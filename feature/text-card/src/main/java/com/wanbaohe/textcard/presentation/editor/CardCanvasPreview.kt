@@ -47,6 +47,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -61,11 +62,15 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChanged
+import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -80,13 +85,25 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.resources.emoji.Emoji
 import com.t8rin.imagetoolbox.core.resources.icons.Close
+import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
+import com.t8rin.imagetoolbox.core.resources.icons.ContentPaste
 import com.t8rin.imagetoolbox.core.settings.presentation.model.toUiFont
+import com.shifenmiao.common.components.text.MAX_SELECTION_SIZE_SCALE
+import com.shifenmiao.common.components.text.MIN_SELECTION_SIZE_SCALE
+import com.shifenmiao.common.components.text.SuppressSystemTextSelectionMenu
+import com.shifenmiao.common.components.text.TextSelectionAction
+import com.shifenmiao.common.components.text.TextSelectionToolbar
+import com.shifenmiao.common.components.text.applySelectionStyle
+import com.shifenmiao.common.components.text.clearSelectionStyles
+import com.shifenmiao.common.components.text.copySelection
+import com.shifenmiao.common.components.text.pasteAtSelection
 import com.t8rin.imagetoolbox.core.ui.widget.editor.AnimatedSelectionBorder
 import com.t8rin.imagetoolbox.core.ui.widget.editor.BoxResizeConfig
 import com.t8rin.imagetoolbox.core.ui.widget.editor.BoxResizeHandles
 import com.t8rin.imagetoolbox.core.ui.widget.editor.HANDLE_SIZE
 import com.t8rin.imagetoolbox.core.ui.widget.editor.RotationHandle
 import com.t8rin.imagetoolbox.core.ui.widget.editor.ScaleHandle
+import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorSelectionRow
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedLoadingIndicator
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.meshGradient
@@ -96,6 +113,8 @@ import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.BackgroundSpec
 import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.outlined.ErrorOutline
+import androidx.compose.material.icons.outlined.FormatClear
+import androidx.compose.material.icons.outlined.Tune
 import com.wanbaohe.textcard.domain.model.CardDrawStroke
 import com.wanbaohe.textcard.domain.model.CardShapeKind
 import com.wanbaohe.textcard.domain.model.CardStrokePoint
@@ -112,6 +131,10 @@ import com.wanbaohe.textcard.domain.model.ShapeElementSpec
 import com.wanbaohe.textcard.domain.model.TextBlock
 import com.wanbaohe.textcard.domain.model.TextCardRenderState
 import com.wanbaohe.textcard.domain.model.buildAnnotatedContent
+import com.wanbaohe.textcard.domain.model.effectiveColorAt
+import com.wanbaohe.textcard.domain.model.effectiveSizeScaleAt
+import com.wanbaohe.textcard.domain.model.isRangeEffectivelyBold
+import com.wanbaohe.textcard.domain.model.isRangeEffectivelyItalic
 import com.wanbaohe.textcard.domain.model.contentBounds
 import com.wanbaohe.textcard.domain.render.CardLayout
 import com.wanbaohe.textcard.domain.render.CardShapeGeometry
@@ -151,6 +174,8 @@ fun CardCanvasPreview(
     editingTextFieldState: TextFieldState? = null,
     onEditingSync: () -> Unit = {},
     onTextEditCommit: () -> Unit = {},
+    onOpenStylePanel: () -> Unit = {},
+    selectionToolbarVisible: Boolean = true,
     onCanvasTap: () -> Unit = {},
     onBackgroundDrag: (Float, Float) -> Unit = { _, _ -> },
     isDrawing: Boolean = false,
@@ -197,7 +222,9 @@ fun CardCanvasPreview(
                             onTextBoxResize = onTextBoxResize,
                             editingTextFieldState = editingTextFieldState,
                             onEditingSync = onEditingSync,
-                            onTextEditCommit = onTextEditCommit
+                            onTextEditCommit = onTextEditCommit,
+                            onOpenStylePanel = onOpenStylePanel,
+                            selectionToolbarVisible = selectionToolbarVisible
                         )
                     }
                 }
@@ -551,6 +578,8 @@ private fun CardTextElement(
     editingTextFieldState: TextFieldState?,
     onEditingSync: () -> Unit,
     onTextEditCommit: () -> Unit,
+    onOpenStylePanel: () -> Unit,
+    selectionToolbarVisible: Boolean,
 ) {
     // 编辑态空内容也保留输入框:否则退格删空的瞬间整个元素被移出组合,焦点/键盘/选中态全丢
     if (block.content.isBlank() && !isEditing) return
@@ -609,6 +638,8 @@ private fun CardTextElement(
                 state = editingTextFieldState,
                 onSync = onEditingSync,
                 onCommit = onTextEditCommit,
+                onOpenStylePanel = onOpenStylePanel,
+                selectionToolbarVisible = selectionToolbarVisible,
                 modifier = contentModifier
             )
         } else {
@@ -625,8 +656,14 @@ private fun CardTextElement(
 /**
  * 就地文字编辑:原位同样式 state 版 BasicTextField(背景透明无装饰线),
  * 进入时自动聚焦弹键盘、光标落末尾;[state] 由页面层按块创建(选区样式工具栏共享),
- * 块内局部样式经 Compose 1.12 addStyle 样式层呈现(增删文字由 TrackedRange 自动跟随),
+ * 块内局部样式经 Compose addStyle 样式层呈现(增删文字由 TrackedRange 自动跟随),
  * 内容/样式变化统一经 [onSync] 回写组件(state 为唯一事实源,模型只是镜像)。
+ *
+ * 选中文字后:
+ * - 系统 Copy/Paste ActionMode 被 [SuppressSystemTextSelectionMenu] 屏蔽;
+ * - 在输入框附近弹自绘 [TextSelectionToolbar](B/I/颜色/字号/复制/粘贴/清除/更多);
+ * - 所有操作只作用于当前选区,经 [TextFieldState.applySelectionStyle] 写局部样式;
+ * - 工具条 Popup 非 focusable,点按钮不会让输入框失焦、选区坍缩。
  */
 @Composable
 private fun InPlaceTextEditor(
@@ -635,10 +672,18 @@ private fun InPlaceTextEditor(
     state: TextFieldState,
     onSync: () -> Unit,
     onCommit: () -> Unit,
+    onOpenStylePanel: () -> Unit,
+    selectionToolbarVisible: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
+    val clipboard = LocalClipboardManager.current
+    var anchorBounds by remember { mutableStateOf(Rect.Zero) }
+    var showColors by remember { mutableStateOf(false) }
+    val selection = state.selection
+    val hasSelection = !selection.collapsed
+
     LaunchedEffect(state) {
         // 灌回模型已有的局部样式(钳制到当前内容长度,防御脏区间)
         block.styleSpans.forEach { span ->
@@ -652,18 +697,143 @@ private fun InPlaceTextEditor(
         // drop(1) 跳过初始值:仅进入编辑态不应标记未保存变更
         snapshotFlow { state.text.toString() }.drop(1).collect { onSync() }
     }
-    BasicTextField(
-        state = state,
-        textStyle = cardTextStyle(block, baseSizePx),
-        cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-        onKeyboardAction = { onCommit() },
-        modifier = modifier
-            .graphicsLayer { alpha = block.alpha.coerceIn(0f, 1f) }
-            // 编辑态输入框内留白,避免文字贴着虚线框
-            .padding(horizontal = 8.dp, vertical = 4.dp)
-            .focusRequester(focusRequester)
-    )
+    // 选区消失后下次重新选中时不要保留上次展开的色板
+    LaunchedEffect(hasSelection) {
+        if (!hasSelection) showColors = false
+    }
+
+    SuppressSystemTextSelectionMenu {
+        BasicTextField(
+            state = state,
+            textStyle = cardTextStyle(block, baseSizePx),
+            cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            onKeyboardAction = {
+                onSync()
+                onCommit()
+            },
+            modifier = modifier
+                .graphicsLayer { alpha = block.alpha.coerceIn(0f, 1f) }
+                // 编辑态输入框内留白,避免文字贴着虚线框
+                .padding(horizontal = 8.dp, vertical = 4.dp)
+                .focusRequester(focusRequester)
+                .onGloballyPositioned { anchorBounds = it.boundsInWindow() }
+        )
+    }
+
+    if (hasSelection && selectionToolbarVisible) {
+        val start = selection.min
+        val end = selection.max
+        val bold = block.isRangeEffectivelyBold(start, end)
+        val italic = block.isRangeEffectivelyItalic(start, end)
+        val currentColor = Color(block.effectiveColorAt(start, end))
+        val currentSize = block.effectiveSizeScaleAt(start, end)
+
+        val applyBold = {
+            state.applySelectionStyle(
+                style = SpanStyle(
+                    fontWeight = if (bold) FontWeight.Normal else FontWeight.Bold
+                ),
+                onChanged = onSync
+            )
+        }
+        val applyItalic = {
+            state.applySelectionStyle(
+                style = SpanStyle(
+                    fontStyle = if (italic) FontStyle.Normal else FontStyle.Italic
+                ),
+                onChanged = onSync
+            )
+        }
+        val stepSize: (Boolean) -> Unit = { increase ->
+            val next = (if (increase) currentSize * 1.15f else currentSize / 1.15f)
+                .coerceIn(MIN_SELECTION_SIZE_SCALE, MAX_SELECTION_SIZE_SCALE)
+            state.applySelectionStyle(
+                style = SpanStyle(fontSize = next.em),
+                onChanged = onSync
+            )
+        }
+
+        val actions = listOf(
+            TextSelectionAction(
+                key = "bold",
+                label = stringResource(R.string.textcard_bold),
+                glyph = "B",
+                selected = bold,
+                onClick = applyBold
+            ),
+            TextSelectionAction(
+                key = "italic",
+                label = stringResource(R.string.textcard_italic),
+                glyph = "I",
+                selected = italic,
+                onClick = applyItalic
+            ),
+            TextSelectionAction(
+                key = "color",
+                label = stringResource(R.string.textcard_text_color),
+                swatch = currentColor,
+                selected = showColors,
+                onClick = { showColors = !showColors }
+            ),
+            TextSelectionAction(
+                key = "size_down",
+                label = stringResource(R.string.textcard_text_size_decrease),
+                glyph = "A-",
+                onClick = { stepSize(false) }
+            ),
+            TextSelectionAction(
+                key = "size_up",
+                label = stringResource(R.string.textcard_text_size_increase),
+                glyph = "A+",
+                onClick = { stepSize(true) }
+            ),
+            TextSelectionAction(
+                key = "copy",
+                label = stringResource(android.R.string.copy),
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                onClick = { state.copySelection(clipboard) }
+            ),
+            TextSelectionAction(
+                key = "paste",
+                label = stringResource(android.R.string.paste),
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentPaste,
+                onClick = { state.pasteAtSelection(clipboard, onSync) }
+            ),
+            TextSelectionAction(
+                key = "clear",
+                label = stringResource(R.string.textcard_clear_selection_style),
+                icon = MaterialIcons.Outlined.FormatClear,
+                onClick = { state.clearSelectionStyles(onSync) }
+            ),
+            TextSelectionAction(
+                key = "more",
+                label = stringResource(R.string.textcard_text_settings),
+                icon = MaterialIcons.Outlined.Tune,
+                onClick = onOpenStylePanel
+            )
+        )
+
+        TextSelectionToolbar(
+            anchorBounds = anchorBounds,
+            actions = actions,
+            footer = if (showColors) {
+                {
+                    ColorSelectionRow(
+                        value = currentColor,
+                        onValueChange = { color ->
+                            state.applySelectionStyle(
+                                style = SpanStyle(color = color),
+                                onChanged = onSync
+                            )
+                            showColors = false
+                        },
+                        allowAlpha = false
+                    )
+                }
+            } else null
+        )
+    }
 }
 
 /** 装饰贴纸元素:透明底,不画棋盘格 */

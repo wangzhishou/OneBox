@@ -222,16 +222,21 @@ fun EditorScaffold(
     var shapeDefaultSpec by remember { mutableStateOf(ShapeSpec.default(ShapeKind.Rectangle)) }
     val immersiveModeState = rememberImmersiveModeState()
 
-    // 「文字设置」调起:优先当前选中的文字图层,其次最上层的非空文字图层
-    // (空内容层不可见,兜底选中它用户会找不到),都没有则新建(弹键盘)
-    val openTextStylePanel: () -> Unit = {
-        val targetId = component.selectedLayer
-            ?.takeIf { it.type is LayerType.Text && !it.transform.locked }?.id
-            ?: component.layers.lastOrNull {
-                (it.type as? LayerType.Text)?.text?.isNotBlank() == true &&
-                    !it.transform.locked
-            }?.id
-        component.beginTextEditSession(targetId, inPlaceEdit = false)
+    // 「文字设置」调起:只作用于当前选中的文字图层。
+    // 不再兜底到最上层文字/自动新建——选中图片时静默改到别的文字层是误改来源。
+    val openTextStylePanel: () -> Boolean = {
+        val target = component.selectedLayer
+            ?.takeIf { it.type is LayerType.Text && !it.transform.locked }
+        if (target == null) {
+            AppToastHost.showToast(message = R.string.markup_select_text_first)
+            false
+        } else {
+            if (component.editSessionLayerId != target.id) {
+                component.beginTextEditSession(target.id, inPlaceEdit = false)
+            }
+            showTextStyleSheet = true
+            true
+        }
     }
 
     val onToolClick: (EditorTool) -> Unit = { tool ->
@@ -246,8 +251,8 @@ fun EditorScaffold(
                             component.setActiveTool(null)
                             activeBottomTab = null
                         } else {
-                            activeBottomTab = tool.id
-                            openTextStylePanel()
+                            // 未选中文字时保持 Tab 不高亮,只提示先选中
+                            if (openTextStylePanel()) activeBottomTab = tool.id
                         }
                     }
 
@@ -261,7 +266,7 @@ fun EditorScaffold(
                 component.setActiveTool(tool.id)
                 when (tool.id) {
                     EditorTools.ID_SELECT -> component.selectLayer(null)
-                    // 侧栏「文字」= 纯新增(编辑入口:选中自动弹出面板/再点文字/底部「文字设置」Tab)
+                    // 侧栏「文字」= 纯新增(编辑入口:再点文字就地编辑/底部「文字设置」Tab/顶部 Aa)
                     EditorTools.ID_TEXT -> component.beginTextEditSession()
                     // 画笔为画布内绘制模式:取消图层选中,避免选中框手势与绘制冲突
                     EditorTools.ID_DRAW -> component.selectLayer(null)
@@ -712,12 +717,14 @@ fun EditorScaffold(
     // 文字编辑:画布就地输入 + 样式底部面板(对齐图文卡片);会话驱动
     val textEditLayerId = component.editSessionLayerId
     LaunchedEffect(textEditLayerId) {
-        // 进入编辑会话打开样式面板;会话结束(提交/取消)一并收起
-        showTextStyleSheet = textEditLayerId != null
-        // 「文字设置」Tab 高亮只随手动点按;会话结束时若仍高亮则取消
-        // (画布选中自动弹出的会话不抢占底部工作态,基础工具栏保持可见)
-        if (textEditLayerId == null && activeBottomTab == EditorTools.ID_TEXT_STYLE) {
-            activeBottomTab = null
+        // 进入就地编辑(再点文字)不自动弹整块样式面板:选中文字后走浮动选区工具条;
+        // 完整样式面板由底部「文字设置」Tab 或画布顶部的「Aa」按钮主动打开。
+        // 会话结束(提交/取消)时收起面板并清掉 Tab 高亮。
+        if (textEditLayerId == null) {
+            showTextStyleSheet = false
+            if (activeBottomTab == EditorTools.ID_TEXT_STYLE) {
+                activeBottomTab = null
+            }
         }
     }
     // 就地编辑态返回键 = 提交退出(优先于页面返回,同图文卡片)
@@ -1061,6 +1068,8 @@ private fun BoxScope.EditorLayerStack(
     aiRectSelect: Boolean,
     immersiveModeState: ImmersiveModeState,
     canvasScale: Float,
+    selectionToolbarVisible: Boolean,
+    onOpenTextStyle: () -> Unit,
     onEditTextLayer: (String) -> Unit,
 ) {
     if (layers.isEmpty()) return
@@ -1159,14 +1168,17 @@ private fun BoxScope.EditorLayerStack(
                             InPlaceTextLayerEditor(
                                 type = textType,
                                 canvasWidthPx = layerCanvasWidth,
-                                onTextChange = { value ->
+                                onTextChange = { value, spans ->
                                     component.updateLayerInEditSession(
                                         layer.id
                                     ) { current ->
                                         (current.type as? LayerType.Text)
                                             ?.let {
                                                 current.copy(
-                                                    type = it.copy(text = value)
+                                                    type = it.copy(
+                                                        text = value,
+                                                        styleSpans = spans
+                                                    )
                                                 )
                                             }
                                             ?: current
@@ -1175,7 +1187,9 @@ private fun BoxScope.EditorLayerStack(
                                 onCommit = {
                                     component.commitLayerEditSession()
                                     component.setActiveTool(null)
-                                }
+                                },
+                                selectionToolbarVisible = selectionToolbarVisible,
+                                onOpenStylePanel = onOpenTextStyle
                             )
                         } else {
                             LayerPreviewRenderers.Content(
@@ -1377,6 +1391,8 @@ private fun EditorCanvas(
                                 aiRectSelect = aiRectSelect,
                                 immersiveModeState = immersiveModeState,
                                 canvasScale = viewport.scale,
+                                selectionToolbarVisible = !textStyleSheetVisible,
+                                onOpenTextStyle = onReopenTextStyle,
                                 onEditTextLayer = onEditTextLayer
                             )
                         }
@@ -1416,6 +1432,8 @@ private fun EditorCanvas(
                                 aiRectSelect = aiRectSelect,
                                 immersiveModeState = immersiveModeState,
                                 canvasScale = viewport.scale,
+                                selectionToolbarVisible = !textStyleSheetVisible,
+                                onOpenTextStyle = onReopenTextStyle,
                                 onEditTextLayer = onEditTextLayer
                             )
                         }

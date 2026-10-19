@@ -228,4 +228,8 @@
     <string name="markup_rasterize_title">转换为图片?</string>
     <string name="markup_rasterize_message">文字/形状图层需先转换为图片才能使用滤镜。转换后不可再编辑文字/形状参数,可通过撤销恢复。</string>
     <string name="markup_rasterize_failed">图层转换失败</string>
+    <string name="markup_text_size_decrease">减小字号</string>
+    <string name="markup_text_size_increase">增大字号</string>
+    <string name="markup_text_clear_format">清除格式</string>
+    <string name="markup_select_text_first">请先选中文字图层</string>
 </resources>

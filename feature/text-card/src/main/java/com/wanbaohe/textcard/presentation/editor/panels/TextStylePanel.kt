@@ -59,6 +59,12 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSegmentedButtonRow
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassDense
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
+import com.shifenmiao.common.components.text.MAX_SELECTION_SIZE_SCALE
+import com.shifenmiao.common.components.text.MIN_SELECTION_SIZE_SCALE
+import com.shifenmiao.common.components.text.applySelectionStyle
+import com.shifenmiao.common.components.text.fullRangeColor
+import com.shifenmiao.common.components.text.withoutFullRangeColor
+import com.shifenmiao.common.components.text.clearSelectionStyles
 import com.t8rin.logger.makeLog
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.CardTextAlignment
@@ -115,7 +121,17 @@ fun TextStylePanel(
     }
 
     val blocks = component.textBlocks
-    val block = component.selectedTextBlock() ?: return
+    val block = component.selectedTextBlock()
+    if (block == null) {
+        PanelTitle(R.string.textcard_text_settings)
+        Text(
+            text = stringResource(R.string.textcard_select_text_first),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(vertical = 12.dp)
+        )
+        return
+    }
     val blockId = block.id
 
     PanelTitle(R.string.textcard_text_settings)
@@ -139,7 +155,7 @@ fun TextStylePanel(
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier
                         .clip(ShapeDefaults.default)
-                        .clickable { clearSelectionStyles(selectionCtx.first, onEditingSync) }
+                        .clickable { selectionCtx.first.clearSelectionStyles(onEditingSync) }
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 )
             }
@@ -184,11 +200,14 @@ fun TextStylePanel(
             }
         }
 
-        // 字体:当前块字体名(该字体渲染),点击打开全局共享的字体选择器(能下载/能导入)
-        FontPickerRow(
-            component = component,
-            block = block
-        )
+        // 字体:整块属性;有活选区时禁用(局部样式 span 目前只覆盖颜色/字号/粗斜),
+        // 避免用户以为改的是选中的几个字、实际改了整块
+        PanelDisabledWrapper(enabled = selectionCtx == null) {
+            FontPickerRow(
+                component = component,
+                block = block
+            )
+        }
 
         // 字号:选区激活时为相对块级的倍率(em 写入样式层,100% = 块级字号),否则整块字号
         PanelSliderRow(
@@ -205,8 +224,7 @@ fun TextStylePanel(
             onValueChange = { value ->
                 val ctx = selectionCtx
                 if (ctx != null) {
-                    applySpanStyle(
-                        state = ctx.first,
+                    ctx.first.applySelectionStyle(
                         style = SpanStyle(fontSize = value.em),
                         onChanged = onEditingSync
                     )
@@ -221,18 +239,26 @@ fun TextStylePanel(
             ColorSelectionRow(
                 value = selectionCtx?.let { (_, blk, sel) ->
                     Color(blk.effectiveColorAt(sel.min, sel.max))
-                } ?: Color(block.color),
+                } ?: Color(
+                    block.styleSpans.fullRangeColor(block.content.length)?.toInt()
+                        ?: block.color.toInt()
+                ),
                 onValueChange = { color ->
                     val ctx = selectionCtx
                     if (ctx != null) {
-                        applySpanStyle(
-                            state = ctx.first,
+                        ctx.first.applySelectionStyle(
                             style = SpanStyle(color = color),
                             onChanged = onEditingSync
                         )
                     } else {
                         component.updateTextBlock(blockId) {
-                            it.copy(color = color.toArgb().toLong() and 0xFFFF_FFFFL)
+                            it.copy(
+                                color = color.toArgb().toLong() and 0xFFFF_FFFFL,
+                                // 全段颜色 span 会压住块级颜色,先清掉;局部选色保留
+                                styleSpans = it.styleSpans.withoutFullRangeColor(
+                                    it.content.length
+                                )
+                            )
                         }
                     }
                 },
@@ -320,8 +346,7 @@ fun TextStylePanel(
                     val ctx = selectionCtx
                     if (ctx != null) {
                         val (_, blk, sel) = ctx
-                        applySpanStyle(
-                            state = ctx.first,
+                        ctx.first.applySelectionStyle(
                             style = SpanStyle(
                                 fontWeight = if (blk.isRangeEffectivelyBold(sel.min, sel.max)) {
                                     FontWeight.Normal
@@ -344,8 +369,7 @@ fun TextStylePanel(
                     val ctx = selectionCtx
                     if (ctx != null) {
                         val (_, blk, sel) = ctx
-                        applySpanStyle(
-                            state = ctx.first,
+                        ctx.first.applySelectionStyle(
                             style = SpanStyle(
                                 fontStyle = if (blk.isRangeEffectivelyItalic(sel.min, sel.max)) {
                                     FontStyle.Normal

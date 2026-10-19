@@ -104,4 +104,7 @@
     <string name="textcard_text_background">文字背景</string>
     <string name="textcard_text_outline">描邊</string>
     <string name="textcard_outline_width">描邊粗細</string>
+    <string name="textcard_select_text_first">請先選取文字</string>
+    <string name="textcard_text_size_decrease">減小字號</string>
+    <string name="textcard_text_size_increase">增大字號</string>
 </resources>

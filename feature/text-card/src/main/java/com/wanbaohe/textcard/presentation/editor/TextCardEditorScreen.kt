@@ -109,6 +109,7 @@ fun TextCardEditorScreen(
     var showShapeSheet by rememberSaveable { mutableStateOf(false) }
     var showGenerateImageSheet by rememberSaveable { mutableStateOf(false) }
     var showExitDialog by rememberSaveable { mutableStateOf(false) }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     // 编辑页返回(顶栏 + 系统返回键/手势):有未保存变更先弹退出确认,选择页不拦截
     val onBack = {
@@ -196,6 +197,13 @@ fun TextCardEditorScreen(
                         editingTextFieldState = editingTextFieldState,
                         onEditingSync = syncEditing,
                         onTextEditCommit = component::endTextEdit,
+                        onOpenStylePanel = {
+                            // 浮动操作条的「更多样式」:收键盘,打开完整文字设置面板
+                            keyboardController?.hide()
+                            component.setActivePanel(EditorPanel.TextStyle)
+                        },
+                        // 完整面板打开时收起浮动工具条,避免压在面板上/重复操作
+                        selectionToolbarVisible = component.activePanel != EditorPanel.TextStyle,
                         onCanvasTap = {
                             // 编辑中点空白 = 提交并退出编辑态
                             component.endTextEdit()
@@ -381,9 +389,13 @@ private fun EditorBottomBar(
             val keyboardController = LocalSoftwareKeyboardController.current
             Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
                 tabs.forEach { panel ->
+                    // 「文字设置」只在选中文字块时可用:未选中文字时打开面板没有作用目标,
+                    // 旧实现会兜底改到第一块,容易误改
+                    val enabled = panel != EditorPanel.TextStyle || component.hasSelectedTextBlock
                     BottomTab(
                         panel = panel,
                         active = component.activePanel == panel,
+                        enabled = enabled,
                         onClick = {
                             // 就地编辑中打开面板先收键盘(文字选区存在 TextFieldState 里,不随焦点丢失)
                             if (component.editingTextBlockId != null) keyboardController?.hide()
@@ -421,10 +433,13 @@ private fun BottomTab(
     active: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
 ) {
-    val contentColor = if (active) {
-        MaterialTheme.colorScheme.onPrimaryContainer
-    } else MaterialTheme.colorScheme.onSurfaceVariant
+    val contentColor = when {
+        !enabled -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
+        active -> MaterialTheme.colorScheme.onPrimaryContainer
+        else -> MaterialTheme.colorScheme.onSurfaceVariant
+    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -434,7 +449,7 @@ private fun BottomTab(
                     MaterialTheme.colorScheme.primaryContainer
                 } else Color.Transparent
             )
-            .clickable(onClick = onClick)
+            .clickable(enabled = enabled, onClick = onClick)
             .padding(horizontal = 4.dp, vertical = 6.dp)
     ) {
         Icon(

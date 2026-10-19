@@ -1,5 +1,6 @@
 package com.wanbaohe.markuplayers.domain.model
 
+import com.shifenmiao.common.components.text.RichTextStyleSpan
 import com.t8rin.imagetoolbox.core.domain.model.Outline
 import com.t8rin.imagetoolbox.core.settings.domain.model.FontType
 import com.t8rin.imagetoolbox.core.ui.widget.editor.StickerSource
@@ -29,6 +30,12 @@ sealed interface LayerType {
         val alignment: TextAlignment = TextAlignment.Left,
         val lineHeight: Float = 1.2f,
         val letterSpacingEm: Float = 0f,
+        /**
+         * 文字内局部样式区间(富文本):颜色 / 粗体 / 斜体 / 字号倍率,
+         * 字段 null = 继承图层级样式。由画布选区工具条写入,文字增删由
+         * Compose TrackedRange 跟随迁移;不变量见 common 的 TextSelectionSupport。
+         */
+        val styleSpans: List<RichTextStyleSpan> = emptyList(),
         /**
          * 框宽(相对底图宽),配合 [widthManuallySet]:
          * [widthManuallySet]=false(默认)= 自适应收紧:框随文字内容收缩(选框始终贴合文字,

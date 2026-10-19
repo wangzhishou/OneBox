@@ -195,4 +195,8 @@
     <string name="markup_rasterize_message">文字/形狀圖層需先轉換為圖片才能使用濾鏡。轉換後不可再編輯文字/形狀參數,可透過復原恢復。</string>
     <string name="markup_rasterize_failed">圖層轉換失敗</string>
     <string name="markup_tool_text_style">文字設定</string>
+    <string name="markup_text_size_decrease">減小字號</string>
+    <string name="markup_text_size_increase">增大字號</string>
+    <string name="markup_text_clear_format">清除格式</string>
+    <string name="markup_select_text_first">請先選取文字圖層</string>
 </resources>

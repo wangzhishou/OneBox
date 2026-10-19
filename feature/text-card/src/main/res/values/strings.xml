@@ -101,4 +101,7 @@
     <string name="textcard_draw_width">Stroke width</string>
     <string name="textcard_editing_selection">Editing: selected text</string>
     <string name="textcard_clear_selection_style">Clear style</string>
+    <string name="textcard_select_text_first">Select a text block first</string>
+    <string name="textcard_text_size_decrease">Decrease text size</string>
+    <string name="textcard_text_size_increase">Increase text size</string>
 </resources>

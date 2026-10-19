@@ -1781,11 +1781,9 @@ class MarkupLayersComponent @AssistedInject internal constructor(
                 .map { it.id }.toSet()
         } else setOf(target.id)
         _maskTargetBitmap.value = null
-        // 选中文字图层自动调起纯面板文字会话(选中即出文字设置面板,对齐图文卡片);
-        // 就地编辑(弹键盘改内容)仍走「再点已选中文字」(EditBox onEditRequest)
-        if (target != null && target.type is LayerType.Text && !target.transform.locked) {
-            beginTextEditSession(target.id, inPlaceEdit = false)
-        }
+        // 选中只负责选中,不自动弹文字样式面板:
+        // 面板/选区工具条要等用户真正框选文字或主动点底部「文字设置」Tab 才出现。
+        // 就地编辑仍走「再点已选中文字」(EditBox onEditRequest)。
     }
 
     fun setActiveTool(id: String?) {

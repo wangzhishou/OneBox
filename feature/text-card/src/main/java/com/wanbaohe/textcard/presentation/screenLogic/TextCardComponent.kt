@@ -252,9 +252,16 @@ class TextCardComponent @AssistedInject internal constructor(
         _selectedElementId.value = id
     }
 
+    /**
+     * 当前真正选中的文字块。只有画布/面板明确选中文字块时才非空——
+     * 不再兜底到第一块,避免选中图片/空白时文字设置面板偷偷改到别的块。
+     */
     fun selectedTextBlock(): TextBlock? =
-        _textBlocks.value.find { it.id == _selectedTextBlockId.value }
-            ?: _textBlocks.value.firstOrNull()
+        _textBlocks.value.find { it.id == _selectedElementId.value }
+
+    /** 当前是否有文字块被选中(底部「文字设置」Tab 的可用性判定) */
+    val hasSelectedTextBlock: Boolean
+        get() = _textBlocks.value.any { it.id == _selectedElementId.value }
 
     fun updateTextBlock(id: String, transform: (TextBlock) -> TextBlock) {
         if (_textBlocks.value.none { it.id == id }) return
@@ -262,7 +269,7 @@ class TextCardComponent @AssistedInject internal constructor(
         registerChanges()
     }
 
-    /** 新增文字块:正文样式,默认排在现有最后一块基准往下,同步建图层并选中(选中即出文字设置面板) */
+    /** 新增文字块:正文样式,默认排在现有最后一块基准往下,同步建图层并选中(样式面板需再点 Tab 或选中文字后的浮动工具条) */
     fun addTextBlock() {
         val last = _textBlocks.value.lastOrNull()
         val block = TextBlock(
@@ -273,7 +280,8 @@ class TextCardComponent @AssistedInject internal constructor(
         )
         _textBlocks.update { it + block }
         _elementLayers.update { it + ElementLayer(block.id, ElementLayer.Kind.Text) }
-        selectElement(block.id)
+        // 新增文字直接进就地编辑:添加后立刻能打字,不用再点一次(对齐图片创作侧栏「文字」)
+        beginTextEdit(block.id)
         registerChanges()
     }
 
@@ -313,16 +321,18 @@ class TextCardComponent @AssistedInject internal constructor(
     // ---------------- 元素选中与变换(文字块/装饰通用) ----------------
 
     /**
-     * 画布点按元素=选中;点空白传 null 取消选中。选中文字块时同步为样式面板目标,
-     * 并自动调起文字设置面板(与图片创作一致:选中文字即出面板,操作作用于当前选中);
-     * 选中非文字元素时若文字面板开着则收起(面板目标已失效)。
+     * 画布点按元素=选中;点空白传 null 取消选中。
+     *
+     * 选中文字块只同步「文字设置」的作用目标,不自动弹面板:
+     * 面板/浮动操作条要等用户真正框选文字(或主动点底部 Tab)才出现,
+     * 避免点一下文字就糊住半屏。选中非文字元素或空白时收起已打开的文字面板,
+     * 防止面板继续改到上一块文字。
      */
     fun selectElement(id: String?) {
         _selectedElementId.value = id
         if (id != null && _textBlocks.value.any { it.id == id }) {
             _selectedTextBlockId.value = id
-            setActivePanel(EditorPanel.TextStyle)
-        } else if (id != null && _activePanel.value == EditorPanel.TextStyle) {
+        } else if (_activePanel.value == EditorPanel.TextStyle) {
             setActivePanel(null)
         }
     }

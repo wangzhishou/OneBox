@@ -6,8 +6,13 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.text.Layout
+import android.text.SpannableString
+import android.text.Spanned
 import android.text.StaticLayout
 import android.text.TextPaint
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
+import android.text.style.StyleSpan
 import androidx.core.content.res.ResourcesCompat
 import com.t8rin.imagetoolbox.core.settings.domain.model.FontType
 import com.wanbaohe.markuplayers.domain.model.LayerType
@@ -15,6 +20,7 @@ import com.wanbaohe.markuplayers.domain.model.MarkupLayer
 import com.wanbaohe.markuplayers.domain.render.LayerExportRenderer
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
+import kotlin.math.ceil
 import kotlin.math.max
 import kotlin.math.roundToInt
 import kotlin.reflect.KClass
@@ -76,8 +82,9 @@ class TextLayerExportRenderer @Inject constructor(
             LayerType.Text.TextAlignment.Justify -> Layout.Alignment.ALIGN_NORMAL
         }
 
+        val exportText = type.exportText()
         fun buildLayout(p: TextPaint, width: Int): StaticLayout = StaticLayout.Builder
-            .obtain(type.text, 0, type.text.length, p, width)
+            .obtain(exportText, 0, exportText.length, p, width)
             .setAlignment(alignment)
             .setLineSpacing(0f, type.lineHeight)
             .setIncludePad(false)
@@ -85,18 +92,36 @@ class TextLayerExportRenderer @Inject constructor(
 
         val probe = buildLayout(paint, layoutWidth)
         // 固定框宽:直接用设定框宽;自适应:按折行后最长行收紧(与 Compose hug 一致),
-        // 再重建以保证行内对齐正确
-        val contentWidth = if (fixedWidth) {
-            boxWidth.roundToInt().coerceAtLeast(1)
+        // 再重建以保证行内对齐正确。
+        //
+        // 关键:收紧宽度必须留 2px 余量。StaticLayout 的 getLineWidth 是浮点值,
+        // 直接 round 成整数再重建时可能比实际行宽小零点几像素,导致最后一行被挤到下一行——
+        // 编辑器/预览(Compose 按自然宽度一次测量)不会折行,导出却折行,正是这个原因。
+        var contentWidth: Int
+        val textWidth: Int
+        if (fixedWidth) {
+            contentWidth = boxWidth.roundToInt().coerceAtLeast(1)
+            textWidth = (contentWidth - 2f * hPad).roundToInt().coerceAtLeast(1)
         } else {
             var maxLine = 0f
             for (i in 0 until probe.lineCount) {
                 maxLine = max(maxLine, probe.getLineWidth(i))
             }
-            (maxLine + 2f * hPad).coerceAtMost(boxWidth).roundToInt().coerceAtLeast(1)
+            // +2px:吸收浮点行宽与整数布局宽度的误差,避免"差 0.125px 就换行"
+            val huggedWidth = (ceil(maxLine).toInt() + 2).coerceIn(1, layoutWidth)
+            textWidth = huggedWidth
+            contentWidth = (huggedWidth + 2f * hPad)
+                .roundToInt()
+                .coerceAtMost(boxWidth.roundToInt())
+                .coerceAtLeast(1)
         }
-        val textWidth = (contentWidth - 2f * hPad).roundToInt().coerceAtLeast(1)
-        val layout = if (textWidth == layoutWidth) probe else buildLayout(paint, textWidth)
+        var layout = if (textWidth == layoutWidth) probe else buildLayout(paint, textWidth)
+        // 防御:仍出现比 probe 更多的行(极端字体/字距),回退到 probe 的折行结果,
+        // 宁可块宽略大,也不让导出与预览行数不一致。
+        if (layout.lineCount > probe.lineCount) {
+            layout = probe
+            contentWidth = boxWidth.roundToInt().coerceAtLeast(1)
+        }
         val contentHeight = layout.height + 2f * vPad
 
         canvas.save()
@@ -125,6 +150,50 @@ class TextLayerExportRenderer @Inject constructor(
         layout.draw(canvas)
         canvas.restore()
         canvas.restore()
+    }
+
+    /**
+     * 局部样式区间 → SpannableString(无局部样式直接返回原文):
+     * 颜色 ForegroundColorSpan;字号倍率 RelativeSizeSpan;粗斜合成一个 StyleSpan
+     * (未设置的字段继承图层级 decorations,故图层粗体下 bold=false 的区间可反粗)。
+     * 与图文卡片 AndroidTextCardExportRenderer.exportText 同构,保证预览/导出一致。
+     */
+    private fun LayerType.Text.exportText(): CharSequence {
+        if (styleSpans.isEmpty()) return text
+        val spannable = SpannableString(text)
+        styleSpans.forEach { span ->
+            val clamped = span.clamped(text.length) ?: return@forEach
+            span.color?.let { color ->
+                spannable.setSpan(
+                    ForegroundColorSpan(color.toInt()),
+                    clamped.start,
+                    clamped.end,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+            span.sizeScale?.let { scale ->
+                spannable.setSpan(
+                    RelativeSizeSpan(scale),
+                    clamped.start,
+                    clamped.end,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+            if (span.bold != null || span.italic != null) {
+                val effectiveBold = span.bold ?: (LayerType.Text.Decoration.Bold in decorations)
+                val effectiveItalic =
+                    span.italic ?: (LayerType.Text.Decoration.Italic in decorations)
+                val style = (if (effectiveBold) Typeface.BOLD else 0) or
+                    (if (effectiveItalic) Typeface.ITALIC else 0)
+                spannable.setSpan(
+                    StyleSpan(style),
+                    clamped.start,
+                    clamped.end,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+        }
+        return spannable
     }
 
     private fun resolveTypeface(

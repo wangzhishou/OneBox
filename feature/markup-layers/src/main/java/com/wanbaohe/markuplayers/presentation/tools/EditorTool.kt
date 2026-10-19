@@ -141,8 +141,8 @@ object EditorTools {
             placement = EditorTool.Placement.BottomTab,
             mode = EditorTool.Mode.Sheet
         ),
-        // 「文字设置」Tab(对齐图文卡片):调起当前选中文字图层的样式面板;
-        // 未选中时选中最上层文字图层,无文字图层时新建
+        // 「文字设置」Tab(对齐图文卡片):只作用于当前选中的文字图层;
+        // 未选中文字时提示先选中,不再兜底改别的图层或新建
         EditorTool(
             id = ID_TEXT_STYLE,
             titleRes = R.string.markup_tool_text_style,

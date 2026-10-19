@@ -229,4 +229,8 @@
     <string name="markup_rasterize_title">Convert to image?</string>
     <string name="markup_rasterize_message">Text and shape layers must be converted to an image before using filters. After conversion, text/shape settings can no longer be edited, but you can restore them via Undo.</string>
     <string name="markup_rasterize_failed">Failed to convert layer</string>
+    <string name="markup_text_size_decrease">Decrease text size</string>
+    <string name="markup_text_size_increase">Increase text size</string>
+    <string name="markup_text_clear_format">Clear formatting</string>
+    <string name="markup_select_text_first">Select a text layer first</string>
 </resources>

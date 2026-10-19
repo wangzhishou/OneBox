@@ -24,6 +24,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.text.OutlineParams
 import com.t8rin.imagetoolbox.core.ui.widget.text.OutlinedText
 import com.wanbaohe.markuplayers.domain.model.LayerType
+import com.wanbaohe.markuplayers.domain.model.buildAnnotatedText
 import com.wanbaohe.markuplayers.domain.model.MarkupLayer
 import kotlin.reflect.KClass
 
@@ -67,7 +68,7 @@ object TextLayerPreviewRenderer : LayerPreviewRenderer {
             Modifier.widthIn(max = with(density) { ((type.widthRatio ?: 1f) * canvasWidthPx).toDp() })
         }
         OutlinedText(
-            text = type.text,
+            text = type.buildAnnotatedText(),
             outlineParams = outlineParams,
             color = type.color.toColor(),
             fontSize = fontSize,

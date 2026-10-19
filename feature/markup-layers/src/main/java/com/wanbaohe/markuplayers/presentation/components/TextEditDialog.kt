@@ -72,6 +72,8 @@ import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.logger.makeLog
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.model.LayerType
+import com.shifenmiao.common.components.text.fullRangeColor
+import com.shifenmiao.common.components.text.withoutFullRangeColor
 import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -191,9 +193,20 @@ private fun TextStyleContent(
 
             SettingRow(label = stringResource(R.string.markup_text_color)) {
                 ColorSelectionRow(
-                    value = Color(text.color),
+                    // 整层颜色:若全段被旧的颜色 span 覆盖,回显 span 的颜色,
+                    // 否则用户会看到"色板选中棕色、画布却是红色"
+                    value = Color(
+                        text.styleSpans.fullRangeColor(text.text.length)?.toInt()
+                            ?: text.color
+                    ),
                     onValueChange = { color ->
-                        onTextChange { it.copy(color = color.toArgb()) }
+                        onTextChange {
+                            it.copy(
+                                color = color.toArgb(),
+                                // 清掉全段颜色覆盖,让整层颜色真正生效;局部选色保留
+                                styleSpans = it.styleSpans.withoutFullRangeColor(it.text.length)
+                            )
+                        }
                     },
                     allowAlpha = false,
                     modifier = Modifier.weight(1f)

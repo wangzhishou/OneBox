@@ -7,6 +7,7 @@ import com.t8rin.imagetoolbox.core.filters.presentation.serialization.EncodedUiF
 import com.t8rin.imagetoolbox.core.filters.presentation.serialization.FilterValue
 import com.t8rin.imagetoolbox.core.filters.presentation.serialization.UiFilterCodec
 import com.t8rin.imagetoolbox.core.settings.domain.model.FontType
+import com.shifenmiao.common.components.text.RichTextStyleSpan
 import com.t8rin.imagetoolbox.core.ui.widget.editor.StickerSource
 import com.wanbaohe.markuplayers.domain.model.BrushType
 import com.wanbaohe.markuplayers.domain.model.BaseTransformSpec
@@ -170,7 +171,7 @@ object MarkupDocumentCodec {
         )
     }
 
-    private fun encodeType(type: LayerType): JsonObject = when (type) {
+private fun encodeType(type: LayerType): JsonObject = when (type) {
         is LayerType.Text -> obj(
             "kind" to json("text"),
             "text" to json(type.text),
@@ -185,6 +186,7 @@ object MarkupDocumentCodec {
             "alignment" to json(type.alignment.name),
             "lineHeight" to json(type.lineHeight),
             "letterSpacingEm" to json(type.letterSpacingEm),
+            "styleSpans" to array(type.styleSpans, ::encodeStyleSpan),
             "widthRatio" to nullable(type.widthRatio, ::json),
             "widthManuallySet" to json(type.widthManuallySet),
         )
@@ -247,7 +249,7 @@ object MarkupDocumentCodec {
                         "decorations", "outline", "alignment", "lineHeight", "letterSpacingEm",
                         "widthRatio"
                     ),
-                    optional = setOf("widthManuallySet")
+                    optional = setOf("widthManuallySet", "styleSpans")
                 )
                 val decorations = value.list("decorations") {
                     enumValue<LayerType.Text.Decoration>(it.stringValue())
@@ -270,6 +272,11 @@ object MarkupDocumentCodec {
                     alignment = enumValue(value.string("alignment")),
                     lineHeight = value.float("lineHeight").positive("Line height"),
                     letterSpacingEm = value.float("letterSpacingEm"),
+                    styleSpans = when (val spans = value["styleSpans"]) {
+                        null, JsonNull -> emptyList()
+                        is JsonArray -> spans.map(::decodeStyleSpan)
+                        else -> invalid("Invalid text style spans")
+                    },
                     widthRatio = widthRatio,
                     widthManuallySet = (value["widthManuallySet"] as? JsonPrimitive)
                         ?.booleanOrNull ?: false,
@@ -609,6 +616,57 @@ object MarkupDocumentCodec {
             else -> invalid("Unknown workspace background")
         }
     }
+}
+
+private fun encodeStyleSpan(span: RichTextStyleSpan): JsonObject = obj(
+    "start" to json(span.start),
+    "end" to json(span.end),
+    "color" to nullable(span.color, ::json),
+    "bold" to nullable(span.bold, ::json),
+    "italic" to nullable(span.italic, ::json),
+    "sizeScale" to nullable(span.sizeScale, ::json),
+)
+
+private fun decodeStyleSpan(element: JsonElement): RichTextStyleSpan {
+    val obj = element.asObject()
+    val allowed = setOf("start", "end", "color", "bold", "italic", "sizeScale")
+    if (obj.keys.any { it !in allowed } || "start" !in obj || "end" !in obj) {
+        invalid("Invalid text style span")
+    }
+    val start = obj.int("start")
+    val end = obj.int("end")
+    if (start < 0 || end <= start) invalid("Invalid text style span range")
+    val color = obj["color"]?.let {
+        if (it == JsonNull) null else it.primitive().let { p ->
+            if (p.isString) invalid("Invalid text style color")
+            p.longOrNull ?: invalid("Invalid text style color")
+        }
+    }
+    val bold = obj["bold"]?.let {
+        if (it == JsonNull) null else it.primitive().let { p ->
+            if (p.isString) invalid("Invalid text style bold")
+            p.booleanOrNull ?: invalid("Invalid text style bold")
+        }
+    }
+    val italic = obj["italic"]?.let {
+        if (it == JsonNull) null else it.primitive().let { p ->
+            if (p.isString) invalid("Invalid text style italic")
+            p.booleanOrNull ?: invalid("Invalid text style italic")
+        }
+    }
+    val sizeScale = obj["sizeScale"]?.let {
+        if (it == JsonNull) null else it.floatValue().also { scale ->
+            if (scale <= 0f) invalid("Invalid text style size")
+        }
+    }
+    return RichTextStyleSpan(
+        start = start,
+        end = end,
+        color = color,
+        bold = bold,
+        italic = italic,
+        sizeScale = sizeScale
+    )
 }
 
 internal data class StoredMarkupProject(
