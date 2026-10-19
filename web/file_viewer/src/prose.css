@@ -1,0 +1,159 @@
+/*
+ * Paper, for the documents prose.js draws: OpenDocument text, Rich Text and Word 97-2003.
+ *
+ * The same ground, shadow and gap docx.html gives a Word page, so that a document looks
+ * like the same kind of thing whichever of the four formats it was saved in. That page's
+ * stylesheet says why each of these is what it is: the centring, border-box, --vw-fit
+ * rather than 100vh, and zoom rather than transform. None of it is restated here.
+ */
+.vw-paper {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 100vh;
+  min-height: calc(var(--vw-fit, 100vh) - var(--vw-top, 0px));
+  padding: 16px 8px;
+}
+
+/*
+ * One sheet. Its width, least height and margins are the document's own and arrive as
+ * inline styles, because they are the one thing here a file decides.
+ *
+ * White with black ink whatever the theme, for the reason a PDF page is: paper is paper
+ * at midnight too, and a document that sets a dark blue heading is relying on it.
+ *
+ * A column, so that the footer of a page shorter than its paper sits at the foot of the
+ * paper and not under the last paragraph. 12pt serif is only what a document that names
+ * no font and no size gets, which for these formats is what the programs that wrote them
+ * would have used.
+ */
+.vw-paper > section {
+  display: flex;
+  flex-direction: column;
+  flex: none;
+  box-sizing: border-box;
+  margin-bottom: 16px;
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.25);
+  zoom: var(--vw-page-zoom, 1);
+  font-family: "Times New Roman", serif;
+  font-size: 12pt;
+  line-height: 1.2;
+  overflow-wrap: break-word;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+}
+
+.vw-paper .vw-body { flex: 1 0 auto; }
+.vw-paper .vw-header { flex: none; margin-bottom: 12pt; }
+.vw-paper .vw-footer { flex: none; margin-top: 12pt; }
+
+/*
+ * Every margin and size below is zeroed because the document supplies its own. A
+ * paragraph with no spacing set has none, and a heading is whatever its style says it
+ * is: left to the browser, an h1 would arrive with a size and a margin no file asked for.
+ * The elements are still the real ones, so a screen reader can move by heading and read
+ * a table as a table.
+ *
+ * pre-wrap keeps the runs of spaces and the tabs these formats are full of. Both are
+ * layout in a word processor, names lined up against dates with the tab key, and
+ * collapsing them the way HTML does would close the columns up.
+ */
+.vw-paper p,
+.vw-paper h1, .vw-paper h2, .vw-paper h3,
+.vw-paper h4, .vw-paper h5, .vw-paper h6 {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  white-space: pre-wrap;
+  tab-size: 36pt;
+  -moz-tab-size: 36pt;
+}
+
+/* An empty paragraph is a blank line, and an element with nothing in it has no height. */
+.vw-paper p:empty::before,
+.vw-paper h1:empty::before, .vw-paper h2:empty::before, .vw-paper h3:empty::before,
+.vw-paper h4:empty::before, .vw-paper h5:empty::before, .vw-paper h6:empty::before {
+  content: "\200B";
+}
+
+/*
+ * The number or bullet of a list item, which these formats either spell out or leave to
+ * be counted. Drawn as text and not as a list marker, because a marker cannot say "2.1.3"
+ * or "(iv)" or a Wingdings arrow, and because copying a list out of the page should take
+ * its numbers along. The width is the hanging indent, set inline beside the paragraph's.
+ */
+.vw-paper .vw-label {
+  display: inline-block;
+  text-indent: 0;
+  white-space: pre;
+}
+
+.vw-paper table {
+  border-collapse: collapse;
+  max-width: 100%;
+}
+.vw-paper td, .vw-paper th {
+  vertical-align: top;
+  font-weight: inherit;
+  text-align: inherit;
+  padding: 0;
+}
+
+.vw-paper img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* A picture in an encoding no browser draws, which for these formats means a Windows
+   metafile. The box keeps the picture's place and says why it is empty. */
+.vw-paper .vw-nopicture {
+  display: inline-block;
+  box-sizing: border-box;
+  max-width: 100%;
+  padding: 6pt;
+  border: 1px solid #b8b3a7;
+  color: #5c574c;
+  font: 9pt Roboto, sans-serif;
+  white-space: normal;
+  text-indent: 0;
+  vertical-align: bottom;
+}
+
+.vw-paper a { color: inherit; text-decoration: inherit; }
+
+.vw-paper sup.vw-noteref, .vw-paper .vw-notes sup { font-size: 0.7em; }
+.vw-paper .vw-notes {
+  margin-top: 18pt;
+  padding-top: 6pt;
+  border-top: 1px solid #8a8578;
+  font-size: 10pt;
+}
+
+/* The surround only, as in docx.html. */
+@media (prefers-color-scheme: dark) {
+  .vw-paper > section { box-shadow: 0 1px 8px rgba(0, 0, 0, 0.6); }
+}
+
+/* Print, as in docx.html: a sheet per page at its real size, with the document's own margins. */
+@media print {
+  @page { margin: 0; }
+  .vw-paper {
+    display: block;
+    min-height: 0;
+    padding: 0;
+  }
+  .vw-paper > section {
+    zoom: 1;
+    margin: 0 auto;
+    box-shadow: none;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+  .vw-paper > section + section { break-before: page; }
+}

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<!-- The policy in ViewerPolicy.kt, which says why each part is there. ViewerPolicyTest
+     keeps this copy word for word the same as that one, in every page. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self'; worker-src 'self'; frame-src 'none'; object-src 'none'; form-action 'none'; base-uri 'none'">
+<title>Word document</title>
+<link rel="stylesheet" href="app.css">
+<style>
+  /* No viewport meta on this page, so the WebView lays out at its 980 CSS px default
+     and zooms that down to fit the screen. That shrinks the status card along with
+     everything else; app.css multiplies it back up by this. See the token there. */
+  :root { --vw-zoom: 2.75; }
+
+  /* Turns off Chromium's own double tap zoom, which fits the block under the finger to the
+     screen and so took a page in by a fifth, or a paragraph by two fifths. DoubleTapZoom.kt
+     zooms a double tap instead, and would zoom twice without this line. A pinch is as it
+     was. */
+  html { touch-action: manipulation; }
+
+  /*
+   * Where the document sits when there is less of it than there is screen, the same as
+   * pdf.html and pptx.html do. A Letter page drawn at the width of a phone was a little
+   * over half a screen tall when this was written, and is about two thirds now that the
+   * rule below fills the width; either way a three-line letter stood at the top with the
+   * rest of the display left as empty ground below it.
+   *
+   * Only three declarations are new. docx-preview's own stylesheet already makes this a
+   * column flex container and gives it align-items: center, which is what has always put
+   * a page in the middle of the screen from side to side; this adds the other axis. That
+   * is a dependency on the vendored file, and it is the one align-items: center has been
+   * riding on since this viewer was written. It also fails safe: a docx-preview that
+   * stopped being flex would make justify-content inert and put the page back at the top,
+   * which is where it is today.
+   *
+   * min-height leaves the wrapper free to grow, so a document longer than the screen has
+   * no free space to distribute and lays out exactly as it did. Only one that already
+   * fits moves. border-box, or the 16px of padding would fall outside the height and give
+   * every short document a little scroll to pull against.
+   *
+   * --vw-fit rather than 100vh: see vwFitHeight() in app.js. It matters here for a
+   * landscape page, which at 1056 px is wider than the 980 the WebView lays out at, and
+   * where 100vh stops being the height the reader can see.
+   */
+  .docx-wrapper {
+    background: var(--vw-ground) !important;
+    padding: 16px 8px !important;
+    box-sizing: border-box;
+    /* Less the room kept for the title bar above, as pdf.html does */
+    min-height: calc(var(--vw-fit, 100vh) - var(--vw-top, 0px));
+    justify-content: center;
+  }
+  /*
+   * A page fills the width of the screen, the way a PDF page and a slide already do.
+   *
+   * docx-preview writes the section its real paper width, 612pt for Letter and 595pt for
+   * A4, which lands at 816 and 794 CSS px against the 980 this WebView lays out at. So a
+   * Word page has been drawn at 83% of the screen with the rest left as ground, and it is
+   * worse than that from the reader's side: the document's own 90pt page margins are
+   * inside those 816 px, so the column of text was 576 px, under sixty per cent of the
+   * screen, where a PDF of the same paper gets all of it.
+   *
+   * zoom and not transform: scale, and that is the whole reason this is workable. A
+   * transform paints at a different size and leaves the layout box alone, so the page
+   * would sit in a hole its old size and the centring above would be measuring the wrong
+   * box. zoom scales the layout too, so every height that follows from the page still
+   * adds up. Nothing is reflowed and no line break moves; it is the same page, larger.
+   *
+   * The ratio is fitPageWidth()'s to work out, because only it knows how wide the paper
+   * turned out to be. The fallback of 1 is what an engine without custom properties gets,
+   * and it is the page exactly as it was drawn before this rule existed.
+   *
+   * flex: none because docx-preview leaves these shrinkable. Their min-height holds them
+   * up today, so that half is guarding the invariant rather than fixing a bug.
+   */
+  .docx-wrapper > section.docx {
+    box-shadow: 0 1px 6px rgba(0,0,0,0.25) !important;
+    margin-bottom: 16px !important;
+    flex: none;
+    zoom: var(--vw-page-zoom, 1);
+  }
+
+  /* The surround only. section.docx is the page itself, and a page is paper: it stays
+     white here for the same reason a PDF page does. */
+  @media (prefers-color-scheme: dark) {
+    .docx-wrapper > section.docx { box-shadow: 0 1px 8px rgba(0,0,0,0.6) !important; }
+  }
+
+  /*
+   * Lines as Word sets them (docx-lines.js): a line's height from Word's rule for it and the
+   * line of the font it is in, and a blank line as tall as a line. The first rule keeps a
+   * paragraph inside another, as in a text box, from taking its spacing.
+   */
+  :where(.docx-wrapper section.docx p) { --vw-m: 1; --vw-lh: initial; }
+  .docx-wrapper section.docx p, .docx-wrapper section.docx span {
+    line-height: var(--vw-lh, calc(var(--vw-m, 1) * var(--vw-f, 1.2)));
+  }
+  .docx-wrapper section.docx p {
+    min-height: var(--vw-lh, calc(var(--vw-m, 1) * var(--vw-f, 1.2) * 1em));
+  }
+
+  /* The rest of a paragraph a page cut in two (docx-pages.js): its number and first-line
+     indent stay with the first half, as Word draws it */
+  .docx-wrapper p.vw-cont::before { content: none !important; counter-increment: none !important; }
+  .docx-wrapper p.vw-cont {
+    list-style-type: none !important;
+    counter-set: none !important;
+    text-indent: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  /*
+   * Night mode (docx-night.js). The ground is black, as a PDF's is, and a line marks the top
+   * of each page and the foot of the last, or black pages would run together. Screen only,
+   * so a printout keeps the document's colours.
+   */
+  @media screen {
+    html.vw-night:not(.vw-night-ready) #container { visibility: hidden; }
+    html.vw-night body,
+    html.vw-night #container .docx-wrapper { background: #000 !important; }
+    html.vw-night .docx-wrapper > section.docx {
+      --vw-edge: calc(1px * var(--vw-zoom) / var(--vw-page-zoom, 1));
+      box-shadow: 0 calc(-1 * var(--vw-edge)) 0 #474747 !important;
+    }
+    html.vw-night .docx-wrapper > section.docx:last-child {
+      box-shadow: 0 calc(-1 * var(--vw-edge)) 0 #474747, 0 var(--vw-edge) 0 #474747 !important;
+    }
+    /* Colours written on an element, each turned over into a property beside it */
+    html.vw-night #container [data-vw-n~="c"] { color: var(--vw-n-c) !important; }
+    html.vw-night #container [data-vw-n~="b"] { background-color: var(--vw-n-b) !important; }
+    html.vw-night #container [data-vw-n~="bt"] { border-top-color: var(--vw-n-bt) !important; }
+    html.vw-night #container [data-vw-n~="br"] { border-right-color: var(--vw-n-br) !important; }
+    html.vw-night #container [data-vw-n~="bb"] { border-bottom-color: var(--vw-n-bb) !important; }
+    html.vw-night #container [data-vw-n~="bl"] { border-left-color: var(--vw-n-bl) !important; }
+    html.vw-night #container [data-vw-n~="d"] { text-decoration-color: var(--vw-n-d) !important; }
+    html.vw-night #container [data-vw-n~="r"] { column-rule-color: var(--vw-n-r) !important; }
+    html.vw-night #container [data-vw-n~="f"] { fill: var(--vw-n-f) !important; }
+    html.vw-night #container [data-vw-n~="s"] { stroke: var(--vw-n-s) !important; }
+    /* A picture that reads as paper turns over with the page; a photograph does not */
+    html.vw-night #container img[data-vw-paper] { filter: invert(1) hue-rotate(180deg); }
+    /* The cards as well, as pdf.html has them, for a phone that is not set to dark */
+    html.vw-night .vw-status { background: #2D2A23; color: #E7E2D9; }
+    html.vw-night .vw-status.vw-error { background: #8C1D18; color: #F9DEDC; }
+  }
+
+  /* Print: each page starts a sheet of its own, at its real size, without the ground,
+     gaps and shadow around it. Its padding is the document's margins, so the sheet adds
+     none. vwPrintSizes in app.js gives each sheet its size. */
+  @media print {
+    @page { margin: 0; }
+    .docx-wrapper {
+      display: block !important;
+      background: none !important;
+      padding: 0 !important;
+      min-height: 0;
+    }
+    .docx-wrapper > section.docx {
+      zoom: 1;
+      margin: 0 auto !important;
+      box-shadow: none !important;
+      /* Or a table's shading and highlighted words print blank */
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      /* The document's margins on every sheet a long page runs on to, not just its first */
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
+    }
+    .docx-wrapper > section.docx + section.docx { break-before: page; }
+  }
+</style>
+<script src="lib/jszip3.min.js"></script>
+<script src="lib/docx-preview.min.js"></script>
+</head>
+<body>
+<div id="vw-status" class="vw-status vw-wait">Rendering document…</div>
+<div id="container" data-vw-find></div>
+<script src="app.js"></script>
+<script src="find.js"></script>
+<script src="docx-pages.js"></script>
+<script src="docx-lines.js"></script>
+<script src="docx-night.js"></script>
+<script src="docx.js"></script>
+</body>
+</html>

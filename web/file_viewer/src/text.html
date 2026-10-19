@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<!-- The policy in ViewerPolicy.kt, which says why each part is there. ViewerPolicyTest
+     keeps this copy word for word the same as that one, in every page. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self'; worker-src 'self'; frame-src 'none'; object-src 'none'; form-action 'none'; base-uri 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Text</title>
+<link rel="stylesheet" href="app.css">
+<style>
+  body { background: #ffffff; }
+  pre {
+    margin: 0;
+    padding: 14px;
+    font: 13px/1.5 "Roboto Mono", Menlo, monospace;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    color: #212121;
+  }
+  .more {
+    margin: 0;
+    padding: 4px 14px 24px;
+    text-align: center;
+  }
+  .more p {
+    margin: 0 0 10px;
+    font: 13px/1.5 Roboto, -apple-system, "Segoe UI", sans-serif;
+    color: #616161;
+  }
+  .more button {
+    padding: 10px 20px;
+    border: 1px solid var(--vw-accent);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--vw-accent);
+    font: 500 15px Roboto, -apple-system, "Segoe UI", sans-serif;
+  }
+  .more button:active { background: #f7e4e0; }
+  .more button[disabled] { opacity: 0.5; }
+  @media (prefers-color-scheme: dark) {
+    body { background: var(--vw-ground); }
+    pre { color: #e0e0e0; }
+    .more p { color: #9e9e9e; }
+    .more button:active { background: #3a2620; }
+  }
+</style>
+</head>
+<body>
+<div id="vw-status" class="vw-status vw-wait">Loading…</div>
+<pre id="content" data-vw-find></pre>
+<div class="more" id="more" hidden>
+  <p id="moreNote" aria-live="polite"></p>
+  <button type="button" id="moreBtn">Show more</button>
+</div>
+<script src="app.js"></script>
+<script src="find.js"></script>
+<script src="text.js"></script>
+</body>
+</html>

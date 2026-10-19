@@ -1,0 +1,58 @@
+/*
+ * App 深色、但页面自己没有夜间样式时的“整页翻色”。
+ *
+ * 为什么不在 Kotlin 里用 WebView 的算法暗化：那套只看系统/Activity 的 uiMode，
+ * 而万宝盒的深色是 Compose 层的（不调 AppCompatDelegate），WebView 会认为 App 还是浅色。
+ *
+ * 为什么滤镜挂在内容容器上、而不是 body 上：页面的白底写在 body 上，
+ * 它会“传播”成画布背景、不参与 body 的滤镜，结果就是文字翻白了、纸还是白的。
+ * 所以给每个页面的“纸”显式加白底，再连纸一起翻：
+ *
+ *   #sheet / #tabs   Excel
+ *   #result          幻灯片（只翻纸，不翻本来就深的画布）
+ *   section          Word 97 / ODT / RTF 的纸
+ *   .vw-page         EPUB 章节
+ *
+ * 图片/视频/画布再翻一次，抵消外层，保持原样。
+ */
+
+html.vw-force-dark,
+html.vw-force-dark body {
+  background: #000 !important;
+}
+
+/* Excel */
+html.vw-force-dark #tabs {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+html.vw-force-dark #sheet {
+  background: #fff;
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* 幻灯片 */
+html.vw-force-dark #result {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* Word 97 / OpenDocument / RTF（由宿主给纸打上 .vw-dark-sheet，避免误伤 EPUB 的 section） */
+html.vw-force-dark .vw-dark-sheet {
+  background: #fff;
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* EPUB：章节挂载在 .epub-frame > main 下 */
+html.vw-force-dark .epub-frame main {
+  background: #fff;
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* 纸里的图片再翻回来 */
+html.vw-force-dark img,
+html.vw-force-dark video,
+html.vw-force-dark canvas,
+html.vw-force-dark picture,
+html.vw-force-dark svg image {
+  filter: invert(1) hue-rotate(180deg) !important;
+}

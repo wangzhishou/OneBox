@@ -1439,6 +1439,15 @@ sealed interface NavigationChild {
         }
     }
 
+    class FileViewer(
+        val fileViewerComponent: com.wanbaohe.fileviewer.component.FileViewerComponent
+    ) : NavigationChild {
+        @Composable
+        override fun Content() {
+            com.wanbaohe.fileviewer.screen.FileViewerScreen(component = fileViewerComponent)
+        }
+    }
+
     class EditPromptItem(
         val editPromptComponent: EditPromptComponent,
         val appComponent: AppComponent

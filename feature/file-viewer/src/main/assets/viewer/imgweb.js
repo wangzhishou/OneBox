@@ -1,0 +1,1 @@
+var img=document.getElementById("img");img.alt=vwName,vwExt==="svg"&&(img.className="svg"),img.onerror=function(){vwError("Could not display this image",vwName)},img.src="/doc/file"+(vwExt?"."+vwExt:"");

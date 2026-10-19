@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<!-- The policy in ViewerPolicy.kt, which says why each part is there. ViewerPolicyTest
+     keeps this copy word for word the same as that one, in every page. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self'; worker-src 'self'; frame-src 'none'; object-src 'none'; form-action 'none'; base-uri 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unknown format</title>
+<link rel="stylesheet" href="app.css">
+<style>
+  .card {
+    margin: 32px 16px;
+    padding: 20px;
+    border-radius: 12px;
+    background: var(--vw-card);
+    box-shadow: 0 1px 4px var(--vw-shadow);
+    color: var(--vw-ink);
+  }
+  .card h2 { margin: 0 0 8px; font-size: 18px; }
+  .card .fname { font-weight: 600; word-break: break-all; }
+  .card p { font-size: 14px; line-height: 1.5; }
+  .as-text {
+    display: block;
+    width: 100%;
+    margin: 18px 0 8px;
+    padding: 12px 16px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--vw-accent);
+    color: var(--vw-accent-ink);
+    font: 500 15px Roboto, -apple-system, "Segoe UI", sans-serif;
+  }
+  .as-text:active { background: #8a2413; }
+  .card .caveat { font-size: 13px; opacity: 0.75; }
+
+  /* Nothing here is a document, it is all chrome, so all of it turns over. */
+  @media (prefers-color-scheme: dark) {
+    .card { background: #221F19; color: var(--vw-ink); box-shadow: 0 1px 4px var(--vw-shadow); }
+    .as-text:active { background: #E09883; }
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <h2>Gander doesn't recognize this format</h2>
+  <p class="fname" id="fname"></p>
+  <p id="hint"></p>
+  <button type="button" class="as-text" id="asText" aria-describedby="caveat">View as text</button>
+  <p class="caveat" id="caveat">If it isn't text, you'll see random characters.</p>
+</div>
+<script src="app.js"></script>
+<script src="unsupported.js"></script>
+</body>
+</html>

@@ -1372,6 +1372,15 @@ class ChildProvider @Inject constructor(
             )
         )
 
+        is Screen.FileViewer -> NavigationChild.FileViewer(
+            fileViewerComponent = lifeFactories.get().fileViewerComponentFactory(
+                componentContext = componentContext,
+                uri = config.uri,
+                mimeType = config.mimeType,
+                onGoBack = ::navigateBack
+            )
+        )
+
         Screen.ThemeSettings -> NavigationChild.SettingsRouter(
             lifeFactories.get().settingRouterComponentFactory(
                 componentContext = componentContext,

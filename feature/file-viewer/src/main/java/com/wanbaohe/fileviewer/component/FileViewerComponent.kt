@@ -1,0 +1,306 @@
+package com.wanbaohe.fileviewer.component
+
+import android.content.Context
+import android.content.Intent
+import android.content.res.Configuration
+import android.net.Uri
+import android.webkit.WebView
+import com.arkivanov.decompose.ComponentContext
+import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
+import com.t8rin.imagetoolbox.core.settings.domain.SettingsProvider
+import com.t8rin.imagetoolbox.core.settings.domain.model.NightMode
+import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.fileviewer.data.ViewerPageListener
+import com.wanbaohe.fileviewer.data.ViewerPreferences
+import com.wanbaohe.fileviewer.data.ViewerRequest
+import com.wanbaohe.fileviewer.data.ViewerWebHost
+import com.wanbaohe.fileviewer.domain.DocumentSource
+import com.wanbaohe.fileviewer.domain.ViewerFormat
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+
+/**
+ * 文件预览页的 Decompose 组件。
+ *
+ * 它负责：把 URI 解析成"用哪个页面 + 名字 + 大小"，决定要不要拒开，
+ * 以及把页面回报的页码/查找计数翻译成 UI 状态。WebView 本身归 Compose
+ * 的 `AndroidView` 持有——组件被 retain 而 View 已 detach 的话必然泄漏。
+ *
+ * 阅读能力（页码/跳页/夜间/查找）都建立在页面侧的 message port 上：
+ * 端口由 [ViewerWebHost] 在 `onPageFinished` 打开，命令发不出去时静默丢弃，
+ * 所以老 WebView 或页面不支持时界面只是少几个控件，不会报错。
+ */
+class FileViewerComponent @AssistedInject internal constructor(
+    @Assisted componentContext: ComponentContext,
+    @Assisted private val uri: Uri?,
+    @Assisted private val mimeType: String?,
+    @Assisted val onGoBack: () -> Unit,
+    @ApplicationContext private val context: Context,
+    private val source: DocumentSource,
+    private val preferences: ViewerPreferences,
+    settingsProvider: SettingsProvider,
+    dispatchersHolder: DispatchersHolder,
+) : BaseComponent(dispatchersHolder, componentContext), ViewerPageListener {
+
+    private val _uiState = MutableStateFlow(
+        FileViewerUiState(
+            isNight = settingsProvider.settingsState.value.nightMode.resolveNight(),
+        )
+    )
+    val uiState = _uiState.asStateFlow()
+
+    private val webHost = ViewerWebHost(source, this)
+    private var request: ViewerRequest? = null
+    private var documentKey: String? = null
+
+    /** 上次读到的页；第一次收到页面回报时用掉一次，之后按用户实际滚动保存。 */
+    private var pendingPageRestore: Int? = null
+    private var restoreConsumed = false
+
+    init {
+        // 全局日夜是唯一的夜间来源：设置一变，月亮图标和打开着的文档一起变
+        settingsProvider.settingsState
+            .onEach { settings ->
+                val night = settings.nightMode.resolveNight()
+                if (_uiState.value.isNight != night) {
+                    _uiState.value = _uiState.value.copy(isNight = night)
+                    applyNightMode(night)
+                }
+            }
+            .launchIn(componentScope)
+
+        componentScope.launch {
+            val resolved = resolve()
+            if (resolved == null) {
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    error = FileViewerError.CannotOpen,
+                )
+                return@launch
+            }
+
+            val key = ViewerPreferences.keyFor(resolved.uri, resolved.length)
+            documentKey = key
+            val saved = preferences.position(key)
+            pendingPageRestore = saved?.toIntOrNull()
+
+            val format = ViewerFormat.fromExtension(resolved.extension)
+            request = resolved.copy(
+                // 夜间跟全局主题走：只有支持独立夜间模式的页面（Word）才传 night
+                nightMode = _uiState.value.isNight && format.supportsNight,
+                // 电子书的进度是页面自己认的字符串，加载时直接给它
+                bookPosition = saved?.takeIf { format == ViewerFormat.EPUB },
+            )
+
+            val tooLarge = ViewerFormat.loadsWholeFile(format) && resolved.length > MAX_INLINE_BYTES
+            _uiState.value = _uiState.value.copy(
+                displayName = resolved.displayName,
+                extension = resolved.extension,
+                format = format,
+                sizeBytes = resolved.length,
+                isLoading = false,
+                error = if (tooLarge) FileViewerError.TooLarge(resolved.length) else null,
+            )
+        }
+    }
+
+    /**
+     * 给 Compose 的 `AndroidView` 用；解析失败或文件过大时返回 null。
+     *
+     * [nightMode] 是 App 当前的全局日夜状态，创建页面时定下初始底色；
+     * 之后用户切换主题由 [applyNightMode] 通过 message port 追上去。
+     */
+    fun createWebView(webViewContext: Context, nightMode: Boolean): WebView? {
+        val state = _uiState.value
+        if (!state.canRender) return null
+        val target = request ?: return null
+        val supportsNight = state.format?.supportsNight == true
+        return webHost.create(
+            webViewContext,
+            target.copy(
+                // Word 有自己的夜间矩阵；其余页面交给 WebView 算法暗化
+                nightMode = nightMode && supportsNight,
+                forceDark = nightMode && !supportsNight,
+            ),
+        )
+    }
+
+    /** Compose 的 `onRelease` 里调；之后不再向页面发命令。 */
+    fun release() = webHost.release()
+
+    // ── 阅读位置 ─────────────────────────────────────────────────────────
+
+    override fun onPage(page: Int, total: Int) {
+        val state = _uiState.value
+        if (!state.canRender) return
+
+        if (!restoreConsumed) {
+            restoreConsumed = true
+            val target = pendingPageRestore
+            pendingPageRestore = null
+            if (target != null && target in 2..total) {
+                // 先按记忆的页码亮着，页面跳过去之后再回报真实页
+                _uiState.value = state.copy(page = target, pageCount = total)
+                documentKey?.let { preferences.savePosition(it, target.toString()) }
+                webHost.goToPage(target)
+                return
+            }
+        }
+
+        _uiState.value = state.copy(page = page, pageCount = total)
+        if (page in 1..total) {
+            documentKey?.let { preferences.savePosition(it, page.toString()) }
+        }
+    }
+
+    override fun onBookPosition(value: String) {
+        documentKey?.let { preferences.savePosition(it, value) }
+    }
+
+    // ── 查找 ─────────────────────────────────────────────────────────────
+
+    override fun onSearchCount(at: Int, total: Int, done: Boolean) {
+        _uiState.value = _uiState.value.copy(
+            search = _uiState.value.search.copy(at = at, total = total, done = done),
+        )
+    }
+
+    fun openSearch() {
+        _uiState.value = _uiState.value.copy(
+            search = _uiState.value.search.copy(isOpen = true),
+        )
+        // 查找条是浮层，页面要让出这块高度，否则第一行字被压在条下面
+        webHost.setTopInset(SEARCH_BAR_HEIGHT_DP)
+    }
+
+    fun closeSearch() {
+        webHost.clearFind()
+        webHost.setTopInset(0)
+        _uiState.value = _uiState.value.copy(
+            search = SearchUiState(isOpen = false),
+        )
+    }
+
+    fun updateSearchQuery(query: String) {
+        _uiState.value = _uiState.value.copy(
+            search = _uiState.value.search.copy(query = query, at = 0, total = 0),
+        )
+        webHost.find(query)
+    }
+
+    fun findNext() = webHost.findNext()
+
+    fun findPrevious() = webHost.findPrevious()
+
+    // ── 夜间 / 跳页 ──────────────────────────────────────────────────────
+
+    /**
+     * 全局日夜模式变化后，把还开着的文档页一起跟过去。
+     *
+     * 支持独立夜间的页面（Word）走 `i1/i0`；其余页面没有自己的深色样式，
+     * 交给 WebView 的算法暗化（见 [ViewerWebHost.applyForceDark]）。
+     */
+    fun applyNightMode(isNight: Boolean) {
+        val format = _uiState.value.format ?: return
+        if (format.supportsNight) {
+            webHost.setNightMode(isNight)
+        } else {
+            webHost.applyForceDark(isNight)
+        }
+    }
+
+    fun goToPage(page: Int) {
+        val total = _uiState.value.pageCount
+        val target = if (total > 0) page.coerceIn(1, total) else page.coerceAtLeast(1)
+        if (target <= 0) return
+        _uiState.value = _uiState.value.copy(page = target)
+        documentKey?.let { preferences.savePosition(it, target.toString()) }
+        webHost.goToPage(target)
+    }
+
+    /** 内部打不开时的出口：交给系统 chooser，和文件浏览器里点"打开方式"一致。 */
+    fun openWithOtherApp() {
+        val target = uri ?: return
+        runCatching {
+            val type = mimeType ?: source.mimeType(target, _uiState.value.extension)
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(target, type)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(Intent.createChooser(intent, null).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            })
+        }
+    }
+
+    /** 全局设置 + 系统配置 → 当前是不是深色。 */
+    private fun NightMode.resolveNight(): Boolean = when (this) {
+        NightMode.Dark -> true
+        NightMode.Light -> false
+        NightMode.System ->
+            (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
+                Configuration.UI_MODE_NIGHT_YES
+    }
+
+    private suspend fun resolve(): ViewerRequest? {
+        val target = uri ?: return null
+        val name = source.displayName(target) ?: target.lastPathSegment ?: return null
+        val extension = name.substringAfterLast('.', "")
+            .lowercase()
+            .ifBlank { extensionFromMime(mimeType) }
+        val format = ViewerFormat.fromExtension(extension)
+        val length = kotlinx.coroutines.withContext(ioDispatcher) { source.length(target) }
+
+        return ViewerRequest(
+            uri = target,
+            page = format.page,
+            webViewFloor = format.webViewFloor,
+            extension = extension,
+            displayName = name,
+            length = length,
+        )
+    }
+
+    private fun extensionFromMime(mime: String?): String = when (mime?.lowercase()) {
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" -> "docx"
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" -> "xlsx"
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation" -> "pptx"
+        "application/msword" -> "doc"
+        "application/vnd.ms-excel" -> "xls"
+        "application/vnd.ms-powerpoint" -> "ppt"
+        "application/vnd.oasis.opendocument.text" -> "odt"
+        "application/vnd.oasis.opendocument.spreadsheet" -> "ods"
+        "application/rtf" -> "rtf"
+        "application/epub+zip" -> "epub"
+        else -> ""
+    }
+
+    @AssistedFactory
+    fun interface Factory {
+        operator fun invoke(
+            componentContext: ComponentContext,
+            uri: Uri?,
+            mimeType: String?,
+            onGoBack: () -> Unit,
+        ): FileViewerComponent
+    }
+
+    private companion object {
+        /**
+         * docx / xlsx / pptx / epub 都是"整包读进 JS 内存"的，只有 PDF 走 range。
+         * 64MB 是给低端机留的余量；再大就让用户换应用，好过 OOM 闪退。
+         */
+        const val MAX_INLINE_BYTES = 64L * 1024 * 1024
+
+        /** 查找条（TextField + 内边距）大约占的高度，跟 FileViewerScreen 里的一致 */
+        const val SEARCH_BAR_HEIGHT_DP = 64
+    }
+}

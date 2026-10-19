@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<!-- The policy in ViewerPolicy.kt, which says why each part is there. ViewerPolicyTest
+     keeps this copy word for word the same as that one, in every page. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self'; worker-src 'self'; frame-src 'none'; object-src 'none'; form-action 'none'; base-uri 'none'">
+<title>Spreadsheet</title>
+<link rel="stylesheet" href="app.css">
+<style>
+  /* No viewport meta on this page, so the WebView lays out at its 980 CSS px default
+     and zooms that down to fit the screen. That shrinks the status card along with
+     everything else; app.css multiplies it back up by this. See the token there. */
+  :root { --vw-zoom: 2.75; }
+
+  body { background: #ffffff; }
+  /* Held under as much of the title bar floating over the sheet as is on screen, which changes
+     as the bar follows the reader's scrolling */
+  #tabs {
+    position: sticky;
+    top: 0;
+    top: calc(var(--vw-top, 0px) - var(--vw-bar-gone, 0px));
+    z-index: 5;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 6px;
+    padding: 8px;
+    background: #ECE8DF;
+    border-bottom: 1px solid #CFC5B2;
+  }
+  #tabs button {
+    flex: 0 0 auto;
+    border: 1px solid #CFC5B2;
+    border-radius: 16px;
+    background: #ffffff;
+    color: #4D4636;
+    font-size: 13px;
+    padding: 6px 14px;
+  }
+  #tabs button.active {
+    background: var(--vw-accent);
+    border-color: var(--vw-accent);
+    color: var(--vw-accent-ink);
+  }
+  #sheet { padding: 8px; overflow: auto; }
+  #sheet table { border-collapse: collapse; font-size: 13px; }
+  #sheet td, #sheet th {
+    border: 1px solid #CFC5B2;
+    padding: 4px 8px;
+    white-space: pre;
+    min-width: 40px;
+  }
+  /* The sheet's first row, which only the first of a large sheet's pieces has: see xlsx.js */
+  #sheet table.vw-top tr:first-child td { background: #F2EDE4; font-weight: 600; }
+  /* Each piece of a large sheet is a table with borders of its own. A later one sits a border's
+     width higher, so its top line lies on the bottom line of the piece above, as the rows of one
+     table share theirs: one line between pieces rather than two, and every row its own height. */
+  #sheet table.vw-more { margin-top: -1px; }
+
+  /* A spreadsheet has no paper to be faithful to, unlike a Word page, so the whole
+     thing goes dark rather than just the surround. The rules are borrowed from the
+     app's night palette. The grid is #6B6250 and not the lighter outline tone: it
+     clears 3:1 against the ground so the structure is still legible, while staying
+     far enough behind the cell text not to compete with the numbers. */
+  @media (prefers-color-scheme: dark) {
+    body { background: var(--vw-ground); }
+    #tabs { background: #221F19; border-bottom-color: #4D4636; }
+    #tabs button { background: var(--vw-card); border-color: #4D4636; color: var(--vw-ink); }
+    #sheet td, #sheet th { border-color: #6B6250; color: var(--vw-ink); }
+    #sheet table.vw-top tr:first-child td { background: var(--vw-card); }
+  }
+</style>
+<script src="lib/xlsx.full.min.js"></script>
+</head>
+<body>
+<div id="vw-status" class="vw-status vw-wait">Loading spreadsheet…</div>
+<div id="tabs" style="display:none"></div>
+<div id="sheet" data-vw-find></div>
+<script src="app.js"></script>
+<script src="find.js"></script>
+<script src="xlsx.js"></script>
+</body>
+</html>

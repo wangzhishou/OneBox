@@ -1540,6 +1540,23 @@ sealed class Screen(
         description = ""
     )
 
+    /**
+     * 文档预览：Office / OpenDocument / RTF / EPUB / 纯文本兜底。
+     *
+     * [mimeType] 来自打开方（Intent / MIME 查询），扩展名兜底时用；
+     * 真正的"用哪个渲染页"在预览模块内部按文件名后缀决定。
+     */
+    @Serializable
+    @SerialName("FileViewer")
+    data class FileViewer(
+        val uri: Uri? = null,
+        val mimeType: String? = null,
+    ) : Screen(
+        id = 1107,
+        title = com.shifenmiao.core.R.string.file_viewer_title,
+        subtitle = com.shifenmiao.core.R.string.file_viewer_description,
+    )
+
     @Serializable
     @SerialName("Altitude")
     data object Altitude : Screen(

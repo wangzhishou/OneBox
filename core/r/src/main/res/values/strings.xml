@@ -2082,4 +2082,15 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
         <item quantity="other">%d requests</item>
     </plurals>
     <string name="price_free">Free</string>
+    <string name="file_viewer_title">File viewer</string>
+    <string name="file_viewer_description">Open Word, Excel, PowerPoint, EPUB and text files offline</string>
+    <string name="file_viewer_error_cannot_open">This file could not be opened. It may have been moved, or the app may no longer have permission to read it.</string>
+    <string name="file_viewer_error_too_large">This file is %1$s, too large to preview here. Open it in another app instead.</string>
+    <string name="file_viewer_open_with_other">Open with another app</string>
+    <string name="file_viewer_search_hint">Search in document</string>
+    <string name="file_viewer_search_previous">Previous match</string>
+    <string name="file_viewer_search_next">Next match</string>
+    <string name="file_viewer_night_mode">Night mode</string>
+    <string name="file_viewer_go_to_page">Go to page</string>
+    <string name="file_viewer_page_number">Page number</string>
 </resources>

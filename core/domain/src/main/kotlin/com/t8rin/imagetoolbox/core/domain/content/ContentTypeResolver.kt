@@ -50,6 +50,11 @@ class DefaultContentTypeResolver : ContentTypeResolver {
             mimeType == "text/html" || extension in HTML_EXTENSIONS ->
                 ContentType.Html(mimeType)
 
+            // 文档要排在 text/* 之前：RTF 在部分机型上被判成 text/rtf，
+            // 先落到 Text 就会被代码编辑器打开，而不是文档预览。
+            isDocumentMimeType(mimeType) || extension in DOCUMENT_EXTENSIONS ->
+                ContentType.Document(mimeType)
+
             mimeType?.startsWith("text/") == true || extension in TEXT_EXTENSIONS ->
                 ContentType.Text(mimeType)
 
@@ -61,9 +66,6 @@ class DefaultContentTypeResolver : ContentTypeResolver {
 
             isArchiveMimeType(mimeType) || extension in ARCHIVE_EXTENSIONS ->
                 ContentType.Archive(mimeType)
-
-            isDocumentMimeType(mimeType) || extension in DOCUMENT_EXTENSIONS ->
-                ContentType.Document(mimeType)
 
             else -> ContentType.Unknown(mimeType)
         }

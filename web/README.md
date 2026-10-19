@@ -6,7 +6,7 @@
 
 ```
 web/
-├── file_transfer/          # 源代码目录
+├── file_transfer/          # 文件传输网页源码
 │   ├── index.html          # HTML 入口
 │   ├── js/
 │   │   ├── bootstrap.js    # JS 入口 (ES Module)
@@ -14,8 +14,11 @@ web/
 │   │   ├── features/       # 功能模块
 │   │   └── ui/             # UI 组件
 │   └── css/                # CSS 样式 (如有)
+├── file_viewer/            # 文档预览页源码（Office/EPUB/文本），见其 README
+│   ├── src/                # 页面源码（gander，未压缩）
+│   └── build.mjs           # 压缩到 feature/file-viewer 的 assets
 ├── package.json            # npm 配置
-├── build.js                # 构建脚本
+├── build.js                # 文件传输构建脚本
 └── README.md               # 本文档
 ```
 

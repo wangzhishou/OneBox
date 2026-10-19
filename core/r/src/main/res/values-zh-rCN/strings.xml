@@ -2047,4 +2047,15 @@
     <plurals name="token_usage_request_times">
         <item quantity="other">%d 请求次数</item>
     </plurals>
+    <string name="file_viewer_title">文件预览</string>
+    <string name="file_viewer_description">离线打开 Word、Excel、PowerPoint、EPUB 和文本文件</string>
+    <string name="file_viewer_error_cannot_open">无法打开这个文件。它可能已被移动，或应用已失去读取权限。</string>
+    <string name="file_viewer_error_too_large">这个文件有 %1$s，太大，无法在这里预览。请用其他应用打开。</string>
+    <string name="file_viewer_open_with_other">用其他应用打开</string>
+    <string name="file_viewer_search_hint">在文档中查找</string>
+    <string name="file_viewer_search_previous">上一个匹配</string>
+    <string name="file_viewer_search_next">下一个匹配</string>
+    <string name="file_viewer_night_mode">夜间模式</string>
+    <string name="file_viewer_go_to_page">跳到页码</string>
+    <string name="file_viewer_page_number">页码</string>
 </resources>

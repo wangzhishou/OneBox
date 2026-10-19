@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<!-- The policy in ViewerPolicy.kt, which says why each part is there. ViewerPolicyTest
+     keeps this copy word for word the same as that one, in every page. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self'; worker-src 'self'; frame-src 'none'; object-src 'none'; form-action 'none'; base-uri 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book</title>
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="epub.css">
+<script src="lib/jszip3.min.js"></script>
+<script src="lib/purify.min.js"></script>
+</head>
+<body>
+<div id="vw-status" class="vw-status vw-wait">Opening book…</div>
+
+<div id="epub-bar" class="epub-bar" hidden>
+  <button type="button" id="epub-contents-open">Contents</button>
+  <span id="epub-where" class="epub-where"></span>
+</div>
+
+<!-- The chapter being read, drawn inside this element's shadow tree: see epub.js. The
+     frame keeps it under what opens over it: see epub.css -->
+<div class="epub-frame"><main id="book"></main></div>
+
+<div id="epub-turn" class="epub-turn" hidden>
+  <button type="button" id="epub-prev">Previous</button>
+  <button type="button" id="epub-next">Next</button>
+</div>
+
+<div id="epub-contents" class="epub-contents" role="dialog" aria-modal="true"
+     aria-labelledby="epub-contents-title" hidden>
+  <div class="epub-contents-head">
+    <h1 id="epub-contents-title">Contents</h1>
+    <button type="button" id="epub-contents-close">Close</button>
+  </div>
+  <p id="epub-title" class="epub-title"></p>
+  <ol id="epub-contents-list" class="epub-contents-list"></ol>
+</div>
+
+<!-- A web address a link in the book points to, shown and never opened: see epub.js -->
+<div id="epub-link" class="epub-link" role="dialog" aria-modal="true"
+     aria-labelledby="epub-link-title" hidden>
+  <div class="epub-link-box">
+    <h1 id="epub-link-title">This link leaves the book</h1>
+    <p id="epub-link-address" class="epub-link-address"></p>
+    <p class="epub-link-note">Gander opens no web address. Copy it to open it in a browser.</p>
+    <div class="epub-link-buttons">
+      <button type="button" id="epub-link-close">Close</button>
+      <button type="button" id="epub-link-copy">Copy address</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script src="find.js"></script>
+<script src="epub.js"></script>
+</body>
+</html>

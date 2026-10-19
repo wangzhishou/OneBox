@@ -1,0 +1,234 @@
+/*
+ * The palette, once.
+ *
+ * These are the app's own roles, and every viewer that links this file reads them
+ * rather than retyping the hex. Before this they were hand-copied into five pages,
+ * which is how text.html and md.html came to keep a cool ground under a warm card:
+ * the shared rule moved and their own copy did not. A viewer that wants a different
+ * ground now sets the token, so the card, the accent and the ink follow it.
+ *
+ * pdf.html, pptx.html and imgweb.html paint their own and are still left alone.
+ */
+:root {
+  --vw-ground: #ECE8DF;
+  --vw-card: #ffffff;
+  --vw-ink: #1E1B15;
+  --vw-accent: #af2d18;
+  --vw-accent-ink: #ffffff;
+  --vw-error: #fdecea;
+  --vw-error-ink: #8c1d18;
+  --vw-shadow: rgba(0, 0, 0, 0.15);
+
+  /*
+   * How many CSS px a page is laid out at for each one the phone shows.
+   *
+   * A viewer that declares width=device-width is laid out at the screen's own width and
+   * this is 1. A viewer that declares no viewport meta lets the WebView use its 980 px
+   * default, and loadWithOverviewMode zooms that down to fit: about 0.42x on a 411 dp
+   * phone, 0.37x on a 360 dp one. That zoom is what keeps a PDF page or a slide sharp
+   * and it costs a document nothing. It costs the card below everything: the 15px there
+   * arrives at about 6 dp and the 420px cap at under half the screen, so the sentence
+   * that is the only thing on the screen is the one thing on it nobody can read.
+   *
+   * So the card multiplies every measurement back up by this, and the five viewers with
+   * no viewport meta - pdf, docx, pptx, xlsx and imgweb - set it to 980/360 rounded up.
+   * Sized for the narrowest phone, so a wide one gets a card that is a little generous
+   * rather than one nobody can read. Written as calc() against the dp the card would
+   * otherwise use, so the relationship stays legible instead of arriving as
+   * pre-multiplied constants that look picked out of the air.
+   *
+   * A WebView without custom properties drops each calc() and keeps the plain px beside
+   * it, which is the small card, not a broken one. That is Chromium below 49, and
+   * minSdk 26 shipped with 58.
+   */
+  --vw-zoom: 1;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, -apple-system, "Segoe UI", sans-serif;
+}
+
+/*
+ * Room at the top of a document for the title bar floating over it, set by vwPlaceTop() in
+ * app.js and nought on a page given none. A page that centres a short document takes it off
+ * the height it centres in. scroll-padding brings a page or a search hit into view below the
+ * bar rather than under it.
+ */
+html { scroll-padding-top: var(--vw-top, 0px); }
+body { padding-top: var(--vw-top, 0px); }
+
+/*
+ * Deliberately on body and not on html. The root element's background paints the
+ * whole viewport, so while html carried this grey, any viewer that recoloured
+ * only body left this showing below a document shorter than the screen. Set on
+ * body alone the browser propagates it to the viewport itself, which fills at any
+ * content height, so a page overriding body is enough and no viewer has to
+ * remember to restate html.
+ */
+body {
+  /* Plain value first, token second. pdf.html notes that a WebView without custom
+     properties "gets app.css back": that is only true while app.css itself still says
+     something such an engine can read, so every token here is preceded by the literal
+     it resolves to in the light theme. An engine that understands var() takes the
+     second declaration; one that does not drops it and keeps the first. */
+  background: #ECE8DF;
+  background: var(--vw-ground);
+}
+
+/*
+ * The card: the line a reader looks at while a document is being built, and afterwards
+ * the place an error or a password prompt arrives in.
+ *
+ * In the middle of the screen rather than in the flow at the top of it. Nothing else is
+ * on the screen while a document is rendering, and a card sitting 24 px down an empty
+ * page reads as a notice about something else rather than as the state of the screen.
+ * Fixed, so that one rule also covers the message that arrives after a document is
+ * already up: an error inserted at the top of the flow of a document the reader has
+ * scrolled some way into is an error nobody ever sees.
+ *
+ * A fixed box is placed against the initial containing block, which is the layout the
+ * WebView zooms to fit, so this lands in the middle of the screen at the scale the
+ * reader is looking at. That block is also what 100vh reports. The two come apart only
+ * once content overflows the layout width - see vwFitHeight() in app.js - and while
+ * this is on screen there is no content.
+ *
+ * z-index because it is now a positioned box among other positioned boxes. A PDF page
+ * is position: relative and pptxjs writes a z-index on to every shape it lays out, and
+ * both of those come after this in tree order, so without a number they paint over it.
+ */
+.vw-status {
+  position: fixed;
+  z-index: 1000;
+  top: 50%;
+  transform: translateY(-50%);
+  /* The gutter on the insets and the centring on the margins, deliberately. Stated as
+     margins instead, a card narrow enough for its max-width to bind would be
+     over-constrained and would sit against the left edge rather than in the middle. */
+  left: 14px;
+  left: calc(14px * var(--vw-zoom));
+  right: 14px;
+  right: calc(14px * var(--vw-zoom));
+  margin: 0 auto;
+  box-sizing: border-box;
+  max-width: 420px;
+  max-width: calc(420px * var(--vw-zoom));
+  /* A guard rather than a layout. Centring cuts a card taller than the screen off at
+     both ends at once, and a fixed box is not something the page can be scrolled to. */
+  max-height: 100vh;
+  overflow-y: auto;
+  padding: 14px 18px;
+  padding: calc(14px * var(--vw-zoom)) calc(18px * var(--vw-zoom));
+  border-radius: 10px;
+  border-radius: calc(10px * var(--vw-zoom));
+  background: #ffffff;
+  background: var(--vw-card);
+  color: #1E1B15;
+  color: var(--vw-ink);
+  font-size: 15px;
+  font-size: calc(15px * var(--vw-zoom));
+  text-align: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 4px var(--vw-shadow);
+}
+
+/*
+ * The card a page opens with, held back before it appears.
+ *
+ * A document that opened quickly used to show the card for a moment and then drop it, which
+ * reads as a flash rather than as progress. Measured on a Nothing Phone 2 over DevTools, from
+ * the card first painting to the card going, cold start included: an ordinary PDF 80 to 330
+ * ms, a Word document 50 to 125, a spreadsheet, a Markdown file or a text file under 50. A
+ * document that arrives inside the hold now goes straight to the screen.
+ *
+ * 700 ms, and the floor under it is pptx.html rather than any renderer. It looks for the
+ * slides every 500 ms, so a deck cannot dismiss its card sooner than that however fast it
+ * rendered, and the deck measured sat between 460 and 490. A hold shorter than the poll shows
+ * the card on every deck for a blink. The largest file measured, a 17 MB PDF read in ranges,
+ * took 585 to 680 ms warm and 880 cold: no card while the app is running, a short one from
+ * a cold start.
+ *
+ * Hidden for the whole duration rather than delayed and then changed: from and to are the
+ * same keyframe, so the card is hidden throughout and afterwards is whatever .vw-status says,
+ * with no fill mode or zero duration to depend on. visibility rather than opacity, so a card
+ * that has not appeared is not read out either.
+ *
+ * On a class of the markup's own and not on .vw-status. Everything a script puts in the card
+ * writes className afresh, which drops this: an error, the password prompt, and "Opening
+ * document…" once the password is entered. All three should arrive at once, the first
+ * because it is not progress and the other two because they answer a tap.
+ */
+.vw-wait {
+  animation: vw-wait 700ms;
+}
+
+@keyframes vw-wait {
+  from, to { visibility: hidden; }
+}
+
+.vw-error {
+  background: #fdecea;
+  background: var(--vw-error);
+  color: #8c1d18;
+  color: var(--vw-error-ink);
+  text-align: left;
+}
+
+.vw-error .vw-error-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+  margin-bottom: calc(6px * var(--vw-zoom));
+}
+
+.vw-error .vw-error-detail {
+  font-size: 13px;
+  font-size: calc(13px * var(--vw-zoom));
+  opacity: 0.85;
+  word-break: break-word;
+}
+
+/*
+ * Night, for every viewer that does not paint its own.
+ *
+ * Verified first that this media query fires at all: a WebView reports the host app's
+ * theme through it with no setting to turn on, which is why md.html and text.html have
+ * worked since they were written. The values are the app's own night roles, so passing
+ * from the file list into a document does not change temperature.
+ *
+ * pdf.html, pptx.html and imgweb.html paint their own dark ground and are left alone.
+ * The document itself stays as the document: a Word page is paper and is white at
+ * midnight too. Turning the contents over is a separate thing and is asked for
+ * separately: night mode, issue #19, which lives in pdf.html because it is a colour
+ * matrix over the finished page rather than anything a stylesheet can say.
+ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --vw-ground: #17130A;
+    --vw-card: #2D2A23;
+    --vw-ink: #E7E2D9;
+    --vw-accent: #FFB39E;
+    --vw-accent-ink: #650B00;
+    --vw-error: #8C1D18;
+    --vw-error-ink: #F9DEDC;
+    --vw-shadow: rgba(0, 0, 0, 0.5);
+  }
+}
+
+/*
+ * Find in page, in every viewer that searches through find.js, in the colours pdf.html gives its
+ * own matches: the current one stronger than the rest.
+ */
+::highlight(vw-find) {
+  background-color: rgba(255, 213, 79, 0.45);
+}
+::highlight(vw-find-active) {
+  background-color: rgba(255, 145, 0, 0.62);
+}
+
+/* Print: no ground behind the paper, no room for a bar that is not there, and no marks left by a search. */
+@media print {
+  html { scroll-padding-top: 0; }
+  body { background: none; padding-top: 0; }
+  ::highlight(vw-find), ::highlight(vw-find-active) { background-color: transparent; }
+}

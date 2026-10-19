@@ -5,11 +5,12 @@
   "private": true,
   "scripts": {
     "build": "node build.js",
-    "watch": "node build.js --watch"
+    "watch": "node build.js --watch",
+    "build:viewer": "node file_viewer/build.mjs",
+    "build:viewer:check": "node file_viewer/build.mjs --check"
   },
   "devDependencies": {
     "esbuild": "^0.19.0",
     "html-minifier-terser": "^7.2.0"
   }
 }
-

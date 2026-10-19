@@ -100,6 +100,18 @@ class DefaultContentRouter(
                 true
             }
 
+            is ContentType.Document -> {
+                // Office / OpenDocument / RTF / EPUB：交给 file-viewer 模块的离线渲染页。
+                // 具体用哪个页面由模块按后缀决定，这里只传 URI 与 MIME 兜底。
+                onNavigate(
+                    Screen.FileViewer(
+                        uri = uri,
+                        mimeType = contentType.mimeType
+                    )
+                )
+                true
+            }
+
             is ContentType.Directory -> {
                 onNavigate(Screen.FileBrowser(initialUri = uri))
                 true

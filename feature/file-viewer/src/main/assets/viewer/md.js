@@ -1,0 +1,1 @@
+vwWebViewTooOld("Markdown files")||vwFetchDoc("text").then(function(txt){var html=marked.parse(txt,{gfm:!0,breaks:!1});document.getElementById("content").innerHTML=DOMPurify.sanitize(html),vwStatusDone()}).catch(function(e){vwError("Could not render this Markdown file",String(e))});
