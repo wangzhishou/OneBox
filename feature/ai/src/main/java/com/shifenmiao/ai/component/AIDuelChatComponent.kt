@@ -4,9 +4,6 @@ import android.content.Context
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.shifenmiao.model.ModelProvider.AppJson
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonObject
@@ -20,6 +17,7 @@ import com.shifenmiao.network.service.SensitiveWordChecker
 import com.shifenmiao.ai.model.AIDuelConfig
 import com.shifenmiao.ai.model.AIDuelConfigCodec
 import com.shifenmiao.ai.model.AIDuelState
+import com.shifenmiao.ai.model.DuelPhase
 import com.shifenmiao.ai.model.DuelSpeaker
 import com.shifenmiao.ai.model.MessageUiModel
 import com.shifenmiao.ai.prompt.PromptManager
@@ -43,7 +41,6 @@ import com.shifenmiao.database.ai.entity.MessageEntity
 import com.shifenmiao.database.chat_prompt.entity.PromptEntity
 import com.shifenmiao.database.item.entity.Category
 import com.shifenmiao.model.ai.AIConversationEntryType
-import com.shifenmiao.model.ai.ChatCompletionChunk
 import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.model.ai.MessageUIState
 import com.shifenmiao.model.ai.RoleType
@@ -52,12 +49,10 @@ import com.shifenmiao.model.ai.SearchResult
 import com.shifenmiao.model.ai.Usage
 import com.shifenmiao.model.ai.unified.LlmStreamEvent
 import com.shifenmiao.model.channel.FlavorType
-import com.shifenmiao.model.state.PageState
 import com.shifenmiao.storage.AppSharedStorage
 import com.shifenmiao.storage.RemoteConfigStorage
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.resource.ResourceManager
-import com.t8rin.logger.makeLog
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -65,8 +60,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -84,27 +79,6 @@ import kotlinx.coroutines.withTimeoutOrNull
 import java.util.Date
 import kotlin.coroutines.resume
 import kotlin.math.ceil
-
-@Serializable
-private data class DuelPromptTemplates(
-    val roleNameInstruction: String = "",
-    val responseRules: String = "",
-    val seedMessage: String = "",
-    val continuePrompt: String = "",
-    val systemInstruction: String = "",
-    val firstTurnInstruction: String = "",
-    val followUpInstruction: String = "",
-    val responseEnvelope: String = "",
-    val opponentLineLabel: String = "",
-    // 旧版按模式分 key 的 map，仅用于兼容解析存量数据：扁平字段为空时回退读取
-    @SerialName("seedMessages") val legacySeedMessages: Map<String, String> = emptyMap(),
-    @SerialName("continuePrompts") val legacyContinuePrompts: Map<String, String> = emptyMap(),
-    @SerialName("modeSystemInstructions") val legacySystemInstructions: Map<String, String> = emptyMap(),
-    @SerialName("firstTurnInstructions") val legacyFirstTurnInstructions: Map<String, String> = emptyMap(),
-    @SerialName("followUpInstructions") val legacyFollowUpInstructions: Map<String, String> = emptyMap(),
-    @SerialName("responseEnvelopes") val legacyResponseEnvelopes: Map<String, String> = emptyMap(),
-    @SerialName("opponentLineLabels") val legacyOpponentLineLabels: Map<String, String> = emptyMap()
-)
 
 class AIDuelChatComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
@@ -144,10 +118,14 @@ class AIDuelChatComponent @AssistedInject internal constructor(
         const val RENDER_THROTTLE_MS = 16L
         const val TYPEWRITER_CHAR_DELAY_MS = 18L
         const val TYPEWRITER_IDLE_POLL_MS = 6L
-        const val STREAM_INACTIVITY_TIMEOUT_MS = 20_000L
+        // 2 分钟无任何流式数据才判超时；reasoning 模型首 token 可能很慢，20 秒容易误杀。
+        const val STREAM_INACTIVITY_TIMEOUT_MS = 120_000L
         const val TYPEWRITER_FAST_FORWARD_PENDING_CHARS = 4096
         const val TYPEWRITER_FAST_CHUNK_CHARS = 256
         const val TYPEWRITER_FAST_UI_UPDATE_MS = 48L
+        const val MAX_CONTEXT_TURNS = 40
+        const val MAX_UNLIMITED_TURNS = 120
+        const val RESUME_WINDOW_MS = 12 * 60 * 60 * 1000L
     }
 
     private val parser = markdownAstNodeParserFactory.create()
@@ -161,8 +139,6 @@ class AIDuelChatComponent @AssistedInject internal constructor(
 
     private val cachedMessageUiModels = mutableMapOf<String, List<MessageUiModel>>()
     private var lastRenderTime = 0L
-
-    private var duelPromptTemplates: DuelPromptTemplates? = null
 
     private val _duelConfig = MutableStateFlow(AIDuelConfig())
     val duelConfig: StateFlow<AIDuelConfig> = _duelConfig
@@ -218,7 +194,14 @@ class AIDuelChatComponent @AssistedInject internal constructor(
 
     private suspend fun loadLastDuelDraftIfAvailable() {
         withContext(ioDispatcher) {
-            val entity = appDatabase.conversationDao()
+            val now = System.currentTimeMillis()
+            val candidates = appDatabase.conversationDao()
+                .getConversationsByType(AIConversationEntryType.DUEL.name, 5)
+            val lastActive = candidates.firstOrNull {
+                now - it.lastActiveAt <= RESUME_WINDOW_MS &&
+                    appDatabase.messageDao().getMessageCount(it.conversationId) > 0
+            }
+            val entity = lastActive ?: appDatabase.conversationDao()
                 .getLastHiddenConversationByType(AIConversationEntryType.DUEL.name)
             if (entity != null) {
                 val conversation = ConversationEntity.toConversation(entity)
@@ -271,87 +254,33 @@ class AIDuelChatComponent @AssistedInject internal constructor(
         }
     }
 
-    private suspend fun loadDuelPromptTemplates(): DuelPromptTemplates {
-        duelPromptTemplates?.let { return it }
-        val entity = withContext(ioDispatcher) {
-            chatPromptDao.getSystemPromptByKey(PromptEntity.SYSTEM_PROMPT_KEY_DUEL_TEMPLATES)
+    private fun personaOrDefault(config: AIDuelConfig, speaker: DuelSpeaker): String {
+        val persona = if (speaker == DuelSpeaker.A) config.personaA else config.personaB
+        return persona.trim().ifBlank {
+            applicationContext.getString(
+                if (speaker == DuelSpeaker.A) {
+                    R.string.ai_duel_default_persona_a
+                } else {
+                    R.string.ai_duel_default_persona_b
+                }
+            )
         }
-        val templates = entity?.prompt?.takeIf { it.isNotBlank() }?.let { json ->
-            kotlin.runCatching { AppJson.decodeFromString<DuelPromptTemplates>(json) }
-                .onFailure { error -> makeLog { "Failed to parse duel prompt templates: ${error.message}" } }
-                .getOrNull()
-        }
-        val result = templates ?: DuelPromptTemplates()
-        duelPromptTemplates = result
-        return result
     }
 
-    private fun String.replaceDuelPlaceholders(
-        currentName: String = "",
-        opponentName: String = ""
-    ): String {
-        return this
-            .replace("{currentName}", currentName)
-            .replace("{opponentName}", opponentName)
+    private fun getSystemInstruction(currentName: String, opponentName: String): String {
+        return applicationContext.getString(
+            R.string.ai_duel_system_prompt,
+            currentName,
+            opponentName
+        )
     }
-
-    private fun getResponseRules(): String = duelPromptTemplates?.responseRules ?: ""
-
-    private fun getRoleNameInstruction(roleName: String): String {
-        return duelPromptTemplates?.roleNameInstruction?.replace("{roleName}", roleName.trim()) ?: ""
-    }
-
-    // 以下 getter 均带旧模板兼容：扁平字段为空时回退到旧 map 的 DEBATE key，避免模板缺失时提示词全空
 
     private fun getSeedMessage(): String {
-        return duelPromptTemplates?.seedMessage?.takeIf { it.isNotBlank() }
-            ?: duelPromptTemplates?.legacySeedMessages?.get("DEBATE").orEmpty()
+        return applicationContext.getString(R.string.ai_duel_seed_start)
     }
 
-    private fun getContinuePrompt(): String {
-        return duelPromptTemplates?.continuePrompt?.takeIf { it.isNotBlank() }
-            ?: duelPromptTemplates?.legacyContinuePrompts?.get("DEBATE").orEmpty()
-    }
-
-    private fun getSystemInstruction(
-        currentName: String,
-        opponentName: String
-    ): String {
-        val template = duelPromptTemplates?.systemInstruction?.takeIf { it.isNotBlank() }
-            ?: duelPromptTemplates?.legacySystemInstructions?.get("DEBATE")
-        return template?.replaceDuelPlaceholders(currentName, opponentName) ?: ""
-    }
-
-    private fun getFirstTurnInstruction(
-        currentName: String,
-        opponentName: String
-    ): String {
-        val template = duelPromptTemplates?.firstTurnInstruction?.takeIf { it.isNotBlank() }
-            ?: duelPromptTemplates?.legacyFirstTurnInstructions?.get("DEBATE")
-        return template?.replaceDuelPlaceholders(currentName, opponentName) ?: ""
-    }
-
-    private fun getFollowUpInstruction(
-        currentName: String,
-        opponentName: String
-    ): String {
-        val template = duelPromptTemplates?.followUpInstruction?.takeIf { it.isNotBlank() }
-            ?: duelPromptTemplates?.legacyFollowUpInstructions?.get("DEBATE")
-        return template?.replaceDuelPlaceholders(currentName, opponentName) ?: ""
-    }
-
-    private fun getResponseEnvelope(
-        currentName: String,
-        opponentName: String
-    ): String {
-        val template = duelPromptTemplates?.responseEnvelope?.takeIf { it.isNotBlank() }
-            ?: duelPromptTemplates?.legacyResponseEnvelopes?.get("DEBATE")
-        return template?.replaceDuelPlaceholders(currentName, opponentName) ?: ""
-    }
-
-    private fun getOpponentLineLabel(): String {
-        return duelPromptTemplates?.opponentLineLabel?.takeIf { it.isNotBlank() }
-            ?: duelPromptTemplates?.legacyOpponentLineLabels?.get("DEBATE").orEmpty()
+    private fun getWrapUpInstruction(): String {
+        return applicationContext.getString(R.string.ai_duel_wrap_up_instruction)
     }
 
     private var observeMessagesJob: Job? = null
@@ -359,7 +288,7 @@ class AIDuelChatComponent @AssistedInject internal constructor(
     private fun observeMessages(conversationId: String) {
         observeMessagesJob?.cancel()
         observeMessagesJob = componentScope.launch(ioDispatcher) {
-            messageDao.getMessagesFlowPaged(conversationId, limit = 50)
+            messageDao.getMessagesFlowPaged(conversationId, limit = 200)
                 .catch { e -> showFailureUI(e.message) }
                 .collectLatest { messageList ->
                     if (conversationId != _conversation.value.id) return@collectLatest
@@ -376,6 +305,21 @@ class AIDuelChatComponent @AssistedInject internal constructor(
                         messages.addAll(messageList)
                     }
                     renderMessage(forceUpdate = true)
+                    val turnCount = messageList.count { parseTurn(it) != null }
+                    val phase = _duelState.value.phase
+                    _duelState.value = _duelState.value.copy(
+                        totalTokens = messageList.sumOf { it.totalTokens },
+                        round = turnCount / 2,
+                        phase = if (
+                            phase == DuelPhase.IDLE &&
+                            messageList.isNotEmpty() &&
+                            !_conversation.value.showLastMessage
+                        ) {
+                            DuelPhase.PAUSED
+                        } else {
+                            phase
+                        }
+                    )
                     if (messageList.isEmpty()) {
                         markPageReady()
                     } else {
@@ -447,10 +391,31 @@ class AIDuelChatComponent @AssistedInject internal constructor(
     fun updateDraftConfig(config: AIDuelConfig, persistDraft: Boolean = true) {
         if (_duelState.value.running) return
         val appTitle = buildConversationTitle(config)
+        val hasMessages = synchronized(messages) { messages.isNotEmpty() }
+        val preserveSession = hasMessages ||
+            (_conversation.value.historyVisible && _conversation.value.messageCount > 0)
         _duelConfig.value = config
 
         config.engineA?.let(aiEngineManager::setDuelEngineA)
         config.engineB?.let(aiEngineManager::setDuelEngineB)
+
+        if (preserveSession) {
+            // 已经在聊天中/从历史打开：只更新配置，不能把已落库的会话重新标成“草稿”。
+            _conversation.value = _conversation.value.copy(
+                entryType = AIConversationEntryType.DUEL,
+                appTitle = appTitle,
+                prompt = AIDuelConfigCodec.encode(config),
+            )
+            synchronized(cachedMessageUiModels) { cachedMessageUiModels.clear() }
+            renderMessage(forceUpdate = true)
+            if (persistDraft && shouldPersistDraftConfig(config)) {
+                componentScope.launch(ioDispatcher) {
+                    appDatabase.conversationDao()
+                        .insertReplace(ConversationEntity.fromConversation(_conversation.value))
+                }
+            }
+            return
+        }
 
         _conversation.value = _conversation.value.copy(
             entryType = AIConversationEntryType.DUEL,
@@ -504,7 +469,8 @@ class AIDuelChatComponent @AssistedInject internal constructor(
             promptIdA > 0 ||
             promptIdB > 0 ||
             promptNameA.isNotBlank() ||
-            promptNameB.isNotBlank()
+            promptNameB.isNotBlank() ||
+            scene.isNotBlank()
     }
 
     fun applyPromptToRole(role: DuelSpeaker, prompt: PromptEntity) {
@@ -530,50 +496,98 @@ class AIDuelChatComponent @AssistedInject internal constructor(
     }
 
     fun startNewConversation() {
-        _conversation.value = _conversation.value.copy(
-            id = Date().time.toString(),
-            entryType = AIConversationEntryType.DUEL,
-            appTitle = applicationContext.getString(R.string.ai_duel_chat_title),
-            title = "",
-            prompt = AIDuelConfigCodec.encode(_duelConfig.value),
-            historyVisible = false,
-            lastMessagePreview = "",
-            lastUserMessagePreview = "",
-            lastActiveAt = System.currentTimeMillis(),
-            messageCount = 0,
-        )
-        clearMessages()
-        loadMessages()
+        componentScope.launch(ioDispatcher) {
+            pauseDuelInternal()
+            _conversation.value = _conversation.value.copy(
+                id = Date().time.toString(),
+                entryType = AIConversationEntryType.DUEL,
+                appTitle = applicationContext.getString(R.string.ai_duel_chat_title),
+                title = "",
+                showLastMessage = false,
+                prompt = AIDuelConfigCodec.encode(_duelConfig.value),
+                historyVisible = false,
+                lastMessagePreview = "",
+                lastUserMessagePreview = "",
+                lastActiveAt = System.currentTimeMillis(),
+                messageCount = 0,
+            )
+            clearMessages()
+            _duelState.value = AIDuelState()
+            loadMessages()
+        }
     }
 
     fun startDuel(config: AIDuelConfig) {
         componentScope.launch(ioDispatcher) {
-            stopDuelInternal(savePartial = false)
-            val engines = availableEngines.value
-            val duelEngineA = aiEngineManager.getDuelEngineA()
-            val duelEngineB = aiEngineManager.getDuelEngineB()
-            val defaultEngineA = config.engineA
-                ?: _duelConfig.value.engineA
-                ?: duelEngineA
-            val defaultEngineB = config.engineB
-                ?: _duelConfig.value.engineB
-                ?: duelEngineB.takeIf { it.name != defaultEngineA.name }
-                ?: engines.firstOrNull { it.name != defaultEngineA.name }
-                ?: engines.firstOrNull()
-                ?: _conversation.value.engine
+            startDuelInternal(config = config, resume = false)
+        }
+    }
 
-            val resolvedConfig = config.copy(
-                engineA = defaultEngineA,
-                engineB = defaultEngineB
+    /** 从当前最后一条发言接着聊；不新建会话、不清空记录。 */
+    fun resumeDuel() {
+        componentScope.launch(ioDispatcher) {
+            startDuelInternal(config = _duelConfig.value, resume = true)
+        }
+    }
+
+    /** 只重试上一条失败/中断的发言。 */
+    fun retryDuel() {
+        componentScope.launch(ioDispatcher) {
+            startDuelInternal(config = _duelConfig.value, resume = true, maxTurnsOverride = 1)
+        }
+    }
+
+    /** 让下一位用一句话收尾，然后结束本次会话。 */
+    fun wrapUpDuel() {
+        componentScope.launch(ioDispatcher) {
+            startDuelInternal(
+                config = _duelConfig.value,
+                resume = true,
+                maxTurnsOverride = 1,
+                wrapUp = true,
             )
-            val validationError = validateDuelConfigForStart(resolvedConfig)
-            if (validationError != null) {
-                withContext(Dispatchers.Main) {
-                    ActionUtils.showToast(applicationContext.getString(validationError))
-                }
-                return@launch
-            }
+        }
+    }
 
+    fun stopDuel() {
+        componentScope.launch(ioDispatcher) {
+            pauseDuelInternal()
+        }
+    }
+
+    private suspend fun startDuelInternal(
+        config: AIDuelConfig,
+        resume: Boolean,
+        maxTurnsOverride: Int? = null,
+        wrapUp: Boolean = false,
+    ) {
+        pauseDuelInternal()
+        val engines = availableEngines.value
+        val duelEngineA = aiEngineManager.getDuelEngineA()
+        val duelEngineB = aiEngineManager.getDuelEngineB()
+        val defaultEngineA = config.engineA
+            ?: _duelConfig.value.engineA
+            ?: duelEngineA
+        val defaultEngineB = config.engineB
+            ?: _duelConfig.value.engineB
+            ?: duelEngineB.takeIf { it.name != defaultEngineA.name }
+            ?: engines.firstOrNull { it.name != defaultEngineA.name }
+            ?: engines.firstOrNull()
+            ?: _conversation.value.engine
+
+        val resolvedConfig = config.copy(
+            engineA = defaultEngineA,
+            engineB = defaultEngineB
+        )
+        val validationError = validateDuelConfigForStart(resolvedConfig)
+        if (validationError != null) {
+            withContext(Dispatchers.Main) {
+                ActionUtils.showToast(applicationContext.getString(validationError))
+            }
+            return
+        }
+
+        if (!resume) {
             val sensitiveHit = checkDuelInputsForSensitiveWords(
                 config = resolvedConfig,
                 scene = "ai_duel_start"
@@ -585,18 +599,35 @@ class AIDuelChatComponent @AssistedInject internal constructor(
                 withContext(Dispatchers.Main) {
                     ActionUtils.showToast(message)
                 }
-                return@launch
+                return
             }
+        }
 
-            val appTitle = buildConversationTitle(resolvedConfig)
-            val conversationId = _conversation.value.id.ifBlank { Date().time.toString() }
+        val appTitle = buildConversationTitle(resolvedConfig)
+        // 非续聊一律开新会话 ID：复用一个已经有消息的 ID 会让 clearMessages() 后的
+        // loadMessages() 又把旧记录读回来。
+        val conversationId = if (resume) {
+            _conversation.value.id.ifBlank { Date().time.toString() }
+        } else {
+            Date().time.toString()
+        }
 
-            _duelConfig.value = resolvedConfig
+        _duelConfig.value = resolvedConfig
+        if (resume) {
+            _conversation.value = _conversation.value.copy(
+                entryType = AIConversationEntryType.DUEL,
+                appTitle = appTitle,
+                historyVisible = true,
+                prompt = AIDuelConfigCodec.encode(resolvedConfig),
+                placeholder = applicationContext.getString(R.string.ai_duel_chat_description)
+            )
+        } else {
             _conversation.value = _conversation.value.copy(
                 id = conversationId,
                 entryType = AIConversationEntryType.DUEL,
                 appTitle = appTitle,
                 title = "",
+                showLastMessage = false,
                 historyVisible = true,
                 lastMessagePreview = "",
                 lastUserMessagePreview = "",
@@ -611,19 +642,71 @@ class AIDuelChatComponent @AssistedInject internal constructor(
 
             clearMessages()
             loadMessages()
+        }
 
-            appDatabase.conversationDao()
-                .insertReplace(ConversationEntity.fromConversation(_conversation.value))
+        appDatabase.conversationDao()
+            .insertReplace(ConversationEntity.fromConversation(_conversation.value))
 
-            _duelState.value = _duelState.value.copy(
-                running = true,
-                round = 0,
-                speaker = DuelSpeaker.A,
-                errorMessage = ""
-            )
-            duelJob = componentScope.launch(ioDispatcher) {
-                runDuelLoop()
+        val turns = synchronized(messages) { messages.toList() }
+            .asReversed()
+            .mapNotNull(::parseTurn)
+        val nextSpeaker = turns.lastOrNull()?.first?.other() ?: DuelSpeaker.A
+        val totalTokens = synchronized(messages) { messages.sumOf { it.totalTokens } }
+
+        _duelState.value = AIDuelState(
+            phase = DuelPhase.RUNNING,
+            round = turns.size / 2,
+            speaker = nextSpeaker,
+            totalTokens = totalTokens,
+        )
+        val maxTurns = maxTurnsOverride ?: batchTurns(resolvedConfig)
+        duelJob = componentScope.launch(ioDispatcher) {
+            try {
+                runDuelLoop(maxTurns = maxTurns, wrapUp = wrapUp)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                removeStreamingPlaceholder()
+                _duelState.value = _duelState.value.copy(
+                    phase = DuelPhase.PAUSED,
+                    errorMessage = e.message?.takeIf { it.isNotBlank() }
+                        ?: applicationContext.getString(R.string.ai_error_unknown),
+                    retryAvailable = true,
+                )
             }
+        }
+    }
+
+    private fun batchTurns(config: AIDuelConfig): Int {
+        val rounds = config.maxRounds
+        return if (rounds <= 0) {
+            MAX_UNLIMITED_TURNS
+        } else {
+            (rounds * 2).coerceAtMost(MAX_UNLIMITED_TURNS)
+        }
+    }
+
+    private suspend fun pauseDuelInternal() {
+        duelJob?.cancel()
+        duelJob = null
+        fetchJob?.cancel()
+        fetchJob = null
+        removeStreamingPlaceholder()
+        if (_duelState.value.phase == DuelPhase.RUNNING) {
+            _duelState.value = _duelState.value.copy(
+                phase = DuelPhase.PAUSED,
+                retryAvailable = _duelState.value.hasError,
+            )
+        }
+        _chatUIState.value = _chatUIState.value.copy(chatActive = false)
+    }
+
+    private fun removeStreamingPlaceholder() {
+        val removed = synchronized(messages) {
+            messages.removeIf { it.id <= 0 && it.uId < MessageUIState.NORMAL.value }
+        }
+        if (removed) {
+            renderMessage(forceUpdate = true)
         }
     }
 
@@ -691,243 +774,134 @@ class AIDuelChatComponent @AssistedInject internal constructor(
         }
     }
 
-    fun stopDuel() {
-        componentScope.launch(ioDispatcher) {
-            stopDuelInternal(savePartial = true)
-        }
-    }
+    private suspend fun runDuelLoop(maxTurns: Int, wrapUp: Boolean = false) {
+        var completedTurns = 0
 
-    private suspend fun stopDuelInternal(savePartial: Boolean) {
-        duelJob?.cancel()
-        duelJob = null
+        while (currentCoroutineContext().isActive && completedTurns < maxTurns) {
+            val config = _duelConfig.value
+            val speaker = nextSpeaker()
+            _duelState.value = _duelState.value.copy(
+                phase = DuelPhase.RUNNING,
+                round = currentTurnCount() / 2,
+                speaker = speaker,
+                errorMessage = "",
+                retryAvailable = false,
+                batchLimitReached = false,
+            )
 
-        val stoppedSuffix = duelStoppedSuffix()
-
-        if (savePartial) {
-            val placeholder = synchronized(messages) {
-                messages.firstOrNull { it.id <= 0 && it.uId == MessageUIState.STREAMING.value }
+            val speakerEngine = if (speaker == DuelSpeaker.A) config.engineA else config.engineB
+            if (speakerEngine == null) {
+                val modelNotSelected = applicationContext.getString(R.string.ai_duel_error_model_not_selected)
+                _duelState.value = _duelState.value.copy(
+                    phase = DuelPhase.PAUSED,
+                    errorMessage = modelNotSelected,
+                    retryAvailable = false,
+                )
+                break
             }
-            val hasContent = placeholder?.let {
-                if (it.role == RoleType.USER.value) it.question.isNotBlank() else it.answer.isNotBlank()
-            } == true
-            if (placeholder != null && hasContent) {
-                kotlin.runCatching {
-                    placeholder.uId = MessageUIState.NORMAL.value
-                    messageDao.insertReplace(
-                        if (placeholder.role == RoleType.USER.value) {
-                            placeholder.copy(
-                                id = 0,
-                                createdAt = Date(),
-                                question = placeholder.question + stoppedSuffix,
-                                entryType = _conversation.value.entryType,
-                                title = _conversation.value.title,
-                            )
-                        } else {
-                            placeholder.copy(
-                                id = 0,
-                                createdAt = Date(),
-                                answer = placeholder.answer + stoppedSuffix,
-                                entryType = _conversation.value.entryType,
-                                title = _conversation.value.title,
-                            )
-                        }
+
+            val canProceed = ensureLoginAndCheckPointsForRound(speakerEngine)
+            if (!canProceed) {
+                _duelState.value = _duelState.value.copy(phase = DuelPhase.PAUSED)
+                break
+            }
+
+            val requestConversation = _conversation.value.copy(
+                prompt = buildRoundPrompt(speaker = speaker, config = config),
+                engine = speakerEngine
+            )
+            val requestMessages = buildRequestMessages(
+                speaker = speaker,
+                extraUserMessage = if (wrapUp) getWrapUpInstruction() else null,
+            )
+            val completionId = Date().time.toString()
+            val isSpeakerA = speaker == DuelSpeaker.A
+            val streaming = MessageEntity(
+                completionId = completionId,
+                conversationId = _conversation.value.id,
+                role = if (isSpeakerA) RoleType.USER.value else RoleType.ASSISTANT.value,
+                question = "",
+                answer = "",
+                reasoningContent = "",
+                createdAt = Date(),
+                engine = speakerEngine.name,
+                model = speakerEngine.model.name,
+                entryType = _conversation.value.entryType,
+                title = _conversation.value.title,
+            ).also {
+                it.uId = MessageUIState.LOADING.value
+            }
+
+            updateStreamingPlaceholder(streaming, forceUpdate = true)
+            _chatUIState.value = _chatUIState.value.copy(chatActive = true)
+
+            val roundStartTimeMs = System.currentTimeMillis()
+            var turnSucceeded = false
+            val turnJob = componentScope.launch(ioDispatcher) {
+                turnSucceeded = try {
+                    streamWithTypewriter(
+                        requestConversation = requestConversation,
+                        requestMessages = requestMessages,
+                        streaming = streaming,
+                        speaker = speaker,
+                        startTimeMs = roundStartTimeMs
                     )
-                }
-            }
-        }
-
-        fetchJob?.cancel()
-        fetchJob = null
-
-        _duelState.value = _duelState.value.copy(running = false)
-        _chatUIState.value = _chatUIState.value.copy(chatActive = false)
-    }
-
-    private suspend fun runDuelLoop() {
-        val config = _duelConfig.value
-        if (config.personaA.isBlank() || config.personaB.isBlank()) {
-            withContext(Dispatchers.Main) {
-                ActionUtils.showToast(applicationContext.getString(R.string.ai_error_unknown))
-            }
-            _duelState.value = _duelState.value.copy(running = false)
-            return
-        }
-
-        loadDuelPromptTemplates()
-
-        var round = 0
-
-        duelLoop@ while (round < config.maxRounds) {
-            if (!currentCoroutineContext().isActive) break
-
-            for (speaker in listOf(DuelSpeaker.A, DuelSpeaker.B)) {
-                if (!currentCoroutineContext().isActive) break@duelLoop
-                try {
-                    _duelState.value =
-                        _duelState.value.copy(running = true, round = round, speaker = speaker)
-                    val baseSpeakerPrompt = if (speaker == DuelSpeaker.A) config.personaA else config.personaB
-                    val roleName = if (speaker == DuelSpeaker.A) config.roleNameA else config.roleNameB
-                    val speakerPrompt = appendRoleNameInstruction(baseSpeakerPrompt, roleName)
-                    val speakerEngine = if (speaker == DuelSpeaker.A) config.engineA else config.engineB
-                    if (speakerEngine == null) {
-                        val modelNotSelected = applicationContext.getString(R.string.ai_duel_error_model_not_selected)
-                        _duelState.value =
-                            _duelState.value.copy(running = false, errorMessage = modelNotSelected)
-                        showFailureUI(modelNotSelected)
-                        break@duelLoop
-                    }
-
-                    val canProceed = ensureLoginAndCheckPointsForRound(speakerEngine)
-                    if (!canProceed) {
-                        _duelState.value = _duelState.value.copy(running = false)
-                        break@duelLoop
-                    }
-                    val isFirstTurn = synchronized(messages) { messages.none { parseTurn(it) != null } }
-                    val requestConversation = _conversation.value.copy(
-                        prompt = buildRoundPrompt(
-                            speakerPrompt = speakerPrompt,
-                            isFirstTurn = isFirstTurn,
-                            speaker = speaker,
-                            config = config,
-                        ),
-                        engine = speakerEngine
-                    )
-
-                    val requestMessages = buildRequestMessages(config, speaker)
-                    val completionId = Date().time.toString()
-                    val isSpeakerA = speaker == DuelSpeaker.A
-                    val streaming = MessageEntity(
-                        completionId = completionId,
-                        conversationId = _conversation.value.id,
-                        role = if (isSpeakerA) {
-                            RoleType.USER.value
-                        } else {
-                            RoleType.ASSISTANT.value
-                        },
-                        question = "",
-                        answer = "",
-                        reasoningContent = "",
-                        createdAt = Date(),
-                        engine = speakerEngine.name,
-                        model = speakerEngine.model.name,
-                        entryType = _conversation.value.entryType,
-                        title = _conversation.value.title,
-                    ).also {
-                        it.uId = MessageUIState.LOADING.value
-                    }
-
-                    updateStreamingPlaceholder(streaming, forceUpdate = true)
-                    _chatUIState.value = _chatUIState.value.copy(chatActive = true)
-
-                    val roundStartTimeMs = System.currentTimeMillis()
-                    fetchJob = componentScope.launch(ioDispatcher) {
-                        try {
-                            streamWithTypewriter(
-                                requestConversation = requestConversation,
-                                requestMessages = requestMessages,
-                                streaming = streaming,
-                                speaker = speaker,
-                                startTimeMs = roundStartTimeMs
-                            )
-                        } catch (e: Exception) {
-                            if (e is CancellationException) {
-                                val hasContent = if (streaming.role == RoleType.USER.value) {
-                                    streaming.question.isNotBlank()
-                                } else {
-                                    streaming.answer.isNotBlank()
-                                }
-                                if (hasContent && streaming.uId == MessageUIState.STREAMING.value) {
-                                    // 持久化前必须置为 NORMAL，否则下一轮会按 STREAMING 状态被误删。
-                                    streaming.uId = MessageUIState.NORMAL.value
-                                    messageDao.insertReplace(
-                                        if (streaming.role == RoleType.USER.value) {
-                                            streaming.copy(
-                                                id = 0,
-                                                createdAt = Date(),
-                                                question = streaming.question + duelStoppedSuffix(),
-                                                entryType = _conversation.value.entryType,
-                                                title = _conversation.value.title,
-                                            )
-                                        } else {
-                                            streaming.copy(
-                                                id = 0,
-                                                createdAt = Date(),
-                                                answer = streaming.answer + duelStoppedSuffix(),
-                                                entryType = _conversation.value.entryType,
-                                                title = _conversation.value.title,
-                                            )
-                                        }
-                                    )
-                                }
-                                streaming.uId = MessageUIState.NORMAL.value
-                            } else {
-                                _duelState.value = _duelState.value.copy(
-                                    running = false,
-                                    errorMessage = e.message.orEmpty()
-                                )
-                                showFailureUI(e.message)
-                                // 持久化前必须置为 NORMAL，否则错误消息 uId 为 STREAMING，
-                                // 后续会被 updateStreamingPlaceholder 误删。
-                                streaming.uId = MessageUIState.NORMAL.value
-                                messageDao.insertReplace(
-                                    if (streaming.role == RoleType.USER.value) {
-                                        streaming.copy(
-                                            id = 0,
-                                            createdAt = Date(),
-                                            question = e.message.orEmpty(),
-                                            entryType = _conversation.value.entryType,
-                                            title = _conversation.value.title,
-                                        )
-                                    } else {
-                                        streaming.copy(
-                                            id = 0,
-                                            createdAt = Date(),
-                                            answer = e.message.orEmpty(),
-                                            entryType = _conversation.value.entryType,
-                                            title = _conversation.value.title,
-                                        )
-                                    }
-                                )
-                            }
-                        }
-                    }
-
-                    fetchJob?.join()
-                    fetchJob = null
-
-                    if (!_duelState.value.running) break@duelLoop
-                    makeLog {
-                        "next"
-                    }
+                } catch (e: CancellationException) {
+                    false
                 } catch (e: Exception) {
+                    removeStreamingPlaceholder()
                     _duelState.value = _duelState.value.copy(
-                        running = false,
-                        errorMessage = e.message.orEmpty()
+                        phase = DuelPhase.PAUSED,
+                        errorMessage = e.message?.takeIf { it.isNotBlank() }
+                            ?: applicationContext.getString(R.string.ai_error_unknown),
+                        retryAvailable = true,
                     )
-                    showFailureUI(e.message)
-                    break@duelLoop
+                    false
                 }
             }
+            fetchJob = turnJob
+            turnJob.join()
+            fetchJob = null
 
-            round += 1
+            if (!currentCoroutineContext().isActive) break
+            if (!turnSucceeded) {
+                _duelState.value = _duelState.value.copy(
+                    phase = DuelPhase.PAUSED,
+                    retryAvailable = _duelState.value.hasError,
+                )
+                break
+            }
+
+            completedTurns += 1
+            _duelState.value = _duelState.value.copy(
+                round = currentTurnCount() / 2,
+                totalTokens = synchronized(messages) { messages.sumOf { it.totalTokens } },
+            )
         }
 
-        _duelState.value = _duelState.value.copy(running = false)
+        if (_duelState.value.phase == DuelPhase.RUNNING) {
+            _duelState.value = _duelState.value.copy(
+                phase = if (wrapUp && completedTurns > 0) DuelPhase.ENDED else DuelPhase.PAUSED,
+                batchLimitReached = !wrapUp &&
+                    maxTurns == batchTurns(_duelConfig.value) &&
+                    completedTurns >= maxTurns,
+            )
+        }
         kotlin.runCatching { insertDuelOperationHistoryIfNeeded() }
     }
 
-    private fun appendRoleNameInstruction(prompt: String, roleName: String): String {
-        val normalizedRoleName = roleName.trim()
-        if (normalizedRoleName.isBlank()) return prompt
+    private fun nextSpeaker(): DuelSpeaker {
+        val lastSpeaker = synchronized(messages) { messages.toList() }
+            .asReversed()
+            .mapNotNull(::parseTurn)
+            .lastOrNull()
+            ?.first
+        return lastSpeaker?.other() ?: DuelSpeaker.A
+    }
 
-        val normalizedPrompt = prompt.trim()
-
-        return buildString {
-            append(getRoleNameInstruction(normalizedRoleName))
-            if (normalizedPrompt.isNotBlank()) {
-                append("\n\n")
-                append(normalizedPrompt)
-            }
+    private fun currentTurnCount(): Int {
+        return synchronized(messages) {
+            messages.count { parseTurn(it) != null }
         }
     }
 
@@ -973,9 +947,7 @@ class AIDuelChatComponent @AssistedInject internal constructor(
         streaming: MessageEntity,
         speaker: DuelSpeaker,
         startTimeMs: Long
-    ) = coroutineScope {
-        if (chatUIState.value.pageState == PageState.ERROR) return@coroutineScope
-
+    ): Boolean = coroutineScope {
         val bufferMutex = Mutex()
         val contentBuffer = StringBuilder()
         var contentCursor = 0
@@ -1086,7 +1058,11 @@ class AIDuelChatComponent @AssistedInject internal constructor(
                 conversation = requestConversation,
                 questionMessageEntityList = requestMessages,
                 enableWebSearch = false
-            ).collect { event ->
+            ).catch { error ->
+                if (error is CancellationException) throw error
+                errorMsg = error.message
+                streamEnded = true
+            }.collect { event ->
                 lastChunkAtMs = System.currentTimeMillis()
                 when (event) {
                     is LlmStreamEvent.Error -> {
@@ -1153,34 +1129,36 @@ class AIDuelChatComponent @AssistedInject internal constructor(
 
         val finalErrorMsg = errorMsg
         if (!finalErrorMsg.isNullOrBlank()) {
-            _duelState.value = _duelState.value.copy(running = false, errorMessage = finalErrorMsg)
-            showFailureUI(finalErrorMsg)
-            // 持久化前必须置为 NORMAL，否则错误消息 uId 为 STREAMING，
-            // 后续会被 updateStreamingPlaceholder 误删。
-            streaming.uId = MessageUIState.NORMAL.value
-            val finalMessage = if (streaming.role == RoleType.USER.value) {
-                streaming.copy(
-                    id = 0,
-                    createdAt = Date(),
-                    question = finalErrorMsg,
-                    entryType = _conversation.value.entryType,
-                    title = _conversation.value.title,
-                )
-            } else {
-                streaming.copy(
-                    id = 0,
-                    createdAt = Date(),
-                    answer = finalErrorMsg,
-                    entryType = _conversation.value.entryType,
-                    title = _conversation.value.title,
-                )
+            // 错误只作为本次会话的临时状态展示，绝不落成一条“发言”。
+            synchronized(messages) {
+                messages.removeIf { it.completionId == streaming.completionId }
             }
-            messageDao.insertReplace(finalMessage)
-            return@coroutineScope
+            renderMessage(forceUpdate = true)
+            _duelState.value = _duelState.value.copy(
+                phase = DuelPhase.PAUSED,
+                errorMessage = finalErrorMsg,
+                retryAvailable = true,
+            )
+            _chatUIState.value = _chatUIState.value.copy(chatActive = false)
+            return@coroutineScope false
         }
 
         delay(TYPE_DELAY)
         val completionText = if (speaker == DuelSpeaker.A) streaming.question else streaming.answer
+        if (completionText.isBlank()) {
+            synchronized(messages) {
+                messages.removeIf { it.completionId == streaming.completionId }
+            }
+            renderMessage(forceUpdate = true)
+            _duelState.value = _duelState.value.copy(
+                phase = DuelPhase.PAUSED,
+                errorMessage = applicationContext.getString(R.string.ai_error),
+                retryAvailable = true,
+            )
+            _chatUIState.value = _chatUIState.value.copy(chatActive = false)
+            return@coroutineScope false
+        }
+
         val finalUsage = calculateUsageIfNull(
             usage = lastUsage,
             questionMessageEntityList = requestMessages,
@@ -1199,10 +1177,13 @@ class AIDuelChatComponent @AssistedInject internal constructor(
             totalTokens = finalUsage.totalTokens,
         )
         messageDao.insertReplace(finalMessage)
-        consumePoints(
-            engine = requestConversation.engine,
-            messageEntity = finalMessage
-        )
+        kotlin.runCatching {
+            consumePoints(
+                engine = requestConversation.engine,
+                messageEntity = finalMessage
+            )
+        }
+        true
     }
 
     private fun calculateUsageIfNull(
@@ -1317,13 +1298,14 @@ class AIDuelChatComponent @AssistedInject internal constructor(
     }
 
     private fun buildRequestMessages(
-        config: AIDuelConfig,
-        speaker: DuelSpeaker
+        speaker: DuelSpeaker,
+        extraUserMessage: String? = null,
     ): List<MessageEntity> {
         val turnsAsc = synchronized(messages) { messages.toList() }
             .asReversed()
             .filter { it.id > 0 || it.uId == MessageUIState.NORMAL.value }
             .mapNotNull(::parseTurn)
+            .takeLast(MAX_CONTEXT_TURNS)
 
         if (turnsAsc.isEmpty()) {
             return listOf(
@@ -1352,76 +1334,53 @@ class AIDuelChatComponent @AssistedInject internal constructor(
                     completionId = "u_$i",
                     conversationId = _conversation.value.id,
                     role = RoleType.USER.value,
-                    question = buildOpponentUserMessage(
-                        opponentSpeaker = turnSpeaker,
-                        opponentContent = content,
-                        currentSpeaker = speaker,
-                        config = config
-                    )
+                    question = content
                 )
             }
         }
 
-        val last = result.lastOrNull()
-        if (last != null && last.role != RoleType.USER.value) {
+        // 严格轮转下最后一条一定是对手的 user 消息；只有历史数据异常时才会走到这里。
+        if (result.lastOrNull()?.role != RoleType.USER.value) {
             result += MessageEntity(
                 completionId = "u_tail",
                 conversationId = _conversation.value.id,
                 role = RoleType.USER.value,
-                question = getContinuePrompt()
+                question = getSeedMessage()
+            )
+        }
+
+        if (!extraUserMessage.isNullOrBlank()) {
+            result += MessageEntity(
+                completionId = "u_extra",
+                conversationId = _conversation.value.id,
+                role = RoleType.USER.value,
+                question = extraUserMessage,
             )
         }
 
         return result
     }
 
-    private fun buildOpponentUserMessage(
-        opponentSpeaker: DuelSpeaker,
-        opponentContent: String,
-        currentSpeaker: DuelSpeaker,
-        config: AIDuelConfig,
-    ): String {
-        val normalizedContent = opponentContent.trim()
-        if (normalizedContent.isBlank()) {
-            return applicationContext.getString(R.string.ai_duel_continue)
-        }
-
-        val opponentName = resolveSpeakerDisplayName(config, opponentSpeaker)
-        val currentName = resolveSpeakerDisplayName(config, currentSpeaker)
-        return buildString {
-            append(getResponseEnvelope(currentName, opponentName))
-            append("\n\n")
-            append(opponentName)
-            append(getOpponentLineLabel())
-            append("：\n")
-            append(normalizedContent)
-        }
-    }
-
-    // 每轮的 system prompt：通用指令 + 发言约束 + 角色 persona（每轮都带，贯穿整个上下文）+ 首轮/后续指令
+    // 每轮的 system prompt：身份 + 可选人设 + 一条“别替对方说话”的边界。
+    // 不再追加“亮观点/别寒暄/回应最有价值的一点”这类导演指令，形式交给双方自己长出来。
     private fun buildRoundPrompt(
-        speakerPrompt: String,
-        isFirstTurn: Boolean,
         speaker: DuelSpeaker,
         config: AIDuelConfig,
     ): String {
-        val normalizedPrompt = speakerPrompt.trim()
         val currentName = resolveSpeakerDisplayName(config, speaker)
         val opponentName = resolveSpeakerDisplayName(config, speaker.other())
+        val persona = personaOrDefault(config, speaker).trim()
 
         return buildString {
             append(getSystemInstruction(currentName, opponentName))
-            append("\n")
-            append(getResponseRules())
-            if (normalizedPrompt.isNotBlank()) {
+            if (persona.isNotBlank()) {
                 append("\n\n")
-                append(normalizedPrompt)
+                append(persona)
             }
-            append("\n\n")
-            if (isFirstTurn) {
-                append(getFirstTurnInstruction(currentName, opponentName))
-            } else {
-                append(getFollowUpInstruction(currentName, opponentName))
+            val scene = config.scene.trim()
+            if (scene.isNotBlank()) {
+                append("\n\n")
+                append(applicationContext.getString(R.string.ai_duel_scene_prompt, scene))
             }
         }
     }
@@ -1442,20 +1401,14 @@ class AIDuelChatComponent @AssistedInject internal constructor(
         }
     }
 
-    private fun buildConversationTitle(@Suppress("UNUSED_PARAMETER") config: AIDuelConfig): String {
-        return applicationContext.getString(R.string.ai_duel_chat_title)
-    }
-
-    private fun duelStoppedSuffix(): String {
-        return "\n\n[${applicationContext.getString(R.string.ai_duel_message_stopped)}]"
+    private fun buildConversationTitle(config: AIDuelConfig): String {
+        val nameA = resolveSpeakerDisplayName(config, DuelSpeaker.A)
+        val nameB = resolveSpeakerDisplayName(config, DuelSpeaker.B)
+        return applicationContext.getString(R.string.ai_duel_title_format, nameA, nameB)
     }
 
     private fun validateDuelConfigForStart(config: AIDuelConfig): Int? {
         return when {
-            config.personaA.isBlank() || config.personaB.isBlank() -> {
-                R.string.ai_duel_error_persona_required
-            }
-
             config.engineA == null || config.engineB == null -> {
                 R.string.ai_duel_error_model_not_selected
             }
@@ -1488,6 +1441,9 @@ class AIDuelChatComponent @AssistedInject internal constructor(
             if (config.roleNameB.isNotBlank()) {
                 add(SensitiveWordCheckField(key = "roleNameB", text = config.roleNameB))
             }
+            if (config.scene.isNotBlank()) {
+                add(SensitiveWordCheckField(key = "scene", text = config.scene))
+            }
         }
         if (fields.isEmpty()) return null
         return when (val outcome = sensitiveWordChecker.check(scene = scene, fields = fields)) {
@@ -1497,6 +1453,8 @@ class AIDuelChatComponent @AssistedInject internal constructor(
     }
 
     private fun parseTurn(message: MessageEntity): Pair<DuelSpeaker, String>? {
+        // 旧版本会把网络错误文案落成一条普通消息；重放时不能再当成发言喂给对方。
+        if (message.finishReason.startsWith("error:") || message.expired) return null
         val isSpeakerA = message.role == RoleType.USER.value
         val speaker = if (isSpeakerA) DuelSpeaker.A else DuelSpeaker.B
         val text = if (isSpeakerA) message.question else message.answer
@@ -1508,11 +1466,18 @@ class AIDuelChatComponent @AssistedInject internal constructor(
         return when {
             text.startsWith("【A】") -> text.removePrefix("【A】").trimStart()
             text.startsWith("【B】") -> text.removePrefix("【B】").trimStart()
+            text.startsWith("A：") -> text.removePrefix("A：").trimStart()
+            text.startsWith("B：") -> text.removePrefix("B：").trimStart()
+            text.startsWith("A:") -> text.removePrefix("A:").trimStart()
+            text.startsWith("B:") -> text.removePrefix("B:").trimStart()
             else -> text
         }
     }
 
     fun onDestroy() {
-        stopDuel()
+        duelJob?.cancel()
+        duelJob = null
+        fetchJob?.cancel()
+        fetchJob = null
     }
 }

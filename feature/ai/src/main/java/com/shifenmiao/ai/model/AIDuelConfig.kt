@@ -21,6 +21,8 @@ data class AIDuelConfig(
     val avatarA: String = "",
     val avatarB: String = "",
     val maxRounds: Int = 5,
+    /** 可选的开场白/场景；留空则由双方自己找话题。 */
+    val scene: String = "",
     val engineA: AiEngine? = null,
     val engineB: AiEngine? = null,
     val promptIdA: Int = 0,
@@ -59,6 +61,7 @@ internal object AIDuelConfigCodec {
             avatarA = str("avatarA"),
             avatarB = str("avatarB"),
             maxRounds = int("maxRounds", 5),
+            scene = str("scene"),
             engineA = engineA,
             engineB = engineB,
             promptIdA = int("promptIdA", 0),
@@ -78,9 +81,23 @@ enum class DuelSpeaker {
     fun other(): DuelSpeaker = if (this == A) B else A
 }
 
+enum class DuelPhase {
+    IDLE,
+    RUNNING,
+    PAUSED,
+    ENDED,
+}
+
 data class AIDuelState(
-    val running: Boolean = false,
+    val phase: DuelPhase = DuelPhase.IDLE,
     val round: Int = 0,
     val speaker: DuelSpeaker = DuelSpeaker.A,
     val errorMessage: String = "",
-)
+    val retryAvailable: Boolean = false,
+    val totalTokens: Int = 0,
+    val batchLimitReached: Boolean = false,
+) {
+    val running: Boolean get() = phase == DuelPhase.RUNNING
+    val paused: Boolean get() = phase == DuelPhase.PAUSED
+    val hasError: Boolean get() = errorMessage.isNotBlank()
+}

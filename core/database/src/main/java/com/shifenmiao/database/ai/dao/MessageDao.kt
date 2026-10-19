@@ -105,6 +105,9 @@ interface MessageDao {
     @Query("SELECT * FROM message WHERE conversation_id = :conversationId ORDER BY created_at DESC LIMIT :limit")
     fun getMessagesFlowPaged(conversationId: String, limit: Int = 50): Flow<List<MessageEntity>>
 
+    @Query("SELECT COUNT(*) FROM message WHERE conversation_id = :conversationId")
+    suspend fun getMessageCount(conversationId: String): Int
+
     @Query("SELECT * FROM message WHERE conversation_id = :conversationId ORDER BY created_at DESC")
     suspend fun getMessageListOnce(conversationId: String): List<MessageEntity>
 

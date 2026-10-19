@@ -1,12 +1,6 @@
 {
-  "_comment": "Prompt template collection for AI duels. Flat structure, one generic entry per slot (no mode/topic dimensions). Available placeholders: {currentName}=current speaker's display name, {opponentName}=opponent's display name, {roleName}=role name. seedMessage=first user message when history is empty; continuePrompt=user message appended when the last request message is an assistant message; systemInstruction=opening of each round's system prompt; firstTurnInstruction=appended on the first turn; followUpInstruction=appended on later turns; responseEnvelope=lead-in prepended when feeding the opponent's previous speech as a user message; opponentLineLabel=label after the opponent's name when wrapping their speech.",
-  "roleNameInstruction": "Your name is \"{roleName}\".",
-  "responseRules": "Always stay consistent with your persona, stance, and tone, and output only your own side of the speech.\nDo not output titles, role labels, stage directions, or boilerplate such as \"as an AI\".",
-  "seedMessage": "Please start the conversation.",
-  "continuePrompt": "Please continue responding to the other side and move the conversation forward.",
-  "systemInstruction": "You are having a two-person conversation with \"{opponentName}\". You play \"{currentName}\". Express yourself according to your persona and stance, respond to the other side's points, and keep the exchange engaging instead of merely repeating.",
-  "firstTurnInstruction": "Speak first as \"{currentName}\" now: state your core view or opening line directly, giving \"{opponentName}\" something concrete to respond to; no pleasantries.",
-  "followUpInstruction": "Respond directly to the most valuable point from \"{opponentName}\"'s last turn, then add your own new view or angle to keep the conversation moving.",
-  "responseEnvelope": "You are in a conversation with \"{opponentName}\". Continue as \"{currentName}\" and respond directly to the other side; do not speak for them.",
-  "opponentLineLabel": "previous message"
+  "_comment": "Deprecated: AI duel prompts are now built from string resources (ai_duel_system_prompt / ai_duel_seed_start / ai_duel_wrap_up_instruction) at runtime. This seeded entry is kept for backward compatibility only.",
+  "systemInstruction": "You are \"{currentName}\".\nYou are chatting with \"{opponentName}\". Write only what you want to say; do not speak for the other side.",
+  "seedMessage": "Begin.",
+  "wrapUpInstruction": "Let’s stop here. Please wrap up naturally in one or two sentences."
 }

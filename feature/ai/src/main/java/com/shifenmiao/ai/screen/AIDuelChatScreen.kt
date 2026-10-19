@@ -126,6 +126,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineMinus
 
 // 提示词输入框字数上限
 private const val PERSONA_MAX_CHARS = 800
+// 开场白/场景输入框字数上限
+private const val SCENE_MAX_CHARS = 200
 // 头像压缩后的最长边像素
 private const val AVATAR_MAX_SIZE_PX = 512
 
@@ -292,6 +294,9 @@ private fun DuelChatContent(
     val avatarA = remember { mutableStateOf(duelConfig.avatarA) }
     val avatarB = remember { mutableStateOf(duelConfig.avatarB) }
     val maxRounds = remember { mutableIntStateOf(duelConfig.maxRounds) }
+    val scene = remember { mutableStateOf(duelConfig.scene) }
+    val expandedRole = remember { mutableStateOf<DuelSpeaker?>(null) }
+    val showAdvanced = remember { mutableStateOf(false) }
     val pickingModelRole = remember { mutableStateOf<DuelSpeaker?>(null) }
     val showModelPicker = remember { mutableStateOf(false) }
     val pickingPromptRole = remember { mutableStateOf<DuelSpeaker?>(null) }
@@ -311,6 +316,7 @@ private fun DuelChatContent(
         avatarA.value = duelConfig.avatarA
         avatarB.value = duelConfig.avatarB
         maxRounds.intValue = duelConfig.maxRounds
+        scene.value = duelConfig.scene
     }
 
     LaunchedEffect(duelState.running) {
@@ -324,6 +330,7 @@ private fun DuelChatContent(
                 avatarA = avatarA.value,
                 avatarB = avatarB.value,
                 maxRounds = maxRounds.intValue,
+                scene = scene.value,
                 engineA = duelConfig.engineA,
                 engineB = duelConfig.engineB,
                 promptIdA = duelConfig.promptIdA,
@@ -362,6 +369,38 @@ private fun DuelChatContent(
         )
     }
 
+    // 清掉人设/所选提示词，回到内置默认人设；如果角色名是选提示词时自动带出的，一起还原成 A/B。
+    val onResetPersona: (DuelSpeaker) -> Unit = { role ->
+        val current = duelConfig
+        if (role == DuelSpeaker.A) {
+            val autoName = current.promptNameA.isNotBlank() &&
+                roleNameA.value.trim() == current.promptNameA.trim()
+            personaA.value = ""
+            if (autoName) roleNameA.value = ""
+            duelChatComponent.updateDraftConfig(
+                current.copy(
+                    personaA = "",
+                    promptIdA = 0,
+                    promptNameA = "",
+                    roleNameA = if (autoName) "" else roleNameA.value,
+                )
+            )
+        } else {
+            val autoName = current.promptNameB.isNotBlank() &&
+                roleNameB.value.trim() == current.promptNameB.trim()
+            personaB.value = ""
+            if (autoName) roleNameB.value = ""
+            duelChatComponent.updateDraftConfig(
+                current.copy(
+                    personaB = "",
+                    promptIdB = 0,
+                    promptNameB = "",
+                    roleNameB = if (autoName) "" else roleNameB.value,
+                )
+            )
+        }
+    }
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -378,6 +417,9 @@ private fun DuelChatContent(
                 avatarA = avatarA,
                 avatarB = avatarB,
                 maxRounds = maxRounds,
+                scene = scene,
+                expandedRole = expandedRole,
+                showAdvanced = showAdvanced,
                 pickingModelRole = pickingModelRole,
                 showModelPicker = showModelPicker,
                 pickingPromptRole = pickingPromptRole,
@@ -386,6 +428,7 @@ private fun DuelChatContent(
                 pickingPersonaHistoryRole = pickingPersonaHistoryRole,
                 showRoleNameHistoryPicker = showRoleNameHistoryPicker,
                 pickingRoleNameHistoryRole = pickingRoleNameHistoryRole,
+                onResetPersona = onResetPersona,
                 onSwapRoles = onSwapRoles,
             )
         } else {
@@ -399,6 +442,12 @@ private fun DuelChatContent(
             )
         }
         val showShare = messageUiModels.isNotEmpty() && !duelState.running
+        if (duelState.hasError) {
+            DuelErrorBanner(
+                message = duelState.errorMessage,
+                onRetry = duelChatComponent::retryDuel,
+            )
+        }
         DuelStatusBar(
             duelConfig = duelConfig,
             duelState = duelState,
@@ -414,6 +463,7 @@ private fun DuelChatContent(
                         avatarA = avatarA.value,
                         avatarB = avatarB.value,
                         maxRounds = maxRounds.intValue,
+                        scene = scene.value,
                         engineA = duelConfig.engineA,
                         engineB = duelConfig.engineB,
                         promptIdA = duelConfig.promptIdA,
@@ -423,7 +473,9 @@ private fun DuelChatContent(
                     )
                 )
             },
-            onStop = duelChatComponent::stopDuel,
+            onPause = duelChatComponent::stopDuel,
+            onResume = duelChatComponent::resumeDuel,
+            onWrapUp = duelChatComponent::wrapUpDuel,
             onShare = {
                 isExporting.value = true
                 duelChatComponent.exportDuelChatHistory { html, aIgcInfo ->
@@ -503,6 +555,9 @@ private fun DuelInlineConfigPanel(
     avatarA: MutableState<String>,
     avatarB: MutableState<String>,
     maxRounds: MutableState<Int>,
+    scene: MutableState<String>,
+    expandedRole: MutableState<DuelSpeaker?>,
+    showAdvanced: MutableState<Boolean>,
     pickingModelRole: MutableState<DuelSpeaker?>,
     showModelPicker: MutableState<Boolean>,
     pickingPromptRole: MutableState<DuelSpeaker?>,
@@ -511,6 +566,7 @@ private fun DuelInlineConfigPanel(
     pickingPersonaHistoryRole: MutableState<DuelSpeaker?>,
     showRoleNameHistoryPicker: MutableState<Boolean>,
     pickingRoleNameHistoryRole: MutableState<DuelSpeaker?>,
+    onResetPersona: (DuelSpeaker) -> Unit,
     onSwapRoles: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
@@ -538,117 +594,342 @@ private fun DuelInlineConfigPanel(
                 color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = stringResource(R.string.ai_duel_config_subtitle),
+                text = stringResource(R.string.ai_duel_quick_start_subtitle),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
 
-        // ── Role A section ──
-        DuelRoleConfigSection(
-            speaker = DuelSpeaker.A,
-            roleName = roleNameA,
-            persona = personaA,
-            avatar = avatarA,
-            duelConfig = duelConfig,
-            duelState = duelState,
-            pickingModelRole = pickingModelRole,
-            showModelPicker = showModelPicker,
-            pickingPromptRole = pickingPromptRole,
-            showPromptPicker = showPromptPicker,
-            showPersonaHistoryPicker = showPersonaHistoryPicker,
-            pickingPersonaHistoryRole = pickingPersonaHistoryRole,
-            showRoleNameHistoryPicker = showRoleNameHistoryPicker,
-            pickingRoleNameHistoryRole = pickingRoleNameHistoryRole,
-        )
-
-        // ── Role B section ──
-        DuelRoleConfigSection(
-            speaker = DuelSpeaker.B,
-            roleName = roleNameB,
-            persona = personaB,
-            avatar = avatarB,
-            duelConfig = duelConfig,
-            duelState = duelState,
-            pickingModelRole = pickingModelRole,
-            showModelPicker = showModelPicker,
-            pickingPromptRole = pickingPromptRole,
-            showPromptPicker = showPromptPicker,
-            showPersonaHistoryPicker = showPersonaHistoryPicker,
-            pickingPersonaHistoryRole = pickingPersonaHistoryRole,
-            showRoleNameHistoryPicker = showRoleNameHistoryPicker,
-            pickingRoleNameHistoryRole = pickingRoleNameHistoryRole,
-        )
-
-        // ── Rounds stepper ──
+        // ── Optional scene / opening line ──
         GlassSurface(
             modifier = Modifier.fillMaxWidth(),
             style = GlassStyle.Thin,
             shape = MaterialTheme.shapes.medium,
             borderWidth = 0.dp,
         ) {
-            Row(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(
-                        horizontal = AppTheme.dimens.paddingNormal,
-                        vertical = AppTheme.dimens.paddingSmall
-                    ),
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingSmall),
-                verticalAlignment = Alignment.CenterVertically
+                    .padding(AppTheme.dimens.paddingNormal),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingSmall)
             ) {
                 Text(
-                    text = stringResource(R.string.ai_duel_rounds),
+                    text = stringResource(R.string.ai_duel_scene_label),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                IconButton(
-                    enabled = !duelState.running && maxRounds.value > 1,
-                    onClick = { maxRounds.value = (maxRounds.value - 1).coerceAtLeast(1) }
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMinus,
-                        contentDescription = stringResource(R.string.ai_duel_decrease_rounds),
-                        modifier = Modifier.size(12.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-                Text(
-                    text = maxRounds.value.toString(),
-                    style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurface
                 )
-                IconButton(
-                    enabled = !duelState.running && maxRounds.value < 50,
-                    onClick = { maxRounds.value = (maxRounds.value + 1).coerceAtMost(50) }
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
-                        contentDescription = stringResource(R.string.ai_duel_increase_rounds),
-                        modifier = Modifier.size(12.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
+                GlassOutlinedTextField(
+                    value = scene.value,
+                    onValueChange = { scene.value = it.take(SCENE_MAX_CHARS) },
+                    modifier = Modifier.fillMaxWidth(),
+                    placeholder = { Text(stringResource(R.string.ai_duel_scene_hint)) },
+                    minLines = 1,
+                    maxLines = 3,
+                )
             }
         }
 
-        // ── Swap roles（角色 A 固定先发言，交换位置即换先手）──
+        // ── Role A ──
+        DuelRoleSummaryCard(
+            speaker = DuelSpeaker.A,
+            roleName = roleNameA,
+            persona = personaA,
+            avatar = avatarA,
+            duelConfig = duelConfig,
+            expanded = expandedRole.value == DuelSpeaker.A,
+            onToggle = {
+                expandedRole.value = if (expandedRole.value == DuelSpeaker.A) null else DuelSpeaker.A
+            },
+            onResetPersona = { onResetPersona(DuelSpeaker.A) },
+        )
+        if (expandedRole.value == DuelSpeaker.A) {
+            DuelRoleConfigSection(
+                speaker = DuelSpeaker.A,
+                roleName = roleNameA,
+                persona = personaA,
+                avatar = avatarA,
+                duelConfig = duelConfig,
+                duelState = duelState,
+                pickingModelRole = pickingModelRole,
+                showModelPicker = showModelPicker,
+                pickingPromptRole = pickingPromptRole,
+                showPromptPicker = showPromptPicker,
+                showPersonaHistoryPicker = showPersonaHistoryPicker,
+                pickingPersonaHistoryRole = pickingPersonaHistoryRole,
+                showRoleNameHistoryPicker = showRoleNameHistoryPicker,
+                pickingRoleNameHistoryRole = pickingRoleNameHistoryRole,
+                onResetPersona = { onResetPersona(DuelSpeaker.A) },
+            )
+        }
+
+        // ── Role B ──
+        DuelRoleSummaryCard(
+            speaker = DuelSpeaker.B,
+            roleName = roleNameB,
+            persona = personaB,
+            avatar = avatarB,
+            duelConfig = duelConfig,
+            expanded = expandedRole.value == DuelSpeaker.B,
+            onToggle = {
+                expandedRole.value = if (expandedRole.value == DuelSpeaker.B) null else DuelSpeaker.B
+            },
+            onResetPersona = { onResetPersona(DuelSpeaker.B) },
+        )
+        if (expandedRole.value == DuelSpeaker.B) {
+            DuelRoleConfigSection(
+                speaker = DuelSpeaker.B,
+                roleName = roleNameB,
+                persona = personaB,
+                avatar = avatarB,
+                duelConfig = duelConfig,
+                duelState = duelState,
+                pickingModelRole = pickingModelRole,
+                showModelPicker = showModelPicker,
+                pickingPromptRole = pickingPromptRole,
+                showPromptPicker = showPromptPicker,
+                showPersonaHistoryPicker = showPersonaHistoryPicker,
+                pickingPersonaHistoryRole = pickingPersonaHistoryRole,
+                showRoleNameHistoryPicker = showRoleNameHistoryPicker,
+                pickingRoleNameHistoryRole = pickingRoleNameHistoryRole,
+                onResetPersona = { onResetPersona(DuelSpeaker.B) },
+            )
+        }
+
+        // ── Advanced settings (collapsed by default) ──
         GlassTonalButton(
-            onClick = onSwapRoles,
-            enabled = !duelState.running,
+            onClick = { showAdvanced.value = !showAdvanced.value },
             modifier = Modifier.fillMaxWidth(),
+            enabled = !duelState.running,
         ) {
             Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSwapVert,
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTune,
                 contentDescription = null,
                 modifier = Modifier.size(18.dp)
             )
             Spacer(modifier = Modifier.width(AppTheme.dimens.paddingSmall))
-            Text(text = stringResource(R.string.ai_duel_swap_roles))
+            Text(text = stringResource(R.string.ai_duel_advanced))
+        }
+
+        if (showAdvanced.value) {
+            GlassSurface(
+                modifier = Modifier.fillMaxWidth(),
+                style = GlassStyle.Thin,
+                shape = MaterialTheme.shapes.medium,
+                borderWidth = 0.dp,
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(AppTheme.dimens.paddingNormal),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingSmall)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingSmall),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(R.string.ai_duel_rounds),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+                        IconButton(
+                            enabled = !duelState.running && maxRounds.value > 1,
+                            onClick = { maxRounds.value = (maxRounds.value - 1).coerceAtLeast(1) }
+                        ) {
+                            Icon(
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMinus,
+                                contentDescription = stringResource(R.string.ai_duel_decrease_rounds),
+                                modifier = Modifier.size(12.dp),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        Text(
+                            text = maxRounds.value.toString(),
+                            style = MaterialTheme.typography.titleSmall,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        IconButton(
+                            enabled = !duelState.running && maxRounds.value < 50,
+                            onClick = { maxRounds.value = (maxRounds.value + 1).coerceAtMost(50) }
+                        ) {
+                            Icon(
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
+                                contentDescription = stringResource(R.string.ai_duel_increase_rounds),
+                                modifier = Modifier.size(12.dp),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                    Text(
+                        text = stringResource(R.string.ai_duel_max_rounds_hint),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
+            // ── Swap roles（角色 A 固定先发言，交换位置即换先手）──
+            GlassTonalButton(
+                onClick = onSwapRoles,
+                enabled = !duelState.running,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSwapVert,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(AppTheme.dimens.paddingSmall))
+                Text(text = stringResource(R.string.ai_duel_swap_roles))
+            }
         }
 
         Spacer(modifier = Modifier.height(AppTheme.dimens.paddingSmall))
+    }
+}
+
+@Composable
+private fun DuelRoleSummaryCard(
+    speaker: DuelSpeaker,
+    roleName: MutableState<String>,
+    persona: MutableState<String>,
+    avatar: MutableState<String>,
+    duelConfig: AIDuelConfig,
+    expanded: Boolean,
+    onToggle: () -> Unit,
+    onResetPersona: () -> Unit,
+) {
+    val roleTitle = if (speaker == DuelSpeaker.A) {
+        stringResource(R.string.ai_duel_role_a)
+    } else {
+        stringResource(R.string.ai_duel_role_b)
+    }
+    val defaultPersona = stringResource(
+        if (speaker == DuelSpeaker.A) {
+            R.string.ai_duel_default_persona_a
+        } else {
+            R.string.ai_duel_default_persona_b
+        }
+    )
+    val displayName = roleName.value.trim().ifBlank {
+        stringResource(
+            if (speaker == DuelSpeaker.A) R.string.ai_duel_speaker_a else R.string.ai_duel_speaker_b
+        )
+    }
+    val engine = if (speaker == DuelSpeaker.A) duelConfig.engineA else duelConfig.engineB
+    val modelName = engine?.model?.title?.takeIf { it.isNotBlank() }
+        ?: stringResource(R.string.ai_duel_model_default)
+    val personaPreview = persona.value.trim().ifBlank { defaultPersona }
+    val isDefaultPersona = persona.value.isBlank()
+    val promptName = if (speaker == DuelSpeaker.A) duelConfig.promptNameA else duelConfig.promptNameB
+    val hasCustomPersona = persona.value.isNotBlank() || promptName.isNotBlank()
+    val containerColor = if (speaker == DuelSpeaker.A) {
+        MaterialTheme.colorScheme.primaryContainer
+    } else {
+        MaterialTheme.colorScheme.tertiaryContainer
+    }
+    val letterTint = if (speaker == DuelSpeaker.A) {
+        MaterialTheme.colorScheme.onPrimaryContainer
+    } else {
+        MaterialTheme.colorScheme.onTertiaryContainer
+    }
+
+    GlassCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(enabled = !expanded) { onToggle() },
+        shape = MaterialTheme.shapes.large,
+        borderWidth = 0.dp,
+        colors = CardDefaults.cardColors(containerColor = containerColor),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(AppTheme.dimens.paddingNormal),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingSmall),
+            verticalAlignment = Alignment.Top
+        ) {
+            DuelRoleAvatar(
+                avatarPath = avatar.value,
+                fallbackName = displayName,
+                containerColor = containerColor,
+                letterTint = letterTint,
+                modifier = Modifier.size(48.dp)
+            )
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(2.dp)
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingSmall),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = roleTitle,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    if (speaker == DuelSpeaker.A) {
+                        Box(
+                            modifier = Modifier
+                                .background(
+                                    color = MaterialTheme.colorScheme.secondaryContainer,
+                                    shape = RoundedCornerShape(6.dp)
+                                )
+                                .padding(horizontal = 6.dp, vertical = 2.dp)
+                        ) {
+                            Text(
+                                text = stringResource(R.string.ai_duel_first_speaker_badge),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
+                        }
+                    }
+                }
+                Text(
+                    text = displayName,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    text = modelName,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = if (isDefaultPersona) {
+                        stringResource(R.string.ai_duel_default_persona_preview, personaPreview)
+                    } else {
+                        personaPreview
+                    },
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+                if (!expanded && hasCustomPersona) {
+                    TextButton(
+                        onClick = onResetPersona,
+                        contentPadding = PaddingValues(0.dp),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.ai_duel_reset_persona),
+                            style = MaterialTheme.typography.bodySmall,
+                        )
+                    }
+                }
+            }
+            TextButton(onClick = onToggle) {
+                Text(
+                    text = stringResource(
+                        if (expanded) R.string.ai_duel_done_editing else R.string.ai_duel_edit_role
+                    )
+                )
+            }
+        }
     }
 }
 
@@ -668,6 +949,7 @@ private fun DuelRoleConfigSection(
     pickingPersonaHistoryRole: MutableState<DuelSpeaker?>,
     showRoleNameHistoryPicker: MutableState<Boolean>,
     pickingRoleNameHistoryRole: MutableState<DuelSpeaker?>,
+    onResetPersona: () -> Unit,
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
@@ -728,7 +1010,15 @@ private fun DuelRoleConfigSection(
             ) {
                 DuelRoleAvatar(
                     avatarPath = avatar.value,
-                    fallbackName = roleTitle,
+                    fallbackName = roleName.value.trim().ifBlank {
+                        stringResource(
+                            if (speaker == DuelSpeaker.A) {
+                                R.string.ai_duel_speaker_a
+                            } else {
+                                R.string.ai_duel_speaker_b
+                            }
+                        )
+                    },
                     containerColor = avatarContainerColor,
                     letterTint = avatarLetterTint,
                     modifier = Modifier
@@ -884,6 +1174,18 @@ private fun DuelRoleConfigSection(
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
+                Spacer(modifier = Modifier.weight(1f))
+                if (persona.value.isNotBlank() || promptName.isNotBlank()) {
+                    TextButton(
+                        onClick = onResetPersona,
+                        enabled = !duelState.running,
+                    ) {
+                        Text(
+                            text = stringResource(R.string.ai_duel_reset_persona),
+                            style = MaterialTheme.typography.bodySmall,
+                        )
+                    }
+                }
             }
 
             // ── Persona / prompt: 输入框 ──
@@ -895,6 +1197,11 @@ private fun DuelRoleConfigSection(
                 placeholder = { Text(stringResource(R.string.ai_duel_persona_hint)) },
                 minLines = 3,
                 maxLines = 5,
+            )
+            Text(
+                text = stringResource(R.string.ai_duel_persona_optional_hint),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
             // ── 已选提示词 + 字数统计 + 放大编辑：独立一行，两端与输入框边缘对齐 ──
@@ -1091,15 +1398,84 @@ private fun saveDuelAvatar(
 // ──────────────────────────────────────────────────────────────
 
 @Composable
+private fun DuelErrorBanner(
+    message: String,
+    onRetry: () -> Unit,
+) {
+    GlassSurface(
+        modifier = Modifier.fillMaxWidth(),
+        style = GlassStyle.Thin,
+        shape = RoundedCornerShape(0.dp),
+        borderWidth = 0.dp,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = AppTheme.dimens.paddingNormal,
+                    vertical = AppTheme.dimens.paddingSmall
+                ),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingSmall),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = stringResource(R.string.ai_duel_error_title),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    text = message,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+            TextButton(onClick = onRetry) {
+                Text(text = stringResource(R.string.ai_duel_retry))
+            }
+        }
+    }
+}
+
+@Composable
 private fun DuelStatusBar(
     duelConfig: AIDuelConfig,
     duelState: com.shifenmiao.ai.model.AIDuelState,
     showInlineConfig: Boolean,
     showShare: Boolean,
     onStartDuel: () -> Unit,
-    onStop: () -> Unit,
+    onPause: () -> Unit,
+    onResume: () -> Unit,
+    onWrapUp: () -> Unit,
     onShare: () -> Unit,
 ) {
+    val speakerName = if (duelState.speaker == DuelSpeaker.A) {
+        duelConfig.roleNameA.ifBlank {
+            duelConfig.promptNameA.ifBlank { stringResource(R.string.ai_duel_speaker_a) }
+        }
+    } else {
+        duelConfig.roleNameB.ifBlank {
+            duelConfig.promptNameB.ifBlank { stringResource(R.string.ai_duel_speaker_b) }
+        }
+    }
+    val statusText = when {
+        duelState.running -> stringResource(
+            R.string.ai_duel_running_detail,
+            duelState.round + 1,
+            speakerName
+        )
+
+        showInlineConfig -> ""
+        duelState.phase == com.shifenmiao.ai.model.DuelPhase.ENDED -> {
+            stringResource(R.string.ai_duel_ended_hint)
+        }
+
+        duelState.batchLimitReached -> stringResource(R.string.ai_duel_batch_finished)
+        else -> stringResource(R.string.ai_duel_paused_hint)
+    }
+
     GlassSurface(
         modifier = Modifier
             .fillMaxWidth()
@@ -1108,7 +1484,7 @@ private fun DuelStatusBar(
         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp, bottomEnd = 0.dp, bottomStart = 0.dp),
         borderWidth = 0.5.dp,
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .navigationBarsPadding()
@@ -1116,62 +1492,67 @@ private fun DuelStatusBar(
                     horizontal = AppTheme.dimens.paddingNormal,
                     vertical = AppTheme.dimens.paddingSmall
                 ),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingSmall)
         ) {
-            if (showShare) {
-                IconButton(onClick = onShare) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineShare,
-                        contentDescription = stringResource(R.string.exporting_share),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+            if (statusText.isNotBlank() || duelState.totalTokens > 0) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingSmall),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = statusText,
+                        modifier = Modifier.weight(1f),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
+                    if (duelState.totalTokens > 0) {
+                        Text(
+                            text = stringResource(R.string.ai_duel_tokens_format, duelState.totalTokens),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                 }
             }
-            // 开始/停止按钮始终右对齐
-            Spacer(modifier = Modifier.weight(1f))
+
             Row(
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingSmall, Alignment.End),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-            if (duelState.running) {
-                Spacer(modifier = Modifier.width(AppTheme.dimens.paddingSmall))
-                val speakerName = if (duelState.speaker == DuelSpeaker.A) {
-                    duelConfig.roleNameA.ifBlank {
-                        duelConfig.promptNameA.ifBlank { stringResource(R.string.ai_duel_speaker_a) }
-                    }
-                } else {
-                    duelConfig.roleNameB.ifBlank {
-                        duelConfig.promptNameB.ifBlank { stringResource(R.string.ai_duel_speaker_b) }
+                if (showShare) {
+                    IconButton(onClick = onShare) {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineShare,
+                            contentDescription = stringResource(R.string.exporting_share),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     }
                 }
-                Text(
-                    text = stringResource(
-                        R.string.ai_duel_running_detail_format,
-                        duelState.round + 1,
-                        duelConfig.maxRounds,
-                        speakerName
-                    ),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-            if (!duelState.running) {
-                GlassTonalButton(
-                    modifier = Modifier,
-                    onClick = onStartDuel,
-                    enabled = showInlineConfig
-                ) {
-                    Text(text = stringResource(R.string.ai_duel_start))
+                Spacer(modifier = Modifier.weight(1f))
+                if (!duelState.running && !showInlineConfig && duelState.phase == com.shifenmiao.ai.model.DuelPhase.PAUSED) {
+                    TextButton(onClick = onWrapUp) {
+                        Text(text = stringResource(R.string.ai_duel_wrap_up))
+                    }
                 }
-            } else {
                 GlassTonalButton(
-                    modifier = Modifier,
-                    onClick = onStop
+                    onClick = when {
+                        duelState.running -> onPause
+                        showInlineConfig -> onStartDuel
+                        else -> onResume
+                    },
                 ) {
-                    Text(text = stringResource(R.string.ai_duel_stop))
+                    Text(
+                        text = when {
+                            duelState.running -> stringResource(R.string.ai_duel_pause)
+                            showInlineConfig -> stringResource(R.string.ai_duel_start)
+                            else -> stringResource(R.string.ai_duel_resume)
+                        }
+                    )
                 }
-            }
             }
         }
     }
@@ -1614,7 +1995,7 @@ private fun DuelRobotMessageHeader(
                 Text(
                     text = robotContainerHeader.modelSubtitle,
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.outlineVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }

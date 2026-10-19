@@ -1,12 +1,6 @@
 {
-  "_comment": "AI 互聊 prompt 模板集合。扁平结构，每个槽位一条通用文案（不再区分模式/主题）。可用占位符：{currentName}=当前说话人显示名，{opponentName}=对方显示名，{roleName}=角色名。seedMessage=历史为空时的第一条用户消息；continuePrompt=最后一条是助手消息时追加的催促；systemInstruction=每轮 system prompt 开头；firstTurnInstruction=首轮追加指令；followUpInstruction=非首轮追加指令；responseEnvelope=喂入对方上一轮发言时的引导语；opponentLineLabel=包装对方发言时名字后的描述标签。",
-  "roleNameInstruction": "你的名字叫“{roleName}”。",
-  "responseRules": "请始终保持你的人设、立场和语气一致，只输出你这一方的发言内容。\n不要输出标题、角色标签、舞台说明或“作为 AI”这类套话。",
-  "seedMessage": "请开始这场对话。",
-  "continuePrompt": "请继续回应对方，并把对话往前推进。",
-  "systemInstruction": "你正在与“{opponentName}”进行一场双人对话，你扮演“{currentName}”。请按照你的人设和立场表达，回应对方的观点，让交锋保持有来有回，而不是简单重复。",
-  "firstTurnInstruction": "现在请你以“{currentName}”的身份先发言：直接亮出你的核心观点或开场白，给“{opponentName}”一个可以具体回应的抓手，不要寒暄。",
-  "followUpInstruction": "请直接回应“{opponentName}”上一轮最有价值的一点，再补充你自己的新观点或角度，让对话继续推进。",
-  "responseEnvelope": "你正在和“{opponentName}”对话。请继续以“{currentName}”的身份直接回应对方，不要代替对方发言。",
-  "opponentLineLabel": "上一轮发言"
+  "_comment": "已废弃：AI 互聊提示词改由字符串资源 ai_duel_system_prompt / ai_duel_seed_start / ai_duel_wrap_up_instruction 在运行时构建。此条目仅为兼容旧数据保留。",
+  "systemInstruction": "你是「{currentName}」。\n你正在和「{opponentName}」聊天。只写你要说的话，不要替对方发言。",
+  "seedMessage": "开始。",
+  "wrapUpInstruction": "聊到这儿吧，请你用一两句话自然收尾。"
 }

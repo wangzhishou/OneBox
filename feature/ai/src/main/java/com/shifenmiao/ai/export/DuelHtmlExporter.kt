@@ -148,14 +148,18 @@ class DuelHtmlExporter {
             roleName = config.roleNameA,
             promptName = config.promptNameA,
             modelTitle = config.engineA?.model?.title.orEmpty(),
-            persona = config.personaA
+            persona = config.personaA.ifBlank {
+                AppContext.getString(R.string.ai_duel_default_persona_a)
+            }
         )
         val cardB = buildPromptCard(
             speaker = DuelSpeaker.B,
             roleName = config.roleNameB,
             promptName = config.promptNameB,
             modelTitle = config.engineB?.model?.title.orEmpty(),
-            persona = config.personaB
+            persona = config.personaB.ifBlank {
+                AppContext.getString(R.string.ai_duel_default_persona_b)
+            }
         )
         return """
             <section class="prompts-section">
