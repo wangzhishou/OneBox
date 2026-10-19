@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.ui.widget.editor.AnimatedSelectionBorder
+import com.t8rin.imagetoolbox.core.ui.widget.editor.HandleDot
 import com.t8rin.imagetoolbox.core.ui.widget.editor.BoxResizeConfig
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.model.LayerTransform
@@ -206,7 +207,7 @@ fun BoxWithConstraintsScope.EditBox(
             var startAngle by remember { mutableStateOf(0f) }
 
             // 标准选框:三个角缩放(右上角让给删除),两侧改文字框宽,顶部旋转。
-            // 缩放标记为矩形方块(类似裁剪角块),中心压在角点上
+            // 角/边手柄统一用图文卡片同款 HandleDot(白边主色圆点)
             listOf(
                 Triple(Alignment.TopStart, -1, -1),
                 Triple(Alignment.BottomStart, -1, 1),
@@ -238,7 +239,7 @@ fun BoxWithConstraintsScope.EditBox(
                     },
                     onEnd = finish
                 ) {
-                    HandleBlock()
+                    HandleDot()
                 }
             }
             LayerTransformHandle(
@@ -312,7 +313,7 @@ fun BoxWithConstraintsScope.EditBox(
                         },
                         onEnd = finish
                     ) {
-                        WidthHandle()
+                        HandleDot()
                     }
                 }
             }
@@ -418,19 +419,6 @@ private fun BoxScope.LayerTransformHandle(
     )
 }
 
-/** 缩放标记视觉:矩形方块(类似裁剪角块),细白边主色填充 */
-@Composable
-private fun HandleBlock() {
-    val shape = RoundedCornerShape(2.dp)
-    Box(
-        modifier = Modifier
-            .size(13.5.dp)
-            .clip(shape)
-            .background(MaterialTheme.colorScheme.primaryContainer, shape)
-            .border(1.dp, Color.White, shape)
-    )
-}
-
 /** 圆形图标手柄视觉(旋转/改文字框宽):主色圆底 + onPrimaryContainer 图标 */
 @Composable
 private fun HandleIcon(icon: ImageVector) {
@@ -444,30 +432,6 @@ private fun HandleIcon(icon: ImageVector) {
             contentDescription = null,
             tint = MaterialTheme.colorScheme.onPrimaryContainer,
             modifier = Modifier.size(18.dp)
-        )
-    }
-}
-
-/**
- * 改文字框宽的左右手柄视觉:细长竖向拖拽条,而不是"圆形图标按钮"。
- * 之前用 Straighten 尺子图标 + 圆底,看起来像一个可点按钮,用户会误以为
- * 有独立功能;改成拖拽条后更像"拖边"而不是"点按钮"。
- */
-@Composable
-private fun WidthHandle() {
-    val shape = RoundedCornerShape(5.dp)
-    Box(
-        modifier = Modifier
-            .size(width = 10.dp, height = 26.dp)
-            .clip(shape)
-            .background(MaterialTheme.colorScheme.primaryContainer),
-        contentAlignment = Alignment.Center
-    ) {
-        Box(
-            modifier = Modifier
-                .size(width = 2.dp, height = 14.dp)
-                .clip(RoundedCornerShape(1.dp))
-                .background(MaterialTheme.colorScheme.onPrimaryContainer)
         )
     }
 }
