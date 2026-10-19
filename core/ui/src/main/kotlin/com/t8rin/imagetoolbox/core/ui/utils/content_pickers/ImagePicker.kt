@@ -180,25 +180,18 @@ private class ImagePickerImpl(
                 )
             }
 
+            // 系统相册/文件选择器靠返回 URI 的临时授权即可读图,不需要存储权限
             ImagePickerMode.GallerySingle,
-            ImagePickerMode.GalleryMultiple,
+            ImagePickerMode.GalleryMultiple -> runAction(galleryAction)
+
             ImagePickerMode.GetContentSingle,
-            ImagePickerMode.GetContentMultiple,
+            ImagePickerMode.GetContentMultiple -> runAction(getContentAction)
+
+            // 内置选图器直接查 MediaStore,只有它需要读取相册权限
             ImagePickerMode.Embedded,
             ImagePickerMode.EmbeddedMultiple -> {
                 ContextUtils.requestStoragePermissionAndExecute(context) {
-                    runAction(
-                        when (mode) {
-                            ImagePickerMode.GallerySingle,
-                            ImagePickerMode.GalleryMultiple -> galleryAction
-
-                            ImagePickerMode.GetContentSingle,
-                            ImagePickerMode.GetContentMultiple -> getContentAction
-
-                            ImagePickerMode.Embedded,
-                            ImagePickerMode.EmbeddedMultiple -> embeddedAction
-                        }
-                    )
+                    runAction(embeddedAction)
                 }
             }
         }
