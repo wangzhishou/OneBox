@@ -67,7 +67,6 @@ import com.t8rin.imagetoolbox.core.ui.widget.modifier.animateShape
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.container
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.fadingEdges
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.transparencyChecker
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTheme
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineError
@@ -87,20 +86,20 @@ fun ColorSelectionRow(
     val context = LocalContext.current
     var customColor by remember { mutableStateOf<Color?>(null) }
     var showColorPicker by remember { mutableStateOf(false) }
-    val listState = rememberLazyListState()
+    // 展开时直接从选中色开始,避免先渲染 index 0 再 scrollToItem 造成的跳动。
+    // 选中色不在预设色板里(自定义取色)时从 0 开始,因为取色入口固定在最左侧。
+    val initialIndex = remember(defaultColors, allowScroll) {
+        if (!allowScroll) {
+            0
+        } else {
+            defaultColors.indexOf(value).takeIf { it >= 0 } ?: 0
+        }
+    }
+    val listState = rememberLazyListState(initialFirstVisibleItemIndex = initialIndex)
 
     LaunchedEffect(value) {
         if (value !in defaultColors) {
             customColor = value
-        }
-    }
-
-    LaunchedEffect(Unit) {
-        delay(250)
-        if (value == customColor) {
-            listState.scrollToItem(0)
-        } else if (value in defaultColors) {
-            listState.scrollToItem(defaultColors.indexOf(value))
         }
     }
 
