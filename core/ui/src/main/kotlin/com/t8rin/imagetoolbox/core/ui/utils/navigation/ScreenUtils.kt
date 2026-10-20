@@ -109,6 +109,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineTextCard
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMarquee
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMeasurement
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMinesweeper
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMovie
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMusicNote
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineGrid4x4
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineNoiseGeneration
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineOcrDocument
@@ -352,6 +354,9 @@ internal fun Screen.simpleName(): String = when (this) {
     is Screen.AiDetect -> "AiDetect"
     is Screen.RecordCenter -> "RecordCenter"
     is Screen.AdWatch -> "AdWatch"
+    // 媒体播放模块：onebox://screen/VideoPlayer、/AudioPlayer 与 App Link /link/screen/<名字>
+    is Screen.VideoPlayer -> "VideoPlayer"
+    is Screen.AudioPlayer -> "AudioPlayer"
     is Screen.CreateAIAgent -> "CreateAIAgent"
     is Screen.CreateAIChatPrompt -> "CreateAIChatPrompt"
     is Screen.Minesweeper -> "Minesweeper"
@@ -522,6 +527,8 @@ internal fun Screen.icon(): ImageVector? = when (this) {
     is Screen.BlessingWallRecord -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBlessingWall
     is Screen.Poem -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePoem
     is Screen.PoemSearch -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBook
+    is Screen.VideoPlayer -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMovie
+    is Screen.AudioPlayer -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMusicNote
     else -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineGpsNotFixed
 }
 
@@ -803,6 +810,9 @@ internal object ScreenConstantsImpl : ScreenConstants {
                     Screen.BlessingWall(),
                     Screen.Poem(),
                     Screen.AdWatch,
+                    // 媒体播放：必须进 entries，否则 CMS 条目按 miniProgramId 反查 Screen 会落空
+                    Screen.VideoPlayer(),
+                    Screen.AudioPlayer(),
                 ),
                 title = R.string.tools,
                 selectedIcon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Toolbox,

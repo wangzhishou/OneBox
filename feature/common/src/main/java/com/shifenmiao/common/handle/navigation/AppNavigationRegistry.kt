@@ -967,8 +967,64 @@ object AppNavigationRegistry {
                         initialQuery = params["q"] ?: params["query"]
                     )
                 }
+            ),
+            // 媒体播放：通知栏用 onebox://screen/VideoPlayer?url=<uri>&play=0 回到播放页,
+            // 必须在这里解析参数,否则命中注册表后会丢掉 url/play 只打开库页。
+            AppNavigationTarget(
+                targetType = AppNavigationTargetType.SCREEN,
+                routeKey = Screen.VideoPlayer().routeKey,
+                canonicalName = "screen.${Screen.VideoPlayer().routeKey}",
+                title = "视频播放",
+                description = "打开本地视频播放器，可带 url 指定要播放的视频（支持画中画）",
+                aliases = listOf(
+                    "video_player", "video", "player", "video_play",
+                    "视频", "视频播放", "播放器", "视频播放器"
+                ),
+                deeplink = buildStructuredDeeplink(
+                    AppNavigationTargetType.SCREEN,
+                    Screen.VideoPlayer().routeKey,
+                ),
+                screenBuilder = { params ->
+                    Screen.VideoPlayer(
+                        uri = params.mediaUri(),
+                        autoPlay = params.autoPlayParam(),
+                    )
+                }
+            ),
+            AppNavigationTarget(
+                targetType = AppNavigationTargetType.SCREEN,
+                routeKey = Screen.AudioPlayer().routeKey,
+                canonicalName = "screen.${Screen.AudioPlayer().routeKey}",
+                title = "音乐播放",
+                description = "打开本地音频播放器，可带 url 指定要播放的音频（支持后台播放）",
+                aliases = listOf(
+                    "audio_player", "music", "music_player", "audio",
+                    "音乐", "音乐播放", "音频", "音频播放", "音乐播放器"
+                ),
+                deeplink = buildStructuredDeeplink(
+                    AppNavigationTargetType.SCREEN,
+                    Screen.AudioPlayer().routeKey,
+                ),
+                screenBuilder = { params ->
+                    Screen.AudioPlayer(
+                        uri = params.mediaUri(),
+                        autoPlay = params.autoPlayParam(),
+                    )
+                }
             )
         )
+
+    /** 深链里的媒体 URI：支持 url / uri 两种参数名，空串按"没带"处理。 */
+    private fun Map<String, String>.mediaUri(): Uri? =
+        (this["url"] ?: this["uri"])
+            ?.takeIf { it.isNotBlank() }
+            ?.let { Uri.parse(it) }
+
+    /** play=0 表示"只回到页面不要自动播放"，缺省按 true。 */
+    private fun Map<String, String>.autoPlayParam(): Boolean =
+        (this["play"] ?: this["autoplay"] ?: this["autoPlay"])?.let {
+            !(it == "0" || it.equals("false", ignoreCase = true))
+        } ?: true
 
     private val actionTargets: List<AppNavigationTarget>
         get() = listOf(
