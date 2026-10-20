@@ -68,7 +68,7 @@
     <string name="cloud_storage_config_invalid">Configuration du stockage cloud incomplète</string>
     <string name="ai_system_prompt_selected_label">Invite système :</string>
     <string name="ai_duel_chat_title">Chat IA-IA</string>
-    <string name="ai_duel_chat_description">Deux IA discutent entre elles, vous pouvez intervenir ou arrêter à tout moment.</string>
+    <string name="ai_duel_chat_description">Deux IA discutent entre elles, arrêtez quand vous voulez, reprenez à tout moment.</string>
     <string name="ai_duel_placeholder_title">Salon de chat IA</string>
     <string name="ai_duel_placeholder_content">Deux IA, une conversation. Les personas sont optionnels, laissez-les trouver leurs sujets.</string>
     <string name="ai_duel_role_a">Rôle A</string>
@@ -115,7 +115,7 @@
     <string name="ai_duel_model_label">Modèle</string>
     <string name="ai_duel_model_default">Appuyez pour sélectionner un modèle</string>
     <string name="ai_duel_config_title">Salon de chat IA</string>
-    <string name="ai_duel_config_subtitle">Deux IA, une conversation. Intervenez ou arrêtez quand vous voulez.</string>
+    <string name="ai_duel_config_subtitle">Deux IA, une conversation. Arrêtez quand vous voulez, reprenez à tout moment.</string>
     <string name="ai_duel_error_persona_required">Veuillez d\'abord renseigner les personnages ou prompts des deux rôles</string>
     <string name="ai_duel_error_model_not_selected">Veuillez d\'abord sélectionner un modèle pour les deux rôles</string>
     <string name="ai_duel_error_stream_timeout">Délai de réponse dépassé, veuillez réessayer plus tard</string>
@@ -1902,7 +1902,7 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="ai_duel_default_persona_b">Tu es plus posé, tu as l\'habitude d\'écouter jusqu\'au bout avant de répondre, et tu aimes illustrer tes propos par des exemples concrets.</string>
     <string name="ai_duel_title_format">%1$s × %2$s</string>
     <string name="ai_duel_wrap_up_instruction">Arrêtons-nous là, termine naturellement en une ou deux phrases.</string>
-    <string name="ai_duel_quick_start_subtitle">Deux IA, une conversation. Tu peux intervenir ou arrêter quand tu veux.</string>
+    <string name="ai_duel_quick_start_subtitle">Deux IA, une conversation. Arrêtez quand vous voulez, reprenez à tout moment.</string>
     <string name="ai_duel_scene_label">De quoi parler ? (facultatif)</string>
     <string name="ai_duel_scene_hint">Laisse vide pour qu\'ils trouvent eux-mêmes un sujet.</string>
     <string name="ai_duel_persona_optional_hint">Laissez vide pour utiliser le persona par défaut.</string>
@@ -1911,7 +1911,7 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="ai_duel_wrap_up">Terminer</string>
     <string name="ai_duel_retry">Réessayer</string>
     <string name="ai_duel_error_title">Cette phrase est incomplète</string>
-    <string name="ai_duel_tokens_format">%1$d tokens cette session</string>
+    <string name="ai_duel_tokens_format">Total cumulé de cette session : %1$d tokens</string>
     <string name="ai_duel_batch_finished">Cette série est terminée, appuyez quand vous voulez continuer.</string>
     <string name="ai_duel_paused_hint">En pause, reprendre continuera à partir de la dernière phrase complète.</string>
     <string name="ai_duel_advanced">Paramètres avancés</string>
@@ -1923,4 +1923,6 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="ai_duel_ended_hint">Terminé, vous pouvez continuer ou démarrer une nouvelle conversation.</string>
     <string name="ai_duel_scene_prompt">Sujet/scénario de cette conversation : %1$s</string>
     <string name="ai_duel_reset_persona">Réinitialiser</string>
+    <string name="ai_duel_pausing">Attendez la fin de cette phrase…</string>
+    <string name="ai_duel_error_cannot_start">Cette phrase n\'a pas pu démarrer, veuillez vérifier la connexion, les crédits ou les paramètres du modèle.</string>
 </resources>

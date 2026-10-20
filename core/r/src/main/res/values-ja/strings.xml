@@ -49,7 +49,7 @@
     <string name="cloud_storage_config_invalid">クラウドストレージの設定が不完全です</string>
     <string name="ai_system_prompt_selected_label">システムプロンプト:</string>
     <string name="ai_duel_chat_title">AI同士の会話</string>
-    <string name="ai_duel_chat_description">2つのAIが自動で会話します。いつでも割り込んだり止めたりできます。</string>
+    <string name="ai_duel_chat_description">2つのAIが自分たちで会話、止めたい時に止めて、いつでも再開。</string>
     <string name="ai_duel_placeholder_title">AIチャットルーム</string>
     <string name="ai_duel_placeholder_content">2つのAIによる会話。人設は任意で、話題はAIに任せられます。</string>
     <string name="ai_duel_role_a">キャラクターA</string>
@@ -96,7 +96,7 @@
     <string name="ai_duel_model_label">モデル</string>
     <string name="ai_duel_model_default">タップしてモデルを選択</string>
     <string name="ai_duel_config_title">AIチャットルーム</string>
-    <string name="ai_duel_config_subtitle">2つのAIによる会話。割り込みも停止も、いつでも自由に。</string>
+    <string name="ai_duel_config_subtitle">2つのAI、1つの会話。いつでも停止、いつでも再開。</string>
     <string name="ai_duel_error_persona_required">両方のキャラクターのペルソナまたはプロンプトを設定してください</string>
     <string name="ai_duel_error_model_not_selected">両方のキャラクターのモデルを選択してください</string>
     <string name="ai_duel_error_stream_timeout">応答がタイムアウトしました。後でもう一度お試しください。</string>
@@ -1903,7 +1903,7 @@
     <string name="ai_duel_default_persona_b">落ち着いた性格で、まず最後まで聞いてから応答する習慣があり、具体的な例を使って分かりやすく説明するのが好きです。</string>
     <string name="ai_duel_title_format">%1$s × %2$s</string>
     <string name="ai_duel_wrap_up_instruction">ここまでにしましょう。1〜2文で自然に締めくくってください。</string>
-    <string name="ai_duel_quick_start_subtitle">2つのAI、1つの会話。割り込みたいときも、止めたいときも、いつでもどうぞ。</string>
+    <string name="ai_duel_quick_start_subtitle">2つのAI、1つの会話。止めたい時に止めて、いつでも再開。</string>
     <string name="ai_duel_scene_label">何を話しますか？（任意）</string>
     <string name="ai_duel_scene_hint">空欄なら、彼ら自身に話題を探させます。</string>
     <string name="ai_duel_persona_optional_hint">未入力の場合はデフォルトのキャラクター設定を使用します。</string>
@@ -1912,7 +1912,7 @@
     <string name="ai_duel_wrap_up">終了</string>
     <string name="ai_duel_retry">再試行</string>
     <string name="ai_duel_error_title">この文は言い終わっていません</string>
-    <string name="ai_duel_tokens_format">今回 %1$d トークン</string>
+    <string name="ai_duel_tokens_format">今回の累計 %1$d tokens</string>
     <string name="ai_duel_batch_finished">このバッチは終了しました。続けたいときはいつでもタップしてください。</string>
     <string name="ai_duel_paused_hint">一時停止中。再開すると最後の完全な発言から会話を続けます。</string>
     <string name="ai_duel_advanced">詳細設定</string>
@@ -1924,4 +1924,6 @@
     <string name="ai_duel_ended_hint">終了しました。会話を続けるか、新しい会話を開始できます。</string>
     <string name="ai_duel_scene_prompt">今回のチャットのトピック/シチュエーション：%1$s</string>
     <string name="ai_duel_reset_persona">リセット</string>
+    <string name="ai_duel_pausing">この文が終わるのを待っています…</string>
+    <string name="ai_duel_error_cannot_start">この文を開始できませんでした。ログイン、ポイント、モデル設定を確認してください。</string>
 </resources>

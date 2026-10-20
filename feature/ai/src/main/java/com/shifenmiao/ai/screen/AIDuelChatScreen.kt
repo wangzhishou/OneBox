@@ -308,7 +308,12 @@ private fun DuelChatContent(
     val pickingRoleNameHistoryRole = remember { mutableStateOf<DuelSpeaker?>(null) }
     val isExporting = remember { mutableStateOf(false) }
 
-    LaunchedEffect(duelConfig) {
+    val lastAppliedConfig = remember { mutableStateOf(duelConfig) }
+
+    // 切会话时强制回填；同一会话内的异步配置变化只回填“用户没动过”的字段，
+    // 避免引擎异步补全时把刚输入的话题/名字/人设盖掉。
+    LaunchedEffect(conversation.id) {
+        lastAppliedConfig.value = duelConfig
         roleNameA.value = duelConfig.roleNameA
         roleNameB.value = duelConfig.roleNameB
         personaA.value = duelConfig.personaA
@@ -317,6 +322,20 @@ private fun DuelChatContent(
         avatarB.value = duelConfig.avatarB
         maxRounds.intValue = duelConfig.maxRounds
         scene.value = duelConfig.scene
+    }
+
+    LaunchedEffect(duelConfig) {
+        val applied = lastAppliedConfig.value
+        if (duelConfig == applied) return@LaunchedEffect
+        if (roleNameA.value == applied.roleNameA) roleNameA.value = duelConfig.roleNameA
+        if (roleNameB.value == applied.roleNameB) roleNameB.value = duelConfig.roleNameB
+        if (personaA.value == applied.personaA) personaA.value = duelConfig.personaA
+        if (personaB.value == applied.personaB) personaB.value = duelConfig.personaB
+        if (avatarA.value == applied.avatarA) avatarA.value = duelConfig.avatarA
+        if (avatarB.value == applied.avatarB) avatarB.value = duelConfig.avatarB
+        if (maxRounds.intValue == applied.maxRounds) maxRounds.intValue = duelConfig.maxRounds
+        if (scene.value == applied.scene) scene.value = duelConfig.scene
+        lastAppliedConfig.value = duelConfig
     }
 
     LaunchedEffect(duelState.running) {
@@ -337,6 +356,7 @@ private fun DuelChatContent(
                 promptIdB = duelConfig.promptIdB,
                 promptNameA = duelConfig.promptNameA,
                 promptNameB = duelConfig.promptNameB,
+                sessionState = duelConfig.sessionState,
             )
         }
             .debounce(300L)
@@ -443,10 +463,7 @@ private fun DuelChatContent(
         }
         val showShare = messageUiModels.isNotEmpty() && !duelState.running
         if (duelState.hasError) {
-            DuelErrorBanner(
-                message = duelState.errorMessage,
-                onRetry = duelChatComponent::retryDuel,
-            )
+            DuelErrorBanner(message = duelState.errorMessage)
         }
         DuelStatusBar(
             duelConfig = duelConfig,
@@ -476,6 +493,7 @@ private fun DuelChatContent(
             onPause = duelChatComponent::stopDuel,
             onResume = duelChatComponent::resumeDuel,
             onWrapUp = duelChatComponent::wrapUpDuel,
+            onRetry = duelChatComponent::retryDuel,
             onShare = {
                 isExporting.value = true
                 duelChatComponent.exportDuelChatHistory { html, aIgcInfo ->
@@ -1400,7 +1418,6 @@ private fun saveDuelAvatar(
 @Composable
 private fun DuelErrorBanner(
     message: String,
-    onRetry: () -> Unit,
 ) {
     GlassSurface(
         modifier = Modifier.fillMaxWidth(),
@@ -1432,9 +1449,6 @@ private fun DuelErrorBanner(
                     overflow = TextOverflow.Ellipsis
                 )
             }
-            TextButton(onClick = onRetry) {
-                Text(text = stringResource(R.string.ai_duel_retry))
-            }
         }
     }
 }
@@ -1449,6 +1463,7 @@ private fun DuelStatusBar(
     onPause: () -> Unit,
     onResume: () -> Unit,
     onWrapUp: () -> Unit,
+    onRetry: () -> Unit,
     onShare: () -> Unit,
 ) {
     val speakerName = if (duelState.speaker == DuelSpeaker.A) {
@@ -1461,9 +1476,11 @@ private fun DuelStatusBar(
         }
     }
     val statusText = when {
+        duelState.hasError -> ""
         duelState.running -> stringResource(
-            R.string.ai_duel_running_detail,
-            duelState.round + 1,
+            R.string.ai_duel_running_detail_format,
+            duelState.batchRound.coerceAtLeast(1),
+            duelState.batchTotal.coerceAtLeast(1),
             speakerName
         )
 
@@ -1533,13 +1550,19 @@ private fun DuelStatusBar(
                     }
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                if (!duelState.running && !showInlineConfig && duelState.phase == com.shifenmiao.ai.model.DuelPhase.PAUSED) {
+                if (!duelState.hasError &&
+                    !duelState.running &&
+                    !showInlineConfig &&
+                    duelState.phase == com.shifenmiao.ai.model.DuelPhase.PAUSED
+                ) {
                     TextButton(onClick = onWrapUp) {
                         Text(text = stringResource(R.string.ai_duel_wrap_up))
                     }
                 }
                 GlassTonalButton(
+                    enabled = !(duelState.running && duelState.pauseRequested),
                     onClick = when {
+                        duelState.hasError -> onRetry
                         duelState.running -> onPause
                         showInlineConfig -> onStartDuel
                         else -> onResume
@@ -1547,6 +1570,9 @@ private fun DuelStatusBar(
                 ) {
                     Text(
                         text = when {
+                            duelState.hasError -> stringResource(R.string.ai_duel_retry)
+                            duelState.running && duelState.pauseRequested ->
+                                stringResource(R.string.ai_duel_pausing)
                             duelState.running -> stringResource(R.string.ai_duel_pause)
                             showInlineConfig -> stringResource(R.string.ai_duel_start)
                             else -> stringResource(R.string.ai_duel_resume)
@@ -1666,6 +1692,15 @@ private fun DuelPickerBottomSheets(
         onCategorySelected = { selectedPromptGroupId.value = it },
         onPromptSelected = { prompt ->
             val role = pickingPromptRole.value ?: DuelSpeaker.A
+            val promptText = prompt.prompt ?: ""
+            val promptTitle = prompt.title ?: ""
+            if (role == DuelSpeaker.A) {
+                personaA.value = promptText
+                if (roleNameA.value.isBlank()) roleNameA.value = promptTitle
+            } else {
+                personaB.value = promptText
+                if (roleNameB.value.isBlank()) roleNameB.value = promptTitle
+            }
             duelChatComponent.applyPromptToRole(role, prompt)
             showPromptPicker.value = false
             pickingPromptRole.value = null

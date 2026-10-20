@@ -30,7 +30,9 @@ data class AIDuelConfig(
     val promptNameA: String = "",
     val promptNameB: String = "",
     val roleNameA: String = "",
-    val roleNameB: String = ""
+    val roleNameB: String = "",
+    /** 会话结束原因，仅供恢复时还原状态：PAUSED / BATCH_LIMIT / ENDED。 */
+    val sessionState: String = "",
 ) : Parcelable
 
 internal object AIDuelConfigCodec {
@@ -70,6 +72,7 @@ internal object AIDuelConfigCodec {
             promptNameB = str("promptNameB"),
             roleNameA = str("roleNameA"),
             roleNameB = str("roleNameB"),
+            sessionState = str("sessionState"),
         )
     }.getOrNull()
 }
@@ -96,6 +99,9 @@ data class AIDuelState(
     val retryAvailable: Boolean = false,
     val totalTokens: Int = 0,
     val batchLimitReached: Boolean = false,
+    val batchRound: Int = 0,
+    val batchTotal: Int = 0,
+    val pauseRequested: Boolean = false,
 ) {
     val running: Boolean get() = phase == DuelPhase.RUNNING
     val paused: Boolean get() = phase == DuelPhase.PAUSED

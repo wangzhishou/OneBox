@@ -49,7 +49,7 @@
     <string name="cloud_storage_config_invalid">클라우드 저장소 구성이 불완전합니다</string>
     <string name="ai_system_prompt_selected_label">시스템 프롬프트:</string>
     <string name="ai_duel_chat_title">AI 대화</string>
-    <string name="ai_duel_chat_description">두 AI가 스스로 대화합니다. 언제든 끼어들거나 중단할 수 있습니다.</string>
+    <string name="ai_duel_chat_description">두 AI가 스스로 대화하고, 원할 때 멈추고 언제든 이어갈 수 있습니다.</string>
     <string name="ai_duel_placeholder_title">AI 채팅방</string>
     <string name="ai_duel_placeholder_content">두 AI, 하나의 대화. 페르소나는 비워두어도 스스로 화제를 찾습니다.</string>
     <string name="ai_duel_role_a">캐릭터 A</string>
@@ -96,7 +96,7 @@
     <string name="ai_duel_model_label">모델</string>
     <string name="ai_duel_model_default">탭하여 모델 선택</string>
     <string name="ai_duel_config_title">AI 채팅방</string>
-    <string name="ai_duel_config_subtitle">두 AI, 하나의 대화. 끼어들거나 중단하고 싶을 때 언제든 가능합니다.</string>
+    <string name="ai_duel_config_subtitle">두 AI, 하나의 대화. 언제든 멈추고, 언제든 이어가세요.</string>
     <string name="ai_duel_error_persona_required">두 캐릭터의 페르소나 또는 프롬프트를 설정해 주세요.</string>
     <string name="ai_duel_error_model_not_selected">두 캐릭터의 모델을 선택해 주세요.</string>
     <string name="ai_duel_error_stream_timeout">응답 시간이 초과되었습니다. 나중에 다시 시도해 주세요.</string>
@@ -1903,7 +1903,7 @@
     <string name="ai_duel_default_persona_b">당신은 좀 더 차분한 편으로, 끝까지 듣고 나서 응답하는 습관이 있으며, 구체적인 예를 들어 설명하는 것을 좋아합니다.</string>
     <string name="ai_duel_title_format">%1$s × %2$s</string>
     <string name="ai_duel_wrap_up_instruction">여기까지 이야기합시다. 한두 문장으로 자연스럽게 마무리해 주세요.</string>
-    <string name="ai_duel_quick_start_subtitle">두 AI, 한 편의 대화. 끼어들고 싶거나 멈추고 싶을 때 언제든 가능합니다.</string>
+    <string name="ai_duel_quick_start_subtitle">두 AI, 하나의 대화. 원할 때 멈추고 언제든 이어갈 수 있습니다.</string>
     <string name="ai_duel_scene_label">무슨 이야기를 할까요? (선택)</string>
     <string name="ai_duel_scene_hint">비워 두면 스스로 화제를 찾습니다.</string>
     <string name="ai_duel_persona_optional_hint">입력하지 않으면 기본 페르소나가 사용됩니다.</string>
@@ -1912,7 +1912,7 @@
     <string name="ai_duel_wrap_up">마무리</string>
     <string name="ai_duel_retry">다시 시도</string>
     <string name="ai_duel_error_title">이 문장이 끝나지 않았습니다</string>
-    <string name="ai_duel_tokens_format">이번 세션 %1$d tokens</string>
+    <string name="ai_duel_tokens_format">이번 세션 누적 %1$d tokens</string>
     <string name="ai_duel_batch_finished">이번 배치 대화가 끝났습니다. 계속하려면 언제든지 누르세요.</string>
     <string name="ai_duel_paused_hint">일시정지됨, 계속하면 마지막 완전한 발언부터 이어서 대화합니다.</string>
     <string name="ai_duel_advanced">고급 설정</string>
@@ -1924,4 +1924,6 @@
     <string name="ai_duel_ended_hint">마무리됨, 계속 대화하거나 새 대화를 시작할 수 있습니다.</string>
     <string name="ai_duel_scene_prompt">이번 채팅의 주제/상황: %1$s</string>
     <string name="ai_duel_reset_persona">초기화</string>
+    <string name="ai_duel_pausing">이 문장이 끝나기를 기다리는 중…</string>
+    <string name="ai_duel_error_cannot_start">이 문장을 시작하지 못했습니다. 로그인, 포인트 또는 모델 설정을 확인하세요.</string>
 </resources>

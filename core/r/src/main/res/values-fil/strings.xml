@@ -49,7 +49,7 @@
     <string name="cloud_storage_config_invalid">Hindi kumpleto ang configuration ng cloud storage</string>
     <string name="ai_system_prompt_selected_label">System Prompt:</string>
     <string name="ai_duel_chat_title">AI Chat sa Isa\'t Isa</string>
-    <string name="ai_duel_chat_description">Dalawang AI ang nag-uusap, pwede kang sumingit o magpatigil anumang oras.</string>
+    <string name="ai_duel_chat_description">Dalawang AI ang nag-uusap, pwedeng ihinto anumang oras, at magpatuloy kahit kailan.</string>
     <string name="ai_duel_placeholder_title">AI Chat Room</string>
     <string name="ai_duel_placeholder_content">Dalawang AI, isang usapan. Pwede mong iwanang blangko ang persona, hayaan silang maghanap ng paksa.</string>
     <string name="ai_duel_role_a">Character A</string>
@@ -96,7 +96,7 @@
     <string name="ai_duel_model_label">Modelo</string>
     <string name="ai_duel_model_default">I-tap upang pumili ng modelo</string>
     <string name="ai_duel_config_title">AI Chat Room</string>
-    <string name="ai_duel_config_subtitle">Dalawang AI, isang usapan. Sumingit ka o magpatigil, anumang oras.</string>
+    <string name="ai_duel_config_subtitle">Dalawang AI, isang usapan. Huminto kung kailan mo gusto, magpatuloy anumang oras.</string>
     <string name="ai_duel_error_persona_required">Mangyaring magtakda ng mga persona o prompt para sa parehong character</string>
     <string name="ai_duel_error_model_not_selected">Mangyaring pumili ng mga modelo para sa parehong character</string>
     <string name="ai_duel_error_stream_timeout">Nag-timeout ang tugon. Mangyaring subukan muli mamaya.</string>
@@ -1914,7 +1914,7 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <string name="ai_duel_default_persona_b">Mas kalmado ka, nakasanayan mong makinig muna bago tumugon, at gusto mong gamitin ang mga konkretong halimbawa para linawin ang sinasabi.</string>
     <string name="ai_duel_title_format">%1$s × %2$s</string>
     <string name="ai_duel_wrap_up_instruction">Dito na lang tayo, mangyaring tapusin ito nang natural sa isa o dalawang pangungusap.</string>
-    <string name="ai_duel_quick_start_subtitle">Dalawang AI, isang usapan. Gusto mong sumingit o magpahinto, kahit kailan pwede.</string>
+    <string name="ai_duel_quick_start_subtitle">Dalawang AI, isang usapan. Pwedeng ihinto anumang oras, at magpatuloy kahit kailan.</string>
     <string name="ai_duel_scene_label">Ano ang pag-uusapan? (Opsyonal)</string>
     <string name="ai_duel_scene_hint">Kung hindi mo ito punan, hayaan silang maghanap ng sarili nilang paksa.</string>
     <string name="ai_duel_persona_optional_hint">Kung walang ilalagay, gagamitin ang default na persona.</string>
@@ -1923,7 +1923,7 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <string name="ai_duel_wrap_up">Tapusin</string>
     <string name="ai_duel_retry">Subukang muli</string>
     <string name="ai_duel_error_title">Hindi natapos ang pangungusap na ito</string>
-    <string name="ai_duel_tokens_format">%1$d tokens sa session na ito</string>
+    <string name="ai_duel_tokens_format">Kabuuang %1$d tokens sa sesyong ito</string>
     <string name="ai_duel_batch_finished">Tapos na ang batch na ito, pindutin lang kapag gusto mong magpatuloy.</string>
     <string name="ai_duel_paused_hint">Naka-pause, ang pagpapatuloy ay magsisimula sa huling kumpletong pahayag.</string>
     <string name="ai_duel_advanced">Mga advanced na setting</string>
@@ -1935,4 +1935,6 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <string name="ai_duel_ended_hint">Tapos na, maaari nang magpatuloy o magsimula ng bagong usapan.</string>
     <string name="ai_duel_scene_prompt">Paksa/eksena ng usapang ito: %1$s</string>
     <string name="ai_duel_reset_persona">I-reset</string>
+    <string name="ai_duel_pausing">Hintayin matapos ang linyang ito…</string>
+    <string name="ai_duel_error_cannot_start">Hindi nasimulan ang linyang ito, pakisuri ang login, credits, o mga setting ng modelo.</string>
 </resources>

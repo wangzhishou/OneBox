@@ -49,7 +49,7 @@
     <string name="cloud_storage_config_invalid">A configuração do armazenamento em nuvem está incompleta</string>
     <string name="ai_system_prompt_selected_label">Prompt do sistema:</string>
     <string name="ai_duel_chat_title">Bate-papo entre IAs</string>
-    <string name="ai_duel_chat_description">Duas IAs conversam entre si, e você pode intervir ou parar a qualquer momento.</string>
+    <string name="ai_duel_chat_description">Dois IAs conversando entre si, pare quando quiser e continue a qualquer momento.</string>
     <string name="ai_duel_placeholder_title">Sala de chat com IA</string>
     <string name="ai_duel_placeholder_content">Duas IAs, uma conversa. Você pode deixar as personas em branco e deixá-las encontrar um assunto por conta própria.</string>
     <string name="ai_duel_role_a">Personagem A</string>
@@ -96,7 +96,7 @@
     <string name="ai_duel_model_label">Modelo</string>
     <string name="ai_duel_model_default">Toque para selecionar o modelo</string>
     <string name="ai_duel_config_title">Sala de chat com IA</string>
-    <string name="ai_duel_config_subtitle">Duas IAs, uma conversa. Você pode intervir ou parar a qualquer momento.</string>
+    <string name="ai_duel_config_subtitle">Dois IAs, uma conversa. Pare quando quiser, continue quando quiser.</string>
     <string name="ai_duel_error_persona_required">Defina personas ou prompts para os dois personagens</string>
     <string name="ai_duel_error_model_not_selected">Selecione modelos para os dois personagens</string>
     <string name="ai_duel_error_stream_timeout">Tempo de resposta esgotado. Tente novamente mais tarde.</string>
@@ -1914,7 +1914,7 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
     <string name="ai_duel_default_persona_b">Você é mais calmo, costuma ouvir tudo antes de responder e gosta de usar exemplos concretos para explicar as coisas com clareza.</string>
     <string name="ai_duel_title_format">%1$s × %2$s</string>
     <string name="ai_duel_wrap_up_instruction">Vamos parar por aqui, encerre naturalmente com uma ou duas frases.</string>
-    <string name="ai_duel_quick_start_subtitle">Dois IAs, uma conversa. Você pode intervir ou parar a qualquer momento.</string>
+    <string name="ai_duel_quick_start_subtitle">Dois IAs, uma conversa. Pare quando quiser e continue a qualquer momento.</string>
     <string name="ai_duel_scene_label">Sobre o que conversar? (opcional)</string>
     <string name="ai_duel_scene_hint">Se não preencher, eles mesmos encontram um assunto.</string>
     <string name="ai_duel_persona_optional_hint">Se não preencher, será usada a persona padrão.</string>
@@ -1923,7 +1923,7 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
     <string name="ai_duel_wrap_up">Encerrar</string>
     <string name="ai_duel_retry">Tentar novamente</string>
     <string name="ai_duel_error_title">Esta frase ficou incompleta</string>
-    <string name="ai_duel_tokens_format">Esta sessão: %1$d tokens</string>
+    <string name="ai_duel_tokens_format">Total acumulado nesta sessão: %1$d tokens</string>
     <string name="ai_duel_batch_finished">Este lote terminou. Toque quando quiser continuar.</string>
     <string name="ai_duel_paused_hint">Pausado. Ao continuar, a conversa retomará a partir da última fala completa.</string>
     <string name="ai_duel_advanced">Configurações avançadas</string>
@@ -1935,4 +1935,6 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
     <string name="ai_duel_ended_hint">Encerrado. Você pode continuar a conversa ou iniciar uma nova.</string>
     <string name="ai_duel_scene_prompt">Tópico/cenário desta conversa: %1$s</string>
     <string name="ai_duel_reset_persona">Redefinir</string>
+    <string name="ai_duel_pausing">Aguardando esta frase terminar…</string>
+    <string name="ai_duel_error_cannot_start">Não foi possível iniciar esta frase. Verifique o login, os créditos ou as configurações do modelo.</string>
 </resources>

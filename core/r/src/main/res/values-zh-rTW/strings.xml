@@ -68,7 +68,7 @@
     <string name="cloud_storage_config_invalid">雲端儲存設定不完整</string>
     <string name="ai_system_prompt_selected_label">系統提示詞：</string>
     <string name="ai_duel_chat_title">AI 互聊</string>
-    <string name="ai_duel_chat_description">兩個 AI 自己聊，你隨時可以插話或喊停。</string>
+    <string name="ai_duel_chat_description">兩個 AI 自己聊，想停就停，隨時繼續。</string>
     <string name="ai_duel_placeholder_title">AI 聊天室</string>
     <string name="ai_duel_placeholder_content">兩個 AI，一場對話。人設可以不填，讓它們自己找話題。</string>
     <string name="ai_duel_role_a">角色 A</string>
@@ -115,7 +115,7 @@
     <string name="ai_duel_model_label">模型</string>
     <string name="ai_duel_model_default">點擊選擇模型</string>
     <string name="ai_duel_config_title">AI 聊天室</string>
-    <string name="ai_duel_config_subtitle">兩個 AI，一場對話。想插話、想喊停，隨時都可以。</string>
+    <string name="ai_duel_config_subtitle">兩個 AI，一場對話。想停就停，隨時繼續。</string>
     <string name="ai_duel_error_persona_required">請先填寫兩個角色的角色設定或提示詞</string>
     <string name="ai_duel_error_model_not_selected">請先為兩個角色選擇模型</string>
     <string name="ai_duel_error_stream_timeout">回應逾時，請稍後重試</string>
@@ -1904,7 +1904,7 @@
     <string name="ai_duel_default_persona_b">你沉穩一些，習慣先聽完再回應，喜歡用具體的例子把話說明白。</string>
     <string name="ai_duel_title_format">%1$s × %2$s</string>
     <string name="ai_duel_wrap_up_instruction">聊到這兒吧，請你用一兩句話自然收尾。</string>
-    <string name="ai_duel_quick_start_subtitle">兩個 AI，一場對話。想插話、想喊停，隨時都可以。</string>
+    <string name="ai_duel_quick_start_subtitle">兩個 AI，一場對話。想停就停，隨時繼續。</string>
     <string name="ai_duel_scene_label">聊點什麼？（選填）</string>
     <string name="ai_duel_scene_hint">不填就讓他們自己找話題。</string>
     <string name="ai_duel_persona_optional_hint">不填就用預設人設。</string>
@@ -1913,7 +1913,7 @@
     <string name="ai_duel_wrap_up">收尾</string>
     <string name="ai_duel_retry">重試</string>
     <string name="ai_duel_error_title">這一句沒說完</string>
-    <string name="ai_duel_tokens_format">本場 %1$d tokens</string>
+    <string name="ai_duel_tokens_format">本場累計 %1$d tokens</string>
     <string name="ai_duel_batch_finished">這一批聊完了，想繼續隨時點。</string>
     <string name="ai_duel_paused_hint">已暫停，繼續會從最後一句完整發言接著聊。</string>
     <string name="ai_duel_advanced">進階設定</string>
@@ -1925,4 +1925,6 @@
     <string name="ai_duel_ended_hint">已收尾，可以繼續聊或開新對話。</string>
     <string name="ai_duel_scene_prompt">本次聊天的話題/場景：%1$s</string>
     <string name="ai_duel_reset_persona">恢復預設</string>
+    <string name="ai_duel_pausing">等這句說完…</string>
+    <string name="ai_duel_error_cannot_start">這一句沒能開始，請檢查登入、積分或模型設定。</string>
 </resources>

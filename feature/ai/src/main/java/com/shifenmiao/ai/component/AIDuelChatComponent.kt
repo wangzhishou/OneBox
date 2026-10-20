@@ -126,6 +126,10 @@ class AIDuelChatComponent @AssistedInject internal constructor(
         const val MAX_CONTEXT_TURNS = 40
         const val MAX_UNLIMITED_TURNS = 120
         const val RESUME_WINDOW_MS = 12 * 60 * 60 * 1000L
+        const val SESSION_NEW = "NEW"
+        const val SESSION_PAUSED = "PAUSED"
+        const val SESSION_BATCH_LIMIT = "BATCH_LIMIT"
+        const val SESSION_ENDED = "ENDED"
     }
 
     private val parser = markdownAstNodeParserFactory.create()
@@ -158,6 +162,8 @@ class AIDuelChatComponent @AssistedInject internal constructor(
     }
 
     private var duelJob: Job? = null
+    private var pauseRequested = false
+    private var duelSessionToken = 0
 
     @AssistedFactory
     fun interface Factory {
@@ -195,14 +201,13 @@ class AIDuelChatComponent @AssistedInject internal constructor(
     private suspend fun loadLastDuelDraftIfAvailable() {
         withContext(ioDispatcher) {
             val now = System.currentTimeMillis()
-            val candidates = appDatabase.conversationDao()
-                .getConversationsByType(AIConversationEntryType.DUEL.name, 5)
-            val lastActive = candidates.firstOrNull {
-                now - it.lastActiveAt <= RESUME_WINDOW_MS &&
-                    appDatabase.messageDao().getMessageCount(it.conversationId) > 0
-            }
-            val entity = lastActive ?: appDatabase.conversationDao()
-                .getLastHiddenConversationByType(AIConversationEntryType.DUEL.name)
+            // 最近一场即使还没有消息也要优先恢复：它就是用户刚点的“新建”，
+            // 不能被更早但已经有消息的会话抢回去。
+            val entity = appDatabase.conversationDao()
+                .getLastConversationByType(AIConversationEntryType.DUEL.name)
+                ?.takeIf { now - it.lastActiveAt <= RESUME_WINDOW_MS }
+                ?: appDatabase.conversationDao()
+                    .getLastHiddenConversationByType(AIConversationEntryType.DUEL.name)
             if (entity != null) {
                 val conversation = ConversationEntity.toConversation(entity)
                 _conversation.value = conversation
@@ -307,17 +312,24 @@ class AIDuelChatComponent @AssistedInject internal constructor(
                     renderMessage(forceUpdate = true)
                     val turnCount = messageList.count { parseTurn(it) != null }
                     val phase = _duelState.value.phase
+                    val shouldRestore = phase == DuelPhase.IDLE &&
+                        messageList.isNotEmpty() &&
+                        !_conversation.value.showLastMessage
+                    val persistedState = _duelConfig.value.sessionState
                     _duelState.value = _duelState.value.copy(
                         totalTokens = messageList.sumOf { it.totalTokens },
                         round = turnCount / 2,
-                        phase = if (
-                            phase == DuelPhase.IDLE &&
-                            messageList.isNotEmpty() &&
-                            !_conversation.value.showLastMessage
-                        ) {
+                        phase = if (shouldRestore && persistedState == SESSION_ENDED) {
+                            DuelPhase.ENDED
+                        } else if (shouldRestore) {
                             DuelPhase.PAUSED
                         } else {
                             phase
+                        },
+                        batchLimitReached = if (shouldRestore) {
+                            persistedState == SESSION_BATCH_LIMIT
+                        } else {
+                            _duelState.value.batchLimitReached
                         }
                     )
                     if (messageList.isEmpty()) {
@@ -470,7 +482,9 @@ class AIDuelChatComponent @AssistedInject internal constructor(
             promptIdB > 0 ||
             promptNameA.isNotBlank() ||
             promptNameB.isNotBlank() ||
-            scene.isNotBlank()
+            scene.isNotBlank() ||
+            sessionState.isNotBlank() ||
+            maxRounds != 5
     }
 
     fun applyPromptToRole(role: DuelSpeaker, prompt: PromptEntity) {
@@ -498,6 +512,7 @@ class AIDuelChatComponent @AssistedInject internal constructor(
     fun startNewConversation() {
         componentScope.launch(ioDispatcher) {
             pauseDuelInternal()
+            _duelConfig.value = _duelConfig.value.copy(sessionState = SESSION_NEW)
             _conversation.value = _conversation.value.copy(
                 id = Date().time.toString(),
                 entryType = AIConversationEntryType.DUEL,
@@ -513,6 +528,9 @@ class AIDuelChatComponent @AssistedInject internal constructor(
             )
             clearMessages()
             _duelState.value = AIDuelState()
+            // 落库：否则离开页面后“新建”会消失，12 小时自动恢复又捞回上一场。
+            appDatabase.conversationDao()
+                .insertReplace(ConversationEntity.fromConversation(_conversation.value))
             loadMessages()
         }
     }
@@ -550,8 +568,14 @@ class AIDuelChatComponent @AssistedInject internal constructor(
     }
 
     fun stopDuel() {
-        componentScope.launch(ioDispatcher) {
-            pauseDuelInternal()
+        if (_duelState.value.running) {
+            // 不立刻砍流：当前这句说完再停，避免屏幕上的半句突然消失。
+            pauseRequested = true
+            _duelState.value = _duelState.value.copy(pauseRequested = true)
+        } else {
+            componentScope.launch(ioDispatcher) {
+                pauseDuelInternal()
+            }
         }
     }
 
@@ -577,7 +601,8 @@ class AIDuelChatComponent @AssistedInject internal constructor(
 
         val resolvedConfig = config.copy(
             engineA = defaultEngineA,
-            engineB = defaultEngineB
+            engineB = defaultEngineB,
+            sessionState = "",
         )
         val validationError = validateDuelConfigForStart(resolvedConfig)
         if (validationError != null) {
@@ -652,17 +677,25 @@ class AIDuelChatComponent @AssistedInject internal constructor(
             .mapNotNull(::parseTurn)
         val nextSpeaker = turns.lastOrNull()?.first?.other() ?: DuelSpeaker.A
         val totalTokens = synchronized(messages) { messages.sumOf { it.totalTokens } }
+        val maxTurns = maxTurnsOverride ?: batchTurns(resolvedConfig)
+        pauseRequested = false
+        val sessionToken = ++duelSessionToken
 
         _duelState.value = AIDuelState(
             phase = DuelPhase.RUNNING,
             round = turns.size / 2,
             speaker = nextSpeaker,
             totalTokens = totalTokens,
+            batchRound = 1,
+            batchTotal = ((maxTurns + 1) / 2).coerceAtLeast(1),
         )
-        val maxTurns = maxTurnsOverride ?: batchTurns(resolvedConfig)
         duelJob = componentScope.launch(ioDispatcher) {
             try {
-                runDuelLoop(maxTurns = maxTurns, wrapUp = wrapUp)
+                runDuelLoop(
+                    maxTurns = maxTurns,
+                    wrapUp = wrapUp,
+                    sessionToken = sessionToken,
+                )
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
@@ -687,6 +720,7 @@ class AIDuelChatComponent @AssistedInject internal constructor(
     }
 
     private suspend fun pauseDuelInternal() {
+        pauseRequested = false
         duelJob?.cancel()
         duelJob = null
         fetchJob?.cancel()
@@ -696,6 +730,7 @@ class AIDuelChatComponent @AssistedInject internal constructor(
             _duelState.value = _duelState.value.copy(
                 phase = DuelPhase.PAUSED,
                 retryAvailable = _duelState.value.hasError,
+                pauseRequested = false,
             )
         }
         _chatUIState.value = _chatUIState.value.copy(chatActive = false)
@@ -774,10 +809,24 @@ class AIDuelChatComponent @AssistedInject internal constructor(
         }
     }
 
-    private suspend fun runDuelLoop(maxTurns: Int, wrapUp: Boolean = false) {
+    private suspend fun runDuelLoop(
+        maxTurns: Int,
+        wrapUp: Boolean = false,
+        sessionToken: Int = duelSessionToken,
+    ) {
+        val loopConversationId = _conversation.value.id
         var completedTurns = 0
 
         while (currentCoroutineContext().isActive && completedTurns < maxTurns) {
+            if (pauseRequested) {
+                pauseRequested = false
+                _duelState.value = _duelState.value.copy(
+                    phase = DuelPhase.PAUSED,
+                    pauseRequested = false,
+                    batchLimitReached = false,
+                )
+                break
+            }
             val config = _duelConfig.value
             val speaker = nextSpeaker()
             _duelState.value = _duelState.value.copy(
@@ -787,6 +836,8 @@ class AIDuelChatComponent @AssistedInject internal constructor(
                 errorMessage = "",
                 retryAvailable = false,
                 batchLimitReached = false,
+                batchRound = completedTurns / 2 + 1,
+                batchTotal = ((maxTurns + 1) / 2).coerceAtLeast(1),
             )
 
             val speakerEngine = if (speaker == DuelSpeaker.A) config.engineA else config.engineB
@@ -802,18 +853,23 @@ class AIDuelChatComponent @AssistedInject internal constructor(
 
             val canProceed = ensureLoginAndCheckPointsForRound(speakerEngine)
             if (!canProceed) {
-                _duelState.value = _duelState.value.copy(phase = DuelPhase.PAUSED)
+                _duelState.value = _duelState.value.copy(
+                    phase = DuelPhase.PAUSED,
+                    errorMessage = applicationContext.getString(R.string.ai_duel_error_cannot_start),
+                    retryAvailable = true,
+                )
                 break
             }
 
             val requestConversation = _conversation.value.copy(
-                prompt = buildRoundPrompt(speaker = speaker, config = config),
+                prompt = buildRoundPrompt(
+                    speaker = speaker,
+                    config = config,
+                    wrapUp = wrapUp,
+                ),
                 engine = speakerEngine
             )
-            val requestMessages = buildRequestMessages(
-                speaker = speaker,
-                extraUserMessage = if (wrapUp) getWrapUpInstruction() else null,
-            )
+            val requestMessages = buildRequestMessages(speaker = speaker)
             val completionId = Date().time.toString()
             val isSpeakerA = speaker == DuelSpeaker.A
             val streaming = MessageEntity(
@@ -876,7 +932,17 @@ class AIDuelChatComponent @AssistedInject internal constructor(
             _duelState.value = _duelState.value.copy(
                 round = currentTurnCount() / 2,
                 totalTokens = synchronized(messages) { messages.sumOf { it.totalTokens } },
+                batchRound = completedTurns / 2 + 1,
             )
+            if (pauseRequested) {
+                pauseRequested = false
+                _duelState.value = _duelState.value.copy(
+                    phase = DuelPhase.PAUSED,
+                    pauseRequested = false,
+                    batchLimitReached = false,
+                )
+                break
+            }
         }
 
         if (_duelState.value.phase == DuelPhase.RUNNING) {
@@ -885,9 +951,32 @@ class AIDuelChatComponent @AssistedInject internal constructor(
                 batchLimitReached = !wrapUp &&
                     maxTurns == batchTurns(_duelConfig.value) &&
                     completedTurns >= maxTurns,
+                pauseRequested = false,
             )
         }
-        kotlin.runCatching { insertDuelOperationHistoryIfNeeded() }
+        val persistedState = when {
+            _duelState.value.phase == DuelPhase.ENDED -> SESSION_ENDED
+            _duelState.value.batchLimitReached -> SESSION_BATCH_LIMIT
+            else -> SESSION_PAUSED
+        }
+        if (sessionToken == duelSessionToken &&
+            _conversation.value.id == loopConversationId
+        ) {
+            kotlin.runCatching { persistSessionState(persistedState) }
+            kotlin.runCatching { insertDuelOperationHistoryIfNeeded() }
+        }
+    }
+
+    private suspend fun persistSessionState(state: String) {
+        val config = _duelConfig.value.copy(sessionState = state)
+        _duelConfig.value = config
+        _conversation.value = _conversation.value.copy(
+            prompt = AIDuelConfigCodec.encode(config)
+        )
+        kotlin.runCatching {
+            appDatabase.conversationDao()
+                .insertReplace(ConversationEntity.fromConversation(_conversation.value))
+        }
     }
 
     private fun nextSpeaker(): DuelSpeaker {
@@ -975,7 +1064,8 @@ class AIDuelChatComponent @AssistedInject internal constructor(
                 val (contentChunk, reasoningChunk, hasPending, fastForward) = bufferMutex.withLock {
                     val pendingChars =
                         (contentBuffer.length - contentCursor) + (reasoningBuffer.length - reasoningCursor)
-                    val fast = pendingChars > TYPEWRITER_FAST_FORWARD_PENDING_CHARS
+                    // 流结束后不再按 18ms/字慢慢放，直接快速排空，避免堵住下一位。
+                    val fast = streamEnded || pendingChars > TYPEWRITER_FAST_FORWARD_PENDING_CHARS
                     val maxChars = if (fast) TYPEWRITER_FAST_CHUNK_CHARS else 1
 
                     val contentEnd = (contentCursor + maxChars).coerceAtMost(contentBuffer.length)
@@ -1299,7 +1389,6 @@ class AIDuelChatComponent @AssistedInject internal constructor(
 
     private fun buildRequestMessages(
         speaker: DuelSpeaker,
-        extraUserMessage: String? = null,
     ): List<MessageEntity> {
         val turnsAsc = synchronized(messages) { messages.toList() }
             .asReversed()
@@ -1349,15 +1438,6 @@ class AIDuelChatComponent @AssistedInject internal constructor(
             )
         }
 
-        if (!extraUserMessage.isNullOrBlank()) {
-            result += MessageEntity(
-                completionId = "u_extra",
-                conversationId = _conversation.value.id,
-                role = RoleType.USER.value,
-                question = extraUserMessage,
-            )
-        }
-
         return result
     }
 
@@ -1366,6 +1446,7 @@ class AIDuelChatComponent @AssistedInject internal constructor(
     private fun buildRoundPrompt(
         speaker: DuelSpeaker,
         config: AIDuelConfig,
+        wrapUp: Boolean = false,
     ): String {
         val currentName = resolveSpeakerDisplayName(config, speaker)
         val opponentName = resolveSpeakerDisplayName(config, speaker.other())
@@ -1381,6 +1462,10 @@ class AIDuelChatComponent @AssistedInject internal constructor(
             if (scene.isNotBlank()) {
                 append("\n\n")
                 append(applicationContext.getString(R.string.ai_duel_scene_prompt, scene))
+            }
+            if (wrapUp) {
+                append("\n\n")
+                append(getWrapUpInstruction())
             }
         }
     }

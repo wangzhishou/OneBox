@@ -68,7 +68,7 @@
     <string name="cloud_storage_config_invalid">Cấu hình lưu trữ đám mây chưa đầy đủ</string>
     <string name="ai_system_prompt_selected_label">Lời nhắc hệ thống:</string>
     <string name="ai_duel_chat_title">AI trò chuyện cùng nhau</string>
-    <string name="ai_duel_chat_description">Hai AI tự trò chuyện, bạn có thể xen vào hoặc dừng lại bất cứ lúc nào.</string>
+    <string name="ai_duel_chat_description">Hai AI tự trò chuyện, muốn dừng thì dừng, tiếp tục bất cứ lúc nào.</string>
     <string name="ai_duel_placeholder_title">Phòng chat AI</string>
     <string name="ai_duel_placeholder_content">Hai AI, một cuộc trò chuyện. Có thể để trống nhân vật, để chúng tự tìm chủ đề.</string>
     <string name="ai_duel_role_a">Nhân vật A</string>
@@ -115,7 +115,7 @@
     <string name="ai_duel_model_label">Mô hình</string>
     <string name="ai_duel_model_default">Nhấn để chọn mô hình</string>
     <string name="ai_duel_config_title">Phòng chat AI</string>
-    <string name="ai_duel_config_subtitle">Hai AI, một cuộc trò chuyện. Muốn xen vào hay dừng lại, đều có thể bất cứ lúc nào.</string>
+    <string name="ai_duel_config_subtitle">Hai AI, một cuộc trò chuyện. Dừng khi muốn, tiếp tục bất cứ lúc nào.</string>
     <string name="ai_duel_error_persona_required">Vui lòng điền nhân vật hoặc gợi ý cho hai nhân vật trước</string>
     <string name="ai_duel_error_model_not_selected">Vui lòng chọn mô hình cho hai nhân vật trước</string>
     <string name="ai_duel_error_stream_timeout">Hết thời gian phản hồi, vui lòng thử lại sau</string>
@@ -1901,7 +1901,7 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <string name="ai_duel_default_persona_b">Bạn điềm tĩnh hơn, có thói quen nghe hết rồi mới đáp lại, thích dùng ví dụ cụ thể để nói rõ vấn đề.</string>
     <string name="ai_duel_title_format">%1$s × %2$s</string>
     <string name="ai_duel_wrap_up_instruction">Trò chuyện đến đây thôi, hãy kết thúc một cách tự nhiên bằng một hai câu.</string>
-    <string name="ai_duel_quick_start_subtitle">Hai AI, một cuộc trò chuyện. Muốn xen vào hay dừng lại, lúc nào cũng được.</string>
+    <string name="ai_duel_quick_start_subtitle">Hai AI, một cuộc hội thoại. Muốn dừng thì dừng, tiếp tục bất cứ lúc nào.</string>
     <string name="ai_duel_scene_label">Trò chuyện về điều gì? (Tùy chọn)</string>
     <string name="ai_duel_scene_hint">Để trống thì họ sẽ tự tìm chủ đề.</string>
     <string name="ai_duel_persona_optional_hint">Không điền thì dùng nhân vật mặc định.</string>
@@ -1910,7 +1910,7 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <string name="ai_duel_wrap_up">Kết thúc</string>
     <string name="ai_duel_retry">Thử lại</string>
     <string name="ai_duel_error_title">Câu này chưa nói xong</string>
-    <string name="ai_duel_tokens_format">Phiên này %1$d tokens</string>
+    <string name="ai_duel_tokens_format">Tổng cộng %1$d tokens trong phiên này</string>
     <string name="ai_duel_batch_finished">Đã trò chuyện xong loạt này, muốn tiếp tục thì bấm bất cứ lúc nào.</string>
     <string name="ai_duel_paused_hint">Đã tạm dừng, tiếp tục sẽ nói tiếp từ câu nói hoàn chỉnh cuối cùng.</string>
     <string name="ai_duel_advanced">Cài đặt nâng cao</string>
@@ -1922,4 +1922,6 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <string name="ai_duel_ended_hint">Đã kết thúc, có thể tiếp tục trò chuyện hoặc mở cuộc trò chuyện mới.</string>
     <string name="ai_duel_scene_prompt">Chủ đề/bối cảnh của cuộc trò chuyện này: %1$s</string>
     <string name="ai_duel_reset_persona">Đặt lại</string>
+    <string name="ai_duel_pausing">Đợi nói xong câu này…</string>
+    <string name="ai_duel_error_cannot_start">Không thể bắt đầu câu này, vui lòng kiểm tra đăng nhập, điểm hoặc cài đặt mô hình.</string>
 </resources>

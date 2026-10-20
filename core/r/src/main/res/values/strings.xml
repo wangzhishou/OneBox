@@ -63,7 +63,7 @@
     <string name="cloud_storage_config_invalid">Cloud storage configuration is incomplete</string>
     <string name="ai_system_prompt_selected_label">System Prompt:</string>
     <string name="ai_duel_chat_title">AI Chat</string>
-    <string name="ai_duel_chat_description">Two AIs chat on their own. Jump in or stop whenever you like.</string>
+    <string name="ai_duel_chat_description">Two AIs chat on their own. Pause or continue whenever you like.</string>
     <string name="ai_duel_placeholder_title">AI Chat Room</string>
     <string name="ai_duel_placeholder_content">Two AIs, one conversation. Leave the personas blank and they will find their own topic.</string>
     <string name="ai_duel_role_a">Character A</string>
@@ -110,7 +110,7 @@
     <string name="ai_duel_model_label">Model</string>
     <string name="ai_duel_model_default">Tap to select model</string>
     <string name="ai_duel_config_title">AI Chat Room</string>
-    <string name="ai_duel_config_subtitle">Two AIs, one conversation. Jump in whenever you like.</string>
+    <string name="ai_duel_config_subtitle">Two AIs, one conversation. Pause or continue whenever you like.</string>
     <string name="ai_duel_error_persona_required">Please set personas or prompts for both characters</string>
     <string name="ai_duel_error_model_not_selected">Please select models for both characters</string>
     <string name="ai_duel_error_stream_timeout">Response timed out. Please try again later.</string>
@@ -121,7 +121,7 @@
     <string name="ai_duel_default_persona_b">You are calmer, like to hear the other side out first, and often use concrete examples to make your point.</string>
     <string name="ai_duel_title_format">%1$s × %2$s</string>
     <string name="ai_duel_wrap_up_instruction">Let’s stop here. Please wrap up naturally in one or two sentences.</string>
-    <string name="ai_duel_quick_start_subtitle">Two AIs, one conversation. Jump in whenever you like.</string>
+    <string name="ai_duel_quick_start_subtitle">Two AIs, one conversation. Pause or continue whenever you like.</string>
     <string name="ai_duel_scene_label">What should they talk about? (optional)</string>
     <string name="ai_duel_scene_hint">Leave blank and they’ll find their own topic.</string>
     <string name="ai_duel_scene_prompt">Topic/scene for this chat: %1$s</string>
@@ -131,8 +131,10 @@
     <string name="ai_duel_resume">Continue</string>
     <string name="ai_duel_wrap_up">Wrap up</string>
     <string name="ai_duel_retry">Retry</string>
+    <string name="ai_duel_pausing">Finishing this turn…</string>
+    <string name="ai_duel_error_cannot_start">Couldn’t start this turn. Check login, points, or model settings.</string>
     <string name="ai_duel_error_title">This turn didn’t finish</string>
-    <string name="ai_duel_tokens_format">%1$d tokens this session</string>
+    <string name="ai_duel_tokens_format">Session total %1$d tokens</string>
     <string name="ai_duel_batch_finished">That’s the batch. Continue whenever you’re ready.</string>
     <string name="ai_duel_paused_hint">Paused. Continue will pick up from the last finished turn.</string>
     <string name="ai_duel_advanced">Advanced</string>

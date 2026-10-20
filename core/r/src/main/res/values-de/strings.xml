@@ -49,7 +49,7 @@
     <string name="cloud_storage_config_invalid">Cloud-Speicherkonfiguration ist unvollständig</string>
     <string name="ai_system_prompt_selected_label">Systemaufforderung:</string>
     <string name="ai_duel_chat_title">KI-Chat</string>
-    <string name="ai_duel_chat_description">Zwei KIs unterhalten sich – Sie können jederzeit eingreifen oder stoppen.</string>
+    <string name="ai_duel_chat_description">Zwei KIs unterhalten sich – stoppe, wann du willst, und mach jederzeit weiter.</string>
     <string name="ai_duel_placeholder_title">KI-Chatraum</string>
     <string name="ai_duel_placeholder_content">Zwei KIs, ein Gespräch. Personas sind optional – lassen Sie sie selbst ein Thema finden.</string>
     <string name="ai_duel_role_a">Charakter A</string>
@@ -96,7 +96,7 @@
     <string name="ai_duel_model_label">Modell</string>
     <string name="ai_duel_model_default">Tippen, um Modell auszuwählen</string>
     <string name="ai_duel_config_title">KI-Chatraum</string>
-    <string name="ai_duel_config_subtitle">Zwei KIs, ein Gespräch. Du kannst jederzeit eingreifen oder stoppen.</string>
+    <string name="ai_duel_config_subtitle">Zwei KIs, ein Gespräch. Pausiere, wann du willst, und mach jederzeit weiter.</string>
     <string name="ai_duel_error_persona_required">Bitte legen Sie Persönlichkeiten oder Aufforderungen für beide Charaktere fest</string>
     <string name="ai_duel_error_model_not_selected">Bitte wählen Sie Modelle für beide Charaktere aus</string>
     <string name="ai_duel_error_stream_timeout">Antwortzeit überschritten. Bitte versuchen Sie es später erneut.</string>
@@ -1914,7 +1914,7 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
     <string name="ai_duel_default_persona_b">Du bist eher ruhig, hörst erst zu und antwortest dann, und erklärst Dinge gern mit konkreten Beispielen.</string>
     <string name="ai_duel_title_format">%1$s × %2$s</string>
     <string name="ai_duel_wrap_up_instruction">Lassen Sie uns hier aufhören. Bitte beende das Gespräch mit ein oder zwei Sätzen auf natürliche Weise.</string>
-    <string name="ai_duel_quick_start_subtitle">Zwei KIs, ein Gespräch. Sie können jederzeit einsteigen oder stoppen.</string>
+    <string name="ai_duel_quick_start_subtitle">Zwei KIs, ein Gespräch. Stoppe, wann du willst, und mach jederzeit weiter.</string>
     <string name="ai_duel_scene_label">Worüber sollen sie reden? (optional)</string>
     <string name="ai_duel_scene_hint">Leer lassen, dann suchen sie sich selbst ein Thema.</string>
     <string name="ai_duel_persona_optional_hint">Leer lassen, um die Standardpersona zu verwenden.</string>
@@ -1923,7 +1923,7 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
     <string name="ai_duel_wrap_up">Abschließen</string>
     <string name="ai_duel_retry">Erneut versuchen</string>
     <string name="ai_duel_error_title">Dieser Satz wurde nicht zu Ende gesprochen</string>
-    <string name="ai_duel_tokens_format">Diese Sitzung: %1$d Tokens</string>
+    <string name="ai_duel_tokens_format">Insgesamt %1$d Tokens in dieser Sitzung</string>
     <string name="ai_duel_batch_finished">Diese Runde ist beendet – tippe jederzeit, um weiterzumachen.</string>
     <string name="ai_duel_paused_hint">Pausiert. Beim Fortsetzen wird an den letzten vollständigen Satz angeknüpft.</string>
     <string name="ai_duel_advanced">Erweiterte Einstellungen</string>
@@ -1935,4 +1935,6 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
     <string name="ai_duel_ended_hint">Abgeschlossen. Sie können weiter chatten oder eine neue Unterhaltung starten.</string>
     <string name="ai_duel_scene_prompt">Thema/Szenario dieses Chats: %1$s</string>
     <string name="ai_duel_reset_persona">Zurücksetzen</string>
+    <string name="ai_duel_pausing">Warte, bis dieser Satz zu Ende ist…</string>
+    <string name="ai_duel_error_cannot_start">Dieser Satz konnte nicht gestartet werden. Bitte prüfe Anmeldung, Guthaben oder Modelleinstellungen.</string>
 </resources>

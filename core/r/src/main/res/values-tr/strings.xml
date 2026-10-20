@@ -49,7 +49,7 @@
     <string name="cloud_storage_config_invalid">Bulut depolama yapılandırması eksik</string>
     <string name="ai_system_prompt_selected_label">Sistem İstemi:</string>
     <string name="ai_duel_chat_title">AI Sohbeti</string>
-    <string name="ai_duel_chat_description">İki AI kendi aralarında konuşur, istediğin zaman araya girebilir veya durdurabilirsin.</string>
+    <string name="ai_duel_chat_description">İki yapay zeka kendi aralarında konuşur; istediğinizde durdurun, dilediğiniz zaman devam edin.</string>
     <string name="ai_duel_placeholder_title">AI Sohbet Odası</string>
     <string name="ai_duel_placeholder_content">İki AI, bir sohbet. Kişilikleri doldurmak zorunda değilsin, konuyu kendileri bulsun.</string>
     <string name="ai_duel_role_a">Karakter A</string>
@@ -96,7 +96,7 @@
     <string name="ai_duel_model_label">Model</string>
     <string name="ai_duel_model_default">Model seçmek için dokunun</string>
     <string name="ai_duel_config_title">AI Sohbet Odası</string>
-    <string name="ai_duel_config_subtitle">İki AI, bir sohbet. Araya girmek veya durdurmak istediğinde her zaman yapabilirsin.</string>
+    <string name="ai_duel_config_subtitle">İki yapay zeka, tek bir sohbet. İstediğin zaman durdur, dilediğin an devam et.</string>
     <string name="ai_duel_error_persona_required">Lütfen her iki karakter için kişilik veya istemler belirleyin</string>
     <string name="ai_duel_error_model_not_selected">Lütfen her iki karakter için model seçin</string>
     <string name="ai_duel_error_stream_timeout">Yanıt zaman aşımına uğradı. Lütfen daha sonra tekrar deneyin.</string>
@@ -1914,7 +1914,7 @@
     <string name="ai_duel_default_persona_b">Daha sakin birisin, önce dinleyip sonra yanıt vermeye alışkınsın, somut örneklerle anlatmayı seviyorsun.</string>
     <string name="ai_duel_title_format">%1$s × %2$s</string>
     <string name="ai_duel_wrap_up_instruction">Buraya kadar yeter, lütfen bir iki cümleyle doğal bir şekilde bitir.</string>
-    <string name="ai_duel_quick_start_subtitle">İki yapay zeka, bir sohbet. İstediğin an araya girebilir, durdurabilirsin.</string>
+    <string name="ai_duel_quick_start_subtitle">İki yapay zeka, tek bir sohbet. İstediğinizde durdurun, dilediğiniz zaman devam edin.</string>
     <string name="ai_duel_scene_label">Ne hakkında konuşsunlar? (isteğe bağlı)</string>
     <string name="ai_duel_scene_hint">Boş bırakırsan kendi konularını bulurlar.</string>
     <string name="ai_duel_persona_optional_hint">Boş bırakırsanız varsayılan kişilik kullanılır.</string>
@@ -1923,7 +1923,7 @@
     <string name="ai_duel_wrap_up">Bitir</string>
     <string name="ai_duel_retry">Yeniden dene</string>
     <string name="ai_duel_error_title">Bu cümle tamamlanmadı</string>
-    <string name="ai_duel_tokens_format">Bu oturum %1$d token</string>
+    <string name="ai_duel_tokens_format">Bu oturumda toplam %1$d token</string>
     <string name="ai_duel_batch_finished">Bu parti bitti, devam etmek isterseniz istediğiniz zaman dokunun.</string>
     <string name="ai_duel_paused_hint">Duraklatıldı, devam edildiğinde son tam cümlenin ardından sohbet sürer.</string>
     <string name="ai_duel_advanced">Gelişmiş ayarlar</string>
@@ -1935,4 +1935,6 @@
     <string name="ai_duel_ended_hint">Sonlandırıldı, sohbete devam edebilir veya yeni bir sohbet başlatabilirsiniz.</string>
     <string name="ai_duel_scene_prompt">Bu sohbetin konusu/senaryosu: %1$s</string>
     <string name="ai_duel_reset_persona">Sıfırla</string>
+    <string name="ai_duel_pausing">Bu cümlenin bitmesini bekleyin…</string>
+    <string name="ai_duel_error_cannot_start">Bu cümle başlatılamadı; lütfen oturum açma, kredi veya model ayarlarını kontrol edin.</string>
 </resources>

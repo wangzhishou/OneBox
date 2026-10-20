@@ -49,7 +49,7 @@
     <string name="cloud_storage_config_invalid">Konfigurasi penyimpanan cloud tidak lengkap</string>
     <string name="ai_system_prompt_selected_label">Perintah Sistem:</string>
     <string name="ai_duel_chat_title">Obrolan AI</string>
-    <string name="ai_duel_chat_description">Dua AI mengobrol sendiri, kamu bisa menyela atau menghentikannya kapan saja.</string>
+    <string name="ai_duel_chat_description">Dua AI mengobrol sendiri, berhenti kapan saja, lanjutkan kapan pun.</string>
     <string name="ai_duel_placeholder_title">Ruang Obrolan AI</string>
     <string name="ai_duel_placeholder_content">Dua AI, satu percakapan. Persona boleh dikosongkan, biarkan mereka mencari topik sendiri.</string>
     <string name="ai_duel_role_a">Karakter A</string>
@@ -96,7 +96,7 @@
     <string name="ai_duel_model_label">Model</string>
     <string name="ai_duel_model_default">Ketuk untuk memilih model</string>
     <string name="ai_duel_config_title">Ruang Obrolan AI</string>
-    <string name="ai_duel_config_subtitle">Dua AI, satu percakapan. Mau menyela atau menghentikan, kapan saja bisa.</string>
+    <string name="ai_duel_config_subtitle">Dua AI, satu percakapan. Berhenti kapan saja, lanjutkan kapan pun.</string>
     <string name="ai_duel_error_persona_required">Silakan atur persona atau prompt untuk kedua karakter</string>
     <string name="ai_duel_error_model_not_selected">Silakan pilih model untuk kedua karakter</string>
     <string name="ai_duel_error_stream_timeout">Respons habis waktu. Silakan coba lagi nanti.</string>
@@ -1903,7 +1903,7 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
     <string name="ai_duel_default_persona_b">Kamu lebih tenang, terbiasa mendengarkan dulu sebelum merespons, dan suka menjelaskan dengan contoh konkret.</string>
     <string name="ai_duel_title_format">%1$s × %2$s</string>
     <string name="ai_duel_wrap_up_instruction">Sudah cukup sampai di sini, tolong akhiri dengan satu atau dua kalimat secara alami.</string>
-    <string name="ai_duel_quick_start_subtitle">Dua AI, satu percakapan. Mau menyela atau menghentikan, kapan saja bisa.</string>
+    <string name="ai_duel_quick_start_subtitle">Dua AI, satu percakapan. Berhenti kapan saja, lanjutkan kapan pun.</string>
     <string name="ai_duel_scene_label">Mau bahas apa? (opsional)</string>
     <string name="ai_duel_scene_hint">Kalau dikosongkan, biarkan mereka mencari topik sendiri.</string>
     <string name="ai_duel_persona_optional_hint">Kosongkan untuk menggunakan persona default.</string>
@@ -1912,7 +1912,7 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
     <string name="ai_duel_wrap_up">Akhiri</string>
     <string name="ai_duel_retry">Coba lagi</string>
     <string name="ai_duel_error_title">Kalimat ini belum selesai</string>
-    <string name="ai_duel_tokens_format">Sesi ini %1$d token</string>
+    <string name="ai_duel_tokens_format">Total %1$d token sesi ini</string>
     <string name="ai_duel_batch_finished">Batch ini sudah selesai, klik kapan saja untuk melanjutkan.</string>
     <string name="ai_duel_paused_hint">Dijeda, lanjutkan akan melanjutkan dari kalimat lengkap terakhir.</string>
     <string name="ai_duel_advanced">Pengaturan lanjutan</string>
@@ -1924,4 +1924,6 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
     <string name="ai_duel_ended_hint">Sudah diakhiri, bisa lanjutkan chat atau mulai percakapan baru.</string>
     <string name="ai_duel_scene_prompt">Topik/skenario obrolan ini: %1$s</string>
     <string name="ai_duel_reset_persona">Atur ulang</string>
+    <string name="ai_duel_pausing">Menunggu kalimat ini selesai…</string>
+    <string name="ai_duel_error_cannot_start">Kalimat ini gagal dimulai, periksa login, poin, atau pengaturan model.</string>
 </resources>

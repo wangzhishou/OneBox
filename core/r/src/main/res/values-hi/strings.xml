@@ -49,7 +49,7 @@
     <string name="cloud_storage_config_invalid">क्लाउड स्टोरेज कॉन्फ़िगरेशन अधूरा है</string>
     <string name="ai_system_prompt_selected_label">सिस्टम प्रॉम्प्ट:</string>
     <string name="ai_duel_chat_title">AI आपसी बातचीत</string>
-    <string name="ai_duel_chat_description">दो AI आपस में बात करते हैं, आप कभी भी बीच में बोल सकते हैं या रोक सकते हैं।</string>
+    <string name="ai_duel_chat_description">दो AI खुद बात करते हैं, जब चाहें रोकें, कभी भी जारी रखें।</string>
     <string name="ai_duel_placeholder_title">AI चैट रूम</string>
     <string name="ai_duel_placeholder_content">दो AI, एक बातचीत। पात्र विवरण खाली छोड़ सकते हैं, उन्हें खुद विषय ढूंढने दें।</string>
     <string name="ai_duel_role_a">पात्र A</string>
@@ -96,7 +96,7 @@
     <string name="ai_duel_model_label">मॉडल</string>
     <string name="ai_duel_model_default">मॉडल चुनने के लिए टैप करें</string>
     <string name="ai_duel_config_title">AI चैट रूम</string>
-    <string name="ai_duel_config_subtitle">दो AI, एक बातचीत। बीच में बोलना हो या रोकना हो, कभी भी कर सकते हैं।</string>
+    <string name="ai_duel_config_subtitle">दो AI, एक बातचीत। जब चाहें रोकें, कभी भी जारी रखें।</string>
     <string name="ai_duel_error_persona_required">कृपया दोनों पात्रों के लिए व्यक्तित्व या प्रॉम्प्ट सेट करें</string>
     <string name="ai_duel_error_model_not_selected">कृपया दोनों पात्रों के लिए मॉडल चुनें</string>
     <string name="ai_duel_error_stream_timeout">प्रतिक्रिया समय समाप्त हो गया। कृपया बाद में पुनः प्रयास करें।</string>
@@ -1914,7 +1914,7 @@
     <string name="ai_duel_default_persona_b">आप कुछ शांत हैं, पहले पूरी बात सुनकर फिर जवाब देने के आदी हैं, और ठोस उदाहरणों से बात स्पष्ट करना पसंद करते हैं।</string>
     <string name="ai_duel_title_format">%1$s × %2$s</string>
     <string name="ai_duel_wrap_up_instruction">बात यहीं तक, कृपया एक-दो वाक्यों में स्वाभाविक रूप से बात समाप्त करें।</string>
-    <string name="ai_duel_quick_start_subtitle">दो AI, एक बातचीत। बीच में बोलना हो या रोकना हो, कभी भी कर सकते हैं।</string>
+    <string name="ai_duel_quick_start_subtitle">दो AI, एक बातचीत। जब चाहें रोकें, कभी भी जारी रखें।</string>
     <string name="ai_duel_scene_label">किस बारे में बात करें? (वैकल्पिक)</string>
     <string name="ai_duel_scene_hint">खाली छोड़ें तो उन्हें खुद विषय चुनने दें।</string>
     <string name="ai_duel_persona_optional_hint">खाली छोड़ने पर डिफ़ॉल्ट पर्सोना उपयोग होगा।</string>
@@ -1923,7 +1923,7 @@
     <string name="ai_duel_wrap_up">समाप्त करें</string>
     <string name="ai_duel_retry">पुनः प्रयास करें</string>
     <string name="ai_duel_error_title">यह वाक्य अधूरा है</string>
-    <string name="ai_duel_tokens_format">इस सत्र में %1$d tokens</string>
+    <string name="ai_duel_tokens_format">इस सत्र में कुल %1$d tokens</string>
     <string name="ai_duel_batch_finished">यह बैच पूरा हुआ, जब चाहें जारी रखने के लिए टैप करें।</string>
     <string name="ai_duel_paused_hint">रोका गया है, जारी रखने पर अंतिम पूर्ण वाक्य से बातचीत आगे बढ़ेगी।</string>
     <string name="ai_duel_advanced">उन्नत सेटिंग्स</string>
@@ -1935,4 +1935,6 @@
     <string name="ai_duel_ended_hint">समाप्त हो गया, आप बातचीत जारी रख सकते हैं या नई बातचीत शुरू कर सकते हैं।</string>
     <string name="ai_duel_scene_prompt">इस चैट का विषय/परिदृश्य: %1$s</string>
     <string name="ai_duel_reset_persona">रीसेट करें</string>
+    <string name="ai_duel_pausing">इस वाक्य के पूरा होने की प्रतीक्षा…</string>
+    <string name="ai_duel_error_cannot_start">यह वाक्य शुरू नहीं हो सका, कृपया लॉगिन, क्रेडिट या मॉडल सेटिंग जाँचें।</string>
 </resources>

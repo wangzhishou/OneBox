@@ -49,7 +49,7 @@
     <string name="cloud_storage_config_invalid">Конфигурация облачного хранилища неполная</string>
     <string name="ai_system_prompt_selected_label">Системная подсказка:</string>
     <string name="ai_duel_chat_title">Общение ИИ</string>
-    <string name="ai_duel_chat_description">Два ИИ общаются сами, а вы можете в любой момент вмешаться или остановить.</string>
+    <string name="ai_duel_chat_description">Два ИИ общаются сами — остановите в любой момент и продолжите, когда захотите.</string>
     <string name="ai_duel_placeholder_title">Чат-комната ИИ</string>
     <string name="ai_duel_placeholder_content">Два ИИ, один диалог. Персонажей можно не заполнять — пусть сами найдут тему.</string>
     <string name="ai_duel_role_a">Персонаж A</string>
@@ -96,7 +96,7 @@
     <string name="ai_duel_model_label">Модель</string>
     <string name="ai_duel_model_default">Нажмите, чтобы выбрать модель</string>
     <string name="ai_duel_config_title">Чат-комната ИИ</string>
-    <string name="ai_duel_config_subtitle">Два ИИ, один диалог. Вмешаться или остановить можно в любой момент.</string>
+    <string name="ai_duel_config_subtitle">Два ИИ, один диалог. Остановите, когда захотите, и продолжайте в любое время.</string>
     <string name="ai_duel_error_persona_required">Пожалуйста, задайте образы или подсказки для обоих персонажей</string>
     <string name="ai_duel_error_model_not_selected">Пожалуйста, выберите модели для обоих персонажей</string>
     <string name="ai_duel_error_stream_timeout">Время ожидания ответа истекло. Пожалуйста, попробуйте позже.</string>
@@ -1948,7 +1948,7 @@
     <string name="ai_duel_default_persona_b">Ты более сдержан, привык сначала выслушать, а потом отвечать, и любишь объяснять на конкретных примерах.</string>
     <string name="ai_duel_title_format">%1$s × %2$s</string>
     <string name="ai_duel_wrap_up_instruction">Давайте на этом закончим. Пожалуйста, естественно заверши разговор одной-двумя фразами.</string>
-    <string name="ai_duel_quick_start_subtitle">Два ИИ, один разговор. Можешь вмешаться или остановить в любой момент.</string>
+    <string name="ai_duel_quick_start_subtitle">Два ИИ, один диалог. Остановите в любой момент и продолжите, когда захотите.</string>
     <string name="ai_duel_scene_label">О чём поговорить? (необязательно)</string>
     <string name="ai_duel_scene_hint">Если оставить пустым, они сами найдут тему.</string>
     <string name="ai_duel_persona_optional_hint">Если не заполнить, будет использоваться персонаж по умолчанию.</string>
@@ -1957,7 +1957,7 @@
     <string name="ai_duel_wrap_up">Завершить</string>
     <string name="ai_duel_retry">Повторить</string>
     <string name="ai_duel_error_title">Эта фраза не закончена</string>
-    <string name="ai_duel_tokens_format">В этой сессии %1$d токенов</string>
+    <string name="ai_duel_tokens_format">Всего за сеанс: %1$d токенов</string>
     <string name="ai_duel_batch_finished">Эта партия завершена. Нажмите, когда захотите продолжить.</string>
     <string name="ai_duel_paused_hint">Приостановлено. При продолжении диалог начнётся с последней полной реплики.</string>
     <string name="ai_duel_advanced">Дополнительные настройки</string>
@@ -1969,4 +1969,6 @@
     <string name="ai_duel_ended_hint">Завершено. Можно продолжить диалог или начать новый.</string>
     <string name="ai_duel_scene_prompt">Тема/сценарий этого чата: %1$s</string>
     <string name="ai_duel_reset_persona">Сбросить</string>
+    <string name="ai_duel_pausing">Дождитесь окончания этой реплики…</string>
+    <string name="ai_duel_error_cannot_start">Не удалось начать эту реплику. Проверьте вход, баланс или настройки модели.</string>
 </resources>
