@@ -57,6 +57,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.shifenmiao.base.pullrefresh.PullToRefreshLayout
 import com.shifenmiao.base.pullrefresh.rememberPullToRefreshStateOnTime
 import com.shifenmiao.base.ui.DeleteConfirmDialog
+import com.shifenmiao.base.ui.fadeBottomEdge
 import com.shifenmiao.base.utils.DateUtils.convertElapsedTimeIntoText
 import com.shifenmiao.common.components.LoadingNextPageItem
 import com.shifenmiao.common.components.comments.commentUidForListType
@@ -373,14 +374,21 @@ private fun EmptyOrErrorState(
     }
 }
 
-private val HomeGridBottomInset = 16.dp
+/**
+ * 视口底部收边的高度。
+ *
+ * 首页网格的视口底边就是底栏上沿：再往里垫 16dp 只会多出一条空白带，还把下一行切成一条
+ * 露头的"空卡片"。现在内容直接贴到底栏，底部按 [HomeGridBottomFade] 渐隐（配合
+ * [gridContentPadding] 的底部留白，滚到底时最后一行不会被吃掉）。
+ */
+private val HomeGridBottomFade = 32.dp
 
 @Composable
 private fun SkeletonItemGrid(isGrid: Boolean) {
     LazyVerticalStaggeredGrid(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = HomeGridBottomInset),
+            .fadeBottomEdge(HomeGridBottomFade),
         columns = gridColumns(isGrid),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalItemSpacing = 16.dp,
@@ -465,7 +473,7 @@ private fun ItemGrid(
         modifier = Modifier
             .fillMaxHeight()
             .nestedScroll(headFollow)
-            .padding(bottom = HomeGridBottomInset),
+            .fadeBottomEdge(HomeGridBottomFade),
         columns = gridColumns(isGrid),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalItemSpacing = 16.dp,
@@ -647,12 +655,18 @@ private fun gridColumns(isGrid: Boolean): StaggeredGridCells {
 }
 
 
+/**
+ * 网格内边距。
+ *
+ * 底部留白要大于 [HomeGridBottomFade]：滚到最后一屏时，最后一行要能停在底部渐隐区上方，
+ * 不然它的下半截会被渐隐吃掉。
+ */
 @Composable
 private fun gridContentPadding() = PaddingValues(
     start = AppTheme.dimens.paddingNormal,
     end = AppTheme.dimens.paddingNormal,
     top = 4.dp,
-    bottom = AppTheme.dimens.paddingLarge,
+    bottom = HomeGridBottomFade + AppTheme.dimens.paddingSmall,
 )
 
 private fun pagingItemKey(
