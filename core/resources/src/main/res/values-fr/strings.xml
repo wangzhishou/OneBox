@@ -1986,4 +1986,25 @@
     <string name="download_started">Téléchargement lancé</string>
     <string name="color_info_tab">Infos couleur</string>
     <string name="color_shading_tab">Ombres de couleur</string>
+    <string name="pick_color_title">Sélecteur de couleur d\'image</string>
+    <string name="pick_color_empty_title">Pas encore d\'image</string>
+    <string name="pick_color_empty_desc">Choisissez une image pour commencer à prélever des couleurs</string>
+    <string name="take_photo">Prendre une photo</string>
+    <string name="pick_color_tab_pick">Couleur</string>
+    <string name="pick_color_tab_history">Historique</string>
+    <string name="color_history">Historique des couleurs</string>
+    <string name="pick_color_rgb_value">RGB %1$d, %2$d, %3$d</string>
+    <string name="pick_color_hsl_value">HSL %1$d°, %2$d%%, %3$d%%</string>
+    <string name="pick_color_hint_title">Faites glisser sur l\'image pour prélever une couleur</string>
+    <string name="pick_color_hint_desc">Glissez avec un doigt pour prélever, pincez avec deux doigts pour zoomer</string>
+    <string name="pick_color_unfavorite">Retirer des favoris</string>
+    <string name="today">Aujourd\'hui</string>
+    <string name="yesterday">Hier</string>
+    <string name="no_color_history">Aucune couleur prélevée pour l\'instant</string>
+    <string name="no_color_history_desc">Les couleurs prélevées seront enregistrées ici, groupées par jour.</string>
+    <string name="no_favorite_colors">Aucune couleur favorite</string>
+    <string name="no_favorite_colors_desc">Touchez le cœur d\'une couleur prélevée pour la conserver ici.</string>
+    <string name="clear_color_history">Effacer l\'historique des couleurs</string>
+    <string name="clear_color_history_confirm">Supprimer tous les enregistrements de couleurs ? Cette action est irréversible.</string>
+    <string name="pick_color_pan_mode">Déplacer et zoomer</string>
 </resources>

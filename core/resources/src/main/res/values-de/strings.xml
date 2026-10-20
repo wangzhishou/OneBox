@@ -1986,4 +1986,25 @@
     <string name="download_started">Download gestartet</string>
     <string name="color_info_tab">Farbinfo</string>
     <string name="color_shading_tab">Farbabstufung</string>
+    <string name="pick_color_title">Bild-Farbwähler</string>
+    <string name="pick_color_empty_title">Noch kein Bild</string>
+    <string name="pick_color_empty_desc">Wähle ein Bild aus, um Farben zu entnehmen</string>
+    <string name="take_photo">Foto aufnehmen</string>
+    <string name="pick_color_tab_pick">Farbe</string>
+    <string name="pick_color_tab_history">Verlauf</string>
+    <string name="color_history">Farbhistorie</string>
+    <string name="pick_color_rgb_value">RGB %1$d, %2$d, %3$d</string>
+    <string name="pick_color_hsl_value">HSL %1$d°, %2$d%%, %3$d%%</string>
+    <string name="pick_color_hint_title">Ziehe über das Bild, um eine Farbe zu wählen</string>
+    <string name="pick_color_hint_desc">Mit einem Finger ziehen zum Wählen, mit zwei Fingern zoomen</string>
+    <string name="pick_color_unfavorite">Aus Favoriten entfernen</string>
+    <string name="today">Heute</string>
+    <string name="yesterday">Gestern</string>
+    <string name="no_color_history">Noch keine Farben gewählt</string>
+    <string name="no_color_history_desc">Gewählte Farben werden hier nach Tag gruppiert gespeichert.</string>
+    <string name="no_favorite_colors">Keine Favoritenfarben</string>
+    <string name="no_favorite_colors_desc">Tippe auf das Herz einer gewählten Farbe, um sie hier zu behalten.</string>
+    <string name="clear_color_history">Farbhistorie löschen</string>
+    <string name="clear_color_history_confirm">Alle Farbeinträge löschen? Dies kann nicht rückgängig gemacht werden.</string>
+    <string name="pick_color_pan_mode">Verschieben und Zoomen</string>
 </resources>

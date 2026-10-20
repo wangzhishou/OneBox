@@ -34,7 +34,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineFrontHand
 fun PanModeButton(
     selected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    contentDescription: String? = null
 ) {
     EnhancedIconButton(
         modifier = modifier,
@@ -53,7 +54,7 @@ fun PanModeButton(
     ) {
         Icon(
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFrontHand,
-            contentDescription = stringResource(R.string.draw)
+            contentDescription = contentDescription ?: stringResource(R.string.draw)
         )
     }
 }

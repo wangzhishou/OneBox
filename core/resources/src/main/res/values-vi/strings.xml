@@ -1986,4 +1986,25 @@
     <string name="download_started">Đã bắt đầu tải xuống</string>
     <string name="color_info_tab">Thông tin màu</string>
     <string name="color_shading_tab">Đổ bóng màu</string>
+    <string name="pick_color_title">Trình chọn màu ảnh</string>
+    <string name="pick_color_empty_title">Chưa có ảnh</string>
+    <string name="pick_color_empty_desc">Chọn một ảnh để bắt đầu lấy màu</string>
+    <string name="take_photo">Chụp ảnh</string>
+    <string name="pick_color_tab_pick">Lấy màu</string>
+    <string name="pick_color_tab_history">Lịch sử</string>
+    <string name="color_history">Lịch sử màu</string>
+    <string name="pick_color_rgb_value">RGB %1$d, %2$d, %3$d</string>
+    <string name="pick_color_hsl_value">HSL %1$d°, %2$d%%, %3$d%%</string>
+    <string name="pick_color_hint_title">Kéo trên ảnh để lấy màu</string>
+    <string name="pick_color_hint_desc">Kéo bằng một ngón để lấy màu, chụm hai ngón để phóng to</string>
+    <string name="pick_color_unfavorite">Bỏ khỏi mục yêu thích</string>
+    <string name="today">Hôm nay</string>
+    <string name="yesterday">Hôm qua</string>
+    <string name="no_color_history">Chưa có màu nào được lấy</string>
+    <string name="no_color_history_desc">Những màu bạn lấy sẽ được lưu ở đây, nhóm theo ngày.</string>
+    <string name="no_favorite_colors">Không có màu yêu thích</string>
+    <string name="no_favorite_colors_desc">Nhấn vào trái tim trên màu đã lấy để giữ màu đó ở đây.</string>
+    <string name="clear_color_history">Xóa lịch sử màu</string>
+    <string name="clear_color_history_confirm">Xóa tất cả bản ghi lấy màu? Không thể hoàn tác thao tác này.</string>
+    <string name="pick_color_pan_mode">Di chuyển và thu phóng</string>
 </resources>

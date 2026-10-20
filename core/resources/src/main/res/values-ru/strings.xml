@@ -1986,4 +1986,25 @@
     <string name="download_started">Загрузка началась</string>
     <string name="color_info_tab">Инфо о цвете</string>
     <string name="color_shading_tab">Затенение</string>
+    <string name="pick_color_title">Выбор цвета с изображения</string>
+    <string name="pick_color_empty_title">Изображения пока нет</string>
+    <string name="pick_color_empty_desc">Выберите изображение, чтобы начать выбирать цвета</string>
+    <string name="take_photo">Сделать фото</string>
+    <string name="pick_color_tab_pick">Цвет</string>
+    <string name="pick_color_tab_history">История</string>
+    <string name="color_history">История цветов</string>
+    <string name="pick_color_rgb_value">RGB %1$d, %2$d, %3$d</string>
+    <string name="pick_color_hsl_value">HSL %1$d°, %2$d%%, %3$d%%</string>
+    <string name="pick_color_hint_title">Проведите по изображению, чтобы выбрать цвет</string>
+    <string name="pick_color_hint_desc">Проведите одним пальцем, чтобы выбрать цвет, сведите два пальца, чтобы масштабировать</string>
+    <string name="pick_color_unfavorite">Убрать из избранного</string>
+    <string name="today">Сегодня</string>
+    <string name="yesterday">Вчера</string>
+    <string name="no_color_history">Пока нет выбранных цветов</string>
+    <string name="no_color_history_desc">Выбранные цвета будут сохраняться здесь, сгруппированные по дням.</string>
+    <string name="no_favorite_colors">Нет избранных цветов</string>
+    <string name="no_favorite_colors_desc">Нажмите на сердечко у выбранного цвета, чтобы сохранить его здесь.</string>
+    <string name="clear_color_history">Очистить историю цветов</string>
+    <string name="clear_color_history_confirm">Удалить все записи выбора цветов? Это действие нельзя отменить.</string>
+    <string name="pick_color_pan_mode">Перемещение и масштаб</string>
 </resources>

@@ -1986,4 +1986,25 @@
     <string name="download_started">開始下載</string>
     <string name="color_info_tab">顏色資訊</string>
     <string name="color_shading_tab">色彩陰影</string>
+    <string name="pick_color_title">圖片取色器</string>
+    <string name="pick_color_empty_title">還沒有圖片</string>
+    <string name="pick_color_empty_desc">選擇一張圖片開始取色</string>
+    <string name="take_photo">拍照</string>
+    <string name="pick_color_tab_pick">取色</string>
+    <string name="pick_color_tab_history">歷史</string>
+    <string name="color_history">取色歷史</string>
+    <string name="pick_color_rgb_value">RGB %1$d, %2$d, %3$d</string>
+    <string name="pick_color_hsl_value">HSL %1$d°, %2$d%%, %3$d%%</string>
+    <string name="pick_color_hint_title">在圖片上拖動取色</string>
+    <string name="pick_color_hint_desc">單指拖動取色，雙指捏合縮放</string>
+    <string name="pick_color_unfavorite">取消收藏</string>
+    <string name="today">今天</string>
+    <string name="yesterday">昨天</string>
+    <string name="no_color_history">還沒有取色記錄</string>
+    <string name="no_color_history_desc">取過的顏色會按日期儲存在這裡。</string>
+    <string name="no_favorite_colors">還沒有收藏顏色</string>
+    <string name="no_favorite_colors_desc">點取色卡片上的愛心，顏色就會收進這裡。</string>
+    <string name="clear_color_history">清空取色歷史</string>
+    <string name="clear_color_history_confirm">確定刪除全部取色記錄？此操作不可恢復。</string>
+    <string name="pick_color_pan_mode">拖動與縮放</string>
 </resources>

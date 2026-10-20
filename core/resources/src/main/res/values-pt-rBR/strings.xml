@@ -1986,4 +1986,25 @@
     <string name="download_started">Download iniciado</string>
     <string name="color_info_tab">Info da cor</string>
     <string name="color_shading_tab">Sombreamento</string>
+    <string name="pick_color_title">Seletor de cor de imagem</string>
+    <string name="pick_color_empty_title">Ainda não há imagem</string>
+    <string name="pick_color_empty_desc">Escolha uma imagem para começar a extrair cores</string>
+    <string name="take_photo">Tirar foto</string>
+    <string name="pick_color_tab_pick">Cor</string>
+    <string name="pick_color_tab_history">Histórico</string>
+    <string name="color_history">Histórico de cores</string>
+    <string name="pick_color_rgb_value">RGB %1$d, %2$d, %3$d</string>
+    <string name="pick_color_hsl_value">HSL %1$d°, %2$d%%, %3$d%%</string>
+    <string name="pick_color_hint_title">Arraste sobre a imagem para extrair uma cor</string>
+    <string name="pick_color_hint_desc">Arraste com um dedo para extrair e faça o gesto de pinça com dois dedos para ampliar</string>
+    <string name="pick_color_unfavorite">Remover dos favoritos</string>
+    <string name="today">Hoje</string>
+    <string name="yesterday">Ontem</string>
+    <string name="no_color_history">Nenhuma cor extraída ainda</string>
+    <string name="no_color_history_desc">As cores extraídas serão salvas aqui, agrupadas por dia.</string>
+    <string name="no_favorite_colors">Nenhuma cor favorita</string>
+    <string name="no_favorite_colors_desc">Toque no coração de uma cor extraída para mantê-la aqui.</string>
+    <string name="clear_color_history">Limpar histórico de cores</string>
+    <string name="clear_color_history_confirm">Excluir todos os registros de extração de cores? Esta ação não pode ser desfeita.</string>
+    <string name="pick_color_pan_mode">Mover e ampliar</string>
 </resources>

@@ -1985,4 +1985,25 @@
     <string name="download_started">İndirme başlatıldı</string>
     <string name="color_info_tab">Renk bilgisi</string>
     <string name="color_shading_tab">Renk gölgeleme</string>
+    <string name="pick_color_title">Görsel renk seçici</string>
+    <string name="pick_color_empty_title">Henüz görsel yok</string>
+    <string name="pick_color_empty_desc">Renk seçmeye başlamak için bir görsel seçin</string>
+    <string name="take_photo">Fotoğraf çek</string>
+    <string name="pick_color_tab_pick">Renk</string>
+    <string name="pick_color_tab_history">Geçmiş</string>
+    <string name="color_history">Renk geçmişi</string>
+    <string name="pick_color_rgb_value">RGB %1$d, %2$d, %3$d</string>
+    <string name="pick_color_hsl_value">HSL %1$d°, %2$d%%, %3$d%%</string>
+    <string name="pick_color_hint_title">Renk seçmek için görsel üzerinde sürükleyin</string>
+    <string name="pick_color_hint_desc">Tek parmakla sürükleyerek renk seçin, iki parmakla kıstırarak yakınlaştırın</string>
+    <string name="pick_color_unfavorite">Favorilerden kaldır</string>
+    <string name="today">Bugün</string>
+    <string name="yesterday">Dün</string>
+    <string name="no_color_history">Henüz renk seçilmedi</string>
+    <string name="no_color_history_desc">Seçtiğiniz renkler burada güne göre gruplanarak kaydedilir.</string>
+    <string name="no_favorite_colors">Favori renk yok</string>
+    <string name="no_favorite_colors_desc">Bir rengi burada tutmak için seçilen rengin kalbine dokunun.</string>
+    <string name="clear_color_history">Renk geçmişini temizle</string>
+    <string name="clear_color_history_confirm">Tüm renk seçim kayıtları silinsin mi? Bu işlem geri alınamaz.</string>
+    <string name="pick_color_pan_mode">Kaydır ve yakınlaştır</string>
 </resources>

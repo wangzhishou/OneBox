@@ -1986,4 +1986,25 @@
     <string name="download_started">Nagsimula ang pag-download</string>
     <string name="color_info_tab">Info ng kulay</string>
     <string name="color_shading_tab">Pag-shade ng kulay</string>
+    <string name="pick_color_title">Pumipili ng Kulay ng Larawan</string>
+    <string name="pick_color_empty_title">Wala pang larawan</string>
+    <string name="pick_color_empty_desc">Pumili ng larawan para magsimulang pumili ng mga kulay</string>
+    <string name="take_photo">Kumuha ng litrato</string>
+    <string name="pick_color_tab_pick">Kulay</string>
+    <string name="pick_color_tab_history">Kasaysayan</string>
+    <string name="color_history">Kasaysayan ng kulay</string>
+    <string name="pick_color_rgb_value">RGB %1$d, %2$d, %3$d</string>
+    <string name="pick_color_hsl_value">HSL %1$d°, %2$d%%, %3$d%%</string>
+    <string name="pick_color_hint_title">Hilahin sa larawan para pumili ng kulay</string>
+    <string name="pick_color_hint_desc">Hilahin gamit ang isang daliri para pumili, kurutin gamit ang dalawang daliri para mag-zoom</string>
+    <string name="pick_color_unfavorite">Alisin sa mga paborito</string>
+    <string name="today">Ngayon</string>
+    <string name="yesterday">Kahapon</string>
+    <string name="no_color_history">Wala pang napiling kulay</string>
+    <string name="no_color_history_desc">Itatabi dito ang mga kulay na pipiliin mo, na nakagrupo ayon sa araw.</string>
+    <string name="no_favorite_colors">Walang paboritong kulay</string>
+    <string name="no_favorite_colors_desc">I-tap ang puso sa napiling kulay para itabi ito dito.</string>
+    <string name="clear_color_history">I-clear ang kasaysayan ng kulay</string>
+    <string name="clear_color_history_confirm">Tanggalin ang lahat ng talaan ng pagpili ng kulay? Hindi na ito maibabalik.</string>
+    <string name="pick_color_pan_mode">Pag-drag at pag-zoom</string>
 </resources>

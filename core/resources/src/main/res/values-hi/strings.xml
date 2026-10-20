@@ -1986,4 +1986,25 @@
     <string name="download_started">डाउनलोड शुरू हुआ</string>
     <string name="color_info_tab">रंग जानकारी</string>
     <string name="color_shading_tab">रंग छायांकन</string>
+    <string name="pick_color_title">इमेज रंग चयनकर्ता</string>
+    <string name="pick_color_empty_title">अभी कोई इमेज नहीं</string>
+    <string name="pick_color_empty_desc">रंग चुनना शुरू करने के लिए एक इमेज चुनें</string>
+    <string name="take_photo">फ़ोटो लें</string>
+    <string name="pick_color_tab_pick">रंग</string>
+    <string name="pick_color_tab_history">इतिहास</string>
+    <string name="color_history">रंग इतिहास</string>
+    <string name="pick_color_rgb_value">RGB %1$d, %2$d, %3$d</string>
+    <string name="pick_color_hsl_value">HSL %1$d°, %2$d%%, %3$d%%</string>
+    <string name="pick_color_hint_title">रंग चुनने के लिए इमेज पर खींचें</string>
+    <string name="pick_color_hint_desc">एक उंगली से खींचकर रंग चुनें, दो उंगलियों से पिंच करके ज़ूम करें</string>
+    <string name="pick_color_unfavorite">पसंदीदा से हटाएं</string>
+    <string name="today">आज</string>
+    <string name="yesterday">बीता कल</string>
+    <string name="no_color_history">अभी तक कोई रंग नहीं चुना गया</string>
+    <string name="no_color_history_desc">आपके द्वारा चुने गए रंग यहां दिन के अनुसार समूहित होकर सेव होंगे।</string>
+    <string name="no_favorite_colors">कोई पसंदीदा रंग नहीं</string>
+    <string name="no_favorite_colors_desc">किसी चुने हुए रंग पर दिल पर टैप करें ताकि वह यहां रहे।</string>
+    <string name="clear_color_history">रंग इतिहास साफ़ करें</string>
+    <string name="clear_color_history_confirm">सभी रंग चुनने के रिकॉर्ड हटाएं? इसे वापस नहीं लाया जा सकता।</string>
+    <string name="pick_color_pan_mode">खींचें और ज़ूम करें</string>
 </resources>

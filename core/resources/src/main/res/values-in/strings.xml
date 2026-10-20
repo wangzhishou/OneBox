@@ -1986,4 +1986,25 @@
     <string name="download_started">Unduhan dimulai</string>
     <string name="color_info_tab">Info warna</string>
     <string name="color_shading_tab">Pewarnaan warna</string>
+    <string name="pick_color_title">Pemilih warna gambar</string>
+    <string name="pick_color_empty_title">Belum ada gambar</string>
+    <string name="pick_color_empty_desc">Pilih gambar untuk mulai memilih warna</string>
+    <string name="take_photo">Ambil foto</string>
+    <string name="pick_color_tab_pick">Warna</string>
+    <string name="pick_color_tab_history">Riwayat</string>
+    <string name="color_history">Riwayat warna</string>
+    <string name="pick_color_rgb_value">RGB %1$d, %2$d, %3$d</string>
+    <string name="pick_color_hsl_value">HSL %1$d°, %2$d%%, %3$d%%</string>
+    <string name="pick_color_hint_title">Seret pada gambar untuk memilih warna</string>
+    <string name="pick_color_hint_desc">Seret dengan satu jari untuk memilih, cubit dengan dua jari untuk memperbesar</string>
+    <string name="pick_color_unfavorite">Hapus dari favorit</string>
+    <string name="today">Hari Ini</string>
+    <string name="yesterday">Kemarin</string>
+    <string name="no_color_history">Belum ada warna yang dipilih</string>
+    <string name="no_color_history_desc">Warna yang Anda pilih akan disimpan di sini, dikelompokkan per hari.</string>
+    <string name="no_favorite_colors">Belum ada warna favorit</string>
+    <string name="no_favorite_colors_desc">Ketuk ikon hati pada warna yang dipilih untuk menyimpannya di sini.</string>
+    <string name="clear_color_history">Hapus riwayat warna</string>
+    <string name="clear_color_history_confirm">Hapus semua catatan pemilihan warna? Tindakan ini tidak dapat dibatalkan.</string>
+    <string name="pick_color_pan_mode">Geser dan perbesar</string>
 </resources>

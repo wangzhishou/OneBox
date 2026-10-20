@@ -1986,4 +1986,25 @@
     <string name="download_started">بدأ التنزيل</string>
     <string name="color_info_tab">معلومات اللون</string>
     <string name="color_shading_tab">تظليل اللون</string>
+    <string name="pick_color_title">منتقي ألوان الصور</string>
+    <string name="pick_color_empty_title">لا توجد صورة بعد</string>
+    <string name="pick_color_empty_desc">اختر صورة لبدء انتقاء الألوان</string>
+    <string name="take_photo">التقاط صورة</string>
+    <string name="pick_color_tab_pick">انتقاء</string>
+    <string name="pick_color_tab_history">السجل</string>
+    <string name="color_history">سجل الألوان</string>
+    <string name="pick_color_rgb_value">RGB %1$d, %2$d, %3$d</string>
+    <string name="pick_color_hsl_value">HSL %1$d°, %2$d%%, %3$d%%</string>
+    <string name="pick_color_hint_title">اسحب على الصورة لانتقاء لون</string>
+    <string name="pick_color_hint_desc">اسحب بإصبع واحد لانتقاء اللون، واقرص بإصبعين للتكبير</string>
+    <string name="pick_color_unfavorite">إزالة من المفضلة</string>
+    <string name="today">اليوم</string>
+    <string name="yesterday">أمس</string>
+    <string name="no_color_history">لا توجد ألوان منتقاة بعد</string>
+    <string name="no_color_history_desc">ستُحفظ الألوان التي تنتقيها هنا، مجمّعة حسب اليوم.</string>
+    <string name="no_favorite_colors">لا توجد ألوان مفضلة</string>
+    <string name="no_favorite_colors_desc">اضغط على القلب في لون منتقى للاحتفاظ به هنا.</string>
+    <string name="clear_color_history">مسح سجل الألوان</string>
+    <string name="clear_color_history_confirm">حذف كل سجلات انتقاء الألوان؟ لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="pick_color_pan_mode">التحريك والتكبير</string>
 </resources>

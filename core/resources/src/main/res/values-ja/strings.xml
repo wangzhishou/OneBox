@@ -1985,4 +1985,25 @@
     <string name="download_started">ダウンロードを開始しました</string>
     <string name="color_info_tab">カラー情報</string>
     <string name="color_shading_tab">カラーシェーディング</string>
+    <string name="pick_color_title">画像カラーピッカー</string>
+    <string name="pick_color_empty_title">画像がまだありません</string>
+    <string name="pick_color_empty_desc">画像を選択して色の取得を始めましょう</string>
+    <string name="take_photo">写真を撮る</string>
+    <string name="pick_color_tab_pick">色を取る</string>
+    <string name="pick_color_tab_history">履歴</string>
+    <string name="color_history">色の履歴</string>
+    <string name="pick_color_rgb_value">RGB %1$d, %2$d, %3$d</string>
+    <string name="pick_color_hsl_value">HSL %1$d°, %2$d%%, %3$d%%</string>
+    <string name="pick_color_hint_title">画像をドラッグして色を取得</string>
+    <string name="pick_color_hint_desc">1本指でドラッグして色を取得、2本指でピンチしてズーム</string>
+    <string name="pick_color_unfavorite">お気に入りから削除</string>
+    <string name="today">今日</string>
+    <string name="yesterday">昨日</string>
+    <string name="no_color_history">まだ色が取得されていません</string>
+    <string name="no_color_history_desc">取得した色は日付ごとにまとめてここに保存されます。</string>
+    <string name="no_favorite_colors">お気に入りの色はありません</string>
+    <string name="no_favorite_colors_desc">取得した色のハートをタップすると、ここに保存されます。</string>
+    <string name="clear_color_history">色の履歴を消去</string>
+    <string name="clear_color_history_confirm">色の取得記録をすべて削除しますか？この操作は取り消せません。</string>
+    <string name="pick_color_pan_mode">移動とズーム</string>
 </resources>

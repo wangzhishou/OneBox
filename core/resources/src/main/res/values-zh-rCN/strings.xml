@@ -59,6 +59,26 @@
     <string name="image">图片</string>
     <string name="color">颜色</string>
     <string name="color_copied">颜色代码已复制</string>
+    <string name="pick_color_title">图片取色器</string>
+    <string name="pick_color_empty_title">还没有图片</string>
+    <string name="pick_color_empty_desc">选择一张图片开始取色</string>
+    <string name="take_photo">拍照</string>
+    <string name="pick_color_tab_pick">取色</string>
+    <string name="pick_color_tab_history">历史</string>
+    <string name="color_history">取色历史</string>
+    <string name="pick_color_rgb_value">RGB %1$d, %2$d, %3$d</string>
+    <string name="pick_color_hsl_value">HSL %1$d°, %2$d%%, %3$d%%</string>
+    <string name="pick_color_hint_title">在图片上拖动取色</string>
+    <string name="pick_color_hint_desc">单指拖动取色，双指捏合缩放</string>
+    <string name="pick_color_unfavorite">取消收藏</string>
+    <string name="today">今天</string>
+    <string name="yesterday">昨天</string>
+    <string name="no_color_history">还没有取色记录</string>
+    <string name="no_color_history_desc">取过的颜色会按日期保存在这里。</string>
+    <string name="no_favorite_colors">还没有收藏颜色</string>
+    <string name="no_favorite_colors_desc">点取色卡片上的爱心，颜色就会收进这里。</string>
+    <string name="clear_color_history">清空取色历史</string>
+    <string name="clear_color_history_confirm">确定删除全部取色记录？此操作不可恢复。</string>
     <string name="crop_sub">将图片裁剪至任意大小</string>
     <string name="version">版本号</string>
     <string name="keep_exif">保留 EXIF 信息</string>
@@ -1988,4 +2008,5 @@
     <string name="sticker_ai_generating">生成中…</string>
     <string name="color_info_tab">颜色信息</string>
     <string name="color_shading_tab">色彩阴影</string>
+    <string name="pick_color_pan_mode">拖动与缩放</string>
 </resources>

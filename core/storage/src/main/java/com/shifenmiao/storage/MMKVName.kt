@@ -12,6 +12,7 @@ object MMKVName {
     const val DEVICE: String = "device"
     const val RECENT_LIST: String = "recent"
     const val SCAN_HISTORY: String = "scan_history"
+    const val COLOR_PICK_HISTORY: String = "color_pick_history"
     const val MARQUEE_SETTING: String = "marquee"
     const val AI_CHAT_SETTING: String = "ai_chat"
     const val AI_ENGINE_SETTING: String = "ai_engine"

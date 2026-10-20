@@ -1984,4 +1984,25 @@
     <string name="download_started">다운로드 시작됨</string>
     <string name="color_info_tab">색상 정보</string>
     <string name="color_shading_tab">색상 음영</string>
+    <string name="pick_color_title">이미지 색상 추출기</string>
+    <string name="pick_color_empty_title">아직 이미지가 없습니다</string>
+    <string name="pick_color_empty_desc">색상 추출을 시작하려면 이미지를 선택하세요</string>
+    <string name="take_photo">사진 촬영</string>
+    <string name="pick_color_tab_pick">색상</string>
+    <string name="pick_color_tab_history">기록</string>
+    <string name="color_history">색상 기록</string>
+    <string name="pick_color_rgb_value">RGB %1$d, %2$d, %3$d</string>
+    <string name="pick_color_hsl_value">HSL %1$d°, %2$d%%, %3$d%%</string>
+    <string name="pick_color_hint_title">이미지를 드래그하여 색상 추출</string>
+    <string name="pick_color_hint_desc">한 손가락으로 드래그하여 색상을 추출하고, 두 손가락으로 핀치하여 확대/축소</string>
+    <string name="pick_color_unfavorite">즐겨찾기에서 제거</string>
+    <string name="today">오늘</string>
+    <string name="yesterday">어제</string>
+    <string name="no_color_history">아직 추출한 색상이 없습니다</string>
+    <string name="no_color_history_desc">추출한 색상은 날짜별로 정리되어 여기에 저장됩니다.</string>
+    <string name="no_favorite_colors">즐겨찾기한 색상이 없습니다</string>
+    <string name="no_favorite_colors_desc">추출한 색상의 하트를 탭하면 여기에 보관됩니다.</string>
+    <string name="clear_color_history">색상 기록 지우기</string>
+    <string name="clear_color_history_confirm">모든 색상 추출 기록을 삭제할까요? 이 작업은 되돌릴 수 없습니다.</string>
+    <string name="pick_color_pan_mode">이동 및 확대/축소</string>
 </resources>

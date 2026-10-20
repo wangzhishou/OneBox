@@ -1986,4 +1986,25 @@
     <string name="download_started">Descarga iniciada</string>
     <string name="color_info_tab">Info de color</string>
     <string name="color_shading_tab">Sombreado</string>
+    <string name="pick_color_title">Selector de color de imagen</string>
+    <string name="pick_color_empty_title">Aún no hay imagen</string>
+    <string name="pick_color_empty_desc">Elige una imagen para empezar a tomar colores</string>
+    <string name="take_photo">Hacer foto</string>
+    <string name="pick_color_tab_pick">Color</string>
+    <string name="pick_color_tab_history">Historial</string>
+    <string name="color_history">Historial de colores</string>
+    <string name="pick_color_rgb_value">RGB %1$d, %2$d, %3$d</string>
+    <string name="pick_color_hsl_value">HSL %1$d°, %2$d%%, %3$d%%</string>
+    <string name="pick_color_hint_title">Arrastra sobre la imagen para tomar un color</string>
+    <string name="pick_color_hint_desc">Arrastra con un dedo para tomar el color y pellizca con dos para ampliar</string>
+    <string name="pick_color_unfavorite">Quitar de favoritos</string>
+    <string name="today">Hoy</string>
+    <string name="yesterday">Ayer</string>
+    <string name="no_color_history">Aún no hay colores tomados</string>
+    <string name="no_color_history_desc">Los colores que tomes se guardarán aquí, agrupados por día.</string>
+    <string name="no_favorite_colors">No hay colores favoritos</string>
+    <string name="no_favorite_colors_desc">Toca el corazón de un color tomado para guardarlo aquí.</string>
+    <string name="clear_color_history">Borrar historial de colores</string>
+    <string name="clear_color_history_confirm">¿Eliminar todos los registros de colores? Esta acción no se puede deshacer.</string>
+    <string name="pick_color_pan_mode">Mover y ampliar</string>
 </resources>
