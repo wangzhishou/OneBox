@@ -3,6 +3,7 @@ package com.wanbaohe.altitude.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -24,6 +25,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.core.R as CoreR
+import com.t8rin.imagetoolbox.core.resources.Icons
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineWaterDrop
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassCardColors
@@ -139,8 +142,8 @@ private fun DailyRow(day: DailyOutlook) {
         fontWeight = FontWeight.SemiBold,
         fontFeatureSettings = "tnum",
     )
-    val precip = day.precipProbability
-        .takeIf { it.isNotBlank() && it != "0" }
+    val precipRaw = day.precipProbability.takeIf { it.isNotBlank() && it != "0" }
+    val precip = precipRaw
         ?.let { stringResource(CoreR.string.altitude_precip_probability, it) }
         .orEmpty()
     Row(
@@ -173,14 +176,29 @@ private fun DailyRow(day: DailyOutlook) {
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
-        Text(
-            text = precip,
-            modifier = Modifier.width(40.dp),
-            style = MaterialTheme.typography.labelSmall.copy(fontFeatureSettings = "tnum"),
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
-            textAlign = TextAlign.End,
-            maxLines = 1,
-        )
+        // 降水概率带个水滴图标：只写 "98%" 夹在天气图标和温度中间看不出是什么
+        Row(
+            modifier = Modifier.width(56.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.End,
+        ) {
+            if (precipRaw != null) {
+                Icon(
+                    imageVector = Icons.Outlined.LineWaterDrop,
+                    contentDescription = stringResource(CoreR.string.altitude_precipitation),
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                    modifier = Modifier.size(12.dp),
+                )
+                Spacer(Modifier.width(2.dp))
+                Text(
+                    text = precip,
+                    style = MaterialTheme.typography.labelSmall.copy(fontFeatureSettings = "tnum"),
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    textAlign = TextAlign.End,
+                    maxLines = 1,
+                )
+            }
+        }
         Text(
             text = stringResource(CoreR.string.altitude_temp_value, day.tempMin),
             modifier = Modifier.width(52.dp),
