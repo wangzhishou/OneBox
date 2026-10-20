@@ -146,7 +146,8 @@ data object AppToastHost {
     fun showFileSuccessToast(
         uri: Uri?,
         message: String,
-        icon: ImageVector = Icons.Outlined.LineSave
+        icon: ImageVector = Icons.Outlined.LineSave,
+        trigger: ReviewPromptTrigger = ReviewPromptTrigger.SAVE_SUCCESS
     ) {
         val handler = fileOpenHandler
         scope.launch {
@@ -169,7 +170,7 @@ data object AppToastHost {
             }
             // Toast 消失后再上报,避免评分弹层与 Toast 互相遮挡;
             // 上报内部自带 runCatching,异常绝不能影响保存主流程
-            ReviewPromptHost.notifySuccess(ReviewPromptTrigger.SAVE_SUCCESS)
+            ReviewPromptHost.notifySuccess(trigger)
         }
     }
 

@@ -183,6 +183,140 @@ class ActivityLogRecorder @Inject constructor(
         )
     }
 
+    // ── 压缩包制作 / 解压 ────────────────────────────
+
+    /**
+     * 制作压缩包成功。压缩包保存到 SAF 后授权可能过期，操作记录里仍保留原 URI，
+     * 点开打不开时由页面自行提示，不影响记录本身。
+     */
+    suspend fun recordArchiveCreated(
+        archiveName: String,
+        fileCount: Int,
+        archiveUri: String,
+        timestamp: Date = Date()
+    ) {
+        val displayName = archiveName.ifBlank {
+            context.getString(R.string.activity_log_archive_unnamed)
+        }
+        val count = fileCount.coerceAtLeast(0)
+        repository.record(
+            ActivityLogEntry(
+                category = ActivityCategory.ARCHIVE,
+                appTitle = context.getString(R.string.activity_log_archive_app_title),
+                title = context.getString(R.string.activity_log_archive_created_title),
+                description = context.resources.getQuantityString(
+                    R.plurals.activity_log_archive_created_description,
+                    count,
+                    displayName,
+                    count
+                ),
+                payload = archivePayload(
+                    actionType = ARCHIVE_ACTION_CREATE,
+                    archiveName = displayName,
+                    archiveUri = archiveUri,
+                    destinationUri = archiveUri,
+                    fileCount = count
+                ),
+                dedupKey = "archive_create_${timestamp.time}",
+                createdAt = timestamp
+            )
+        )
+    }
+
+    /**
+     * 整包解压成功，[folderUri] 是新建出来的目标文件夹（document URI），供点击回跳。
+     */
+    suspend fun recordArchiveExtracted(
+        archiveName: String,
+        fileCount: Int,
+        folderName: String,
+        archiveUri: String,
+        folderUri: String,
+        timestamp: Date = Date()
+    ) {
+        val count = fileCount.coerceAtLeast(0)
+        repository.record(
+            ActivityLogEntry(
+                category = ActivityCategory.ARCHIVE,
+                appTitle = context.getString(R.string.activity_log_archive_app_title),
+                title = context.getString(R.string.activity_log_archive_extracted_title),
+                description = context.resources.getQuantityString(
+                    R.plurals.activity_log_archive_extracted_description,
+                    count,
+                    count,
+                    archiveFolderLabel(folderName)
+                ),
+                payload = archivePayload(
+                    actionType = ARCHIVE_ACTION_EXTRACT,
+                    archiveName = archiveName,
+                    archiveUri = archiveUri,
+                    destinationUri = folderUri,
+                    fileCount = count
+                ),
+                dedupKey = "archive_extract_${timestamp.time}",
+                createdAt = timestamp
+            )
+        )
+    }
+
+    /**
+     * 单个条目解压成功，[fileUri] 是写出的目标文件，点击回跳到它所在的目录。
+     */
+    suspend fun recordArchiveEntryExtracted(
+        fileName: String,
+        folderName: String,
+        archiveUri: String,
+        fileUri: String,
+        timestamp: Date = Date()
+    ) {
+        val displayName = fileName.ifBlank {
+            context.getString(R.string.activity_log_archive_unnamed)
+        }
+        repository.record(
+            ActivityLogEntry(
+                category = ActivityCategory.ARCHIVE,
+                appTitle = context.getString(R.string.activity_log_archive_app_title),
+                title = context.getString(R.string.activity_log_archive_entry_extracted_title),
+                description = context.getString(
+                    R.string.activity_log_archive_entry_extracted_description,
+                    displayName,
+                    archiveFolderLabel(folderName)
+                ),
+                payload = archivePayload(
+                    actionType = ARCHIVE_ACTION_EXTRACT_FILE,
+                    archiveName = context.getString(R.string.activity_log_archive_unnamed),
+                    archiveUri = archiveUri,
+                    destinationUri = fileUri,
+                    fileName = displayName,
+                    fileCount = 1
+                ),
+                dedupKey = "archive_extract_file_${timestamp.time}",
+                createdAt = timestamp
+            )
+        )
+    }
+
+    private fun archiveFolderLabel(folderName: String): String =
+        folderName.ifBlank { context.getString(R.string.activity_log_archive_unknown_folder) }
+
+    private fun archivePayload(
+        actionType: String,
+        archiveName: String,
+        archiveUri: String,
+        destinationUri: String = "",
+        fileName: String = "",
+        fileCount: Int = 0
+    ): String = JSONObject().apply {
+        put("actionType", actionType)
+        put("archiveName", archiveName)
+        // 保留原始 content URI：操作记录跳转走 FileBrowser/ZipBrowser，能直接吃 SAF URI；
+        // 转成 file:// 会丢掉「解压出的那个子文件夹」，只剩父目录。
+        put("archiveUri", archiveUri)
+        put("destinationUri", destinationUri)
+        put("fileName", fileName)
+        put("fileCount", fileCount)
+    }.toString()
+
     // ── 笔记 ────────────────────────────────────────
 
     suspend fun recordNote(
@@ -721,5 +855,16 @@ class ActivityLogRecorder @Inject constructor(
     private fun String?.toLogUri(): String {
         if (this.isNullOrBlank()) return this ?: ""
         return SafUriUtils.toFileUri(context, this) ?: this
+    }
+
+    companion object {
+        /** 压缩包制作（payload.actionType） */
+        const val ARCHIVE_ACTION_CREATE = "CREATE"
+
+        /** 整个压缩包解压 */
+        const val ARCHIVE_ACTION_EXTRACT = "EXTRACT"
+
+        /** 单个条目解压 */
+        const val ARCHIVE_ACTION_EXTRACT_FILE = "EXTRACT_FILE"
     }
 }

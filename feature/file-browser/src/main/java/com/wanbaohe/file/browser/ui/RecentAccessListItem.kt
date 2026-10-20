@@ -123,11 +123,8 @@ private fun RecentAccessThumbnail(
         }
     } else {
         val icon: ImageVector = if (isFolder) com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFolder else Icons.AutoMirrored.Filled.InsertDriveFile
-        val tint = if (isFolder) {
-            MaterialTheme.colorScheme.onPrimaryContainer
-        } else {
-            MaterialTheme.colorScheme.surfaceContainer
-        }
+        // 文件图标与文件夹同一强调色；surfaceContainer 在浅色卡片上几乎看不见
+        val tint = MaterialTheme.colorScheme.onPrimaryContainer
         Icon(
             imageVector = icon,
             contentDescription = if (isFolder) "文件夹" else "文件",

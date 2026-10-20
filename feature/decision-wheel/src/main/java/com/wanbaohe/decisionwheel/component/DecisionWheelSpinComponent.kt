@@ -13,6 +13,8 @@ import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
 import com.wanbaohe.com.color.ColorGenerator
+import com.wanbaohe.core.ui.review.ReviewPromptHost
+import com.wanbaohe.core.ui.review.ReviewPromptTrigger
 import com.wanbaohe.decisionwheel.data.DecisionWheelPresetsProvider
 import com.wanbaohe.decisionwheel.data.WheelRepository
 import com.wanbaohe.decisionwheel.data.WheelSettingsHolder
@@ -367,6 +369,10 @@ class DecisionWheelSpinComponent @AssistedInject internal constructor(
             _uiState.update {
                 it.copy(isSpinning = false, settledIndex = winnerIndex, showResult = true)
             }
+
+            // 结果已落库并展示 = 用户刚拿到价值,报给应用内评分弹层做门控判断
+            // (真正弹不弹由 InAppReviewPrompt 的次数门槛/冷却/Play 配额决定)
+            ReviewPromptHost.notifySuccess(ReviewPromptTrigger.DECISION_WHEEL_SUCCESS)
 
             // 停稳:转动声淡出,同时补一记结果揭示音,两段交叉着走
             spinSoundJob?.cancel()

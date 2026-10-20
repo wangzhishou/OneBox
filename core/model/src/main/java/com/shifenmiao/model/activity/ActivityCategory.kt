@@ -22,6 +22,9 @@ enum class ActivityCategory {
     /** 文件格式转换（PDF、文档等） */
     FILE_CONVERT,
 
+    /** 压缩包制作 / 解压 */
+    ARCHIVE,
+
     /** 笔记编辑 */
     NOTE_EDIT,
 

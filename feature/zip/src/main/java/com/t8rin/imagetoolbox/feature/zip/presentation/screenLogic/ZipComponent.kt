@@ -22,6 +22,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import com.arkivanov.decompose.ComponentContext
+import com.shifenmiao.database.activity.ActivityLogRecorder
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.image.ShareProvider
 import com.t8rin.imagetoolbox.core.domain.utils.runSuspendCatching
@@ -31,6 +32,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.state.update
 import com.t8rin.imagetoolbox.feature.zip.domain.ZipManager
 import com.t8rin.imagetoolbox.feature.zip.domain.ZipProgress
 import com.t8rin.imagetoolbox.feature.zip.domain.ZipSourceFile
+import com.t8rin.logger.makeLog
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -43,6 +45,7 @@ class ZipComponent @AssistedInject internal constructor(
     @Assisted val onGoBack: () -> Unit,
     private val zipManager: ZipManager,
     private val shareProvider: ShareProvider,
+    private val activityLogRecorder: ActivityLogRecorder,
     dispatchersHolder: DispatchersHolder
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
@@ -147,9 +150,25 @@ class ZipComponent @AssistedInject internal constructor(
             }
 
             _isSaving.value = false
-            result.onSuccess { _savedArchiveUri.value = it }
+            result.onSuccess { savedUri ->
+                _savedArchiveUri.value = savedUri
+                recordArchiveCreated(savedUri)
+            }
             onResult(result)
         }
+    }
+
+    /**
+     * 写操作记录（操作记录页可点回压缩包）。失败只打日志，绝不能影响保存成功提示。
+     */
+    private suspend fun recordArchiveCreated(archiveUri: Uri) {
+        runCatching {
+            activityLogRecorder.recordArchiveCreated(
+                archiveName = zipManager.displayName(archiveUri.toString()).orEmpty(),
+                fileCount = _uris.value.size,
+                archiveUri = archiveUri.toString()
+            )
+        }.onFailure { it.makeLog("ZipComponent") }
     }
 
     fun shareSavedArchive(onComplete: () -> Unit) {

@@ -61,6 +61,7 @@ import com.t8rin.imagetoolbox.feature.zip.presentation.components.ZipLoadingStat
 import com.t8rin.imagetoolbox.feature.zip.presentation.components.ZipProgressDialog
 import com.t8rin.imagetoolbox.feature.zip.presentation.screenLogic.ZipBrowserComponent
 import com.t8rin.imagetoolbox.feature.zip.presentation.screenLogic.ZipBrowserItem
+import com.wanbaohe.core.ui.review.ReviewPromptTrigger
 
 @Composable
 fun ZipBrowserContent(component: ZipBrowserComponent) {
@@ -97,7 +98,8 @@ fun ZipBrowserContent(component: ZipBrowserComponent) {
                     )
                     AppToastHost.showFileSuccessToast(
                         uri = extractedFolderUri,
-                        message = message
+                        message = message,
+                        trigger = ReviewPromptTrigger.ARCHIVE_SUCCESS
                     )
                 }.onFailure {
                     showZipFailure(resources, it)
@@ -116,7 +118,8 @@ fun ZipBrowserContent(component: ZipBrowserComponent) {
                 result.onSuccess { extractedUri ->
                     AppToastHost.showFileSuccessToast(
                         uri = extractedUri,
-                        message = resources.getString(R.string.zip_file_saved)
+                        message = resources.getString(R.string.zip_file_saved),
+                        trigger = ReviewPromptTrigger.ARCHIVE_SUCCESS
                     )
                 }.onFailure {
                     showZipFailure(resources, it)

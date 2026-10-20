@@ -12,6 +12,15 @@ enum class ReviewPromptTrigger {
     /** 文件保存成功(com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost.showFileSuccessToast) */
     SAVE_SUCCESS,
 
+    /** 压缩包制作 / 解压成功(AppToastHost.showFileSuccessToast 由压缩包页面传入) */
+    ARCHIVE_SUCCESS,
+
+    /** 网络测速跑完并落库(SpeedTestComponent) */
+    SPEED_TEST_SUCCESS,
+
+    /** 决策转盘停稳、结果已出(DecisionWheelSpinComponent.onSpinSettled) */
+    DECISION_WHEEL_SUCCESS,
+
     /** AI 一轮问答成功落库(MessagePersistenceWorker.onChatCompletionEnd) */
     AI_ANSWER_SUCCESS,
 

@@ -341,6 +341,13 @@ internal class AndroidZipManager @Inject constructor(
         if (uri.scheme == "file") {
             return uri.path?.substringAfterLast('/')?.let(Uri::decode)
         }
+        // 目录树 URI（解压目标）在 OpenableColumns 里没有 DISPLAY_NAME，需按 tree 取
+        if (runCatching { DocumentsContract.isTreeUri(uri) }.getOrDefault(false)) {
+            runCatching { DocumentFile.fromTreeUri(context, uri)?.name }
+                .getOrNull()
+                ?.takeIf { it.isNotBlank() }
+                ?.let { return it }
+        }
         return runCatching {
             context.contentResolver.query(
                 uri,

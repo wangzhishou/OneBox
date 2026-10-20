@@ -32,7 +32,7 @@ import kotlin.coroutines.resume
  */
 object InAppReviewPrompt {
 
-    /** 累计成功时刻(保存成功/AI 回答成功/小游戏通关)达到该次数后才考虑弹评分层 */
+    /** 累计成功时刻(保存/压缩解压/测速/转盘/AI 回答/小游戏通关)达到该次数后才考虑弹评分层 */
     private const val PROMPT_AFTER_MOMENTS = 3
 
     /** 每个安装最多发起弹出的次数 */

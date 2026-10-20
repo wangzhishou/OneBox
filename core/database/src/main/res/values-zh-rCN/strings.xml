@@ -43,4 +43,18 @@
     <string name="activity_log_poem_app_title">中国古诗词</string>
     <string name="activity_log_todo_app_title">待办清单</string>
     <string name="activity_log_xiangqi_app_title">中国象棋</string>
+    <!-- 压缩包制作/解压活动日志 -->
+    <string name="activity_log_archive_app_title">文件压缩</string>
+    <string name="activity_log_archive_created_title">制作压缩包</string>
+    <string name="activity_log_archive_extracted_title">解压压缩包</string>
+    <string name="activity_log_archive_entry_extracted_title">解压文件</string>
+    <string name="activity_log_archive_entry_extracted_description">已解压「%1$s」到「%2$s」</string>
+    <string name="activity_log_archive_unnamed">压缩包</string>
+    <string name="activity_log_archive_unknown_folder">所选文件夹</string>
+    <plurals name="activity_log_archive_created_description">
+        <item quantity="other">已保存「%1$s」，共 %2$d 个文件</item>
+    </plurals>
+    <plurals name="activity_log_archive_extracted_description">
+        <item quantity="other">已解压 %1$d 个文件到「%2$s」</item>
+    </plurals>
 </resources>

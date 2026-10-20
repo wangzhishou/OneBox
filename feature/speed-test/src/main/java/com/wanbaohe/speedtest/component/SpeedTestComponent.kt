@@ -3,6 +3,8 @@ package com.wanbaohe.speedtest.component
 import com.arkivanov.decompose.ComponentContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.review.ReviewPromptHost
+import com.wanbaohe.core.ui.review.ReviewPromptTrigger
 import com.wanbaohe.speedtest.data.NetworkHelper
 import com.wanbaohe.speedtest.data.SpeedTestConfig
 import com.wanbaohe.speedtest.data.SpeedTestConfigRepository
@@ -92,6 +94,9 @@ class SpeedTestComponent @AssistedInject internal constructor(
                             latencyMs = phase.record.latencyMs, measuringLatency = false,
                             liveMbps = phase.record.downloadMbps, progress = 1f
                         )
+                        // 测速跑完并落库 = 用户刚拿到价值,报给应用内评分弹层做门控判断
+                        // (真正弹不弹由 InAppReviewPrompt 的次数门槛/冷却/Play 配额决定)
+                        ReviewPromptHost.notifySuccess(ReviewPromptTrigger.SPEED_TEST_SUCCESS)
                     }
                     is SpeedTestPhase.Error ->
                         _uiState.value = _uiState.value.copy(

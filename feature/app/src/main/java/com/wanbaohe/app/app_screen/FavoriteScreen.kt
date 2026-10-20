@@ -95,6 +95,7 @@ import java.util.Locale
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAgent
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAiChat
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAiDuelChat
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineArchive
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAudioFile
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBlog
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBook
@@ -936,6 +937,7 @@ private fun recordCategoryIcon(category: ActivityCategory): ImageVector = when (
     ActivityCategory.AI_AGENT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAgent
     ActivityCategory.IMAGE_EDIT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImage
     ActivityCategory.FILE_CONVERT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineResizeConvert
+    ActivityCategory.ARCHIVE -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineArchive
     ActivityCategory.NOTE_EDIT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineNote
     ActivityCategory.HTML_EDIT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMarkdownEdit
     ActivityCategory.AUDIO_EDIT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAudioFile

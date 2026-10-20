@@ -126,7 +126,7 @@ class FileBrowserComponent @AssistedInject internal constructor(
             }.launchIn(CoroutineScope(defaultDispatcher))
         componentScope.launch {
             if (initialUri != null) {
-                // 直接加载目录：content tree URI 或 file:// 目录
+                // 直接加载目录：content tree URI、document 目录 URI 或 file:// 目录
                 // 其他情况当作文件，找其父目录并高亮文件名
                 val isDirectory = when {
                     initialUri.scheme == "content" && DocumentsContract.isTreeUri(initialUri) -> true
@@ -134,7 +134,8 @@ class FileBrowserComponent @AssistedInject internal constructor(
                         val f = initialUri.path?.let { java.io.File(it) }
                         f != null && f.isDirectory
                     }
-                    else -> false
+                    // 解压记录跳转过来的目标是「新建的文件夹」，它是 tree 下的 document URI，不是 tree URI
+                    else -> fileHelper.isDirectoryUri(initialUri)
                 }
                 if (isDirectory) {
                     loadDirectory(initialUri)

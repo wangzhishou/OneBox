@@ -160,11 +160,8 @@ private fun FileIcon(
             mimeType = item.mimeType
         )
 
-        val tint = if (item.isDirectory) {
-            MaterialTheme.colorScheme.onPrimaryContainer
-        } else {
-            MaterialTheme.colorScheme.surfaceContainer
-        }
+        // 文件图标与文件夹同一强调色；surfaceContainer 在浅色卡片上几乎看不见
+        val tint = MaterialTheme.colorScheme.onPrimaryContainer
 
         Icon(
             imageVector = icon,

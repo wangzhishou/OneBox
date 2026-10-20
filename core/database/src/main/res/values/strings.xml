@@ -43,4 +43,20 @@
     <string name="activity_log_poem_app_title">Chinese Poetry</string>
     <string name="activity_log_todo_app_title">To-Do List</string>
     <string name="activity_log_xiangqi_app_title">Chinese Chess</string>
+    <!-- Archive create/extract activity log entries -->
+    <string name="activity_log_archive_app_title">File archive</string>
+    <string name="activity_log_archive_created_title">Archive created</string>
+    <string name="activity_log_archive_extracted_title">Archive extracted</string>
+    <string name="activity_log_archive_entry_extracted_title">File extracted</string>
+    <string name="activity_log_archive_entry_extracted_description">Extracted %1$s to %2$s</string>
+    <string name="activity_log_archive_unnamed">archive</string>
+    <string name="activity_log_archive_unknown_folder">the selected folder</string>
+    <plurals name="activity_log_archive_created_description">
+        <item quantity="one">Saved %1$s · %2$d file</item>
+        <item quantity="other">Saved %1$s · %2$d files</item>
+    </plurals>
+    <plurals name="activity_log_archive_extracted_description">
+        <item quantity="one">Extracted %1$d file to %2$s</item>
+        <item quantity="other">Extracted %1$d files to %2$s</item>
+    </plurals>
 </resources>

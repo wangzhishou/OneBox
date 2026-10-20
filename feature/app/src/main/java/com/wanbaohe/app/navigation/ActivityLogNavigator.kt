@@ -1,6 +1,8 @@
 package com.wanbaohe.app.navigation
 
+import android.net.Uri
 import com.shifenmiao.common.handle.AIConversationNavigation
+import com.shifenmiao.database.activity.ActivityLogRecorder
 import com.shifenmiao.database.data_draft.DataDraftHelper
 import com.shifenmiao.model.ListItemType
 import com.shifenmiao.model.activity.ActivityCategory
@@ -44,6 +46,7 @@ object ActivityLogNavigator {
             ActivityCategory.HOUSEHOLD -> Screen.HouseholdItems()
             ActivityCategory.PERIOD -> Screen.Period()
             ActivityCategory.POEM -> resolvePoem(payload)
+            ActivityCategory.ARCHIVE -> resolveArchive(payload)
             else -> resolveByScreenRoute(entry)
         }
     }
@@ -180,6 +183,32 @@ object ActivityLogNavigator {
         return when {
             poemId == null || actionType.equals("DELETE", ignoreCase = true) -> Screen.Poem()
             else -> Screen.Poem(poemId = poemId)
+        }
+    }
+
+    // ── 压缩包制作 / 解压 ────────────────────────────
+
+    private fun resolveArchive(payload: JSONObject?): Screen? {
+        payload ?: return null
+        val destinationUri = payload.optString("destinationUri").takeIf { it.isNotBlank() }
+        val archiveUri = payload.optString("archiveUri").takeIf { it.isNotBlank() }
+        return when (payload.optString("actionType")) {
+            // 解压：回到解压结果所在的文件夹/文件（FileBrowser 对文件 URI 会打开父目录并高亮）
+            ActivityLogRecorder.ARCHIVE_ACTION_EXTRACT,
+            ActivityLogRecorder.ARCHIVE_ACTION_EXTRACT_FILE -> {
+                destinationUri?.let { destination ->
+                    runCatching {
+                        Screen.FileBrowser(initialUri = Uri.parse(destination))
+                    }.getOrNull()
+                } ?: archiveUri?.let { archive ->
+                    runCatching { Screen.ZipBrowser(uri = Uri.parse(archive)) }.getOrNull()
+                }
+            }
+
+            // 制作压缩包：打开刚保存的压缩包浏览
+            else -> archiveUri?.let { archive ->
+                runCatching { Screen.ZipBrowser(uri = Uri.parse(archive)) }.getOrNull()
+            } ?: Screen.Zip()
         }
     }
 

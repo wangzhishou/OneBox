@@ -42,6 +42,7 @@ import com.t8rin.imagetoolbox.feature.zip.presentation.components.ZipEmptyState
 import com.t8rin.imagetoolbox.feature.zip.presentation.components.ZipProgressDialog
 import com.t8rin.imagetoolbox.feature.zip.presentation.components.ZipSourceFileList
 import com.t8rin.imagetoolbox.feature.zip.presentation.screenLogic.ZipComponent
+import com.wanbaohe.core.ui.review.ReviewPromptTrigger
 
 @Composable
 fun ZipContent(component: ZipComponent) {
@@ -62,7 +63,8 @@ fun ZipContent(component: ZipComponent) {
                 result.onSuccess { savedUri ->
                     AppToastHost.showFileSuccessToast(
                         uri = savedUri,
-                        message = resources.getString(R.string.zip_saved_message)
+                        message = resources.getString(R.string.zip_saved_message),
+                        trigger = ReviewPromptTrigger.ARCHIVE_SUCCESS
                     )
                 }.onFailure {
                     AppToastHost.showFailureToast(it)

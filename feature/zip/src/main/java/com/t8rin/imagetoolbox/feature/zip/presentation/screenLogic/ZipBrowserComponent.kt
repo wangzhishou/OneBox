@@ -22,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import androidx.core.net.toUri
+import com.shifenmiao.database.activity.ActivityLogRecorder
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.utils.runSuspendCatching
 import com.t8rin.imagetoolbox.core.domain.utils.smartJob
@@ -36,6 +37,7 @@ import com.t8rin.imagetoolbox.feature.zip.domain.ZipManager
 import com.t8rin.imagetoolbox.feature.zip.domain.ZipProgress
 import com.t8rin.imagetoolbox.feature.zip.data.ZipExtractPrefs
 import com.t8rin.imagetoolbox.feature.zip.data.resolveExtractStartUri
+import com.t8rin.logger.makeLog
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -49,6 +51,7 @@ class ZipBrowserComponent @AssistedInject internal constructor(
     @Assisted val onGoBack: () -> Unit,
     private val zipManager: ZipManager,
     private val extractPrefs: ZipExtractPrefs,
+    private val activityLogRecorder: ActivityLogRecorder,
     settingsProvider: SettingsProvider,
     dispatchersHolder: DispatchersHolder
 ) : BaseComponent(dispatchersHolder, componentContext) {
@@ -221,6 +224,9 @@ class ZipBrowserComponent @AssistedInject internal constructor(
             }
 
             _isExtracting.value = false
+            result.onSuccess { folderUri ->
+                recordArchiveExtracted(folderUri)
+            }
             onResult(result)
         }
     }
@@ -253,8 +259,39 @@ class ZipBrowserComponent @AssistedInject internal constructor(
             }
 
             _isExtracting.value = false
+            result.onSuccess { fileUri ->
+                recordArchiveEntryExtracted(entry.name, fileUri)
+            }
             onResult(result)
         }
+    }
+
+    /**
+     * 写操作记录（操作记录页可点回解压出的文件夹）。失败只打日志，
+     * 绝不能影响解压成功提示。
+     */
+    private suspend fun recordArchiveExtracted(folderUri: Uri) {
+        runCatching {
+            activityLogRecorder.recordArchiveExtracted(
+                archiveName = _archiveName.value,
+                fileCount = fileCount,
+                folderName = zipManager.displayName(folderUri.toString()).orEmpty(),
+                archiveUri = sourceUri.toString(),
+                folderUri = folderUri.toString()
+            )
+        }.onFailure { it.makeLog("ZipBrowserComponent") }
+    }
+
+    private suspend fun recordArchiveEntryExtracted(fileName: String, fileUri: Uri) {
+        runCatching {
+            activityLogRecorder.recordArchiveEntryExtracted(
+                fileName = fileName,
+                // 单文件解压拿不到父目录显示名，记录里用「所选文件夹」兜底
+                folderName = "",
+                archiveUri = sourceUri.toString(),
+                fileUri = fileUri.toString()
+            )
+        }.onFailure { it.makeLog("ZipBrowserComponent") }
     }
 
     fun cancelExtraction() {
