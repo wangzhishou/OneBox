@@ -214,7 +214,12 @@ fun EnhancedDropdownMenu(
 
     val startPadding = contentPadding.calculateStartPadding(LayoutDirection.Ltr)
     val endPadding = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
-    val verticalPadding = contentPadding.calculateTopPadding()
+    // 气泡主体被箭头切掉一侧 [BUBBLE_ARROW_SIZE]：那一侧补回箭头高度，
+    // 内容在气泡主体里的上下留白才和另一侧一致，而不是只有 2dp。
+    val topPadding = contentPadding.calculateTopPadding() +
+        if (expandUp) 0.dp else BUBBLE_ARROW_SIZE
+    val bottomPadding = contentPadding.calculateBottomPadding() +
+        if (expandUp) BUBBLE_ARROW_SIZE else 0.dp
 
     // 层叠定位容器的位置(包住入口按钮的那个 Box),用来算弹窗贴哪一边
     var containerBounds by remember { mutableStateOf<Rect?>(null) }
@@ -256,7 +261,7 @@ fun EnhancedDropdownMenu(
         val maxMenuHeight = minOf(
             maxHeight,
             with(density) {
-                val reserved = BUBBLE_ARROW_SIZE + offset + MENU_SCREEN_MARGIN + verticalPadding * 2
+                val reserved = offset + MENU_SCREEN_MARGIN + topPadding + bottomPadding
                 (windowSize.height - reserved.roundToPx()).coerceAtLeast(0).toDp()
             }
         )
@@ -349,8 +354,8 @@ fun EnhancedDropdownMenu(
                             .padding(
                                 start = startPadding,
                                 end = endPadding,
-                                top = verticalPadding,
-                                bottom = verticalPadding
+                                top = topPadding,
+                                bottom = bottomPadding
                             ),
                         content = content
                     )
