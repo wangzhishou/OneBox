@@ -110,4 +110,9 @@
     <string name="collapse">Put it away.</string>
     <string name="dialog_clear_recents_title">Clear Recents</string>
     <string name="dialog_clear_recents_message">Clear all recent access records? This cannot be undone.</string>
+
+    <!-- 分区存储受限时的空目录说明(Google 渠道没有 MANAGE_EXTERNAL_STORAGE) -->
+    <string name="empty_folder_storage_limited_title">Folder can\'t be listed</string>
+    <string name="empty_folder_storage_limited_message">Android hides documents, archives and other non-media files from apps without full storage access. Choose a folder to grant access, or open the file from your system file manager.</string>
+
 </resources>

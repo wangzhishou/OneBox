@@ -59,6 +59,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
@@ -74,6 +75,8 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFolderPicker
+import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.hasAllFilesAccess
+import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.isAllFilesAccessDeclared
 import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.takePersistablePermission
 import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavItem
 import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavigationBar
@@ -133,6 +136,7 @@ fun FileBrowserScreen(
     val selectionMode by fileBrowserComponent.selectionMode.collectAsState()
     val selectedUris by fileBrowserComponent.selectedUris.collectAsState()
 
+    val context = LocalContext.current
     val isSearchMode = remember { mutableStateOf(false) }
     val searchQuery = remember { mutableStateOf("") }
 
@@ -143,6 +147,19 @@ fun FileBrowserScreen(
         }
     )
     val coroutineScope = rememberCoroutineScope()
+
+    /*
+     * Google 渠道没有 MANAGE_EXTERNAL_STORAGE，分区存储会把文档/压缩包这类非媒体文件
+     * 从 File.listFiles() 里直接过滤掉，目录看起来是空的。这种情况不能只显示
+     * "空文件夹"，否则用户既没权限也没解释 —— 空态里要给 SAF 选目录的入口。
+     * 声明了权限但还没授权的渠道由顶部的授权卡片负责引导，这里不重复。
+     */
+    val storageListingRestricted = remember(context, currentUri) {
+        !context.isAllFilesAccessDeclared() &&
+                !context.hasAllFilesAccess() &&
+                (currentUri == null || currentUri?.scheme == "file")
+    }
+
     val showDeleteDialog = remember { mutableStateOf(false) }
     val showClearRecentsDialog = remember { mutableStateOf(false) }
     val showRenameDialog = remember { mutableStateOf(false) }
@@ -326,7 +343,9 @@ fun FileBrowserScreen(
                 isPortrait = true,
                 onRecentClick = fileBrowserComponent::openRecent,
                 viewMode = viewMode,
-                searchQuery = if (isSearchMode.value) searchQuery.value else ""
+                searchQuery = if (isSearchMode.value) searchQuery.value else "",
+                storageListingRestricted = storageListingRestricted,
+                onPickFolder = { folderPicker.pickFolder() }
             )
 
             if (selectionMode != FileBrowserComponent.SelectionMode.NONE) {
@@ -393,7 +412,9 @@ fun FileBrowserScreen(
                         isPortrait = false,
                         onRecentClick = fileBrowserComponent::openRecent,
                         viewMode = viewMode,
-                        searchQuery = if (isSearchMode.value) searchQuery.value else ""
+                        searchQuery = if (isSearchMode.value) searchQuery.value else "",
+                        storageListingRestricted = storageListingRestricted,
+                        onPickFolder = { folderPicker.pickFolder() }
                     )
 
                     if (selectionMode != FileBrowserComponent.SelectionMode.NONE) {
@@ -629,6 +650,30 @@ fun FileBrowserScreen(
  * Navigation toolbar showing breadcrumb, view mode toggle, and sort options.
  * Placed below the title bar for a flat, modern UI experience.
  */
+/**
+ * 深路径的面包屑只留尾部。
+ *
+ * 整条路径横向排列时会一直向右滚，左边被裁成 "wnload / …"，既看不出省略也没有
+ * 可读的层级。这里压成 "… / 父目录 / 当前目录"：省略号可以点，跳回被折叠的上一层。
+ */
+private fun shortenBreadcrumbs(
+    breadcrumbs: List<Pair<String, android.net.Uri?>>
+): List<Pair<String, android.net.Uri?>> {
+    if (breadcrumbs.size <= MAX_BREADCRUMB_SEGMENTS) {
+        return breadcrumbs.map { (name, uri) -> name.truncateSegment() to uri }
+    }
+    val tail = breadcrumbs.takeLast(MAX_BREADCRUMB_SEGMENTS - 1)
+    val hiddenParent = breadcrumbs[breadcrumbs.size - tail.size - 1]
+    return listOf("…" to hiddenParent.second) +
+            tail.map { (name, uri) -> name.truncateSegment() to uri }
+}
+
+/** 单个目录名过长时自己省掉结尾，保证三段以内一定能塞进一行 */
+private fun String.truncateSegment(maxLength: Int = 18): String =
+    if (length <= maxLength) this else take(maxLength - 1) + "…"
+
+private const val MAX_BREADCRUMB_SEGMENTS = 3
+
 @Composable
 private fun NavigationToolbar(
     breadcrumbs: List<Pair<String, android.net.Uri?>>,
@@ -644,9 +689,10 @@ private fun NavigationToolbar(
     val scrollState = rememberScrollState()
     var sortMenuExpanded by remember { mutableStateOf(false) }
     val iconSize = 16.dp
+    val visibleBreadcrumbs = remember(breadcrumbs) { shortenBreadcrumbs(breadcrumbs) }
 
     // 面包屑保持单行横向滚动;路径超长时自动滚到末尾,保证当前目录始终可见
-    LaunchedEffect(breadcrumbs) {
+    LaunchedEffect(visibleBreadcrumbs) {
         withFrameNanos { }
         scrollState.scrollTo(scrollState.maxValue)
     }
@@ -691,8 +737,8 @@ private fun NavigationToolbar(
                 .horizontalScroll(scrollState),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            breadcrumbs.forEachIndexed { index, (name, uri) ->
-                val isLast = index == breadcrumbs.size - 1
+            visibleBreadcrumbs.forEachIndexed { index, (name, uri) ->
+                val isLast = index == visibleBreadcrumbs.size - 1
 
                 Text(
                     text = name,
@@ -829,7 +875,9 @@ private fun ColumnScope.FileBrowserContent(
     isPortrait: Boolean,
     onRecentClick: ((android.net.Uri) -> Unit)? = null,
     viewMode: FileBrowserViewMode = FileBrowserViewMode.LIST,
-    searchQuery: String = ""
+    searchQuery: String = "",
+    storageListingRestricted: Boolean = false,
+    onPickFolder: (() -> Unit)? = null,
 ) {
     val horizontalPadding = if (isPortrait) 16.dp else 8.dp
     val contentPadding = PaddingValues(
@@ -870,7 +918,9 @@ private fun ColumnScope.FileBrowserContent(
 
         is FileBrowserState.Empty -> {
             EmptyFolderState(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                showStorageHint = storageListingRestricted,
+                onPickFolder = onPickFolder
             )
         }
 

@@ -1,7 +1,6 @@
 package com.shifenmiao.base.ui.card
 
 import android.os.Build
-import android.os.Environment
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -32,6 +31,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.theme.AppTheme
 import com.shifenmiao.core.R
+import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.hasAllFilesAccess
+import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.isAllFilesAccessDeclared
 import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.manageAppAllFilesIntent
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassCardColors
@@ -47,21 +48,8 @@ fun AllFilesAccessPermissionCard(
     onRequestAllFilesAccessFailed: () -> Unit = { }
 ) {
     val context = LocalContext.current
-    fun hasAllFilesAccessPermission(): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            Environment.isExternalStorageManager()
-        } else {
-            true
-        }
-    }
     // google 渠道按 Play 政策移除了 MANAGE_EXTERNAL_STORAGE 声明，
     // 未声明时系统设置页的开关是灰的、永远无法授权，不再展示引导卡片
-    fun isAllFilesAccessDeclared(): Boolean = runCatching {
-        context.packageManager
-            .getPackageInfo(context.packageName, android.content.pm.PackageManager.GET_PERMISSIONS)
-            .requestedPermissions
-            ?.contains(android.Manifest.permission.MANAGE_EXTERNAL_STORAGE) == true
-    }.getOrDefault(false)
     // 用于触发权限返回后的 UI 刷新
     var permissionInvalidator by remember { mutableIntStateOf(0) }
     val checkPermissionLauncher = rememberLauncherForActivityResult(
@@ -71,7 +59,7 @@ fun AllFilesAccessPermissionCard(
     }
     LaunchedEffect(permissionInvalidator) {
         if (permissionInvalidator > 0) {
-            if (hasAllFilesAccessPermission()) {
+            if (context.hasAllFilesAccess()) {
                 onRequestAllFilesAccessSuccess()
             } else {
                 onRequestAllFilesAccessFailed()
@@ -79,8 +67,8 @@ fun AllFilesAccessPermissionCard(
         }
     }
     val needAllFilesAccessCard =
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !hasAllFilesAccessPermission() &&
-                isAllFilesAccessDeclared()
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !context.hasAllFilesAccess() &&
+                context.isAllFilesAccessDeclared()
     if (needAllFilesAccessCard) {
         GlassCard(
             modifier = modifier.fillMaxWidth(),

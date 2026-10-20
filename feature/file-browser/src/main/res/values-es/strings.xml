@@ -75,4 +75,7 @@
     <string name="cd_open_search">Abrir búsqueda</string>
     <string name="cd_close_search">Cerrar búsqueda</string>
     <string name="cd_clear_search">Borrar contenido de búsqueda</string>
+
+    <string name="empty_folder_storage_limited_title">No se puede mostrar esta carpeta</string>
+    <string name="empty_folder_storage_limited_message">Por las restricciones de almacenamiento del sistema, la app no puede ver documentos, archivos comprimidos ni otros archivos que no sean multimedia. Pulsa el botón de abajo para autorizar una carpeta, o abre el archivo desde el administrador de archivos del sistema con «Abrir con».</string>
 </resources>

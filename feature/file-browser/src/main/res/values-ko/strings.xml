@@ -75,4 +75,7 @@
     <string name="cd_open_search">검색 열기</string>
     <string name="cd_close_search">검색 닫기</string>
     <string name="cd_clear_search">검색 내용 지우기</string>
+
+    <string name="empty_folder_storage_limited_title">이 폴더를 표시할 수 없음</string>
+    <string name="empty_folder_storage_limited_message">시스템 저장소 제한으로 인해 앱에서 문서, 압축 파일 등 미디어가 아닌 파일을 볼 수 없습니다. 아래 버튼을 눌러 폴더를 허용하거나 시스템 파일 관리자의 「연결 프로그램」에서 여세요.</string>
 </resources>

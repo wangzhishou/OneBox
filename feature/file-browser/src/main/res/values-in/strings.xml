@@ -75,4 +75,7 @@
     <string name="cd_open_search">Buka pencarian</string>
     <string name="cd_close_search">Tutup pencarian</string>
     <string name="cd_clear_search">Hapus isi pencarian</string>
+
+    <string name="empty_folder_storage_limited_title">Tidak dapat menampilkan folder ini</string>
+    <string name="empty_folder_storage_limited_message">Karena batasan penyimpanan sistem, aplikasi tidak dapat melihat dokumen, arsip, dan file non-media lainnya di sini. Ketuk tombol di bawah untuk memberi akses folder, atau buka dari \"Buka dengan\" di pengelola file sistem.</string>
 </resources>

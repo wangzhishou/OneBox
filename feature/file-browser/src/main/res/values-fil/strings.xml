@@ -75,4 +75,7 @@
     <string name="cd_open_search">Buksan ang Paghahanap</string>
     <string name="cd_close_search">Isara ang Paghahanap</string>
     <string name="cd_clear_search">Burahin ang Nilalaman ng Paghahanap</string>
+
+    <string name="empty_folder_storage_limited_title">Hindi mailista ang folder na ito</string>
+    <string name="empty_folder_storage_limited_message">Itinatago ng system storage limit ang mga dokumento, archive at iba pang non-media na file dito. Pumili ng folder para magbigay ng access, o buksan ang file mula sa system file manager.</string>
 </resources>

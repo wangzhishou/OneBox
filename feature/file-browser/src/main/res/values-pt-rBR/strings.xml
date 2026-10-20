@@ -75,4 +75,7 @@
     <string name="cd_open_search">Abrir pesquisa</string>
     <string name="cd_close_search">Fechar pesquisa</string>
     <string name="cd_clear_search">Limpar conteúdo da pesquisa</string>
+
+    <string name="empty_folder_storage_limited_title">Não é possível listar esta pasta</string>
+    <string name="empty_folder_storage_limited_message">Devido às restrições de armazenamento do sistema, o app não consegue ver documentos, arquivos compactados e outros arquivos que não são de mídia aqui. Toque no botão abaixo para autorizar uma pasta ou abra pelo \"Abrir com\" do gerenciador de arquivos do sistema.</string>
 </resources>

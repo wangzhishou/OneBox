@@ -75,4 +75,7 @@
     <string name="cd_open_search">Aramayı aç</string>
     <string name="cd_close_search">Aramayı kapat</string>
     <string name="cd_clear_search">Arama içeriğini temizle</string>
+
+    <string name="empty_folder_storage_limited_title">Bu klasör listelenemiyor</string>
+    <string name="empty_folder_storage_limited_message">Sistem depolama kısıtlamaları nedeniyle uygulama buradaki belgeleri, arşivleri ve diğer medya dışı dosyaları göremez. Erişim vermek için aşağıdaki düğmeye dokunup bir klasör seçin veya sistem dosya yöneticisindeki «Birlikte aç» ile girin.</string>
 </resources>

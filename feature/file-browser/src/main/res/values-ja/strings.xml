@@ -75,4 +75,7 @@
     <string name="cd_open_search">検索を開く</string>
     <string name="cd_close_search">検索を閉じる</string>
     <string name="cd_clear_search">検索内容を消去</string>
+
+    <string name="empty_folder_storage_limited_title">このフォルダを表示できません</string>
+    <string name="empty_folder_storage_limited_message">システムのストレージ制限により、アプリはここにあるドキュメントや圧縮ファイルなどの非メディアファイルを表示できません。下のボタンでフォルダを許可するか、システムのファイルマネージャーの「アプリで開く」から開いてください。</string>
 </resources>

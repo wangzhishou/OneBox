@@ -32,6 +32,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
 import android.provider.Settings
 import android.webkit.MimeTypeMap
 import android.widget.Toast
@@ -697,6 +698,31 @@ object ContextUtils {
             override val fontScale: Float
                 get() = resources.configuration.fontScale
         }
+
+    /**
+     * 当前能否按路径列出存储里的全部文件。
+     *
+     * Android 11 起非媒体文件受分区存储限制：没有"所有文件访问"时 `File.listFiles()`
+     * 会把文档、压缩包等直接过滤掉，目录看起来是空的。
+     */
+    fun Context.hasAllFilesAccess(): Boolean =
+        Build.VERSION.SDK_INT < Build.VERSION_CODES.R || Environment.isExternalStorageManager()
+
+    /**
+     * 清单里是否声明了 MANAGE_EXTERNAL_STORAGE。
+     *
+     * Google 渠道按 Play 政策移除了这条声明，此时系统设置页的开关永远是灰的，
+     * 引导用户去授权没有意义，页面要改用"选择文件夹(SAF)"这条路。
+     */
+    fun Context.isAllFilesAccessDeclared(): Boolean = runCatching {
+        packageManager
+            .getPackageInfo(packageName, android.content.pm.PackageManager.GET_PERMISSIONS)
+            .requestedPermissions
+            ?.contains(Manifest.permission.MANAGE_EXTERNAL_STORAGE) == true
+    }.getOrDefault(false)
+
+    /** 分区存储是否会隐藏非媒体文件（声明了但还没授权也算）。 */
+    fun Context.isStorageListingRestricted(): Boolean = !hasAllFilesAccess()
 
     @RequiresApi(Build.VERSION_CODES.R)
     fun manageAllFilesIntent() = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)

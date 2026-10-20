@@ -75,4 +75,7 @@
     <string name="cd_clear_search">Xóa nội dung tìm kiếm</string>
     <string name="expand">Mở rộng</string>
     <string name="collapse">Thu gọn</string>
+
+    <string name="empty_folder_storage_limited_title">Không thể liệt kê thư mục này</string>
+    <string name="empty_folder_storage_limited_message">Do giới hạn lưu trữ của hệ thống, ứng dụng không thấy được tài liệu, tệp nén và các tệp không phải media ở đây. Nhấn nút bên dưới để cấp quyền cho một thư mục, hoặc mở từ «Mở bằng» trong trình quản lý tệp của hệ thống.</string>
 </resources>
