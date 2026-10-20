@@ -1971,4 +1971,8 @@
     <string name="ai_duel_reset_persona">Сбросить</string>
     <string name="ai_duel_pausing">Дождитесь окончания этой реплики…</string>
     <string name="ai_duel_error_cannot_start">Не удалось начать эту реплику. Проверьте вход, баланс или настройки модели.</string>
+    <string name="media_video_title">Видеоплеер</string>
+    <string name="media_video_description">Воспроизведение локальных видео с поддержкой «картинка в картинке»</string>
+    <string name="media_audio_title">Музыкальный плеер</string>
+    <string name="media_audio_description">Воспроизведение локальных аудиофайлов в фоне</string>
 </resources>

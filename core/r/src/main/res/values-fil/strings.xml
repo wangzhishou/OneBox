@@ -1937,4 +1937,8 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <string name="ai_duel_reset_persona">I-reset</string>
     <string name="ai_duel_pausing">Hintayin matapos ang linyang ito…</string>
     <string name="ai_duel_error_cannot_start">Hindi nasimulan ang linyang ito, pakisuri ang login, credits, o mga setting ng modelo.</string>
+    <string name="media_video_title">Video player</string>
+    <string name="media_video_description">Magpatugtog ng lokal na video, may picture-in-picture</string>
+    <string name="media_audio_title">Music player</string>
+    <string name="media_audio_description">Magpatugtog ng lokal na audio sa background</string>
 </resources>

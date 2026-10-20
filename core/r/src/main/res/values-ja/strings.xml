@@ -1926,4 +1926,8 @@
     <string name="ai_duel_reset_persona">リセット</string>
     <string name="ai_duel_pausing">この文が終わるのを待っています…</string>
     <string name="ai_duel_error_cannot_start">この文を開始できませんでした。ログイン、ポイント、モデル設定を確認してください。</string>
+    <string name="media_video_title">動画プレーヤー</string>
+    <string name="media_video_description">ローカル動画を再生。ピクチャーインピクチャー対応</string>
+    <string name="media_audio_title">音楽プレーヤー</string>
+    <string name="media_audio_description">ローカル音声をバックグラウンドで再生</string>
 </resources>

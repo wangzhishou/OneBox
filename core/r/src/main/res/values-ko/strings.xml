@@ -1926,4 +1926,8 @@
     <string name="ai_duel_reset_persona">초기화</string>
     <string name="ai_duel_pausing">이 문장이 끝나기를 기다리는 중…</string>
     <string name="ai_duel_error_cannot_start">이 문장을 시작하지 못했습니다. 로그인, 포인트 또는 모델 설정을 확인하세요.</string>
+    <string name="media_video_title">동영상 플레이어</string>
+    <string name="media_video_description">로컬 동영상 재생, 화면 속 화면 지원</string>
+    <string name="media_audio_title">음악 플레이어</string>
+    <string name="media_audio_description">로컬 오디오를 백그라운드에서 재생</string>
 </resources>

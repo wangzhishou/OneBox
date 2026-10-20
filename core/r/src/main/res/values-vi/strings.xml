@@ -1924,4 +1924,8 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <string name="ai_duel_reset_persona">Đặt lại</string>
     <string name="ai_duel_pausing">Đợi nói xong câu này…</string>
     <string name="ai_duel_error_cannot_start">Không thể bắt đầu câu này, vui lòng kiểm tra đăng nhập, điểm hoặc cài đặt mô hình.</string>
+    <string name="media_video_title">Trình phát video</string>
+    <string name="media_video_description">Phát video trong máy, hỗ trợ cửa sổ nổi</string>
+    <string name="media_audio_title">Trình phát nhạc</string>
+    <string name="media_audio_description">Phát tệp âm thanh trong máy ở chế độ nền</string>
 </resources>

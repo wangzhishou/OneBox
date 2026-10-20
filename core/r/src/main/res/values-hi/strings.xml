@@ -1937,4 +1937,8 @@
     <string name="ai_duel_reset_persona">रीसेट करें</string>
     <string name="ai_duel_pausing">इस वाक्य के पूरा होने की प्रतीक्षा…</string>
     <string name="ai_duel_error_cannot_start">यह वाक्य शुरू नहीं हो सका, कृपया लॉगिन, क्रेडिट या मॉडल सेटिंग जाँचें।</string>
+    <string name="media_video_title">वीडियो प्लेयर</string>
+    <string name="media_video_description">लोकल वीडियो चलाएँ, पिक्चर-इन-पिक्चर सहायता के साथ</string>
+    <string name="media_audio_title">म्यूज़िक प्लेयर</string>
+    <string name="media_audio_description">लोकल ऑडियो फ़ाइलें बैकग्राउंड में चलाएँ</string>
 </resources>

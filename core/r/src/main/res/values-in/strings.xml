@@ -1926,4 +1926,8 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
     <string name="ai_duel_reset_persona">Atur ulang</string>
     <string name="ai_duel_pausing">Menunggu kalimat ini selesai…</string>
     <string name="ai_duel_error_cannot_start">Kalimat ini gagal dimulai, periksa login, poin, atau pengaturan model.</string>
+    <string name="media_video_title">Pemutar video</string>
+    <string name="media_video_description">Putar video lokal dengan dukungan picture-in-picture</string>
+    <string name="media_audio_title">Pemutar musik</string>
+    <string name="media_audio_description">Putar file audio lokal di latar belakang</string>
 </resources>

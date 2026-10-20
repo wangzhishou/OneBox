@@ -1925,4 +1925,8 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="ai_duel_reset_persona">Réinitialiser</string>
     <string name="ai_duel_pausing">Attendez la fin de cette phrase…</string>
     <string name="ai_duel_error_cannot_start">Cette phrase n\'a pas pu démarrer, veuillez vérifier la connexion, les crédits ou les paramètres du modèle.</string>
+    <string name="media_video_title">Lecteur vidéo</string>
+    <string name="media_video_description">Lisez vos vidéos locales en incrustation</string>
+    <string name="media_audio_title">Lecteur de musique</string>
+    <string name="media_audio_description">Lisez vos fichiers audio locaux en arrière-plan</string>
 </resources>

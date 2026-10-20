@@ -1937,4 +1937,8 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
     <string name="ai_duel_reset_persona">Zurücksetzen</string>
     <string name="ai_duel_pausing">Warte, bis dieser Satz zu Ende ist…</string>
     <string name="ai_duel_error_cannot_start">Dieser Satz konnte nicht gestartet werden. Bitte prüfe Anmeldung, Guthaben oder Modelleinstellungen.</string>
+    <string name="media_video_title">Videoplayer</string>
+    <string name="media_video_description">Lokale Videos mit Bild-in-Bild abspielen</string>
+    <string name="media_audio_title">Musikplayer</string>
+    <string name="media_audio_description">Lokale Audiodateien im Hintergrund abspielen</string>
 </resources>

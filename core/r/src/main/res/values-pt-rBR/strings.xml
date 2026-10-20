@@ -1937,4 +1937,8 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
     <string name="ai_duel_reset_persona">Redefinir</string>
     <string name="ai_duel_pausing">Aguardando esta frase terminar…</string>
     <string name="ai_duel_error_cannot_start">Não foi possível iniciar esta frase. Verifique o login, os créditos ou as configurações do modelo.</string>
+    <string name="media_video_title">Player de vídeo</string>
+    <string name="media_video_description">Reproduza vídeos locais com imagem em imagem</string>
+    <string name="media_audio_title">Player de música</string>
+    <string name="media_audio_description">Reproduza arquivos de áudio locais em segundo plano</string>
 </resources>

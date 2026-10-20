@@ -174,6 +174,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineBusiness
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDrawerCabinet
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMinus
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMovie
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMusicNote
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSecurity
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSend
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineShuffle
@@ -567,6 +568,8 @@ object IconRegistry {
         "Work" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Toolbox },
         "ShoppingCart" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineShoppingCart },
         "Movie" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMovie },
+        // 音乐播放器条目图标（媒体播放模块 AudioPlayer 页面）
+        "MusicNote" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMusicNote },
         "Inbox" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineInbox },
         "Translate" to { com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Language },
         "TravelExplore" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTravelExplore },

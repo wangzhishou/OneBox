@@ -1937,4 +1937,8 @@ Consejo: si eliges «Ocultar para siempre», podrás devolverme más tarde en Aj
     <string name="ai_duel_reset_persona">Restablecer</string>
     <string name="ai_duel_pausing">Esperando a que termine esta frase…</string>
     <string name="ai_duel_error_cannot_start">Esta frase no pudo iniciarse; revisa el inicio de sesión, los créditos o la configuración del modelo.</string>
+    <string name="media_video_title">Reproductor de vídeo</string>
+    <string name="media_video_description">Reproduce vídeos locales con imagen en imagen</string>
+    <string name="media_audio_title">Reproductor de música</string>
+    <string name="media_audio_description">Reproduce archivos de audio locales en segundo plano</string>
 </resources>

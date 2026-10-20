@@ -1927,4 +1927,8 @@
     <string name="ai_duel_reset_persona">恢復預設</string>
     <string name="ai_duel_pausing">等這句說完…</string>
     <string name="ai_duel_error_cannot_start">這一句沒能開始，請檢查登入、積分或模型設定。</string>
+    <string name="media_video_title">影片播放</string>
+    <string name="media_video_description">本機影片播放，支援子母畫面</string>
+    <string name="media_audio_title">音樂播放</string>
+    <string name="media_audio_description">本機音訊播放，支援背景播放</string>
 </resources>

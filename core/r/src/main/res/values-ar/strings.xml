@@ -1971,4 +1971,8 @@
         <item quantity="many">⁦%d⁩ طلبًا</item>
         <item quantity="other">⁦%d⁩ طلبًا</item>
     </plurals>
+    <string name="media_video_title">مشغل الفيديو</string>
+    <string name="media_video_description">تشغيل الفيديوهات المحلية مع دعم صورة داخل صورة</string>
+    <string name="media_audio_title">مشغل الموسيقى</string>
+    <string name="media_audio_description">تشغيل ملفات الصوت المحلية في الخلفية</string>
 </resources>
