@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -49,6 +48,7 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Close
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavItem
 import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.media.R
@@ -433,7 +433,7 @@ private fun TopBarActions(
                 contentDescription = stringResource(R.string.media_more),
             )
         }
-        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+        EnhancedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             if (state.tab == MediaTab.PLAYER) {
                 DropdownMenuItem(
                     text = { Text(stringResource(R.string.media_file_info)) },
