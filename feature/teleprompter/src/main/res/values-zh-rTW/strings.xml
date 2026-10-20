@@ -68,4 +68,6 @@
     <string name="teleprompter_log_created_desc">建立了提詞文稿「%1$s」(%2$d 字)</string>
     <string name="teleprompter_log_updated_desc">更新了提詞文稿「%1$s」(%2$d 字)</string>
     <string name="teleprompter_log_deleted_desc">刪除了提詞文稿「%1$s」</string>
+
+    <plurals name="teleprompter_word_count_latin"><item quantity="other">%d 詞</item></plurals>
 </resources>

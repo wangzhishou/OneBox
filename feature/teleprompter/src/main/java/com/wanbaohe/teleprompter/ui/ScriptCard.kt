@@ -33,6 +33,9 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.database.teleprompter.entity.TeleprompterScriptEntity
 import com.wanbaohe.com.string.TimeFormatter
 import com.wanbaohe.teleprompter.R
+import com.wanbaohe.teleprompter.util.ScriptCountUnit
+import com.wanbaohe.teleprompter.util.countScriptWords
+import com.wanbaohe.teleprompter.util.scriptCountUnit
 import java.util.Date
 
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedButton
@@ -131,6 +134,9 @@ fun ScriptCard(
             Spacer(Modifier.height(12.dp))
 
             // ── 底部：字数 + 时间 + 外露播放按钮 ───────────────────
+            // 计数从正文重算：库里的 wordCount 是保存时写的旧口径，英文稿会显示成字母数
+            val count = remember(script.content) { countScriptWords(script.content) }
+            val countUnit = remember(script.content) { scriptCountUnit(script.content) }
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
@@ -138,7 +144,15 @@ fun ScriptCard(
             ) {
                 Column {
                     Text(
-                        text = pluralStringResource(R.plurals.teleprompter_word_count, script.wordCount, script.wordCount),
+                        text = pluralStringResource(
+                            if (countUnit == ScriptCountUnit.WORDS) {
+                                R.plurals.teleprompter_word_count_latin
+                            } else {
+                                R.plurals.teleprompter_word_count
+                            },
+                            count,
+                            count,
+                        ),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )

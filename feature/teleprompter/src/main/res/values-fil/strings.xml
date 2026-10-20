@@ -70,4 +70,6 @@
     <string name="teleprompter_log_created_desc">Ginawa ang script na “%1$s” (%2$d titik)</string>
     <string name="teleprompter_log_updated_desc">Na-update ang script na “%1$s” (%2$d titik)</string>
     <string name="teleprompter_log_deleted_desc">Tinanggal ang script na “%1$s”</string>
+
+    <plurals name="teleprompter_word_count_latin"><item quantity="one">%d salita</item><item quantity="other">%d salita</item></plurals>
 </resources>

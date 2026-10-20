@@ -9,11 +9,42 @@ import kotlin.math.ceil
  * 避免列表卡片和编辑页各算一套，字数对不上。
  */
 
-/** 与保存口径一致：去掉空白后按字符计（中文按字，英文按字母）。 */
+/** 这一份文稿该按"字"还是按"词"计数：中文按字，使用空格分词的文字按词。 */
+internal enum class ScriptCountUnit { CHARACTERS, WORDS }
+
 private val whitespaceRegex = Regex("\\s+")
 
-internal fun countScriptWords(content: String): Int =
-    content.replace(whitespaceRegex, "").length
+/**
+ * 计数单位跟着文稿本身的文字走，而不是跟着界面语言：
+ * 中文界面里录一段英文稿，显示"54 字"同样是错的。
+ */
+internal fun scriptCountUnit(content: String): ScriptCountUnit =
+    if (content.any { it.isCjkOrFullWidth() }) ScriptCountUnit.CHARACTERS
+    else if (content.any { it.isLetterOrDigit() }) ScriptCountUnit.WORDS
+    else ScriptCountUnit.CHARACTERS
+
+/**
+ * 字数：CJK 按字、其余按词（和 Word/微信的"字数"口径一致）。
+ *
+ * 纯拉丁文稿按词计，不再把字母数当"字数"—— 67 个字符报成"54 字"在英文场景下没有意义。
+ */
+internal fun countScriptWords(content: String): Int = when (scriptCountUnit(content)) {
+    ScriptCountUnit.CHARACTERS -> cjkCharCount(content) + latinWordCount(content)
+    ScriptCountUnit.WORDS -> latinWordCount(content)
+}
+
+/** 只数 CJK 的文字：句读、全角标点（isLetterOrDigit 为 false）不该抬高字数 */
+private fun cjkCharCount(content: String): Int =
+    content.count { it.isCjkOrFullWidth() && it.isLetterOrDigit() }
+
+/**
+ * 按空白切词，只数"还剩下字母/数字"的块：中文标点、破折号不算词，
+ * 俄语/德语这类同样用空格分词的文字靠 [Char.isLetterOrDigit] 自然覆盖。
+ */
+private fun latinWordCount(content: String): Int =
+    content.split(whitespaceRegex).count { token ->
+        token.any { it.isLetterOrDigit() && !it.isCjkOrFullWidth() }
+    }
 
 /**
  * 按"人说话的速度"估算朗读时长。

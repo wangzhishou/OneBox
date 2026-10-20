@@ -70,4 +70,6 @@
     <string name="teleprompter_log_created_desc">Đã tạo bản nhắc lời \"%1$s\" (%2$d ký tự)</string>
     <string name="teleprompter_log_updated_desc">Đã cập nhật bản nhắc lời \"%1$s\" (%2$d ký tự)</string>
     <string name="teleprompter_log_deleted_desc">Đã xóa bản nhắc lời \"%1$s\"</string>
+
+    <plurals name="teleprompter_word_count_latin"><item quantity="other">%d từ</item></plurals>
 </resources>

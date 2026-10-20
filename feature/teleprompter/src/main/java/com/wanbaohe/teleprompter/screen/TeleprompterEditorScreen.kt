@@ -41,7 +41,9 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.utils.getString
 import com.wanbaohe.teleprompter.R
 import com.wanbaohe.teleprompter.component.TeleprompterComponent
+import com.wanbaohe.teleprompter.util.ScriptCountUnit
 import com.wanbaohe.teleprompter.util.countScriptWords
+import com.wanbaohe.teleprompter.util.scriptCountUnit
 import com.wanbaohe.teleprompter.util.estimateReadingSeconds
 
 /** 文稿正文的上下留白：比单行输入框更宽，长文贴着圆角会显得挤。 */
@@ -68,6 +70,7 @@ fun TeleprompterEditorScreen(
     var showExitDialog by rememberSaveable { mutableStateOf(false) }
 
     val wordCount = remember(state.content) { countScriptWords(state.content) }
+    val countUnit = remember(state.content) { scriptCountUnit(state.content) }
     val readingSeconds = remember(state.content) { estimateReadingSeconds(state.content) }
 
     val onBack: () -> Unit = {
@@ -159,6 +162,7 @@ fun TeleprompterEditorScreen(
 
             EditorStats(
                 wordCount = wordCount,
+                countUnit = countUnit,
                 readingSeconds = readingSeconds,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -206,6 +210,7 @@ fun TeleprompterEditorScreen(
 @Composable
 private fun EditorStats(
     wordCount: Int,
+    countUnit: ScriptCountUnit,
     readingSeconds: Int,
     modifier: Modifier = Modifier,
 ) {
@@ -215,8 +220,13 @@ private fun EditorStats(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
+            // 英文稿按"词"、中文稿按"字"，单位跟着文字走
             text = pluralStringResource(
-                R.plurals.teleprompter_word_count,
+                if (countUnit == ScriptCountUnit.WORDS) {
+                    R.plurals.teleprompter_word_count_latin
+                } else {
+                    R.plurals.teleprompter_word_count
+                },
                 wordCount,
                 wordCount,
             ),
