@@ -106,6 +106,31 @@ class FileHelper @Inject constructor(
         }
     }
 
+    /**
+     * 取一个 URI 的真实显示名。
+     *
+     * content:// 的 lastPathSegment 经常只是数字 ID（如 MediaStore 的 .../audio/media/86），
+     * 直接当文件名记进"最近访问"会让历史列表全是数字，所以先查 OpenableColumns.DISPLAY_NAME。
+     */
+    suspend fun getDisplayName(uri: Uri): String = withContext(Dispatchers.IO) {
+        runCatching {
+            context.contentResolver.query(
+                uri,
+                arrayOf(android.provider.OpenableColumns.DISPLAY_NAME),
+                null,
+                null,
+                null,
+            )?.use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val index = cursor.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
+                    if (index >= 0) cursor.getString(index) else null
+                } else null
+            }
+        }.getOrNull()?.takeIf { it.isNotBlank() }
+            ?: uri.lastPathSegment
+            ?: uri.toString()
+    }
+
     suspend fun isDirectoryUri(uri: Uri): Boolean = withContext(Dispatchers.IO) {
         when (uri.scheme) {
             "content" -> runCatching {

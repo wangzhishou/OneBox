@@ -155,12 +155,24 @@ fun Intent?.handleDeeplinks(
 
                 when (intent.action) {
                     Intent.ACTION_SEND_MULTIPLE -> {
-                        intent.parcelableArrayList<Uri>(Intent.EXTRA_STREAM)?.let {
-                            if (isAudio) {
+                        intent.parcelableArrayList<Uri>(Intent.EXTRA_STREAM)?.let { uris ->
+                            // 多选音视频也进播放器（队列=选中的全部），和单条分享保持一致
+                            val isVideo = intent.type?.startsWith("video/") == true
+                            if (isAudio || isVideo) {
+                                val handled = uris.firstOrNull()?.let { first ->
+                                    contentRouter?.route(
+                                        uri = first,
+                                        context = context,
+                                        onNavigate = onNavigate,
+                                        allSiblings = uris,
+                                        fallbackToExternal = false
+                                    )
+                                } == true
+                                if (handled) return
                                 onHasExtraDataType(ExtraDataType.Audio)
-                                onGetUris(it)
+                                onGetUris(uris)
                             } else {
-                                onNavigate(Screen.Zip(it))
+                                onNavigate(Screen.Zip(uris))
                             }
                         }
                     }
@@ -170,6 +182,18 @@ fun Intent?.handleDeeplinks(
                             if (it.toString().contains(BackupFileExtension, true)) {
                                 onHasExtraDataType(ExtraDataType.Backup(it.toString()))
                                 return
+                            }
+                            // 分享进来的音视频直接进播放器，不再落到"选择工具"页
+                            val isVideo = intent.type?.startsWith("video/") == true
+                            if ((isAudio || isVideo) && contentRouter != null) {
+                                val handled = contentRouter.route(
+                                    uri = it,
+                                    context = context,
+                                    onNavigate = onNavigate,
+                                    allSiblings = emptyList(),
+                                    fallbackToExternal = false
+                                )
+                                if (handled) return
                             }
                             if (isAudio) {
                                 onHasExtraDataType(ExtraDataType.Audio)
@@ -197,6 +221,16 @@ fun Intent?.handleDeeplinks(
                             }
 
                             if (isAudio) {
+                                // 音频也要走统一路由：ContentRouter 会落到播放器，
+                                // 不再进旧的"音频工具"选择页
+                                val handled = contentRouter?.route(
+                                    uri = uri,
+                                    context = context,
+                                    onNavigate = onNavigate,
+                                    allSiblings = uris,
+                                    fallbackToExternal = false
+                                ) == true
+                                if (handled) return@runCatching
                                 onHasExtraDataType(ExtraDataType.Audio)
                             } else {
                                 // 单文件场景：优先委托给 ContentRouter 做统一路由

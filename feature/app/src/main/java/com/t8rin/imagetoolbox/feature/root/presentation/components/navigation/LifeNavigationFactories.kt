@@ -46,6 +46,7 @@ import com.wanbaohe.setting.router.screenLogic.SettingRouterComponent
 import com.wanbaohe.dsh.component.DshRootComponent
 import com.wanbaohe.speedtest.component.SpeedTestComponent
 import com.wanbaohe.fileviewer.component.FileViewerComponent
+import com.wanbaohe.media.component.MediaPlayerComponent
 import com.wanbaohe.survive30s.component.Survive30sComponent
 import com.wanbaohe.teleprompter.component.TeleprompterComponent
 import com.wanbaohe.aidetect.component.AiDetectComponent
@@ -101,6 +102,7 @@ class LifeNavigationFactories @Inject constructor(
     val markdownEditorComponentFactory: MarkdownEditorComponent.Factory,
     val plainTextCodeEditorComponentFactory: com.wanbaohe.code.editor.component.CodeEditorComponent.Factory,
     val fileViewerComponentFactory: FileViewerComponent.Factory,
+    val mediaPlayerComponentFactory: MediaPlayerComponent.Factory,
     val survive30sComponentFactory: Survive30sComponent.Factory,
     val browserComponentFactory: BrowserComponent.Factory,
     val dataSyncComponentFactory: com.shifenmiao.common.export.DataSyncComponent.Factory,

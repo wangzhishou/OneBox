@@ -1381,6 +1381,28 @@ class ChildProvider @Inject constructor(
             )
         )
 
+        is Screen.VideoPlayer -> NavigationChild.MediaPlayer(
+            mediaPlayerComponent = lifeFactories.get().mediaPlayerComponentFactory(
+                componentContext = componentContext,
+                kind = com.wanbaohe.media.domain.MediaKind.VIDEO,
+                uri = config.uri,
+                playlist = config.playlist,
+                autoPlay = config.autoPlay,
+                onGoBack = ::navigateBack
+            )
+        )
+
+        is Screen.AudioPlayer -> NavigationChild.MediaPlayer(
+            mediaPlayerComponent = lifeFactories.get().mediaPlayerComponentFactory(
+                componentContext = componentContext,
+                kind = com.wanbaohe.media.domain.MediaKind.AUDIO,
+                uri = config.uri,
+                playlist = config.playlist,
+                autoPlay = config.autoPlay,
+                onGoBack = ::navigateBack
+            )
+        )
+
         Screen.ThemeSettings -> NavigationChild.SettingsRouter(
             lifeFactories.get().settingRouterComponentFactory(
                 componentContext = componentContext,

@@ -563,6 +563,7 @@ dependencies {
     implementation(projects.feature.mediaPicker)
     implementation(projects.feature.quickTiles)
     implementation(projects.feature.app)
+    implementation(projects.feature.mediaPlayer)
     implementation(projects.feature.ai)
     implementation(projects.feature.wechat)
     implementation(projects.feature.login)

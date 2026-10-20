@@ -36,6 +36,10 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
+    <!-- 音乐/视频后台播放：媒体会话通知在前台服务里跑 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <!-- 息屏后保持解码线程（ExoPlayer setWakeMode） -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.PROJECT_MEDIA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
@@ -160,6 +164,23 @@
                 <data android:pathSuffix=".rs" />
                 <data android:pathSuffix=".rb" />
                 <data android:pathSuffix=".dart" />
+                <!-- 本地音视频：交给内置播放页（画中画 / 后台播放） -->
+                <data android:mimeType="audio/*" />
+                <data android:mimeType="video/*" />
+                <data android:pathSuffix=".mp3" />
+                <data android:pathSuffix=".m4a" />
+                <data android:pathSuffix=".flac" />
+                <data android:pathSuffix=".wav" />
+                <data android:pathSuffix=".ogg" />
+                <data android:pathSuffix=".aac" />
+                <data android:pathSuffix=".opus" />
+                <data android:pathSuffix=".mp4" />
+                <data android:pathSuffix=".mkv" />
+                <data android:pathSuffix=".webm" />
+                <data android:pathSuffix=".mov" />
+                <data android:pathSuffix=".avi" />
+                <data android:pathSuffix=".3gp" />
+                <data android:pathSuffix=".m4v" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -279,6 +300,12 @@
             android:name="com.wanbaohe.app.service.FloatingRobotService"
             android:enabled="true"
             android:exported="false" />
+
+        <!-- 媒体后台播放：自管前台服务（通知栏/蓝牙耳机按键经 MediaSession 生效） -->
+        <service
+            android:name="com.wanbaohe.media.playback.MediaPlaybackService"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback" />
 
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"

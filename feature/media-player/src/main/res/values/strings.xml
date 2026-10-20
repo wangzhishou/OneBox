@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 播放页顶栏 -->
+    <string name="media_video_player_title">Video</string>
+    <string name="media_audio_player_title">Now playing</string>
+    <string name="media_video_library_title">Video library</string>
+    <string name="media_audio_library_title">Music library</string>
+
+    <!-- 底部两个 Tab -->
+    <string name="media_tab_video">Video</string>
+    <string name="media_tab_video_library">Library</string>
+    <string name="media_tab_play">Play</string>
+    <string name="media_tab_music_library">Library</string>
+
+    <!-- 媒体库分区 -->
+    <string name="media_recent_videos">Recently watched</string>
+    <string name="media_recent_audio">Recently played</string>
+    <string name="media_all_videos">All videos</string>
+    <string name="media_all_audio">All songs</string>
+    <string name="media_filter_all">All</string>
+    <string name="media_filter_favorites">Favorites</string>
+    <string name="media_filter_recent">Recent</string>
+
+    <!-- 空态 -->
+    <string name="media_empty_videos_title">No videos yet</string>
+    <string name="media_empty_videos_subtitle">Tap + at the top right, or add a video you like</string>
+    <string name="media_empty_audio_title">No music yet</string>
+    <string name="media_empty_audio_subtitle">Tap + at the top right, or add a song you like</string>
+    <string name="media_add">Add</string>
+    <string name="media_add_file">Add file</string>
+
+    <!-- 操作 -->
+    <string name="media_open_with">Open with</string>
+    <string name="media_share">Share</string>
+    <string name="media_favorite">Favorite</string>
+    <string name="media_search">Search</string>
+    <string name="media_more">More</string>
+    <string name="media_clear_recent">Clear recent</string>
+    <string name="media_play">Play</string>
+    <string name="media_pause">Pause</string>
+    <string name="media_previous">Previous</string>
+    <string name="media_next">Next</string>
+    <string name="media_file_info">File info</string>
+    <string name="media_close">Close</string>
+
+    <!-- 播放模式 / 队列 -->
+    <string name="media_playback_mode">Play mode</string>
+    <string name="media_playback_queue">Play queue</string>
+    <string name="media_mode_sequential">Sequential</string>
+    <string name="media_mode_repeat_one">Repeat one</string>
+    <string name="media_mode_shuffle">Shuffle</string>
+
+    <!-- 元信息 -->
+    <string name="media_unknown_artist">Unknown artist</string>
+    <string name="media_video_type">Local video</string>
+    <string name="media_audio_type">Local audio</string>
+    <string name="media_now_playing_hint">Pick a file to start playing</string>
+    <string name="media_info_name">File name</string>
+    <string name="media_info_path">Location</string>
+    <string name="media_info_size">Size</string>
+    <string name="media_info_duration">Duration</string>
+    <string name="media_info_resolution">Resolution</string>
+    <string name="media_info_artist">Artist</string>
+    <string name="media_play_error">This file can\'t be played, try another one</string>
+    <string name="media_playback_channel">Playback</string>
+    <string name="media_playback_channel_description">Controls for background audio playback</string>
+    <string name="media_fullscreen">Fullscreen</string>
+    <string name="media_exit_fullscreen">Exit fullscreen</string>
+    <string name="media_permission_hint">Only recently opened files are shown. Allow access to browse all media on this device.</string>
+    <string name="media_permission_action">Allow</string>
+    <string name="media_clear_recent_confirm_title">Clear recent?</string>
+    <string name="media_clear_recent_confirm_message">Only the recent list is cleared; files are not deleted.</string>
+    <string name="media_clear_recent_confirm_action">Clear</string>
+    <string name="media_cancel">Cancel</string>
+    <string name="media_queue_empty">The queue is empty</string>
+    <string name="media_stop_playback">Stop playback</string>
+    <string name="media_unfavorite">Remove favorite</string>
+    <string name="media_play_all">Play all</string>
+    <string name="media_permission_settings_title">Can\'t access device media</string>
+    <string name="media_permission_settings_message">Allow music and video access in system settings to browse everything on this device.</string>
+    <string name="media_open_settings">Open settings</string>
+
+    <plurals name="media_queue_count">
+        <item quantity="one">%1$d song</item>
+        <item quantity="other">%1$d songs</item>
+    </plurals>
+</resources>

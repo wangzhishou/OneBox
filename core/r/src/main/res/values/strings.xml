@@ -2111,6 +2111,10 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     </plurals>
     <string name="price_free">Free</string>
     <string name="file_viewer_title">File viewer</string>
+    <string name="media_video_title">Video player</string>
+    <string name="media_video_description">Play local videos with picture-in-picture support</string>
+    <string name="media_audio_title">Music player</string>
+    <string name="media_audio_description">Play local audio files in the background</string>
     <string name="file_viewer_description">Open Word, Excel, PowerPoint, EPUB and text files offline</string>
     <string name="file_viewer_error_cannot_open">This file could not be opened. It may have been moved, or the app may no longer have permission to read it.</string>
     <string name="file_viewer_error_too_large">This file is %1$s, too large to preview here. Open it in another app instead.</string>

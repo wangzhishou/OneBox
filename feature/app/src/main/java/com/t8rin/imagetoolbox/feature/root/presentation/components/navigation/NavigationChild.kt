@@ -1448,6 +1448,15 @@ sealed interface NavigationChild {
         }
     }
 
+    class MediaPlayer(
+        val mediaPlayerComponent: com.wanbaohe.media.component.MediaPlayerComponent
+    ) : NavigationChild {
+        @Composable
+        override fun Content() {
+            com.wanbaohe.media.screen.MediaPlayerScreen(component = mediaPlayerComponent)
+        }
+    }
+
     class EditPromptItem(
         val editPromptComponent: EditPromptComponent,
         val appComponent: AppComponent

@@ -112,6 +112,29 @@ class DefaultContentRouter(
                 true
             }
 
+            is ContentType.Audio -> {
+                // 音频/视频统一走内置播放器：后台播放、通知栏控制都在那里
+                onNavigate(
+                    Screen.AudioPlayer(
+                        uri = uri,
+                        mimeType = contentType.mimeType,
+                        playlist = allSiblings.map { it.toString() },
+                    )
+                )
+                true
+            }
+
+            is ContentType.Video -> {
+                onNavigate(
+                    Screen.VideoPlayer(
+                        uri = uri,
+                        mimeType = contentType.mimeType,
+                        playlist = allSiblings.map { it.toString() },
+                    )
+                )
+                true
+            }
+
             is ContentType.Directory -> {
                 onNavigate(Screen.FileBrowser(initialUri = uri))
                 true
@@ -131,7 +154,7 @@ class DefaultContentRouter(
             }
 
             else -> {
-                // 有类型但内部没有对应页面（音频/视频/压缩包/Office 文档）：
+                // 有类型但内部没有对应页面（压缩包等）：
                 // 外部入口回退文件浏览器，内部点击才外抛系统 chooser。
                 if (fallbackToExternal) {
                     openWithExternalApp(uri, context)

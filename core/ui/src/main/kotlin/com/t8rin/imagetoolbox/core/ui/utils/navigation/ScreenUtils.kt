@@ -653,6 +653,16 @@ internal object ScreenConstantsImpl : ScreenConstants {
                         )
                     )
                 }
+                // 媒体播放页：通知栏/外部链接用 onebox://screen/VideoPlayer?url=<uri> 直接回到播放页；
+                // 不带 url 时打开库页（Screen.VideoPlayer 本身允许 uri 为空）
+                "VideoPlayer" -> return Screen.VideoPlayer(
+                    uri = screenParams.url?.takeIf { it.isNotBlank() }?.let(Uri::parse),
+                    autoPlay = queryParams["play"] != "0",
+                )
+                "AudioPlayer" -> return Screen.AudioPlayer(
+                    uri = screenParams.url?.takeIf { it.isNotBlank() }?.let(Uri::parse),
+                    autoPlay = queryParams["play"] != "0",
+                )
                 "WebView" -> {
                     if (screenParams.url.isNullOrBlank()) return NewApp()
                     return WebView(

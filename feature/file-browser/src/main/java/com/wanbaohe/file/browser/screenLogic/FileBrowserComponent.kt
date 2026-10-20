@@ -471,7 +471,7 @@ class FileBrowserComponent @AssistedInject internal constructor(
                 recordRecent(uri, fileHelper.getDisplayPath(uri), RecentAccessRepository.TYPE_FOLDER)
                 loadDirectory(uri)
             } else {
-                val name = uri.lastPathSegment ?: uri.toString()
+                val name = fileHelper.getDisplayName(uri)
                 recordRecent(uri, name, RecentAccessRepository.TYPE_FILE)
                 contentRouter.route(
                     uri = uri,
@@ -518,19 +518,24 @@ class FileBrowserComponent @AssistedInject internal constructor(
         } else {
             recordRecent(item.uri, item.name, RecentAccessRepository.TYPE_FILE)
             val currentFiles = (_state.value as? FileBrowserState.Success)?.files.orEmpty()
-            // 预过滤图片 URI：利用 FileItem 已有的 mimeType，避免 ContentRouter 内重复 I/O
-            val imageSiblings = if (item.mimeType?.startsWith("image/") == true) {
-                currentFiles
+            // 同目录同类文件：图片用于左右滑，音视频作为播放队列（下一首/上一首才有意义）
+            val siblings = when {
+                item.mimeType?.startsWith("image/") == true -> currentFiles
                     .filter { it.mimeType?.startsWith("image/") == true }
-                    .map { it.uri }
-            } else {
-                emptyList()
-            }
+
+                item.mimeType?.startsWith("audio/") == true -> currentFiles
+                    .filter { it.mimeType?.startsWith("audio/") == true }
+
+                item.mimeType?.startsWith("video/") == true -> currentFiles
+                    .filter { it.mimeType?.startsWith("video/") == true }
+
+                else -> emptyList()
+            }.map { it.uri }
             contentRouter.route(
                 uri = item.uri,
                 context = context,
                 onNavigate = onNavigate,
-                allSiblings = imageSiblings,
+                allSiblings = siblings,
                 fallbackToExternal = true
             )
         }

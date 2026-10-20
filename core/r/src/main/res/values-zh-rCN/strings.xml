@@ -2076,6 +2076,10 @@
         <item quantity="other">%d 请求次数</item>
     </plurals>
     <string name="file_viewer_title">文件预览</string>
+    <string name="media_video_title">视频播放</string>
+    <string name="media_video_description">本地视频播放，支持退后台画中画</string>
+    <string name="media_audio_title">音乐播放</string>
+    <string name="media_audio_description">本地音频播放，支持后台播放</string>
     <string name="file_viewer_description">离线打开 Word、Excel、PowerPoint、EPUB 和文本文件</string>
     <string name="file_viewer_error_cannot_open">无法打开这个文件。它可能已被移动，或应用已失去读取权限。</string>
     <string name="file_viewer_error_too_large">这个文件有 %1$s，太大，无法在这里预览。请用其他应用打开。</string>

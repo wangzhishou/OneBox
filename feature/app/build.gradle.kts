@@ -77,6 +77,7 @@ dependencies {
     implementation(projects.feature.fileTransfer)
     implementation(projects.feature.fileBrowser)
     implementation(projects.feature.fileViewer)
+    implementation(projects.feature.mediaPlayer)
     implementation(projects.feature.cloudStorage)
     implementation(projects.feature.marktodo)
     implementation(projects.feature.minesweeper)

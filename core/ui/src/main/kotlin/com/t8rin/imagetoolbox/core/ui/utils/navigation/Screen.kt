@@ -1557,6 +1557,43 @@ sealed class Screen(
         subtitle = com.shifenmiao.core.R.string.file_viewer_description,
     )
 
+    /**
+     * 视频播放：本地视频文件的统一打开方式。
+     *
+     * [uri] 为空时落在媒体库页（用户从详情/入口进来还没选文件），
+     * [mimeType] 只作为打不开时的兜底提示，播放内核按文件本身解码。
+     */
+    @Serializable
+    @SerialName("VideoPlayer")
+    data class VideoPlayer(
+        val uri: Uri? = null,
+        val mimeType: String? = null,
+        /** 同目录的视频：从文件浏览器/分享打开时作为播放队列 */
+        val playlist: List<String> = emptyList(),
+        /** false 表示打开页面但不自动播放（通知栏回到播放页用） */
+        val autoPlay: Boolean = true,
+    ) : Screen(
+        id = 1108,
+        title = com.shifenmiao.core.R.string.media_video_title,
+        subtitle = com.shifenmiao.core.R.string.media_video_description,
+    )
+
+    /** 音频播放：本地音频文件的统一打开方式，退到后台仍继续播放。 */
+    @Serializable
+    @SerialName("AudioPlayer")
+    data class AudioPlayer(
+        val uri: Uri? = null,
+        val mimeType: String? = null,
+        /** 同目录的音频：从文件浏览器/分享打开时作为播放队列 */
+        val playlist: List<String> = emptyList(),
+        /** false 表示打开页面但不自动播放（通知栏回到播放页用） */
+        val autoPlay: Boolean = true,
+    ) : Screen(
+        id = 1109,
+        title = com.shifenmiao.core.R.string.media_audio_title,
+        subtitle = com.shifenmiao.core.R.string.media_audio_description,
+    )
+
     @Serializable
     @SerialName("Altitude")
     data object Altitude : Screen(
