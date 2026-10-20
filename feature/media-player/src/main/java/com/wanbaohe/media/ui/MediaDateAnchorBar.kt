@@ -3,6 +3,7 @@ package com.wanbaohe.media.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -91,7 +92,8 @@ internal fun MediaDateAnchorBar(
                 expandUp = true,
                 maxWidth = 200.dp,
                 maxHeight = 360.dp,
-                containerColor = MaterialTheme.colorScheme.surface,
+                containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+                contentPadding = PaddingValues(top = 12.dp, bottom = 8.dp),
             ) {
                 Text(
                     text = stringResource(R.string.media_jump_to_date),

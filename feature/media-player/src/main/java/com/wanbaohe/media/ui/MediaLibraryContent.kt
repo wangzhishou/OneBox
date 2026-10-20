@@ -21,7 +21,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -43,6 +42,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.NoResults
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilterChip
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
@@ -529,9 +529,11 @@ private fun RowOverflowMenu(
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
-        DropdownMenu(
+        EnhancedDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+            contentPadding = PaddingValues(top = 12.dp, bottom = 8.dp),
         ) {
             DropdownMenuItem(
                 text = {

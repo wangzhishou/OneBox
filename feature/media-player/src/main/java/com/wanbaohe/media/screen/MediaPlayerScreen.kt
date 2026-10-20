@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -21,6 +22,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -433,7 +435,12 @@ private fun TopBarActions(
                 contentDescription = stringResource(R.string.media_more),
             )
         }
-        EnhancedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+        EnhancedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+            contentPadding = PaddingValues(top = 14.dp, bottom = 8.dp),
+        ) {
             if (state.tab == MediaTab.PLAYER) {
                 DropdownMenuItem(
                     text = { Text(stringResource(R.string.media_file_info)) },
