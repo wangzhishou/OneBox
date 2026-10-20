@@ -108,7 +108,9 @@ fun AudioPlayerContent(
                 } else {
                     MediaFavoriteBorderIcon
                 },
-                contentDescription = stringResource(R.string.media_favorite),
+                contentDescription = stringResource(
+                    if (state.isFavorite) R.string.media_unfavorite else R.string.media_favorite
+                ),
                 onClick = component::toggleFavorite,
                 selected = state.isFavorite,
             )

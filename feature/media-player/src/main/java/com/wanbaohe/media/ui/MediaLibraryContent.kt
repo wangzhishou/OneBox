@@ -24,6 +24,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -544,21 +545,20 @@ private fun RowOverflowMenu(
                     )
                 },
                 leadingIcon = {
+                    // 收藏/取消收藏只用一个心形：已收藏时实心高亮，未收藏时空心
                     Icon(
-                        imageVector = MediaFavoriteBorderIcon,
+                        imageVector = if (isFavorite) {
+                            MediaFavoriteIcon
+                        } else {
+                            MediaFavoriteBorderIcon
+                        },
                         contentDescription = null,
+                        tint = if (isFavorite) {
+                            MaterialTheme.colorScheme.onPrimaryContainer
+                        } else {
+                            LocalContentColor.current
+                        },
                     )
-                },
-                trailingIcon = if (isFavorite) {
-                    {
-                        Icon(
-                            imageVector = MediaFavoriteBorderIcon,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                        )
-                    }
-                } else {
-                    null
                 },
                 onClick = {
                     expanded = false

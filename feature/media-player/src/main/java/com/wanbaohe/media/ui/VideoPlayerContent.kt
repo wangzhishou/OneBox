@@ -440,7 +440,9 @@ fun ActionRow(
             } else {
                 MediaFavoriteBorderIcon
             },
-            contentDescription = stringResource(R.string.media_favorite),
+            contentDescription = stringResource(
+                if (isFavorite) R.string.media_unfavorite else R.string.media_favorite
+            ),
             onClick = onFavorite,
             selected = isFavorite,
             enabled = enabled,
