@@ -76,4 +76,10 @@
     <string name="media_jump_to_date">Tarihe git</string>
     <string name="media_unknown_date">Tarih bilinmiyor</string>
 
+
+    <string name="media_unsupported_format">%1$s biçimi yerleşik oynatıcı tarafından desteklenmiyor, atlandı</string>
+    <string name="media_unsupported_format_generic">Bu biçim yerleşik oynatıcı tarafından henüz desteklenmiyor</string>
+    <string name="media_play_failed">Oynatma başarısız oldu, sonraki öğeye geçildi</string>
+    <string name="media_collapse_recent">Son oynatılanları daralt</string>
+    <string name="media_expand_recent">Son oynatılanları genişlet</string>
 </resources>

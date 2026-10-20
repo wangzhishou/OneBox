@@ -9,6 +9,7 @@ import com.t8rin.logger.makeLog
 import com.wanbaohe.media.domain.MediaDeviceLibrarySource
 import com.wanbaohe.media.domain.MediaEntry
 import com.wanbaohe.media.domain.MediaKind
+import com.wanbaohe.media.domain.canPlay
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -122,6 +123,9 @@ class MediaStoreDeviceLibrarySource @Inject constructor(
                 val displayName = nameIndex.takeIf { it >= 0 }?.let(cursor::getString)
                     ?.takeIf { it.isNotBlank() }
                     ?: continue
+                // MediaStore 认得的"音频/视频"不一定解不开:AIFF/WMA 这类没有解码器,
+                // 放进列表只会点了没反应,干脆入库时就挡掉
+                if (!kind.canPlay(displayName)) continue
                 val location = relativePathIndex.takeIf { it >= 0 }?.let(cursor::getString)
                     ?.takeIf { it.isNotBlank() }
                     ?.trimEnd('/')

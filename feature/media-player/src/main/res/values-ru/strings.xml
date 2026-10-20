@@ -78,4 +78,10 @@
     <string name="media_jump_to_date">Перейти к дате</string>
     <string name="media_unknown_date">Дата неизвестна</string>
 
+
+    <string name="media_unsupported_format">Формат «%1$s» не поддерживается встроенным плеером, пропущено</string>
+    <string name="media_unsupported_format_generic">Этот формат пока не поддерживается встроенным плеером</string>
+    <string name="media_play_failed">Не удалось воспроизвести, переход к следующему</string>
+    <string name="media_collapse_recent">Свернуть недавние</string>
+    <string name="media_expand_recent">Развернуть недавние</string>
 </resources>

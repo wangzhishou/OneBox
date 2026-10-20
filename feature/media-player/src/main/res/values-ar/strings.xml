@@ -80,4 +80,10 @@
     <string name="media_jump_to_date">الانتقال إلى التاريخ</string>
     <string name="media_unknown_date">تاريخ غير معروف</string>
 
+
+    <string name="media_unsupported_format">تنسيق %1$s غير مدعوم في المشغل المدمج، تم التخطي</string>
+    <string name="media_unsupported_format_generic">هذا التنسيق غير مدعوم في المشغل المدمج</string>
+    <string name="media_play_failed">فشل التشغيل، تم الانتقال إلى العنصر التالي</string>
+    <string name="media_collapse_recent">طي</string>
+    <string name="media_expand_recent">توسيع</string>
 </resources>

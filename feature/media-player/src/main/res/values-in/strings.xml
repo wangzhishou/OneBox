@@ -76,4 +76,10 @@
     <string name="media_jump_to_date">Lompat ke tanggal</string>
     <string name="media_unknown_date">Tanggal tidak diketahui</string>
 
+
+    <string name="media_unsupported_format">Format %1$s tidak didukung oleh pemutar bawaan, jadi dilewati</string>
+    <string name="media_unsupported_format_generic">Format ini belum didukung oleh pemutar bawaan</string>
+    <string name="media_play_failed">Pemutaran gagal, beralih ke item berikutnya</string>
+    <string name="media_collapse_recent">Ciutkan</string>
+    <string name="media_expand_recent">Bentangkan</string>
 </resources>

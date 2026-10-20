@@ -76,4 +76,10 @@
     <string name="media_jump_to_date">तारीख पर जाएं</string>
     <string name="media_unknown_date">अज्ञात तिथि</string>
 
+
+    <string name="media_unsupported_format">%1$s का फ़ॉर्मेट अंतर्निहित प्लेयर द्वारा समर्थित नहीं है, इसलिए छोड़ दिया गया</string>
+    <string name="media_unsupported_format_generic">यह फ़ॉर्मेट अंतर्निहित प्लेयर द्वारा अभी समर्थित नहीं है</string>
+    <string name="media_play_failed">प्लेबैक विफल, अगले आइटम पर जा रहे हैं</string>
+    <string name="media_collapse_recent">हाल ही में चलाए गए को संकुचित करें</string>
+    <string name="media_expand_recent">हाल ही में चलाए गए को विस्तृत करें</string>
 </resources>

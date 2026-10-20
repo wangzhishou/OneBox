@@ -76,4 +76,10 @@
     <string name="media_jump_to_date">Pumunta sa petsa</string>
     <string name="media_unknown_date">Hindi alam ang petsa</string>
 
+
+    <string name="media_unsupported_format">Hindi kayang i-play ng built-in na player ang %1$s, kaya nilaktawan ito</string>
+    <string name="media_unsupported_format_generic">Hindi pa kayang i-play ng built-in na player ang format na ito</string>
+    <string name="media_play_failed">Nabigo ang pag-play, lumalaktaw sa susunod</string>
+    <string name="media_collapse_recent">I-collapse</string>
+    <string name="media_expand_recent">I-expand</string>
 </resources>

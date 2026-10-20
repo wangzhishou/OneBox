@@ -76,4 +76,10 @@
     <string name="media_jump_to_date">日付へ移動</string>
     <string name="media_unknown_date">日付不明</string>
 
+
+    <string name="media_unsupported_format">「%1$s」の形式は内蔵プレーヤーでサポートされていないため、スキップしました</string>
+    <string name="media_unsupported_format_generic">この形式は内蔵プレーヤーではまだサポートされていません</string>
+    <string name="media_play_failed">再生に失敗したため、次の項目にスキップしました</string>
+    <string name="media_collapse_recent">最近の再生を折りたたむ</string>
+    <string name="media_expand_recent">最近の再生を展開する</string>
 </resources>

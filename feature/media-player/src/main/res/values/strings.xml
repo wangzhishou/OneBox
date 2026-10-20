@@ -91,4 +91,15 @@
         <item quantity="one">%1$d song</item>
         <item quantity="other">%1$d songs</item>
     </plurals>
+
+    <!-- 播放失败/格式不支持(入库时已按 PlayableFormats 过滤) -->
+    <string name="media_unsupported_format">%1$s can\'t be played by the built-in player, so it was skipped</string>
+    <string name="media_unsupported_format_generic">This format can\'t be played by the built-in player</string>
+    <string name="media_play_failed">Playback failed, skipping to the next item</string>
+
+
+    <!-- 最近播放卡片可折叠 -->
+    <string name="media_collapse_recent">Collapse</string>
+    <string name="media_expand_recent">Expand</string>
+
 </resources>

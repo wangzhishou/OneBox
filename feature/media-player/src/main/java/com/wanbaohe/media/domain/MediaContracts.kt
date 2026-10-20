@@ -3,6 +3,7 @@ package com.wanbaohe.media.domain
 import android.graphics.Bitmap
 import android.view.TextureView
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 
 /**
@@ -21,6 +22,9 @@ interface MediaLibraryRepository {
 
     /** 清空某一类媒体的最近记录（音频不会连带动视频的历史）。 */
     suspend fun clearRecent(kind: MediaKind)
+
+    /** 去掉一条记录：播放失败/格式不支持的条目不该继续留在"最近播放"里。 */
+    suspend fun forget(uri: String)
 }
 
 /**
@@ -91,6 +95,14 @@ interface MediaEntryResolver {
 interface MediaPlaybackController {
 
     val state: StateFlow<PlaybackState>
+
+    /**
+     * 播放失败的事件流（一次性，不留在 [state] 里）。
+     *
+     * 页面据此提示"该格式暂不支持"并把坏条目从最近记录里摘掉；自动跳过的条目
+     * 也会发一条，否则用户只会看到"点了没反应"。
+     */
+    val failures: SharedFlow<PlaybackFailure>
 
     /**
      * 设置播放队列并从第 [startIndex] 个开始。

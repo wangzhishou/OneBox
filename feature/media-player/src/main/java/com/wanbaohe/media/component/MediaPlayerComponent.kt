@@ -10,6 +10,8 @@ import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.shifenmiao.base.pip.VideoPipState
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.media.R
 import com.wanbaohe.media.domain.MediaDeviceLibrarySource
 import com.wanbaohe.media.domain.MediaEntry
 import com.wanbaohe.media.domain.MediaEntryResolver
@@ -86,6 +88,7 @@ class MediaPlayerComponent @AssistedInject internal constructor(
         observeRecents()
         observeFavorites()
         observePlayback()
+        observePlaybackFailures()
         refreshDeviceLibrary()
         openInitialUri()
 
@@ -518,6 +521,44 @@ class MediaPlayerComponent @AssistedInject internal constructor(
                 } else if (kind == MediaKind.VIDEO) {
                     // 视频页不再登记画中画；只清自己的声明，不影响别的所有者
                     videoPipState.clear(this@MediaPlayerComponent)
+                }
+            }
+            .launchIn(componentScope)
+    }
+
+    /**
+     * 播放失败的处理。
+     *
+     * 一处失败可能被引擎"静默跳过"（队列里还有下一首），页面上就看不出任何提示；
+     * 所以不管跳没跳都提示一次。已知不支持的格式顺手从"最近播放"里摘掉 ——
+     * 留着只会让用户反复点进同一个放不了的文件。
+     */
+    private fun observePlaybackFailures() {
+        playback.failures
+            .onEach { failure ->
+                if (failure.kind != kind) return@onEach
+                val title = failure.entry?.bestTitle ?: failure.entry?.displayName
+                when {
+                    // 格式不支持：从"最近播放"里摘掉，别让用户反复点进同一个放不了的文件
+                    failure.unsupported -> {
+                        failure.entry?.let { entry ->
+                            componentScope.launch { libraryRepository.forget(entry.uri) }
+                        }
+                        if (failure.skipped) {
+                            AppToastHost.showToast(
+                                message = if (title != null) {
+                                    context.getString(R.string.media_unsupported_format, title)
+                                } else {
+                                    context.getString(R.string.media_unsupported_format_generic)
+                                }
+                            )
+                        }
+                    }
+                    // 文件坏了/权限丢了：自动跳过的场合没人看得见，补一条提示；
+                    // 没跳过时页面本身已经显示"播放不了"，不再叠一条 toast
+                    failure.skipped -> AppToastHost.showToast(
+                        message = context.getString(R.string.media_play_failed)
+                    )
                 }
             }
             .launchIn(componentScope)

@@ -113,6 +113,21 @@ enum class PlaybackMode {
 }
 
 /**
+ * 一次播放失败。
+ *
+ * [unsupported] 表示"内置播放器本来就不认这个格式"（解码器/extractor 缺失），
+ * 与文件损坏、权限丢失等运行时错误区分开，页面文案不一样。
+ */
+data class PlaybackFailure(
+    val entry: MediaEntry?,
+    val kind: MediaKind,
+    val unsupported: Boolean,
+    /** 引擎是否已经自动跳到下一项：跳过的才需要一次性提示，否则页面自己会显示错误 */
+    val skipped: Boolean = false,
+    val message: String? = null,
+)
+
+/**
  * 播放器的可观察状态。
  *
  * 位置/时长都由播放内核推送，页面只负责渲染；切歌时整个状态一起换，

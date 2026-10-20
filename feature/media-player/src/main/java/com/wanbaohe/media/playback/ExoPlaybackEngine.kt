@@ -20,15 +20,20 @@ import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.wanbaohe.media.domain.MediaEntry
 import com.wanbaohe.media.domain.MediaKind
 import com.wanbaohe.media.domain.MediaPlaybackController
+import com.wanbaohe.media.domain.PlaybackFailure
 import com.wanbaohe.media.domain.PlaybackMode
 import com.wanbaohe.media.domain.PlaybackState
+import com.wanbaohe.media.domain.isKnownUnsupported
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -53,6 +58,10 @@ class ExoPlaybackEngine @Inject constructor(
 
     private val _state = MutableStateFlow(PlaybackState())
     override val state: StateFlow<PlaybackState> = _state.asStateFlow()
+
+    // extraBufferCapacity 让 tryEmit 在页面还没开始收集时也不会丢事件
+    private val _failures = MutableSharedFlow<PlaybackFailure>(extraBufferCapacity = 8)
+    override val failures: SharedFlow<PlaybackFailure> = _failures.asSharedFlow()
 
     private var exoPlayer: ExoPlayer? = null
     private var mediaSession: MediaSession? = null
@@ -353,12 +362,15 @@ class ExoPlaybackEngine @Inject constructor(
         /**
          * 一个文件坏了不能把整个队列卡死：自动跳到下一项再试，
          * 连续多次都失败才把错误摆到界面上，避免在坏条目上无限循环。
+         *
+         * 不管跳不跳，都把这次失败发出去：静默跳过正是"点了没反应"的来源。
          */
         override fun onPlayerError(error: PlaybackException) {
             val player = exoPlayer ?: return
             val canSkip = errorStreak < MAX_CONSECUTIVE_ERRORS &&
                 player.mediaItemCount > 1 &&
                 player.hasNextMediaItem()
+            publishFailure(error, skipped = canSkip)
             if (canSkip) {
                 errorStreak++
                 player.seekToNextMediaItem()
@@ -367,6 +379,32 @@ class ExoPlaybackEngine @Inject constructor(
                 return
             }
             _state.value = _state.value.copy(isPlaying = false, hasError = true)
+        }
+    }
+
+    /**
+     * 把失败归到"当前这条"上。
+     *
+     * 用播放器的 currentMediaItemIndex 取队列条目：onPlayerError 时索引还停在
+     * 出错的那一项上（跳过发生在之后）。拿不到条目也照样发，页面至少能提示一次。
+     */
+    private fun publishFailure(error: PlaybackException, skipped: Boolean) {
+        val mediaId = exoPlayer?.currentMediaItem?.mediaId
+        val entry = queueEntries.firstOrNull { it.uri == mediaId }
+            ?: mediaId?.let { MediaEntry(uri = it, displayName = it.substringAfterLast('/')) }
+        val unsupported = entry?.let { playerKind.isKnownUnsupported(it.displayName) } == true ||
+                error.errorCode == PlaybackException.ERROR_CODE_DECODING_FORMAT_UNSUPPORTED ||
+                error.errorCode == PlaybackException.ERROR_CODE_PARSING_CONTAINER_UNSUPPORTED
+        runCatching {
+            _failures.tryEmit(
+                PlaybackFailure(
+                    entry = entry,
+                    kind = playerKind,
+                    unsupported = unsupported,
+                    skipped = skipped,
+                    message = error.errorCodeName,
+                )
+            )
         }
     }
 

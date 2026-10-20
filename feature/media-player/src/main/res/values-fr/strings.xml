@@ -76,4 +76,10 @@
     <string name="media_jump_to_date">Aller à la date</string>
     <string name="media_unknown_date">Date inconnue</string>
 
+
+    <string name="media_unsupported_format">Le format de « %1$s » n\'est pas pris en charge par le lecteur intégré, il a été ignoré</string>
+    <string name="media_unsupported_format_generic">Ce format n\'est pas pris en charge par le lecteur intégré</string>
+    <string name="media_play_failed">Échec de la lecture, passage à l\'élément suivant</string>
+    <string name="media_collapse_recent">Réduire</string>
+    <string name="media_expand_recent">Développer</string>
 </resources>

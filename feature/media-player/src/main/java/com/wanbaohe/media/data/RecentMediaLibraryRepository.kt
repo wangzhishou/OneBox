@@ -6,6 +6,7 @@ import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.wanbaohe.media.domain.MediaEntry
 import com.wanbaohe.media.domain.MediaKind
 import com.wanbaohe.media.domain.MediaLibraryRepository
+import com.wanbaohe.media.domain.canPlay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -37,6 +38,8 @@ class RecentMediaLibraryRepository @Inject constructor(
                 records.forEach { record ->
                     if (record.accessType != RecentAccessRepository.TYPE_FILE) return@forEach
                     if (kindOf(record.uri, record.displayName) != kind) return@forEach
+                    // 打不开的格式不该留在"最近播放":点进去只会静默失败
+                    if (!kind.canPlay(record.displayName)) return@forEach
                     entries += MediaEntry(
                         uri = record.uri,
                         displayName = record.displayName,
@@ -68,6 +71,10 @@ class RecentMediaLibraryRepository @Inject constructor(
             .forEach {
                 recentAccessRepository.remove(it.uri)
             }
+    }
+
+    override suspend fun forget(uri: String) {
+        recentAccessRepository.remove(uri)
     }
 
     /**

@@ -76,4 +76,10 @@
     <string name="media_jump_to_date">Ir para a data</string>
     <string name="media_unknown_date">Data desconhecida</string>
 
+
+    <string name="media_unsupported_format">O formato de %1$s não é compatível com o player integrado, então foi ignorado</string>
+    <string name="media_unsupported_format_generic">Este formato não é compatível com o player integrado</string>
+    <string name="media_play_failed">Falha na reprodução, pulando para o próximo item</string>
+    <string name="media_collapse_recent">Recolher</string>
+    <string name="media_expand_recent">Expandir</string>
 </resources>

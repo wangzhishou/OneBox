@@ -76,4 +76,10 @@
     <string name="media_jump_to_date">Đi đến ngày</string>
     <string name="media_unknown_date">Không rõ ngày</string>
 
+
+    <string name="media_unsupported_format">Định dạng của \"%1$s\" không được trình phát tích hợp hỗ trợ, đã bỏ qua</string>
+    <string name="media_unsupported_format_generic">Trình phát tích hợp chưa hỗ trợ định dạng này</string>
+    <string name="media_play_failed">Phát thất bại, đã chuyển sang mục tiếp theo</string>
+    <string name="media_collapse_recent">Thu gọn phát gần đây</string>
+    <string name="media_expand_recent">Mở rộng phát gần đây</string>
 </resources>

@@ -27,6 +27,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,6 +35,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,6 +47,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.t8rin.imagetoolbox.core.resources.Icons
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandLess
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandMore
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.media.R
@@ -461,7 +466,12 @@ fun ActionRow(
     }
 }
 
-/** "最近观看/最近播放"横向卡片。 */
+/**
+ * "最近观看/最近播放"横向卡片。
+ *
+ * 卡片本身占的高度不小（列表顶上就它最抢眼），所以标题栏可以点着收起；
+ * 收起后只留一行标题，把屏幕让给下面按天分组的列表。
+ */
 @Composable
 fun RecentMediaCard(
     title: String,
@@ -472,25 +482,53 @@ fun RecentMediaCard(
     onSelect: (MediaEntry) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var expanded by rememberSaveable { mutableStateOf(true) }
     GlassCard(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         style = GlassStyle.Regular,
     ) {
         Column(modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp)) {
-            MediaSectionHeader(title = title)
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 4.dp),
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                items(entries, key = { it.uri }) { entry ->
-                    RecentMediaTile(
-                        entry = entry,
-                        kind = kind,
-                        loadArtwork = loadArtwork,
-                        loadMetadata = loadMetadata,
-                        onClick = { onSelect(entry) },
+                MediaSectionHeader(
+                    title = title,
+                    modifier = Modifier.weight(1f),
+                    trailing = if (expanded) null else entries.size.toString(),
+                )
+                IconButton(
+                    onClick = { expanded = !expanded },
+                    modifier = Modifier.size(36.dp),
+                ) {
+                    Icon(
+                        imageVector = if (expanded) {
+                            Icons.Outlined.LineExpandLess
+                        } else {
+                            Icons.Outlined.LineExpandMore
+                        },
+                        contentDescription = stringResource(
+                            if (expanded) R.string.media_collapse_recent else R.string.media_expand_recent
+                        ),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
+                }
+            }
+            if (expanded) {
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 4.dp),
+                ) {
+                    items(entries, key = { it.uri }) { entry ->
+                        RecentMediaTile(
+                            entry = entry,
+                            kind = kind,
+                            loadArtwork = loadArtwork,
+                            loadMetadata = loadMetadata,
+                            onClick = { onSelect(entry) },
+                        )
+                    }
                 }
             }
         }

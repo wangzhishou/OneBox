@@ -76,4 +76,10 @@
     <string name="media_jump_to_date">날짜로 이동</string>
     <string name="media_unknown_date">날짜 알 수 없음</string>
 
+
+    <string name="media_unsupported_format">"%1$s" 형식은 내장 플레이어에서 지원하지 않아 건너뛰었습니다</string>
+    <string name="media_unsupported_format_generic">이 형식은 내장 플레이어에서 아직 지원하지 않습니다</string>
+    <string name="media_play_failed">재생에 실패하여 다음 항목으로 넘어갔습니다</string>
+    <string name="media_collapse_recent">최근 재생 접기</string>
+    <string name="media_expand_recent">최근 재생 펼치기</string>
 </resources>

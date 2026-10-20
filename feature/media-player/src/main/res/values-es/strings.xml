@@ -76,4 +76,10 @@
     <string name="media_jump_to_date">Ir a la fecha</string>
     <string name="media_unknown_date">Fecha desconocida</string>
 
+
+    <string name="media_unsupported_format">El formato de %1$s no es compatible con el reproductor integrado, se ha omitido</string>
+    <string name="media_unsupported_format_generic">El reproductor integrado no admite este formato por ahora</string>
+    <string name="media_play_failed">Error de reproducción, se pasa al siguiente</string>
+    <string name="media_collapse_recent">Contraer reproducción reciente</string>
+    <string name="media_expand_recent">Expandir reproducción reciente</string>
 </resources>

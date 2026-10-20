@@ -76,4 +76,10 @@
     <string name="media_jump_to_date">Zum Datum springen</string>
     <string name="media_unknown_date">Unbekanntes Datum</string>
 
+
+    <string name="media_unsupported_format">Das Format von %1$s wird vom integrierten Player nicht unterstützt und wurde übersprungen</string>
+    <string name="media_unsupported_format_generic">Dieses Format wird vom integrierten Player derzeit nicht unterstützt</string>
+    <string name="media_play_failed">Wiedergabe fehlgeschlagen, zum nächsten Element gesprungen</string>
+    <string name="media_collapse_recent">Zuletzt wiedergegeben einklappen</string>
+    <string name="media_expand_recent">Zuletzt wiedergegeben ausklappen</string>
 </resources>

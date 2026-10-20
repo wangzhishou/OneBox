@@ -183,6 +183,19 @@ fun PlayQueueSheet(
 }
 
 /**
+ * 路径太长时省略中间。
+ *
+ * 直接折行会把"位置"撑成两行、把弹窗顶高，而且断点落在目录名中间更难读；
+ * 保留头尾（存储位置 + 当前目录）比保留中间有用。
+ */
+private fun middleEllipsize(value: String, maxLength: Int = 44): String {
+    if (value.length <= maxLength) return value
+    val head = maxLength / 2 - 2
+    val tail = maxLength - head - 1
+    return value.take(head) + "…" + value.takeLast(tail)
+}
+
+/**
  * 文件信息弹窗。
  *
  * 只展示已有数据：路径、大小、时长、分辨率、作者 —— 拿不到的字段直接不出现，
@@ -198,10 +211,12 @@ fun MediaInfoDialog(
     val rows = buildList {
         add(stringResource(R.string.media_info_name) to entry.displayName)
         // 位置优先用 MediaStore 的目录，拿不到才退回 URI（解码后至少能看懂）
+        // 长路径省略中间：开头是存储/一级目录，结尾是文件所在目录，两头都比中段有用
         add(
-            stringResource(R.string.media_info_path) to (
-                entry.location ?: runCatching { android.net.Uri.decode(entry.uri) }.getOrDefault(entry.uri)
-                )
+            stringResource(R.string.media_info_path) to middleEllipsize(
+                entry.location
+                    ?: runCatching { android.net.Uri.decode(entry.uri) }.getOrDefault(entry.uri)
+            )
         )
         state.metadata.sizeBytes.takeIf { it > 0L }?.let {
             add(stringResource(R.string.media_info_size) to Formatter.formatFileSize(context, it))
@@ -250,6 +265,8 @@ fun MediaInfoDialog(
                             text = value,
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 }

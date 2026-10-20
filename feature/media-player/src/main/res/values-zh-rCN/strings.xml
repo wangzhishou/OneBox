@@ -90,4 +90,15 @@
     <plurals name="media_queue_count">
         <item quantity="other">共 %1$d 首歌曲</item>
     </plurals>
+
+    <!-- 播放失败/格式不支持(入库时已按 PlayableFormats 过滤) -->
+    <string name="media_unsupported_format">「%1$s」的格式内置播放器不支持，已跳过</string>
+    <string name="media_unsupported_format_generic">该格式内置播放器暂不支持</string>
+    <string name="media_play_failed">播放失败，已跳到下一个</string>
+
+
+    <!-- 最近播放卡片可折叠 -->
+    <string name="media_collapse_recent">收起最近播放</string>
+    <string name="media_expand_recent">展开最近播放</string>
+
 </resources>
