@@ -15,15 +15,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.ai.agent.tool.AgentUserQuestionPresentation
 import com.shifenmiao.ai.component.GlobalToolUiHost
-import com.shifenmiao.base.ui.button.CancelButton
-import com.shifenmiao.base.ui.button.ConfirmButton
+import com.wanbaohe.base.ui.button.CancelButton
+import com.wanbaohe.base.ui.button.ConfirmButton
 import com.shifenmiao.core.R
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.FileType
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFilePicker
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFolderPicker
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.core.ui.utils.content_pickers.FileType
+import com.wanbaohe.core.ui.utils.content_pickers.rememberFilePicker
+import com.wanbaohe.core.ui.utils.content_pickers.rememberFolderPicker
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 
 /**
  * 将 LLM 传入的 mimeType 字符串（如 "image/jpg"、多类型逗号分隔）

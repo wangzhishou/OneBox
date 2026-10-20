@@ -1,6 +1,6 @@
 package com.wanbaohe.speedtest.screen.ui
 
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
+import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.wanbaohe.speedtest.R
 import com.wanbaohe.speedtest.data.SpeedTestConfig
 
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 
 /**
  * 新增 / 编辑测速配置弹窗

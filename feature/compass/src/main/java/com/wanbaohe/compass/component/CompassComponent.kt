@@ -11,7 +11,7 @@ import androidx.compose.runtime.Immutable
 import androidx.core.content.ContextCompat
 import com.arkivanov.decompose.ComponentContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.compass.data.sensor.CompassSensorSource
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory

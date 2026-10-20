@@ -56,18 +56,18 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.base.ui.button.FixedHeightButton
+import com.wanbaohe.base.ui.button.FixedHeightButton
 import com.shifenmiao.common.R
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.Picker
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
-import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
-import com.t8rin.imagetoolbox.core.ui.widget.dialogs.LoadingDialog
-import com.t8rin.imagetoolbox.core.ui.widget.dialogs.OneTimeImagePickingDialog
-import com.t8rin.imagetoolbox.core.ui.widget.dialogs.OneTimeSaveLocationSelectionDialog
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
+import com.wanbaohe.core.ui.utils.content_pickers.Picker
+import com.wanbaohe.core.ui.utils.content_pickers.rememberImagePicker
+import com.wanbaohe.core.ui.widget.dialogs.ExitWithoutSavingDialog
+import com.wanbaohe.core.ui.widget.dialogs.LoadingDialog
+import com.wanbaohe.core.ui.widget.dialogs.OneTimeImagePickingDialog
+import com.wanbaohe.core.ui.widget.dialogs.OneTimeSaveLocationSelectionDialog
+import com.wanbaohe.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDownload
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineImage
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineKeyboardArrowDown
@@ -155,7 +155,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
  * ```
  *
  * ## 配套组件
- * @see com.t8rin.imagetoolbox.core.ui.utils.ImageBaseComponent 配套的逻辑组件
+ * @see com.wanbaohe.core.ui.utils.ImageBaseComponent 配套的逻辑组件
  * @see BaseScreen 基础屏幕组件
  * @see ImmersiveModeState 沉浸式模式状态
  */

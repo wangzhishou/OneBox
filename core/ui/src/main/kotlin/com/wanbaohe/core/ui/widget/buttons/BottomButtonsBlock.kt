@@ -1,0 +1,414 @@
+/*
+ * ImageToolbox is an image editor for android
+ * Copyright (c) 2026 T8RIN (Malik Mukhametzyanov)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * You should have received a copy of the Apache License
+ * along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+ */
+
+package com.wanbaohe.core.ui.widget.buttons
+
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.displayCutout
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.union
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.rememberScrollState
+import com.t8rin.imagetoolbox.core.resources.Icons
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.t8rin.imagetoolbox.core.resources.R
+import com.t8rin.imagetoolbox.core.resources.icons.AddPhotoAlt
+import com.t8rin.imagetoolbox.core.resources.icons.Save
+import com.wanbaohe.core.ui.theme.takeColorFromScheme
+import com.wanbaohe.core.ui.utils.helper.isPortraitOrientationAsState
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedFloatingActionButton
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedFloatingActionButtonType
+import com.wanbaohe.core.ui.widget.enhanced.ProvideFABType
+import com.wanbaohe.core.ui.widget.enhanced.enhancedVerticalScroll
+import com.wanbaohe.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.widget.modifier.container
+import com.wanbaohe.core.ui.widget.modifier.drawHorizontalStroke
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
+
+@Composable
+fun BottomButtonsBlock(
+    isNoData: Boolean,
+    onSecondaryButtonClick: () -> Unit,
+    onSecondaryButtonLongClick: (() -> Unit)? = null,
+    secondaryButtonIcon: ImageVector = Icons.Rounded.AddPhotoAlt,
+    secondaryButtonText: String = stringResource(R.string.pick_image_alt),
+    onPrimaryButtonClick: () -> Unit,
+    onPrimaryButtonLongClick: (() -> Unit)? = null,
+    primaryButtonIcon: ImageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSave,
+    primaryButtonText: String = "",
+    isPrimaryButtonVisible: Boolean = true,
+    isSecondaryButtonVisible: Boolean = true,
+    showNullDataButtonAsContainer: Boolean = false,
+    middleFab: (@Composable ColumnScope.() -> Unit)? = null,
+    actions: @Composable RowScope.() -> Unit,
+    isPrimaryButtonEnabled: Boolean = true,
+    showMiddleFabInRow: Boolean = false,
+    isScreenHaveNoDataContent: Boolean = false,
+    primaryButtonContainerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    primaryButtonContentColor: Color = contentColorFor(primaryButtonContainerColor),
+    enableHorizontalStroke: Boolean = true
+) {
+    val isPortrait by isPortraitOrientationAsState()
+    val spacing = 8.dp
+
+    AnimatedContent(
+        targetState = Triple(isNoData, isPortrait, isScreenHaveNoDataContent),
+        transitionSpec = {
+            fadeIn() + slideInVertically { it / 2 } togetherWith fadeOut() + slideOutVertically { it / 2 }
+        }
+    ) { (isEmptyState, portrait, isHaveNoDataContent) ->
+        if (isEmptyState) {
+            val cutout = WindowInsets.displayCutout.only(
+                WindowInsetsSides.Horizontal
+            )
+
+            val button = @Composable {
+                Row(
+                    modifier = Modifier
+                        .windowInsetsPadding(
+                            WindowInsets.navigationBars.union(cutout)
+                        )
+                        .padding(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(spacing),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    val middle = @Composable {
+                        if (showMiddleFabInRow && middleFab != null) {
+                            ProvideFABType(EnhancedFloatingActionButtonType.SecondaryHorizontal) {
+                                Column(
+                                    content = middleFab
+                                )
+                            }
+                        }
+                    }
+
+                    if (!isPrimaryButtonVisible) middle()
+
+                    EnhancedFloatingActionButton(
+                        onClick = onSecondaryButtonClick,
+                        onLongClick = onSecondaryButtonLongClick,
+                        content = {
+                            Spacer(Modifier.width(16.dp))
+                            Icon(
+                                imageVector = secondaryButtonIcon,
+                                contentDescription = null
+                            )
+                            Spacer(Modifier.width(16.dp))
+                            Text(secondaryButtonText)
+                            Spacer(Modifier.width(16.dp))
+                        }
+                    )
+
+                    if (isPrimaryButtonVisible) middle()
+                }
+            }
+            if (showNullDataButtonAsContainer) {
+                if (!isPortrait && isHaveNoDataContent) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .glassBackground(
+                                color = MaterialTheme.colorScheme.surfaceContainerLow
+                            )
+                            .consumeWindowInsets(cutout.only(WindowInsetsSides.Start)),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        button()
+                    }
+                } else {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .drawHorizontalStroke(
+                                top = true,
+                                enabled = enableHorizontalStroke
+                            )
+                            .glassBackground(
+                                color = MaterialTheme.colorScheme.surfaceContainerLow
+                            ),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        button()
+                    }
+                }
+            } else {
+                button()
+            }
+        } else if (portrait) {
+            BottomAppBar(
+                modifier = Modifier
+                    .drawHorizontalStroke(
+                        top = true,
+                        enabled = enableHorizontalStroke
+                    )
+                    // 顶部左右两角做成圆角，和项目里导航栏/底部操作栏
+                    // （OneBoxBottomActionBar）保持同一套形状语言。
+                    // 这里用 clip 而不是 shape 参数：当前 material3 版本的
+                    // BottomAppBar 没有 shape 入参。
+                    .clip(
+                        RoundedCornerShape(
+                            topStart = OneBoxDesignSystem.largeRadius,
+                            topEnd = OneBoxDesignSystem.largeRadius,
+                        )
+                    ),
+                containerColor = MaterialTheme.colorScheme.surfaceContainer.copy(0.68f),
+                windowInsets = WindowInsets.safeDrawing.only(
+                    WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
+                ),
+                actions = actions,
+                floatingActionButton = {
+                    Row {
+                        val middle = @Composable {
+                            AnimatedVisibility(visible = showMiddleFabInRow) {
+                                middleFab?.let {
+                                    ProvideFABType(EnhancedFloatingActionButtonType.SecondaryHorizontal) {
+                                        Column(
+                                            modifier = Modifier.padding(end = spacing),
+                                            content = { it() }
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                        if (!isPrimaryButtonVisible) middle()
+
+                        AnimatedVisibility(visible = isSecondaryButtonVisible) {
+                            EnhancedFloatingActionButton(
+                                onClick = onSecondaryButtonClick,
+                                onLongClick = onSecondaryButtonLongClick,
+                                containerColor = takeColorFromScheme {
+                                    if (isPrimaryButtonVisible) tertiaryContainer
+                                    else primaryContainer
+                                },
+                                // 和主按钮（保存）用同一个尺寸/形状：
+                                // 两个按钮都是「icon + 背景容器」的组合，
+                                // 大小必须一致，不能一个是 42×56 圆角矩形、
+                                // 一个是 48×48 圆角方形。
+                                type = EnhancedFloatingActionButtonType.Compact,
+                                modifier = Modifier.padding(end = spacing)
+                            ) {
+                                Icon(
+                                    imageVector = secondaryButtonIcon,
+                                    contentDescription = null,
+                                    modifier = Modifier.padding(FabIconPadding)
+                                )
+                            }
+                        }
+
+                        if (isPrimaryButtonVisible) middle()
+
+                        AnimatedVisibility(visible = isPrimaryButtonVisible) {
+                            EnhancedFloatingActionButton(
+                                onClick = onPrimaryButtonClick.takeIf { isPrimaryButtonEnabled },
+                                onLongClick = onPrimaryButtonLongClick.takeIf { isPrimaryButtonEnabled },
+                                interactionSource = remember { MutableInteractionSource() }.takeIf { isPrimaryButtonEnabled },
+                                type = EnhancedFloatingActionButtonType.Compact,
+                                containerColor = takeColorFromScheme {
+                                    if (isPrimaryButtonEnabled) primaryButtonContainerColor
+                                    else surfaceContainer
+                                },
+                                contentColor = takeColorFromScheme {
+                                    if (isPrimaryButtonEnabled) primaryButtonContentColor
+                                    else outline
+                                }
+                            ) {
+                                AnimatedContent(
+                                    targetState = primaryButtonIcon to primaryButtonText,
+                                    transitionSpec = { fadeIn() + scaleIn() togetherWith fadeOut() + scaleOut() }
+                                ) { (icon, text) ->
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.Center
+                                    ) {
+                                        if (text.isNotEmpty()) {
+                                            Spacer(Modifier.width(16.dp))
+                                        }
+                                        Icon(
+                                            imageVector = icon,
+                                            contentDescription = null,
+                                            modifier = Modifier.padding(FabIconPadding)
+                                        )
+                                        if (text.isNotEmpty()) {
+                                            Spacer(Modifier.width(16.dp))
+                                            Text(text)
+                                            Spacer(Modifier.width(16.dp))
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            )
+        } else {
+            val direction = LocalLayoutDirection.current
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .container(
+                        shape = RectangleShape,
+                        color = MaterialTheme.colorScheme.surfaceContainer
+                    )
+                    .enhancedVerticalScroll(rememberScrollState())
+                    .padding(horizontal = 16.dp)
+                    .navigationBarsPadding()
+                    .padding(
+                        end = WindowInsets.displayCutout
+                            .asPaddingValues()
+                            .calculateEndPadding(direction)
+                    ),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                val middle = @Composable {
+                    middleFab?.let {
+                        Spacer(Modifier.height(spacing))
+                        ProvideFABType(EnhancedFloatingActionButtonType.SecondaryVertical) {
+                            it()
+                        }
+                    }
+                }
+
+                Row { actions() }
+
+                if (!isPrimaryButtonVisible) middle()
+
+                Spacer(Modifier.height(spacing))
+
+                AnimatedVisibility(visible = isSecondaryButtonVisible) {
+                    EnhancedFloatingActionButton(
+                        onClick = onSecondaryButtonClick,
+                        onLongClick = onSecondaryButtonLongClick,
+                        containerColor = takeColorFromScheme {
+                            if (isPrimaryButtonVisible) tertiaryContainer
+                            else primaryContainer
+                        },
+                        type = if (isPrimaryButtonVisible) {
+                            EnhancedFloatingActionButtonType.SecondaryVertical
+                        } else {
+                            EnhancedFloatingActionButtonType.Primary
+                        }
+                    ) {
+                        Icon(
+                            imageVector = secondaryButtonIcon,
+                            contentDescription = null
+                        )
+                    }
+                }
+
+                if (isPrimaryButtonVisible) middle()
+
+                AnimatedVisibility(visible = isPrimaryButtonVisible) {
+                    EnhancedFloatingActionButton(
+                        onClick = onPrimaryButtonClick.takeIf { isPrimaryButtonEnabled },
+                        onLongClick = onPrimaryButtonLongClick.takeIf { isPrimaryButtonEnabled },
+                        interactionSource = remember { MutableInteractionSource() }.takeIf { isPrimaryButtonEnabled },
+                        type = EnhancedFloatingActionButtonType.Compact,
+                        containerColor = takeColorFromScheme {
+                            if (isPrimaryButtonEnabled) primaryButtonContainerColor
+                            else surfaceContainer
+                        },
+                        contentColor = takeColorFromScheme {
+                            if (isPrimaryButtonEnabled) primaryButtonContentColor
+                            else outline
+                        },
+                        modifier = Modifier.padding(top = spacing)
+                    ) {
+                        AnimatedContent(
+                            targetState = primaryButtonIcon to primaryButtonText,
+                            transitionSpec = { fadeIn() + scaleIn() togetherWith fadeOut() + scaleOut() }
+                        ) { (icon, text) ->
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                if (text.isNotEmpty()) {
+                                    Spacer(Modifier.width(16.dp))
+                                }
+                                Icon(
+                                    imageVector = icon,
+                                    contentDescription = null,
+                                    modifier = Modifier.padding(FabIconPadding)
+                                )
+                                if (text.isNotEmpty()) {
+                                    Spacer(Modifier.width(16.dp))
+                                    Text(text)
+                                    Spacer(Modifier.width(16.dp))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * 底部操作栏按钮内的图标留白 —— 让 icon 和 48×48 的圆角底色容器之间
+ * 保持一圈呼吸空间，而不是图标顶到容器边缘。
+ */
+private val FabIconPadding = 4.dp

@@ -26,8 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.lifetime.R
 import com.shifenmiao.lifetime.component.LifeTimeWelcomeComponent
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
-import com.t8rin.imagetoolbox.core.ui.widget.system.OnePrimaryButton
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
+import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineArrowForwardIos
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHourglass
 

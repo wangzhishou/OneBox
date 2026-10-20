@@ -27,9 +27,9 @@ import androidx.compose.ui.unit.sp
 import com.shifenmiao.common.handle.LocalUrlNavigator
 import com.shifenmiao.core.BuildConfig
 import com.shifenmiao.core.R
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.scaleOnTap
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.widget.modifier.scaleOnTap
 
 @Composable
 fun TextLogo() {

@@ -11,8 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxListItem
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
+import com.wanbaohe.core.ui.widget.system.OneBoxListItem
 import com.wanbaohe.cloud.storage.R
 import com.wanbaohe.cloud.storage.model.CloudStorageConnection
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCloudStorage

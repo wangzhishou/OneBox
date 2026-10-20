@@ -6,10 +6,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.shifenmiao.core.R
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalLoginState
+import com.wanbaohe.core.ui.utils.provider.LocalLoginState
 import com.shifenmiao.model.login.LoginStyle
 import com.shifenmiao.login.viewModel.LoginComponent
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 
 @Composable
 fun ModalBottomSheetLogin(

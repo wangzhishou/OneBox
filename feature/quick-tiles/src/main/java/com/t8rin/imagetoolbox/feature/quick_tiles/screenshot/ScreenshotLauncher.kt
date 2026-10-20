@@ -25,10 +25,10 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.buildIntent
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.getScreenExtra
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.postToast
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.putScreenExtra
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.buildIntent
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.getScreenExtra
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.postToast
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.putScreenExtra
 
 class ScreenshotLauncher : AppCompatActivity() {
 

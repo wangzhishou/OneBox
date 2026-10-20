@@ -53,13 +53,13 @@ import androidx.compose.ui.unit.sp
 import com.smarttoolfactory.colordetector.parser.ColorNameParser
 import com.t8rin.dynamic.theme.ColorTuple
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.theme.inverse
-import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
-import com.t8rin.imagetoolbox.core.ui.utils.helper.toHex
-import com.t8rin.imagetoolbox.core.ui.widget.controls.selection.ColorRowSelector
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.hapticsClickable
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.transparencyChecker
-import com.t8rin.imagetoolbox.core.ui.widget.saver.ColorSaver
+import com.wanbaohe.core.ui.theme.inverse
+import com.wanbaohe.core.ui.utils.helper.Clipboard
+import com.wanbaohe.core.ui.utils.helper.toHex
+import com.wanbaohe.core.ui.widget.controls.selection.ColorRowSelector
+import com.wanbaohe.core.ui.widget.enhanced.hapticsClickable
+import com.wanbaohe.core.ui.widget.modifier.transparencyChecker
+import com.wanbaohe.core.ui.widget.saver.ColorSaver
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 
 @Composable

@@ -42,8 +42,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.theme.inverse
-import com.t8rin.imagetoolbox.core.ui.widget.text.RoundedTextFieldColors
+import com.wanbaohe.core.ui.theme.inverse
+import com.wanbaohe.core.ui.widget.text.RoundedTextFieldColors
 
 
 @Composable

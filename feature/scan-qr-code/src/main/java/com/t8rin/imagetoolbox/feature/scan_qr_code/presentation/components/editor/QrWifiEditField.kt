@@ -36,9 +36,9 @@ import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.domain.model.QrType
 import com.t8rin.imagetoolbox.core.domain.model.QrType.Wifi.EncryptionType
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.widget.controls.selection.DataSelector
-import com.t8rin.imagetoolbox.core.ui.widget.text.RoundedTextField
-import com.t8rin.imagetoolbox.core.ui.widget.text.TitleItem
+import com.wanbaohe.core.ui.widget.controls.selection.DataSelector
+import com.wanbaohe.core.ui.widget.text.RoundedTextField
+import com.wanbaohe.core.ui.widget.text.TitleItem
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBuild
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineText
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSecurity

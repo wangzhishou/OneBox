@@ -25,7 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.core.R
-import com.t8rin.imagetoolbox.core.ui.widget.other.TopAppBarEmoji
+import com.wanbaohe.core.ui.widget.other.TopAppBarEmoji
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
@@ -35,7 +35,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LinePdf
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePrint
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineOpenInBrowser
 import androidx.compose.foundation.layout.Box
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 /**
  * 通用 WebView 顶部栏

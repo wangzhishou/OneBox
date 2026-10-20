@@ -10,7 +10,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.passwordvault.detail.PasswordVaultDetailScreen
 import com.wanbaohe.passwordvault.edit.PasswordVaultEditScreen
 import com.wanbaohe.passwordvault.list.PasswordVaultListScreen

@@ -51,12 +51,12 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.airbnb.lottie.compose.rememberLottieDynamicProperties
 import com.airbnb.lottie.compose.rememberLottieDynamicProperty
-import com.shifenmiao.base.ui.shapes.DownArrowBubbleShape
+import com.wanbaohe.base.ui.shapes.DownArrowBubbleShape
 import com.shifenmiao.core.R
 import com.shifenmiao.model.state.RobotState
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.glassBackground
 
 /** 气泡区域固定高度（含下箭头），机器人出现/消失时布局不跳动 */
 private val BUBBLE_AREA_HEIGHT = 64.dp

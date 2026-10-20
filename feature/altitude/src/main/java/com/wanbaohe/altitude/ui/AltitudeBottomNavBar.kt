@@ -7,8 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import com.shifenmiao.core.R as CoreR
-import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavItem
-import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavigationBar
+import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
+import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBar
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSpeedTest
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineInsights
 

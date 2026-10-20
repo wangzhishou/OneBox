@@ -34,7 +34,7 @@ import com.t8rin.imagetoolbox.core.filters.domain.model.enums.BlurEdgeMode
 import com.t8rin.imagetoolbox.core.filters.domain.model.enums.TransferFunc
 import com.t8rin.imagetoolbox.core.filters.domain.model.params.LinearGaussianParams
 import com.t8rin.imagetoolbox.core.filters.presentation.model.UiFilter
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSliderItem
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedSliderItem
 
 @Composable
 internal fun LinearGaussianParamsItem(

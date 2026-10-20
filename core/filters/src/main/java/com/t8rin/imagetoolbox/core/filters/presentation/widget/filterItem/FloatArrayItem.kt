@@ -33,8 +33,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.filters.presentation.model.UiFilter
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
-import com.t8rin.imagetoolbox.core.ui.widget.text.RoundedTextField
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
+import com.wanbaohe.core.ui.widget.text.RoundedTextField
 import kotlin.math.absoluteValue
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 

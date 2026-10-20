@@ -33,7 +33,7 @@ import com.halilibo.richtext.ui.button.SaveCodeActionButton
 import com.halilibo.richtext.ui.a2ui.A2uiCodeBlock
 import com.halilibo.richtext.ui.mermaid.MermaidCodeBlock
 import com.shifenmiao.model.node.AstFencedCodeBlock
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.widget.glass.glassBackground
 import io.noties.markwon.SpannableBuilder
 import io.noties.markwon.locator.PrismGrammarLocator
 import io.noties.markwon.plugins.codeblock.CodeBlockClickListener

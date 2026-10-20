@@ -61,7 +61,7 @@ import com.t8rin.imagetoolbox.core.filters.domain.model.createFilter
 import com.t8rin.imagetoolbox.core.filters.domain.model.enums.SpotHealMode
 import com.t8rin.imagetoolbox.core.resources.shapes.MaterialStarShape
 import com.t8rin.imagetoolbox.core.settings.domain.SettingsProvider
-import com.t8rin.imagetoolbox.core.ui.utils.helper.toImageModel
+import com.wanbaohe.core.ui.utils.helper.toImageModel
 import com.t8rin.imagetoolbox.core.utils.toTypeface
 import com.t8rin.imagetoolbox.feature.draw.data.utils.drawRepeatedBitmapOnPath
 import com.t8rin.imagetoolbox.feature.draw.data.utils.drawRepeatedTextOnPath

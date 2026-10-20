@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.AddPhotoAlt
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxBottomActionBar
+import com.wanbaohe.core.ui.widget.system.OneBoxBottomActionBar
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 
 /**

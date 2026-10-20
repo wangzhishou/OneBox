@@ -44,10 +44,10 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.DeleteSweep
-import com.t8rin.imagetoolbox.core.ui.utils.capturable.CaptureController
-import com.t8rin.imagetoolbox.core.ui.utils.capturable.capturable
-import com.t8rin.imagetoolbox.core.ui.utils.capturable.rememberCaptureController
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalComponentActivity
+import com.wanbaohe.core.ui.utils.capturable.CaptureController
+import com.wanbaohe.core.ui.utils.capturable.capturable
+import com.wanbaohe.core.ui.utils.capturable.rememberCaptureController
+import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
 import com.wanbaohe.altitude.component.AltitudeComponent
 import com.wanbaohe.altitude.component.AltitudeUiState
 import com.wanbaohe.altitude.domain.AltitudeRecord

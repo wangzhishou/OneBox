@@ -25,10 +25,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorSelectionRow
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedChip
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
+import com.wanbaohe.core.ui.widget.color_picker.ColorSelectionRow
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedChip
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.presentation.components.SheetHeader
 

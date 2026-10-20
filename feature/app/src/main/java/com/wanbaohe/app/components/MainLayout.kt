@@ -15,10 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.base.ui.modifier.onGloballyPositionedDebounced
+import com.wanbaohe.base.ui.modifier.onGloballyPositionedDebounced
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.robot.RobotController
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.Screen
 
 @Composable
 fun MainLayout(

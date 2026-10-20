@@ -21,8 +21,8 @@ import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCasino
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSettings
-import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavItem
-import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavigationBar
+import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
+import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.decisionwheel.R
 import com.wanbaohe.decisionwheel.component.DecisionWheelRouterComponent
 import com.wanbaohe.decisionwheel.component.WheelTab

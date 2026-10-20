@@ -17,7 +17,7 @@
 
 package com.t8rin.imagetoolbox.feature.root.presentation.components.utils
 
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.Screen
 
 fun interface BackEventObserver {
     fun onBack(closedScreen: Screen?)

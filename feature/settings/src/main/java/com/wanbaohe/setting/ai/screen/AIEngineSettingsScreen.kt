@@ -37,23 +37,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.base.ui.icon.IconRegistry
+import com.wanbaohe.base.ui.icon.IconRegistry
 import com.shifenmiao.base.utils.LoginUtils
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.ai.providerBrandIcon
 import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.model.ai.AiRequestProtocol
 import com.shifenmiao.model.remote.AiEngineConfig
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDangerButton
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxLeadingIconBadge
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionCard
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneSecondaryButton
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.widget.system.OneBoxDangerButton
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
+import com.wanbaohe.core.ui.widget.system.OneBoxLeadingIconBadge
+import com.wanbaohe.core.ui.widget.system.OneBoxSectionCard
+import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
 import com.t8rin.imagetoolbox.core.utils.getString
 import com.wanbaohe.setting.ai.component.AIEngineSettingsComponent
 import com.wanbaohe.settings.R
@@ -62,7 +62,7 @@ import com.shifenmiao.core.R as CoreR
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSettingsSuggest
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 @Composable
 fun AIEngineSettingsScreen(

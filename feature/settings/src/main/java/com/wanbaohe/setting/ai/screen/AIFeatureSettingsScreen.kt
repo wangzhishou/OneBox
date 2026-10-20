@@ -27,13 +27,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxGroupDivider
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxLeadingIconBadge
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxNumberStepperField
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionCard
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionHeader
+import com.wanbaohe.core.ui.widget.glass.GlassSwitch
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
+import com.wanbaohe.core.ui.widget.system.OneBoxGroupDivider
+import com.wanbaohe.core.ui.widget.system.OneBoxLeadingIconBadge
+import com.wanbaohe.core.ui.widget.system.OneBoxNumberStepperField
+import com.wanbaohe.core.ui.widget.system.OneBoxSectionCard
+import com.wanbaohe.core.ui.widget.system.OneBoxSectionHeader
 import com.wanbaohe.setting.ai.component.AIFeatureSettingsComponent
 import com.wanbaohe.settings.R
 import com.shifenmiao.core.R as CoreR

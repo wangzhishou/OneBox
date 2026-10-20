@@ -21,7 +21,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity.RESULT_OK
-import com.t8rin.imagetoolbox.core.ui.utils.helper.toClipData
+import com.wanbaohe.core.ui.utils.helper.toClipData
 
 internal fun ComponentActivity.sendMediaAsResult(selectedMedia: List<Uri>) {
     val newIntent = Intent(

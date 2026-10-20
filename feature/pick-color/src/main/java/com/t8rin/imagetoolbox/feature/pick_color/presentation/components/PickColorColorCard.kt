@@ -29,10 +29,10 @@ import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFavorite
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFavoriteFilled
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTouchApp
-import com.t8rin.imagetoolbox.core.ui.utils.helper.toHex
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.utils.helper.toHex
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
+import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
 
 /**
  * 取色结果卡片。

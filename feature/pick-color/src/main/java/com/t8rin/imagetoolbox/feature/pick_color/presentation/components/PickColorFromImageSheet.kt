@@ -50,20 +50,20 @@ import androidx.compose.ui.unit.dp
 import com.smarttoolfactory.colordetector.ImageColorDetector
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
-import com.t8rin.imagetoolbox.core.ui.theme.inverse
-import com.t8rin.imagetoolbox.core.ui.theme.outlineVariant
-import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
-import com.t8rin.imagetoolbox.core.ui.utils.helper.toHex
-import com.t8rin.imagetoolbox.core.ui.widget.buttons.PanModeButton
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalSheetDragHandle
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.hapticsClickable
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.flatGlassContainer
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.shimmer
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.transparencyChecker
+import com.wanbaohe.core.ui.theme.inverse
+import com.wanbaohe.core.ui.theme.outlineVariant
+import com.wanbaohe.core.ui.utils.helper.Clipboard
+import com.wanbaohe.core.ui.utils.helper.toHex
+import com.wanbaohe.core.ui.widget.buttons.PanModeButton
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalSheetDragHandle
+import com.wanbaohe.core.ui.widget.enhanced.hapticsClickable
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
+import com.wanbaohe.core.ui.widget.modifier.flatGlassContainer
+import com.wanbaohe.core.ui.widget.modifier.shimmer
+import com.wanbaohe.core.ui.widget.modifier.transparencyChecker
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 
 @Composable

@@ -7,9 +7,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.Picker
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
-import com.t8rin.imagetoolbox.core.ui.widget.dialogs.OneTimeImagePickingDialog
+import com.wanbaohe.core.ui.utils.content_pickers.Picker
+import com.wanbaohe.core.ui.utils.content_pickers.rememberImagePicker
+import com.wanbaohe.core.ui.widget.dialogs.OneTimeImagePickingDialog
 
 /**
  * 创建标准的图片选择器（多选）

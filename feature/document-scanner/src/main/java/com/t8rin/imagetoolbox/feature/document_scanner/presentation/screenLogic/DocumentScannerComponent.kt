@@ -40,11 +40,11 @@ import com.t8rin.imagetoolbox.core.domain.saving.model.onSuccess
 import com.t8rin.imagetoolbox.core.domain.utils.runSuspendCatching
 import com.t8rin.imagetoolbox.core.domain.utils.smartJob
 import com.t8rin.imagetoolbox.core.domain.utils.timestamp
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ScanResult
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.coroutineScope
-import com.t8rin.imagetoolbox.core.ui.utils.state.update
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.helper.ScanResult
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.coroutineScope
+import com.wanbaohe.core.ui.utils.state.update
 import com.t8rin.imagetoolbox.feature.pdf_tools.domain.PdfManager
 import com.t8rin.imagetoolbox.feature.pdf_tools.domain.model.PdfCreationParams
 import dagger.assisted.Assisted

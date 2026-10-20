@@ -20,7 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.shifenmiao.base.ui.AppCenterAlignedTopAppBar
+import com.wanbaohe.base.ui.AppCenterAlignedTopAppBar
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.core.R
 import com.shifenmiao.login.state.RegistrationUiEvent

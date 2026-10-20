@@ -29,11 +29,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.domain.model.IntegerSize
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ImageUtils.restrict
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.flatGlassContainer
-import com.t8rin.imagetoolbox.core.ui.widget.text.RoundedTextField
-import com.t8rin.imagetoolbox.core.ui.widget.text.RoundedTextFieldColors
+import com.wanbaohe.core.ui.utils.helper.ImageUtils.restrict
+import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
+import com.wanbaohe.core.ui.widget.modifier.flatGlassContainer
+import com.wanbaohe.core.ui.widget.text.RoundedTextField
+import com.wanbaohe.core.ui.widget.text.RoundedTextFieldColors
 
 @Composable
 fun GradientSizeSelector(

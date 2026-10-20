@@ -16,8 +16,8 @@ import com.shifenmiao.network.model.comment.MyComment
 import com.shifenmiao.network.model.notification.UserNotification
 import com.shifenmiao.storage.TokenStorage
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.notification.service.NotificationRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory

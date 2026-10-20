@@ -26,7 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.halilibo.richtext.ui.button.CopyCodeActionButton
 import com.shifenmiao.model.node.AstFencedCodeBlock
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.widget.glass.glassBackground
 import io.noties.markwon.plugins.codeblock.CodeBlockClickListener
 import kotlinx.coroutines.delay
 

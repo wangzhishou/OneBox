@@ -16,8 +16,8 @@ import com.shifenmiao.model.image.ImageViewerInfo
 import com.shifenmiao.model.webview.WebViewParams
 import com.shifenmiao.model.webview.WebViewType
 import com.t8rin.imagetoolbox.core.data.utils.SafUriUtils
-import com.t8rin.imagetoolbox.core.ui.utils.content.ContentRouter
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.content.ContentRouter
+import com.wanbaohe.core.ui.utils.navigation.Screen
 
 // 创建一个CompositionLocal来提供UrlNavigator
 val LocalUrlNavigator = compositionLocalOf<UrlNavigator> { error("No UrlNavigator provided") }

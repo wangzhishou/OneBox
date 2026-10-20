@@ -33,7 +33,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
-import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
+import com.wanbaohe.core.ui.utils.helper.Clipboard
 import com.wanbaohe.boardgame.R as BoardGameR
 import com.wanbaohe.boardgame.model.BoardGameAction
 import com.wanbaohe.boardgame.model.BoardGameSideOption
@@ -54,7 +54,7 @@ import com.wanbaohe.gomoku.domain.model.BoardPoint
 import com.wanbaohe.gomoku.domain.model.Side
 import com.wanbaohe.gomoku.ui.board.GomokuBoard
 import com.wanbaohe.gomoku.ui.board.StoneDisc
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 @Composable
 fun GomokuSetupScreen(

@@ -3,8 +3,8 @@ package com.wanbaohe.period.component
 import com.arkivanov.decompose.ComponentContext
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.period.R
 import com.wanbaohe.period.model.PeriodDayStatus
 import com.wanbaohe.period.model.PeriodEditorState

@@ -16,11 +16,11 @@ import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.Search
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFilePicker
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.rememberFilename
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ImageUtils.rememberPdfPages
-import com.t8rin.imagetoolbox.core.ui.utils.helper.isPortraitOrientationAsState
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
+import com.wanbaohe.core.ui.utils.content_pickers.rememberFilePicker
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.rememberFilename
+import com.wanbaohe.core.ui.utils.helper.ImageUtils.rememberPdfPages
+import com.wanbaohe.core.ui.utils.helper.isPortraitOrientationAsState
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
 import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.canUseNewPdfFully
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.common.BasePdfToolContent
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.preview.screenLogic.PreviewPdfToolComponent

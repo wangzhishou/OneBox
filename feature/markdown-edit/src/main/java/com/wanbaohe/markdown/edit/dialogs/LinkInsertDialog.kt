@@ -1,6 +1,6 @@
 package com.wanbaohe.markdown.edit.dialogs
 
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
+import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,8 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.core.R
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedButton
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedButton
 import com.wanbaohe.markdown.edit.R as MarkdownR
 
 /**

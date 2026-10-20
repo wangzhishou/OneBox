@@ -11,7 +11,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import com.shifenmiao.base.ui.ConfirmDialog
+import com.wanbaohe.base.ui.ConfirmDialog
 import com.shifenmiao.storage.AppSharedStorage
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSync
 import com.shifenmiao.core.R as CoreR

@@ -30,8 +30,8 @@ import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.storage.RemoteConfigStorage
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUploadFile
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.boardgame.ui.BoardCover
 import com.wanbaohe.boardgame.ui.BoardGamePillButton
 import com.wanbaohe.boardgame.R as BoardGameR

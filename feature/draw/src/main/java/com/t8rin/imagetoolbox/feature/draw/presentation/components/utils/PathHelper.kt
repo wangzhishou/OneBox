@@ -33,7 +33,7 @@ import androidx.compose.ui.graphics.asAndroidPath
 import androidx.compose.ui.graphics.asComposePath
 import com.t8rin.imagetoolbox.core.domain.model.IntegerSize
 import com.t8rin.imagetoolbox.core.domain.model.Pt
-import com.t8rin.imagetoolbox.core.ui.utils.helper.rotate
+import com.wanbaohe.core.ui.utils.helper.rotate
 import com.t8rin.imagetoolbox.feature.draw.domain.DrawPathMode
 import kotlin.math.abs
 import kotlin.math.cos

@@ -41,13 +41,13 @@ import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageInfo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
-import com.t8rin.imagetoolbox.core.ui.utils.capturable.CaptureController
-import com.t8rin.imagetoolbox.core.ui.utils.capturable.capturable
-import com.t8rin.imagetoolbox.core.ui.utils.capturable.rememberCaptureController
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalImageShareProvider
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.utils.capturable.CaptureController
+import com.wanbaohe.core.ui.utils.capturable.capturable
+import com.wanbaohe.core.ui.utils.capturable.rememberCaptureController
+import com.wanbaohe.core.ui.utils.provider.LocalImageShareProvider
+import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.boardgame.model.BoardGameAction
 import com.wanbaohe.boardgame.ui.ActionBar
 import com.wanbaohe.boardgame.ui.BoardGameToolButton
@@ -71,7 +71,7 @@ import com.wanbaohe.chess.ui.ChessOpponentPicker
 import com.wanbaohe.chess.ui.board.ChessBoard
 import com.wanbaohe.chess.ui.board.glyph
 import kotlinx.coroutines.launch
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.wanbaohe.boardgame.ui.accentTextButtonColors
 import com.wanbaohe.boardgame.ui.dangerTextButtonColors
 

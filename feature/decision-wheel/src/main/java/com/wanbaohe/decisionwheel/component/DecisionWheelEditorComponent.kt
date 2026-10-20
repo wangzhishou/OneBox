@@ -7,7 +7,7 @@ import com.shifenmiao.common.ai.AIPromptExecutor
 import com.shifenmiao.common.ai.AiLanguagePrompt
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.com.color.ColorGenerator
 import com.wanbaohe.decisionwheel.R
 import com.wanbaohe.decisionwheel.data.WheelRepository

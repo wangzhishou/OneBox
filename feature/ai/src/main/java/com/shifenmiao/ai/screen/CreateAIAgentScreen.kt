@@ -66,7 +66,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.ai.component.CreateAIAgentComponent
 import com.shifenmiao.ai.component.GenerationStatus
-import com.shifenmiao.base.ui.DeleteConfirmDialog
+import com.wanbaohe.base.ui.DeleteConfirmDialog
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.CreationMetaConfigSheet
@@ -85,12 +85,12 @@ import com.shifenmiao.model.ai.tool.ToolCategory
 import com.shifenmiao.model.HomeTabKey
 import com.shifenmiao.model.event.AppEventBus
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
+import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
+import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.utils.getString
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Close

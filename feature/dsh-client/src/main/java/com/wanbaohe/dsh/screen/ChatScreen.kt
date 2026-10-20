@@ -89,8 +89,8 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
+import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.utils.fileProviderAuthority
 import com.wanbaohe.dsh.R
 import com.wanbaohe.dsh.component.ChatUiState
@@ -124,7 +124,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.JsonObject
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 /**
  * DSH 聊天页(P5a 功能面):抽屉会话列表(搜索/长按菜单)+ 会话流节点渲染 +

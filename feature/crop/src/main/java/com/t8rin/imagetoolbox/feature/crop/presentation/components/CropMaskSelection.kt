@@ -60,13 +60,13 @@ import com.smarttoolfactory.cropper.model.RoundedCornerCropShape
 import com.smarttoolfactory.cropper.settings.CropOutlineProperty
 import com.smarttoolfactory.cropper.widget.CropFrameDisplayCard
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.theme.outlineVariant
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSliderItem
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.hapticsClickable
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.flatGlassContainer
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.fadingEdges
+import com.wanbaohe.core.ui.theme.outlineVariant
+import com.wanbaohe.core.ui.utils.content_pickers.rememberImagePicker
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedSliderItem
+import com.wanbaohe.core.ui.widget.enhanced.hapticsClickable
+import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
+import com.wanbaohe.core.ui.widget.modifier.flatGlassContainer
+import com.wanbaohe.core.ui.widget.modifier.fadingEdges
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 

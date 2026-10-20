@@ -30,8 +30,8 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.utils.ShareUtils
 import com.shifenmiao.core.R
 import com.shifenmiao.model.wechat.Wechat
-import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
-import com.t8rin.imagetoolbox.core.ui.utils.helper.rememberRipple
+import com.wanbaohe.core.ui.utils.helper.Clipboard
+import com.wanbaohe.core.ui.utils.helper.rememberRipple
 import com.t8rin.imagetoolbox.core.utils.appContext
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare

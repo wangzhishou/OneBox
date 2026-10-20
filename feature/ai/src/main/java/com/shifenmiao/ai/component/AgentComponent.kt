@@ -32,7 +32,7 @@ import com.shifenmiao.network.utils.NetworkUtils
 import com.shifenmiao.storage.RemoteConfigStorage
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.resource.ResourceManager
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.a2ui.catalog.A2uiRenderProvider
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory

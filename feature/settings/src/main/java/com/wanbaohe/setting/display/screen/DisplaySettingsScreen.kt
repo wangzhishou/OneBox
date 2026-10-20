@@ -55,17 +55,17 @@ import com.t8rin.imagetoolbox.core.settings.domain.model.NightMode
 import com.t8rin.imagetoolbox.core.settings.presentation.model.UiFontFamily
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsManager
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalComponentActivity
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSegmentedButtonRow
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCustomSlider
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionCard
-import com.t8rin.imagetoolbox.core.ui.widget.theme.ThemePresetSelector
-import com.t8rin.imagetoolbox.core.ui.widget.controls.selection.PickFontFamilySheet
+import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
+import com.wanbaohe.core.ui.widget.glass.GlassSegmentedButtonRow
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.GlassSwitch
+import com.wanbaohe.core.ui.widget.glass.GlassCustomSlider
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
+import com.wanbaohe.core.ui.widget.system.OneBoxSectionCard
+import com.wanbaohe.core.ui.widget.theme.ThemePresetSelector
+import com.wanbaohe.core.ui.widget.controls.selection.PickFontFamilySheet
 import com.t8rin.imagetoolbox.feature.settings.presentation.screenLogic.SettingsComponent
 import com.wanbaohe.setting.display.component.DisplaySettingsComponent
 import kotlinx.coroutines.launch
@@ -497,7 +497,7 @@ fun ConfettiSettingItem(component: DisplaySettingsComponent) {
                     component.settingsComponent.toggleConfettiEnabled()
                 }
                 if (enabled) {
-                    com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost.showConfetti()
+                    com.wanbaohe.core.ui.utils.helper.AppToastHost.showConfetti()
                 }
             },
             thumbContent = {
@@ -678,7 +678,7 @@ private fun FontFamilySettingSection(settingsComponent: SettingsComponent) {
         }
     )
 
-    val showConfetti: () -> Unit = com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost::showConfetti
+    val showConfetti: () -> Unit = com.wanbaohe.core.ui.utils.helper.AppToastHost::showConfetti
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -716,7 +716,7 @@ private fun FontFamilySettingSection(settingsComponent: SettingsComponent) {
                 uri = it,
                 onSuccess = showConfetti,
                 onFailure = {
-                    com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost.showToast(
+                    com.wanbaohe.core.ui.utils.helper.AppToastHost.showToast(
                         message = com.t8rin.imagetoolbox.core.utils.appContext.getString(com.t8rin.imagetoolbox.core.resources.R.string.wrong_font),
                         icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineText
                     )
@@ -733,7 +733,7 @@ private fun FontFamilySettingSection(settingsComponent: SettingsComponent) {
 
                 exportFontsLauncher.launch("FONTS_EXPORT_$timeStamp.zip")
             }.onFailure {
-                com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost.showActivateFilesToast()
+                com.wanbaohe.core.ui.utils.helper.AppToastHost.showActivateFilesToast()
             }
         }
     )

@@ -31,8 +31,8 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionCard
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
+import com.wanbaohe.core.ui.widget.system.OneBoxSectionCard
 import com.wanbaohe.sudoku.R
 import com.wanbaohe.sudoku.component.SudokuComponent
 import com.wanbaohe.sudoku.logic.SudokuDifficulty

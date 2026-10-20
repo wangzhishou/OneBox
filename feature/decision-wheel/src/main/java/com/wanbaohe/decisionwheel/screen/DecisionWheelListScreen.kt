@@ -45,9 +45,9 @@ import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
+import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.decisionwheel.R
 import com.wanbaohe.decisionwheel.component.DecisionWheel
 import com.wanbaohe.decisionwheel.component.DecisionWheelRouterComponent

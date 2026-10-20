@@ -23,9 +23,9 @@ import com.shifenmiao.model.imageprocess.RetouchParams
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMinus
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalIconButton
+import com.wanbaohe.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.widget.glass.GlassSwitch
+import com.wanbaohe.core.ui.widget.glass.GlassTonalIconButton
 import com.wanbaohe.idphoto.domain.BeautyParamGroup
 import com.wanbaohe.idphoto.domain.BeautyParamSpec
 import java.util.Locale

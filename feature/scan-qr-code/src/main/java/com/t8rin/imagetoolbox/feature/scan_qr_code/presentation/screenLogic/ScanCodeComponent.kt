@@ -6,8 +6,8 @@ import com.arkivanov.decompose.ComponentContext
 import com.shifenmiao.model.scan.ScanHistoryEntry
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.model.QrType
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.feature.scan_qr_code.domain.ScanCodeContentType
 import com.t8rin.imagetoolbox.feature.scan_qr_code.domain.ScanCodeResultResolver
 import com.t8rin.imagetoolbox.feature.scan_qr_code.domain.ScanHistoryRepository

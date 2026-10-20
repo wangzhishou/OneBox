@@ -65,8 +65,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassRegular
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedButton
+import com.wanbaohe.core.ui.widget.glass.glassRegular
 import com.wanbaohe.adwatch.R
 import com.wanbaohe.adwatch.ads.AdWatchAds
 import com.wanbaohe.adwatch.ads.RewardedAdStatus

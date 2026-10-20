@@ -24,10 +24,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.base.ui.button.ConfirmButton
+import com.wanbaohe.base.ui.button.ConfirmButton
 import com.t8rin.imagetoolbox.core.filters.presentation.widget.FilterItem
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSlider
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedSlider
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.presentation.components.EditorTargetSelector
 import com.wanbaohe.markuplayers.presentation.components.LayerIconButton

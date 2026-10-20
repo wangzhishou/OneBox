@@ -35,8 +35,8 @@ import com.t8rin.imagetoolbox.core.domain.utils.trimTrailingZero
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.Latitude
 import com.t8rin.imagetoolbox.core.resources.icons.Longitude
-import com.t8rin.imagetoolbox.core.ui.widget.text.RoundedTextField
-import com.t8rin.imagetoolbox.core.ui.widget.value.filterDecimal
+import com.wanbaohe.core.ui.widget.text.RoundedTextField
+import com.wanbaohe.core.ui.widget.value.filterDecimal
 
 @Composable
 internal fun QrGeoEditField(

@@ -34,8 +34,8 @@ import com.shifenmiao.model.colors.EditorColors
 import com.shifenmiao.webview.common.WebViewPool
 import com.shifenmiao.webview.common.WebViewSettings
 import com.t8rin.imagetoolbox.core.data.utils.SafUriUtils
-import com.t8rin.imagetoolbox.core.ui.widget.text.EditorUiDefaults
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
+import com.wanbaohe.core.ui.widget.text.EditorUiDefaults
+import com.wanbaohe.core.ui.utils.content_pickers.rememberImagePicker
 import com.wanbaohe.markdown.edit.R as MarkdownR
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

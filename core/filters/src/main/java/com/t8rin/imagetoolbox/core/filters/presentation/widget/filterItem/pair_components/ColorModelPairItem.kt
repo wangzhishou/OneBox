@@ -33,10 +33,10 @@ import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.domain.model.ColorModel
 import com.t8rin.imagetoolbox.core.filters.presentation.model.UiFilter
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.utils.helper.toColor
-import com.t8rin.imagetoolbox.core.ui.utils.helper.toModel
-import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorSelectionRowDefaults
-import com.t8rin.imagetoolbox.core.ui.widget.controls.selection.ColorRowSelector
+import com.wanbaohe.core.ui.utils.helper.toColor
+import com.wanbaohe.core.ui.utils.helper.toModel
+import com.wanbaohe.core.ui.widget.color_picker.ColorSelectionRowDefaults
+import com.wanbaohe.core.ui.widget.controls.selection.ColorRowSelector
 
 @Composable
 internal fun ColorModelPairItem(

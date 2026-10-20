@@ -31,9 +31,9 @@ import com.t8rin.imagetoolbox.core.domain.model.ImageModel
 import com.t8rin.imagetoolbox.core.domain.utils.roundTo
 import com.t8rin.imagetoolbox.core.filters.presentation.model.UiFilter
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.utils.helper.toImageModel
-import com.t8rin.imagetoolbox.core.ui.widget.controls.selection.ImageSelector
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSliderItem
+import com.wanbaohe.core.ui.utils.helper.toImageModel
+import com.wanbaohe.core.ui.widget.controls.selection.ImageSelector
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedSliderItem
 
 @Composable
 internal fun FloatImageModelPairItem(

@@ -50,9 +50,9 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Close
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
-import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavItem
-import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavigationBar
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
+import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.media.R
 import com.wanbaohe.media.component.MediaPlayerComponent
 import com.wanbaohe.media.component.MediaPlayerUiState

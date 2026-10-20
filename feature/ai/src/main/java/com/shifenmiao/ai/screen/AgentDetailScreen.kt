@@ -24,7 +24,7 @@ import androidx.compose.ui.res.stringResource
 import com.shifenmiao.ai.component.AgentDetailComponent
 import com.shifenmiao.ai.ui.AIChatBottom
 import com.shifenmiao.ai.ui.AIContentRecommend
-import com.shifenmiao.base.ui.DisableContainer
+import com.wanbaohe.base.ui.DisableContainer
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
@@ -32,8 +32,8 @@ import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.state.PageState
 import com.shifenmiao.model.state.LocalChatUIState
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.t8rin.imagetoolbox.core.resources.icons.Close

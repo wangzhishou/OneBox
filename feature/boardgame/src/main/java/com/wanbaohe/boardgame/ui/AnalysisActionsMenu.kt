@@ -19,8 +19,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalIconButton
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.wanbaohe.core.ui.widget.glass.GlassTonalIconButton
 import com.wanbaohe.boardgame.R
 
 @Composable

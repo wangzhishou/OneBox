@@ -24,8 +24,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorSelectionRowDefaults
-import com.t8rin.imagetoolbox.core.ui.widget.controls.selection.ColorRowSelector
+import com.wanbaohe.core.ui.widget.color_picker.ColorSelectionRowDefaults
+import com.wanbaohe.core.ui.widget.controls.selection.ColorRowSelector
 
 @Composable
 fun DrawColorSelector(

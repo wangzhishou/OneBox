@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.shifenmiao.ai.component.AIChatComponent
 import com.shifenmiao.ai.screen.AIChatBody
-import com.shifenmiao.base.ui.DisableContainer
+import com.wanbaohe.base.ui.DisableContainer
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.state.PageState
@@ -27,7 +27,7 @@ import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAddAiChat
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import java.util.Date
 import com.shifenmiao.core.R as CoreR
 

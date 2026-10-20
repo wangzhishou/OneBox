@@ -16,7 +16,7 @@ import android.text.TextUtils
 import android.util.Log
 import androidx.core.net.toFile
 import androidx.core.net.toUri
-import com.t8rin.imagetoolbox.core.ui.utils.helper.contentUriToFilePath
+import com.wanbaohe.core.ui.utils.helper.contentUriToFilePath
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException

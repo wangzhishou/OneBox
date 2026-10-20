@@ -49,9 +49,9 @@ import com.shifenmiao.common.ui.rememberAddImagePickerState
 import com.shifenmiao.common.ui.rememberImmersiveModeState
 import com.shifenmiao.common.ui.rememberPreviewPaddingValues
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.Picker
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalTopSheet
+import com.wanbaohe.core.ui.utils.content_pickers.Picker
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalTopSheet
 import com.wanbaohe.camera.watermark.R
 import com.wanbaohe.camera.watermark.domain.WatermarkStyle
 import com.wanbaohe.camera.watermark.presentation.components.ExportConfigPanel

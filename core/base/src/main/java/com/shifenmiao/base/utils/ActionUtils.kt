@@ -21,8 +21,8 @@ import com.shifenmiao.model.user.event.BindPhoneEvent
 import com.shifenmiao.storage.RemoteConfigStorage
 import com.shifenmiao.storage.TokenStorage
 import dagger.hilt.android.EntryPointAccessors
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.widget.other.ToastDuration
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.widget.other.ToastDuration
 import androidx.core.net.toUri
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineError
 

@@ -42,10 +42,10 @@ import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
 import com.t8rin.imagetoolbox.core.filters.presentation.model.UiFilter
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.Github
-import com.t8rin.imagetoolbox.core.ui.utils.helper.toFileModel
-import com.t8rin.imagetoolbox.core.ui.widget.controls.selection.FileSelector
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedButton
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSliderItem
+import com.wanbaohe.core.ui.utils.helper.toFileModel
+import com.wanbaohe.core.ui.widget.controls.selection.FileSelector
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedButton
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedSliderItem
 
 @Composable
 internal fun FloatFileModelPairItem(

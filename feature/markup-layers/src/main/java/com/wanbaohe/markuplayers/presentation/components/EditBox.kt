@@ -42,8 +42,8 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Close
-import com.t8rin.imagetoolbox.core.ui.widget.editor.AnimatedSelectionBorder
-import com.t8rin.imagetoolbox.core.ui.widget.editor.BoxResizeConfig
+import com.wanbaohe.core.ui.widget.editor.AnimatedSelectionBorder
+import com.wanbaohe.core.ui.widget.editor.BoxResizeConfig
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.model.LayerTransform
 import kotlin.math.atan2

@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.halilibo.richtext.R
 import com.shifenmiao.model.node.AstFencedCodeBlock
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.widget.glass.glassBackground
 import io.noties.markwon.SpannableBuilder
 import io.noties.markwon.locator.PrismGrammarLocator
 import io.noties.markwon.plugins.codeblock.CodeBlockClickListener

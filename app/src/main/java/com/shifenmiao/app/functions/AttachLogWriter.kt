@@ -19,7 +19,7 @@ package com.shifenmiao.app.functions
 
 import android.app.Application
 import com.shifenmiao.app.utils.isMain
-import com.t8rin.imagetoolbox.core.ui.utils.helper.DeviceInfo
+import com.wanbaohe.core.ui.utils.helper.DeviceInfo
 import com.t8rin.imagetoolbox.core.utils.fileProviderAuthority
 import com.t8rin.logger.Logger
 import com.t8rin.logger.attachLogWriter

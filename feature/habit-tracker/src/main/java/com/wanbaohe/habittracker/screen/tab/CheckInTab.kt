@@ -39,11 +39,11 @@ import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
-import com.t8rin.imagetoolbox.core.ui.widget.charts.DonutChartSlice
-import com.t8rin.imagetoolbox.core.ui.widget.charts.DonutExpenseChart
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
-import com.t8rin.imagetoolbox.core.ui.widget.week_selector.WeekSelector
+import com.wanbaohe.core.ui.widget.charts.DonutChartSlice
+import com.wanbaohe.core.ui.widget.charts.DonutExpenseChart
+import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.widget.week_selector.WeekSelector
 import com.wanbaohe.habittracker.R
 import com.wanbaohe.habittracker.component.HabitTrackerComponent
 import com.wanbaohe.habittracker.model.HabitIcons

@@ -10,7 +10,7 @@ import com.shifenmiao.model.ai.ToolParameterProperty
 import com.shifenmiao.model.ai.ToolParameters
 import com.shifenmiao.model.ai.tool.ToolCategory
 import com.shifenmiao.model.ai.tool.ToolRiskLevel
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.feature.pdf_tools.service.PdfToolsService
 import javax.inject.Inject
 import kotlinx.serialization.Serializable

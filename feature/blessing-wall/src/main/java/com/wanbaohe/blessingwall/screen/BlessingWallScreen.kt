@@ -68,14 +68,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
-import com.t8rin.imagetoolbox.core.ui.utils.blessing.BlessingEffectType
-import com.t8rin.imagetoolbox.core.ui.utils.capturable.capturable
-import com.t8rin.imagetoolbox.core.ui.utils.capturable.rememberCaptureController
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.core.ui.widget.glass.GlassButton
+import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
+import com.wanbaohe.core.ui.utils.blessing.BlessingEffectType
+import com.wanbaohe.core.ui.utils.capturable.capturable
+import com.wanbaohe.core.ui.utils.capturable.rememberCaptureController
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.blessingwall.R
 import com.wanbaohe.blessingwall.component.BlessingWallComponent
 import com.wanbaohe.blessingwall.model.BlessingTabCustomization
@@ -561,7 +561,7 @@ private fun BlessingPage(
                     color = MaterialTheme.colorScheme.surfaceContainerLow,
                     contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 ) {
-                    Text(stringResource(com.t8rin.imagetoolbox.core.ui.R.string.date_picker_cancel))
+                    Text(stringResource(com.wanbaohe.core.ui.R.string.date_picker_cancel))
                 }
             },
         )
@@ -624,7 +624,7 @@ private fun BlessingPage(
                     color = MaterialTheme.colorScheme.surfaceContainerLow,
                     contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 ) {
-                    Text(stringResource(com.t8rin.imagetoolbox.core.ui.R.string.date_picker_cancel))
+                    Text(stringResource(com.wanbaohe.core.ui.R.string.date_picker_cancel))
                 }
             },
         )

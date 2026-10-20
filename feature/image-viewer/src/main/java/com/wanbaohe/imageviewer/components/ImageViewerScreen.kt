@@ -22,11 +22,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import coil3.compose.AsyncImagePainter
-import com.shifenmiao.base.ui.page.PageIndicator
+import com.wanbaohe.base.ui.page.PageIndicator
 import com.shifenmiao.common.ui.ImageViewerBaseScreen
 import com.shifenmiao.common.ui.ViewerActionButton
 import com.shifenmiao.common.ui.rememberImmersiveModeState
-import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
+import com.wanbaohe.core.ui.widget.image.Picture
 import com.wanbaohe.imageviewer.screenLogic.ImageViewerComponent
 import net.engawapg.lib.zoomable.rememberZoomState
 import net.engawapg.lib.zoomable.toggleScale

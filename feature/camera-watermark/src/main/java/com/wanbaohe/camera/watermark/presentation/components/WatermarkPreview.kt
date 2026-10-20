@@ -22,7 +22,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.ZoomableImagePreview
-import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
+import com.wanbaohe.core.ui.widget.image.Picture
 import com.wanbaohe.camera.watermark.R
 
 /**

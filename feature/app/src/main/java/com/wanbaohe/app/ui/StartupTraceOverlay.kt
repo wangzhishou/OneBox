@@ -39,8 +39,8 @@ import androidx.compose.ui.res.stringResource
 import com.shifenmiao.core.R
 import com.shifenmiao.storage.AppSharedStorage
 import com.t8rin.imagetoolbox.core.domain.performance.StartupTrace
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalIconButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.liquidGlassThick
+import com.wanbaohe.core.ui.widget.glass.GlassTonalIconButton
+import com.wanbaohe.core.ui.widget.glass.liquidGlassThick
 import kotlin.math.roundToInt
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 

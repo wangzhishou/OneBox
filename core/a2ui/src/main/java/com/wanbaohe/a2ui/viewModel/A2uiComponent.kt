@@ -2,7 +2,7 @@ package com.wanbaohe.a2ui.viewModel
 
 import com.arkivanov.decompose.ComponentContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.a2ui.catalog.A2uiComponentRegistry
 import com.wanbaohe.a2ui.catalog.A2uiThemeMapper
 import com.wanbaohe.a2ui.domain.model.A2uiAction

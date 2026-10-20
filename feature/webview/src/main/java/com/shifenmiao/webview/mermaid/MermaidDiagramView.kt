@@ -40,7 +40,7 @@ import com.shifenmiao.webview.common.WebViewSettings
 import com.shifenmiao.webview.diagnostics.WebViewDiagnostics
 import com.shifenmiao.webview.di.WebViewEntryPoint
 import com.shifenmiao.webview.resource.WebResourceEngine
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.shimmer
+import com.wanbaohe.core.ui.widget.modifier.shimmer
 import dagger.hilt.android.EntryPointAccessors
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.delay

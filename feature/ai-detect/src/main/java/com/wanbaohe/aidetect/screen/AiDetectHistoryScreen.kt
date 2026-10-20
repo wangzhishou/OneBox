@@ -41,7 +41,7 @@ import com.shifenmiao.database.aidetect.entity.AiDetectRecordEntity
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDeleteForever
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDescription
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineImage
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.aidetect.R
 import com.wanbaohe.aidetect.component.AiDetectComponent
 import com.wanbaohe.aidetect.service.AiDetectService

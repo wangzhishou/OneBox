@@ -45,7 +45,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
+import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -65,21 +65,21 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.base.ui.ConfirmContentDialog
-import com.shifenmiao.base.ui.card.AllFilesAccessPermissionCard
+import com.wanbaohe.base.ui.ConfirmContentDialog
+import com.wanbaohe.base.ui.card.AllFilesAccessPermissionCard
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.utils.helper.isPortraitOrientationAsState
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFolderPicker
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.hasAllFilesAccess
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.isAllFilesAccessDeclared
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.takePersistablePermission
-import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavItem
-import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavigationBar
+import com.wanbaohe.core.ui.utils.helper.isPortraitOrientationAsState
+import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.utils.content_pickers.rememberFolderPicker
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.hasAllFilesAccess
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.isAllFilesAccessDeclared
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.takePersistablePermission
+import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
+import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.file.browser.R
 import com.wanbaohe.file.browser.model.FileBrowserState
 import com.wanbaohe.file.browser.model.FileBrowserViewMode
@@ -114,7 +114,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.SelectAll
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineArrowDownward
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFileTransfer
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSchedule
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 /**
  * File browser main screen

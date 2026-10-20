@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.remote.AnalyticsManager
 import com.t8rin.imagetoolbox.core.settings.domain.SettingsProvider
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.BaseComponent
 
 class SearchComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,

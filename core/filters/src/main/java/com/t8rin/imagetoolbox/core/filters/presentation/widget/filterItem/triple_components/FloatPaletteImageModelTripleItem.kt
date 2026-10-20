@@ -39,12 +39,12 @@ import com.t8rin.imagetoolbox.core.filters.domain.model.enums.PaletteTransferSpa
 import com.t8rin.imagetoolbox.core.filters.presentation.model.UiFilter
 import com.t8rin.imagetoolbox.core.filters.presentation.utils.translatedName
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.utils.helper.toImageModel
-import com.t8rin.imagetoolbox.core.ui.widget.controls.selection.ImageSelector
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedButtonGroup
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSliderItem
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.flatGlassContainer
+import com.wanbaohe.core.ui.utils.helper.toImageModel
+import com.wanbaohe.core.ui.widget.controls.selection.ImageSelector
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedButtonGroup
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedSliderItem
+import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
+import com.wanbaohe.core.ui.widget.modifier.flatGlassContainer
 
 @Composable
 internal fun FloatPaletteImageModelTripleItem(

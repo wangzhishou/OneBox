@@ -1,7 +1,7 @@
 package com.wanbaohe.file.browser.utils
 
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.t8rin.imagetoolbox.core.ui.utils.file.FileTypeIconProvider
+import com.wanbaohe.core.ui.utils.file.FileTypeIconProvider
 
 /**
  * Provides appropriate icons for files based on their extension or MIME type.

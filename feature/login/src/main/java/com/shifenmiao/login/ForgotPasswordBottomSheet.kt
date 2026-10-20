@@ -16,8 +16,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.shifenmiao.base.ui.button.SmallClickableWithIconAndText
-import com.shifenmiao.base.ui.TitleText
+import com.wanbaohe.base.ui.button.SmallClickableWithIconAndText
+import com.wanbaohe.base.ui.TitleText
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.core.R
 import com.shifenmiao.login.state.ForgotPasswordUiEvent
@@ -25,7 +25,7 @@ import com.shifenmiao.login.ui.ForgotPasswordInputs
 import com.shifenmiao.login.viewModel.LoginComponent
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassCard
 
 @Composable
 fun ForgotPasswordBottomSheet(

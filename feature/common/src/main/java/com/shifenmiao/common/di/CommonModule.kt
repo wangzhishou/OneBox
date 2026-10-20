@@ -8,8 +8,8 @@ import com.shifenmiao.model.datasource.DataItemRemoteDataSource
 import com.t8rin.imagetoolbox.core.domain.content.ContentTypeResolver
 import com.t8rin.imagetoolbox.core.domain.content.DefaultContentTypeResolver
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.content.ContentRouter
-import com.t8rin.imagetoolbox.core.ui.utils.content.DefaultContentRouter
+import com.wanbaohe.core.ui.utils.content.ContentRouter
+import com.wanbaohe.core.ui.utils.content.DefaultContentRouter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -15,7 +15,7 @@ import com.shifenmiao.base.utils.DateUtils.convertElapsedTimeIntoText
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.model.blog.BlogDetailState
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBarType
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBarType
 import com.wanbaohe.blog.logic.BlogComponent
 import com.shifenmiao.common.components.blog.BlogHeader
 import com.wanbaohe.blog.ui.BlogContent

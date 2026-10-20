@@ -7,10 +7,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import com.t8rin.imagetoolbox.core.resources.emoji.Emoji
-import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
+import com.wanbaohe.core.ui.widget.image.Picture
 import com.wanbaohe.markuplayers.domain.model.LayerType
 import com.wanbaohe.markuplayers.domain.model.MarkupLayer
-import com.t8rin.imagetoolbox.core.ui.widget.editor.StickerSource
+import com.wanbaohe.core.ui.widget.editor.StickerSource
 import java.io.File
 import kotlin.reflect.KClass
 

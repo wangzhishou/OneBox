@@ -18,7 +18,7 @@ package com.t8rin.imagetoolbox.feature.media_picker.presentation
 
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.retainedComponent
-import com.t8rin.imagetoolbox.core.ui.utils.ComposeActivity
+import com.wanbaohe.core.ui.utils.ComposeActivity
 import com.t8rin.imagetoolbox.feature.media_picker.presentation.components.MediaPickerRootContent
 import com.t8rin.imagetoolbox.feature.media_picker.presentation.screenLogic.MediaPickerComponent
 import dagger.hilt.android.AndroidEntryPoint

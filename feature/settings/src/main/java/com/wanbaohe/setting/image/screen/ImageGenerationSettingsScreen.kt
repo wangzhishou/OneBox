@@ -15,7 +15,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
+import com.wanbaohe.core.ui.widget.glass.GlassSwitch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -35,10 +35,10 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.imagegeneration.model.ImageProviderConfig
 import com.shifenmiao.imagegeneration.model.ImageProviderDescriptor
 import com.shifenmiao.imagegeneration.service.ImageGenerationManager
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.settings.R
 import com.shifenmiao.core.R as CoreR
 

@@ -26,8 +26,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.t8rin.imagetoolbox.core.ui.widget.buttons.CompareButton
-import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
+import com.wanbaohe.core.ui.widget.buttons.CompareButton
+import com.wanbaohe.core.ui.widget.image.Picture
 import com.t8rin.imagetoolbox.feature.compare.presentation.components.CompareSheet
 import com.t8rin.imagetoolbox.feature.gradient_maker.presentation.components.model.canPickImage
 import com.t8rin.imagetoolbox.feature.gradient_maker.presentation.components.model.isMesh

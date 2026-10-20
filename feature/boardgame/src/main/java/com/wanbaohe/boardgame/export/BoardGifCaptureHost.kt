@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.domain.model.IntegerSize
-import com.t8rin.imagetoolbox.core.ui.utils.capturable.CaptureController
-import com.t8rin.imagetoolbox.core.ui.utils.capturable.capturable
+import com.wanbaohe.core.ui.utils.capturable.CaptureController
+import com.wanbaohe.core.ui.utils.capturable.capturable
 import com.wanbaohe.boardgame.R
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers

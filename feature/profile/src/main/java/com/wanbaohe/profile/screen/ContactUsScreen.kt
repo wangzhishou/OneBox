@@ -33,10 +33,10 @@ import com.shifenmiao.core.constants.UrlConstants
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.model.webview.WebViewParams
 import com.shifenmiao.model.wechat.Wechat
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
+import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.helper.Clipboard
 import com.wanbaohe.profile.ui.AboutGlassCard
 import com.wanbaohe.profile.ui.AboutGlassListItem
 import com.wanbaohe.profile.ui.AboutSectionTitle

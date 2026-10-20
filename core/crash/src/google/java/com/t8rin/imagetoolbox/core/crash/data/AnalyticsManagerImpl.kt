@@ -25,7 +25,7 @@ import com.google.firebase.analytics.analytics
 import com.google.firebase.analytics.logEvent
 import com.google.firebase.crashlytics.crashlytics
 import com.t8rin.imagetoolbox.core.domain.remote.AnalyticsManager
-import com.t8rin.imagetoolbox.core.ui.utils.helper.DeviceInfo.Companion.get
+import com.wanbaohe.core.ui.utils.helper.DeviceInfo.Companion.get
 
 internal object AnalyticsManagerImpl : AnalyticsManager {
 

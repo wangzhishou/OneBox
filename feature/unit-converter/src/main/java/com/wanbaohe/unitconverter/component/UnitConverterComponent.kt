@@ -2,7 +2,7 @@ package com.wanbaohe.unitconverter.component
 
 import com.arkivanov.decompose.ComponentContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.unitconverter.domain.CalculatorEvaluator
 import com.wanbaohe.unitconverter.domain.KinshipGender
 import com.wanbaohe.unitconverter.domain.KinshipStep

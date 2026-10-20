@@ -37,8 +37,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalLoginState
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.utils.provider.LocalLoginState
+import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.profile.ui.AboutGlassCard
 import com.t8rin.imagetoolbox.core.resources.icons.CheckCircle
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWorkspacePremium

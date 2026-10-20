@@ -42,10 +42,10 @@ import com.t8rin.imagetoolbox.core.domain.saving.FileController
 import com.t8rin.imagetoolbox.core.domain.saving.model.ImageSaveTarget
 import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
 import com.t8rin.imagetoolbox.core.domain.utils.smartJob
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ImageUtils.safeAspectRatio
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.utils.state.update
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.helper.ImageUtils.safeAspectRatio
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.state.update
 import com.t8rin.imagetoolbox.feature.crop.presentation.components.CropType
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory

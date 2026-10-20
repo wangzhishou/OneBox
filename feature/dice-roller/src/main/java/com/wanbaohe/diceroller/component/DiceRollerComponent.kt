@@ -8,7 +8,7 @@ import android.hardware.SensorManager
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.diceroller.data.DiceHistoryStorage
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory

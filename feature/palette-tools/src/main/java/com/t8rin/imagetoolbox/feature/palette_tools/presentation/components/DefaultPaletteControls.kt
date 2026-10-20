@@ -36,13 +36,13 @@ import androidx.compose.ui.unit.dp
 import com.smarttoolfactory.colordetector.rememberImageColorPaletteState
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.FileExport
-import com.t8rin.imagetoolbox.core.ui.theme.mixedContainer
-import com.t8rin.imagetoolbox.core.ui.theme.onMixedContainer
-import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
-import com.t8rin.imagetoolbox.core.ui.utils.helper.toHex
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.flatGlassContainer
-import com.t8rin.imagetoolbox.core.ui.widget.preferences.PreferenceItem
+import com.wanbaohe.core.ui.theme.mixedContainer
+import com.wanbaohe.core.ui.theme.onMixedContainer
+import com.wanbaohe.core.ui.utils.helper.Clipboard
+import com.wanbaohe.core.ui.utils.helper.toHex
+import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
+import com.wanbaohe.core.ui.widget.modifier.flatGlassContainer
+import com.wanbaohe.core.ui.widget.preferences.PreferenceItem
 import com.t8rin.imagetoolbox.feature.palette_tools.presentation.components.model.NamedColor
 
 

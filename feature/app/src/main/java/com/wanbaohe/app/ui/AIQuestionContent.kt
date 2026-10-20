@@ -30,9 +30,9 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.ai.agent.tool.AgentQuestionType
 import com.shifenmiao.ai.agent.tool.AgentUserQuestionItem
 import com.shifenmiao.ai.agent.tool.AgentUserQuestionRequest
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCheckbox
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTextFieldVisualPreset
+import com.wanbaohe.core.ui.widget.glass.GlassCheckbox
+import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
+import com.wanbaohe.core.ui.widget.glass.GlassTextFieldVisualPreset
 
 @Composable
 fun AIQuestionContent(

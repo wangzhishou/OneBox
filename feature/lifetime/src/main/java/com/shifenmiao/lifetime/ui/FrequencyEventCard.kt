@@ -34,15 +34,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.shifenmiao.base.ui.icon.IconAvatar
+import com.wanbaohe.base.ui.icon.IconAvatar
 import com.shifenmiao.common.components.sectionGradient
 import com.shifenmiao.common.components.sectionIconColor
 import com.shifenmiao.common.components.sectionIconContainerColor
 import com.shifenmiao.common.components.sectionThemeForIndex
 import com.shifenmiao.lifetime.R
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassContentColor
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
+import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.tintedGlassContentColor
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 
 /**
  * 频率事件卡片（点击翻转显示「已完成 / 待完成」）—— 竖屏比例 (2:3 高宽比)。

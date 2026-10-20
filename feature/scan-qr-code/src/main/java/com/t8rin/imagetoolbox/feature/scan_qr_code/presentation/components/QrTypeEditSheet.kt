@@ -36,11 +36,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.domain.model.QrType
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.widget.controls.selection.DataSelector
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.clearFocusOnTap
-import com.t8rin.imagetoolbox.core.ui.widget.system.OnePrimaryButton
-import com.t8rin.imagetoolbox.core.ui.widget.text.TitleItem
+import com.wanbaohe.core.ui.widget.controls.selection.DataSelector
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.wanbaohe.core.ui.widget.modifier.clearFocusOnTap
+import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
+import com.wanbaohe.core.ui.widget.text.TitleItem
 import com.t8rin.imagetoolbox.feature.scan_qr_code.presentation.components.editor.QrEditField
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineQrCode
 

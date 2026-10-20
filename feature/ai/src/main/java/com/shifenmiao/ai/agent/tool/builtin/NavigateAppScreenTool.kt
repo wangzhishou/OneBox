@@ -17,7 +17,7 @@ import com.shifenmiao.model.ai.ToolParameterProperty
 import com.shifenmiao.model.ai.ToolParameters
 import com.shifenmiao.model.ai.tool.ToolCategory
 import com.shifenmiao.model.ai.tool.ToolRiskLevel
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.ScreenCallbackResult
+import com.wanbaohe.core.ui.utils.navigation.ScreenCallbackResult
 import javax.inject.Inject
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString

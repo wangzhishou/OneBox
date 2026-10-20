@@ -7,7 +7,7 @@ import com.shifenmiao.database.ai.entity.MessageEntity
 import com.shifenmiao.database.item.entity.ItemWithCategories
 import com.shifenmiao.database.item.entity.ItemWithCategoriesAndStats
 import com.shifenmiao.database.item.entity.requiresAuth
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.Screen
 
 object HandleEvent {
 

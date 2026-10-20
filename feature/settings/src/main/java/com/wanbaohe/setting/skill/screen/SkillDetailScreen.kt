@@ -27,9 +27,9 @@ import com.shifenmiao.core.R
 import com.shifenmiao.database.ai.SkillFrontMatterParser
 import com.shifenmiao.database.ai.entity.SkillEntity
 import com.t8rin.imagetoolbox.core.resources.icons.Check
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
-import com.t8rin.imagetoolbox.core.ui.widget.text.EditorUiDefaults
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.widget.dialogs.ExitWithoutSavingDialog
+import com.wanbaohe.core.ui.widget.text.EditorUiDefaults
 import com.wanbaohe.markdown.edit.webview.WebViewMarkdownEditor
 import com.wanbaohe.markdown.edit.webview.rememberWebViewMarkdownEditorState
 import com.wanbaohe.setting.skill.component.SkillDetailComponent

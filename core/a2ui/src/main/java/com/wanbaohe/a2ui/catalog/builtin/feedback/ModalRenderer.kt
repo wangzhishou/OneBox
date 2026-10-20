@@ -4,7 +4,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.shifenmiao.core.R
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.a2ui.catalog.A2uiComponentRenderer
 import com.wanbaohe.a2ui.catalog.A2uiRenderContext
 import com.wanbaohe.a2ui.domain.model.A2uiComponent
@@ -44,14 +44,14 @@ class ModalRenderer @Inject constructor() : A2uiComponentRenderer {
             text = { children() },
             confirmButton = {
                 if (confirmText != null) {
-                    com.t8rin.imagetoolbox.core.ui.widget.glass.GlassButton(
+                    com.wanbaohe.core.ui.widget.glass.GlassButton(
                         onClick = onConfirm,
                         content = { Text(confirmText) },
                     )
                 }
             },
             dismissButton = {
-                com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTextButton(
+                com.wanbaohe.core.ui.widget.glass.GlassTextButton(
                     onClick = onDismiss,
                     content = { Text(dismissText) },
                 )

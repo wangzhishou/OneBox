@@ -17,12 +17,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
-import com.shifenmiao.base.ui.ActionButton
-import com.shifenmiao.base.ui.DeleteConfirmDialog
+import com.wanbaohe.base.ui.ActionButton
+import com.wanbaohe.base.ui.DeleteConfirmDialog
 import com.shifenmiao.core.R
 import com.shifenmiao.database.ai.entity.MessageEntity
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
+import com.wanbaohe.core.ui.utils.helper.Clipboard
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.NoteAdd
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh

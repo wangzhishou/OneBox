@@ -34,11 +34,11 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.shifenmiao.ai.component.AIChatBaseComponent
 import com.shifenmiao.base.components.ErrorItem
 import com.shifenmiao.base.manager.DeleteConfirmationManager
-import com.shifenmiao.base.ui.AdvancedDeleteConfirmDialog
-import com.shifenmiao.base.ui.loading.EmptyBox
+import com.wanbaohe.base.ui.AdvancedDeleteConfirmDialog
+import com.wanbaohe.base.ui.loading.EmptyBox
 import com.shifenmiao.core.R
 import com.shifenmiao.database.ai.entity.MessageEntity
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxListItem
+import com.wanbaohe.core.ui.widget.system.OneBoxListItem
 import java.text.SimpleDateFormat
 import java.util.Locale
 

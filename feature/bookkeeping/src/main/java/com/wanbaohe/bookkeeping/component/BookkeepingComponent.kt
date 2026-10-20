@@ -10,7 +10,7 @@ import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.model.money.AppCurrency
 import com.shifenmiao.storage.AppSharedStorage
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.bookkeeping.R
 import com.wanbaohe.bookkeeping.model.BookkeepingCategoryUi
 import com.wanbaohe.bookkeeping.model.BookkeepingRecordType
@@ -51,7 +51,7 @@ import kotlinx.coroutines.launch
 class BookkeepingComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted val onGoBack: () -> Unit,
-    @Assisted val onNavigate: (com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen) -> Unit,
+    @Assisted val onNavigate: (com.wanbaohe.core.ui.utils.navigation.Screen) -> Unit,
     @Assisted("editingRecordId") private val editingRecordId: String?,
     dispatchersHolder: DispatchersHolder,
     private val repository: BookkeepingRepository,
@@ -139,15 +139,15 @@ class BookkeepingComponent @AssistedInject internal constructor(
     // ─────────── 表单 ───────────
 
     fun navigateToAddRecord() {
-        onNavigate(com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.Bookkeeping(
-            com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.Bookkeeping.Type.AddRecord()
+        onNavigate(com.wanbaohe.core.ui.utils.navigation.Screen.Bookkeeping(
+            com.wanbaohe.core.ui.utils.navigation.Screen.Bookkeeping.Type.AddRecord()
         ))
     }
 
     /** 空态引导:跳转 AI 聊天,用自然语言记账。 */
     fun navigateToAiAssist() {
         onNavigate(
-            com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.AITabChatScreen(
+            com.wanbaohe.core.ui.utils.navigation.Screen.AITabChatScreen(
                 com.shifenmiao.model.ai.Conversation(
                     entryType = com.shifenmiao.model.ai.AIConversationEntryType.ASSISTANT,
                     title = AppContext.getString(R.string.bookkeeping_ai_assist_title),
@@ -386,7 +386,7 @@ class BookkeepingComponent @AssistedInject internal constructor(
         val records: List<BookkeepingRecordUi>,
         val breakdowns: List<com.wanbaohe.bookkeeping.model.CategoryBreakdownUi>,
         val incomeBreakdowns: List<com.wanbaohe.bookkeeping.model.CategoryBreakdownUi>,
-        val daily: List<com.t8rin.imagetoolbox.core.ui.widget.charts.BarChartEntry>,
+        val daily: List<com.wanbaohe.core.ui.widget.charts.BarChartEntry>,
     )
 
     private companion object {
@@ -398,7 +398,7 @@ class BookkeepingComponent @AssistedInject internal constructor(
         operator fun invoke(
             componentContext: ComponentContext,
             onGoBack: () -> Unit,
-            onNavigate: (com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen) -> Unit,
+            onNavigate: (com.wanbaohe.core.ui.utils.navigation.Screen) -> Unit,
             @Assisted("editingRecordId") editingRecordId: String?,
         ): BookkeepingComponent
     }

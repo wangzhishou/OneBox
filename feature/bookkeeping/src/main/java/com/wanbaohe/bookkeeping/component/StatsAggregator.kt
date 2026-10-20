@@ -2,7 +2,7 @@ package com.wanbaohe.bookkeeping.component
 
 import com.shifenmiao.database.bookkeeping.repo.BookkeepingRepository
 import com.shifenmiao.interfaces.singleton.AppContext
-import com.t8rin.imagetoolbox.core.ui.widget.charts.BarChartEntry
+import com.wanbaohe.core.ui.widget.charts.BarChartEntry
 import com.wanbaohe.bookkeeping.R
 import com.wanbaohe.bookkeeping.model.BookkeepingDateRange
 import com.wanbaohe.bookkeeping.model.BookkeepingRecordType

@@ -22,9 +22,9 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.t8rin.imagetoolbox.core.settings.presentation.model.toUiState
-import com.t8rin.imagetoolbox.core.ui.utils.helper.EXTRA_PICKER_TITLE
-import com.t8rin.imagetoolbox.core.ui.utils.provider.ImageToolboxCompositionLocals
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalComponentActivity
+import com.wanbaohe.core.ui.utils.helper.EXTRA_PICKER_TITLE
+import com.wanbaohe.core.ui.utils.provider.ImageToolboxCompositionLocals
+import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
 import com.t8rin.imagetoolbox.feature.media_picker.domain.model.AllowedMedia
 import com.t8rin.imagetoolbox.feature.media_picker.presentation.screenLogic.MediaPickerComponent
 

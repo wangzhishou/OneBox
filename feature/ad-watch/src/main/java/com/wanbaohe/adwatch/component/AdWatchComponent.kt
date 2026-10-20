@@ -7,7 +7,7 @@ import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.storage.RemoteConfigStorage
 import com.shifenmiao.storage.TokenStorage
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.BaseComponent
 import com.tencent.mmkv.MMKV
 import com.wanbaohe.adwatch.R
 import com.wanbaohe.adwatch.ads.AdWatchAds

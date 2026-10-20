@@ -31,11 +31,11 @@ import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.online.component.EditPromptComponent
 import com.shifenmiao.online.ui.PromptCategorySelection
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBarType
-import com.t8rin.imagetoolbox.core.ui.widget.text.EditorTitleField
-import com.t8rin.imagetoolbox.core.ui.widget.text.EditorUiDefaults
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.widget.dialogs.ExitWithoutSavingDialog
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBarType
+import com.wanbaohe.core.ui.widget.text.EditorTitleField
+import com.wanbaohe.core.ui.widget.text.EditorUiDefaults
 import com.wanbaohe.markdown.edit.webview.WebViewMarkdownEditor
 import com.wanbaohe.markdown.edit.webview.rememberWebViewMarkdownEditorState
 import kotlinx.coroutines.Dispatchers

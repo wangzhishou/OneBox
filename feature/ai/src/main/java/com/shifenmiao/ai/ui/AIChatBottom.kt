@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.ai.R
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalIconButton
+import com.wanbaohe.core.ui.widget.glass.GlassTonalIconButton
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineVerticalAlignBottom
 
 @Composable

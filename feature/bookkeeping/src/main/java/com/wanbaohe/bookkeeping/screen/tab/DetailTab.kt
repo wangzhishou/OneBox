@@ -38,11 +38,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.base.ui.picker.ChineseDateRangePickerDialog
+import com.wanbaohe.base.ui.picker.ChineseDateRangePickerDialog
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTimeFilterBar
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedTimeFilterBar
+import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.bookkeeping.R
 import com.wanbaohe.bookkeeping.component.BookkeepingComponent
 import com.wanbaohe.bookkeeping.model.BookkeepingRecentPreset
@@ -59,8 +59,8 @@ import com.wanbaohe.bookkeeping.screen.util.centsText
 import com.wanbaohe.bookkeeping.screen.util.recordLineSubtitle
 import com.wanbaohe.bookkeeping.screen.util.signedAmount
 import java.time.LocalDate
-import com.shifenmiao.base.ui.empty.EmptyStateGuide
-import com.shifenmiao.base.ui.empty.EmptyStateGuideAction
+import com.wanbaohe.base.ui.empty.EmptyStateGuide
+import com.wanbaohe.base.ui.empty.EmptyStateGuideAction
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAutoFix
@@ -197,8 +197,8 @@ internal fun DetailTab(
                     onDeleteRecord = { recordId -> pendingDeleteRecordId = recordId },
                     onEditRecord = { recordId ->
                         component.onNavigate(
-                            com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.Bookkeeping(
-                                com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.Bookkeeping.Type.AddRecord(
+                            com.wanbaohe.core.ui.utils.navigation.Screen.Bookkeeping(
+                                com.wanbaohe.core.ui.utils.navigation.Screen.Bookkeeping.Type.AddRecord(
                                     editingRecordId = recordId
                                 )
                             )

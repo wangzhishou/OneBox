@@ -39,12 +39,12 @@ import com.t8rin.imagetoolbox.core.domain.image.model.ImageInfo
 import com.t8rin.imagetoolbox.core.resources.icons.Fullscreen
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
-import com.t8rin.imagetoolbox.core.ui.utils.capturable.CaptureController
-import com.t8rin.imagetoolbox.core.ui.utils.capturable.capturable
-import com.t8rin.imagetoolbox.core.ui.utils.capturable.rememberCaptureController
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalImageShareProvider
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalLoginState
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
+import com.wanbaohe.core.ui.utils.capturable.CaptureController
+import com.wanbaohe.core.ui.utils.capturable.capturable
+import com.wanbaohe.core.ui.utils.capturable.rememberCaptureController
+import com.wanbaohe.core.ui.utils.provider.LocalImageShareProvider
+import com.wanbaohe.core.ui.utils.provider.LocalLoginState
+import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.boardgame.R as BoardGameR
 import com.wanbaohe.boardgame.model.BoardGameAction
 import com.wanbaohe.boardgame.model.PlayerBarData
@@ -70,7 +70,7 @@ import com.wanbaohe.gomoku.presentation.localizedGameResultText
 import com.wanbaohe.gomoku.ui.GomokuOpponentPicker
 import com.wanbaohe.gomoku.ui.board.GomokuBoard
 import kotlinx.coroutines.launch
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.wanbaohe.boardgame.ui.accentTextButtonColors
 import com.wanbaohe.boardgame.ui.dangerTextButtonColors
 

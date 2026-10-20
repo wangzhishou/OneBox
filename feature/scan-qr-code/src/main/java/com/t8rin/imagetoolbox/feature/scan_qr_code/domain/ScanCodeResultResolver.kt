@@ -1,6 +1,6 @@
 package com.t8rin.imagetoolbox.feature.scan_qr_code.domain
 
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.Screen
 
 enum class ScanCodeContentType {
     INTERNAL_DEEPLINK,

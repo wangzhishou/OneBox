@@ -6,7 +6,7 @@ import android.view.WindowManager
 import androidx.compose.runtime.Immutable
 import com.arkivanov.decompose.ComponentContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.measurement.data.sensor.LevelSensorSource
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory

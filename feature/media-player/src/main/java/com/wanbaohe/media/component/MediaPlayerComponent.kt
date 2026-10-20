@@ -9,8 +9,8 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.shifenmiao.base.pip.VideoPipState
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.media.R
 import com.wanbaohe.media.domain.MediaDeviceLibrarySource
 import com.wanbaohe.media.domain.MediaEntry

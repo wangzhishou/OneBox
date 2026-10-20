@@ -13,8 +13,8 @@ import com.shifenmiao.model.ai.event.MainShowType
 import com.shifenmiao.model.event.AppEventBus
 import com.shifenmiao.storage.TokenStorage
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.aidetect.service.AiDetectError
 import com.wanbaohe.aidetect.service.AiDetectException
 import com.wanbaohe.aidetect.service.AiDetectService

@@ -41,7 +41,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassButton
+import com.wanbaohe.core.ui.widget.glass.GlassButton
 import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.diceroller.R
 import com.wanbaohe.diceroller.component.DiceRollerComponent

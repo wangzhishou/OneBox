@@ -45,9 +45,9 @@ import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.domain.utils.ListUtils.leftFrom
 import com.t8rin.imagetoolbox.core.domain.utils.ListUtils.rightFrom
 import com.t8rin.imagetoolbox.core.resources.icons.VisibilityOff
-import com.t8rin.imagetoolbox.core.ui.theme.takeColorFromScheme
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedBadge
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.detectSwipes
+import com.wanbaohe.core.ui.theme.takeColorFromScheme
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedBadge
+import com.wanbaohe.core.ui.widget.modifier.detectSwipes
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineVisibilityOff
 
 @Composable

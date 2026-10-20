@@ -50,8 +50,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandLess
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandMore
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.media.R
 import com.wanbaohe.media.component.MediaPlayerComponent
 import com.wanbaohe.media.component.MediaPlayerUiState

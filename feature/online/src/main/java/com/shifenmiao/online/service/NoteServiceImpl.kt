@@ -19,7 +19,7 @@ import com.shifenmiao.model.note.NoteResult
 import com.shifenmiao.model.note.NoteSaveParams
 import com.shifenmiao.model.note.NoteService
 import com.shifenmiao.model.note.NoteSummary
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.t8rin.logger.makeLog
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject

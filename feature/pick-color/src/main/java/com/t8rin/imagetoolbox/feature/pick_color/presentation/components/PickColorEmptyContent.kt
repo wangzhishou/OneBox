@@ -33,8 +33,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.AddPhotoAlt
 import com.t8rin.imagetoolbox.core.resources.icons.CameraAlt
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineImage
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassMedium
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxPillButton
+import com.wanbaohe.core.ui.widget.glass.glassMedium
+import com.wanbaohe.core.ui.widget.system.OneBoxPillButton
 
 @Composable
 internal fun PickColorEmptyContent(

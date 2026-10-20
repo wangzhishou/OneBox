@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.shifenmiao.common.utils.BaseUtils
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalLoginState
+import com.wanbaohe.core.ui.utils.provider.LocalLoginState
 import com.wanbaohe.boardgame.model.PlayerBarData
 import com.wanbaohe.boardgame.ui.PlayersBar
 import com.wanbaohe.chess.R

@@ -1,6 +1,6 @@
 package com.wanbaohe.profile.components
 
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
+import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,15 +27,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.base.ui.ConfirmContentDialog
+import com.wanbaohe.base.ui.ConfirmContentDialog
 import com.shifenmiao.base.utils.StringUtils
 import com.shifenmiao.core.R
 import com.shifenmiao.interfaces.singleton.AppContext
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalLoginState
+import com.wanbaohe.core.ui.utils.provider.LocalLoginState
 import com.shifenmiao.login.viewModel.LoginComponent
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.helper.Clipboard
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.PersonAdd
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineContentPaste

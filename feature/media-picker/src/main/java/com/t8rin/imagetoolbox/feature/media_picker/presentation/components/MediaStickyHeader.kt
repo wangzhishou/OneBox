@@ -36,8 +36,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.ui.widget.buttons.MediaCheckBox
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.hapticsCombinedClickable
+import com.wanbaohe.core.ui.widget.buttons.MediaCheckBox
+import com.wanbaohe.core.ui.widget.enhanced.hapticsCombinedClickable
 
 @Composable
 fun MediaStickyHeader(

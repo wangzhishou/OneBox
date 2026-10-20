@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.base.utils.aiImageProcessPointsCost
-import com.t8rin.imagetoolbox.core.ui.widget.editor.AiEditImage
-import com.t8rin.imagetoolbox.core.ui.widget.editor.AiGenerateImageSheet
+import com.wanbaohe.core.ui.widget.editor.AiEditImage
+import com.wanbaohe.core.ui.widget.editor.AiGenerateImageSheet
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.presentation.screenLogic.AI_IMAGE_POINTS_SOURCE
 import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent

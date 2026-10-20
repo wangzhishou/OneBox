@@ -29,8 +29,8 @@ import com.shifenmiao.core.R
 import com.shifenmiao.model.marquee.MarqueePresentationMode
 import com.shifenmiao.model.marquee.MarqueeSettings
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCustomSlider
+import com.wanbaohe.core.ui.widget.glass.GlassSwitch
+import com.wanbaohe.core.ui.widget.glass.GlassCustomSlider
 
 /**
  * 根据展示模式显示对应的设置面板

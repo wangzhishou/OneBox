@@ -21,16 +21,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.base.ui.DeleteConfirmDialog
-import com.shifenmiao.base.ui.card.PlaceholderCard
+import com.wanbaohe.base.ui.DeleteConfirmDialog
+import com.wanbaohe.base.ui.card.PlaceholderCard
 import com.shifenmiao.common.components.LocalArticleList
 import com.shifenmiao.common.handle.HandleEvent
 import com.shifenmiao.common.handle.ItemResourceResolver
 import com.shifenmiao.core.R
 import com.shifenmiao.database.item.entity.ItemWithCategoriesAndStats
 import com.shifenmiao.online.component.ItemListComponent
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -121,7 +121,7 @@ private fun openItem(
     scope: CoroutineScope,
     itemListComponent: ItemListComponent,
     context: android.content.Context,
-    onNavigate: (com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen) -> Unit,
+    onNavigate: (com.wanbaohe.core.ui.utils.navigation.Screen) -> Unit,
     item: ItemWithCategoriesAndStats,
 ) {
     itemListComponent.recordItemClick(item.item.id)

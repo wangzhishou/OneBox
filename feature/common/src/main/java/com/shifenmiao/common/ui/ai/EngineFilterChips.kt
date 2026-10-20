@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.core.R
 import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilterChip
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
 
 const val ENGINE_FILTER_ALL = "__all__"
 

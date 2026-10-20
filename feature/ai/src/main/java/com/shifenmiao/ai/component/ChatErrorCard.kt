@@ -55,8 +55,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineServerModels
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTimer
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWifiError
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWifiOff
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.widget.glass.GlassSurface
 
 /**
  * AI 聊天错误卡片。

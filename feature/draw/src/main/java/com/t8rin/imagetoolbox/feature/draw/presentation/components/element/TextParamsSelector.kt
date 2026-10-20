@@ -37,13 +37,13 @@ import com.smarttoolfactory.colordetector.util.ColorUtil.roundToTwoDigits
 import com.t8rin.imagetoolbox.core.domain.model.pt
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.settings.presentation.model.toUiFont
-import com.t8rin.imagetoolbox.core.ui.widget.controls.selection.FontSelector
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSliderItem
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.animateShape
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.flatGlassContainer
-import com.t8rin.imagetoolbox.core.ui.widget.preferences.PreferenceRowSwitch
-import com.t8rin.imagetoolbox.core.ui.widget.text.RoundedTextField
+import com.wanbaohe.core.ui.widget.controls.selection.FontSelector
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedSliderItem
+import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
+import com.wanbaohe.core.ui.widget.modifier.animateShape
+import com.wanbaohe.core.ui.widget.modifier.flatGlassContainer
+import com.wanbaohe.core.ui.widget.preferences.PreferenceRowSwitch
+import com.wanbaohe.core.ui.widget.text.RoundedTextField
 import com.t8rin.imagetoolbox.feature.draw.domain.DrawMode
 
 @Composable

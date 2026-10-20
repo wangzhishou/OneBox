@@ -68,8 +68,8 @@ import com.t8rin.imagetoolbox.core.filters.presentation.model.UiNativeStackBlurF
 import com.t8rin.imagetoolbox.core.filters.presentation.model.UiPixelationFilter
 import com.t8rin.imagetoolbox.core.filters.presentation.model.toUiFilter
 import com.t8rin.imagetoolbox.core.resources.shapes.MaterialStarShape
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.density
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.Line
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.density
+import com.wanbaohe.core.ui.widget.modifier.Line
 import com.t8rin.imagetoolbox.core.utils.toTypeface
 import com.t8rin.imagetoolbox.feature.draw.domain.DrawLineStyle
 import com.t8rin.imagetoolbox.feature.draw.domain.DrawMode

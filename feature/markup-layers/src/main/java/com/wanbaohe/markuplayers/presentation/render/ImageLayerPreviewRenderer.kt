@@ -8,7 +8,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import coil3.request.ImageRequest
-import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
+import com.wanbaohe.core.ui.widget.image.Picture
 import com.wanbaohe.markuplayers.domain.model.LayerType
 import com.wanbaohe.markuplayers.domain.model.MarkupLayer
 import kotlin.reflect.KClass

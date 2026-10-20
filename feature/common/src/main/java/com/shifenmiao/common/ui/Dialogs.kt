@@ -22,9 +22,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
-import com.shifenmiao.base.ui.ConfirmContentDialog
-import com.shifenmiao.base.ui.MarkdownLazyContent
-import com.shifenmiao.base.ui.styleVerticalScrollbar
+import com.wanbaohe.base.ui.ConfirmContentDialog
+import com.wanbaohe.base.ui.MarkdownLazyContent
+import com.wanbaohe.base.ui.styleVerticalScrollbar
 import com.shifenmiao.common.utils.ShareUtils
 import com.shifenmiao.core.R
 import com.shifenmiao.core.constants.Constants
@@ -32,9 +32,9 @@ import com.shifenmiao.model.event.AgreePrivacyPolicyEvent
 import com.shifenmiao.model.event.AppEventBus
 import com.shifenmiao.model.wechat.Wechat
 import com.shifenmiao.storage.AppSharedStorage
-import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalComponentActivity
-import com.t8rin.imagetoolbox.core.ui.widget.text.HtmlText
+import com.wanbaohe.core.ui.utils.helper.Clipboard
+import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
+import com.wanbaohe.core.ui.widget.text.HtmlText
 
 @Composable
 fun PrivacyPolicyDialog(

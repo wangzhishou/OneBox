@@ -16,11 +16,11 @@ import com.shifenmiao.ai.image.controllers.AIImageComponent
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
-import com.t8rin.imagetoolbox.core.ui.utils.helper.isPortraitOrientationAsState
-import com.t8rin.imagetoolbox.core.ui.widget.buttons.ShareButton
-import com.t8rin.imagetoolbox.core.ui.widget.sheets.ProcessImagesPreferenceSheet
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.helper.Clipboard
+import com.wanbaohe.core.ui.utils.helper.isPortraitOrientationAsState
+import com.wanbaohe.core.ui.widget.buttons.ShareButton
+import com.wanbaohe.core.ui.widget.sheets.ProcessImagesPreferenceSheet
 
 @Composable
 fun AIGCImageScreen(

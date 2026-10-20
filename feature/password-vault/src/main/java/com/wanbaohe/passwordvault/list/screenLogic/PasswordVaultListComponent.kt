@@ -4,8 +4,8 @@ import com.arkivanov.decompose.ComponentContext
 import com.shifenmiao.base.auth.AuthorizationCodeStateHolder
 import com.shifenmiao.base.utils.ActionUtils
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.passwordvault.model.PasswordVaultListEvent
 import com.wanbaohe.passwordvault.model.PasswordVaultListUiState
 import com.wanbaohe.passwordvault.service.PasswordVaultService

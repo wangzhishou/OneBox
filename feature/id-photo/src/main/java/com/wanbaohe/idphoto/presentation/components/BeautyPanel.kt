@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.model.imageprocess.RetouchParams
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilterChip
+import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
 import com.wanbaohe.idphoto.R
 import com.wanbaohe.idphoto.domain.BeautyLevel
 

@@ -3,7 +3,7 @@ package com.wanbaohe.a2ui.catalog.builtin.input
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCustomRangeSlider
+import com.wanbaohe.core.ui.widget.glass.GlassCustomRangeSlider
 import com.wanbaohe.a2ui.catalog.A2uiComponentRenderer
 import com.wanbaohe.a2ui.catalog.A2uiRenderContext
 import com.wanbaohe.a2ui.domain.model.A2uiComponent

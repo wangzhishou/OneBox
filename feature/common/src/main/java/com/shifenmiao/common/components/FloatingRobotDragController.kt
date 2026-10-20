@@ -30,7 +30,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
-import com.shifenmiao.base.ui.OptionConfirmDialog
+import com.wanbaohe.base.ui.OptionConfirmDialog
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.robot.FloatingRobot
 import com.shifenmiao.core.R

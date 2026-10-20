@@ -37,8 +37,8 @@ import com.shifenmiao.common.components.sectionIconContainerColor
 import com.shifenmiao.common.components.sectionThemeForIndex
 import com.shifenmiao.database.recordcenter.entity.HealthRecordEntity
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassContentColor
+import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.tintedGlassContentColor
 import com.wanbaohe.recordcenter.R
 import com.wanbaohe.recordcenter.registry.RecordTypeDefinition
 import com.wanbaohe.recordcenter.screen.util.formatRecordValueParts

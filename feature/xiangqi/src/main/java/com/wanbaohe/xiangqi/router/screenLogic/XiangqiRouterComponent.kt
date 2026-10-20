@@ -27,8 +27,8 @@ import com.shifenmiao.model.ai.AiModel
 import com.shifenmiao.model.tts.TTSConfig
 import com.shifenmiao.tts.service.TTSService
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.xiangqi.application.audio.XiangqiAudioDefaults
 import com.wanbaohe.xiangqi.application.port.outbound.EngineSlot
 import com.wanbaohe.xiangqi.application.port.outbound.SoundPlayer

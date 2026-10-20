@@ -26,8 +26,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.ui.theme.White
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.advancedShadow
+import com.wanbaohe.core.ui.theme.White
+import com.wanbaohe.core.ui.widget.modifier.advancedShadow
 import com.t8rin.imagetoolbox.feature.media_picker.domain.model.Media
 
 @Composable

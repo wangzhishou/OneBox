@@ -18,13 +18,13 @@ import androidx.compose.ui.window.DialogProperties
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.shifenmiao.ai.component.AIChatComponent
 import com.shifenmiao.ai.component.AgentToolCallUIState
-import com.shifenmiao.base.ui.ConfirmDialog
+import com.wanbaohe.base.ui.ConfirmDialog
 import com.shifenmiao.base.utils.CoreUtils
 import com.shifenmiao.common.components.FloatingRobotDragController
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.PrivacyPolicyDialog
 import com.shifenmiao.common.ui.ai.AIModelsPickerBottomSheet
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.utils.getString
 import kotlinx.coroutines.launch
 import com.shifenmiao.core.R
@@ -44,8 +44,8 @@ import com.t8rin.imagetoolbox.core.settings.domain.toSimpleSettingsInteractor
 import com.t8rin.imagetoolbox.core.domain.performance.StartupTrace
 import com.t8rin.imagetoolbox.core.domain.startup.StartupPhase
 import com.t8rin.imagetoolbox.core.domain.startup.StartupPhaseController
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.findActivity
-import com.t8rin.imagetoolbox.core.ui.utils.helper.isShellPortraitOrientationAsState
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.findActivity
+import com.wanbaohe.core.ui.utils.helper.isShellPortraitOrientationAsState
 import com.t8rin.imagetoolbox.feature.root.presentation.components.BlogModalBottomSheet
 import com.t8rin.imagetoolbox.feature.root.presentation.components.utils.uiSettingsState
 import com.t8rin.imagetoolbox.feature.root.presentation.screenLogic.RootComponent
@@ -102,7 +102,7 @@ fun AppContent(
         }
 
         val isAITabChatScreen =
-            childStack.active.configuration is com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.AITabChatScreen
+            childStack.active.configuration is com.wanbaohe.core.ui.utils.navigation.Screen.AITabChatScreen
 
         // 全局 AI 宿主保持懒挂载：
         // - AI 浮层首次打开时初始化
@@ -278,7 +278,7 @@ private fun AppOverlayHost(
                 onNavigateToAddEngine = {
                     rootComponent.loginComponent.hideLoginModal()
                     appComponent.onNavigate(
-                        com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.AISettings()
+                        com.wanbaohe.core.ui.utils.navigation.Screen.AISettings()
                     )
                 }
             )
@@ -313,7 +313,7 @@ private fun AppOverlayHost(
     }
 
     if (authCodeState.showAuthCode) {
-        com.t8rin.imagetoolbox.core.ui.widget.enhanced.AuthorizationCodeScreen(
+        com.wanbaohe.core.ui.widget.enhanced.AuthorizationCodeScreen(
             mode = authCodeState.mode,
             setupStep = authCodeState.setupStep,
             onSubmit = rootComponent.authorizationCodeStateHolder::submit,

@@ -29,8 +29,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.domain.model.QrType
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.ContactPickerButton
-import com.t8rin.imagetoolbox.core.ui.widget.text.RoundedTextField
+import com.wanbaohe.core.ui.utils.content_pickers.ContactPickerButton
+import com.wanbaohe.core.ui.widget.text.RoundedTextField
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineNumbers
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineStickyNote
 

@@ -30,11 +30,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.ai.EngineFilterChip
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionCard
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionHeader
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
+import com.wanbaohe.core.ui.widget.system.OneBoxSectionCard
+import com.wanbaohe.core.ui.widget.system.OneBoxSectionHeader
 import com.wanbaohe.setting.local.component.LocalModelFile
 import com.wanbaohe.setting.local.component.LocalModelManagementComponent
 import com.wanbaohe.setting.local.component.ModelDownloadUiState

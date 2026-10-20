@@ -46,15 +46,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.shifenmiao.base.ui.button.CancelButton
-import com.shifenmiao.base.ui.button.ConfirmButton
+import com.wanbaohe.base.ui.button.CancelButton
+import com.wanbaohe.base.ui.button.ConfirmButton
 import com.shifenmiao.core.R
 import com.shifenmiao.marquee.screen.components.FireworksBackground
 import com.shifenmiao.marquee.screenLogic.MarqueeComponent
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalScreenSize
+import com.wanbaohe.core.ui.utils.provider.LocalScreenSize
 import com.shifenmiao.marquee.R as MarqueeR
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.alertDialogBorder
-import com.t8rin.imagetoolbox.core.ui.widget.other.LockScreenOrientation
+import com.wanbaohe.core.ui.widget.modifier.alertDialogBorder
+import com.wanbaohe.core.ui.widget.other.LockScreenOrientation
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

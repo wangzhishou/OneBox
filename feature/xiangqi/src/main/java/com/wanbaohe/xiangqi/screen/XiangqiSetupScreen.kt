@@ -35,8 +35,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.boardgame.model.BoardGameAction
 import com.wanbaohe.boardgame.model.BoardGameSideOption
 import com.wanbaohe.boardgame.ui.ActionBar
@@ -60,9 +60,9 @@ import com.wanbaohe.xiangqi.ui.board.PieceDisc
 import com.wanbaohe.xiangqi.ui.board.XiangqiBoard
 import com.wanbaohe.xiangqi.ui.board.xiangqiBoardAspectRatio
 import com.wanbaohe.xiangqi.ui.board.pieceLabel
-import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
+import com.wanbaohe.core.ui.utils.helper.Clipboard
 import com.wanbaohe.xiangqi.router.LocalXiangqiImmersiveModeState
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 @Composable
 fun XiangqiSetupScreen(

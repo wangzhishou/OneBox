@@ -17,16 +17,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.base.ui.icon.IconAvatar
+import com.wanbaohe.base.ui.icon.IconAvatar
 import com.shifenmiao.common.components.sectionGradient
 import com.shifenmiao.common.components.sectionIconColor
 import com.shifenmiao.common.components.sectionIconContainerColor
 import com.shifenmiao.common.components.sectionThemeForIndex
 import com.shifenmiao.lifetime.domain.model.MilestoneStatus
 import com.shifenmiao.lifetime.util.milestoneStatusLabel
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassContentColor
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
+import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.tintedGlassContentColor
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import java.time.LocalDate
 
 /**

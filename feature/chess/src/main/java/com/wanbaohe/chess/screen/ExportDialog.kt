@@ -18,9 +18,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.shareText
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
+import com.wanbaohe.core.ui.utils.helper.Clipboard
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.shareText
+import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.chess.R
 
 /**

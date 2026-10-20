@@ -28,7 +28,7 @@ import androidx.webkit.WebViewAssetLoader
 import com.shifenmiao.model.colors.EditorColors
 import com.shifenmiao.webview.common.WebViewPool
 import com.shifenmiao.webview.common.WebViewSettings
-import com.t8rin.imagetoolbox.core.ui.widget.text.EditorUiDefaults
+import com.wanbaohe.core.ui.widget.text.EditorUiDefaults
 import org.json.JSONObject
 
 /**

@@ -42,9 +42,9 @@ import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFolderPicker
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.takePersistablePermission
+import com.wanbaohe.core.ui.utils.content_pickers.rememberFolderPicker
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.takePersistablePermission
 import com.t8rin.imagetoolbox.feature.zip.R
 import com.t8rin.imagetoolbox.feature.zip.domain.ArchiveUnavailableException
 import com.t8rin.imagetoolbox.feature.zip.domain.EncryptedArchiveException

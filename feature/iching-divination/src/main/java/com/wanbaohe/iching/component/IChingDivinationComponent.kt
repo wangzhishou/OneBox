@@ -19,8 +19,8 @@ import com.shifenmiao.model.ai.event.MainShowType
 import com.shifenmiao.model.event.AppEventBus
 import com.shifenmiao.storage.TokenStorage
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.iching.data.IChingHistoryRecord
 import com.wanbaohe.iching.data.IChingHistoryRepository
 import com.wanbaohe.iching.data.IChingSoundSettings

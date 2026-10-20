@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.shifenmiao.base.ui.card.TonalCardPalette
+import com.wanbaohe.base.ui.card.TonalCardPalette
 import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.database.item.entity.ItemEntity
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChatBubble

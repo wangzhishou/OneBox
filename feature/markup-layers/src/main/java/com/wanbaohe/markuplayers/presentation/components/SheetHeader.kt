@@ -2,7 +2,7 @@ package com.wanbaohe.markuplayers.presentation.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSheetHeader
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedSheetHeader
 
 /**
  * 底部弹层共享头部 — 已统一到 [EnhancedSheetHeader](样式基准:本模块「编辑文字」面板)。

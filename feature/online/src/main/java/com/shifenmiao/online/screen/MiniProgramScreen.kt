@@ -20,8 +20,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
-import com.shifenmiao.base.ui.button.PrimaryButton
-import com.shifenmiao.base.ui.button.SecondaryButton
+import com.wanbaohe.base.ui.button.PrimaryButton
+import com.wanbaohe.base.ui.button.SecondaryButton
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
@@ -29,9 +29,9 @@ import com.shifenmiao.model.DataItem
 import com.shifenmiao.model.wechat.Wechat
 import com.shifenmiao.storage.AppSharedStorage
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCheckbox
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.coloredGlass
+import com.wanbaohe.core.ui.widget.glass.GlassCheckbox
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.coloredGlass
 
 @Composable
 fun MiniProgramScreen(

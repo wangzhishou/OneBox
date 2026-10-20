@@ -56,7 +56,7 @@ import com.shifenmiao.base.utils.StringUtils
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalLoginState
+import com.wanbaohe.core.ui.utils.provider.LocalLoginState
 import com.shifenmiao.login.viewModel.LoginComponent
 import com.shifenmiao.model.pay.PrePayResponse
 import com.shifenmiao.model.pay.alipay.PayPrice
@@ -66,11 +66,11 @@ import com.shifenmiao.pay.PaymentMethod
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineKey
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSlideshow
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalScreenSize
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassRegular
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxLeadingIconBadge
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.provider.LocalScreenSize
+import com.wanbaohe.core.ui.widget.glass.GlassButton
+import com.wanbaohe.core.ui.widget.glass.glassRegular
+import com.wanbaohe.core.ui.widget.system.OneBoxLeadingIconBadge
 import com.wanbaohe.profile.components.AnimatedViewPager
 import com.wanbaohe.profile.components.AppTextInfo
 import com.wanbaohe.profile.components.PlayProductSlider

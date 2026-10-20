@@ -1,7 +1,7 @@
 package com.wanbaohe.a2ui.catalog
 
 import androidx.compose.runtime.Composable
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import javax.inject.Inject
 import javax.inject.Singleton
 

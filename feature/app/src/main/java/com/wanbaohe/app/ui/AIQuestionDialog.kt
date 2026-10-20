@@ -12,7 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
 import com.shifenmiao.ai.agent.tool.AgentUserQuestionRequest
 import com.shifenmiao.core.R
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 
 @Composable
 fun AIQuestionDialog(

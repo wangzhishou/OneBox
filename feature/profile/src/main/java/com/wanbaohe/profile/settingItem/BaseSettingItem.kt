@@ -22,10 +22,10 @@ import com.shifenmiao.network.update.OpenSourceReleaseEntryPoint
 import com.t8rin.imagetoolbox.core.resources.R
 import com.shifenmiao.core.R as CoreR
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.getCurrentLocaleString
-import com.t8rin.imagetoolbox.core.ui.utils.helper.toUiPath
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxListItem
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxThemedIconBadge
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.getCurrentLocaleString
+import com.wanbaohe.core.ui.utils.helper.toUiPath
+import com.wanbaohe.core.ui.widget.system.OneBoxListItem
+import com.wanbaohe.core.ui.widget.system.OneBoxThemedIconBadge
 import com.t8rin.imagetoolbox.feature.settings.presentation.screenLogic.SettingsComponent
 import com.wanbaohe.profile.model.ProfileSetting
 import dagger.hilt.android.EntryPointAccessors

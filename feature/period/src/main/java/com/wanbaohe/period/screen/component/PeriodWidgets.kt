@@ -44,7 +44,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LinePeriodInsomnia
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePeriodMoodSwings
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePeriodNausea
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWaterDrop
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.period.R
 import com.wanbaohe.period.model.PeriodColors
 import com.wanbaohe.period.model.PeriodFlow

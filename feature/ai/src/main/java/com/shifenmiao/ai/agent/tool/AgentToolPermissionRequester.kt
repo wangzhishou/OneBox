@@ -1,7 +1,7 @@
 package com.shifenmiao.ai.agent.tool
 
 import com.shifenmiao.model.event.PermissionRequest
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils
+import com.wanbaohe.core.ui.utils.helper.ContextUtils
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.resume

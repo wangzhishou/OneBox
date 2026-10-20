@@ -43,12 +43,12 @@ import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.domain.image.model.Preset
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ImageUtils.restrict
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedChip
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.flatGlassContainer
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.fadingEdges
-import com.t8rin.imagetoolbox.core.ui.widget.text.AutoSizeText
-import com.t8rin.imagetoolbox.core.ui.widget.text.RoundedTextField
+import com.wanbaohe.core.ui.utils.helper.ImageUtils.restrict
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedChip
+import com.wanbaohe.core.ui.widget.modifier.flatGlassContainer
+import com.wanbaohe.core.ui.widget.modifier.fadingEdges
+import com.wanbaohe.core.ui.widget.text.AutoSizeText
+import com.wanbaohe.core.ui.widget.text.RoundedTextField
 
 /**
  * 压缩控制面板 —— 预设百分比芯片 + 手动 KB 输入并排展示。

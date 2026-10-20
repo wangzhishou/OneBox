@@ -28,12 +28,12 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.ui.theme.outlineVariant
-import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.HelperGridParams
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.drawHelperGrid
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.transparencyChecker
+import com.wanbaohe.core.ui.theme.outlineVariant
+import com.wanbaohe.core.ui.widget.image.Picture
+import com.wanbaohe.core.ui.widget.modifier.HelperGridParams
+import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
+import com.wanbaohe.core.ui.widget.modifier.drawHelperGrid
+import com.wanbaohe.core.ui.widget.modifier.transparencyChecker
 
 @Composable
 fun BoxScope.BitmapDrawerPreview(

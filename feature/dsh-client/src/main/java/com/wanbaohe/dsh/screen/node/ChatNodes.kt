@@ -58,8 +58,8 @@ import com.halilibo.richtext.markwon.MarkdownAstNodeParser
 import com.halilibo.richtext.ui.material3.RichText
 import com.shifenmiao.model.node.AstNode
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.dsh.R
 import com.wanbaohe.dsh.screen.DeliverablesRow
 import com.wanbaohe.dsh.screen.DshSuccessGreen

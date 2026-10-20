@@ -52,9 +52,9 @@ import com.t8rin.imagetoolbox.core.filters.presentation.widget.FilterTemplateCre
 import com.t8rin.imagetoolbox.core.filters.presentation.widget.FilterTemplateInfoSheet
 import com.t8rin.imagetoolbox.core.filters.presentation.widget.TemplateFilterSelectionItem
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
-import com.t8rin.imagetoolbox.core.ui.widget.utils.rememberRetainedLazyListState
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
+import com.wanbaohe.core.ui.widget.utils.rememberRetainedLazyListState
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineExtensionOff
 
 @Composable

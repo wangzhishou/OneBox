@@ -7,8 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import com.t8rin.imagetoolbox.core.ui.widget.dialogs.LoadingDialog
-import com.t8rin.imagetoolbox.core.ui.widget.text.AutoSizeText
+import com.wanbaohe.core.ui.widget.dialogs.LoadingDialog
+import com.wanbaohe.core.ui.widget.text.AutoSizeText
 import com.t8rin.imagetoolbox.feature.zip.R
 import com.t8rin.imagetoolbox.feature.zip.domain.ZipProgress
 import kotlin.math.roundToInt

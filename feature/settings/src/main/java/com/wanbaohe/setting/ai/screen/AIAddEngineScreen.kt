@@ -29,8 +29,8 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.base.ui.ClearTextFieldTrailingIcon
-import com.shifenmiao.base.ui.PasswordTextField
+import com.wanbaohe.base.ui.ClearTextFieldTrailingIcon
+import com.wanbaohe.base.ui.PasswordTextField
 import com.shifenmiao.base.utils.StringUtils
 import com.shifenmiao.common.manager.AddEngineResult
 import com.shifenmiao.common.ui.BaseScreen
@@ -38,10 +38,10 @@ import com.shifenmiao.common.ui.BottomSaveCancelBar
 import com.shifenmiao.core.constants.UrlConstants
 import com.shifenmiao.model.ai.AiRequestProtocol
 import com.shifenmiao.model.ai.AuthType
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxOutlinedTextField
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionCard
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
+import com.wanbaohe.core.ui.widget.system.OneBoxOutlinedTextField
+import com.wanbaohe.core.ui.widget.system.OneBoxSectionCard
 import com.t8rin.imagetoolbox.core.utils.getString
 import com.wanbaohe.setting.ai.component.AIAddEngineComponent
 import com.wanbaohe.setting.ai.component.AIEngineSettingsDetailComponent
@@ -514,7 +514,7 @@ fun AIAddEngineScreen(
     }
 
     if (showExitConfirmDialog) {
-        com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog(
+        com.wanbaohe.core.ui.widget.dialogs.ExitWithoutSavingDialog(
             title = stringResource(R.string.ai_engine_discard_title),
             text = stringResource(R.string.ai_engine_discard_message),
             onExit = {

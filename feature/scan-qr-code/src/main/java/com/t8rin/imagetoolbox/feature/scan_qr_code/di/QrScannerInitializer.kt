@@ -1,7 +1,7 @@
 package com.t8rin.imagetoolbox.feature.scan_qr_code.di
 
 import android.graphics.Bitmap
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ImageUtils.applyPadding
+import com.wanbaohe.core.ui.utils.helper.ImageUtils.applyPadding
 import com.t8rin.opencv_tools.qr_prepare.QrPrepareHelper
 import io.github.g00fy2.quickie.extensions.QrProcessor
 import java.util.concurrent.atomic.AtomicBoolean

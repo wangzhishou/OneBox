@@ -11,7 +11,7 @@ import android.provider.OpenableColumns
 import com.arkivanov.decompose.ComponentContext
 import com.shifenmiao.database.FeatureDatabase
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.BaseComponent
 import com.shifenmiao.model.transfer.ChatMessage
 import com.shifenmiao.model.transfer.ChatSession
 import com.shifenmiao.model.transfer.MessageType

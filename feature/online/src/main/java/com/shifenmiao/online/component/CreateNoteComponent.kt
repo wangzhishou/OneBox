@@ -16,9 +16,9 @@ import com.shifenmiao.model.note.NoteService
 import com.shifenmiao.model.reorderable.ReorderableType
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.ScreenCallback
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.ScreenCallbackResult
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.navigation.ScreenCallback
+import com.wanbaohe.core.ui.utils.navigation.ScreenCallbackResult
 import com.wanbaohe.com.string.MarkdownSummary
 import com.wanbaohe.markdown.edit.webview.MarkdownPreloadConfig
 import com.wanbaohe.markdown.edit.webview.MarkdownWebViewPoolHelper

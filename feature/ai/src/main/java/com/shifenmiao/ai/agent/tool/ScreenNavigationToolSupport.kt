@@ -1,8 +1,8 @@
 package com.shifenmiao.ai.agent.tool
 
 import com.shifenmiao.ai.agent.callback.ToolCallback
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.ScreenCallbackResult
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.ScreenCallbackResult
 
 data class ScreenNavigationExecution(
     val mode: String,

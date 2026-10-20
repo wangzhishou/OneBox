@@ -27,7 +27,7 @@ import com.t8rin.imagetoolbox.core.domain.model.IntegerSize
 import com.t8rin.imagetoolbox.core.domain.transformation.Transformation
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
 import com.t8rin.imagetoolbox.core.ksp.annotations.FilterInject
-import com.t8rin.imagetoolbox.core.ui.theme.toColor
+import com.wanbaohe.core.ui.theme.toColor
 
 @FilterInject
 internal class HorizontalWindStaggerFilter(

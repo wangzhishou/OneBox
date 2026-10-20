@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.sp
 import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.altitude.component.AltitudeUiState
 import com.wanbaohe.altitude.domain.AltitudeSource
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import kotlin.math.ln
 import kotlin.math.PI
 import kotlin.math.cos

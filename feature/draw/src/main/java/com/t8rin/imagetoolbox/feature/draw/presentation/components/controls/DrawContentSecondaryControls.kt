@@ -20,9 +20,9 @@ package com.t8rin.imagetoolbox.feature.draw.presentation.components.controls
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import com.t8rin.imagetoolbox.core.ui.widget.buttons.EraseModeButton
-import com.t8rin.imagetoolbox.core.ui.widget.buttons.PanModeButton
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
+import com.wanbaohe.core.ui.widget.buttons.EraseModeButton
+import com.wanbaohe.core.ui.widget.buttons.PanModeButton
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
 import com.t8rin.imagetoolbox.feature.draw.presentation.screenLogic.DrawComponent
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo

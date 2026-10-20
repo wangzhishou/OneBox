@@ -6,8 +6,8 @@ import com.shifenmiao.base.audio.NetworkAudioPlayer
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.imagegeneration.service.ImageGenerationManager
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.setting.ai.component.AIFeatureSettingsComponent
 import com.wanbaohe.setting.ai.component.AIAddEngineComponent
 import com.wanbaohe.setting.ai.component.AIEngineSettingsComponent

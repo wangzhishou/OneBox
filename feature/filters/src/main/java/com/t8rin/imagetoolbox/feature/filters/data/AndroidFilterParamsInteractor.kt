@@ -38,7 +38,7 @@ import com.t8rin.imagetoolbox.core.filters.domain.FilterParamsInteractor
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
 import com.t8rin.imagetoolbox.core.filters.domain.model.TemplateFilter
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.utils.helper.toImageModel
+import com.wanbaohe.core.ui.utils.helper.toImageModel
 import com.t8rin.imagetoolbox.feature.filters.data.utils.serialization.PACKAGE_ALIAS
 import com.t8rin.imagetoolbox.feature.filters.data.utils.serialization.toDatastoreString
 import com.t8rin.imagetoolbox.feature.filters.data.utils.serialization.toFiltersList

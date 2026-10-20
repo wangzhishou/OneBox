@@ -56,10 +56,10 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineBlender
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineInfo
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.rememberAppColorTuple
-import com.t8rin.imagetoolbox.core.ui.widget.controls.selection.ColorRowSelector
-import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavItem
-import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavigationBar
-import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavigationBarStyle
+import com.wanbaohe.core.ui.widget.controls.selection.ColorRowSelector
+import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
+import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBar
+import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBarStyle
 
 private enum class ColorToolTab { INFO, MIXING, SHADING, HISTOGRAM }
 

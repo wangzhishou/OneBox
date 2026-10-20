@@ -31,9 +31,9 @@ import androidx.compose.ui.unit.dp
 import com.smarttoolfactory.extendedcolors.util.roundToTwoDigits
 import com.t8rin.imagetoolbox.core.domain.utils.roundTo
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.widget.controls.selection.DataSelector
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSliderItem
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
+import com.wanbaohe.core.ui.widget.controls.selection.DataSelector
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedSliderItem
+import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.noise_generation.domain.model.CellularDistanceFunction
 import com.t8rin.imagetoolbox.noise_generation.domain.model.CellularReturnType
 import com.t8rin.imagetoolbox.noise_generation.domain.model.DomainWarpType

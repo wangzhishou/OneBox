@@ -18,8 +18,8 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import com.t8rin.imagetoolbox.core.domain.image.ImageGetter
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.PointData
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.drawMeshGradient
+import com.wanbaohe.core.ui.widget.modifier.PointData
+import com.wanbaohe.core.ui.widget.modifier.drawMeshGradient
 import com.t8rin.imagetoolbox.core.utils.toTypeface
 import com.wanbaohe.textcard.domain.TextCardExportRenderer
 import com.wanbaohe.textcard.domain.model.BackgroundSpec

@@ -1,7 +1,7 @@
 package com.wanbaohe.habittracker.model
 
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.shifenmiao.base.ui.icon.IconRegistry
+import com.wanbaohe.base.ui.icon.IconRegistry
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWaterDrop
 

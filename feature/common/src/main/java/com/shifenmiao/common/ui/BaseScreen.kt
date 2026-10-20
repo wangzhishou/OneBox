@@ -28,9 +28,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.core.R
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBar
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBarType
-import com.t8rin.imagetoolbox.core.ui.widget.other.TopAppBarEmoji
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBar
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBarType
+import com.wanbaohe.core.ui.widget.other.TopAppBarEmoji
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
 
 @Composable

@@ -22,7 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.shifenmiao.base.ui.CancelableChip
+import com.wanbaohe.base.ui.CancelableChip
 import com.shifenmiao.core.R
 import com.shifenmiao.model.search.SuggestionModel
 import com.shifenmiao.storage.SearchHistoryStore

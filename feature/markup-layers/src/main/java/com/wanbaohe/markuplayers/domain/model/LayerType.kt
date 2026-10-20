@@ -3,7 +3,7 @@ package com.wanbaohe.markuplayers.domain.model
 import com.shifenmiao.common.components.text.RichTextStyleSpan
 import com.t8rin.imagetoolbox.core.domain.model.Outline
 import com.t8rin.imagetoolbox.core.settings.domain.model.FontType
-import com.t8rin.imagetoolbox.core.ui.widget.editor.StickerSource
+import com.wanbaohe.core.ui.widget.editor.StickerSource
 
 /**
  * 图层类型。新增图层类型的步骤:

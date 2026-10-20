@@ -13,7 +13,7 @@ import android.webkit.MimeTypeMap
 import com.t8rin.imagetoolbox.core.filters.presentation.model.UiFilter
 import com.t8rin.imagetoolbox.core.filters.presentation.serialization.UiFilterCodec
 import com.t8rin.imagetoolbox.core.settings.domain.model.FontType
-import com.t8rin.imagetoolbox.core.ui.widget.editor.StickerSource
+import com.wanbaohe.core.ui.widget.editor.StickerSource
 import com.t8rin.logger.makeLog
 import com.wanbaohe.markuplayers.domain.model.LayerEffect
 import com.wanbaohe.markuplayers.domain.model.LayerType

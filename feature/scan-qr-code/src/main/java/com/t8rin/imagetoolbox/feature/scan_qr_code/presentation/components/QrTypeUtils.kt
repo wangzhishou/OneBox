@@ -28,7 +28,7 @@ import com.t8rin.imagetoolbox.core.domain.model.QrType
 import com.t8rin.imagetoolbox.core.domain.model.copy
 import com.t8rin.imagetoolbox.core.domain.model.ifNotEmpty
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.Contact
+import com.wanbaohe.core.ui.utils.content_pickers.Contact
 import ezvcard.Ezvcard
 import ezvcard.VCard
 import ezvcard.parameter.EmailType

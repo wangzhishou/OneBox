@@ -19,7 +19,7 @@ package com.t8rin.imagetoolbox.feature.root.presentation.components.navigation
 
 import android.net.Uri
 import androidx.compose.runtime.Composable
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.shifenmiao.ai.component.AIChatComponent
 import com.shifenmiao.ai.component.AIDuelChatComponent
 import com.shifenmiao.ai.component.AIHistoryCenterComponent

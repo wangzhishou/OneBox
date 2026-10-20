@@ -15,7 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalLoginState
+import com.wanbaohe.core.ui.utils.provider.LocalLoginState
 import com.shifenmiao.login.state.LoginShowType
 import com.shifenmiao.login.ui.LoginAgreementDialog
 import com.shifenmiao.login.ui.LoginBody

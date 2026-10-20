@@ -30,8 +30,8 @@ import com.t8rin.imagetoolbox.core.domain.saving.FileController
 import com.t8rin.imagetoolbox.core.domain.saving.restoreObject
 import com.t8rin.imagetoolbox.core.domain.saving.saveObject
 import com.t8rin.imagetoolbox.core.domain.utils.smartJob
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.state.update
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.state.update
 import com.t8rin.imagetoolbox.feature.checksum_tools.domain.ChecksumManager
 import com.t8rin.imagetoolbox.feature.checksum_tools.domain.ChecksumSource
 import com.t8rin.imagetoolbox.feature.checksum_tools.presentation.components.ChecksumPage

@@ -7,7 +7,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCircularProgressIndicator
+import com.wanbaohe.core.ui.widget.glass.GlassCircularProgressIndicator
 
 private val scrollableRootTypes = setOf("Column", "Card", "Row")
 

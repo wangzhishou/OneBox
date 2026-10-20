@@ -38,7 +38,7 @@ import com.shifenmiao.base.utils.StringUtils.formatPriceWithUnit
 import com.shifenmiao.core.R
 import com.shifenmiao.model.pay.alipay.PayPrice
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassRegular
+import com.wanbaohe.core.ui.widget.glass.glassRegular
 import com.wanbaohe.profile.components.modifier.pagerAnimation
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.Check

@@ -2,9 +2,9 @@ package com.shifenmiao.ai.agent.callback
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnDestroy
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.ScreenCallbackResult
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.ScreenLifecycleEvent
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.ScreenCallbackResult
+import com.wanbaohe.core.ui.utils.navigation.ScreenLifecycleEvent
 import com.t8rin.logger.makeLog
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.MutableSharedFlow

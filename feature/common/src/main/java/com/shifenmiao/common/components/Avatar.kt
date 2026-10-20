@@ -26,9 +26,9 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.shifenmiao.core.R
-import com.shifenmiao.base.ui.painter.TextPainter
+import com.wanbaohe.base.ui.painter.TextPainter
 import com.shifenmiao.base.utils.StringUtils
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAvatarDefault
 
 @Composable

@@ -1,6 +1,6 @@
 package com.shifenmiao.ai.ui
 
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
+import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.foundation.MarqueeSpacing
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
@@ -32,8 +32,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.base.ui.button.CancelButton
-import com.shifenmiao.base.ui.button.ConfirmButton
+import com.wanbaohe.base.ui.button.CancelButton
+import com.wanbaohe.base.ui.button.ConfirmButton
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.core.R
 import com.shifenmiao.core.constants.Constants.AI_MODEL_DEFAULT_TITLE

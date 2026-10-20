@@ -43,11 +43,11 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.demo.screenLogic.DemoComponent
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalWindowSizeClass
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
+import com.wanbaohe.core.ui.utils.provider.LocalWindowSizeClass
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
+import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.a2ui.A2uiContentParser
 import com.wanbaohe.a2ui.ui.A2uiSurfaceView
 import com.wanbaohe.a2ui.ui.A2uiViewerContext

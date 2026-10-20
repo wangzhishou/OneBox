@@ -29,9 +29,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import com.shifenmiao.base.ui.DeleteConfirmDialog
-import com.shifenmiao.base.ui.loading.EmptyBox
-import com.shifenmiao.base.ui.utils.Animation
+import com.wanbaohe.base.ui.DeleteConfirmDialog
+import com.wanbaohe.base.ui.loading.EmptyBox
+import com.wanbaohe.base.ui.utils.Animation
 import com.shifenmiao.common.components.SearchMessageCard
 import com.shifenmiao.common.components.comments.CommentsHost
 import com.shifenmiao.common.components.comments.commentUidForListType
@@ -45,7 +45,7 @@ import com.shifenmiao.online.ui.VerticalStaggeredCard
 import com.shifenmiao.search.logic.SearchComponent
 import com.shifenmiao.storage.SearchHistoryStore
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
+import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSearchOff
 

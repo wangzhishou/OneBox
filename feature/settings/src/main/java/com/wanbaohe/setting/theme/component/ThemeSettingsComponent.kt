@@ -14,11 +14,11 @@ import com.t8rin.imagetoolbox.core.settings.domain.ThemeSettingService
 import com.t8rin.imagetoolbox.core.settings.domain.model.AppThemePreset
 import com.t8rin.imagetoolbox.core.settings.domain.model.GradientBackgroundStyle
 import com.t8rin.imagetoolbox.core.settings.domain.model.NightMode
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.widget.other.ToastDuration
-import com.t8rin.imagetoolbox.core.ui.widget.theme.localizedName
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.widget.other.ToastDuration
+import com.wanbaohe.core.ui.widget.theme.localizedName
 import com.wanbaohe.settings.R
 import com.shifenmiao.core.R as CoreR
 import dagger.assisted.Assisted

@@ -32,7 +32,7 @@ import android.view.WindowManager
 import androidx.core.content.getSystemService
 import androidx.core.graphics.createBitmap
 import com.t8rin.imagetoolbox.core.domain.model.IntegerSize
-import com.t8rin.imagetoolbox.core.ui.utils.helper.mainLooperDelayedAction
+import com.wanbaohe.core.ui.utils.helper.mainLooperDelayedAction
 import com.t8rin.logger.makeLog
 
 

@@ -7,13 +7,13 @@ import androidx.core.net.toUri
 import com.arkivanov.decompose.ComponentContext
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.core.R
-import com.t8rin.imagetoolbox.core.ui.utils.content.ContentRouter
+import com.wanbaohe.core.ui.utils.content.ContentRouter
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.settings.domain.SettingsManager
 import com.t8rin.imagetoolbox.core.settings.domain.model.SettingsState
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.file.browser.model.FileBrowserConfig
 import com.wanbaohe.file.browser.model.FileBrowserState
 import com.wanbaohe.file.browser.model.FileBrowserViewMode

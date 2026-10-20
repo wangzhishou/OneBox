@@ -14,9 +14,9 @@ import androidx.compose.ui.platform.LocalContext
 import com.shifenmiao.webview.common.CommonWebView
 import com.shifenmiao.webview.common.WebViewTopAppBarWithExport
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFileCreator
-import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalComponentActivity
+import com.wanbaohe.core.ui.utils.content_pickers.rememberFileCreator
+import com.wanbaohe.core.ui.utils.helper.Clipboard
+import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
 
 @Composable
 fun PreviewWebViewScreen(

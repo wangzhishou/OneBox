@@ -19,8 +19,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.ui.widget.text.RoundedTextField as CoreRoundedTextField
-import com.t8rin.imagetoolbox.core.ui.widget.text.RoundedTextFieldColors as CoreRoundedTextFieldColors
+import com.wanbaohe.core.ui.widget.text.RoundedTextField as CoreRoundedTextField
+import com.wanbaohe.core.ui.widget.text.RoundedTextFieldColors as CoreRoundedTextFieldColors
 
 @Composable
 fun RoundedTextField(

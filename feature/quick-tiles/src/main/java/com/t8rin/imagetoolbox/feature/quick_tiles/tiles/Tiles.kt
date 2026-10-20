@@ -17,7 +17,7 @@
 
 package com.t8rin.imagetoolbox.feature.quick_tiles.tiles
 
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.feature.quick_tiles.tiles.TileAction.OpenApp
 import com.t8rin.imagetoolbox.feature.quick_tiles.tiles.TileAction.OpenScreen
 import com.t8rin.imagetoolbox.feature.quick_tiles.tiles.TileAction.Screenshot

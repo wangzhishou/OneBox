@@ -8,7 +8,7 @@ import com.shifenmiao.model.ListItemType
 import com.shifenmiao.model.activity.ActivityCategory
 import com.shifenmiao.model.activity.ActivityLogEntry
 import com.shifenmiao.model.ai.AIConversationEntryType
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.t8rin.logger.makeLog
 import com.wanbaohe.app.navigation.ActivityLogNavigator.resolve
 import org.json.JSONObject

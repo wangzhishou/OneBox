@@ -37,7 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.base.ui.empty.EmptyStateGuide
+import com.wanbaohe.base.ui.empty.EmptyStateGuide
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.model.color.ColorPickHistoryEntry
 import com.t8rin.imagetoolbox.core.resources.Icons
@@ -48,15 +48,15 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineDeleteForever
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFavorite
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFavoriteFilled
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
-import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
-import com.t8rin.imagetoolbox.core.ui.utils.helper.toHex
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedChip
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDangerButton
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxListItem
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneSecondaryButton
+import com.wanbaohe.core.ui.utils.helper.Clipboard
+import com.wanbaohe.core.ui.utils.helper.toHex
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedChip
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
+import com.wanbaohe.core.ui.widget.system.OneBoxDangerButton
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
+import com.wanbaohe.core.ui.widget.system.OneBoxListItem
+import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
 
 @Composable
 internal fun PickColorHistoryContent(

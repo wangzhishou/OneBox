@@ -30,7 +30,7 @@ import com.shifenmiao.model.color.ColorPickHistoryEntry
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.image.ImageGetter
 import com.t8rin.imagetoolbox.core.domain.utils.runSuspendCatching
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.BaseComponent
 import com.t8rin.imagetoolbox.feature.pick_color.domain.ColorPickHistoryRepository
 import com.t8rin.imagetoolbox.feature.pick_color.presentation.model.PickColorTab
 import dagger.assisted.Assisted

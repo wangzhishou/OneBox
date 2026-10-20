@@ -19,8 +19,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.shifenmiao.core.R
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.TextFields
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 
 /**
  * 笔记标题弹窗：自定义标题编辑。

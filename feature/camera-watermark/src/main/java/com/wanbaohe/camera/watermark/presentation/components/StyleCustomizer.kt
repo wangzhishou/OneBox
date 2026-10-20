@@ -1,6 +1,6 @@
 package com.wanbaohe.camera.watermark.presentation.components
 
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
+import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,7 +25,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.CenterAlignedTopAppBar
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCheckbox
+import com.wanbaohe.core.ui.widget.glass.GlassCheckbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -52,12 +52,12 @@ import androidx.core.net.toUri
 import coil3.compose.AsyncImage
 import com.shifenmiao.common.ui.AddImagePickingDialogWithPicker
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.Picker
-import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorPickerSheet
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCustomSlider
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.utils.content_pickers.Picker
+import com.wanbaohe.core.ui.widget.color_picker.ColorPickerSheet
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.wanbaohe.core.ui.widget.glass.GlassSwitch
+import com.wanbaohe.core.ui.widget.glass.GlassCustomSlider
+import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.camera.watermark.R
 import com.wanbaohe.camera.watermark.domain.LogoType
 import com.wanbaohe.camera.watermark.domain.WatermarkMetadata

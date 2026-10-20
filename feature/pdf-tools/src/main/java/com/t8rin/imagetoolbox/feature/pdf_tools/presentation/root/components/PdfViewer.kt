@@ -34,8 +34,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedLoadingIndicator
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.animateContentSizeNoClip
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedLoadingIndicator
+import com.wanbaohe.core.ui.widget.modifier.animateContentSizeNoClip
 import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.canUseNewPdf
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.root.components.viewer.LegacyPdfViewer
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.root.components.viewer.ModernPdfViewer

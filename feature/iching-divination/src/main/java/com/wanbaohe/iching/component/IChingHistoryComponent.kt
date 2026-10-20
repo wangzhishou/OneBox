@@ -2,7 +2,7 @@ package com.wanbaohe.iching.component
 
 import com.arkivanov.decompose.ComponentContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.iching.data.IChingHistoryRecord
 import com.wanbaohe.iching.data.IChingHistoryRepository
 import com.wanbaohe.iching.domain.IChingTextLibrary

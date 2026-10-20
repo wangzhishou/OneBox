@@ -33,10 +33,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.shapes.CloverShape
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.rememberFilename
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ImageUtils.rememberHumanFileSize
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassThin
-import com.t8rin.imagetoolbox.core.ui.widget.preferences.PreferenceItemOverload
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.rememberFilename
+import com.wanbaohe.core.ui.utils.helper.ImageUtils.rememberHumanFileSize
+import com.wanbaohe.core.ui.widget.glass.glassThin
+import com.wanbaohe.core.ui.widget.preferences.PreferenceItemOverload
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFilePresent
 
 @Composable

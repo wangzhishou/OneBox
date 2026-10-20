@@ -5,7 +5,7 @@ import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.shifenmiao.base.audio.NetworkAudioPlayer
 import com.tencent.mmkv.MMKV
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.core.ui.review.ReviewPromptHost
 import com.wanbaohe.core.ui.review.ReviewPromptTrigger
 import com.shifenmiao.common.utils.BaseUtils

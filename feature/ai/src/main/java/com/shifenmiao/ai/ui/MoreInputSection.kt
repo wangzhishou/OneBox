@@ -34,7 +34,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.ai.logic.ChatInputComponent
-import com.shifenmiao.base.ui.icon.IconRegistry
+import com.wanbaohe.base.ui.icon.IconRegistry
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.ai.providerAccentColor
 import com.shifenmiao.common.ui.ai.providerBrandIcon
@@ -43,12 +43,12 @@ import com.shifenmiao.storage.AIChatStorage
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
 import com.t8rin.imagetoolbox.core.settings.presentation.model.PicturePickerMode
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.FileType
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.Picker
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFilePicker
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.utils.content_pickers.FileType
+import com.wanbaohe.core.ui.utils.content_pickers.Picker
+import com.wanbaohe.core.ui.utils.content_pickers.rememberFilePicker
+import com.wanbaohe.core.ui.utils.content_pickers.rememberImagePicker
+import com.wanbaohe.core.ui.widget.glass.GlassSwitch
+import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBuild
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSettings

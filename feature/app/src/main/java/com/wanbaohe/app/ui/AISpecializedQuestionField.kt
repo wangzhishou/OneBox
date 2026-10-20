@@ -28,22 +28,22 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.ai.agent.tool.AgentQuestionType
 import com.shifenmiao.ai.agent.tool.AgentUserQuestionItem
-import com.shifenmiao.base.ui.picker.ChineseDatePickerDialog
-import com.shifenmiao.base.ui.picker.ChineseDateRangePickerDialog
-import com.shifenmiao.base.ui.picker.ChineseTimeRangePickerDialog
-import com.shifenmiao.base.ui.picker.rememberCityPickerState
+import com.wanbaohe.base.ui.picker.ChineseDatePickerDialog
+import com.wanbaohe.base.ui.picker.ChineseDateRangePickerDialog
+import com.wanbaohe.base.ui.picker.ChineseTimeRangePickerDialog
+import com.wanbaohe.base.ui.picker.rememberCityPickerState
 import com.shifenmiao.model.ui.picker.SelectedCountryData
 import com.t8rin.imagetoolbox.core.data.utils.SafUriUtils
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.FileType
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.Picker
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFilePicker
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFolderPicker
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
-import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorPickerSheet
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTimePickerDialog
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTextFieldVisualPreset
+import com.wanbaohe.core.ui.utils.content_pickers.FileType
+import com.wanbaohe.core.ui.utils.content_pickers.Picker
+import com.wanbaohe.core.ui.utils.content_pickers.rememberFilePicker
+import com.wanbaohe.core.ui.utils.content_pickers.rememberFolderPicker
+import com.wanbaohe.core.ui.utils.content_pickers.rememberImagePicker
+import com.wanbaohe.core.ui.widget.color_picker.ColorPickerSheet
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedTimePickerDialog
+import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
+import com.wanbaohe.core.ui.widget.glass.GlassTextFieldVisualPreset
 import androidx.compose.runtime.compositionLocalOf
 import java.time.Instant
 import java.time.LocalDate
@@ -66,8 +66,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineAttachFile
  *
  * 父弹框（[AIQuestionDialog] / [AIQuestionBottomSheet]）用 [placeAboveAll][androidx.compose.runtime.CompositionLocalProvider] = true 渲染时
  * 内嵌的 picker（date / time / date_range / time_range / color / city）需要同步把
- * `placeAboveAll` 也设成 true，否则会被外层 [com.t8rin.imagetoolbox.core.ui.widget.utils.FullscreenPopup]
- * 的 z-index 处理逻辑盖住（详见 [com.t8rin.imagetoolbox.core.ui.widget.utils.PopupLayout.show]）。
+ * `placeAboveAll` 也设成 true，否则会被外层 [com.wanbaohe.core.ui.widget.utils.FullscreenPopup]
+ * 的 z-index 处理逻辑盖住（详见 [com.wanbaohe.core.ui.widget.utils.PopupLayout.show]）。
  *
  * 默认 false，保持非嵌套场景下与改动前一致。
  */
@@ -268,7 +268,7 @@ private fun AISpecializedPicker(
         AgentQuestionType.date -> {
             ChineseDatePickerDialog(
                 initialDateMillis = parseDateString(currentValue),
-                title = title.ifBlank { stringResource(com.t8rin.imagetoolbox.core.ui.R.string.date_picker_title) },
+                title = title.ifBlank { stringResource(com.wanbaohe.core.ui.R.string.date_picker_title) },
                 onDateSelected = { millis ->
                     onPicked(formatDateMillis(millis))
                 },

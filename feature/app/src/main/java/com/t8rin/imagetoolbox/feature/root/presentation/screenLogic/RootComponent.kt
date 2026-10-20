@@ -56,15 +56,15 @@ import com.t8rin.imagetoolbox.core.domain.saving.FileController
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.settings.domain.SettingsManager
 import com.t8rin.imagetoolbox.core.settings.domain.model.SettingsState
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.content.ContentRouter
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.utils.helper.handleDeeplinks
-import com.t8rin.imagetoolbox.core.ui.utils.helper.toImageModel
-import com.t8rin.imagetoolbox.core.ui.utils.loadStartupSettingsSnapshot
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.utils.state.update
-import com.t8rin.imagetoolbox.core.ui.widget.other.ToastDuration
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.content.ContentRouter
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.helper.handleDeeplinks
+import com.wanbaohe.core.ui.utils.helper.toImageModel
+import com.wanbaohe.core.ui.utils.loadStartupSettingsSnapshot
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.state.update
+import com.wanbaohe.core.ui.widget.other.ToastDuration
 import com.t8rin.imagetoolbox.feature.root.presentation.components.navigation.ChildProvider
 import com.t8rin.imagetoolbox.feature.root.presentation.components.navigation.NavigationChild
 import com.t8rin.imagetoolbox.feature.root.presentation.components.utils.BackEventObserver
@@ -94,7 +94,7 @@ class RootComponent @AssistedInject internal constructor(
     private val globalToolUiHostProvider: Provider<GlobalToolUiHost>,
     private val effectHostProvider: Provider<com.shifenmiao.ai.component.EffectHost>,
     val dataDraftHelper: com.shifenmiao.database.data_draft.DataDraftHelper,
-    val cityPickerDataHolder: com.shifenmiao.base.ui.picker.viewmodel.CityPickerDataHolder,
+    val cityPickerDataHolder: com.wanbaohe.base.ui.picker.viewmodel.CityPickerDataHolder,
     val imageShareProvider: ImageShareProvider<Bitmap>,
     val contentRouter: ContentRouter,
 ) : BaseComponent(dispatchersHolder, componentContext), ResourceManager by resourceManager {

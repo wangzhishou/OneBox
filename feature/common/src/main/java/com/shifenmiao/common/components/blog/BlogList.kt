@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.shifenmiao.base.components.ErrorBox
-import com.shifenmiao.base.ui.loading.EmptyBox
+import com.wanbaohe.base.ui.loading.EmptyBox
 import com.shifenmiao.common.components.LoadingItem
 import com.shifenmiao.core.R
 import com.shifenmiao.model.blog.BlogItem

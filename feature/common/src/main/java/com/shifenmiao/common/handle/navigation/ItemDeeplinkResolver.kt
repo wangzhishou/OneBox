@@ -8,7 +8,7 @@ import com.shifenmiao.common.handle.ItemScreenResolver
 import com.shifenmiao.core.constants.UrlConstants
 import com.shifenmiao.database.AppDatabase
 import com.shifenmiao.database.data_draft.DataDraftHelper
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors

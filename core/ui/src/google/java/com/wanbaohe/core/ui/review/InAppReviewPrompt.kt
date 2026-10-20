@@ -7,7 +7,7 @@ import com.google.android.play.core.review.ReviewManagerFactory
 import com.t8rin.imagetoolbox.core.di.entryPoint
 import com.t8rin.imagetoolbox.core.settings.di.SettingsStateEntryPoint
 import com.t8rin.imagetoolbox.core.settings.domain.SettingsManager
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.utils.makeLog
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay

@@ -35,8 +35,8 @@ import com.t8rin.imagetoolbox.core.filters.domain.model.enums.FadeSide
 import com.t8rin.imagetoolbox.core.filters.domain.model.params.SideFadeParams
 import com.t8rin.imagetoolbox.core.filters.presentation.model.UiFilter
 import com.t8rin.imagetoolbox.core.filters.presentation.utils.translatedName
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedButtonGroup
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSliderItem
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedButtonGroup
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedSliderItem
 
 @Composable
 internal fun SideFadeRelativeItem(

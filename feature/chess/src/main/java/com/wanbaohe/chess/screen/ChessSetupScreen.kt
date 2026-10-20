@@ -36,9 +36,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
-import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.utils.helper.Clipboard
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.boardgame.model.BoardGameAction
 import com.wanbaohe.boardgame.model.BoardGameSideOption
 import com.wanbaohe.boardgame.ui.ActionBar
@@ -61,7 +61,7 @@ import com.wanbaohe.chess.domain.model.PieceType
 import com.wanbaohe.chess.domain.model.Side
 import com.wanbaohe.chess.ui.board.ChessBoard
 import com.wanbaohe.chess.ui.board.glyph
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 @Composable
 fun ChessSetupScreen(

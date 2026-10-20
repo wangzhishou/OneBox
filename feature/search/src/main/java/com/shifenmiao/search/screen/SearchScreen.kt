@@ -36,7 +36,7 @@ import com.shifenmiao.search.components.SearchResults
 import com.shifenmiao.search.components.SearchSuggest
 import com.shifenmiao.search.logic.SearchComponent
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
+import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import kotlinx.coroutines.launch
 
 @Composable

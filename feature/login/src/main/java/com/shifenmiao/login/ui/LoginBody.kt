@@ -27,8 +27,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.base.ui.EmailTextField
-import com.shifenmiao.base.ui.button.PrimaryButton
+import com.wanbaohe.base.ui.EmailTextField
+import com.wanbaohe.base.ui.button.PrimaryButton
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.base.utils.StringUtils
 import com.shifenmiao.core.R
@@ -38,9 +38,9 @@ import com.shifenmiao.model.login.LoginType
 import com.shifenmiao.login.state.LoginUiEvent
 import com.shifenmiao.login.viewModel.LoginComponent
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSegmentedButtonRow
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.widget.glass.GlassSegmentedButtonRow
+import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.resources.icons.CheckCircle
 
 @Composable

@@ -15,7 +15,7 @@ import com.shifenmiao.model.ai.AiWorkingModelSlot
 import com.shifenmiao.model.ai.AuthType
 import com.shifenmiao.model.remote.AiEngineConfig
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.setting.local.download.LocalModelDownloader
 import com.wanbaohe.settings.R
 import dagger.assisted.Assisted

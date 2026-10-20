@@ -28,9 +28,9 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.shifenmiao.common.ui.rememberImmersiveModeState
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.boardgame.model.BoardGameTab
 import com.wanbaohe.boardgame.ui.BoardGameTabScaffold
 import com.wanbaohe.xiangqi.R

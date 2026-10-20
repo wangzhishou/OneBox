@@ -21,7 +21,7 @@ plugins {
     alias(libs.plugins.image.toolbox.compose)
 }
 
-android.namespace = "com.t8rin.imagetoolbox.core.ui"
+android.namespace = "com.wanbaohe.core.ui"
 
 // 为国内渠道增加 src/domestic sourceSet,与 src/google 形成 flavor 隔离(同 core/r 的做法):
 //   - 国内渠道 + foss:src/main + src/domestic(InAppReviewPrompt 空实现、OpenCV 文档扫描器)

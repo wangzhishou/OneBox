@@ -27,8 +27,8 @@ import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.image.ShareProvider
 import com.t8rin.imagetoolbox.core.domain.utils.runSuspendCatching
 import com.t8rin.imagetoolbox.core.domain.utils.smartJob
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.state.update
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.state.update
 import com.t8rin.imagetoolbox.feature.zip.domain.ZipManager
 import com.t8rin.imagetoolbox.feature.zip.domain.ZipProgress
 import com.t8rin.imagetoolbox.feature.zip.domain.ZipSourceFile

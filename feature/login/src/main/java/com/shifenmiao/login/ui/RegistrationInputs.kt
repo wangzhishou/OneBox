@@ -7,9 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import com.shifenmiao.base.ui.EmailTextField
-import com.shifenmiao.base.ui.PasswordTextField
-import com.shifenmiao.base.ui.button.PrimaryButton
+import com.wanbaohe.base.ui.EmailTextField
+import com.wanbaohe.base.ui.PasswordTextField
+import com.wanbaohe.base.ui.button.PrimaryButton
 import com.shifenmiao.login.state.RegistrationState
 import com.shifenmiao.theme.AppTheme
 import com.shifenmiao.core.R

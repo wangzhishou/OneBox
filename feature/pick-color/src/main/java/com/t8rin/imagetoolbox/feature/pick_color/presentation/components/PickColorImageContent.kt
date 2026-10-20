@@ -26,8 +26,8 @@ import com.smarttoolfactory.colordetector.ImageColorDetector
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.AddPhotoAlt
-import com.t8rin.imagetoolbox.core.ui.widget.buttons.PanModeButton
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
+import com.wanbaohe.core.ui.widget.buttons.PanModeButton
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
 
 /**
  * 取色页：BaseScreen 提供标准顶栏，选中的图片作为最底层背景铺满整屏，

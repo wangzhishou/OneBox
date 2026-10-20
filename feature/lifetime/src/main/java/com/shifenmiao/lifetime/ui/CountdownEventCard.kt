@@ -20,7 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.shifenmiao.base.ui.icon.IconAvatar
+import com.wanbaohe.base.ui.icon.IconAvatar
 import com.shifenmiao.common.components.sectionGradient
 import com.shifenmiao.common.components.sectionIconColor
 import com.shifenmiao.common.components.sectionIconContainerColor
@@ -29,9 +29,9 @@ import com.shifenmiao.lifetime.R
 import com.shifenmiao.lifetime.domain.model.CountdownStatus
 import com.shifenmiao.lifetime.util.countdownStatusLabel
 import com.shifenmiao.lifetime.util.localizedPresetEventName
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassContentColor
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
+import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.tintedGlassContentColor
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 
 /**
  * 倒数日卡片 —— 竖屏比例 (3:4 高宽比)。

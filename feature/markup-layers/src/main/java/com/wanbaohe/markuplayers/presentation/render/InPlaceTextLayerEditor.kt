@@ -59,9 +59,9 @@ import com.shifenmiao.common.components.text.toRichTextStyleSpan
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.ContentPaste
 import com.t8rin.imagetoolbox.core.settings.presentation.model.toUiFont
-import com.t8rin.imagetoolbox.core.ui.theme.toColor
-import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorSelectionRow
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
+import com.wanbaohe.core.ui.theme.toColor
+import com.wanbaohe.core.ui.widget.color_picker.ColorSelectionRow
+import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.model.LayerType
 import com.wanbaohe.markuplayers.domain.model.effectiveColorAt

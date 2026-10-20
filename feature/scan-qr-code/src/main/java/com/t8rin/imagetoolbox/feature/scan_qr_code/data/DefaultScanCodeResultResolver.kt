@@ -11,7 +11,7 @@ import com.shifenmiao.common.handle.navigation.DeeplinkRecentRecorder
 import com.shifenmiao.common.handle.navigation.ItemDeeplinkResolver
 import com.shifenmiao.model.image.ImageViewerInfo
 import com.t8rin.imagetoolbox.core.data.utils.SafUriUtils
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.feature.scan_qr_code.domain.ScanCodeContentType
 import com.t8rin.imagetoolbox.feature.scan_qr_code.domain.ScanCodeResultResolver
 import dagger.hilt.android.qualifiers.ApplicationContext

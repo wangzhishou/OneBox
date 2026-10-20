@@ -25,7 +25,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.SubcomposeAsyncImage
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassRegular
+import com.wanbaohe.core.ui.widget.glass.glassRegular
 import com.wanbaohe.file.browser.model.FileBrowserState
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFolder
 

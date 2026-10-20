@@ -5,7 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.shifenmiao.common.logic.AppComponent
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.feature.root.presentation.screenLogic.RootComponent
 
 /**

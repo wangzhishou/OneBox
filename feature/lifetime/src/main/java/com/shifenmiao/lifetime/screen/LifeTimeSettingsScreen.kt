@@ -23,16 +23,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.shifenmiao.base.ui.picker.ChineseDatePickerDialog
+import com.wanbaohe.base.ui.picker.ChineseDatePickerDialog
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.lifetime.R
 import com.shifenmiao.lifetime.component.LifeTimeSettingsComponent
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.sliders.custom_slider.CustomSlider
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionCard
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionHeader
-import com.t8rin.imagetoolbox.core.ui.widget.system.OnePrimaryButton
+import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.sliders.custom_slider.CustomSlider
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
+import com.wanbaohe.core.ui.widget.system.OneBoxSectionCard
+import com.wanbaohe.core.ui.widget.system.OneBoxSectionHeader
+import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
 import java.time.LocalDate
 
 @Composable

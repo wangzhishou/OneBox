@@ -17,8 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilterChip
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassIconButton
+import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
+import com.wanbaohe.core.ui.widget.glass.GlassIconButton
 import com.wanbaohe.passwordvault.R
 import com.wanbaohe.passwordvault.model.PasswordVaultCategoryUi
 import com.wanbaohe.passwordvault.util.localizedCategoryName

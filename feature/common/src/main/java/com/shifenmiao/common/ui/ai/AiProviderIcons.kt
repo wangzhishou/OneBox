@@ -2,20 +2,20 @@ package com.shifenmiao.common.ui.ai
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.shifenmiao.base.ui.icon.BaiduBrandIcon
-import com.shifenmiao.base.ui.icon.ClaudeBrandIcon
-import com.shifenmiao.base.ui.icon.DeepSeekBrandIcon
-import com.shifenmiao.base.ui.icon.DoubaoBrandIcon
-import com.shifenmiao.base.ui.icon.GeminiBrandIcon
-import com.shifenmiao.base.ui.icon.GrokBrandIcon
-import com.shifenmiao.base.ui.icon.HunyuanBrandIcon
-import com.shifenmiao.base.ui.icon.KimiBrandIcon
-import com.shifenmiao.base.ui.icon.MiniMaxBrandIcon
-import com.shifenmiao.base.ui.icon.OpenAiBrandIcon
-import com.shifenmiao.base.ui.icon.OpenRouterBrandIcon
-import com.shifenmiao.base.ui.icon.QwenBrandIcon
-import com.shifenmiao.base.ui.icon.XiaomiBrandIcon
-import com.shifenmiao.base.ui.icon.ZhipuBrandIcon
+import com.wanbaohe.base.ui.icon.BaiduBrandIcon
+import com.wanbaohe.base.ui.icon.ClaudeBrandIcon
+import com.wanbaohe.base.ui.icon.DeepSeekBrandIcon
+import com.wanbaohe.base.ui.icon.DoubaoBrandIcon
+import com.wanbaohe.base.ui.icon.GeminiBrandIcon
+import com.wanbaohe.base.ui.icon.GrokBrandIcon
+import com.wanbaohe.base.ui.icon.HunyuanBrandIcon
+import com.wanbaohe.base.ui.icon.KimiBrandIcon
+import com.wanbaohe.base.ui.icon.MiniMaxBrandIcon
+import com.wanbaohe.base.ui.icon.OpenAiBrandIcon
+import com.wanbaohe.base.ui.icon.OpenRouterBrandIcon
+import com.wanbaohe.base.ui.icon.QwenBrandIcon
+import com.wanbaohe.base.ui.icon.XiaomiBrandIcon
+import com.wanbaohe.base.ui.icon.ZhipuBrandIcon
 
 /**
  * AI 厂商品牌矢量图标(单色填充,使用处按厂商色 tint)。

@@ -19,10 +19,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.em
 import com.t8rin.imagetoolbox.core.settings.presentation.model.toUiFont
-import com.t8rin.imagetoolbox.core.ui.theme.toColor
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
-import com.t8rin.imagetoolbox.core.ui.widget.text.OutlineParams
-import com.t8rin.imagetoolbox.core.ui.widget.text.OutlinedText
+import com.wanbaohe.core.ui.theme.toColor
+import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
+import com.wanbaohe.core.ui.widget.text.OutlineParams
+import com.wanbaohe.core.ui.widget.text.OutlinedText
 import com.wanbaohe.markuplayers.domain.model.LayerType
 import com.wanbaohe.markuplayers.domain.model.buildAnnotatedText
 import com.wanbaohe.markuplayers.domain.model.MarkupLayer

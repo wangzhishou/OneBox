@@ -13,8 +13,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.ui.widget.other.ExpandableItem
-import com.t8rin.imagetoolbox.core.ui.widget.text.TitleItem
+import com.wanbaohe.core.ui.widget.other.ExpandableItem
+import com.wanbaohe.core.ui.widget.text.TitleItem
 
 @Composable
 fun ProfileGroupItem(

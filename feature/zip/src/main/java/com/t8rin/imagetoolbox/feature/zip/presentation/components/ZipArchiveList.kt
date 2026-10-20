@@ -34,8 +34,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedLoadingIndicator
-import com.t8rin.imagetoolbox.core.ui.widget.text.AutoSizeText
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedLoadingIndicator
+import com.wanbaohe.core.ui.widget.text.AutoSizeText
 import com.t8rin.imagetoolbox.feature.zip.domain.ZipProgress
 import kotlin.math.roundToInt
 import com.shifenmiao.theme.AppTheme
@@ -47,11 +47,11 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineInfo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineZip
 import com.t8rin.imagetoolbox.core.resources.R as CoreR
-import com.t8rin.imagetoolbox.core.ui.utils.file.FileTypeIconProvider
-import com.t8rin.imagetoolbox.core.ui.utils.file.FileVisualCategory
-import com.t8rin.imagetoolbox.core.ui.widget.file.FileTypeBadge
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassRegular
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.wanbaohe.core.ui.utils.file.FileTypeIconProvider
+import com.wanbaohe.core.ui.utils.file.FileVisualCategory
+import com.wanbaohe.core.ui.widget.file.FileTypeBadge
+import com.wanbaohe.core.ui.widget.glass.glassRegular
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.t8rin.imagetoolbox.feature.zip.R
 import com.t8rin.imagetoolbox.feature.zip.domain.ZipArchiveEntry
 import com.t8rin.imagetoolbox.feature.zip.presentation.formatZipTimestamp

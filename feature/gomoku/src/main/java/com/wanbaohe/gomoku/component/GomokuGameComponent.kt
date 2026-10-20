@@ -15,8 +15,8 @@ import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.model.ai.AiModel
 import com.shifenmiao.model.ModelProvider.AppJson
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.gomoku.application.dto.GameDetail
 import com.wanbaohe.gomoku.application.dto.GameAiPlayerConfig
 import com.wanbaohe.gomoku.application.dto.GamePreparation

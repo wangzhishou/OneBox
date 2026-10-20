@@ -33,8 +33,8 @@ import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineContrast
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSunny
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWaterDrop
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSlider
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedSlider
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.presentation.components.EditorTargetSelector
 import com.wanbaohe.markuplayers.presentation.components.SheetHeader

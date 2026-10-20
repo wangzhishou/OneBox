@@ -15,8 +15,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCheckbox
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassRadioButton
+import com.wanbaohe.core.ui.widget.glass.GlassCheckbox
+import com.wanbaohe.core.ui.widget.glass.GlassRadioButton
 import com.wanbaohe.a2ui.catalog.A2uiComponentRenderer
 import com.wanbaohe.a2ui.catalog.A2uiRenderContext
 import com.wanbaohe.a2ui.domain.model.A2uiComponent

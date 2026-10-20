@@ -19,11 +19,11 @@ package com.t8rin.imagetoolbox.feature.quick_tiles.tiles
 
 import android.content.Context
 import android.content.Intent
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppActivityClass
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.SHORTCUT_OPEN_ACTION
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.buildIntent
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.putScreenExtra
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.helper.AppActivityClass
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.SHORTCUT_OPEN_ACTION
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.buildIntent
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.putScreenExtra
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.feature.quick_tiles.screenshot.SCREENSHOT_ACTION
 import com.t8rin.imagetoolbox.feature.quick_tiles.screenshot.ScreenshotLauncher
 

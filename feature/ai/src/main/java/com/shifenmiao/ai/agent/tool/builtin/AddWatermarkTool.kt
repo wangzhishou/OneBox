@@ -21,7 +21,7 @@ import com.t8rin.imagetoolbox.core.domain.model.Position
 import com.t8rin.imagetoolbox.core.domain.saving.FileController
 import com.t8rin.imagetoolbox.core.domain.saving.model.ImageSaveTarget
 import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
-import com.t8rin.imagetoolbox.core.ui.utils.helper.SaveSuccessNotifier
+import com.wanbaohe.core.ui.utils.helper.SaveSuccessNotifier
 import com.t8rin.imagetoolbox.feature.watermarking.domain.TextParams
 import com.t8rin.imagetoolbox.feature.watermarking.domain.WatermarkApplier
 import com.t8rin.imagetoolbox.feature.watermarking.domain.WatermarkParams

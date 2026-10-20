@@ -26,8 +26,8 @@ import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter
 import com.shifenmiao.base.utils.ImageUtils
 import com.shifenmiao.model.StrapiImage
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassRegular
-import com.t8rin.imagetoolbox.core.ui.widget.image.ImageGalleryViewer
+import com.wanbaohe.core.ui.widget.glass.glassRegular
+import com.wanbaohe.core.ui.widget.image.ImageGalleryViewer
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineError
 
 /**

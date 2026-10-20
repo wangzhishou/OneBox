@@ -1,6 +1,6 @@
 package com.shifenmiao.ai.agent.callback
 
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.Screen
 
 /**
  * 导航请求密封类

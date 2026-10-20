@@ -10,7 +10,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import com.shifenmiao.base.ui.painter.TextPainter
+import com.wanbaohe.base.ui.painter.TextPainter
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.model.StrapiImage
 import java.io.ByteArrayOutputStream

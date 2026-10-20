@@ -35,7 +35,7 @@ import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageInfo
 import com.t8rin.imagetoolbox.core.domain.model.IntegerSize
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.utils.permission.PermissionUtils.hasPermissionAllowed
+import com.wanbaohe.core.ui.utils.permission.PermissionUtils.hasPermissionAllowed
 import com.t8rin.imagetoolbox.feature.wallpapers_export.domain.WallpapersProvider
 import com.t8rin.imagetoolbox.feature.wallpapers_export.domain.model.Permission
 import com.t8rin.imagetoolbox.feature.wallpapers_export.domain.model.Wallpaper

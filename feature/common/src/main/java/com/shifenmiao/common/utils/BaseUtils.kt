@@ -12,7 +12,7 @@ import com.shifenmiao.model.points.RewardPoints
 import com.shifenmiao.model.points.RewardPointsEvent
 import com.shifenmiao.storage.AppSharedStorage
 import com.shifenmiao.storage.TokenStorage
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.utils.getString
 import kotlin.math.roundToInt
 

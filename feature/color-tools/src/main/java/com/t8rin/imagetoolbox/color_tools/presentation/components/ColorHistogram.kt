@@ -34,9 +34,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.material3.MaterialTheme
 import com.t8rin.histogram.HistogramType
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.widget.controls.selection.ImageSelector
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassRegular
-import com.t8rin.imagetoolbox.core.ui.widget.image.HistogramChart
+import com.wanbaohe.core.ui.widget.controls.selection.ImageSelector
+import com.wanbaohe.core.ui.widget.glass.glassRegular
+import com.wanbaohe.core.ui.widget.image.HistogramChart
 
 @Composable
 internal fun ColorHistogram() {

@@ -40,7 +40,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.shifenmiao.base.ui.shapes.BubbleShape
+import com.wanbaohe.base.ui.shapes.BubbleShape
 import com.t8rin.imagetoolbox.core.resources.icons.ChatPlus
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAgent
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAiChat
@@ -59,7 +59,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LinePrompt
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineScanQrCode
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSchedule
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassDense
+import com.wanbaohe.core.ui.widget.glass.glassDense
 import com.shifenmiao.core.R as CoreR
 import com.t8rin.imagetoolbox.core.resources.R as ToolboxR
 

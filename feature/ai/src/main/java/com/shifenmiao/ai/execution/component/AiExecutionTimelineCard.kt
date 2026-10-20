@@ -58,12 +58,12 @@ import com.shifenmiao.ai.execution.model.DeepLinkItemUiModel
 import com.shifenmiao.ai.execution.model.ExecutionStepStatus
 import com.shifenmiao.ai.execution.model.ExecutionStepUiModel
 import com.shifenmiao.common.handle.LocalUrlNavigator
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCardSegment
-import com.t8rin.imagetoolbox.core.ui.widget.glass.flatGlassCardSegment
+import com.wanbaohe.core.ui.widget.glass.GlassCardSegment
+import com.wanbaohe.core.ui.widget.glass.flatGlassCardSegment
 import com.shifenmiao.core.R
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
-import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.utils.helper.Clipboard
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.resources.icons.CheckCircle
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy

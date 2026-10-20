@@ -37,7 +37,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineEmojiFace
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHealing
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineStickyNote
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWaterDrop
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.period.R
 import com.wanbaohe.period.component.PeriodDetailComponent
 import com.wanbaohe.period.component.PeriodDetailUi

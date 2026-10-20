@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageInfo
 import com.t8rin.imagetoolbox.core.domain.model.IntegerSize
 import com.t8rin.imagetoolbox.core.filters.presentation.model.UiFilter
-import com.t8rin.imagetoolbox.core.ui.widget.controls.ResizeImageField
+import com.wanbaohe.core.ui.widget.controls.ResizeImageField
 import kotlinx.coroutines.delay
 
 @Composable

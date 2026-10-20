@@ -3,7 +3,7 @@ package com.wanbaohe.recordcenter.component
 import com.arkivanov.decompose.ComponentContext
 import com.shifenmiao.database.recordcenter.repo.HealthRecordRepository
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.recordcenter.model.RecordFieldsCodec
 import com.wanbaohe.recordcenter.registry.RecordTypeCatalog
 import com.wanbaohe.recordcenter.registry.RecordTypeDefinition

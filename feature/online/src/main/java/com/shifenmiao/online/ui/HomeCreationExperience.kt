@@ -30,8 +30,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.base.ui.empty.EmptyStateGuide
-import com.shifenmiao.base.ui.empty.EmptyStateGuideAction
+import com.wanbaohe.base.ui.empty.EmptyStateGuide
+import com.wanbaohe.base.ui.empty.EmptyStateGuideAction
 import com.shifenmiao.core.R
 import com.shifenmiao.model.ListItemType
 import com.shifenmiao.model.ai.AIConversationEntryType
@@ -43,8 +43,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineAutoFix
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCodeEditor
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineNote
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePrompt
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassThin
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.widget.glass.glassThin
 
 @Composable
 fun HomeEmptyState(

@@ -26,10 +26,10 @@ import com.shifenmiao.network.downloader.HtmlDownloadConfig
 import com.shifenmiao.network.downloader.HtmlDownloadResult
 import com.shifenmiao.network.downloader.HtmlDownloader
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.ScreenCallback
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.ScreenCallbackResult
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.ScreenCallback
+import com.wanbaohe.core.ui.utils.navigation.ScreenCallbackResult
 import com.t8rin.imagetoolbox.core.utils.appContext
 import com.wanbaohe.code.editor.CodeEditorDataStore
 import dagger.assisted.Assisted

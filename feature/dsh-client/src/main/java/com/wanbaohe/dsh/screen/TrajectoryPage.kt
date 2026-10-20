@@ -46,7 +46,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.widget.glass.MeshGradientBackground
+import com.wanbaohe.core.ui.widget.glass.MeshGradientBackground
 import com.wanbaohe.dsh.R
 import com.wanbaohe.dsh.session.SessionStore
 import com.wanbaohe.dsh.session.TrajectoryExtractor

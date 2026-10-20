@@ -13,8 +13,8 @@ import com.arkivanov.essenty.lifecycle.doOnStop
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.base.audio.NetworkAudioPlayer
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.gomoku.application.audio.GomokuAudioDefaults
 import com.wanbaohe.gomoku.application.dto.GameDetail
 import com.wanbaohe.gomoku.application.dto.GamePreparation

@@ -23,7 +23,7 @@ import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
 import com.t8rin.imagetoolbox.core.filters.domain.model.FilterParam
 import com.t8rin.imagetoolbox.core.filters.domain.model.enums.PopArtBlendingMode
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.utils.helper.toModel
+import com.wanbaohe.core.ui.utils.helper.toModel
 
 class UiPopArtFilter(
     override val value: Triple<Float, ColorModel, PopArtBlendingMode> = Triple(

@@ -24,8 +24,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import com.t8rin.dynamic.theme.ColorTuple
 import com.t8rin.dynamic.theme.LocalDynamicThemeState
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ColorSchemeName
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalComponentActivity
+import com.wanbaohe.core.ui.utils.helper.ColorSchemeName
+import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

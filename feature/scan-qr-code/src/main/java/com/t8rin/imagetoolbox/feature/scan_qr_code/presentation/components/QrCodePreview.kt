@@ -46,19 +46,19 @@ import androidx.compose.ui.unit.min
 import coil3.request.ImageRequest
 import coil3.size.Precision
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.theme.ProvideTypography
-import com.t8rin.imagetoolbox.core.ui.theme.takeColorFromScheme
-import com.t8rin.imagetoolbox.core.ui.theme.takeIf
-import com.t8rin.imagetoolbox.core.ui.utils.capturable.CaptureController
-import com.t8rin.imagetoolbox.core.ui.utils.capturable.capturable
-import com.t8rin.imagetoolbox.core.ui.utils.helper.rememberPrevious
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
-import com.t8rin.imagetoolbox.core.ui.widget.image.ImageNotPickedWidget
-import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
-import com.t8rin.imagetoolbox.core.ui.widget.other.BoxAnimatedVisibility
-import com.t8rin.imagetoolbox.core.ui.widget.other.QrCode
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
+import com.wanbaohe.core.ui.theme.ProvideTypography
+import com.wanbaohe.core.ui.theme.takeColorFromScheme
+import com.wanbaohe.core.ui.theme.takeIf
+import com.wanbaohe.core.ui.utils.capturable.CaptureController
+import com.wanbaohe.core.ui.utils.capturable.capturable
+import com.wanbaohe.core.ui.utils.helper.rememberPrevious
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.widget.image.ImageNotPickedWidget
+import com.wanbaohe.core.ui.widget.image.Picture
+import com.wanbaohe.core.ui.widget.other.BoxAnimatedVisibility
+import com.wanbaohe.core.ui.widget.other.QrCode
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 
 @Composable
 internal fun QrCodePreview(

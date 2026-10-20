@@ -15,8 +15,8 @@ import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.ai.Conversation
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.com.color.ColorGenerator
 import com.wanbaohe.decisionwheel.data.DecisionWheelPresetsProvider
 import com.wanbaohe.decisionwheel.data.WheelRepository
@@ -55,7 +55,7 @@ enum class WheelTab { SPIN, HISTORY, SETTINGS }
 class DecisionWheelRouterComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onGoBack: () -> Unit,
-    @Assisted private val onNavigate: (com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen) -> Unit,
+    @Assisted private val onNavigate: (com.wanbaohe.core.ui.utils.navigation.Screen) -> Unit,
     @Assisted private val initialWheelId: String?,
     private val repository: WheelRepository,
     private val presetsProvider: DecisionWheelPresetsProvider,
@@ -268,7 +268,7 @@ class DecisionWheelRouterComponent @AssistedInject internal constructor(
         operator fun invoke(
             componentContext: ComponentContext,
             onGoBack: () -> Unit,
-            onNavigate: (com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen) -> Unit,
+            onNavigate: (com.wanbaohe.core.ui.utils.navigation.Screen) -> Unit,
             initialWheelId: String?
         ): DecisionWheelRouterComponent
     }

@@ -20,7 +20,7 @@ import com.shifenmiao.model.item.ItemEntityParams
 import com.shifenmiao.model.note.NoteResult
 import com.shifenmiao.model.note.NoteSaveParams
 import com.shifenmiao.model.note.NoteService
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import org.json.JSONObject

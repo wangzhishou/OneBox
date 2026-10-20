@@ -21,9 +21,9 @@ import com.shifenmiao.common.handle.LocalUrlNavigator
 import com.shifenmiao.core.R
 import com.shifenmiao.demo.screenLogic.DemoComponent
 import com.shifenmiao.model.HomeTabKey
-import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
+import com.wanbaohe.core.ui.utils.helper.Clipboard
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 
 private data class DeeplinkExample(
     val label: String,

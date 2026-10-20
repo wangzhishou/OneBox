@@ -20,8 +20,8 @@ package com.t8rin.imagetoolbox.core.crash.presentation.components
 import android.content.Intent
 import android.util.Log
 import com.t8rin.imagetoolbox.core.domain.ISSUE_TRACKER
-import com.t8rin.imagetoolbox.core.ui.utils.helper.DeviceInfo
-import com.t8rin.imagetoolbox.core.ui.utils.helper.encodeEscaped
+import com.wanbaohe.core.ui.utils.helper.DeviceInfo
+import com.wanbaohe.core.ui.utils.helper.encodeEscaped
 
 interface CrashHandler {
 

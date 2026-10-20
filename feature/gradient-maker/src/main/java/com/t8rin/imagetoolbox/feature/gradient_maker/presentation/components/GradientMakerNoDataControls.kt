@@ -33,10 +33,10 @@ import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.ImageOverlay
 import com.t8rin.imagetoolbox.core.resources.icons.MeshDownload
 import com.t8rin.imagetoolbox.core.resources.icons.MeshGradient
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.widget.preferences.PreferenceItemsGrid
-import com.t8rin.imagetoolbox.core.ui.widget.preferences.TypeSelectionCard
+import com.wanbaohe.core.ui.utils.content_pickers.rememberImagePicker
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.widget.preferences.PreferenceItemsGrid
+import com.wanbaohe.core.ui.widget.preferences.TypeSelectionCard
 import com.t8rin.imagetoolbox.feature.gradient_maker.presentation.components.model.GradientMakerType
 import com.t8rin.imagetoolbox.feature.gradient_maker.presentation.screenLogic.GradientMakerComponent
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineImagePreview

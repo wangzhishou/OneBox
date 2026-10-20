@@ -3,8 +3,8 @@ package com.wanbaohe.calendar.router.screenLogic
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.calendar.bazi.screenLogic.BaZiComponent
 import com.wanbaohe.calendar.calendar_view.screenLogic.CalendarViewComponent
 import com.wanbaohe.calendar.auspicious.screenLogic.AuspiciousComponent

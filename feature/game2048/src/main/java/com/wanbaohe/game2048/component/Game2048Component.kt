@@ -3,7 +3,7 @@ package com.wanbaohe.game2048.component
 import android.content.Context
 import com.arkivanov.decompose.ComponentContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.core.ui.review.ReviewPromptHost
 import com.wanbaohe.core.ui.review.ReviewPromptTrigger
 import com.wanbaohe.game2048.data.Game2048Storage

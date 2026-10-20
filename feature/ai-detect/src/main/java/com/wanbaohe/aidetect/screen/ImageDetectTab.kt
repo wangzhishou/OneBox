@@ -34,10 +34,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineImage
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCircularProgressIndicator
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedButton
+import com.wanbaohe.core.ui.utils.content_pickers.rememberImagePicker
+import com.wanbaohe.core.ui.widget.glass.GlassButton
+import com.wanbaohe.core.ui.widget.glass.GlassCircularProgressIndicator
+import com.wanbaohe.core.ui.widget.glass.GlassOutlinedButton
 import com.wanbaohe.aidetect.R
 import com.wanbaohe.aidetect.component.AiDetectComponent
 

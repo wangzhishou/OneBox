@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.base.ui.MarkdownLazyContent
+import com.wanbaohe.base.ui.MarkdownLazyContent
 import com.shifenmiao.common.handle.LocalUrlNavigator
 import com.shifenmiao.core.R
 import com.shifenmiao.model.blog.BlogDetailState

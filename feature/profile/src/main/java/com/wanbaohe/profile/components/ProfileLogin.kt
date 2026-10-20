@@ -16,10 +16,10 @@ import com.shifenmiao.base.utils.StringUtils
 import com.shifenmiao.common.components.Avatar
 import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.core.R
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalLoginState
+import com.wanbaohe.core.ui.utils.provider.LocalLoginState
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
+import com.wanbaohe.core.ui.utils.navigation.Screen
 
 @Composable
 fun ProfileLogin(

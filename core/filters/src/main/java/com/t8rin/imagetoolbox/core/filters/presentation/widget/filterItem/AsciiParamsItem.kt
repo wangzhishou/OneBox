@@ -57,18 +57,18 @@ import com.t8rin.imagetoolbox.core.resources.icons.Save
 import com.t8rin.imagetoolbox.core.settings.presentation.model.asUi
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSimpleSettingsInteractor
-import com.t8rin.imagetoolbox.core.ui.utils.helper.toColor
-import com.t8rin.imagetoolbox.core.ui.utils.helper.toModel
-import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorSelectionRowDefaults
-import com.t8rin.imagetoolbox.core.ui.widget.controls.selection.ColorRowSelector
-import com.t8rin.imagetoolbox.core.ui.widget.controls.selection.FontSelector
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedButtonGroup
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSliderItem
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.flatGlassContainer
-import com.t8rin.imagetoolbox.core.ui.widget.preferences.PreferenceRowSwitch
-import com.t8rin.imagetoolbox.core.ui.widget.text.RoundedTextField
+import com.wanbaohe.core.ui.utils.helper.toColor
+import com.wanbaohe.core.ui.utils.helper.toModel
+import com.wanbaohe.core.ui.widget.color_picker.ColorSelectionRowDefaults
+import com.wanbaohe.core.ui.widget.controls.selection.ColorRowSelector
+import com.wanbaohe.core.ui.widget.controls.selection.FontSelector
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedButtonGroup
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedSliderItem
+import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
+import com.wanbaohe.core.ui.widget.modifier.flatGlassContainer
+import com.wanbaohe.core.ui.widget.preferences.PreferenceRowSwitch
+import com.wanbaohe.core.ui.widget.text.RoundedTextField
 import kotlinx.coroutines.launch
 
 @Composable

@@ -9,10 +9,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextDecoration
 import com.shifenmiao.core.R
 import com.shifenmiao.model.webview.WebViewParams
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCheckbox
-import com.t8rin.imagetoolbox.core.ui.widget.text.HtmlText
+import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.widget.glass.GlassCheckbox
+import com.wanbaohe.core.ui.widget.text.HtmlText
 import com.t8rin.imagetoolbox.core.utils.getString
 
 @Composable

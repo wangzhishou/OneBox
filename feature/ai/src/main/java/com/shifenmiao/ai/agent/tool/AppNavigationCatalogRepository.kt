@@ -7,8 +7,8 @@ import com.shifenmiao.common.handle.navigation.AppNavigationTargetType
 import com.shifenmiao.common.handle.ItemScreenResolver
 import com.shifenmiao.common.handle.navigation.ItemDeeplinkResolver
 import com.shifenmiao.model.ListItemType
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.ScreenCallback
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.ScreenCallback
 import javax.inject.Inject
 import javax.inject.Singleton
 

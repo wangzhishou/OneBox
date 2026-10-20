@@ -22,7 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
+import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -37,8 +37,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.ai.component.AgentComponent
 import com.shifenmiao.base.components.CenterErrorBox
-import com.shifenmiao.base.ui.CenterLoadingBox
-import com.shifenmiao.base.ui.DisableContainer
+import com.wanbaohe.base.ui.CenterLoadingBox
+import com.wanbaohe.base.ui.DisableContainer
 import com.shifenmiao.base.utils.LoginUtils
 import com.shifenmiao.common.handle.LocalUrlNavigator
 import com.shifenmiao.common.logic.AppComponent
@@ -50,10 +50,10 @@ import com.shifenmiao.model.ai.Agent
 import com.shifenmiao.model.state.ChatUIState
 import com.shifenmiao.model.state.PageState
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalLoginState
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.provider.LocalLoginState
 import com.t8rin.imagetoolbox.core.utils.getString
 import com.wanbaohe.a2ui.ui.A2uiDynamicContent
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack

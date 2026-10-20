@@ -9,7 +9,7 @@ import com.shifenmiao.model.colors.EditorColors
  *
  * 包含所有影响 HTML 生成的参数，用于区分不同的缓存
  *
- * 排版默认值必须与 [com.t8rin.imagetoolbox.core.ui.widget.text.EditorUiDefaults.contentTextStyle]
+ * 排版默认值必须与 [com.wanbaohe.core.ui.widget.text.EditorUiDefaults.contentTextStyle]
  * （正文 15sp / 行高 22sp / 字距 0.25sp、字重 400）保持一致。它们只决定 JS 推送真实样式之前的
  * 首帧观感；命中判断不依赖这些字段（见 MarkdownWebViewPoolHelper 的 matchKeyOf）。
  */

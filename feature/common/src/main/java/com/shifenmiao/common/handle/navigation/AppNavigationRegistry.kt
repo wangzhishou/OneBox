@@ -8,8 +8,8 @@ import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.model.DataItem
 import com.shifenmiao.model.HomeTabKey
 import com.shifenmiao.model.webview.WebViewParams
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.ScreenCallback
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.ScreenCallback
 import java.util.Locale
 
 enum class AppNavigationTargetType {

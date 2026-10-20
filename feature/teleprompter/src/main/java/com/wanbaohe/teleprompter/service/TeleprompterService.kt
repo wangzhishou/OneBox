@@ -4,7 +4,7 @@ import com.shifenmiao.database.activity.ActivityLogRecorder
 import com.shifenmiao.database.teleprompter.entity.TeleprompterScriptEntity
 import com.shifenmiao.database.teleprompter.repo.TeleprompterRepository
 import com.shifenmiao.interfaces.singleton.AppContext
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.teleprompter.R
 import com.wanbaohe.teleprompter.util.countScriptWords
 import java.util.UUID

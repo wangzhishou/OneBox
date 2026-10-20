@@ -20,8 +20,8 @@ package com.t8rin.imagetoolbox.feature.scan_qr_code.presentation.components
 import android.net.Uri
 import com.t8rin.imagetoolbox.core.domain.model.QrType
 import com.t8rin.imagetoolbox.core.settings.presentation.model.UiFontFamily
-import com.t8rin.imagetoolbox.core.ui.widget.other.BarcodeType
-import com.t8rin.imagetoolbox.core.ui.widget.other.QrCodeParams
+import com.wanbaohe.core.ui.widget.other.BarcodeType
+import com.wanbaohe.core.ui.widget.other.QrCodeParams
 
 data class QrPreviewParams(
     val imageUri: Uri?,

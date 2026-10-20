@@ -19,7 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.halilibo.richtext.R
-import com.shifenmiao.core.ui.skeleton.shimmerLoading
+import com.wanbaohe.core.ui.skeleton.shimmerLoading
 
 /**
  * a2ui 代码块流式输出时的骨架占位组件。

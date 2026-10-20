@@ -23,8 +23,8 @@ import com.shifenmiao.ai.component.UserMessageHeader
 import com.shifenmiao.ai.component.UserMessageMarkdownBlock
 import com.shifenmiao.ai.component.UserMessageTextContent
 import com.shifenmiao.ai.model.MessageUiModel
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCardSegment
-import com.t8rin.imagetoolbox.core.ui.widget.glass.flatGlassCardSegment
+import com.wanbaohe.core.ui.widget.glass.GlassCardSegment
+import com.wanbaohe.core.ui.widget.glass.flatGlassCardSegment
 import io.noties.markwon.plugins.codeblock.CodeBlockClickListener
 
 /**

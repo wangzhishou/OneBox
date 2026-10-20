@@ -36,10 +36,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import coil3.compose.AsyncImage
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalIconButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.coloredGlass
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.GlassTonalIconButton
+import com.wanbaohe.core.ui.widget.glass.coloredGlass
+import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.camera.watermark.R
 import com.wanbaohe.camera.watermark.domain.LogoType
 import com.wanbaohe.camera.watermark.domain.WatermarkStyle

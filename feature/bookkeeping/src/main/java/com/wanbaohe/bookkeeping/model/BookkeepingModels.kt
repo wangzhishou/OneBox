@@ -1,7 +1,7 @@
 package com.wanbaohe.bookkeeping.model
 
 import com.shifenmiao.model.money.AppCurrency
-import com.t8rin.imagetoolbox.core.ui.widget.charts.BarChartEntry
+import com.wanbaohe.core.ui.widget.charts.BarChartEntry
 import java.time.LocalDate
 import java.time.YearMonth
 

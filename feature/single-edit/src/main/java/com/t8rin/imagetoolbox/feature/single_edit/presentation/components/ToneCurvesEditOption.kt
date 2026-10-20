@@ -49,14 +49,14 @@ import com.t8rin.curves.ImageCurvesEditor
 import com.t8rin.curves.ImageCurvesEditorState
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.ImageReset
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalScreenSize
-import com.t8rin.imagetoolbox.core.ui.widget.buttons.ShowOriginalButton
-import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ResetDialog
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBar
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBarType
-import com.t8rin.imagetoolbox.core.ui.widget.other.TopAppBarEmoji
-import com.t8rin.imagetoolbox.core.ui.widget.text.marquee
+import com.wanbaohe.core.ui.utils.provider.LocalScreenSize
+import com.wanbaohe.core.ui.widget.buttons.ShowOriginalButton
+import com.wanbaohe.core.ui.widget.dialogs.ResetDialog
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBar
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBarType
+import com.wanbaohe.core.ui.widget.other.TopAppBarEmoji
+import com.wanbaohe.core.ui.widget.text.marquee
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 
 @Composable

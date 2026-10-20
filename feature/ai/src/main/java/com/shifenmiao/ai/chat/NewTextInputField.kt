@@ -37,7 +37,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.model.ai.ChatInputState
 import com.shifenmiao.model.ai.Conversation
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.widget.glass.glassBackground
 
 /**
  * 聊天输入框：单行时使用 Row 横排（leading + 文本 + trailing send）；

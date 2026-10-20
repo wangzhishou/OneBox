@@ -24,7 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.domain.utils.roundTo
 import com.t8rin.imagetoolbox.core.filters.presentation.model.UiFilter
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSlider
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedSlider
 
 @Composable
 internal fun FloatItem(

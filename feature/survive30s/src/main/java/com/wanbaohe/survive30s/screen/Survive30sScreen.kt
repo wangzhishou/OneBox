@@ -58,11 +58,11 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import java.util.Locale
 import com.shifenmiao.common.ui.BaseScreen
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassLinearProgressIndicator
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassMedium
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassThin
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.widget.glass.GlassButton
+import com.wanbaohe.core.ui.widget.glass.GlassLinearProgressIndicator
+import com.wanbaohe.core.ui.widget.glass.glassMedium
+import com.wanbaohe.core.ui.widget.glass.glassThin
 import com.wanbaohe.survive30s.R
 import com.wanbaohe.survive30s.component.GameState
 import com.wanbaohe.survive30s.component.Survive30sComponent

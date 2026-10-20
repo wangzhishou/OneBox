@@ -10,7 +10,7 @@ import com.shifenmiao.core.R as CoreR
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.settings.domain.SettingsProvider
 import com.t8rin.imagetoolbox.core.settings.domain.model.NightMode
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.fileviewer.data.ViewerPageListener
 import com.wanbaohe.fileviewer.data.ViewerPreferences
 import com.wanbaohe.fileviewer.data.ViewerRequest

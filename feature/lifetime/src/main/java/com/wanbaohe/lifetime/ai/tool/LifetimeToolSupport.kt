@@ -3,7 +3,7 @@ package com.wanbaohe.lifetime.ai.tool
 import com.shifenmiao.ai.agent.tool.AgentToolResult
 import com.shifenmiao.common.handle.navigation.AppNavigationRegistry
 import com.shifenmiao.common.handle.navigation.AppNavigationTargetType
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import org.json.JSONArray
 import org.json.JSONObject
 

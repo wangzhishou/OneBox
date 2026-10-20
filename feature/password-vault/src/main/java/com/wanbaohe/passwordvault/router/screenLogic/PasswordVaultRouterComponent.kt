@@ -3,8 +3,8 @@ package com.wanbaohe.passwordvault.router.screenLogic
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.passwordvault.detail.screenLogic.PasswordVaultDetailComponent
 import com.wanbaohe.passwordvault.edit.screenLogic.PasswordVaultEditComponent
 import com.wanbaohe.passwordvault.list.screenLogic.PasswordVaultListComponent

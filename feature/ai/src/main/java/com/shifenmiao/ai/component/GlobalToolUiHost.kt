@@ -6,7 +6,7 @@ import com.shifenmiao.ai.agent.tool.FilePickerRequest
 import com.shifenmiao.ai.agent.tool.FolderPickerRequest
 import com.shifenmiao.ai.agent.tool.InteractiveToolRuntime
 import com.shifenmiao.ai.agent.tool.ToolConfirmationRequest
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject

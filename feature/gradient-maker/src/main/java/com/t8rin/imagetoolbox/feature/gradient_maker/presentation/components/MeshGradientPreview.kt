@@ -31,9 +31,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.zIndex
 import com.smarttoolfactory.colordetector.util.ColorUtil.roundToTwoDigits
 import com.t8rin.imagetoolbox.core.domain.model.IntegerSize
-import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.meshGradient
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.transparencyChecker
+import com.wanbaohe.core.ui.widget.image.Picture
+import com.wanbaohe.core.ui.widget.modifier.meshGradient
+import com.wanbaohe.core.ui.widget.modifier.transparencyChecker
 
 @Composable
 internal fun MeshGradientPreview(

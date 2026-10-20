@@ -16,9 +16,9 @@ import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.model.ListItemType
 import com.shifenmiao.model.image.ImageViewerInfo
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.helper.Clipboard
 import io.noties.markwon.plugins.codeblock.CodeBlockClickListener
 import kotlinx.coroutines.launch
 import java.io.File

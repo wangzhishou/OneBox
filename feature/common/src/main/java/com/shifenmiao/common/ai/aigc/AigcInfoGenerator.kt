@@ -11,7 +11,7 @@ import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.model.ai.AiModel
 import com.shifenmiao.storage.RemoteConfigStorage
 import com.shifenmiao.storage.TokenStorage
-import com.t8rin.imagetoolbox.core.ui.utils.helper.DeviceInfo
+import com.wanbaohe.core.ui.utils.helper.DeviceInfo
 import java.security.MessageDigest
 import java.util.UUID
 

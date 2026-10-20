@@ -36,11 +36,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
-import com.shifenmiao.base.ui.tab.TabPosition
-import com.shifenmiao.base.ui.tab.ScrollableTabRow
+import com.wanbaohe.base.ui.tab.TabPosition
+import com.wanbaohe.base.ui.tab.ScrollableTabRow
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassDense
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassThin
+import com.wanbaohe.core.ui.widget.glass.glassDense
+import com.wanbaohe.core.ui.widget.glass.glassThin
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue

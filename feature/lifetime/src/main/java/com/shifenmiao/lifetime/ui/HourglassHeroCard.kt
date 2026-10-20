@@ -47,8 +47,8 @@ import androidx.compose.ui.unit.sp
 import com.shifenmiao.lifetime.R
 import com.shifenmiao.lifetime.domain.LifeTimeData
 import com.shifenmiao.lifetime.domain.RemainingLifeData
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
+import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.cos

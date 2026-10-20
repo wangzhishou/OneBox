@@ -44,7 +44,7 @@ import com.t8rin.curves.ImageCurvesEditorState
 import com.t8rin.imagetoolbox.core.filters.domain.model.params.ToneCurvesParams
 import com.t8rin.imagetoolbox.core.filters.presentation.model.UiFilter
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.utils.helper.LocalFilterPreviewModelProvider
+import com.wanbaohe.core.ui.utils.helper.LocalFilterPreviewModelProvider
 
 @Composable
 internal fun ToneCurvesParamsItem(

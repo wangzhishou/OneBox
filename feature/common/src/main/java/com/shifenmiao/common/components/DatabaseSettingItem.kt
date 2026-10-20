@@ -23,7 +23,7 @@ import com.shifenmiao.core.R
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCloudUpload
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCloudDownload
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassMedium
+import com.wanbaohe.core.ui.widget.glass.glassMedium
 
 /**
  * 简单的两列「备份 / 恢复」按钮行，不包含任何业务逻辑。

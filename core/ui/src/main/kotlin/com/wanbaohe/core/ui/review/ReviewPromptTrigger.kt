@@ -9,7 +9,7 @@ package com.wanbaohe.core.ui.review
  */
 enum class ReviewPromptTrigger {
 
-    /** 文件保存成功(com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost.showFileSuccessToast) */
+    /** 文件保存成功(com.wanbaohe.core.ui.utils.helper.AppToastHost.showFileSuccessToast) */
     SAVE_SUCCESS,
 
     /** 压缩包制作 / 解压成功(AppToastHost.showFileSuccessToast 由压缩包页面传入) */

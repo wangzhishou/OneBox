@@ -36,7 +36,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSpeedTest
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWifi
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassThin
+import com.wanbaohe.core.ui.widget.glass.glassThin
 import com.wanbaohe.speedtest.R
 import com.wanbaohe.speedtest.component.SpeedTestStatus
 import com.wanbaohe.speedtest.component.SpeedTestUiState

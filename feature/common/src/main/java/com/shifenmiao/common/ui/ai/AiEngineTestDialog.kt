@@ -41,7 +41,7 @@ import com.shifenmiao.network.AiRequestUrlResolver
 import com.shifenmiao.network.AiRequestUrlResolver.normalizeBaseUrl
 import com.shifenmiao.network.NetworkBuilder
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType

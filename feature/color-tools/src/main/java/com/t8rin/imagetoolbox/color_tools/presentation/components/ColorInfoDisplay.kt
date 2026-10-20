@@ -54,8 +54,8 @@ import com.smarttoolfactory.colordetector.util.HexUtil
 import com.smarttoolfactory.colorpicker.util.HexVisualTransformation
 import com.smarttoolfactory.colorpicker.util.hexRegexSingleChar
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTextFieldContainer
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
+import com.wanbaohe.core.ui.widget.glass.GlassTextFieldContainer
 import kotlin.math.roundToInt
 import android.graphics.Color as AndroidColor
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy

@@ -27,9 +27,9 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.core.R as CoreR
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWaterDrop
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
-import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassCardColors
+import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors
 import com.wanbaohe.core.weather.domain.model.AirQuality
 import com.wanbaohe.core.weather.domain.model.DailyOutlook
 import com.wanbaohe.core.weather.domain.model.LifeIndex

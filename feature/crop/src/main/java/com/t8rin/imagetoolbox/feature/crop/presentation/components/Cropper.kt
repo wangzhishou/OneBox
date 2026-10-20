@@ -63,8 +63,8 @@ import com.smarttoolfactory.cropper.settings.CropDefaults
 import com.smarttoolfactory.cropper.settings.CropProperties
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.transparencyChecker
-import com.t8rin.imagetoolbox.core.ui.widget.other.BoxAnimatedVisibility
+import com.wanbaohe.core.ui.widget.modifier.transparencyChecker
+import com.wanbaohe.core.ui.widget.other.BoxAnimatedVisibility
 import com.t8rin.opencv_tools.free_corners_crop.compose.FreeCornersCropper
 import com.yalantis.ucrop.compose.UCropper
 import kotlinx.coroutines.launch

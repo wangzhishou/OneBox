@@ -57,14 +57,14 @@ import com.wanbaohe.xiangqi.ui.XiangqiOpponentPicker
 import com.shifenmiao.common.utils.BaseUtils
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageInfo
-import com.t8rin.imagetoolbox.core.ui.utils.capturable.capturable
-import com.t8rin.imagetoolbox.core.ui.utils.capturable.rememberCaptureController
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalImageShareProvider
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalLoginState
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
+import com.wanbaohe.core.ui.utils.capturable.capturable
+import com.wanbaohe.core.ui.utils.capturable.rememberCaptureController
+import com.wanbaohe.core.ui.utils.provider.LocalImageShareProvider
+import com.wanbaohe.core.ui.utils.provider.LocalLoginState
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
+import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.xiangqi.BuildConfig
 import com.wanbaohe.xiangqi.R
 import com.wanbaohe.xiangqi.application.port.outbound.MoveDecision
@@ -102,7 +102,7 @@ import com.wanbaohe.boardgame.ui.PlayersBar as BoardGamePlayersBar
 import com.wanbaohe.boardgame.ui.BoardGameToolButton
 import com.wanbaohe.boardgame.R as BoardGameR
 import kotlinx.coroutines.delay
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.wanbaohe.boardgame.ui.accentTextButtonColors
 import com.wanbaohe.boardgame.ui.dangerTextButtonColors
 
@@ -327,7 +327,7 @@ fun XiangqiGameScreen(
 private fun XiangqiGameContent(
     component: XiangqiGameComponent,
     modifier: Modifier,
-    captureController: com.t8rin.imagetoolbox.core.ui.utils.capturable.CaptureController,
+    captureController: com.wanbaohe.core.ui.utils.capturable.CaptureController,
     onExport: () -> Unit,
     onPickAiFor: (Side) -> Unit,
     onShowOrigin: () -> Unit,

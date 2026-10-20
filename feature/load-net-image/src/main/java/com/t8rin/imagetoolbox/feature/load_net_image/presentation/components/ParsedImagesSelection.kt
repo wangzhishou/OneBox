@@ -27,7 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.ui.widget.image.ImagesPreviewWithSelection
+import com.wanbaohe.core.ui.widget.image.ImagesPreviewWithSelection
 import com.t8rin.imagetoolbox.feature.load_net_image.presentation.screenLogic.LoadNetImageComponent
 
 @Composable

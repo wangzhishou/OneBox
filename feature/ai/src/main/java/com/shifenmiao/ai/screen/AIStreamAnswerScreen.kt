@@ -56,8 +56,8 @@ import com.halilibo.richtext.ui.material3.RichText
 import com.shifenmiao.ai.component.AIStreamAnswerComponent
 import com.shifenmiao.ai.component.AIStreamAnswerStatus
 import com.shifenmiao.ai.model.BlockReuseCache
-import com.shifenmiao.base.ui.AILoadingRow
-import com.shifenmiao.base.ui.ExpandableMarkdownContent
+import com.wanbaohe.base.ui.AILoadingRow
+import com.wanbaohe.base.ui.ExpandableMarkdownContent
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
@@ -70,8 +70,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.widget.glass.GlassSurface
 
 @Composable
 fun AIStreamAnswerScreen(

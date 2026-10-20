@@ -18,8 +18,8 @@ import com.t8rin.imagetoolbox.core.domain.image.set
 import com.t8rin.imagetoolbox.core.domain.saving.FileController
 import com.t8rin.imagetoolbox.core.domain.saving.model.ImageSaveTarget
 import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
-import com.t8rin.imagetoolbox.core.ui.utils.ImageBaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.state.update
+import com.wanbaohe.core.ui.utils.ImageBaseComponent
+import com.wanbaohe.core.ui.utils.state.update
 import com.t8rin.logger.makeLog
 import com.wanbaohe.camera.watermark.data.ExifMetadataParser
 import com.wanbaohe.camera.watermark.data.WatermarkRenderer

@@ -19,7 +19,7 @@ import com.shifenmiao.storage.TokenStorage
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.saving.FileController
 import com.t8rin.imagetoolbox.core.settings.domain.SettingsManager
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.BaseComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -462,7 +462,7 @@ class CommentsComponent @AssistedInject internal constructor(
     // ──────────────── Helpers ────────────────
 
     private fun showToast(msg: String) {
-        com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost.showToast(msg)
+        com.wanbaohe.core.ui.utils.helper.AppToastHost.showToast(msg)
     }
 
     private fun loadFailedFormat(code: Int): String =

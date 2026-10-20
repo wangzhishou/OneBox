@@ -3,8 +3,8 @@ package com.wanbaohe.xiangqi.screen
 import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.storage.RemoteConfigStorage
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -50,7 +50,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LinePsychology
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineScience
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUploadFile
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistoryEdu
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.wanbaohe.boardgame.ui.accentTextButtonColors
 
 @Composable

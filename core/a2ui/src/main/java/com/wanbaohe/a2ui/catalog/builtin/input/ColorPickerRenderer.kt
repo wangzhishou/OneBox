@@ -11,8 +11,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorSelectionRow
-import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorSelectionRowDefaults
+import com.wanbaohe.core.ui.widget.color_picker.ColorSelectionRow
+import com.wanbaohe.core.ui.widget.color_picker.ColorSelectionRowDefaults
 import com.wanbaohe.a2ui.catalog.A2uiComponentRenderer
 import com.wanbaohe.a2ui.catalog.A2uiRenderContext
 import com.wanbaohe.a2ui.domain.model.A2uiComponent

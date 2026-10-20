@@ -11,10 +11,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.shifenmiao.core.R
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.feature.root.presentation.screenLogic.RootComponent
 import kotlin.time.Duration.Companion.milliseconds
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineExitToApp

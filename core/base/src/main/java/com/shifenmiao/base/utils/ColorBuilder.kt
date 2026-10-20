@@ -11,7 +11,7 @@ import com.t8rin.dynamic.theme.ColorTuple
 import com.t8rin.dynamic.theme.calculateSecondaryColor
 import com.t8rin.dynamic.theme.calculateSurfaceColor
 import com.t8rin.dynamic.theme.calculateTertiaryColor
-import com.t8rin.imagetoolbox.core.ui.theme.toColor
+import com.wanbaohe.core.ui.theme.toColor
 
 object ColorBuilder {
 

@@ -68,37 +68,37 @@ import com.wanbaohe.dynamicui.state.UiStateScope
 import com.wanbaohe.dynamicui.state.ValueExprResolver
 import com.wanbaohe.dynamicui.state.rememberResolvedBool
 import com.wanbaohe.dynamicui.state.rememberResolvedString
-import com.shifenmiao.base.ui.icon.IconRegistry
-import com.shifenmiao.base.ui.icon.IconAvatar
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassAssistChip
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassBadge
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassBadgedBox
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCheckbox
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCircularProgressIndicator
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilledIconButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilterChip
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassIconButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassLinearProgressIndicator
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedIconButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassRadioButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStepper
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSuggestionChip
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTextButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTextFieldVisualPreset
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalIconButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTopAppBar
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCustomSlider
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCustomRangeSlider
-import com.t8rin.imagetoolbox.core.ui.widget.glass.SingleChoiceGlassSegmentedButtonRow
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.base.ui.icon.IconRegistry
+import com.wanbaohe.base.ui.icon.IconAvatar
+import com.wanbaohe.core.ui.widget.glass.GlassAssistChip
+import com.wanbaohe.core.ui.widget.glass.GlassBadge
+import com.wanbaohe.core.ui.widget.glass.GlassBadgedBox
+import com.wanbaohe.core.ui.widget.glass.GlassButton
+import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassCheckbox
+import com.wanbaohe.core.ui.widget.glass.GlassCircularProgressIndicator
+import com.wanbaohe.core.ui.widget.glass.GlassFilledIconButton
+import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
+import com.wanbaohe.core.ui.widget.glass.GlassIconButton
+import com.wanbaohe.core.ui.widget.glass.GlassLinearProgressIndicator
+import com.wanbaohe.core.ui.widget.glass.GlassOutlinedIconButton
+import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
+import com.wanbaohe.core.ui.widget.glass.GlassOutlinedButton
+import com.wanbaohe.core.ui.widget.glass.GlassRadioButton
+import com.wanbaohe.core.ui.widget.glass.GlassStepper
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.GlassSuggestionChip
+import com.wanbaohe.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.widget.glass.GlassSwitch
+import com.wanbaohe.core.ui.widget.glass.GlassTextButton
+import com.wanbaohe.core.ui.widget.glass.GlassTextFieldVisualPreset
+import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
+import com.wanbaohe.core.ui.widget.glass.GlassTonalIconButton
+import com.wanbaohe.core.ui.widget.glass.GlassTopAppBar
+import com.wanbaohe.core.ui.widget.glass.GlassCustomSlider
+import com.wanbaohe.core.ui.widget.glass.GlassCustomRangeSlider
+import com.wanbaohe.core.ui.widget.glass.SingleChoiceGlassSegmentedButtonRow
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.foundation.layout.PaddingValues
@@ -435,7 +435,7 @@ private fun CheckboxRenderer(node: UiNode, scope: UiStateScope, ctx: RenderConte
 // ─── Slider ──────────────────────────────────────────────────────────────────
 
 /**
- * 渲染 [com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCustomSlider],
+ * 渲染 [com.wanbaohe.core.ui.widget.glass.GlassCustomSlider],
  * 参数与 M3 [Slider] 一致:
  *
  * - `value: Float` (state 表达式或字面量)
@@ -485,7 +485,7 @@ private fun SliderRenderer(node: UiNode, scope: UiStateScope, ctx: RenderContext
 // ─── RangeSlider ─────────────────────────────────────────────────────────────
 
 /**
- * 渲染 [com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCustomRangeSlider],
+ * 渲染 [com.wanbaohe.core.ui.widget.glass.GlassCustomRangeSlider],
  * 参数与 M3 `RangeSlider` 一致。
  *
  * JSON:

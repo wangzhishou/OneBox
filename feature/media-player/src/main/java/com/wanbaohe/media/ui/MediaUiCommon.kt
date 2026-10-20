@@ -32,8 +32,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassIconButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.GlassIconButton
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.media.R
 import com.wanbaohe.media.component.MediaPlayerUiState
 import com.wanbaohe.media.domain.MediaEntry

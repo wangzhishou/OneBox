@@ -29,8 +29,8 @@ import com.wanbaohe.visual.automation.service.CurrentActivityProvider
 import dagger.hilt.android.AndroidEntryPoint
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.domain.performance.StartupTrace
-import com.t8rin.imagetoolbox.core.ui.utils.ComposeActivity
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils
+import com.wanbaohe.core.ui.utils.ComposeActivity
+import com.wanbaohe.core.ui.utils.helper.ContextUtils
 import com.t8rin.imagetoolbox.feature.root.presentation.screenLogic.RootComponent
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope

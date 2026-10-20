@@ -22,7 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.shifenmiao.base.ui.MarkdownContent
+import com.wanbaohe.base.ui.MarkdownContent
 import com.shifenmiao.base.utils.DateUtils
 import com.shifenmiao.common.components.Avatar
 import com.shifenmiao.common.components.SelectableContentWrapper
@@ -31,7 +31,7 @@ import com.shifenmiao.core.R
 import com.shifenmiao.model.blog.BlogItem
 import com.shifenmiao.model.blog.Tag
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineStar
 
 @Composable

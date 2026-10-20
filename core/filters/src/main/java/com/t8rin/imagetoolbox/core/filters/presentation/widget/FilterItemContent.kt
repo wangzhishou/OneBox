@@ -76,7 +76,7 @@ import com.t8rin.imagetoolbox.core.filters.presentation.widget.filterItem.ToneCu
 import com.t8rin.imagetoolbox.core.filters.presentation.widget.filterItem.TripleItem
 import com.t8rin.imagetoolbox.core.filters.presentation.widget.filterItem.VoronoiCrystallizeParamsItem
 import com.t8rin.imagetoolbox.core.filters.presentation.widget.filterItem.WaterParamsItem
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedButtonGroup
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedButtonGroup
 
 @Composable
 internal fun <T : Any> FilterItemContent(

@@ -13,9 +13,9 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.shifenmiao.core.R
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTopAppBar
-import com.t8rin.imagetoolbox.core.ui.widget.glass.MeshGradientBackground
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
+import com.wanbaohe.core.ui.widget.glass.GlassTopAppBar
+import com.wanbaohe.core.ui.widget.glass.MeshGradientBackground
 import com.wanbaohe.a2ui.ui.A2uiSurfaceView
 import com.wanbaohe.a2ui.viewModel.A2uiComponent
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack

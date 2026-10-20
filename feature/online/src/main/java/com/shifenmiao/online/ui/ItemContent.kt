@@ -32,10 +32,10 @@ import com.shifenmiao.online.component.CreateNoteComponent
 import com.shifenmiao.online.component.EditPromptComponent
 import com.shifenmiao.online.component.EditPromptUiState
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilterChip
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxOutlinedTextField
+import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
+import com.wanbaohe.core.ui.widget.system.OneBoxOutlinedTextField
 import kotlinx.coroutines.flow.StateFlow
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSettings
 import com.t8rin.imagetoolbox.core.resources.icons.Check

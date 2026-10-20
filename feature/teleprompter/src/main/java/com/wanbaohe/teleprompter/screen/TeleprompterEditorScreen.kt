@@ -35,9 +35,9 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.widget.dialogs.ExitWithoutSavingDialog
+import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.utils.getString
 import com.wanbaohe.teleprompter.R
 import com.wanbaohe.teleprompter.component.TeleprompterComponent

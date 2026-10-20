@@ -12,7 +12,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import com.shifenmiao.model.event.AppEventBus
 import com.shifenmiao.database.data_draft.DataDraftHelper
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.markdown.edit.EditorDataStore
 import com.shifenmiao.model.event.EditorResultEvent
 import dagger.assisted.Assisted

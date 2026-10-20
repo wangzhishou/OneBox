@@ -36,8 +36,8 @@ import com.shifenmiao.model.ai.AiRequestProtocol
 import com.shifenmiao.model.channel.FlavorType
 import com.shifenmiao.model.tts.TTSConfig
 import com.shifenmiao.tts.service.TTSService
-import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavItem
-import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavigationBar
+import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
+import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.setting.ai.component.AIEngineSettingsComponent
 import com.wanbaohe.setting.image.screen.ImageGenerationSettingsContent
 import com.wanbaohe.setting.local.component.LocalModelManagementComponent

@@ -64,8 +64,8 @@ import com.mikepenz.aboutlibraries.ui.compose.LibraryTextStyles
 import com.mikepenz.aboutlibraries.ui.compose.m3.component.LibraryChip
 import com.mikepenz.aboutlibraries.ui.compose.m3.libraryColors
 import com.mikepenz.aboutlibraries.ui.compose.util.author
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassMedium
-import com.t8rin.imagetoolbox.core.ui.widget.text.marquee
+import com.wanbaohe.core.ui.widget.glass.glassMedium
+import com.wanbaohe.core.ui.widget.text.marquee
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList

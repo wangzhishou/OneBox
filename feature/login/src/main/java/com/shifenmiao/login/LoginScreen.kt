@@ -20,7 +20,7 @@ import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
 import com.shifenmiao.model.login.LoginStyle
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalLoginState
+import com.wanbaohe.core.ui.utils.provider.LocalLoginState
 import com.shifenmiao.login.ui.LoginAgreementDialog
 import com.shifenmiao.login.ui.LoginBody
 import com.shifenmiao.login.ui.LoginOther
@@ -94,7 +94,7 @@ fun LoginScreen(
                         // 先退出登录页再进服务与模型, 返回时直达原页面
                         onGoBack()
                         appComponent.onNavigate(
-                            com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.AISettings()
+                            com.wanbaohe.core.ui.utils.navigation.Screen.AISettings()
                         )
                     }
                 )

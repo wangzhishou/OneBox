@@ -48,7 +48,7 @@ import com.airbnb.lottie.compose.rememberLottieDynamicProperty
 import com.shifenmiao.ai.voice.AsrState
 import com.shifenmiao.ai.voice.VoiceRecognizer
 import com.shifenmiao.core.R
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
 
 /**
  * 语音输入录音面板(讯飞大模型识别)。

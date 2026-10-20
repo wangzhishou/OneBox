@@ -38,10 +38,10 @@ import com.shifenmiao.core.constants.UrlConstants
 import com.shifenmiao.model.webview.WebViewParams
 import com.shifenmiao.model.webview.WebViewType
 import com.shifenmiao.webview.common.CommonWebView
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalComponentActivity
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.widget.dialogs.LoadingDialog
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.widget.dialogs.LoadingDialog
 import io.noties.markwon.utils.MarkdownStringUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -53,7 +53,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePrint
 import androidx.compose.foundation.layout.Box
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 @Composable
 fun MarkdownRenderWebViewScreen(

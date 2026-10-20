@@ -12,7 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.shifenmiao.base.ui.button.SecondarySmallButton
+import com.wanbaohe.base.ui.button.SecondarySmallButton
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.base.utils.StringUtils
 import com.shifenmiao.common.logic.AppComponent
@@ -21,8 +21,8 @@ import com.shifenmiao.login.viewModel.LoginComponent
 import com.shifenmiao.model.pay.PayState
 import com.shifenmiao.model.state.UIState
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.utils.appContext
 import com.wanbaohe.profile.components.NeedCoffeeTextInfo
 import com.wanbaohe.profile.components.ShowInvitationCodeDialog
@@ -70,13 +70,13 @@ fun BuyCoffeeDialogModalSheet(
             payComponent = payComponent,
             onNavigateToAdWatch = {
                 appComponent.hideBuyCoffeeDialogModalSheet()
-                appComponent.onNavigate(com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.AdWatch)
+                appComponent.onNavigate(com.wanbaohe.core.ui.utils.navigation.Screen.AdWatch)
             },
             onNavigateToAddEngine = {
                 appComponent.hideBuyCoffeeDialogModalSheet()
                 appComponent.onNavigate(
-                    com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.AISettings(
-                        com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.AISettings.Type.AddEngine()
+                    com.wanbaohe.core.ui.utils.navigation.Screen.AISettings(
+                        com.wanbaohe.core.ui.utils.navigation.Screen.AISettings.Type.AddEngine()
                     )
                 )
             }

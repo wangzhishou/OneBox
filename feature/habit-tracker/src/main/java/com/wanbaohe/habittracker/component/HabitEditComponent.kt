@@ -3,7 +3,7 @@ package com.wanbaohe.habittracker.component
 import com.arkivanov.decompose.ComponentContext
 import com.shifenmiao.database.habit.repo.HabitRepository
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.habittracker.model.HabitEditUiState
 import com.wanbaohe.habittracker.service.HabitService
 import dagger.assisted.Assisted

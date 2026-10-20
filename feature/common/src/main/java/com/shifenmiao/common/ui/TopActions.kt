@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import com.shifenmiao.common.components.QuickOperations
 import com.shifenmiao.common.logic.AppComponent
-import com.t8rin.imagetoolbox.core.ui.utils.helper.isShellPortraitOrientationAsState
+import com.wanbaohe.core.ui.utils.helper.isShellPortraitOrientationAsState
 
 @Composable
 fun TopActions(

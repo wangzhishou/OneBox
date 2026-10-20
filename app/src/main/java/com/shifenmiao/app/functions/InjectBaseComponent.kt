@@ -18,6 +18,6 @@
 package com.shifenmiao.app.functions
 
 import com.shifenmiao.app.AppApplication
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.BaseComponent
 
 internal fun AppApplication.injectBaseComponent() = BaseComponent.inject(keepAliveService)

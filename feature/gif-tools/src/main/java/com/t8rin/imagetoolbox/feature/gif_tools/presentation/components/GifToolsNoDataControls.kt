@@ -18,9 +18,9 @@
 package com.t8rin.imagetoolbox.feature.gif_tools.presentation.components
 
 import androidx.compose.runtime.Composable
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.widget.preferences.TypeSelectionGrid
-import com.t8rin.imagetoolbox.core.ui.widget.preferences.TypeSelectionItem
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.widget.preferences.TypeSelectionGrid
+import com.wanbaohe.core.ui.widget.preferences.TypeSelectionItem
 
 @Composable
 internal fun GifToolsNoDataControls(

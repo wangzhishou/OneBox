@@ -22,7 +22,7 @@ import com.arkivanov.decompose.retainedComponent
 import com.t8rin.imagetoolbox.core.crash.presentation.components.CrashHandler
 import com.t8rin.imagetoolbox.core.crash.presentation.components.CrashRootContent
 import com.t8rin.imagetoolbox.core.crash.presentation.screenLogic.CrashComponent
-import com.t8rin.imagetoolbox.core.ui.utils.ComposeActivity
+import com.wanbaohe.core.ui.utils.ComposeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

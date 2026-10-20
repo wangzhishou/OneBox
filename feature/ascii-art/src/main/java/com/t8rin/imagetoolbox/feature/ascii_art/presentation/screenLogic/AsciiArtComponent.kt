@@ -32,9 +32,9 @@ import com.t8rin.imagetoolbox.core.filters.presentation.model.UiAsciiFilter
 import com.t8rin.imagetoolbox.core.filters.presentation.model.UiNegativeFilter
 import com.t8rin.imagetoolbox.core.settings.domain.SettingsProvider
 import com.t8rin.imagetoolbox.core.settings.presentation.model.asFontType
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.helper.toCoil
-import com.t8rin.imagetoolbox.core.ui.utils.state.update
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.helper.toCoil
+import com.wanbaohe.core.ui.utils.state.update
 import com.t8rin.imagetoolbox.feature.ascii_art.domain.AsciiConverter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory

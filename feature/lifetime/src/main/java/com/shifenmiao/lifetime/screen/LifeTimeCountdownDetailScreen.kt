@@ -25,7 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.base.ui.icon.IconAvatar
+import com.wanbaohe.base.ui.icon.IconAvatar
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.lifetime.R
 import com.shifenmiao.lifetime.component.LifeTimeCountdownDetailComponent
@@ -34,9 +34,9 @@ import com.shifenmiao.lifetime.domain.model.CountdownStatus
 import com.shifenmiao.lifetime.ui.NoteSection
 import com.shifenmiao.lifetime.util.countdownStatusLabel
 import com.shifenmiao.lifetime.util.localizedPresetEventName
-import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
+import com.wanbaohe.core.ui.widget.dialogs.ExitWithoutSavingDialog
+import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 
 @Composable

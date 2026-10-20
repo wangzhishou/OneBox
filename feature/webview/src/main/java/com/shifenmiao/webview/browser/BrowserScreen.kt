@@ -45,15 +45,15 @@ import com.shifenmiao.webview.common.WebViewPool
 import com.shifenmiao.webview.common.WebViewSettings
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
 import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFileCreator
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.utils.helper.SaveSuccessNotifier
+import com.wanbaohe.core.ui.utils.content_pickers.rememberFileCreator
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.helper.SaveSuccessNotifier
 import com.shifenmiao.common.ui.LoadingOverlay
 import kotlinx.coroutines.delay
 
 /**
  * 导航进入动画里最长的一段是 scale 500ms
- * （[com.t8rin.imagetoolbox.core.ui.utils.animation.toolboxPredictiveBackAnimation] 的 defaultAnimator）。
+ * （[com.wanbaohe.core.ui.utils.animation.toolboxPredictiveBackAnimation] 的 defaultAnimator）。
  * 这段时间里如果已经把 WebView 挂上，它的合成层不跟着 Compose 的位移/缩放走，
  * 会在最终位置先画出一块白，把顶栏盖住，动画落稳后顶栏才补出来，看起来像卡住又闪一下。
  */

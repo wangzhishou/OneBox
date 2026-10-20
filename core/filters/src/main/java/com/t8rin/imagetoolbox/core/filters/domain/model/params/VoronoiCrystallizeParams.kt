@@ -19,7 +19,7 @@ package com.t8rin.imagetoolbox.core.filters.domain.model.params
 
 import androidx.compose.ui.graphics.Color
 import com.t8rin.imagetoolbox.core.domain.model.ColorModel
-import com.t8rin.imagetoolbox.core.ui.utils.helper.toModel
+import com.wanbaohe.core.ui.utils.helper.toModel
 
 data class VoronoiCrystallizeParams(
     val borderThickness: Float,

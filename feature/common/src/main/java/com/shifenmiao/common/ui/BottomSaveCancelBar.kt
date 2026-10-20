@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.shifenmiao.core.R
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxBottomActionBar
+import com.wanbaohe.core.ui.widget.system.OneBoxBottomActionBar
 
 @Composable
 fun BottomSaveCancelBar(

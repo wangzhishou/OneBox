@@ -20,8 +20,8 @@ import androidx.core.net.toUri
 import com.shifenmiao.base.entrypoint.ChannelConfigEntryPoint
 import com.shifenmiao.base.manager.DataBaseManager
 import com.shifenmiao.base.manager.StorageManager
-import com.shifenmiao.base.ui.ConfirmDialog
-import com.shifenmiao.base.ui.getDefaultShareText
+import com.wanbaohe.base.ui.ConfirmDialog
+import com.wanbaohe.base.ui.getDefaultShareText
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.WeChatConfirmDialog
@@ -33,11 +33,11 @@ import com.shifenmiao.network.update.OpenSourceReleaseEntryPoint
 import com.shifenmiao.theme.AppTheme
 import com.shifenmiao.webview.di.WebViewEntryPoint
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
-import com.t8rin.imagetoolbox.core.ui.widget.other.ToastDuration
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
+import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.widget.glass.GlassSwitch
+import com.wanbaohe.core.ui.widget.other.ToastDuration
 import com.t8rin.imagetoolbox.core.utils.appContext
 import com.t8rin.imagetoolbox.feature.settings.presentation.screenLogic.SettingsComponent
 import com.wanbaohe.profile.model.ProfileSetting

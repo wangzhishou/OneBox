@@ -49,15 +49,15 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LinePause
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTimer
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassThick
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassThin
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
+import com.wanbaohe.core.ui.widget.glass.glassThick
+import com.wanbaohe.core.ui.widget.glass.glassThin
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.sudoku.R
 import com.wanbaohe.sudoku.component.SudokuComponent
 import com.wanbaohe.sudoku.component.SudokuUiState
 import com.wanbaohe.sudoku.data.SudokuTimerMode
 import com.wanbaohe.sudoku.logic.SudokuEngine
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.filled.MoreVert
 

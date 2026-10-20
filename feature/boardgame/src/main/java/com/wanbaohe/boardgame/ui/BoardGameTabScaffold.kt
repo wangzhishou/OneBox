@@ -12,8 +12,8 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.ImmersiveBottomContent
 import com.shifenmiao.common.ui.ImmersiveModeState
 import com.shifenmiao.common.ui.rememberImmersiveModeState
-import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavItem
-import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavigationBar
+import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
+import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.boardgame.model.BoardGameTab
 
 /**

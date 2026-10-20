@@ -19,7 +19,7 @@ import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.model.item.ItemEntityParams
 import com.shifenmiao.model.webview.WebViewParams
 import com.shifenmiao.model.wechat.Wechat
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.Screen
 
 enum class ItemScreenAction {
     OPEN,

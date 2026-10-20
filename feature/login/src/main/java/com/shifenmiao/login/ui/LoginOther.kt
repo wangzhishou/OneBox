@@ -33,8 +33,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.channel.ChannelConfig
 import com.shifenmiao.base.entrypoint.ChannelConfigEntryPoint
-import com.shifenmiao.base.ui.button.PrimaryButton
-import com.shifenmiao.base.ui.button.SecondaryButton
+import com.wanbaohe.base.ui.button.PrimaryButton
+import com.wanbaohe.base.ui.button.SecondaryButton
 import com.shifenmiao.base.utils.CoreUtils
 import com.shifenmiao.base.utils.LoginUtils
 import com.shifenmiao.core.R
@@ -44,11 +44,11 @@ import com.shifenmiao.login.viewModel.LoginComponent
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineKey
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxLeadingIconBadge
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxListItem
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
+import com.wanbaohe.core.ui.widget.system.OneBoxLeadingIconBadge
+import com.wanbaohe.core.ui.widget.system.OneBoxListItem
 import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineProfile

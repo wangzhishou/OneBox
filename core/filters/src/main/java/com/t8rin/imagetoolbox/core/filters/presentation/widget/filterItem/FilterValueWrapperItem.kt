@@ -30,10 +30,10 @@ import com.t8rin.imagetoolbox.core.filters.domain.model.wrap
 import com.t8rin.imagetoolbox.core.filters.presentation.model.UiColorOverlayFilter
 import com.t8rin.imagetoolbox.core.filters.presentation.model.UiFilter
 import com.t8rin.imagetoolbox.core.filters.presentation.model.UiRGBFilter
-import com.t8rin.imagetoolbox.core.ui.utils.helper.toColor
-import com.t8rin.imagetoolbox.core.ui.utils.helper.toModel
-import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorSelectionRow
-import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorSelectionRowDefaults
+import com.wanbaohe.core.ui.utils.helper.toColor
+import com.wanbaohe.core.ui.utils.helper.toModel
+import com.wanbaohe.core.ui.widget.color_picker.ColorSelectionRow
+import com.wanbaohe.core.ui.widget.color_picker.ColorSelectionRowDefaults
 
 @Composable
 internal fun FilterValueWrapperItem(

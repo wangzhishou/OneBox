@@ -3,7 +3,7 @@ package com.shifenmiao.common.handle
 import com.shifenmiao.model.AIChatObject
 import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.ai.Conversation
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.Screen
 
 /**
  * AI 会话导航统一入口。

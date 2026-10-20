@@ -9,9 +9,9 @@ import com.shifenmiao.database.item.entity.toModel
 import com.shifenmiao.model.item.ItemDataUiState
 import com.shifenmiao.model.item.ItemEntityParams
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.ScreenCallback
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.ScreenCallbackResult
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.navigation.ScreenCallback
+import com.wanbaohe.core.ui.utils.navigation.ScreenCallbackResult
 import com.t8rin.logger.makeLog
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory

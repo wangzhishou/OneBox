@@ -27,7 +27,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.ui.widget.controls.resize_group.components.BlurRadiusSelector
+import com.wanbaohe.core.ui.widget.controls.resize_group.components.BlurRadiusSelector
 import com.t8rin.imagetoolbox.feature.draw.domain.DrawMode
 
 @Composable

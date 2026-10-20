@@ -31,7 +31,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.SplitComplementary
 import com.t8rin.imagetoolbox.core.resources.icons.SquareHarmony
 import com.t8rin.imagetoolbox.core.resources.icons.Tetradic
 import com.t8rin.imagetoolbox.core.resources.icons.Triadic
-import com.t8rin.imagetoolbox.core.ui.theme.toColor
+import com.wanbaohe.core.ui.theme.toColor
 import android.graphics.Color as AndroidColor
 
 fun Color.applyHarmony(

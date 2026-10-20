@@ -7,14 +7,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxGroupDivider
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionCard
+import com.wanbaohe.core.ui.widget.system.OneBoxGroupDivider
+import com.wanbaohe.core.ui.widget.system.OneBoxSectionCard
 import com.wanbaohe.cloud.storage.R
 
 @Composable
 fun SyncPlaceholderTab() {
     val checklist = stringArrayResource(R.array.cloud_storage_sync_checklist)
-    Column(verticalArrangement = Arrangement.spacedBy(com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem.blockSpacing)) {
+    Column(verticalArrangement = Arrangement.spacedBy(com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem.blockSpacing)) {
         OneBoxSectionCard {
             Text(
                 text = stringResource(R.string.cloud_storage_sync_placeholder_title),

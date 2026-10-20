@@ -5,7 +5,7 @@ import com.shifenmiao.database.habit.entity.HabitEntity
 import com.shifenmiao.database.habit.repo.HabitRepository
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.storage.AppSharedStorage
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.t8rin.logger.makeLog
 import com.wanbaohe.habittracker.R
 import com.wanbaohe.habittracker.model.HabitIcons

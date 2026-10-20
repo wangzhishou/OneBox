@@ -32,8 +32,8 @@ import androidx.compose.ui.geometry.isSpecified
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.t8rin.gesture.pointerMotionEvents
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.observePointersCountWithOffset
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.smartDelayAfterDownInMillis
+import com.wanbaohe.core.ui.widget.modifier.observePointersCountWithOffset
+import com.wanbaohe.core.ui.widget.modifier.smartDelayAfterDownInMillis
 import net.engawapg.lib.zoomable.ZoomState
 import net.engawapg.lib.zoomable.ZoomableDefaults.defaultZoomOnDoubleTap
 import net.engawapg.lib.zoomable.zoomable

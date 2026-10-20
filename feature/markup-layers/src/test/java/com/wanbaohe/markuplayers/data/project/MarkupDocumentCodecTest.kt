@@ -5,7 +5,7 @@ import com.t8rin.imagetoolbox.core.domain.model.Outline
 import com.t8rin.imagetoolbox.core.filters.presentation.model.UiBrightnessFilter
 import com.t8rin.imagetoolbox.core.filters.presentation.model.UiSepiaFilter
 import com.t8rin.imagetoolbox.core.settings.domain.model.FontType
-import com.t8rin.imagetoolbox.core.ui.widget.editor.StickerSource
+import com.wanbaohe.core.ui.widget.editor.StickerSource
 import com.wanbaohe.markuplayers.domain.model.BrushType
 import com.wanbaohe.markuplayers.domain.model.DrawStroke
 import com.wanbaohe.markuplayers.domain.model.LayerBlendMode

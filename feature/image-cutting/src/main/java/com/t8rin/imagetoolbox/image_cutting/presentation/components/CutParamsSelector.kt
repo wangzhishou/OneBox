@@ -32,9 +32,9 @@ import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.domain.utils.roundTo
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.SelectInverse
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedRangeSliderItem
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
-import com.t8rin.imagetoolbox.core.ui.widget.preferences.PreferenceRowSwitch
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedRangeSliderItem
+import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
+import com.wanbaohe.core.ui.widget.preferences.PreferenceRowSwitch
 import com.t8rin.imagetoolbox.image_cutting.domain.CutParams
 import com.t8rin.imagetoolbox.image_cutting.domain.PivotPair
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBorderHorizontal

@@ -45,11 +45,11 @@ import com.t8rin.imagetoolbox.core.domain.model.QrType
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.Prefix
 import com.t8rin.imagetoolbox.core.resources.icons.Suffix
-import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.ContactPickerButton
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedButton
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
-import com.t8rin.imagetoolbox.core.ui.widget.text.RoundedTextField
-import com.t8rin.imagetoolbox.core.ui.widget.text.TitleItem
+import com.wanbaohe.core.ui.utils.content_pickers.ContactPickerButton
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedButton
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
+import com.wanbaohe.core.ui.widget.text.RoundedTextField
+import com.wanbaohe.core.ui.widget.text.TitleItem
 import com.t8rin.imagetoolbox.feature.scan_qr_code.presentation.components.toQrType
 import com.t8rin.imagetoolbox.feature.scan_qr_code.presentation.components.updateFormattedName
 import com.t8rin.imagetoolbox.core.resources.icons.Add

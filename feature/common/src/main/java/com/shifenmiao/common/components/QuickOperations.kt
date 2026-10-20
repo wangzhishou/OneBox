@@ -13,7 +13,7 @@ import androidx.compose.ui.layout.positionInRoot
 import com.shifenmiao.base.utils.RateLimiter
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.robot.RobotController
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.resources.icons.Search
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDrawer
 

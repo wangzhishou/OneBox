@@ -3,8 +3,8 @@ package com.wanbaohe.calendar.auspicious.screenLogic
 import androidx.compose.runtime.Immutable
 import com.arkivanov.decompose.ComponentContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.calendar.data.AuspiciousDayFinder
 import com.wanbaohe.calendar.data.AuspiciousDayResult
 import com.wanbaohe.calendar.data.YiJiCalculator

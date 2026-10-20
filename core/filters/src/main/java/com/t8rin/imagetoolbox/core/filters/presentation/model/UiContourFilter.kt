@@ -23,7 +23,7 @@ import com.t8rin.imagetoolbox.core.domain.utils.Quad
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
 import com.t8rin.imagetoolbox.core.filters.domain.model.FilterParam
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.ui.utils.helper.toModel
+import com.wanbaohe.core.ui.utils.helper.toModel
 
 class UiContourFilter(
     override val value: Quad<Float, Float, Float, ColorModel> = Quad(

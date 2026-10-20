@@ -18,7 +18,7 @@
 package com.t8rin.imagetoolbox.color_tools.presentation.components
 
 import androidx.compose.ui.graphics.Color
-import com.t8rin.imagetoolbox.core.ui.theme.blend
+import com.wanbaohe.core.ui.theme.blend
 
 fun Color.mixWith(
     color: Color,

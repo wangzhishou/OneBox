@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.wanbaohe.altitude.domain.AltitudeRecord
 import com.wanbaohe.altitude.domain.AltitudeUnit
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.widget.glass.glassBackground
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

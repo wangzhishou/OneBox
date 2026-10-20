@@ -44,7 +44,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.shifenmiao.base.ui.MarkdownLazyContent
+import com.wanbaohe.base.ui.MarkdownLazyContent
 
 /**
  * Debug-only native Markdown editor experiment.

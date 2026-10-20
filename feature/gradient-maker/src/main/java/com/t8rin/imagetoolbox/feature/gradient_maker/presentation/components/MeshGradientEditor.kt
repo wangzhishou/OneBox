@@ -40,13 +40,13 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.pointer.pointerInput
 import com.t8rin.imagetoolbox.core.resources.icons.EditAlt
-import com.t8rin.imagetoolbox.core.ui.theme.inverseByLuma
-import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorPickerSheet
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.meshGradient
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.tappable
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.transparencyChecker
-import com.t8rin.imagetoolbox.core.ui.widget.saver.OffsetSaver
+import com.wanbaohe.core.ui.theme.inverseByLuma
+import com.wanbaohe.core.ui.widget.color_picker.ColorPickerSheet
+import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
+import com.wanbaohe.core.ui.widget.modifier.meshGradient
+import com.wanbaohe.core.ui.widget.modifier.tappable
+import com.wanbaohe.core.ui.widget.modifier.transparencyChecker
+import com.wanbaohe.core.ui.widget.saver.OffsetSaver
 import kotlin.math.pow
 import kotlin.math.sqrt
 

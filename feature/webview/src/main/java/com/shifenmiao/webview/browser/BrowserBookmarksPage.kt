@@ -38,8 +38,8 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.components.category.CategoryManagementDialog
 import com.shifenmiao.common.components.category.ManageableItem
 import com.shifenmiao.model.Source
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
+import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import androidx.compose.ui.res.stringResource
 import com.shifenmiao.webview.R

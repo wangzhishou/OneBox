@@ -50,7 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.fileviewer.component.FileViewerComponent
 import com.wanbaohe.fileviewer.component.FileViewerError
 import com.wanbaohe.fileviewer.component.FileViewerUiState

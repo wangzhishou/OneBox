@@ -8,7 +8,7 @@ import com.t8rin.imagetoolbox.core.filters.presentation.serialization.FilterValu
 import com.t8rin.imagetoolbox.core.filters.presentation.serialization.UiFilterCodec
 import com.t8rin.imagetoolbox.core.settings.domain.model.FontType
 import com.shifenmiao.common.components.text.RichTextStyleSpan
-import com.t8rin.imagetoolbox.core.ui.widget.editor.StickerSource
+import com.wanbaohe.core.ui.widget.editor.StickerSource
 import com.wanbaohe.markuplayers.domain.model.BrushType
 import com.wanbaohe.markuplayers.domain.model.BaseTransformSpec
 import com.wanbaohe.markuplayers.domain.model.DrawStroke
