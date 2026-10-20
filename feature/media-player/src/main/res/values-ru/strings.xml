@@ -48,6 +48,7 @@
     <string name="media_info_duration">Длительность</string>
     <string name="media_info_resolution">Разрешение</string>
     <string name="media_info_artist">Исполнитель</string>
+    <string name="media_retry">Повторить</string>
     <string name="media_play_error">Этот файл не может быть воспроизведён, попробуйте другой</string>
     <string name="media_playback_channel">Воспроизведение</string>
     <string name="media_playback_channel_description">Управление фоновым воспроизведением аудио</string>
@@ -72,4 +73,9 @@
         <item quantity="many">%1$d песен</item>
         <item quantity="other">%1$d песни</item>
     </plurals>
+    <string name="media_today">Сегодня</string>
+    <string name="media_yesterday">Вчера</string>
+    <string name="media_jump_to_date">Перейти к дате</string>
+    <string name="media_unknown_date">Дата неизвестна</string>
+
 </resources>

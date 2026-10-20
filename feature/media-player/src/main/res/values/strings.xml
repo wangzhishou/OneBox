@@ -22,6 +22,11 @@
     <string name="media_filter_favorites">Favorites</string>
     <string name="media_filter_recent">Recent</string>
 
+    <string name="media_today">Today</string>
+    <string name="media_yesterday">Yesterday</string>
+    <string name="media_jump_to_date">Jump to date</string>
+    <string name="media_unknown_date">Unknown date</string>
+
     <!-- 空态 -->
     <string name="media_empty_videos_title">No videos yet</string>
     <string name="media_empty_videos_subtitle">Tap + at the top right, or add a video you like</string>
@@ -63,6 +68,7 @@
     <string name="media_info_resolution">Resolution</string>
     <string name="media_info_artist">Artist</string>
     <string name="media_play_error">This file can\'t be played, try another one</string>
+    <string name="media_retry">Try again</string>
     <string name="media_playback_channel">Playback</string>
     <string name="media_playback_channel_description">Controls for background audio playback</string>
     <string name="media_fullscreen">Fullscreen</string>

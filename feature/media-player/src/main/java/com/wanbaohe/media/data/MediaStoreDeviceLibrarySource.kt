@@ -43,6 +43,11 @@ class MediaStoreDeviceLibrarySource @Inject constructor(
             MediaKind.AUDIO -> MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
         }
         val includeRelativePath = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+        // 拍摄时间：视频优先 DATE_TAKEN，音频没有这个字段，用入库时间近似
+        val captureColumn = when (kind) {
+            MediaKind.VIDEO -> MediaStore.Video.VideoColumns.DATE_TAKEN
+            MediaKind.AUDIO -> MediaStore.MediaColumns.DATE_ADDED
+        }
         // 标题/作者/专辑/时长在 AudioColumns / VideoColumns 下各有一套常量
         val baseColumns = when (kind) {
             MediaKind.VIDEO -> arrayOf(
@@ -53,6 +58,9 @@ class MediaStoreDeviceLibrarySource @Inject constructor(
                 MediaStore.Video.VideoColumns.ALBUM,
                 MediaStore.Video.VideoColumns.DURATION,
                 MediaStore.MediaColumns.DATA,
+                MediaStore.Video.VideoColumns.DATE_TAKEN,
+                MediaStore.MediaColumns.DATE_ADDED,
+                MediaStore.MediaColumns.DATE_MODIFIED,
             )
 
             MediaKind.AUDIO -> arrayOf(
@@ -63,6 +71,8 @@ class MediaStoreDeviceLibrarySource @Inject constructor(
                 MediaStore.Audio.AudioColumns.ALBUM,
                 MediaStore.Audio.AudioColumns.DURATION,
                 MediaStore.MediaColumns.DATA,
+                MediaStore.MediaColumns.DATE_ADDED,
+                MediaStore.MediaColumns.DATE_MODIFIED,
             )
         }
         val columns = if (includeRelativePath) {
@@ -93,7 +103,7 @@ class MediaStoreDeviceLibrarySource @Inject constructor(
             columns,
             selection,
             null,
-            "${MediaStore.MediaColumns.DATE_MODIFIED} DESC",
+            "$captureColumn DESC, ${MediaStore.MediaColumns.DATE_MODIFIED} DESC",
         )?.use { cursor ->
             val idIndex = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns._ID)
             val nameIndex = cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME)
@@ -103,6 +113,9 @@ class MediaStoreDeviceLibrarySource @Inject constructor(
             val durationIndex = cursor.getColumnIndex(MediaStore.MediaColumns.DURATION)
             val dataIndex = cursor.getColumnIndex(MediaStore.MediaColumns.DATA)
             val relativePathIndex = cursor.getColumnIndex(MediaStore.MediaColumns.RELATIVE_PATH)
+            val captureIndex = cursor.getColumnIndex(captureColumn)
+            val addedIndex = cursor.getColumnIndex(MediaStore.MediaColumns.DATE_ADDED)
+            val modifiedIndex = cursor.getColumnIndex(MediaStore.MediaColumns.DATE_MODIFIED)
 
             while (cursor.moveToNext() && result.size < DEFAULT_LIMIT) {
                 val id = cursor.getLong(idIndex)
@@ -115,9 +128,16 @@ class MediaStoreDeviceLibrarySource @Inject constructor(
                     ?: dataIndex.takeIf { it >= 0 }?.let(cursor::getString)
                         ?.takeIf { it.isNotBlank() }
                         ?.substringBeforeLast('/')
+                val capturedAt = captureTimeMillis(
+                    kind = kind,
+                    captureMs = captureIndex.takeIf { it >= 0 }?.let(cursor::getLong) ?: 0L,
+                    addedSeconds = addedIndex.takeIf { it >= 0 }?.let(cursor::getLong) ?: 0L,
+                    modifiedSeconds = modifiedIndex.takeIf { it >= 0 }?.let(cursor::getLong) ?: 0L,
+                )
                 result += MediaEntry(
                     uri = ContentUris.withAppendedId(collection, id).toString(),
                     displayName = displayName,
+                    capturedAt = capturedAt,
                     mediaTitle = titleIndex.takeIf { it >= 0 }?.let(cursor::getString)
                         ?.takeUnless(::isUnknown),
                     artist = artistIndex.takeIf { it >= 0 }?.let(cursor::getString)
@@ -130,7 +150,32 @@ class MediaStoreDeviceLibrarySource @Inject constructor(
                 )
             }
         }
+        // MediaStore 的 DATE_TAKEN 对一部分老文件是 0；按最终算出的拍摄时间再排一次，
+        // 保证没有拍摄时间的条目不会夹在中间。stable sort 保留 SQL 里同时间的修改时间顺序。
+        result.sortByDescending { it.capturedAt }
         return result
+    }
+
+    /**
+     * 统一成毫秒：DATE_TAKEN 本身就是毫秒，DATE_ADDED/DATE_MODIFIED 是秒。
+     *
+     * 视频优先拍摄时间，其次入库时间，最后修改时间；音频没有 DATE_TAKEN，用入库时间。
+     */
+    private fun captureTimeMillis(
+        kind: MediaKind,
+        captureMs: Long,
+        addedSeconds: Long,
+        modifiedSeconds: Long,
+    ): Long {
+        val addedMs = addedSeconds.takeIf { it > 0L }?.times(1000L) ?: 0L
+        val modifiedMs = modifiedSeconds.takeIf { it > 0L }?.times(1000L) ?: 0L
+        return when (kind) {
+            MediaKind.VIDEO -> captureMs.takeIf { it > 0L }
+                ?: addedMs.takeIf { it > 0L }
+                ?: modifiedMs
+
+            MediaKind.AUDIO -> addedMs.takeIf { it > 0L } ?: modifiedMs
+        }
     }
 
     /** MediaStore 对未知标签返回 "<unknown>"，不能当成作者显示 */

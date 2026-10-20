@@ -48,6 +48,7 @@
     <string name="media_info_duration">Durasi</string>
     <string name="media_info_resolution">Resolusi</string>
     <string name="media_info_artist">Artis</string>
+    <string name="media_retry">Coba lagi</string>
     <string name="media_play_error">File ini tidak dapat diputar, coba yang lain</string>
     <string name="media_playback_channel">Pemutaran</string>
     <string name="media_playback_channel_description">Kontrol untuk pemutaran audio latar belakang</string>
@@ -70,4 +71,9 @@
         <item quantity="one">%1$d lagu</item>
         <item quantity="other">%1$d lagu</item>
     </plurals>
+    <string name="media_today">Hari ini</string>
+    <string name="media_yesterday">Kemarin</string>
+    <string name="media_jump_to_date">Lompat ke tanggal</string>
+    <string name="media_unknown_date">Tanggal tidak diketahui</string>
+
 </resources>

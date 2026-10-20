@@ -48,6 +48,7 @@
     <string name="media_info_duration">Duração</string>
     <string name="media_info_resolution">Resolução</string>
     <string name="media_info_artist">Artista</string>
+    <string name="media_retry">Tentar novamente</string>
     <string name="media_play_error">Não é possível reproduzir este arquivo, tente outro</string>
     <string name="media_playback_channel">Reprodução</string>
     <string name="media_playback_channel_description">Controles para reprodução de áudio em segundo plano</string>
@@ -70,4 +71,9 @@
         <item quantity="one">%1$d música</item>
         <item quantity="other">%1$d músicas</item>
     </plurals>
+    <string name="media_today">Hoje</string>
+    <string name="media_yesterday">Ontem</string>
+    <string name="media_jump_to_date">Ir para a data</string>
+    <string name="media_unknown_date">Data desconhecida</string>
+
 </resources>

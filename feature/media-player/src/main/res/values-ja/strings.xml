@@ -48,6 +48,7 @@
     <string name="media_info_duration">再生時間</string>
     <string name="media_info_resolution">解像度</string>
     <string name="media_info_artist">アーティスト</string>
+    <string name="media_retry">再試行</string>
     <string name="media_play_error">このファイルは再生できません。別のファイルをお試しください</string>
     <string name="media_playback_channel">再生</string>
     <string name="media_playback_channel_description">バックグラウンド音声再生の操作</string>
@@ -70,4 +71,9 @@
         <item quantity="one">%1$d曲</item>
         <item quantity="other">%1$d曲</item>
     </plurals>
+    <string name="media_today">今日</string>
+    <string name="media_yesterday">昨日</string>
+    <string name="media_jump_to_date">日付へ移動</string>
+    <string name="media_unknown_date">日付不明</string>
+
 </resources>

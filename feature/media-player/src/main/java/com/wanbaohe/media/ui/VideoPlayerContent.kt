@@ -30,7 +30,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,19 +41,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.t8rin.imagetoolbox.core.resources.Icons
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineAspectRatio
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineFavorite
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineFavoriteFilled
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineInfo
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMovie
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineOpenWith
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineSkipNext
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineSkipPrevious
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.media.R
@@ -112,16 +102,6 @@ fun VideoPlayerContent(
             )
         }
 
-        if (state.playback.hasError) {
-            item {
-                Text(
-                    text = stringResource(R.string.media_play_error),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error,
-                )
-            }
-        }
-
         item {
             ActionRow(
                 isFavorite = state.isFavorite,
@@ -167,6 +147,9 @@ fun VideoStage(
 ) {
     val entry = state.current
     var controlsVisible by remember { mutableStateOf(true) }
+    val aspectRatio = videoAspectRatio(state)
+    // 竖屏视频在播放页最多占 4:5 的卡片：再高就会把标题/收藏/分享整块挤出屏幕
+    val cardAspectRatio = aspectRatio.coerceAtLeast(MIN_CARD_ASPECT)
 
     LaunchedEffect(controlsVisible, state.isPlaying, entry?.uri) {
         if (controlsVisible && state.isPlaying) {
@@ -174,8 +157,10 @@ fun VideoStage(
             controlsVisible = false
         }
     }
-    // 暂停时控件必须能看见，否则用户找不到播放键
-    val controlsShown = showControls && (controlsVisible || !state.isPlaying)
+    // 暂停时控件必须能看见，否则用户找不到播放键；出错时只留重试层，不再叠播放控件
+    val controlsShown = showControls &&
+        !state.playback.hasError &&
+        (controlsVisible || !state.isPlaying)
     val interactionSource = remember { MutableInteractionSource() }
 
     val stageModifier = if (fullscreen) {
@@ -185,7 +170,7 @@ fun VideoStage(
     } else {
         modifier
             .fillMaxWidth()
-            .aspectRatio(videoAspectRatio(state))
+            .aspectRatio(cardAspectRatio)
             .clip(RoundedCornerShape(16.dp))
             .background(Color.Black)
     }
@@ -207,27 +192,31 @@ fun VideoStage(
             return@Box
         }
 
-        val textureView = remember { mutableStateOf<TextureView?>(null) }
+        /*
+         * 画面在 factory 里就交给播放器，在 onRelease 里摘掉。
+         *
+         * 不能放在 update 里用"引用变化"判断：factory 先执行，引用早就赋好了，
+         * update 永远认为"同一个 View"而跳过 attach —— release 包黑屏有声就是这么来的。
+         * ExoPlayer 的 setVideoTextureView 会自己等 SurfaceTexture 可用，提前挂没问题。
+         */
         AndroidView(
-            factory = { context -> TextureView(context).also { textureView.value = it } },
-            update = { view ->
-                // 播放中每次重组都会走 update；同一个 View 不需要重复 setVideoTextureView
-                if (textureView.value !== view) {
-                    textureView.value = view
-                    component.attachVideoTexture(view)
-                }
-            },
-            modifier = Modifier.fillMaxSize(),
+            factory = { context -> TextureView(context).also(component::attachVideoTexture) },
+            onRelease = { view -> component.detachVideoTexture(view) },
+            // 永远按视频本身的比例装进舞台：舞台比视频宽（竖屏卡片/全屏黑边）时
+            // 左右或上下留黑，而不是把画面拉变形
+            modifier = Modifier.aspectRatio(aspectRatio),
+            update = {},
         )
-        DisposableEffect(Unit) {
-            onDispose { textureView.value?.let(component::detachVideoTexture) }
-        }
 
         if (state.isBuffering) {
             CircularProgressIndicator(
                 color = Color.White,
                 modifier = Modifier.size(40.dp),
             )
+        }
+
+        if (state.playback.hasError) {
+            PlaybackErrorOverlay(onRetry = component::togglePlayPause)
         }
 
         AnimatedVisibility(
@@ -242,7 +231,7 @@ fun VideoStage(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     MediaActionButton(
-                        icon = Icons.Outlined.LineSkipPrevious,
+                        icon = MediaSkipPreviousIcon,
                         contentDescription = stringResource(R.string.media_previous),
                         onClick = component::previous,
                         size = 52.dp,
@@ -256,7 +245,7 @@ fun VideoStage(
                         size = 66.dp,
                     )
                     MediaActionButton(
-                        icon = Icons.Outlined.LineSkipNext,
+                        icon = MediaSkipNextIcon,
                         contentDescription = stringResource(R.string.media_next),
                         onClick = component::next,
                         size = 52.dp,
@@ -265,8 +254,10 @@ fun VideoStage(
 
                 if (onToggleFullscreen != null) {
                     MediaActionButton(
-                        icon = Icons.Outlined.LineAspectRatio,
-                        contentDescription = stringResource(R.string.media_fullscreen),
+                        icon = if (fullscreen) MediaFullscreenExitIcon else MediaFullscreenIcon,
+                        contentDescription = stringResource(
+                            if (fullscreen) R.string.media_exit_fullscreen else R.string.media_fullscreen
+                        ),
                         onClick = onToggleFullscreen,
                         size = 40.dp,
                         modifier = Modifier
@@ -322,17 +313,52 @@ fun VideoStage(
 
 private const val CONTROLS_AUTO_HIDE_MS = 3_000L
 
+/** 播放页卡片的最瘦比例（4:5）：竖屏视频最多这么高，给下面的标题/操作留位置 */
+private const val MIN_CARD_ASPECT = 0.8f
+
 /**
  * 视频宽高比：直接用视频本身的尺寸。
  *
  * 以前把竖屏限制在 3:4，9:16 的手机会被 TextureView 横向拉宽；现在只在极端比例上兜底，
  * 竖屏视频按原比例留黑边。
  */
-private fun videoAspectRatio(state: MediaPlayerUiState): Float {
+internal fun videoAspectRatio(state: MediaPlayerUiState): Float {
     val width = state.playback.videoWidth.takeIf { it > 0 } ?: state.metadata.width
     val height = state.playback.videoHeight.takeIf { it > 0 } ?: state.metadata.height
     if (width <= 0 || height <= 0) return 16f / 9f
     return (width.toFloat() / height).coerceIn(0.42f, 2.6f)
+}
+
+/**
+ * 画面是不是"确实比高更宽"。
+ *
+ * 全屏只对横屏视频强制转横屏；竖屏（以及尺寸还没读到的）保持用户当前方向，
+ * 避免竖屏短视频一点全屏就被掰成横屏。
+ */
+internal fun videoHasLandscapeDimensions(state: MediaPlayerUiState): Boolean {
+    val width = state.playback.videoWidth.takeIf { it > 0 } ?: state.metadata.width
+    val height = state.playback.videoHeight.takeIf { it > 0 } ?: state.metadata.height
+    return width > 0 && height > 0 && width > height
+}
+
+/** 解码失败的兜底层：一句原因 + 重试（重新 prepare，让播放器换解码器再试）。 */
+@Composable
+private fun PlaybackErrorOverlay(onRetry: () -> Unit) {
+    Column(
+        modifier = Modifier.padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        Text(
+            text = stringResource(R.string.media_play_error),
+            style = MaterialTheme.typography.bodyMedium,
+            color = Color.White,
+            textAlign = TextAlign.Center,
+        )
+        Button(onClick = onRetry) {
+            Text(text = stringResource(R.string.media_retry))
+        }
+    }
 }
 
 @Composable
@@ -342,7 +368,7 @@ private fun EmptyStage(onAddFile: (() -> Unit)? = null) {
         modifier = Modifier.padding(16.dp),
     ) {
         Icon(
-            imageVector = Icons.Outlined.LineMovie,
+            imageVector = MediaMovieIcon,
             contentDescription = null,
             tint = Color.White.copy(alpha = 0.5f),
             modifier = Modifier.size(48.dp),
@@ -405,9 +431,9 @@ fun ActionRow(
     ) {
         MediaActionButton(
             icon = if (isFavorite) {
-                Icons.Outlined.LineFavoriteFilled
+                MediaFavoriteIcon
             } else {
-                Icons.Outlined.LineFavorite
+                MediaFavoriteBorderIcon
             },
             contentDescription = stringResource(R.string.media_favorite),
             onClick = onFavorite,
@@ -415,19 +441,19 @@ fun ActionRow(
             enabled = enabled,
         )
         MediaActionButton(
-            icon = Icons.Outlined.LineShare,
+            icon = MediaShareIcon,
             contentDescription = stringResource(R.string.media_share),
             onClick = onShare,
             enabled = enabled,
         )
         MediaActionButton(
-            icon = Icons.Outlined.LineInfo,
+            icon = MediaInfoIcon,
             contentDescription = stringResource(R.string.media_file_info),
             onClick = onInfo,
             enabled = enabled,
         )
         MediaActionButton(
-            icon = Icons.Outlined.LineOpenWith,
+            icon = MediaOpenInNewIcon,
             contentDescription = stringResource(R.string.media_open_with),
             onClick = onOpenWith,
             enabled = enabled,

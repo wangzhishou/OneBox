@@ -48,6 +48,7 @@
     <string name="media_info_duration">時長</string>
     <string name="media_info_resolution">解析度</string>
     <string name="media_info_artist">作者</string>
+    <string name="media_retry">重試</string>
     <string name="media_play_error">這個檔案無法播放，換一個試試</string>
     <string name="media_playback_channel">播放控制</string>
     <string name="media_playback_channel_description">背景音訊播放的控制通知</string>
@@ -69,4 +70,9 @@
     <plurals name="media_queue_count">
         <item quantity="other">共 %1$d 首歌曲</item>
     </plurals>
+    <string name="media_today">今天</string>
+    <string name="media_yesterday">昨天</string>
+    <string name="media_jump_to_date">跳轉到日期</string>
+    <string name="media_unknown_date">日期未知</string>
+
 </resources>

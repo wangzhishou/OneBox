@@ -13,6 +13,7 @@ import androidx.media3.common.MediaMetadata
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.VideoSize
+import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaSession
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
@@ -285,7 +286,11 @@ class ExoPlaybackEngine @Inject constructor(
     @MainThread
     private fun ensurePlayer(): ExoPlayer {
         exoPlayer?.let { return it }
-        val player = ExoPlayer.Builder(context)
+        // 三星等机器的硬件解码器偶发初始化失败；打开回退后坏了的硬解会自动降到软解，
+        // 不至于"只有声音没有画面"（黑屏时不会走 onPlayerError，回退是更稳的兜底）
+        val renderersFactory = DefaultRenderersFactory(context)
+            .setEnableDecoderFallback(true)
+        val player = ExoPlayer.Builder(context, renderersFactory)
             .build()
             .apply {
                 setAudioAttributes(

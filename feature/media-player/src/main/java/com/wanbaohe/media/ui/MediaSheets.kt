@@ -29,7 +29,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Check
-import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassRegular
 import com.wanbaohe.media.R
@@ -142,7 +141,7 @@ fun PlayQueueSheet(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Icon(
-                        imageVector = Icons.Outlined.LinePlay,
+                        imageVector = MediaPlayIcon,
                         contentDescription = null,
                         tint = if (isCurrent) {
                             MaterialTheme.colorScheme.onPrimaryContainer
@@ -223,6 +222,9 @@ fun MediaInfoDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
+        // 文件信息是独立浮层，底色用最浅的中性容器色，和页面玻璃卡片区分开
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+        tonalElevation = 0.dp,
         title = { Text(text = stringResource(R.string.media_file_info)) },
         text = {
             Column(

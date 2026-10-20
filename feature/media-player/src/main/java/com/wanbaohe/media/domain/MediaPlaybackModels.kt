@@ -35,6 +35,8 @@ data class MediaEntry(
     val displayName: String,
     /** 最近打开时间；本机媒体库里的条目没有访问记录时为 0 */
     val accessedAt: Long = 0L,
+    /** 拍摄/创建时间（毫秒）；取不到时为 0，按拍摄时间排序/分组用 */
+    val capturedAt: Long = 0L,
     /** MediaStore 里的标题（可能为空；最近打开的文件只有文件名） */
     val mediaTitle: String? = null,
     val artist: String? = null,
@@ -60,6 +62,15 @@ data class MediaEntry(
     /** 界面优先显示媒体库标题，其次才是文件名 */
     val bestTitle: String
         get() = mediaTitle?.takeIf { it.isNotBlank() } ?: title
+
+    /**
+     * 列表排序/按天分组用的时间。
+     *
+     * 拍摄时间优先；老文件或文档 URI 没有拍摄时间时退回最近打开时间，
+     * 都没有就落到 0（归到"未知日期"）。
+     */
+    val sortTimeMillis: Long
+        get() = capturedAt.takeIf { it > 0L } ?: accessedAt
 
     /**
      * 列表行的副标题提示：只认作者。

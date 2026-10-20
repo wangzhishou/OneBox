@@ -17,6 +17,7 @@ import com.arkivanov.decompose.retainedComponent
 import com.shifenmiao.base.pip.VideoPipSpec
 import com.shifenmiao.base.pip.VideoPipState
 import com.wanbaohe.media.R as MediaR
+import com.wanbaohe.media.domain.MediaPlaybackController
 import com.wanbaohe.media.playback.MediaPlaybackService
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.model.event.PermissionRequest
@@ -56,6 +57,13 @@ class AppActivity : ComposeActivity() {
     // 视频播放页登记的画中画规格：API 26-30 没有 setAutoEnterEnabled，只能在这里手动进
     @Inject
     lateinit var videoPipState: VideoPipState
+
+    // 关掉画中画小窗时要把从视频页留下的后台播放一起收掉
+    @Inject
+    lateinit var mediaPlayback: MediaPlaybackController
+
+    /** 当前这轮画中画是不是视频页拉起的（AI 聊天小窗关闭时不能误停音乐）。 */
+    private var videoPipActive = false
 
     private val component: RootComponent by lazy {
         retainedComponent(factory = rootComponentFactory::invoke)
@@ -262,6 +270,9 @@ class AppActivity : ComposeActivity() {
     @Suppress("OVERRIDE_DEPRECATION")
     override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean) {
         super.onPictureInPictureModeChanged(isInPictureInPictureMode)
+        if (isInPictureInPictureMode) {
+            videoPipActive = videoPipState.spec.value != null
+        }
         // AI 聊天的小窗只展示机器人；视频小窗则由播放页自己只渲染画面，
         // 不能套用 App 级 PiP 模式（那会把整个页面换成机器人）。
         videoPipState.setInPip(isInPictureInPictureMode)
@@ -275,6 +286,10 @@ class AppActivity : ComposeActivity() {
 
     override fun onResume() {
         super.onResume()
+        if (!isInPictureInPictureMode) {
+            // 从小窗展开回来（或正常回到前台）：用户仍看着画面，播放不该被打断
+            videoPipActive = false
+        }
         ContextUtils.registerCurrentActivity(this)
         currentActivityProvider.setCurrentActivity(this)
         component.appComponent.registerShakeListener()
@@ -289,6 +304,13 @@ class AppActivity : ComposeActivity() {
 
     override fun onStop() {
         super.onStop()
+        // 在视频画中画里被 stop 且没有先 resume，说明用户把小窗关掉了。
+        // 视频页已经不可见，播放内核和前台服务都要收掉，否则后台只剩声音。
+        if (videoPipActive && !isChangingConfigurations) {
+            videoPipActive = false
+            videoPipState.clear()
+            mediaPlayback.stop()
+        }
     }
 
     override fun onDestroy() {

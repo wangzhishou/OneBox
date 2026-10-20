@@ -32,14 +32,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.resources.Icons
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMovie
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMusicNote
-import com.t8rin.imagetoolbox.core.resources.icons.line.LinePause
-import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineRepeat
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineRepeatOne
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineShuffle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassIconButton
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.media.R
@@ -65,8 +57,8 @@ fun formatMediaDuration(durationMs: Long): String {
 
 /** 媒体类型对应的占位图标（没有封面时用）。 */
 fun MediaKind.placeholderIcon(): ImageVector = when (this) {
-    MediaKind.VIDEO -> Icons.Outlined.LineMovie
-    MediaKind.AUDIO -> Icons.Outlined.LineMusicNote
+    MediaKind.VIDEO -> MediaMovieIcon
+    MediaKind.AUDIO -> MediaMusicIcon
 }
 
 /**
@@ -204,9 +196,9 @@ fun playbackModeLabel(mode: PlaybackMode): String = when (mode) {
 
 /** 播放模式 → 图标。 */
 fun playbackModeIcon(mode: PlaybackMode): ImageVector = when (mode) {
-    PlaybackMode.SEQUENTIAL -> Icons.Outlined.LineRepeat
-    PlaybackMode.REPEAT_ONE -> Icons.Outlined.LineRepeatOne
-    PlaybackMode.SHUFFLE -> Icons.Outlined.LineShuffle
+    PlaybackMode.SEQUENTIAL -> MediaRepeatIcon
+    PlaybackMode.REPEAT_ONE -> MediaRepeatOneIcon
+    PlaybackMode.SHUFFLE -> MediaShuffleIcon
 }
 
 /** 列表项的元信息：读一次缓存住，时长/作者/缩略图共用。 */
@@ -254,7 +246,7 @@ fun PlayPauseCircle(
         contentAlignment = Alignment.Center,
     ) {
         Icon(
-            imageVector = if (isPlaying) Icons.Outlined.LinePause else Icons.Outlined.LinePlay,
+            imageVector = if (isPlaying) MediaPauseIcon else MediaPlayIcon,
             contentDescription = contentDescription,
             tint = MaterialTheme.colorScheme.onPrimaryContainer,
             modifier = Modifier.size(size * 0.44f),

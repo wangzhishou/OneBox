@@ -48,6 +48,7 @@
     <string name="media_info_duration">Dauer</string>
     <string name="media_info_resolution">Auflösung</string>
     <string name="media_info_artist">Künstler</string>
+    <string name="media_retry">Erneut versuchen</string>
     <string name="media_play_error">Diese Datei kann nicht abgespielt werden, versuche eine andere</string>
     <string name="media_playback_channel">Wiedergabe</string>
     <string name="media_playback_channel_description">Steuerung für Hintergrund-Audiowiedergabe</string>
@@ -70,4 +71,9 @@
         <item quantity="one">%1$d Titel</item>
         <item quantity="other">%1$d Titel</item>
     </plurals>
+    <string name="media_today">Heute</string>
+    <string name="media_yesterday">Gestern</string>
+    <string name="media_jump_to_date">Zum Datum springen</string>
+    <string name="media_unknown_date">Unbekanntes Datum</string>
+
 </resources>

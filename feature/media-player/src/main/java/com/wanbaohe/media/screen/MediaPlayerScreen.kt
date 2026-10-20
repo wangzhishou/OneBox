@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.provider.Settings
+import android.view.WindowManager
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -41,19 +42,13 @@ import androidx.core.app.ActivityCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Close
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineAlbum
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineInfo
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMovie
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMusicNote
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineOpenWith
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineSearch
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineViewList
 import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavItem
 import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.media.R
@@ -61,6 +56,15 @@ import com.wanbaohe.media.component.MediaPlayerComponent
 import com.wanbaohe.media.component.MediaPlayerUiState
 import com.wanbaohe.media.component.MediaTab
 import com.wanbaohe.media.domain.MediaKind
+import com.wanbaohe.media.ui.MediaAddIcon
+import com.wanbaohe.media.ui.MediaInfoIcon
+import com.wanbaohe.media.ui.MediaLibraryMusicIcon
+import com.wanbaohe.media.ui.MediaMoreIcon
+import com.wanbaohe.media.ui.MediaMovieIcon
+import com.wanbaohe.media.ui.MediaMusicIcon
+import com.wanbaohe.media.ui.MediaOpenInNewIcon
+import com.wanbaohe.media.ui.MediaShareIcon
+import com.wanbaohe.media.ui.MediaVideoLibraryIcon
 import com.wanbaohe.media.ui.AudioPlayerContent
 import com.wanbaohe.media.ui.MediaInfoDialog
 import com.wanbaohe.media.ui.MediaLibraryContent
@@ -68,6 +72,7 @@ import com.wanbaohe.media.ui.PlayQueueSheet
 import com.wanbaohe.media.ui.PlaybackModeSheet
 import com.wanbaohe.media.ui.VideoPlayerContent
 import com.wanbaohe.media.ui.VideoStage
+import com.wanbaohe.media.ui.videoHasLandscapeDimensions
 
 /**
  * 视频/音乐页面外壳。
@@ -85,6 +90,7 @@ fun MediaPlayerScreen(component: MediaPlayerComponent) {
     val state by component.uiState.collectAsState()
     val isInPip by component.inPictureInPicture.collectAsState()
     val context = LocalContext.current
+    val activity = LocalActivity.current
 
     val pickMedia = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenMultipleDocuments()
@@ -98,7 +104,6 @@ fun MediaPlayerScreen(component: MediaPlayerComponent) {
     }
 
     // 授权入口：组件置标记，页面负责拉起系统权限框，结果回给组件
-    val activity = LocalActivity.current
     var showPermissionSettings by remember { mutableStateOf(false) }
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
@@ -137,6 +142,39 @@ fun MediaPlayerScreen(component: MediaPlayerComponent) {
         onDispose { component.onScreenLeft() }
     }
 
+    /*
+     * Activity 真正不可见时也走一次：Compose 在 Activity stop 后不会马上销毁，
+     * 只靠 onDispose 的话按 Home/锁屏后视频的音频会一直响。
+     * 画中画进入时 Activity 是 STARTED 而非 STOPPED，不会误暂停小窗里的播放。
+     */
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_STOP) component.onScreenLeft()
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    }
+
+    // 视频播放时保持亮屏；暂停/停止立刻释放，看列表时不会一直亮着
+    val keepScreenOn = state.kind == MediaKind.VIDEO && state.isPlaying
+    DisposableEffect(activity, keepScreenOn) {
+        if (activity == null || !keepScreenOn) return@DisposableEffect onDispose {}
+        activity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        onDispose {
+            activity.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        }
+    }
+
+    // 播放页的返回先回媒体库列表，再按一次才退出；顶栏箭头和系统返回键都走这里
+    val goBack: () -> Unit = {
+        if (state.tab == MediaTab.PLAYER && state.current != null) {
+            component.selectTab(MediaTab.LIBRARY)
+        } else {
+            component.onGoBack()
+        }
+    }
+
     if (isInPip && state.kind == MediaKind.VIDEO) {
         VideoStage(
             component = component,
@@ -161,13 +199,12 @@ fun MediaPlayerScreen(component: MediaPlayerComponent) {
 
     BaseScreen(
         title = stringResource(titleOf(state)),
-        onGoBack = component.onGoBack,
+        onGoBack = goBack,
         isShowDefaultActions = false,
         showNavigationBarsPadding = false,
         actions = {
             TopBarActions(
                 state = state,
-                onToggleSearch = component::toggleSearch,
                 onAddFile = openPicker,
                 onShare = component::share,
                 onInfo = { component.showInfo(true) },
@@ -283,9 +320,11 @@ fun MediaPlayerScreen(component: MediaPlayerComponent) {
 }
 
 /**
- * 全屏视频：转横屏 + 隐藏系统栏，只留画面和浮层控件。
+ * 全屏视频：隐藏系统栏，只留画面和浮层控件。
  *
- * 退出全屏或页面被销毁时恢复竖屏与系统栏，避免把整个 App 留在横屏状态。
+ * 只有横屏素材才转横屏；竖屏视频保持用户当前方向，画面按比例居中留边，
+ * 不再把 9:16 的竖屏视频掰成横屏再横向拉满。退出全屏/页面销毁时恢复方向与系统栏，
+ * 避免把整个 App 留在横屏或隐藏状态栏。
  */
 @Composable
 private fun FullscreenVideo(
@@ -294,10 +333,16 @@ private fun FullscreenVideo(
     onExit: () -> Unit,
 ) {
     val activity = LocalActivity.current
-    DisposableEffect(activity) {
+    // 尺寸未知时也不强制旋转：等 onVideoSizeChanged 回来再决定，避免一点全屏就乱转
+    val forceLandscape = videoHasLandscapeDimensions(state)
+    DisposableEffect(activity, forceLandscape) {
         if (activity == null) return@DisposableEffect onDispose {}
         val controller = WindowCompat.getInsetsController(activity.window, activity.window.decorView)
-        activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+        activity.requestedOrientation = if (forceLandscape) {
+            ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+        } else {
+            ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+        }
         controller.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         controller.hide(WindowInsetsCompat.Type.systemBars())
@@ -318,7 +363,8 @@ private fun FullscreenVideo(
             durationMs = state.playback.durationMs.takeIf { it > 0L } ?: state.metadata.durationMs,
             modifier = Modifier.fillMaxSize(),
             fullscreen = true,
-            onToggleFullscreen = onExit,
+            // 退出入口统一放在左上角常驻的 X；画面里的切换键在全屏时不再重复出现
+            onToggleFullscreen = null,
         )
         IconButton(
             onClick = onExit,
@@ -350,12 +396,12 @@ private fun titleOf(state: MediaPlayerUiState): Int = when {
 /**
  * 顶栏右侧动作。
  *
- * 库页给"搜索 + 添加文件"，播放页给"分享 + 更多"；两套入口不混在一起。
+ * 库页只留"添加文件 + 更多"（列表已按拍摄时间分组，搜索入口暂时移除），
+ * 播放页给"分享 + 更多"；两套入口不混在一起。
  */
 @Composable
 private fun TopBarActions(
     state: MediaPlayerUiState,
-    onToggleSearch: () -> Unit,
     onAddFile: () -> Unit,
     onShare: () -> Unit,
     onInfo: () -> Unit,
@@ -364,22 +410,16 @@ private fun TopBarActions(
     onStopPlayback: () -> Unit,
 ) {
     if (state.tab == MediaTab.LIBRARY) {
-        IconButton(onClick = onToggleSearch) {
-            Icon(
-                imageVector = Icons.Outlined.LineSearch,
-                contentDescription = stringResource(R.string.media_search),
-            )
-        }
         IconButton(onClick = onAddFile) {
             Icon(
-                imageVector = Icons.Rounded.Add,
+                imageVector = MediaAddIcon,
                 contentDescription = stringResource(R.string.media_add_file),
             )
         }
     } else {
         IconButton(onClick = onShare, enabled = state.current != null) {
             Icon(
-                imageVector = Icons.Outlined.LineShare,
+                imageVector = MediaShareIcon,
                 contentDescription = stringResource(R.string.media_share),
             )
         }
@@ -389,7 +429,7 @@ private fun TopBarActions(
     Box {
         IconButton(onClick = { expanded = true }) {
             Icon(
-                imageVector = Icons.Outlined.LineMore,
+                imageVector = MediaMoreIcon,
                 contentDescription = stringResource(R.string.media_more),
             )
         }
@@ -398,7 +438,7 @@ private fun TopBarActions(
                 DropdownMenuItem(
                     text = { Text(stringResource(R.string.media_file_info)) },
                     leadingIcon = {
-                        Icon(Icons.Outlined.LineInfo, contentDescription = null)
+                        Icon(MediaInfoIcon, contentDescription = null)
                     },
                     onClick = {
                         expanded = false
@@ -408,7 +448,7 @@ private fun TopBarActions(
                 DropdownMenuItem(
                     text = { Text(stringResource(R.string.media_open_with)) },
                     leadingIcon = {
-                        Icon(Icons.Outlined.LineOpenWith, contentDescription = null)
+                        Icon(MediaOpenInNewIcon, contentDescription = null)
                     },
                     onClick = {
                         expanded = false
@@ -451,9 +491,9 @@ private fun MediaBottomTabs(
                 if (kind == MediaKind.VIDEO) R.string.media_tab_video else R.string.media_tab_play
             ),
             icon = if (kind == MediaKind.VIDEO) {
-                Icons.Outlined.LineMovie
+                MediaMovieIcon
             } else {
-                Icons.Outlined.LineMusicNote
+                MediaMusicIcon
             },
         ),
         BottomNavItem(
@@ -466,9 +506,9 @@ private fun MediaBottomTabs(
                 }
             ),
             icon = if (kind == MediaKind.VIDEO) {
-                Icons.Outlined.LineViewList
+                MediaVideoLibraryIcon
             } else {
-                Icons.Outlined.LineAlbum
+                MediaLibraryMusicIcon
             },
         ),
     )

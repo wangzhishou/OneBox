@@ -36,8 +36,6 @@ data class MediaPlayerUiState(
     val metadata: MediaMetadata = MediaMetadata(),
     val playback: PlaybackState = PlaybackState(),
     val filter: MediaFilter = MediaFilter.ALL,
-    val query: String = "",
-    val isSearchOpen: Boolean = false,
     val isLoading: Boolean = true,
     val hasMediaPermission: Boolean = true,
     val isPermissionRequestPending: Boolean = false,
@@ -62,16 +60,6 @@ data class MediaPlayerUiState(
 
     val hasLibrary: Boolean get() = library.isNotEmpty() || recentEntries.isNotEmpty()
 
-    /** 搜索词同时匹配文件名、媒体库标题、作者、专辑。 */
-    private fun matches(entry: MediaEntry): Boolean {
-        val trimmed = query.trim()
-        if (trimmed.isEmpty()) return true
-        return entry.displayName.contains(trimmed, ignoreCase = true) ||
-            entry.bestTitle.contains(trimmed, ignoreCase = true) ||
-            entry.artist?.contains(trimmed, ignoreCase = true) == true ||
-            entry.album?.contains(trimmed, ignoreCase = true) == true
-    }
-
     private fun passesFilter(entry: MediaEntry): Boolean = when (filter) {
         // "最近"的数据源本身就是访问记录，不再叠时间窗口——
         // 否则一周没用过 App 时这个筛选会直接空列表
@@ -79,7 +67,7 @@ data class MediaPlayerUiState(
         MediaFilter.FAVORITES -> entry.uri in favorites
     }
 
-    /** 搜索 + 胶囊筛选之后的"全部"列表。 */
+    /** 胶囊筛选之后的"全部"列表（没有搜索，顺序沿用数据源按时间排好的顺序）。 */
     val visibleLibrary: List<MediaEntry>
         get() {
             val source = when (filter) {
@@ -88,18 +76,17 @@ data class MediaPlayerUiState(
                 MediaFilter.FAVORITES -> (library + favoriteFallbacks).distinctBy { it.uri }
                 else -> library
             }
-            return source.filter(::passesFilter).filter(::matches)
+            return source.filter(::passesFilter)
         }
 
     /**
-     * 最近区块：和筛选/搜索保持同一份数据，避免横滑和下面列表对不上。
+     * 最近区块：和筛选保持同一份数据，避免横滑和下面列表对不上。
      *
      * 只在展示层按显示名去重：同一个文件常以 MediaStore URI 和文档 URI 各记一条，
      * 横滑里并排出现两张一模一样的缩略图很奇怪；"全部"列表仍保留完整条目。
      */
     val visibleRecents: List<MediaEntry>
-        get() = recentEntries.filter(::passesFilter).filter(::matches)
-            .distinctBy { it.displayName }
+        get() = recentEntries.filter(::passesFilter).distinctBy { it.displayName }
 
     /** 最近区块只放前几项，跟原型里四个大缩略图一致。 */
     val recentHighlights: List<MediaEntry> get() = visibleRecents.take(4)

@@ -28,16 +28,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.background
 import androidx.compose.ui.draw.clip
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMusicNote
 import androidx.compose.ui.unit.min
-import com.t8rin.imagetoolbox.core.resources.Icons
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineFavorite
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineFavoriteFilled
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineOpenWith
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineShuffle
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineSkipNext
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineSkipPrevious
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineViewList
 import com.wanbaohe.media.R
 import com.wanbaohe.media.component.MediaPlayerComponent
 import com.wanbaohe.media.component.MediaPlayerUiState
@@ -113,16 +104,16 @@ fun AudioPlayerContent(
         ) {
             MediaActionButton(
                 icon = if (state.isFavorite) {
-                    Icons.Outlined.LineFavoriteFilled
+                    MediaFavoriteIcon
                 } else {
-                    Icons.Outlined.LineFavorite
+                    MediaFavoriteBorderIcon
                 },
                 contentDescription = stringResource(R.string.media_favorite),
                 onClick = component::toggleFavorite,
                 selected = state.isFavorite,
             )
             MediaActionButton(
-                icon = Icons.Outlined.LineShuffle,
+                icon = MediaShuffleIcon,
                 contentDescription = stringResource(R.string.media_mode_shuffle),
                 onClick = {
                     component.setMode(
@@ -136,12 +127,12 @@ fun AudioPlayerContent(
                 selected = state.mode == PlaybackMode.SHUFFLE,
             )
             MediaActionButton(
-                icon = Icons.Outlined.LineViewList,
+                icon = MediaQueueIcon,
                 contentDescription = stringResource(R.string.media_playback_queue),
                 onClick = { component.showQueue(true) },
             )
             MediaActionButton(
-                icon = Icons.Outlined.LineOpenWith,
+                icon = MediaOpenInNewIcon,
                 contentDescription = stringResource(R.string.media_open_with),
                 onClick = component::openWithOtherApp,
             )
@@ -164,7 +155,7 @@ fun AudioPlayerContent(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             MediaActionButton(
-                icon = Icons.Outlined.LineSkipPrevious,
+                icon = MediaSkipPreviousIcon,
                 contentDescription = stringResource(R.string.media_previous),
                 onClick = component::previous,
                 size = 56.dp,
@@ -185,7 +176,7 @@ fun AudioPlayerContent(
                 )
             }
             MediaActionButton(
-                icon = Icons.Outlined.LineSkipNext,
+                icon = MediaSkipNextIcon,
                 contentDescription = stringResource(R.string.media_next),
                 onClick = component::next,
                 size = 56.dp,
@@ -204,7 +195,7 @@ fun AudioPlayerContent(
         Spacer(modifier = Modifier.height(12.dp))
 
         MediaInfoRow(
-            icon = Icons.Outlined.LineViewList,
+            icon = MediaQueueIcon,
             title = stringResource(R.string.media_playback_queue),
             subtitle = pluralStringResource(
                 R.plurals.media_queue_count,
@@ -246,7 +237,7 @@ private fun EmptyAudioPlayer(
             contentAlignment = Alignment.Center,
         ) {
             androidx.compose.material3.Icon(
-                imageVector = Icons.Outlined.LineMusicNote,
+                imageVector = MediaMusicIcon,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.65f),
                 modifier = Modifier.size(56.dp),

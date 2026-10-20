@@ -48,6 +48,7 @@
     <string name="media_info_duration">Tagal</string>
     <string name="media_info_resolution">Resolusyon</string>
     <string name="media_info_artist">Artista</string>
+    <string name="media_retry">Subukang muli</string>
     <string name="media_play_error">Hindi ma-play ang file na ito, subukan ang iba</string>
     <string name="media_playback_channel">Pag-play</string>
     <string name="media_playback_channel_description">Mga kontrol para sa pag-play ng audio sa background</string>
@@ -70,4 +71,9 @@
         <item quantity="one">%1$d kanta</item>
         <item quantity="other">%1$d kanta</item>
     </plurals>
+    <string name="media_today">Ngayon</string>
+    <string name="media_yesterday">Kahapon</string>
+    <string name="media_jump_to_date">Pumunta sa petsa</string>
+    <string name="media_unknown_date">Hindi alam ang petsa</string>
+
 </resources>

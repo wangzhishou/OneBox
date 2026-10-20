@@ -22,6 +22,11 @@
     <string name="media_filter_favorites">收藏</string>
     <string name="media_filter_recent">最近播放</string>
 
+    <string name="media_today">今天</string>
+    <string name="media_yesterday">昨天</string>
+    <string name="media_jump_to_date">跳转到日期</string>
+    <string name="media_unknown_date">日期未知</string>
+
     <!-- 空态 -->
     <string name="media_empty_videos_title">还没有视频</string>
     <string name="media_empty_videos_subtitle">点击右上角 + 或去添加你喜欢的视频</string>
@@ -63,6 +68,7 @@
     <string name="media_info_resolution">分辨率</string>
     <string name="media_info_artist">作者</string>
     <string name="media_play_error">这个文件播放不了，换一个试试</string>
+    <string name="media_retry">重试</string>
     <string name="media_playback_channel">播放控制</string>
     <string name="media_playback_channel_description">后台音频播放的控制通知</string>
     <string name="media_fullscreen">全屏</string>

@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -28,27 +29,22 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.NoResults
-import com.t8rin.imagetoolbox.core.resources.Icons
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineFavorite
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineFolder
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMusicNote
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineOpenWith
-import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilterChip
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSearchTextField
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassRegular
@@ -59,6 +55,10 @@ import com.wanbaohe.media.component.MediaPlayerUiState
 import com.wanbaohe.media.domain.MediaEntry
 import com.wanbaohe.media.domain.MediaKind
 import com.wanbaohe.media.domain.MediaMetadata
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.Locale
+import kotlinx.coroutines.launch
 
 /**
  * 媒体库页正文（原型"视频库 / 音乐库"）。
@@ -66,6 +66,9 @@ import com.wanbaohe.media.domain.MediaMetadata
  * 数据有两层："全部"是本机媒体库（MediaStore），"最近"是 App 打开过的记录。
  * 没有读媒体权限时只能看最近记录，页面顶部会给一条授权提示；空态按钮直接拉起
  * 系统文件选择器，对应原型里"去添加"。
+ *
+ * 视频/音频条目按拍摄时间（拿不到就退回修改/打开时间）倒序，并按天分组显示；
+ * 筛选胶囊固定在列表上方，滚动几百条时也一直能切"全部/收藏/最近"。
  */
 @Composable
 fun MediaLibraryContent(
@@ -80,13 +83,11 @@ fun MediaLibraryContent(
         state.recentEntries,
         state.favorites,
         state.filter,
-        state.query,
     ) { state.visibleLibrary }
     val highlights = remember(
         state.recentEntries,
         state.favorites,
         state.filter,
-        state.query,
     ) { state.recentHighlights }
     val recentTitle = stringResource(
         if (state.kind == MediaKind.VIDEO) R.string.media_recent_videos else R.string.media_recent_audio
@@ -94,124 +95,182 @@ fun MediaLibraryContent(
     val allTitle = stringResource(
         if (state.kind == MediaKind.VIDEO) R.string.media_all_videos else R.string.media_all_audio
     )
-
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 24.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-    ) {
-        if (state.isSearchOpen) {
-            item {
-                GlassSearchTextField(
-                    value = state.query,
-                    onValueChange = component::setQuery,
-                    placeholder = stringResource(R.string.media_search),
-                    style = GlassStyle.Medium,
-                )
-            }
+    val todayLabel = stringResource(R.string.media_today)
+    val yesterdayLabel = stringResource(R.string.media_yesterday)
+    val unknownDateLabel = stringResource(R.string.media_unknown_date)
+    val locale: Locale = LocalConfiguration.current.locales[0]
+    val dateFormat = remember(locale) { DateFormat.getDateInstance(DateFormat.MEDIUM, locale) }
+    // 右侧日期锚点只到"月"：一天一个锚点在 1000 条列表里太密
+    val monthFormat = remember(locale) {
+        SimpleDateFormat(
+            android.text.format.DateFormat.getBestDateTimePattern(locale, "yMMMM"),
+            locale,
+        )
+    }
+    val groups = remember(visible, state.filter, todayLabel, yesterdayLabel, unknownDateLabel, dateFormat) {
+        groupMediaByDay(
+            entries = visible,
+            filter = state.filter,
+            todayLabel = todayLabel,
+            yesterdayLabel = yesterdayLabel,
+            unknownLabel = unknownDateLabel,
+            dateFormat = dateFormat,
+        )
+    }
+    // 日期组之前的 item 数：权限提示 + 最近观看卡片 + "全部视频"标题
+    val preGroupItemCount = (if (!state.hasMediaPermission) 1 else 0) +
+        (if (highlights.isNotEmpty()) 1 else 0) + 1
+    val anchors = remember(groups, preGroupItemCount, monthFormat, unknownDateLabel) {
+        buildMediaDateAnchors(
+            groups = groups,
+            baseItemIndex = preGroupItemCount,
+            monthFormatter = monthFormat,
+            unknownLabel = unknownDateLabel,
+        )
+    }
+    val listState = rememberLazyListState()
+    val activeAnchorIndex by remember(anchors) {
+        derivedStateOf {
+            anchors.indexOfLast { it.itemIndex <= listState.firstVisibleItemIndex }
+                .coerceAtLeast(0)
         }
+    }
+    val scope = rememberCoroutineScope()
+    // 切换筛选后回到顶部，否则会停在上一份列表的中段
+    LaunchedEffect(state.filter) { listState.scrollToItem(0) }
 
+    Column(modifier = modifier.fillMaxSize()) {
         if (state.hasLibrary) {
-            item {
-                FilterChips(
-                    selected = state.filter,
-                    onSelect = component::setFilter,
-                )
-            }
+            FilterChips(
+                selected = state.filter,
+                onSelect = component::setFilter,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 2.dp),
+            )
         }
 
-        if (!state.hasMediaPermission) {
-            item {
-                PermissionBanner(onGrant = component::requestMediaPermission)
-            }
-        }
+        Box(modifier = Modifier.weight(1f)) {
+            LazyColumn(
+                state = listState,
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 24.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                if (!state.hasMediaPermission) {
+                    item {
+                        PermissionBanner(onGrant = component::requestMediaPermission)
+                    }
+                }
 
-        if (!state.hasLibrary) {
-            item {
-                if (state.isLoading) {
-                    // 首次读库还没回来时别急着喊"还没有音乐"，否则会闪一下空态
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 120.dp),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        CircularProgressIndicator()
+                if (!state.hasLibrary) {
+                    item {
+                        if (state.isLoading) {
+                            // 首次读库还没回来时别急着喊"还没有音乐"，否则会闪一下空态
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 120.dp),
+                                contentAlignment = Alignment.Center,
+                            ) {
+                                CircularProgressIndicator()
+                            }
+                        } else {
+                            EmptyMediaState(
+                                kind = state.kind,
+                                isLoading = false,
+                                onAdd = onAddFile,
+                            )
+                        }
                     }
                 } else {
-                    EmptyMediaState(
-                        kind = state.kind,
-                        isLoading = false,
-                        onAdd = onAddFile,
-                    )
-                }
-            }
-        } else {
-            if (highlights.isNotEmpty()) {
-                item {
-                    RecentMediaCard(
-                        title = recentTitle,
-                        entries = highlights,
-                        kind = state.kind,
-                        loadArtwork = component::artwork,
-                        loadMetadata = component::metadata,
-                        onSelect = component::play,
-                    )
-                }
-            }
+                    if (highlights.isNotEmpty()) {
+                        item {
+                            RecentMediaCard(
+                                title = recentTitle,
+                                entries = highlights,
+                                kind = state.kind,
+                                loadArtwork = component::artwork,
+                                loadMetadata = component::metadata,
+                                onSelect = component::play,
+                            )
+                        }
+                    }
 
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    MediaSectionHeader(
-                        title = allTitle,
-                        trailing = visible.size.toString(),
-                        modifier = Modifier.weight(1f),
-                    )
-                    if (visible.isNotEmpty()) {
-                        TextButton(onClick = component::playAll) {
-                            Text(text = stringResource(R.string.media_play_all))
+                    item {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            MediaSectionHeader(
+                                title = allTitle,
+                                trailing = visible.size.toString(),
+                                modifier = Modifier.weight(1f),
+                            )
+                            if (visible.isNotEmpty()) {
+                                TextButton(onClick = component::playAll) {
+                                    Text(text = stringResource(R.string.media_play_all))
+                                }
+                            }
+                        }
+                    }
+
+                    if (visible.isEmpty()) {
+                        item { NoResults() }
+                    } else {
+                        groups.forEach { group ->
+                            item(key = "day-${group.dayStart}") {
+                                MediaDateHeader(title = group.title, count = group.entries.size)
+                            }
+                            items(group.entries, key = { it.uri }) { entry ->
+                                MediaListRow(
+                                    entry = entry,
+                                    kind = state.kind,
+                                    isCurrent = entry.uri == state.current?.uri,
+                                    isFavorite = entry.uri in state.favorites,
+                                    loadArtwork = component::artwork,
+                                    loadMetadata = component::metadata,
+                                    onClick = { component.play(entry) },
+                                    onFavorite = { component.toggleFavorite(entry) },
+                                    onShare = { component.share(entry) },
+                                    onOpenWith = { component.openWithOtherApp(entry) },
+                                )
+                            }
                         }
                     }
                 }
             }
 
-            if (visible.isEmpty()) {
-                item { NoResults() }
-            } else {
-                items(visible, key = { it.uri }) { entry ->
-                    MediaListRow(
-                        entry = entry,
-                        kind = state.kind,
-                        isCurrent = entry.uri == state.current?.uri,
-                        isFavorite = entry.uri in state.favorites,
-                        loadArtwork = component::artwork,
-                        loadMetadata = component::metadata,
-                        onClick = { component.play(entry) },
-                        onFavorite = { component.toggleFavorite(entry) },
-                        onShare = { component.share(entry) },
-                        onOpenWith = { component.openWithOtherApp(entry) },
-                    )
-                }
+            if (visible.size > DATE_ANCHOR_MIN_ITEMS && anchors.size > 1) {
+                MediaDateAnchorBar(
+                    anchors = anchors,
+                    activeIndex = activeAnchorIndex,
+                    onJump = { anchor ->
+                        scope.launch { listState.animateScrollToItem(anchor.itemIndex) }
+                    },
+                    modifier = Modifier.matchParentSize(),
+                )
             }
         }
     }
 }
 
-/** 顶部筛选胶囊：全部 / 收藏 / 最近播放。 */
+/** 顶部筛选胶囊：全部 / 收藏 / 最近播放。固定显示在列表上方。 */
 @Composable
 private fun FilterChips(
     selected: MediaFilter,
     onSelect: (MediaFilter) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val filters = listOf(
         MediaFilter.ALL to stringResource(R.string.media_filter_all),
         MediaFilter.FAVORITES to stringResource(R.string.media_filter_favorites),
         MediaFilter.RECENT to stringResource(R.string.media_filter_recent),
     )
-    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    LazyRow(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
         items(filters, key = { it.first.name }) { (filter, label) ->
             GlassFilterChip(
                 selected = filter == selected,
@@ -219,6 +278,29 @@ private fun FilterChips(
                 label = { Text(text = label) },
             )
         }
+    }
+}
+
+/** 日期分组标题：日期 + 条数。 */
+@Composable
+private fun MediaDateHeader(title: String, count: Int) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 4.dp, top = 6.dp, bottom = 2.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = count.toString(),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+        )
     }
 }
 
@@ -237,7 +319,7 @@ private fun PermissionBanner(onGrant: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                imageVector = Icons.Outlined.LineFolder,
+                imageVector = MediaFolderIcon,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.size(22.dp),
@@ -284,9 +366,9 @@ fun EmptyMediaState(
             ) {
                 Icon(
                     imageVector = if (kind == MediaKind.VIDEO) {
-                        Icons.Outlined.LineFolder
+                        MediaFolderIcon
                     } else {
-                        Icons.Outlined.LineMusicNote
+                        MediaMusicIcon
                     },
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
@@ -397,7 +479,7 @@ fun MediaListRow(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 if (isCurrent) {
                     Icon(
-                        imageVector = Icons.Outlined.LinePlay,
+                        imageVector = MediaPlayIcon,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier.size(14.dp),
@@ -442,7 +524,7 @@ private fun RowOverflowMenu(
     Box {
         IconButton(onClick = { expanded = true }) {
             Icon(
-                imageVector = Icons.Outlined.LineMore,
+                imageVector = MediaMoreIcon,
                 contentDescription = stringResource(R.string.media_more),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -461,14 +543,14 @@ private fun RowOverflowMenu(
                 },
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Outlined.LineFavorite,
+                        imageVector = MediaFavoriteBorderIcon,
                         contentDescription = null,
                     )
                 },
                 trailingIcon = if (isFavorite) {
                     {
                         Icon(
-                            imageVector = Icons.Outlined.LineFavorite,
+                            imageVector = MediaFavoriteBorderIcon,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
                         )
@@ -485,7 +567,7 @@ private fun RowOverflowMenu(
                 text = { Text(text = stringResource(R.string.media_share)) },
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Outlined.LineShare,
+                        imageVector = MediaShareIcon,
                         contentDescription = null,
                     )
                 },
@@ -498,7 +580,7 @@ private fun RowOverflowMenu(
                 text = { Text(text = stringResource(R.string.media_open_with)) },
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Outlined.LineOpenWith,
+                        imageVector = MediaOpenInNewIcon,
                         contentDescription = null,
                     )
                 },
@@ -510,3 +592,6 @@ private fun RowOverflowMenu(
         }
     }
 }
+
+/** 列表超过这么多条才显示右侧日期锚点，短列表没必要占一块浮层 */
+private const val DATE_ANCHOR_MIN_ITEMS = 60

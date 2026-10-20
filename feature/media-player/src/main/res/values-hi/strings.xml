@@ -48,6 +48,7 @@
     <string name="media_info_duration">अवधि</string>
     <string name="media_info_resolution">रिज़ॉल्यूशन</string>
     <string name="media_info_artist">कलाकार</string>
+    <string name="media_retry">फिर से कोशिश करें</string>
     <string name="media_play_error">यह फ़ाइल चलाई नहीं जा सकती, कोई दूसरी आज़माएं</string>
     <string name="media_playback_channel">प्लेबैक</string>
     <string name="media_playback_channel_description">पृष्ठभूमि ऑडियो प्लेबैक के लिए नियंत्रण</string>
@@ -70,4 +71,9 @@
         <item quantity="one">%1$d गाना</item>
         <item quantity="other">%1$d गाने</item>
     </plurals>
+    <string name="media_today">आज</string>
+    <string name="media_yesterday">कल</string>
+    <string name="media_jump_to_date">तारीख पर जाएं</string>
+    <string name="media_unknown_date">अज्ञात तिथि</string>
+
 </resources>

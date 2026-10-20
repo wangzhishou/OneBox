@@ -119,6 +119,7 @@ class MediaPlayerComponent @AssistedInject internal constructor(
                 playback.open(entry, kind)
             }
         }
+        pausedForLibraryTab = false
         _uiState.value = _uiState.value.copy(
             tab = MediaTab.PLAYER,
             current = entry,
@@ -145,6 +146,7 @@ class MediaPlayerComponent @AssistedInject internal constructor(
             if (entries.isEmpty()) return@launch
             entries.forEach { libraryRepository.recordOpened(it) }
             playback.openQueue(entries, 0, kind)
+            pausedForLibraryTab = false
             _uiState.value = _uiState.value.copy(
                 tab = MediaTab.PLAYER,
                 current = entries.first(),
@@ -202,6 +204,7 @@ class MediaPlayerComponent @AssistedInject internal constructor(
             }
             val index = queue.indexOfFirst { it.uri == entry.uri }.coerceAtLeast(0)
             playback.openQueue(queue, index, kind, autoPlay)
+            pausedForLibraryTab = false
             if (autoPlay) askNotificationPermissionIfNeeded()
         }
     }
@@ -211,6 +214,7 @@ class MediaPlayerComponent @AssistedInject internal constructor(
         val queue = _uiState.value.visibleLibrary
         if (queue.isEmpty()) return
         playback.openQueue(queue, 0, kind, autoPlay = true)
+        pausedForLibraryTab = false
         val first = queue.first()
         _uiState.value = _uiState.value.copy(tab = MediaTab.PLAYER, current = first)
         loadMetadata(first)
@@ -221,6 +225,7 @@ class MediaPlayerComponent @AssistedInject internal constructor(
     /** App 内真正停止播放（不只是暂停），同时收掉通知。 */
     fun stopPlayback() {
         playback.stop()
+        pausedForLibraryTab = false
         videoPipState.clear(this)
         _uiState.value = _uiState.value.copy(current = null, metadata = MediaMetadata())
     }
@@ -268,18 +273,6 @@ class MediaPlayerComponent @AssistedInject internal constructor(
 
     fun setFilter(filter: MediaFilter) {
         _uiState.value = _uiState.value.copy(filter = filter)
-    }
-
-    fun toggleSearch() {
-        val next = !_uiState.value.isSearchOpen
-        _uiState.value = _uiState.value.copy(
-            isSearchOpen = next,
-            query = if (next) _uiState.value.query else "",
-        )
-    }
-
-    fun setQuery(query: String) {
-        _uiState.value = _uiState.value.copy(query = query)
     }
 
     fun showQueue(show: Boolean) {
@@ -335,6 +328,8 @@ class MediaPlayerComponent @AssistedInject internal constructor(
     fun onScreenLeft() {
         if (kind != MediaKind.VIDEO) return
         if (_uiState.value.playback.isPlaying) playback.togglePlayPause()
+        // 这次暂停是"页面离开"造成的，不是切到库页；回来时不能被 selectTab 自动续播
+        pausedForLibraryTab = false
         videoPipState.clear(this)
     }
 

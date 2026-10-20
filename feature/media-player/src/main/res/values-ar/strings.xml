@@ -48,6 +48,7 @@
     <string name="media_info_duration">المدة</string>
     <string name="media_info_resolution">الدقة</string>
     <string name="media_info_artist">الفنان</string>
+    <string name="media_retry">إعادة المحاولة</string>
     <string name="media_play_error">لا يمكن تشغيل هذا الملف، جرّب ملفًا آخر</string>
     <string name="media_playback_channel">التشغيل</string>
     <string name="media_playback_channel_description">عناصر التحكم في تشغيل الصوت في الخلفية</string>
@@ -74,4 +75,9 @@
         <item quantity="many">%1$d أغنية</item>
         <item quantity="other">%1$d أغنية</item>
     </plurals>
+    <string name="media_today">اليوم</string>
+    <string name="media_yesterday">أمس</string>
+    <string name="media_jump_to_date">الانتقال إلى التاريخ</string>
+    <string name="media_unknown_date">تاريخ غير معروف</string>
+
 </resources>

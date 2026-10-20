@@ -48,6 +48,7 @@
     <string name="media_info_duration">Thời lượng</string>
     <string name="media_info_resolution">Độ phân giải</string>
     <string name="media_info_artist">Nghệ sĩ</string>
+    <string name="media_retry">Thử lại</string>
     <string name="media_play_error">Không thể phát tệp này, hãy thử tệp khác</string>
     <string name="media_playback_channel">Phát lại</string>
     <string name="media_playback_channel_description">Điều khiển phát âm thanh nền</string>
@@ -70,4 +71,9 @@
         <item quantity="one">%1$d bài hát</item>
         <item quantity="other">%1$d bài hát</item>
     </plurals>
+    <string name="media_today">Hôm nay</string>
+    <string name="media_yesterday">Hôm qua</string>
+    <string name="media_jump_to_date">Đi đến ngày</string>
+    <string name="media_unknown_date">Không rõ ngày</string>
+
 </resources>

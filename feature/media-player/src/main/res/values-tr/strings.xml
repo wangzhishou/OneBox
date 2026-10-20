@@ -48,6 +48,7 @@
     <string name="media_info_duration">Süre</string>
     <string name="media_info_resolution">Çözünürlük</string>
     <string name="media_info_artist">Sanatçı</string>
+    <string name="media_retry">Tekrar dene</string>
     <string name="media_play_error">Bu dosya oynatılamıyor, başka bir dosya deneyin</string>
     <string name="media_playback_channel">Oynatma</string>
     <string name="media_playback_channel_description">Arka plan ses oynatma kontrolleri</string>
@@ -70,4 +71,9 @@
         <item quantity="one">%1$d şarkı</item>
         <item quantity="other">%1$d şarkı</item>
     </plurals>
+    <string name="media_today">Bugün</string>
+    <string name="media_yesterday">Dün</string>
+    <string name="media_jump_to_date">Tarihe git</string>
+    <string name="media_unknown_date">Tarih bilinmiyor</string>
+
 </resources>
