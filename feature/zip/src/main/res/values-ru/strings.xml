@@ -60,4 +60,6 @@
         <item quantity="many">Извлечено %d файлов</item>
         <item quantity="other">Извлечено %d файла</item>
     </plurals>
+
+    <string name="zip_extract_destination_unavailable">Ничего не распаковано: система не разрешает приложению писать прямо в корень Download. Выберите внутри него подпапку (или создайте новую).</string>
 </resources>

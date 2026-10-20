@@ -70,4 +70,6 @@
         <item quantity="many">تم استخراج %d ملفًا</item>
         <item quantity="other">تم استخراج %d ملف</item>
     </plurals>
+
+    <string name="zip_extract_destination_unavailable">لم يتم استخراج أي شيء. لا يسمح Android للتطبيقات بالكتابة مباشرة في جذر Download — اختر مجلدًا داخله (أو أنشئ مجلدًا جديدًا).</string>
 </resources>

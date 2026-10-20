@@ -78,9 +78,15 @@ fun ZipBrowserContent(component: ZipBrowserComponent) {
     }
 
     val folderPicker = rememberFolderPicker(
+        onFailure = {
+            // 用户没选成（尤其是被 "Can't use this folder" 挡住时）给一句能照做的提示，
+            // 否则返回页面就只剩"什么都没发生"
+            AppToastHost.showToast(resources.getString(R.string.zip_extract_destination_unavailable))
+        },
         onSuccess = { destinationUri ->
             // 记住用户选的目标目录，避免每次解压都再弹一次"允许访问"
             destinationUri.takePersistablePermission()
+            component.rememberExtractDestination(destinationUri)
             component.extractAll(destinationUri) { result ->
                 result.onSuccess { extractedFolderUri ->
                     val count = component.fileCount
@@ -227,7 +233,8 @@ fun ZipBrowserContent(component: ZipBrowserComponent) {
                     ZipBottomActionBar(
                         text = stringResource(R.string.zip_extract_all),
                         enabled = !component.isExtracting,
-                        onClick = { folderPicker.pickFolder() }
+                        // 从上次的目录（或 App 工作目录）开始，别再扔回存储根目录
+                        onClick = { folderPicker.pickFolder(component.extractStartUri()) }
                     )
                 }
             }

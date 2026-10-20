@@ -50,4 +50,6 @@
         <item quantity="one">%d file diekstrak</item>
         <item quantity="other">%d file diekstrak</item>
     </plurals>
+
+    <string name="zip_extract_destination_unavailable">Tidak ada yang diekstrak. Android tidak mengizinkan aplikasi menulis langsung ke folder utama Download — pilih folder di dalamnya (atau buat folder baru).</string>
 </resources>

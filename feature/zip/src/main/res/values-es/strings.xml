@@ -50,4 +50,6 @@
         <item quantity="one">%d archivo extraído</item>
         <item quantity="other">%d archivos extraídos</item>
     </plurals>
+
+    <string name="zip_extract_destination_unavailable">No se extrajo nada. Android no permite que las apps escriban directamente en la raíz de Download: elige una carpeta dentro de ella (o crea una nueva).</string>
 </resources>

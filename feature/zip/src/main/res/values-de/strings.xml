@@ -50,4 +50,6 @@
         <item quantity="one">%d Datei extrahiert</item>
         <item quantity="other">%d Dateien extrahiert</item>
     </plurals>
+
+    <string name="zip_extract_destination_unavailable">Nichts entpackt. Android erlaubt Apps nicht, direkt in das Download-Stammverzeichnis zu schreiben – wähle einen Ordner darin (oder erstelle einen neuen).</string>
 </resources>

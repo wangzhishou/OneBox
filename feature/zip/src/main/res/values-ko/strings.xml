@@ -50,4 +50,6 @@
         <item quantity="one">파일 %d개 추출됨</item>
         <item quantity="other">파일 %d개 추출됨</item>
     </plurals>
+
+    <string name="zip_extract_destination_unavailable">압축을 풀지 않았습니다. Android에서는 앱이 Download 루트에 직접 쓸 수 없으니 그 안의 폴더를 선택하거나 새로 만드세요.</string>
 </resources>

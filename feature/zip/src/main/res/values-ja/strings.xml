@@ -50,4 +50,6 @@
         <item quantity="one">%dファイルを抽出しました</item>
         <item quantity="other">%dファイルを抽出しました</item>
     </plurals>
+
+    <string name="zip_extract_destination_unavailable">解凍できませんでした。AndroidではアプリがDownloadのルートに直接書き込むことはできません。その中にフォルダを選択するか、新規作成してください。</string>
 </resources>

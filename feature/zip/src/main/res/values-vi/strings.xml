@@ -50,4 +50,6 @@
         <item quantity="one">Đã giải nén %d tệp</item>
         <item quantity="other">Đã giải nén %d tệp</item>
     </plurals>
+
+    <string name="zip_extract_destination_unavailable">Không giải nén gì cả. Android không cho phép ứng dụng ghi trực tiếp vào thư mục gốc Download — hãy chọn một thư mục con bên trong (hoặc tạo thư mục mới).</string>
 </resources>

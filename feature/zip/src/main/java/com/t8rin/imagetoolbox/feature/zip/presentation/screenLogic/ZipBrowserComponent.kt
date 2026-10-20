@@ -21,9 +21,11 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnDestroy
+import androidx.core.net.toUri
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.utils.runSuspendCatching
 import com.t8rin.imagetoolbox.core.domain.utils.smartJob
+import com.t8rin.imagetoolbox.core.settings.domain.SettingsProvider
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
 import com.t8rin.imagetoolbox.feature.zip.domain.ArchiveUnavailableException
 import com.t8rin.imagetoolbox.feature.zip.domain.EncryptedArchiveException
@@ -32,6 +34,8 @@ import com.t8rin.imagetoolbox.feature.zip.domain.ZipArchive
 import com.t8rin.imagetoolbox.feature.zip.domain.ZipArchiveEntry
 import com.t8rin.imagetoolbox.feature.zip.domain.ZipManager
 import com.t8rin.imagetoolbox.feature.zip.domain.ZipProgress
+import com.t8rin.imagetoolbox.feature.zip.data.ZipExtractPrefs
+import com.t8rin.imagetoolbox.feature.zip.data.resolveExtractStartUri
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -44,8 +48,13 @@ class ZipBrowserComponent @AssistedInject internal constructor(
     @Assisted private val sourceUri: Uri,
     @Assisted val onGoBack: () -> Unit,
     private val zipManager: ZipManager,
+    private val extractPrefs: ZipExtractPrefs,
+    settingsProvider: SettingsProvider,
     dispatchersHolder: DispatchersHolder
 ) : BaseComponent(dispatchersHolder, componentContext) {
+
+    /** App 工作目录（用户在设置里授权的保存文件夹），解压选择器的默认落点之一 */
+    private val workspaceUri = settingsProvider.settingsState.value.saveFolderUri?.toUri()
 
     sealed interface State {
         data object Loading : State
@@ -174,6 +183,20 @@ class ZipBrowserComponent @AssistedInject internal constructor(
         rebuildItems()
         return true
     }
+
+    /**
+     * 目录选择器该从哪儿打开。
+     *
+     * 系统默认从存储根目录打开，而根目录与 Download 根目录都不可写；
+     * 这里优先上次选过的目录，其次 App 工作目录，最后 Download（让用户选子目录）。
+     */
+    fun extractStartUri(): Uri? = resolveExtractStartUri(
+        lastDestination = extractPrefs.lastDestination(),
+        workspaceUri = workspaceUri,
+    )
+
+    /** 记住这次选的目录，下次解压直接从这里开始。 */
+    fun rememberExtractDestination(uri: Uri) = extractPrefs.saveLastDestination(uri)
 
     fun extractAll(
         destinationTreeUri: Uri,

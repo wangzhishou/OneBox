@@ -50,4 +50,6 @@
         <item quantity="one">%d arquivo extraído</item>
         <item quantity="other">%d arquivos extraídos</item>
     </plurals>
+
+    <string name="zip_extract_destination_unavailable">Nada foi extraído. O Android não permite que apps gravem diretamente na raiz de Download — escolha uma pasta dentro dela (ou crie uma nova).</string>
 </resources>

@@ -50,4 +50,6 @@
         <item quantity="one">Na-extract ang %d file</item>
         <item quantity="other">Na-extract ang %d (na) file</item>
     </plurals>
+
+    <string name="zip_extract_destination_unavailable">Walang na-extract. Hindi pinapayagan ng Android ang mga app na direktang magsulat sa root ng Download — pumili ng folder sa loob nito (o gumawa ng bago).</string>
 </resources>

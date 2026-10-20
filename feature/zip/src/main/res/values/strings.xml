@@ -60,4 +60,8 @@
         <item quantity="one">Extracted %d file</item>
         <item quantity="other">Extracted %d files</item>
     </plurals>
+
+    <!-- 解压目标目录：SAF 限制与默认落点 -->
+    <string name="zip_extract_destination_unavailable">Nothing was extracted. Android won\'t let apps write straight into the Download root — pick a folder inside it (or create a new one).</string>
+
 </resources>

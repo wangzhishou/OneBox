@@ -55,4 +55,8 @@
     <plurals name="zip_extract_success">
         <item quantity="other">已解压 %d 个文件</item>
     </plurals>
+
+    <!-- 解压目标目录：SAF 限制与默认落点 -->
+    <string name="zip_extract_destination_unavailable">没有解压：系统不允许应用直接写入 Download 根目录，请在里面选一个子目录（或新建一个）。</string>
+
 </resources>

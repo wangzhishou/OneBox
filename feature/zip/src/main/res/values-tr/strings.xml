@@ -50,4 +50,6 @@
         <item quantity="one">%d dosya çıkarıldı</item>
         <item quantity="other">%d dosya çıkarıldı</item>
     </plurals>
+
+    <string name="zip_extract_destination_unavailable">Hiçbir şey çıkarılmadı. Android uygulamaların doğrudan Download kök dizinine yazmasına izin vermiyor — içindeki bir klasörü seçin (veya yeni bir tane oluşturun).</string>
 </resources>

@@ -55,4 +55,6 @@
     <plurals name="zip_extract_success">
         <item quantity="other">已解壓縮 %d 個檔案</item>
     </plurals>
+
+    <string name="zip_extract_destination_unavailable">沒有解壓縮：系統不允許應用程式直接寫入 Download 根目錄，請在裡面選一個子目錄（或新建一個）。</string>
 </resources>

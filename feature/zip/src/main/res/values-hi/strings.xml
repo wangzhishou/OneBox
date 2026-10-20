@@ -50,4 +50,6 @@
         <item quantity="one">%d फ़ाइल निकाली गई</item>
         <item quantity="other">%d फ़ाइलें निकाली गईं</item>
     </plurals>
+
+    <string name="zip_extract_destination_unavailable">कुछ भी एक्सट्रैक्ट नहीं हुआ: सिस्टम ऐप्स को सीधे Download रूट में लिखने की अनुमति नहीं देता, कृपया उसके अंदर कोई सबफ़ोल्डर चुनें (या नया बनाएँ)।</string>
 </resources>
