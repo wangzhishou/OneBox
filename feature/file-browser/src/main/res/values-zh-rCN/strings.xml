@@ -4,6 +4,7 @@
     <string name="file_browser_title">文件浏览器</string>
 
     <!-- Actions -->
+    <string name="open_folder">选择文件夹</string>
     <string name="action_back">返回</string>
     <string name="action_sort">排序</string>
     <string name="action_refresh">刷新</string>

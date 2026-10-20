@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="file_browser_title">檔案瀏覽器</string>
+    <string name="open_folder">選擇資料夾</string>
     <string name="action_back">返回</string>
     <string name="action_sort">排序</string>
     <string name="action_refresh">重新整理</string>

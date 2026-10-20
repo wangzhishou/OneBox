@@ -73,6 +73,8 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
+import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFolderPicker
+import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.takePersistablePermission
 import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavItem
 import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.file.browser.R
@@ -101,6 +103,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.OpenInNew
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineApp
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFeatures
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFolder
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineFolderCustom
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandLess
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineViewList
@@ -133,6 +136,12 @@ fun FileBrowserScreen(
     val isSearchMode = remember { mutableStateOf(false) }
     val searchQuery = remember { mutableStateOf("") }
 
+    val folderPicker = rememberFolderPicker(
+        onSuccess = { treeUri ->
+            treeUri.takePersistablePermission()
+            fileBrowserComponent.openTree(treeUri)
+        }
+    )
     val coroutineScope = rememberCoroutineScope()
     val showDeleteDialog = remember { mutableStateOf(false) }
     val showClearRecentsDialog = remember { mutableStateOf(false) }
@@ -221,6 +230,14 @@ fun FileBrowserScreen(
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
+            }
+
+            IconButton(onClick = { folderPicker.pickFolder() }) {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFolderCustom,
+                    contentDescription = stringResource(R.string.open_folder),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
 
             IconButton(

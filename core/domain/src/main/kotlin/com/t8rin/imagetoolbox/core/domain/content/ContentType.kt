@@ -14,7 +14,11 @@ sealed class ContentType {
     data class Markdown(val mimeType: String?) : ContentType()
     data class Audio(val mimeType: String?) : ContentType()
     data class Video(val mimeType: String?) : ContentType()
-    data class Archive(val mimeType: String?) : ContentType()
+    data class Archive(
+        val mimeType: String?,
+        /** 文件扩展名（小写、不带点），用于区分 zip 与 rar/7z 等不支持内部浏览的格式 */
+        val extension: String? = null
+    ) : ContentType()
     data class Document(val mimeType: String?) : ContentType()
     data class Html(val mimeType: String?) : ContentType()
     object Directory : ContentType()

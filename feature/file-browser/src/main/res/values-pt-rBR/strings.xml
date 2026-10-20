@@ -5,6 +5,7 @@
     <string name="dialog_clear_recents_title">Limpar Recentes</string>
     <string name="dialog_clear_recents_message">Limpar todos os registros de acesso recentes? Isso não pode ser desfeito.</string>
     <string name="file_browser_title">Navegador de arquivos</string>
+    <string name="open_folder">Abrir pasta</string>
     <string name="action_back">Voltar</string>
     <string name="action_sort">Ordenar</string>
     <string name="action_refresh">Atualizar</string>

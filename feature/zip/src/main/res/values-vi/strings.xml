@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="zip_create_title">Tạo tệp nén</string>
+    <string name="zip_add_files">Thêm tệp</string>
+    <string name="zip_empty_title">Chưa có tệp nào</string>
+    <string name="zip_empty_message">Nhấn + ở góc trên, sau đó chọn các tệp cần nén</string>
+    <string name="zip_added_files">Tệp đã thêm</string>
+    <string name="zip_save_archive">Lưu dưới dạng tệp nén</string>
+    <string name="zip_saved_message">Đã lưu tệp nén</string>
+    <string name="zip_remove_file">Xóa tệp</string>
+    <string name="zip_browse_title">Tệp nén</string>
+    <string name="zip_extract_all">Giải nén tất cả tệp</string>
+    <string name="zip_extract_file">Giải nén tệp này</string>
+    <string name="zip_entry_details">Chi tiết</string>
+    <string name="zip_open_failed">Không thể mở tệp nén này</string>
+    <string name="zip_only_zip_supported">Chỉ có thể mở tệp nén ZIP tại đây</string>
+    <string name="zip_retry">Thử lại</string>
+    <string name="zip_details_path">Đường dẫn</string>
+    <string name="zip_details_size">Kích thước gốc</string>
+    <string name="zip_details_compressed_size">Kích thước nén</string>
+    <string name="zip_details_modified">Đã sửa đổi</string>
+    <string name="zip_file_saved">Đã giải nén tệp</string>
+    <string name="zip_share">Chia sẻ</string>
+    <string name="zip_unknown_size">Không xác định</string>
+    <string name="zip_loading">Đang đọc tệp nén…</string>
+    <string name="zip_empty_folder">Thư mục này trống</string>
+    <string name="zip_empty_archive">Tệp nén này không có tệp nào</string>
+    <string name="zip_more_actions">Thao tác khác</string>
+    <string name="zip_progress_percent">%1$d%%</string>
+    <string name="zip_encrypted_unsupported">Tệp nén này được bảo vệ bằng mật khẩu và không thể giải nén</string>
+    <string name="zip_archive_closed">Tệp nén không còn khả dụng. Hãy mở lại.</string>
+    <string name="zip_encrypted_open">Không hỗ trợ tệp nén được bảo vệ bằng mật khẩu</string>
+    <plurals name="zip_file_count">
+        <item quantity="one">%d tệp</item>
+        <item quantity="other">%d tệp</item>
+    </plurals>
+    <plurals name="zip_added_summary">
+        <item quantity="one">%1$d tệp · tổng %2$s</item>
+        <item quantity="other">%1$d tệp · tổng %2$s</item>
+    </plurals>
+    <plurals name="zip_archive_summary">
+        <item quantity="one">%1$d tệp · %2$s</item>
+        <item quantity="other">%1$d tệp · %2$s</item>
+    </plurals>
+    <plurals name="zip_archive_summary_compressed">
+        <item quantity="one">%1$d tệp · %2$s · nhỏ hơn %3$d%%</item>
+        <item quantity="other">%1$d tệp · %2$s · nhỏ hơn %3$d%%</item>
+    </plurals>
+    <plurals name="zip_extract_success">
+        <item quantity="one">Đã giải nén %d tệp</item>
+        <item quantity="other">Đã giải nén %d tệp</item>
+    </plurals>
+</resources>

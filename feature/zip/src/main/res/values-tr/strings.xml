@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="zip_create_title">Arşiv oluştur</string>
+    <string name="zip_add_files">Dosya ekle</string>
+    <string name="zip_empty_title">Henüz dosya yok</string>
+    <string name="zip_empty_message">Sağ üst köşedeki + simgesine dokunun, ardından sıkıştırılacak dosyaları seçin</string>
+    <string name="zip_added_files">Eklenen dosyalar</string>
+    <string name="zip_save_archive">Arşiv olarak kaydet</string>
+    <string name="zip_saved_message">Arşiv kaydedildi</string>
+    <string name="zip_remove_file">Dosyayı kaldır</string>
+    <string name="zip_browse_title">Arşiv</string>
+    <string name="zip_extract_all">Tüm dosyaları çıkar</string>
+    <string name="zip_extract_file">Bu dosyayı çıkar</string>
+    <string name="zip_entry_details">Ayrıntılar</string>
+    <string name="zip_open_failed">Bu arşiv açılamadı</string>
+    <string name="zip_only_zip_supported">Burada yalnızca ZIP arşivleri açılabilir</string>
+    <string name="zip_retry">Tekrar dene</string>
+    <string name="zip_details_path">Yol</string>
+    <string name="zip_details_size">Orijinal boyut</string>
+    <string name="zip_details_compressed_size">Sıkıştırılmış boyut</string>
+    <string name="zip_details_modified">Değiştirilme</string>
+    <string name="zip_file_saved">Dosya çıkarıldı</string>
+    <string name="zip_share">Paylaş</string>
+    <string name="zip_unknown_size">Bilinmiyor</string>
+    <string name="zip_loading">Arşiv okunuyor…</string>
+    <string name="zip_empty_folder">Bu klasör boş</string>
+    <string name="zip_empty_archive">Bu arşivde dosya yok</string>
+    <string name="zip_more_actions">Diğer işlemler</string>
+    <string name="zip_progress_percent">%1$d%%</string>
+    <string name="zip_encrypted_unsupported">Bu arşiv parola korumalı ve çıkarılamıyor</string>
+    <string name="zip_archive_closed">Arşiv artık kullanılamıyor. Yeniden açın.</string>
+    <string name="zip_encrypted_open">Parola korumalı arşivler desteklenmiyor</string>
+    <plurals name="zip_file_count">
+        <item quantity="one">%d dosya</item>
+        <item quantity="other">%d dosya</item>
+    </plurals>
+    <plurals name="zip_added_summary">
+        <item quantity="one">%1$d dosya · toplam %2$s</item>
+        <item quantity="other">%1$d dosya · toplam %2$s</item>
+    </plurals>
+    <plurals name="zip_archive_summary">
+        <item quantity="one">%1$d dosya · %2$s</item>
+        <item quantity="other">%1$d dosya · %2$s</item>
+    </plurals>
+    <plurals name="zip_archive_summary_compressed">
+        <item quantity="one">%1$d dosya · %2$s · %3$d%% daha küçük</item>
+        <item quantity="other">%1$d dosya · %2$s · %3$d%% daha küçük</item>
+    </plurals>
+    <plurals name="zip_extract_success">
+        <item quantity="one">%d dosya çıkarıldı</item>
+        <item quantity="other">%d dosya çıkarıldı</item>
+    </plurals>
+</resources>

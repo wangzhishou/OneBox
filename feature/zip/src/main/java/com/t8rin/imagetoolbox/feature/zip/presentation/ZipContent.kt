@@ -17,123 +17,117 @@
 
 package com.t8rin.imagetoolbox.feature.zip.presentation
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Box
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.resources.R
+import androidx.core.net.toUri
+import com.shifenmiao.common.ui.BaseScreen
+import com.t8rin.imagetoolbox.core.domain.utils.timestamp
+import com.t8rin.imagetoolbox.core.resources.Icons
+import com.t8rin.imagetoolbox.core.resources.icons.Add
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFilePicker
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.widget.AdaptiveLayoutScreen
-import com.t8rin.imagetoolbox.core.ui.widget.buttons.BottomButtonsBlock
-import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
-import com.t8rin.imagetoolbox.core.ui.widget.dialogs.LoadingDialog
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.image.AutoFilePicker
-import com.t8rin.imagetoolbox.core.ui.widget.image.FileNotPickedWidget
-import com.t8rin.imagetoolbox.core.ui.widget.other.TopAppBarEmoji
-import com.t8rin.imagetoolbox.core.ui.widget.text.marquee
-import com.t8rin.imagetoolbox.feature.zip.presentation.components.ZipControls
+import com.t8rin.imagetoolbox.feature.zip.R
+import com.t8rin.imagetoolbox.feature.zip.domain.ZipSourceFile
+import com.t8rin.imagetoolbox.feature.zip.presentation.components.ZipBottomActionBar
+import com.t8rin.imagetoolbox.feature.zip.presentation.components.ZipEmptyState
+import com.t8rin.imagetoolbox.feature.zip.presentation.components.ZipProgressDialog
+import com.t8rin.imagetoolbox.feature.zip.presentation.components.ZipSourceFileList
 import com.t8rin.imagetoolbox.feature.zip.presentation.screenLogic.ZipComponent
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineFileOpen
-
 
 @Composable
-fun ZipContent(
-    component: ZipComponent
-) {
-    var showExitDialog by rememberSaveable { mutableStateOf(false) }
+fun ZipContent(component: ZipComponent) {
+    val resources = LocalResources.current
 
-    val onBack = {
-        if (component.uris.isNotEmpty() && component.compressedArchiveUri != null) {
-            showExitDialog = true
-        } else component.onGoBack()
-    }
-
-    val filePicker = rememberFilePicker(onSuccess = component::setUris)
+    val filePicker = rememberFilePicker(onSuccess = component::addUris)
 
     AutoFilePicker(
         onAutoPick = filePicker::pickFile,
         isPickedAlready = !component.initialUris.isNullOrEmpty()
     )
 
-    AdaptiveLayoutScreen(
-        shouldDisableBackHandler = !(component.uris.isNotEmpty() && component.compressedArchiveUri != null),
-        title = {
-            Text(
-                text = stringResource(R.string.zip),
-                modifier = Modifier.marquee()
-            )
-        },
-        topAppBarPersistentActions = {
-            TopAppBarEmoji()
-        },
-        onGoBack = onBack,
-        actions = {},
-        imagePreview = {},
-        showImagePreviewAsStickyHeader = false,
-        placeImagePreview = false,
-        addHorizontalCutoutPaddingIfNoPreview = false,
-        noDataControls = {
-            FileNotPickedWidget(onPickFile = filePicker::pickFile)
-        },
-        controls = {
-            ZipControls(
-                component = component,
-                lazyListState = it
-            )
-        },
-        buttons = {
-            BottomButtonsBlock(
-                isNoData = component.uris.isEmpty(),
-                onSecondaryButtonClick = filePicker::pickFile,
-                secondaryButtonIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFileOpen,
-                secondaryButtonText = stringResource(R.string.pick_file),
-                isPrimaryButtonVisible = component.uris.isNotEmpty(),
-                onPrimaryButtonClick = {
-                    component.startCompression(AppToastHost::showFailureToast)
-                },
-                actions = {
-                    GlassSurface(
-                        modifier = Modifier.padding(AppTheme.dimens.spaceSmall),
-                        style = GlassStyle.Thin,
-                        shape = MaterialTheme.shapes.small,
-                        color = MaterialTheme.colorScheme.secondaryContainer,
-                        borderWidth = 0.dp,
-                    ) {
-                        Text(
-                            text = component.uris.size.toString(),
-                            color = MaterialTheme.colorScheme.onSecondaryContainer,
-                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
-                        )
-                    }
+    val createArchiveLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CreateDocument("application/zip")
+    ) { destinationUri ->
+        if (destinationUri != null) {
+            component.saveArchive(destinationUri) { result ->
+                result.onSuccess { savedUri ->
+                    AppToastHost.showFileSuccessToast(
+                        uri = savedUri,
+                        message = resources.getString(R.string.zip_saved_message)
+                    )
+                }.onFailure {
+                    AppToastHost.showFailureToast(it)
                 }
-            )
-        },
-        canShowScreenData = component.uris.isNotEmpty()
-    )
+            }
+        }
+    }
 
-    ExitWithoutSavingDialog(
-        onExit = component.onGoBack,
-        onDismiss = { showExitDialog = false },
-        visible = showExitDialog
-    )
+    BaseScreen(
+        title = stringResource(R.string.zip_create_title),
+        onGoBack = component.onGoBack,
+        isShowDefaultActions = false,
+        showNavigationBarsPadding = false,
+        actions = {
+            IconButton(onClick = filePicker::pickFile) {
+                Icon(
+                    imageVector = Icons.Outlined.Add,
+                    contentDescription = stringResource(R.string.zip_add_files)
+                )
+            }
+            if (component.savedArchiveUri != null) {
+                IconButton(onClick = { component.shareSavedArchive(AppToastHost::showConfetti) }) {
+                    Icon(
+                        imageVector = Icons.Outlined.LineShare,
+                        contentDescription = stringResource(R.string.zip_share)
+                    )
+                }
+            }
+        }
+    ) {
+        Box(modifier = Modifier.weight(1f)) {
+            if (component.sourceFiles.isEmpty()) {
+                ZipEmptyState(onAddFiles = filePicker::pickFile)
+            } else {
+                ZipSourceFileList(
+                    files = component.sourceFiles,
+                    totalSize = component.totalSize,
+                    onRemove = { component.removeUri(it.uri.toUri()) }
+                )
+            }
+        }
 
-    LoadingDialog(
+        ZipBottomActionBar(
+            text = stringResource(R.string.zip_save_archive),
+            enabled = component.uris.isNotEmpty(),
+            onClick = {
+                createArchiveLauncher.launch(
+                    suggestedArchiveName(component.sourceFiles)
+                )
+            }
+        )
+    }
+
+    ZipProgressDialog(
         visible = component.isSaving,
-        done = component.done,
-        left = component.left,
+        progress = component.progress,
         onCancelLoading = component::cancelSaving
     )
+}
 
+private fun suggestedArchiveName(files: List<ZipSourceFile>): String {
+    val singleName = files.singleOrNull()?.name
+    if (!singleName.isNullOrBlank()) {
+        val baseName = singleName.substringBeforeLast('.', singleName).ifBlank { "archive" }
+        return "$baseName.zip"
+    }
+    return "ZIP_${timestamp("yyyyMMdd_HHmmss")}.zip"
 }

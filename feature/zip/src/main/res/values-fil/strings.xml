@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="zip_create_title">Gumawa ng archive</string>
+    <string name="zip_add_files">Magdagdag ng mga file</string>
+    <string name="zip_empty_title">Wala pang file</string>
+    <string name="zip_empty_message">I-tap ang + sa sulok sa itaas, pagkatapos piliin ang mga file na i-compress</string>
+    <string name="zip_added_files">Mga naidagdag na file</string>
+    <string name="zip_save_archive">I-save bilang archive</string>
+    <string name="zip_saved_message">Na-save ang archive</string>
+    <string name="zip_remove_file">Alisin ang file</string>
+    <string name="zip_browse_title">Archive</string>
+    <string name="zip_extract_all">I-extract ang lahat ng file</string>
+    <string name="zip_extract_file">I-extract ang file na ito</string>
+    <string name="zip_entry_details">Mga detalye</string>
+    <string name="zip_open_failed">Hindi mabuksan ang archive na ito</string>
+    <string name="zip_only_zip_supported">Mga ZIP archive lang ang mabubuksan dito</string>
+    <string name="zip_retry">Subukan muli</string>
+    <string name="zip_details_path">Path</string>
+    <string name="zip_details_size">Orihinal na laki</string>
+    <string name="zip_details_compressed_size">Compressed na laki</string>
+    <string name="zip_details_modified">Binago</string>
+    <string name="zip_file_saved">Na-extract ang file</string>
+    <string name="zip_share">Ibahagi</string>
+    <string name="zip_unknown_size">Hindi alam</string>
+    <string name="zip_loading">Binabasa ang archive…</string>
+    <string name="zip_empty_folder">Walang laman ang folder na ito</string>
+    <string name="zip_empty_archive">Walang file ang archive na ito</string>
+    <string name="zip_more_actions">Higit pang aksyon</string>
+    <string name="zip_progress_percent">%1$d%%</string>
+    <string name="zip_encrypted_unsupported">May password ang archive na ito at hindi ito ma-extract</string>
+    <string name="zip_archive_closed">Hindi na available ang archive. Buksan muli ito.</string>
+    <string name="zip_encrypted_open">Hindi sinusuportahan ang mga archive na may password</string>
+    <plurals name="zip_file_count">
+        <item quantity="one">%d file</item>
+        <item quantity="other">%d (na) file</item>
+    </plurals>
+    <plurals name="zip_added_summary">
+        <item quantity="one">%1$d file · %2$s sa kabuuan</item>
+        <item quantity="other">%1$d (na) file · %2$s sa kabuuan</item>
+    </plurals>
+    <plurals name="zip_archive_summary">
+        <item quantity="one">%1$d file · %2$s</item>
+        <item quantity="other">%1$d (na) file · %2$s</item>
+    </plurals>
+    <plurals name="zip_archive_summary_compressed">
+        <item quantity="one">%1$d file · %2$s · %3$d%% mas maliit</item>
+        <item quantity="other">%1$d (na) file · %2$s · %3$d%% mas maliit</item>
+    </plurals>
+    <plurals name="zip_extract_success">
+        <item quantity="one">Na-extract ang %d file</item>
+        <item quantity="other">Na-extract ang %d (na) file</item>
+    </plurals>
+</resources>

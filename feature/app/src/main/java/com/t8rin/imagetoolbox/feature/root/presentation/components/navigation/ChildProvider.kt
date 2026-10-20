@@ -132,6 +132,7 @@ import com.t8rin.imagetoolbox.feature.root.presentation.components.navigation.Na
 import com.t8rin.imagetoolbox.feature.root.presentation.components.navigation.NavigationChild.WebpTools
 import com.t8rin.imagetoolbox.feature.root.presentation.components.navigation.NavigationChild.WeightResize
 import com.t8rin.imagetoolbox.feature.root.presentation.components.navigation.NavigationChild.Zip
+import com.t8rin.imagetoolbox.feature.root.presentation.components.navigation.NavigationChild.ZipBrowser
 import com.t8rin.imagetoolbox.feature.root.presentation.screenLogic.RootComponent
 import com.t8rin.imagetoolbox.feature.scan_qr_code.presentation.screenLogic.ScanQrCodeComponent
 import com.t8rin.imagetoolbox.feature.scan_qr_code.presentation.screenLogic.ScanCodeComponent
@@ -581,6 +582,14 @@ class ChildProvider @Inject constructor(
             imageFactories.get().zipComponentFactory(
                 componentContext = componentContext,
                 initialUris = config.uris,
+                onGoBack = ::navigateBack
+            )
+        )
+
+        is Screen.ZipBrowser -> ZipBrowser(
+            imageFactories.get().zipBrowserComponentFactory(
+                componentContext = componentContext,
+                sourceUri = config.uri,
                 onGoBack = ::navigateBack
             )
         )

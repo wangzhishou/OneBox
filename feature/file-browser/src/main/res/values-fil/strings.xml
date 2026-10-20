@@ -5,6 +5,7 @@
     <string name="dialog_clear_recents_title">I-clear ang mga Kamakailan</string>
     <string name="dialog_clear_recents_message">I-clear ang lahat ng mga tala ng kamakailang pag-access? Hindi ito maaaring i-undo.</string>
     <string name="file_browser_title">Tagapaghanap ng File</string>
+    <string name="open_folder">Buksan ang folder</string>
     <string name="action_back">Bumalik</string>
     <string name="action_sort">Isaayos</string>
     <string name="action_refresh">I-refresh</string>

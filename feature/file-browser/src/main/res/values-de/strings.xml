@@ -5,6 +5,7 @@
     <string name="dialog_clear_recents_title">Letzte löschen</string>
     <string name="dialog_clear_recents_message">Alle letzten Zugriffsaufzeichnungen löschen? Dies kann nicht rückgängig gemacht werden.</string>
     <string name="file_browser_title">Dateibrowser</string>
+    <string name="open_folder">Ordner öffnen</string>
     <string name="action_back">Zurück</string>
     <string name="action_sort">Sortieren</string>
     <string name="action_refresh">Aktualisieren</string>

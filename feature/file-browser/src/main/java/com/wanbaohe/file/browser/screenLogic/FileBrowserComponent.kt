@@ -409,7 +409,8 @@ class FileBrowserComponent @AssistedInject internal constructor(
     fun openWorkspace() {
         prefs.saveLastDestination(NavDestination.WORKSPACE)
 
-        val uri = FileBrowserConfig.workspaceRootUriProvider(context)
+        val uri = prefs.loadLastWorkspaceUri()
+            ?: FileBrowserConfig.workspaceRootUriProvider(context)
         prefs.saveLastWorkspaceUri(uri)
 
         if (uri == null) {
@@ -418,6 +419,16 @@ class FileBrowserComponent @AssistedInject internal constructor(
         } else {
             switchRootDestination(NavDestination.WORKSPACE, uri)
         }
+    }
+
+    /**
+     * 打开用户通过系统文件夹选择器授权的目录（SAF tree）。
+     * 挂载树后能列出任意类型的文件（包括 zip），不受 Play 版分区存储只显示媒体的限制。
+     */
+    fun openTree(uri: Uri) {
+        prefs.saveLastDestination(NavDestination.WORKSPACE)
+        prefs.saveLastWorkspaceUri(uri)
+        switchRootDestination(NavDestination.WORKSPACE, uri)
     }
 
     /**

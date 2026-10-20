@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="file_browser_title">Trình duyệt tệp</string>
+    <string name="open_folder">Mở thư mục</string>
     <string name="action_back">Quay lại</string>
     <string name="action_sort">Sắp xếp</string>
     <string name="action_refresh">Làm mới</string>

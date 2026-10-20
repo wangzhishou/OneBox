@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="zip_create_title">Создать архив</string>
+    <string name="zip_add_files">Добавить файлы</string>
+    <string name="zip_empty_title">Файлов пока нет</string>
+    <string name="zip_empty_message">Нажмите + в верхнем углу и выберите файлы для сжатия</string>
+    <string name="zip_added_files">Добавленные файлы</string>
+    <string name="zip_save_archive">Сохранить как архив</string>
+    <string name="zip_saved_message">Архив сохранён</string>
+    <string name="zip_remove_file">Удалить файл</string>
+    <string name="zip_browse_title">Архив</string>
+    <string name="zip_extract_all">Извлечь все файлы</string>
+    <string name="zip_extract_file">Извлечь этот файл</string>
+    <string name="zip_entry_details">Подробности</string>
+    <string name="zip_open_failed">Не удалось открыть этот архив</string>
+    <string name="zip_only_zip_supported">Здесь можно открывать только ZIP-архивы</string>
+    <string name="zip_retry">Повторить</string>
+    <string name="zip_details_path">Путь</string>
+    <string name="zip_details_size">Исходный размер</string>
+    <string name="zip_details_compressed_size">Сжатый размер</string>
+    <string name="zip_details_modified">Изменён</string>
+    <string name="zip_file_saved">Файл извлечён</string>
+    <string name="zip_share">Поделиться</string>
+    <string name="zip_unknown_size">Неизвестно</string>
+    <string name="zip_loading">Чтение архива…</string>
+    <string name="zip_empty_folder">Эта папка пуста</string>
+    <string name="zip_empty_archive">В этом архиве нет файлов</string>
+    <string name="zip_more_actions">Другие действия</string>
+    <string name="zip_progress_percent">%1$d%%</string>
+    <string name="zip_encrypted_unsupported">Этот архив защищён паролем, извлечь его нельзя</string>
+    <string name="zip_archive_closed">Архив больше недоступен. Откройте его снова.</string>
+    <string name="zip_encrypted_open">Архивы с паролем не поддерживаются</string>
+    <plurals name="zip_file_count">
+        <item quantity="one">%d файл</item>
+        <item quantity="few">%d файла</item>
+        <item quantity="many">%d файлов</item>
+        <item quantity="other">%d файла</item>
+    </plurals>
+    <plurals name="zip_added_summary">
+        <item quantity="one">%1$d файл · %2$s всего</item>
+        <item quantity="few">%1$d файла · %2$s всего</item>
+        <item quantity="many">%1$d файлов · %2$s всего</item>
+        <item quantity="other">%1$d файла · %2$s всего</item>
+    </plurals>
+    <plurals name="zip_archive_summary">
+        <item quantity="one">%1$d файл · %2$s</item>
+        <item quantity="few">%1$d файла · %2$s</item>
+        <item quantity="many">%1$d файлов · %2$s</item>
+        <item quantity="other">%1$d файла · %2$s</item>
+    </plurals>
+    <plurals name="zip_archive_summary_compressed">
+        <item quantity="one">%1$d файл · %2$s · на %3$d%% меньше</item>
+        <item quantity="few">%1$d файла · %2$s · на %3$d%% меньше</item>
+        <item quantity="many">%1$d файлов · %2$s · на %3$d%% меньше</item>
+        <item quantity="other">%1$d файла · %2$s · на %3$d%% меньше</item>
+    </plurals>
+    <plurals name="zip_extract_success">
+        <item quantity="one">Извлечён %d файл</item>
+        <item quantity="few">Извлечено %d файла</item>
+        <item quantity="many">Извлечено %d файлов</item>
+        <item quantity="other">Извлечено %d файла</item>
+    </plurals>
+</resources>

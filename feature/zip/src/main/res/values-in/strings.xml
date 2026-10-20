@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="zip_create_title">Buat arsip</string>
+    <string name="zip_add_files">Tambah file</string>
+    <string name="zip_empty_title">Belum ada file</string>
+    <string name="zip_empty_message">Ketuk + di pojok atas, lalu pilih file yang akan dikompres</string>
+    <string name="zip_added_files">File ditambahkan</string>
+    <string name="zip_save_archive">Simpan sebagai arsip</string>
+    <string name="zip_saved_message">Arsip disimpan</string>
+    <string name="zip_remove_file">Hapus file</string>
+    <string name="zip_browse_title">Arsip</string>
+    <string name="zip_extract_all">Ekstrak semua file</string>
+    <string name="zip_extract_file">Ekstrak file ini</string>
+    <string name="zip_entry_details">Detail</string>
+    <string name="zip_open_failed">Tidak dapat membuka arsip ini</string>
+    <string name="zip_only_zip_supported">Hanya arsip ZIP yang dapat dibuka di sini</string>
+    <string name="zip_retry">Coba lagi</string>
+    <string name="zip_details_path">Jalur</string>
+    <string name="zip_details_size">Ukuran asli</string>
+    <string name="zip_details_compressed_size">Ukuran terkompresi</string>
+    <string name="zip_details_modified">Diubah</string>
+    <string name="zip_file_saved">File diekstrak</string>
+    <string name="zip_share">Bagikan</string>
+    <string name="zip_unknown_size">Tidak diketahui</string>
+    <string name="zip_loading">Membaca arsip…</string>
+    <string name="zip_empty_folder">Folder ini kosong</string>
+    <string name="zip_empty_archive">Arsip ini tidak memiliki file</string>
+    <string name="zip_more_actions">Tindakan lainnya</string>
+    <string name="zip_progress_percent">%1$d%%</string>
+    <string name="zip_encrypted_unsupported">Arsip ini dilindungi kata sandi dan tidak dapat diekstrak</string>
+    <string name="zip_archive_closed">Arsip tidak lagi tersedia. Buka kembali.</string>
+    <string name="zip_encrypted_open">Arsip yang dilindungi kata sandi tidak didukung</string>
+    <plurals name="zip_file_count">
+        <item quantity="one">%d file</item>
+        <item quantity="other">%d file</item>
+    </plurals>
+    <plurals name="zip_added_summary">
+        <item quantity="one">%1$d file · %2$s total</item>
+        <item quantity="other">%1$d file · %2$s total</item>
+    </plurals>
+    <plurals name="zip_archive_summary">
+        <item quantity="one">%1$d file · %2$s</item>
+        <item quantity="other">%1$d file · %2$s</item>
+    </plurals>
+    <plurals name="zip_archive_summary_compressed">
+        <item quantity="one">%1$d file · %2$s · %3$d%% lebih kecil</item>
+        <item quantity="other">%1$d file · %2$s · %3$d%% lebih kecil</item>
+    </plurals>
+    <plurals name="zip_extract_success">
+        <item quantity="one">%d file diekstrak</item>
+        <item quantity="other">%d file diekstrak</item>
+    </plurals>
+</resources>

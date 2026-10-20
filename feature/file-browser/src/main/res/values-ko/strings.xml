@@ -5,6 +5,7 @@
     <string name="dialog_clear_recents_title">최근 항목 지우기</string>
     <string name="dialog_clear_recents_message">모든 최근 접근 기록을 지우시겠습니까? 이 작업은 되돌릴 수 없습니다.</string>
     <string name="file_browser_title">파일 브라우저</string>
+    <string name="open_folder">폴더 열기</string>
     <string name="action_back">뒤로</string>
     <string name="action_sort">정렬</string>
     <string name="action_refresh">새로 고침</string>

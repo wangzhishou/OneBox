@@ -42,6 +42,8 @@ interface ContentRouter {
      * 外部打开入口（Intent/DeepLink）应传 false：打不开的类型改为回退文件浏览器，
      * 避免本 App 作为 chooser 候选被再次点回造成死循环；
      * 文件浏览器内点击传 true，保持"抛给其它应用打开"的行为。
+     * @param mimeTypeHint 调用方已知的 MIME 类型（分享/打开 Intent 的 type），
+     * 用于外部 content URI 无法反查文件名时的类型兜底。
      * @return 是否成功处理（true = 已路由，false = 未处理）
      */
     fun route(
@@ -49,7 +51,8 @@ interface ContentRouter {
         context: Context,
         onNavigate: (Screen) -> Unit,
         allSiblings: List<Uri> = emptyList(),
-        fallbackToExternal: Boolean = true
+        fallbackToExternal: Boolean = true,
+        mimeTypeHint: String? = null
     ): Boolean
 }
 
@@ -65,9 +68,10 @@ class DefaultContentRouter(
         context: Context,
         onNavigate: (Screen) -> Unit,
         allSiblings: List<Uri>,
-        fallbackToExternal: Boolean
+        fallbackToExternal: Boolean,
+        mimeTypeHint: String?
     ): Boolean {
-        val contentType = contentTypeResolver.resolve(uri, context)
+        val contentType = contentTypeResolver.resolve(uri, context, mimeTypeHint)
 
         return when (contentType) {
             is ContentType.Image -> {
@@ -140,6 +144,22 @@ class DefaultContentRouter(
                 true
             }
 
+            is ContentType.Archive -> {
+                // zip 走内置的浏览/解压页；rar/7z 等 App 内暂不支持，维持原来的外抛/回退行为。
+                val isZip = contentType.extension == "zip" ||
+                    contentType.mimeType == "application/zip" ||
+                    contentType.mimeType == "application/x-zip-compressed"
+                if (isZip) {
+                    onNavigate(Screen.ZipBrowser(uri = uri))
+                    true
+                } else if (fallbackToExternal) {
+                    openWithExternalApp(uri, context)
+                } else {
+                    onNavigate(Screen.FileBrowser(initialUri = uri))
+                    true
+                }
+            }
+
             is ContentType.Unknown -> {
                 // 打不开的文件：外部入口（fallbackToExternal=false）回退到文件浏览器
                 // 定位到所在目录；文件浏览器内点击（=true）才抛给系统 chooser。
@@ -154,8 +174,7 @@ class DefaultContentRouter(
             }
 
             else -> {
-                // 有类型但内部没有对应页面（压缩包等）：
-                // 外部入口回退文件浏览器，内部点击才外抛系统 chooser。
+                // 兜底：外部入口回退文件浏览器，内部点击才外抛系统 chooser。
                 if (fallbackToExternal) {
                     openWithExternalApp(uri, context)
                 } else {

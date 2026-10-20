@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="zip_create_title">Create archive</string>
+    <string name="zip_add_files">Add files</string>
+    <string name="zip_empty_title">No files yet</string>
+    <string name="zip_empty_message">Tap + in the top corner, then choose the files to compress</string>
+    <string name="zip_added_files">Added files</string>
+    <string name="zip_save_archive">Save as archive</string>
+    <string name="zip_saved_message">Archive saved</string>
+    <string name="zip_remove_file">Remove file</string>
+    <string name="zip_browse_title">Archive</string>
+    <string name="zip_extract_all">Extract all files</string>
+    <string name="zip_extract_file">Extract this file</string>
+    <string name="zip_entry_details">Details</string>
+    <string name="zip_open_failed">Could not open this archive</string>
+    <string name="zip_only_zip_supported">Only ZIP archives can be opened here</string>
+    <string name="zip_retry">Try again</string>
+    <string name="zip_details_path">Path</string>
+    <string name="zip_details_size">Original size</string>
+    <string name="zip_details_compressed_size">Compressed size</string>
+    <string name="zip_details_modified">Modified</string>
+    <string name="zip_file_saved">File extracted</string>
+    <string name="zip_share">Share</string>
+    <string name="zip_unknown_size">Unknown</string>
+    <string name="zip_loading">Reading archive…</string>
+
+    <string name="zip_empty_folder">This folder is empty</string>
+    <string name="zip_empty_archive">This archive has no files</string>
+
+    <string name="zip_more_actions">More actions</string>
+
+    <string name="zip_progress_percent">%1$d%%</string>
+
+    <string name="zip_encrypted_unsupported">This archive is password-protected and can\'t be extracted</string>
+    <string name="zip_archive_closed">Archive is no longer available. Reopen it.</string>
+
+    <string name="zip_encrypted_open">Password-protected archives are not supported</string>
+
+    <plurals name="zip_file_count">
+        <item quantity="one">%d file</item>
+        <item quantity="other">%d files</item>
+    </plurals>
+
+    <plurals name="zip_added_summary">
+        <item quantity="one">%1$d file · %2$s total</item>
+        <item quantity="other">%1$d files · %2$s total</item>
+    </plurals>
+
+    <plurals name="zip_archive_summary">
+        <item quantity="one">%1$d file · %2$s</item>
+        <item quantity="other">%1$d files · %2$s</item>
+    </plurals>
+
+    <plurals name="zip_archive_summary_compressed">
+        <item quantity="one">%1$d file · %2$s · %3$d%% smaller</item>
+        <item quantity="other">%1$d files · %2$s · %3$d%% smaller</item>
+    </plurals>
+
+    <plurals name="zip_extract_success">
+        <item quantity="one">Extracted %d file</item>
+        <item quantity="other">Extracted %d files</item>
+    </plurals>
+</resources>

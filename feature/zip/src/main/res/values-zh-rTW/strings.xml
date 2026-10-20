@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="zip_create_title">製作壓縮檔</string>
+    <string name="zip_add_files">加入檔案</string>
+    <string name="zip_empty_title">還沒有加入檔案</string>
+    <string name="zip_empty_message">點擊右上角加入，選擇要壓縮的檔案</string>
+    <string name="zip_added_files">已加入檔案</string>
+    <string name="zip_save_archive">儲存為壓縮檔</string>
+    <string name="zip_saved_message">壓縮檔已儲存</string>
+    <string name="zip_remove_file">移除檔案</string>
+    <string name="zip_browse_title">壓縮檔</string>
+    <string name="zip_extract_all">解壓縮全部檔案</string>
+    <string name="zip_extract_file">解壓縮此檔案</string>
+    <string name="zip_entry_details">檔案資訊</string>
+    <string name="zip_open_failed">無法開啟這個壓縮檔</string>
+    <string name="zip_only_zip_supported">目前只支援瀏覽 ZIP 壓縮檔</string>
+    <string name="zip_retry">重試</string>
+    <string name="zip_details_path">路徑</string>
+    <string name="zip_details_size">原始大小</string>
+    <string name="zip_details_compressed_size">壓縮後大小</string>
+    <string name="zip_details_modified">修改時間</string>
+    <string name="zip_file_saved">檔案已解壓縮</string>
+    <string name="zip_share">分享</string>
+    <string name="zip_unknown_size">未知</string>
+    <string name="zip_loading">正在讀取壓縮檔…</string>
+
+    <string name="zip_empty_folder">這個資料夾是空的</string>
+    <string name="zip_empty_archive">這個壓縮檔裡沒有檔案</string>
+
+    <string name="zip_more_actions">更多操作</string>
+
+    <string name="zip_progress_percent">%1$d%%</string>
+
+    <string name="zip_encrypted_unsupported">這個壓縮檔有密碼，暫時無法解壓縮</string>
+    <string name="zip_archive_closed">壓縮檔已關閉，請重新開啟</string>
+
+    <string name="zip_encrypted_open">暫不支援開啟有密碼的壓縮檔</string>
+
+    <plurals name="zip_file_count">
+        <item quantity="other">%d 個檔案</item>
+    </plurals>
+
+    <plurals name="zip_added_summary">
+        <item quantity="other">共 %1$d 個檔案 · 合計 %2$s</item>
+    </plurals>
+
+    <plurals name="zip_archive_summary">
+        <item quantity="other">%1$d 個檔案 · %2$s</item>
+    </plurals>
+
+    <plurals name="zip_archive_summary_compressed">
+        <item quantity="other">%1$d 個檔案 · %2$s · 已壓縮 %3$d%%</item>
+    </plurals>
+
+    <plurals name="zip_extract_success">
+        <item quantity="other">已解壓縮 %d 個檔案</item>
+    </plurals>
+</resources>

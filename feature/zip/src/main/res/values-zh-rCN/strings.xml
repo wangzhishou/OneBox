@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="zip_create_title">制作压缩包</string>
+    <string name="zip_add_files">添加文件</string>
+    <string name="zip_empty_title">还没有添加文件</string>
+    <string name="zip_empty_message">点击右上角添加，选择要压缩的文件</string>
+    <string name="zip_added_files">已添加文件</string>
+    <string name="zip_save_archive">保存为压缩包</string>
+    <string name="zip_saved_message">压缩包已保存</string>
+    <string name="zip_remove_file">移除文件</string>
+    <string name="zip_browse_title">压缩包</string>
+    <string name="zip_extract_all">解压全部文件</string>
+    <string name="zip_extract_file">解压此文件</string>
+    <string name="zip_entry_details">文件信息</string>
+    <string name="zip_open_failed">无法打开这个压缩包</string>
+    <string name="zip_only_zip_supported">目前只支持浏览 ZIP 压缩包</string>
+    <string name="zip_retry">重试</string>
+    <string name="zip_details_path">路径</string>
+    <string name="zip_details_size">原始大小</string>
+    <string name="zip_details_compressed_size">压缩后大小</string>
+    <string name="zip_details_modified">修改时间</string>
+    <string name="zip_file_saved">文件已解压</string>
+    <string name="zip_share">分享</string>
+    <string name="zip_unknown_size">未知</string>
+    <string name="zip_loading">正在读取压缩包…</string>
+
+    <string name="zip_empty_folder">这个文件夹是空的</string>
+    <string name="zip_empty_archive">这个压缩包里没有文件</string>
+
+    <string name="zip_more_actions">更多操作</string>
+
+    <string name="zip_progress_percent">%1$d%%</string>
+
+    <string name="zip_encrypted_unsupported">这个压缩包有密码，暂时无法解压</string>
+    <string name="zip_archive_closed">压缩包已关闭，请重新打开</string>
+
+    <string name="zip_encrypted_open">暂不支持打开带密码的压缩包</string>
+
+    <plurals name="zip_file_count">
+        <item quantity="other">%d 个文件</item>
+    </plurals>
+
+    <plurals name="zip_added_summary">
+        <item quantity="other">共 %1$d 个文件 · 合计 %2$s</item>
+    </plurals>
+
+    <plurals name="zip_archive_summary">
+        <item quantity="other">%1$d 个文件 · %2$s</item>
+    </plurals>
+
+    <plurals name="zip_archive_summary_compressed">
+        <item quantity="other">%1$d 个文件 · %2$s · 已压缩 %3$d%%</item>
+    </plurals>
+
+    <plurals name="zip_extract_success">
+        <item quantity="other">已解压 %d 个文件</item>
+    </plurals>
+</resources>

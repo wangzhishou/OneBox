@@ -23,3 +23,8 @@ plugins {
 }
 
 android.namespace = "com.t8rin.imagetoolbox.feature.zip"
+
+dependencies {
+    // 与文件浏览共用 BaseScreen 顶部栏/返回键行为
+    implementation(projects.feature.common)
+}

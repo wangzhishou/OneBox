@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="file_browser_title">متصفح الملفات</string>
+    <string name="open_folder">فتح المجلد</string>
     <string name="action_back">رجوع</string>
     <string name="action_sort">ترتيب</string>
     <string name="action_refresh">تحديث</string>

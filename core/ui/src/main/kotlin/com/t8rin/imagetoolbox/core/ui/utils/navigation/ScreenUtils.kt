@@ -221,6 +221,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.WebView
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.WebpTools
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.WeightResize
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.Zip
+import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.ZipBrowser
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.PrimitiveKind
@@ -270,6 +271,7 @@ internal fun Screen.simpleName(): String = when (this) {
     is SingleEdit -> "Single_Edit"
     is Watermarking -> "Watermarking"
     is Zip -> "Zip"
+    is ZipBrowser -> "ZipBrowser"
     is App -> "App"
     is NewApp -> "NewApp"
     is Calendar -> "App"
@@ -419,6 +421,7 @@ internal fun Screen.icon(): ImageVector? = when (this) {
     is WeightResize -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineWeightResize
     is Watermarking -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineWatermarking
     is Zip -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineZip
+    is ZipBrowser -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineZip
     is SvgMaker -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSvgMaker
     is FormatConversion -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFormatConversion
     is DocumentScanner -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDocumentScanner
@@ -670,6 +673,12 @@ internal object ScreenConstantsImpl : ScreenConstants {
                     uri = screenParams.url?.takeIf { it.isNotBlank() }?.let(Uri::parse),
                     autoPlay = queryParams["play"] != "0",
                 )
+                // 压缩包浏览需要具体文件：onebox://screen/ZipBrowser?url=<zip uri>
+                "ZipBrowser" -> {
+                    val zipUri = screenParams.url?.takeIf { it.isNotBlank() }?.let(Uri::parse)
+                        ?: return NewApp()
+                    return Screen.ZipBrowser(uri = zipUri)
+                }
                 "WebView" -> {
                     if (screenParams.url.isNullOrBlank()) return NewApp()
                     return WebView(

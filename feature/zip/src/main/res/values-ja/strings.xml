@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="zip_create_title">アーカイブを作成</string>
+    <string name="zip_add_files">ファイルを追加</string>
+    <string name="zip_empty_title">ファイルがまだありません</string>
+    <string name="zip_empty_message">右上の+をタップして、圧縮するファイルを選択してください</string>
+    <string name="zip_added_files">追加したファイル</string>
+    <string name="zip_save_archive">アーカイブとして保存</string>
+    <string name="zip_saved_message">アーカイブを保存しました</string>
+    <string name="zip_remove_file">ファイルを削除</string>
+    <string name="zip_browse_title">アーカイブ</string>
+    <string name="zip_extract_all">すべてのファイルを展開</string>
+    <string name="zip_extract_file">このファイルを展開</string>
+    <string name="zip_entry_details">詳細</string>
+    <string name="zip_open_failed">このアーカイブを開けませんでした</string>
+    <string name="zip_only_zip_supported">ここではZIPアーカイブのみ開けます</string>
+    <string name="zip_retry">再試行</string>
+    <string name="zip_details_path">パス</string>
+    <string name="zip_details_size">元のサイズ</string>
+    <string name="zip_details_compressed_size">圧縮後のサイズ</string>
+    <string name="zip_details_modified">更新日時</string>
+    <string name="zip_file_saved">ファイルを展開しました</string>
+    <string name="zip_share">共有</string>
+    <string name="zip_unknown_size">不明</string>
+    <string name="zip_loading">アーカイブを読み込み中…</string>
+    <string name="zip_empty_folder">このフォルダは空です</string>
+    <string name="zip_empty_archive">このアーカイブにはファイルがありません</string>
+    <string name="zip_more_actions">その他の操作</string>
+    <string name="zip_progress_percent">%1$d%%</string>
+    <string name="zip_encrypted_unsupported">このアーカイブはパスワードで保護されているため展開できません</string>
+    <string name="zip_archive_closed">アーカイブは利用できなくなりました。再度開いてください。</string>
+    <string name="zip_encrypted_open">パスワードで保護されたアーカイブはサポートされていません</string>
+    <plurals name="zip_file_count">
+        <item quantity="one">%dファイル</item>
+        <item quantity="other">%dファイル</item>
+    </plurals>
+    <plurals name="zip_added_summary">
+        <item quantity="one">%1$dファイル · 合計%2$s</item>
+        <item quantity="other">%1$dファイル · 合計%2$s</item>
+    </plurals>
+    <plurals name="zip_archive_summary">
+        <item quantity="one">%1$dファイル · %2$s</item>
+        <item quantity="other">%1$dファイル · %2$s</item>
+    </plurals>
+    <plurals name="zip_archive_summary_compressed">
+        <item quantity="one">%1$dファイル · %2$s · %3$d%%削減</item>
+        <item quantity="other">%1$dファイル · %2$s · %3$d%%削減</item>
+    </plurals>
+    <plurals name="zip_extract_success">
+        <item quantity="one">%dファイルを抽出しました</item>
+        <item quantity="other">%dファイルを抽出しました</item>
+    </plurals>
+</resources>

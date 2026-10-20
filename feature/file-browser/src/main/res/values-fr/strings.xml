@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="file_browser_title">Explorateur de fichiers</string>
+    <string name="open_folder">Ouvrir le dossier</string>
     <string name="action_back">Retour</string>
     <string name="action_sort">Trier</string>
     <string name="action_refresh">Actualiser</string>

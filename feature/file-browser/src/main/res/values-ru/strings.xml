@@ -5,6 +5,7 @@
     <string name="dialog_clear_recents_title">Очистить недавние</string>
     <string name="dialog_clear_recents_message">Очистить все записи недавнего доступа? Это действие нельзя отменить.</string>
     <string name="file_browser_title">Проводник</string>
+    <string name="open_folder">Открыть папку</string>
     <string name="action_back">Назад</string>
     <string name="action_sort">Сортировка</string>
     <string name="action_refresh">Обновить</string>

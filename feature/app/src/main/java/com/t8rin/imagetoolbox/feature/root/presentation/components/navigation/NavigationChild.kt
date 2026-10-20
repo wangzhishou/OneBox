@@ -179,7 +179,9 @@ import com.t8rin.imagetoolbox.feature.webp_tools.presentation.WebpToolsContent
 import com.t8rin.imagetoolbox.feature.webp_tools.presentation.screenLogic.WebpToolsComponent
 import com.t8rin.imagetoolbox.feature.weight_resize.presentation.WeightResizeContent
 import com.t8rin.imagetoolbox.feature.weight_resize.presentation.screenLogic.WeightResizeComponent
+import com.t8rin.imagetoolbox.feature.zip.presentation.ZipBrowserContent
 import com.t8rin.imagetoolbox.feature.zip.presentation.ZipContent
+import com.t8rin.imagetoolbox.feature.zip.presentation.screenLogic.ZipBrowserComponent
 import com.t8rin.imagetoolbox.feature.zip.presentation.screenLogic.ZipComponent
 import com.t8rin.imagetoolbox.image_cutting.presentation.ImageCutterContent
 import com.t8rin.imagetoolbox.image_cutting.presentation.screenLogic.ImageCutterComponent
@@ -456,6 +458,11 @@ sealed interface NavigationChild {
     class Zip(private val component: ZipComponent) : NavigationChild {
         @Composable
         override fun Content() = ZipContent(component)
+    }
+
+    class ZipBrowser(private val component: ZipBrowserComponent) : NavigationChild {
+        @Composable
+        override fun Content() = ZipBrowserContent(component)
     }
 
     class LibrariesInfo(private val component: LibrariesInfoComponent) : NavigationChild {

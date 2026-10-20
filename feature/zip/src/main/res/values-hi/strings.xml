@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="zip_create_title">संग्रह बनाएं</string>
+    <string name="zip_add_files">फ़ाइलें जोड़ें</string>
+    <string name="zip_empty_title">अभी कोई फ़ाइल नहीं</string>
+    <string name="zip_empty_message">ऊपर कोने में + पर टैप करें, फिर संपीड़ित करने के लिए फ़ाइलें चुनें</string>
+    <string name="zip_added_files">जोड़ी गई फ़ाइलें</string>
+    <string name="zip_save_archive">संग्रह के रूप में सहेजें</string>
+    <string name="zip_saved_message">संग्रह सहेजा गया</string>
+    <string name="zip_remove_file">फ़ाइल हटाएं</string>
+    <string name="zip_browse_title">संग्रह</string>
+    <string name="zip_extract_all">सभी फ़ाइलें निकालें</string>
+    <string name="zip_extract_file">यह फ़ाइल निकालें</string>
+    <string name="zip_entry_details">विवरण</string>
+    <string name="zip_open_failed">यह संग्रह खोला नहीं जा सका</string>
+    <string name="zip_only_zip_supported">यहां केवल ZIP संग्रह खोले जा सकते हैं</string>
+    <string name="zip_retry">पुनः प्रयास करें</string>
+    <string name="zip_details_path">पथ</string>
+    <string name="zip_details_size">मूल आकार</string>
+    <string name="zip_details_compressed_size">संपीड़ित आकार</string>
+    <string name="zip_details_modified">संशोधित</string>
+    <string name="zip_file_saved">फ़ाइल निकाली गई</string>
+    <string name="zip_share">साझा करें</string>
+    <string name="zip_unknown_size">अज्ञात</string>
+    <string name="zip_loading">संग्रह पढ़ा जा रहा है…</string>
+    <string name="zip_empty_folder">यह फ़ोल्डर खाली है</string>
+    <string name="zip_empty_archive">इस संग्रह में कोई फ़ाइल नहीं है</string>
+    <string name="zip_more_actions">अधिक क्रियाएं</string>
+    <string name="zip_progress_percent">%1$d%%</string>
+    <string name="zip_encrypted_unsupported">यह संग्रह पासवर्ड-सुरक्षित है और इसे निकाला नहीं जा सकता</string>
+    <string name="zip_archive_closed">संग्रह अब उपलब्ध नहीं है। इसे फिर से खोलें।</string>
+    <string name="zip_encrypted_open">पासवर्ड-सुरक्षित संग्रह समर्थित नहीं हैं</string>
+    <plurals name="zip_file_count">
+        <item quantity="one">%d फ़ाइल</item>
+        <item quantity="other">%d फ़ाइलें</item>
+    </plurals>
+    <plurals name="zip_added_summary">
+        <item quantity="one">%1$d फ़ाइल · कुल %2$s</item>
+        <item quantity="other">%1$d फ़ाइलें · कुल %2$s</item>
+    </plurals>
+    <plurals name="zip_archive_summary">
+        <item quantity="one">%1$d फ़ाइल · %2$s</item>
+        <item quantity="other">%1$d फ़ाइलें · %2$s</item>
+    </plurals>
+    <plurals name="zip_archive_summary_compressed">
+        <item quantity="one">%1$d फ़ाइल · %2$s · %3$d%% छोटा</item>
+        <item quantity="other">%1$d फ़ाइलें · %2$s · %3$d%% छोटा</item>
+    </plurals>
+    <plurals name="zip_extract_success">
+        <item quantity="one">%d फ़ाइल निकाली गई</item>
+        <item quantity="other">%d फ़ाइलें निकाली गईं</item>
+    </plurals>
+</resources>

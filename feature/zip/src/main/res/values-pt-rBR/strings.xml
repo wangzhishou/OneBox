@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="zip_create_title">Criar arquivo</string>
+    <string name="zip_add_files">Adicionar arquivos</string>
+    <string name="zip_empty_title">Nenhum arquivo ainda</string>
+    <string name="zip_empty_message">Toque em + no canto superior e escolha os arquivos para compactar</string>
+    <string name="zip_added_files">Arquivos adicionados</string>
+    <string name="zip_save_archive">Salvar como arquivo</string>
+    <string name="zip_saved_message">Arquivo salvo</string>
+    <string name="zip_remove_file">Remover arquivo</string>
+    <string name="zip_browse_title">Arquivo</string>
+    <string name="zip_extract_all">Extrair todos os arquivos</string>
+    <string name="zip_extract_file">Extrair este arquivo</string>
+    <string name="zip_entry_details">Detalhes</string>
+    <string name="zip_open_failed">Não foi possível abrir este arquivo</string>
+    <string name="zip_only_zip_supported">Apenas arquivos ZIP podem ser abertos aqui</string>
+    <string name="zip_retry">Tentar novamente</string>
+    <string name="zip_details_path">Caminho</string>
+    <string name="zip_details_size">Tamanho original</string>
+    <string name="zip_details_compressed_size">Tamanho compactado</string>
+    <string name="zip_details_modified">Modificado</string>
+    <string name="zip_file_saved">Arquivo extraído</string>
+    <string name="zip_share">Compartilhar</string>
+    <string name="zip_unknown_size">Desconhecido</string>
+    <string name="zip_loading">Lendo arquivo…</string>
+    <string name="zip_empty_folder">Esta pasta está vazia</string>
+    <string name="zip_empty_archive">Este arquivo não contém arquivos</string>
+    <string name="zip_more_actions">Mais ações</string>
+    <string name="zip_progress_percent">%1$d%%</string>
+    <string name="zip_encrypted_unsupported">Este arquivo é protegido por senha e não pode ser extraído</string>
+    <string name="zip_archive_closed">O arquivo não está mais disponível. Abra-o novamente.</string>
+    <string name="zip_encrypted_open">Arquivos protegidos por senha não são suportados</string>
+    <plurals name="zip_file_count">
+        <item quantity="one">%d arquivo</item>
+        <item quantity="other">%d arquivos</item>
+    </plurals>
+    <plurals name="zip_added_summary">
+        <item quantity="one">%1$d arquivo · %2$s no total</item>
+        <item quantity="other">%1$d arquivos · %2$s no total</item>
+    </plurals>
+    <plurals name="zip_archive_summary">
+        <item quantity="one">%1$d arquivo · %2$s</item>
+        <item quantity="other">%1$d arquivos · %2$s</item>
+    </plurals>
+    <plurals name="zip_archive_summary_compressed">
+        <item quantity="one">%1$d arquivo · %2$s · %3$d%% menor</item>
+        <item quantity="other">%1$d arquivos · %2$s · %3$d%% menor</item>
+    </plurals>
+    <plurals name="zip_extract_success">
+        <item quantity="one">%d arquivo extraído</item>
+        <item quantity="other">%d arquivos extraídos</item>
+    </plurals>
+</resources>

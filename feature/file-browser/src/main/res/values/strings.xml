@@ -3,6 +3,7 @@
     <string name="file_browser_title">File Browser</string>
 
     <!-- Actions -->
+    <string name="open_folder">Open folder</string>
     <string name="action_back">Back</string>
     <string name="action_sort">Sort</string>
     <string name="action_refresh">Refresh</string>

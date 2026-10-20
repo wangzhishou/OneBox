@@ -5,6 +5,7 @@
     <string name="dialog_clear_recents_title">हाल की सूची साफ़ करें</string>
     <string name="dialog_clear_recents_message">सभी हालिया एक्सेस रिकॉर्ड साफ़ करें? इसे पूर्ववत नहीं किया जा सकता।</string>
     <string name="file_browser_title">फ़ाइल ब्राउज़र</string>
+    <string name="open_folder">फ़ोल्डर खोलें</string>
     <string name="action_back">वापस</string>
     <string name="action_sort">क्रमबद्ध करें</string>
     <string name="action_refresh">रिफ्रेश करें</string>

@@ -138,7 +138,14 @@ fun Intent?.handleDeeplinks(
                     if (intent.action == Intent.ACTION_VIEW) {
                         // 单文件场景：优先委托给 ContentRouter
                         if (contentRouter != null) {
-                            contentRouter.route(it, context, onNavigate, emptyList(), fallbackToExternal = false)
+                            contentRouter.route(
+                                uri = it,
+                                context = context,
+                                onNavigate = onNavigate,
+                                allSiblings = emptyList(),
+                                fallbackToExternal = false,
+                                mimeTypeHint = intent.type
+                            )
                         } else {
                             onNavigate(Screen.PdfTools(Screen.PdfTools.Type.Preview(it)))
                         }
@@ -183,6 +190,20 @@ fun Intent?.handleDeeplinks(
                                 onHasExtraDataType(ExtraDataType.Backup(it.toString()))
                                 return
                             }
+                            // 分享进来的 zip 直接打开压缩包浏览页，不再落到"选择工具"页。
+                            // 只认 application/zip 精确类型、.zip 后缀或真实探测结果；
+                            // 不能用 contains("zip")，application/gzip 也会误命中。
+                            if (isZipShare(it, context, intent.type) && contentRouter != null) {
+                                val handled = contentRouter.route(
+                                    uri = it,
+                                    context = context,
+                                    onNavigate = onNavigate,
+                                    allSiblings = emptyList(),
+                                    fallbackToExternal = false,
+                                    mimeTypeHint = intent.type
+                                )
+                                if (handled) return
+                            }
                             // 分享进来的音视频直接进播放器，不再落到"选择工具"页
                             val isVideo = intent.type?.startsWith("video/") == true
                             if ((isAudio || isVideo) && contentRouter != null) {
@@ -191,7 +212,8 @@ fun Intent?.handleDeeplinks(
                                     context = context,
                                     onNavigate = onNavigate,
                                     allSiblings = emptyList(),
-                                    fallbackToExternal = false
+                                    fallbackToExternal = false,
+                                    mimeTypeHint = intent.type
                                 )
                                 if (handled) return
                             }
@@ -242,7 +264,8 @@ fun Intent?.handleDeeplinks(
                                         allSiblings = emptyList(),
                                         // 外部打开入口：打不开的类型回退文件浏览器，
                                         // 不外抛 chooser（本 App 在候选里会死循环）
-                                        fallbackToExternal = false
+                                        fallbackToExternal = false,
+                                        mimeTypeHint = intent.type
                                     )
                                     if (handled) return@runCatching
                                 }
@@ -274,3 +297,32 @@ fun Intent?.handleDeeplinks(
         com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineError
     )
 }
+
+private fun isZipShare(
+    uri: Uri,
+    context: Context,
+    mimeType: String?
+): Boolean {
+    if (mimeType.isZipMime()) return true
+    if (uri.toString().substringBefore('?').endsWith(".zip", ignoreCase = true)) return true
+
+    val displayName = runCatching {
+        context.contentResolver.query(
+            uri,
+            arrayOf(android.provider.OpenableColumns.DISPLAY_NAME),
+            null,
+            null,
+            null
+        )?.use { cursor ->
+            if (cursor.moveToFirst()) cursor.getString(0) else null
+        }
+    }.getOrNull()
+    if (displayName?.endsWith(".zip", ignoreCase = true) == true) return true
+
+    return runCatching { context.contentResolver.getType(uri) }
+        .getOrNull()
+        .isZipMime()
+}
+
+private fun String?.isZipMime(): Boolean =
+    this == "application/zip" || this == "application/x-zip-compressed"

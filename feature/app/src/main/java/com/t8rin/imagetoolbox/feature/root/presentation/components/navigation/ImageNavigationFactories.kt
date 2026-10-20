@@ -44,6 +44,7 @@ import com.t8rin.imagetoolbox.feature.watermarking.presentation.screenLogic.Wate
 import com.t8rin.imagetoolbox.feature.webp_tools.presentation.screenLogic.WebpToolsComponent
 import com.t8rin.imagetoolbox.feature.weight_resize.presentation.screenLogic.WeightResizeComponent
 import com.t8rin.imagetoolbox.feature.zip.presentation.screenLogic.ZipComponent
+import com.t8rin.imagetoolbox.feature.zip.presentation.screenLogic.ZipBrowserComponent
 import com.t8rin.imagetoolbox.image_cutting.presentation.screenLogic.ImageCutterComponent
 import com.t8rin.imagetoolbox.image_splitting.presentation.screenLogic.ImageSplitterComponent
 import com.t8rin.imagetoolbox.library_details.presentation.screenLogic.LibraryDetailsComponent
@@ -96,6 +97,7 @@ class ImageNavigationFactories @Inject constructor(
     val webpToolsComponentFactory: WebpToolsComponent.Factory,
     val weightResizeComponentFactory: WeightResizeComponent.Factory,
     val zipComponentFactory: ZipComponent.Factory,
+    val zipBrowserComponentFactory: ZipBrowserComponent.Factory,
     val markupLayersComponentFactory: MarkupLayersComponent.Factory,
     val textCardComponentFactory: TextCardComponent.Factory,
     val meshGradientsComponentFactory: MeshGradientsComponent.Factory,

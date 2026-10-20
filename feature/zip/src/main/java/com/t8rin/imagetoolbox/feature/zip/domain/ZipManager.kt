@@ -19,9 +19,31 @@ package com.t8rin.imagetoolbox.feature.zip.domain
 
 interface ZipManager {
 
-    suspend fun zip(
+    /**
+     * 解析待压缩文件的显示名、大小和类型。
+     */
+    suspend fun describeSources(uris: List<String>): List<ZipSourceFile>
+
+    /**
+     * 把 [files] 压缩到用户选定的 [destinationUri]。
+     */
+    suspend fun compress(
         files: List<String>,
-        onProgress: () -> Unit
-    ): String
+        destinationUri: String,
+        onProgress: (ZipProgress) -> Unit
+    )
+
+    /**
+     * 读取压缩包显示名（打不开时也用它在标题栏显示文件名）。
+     */
+    suspend fun displayName(uri: String): String?
+
+    /**
+     * 打开一个 zip 压缩包用于浏览/解压；调用方负责 [ZipArchive.close]。
+     */
+    suspend fun openArchive(
+        uri: String,
+        onProgress: (ZipProgress) -> Unit = {}
+    ): ZipArchive
 
 }

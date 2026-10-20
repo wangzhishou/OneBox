@@ -5,6 +5,7 @@
     <string name="dialog_clear_recents_title">Son Kullanılanları Temizle</string>
     <string name="dialog_clear_recents_message">Tüm son erişim kayıtları temizlensin mi? Bu işlem geri alınamaz.</string>
     <string name="file_browser_title">Dosya gezgini</string>
+    <string name="open_folder">Klasörü aç</string>
     <string name="action_back">Geri</string>
     <string name="action_sort">Sırala</string>
     <string name="action_refresh">Yenile</string>

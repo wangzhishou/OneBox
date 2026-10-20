@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="zip_create_title">Archiv erstellen</string>
+    <string name="zip_add_files">Dateien hinzufügen</string>
+    <string name="zip_empty_title">Noch keine Dateien</string>
+    <string name="zip_empty_message">Tippe oben in der Ecke auf + und wähle dann die zu komprimierenden Dateien aus</string>
+    <string name="zip_added_files">Hinzugefügte Dateien</string>
+    <string name="zip_save_archive">Als Archiv speichern</string>
+    <string name="zip_saved_message">Archiv gespeichert</string>
+    <string name="zip_remove_file">Datei entfernen</string>
+    <string name="zip_browse_title">Archiv</string>
+    <string name="zip_extract_all">Alle Dateien extrahieren</string>
+    <string name="zip_extract_file">Diese Datei extrahieren</string>
+    <string name="zip_entry_details">Details</string>
+    <string name="zip_open_failed">Dieses Archiv konnte nicht geöffnet werden</string>
+    <string name="zip_only_zip_supported">Hier können nur ZIP-Archive geöffnet werden</string>
+    <string name="zip_retry">Erneut versuchen</string>
+    <string name="zip_details_path">Pfad</string>
+    <string name="zip_details_size">Originalgröße</string>
+    <string name="zip_details_compressed_size">Komprimierte Größe</string>
+    <string name="zip_details_modified">Geändert</string>
+    <string name="zip_file_saved">Datei extrahiert</string>
+    <string name="zip_share">Teilen</string>
+    <string name="zip_unknown_size">Unbekannt</string>
+    <string name="zip_loading">Archiv wird gelesen…</string>
+    <string name="zip_empty_folder">Dieser Ordner ist leer</string>
+    <string name="zip_empty_archive">Dieses Archiv enthält keine Dateien</string>
+    <string name="zip_more_actions">Weitere Aktionen</string>
+    <string name="zip_progress_percent">%1$d%%</string>
+    <string name="zip_encrypted_unsupported">Dieses Archiv ist passwortgeschützt und kann nicht extrahiert werden</string>
+    <string name="zip_archive_closed">Archiv ist nicht mehr verfügbar. Öffne es erneut.</string>
+    <string name="zip_encrypted_open">Passwortgeschützte Archive werden nicht unterstützt</string>
+    <plurals name="zip_file_count">
+        <item quantity="one">%d Datei</item>
+        <item quantity="other">%d Dateien</item>
+    </plurals>
+    <plurals name="zip_added_summary">
+        <item quantity="one">%1$d Datei · %2$s gesamt</item>
+        <item quantity="other">%1$d Dateien · %2$s gesamt</item>
+    </plurals>
+    <plurals name="zip_archive_summary">
+        <item quantity="one">%1$d Datei · %2$s</item>
+        <item quantity="other">%1$d Dateien · %2$s</item>
+    </plurals>
+    <plurals name="zip_archive_summary_compressed">
+        <item quantity="one">%1$d Datei · %2$s · %3$d%% kleiner</item>
+        <item quantity="other">%1$d Dateien · %2$s · %3$d%% kleiner</item>
+    </plurals>
+    <plurals name="zip_extract_success">
+        <item quantity="one">%d Datei extrahiert</item>
+        <item quantity="other">%d Dateien extrahiert</item>
+    </plurals>
+</resources>

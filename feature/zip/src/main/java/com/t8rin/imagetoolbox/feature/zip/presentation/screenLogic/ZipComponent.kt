@@ -20,22 +20,22 @@ package com.t8rin.imagetoolbox.feature.zip.presentation.screenLogic
 import android.net.Uri
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import com.arkivanov.decompose.ComponentContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.image.ShareProvider
-import com.t8rin.imagetoolbox.core.domain.saving.FileController
-import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
 import com.t8rin.imagetoolbox.core.domain.utils.runSuspendCatching
 import com.t8rin.imagetoolbox.core.domain.utils.smartJob
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
 import com.t8rin.imagetoolbox.core.ui.utils.state.update
 import com.t8rin.imagetoolbox.feature.zip.domain.ZipManager
+import com.t8rin.imagetoolbox.feature.zip.domain.ZipProgress
+import com.t8rin.imagetoolbox.feature.zip.domain.ZipSourceFile
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class ZipComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
@@ -43,7 +43,6 @@ class ZipComponent @AssistedInject internal constructor(
     @Assisted val onGoBack: () -> Unit,
     private val zipManager: ZipManager,
     private val shareProvider: ShareProvider,
-    private val fileController: FileController,
     dispatchersHolder: DispatchersHolder
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
@@ -56,87 +55,125 @@ class ZipComponent @AssistedInject internal constructor(
     private val _uris = mutableStateOf<List<Uri>>(emptyList())
     val uris by _uris
 
-    private val _compressedArchiveUri = mutableStateOf<String?>(null)
-    val compressedArchiveUri by _compressedArchiveUri
+    private val _sourceFiles = mutableStateOf<List<ZipSourceFile>>(emptyList())
+    val sourceFiles by _sourceFiles
+
+    val totalSize: Long
+        get() = sourceFiles.sumOf { it.size }
+
+    private val _savedArchiveUri = mutableStateOf<Uri?>(null)
+    val savedArchiveUri by _savedArchiveUri
 
     private val _isSaving: MutableState<Boolean> = mutableStateOf(false)
     val isSaving by _isSaving
 
-    private val _done: MutableState<Int> = mutableIntStateOf(0)
-    val done by _done
+    private val _progress = mutableStateOf(ZipProgress())
+    val progress by _progress
 
-    private val _left: MutableState<Int> = mutableIntStateOf(-1)
-    val left by _left
-
-    fun setUris(newUris: List<Uri>) {
-        _uris.update { newUris.distinct() }
-        resetCalculatedData()
-    }
+    private var describeJob: Job? by smartJob()
 
     private var savingJob: Job? by smartJob {
         _isSaving.update { false }
+        _progress.update { ZipProgress() }
     }
 
-    fun startCompression(
-        onFailure: (Throwable) -> Unit
+    fun setUris(newUris: List<Uri>) {
+        _uris.update { newUris.distinct() }
+        _savedArchiveUri.update { null }
+        refreshSourceFiles()
+    }
+
+    fun addUris(list: List<Uri>) = setUris(uris + list)
+
+    fun removeUri(uri: Uri) {
+        _uris.update { it - uri }
+        _savedArchiveUri.update { null }
+        refreshSourceFiles()
+    }
+
+    /**
+     * 解析文件元数据（真实文件名、大小、类型）。先放一组占位数据，
+     * 避免列表在查询期间空一拍。
+     */
+    private fun refreshSourceFiles() {
+        val snapshot = _uris.value
+        _sourceFiles.value = snapshot.map { uri ->
+            val fallbackName = uri.lastPathSegment
+                ?.substringAfterLast('/')
+                ?.substringAfterLast(':')
+                ?.takeIf { it.isNotBlank() }
+                ?: uri.toString()
+            ZipSourceFile(
+                uri = uri.toString(),
+                name = fallbackName,
+                size = 0L,
+                extension = fallbackName.substringAfterLast('.', "").lowercase(),
+                mimeType = null
+            )
+        }
+        if (snapshot.isEmpty()) return
+
+        describeJob = componentScope.launch {
+            val described = zipManager.describeSources(snapshot.map { it.toString() })
+            if (_uris.value == snapshot) {
+                _sourceFiles.value = described
+            }
+        }
+    }
+
+    /**
+     * 一步保存：用户先在系统保存对话框里选好位置，压缩结果直接写进去。
+     */
+    fun saveArchive(
+        destinationUri: Uri,
+        onResult: (Result<Uri>) -> Unit
     ) {
+        if (_uris.value.isEmpty()) return
+
         savingJob = componentScope.launch {
             _isSaving.value = true
-            if (uris.isEmpty()) {
-                return@launch
-            }
-            runSuspendCatching {
-                _done.update { 0 }
-                _left.update { uris.size }
-                _compressedArchiveUri.value = zipManager.zip(
-                    files = uris.map { it.toString() },
-                    onProgress = {
-                        _done.update { it + 1 }
-                    }
+            _progress.value = ZipProgress(
+                totalBytes = totalSize,
+                totalFiles = _uris.value.size
+            )
+
+            val result = runSuspendCatching {
+                zipManager.compress(
+                    files = _uris.value.map(Uri::toString),
+                    destinationUri = destinationUri.toString(),
+                    onProgress = ::publishProgress
                 )
-            }.onFailure(onFailure)
+                destinationUri
+            }
+
             _isSaving.value = false
+            result.onSuccess { _savedArchiveUri.value = it }
+            onResult(result)
         }
     }
 
-    private fun resetCalculatedData() {
-        _compressedArchiveUri.value = null
-    }
-
-    fun saveResultTo(
-        uri: Uri,
-        onResult: (SaveResult) -> Unit
-    ) {
+    fun shareSavedArchive(onComplete: () -> Unit) {
+        val uri = _savedArchiveUri.value ?: return
         savingJob = componentScope.launch {
             _isSaving.value = true
-            _compressedArchiveUri.value?.let { byteArray ->
-                fileController.transferBytes(
-                    fromUri = byteArray,
-                    toUri = uri.toString(),
-                ).also(onResult).onSuccess(::registerSave)
-            }
-            _isSaving.value = false
-        }
-    }
-
-    fun shareFile(
-        onComplete: () -> Unit
-    ) {
-        compressedArchiveUri?.let { uri ->
-            savingJob = componentScope.launch {
-                _done.update { 0 }
-                _left.update { 0 }
-
-                _isSaving.value = true
+            _progress.value = ZipProgress()
+            runSuspendCatching {
                 shareProvider.shareUri(
-                    uri = uri,
+                    uri = uri.toString(),
                     onComplete = {
                         _isSaving.value = false
                         onComplete()
                     }
                 )
+            }.onFailure {
+                _isSaving.value = false
             }
         }
+    }
+
+    private fun publishProgress(progress: ZipProgress) {
+        // 进度回调在 IO 线程，统一回到主线程写 Compose state
+        componentScope.launch { _progress.value = progress }
     }
 
     fun cancelSaving() {
@@ -144,13 +181,6 @@ class ZipComponent @AssistedInject internal constructor(
         savingJob = null
         _isSaving.value = false
     }
-
-    fun removeUri(uri: Uri) {
-        _uris.update { it - uri }
-    }
-
-    fun addUris(list: List<Uri>) = setUris(uris + list)
-
 
     @AssistedFactory
     fun interface Factory {

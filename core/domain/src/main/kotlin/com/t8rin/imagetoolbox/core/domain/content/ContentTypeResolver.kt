@@ -23,7 +23,15 @@ import com.t8rin.imagetoolbox.core.domain.content.ContentType.Companion.VIDEO_EX
  * 禁止在业务层重复实现类型判断逻辑。
  */
 interface ContentTypeResolver {
-    fun resolve(uri: Uri, context: Context): ContentType
+    /**
+     * @param mimeTypeHint 调用方已知的 MIME 类型（如分享 Intent 的 type）。
+     * 外部分享的 content URI 有时读不到文件名/类型，此时用这个提示兜底。
+     */
+    fun resolve(
+        uri: Uri,
+        context: Context,
+        mimeTypeHint: String? = null
+    ): ContentType
 }
 
 /**
@@ -31,12 +39,28 @@ interface ContentTypeResolver {
  */
 class DefaultContentTypeResolver : ContentTypeResolver {
 
-    override fun resolve(uri: Uri, context: Context): ContentType {
-        val mimeType = resolveMimeType(uri, context)
+    override fun resolve(
+        uri: Uri,
+        context: Context,
+        mimeTypeHint: String?
+    ): ContentType {
+        val detectedMimeType = resolveMimeType(uri, context)
+        // zip 的 MIME 提示优先于被文件管理器误标的 text/plain 等类型；
+        // 其他类型仍以真实探测结果为准，hint 只在探测不到时兜底。
+        val mimeType = when {
+            mimeTypeHint.isZipMime() -> mimeTypeHint
+            detectedMimeType != null && detectedMimeType != "application/octet-stream" -> detectedMimeType
+            mimeTypeHint != null -> mimeTypeHint
+            else -> detectedMimeType
+        }
         val extension = resolveExtension(uri, context)
 
         return when {
             isDirectory(uri, context) -> ContentType.Directory
+
+            // 扩展名是压缩包时优先按压缩包处理，避免被误标的 text/plain、audio/* 抢走
+            extension in ARCHIVE_EXTENSIONS ->
+                ContentType.Archive(mimeType, extension)
 
             mimeType?.startsWith("image/") == true || extension in IMAGE_EXTENSIONS ->
                 ContentType.Image(mimeType)
@@ -55,6 +79,10 @@ class DefaultContentTypeResolver : ContentTypeResolver {
             isDocumentMimeType(mimeType) || extension in DOCUMENT_EXTENSIONS ->
                 ContentType.Document(mimeType)
 
+            // 压缩包 MIME 排在 text/audio/video 之前；epub 已在上面按 Document 处理
+            isArchiveMimeType(mimeType) ->
+                ContentType.Archive(mimeType, extension)
+
             mimeType?.startsWith("text/") == true || extension in TEXT_EXTENSIONS ->
                 ContentType.Text(mimeType)
 
@@ -63,9 +91,6 @@ class DefaultContentTypeResolver : ContentTypeResolver {
 
             mimeType?.startsWith("video/") == true || extension in VIDEO_EXTENSIONS ->
                 ContentType.Video(mimeType)
-
-            isArchiveMimeType(mimeType) || extension in ARCHIVE_EXTENSIONS ->
-                ContentType.Archive(mimeType)
 
             else -> ContentType.Unknown(mimeType)
         }
@@ -131,6 +156,9 @@ class DefaultContentTypeResolver : ContentTypeResolver {
             mimeType?.contains("directory") == true
         }
     }
+
+    private fun String?.isZipMime(): Boolean =
+        this == "application/zip" || this == "application/x-zip-compressed"
 
     private fun isArchiveMimeType(mimeType: String?): Boolean {
         return mimeType?.let {

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="zip_create_title">إنشاء أرشيف</string>
+    <string name="zip_add_files">إضافة ملفات</string>
+    <string name="zip_empty_title">لا توجد ملفات بعد</string>
+    <string name="zip_empty_message">اضغط على + في الزاوية العلوية، ثم اختر الملفات المراد ضغطها</string>
+    <string name="zip_added_files">الملفات المضافة</string>
+    <string name="zip_save_archive">حفظ كأرشيف</string>
+    <string name="zip_saved_message">تم حفظ الأرشيف</string>
+    <string name="zip_remove_file">إزالة الملف</string>
+    <string name="zip_browse_title">أرشيف</string>
+    <string name="zip_extract_all">استخراج جميع الملفات</string>
+    <string name="zip_extract_file">استخراج هذا الملف</string>
+    <string name="zip_entry_details">التفاصيل</string>
+    <string name="zip_open_failed">تعذر فتح هذا الأرشيف</string>
+    <string name="zip_only_zip_supported">يمكن فتح أرشيفات ZIP فقط هنا</string>
+    <string name="zip_retry">إعادة المحاولة</string>
+    <string name="zip_details_path">المسار</string>
+    <string name="zip_details_size">الحجم الأصلي</string>
+    <string name="zip_details_compressed_size">الحجم المضغوط</string>
+    <string name="zip_details_modified">آخر تعديل</string>
+    <string name="zip_file_saved">تم استخراج الملف</string>
+    <string name="zip_share">مشاركة</string>
+    <string name="zip_unknown_size">غير معروف</string>
+    <string name="zip_loading">جارٍ قراءة الأرشيف…</string>
+    <string name="zip_empty_folder">هذا المجلد فارغ</string>
+    <string name="zip_empty_archive">لا يحتوي هذا الأرشيف على ملفات</string>
+    <string name="zip_more_actions">إجراءات أخرى</string>
+    <string name="zip_progress_percent">%1$d%%</string>
+    <string name="zip_encrypted_unsupported">هذا الأرشيف محمي بكلمة مرور ولا يمكن استخراجه</string>
+    <string name="zip_archive_closed">الأرشيف لم يعد متاحًا. أعد فتحه.</string>
+    <string name="zip_encrypted_open">الأرشيفات المحمية بكلمة مرور غير مدعومة</string>
+    <plurals name="zip_file_count">
+        <item quantity="zero">لا ملفات</item>
+        <item quantity="one">ملف واحد</item>
+        <item quantity="two">ملفان</item>
+        <item quantity="few">%d ملفات</item>
+        <item quantity="many">%d ملفًا</item>
+        <item quantity="other">%d ملف</item>
+    </plurals>
+    <plurals name="zip_added_summary">
+        <item quantity="zero">لا ملفات · %2$s الإجمالي</item>
+        <item quantity="one">ملف واحد · %2$s الإجمالي</item>
+        <item quantity="two">ملفان · %2$s الإجمالي</item>
+        <item quantity="few">%1$d ملفات · %2$s الإجمالي</item>
+        <item quantity="many">%1$d ملفًا · %2$s الإجمالي</item>
+        <item quantity="other">%1$d ملف · %2$s الإجمالي</item>
+    </plurals>
+    <plurals name="zip_archive_summary">
+        <item quantity="zero">لا ملفات · %2$s</item>
+        <item quantity="one">ملف واحد · %2$s</item>
+        <item quantity="two">ملفان · %2$s</item>
+        <item quantity="few">%1$d ملفات · %2$s</item>
+        <item quantity="many">%1$d ملفًا · %2$s</item>
+        <item quantity="other">%1$d ملف · %2$s</item>
+    </plurals>
+    <plurals name="zip_archive_summary_compressed">
+        <item quantity="zero">لا ملفات · %2$s · أصغر بنسبة %3$d%%</item>
+        <item quantity="one">ملف واحد · %2$s · أصغر بنسبة %3$d%%</item>
+        <item quantity="two">ملفان · %2$s · أصغر بنسبة %3$d%%</item>
+        <item quantity="few">%1$d ملفات · %2$s · أصغر بنسبة %3$d%%</item>
+        <item quantity="many">%1$d ملفًا · %2$s · أصغر بنسبة %3$d%%</item>
+        <item quantity="other">%1$d ملف · %2$s · أصغر بنسبة %3$d%%</item>
+    </plurals>
+    <plurals name="zip_extract_success">
+        <item quantity="zero">لم يتم استخراج أي ملف</item>
+        <item quantity="one">تم استخراج ملف واحد</item>
+        <item quantity="two">تم استخراج ملفين</item>
+        <item quantity="few">تم استخراج %d ملفات</item>
+        <item quantity="many">تم استخراج %d ملفًا</item>
+        <item quantity="other">تم استخراج %d ملف</item>
+    </plurals>
+</resources>

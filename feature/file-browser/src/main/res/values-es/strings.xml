@@ -5,6 +5,7 @@
     <string name="dialog_clear_recents_title">Borrar recientes</string>
     <string name="dialog_clear_recents_message">¿Borrar todos los registros de acceso recientes? Esta acción no se puede deshacer.</string>
     <string name="file_browser_title">Explorador de archivos</string>
+    <string name="open_folder">Abrir carpeta</string>
     <string name="action_back">Atrás</string>
     <string name="action_sort">Ordenar</string>
     <string name="action_refresh">Actualizar</string>

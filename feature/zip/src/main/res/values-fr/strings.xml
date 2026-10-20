@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="zip_create_title">Créer une archive</string>
+    <string name="zip_add_files">Ajouter des fichiers</string>
+    <string name="zip_empty_title">Aucun fichier pour l\'instant</string>
+    <string name="zip_empty_message">Appuyez sur + en haut, puis choisissez les fichiers à compresser</string>
+    <string name="zip_added_files">Fichiers ajoutés</string>
+    <string name="zip_save_archive">Enregistrer l\'archive</string>
+    <string name="zip_saved_message">Archive enregistrée</string>
+    <string name="zip_remove_file">Supprimer le fichier</string>
+    <string name="zip_browse_title">Archive</string>
+    <string name="zip_extract_all">Extraire tous les fichiers</string>
+    <string name="zip_extract_file">Extraire ce fichier</string>
+    <string name="zip_entry_details">Détails</string>
+    <string name="zip_open_failed">Impossible d\'ouvrir cette archive</string>
+    <string name="zip_only_zip_supported">Seules les archives ZIP peuvent être ouvertes ici</string>
+    <string name="zip_retry">Réessayer</string>
+    <string name="zip_details_path">Chemin</string>
+    <string name="zip_details_size">Taille d\'origine</string>
+    <string name="zip_details_compressed_size">Taille compressée</string>
+    <string name="zip_details_modified">Modifié</string>
+    <string name="zip_file_saved">Fichier extrait</string>
+    <string name="zip_share">Partager</string>
+    <string name="zip_unknown_size">Inconnu</string>
+    <string name="zip_loading">Lecture de l\'archive…</string>
+    <string name="zip_empty_folder">Ce dossier est vide</string>
+    <string name="zip_empty_archive">Cette archive ne contient aucun fichier</string>
+    <string name="zip_more_actions">Plus d\'actions</string>
+    <string name="zip_progress_percent">%1$d%%</string>
+    <string name="zip_encrypted_unsupported">Cette archive est protégée par mot de passe et ne peut pas être extraite</string>
+    <string name="zip_archive_closed">L\'archive n\'est plus disponible. Rouvrez-la.</string>
+    <string name="zip_encrypted_open">Les archives protégées par mot de passe ne sont pas prises en charge</string>
+    <plurals name="zip_file_count">
+        <item quantity="one">%d fichier</item>
+        <item quantity="other">%d fichiers</item>
+    </plurals>
+    <plurals name="zip_added_summary">
+        <item quantity="one">%1$d fichier · %2$s au total</item>
+        <item quantity="other">%1$d fichiers · %2$s au total</item>
+    </plurals>
+    <plurals name="zip_archive_summary">
+        <item quantity="one">%1$d fichier · %2$s</item>
+        <item quantity="other">%1$d fichiers · %2$s</item>
+    </plurals>
+    <plurals name="zip_archive_summary_compressed">
+        <item quantity="one">%1$d fichier · %2$s · %3$d%% plus petit</item>
+        <item quantity="other">%1$d fichiers · %2$s · %3$d%% plus petits</item>
+    </plurals>
+    <plurals name="zip_extract_success">
+        <item quantity="one">%d fichier extrait</item>
+        <item quantity="other">%d fichiers extraits</item>
+    </plurals>
+</resources>

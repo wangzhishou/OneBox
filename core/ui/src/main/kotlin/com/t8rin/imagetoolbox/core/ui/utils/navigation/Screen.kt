@@ -679,6 +679,19 @@ sealed class Screen(
         subtitle = R.string.zip_sub
     )
 
+    /**
+     * 浏览/解压一个已存在的 zip 压缩包（文件浏览器点 zip、外部分享 zip 进来都走这里）。
+     */
+    @Serializable
+    @SerialName("ZipBrowser")
+    data class ZipBrowser(
+        val uri: Uri
+    ) : Screen(
+        id = 1110,
+        title = R.string.zip,
+        subtitle = R.string.zip_sub
+    )
+
     @Serializable
     @SerialName("SvgMaker")
     data class SvgMaker(

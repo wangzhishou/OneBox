@@ -5,6 +5,7 @@
     <string name="dialog_clear_recents_title">最近の履歴をクリア</string>
     <string name="dialog_clear_recents_message">最近のアクセス記録をすべてクリアしますか？この操作は元に戻せません。</string>
     <string name="file_browser_title">ファイルブラウザ</string>
+    <string name="open_folder">フォルダを開く</string>
     <string name="action_back">戻る</string>
     <string name="action_sort">並べ替え</string>
     <string name="action_refresh">更新</string>
