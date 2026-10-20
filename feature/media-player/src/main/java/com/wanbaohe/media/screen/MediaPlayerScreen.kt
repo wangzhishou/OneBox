@@ -439,7 +439,7 @@ private fun TopBarActions(
             expanded = expanded,
             onDismissRequest = { expanded = false },
             containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-            contentPadding = PaddingValues(top = 14.dp, bottom = 8.dp),
+            contentPadding = PaddingValues(vertical = 12.dp),
         ) {
             if (state.tab == MediaTab.PLAYER) {
                 DropdownMenuItem(

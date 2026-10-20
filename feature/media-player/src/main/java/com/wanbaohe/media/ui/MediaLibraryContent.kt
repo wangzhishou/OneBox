@@ -533,7 +533,7 @@ private fun RowOverflowMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
             containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-            contentPadding = PaddingValues(top = 12.dp, bottom = 8.dp),
+            contentPadding = PaddingValues(vertical = 12.dp),
         ) {
             DropdownMenuItem(
                 text = {

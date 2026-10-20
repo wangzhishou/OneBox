@@ -93,7 +93,7 @@ internal fun MediaDateAnchorBar(
                 maxWidth = 200.dp,
                 maxHeight = 360.dp,
                 containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-                contentPadding = PaddingValues(top = 12.dp, bottom = 8.dp),
+                contentPadding = PaddingValues(vertical = 12.dp),
             ) {
                 Text(
                     text = stringResource(R.string.media_jump_to_date),
