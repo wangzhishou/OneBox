@@ -1941,4 +1941,18 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
     <string name="media_video_description">Lokale Videos mit Bild-in-Bild abspielen</string>
     <string name="media_audio_title">Musikplayer</string>
     <string name="media_audio_description">Lokale Audiodateien im Hintergrund abspielen</string>
+
+    <string name="viewer_epub_opening">Buch wird geöffnet…</string>
+    <string name="viewer_epub_contents">Inhalt</string>
+    <string name="viewer_epub_close">Schließen</string>
+    <string name="viewer_epub_previous">Vorheriger Abschnitt</string>
+    <string name="viewer_epub_next">Nächster Abschnitt</string>
+    <string name="viewer_epub_link_leaves">Dieser Link führt aus dem Buch heraus</string>
+    <string name="viewer_epub_link_note">Webadressen können hier nicht direkt geöffnet werden. Kopiere sie, um sie im Browser zu öffnen.</string>
+    <string name="viewer_epub_copy_address">Adresse kopieren</string>
+    <string name="viewer_epub_copied">Kopiert</string>
+    <string name="viewer_epub_open_failed">Dieses Buch lässt sich nicht öffnen</string>
+    <string name="viewer_epub_locked">Dieses Buch ist verschlüsselt</string>
+    <string name="viewer_epub_part_unreadable">Dieser Teil des Inhalts kann nicht gelesen werden.</string>
+    <string name="ai_duel_language_instruction">Sofern das Gespräch nichts anderes verlangt, denke und antworte auf %1$s – schreibe auch deine Überlegungen auf %1$s.</string>
 </resources>

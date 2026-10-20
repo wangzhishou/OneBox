@@ -31,6 +31,8 @@ internal data class ViewerRequest(
     /** 页面自己没有深色样式时，交给 WebView 的算法暗化 */
     val forceDark: Boolean = false,
     val bookPosition: String? = null,
+    /** 页面外壳文案：英文原文 → 当前语言译文（见 assets/viewer/i18n.js） */
+    val uiLabels: Map<String, String> = emptyMap(),
 )
 
 /** 页面通过 message port 回报的东西。全在主线程回调。 */
@@ -294,6 +296,7 @@ internal class ViewerWebHost(
         request.bookPosition?.let {
             builder.append("&at=").append(Uri.encode(it.removePrefix("at ")))
         }
+        encodeUiLabels(request.uiLabels)?.let { builder.append("&ui=").append(it) }
 
         val major = chromiumMajor(userAgent)
         val floor = request.webViewFloor
@@ -302,6 +305,21 @@ internal class ViewerWebHost(
         }
         if (isLockedWebViewProvider(context)) builder.append("&locked=1")
         return builder.toString()
+    }
+
+    /**
+     * 把外壳文案编码成 `key\u001evalue\u001f...` 再整体 URL 编码。
+     *
+     * 不用 JSON：页面侧 URLSearchParams 已经解过一次码，按两个控制字符切就行，
+     * 译文里的引号、斜杠、非拉丁文字都不用额外转义。控制字符本身被 Uri.encode
+     * 编成 %1F/%1E，不会和文案内容撞车。
+     */
+    private fun encodeUiLabels(labels: Map<String, String>): String? {
+        if (labels.isEmpty()) return null
+        val payload = labels.entries.joinToString(separator = "\u001F") { (key, value) ->
+            key + "\u001E" + value
+        }
+        return Uri.encode(payload)
     }
 
     /**

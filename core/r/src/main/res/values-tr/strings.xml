@@ -1941,4 +1941,18 @@
     <string name="media_video_description">Yerel videoları resim içinde resim desteğiyle oynatın</string>
     <string name="media_audio_title">Müzik çalar</string>
     <string name="media_audio_description">Yerel ses dosyalarını arka planda çalın</string>
+
+    <string name="viewer_epub_opening">Kitap açılıyor…</string>
+    <string name="viewer_epub_contents">İçindekiler</string>
+    <string name="viewer_epub_close">Kapat</string>
+    <string name="viewer_epub_previous">Önceki</string>
+    <string name="viewer_epub_next">Sonraki</string>
+    <string name="viewer_epub_link_leaves">Bu bağlantı kitabın dışına çıkıyor</string>
+    <string name="viewer_epub_link_note">Web adresleri burada açılamaz. Tarayıcıda açmak için kopyalayın.</string>
+    <string name="viewer_epub_copy_address">Adresi kopyala</string>
+    <string name="viewer_epub_copied">Kopyalandı</string>
+    <string name="viewer_epub_open_failed">Bu kitap açılamadı</string>
+    <string name="viewer_epub_locked">Bu kitap şifrelenmiş</string>
+    <string name="viewer_epub_part_unreadable">Kitabın bu bölümü okunamadı.</string>
+    <string name="ai_duel_language_instruction">Konuşma başka bir dil istemedikçe %1$s dilinde düşün ve yanıtla; akıl yürütmeni de %1$s dilinde yaz.</string>
 </resources>

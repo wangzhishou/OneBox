@@ -1975,4 +1975,18 @@
     <string name="media_video_description">تشغيل الفيديوهات المحلية مع دعم صورة داخل صورة</string>
     <string name="media_audio_title">مشغل الموسيقى</string>
     <string name="media_audio_description">تشغيل ملفات الصوت المحلية في الخلفية</string>
+
+    <string name="viewer_epub_opening">جارٍ فتح الكتاب…</string>
+    <string name="viewer_epub_contents">المحتويات</string>
+    <string name="viewer_epub_close">إغلاق</string>
+    <string name="viewer_epub_previous">القسم السابق</string>
+    <string name="viewer_epub_next">القسم التالي</string>
+    <string name="viewer_epub_link_leaves">هذا الرابط يؤدي إلى خارج الكتاب</string>
+    <string name="viewer_epub_link_note">لا يمكن فتح عناوين الويب هنا. انسخها لفتحها في المتصفح.</string>
+    <string name="viewer_epub_copy_address">نسخ العنوان</string>
+    <string name="viewer_epub_copied">تم النسخ</string>
+    <string name="viewer_epub_open_failed">تعذّر فتح هذا الكتاب</string>
+    <string name="viewer_epub_locked">هذا الكتاب مشفّر</string>
+    <string name="viewer_epub_part_unreadable">تعذّرت قراءة هذا الجزء من الكتاب.</string>
+    <string name="ai_duel_language_instruction">ما لم تطلب المحادثة لغة أخرى، فكّر وأجب بـ%1$s، واكتب عملية تفكيرك بـ%1$s أيضًا.</string>
 </resources>

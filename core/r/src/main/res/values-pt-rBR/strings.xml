@@ -1941,4 +1941,18 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
     <string name="media_video_description">Reproduza vídeos locais com imagem em imagem</string>
     <string name="media_audio_title">Player de música</string>
     <string name="media_audio_description">Reproduza arquivos de áudio locais em segundo plano</string>
+
+    <string name="viewer_epub_opening">Abrindo o livro…</string>
+    <string name="viewer_epub_contents">Sumário</string>
+    <string name="viewer_epub_close">Fechar</string>
+    <string name="viewer_epub_previous">Anterior</string>
+    <string name="viewer_epub_next">Próximo</string>
+    <string name="viewer_epub_link_leaves">Este link leva para fora do livro</string>
+    <string name="viewer_epub_link_note">Não é possível abrir endereços da web aqui. Copie para abrir no navegador.</string>
+    <string name="viewer_epub_copy_address">Copiar endereço</string>
+    <string name="viewer_epub_copied">Copiado</string>
+    <string name="viewer_epub_open_failed">Não foi possível abrir este livro</string>
+    <string name="viewer_epub_locked">Este livro está bloqueado</string>
+    <string name="viewer_epub_part_unreadable">Não foi possível ler esta parte do livro.</string>
+    <string name="ai_duel_language_instruction">A menos que a conversa peça outro idioma, pense e responda em %1$s — escreva seu raciocínio em %1$s também.</string>
 </resources>

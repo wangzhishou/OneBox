@@ -1930,4 +1930,18 @@
     <string name="media_video_description">ローカル動画を再生。ピクチャーインピクチャー対応</string>
     <string name="media_audio_title">音楽プレーヤー</string>
     <string name="media_audio_description">ローカル音声をバックグラウンドで再生</string>
+
+    <string name="viewer_epub_opening">書籍を開いています…</string>
+    <string name="viewer_epub_contents">目次</string>
+    <string name="viewer_epub_close">閉じる</string>
+    <string name="viewer_epub_previous">前の節</string>
+    <string name="viewer_epub_next">次の節</string>
+    <string name="viewer_epub_link_leaves">このリンクは書籍の外を指しています</string>
+    <string name="viewer_epub_link_note">ここではウェブアドレスを直接開けません。コピーしてブラウザで開いてください。</string>
+    <string name="viewer_epub_copy_address">アドレスをコピー</string>
+    <string name="viewer_epub_copied">コピーしました</string>
+    <string name="viewer_epub_open_failed">この書籍を開けません</string>
+    <string name="viewer_epub_locked">この書籍は暗号化されています</string>
+    <string name="viewer_epub_part_unreadable">この部分の内容を読み取れません。</string>
+    <string name="ai_duel_language_instruction">会話で別の言語を求められない限り、%1$sで考えて回答し、思考過程も%1$sで書いてください。</string>
 </resources>

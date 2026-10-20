@@ -1928,4 +1928,18 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <string name="media_video_description">Phát video trong máy, hỗ trợ cửa sổ nổi</string>
     <string name="media_audio_title">Trình phát nhạc</string>
     <string name="media_audio_description">Phát tệp âm thanh trong máy ở chế độ nền</string>
+
+    <string name="viewer_epub_opening">Đang mở sách…</string>
+    <string name="viewer_epub_contents">Mục lục</string>
+    <string name="viewer_epub_close">Đóng</string>
+    <string name="viewer_epub_previous">Phần trước</string>
+    <string name="viewer_epub_next">Phần tiếp theo</string>
+    <string name="viewer_epub_link_leaves">Liên kết này dẫn ra ngoài sách</string>
+    <string name="viewer_epub_link_note">Không thể mở địa chỉ web tại đây. Hãy sao chép để mở trong trình duyệt.</string>
+    <string name="viewer_epub_copy_address">Sao chép địa chỉ</string>
+    <string name="viewer_epub_copied">Đã sao chép</string>
+    <string name="viewer_epub_open_failed">Không thể mở sách này</string>
+    <string name="viewer_epub_locked">Sách này đã được mã hóa</string>
+    <string name="viewer_epub_part_unreadable">Không thể đọc phần nội dung này.</string>
+    <string name="ai_duel_language_instruction">Trừ khi cuộc trò chuyện yêu cầu ngôn ngữ khác, hãy suy nghĩ và trả lời bằng %1$s, quá trình suy nghĩ cũng viết bằng %1$s.</string>
 </resources>

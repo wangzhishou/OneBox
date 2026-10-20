@@ -2125,4 +2125,23 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="file_viewer_night_mode">Night mode</string>
     <string name="file_viewer_go_to_page">Go to page</string>
     <string name="file_viewer_page_number">Page number</string>
+
+    <!-- EPUB 阅读器外壳(assets/viewer/epub.html + epub.js 的英文原文) -->
+    <string name="viewer_epub_opening">Opening book…</string>
+    <string name="viewer_epub_contents">Contents</string>
+    <string name="viewer_epub_close">Close</string>
+    <string name="viewer_epub_previous">Previous</string>
+    <string name="viewer_epub_next">Next</string>
+    <string name="viewer_epub_link_leaves">This link leaves the book</string>
+    <string name="viewer_epub_link_note">Web addresses can\'t be opened here. Copy it to open it in a browser.</string>
+    <string name="viewer_epub_copy_address">Copy address</string>
+    <string name="viewer_epub_copied">Copied</string>
+    <string name="viewer_epub_open_failed">Could not open this book</string>
+    <string name="viewer_epub_locked">This book is locked</string>
+    <string name="viewer_epub_part_unreadable">This part of the book could not be read.</string>
+
+
+    <!-- AI 聊天室:思考/回答的语言跟界面语言走 -->
+    <string name="ai_duel_language_instruction">Unless the conversation asks for another language, think and answer in %1$s — write your reasoning in %1$s as well.</string>
+
 </resources>

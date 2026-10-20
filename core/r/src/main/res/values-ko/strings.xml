@@ -1930,4 +1930,18 @@
     <string name="media_video_description">로컬 동영상 재생, 화면 속 화면 지원</string>
     <string name="media_audio_title">음악 플레이어</string>
     <string name="media_audio_description">로컬 오디오를 백그라운드에서 재생</string>
+
+    <string name="viewer_epub_opening">책을 여는 중…</string>
+    <string name="viewer_epub_contents">목차</string>
+    <string name="viewer_epub_close">닫기</string>
+    <string name="viewer_epub_previous">이전 섹션</string>
+    <string name="viewer_epub_next">다음 섹션</string>
+    <string name="viewer_epub_link_leaves">이 링크는 책 밖으로 연결됩니다</string>
+    <string name="viewer_epub_link_note">여기서는 웹 주소를 바로 열 수 없습니다. 복사한 후 브라우저에서 열 수 있습니다.</string>
+    <string name="viewer_epub_copy_address">주소 복사</string>
+    <string name="viewer_epub_copied">복사됨</string>
+    <string name="viewer_epub_open_failed">이 책을 열 수 없습니다</string>
+    <string name="viewer_epub_locked">이 책은 암호화되어 있습니다</string>
+    <string name="viewer_epub_part_unreadable">이 부분의 내용을 읽을 수 없습니다.</string>
+    <string name="ai_duel_language_instruction">대화에서 다른 언어를 요구하지 않는 한 %1$s로 생각하고 답하며, 사고 과정도 %1$s로 작성하세요.</string>
 </resources>

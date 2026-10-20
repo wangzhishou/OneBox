@@ -1975,4 +1975,18 @@
     <string name="media_video_description">Воспроизведение локальных видео с поддержкой «картинка в картинке»</string>
     <string name="media_audio_title">Музыкальный плеер</string>
     <string name="media_audio_description">Воспроизведение локальных аудиофайлов в фоне</string>
+
+    <string name="viewer_epub_opening">Открытие книги…</string>
+    <string name="viewer_epub_contents">Содержание</string>
+    <string name="viewer_epub_close">Закрыть</string>
+    <string name="viewer_epub_previous">Предыдущий раздел</string>
+    <string name="viewer_epub_next">Следующий раздел</string>
+    <string name="viewer_epub_link_leaves">Эта ссылка ведёт за пределы книги</string>
+    <string name="viewer_epub_link_note">Здесь нельзя открыть веб-адрес напрямую. Скопируйте его, чтобы открыть в браузере.</string>
+    <string name="viewer_epub_copy_address">Копировать адрес</string>
+    <string name="viewer_epub_copied">Скопировано</string>
+    <string name="viewer_epub_open_failed">Не удалось открыть эту книгу</string>
+    <string name="viewer_epub_locked">Эта книга зашифрована</string>
+    <string name="viewer_epub_part_unreadable">Эту часть книги не удалось прочитать.</string>
+    <string name="ai_duel_language_instruction">Если в разговоре не требуется другой язык, думайте и отвечайте на языке %1$s, а рассуждения также записывайте на языке %1$s.</string>
 </resources>

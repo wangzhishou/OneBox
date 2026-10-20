@@ -1930,4 +1930,18 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
     <string name="media_video_description">Putar video lokal dengan dukungan picture-in-picture</string>
     <string name="media_audio_title">Pemutar musik</string>
     <string name="media_audio_description">Putar file audio lokal di latar belakang</string>
+
+    <string name="viewer_epub_opening">Membuka buku…</string>
+    <string name="viewer_epub_contents">Daftar isi</string>
+    <string name="viewer_epub_close">Tutup</string>
+    <string name="viewer_epub_previous">Sebelumnya</string>
+    <string name="viewer_epub_next">Berikutnya</string>
+    <string name="viewer_epub_link_leaves">Tautan ini mengarah ke luar buku</string>
+    <string name="viewer_epub_link_note">Alamat web tidak dapat dibuka di sini. Salin untuk membukanya di browser.</string>
+    <string name="viewer_epub_copy_address">Salin alamat</string>
+    <string name="viewer_epub_copied">Disalin</string>
+    <string name="viewer_epub_open_failed">Buku ini tidak dapat dibuka</string>
+    <string name="viewer_epub_locked">Buku ini terenkripsi</string>
+    <string name="viewer_epub_part_unreadable">Bagian ini tidak dapat dibaca.</string>
+    <string name="ai_duel_language_instruction">Kecuali percakapan meminta bahasa lain, berpikir dan jawablah dalam %1$s, tulis proses berpikir juga dalam %1$s.</string>
 </resources>

@@ -1929,4 +1929,18 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="media_video_description">Lisez vos vidéos locales en incrustation</string>
     <string name="media_audio_title">Lecteur de musique</string>
     <string name="media_audio_description">Lisez vos fichiers audio locaux en arrière-plan</string>
+
+    <string name="viewer_epub_opening">Ouverture du livre…</string>
+    <string name="viewer_epub_contents">Sommaire</string>
+    <string name="viewer_epub_close">Fermer</string>
+    <string name="viewer_epub_previous">Section précédente</string>
+    <string name="viewer_epub_next">Section suivante</string>
+    <string name="viewer_epub_link_leaves">Ce lien mène hors du livre</string>
+    <string name="viewer_epub_link_note">Les adresses web ne peuvent pas être ouvertes ici. Copiez-les pour les ouvrir dans un navigateur.</string>
+    <string name="viewer_epub_copy_address">Copier l\'adresse</string>
+    <string name="viewer_epub_copied">Copié</string>
+    <string name="viewer_epub_open_failed">Impossible d\'ouvrir ce livre</string>
+    <string name="viewer_epub_locked">Ce livre est chiffré</string>
+    <string name="viewer_epub_part_unreadable">Cette partie du contenu est illisible.</string>
+    <string name="ai_duel_language_instruction">Sauf demande contraire dans la conversation, réfléchis et réponds en %1$s, en rédigeant aussi ton raisonnement en %1$s.</string>
 </resources>

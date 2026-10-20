@@ -1941,4 +1941,18 @@
     <string name="media_video_description">लोकल वीडियो चलाएँ, पिक्चर-इन-पिक्चर सहायता के साथ</string>
     <string name="media_audio_title">म्यूज़िक प्लेयर</string>
     <string name="media_audio_description">लोकल ऑडियो फ़ाइलें बैकग्राउंड में चलाएँ</string>
+
+    <string name="viewer_epub_opening">किताब खोली जा रही है…</string>
+    <string name="viewer_epub_contents">विषय-सूची</string>
+    <string name="viewer_epub_close">बंद करें</string>
+    <string name="viewer_epub_previous">पिछला</string>
+    <string name="viewer_epub_next">अगला</string>
+    <string name="viewer_epub_link_leaves">यह लिंक किताब से बाहर जाता है</string>
+    <string name="viewer_epub_link_note">यहाँ वेब पता सीधे नहीं खोला जा सकता, कॉपी करके ब्राउज़र में खोलें।</string>
+    <string name="viewer_epub_copy_address">पता कॉपी करें</string>
+    <string name="viewer_epub_copied">कॉपी हो गया</string>
+    <string name="viewer_epub_open_failed">यह किताब नहीं खुल सकी</string>
+    <string name="viewer_epub_locked">यह किताब एन्क्रिप्टेड है</string>
+    <string name="viewer_epub_part_unreadable">किताब का यह हिस्सा पढ़ा नहीं जा सका।</string>
+    <string name="ai_duel_language_instruction">जब तक बातचीत में किसी और भाषा के लिए न कहा जाए, %1$s में सोचें और उत्तर दें, सोचने की प्रक्रिया भी %1$s में लिखें।</string>
 </resources>

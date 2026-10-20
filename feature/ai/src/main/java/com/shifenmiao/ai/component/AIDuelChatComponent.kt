@@ -1463,11 +1463,29 @@ class AIDuelChatComponent @AssistedInject internal constructor(
                 append("\n\n")
                 append(applicationContext.getString(R.string.ai_duel_scene_prompt, scene))
             }
+            // 思考和回答的语言跟着界面走：模型侧默认会混语言，一场对话里
+            // 中文思考块突然整段英文，在中文界面下非常割裂
+            append("\n\n")
+            append(getLanguageInstruction())
             if (wrapUp) {
                 append("\n\n")
                 append(getWrapUpInstruction())
             }
         }
+    }
+
+    /**
+     * 语言约束。
+     *
+     * 用当前界面语言的名字（"中文（简体）"、"Deutsch"）而不是写死"中文"：
+     * 换了 App 语言这条提示也要跟着换，否则英文界面下又会要求中文思考。
+     */
+    private fun getLanguageInstruction(): String {
+        val locale = applicationContext.resources.configuration.locales[0]
+        return applicationContext.getString(
+            R.string.ai_duel_language_instruction,
+            locale.getDisplayName(locale)
+        )
     }
 
     private fun resolveSpeakerDisplayName(config: AIDuelConfig, speaker: DuelSpeaker): String {

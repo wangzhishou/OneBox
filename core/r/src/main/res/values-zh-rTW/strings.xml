@@ -1931,4 +1931,18 @@
     <string name="media_video_description">本機影片播放，支援子母畫面</string>
     <string name="media_audio_title">音樂播放</string>
     <string name="media_audio_description">本機音訊播放，支援背景播放</string>
+
+    <string name="viewer_epub_opening">正在開啟書籍…</string>
+    <string name="viewer_epub_contents">目錄</string>
+    <string name="viewer_epub_close">關閉</string>
+    <string name="viewer_epub_previous">上一節</string>
+    <string name="viewer_epub_next">下一節</string>
+    <string name="viewer_epub_link_leaves">該連結指向書外</string>
+    <string name="viewer_epub_link_note">這裡不能直接開啟網頁位址，複製後可在瀏覽器裡開啟。</string>
+    <string name="viewer_epub_copy_address">複製位址</string>
+    <string name="viewer_epub_copied">已複製</string>
+    <string name="viewer_epub_open_failed">這本書打不開</string>
+    <string name="viewer_epub_locked">這本書已加密</string>
+    <string name="viewer_epub_part_unreadable">這一部分內容讀不出來。</string>
+    <string name="ai_duel_language_instruction">除對話裡另有要求外，請用%1$s思考和回答，思考過程也寫成%1$s。</string>
 </resources>

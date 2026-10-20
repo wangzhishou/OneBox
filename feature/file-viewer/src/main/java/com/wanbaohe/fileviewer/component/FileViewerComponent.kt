@@ -6,6 +6,7 @@ import android.content.res.Configuration
 import android.net.Uri
 import android.webkit.WebView
 import com.arkivanov.decompose.ComponentContext
+import com.shifenmiao.core.R as CoreR
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.settings.domain.SettingsProvider
 import com.t8rin.imagetoolbox.core.settings.domain.model.NightMode
@@ -97,6 +98,8 @@ class FileViewerComponent @AssistedInject internal constructor(
                 nightMode = _uiState.value.isNight && format.supportsNight,
                 // 电子书的进度是页面自己认的字符串，加载时直接给它
                 bookPosition = saved?.takeIf { format == ViewerFormat.EPUB },
+                // 只有电子书阅读器自带英文外壳，其余页面用的是 App 自己的顶栏
+                uiLabels = if (format == ViewerFormat.EPUB) epubUiLabels() else emptyMap(),
             )
 
             val tooLarge = ViewerFormat.loadsWholeFile(format) && resolved.length > MAX_INLINE_BYTES
@@ -268,6 +271,30 @@ class FileViewerComponent @AssistedInject internal constructor(
             length = length,
         )
     }
+
+    /**
+     * 电子书阅读器(assets/viewer/epub.html + epub.js)外壳的英文原文 → 当前语言。
+     *
+     * key 必须和页面里写死的英文逐字一致（epub.html 的按钮/弹窗、epub.js 运行时
+     * 塞进去的 "Copied" 和错误标题）；页面对不上时原样显示英文，不会出乱码。
+     * 文案改了要同步改页面，否则只是退回英文。
+     */
+    private fun epubUiLabels(): Map<String, String> = mapOf(
+        "Opening book…" to context.getString(CoreR.string.viewer_epub_opening),
+        "Contents" to context.getString(CoreR.string.viewer_epub_contents),
+        "Close" to context.getString(CoreR.string.viewer_epub_close),
+        "Previous" to context.getString(CoreR.string.viewer_epub_previous),
+        "Next" to context.getString(CoreR.string.viewer_epub_next),
+        "This link leaves the book" to context.getString(CoreR.string.viewer_epub_link_leaves),
+        "Web addresses can't be opened here. Copy it to open it in a browser." to
+                context.getString(CoreR.string.viewer_epub_link_note),
+        "Copy address" to context.getString(CoreR.string.viewer_epub_copy_address),
+        "Copied" to context.getString(CoreR.string.viewer_epub_copied),
+        "Could not open this book" to context.getString(CoreR.string.viewer_epub_open_failed),
+        "This book is locked" to context.getString(CoreR.string.viewer_epub_locked),
+        "This part of the book could not be read." to
+                context.getString(CoreR.string.viewer_epub_part_unreadable),
+    )
 
     private fun extensionFromMime(mime: String?): String = when (mime?.lowercase()) {
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document" -> "docx"
