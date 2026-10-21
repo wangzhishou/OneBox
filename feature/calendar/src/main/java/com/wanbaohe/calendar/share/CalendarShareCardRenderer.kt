@@ -11,15 +11,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathOperation
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.CanvasDrawScope
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.clipPath
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.PathNode
 import androidx.compose.ui.graphics.vector.PathParser
+import androidx.compose.ui.graphics.vector.VectorGroup
+import androidx.compose.ui.graphics.vector.VectorPath
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextMeasurer
@@ -32,9 +39,23 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.sp
+import com.t8rin.imagetoolbox.core.resources.Icons
+import com.wanbaohe.icons.ornament.OrnamentChineseKnot
+import com.wanbaohe.icons.ornament.OrnamentCloudRed
+import com.wanbaohe.icons.ornament.OrnamentCornerTlGray
+import com.wanbaohe.icons.ornament.OrnamentCornerTlRed
+import com.wanbaohe.icons.ornament.OrnamentMeanderTile
+import com.wanbaohe.icons.ornament.OrnamentSealGreen
+import com.wanbaohe.icons.ornament.OrnamentSealRed
 import kotlin.math.PI
+import kotlin.math.abs
+import kotlin.math.atan2
+import kotlin.math.ceil
 import kotlin.math.cos
+import kotlin.math.max
 import kotlin.math.sin
+import kotlin.math.sqrt
+import kotlin.math.tan
 import kotlin.random.Random
 
 /**
@@ -370,13 +391,13 @@ object CalendarShareCardRenderer {
             center = Offset(126f, 154f),
             scale = 1.4f,
             color = accent,
-            alpha = 0.28f
+            alpha = 0.34f
         )
         drawCloudOrnament(
             center = Offset(954f, 154f),
             scale = 1.4f,
             color = accent,
-            alpha = 0.28f,
+            alpha = 0.34f,
             mirrored = true
         )
 
@@ -414,13 +435,13 @@ object CalendarShareCardRenderer {
             center = Offset(492f, 292f),
             scale = 0.55f,
             color = accent,
-            alpha = 0.3f
+            alpha = 0.42f
         )
         drawCloudOrnament(
             center = Offset(588f, 292f),
             scale = 0.55f,
             color = accent,
-            alpha = 0.3f,
+            alpha = 0.42f,
             mirrored = true
         )
     }
@@ -436,21 +457,37 @@ object CalendarShareCardRenderer {
 
         drawVerticalRule(x = 246f, top = 326f, bottom = 826f, color = accent)
         drawVerticalRule(x = 834f, top = 326f, bottom = 826f, color = accent)
-        drawCornerBracket(246f, 326f, 1f, 1f, 25f, accent.copy(alpha = 0.62f))
-        drawCornerBracket(834f, 326f, -1f, 1f, 25f, accent.copy(alpha = 0.62f))
-        drawCornerBracket(246f, 826f, 1f, -1f, 25f, accent.copy(alpha = 0.62f))
-        drawCornerBracket(834f, 826f, -1f, -1f, 25f, accent.copy(alpha = 0.62f))
+        drawCornerAsset(
+            vector = Icons.Filled.OrnamentCornerTlRed,
+            x = 246f, y = 326f, width = 72f, height = 44f,
+            xDir = 1f, yDir = 1f, alpha = 0.75f
+        )
+        drawCornerAsset(
+            vector = Icons.Filled.OrnamentCornerTlRed,
+            x = 834f, y = 326f, width = 72f, height = 44f,
+            xDir = -1f, yDir = 1f, alpha = 0.75f
+        )
+        drawCornerAsset(
+            vector = Icons.Filled.OrnamentCornerTlRed,
+            x = 246f, y = 826f, width = 72f, height = 44f,
+            xDir = 1f, yDir = -1f, alpha = 0.75f
+        )
+        drawCornerAsset(
+            vector = Icons.Filled.OrnamentCornerTlRed,
+            x = 834f, y = 826f, width = 72f, height = 44f,
+            xDir = -1f, yDir = -1f, alpha = 0.75f
+        )
         drawCloudOrnament(
             center = Offset(195f, 798f),
             scale = 0.7f,
             color = accent,
-            alpha = 0.24f
+            alpha = 0.32f
         )
         drawCloudOrnament(
             center = Offset(885f, 798f),
             scale = 0.7f,
             color = accent,
-            alpha = 0.24f,
+            alpha = 0.32f,
             mirrored = true
         )
 
@@ -650,10 +687,46 @@ object CalendarShareCardRenderer {
             style = Stroke(width = 1f)
         )
 
-        drawLunarBracket(left, top, xDir = 1f, yDir = 1f, color = accent)
-        drawLunarBracket(right, top, xDir = -1f, yDir = 1f, color = accent)
-        drawLunarBracket(left, bottom, xDir = 1f, yDir = -1f, color = accent)
-        drawLunarBracket(right, bottom, xDir = -1f, yDir = -1f, color = accent)
+        drawCornerAsset(
+            vector = Icons.Filled.OrnamentCornerTlRed,
+            x = left,
+            y = top,
+            width = 78f,
+            height = 48f,
+            xDir = 1f,
+            yDir = 1f,
+            alpha = 0.95f
+        )
+        drawCornerAsset(
+            vector = Icons.Filled.OrnamentCornerTlRed,
+            x = right,
+            y = top,
+            width = 78f,
+            height = 48f,
+            xDir = -1f,
+            yDir = 1f,
+            alpha = 0.95f
+        )
+        drawCornerAsset(
+            vector = Icons.Filled.OrnamentCornerTlRed,
+            x = left,
+            y = bottom,
+            width = 78f,
+            height = 48f,
+            xDir = 1f,
+            yDir = -1f,
+            alpha = 0.95f
+        )
+        drawCornerAsset(
+            vector = Icons.Filled.OrnamentCornerTlRed,
+            x = right,
+            y = bottom,
+            width = 78f,
+            height = 48f,
+            xDir = -1f,
+            yDir = -1f,
+            alpha = 0.95f
+        )
 
         val text = textMeasurer.oneLine(
             text = buildString {
@@ -669,77 +742,19 @@ object CalendarShareCardRenderer {
             )
         )
         drawCloudOrnament(
-            center = Offset(178f, 912f),
+            center = Offset(205f, 912f),
             scale = 1.2f,
             color = accent,
-            alpha = 0.3f
+            alpha = 0.37f
         )
         drawCloudOrnament(
-            center = Offset(902f, 912f),
+            center = Offset(875f, 912f),
             scale = 1.2f,
             color = accent,
-            alpha = 0.3f,
+            alpha = 0.37f,
             mirrored = true
         )
         drawCentered(text, centerX = WIDTH / 2f, baselineY = 933f)
-    }
-
-    /**
-     * 回纹式折角：外层 L + 内层 L + 端部短钩，比一条简单折线更像传统角花。
-     */
-    private fun DrawScope.drawLunarBracket(
-        x: Float,
-        y: Float,
-        xDir: Float,
-        yDir: Float,
-        color: Color,
-    ) {
-        val stroke = 3.5f
-        drawLine(
-            color = color,
-            start = Offset(x, y + yDir * 46f),
-            end = Offset(x, y),
-            strokeWidth = stroke,
-            cap = StrokeCap.Square
-        )
-        drawLine(
-            color = color,
-            start = Offset(x, y),
-            end = Offset(x + xDir * 46f, y),
-            strokeWidth = stroke,
-            cap = StrokeCap.Square
-        )
-
-        val inner = 13f
-        drawLine(
-            color = color,
-            start = Offset(x + xDir * inner, y + yDir * 34f),
-            end = Offset(x + xDir * inner, y + yDir * inner),
-            strokeWidth = stroke * 0.7f,
-            cap = StrokeCap.Square
-        )
-        drawLine(
-            color = color,
-            start = Offset(x + xDir * inner, y + yDir * inner),
-            end = Offset(x + xDir * 34f, y + yDir * inner),
-            strokeWidth = stroke * 0.7f,
-            cap = StrokeCap.Square
-        )
-
-        drawLine(
-            color = color,
-            start = Offset(x, y + yDir * 56f),
-            end = Offset(x, y + yDir * 46f),
-            strokeWidth = stroke * 0.7f,
-            cap = StrokeCap.Square
-        )
-        drawLine(
-            color = color,
-            start = Offset(x + xDir * 56f, y),
-            end = Offset(x + xDir * 46f, y),
-            strokeWidth = stroke * 0.7f,
-            cap = StrokeCap.Square
-        )
     }
 
     // ─── 三栏黄历：宜 / 今日干支+吉时 / 忌 ────────────────────────
@@ -783,10 +798,26 @@ object CalendarShareCardRenderer {
             style = Stroke(width = 1f)
         )
 
-        drawCornerBracket(left + 12f, top + 12f, 1f, 1f, 26f, accent.copy(alpha = 0.6f))
-        drawCornerBracket(right - 12f, top + 12f, -1f, 1f, 26f, accent.copy(alpha = 0.6f))
-        drawCornerBracket(left + 12f, bottom - 12f, 1f, -1f, 26f, accent.copy(alpha = 0.6f))
-        drawCornerBracket(right - 12f, bottom - 12f, -1f, -1f, 26f, accent.copy(alpha = 0.6f))
+        drawCornerAsset(
+            vector = Icons.Filled.OrnamentCornerTlGray,
+            x = left + 12f, y = top + 12f, width = 72f, height = 44f,
+            xDir = 1f, yDir = 1f, alpha = 0.8f
+        )
+        drawCornerAsset(
+            vector = Icons.Filled.OrnamentCornerTlRed,
+            x = right - 12f, y = top + 12f, width = 72f, height = 44f,
+            xDir = -1f, yDir = 1f, alpha = 0.8f
+        )
+        drawCornerAsset(
+            vector = Icons.Filled.OrnamentCornerTlGray,
+            x = left + 12f, y = bottom - 12f, width = 72f, height = 44f,
+            xDir = 1f, yDir = -1f, alpha = 0.8f
+        )
+        drawCornerAsset(
+            vector = Icons.Filled.OrnamentCornerTlRed,
+            x = right - 12f, y = bottom - 12f, width = 72f, height = 44f,
+            xDir = -1f, yDir = -1f, alpha = 0.8f
+        )
 
         listOf(left + columnWidth, left + columnWidth * 2f).forEach { x ->
             drawLine(
@@ -809,18 +840,16 @@ object CalendarShareCardRenderer {
         drawSeal(
             center = Offset(centers[0], 1050f),
             glyph = data.labels.yiSeal,
-            fill = palette.yiSeal,
             onFill = palette.onYiSeal,
-            palette = palette,
-            textMeasurer = textMeasurer
+            textMeasurer = textMeasurer,
+            vector = Icons.Filled.OrnamentSealGreen
         )
         drawSeal(
             center = Offset(centers[2], 1050f),
             glyph = data.labels.jiSeal,
-            fill = palette.jiSeal,
             onFill = palette.onJiSeal,
-            palette = palette,
-            textMeasurer = textMeasurer
+            textMeasurer = textMeasurer,
+            vector = Icons.Filled.OrnamentSealRed
         )
 
         drawAlmanacList(
@@ -1038,92 +1067,47 @@ object CalendarShareCardRenderer {
             )
         }
 
-        val coinCenter = Offset(centerX, 1284f)
-        drawCircle(
-            color = accent.copy(alpha = 0.42f),
-            radius = 18f,
-            center = coinCenter,
-            style = Stroke(width = 1.5f)
+        val knotSize = 54f
+        drawVectorAsset(
+            vector = Icons.Filled.OrnamentChineseKnot,
+            left = centerX - knotSize / 2f,
+            top = 1274f - knotSize / 2f,
+            width = knotSize,
+            height = knotSize,
+            alpha = 0.9f,
+            tint = accent
         )
-        drawCircle(
-            color = accent.copy(alpha = 0.18f),
-            radius = 12f,
-            center = coinCenter,
-            style = Stroke(width = 1f)
-        )
-        drawRect(
-            color = accent.copy(alpha = 0.42f),
-            topLeft = Offset(centerX - 5f, 1279f),
-            size = Size(10f, 10f),
-            style = Stroke(width = 1.2f)
+        drawMeanderStrip(
+            left = 180f,
+            right = 900f,
+            top = 1311f,
+            height = 13f,
+            alpha = 0.6f
         )
     }
 
     private fun DrawScope.drawSeal(
         center: Offset,
         glyph: String,
-        fill: Color,
         onFill: Color,
-        palette: CalendarSharePalette,
         textMeasurer: TextMeasurer,
+        vector: ImageVector,
     ) {
-        val badge = buildScallopedBadge(radius = 46f, lobes = 12, lobeRadius = 10f)
-
-        translate(center.x, center.y) {
-            drawPath(badge, fill)
-            drawCircle(
-                color = palette.paper,
-                radius = 37f,
-                center = Offset.Zero,
-                style = Stroke(width = 2f)
-            )
-        }
+        val width = 128f
+        val height = 118f
+        drawVectorAsset(
+            vector = vector,
+            left = center.x - width / 2f,
+            top = center.y - height / 2f,
+            width = width,
+            height = height
+        )
 
         val glyphLayout = textMeasurer.oneLine(
             text = glyph,
             style = serif(size = 52f, color = onFill)
         )
         drawCenteredInBox(glyphLayout, center)
-
-        val cloud = buildCloudPath()
-        drawSealCloud(
-            center = Offset(center.x - 66f, center.y + 6f),
-            cloud = cloud,
-            fill = palette.paper,
-            outline = fill,
-            mirrored = false
-        )
-        drawSealCloud(
-            center = Offset(center.x + 66f, center.y + 6f),
-            cloud = cloud,
-            fill = palette.paper,
-            outline = fill,
-            mirrored = true
-        )
-    }
-
-    private fun DrawScope.drawSealCloud(
-        center: Offset,
-        cloud: Path,
-        fill: Color,
-        outline: Color,
-        mirrored: Boolean,
-    ) {
-        translate(center.x, center.y) {
-            scale(
-                scaleX = if (mirrored) -1f else 1f,
-                scaleY = 1f,
-                pivot = Offset.Zero
-            ) {
-                drawPath(cloud, fill)
-                drawPath(cloud, outline, style = Stroke(width = 2.6f))
-                drawPath(
-                    path = cloudCurlPath(),
-                    color = outline,
-                    style = Stroke(width = 2.2f, cap = StrokeCap.Round)
-                )
-            }
-        }
     }
 
     // ─── 天气卡 / 节日栏 / 心语（有则显示）────────────────────────
@@ -1262,13 +1246,13 @@ object CalendarShareCardRenderer {
             center = Offset(left + 28f, top + WEATHER_CARD_HEIGHT - 14f),
             scale = 0.6f,
             color = palette.accent,
-            alpha = 0.22f
+            alpha = 0.3f
         )
         drawCloudOrnament(
             center = Offset(right - 28f, top + WEATHER_CARD_HEIGHT - 14f),
             scale = 0.6f,
             color = palette.accent,
-            alpha = 0.22f,
+            alpha = 0.3f,
             mirrored = true
         )
     }
@@ -1587,13 +1571,13 @@ object CalendarShareCardRenderer {
             center = Offset(126f, layout.brandBaseline - 8f),
             scale = 1.1f,
             color = accent,
-            alpha = 0.22f
+            alpha = 0.3f
         )
         drawCloudOrnament(
             center = Offset(954f, layout.brandBaseline - 8f),
             scale = 1.1f,
             color = accent,
-            alpha = 0.22f,
+            alpha = 0.3f,
             mirrored = true
         )
         drawBrand(data, textMeasurer, layout.brandBaseline)
@@ -1667,14 +1651,12 @@ object CalendarShareCardRenderer {
         return cloud.unionWith(base)
     }
 
-    private fun cloudCurlPath(): Path = Path().apply {
-        moveTo(-24f, 5f)
-        cubicTo(-34f, 5f, -38f, -2f, -34f, -8f)
-        cubicTo(-30f, -15f, -20f, -12f, -22f, -4f)
-        cubicTo(-23f, 1f, -29f, 2f, -30f, -2f)
+    private fun Path.unionWith(other: Path): Path {
+        val result = Path()
+        return if (result.op(this, other, PathOperation.Union)) result else this
     }
 
-    /** 低饱和度的祥云装饰：淡填充 + 线稿 + 卷云尾。 */
+    /** 低饱和度的祥云装饰，使用设计稿导出的对称流云素材。 */
     private fun DrawScope.drawCloudOrnament(
         center: Offset,
         scale: Float,
@@ -1682,101 +1664,317 @@ object CalendarShareCardRenderer {
         alpha: Float,
         mirrored: Boolean = false,
     ) {
-        val cloud = buildCloudPath()
-        translate(center.x, center.y) {
-            scale(
-                scaleX = if (mirrored) -scale else scale,
-                scaleY = scale,
-                pivot = Offset.Zero
-            ) {
-                drawPath(cloud, color.copy(alpha = alpha * 0.16f))
-                drawPath(
-                    path = cloud,
-                    color = color.copy(alpha = alpha),
-                    style = Stroke(width = 1.6f)
+        val width = 80f * scale
+        val height = width * (590f / 1380f)
+        drawVectorAsset(
+            vector = Icons.Filled.OrnamentCloudRed,
+            left = center.x - width / 2f,
+            top = center.y - height / 2f,
+            width = width,
+            height = height,
+            alpha = alpha,
+            tint = color,
+            flipX = mirrored
+        )
+    }
+
+    /** 回纹角花：使用左上朝向素材，其它三角通过翻转复用。 */
+    private fun DrawScope.drawCornerAsset(
+        vector: ImageVector,
+        x: Float,
+        y: Float,
+        width: Float,
+        height: Float,
+        xDir: Float,
+        yDir: Float,
+        alpha: Float,
+    ) {
+        drawVectorAsset(
+            vector = vector,
+            left = if (xDir < 0f) x - width else x,
+            top = if (yDir < 0f) y - height else y,
+            width = width,
+            height = height,
+            alpha = alpha,
+            flipX = xDir < 0f,
+            flipY = yDir < 0f
+        )
+    }
+
+    /** 回纹无缝平铺：按素材原始比例横向重复，作为三栏底部的细边框。 */
+    private fun DrawScope.drawMeanderStrip(
+        left: Float,
+        right: Float,
+        top: Float,
+        height: Float,
+        alpha: Float,
+    ) {
+        val tileWidth = height * (233f / 47f)
+        clipRect(left = left, top = top, right = right, bottom = top + height) {
+            var x = left
+            while (x < right) {
+                drawVectorAsset(
+                    vector = Icons.Filled.OrnamentMeanderTile,
+                    left = x,
+                    top = top,
+                    width = tileWidth,
+                    height = height,
+                    alpha = alpha
                 )
-                drawPath(
-                    path = cloudCurlPath(),
-                    color = color.copy(alpha = alpha),
-                    style = Stroke(width = 1.4f, cap = StrokeCap.Round)
-                )
+                x += tileWidth
             }
         }
     }
 
-    /** 小回纹角花：外 L + 内 L，用在主日期框和三栏黄历的四角。 */
-    private fun DrawScope.drawCornerBracket(
-        x: Float,
-        y: Float,
-        xDir: Float,
-        yDir: Float,
-        size: Float,
-        color: Color,
+    // ─── ImageVector 矢量素材绘制（不依赖 Compose 组合）────────────
+
+    private fun DrawScope.drawVectorAsset(
+        vector: ImageVector,
+        left: Float,
+        top: Float,
+        width: Float,
+        height: Float,
+        alpha: Float = 1f,
+        tint: Color? = null,
+        flipX: Boolean = false,
+        flipY: Boolean = false,
     ) {
-        drawLine(
-            color = color,
-            start = Offset(x + xDir * size, y),
-            end = Offset(x, y),
-            strokeWidth = 2f,
-            cap = StrokeCap.Square
-        )
-        drawLine(
-            color = color,
-            start = Offset(x, y),
-            end = Offset(x, y + yDir * size),
-            strokeWidth = 2f,
-            cap = StrokeCap.Square
-        )
-        val inset = size * 0.32f
-        val inner = size * 0.72f
-        drawLine(
-            color = color,
-            start = Offset(x + xDir * inner, y + yDir * inset),
-            end = Offset(x + xDir * inset, y + yDir * inset),
-            strokeWidth = 1.1f,
-            cap = StrokeCap.Square
-        )
-        drawLine(
-            color = color,
-            start = Offset(x + xDir * inset, y + yDir * inset),
-            end = Offset(x + xDir * inset, y + yDir * inner),
-            strokeWidth = 1.1f,
-            cap = StrokeCap.Square
-        )
+        translate(
+            left = left + if (flipX) width else 0f,
+            top = top + if (flipY) height else 0f
+        ) {
+            scale(
+                scaleX = (if (flipX) -width else width) / vector.viewportWidth,
+                scaleY = (if (flipY) -height else height) / vector.viewportHeight,
+                pivot = Offset.Zero
+            ) {
+                drawVectorGroup(vector.root, alpha = alpha, tint = tint)
+            }
+        }
     }
 
-    private fun Path.unionWith(other: Path): Path {
-        val result = Path()
-        return if (result.op(this, other, PathOperation.Union)) result else this
+    private fun DrawScope.drawVectorGroup(
+        group: VectorGroup,
+        alpha: Float,
+        tint: Color?,
+    ) {
+        translate(left = group.translationX, top = group.translationY) {
+            rotate(degrees = group.rotation, pivot = Offset(group.pivotX, group.pivotY)) {
+                scale(
+                    scaleX = group.scaleX,
+                    scaleY = group.scaleY,
+                    pivot = Offset(group.pivotX, group.pivotY)
+                ) {
+                    group.forEach { node ->
+                        when (node) {
+                            is VectorGroup -> drawVectorGroup(node, alpha, tint)
+                            is VectorPath -> drawVectorPath(node, alpha, tint)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun DrawScope.drawVectorPath(
+        path: VectorPath,
+        alpha: Float,
+        tint: Color?,
+    ) {
+        val composePath = path.pathData.toComposePath()
+        composePath.fillType = path.pathFillType
+
+        val fill = path.fill
+        if (fill is SolidColor) {
+            drawPath(
+                path = composePath,
+                color = tint ?: fill.value,
+                alpha = alpha * path.fillAlpha
+            )
+        }
+
+        val stroke = path.stroke
+        if (stroke is SolidColor) {
+            drawPath(
+                path = composePath,
+                color = tint ?: stroke.value,
+                alpha = alpha * path.strokeAlpha,
+                style = Stroke(
+                    width = path.strokeLineWidth,
+                    cap = path.strokeLineCap,
+                    join = path.strokeLineJoin,
+                    miter = path.strokeLineMiter
+                )
+            )
+        }
+    }
+
+    private fun List<PathNode>.toComposePath(): Path {
+        val path = Path()
+        var currentX = 0f
+        var currentY = 0f
+        var contourX = 0f
+        var contourY = 0f
+
+        for (node in this) {
+            when (node) {
+                is PathNode.MoveTo -> {
+                    path.moveTo(node.x, node.y)
+                    currentX = node.x
+                    currentY = node.y
+                    contourX = node.x
+                    contourY = node.y
+                }
+
+                is PathNode.LineTo -> {
+                    path.lineTo(node.x, node.y)
+                    currentX = node.x
+                    currentY = node.y
+                }
+
+                is PathNode.CurveTo -> {
+                    path.cubicTo(
+                        node.x1, node.y1, node.x2, node.y2, node.x3, node.y3
+                    )
+                    currentX = node.x3
+                    currentY = node.y3
+                }
+
+                is PathNode.QuadTo -> {
+                    path.quadraticBezierTo(
+                        node.x1, node.y1, node.x2, node.y2
+                    )
+                    currentX = node.x2
+                    currentY = node.y2
+                }
+
+                is PathNode.ArcTo -> {
+                    appendSvgArc(
+                        path = path,
+                        startX = currentX,
+                        startY = currentY,
+                        node = node
+                    )
+                    currentX = node.arcStartX
+                    currentY = node.arcStartY
+                }
+
+                PathNode.Close -> {
+                    path.close()
+                    currentX = contourX
+                    currentY = contourY
+                }
+
+                else -> Unit
+            }
+        }
+        return path
     }
 
     /**
-     * 花瓣边印章：中心圆 + 12 个环绕小圆并集。
+     * SVG 椭圆弧转三次贝塞尔：Path.arcTo 只支持未旋转椭圆的 rect/角度形式，
+     * 盘长结素材里带 x-axis-rotation 的圆弧需要自己求圆心再分段拟合。
      */
-    private fun buildScallopedBadge(
-        radius: Float,
-        lobes: Int,
-        lobeRadius: Float,
-    ): Path {
-        var badge = Path().apply {
-            addOval(Rect(center = Offset.Zero, radius = radius))
+    private fun appendSvgArc(
+        path: Path,
+        startX: Float,
+        startY: Float,
+        node: PathNode.ArcTo,
+    ) {
+        val endX = node.arcStartX
+        val endY = node.arcStartY
+        var rx = abs(node.horizontalEllipseRadius)
+        var ry = abs(node.verticalEllipseRadius)
+        if (rx == 0f || ry == 0f || (startX == endX && startY == endY)) {
+            path.lineTo(endX, endY)
+            return
         }
-        repeat(lobes) { index ->
-            val angle = index * 2.0 * PI / lobes
-            val lobe = Path().apply {
-                addOval(
-                    Rect(
-                        center = Offset(
-                            (cos(angle) * radius).toFloat(),
-                            (sin(angle) * radius).toFloat()
-                        ),
-                        radius = lobeRadius
-                    )
-                )
-            }
-            badge = badge.unionWith(lobe)
+
+        val phi = node.theta * PI.toFloat() / 180f
+        val cosPhi = cos(phi)
+        val sinPhi = sin(phi)
+        val dx = (startX - endX) / 2f
+        val dy = (startY - endY) / 2f
+        val x1p = cosPhi * dx + sinPhi * dy
+        val y1p = -sinPhi * dx + cosPhi * dy
+
+        val lambda = (x1p * x1p) / (rx * rx) + (y1p * y1p) / (ry * ry)
+        if (lambda > 1f) {
+            val scale = sqrt(lambda)
+            rx *= scale
+            ry *= scale
         }
-        return badge
+
+        val sign = if (node.isMoreThanHalf == node.isPositiveArc) -1f else 1f
+        val numerator = rx * rx * ry * ry - rx * rx * y1p * y1p - ry * ry * x1p * x1p
+        val denominator = rx * rx * y1p * y1p + ry * ry * x1p * x1p
+        val coefficient = sign * sqrt(max(0f, numerator / denominator))
+        val cxp = coefficient * (rx * y1p / ry)
+        val cyp = -coefficient * (ry * x1p / rx)
+        val cx = cosPhi * cxp - sinPhi * cyp + (startX + endX) / 2f
+        val cy = sinPhi * cxp + cosPhi * cyp + (startY + endY) / 2f
+
+        val ux = (x1p - cxp) / rx
+        val uy = (y1p - cyp) / ry
+        val vx = (-x1p - cxp) / rx
+        val vy = (-y1p - cyp) / ry
+        val startAngle = atan2(uy, ux)
+        var delta = atan2(ux * vy - uy * vx, ux * vx + uy * vy)
+        if (!node.isPositiveArc && delta > 0f) delta -= 2f * PI.toFloat()
+        if (node.isPositiveArc && delta < 0f) delta += 2f * PI.toFloat()
+
+        val segments = max(1, ceil(abs(delta) / (PI.toFloat() / 2f)).toInt())
+        val step = delta / segments
+        var theta1 = startAngle
+        repeat(segments) {
+            val theta2 = theta1 + step
+            val alpha = 4f / 3f * tan((theta2 - theta1) / 4f)
+            val p0 = ellipsePoint(cx, cy, rx, ry, cosPhi, sinPhi, theta1)
+            val p3 = ellipsePoint(cx, cy, rx, ry, cosPhi, sinPhi, theta2)
+            val d0 = ellipseDerivative(rx, ry, cosPhi, sinPhi, theta1)
+            val d1 = ellipseDerivative(rx, ry, cosPhi, sinPhi, theta2)
+            path.cubicTo(
+                p0.x + alpha * d0.x,
+                p0.y + alpha * d0.y,
+                p3.x - alpha * d1.x,
+                p3.y - alpha * d1.y,
+                p3.x,
+                p3.y
+            )
+            theta1 = theta2
+        }
+    }
+
+    private fun ellipsePoint(
+        cx: Float,
+        cy: Float,
+        rx: Float,
+        ry: Float,
+        cosPhi: Float,
+        sinPhi: Float,
+        theta: Float,
+    ): Offset {
+        val x = rx * cos(theta)
+        val y = ry * sin(theta)
+        return Offset(
+            cx + cosPhi * x - sinPhi * y,
+            cy + sinPhi * x + cosPhi * y
+        )
+    }
+
+    private fun ellipseDerivative(
+        rx: Float,
+        ry: Float,
+        cosPhi: Float,
+        sinPhi: Float,
+        theta: Float,
+    ): Offset {
+        val x = -rx * sin(theta)
+        val y = ry * cos(theta)
+        return Offset(
+            cosPhi * x - sinPhi * y,
+            sinPhi * x + cosPhi * y
+        )
     }
 
     // ─── 文字 ────────────────────────────────────────────────────────
