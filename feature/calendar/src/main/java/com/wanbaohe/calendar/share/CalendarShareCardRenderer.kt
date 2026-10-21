@@ -55,7 +55,6 @@ import com.wanbaohe.icons.Pig
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.wanbaohe.icons.ornament.OrnamentChineseKnot
 import com.wanbaohe.icons.ornament.OrnamentCloudRed
-import com.wanbaohe.icons.ornament.OrnamentCornerTlGray
 import com.wanbaohe.icons.ornament.OrnamentCornerTlRed
 import com.wanbaohe.icons.ornament.OrnamentMeanderTile
 import com.wanbaohe.icons.ornament.OrnamentSealGreen
@@ -784,9 +783,9 @@ object CalendarShareCardRenderer {
         )
 
         drawCornerAsset(
-            vector = Icons.Filled.OrnamentCornerTlGray,
+            vector = Icons.Filled.OrnamentCornerTlRed,
             x = left + 12f, y = top + 12f, width = 72f, height = 44f,
-            xDir = 1f, yDir = 1f, alpha = 0.8f, tint = palette.inkSoft
+            xDir = 1f, yDir = 1f, alpha = 0.8f, tint = accent
         )
         drawCornerAsset(
             vector = Icons.Filled.OrnamentCornerTlRed,
@@ -794,9 +793,9 @@ object CalendarShareCardRenderer {
             xDir = -1f, yDir = 1f, alpha = 0.8f, tint = accent
         )
         drawCornerAsset(
-            vector = Icons.Filled.OrnamentCornerTlGray,
+            vector = Icons.Filled.OrnamentCornerTlRed,
             x = left + 12f, y = bottom - 12f, width = 72f, height = 44f,
-            xDir = 1f, yDir = -1f, alpha = 0.8f, tint = palette.inkSoft
+            xDir = 1f, yDir = -1f, alpha = 0.8f, tint = accent
         )
         drawCornerAsset(
             vector = Icons.Filled.OrnamentCornerTlRed,
