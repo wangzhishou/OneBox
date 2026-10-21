@@ -62,11 +62,12 @@ internal class KeepAliveForegroundService : Service() {
         startId: Int
     ): Int {
         if (intent == null) {
-            startForeground()
-            Handler(Looper.getMainLooper()).postDelayed(
-                ::stopForegroundSafe,
-                1000
-            )
+            if (startForeground()) {
+                Handler(Looper.getMainLooper()).postDelayed(
+                    ::stopForegroundSafe,
+                    1000
+                )
+            }
             return START_NOT_STICKY
         }
 
@@ -91,42 +92,58 @@ internal class KeepAliveForegroundService : Service() {
             }
 
             ACTION_STOP -> {
-                startForeground()
-
                 removeNotification = intent.getBooleanExtra(
                     EXTRA_REMOVE_NOTIFICATION, true
                 ).makeLog("KeepAliveForegroundService")
 
-                Handler(Looper.getMainLooper()).postDelayed(
-                    ::stopForegroundSafe,
-                    1000
-                )
+                if (startForeground()) {
+                    Handler(Looper.getMainLooper()).postDelayed(
+                        ::stopForegroundSafe,
+                        1000
+                    )
+                } else {
+                    stopForegroundSafe()
+                }
             }
 
             else -> startForeground()
         }
     }
 
-    private fun startForeground() {
-        val action = {
+    /**
+     * 进入前台并挂上进度通知。
+     *
+     * 注意：失败时绝不能把异常抛回 [onCreate]/[onStartCommand]——那会直接崩掉进程，
+     * 而且调用方（保存/导出）本身还在跑。这里统一降级为「停掉服务、任务继续」。
+     */
+    private fun startForeground(): Boolean {
+        val notification = runCatching { buildNotification() }.getOrElse { throwable ->
+            throwable.makeLog("KeepAliveForegroundService")
+            "buildNotification failed, stop service".makeLog("KeepAliveForegroundService")
+            stopForegroundSafe()
+            return false
+        }
+
+        return runCatching {
             ServiceCompat.startForeground(
                 this,
                 NOTIFICATION_ID,
-                buildNotification(),
+                notification,
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
                 } else {
                     0
                 }
             )
-        }
-        runCatching {
-            action()
-        }.onFailure {
-            action()
-            it.makeLog()
-            "startForeground failed".makeLog("KeepAliveForegroundService")
-        }
+        }.fold(
+            onSuccess = { true },
+            onFailure = { throwable ->
+                throwable.makeLog("KeepAliveForegroundService")
+                "startForeground failed, stop service".makeLog("KeepAliveForegroundService")
+                stopForegroundSafe()
+                false
+            }
+        )
     }
 
     private fun createChannel() {
@@ -163,19 +180,22 @@ internal class KeepAliveForegroundService : Service() {
     }
 
     private fun buildNotification(): Notification {
-        val launchIntent = Intent(
-            this, Class.forName(
-                "com.t8rin.imagetoolbox.app.presentation.AppActivity"
-            )
-        ).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-        }
-        val contentPendingIntent = PendingIntent.getActivity(
-            this,
-            0,
-            launchIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or (PendingIntent.FLAG_IMMUTABLE)
-        )
+        // 用 PackageManager 拿本包启动 Intent，而不是 Class.forName 硬编码 Activity 类名：
+        // 类在 app 模块、会随包名/重构变化，硬编码在 core 模块里既易失效又是反向依赖。
+        // 拿不到（例如被系统裁剪）就不挂点击跳转，通知本身仍然可用。
+        val contentPendingIntent = packageManager
+            .getLaunchIntentForPackage(packageName)
+            ?.apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+            ?.let { launchIntent ->
+                PendingIntent.getActivity(
+                    this,
+                    0,
+                    launchIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                )
+            }
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(title.ifEmpty { getString(R.string.processing) })
@@ -191,11 +211,6 @@ internal class KeepAliveForegroundService : Service() {
             .setOngoing(true)
             .setContentIntent(contentPendingIntent)
             .build()
-            .also { notification ->
-                runCatching {
-                    notificationManager.notify(NOTIFICATION_ID, notification)
-                }.onFailure { it.makeLog("KeepAliveForegroundService") }
-            }
     }
 
     override fun onBind(intent: Intent?) = null

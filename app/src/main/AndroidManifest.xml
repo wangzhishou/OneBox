@@ -38,6 +38,10 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
     <!-- 音乐/视频后台播放：媒体会话通知在前台服务里跑 -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <!-- 长任务进度保活（保存/导出/PDF 等）：dataSync 前台服务 + 进度通知。
+         权限与 service 类型必须显式声明，不能依赖依赖库的清单合并——合并结果随库版本漂移。 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <!-- 息屏后保持解码线程（ExoPlayer setWakeMode） -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.PROJECT_MEDIA" />
@@ -310,6 +314,14 @@
             android:name="com.wanbaohe.media.playback.MediaPlaybackService"
             android:exported="false"
             android:foregroundServiceType="mediaPlayback" />
+
+        <!-- 长任务进度保活：保存/导出/PDF 等耗时操作期间挂前台，避免退后台或锁屏被回收。
+             类在 core/data，必须写全限定名；stopWithTask=true 表示用户划掉任务即停，不常驻。 -->
+        <service
+            android:name="com.t8rin.imagetoolbox.core.data.saving.KeepAliveForegroundService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync"
+            android:stopWithTask="true" />
 
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
