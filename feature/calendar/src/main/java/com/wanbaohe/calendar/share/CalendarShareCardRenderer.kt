@@ -25,7 +25,6 @@ import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.PathNode
-import androidx.compose.ui.graphics.vector.PathParser
 import androidx.compose.ui.graphics.vector.VectorGroup
 import androidx.compose.ui.graphics.vector.VectorPath
 import androidx.compose.ui.text.AnnotatedString
@@ -40,6 +39,19 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.sp
+import androidx.compose.material.icons.Icons as MaterialIcons
+import com.wanbaohe.icons.Rat
+import com.wanbaohe.icons.Ox
+import com.wanbaohe.icons.Tiger
+import com.wanbaohe.icons.Rabbit
+import com.wanbaohe.icons.Dragon
+import com.wanbaohe.icons.Snake
+import com.wanbaohe.icons.Horse
+import com.wanbaohe.icons.Goat
+import com.wanbaohe.icons.Monkey
+import com.wanbaohe.icons.Rooster
+import com.wanbaohe.icons.Dog
+import com.wanbaohe.icons.Pig
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.wanbaohe.icons.ornament.OrnamentChineseKnot
 import com.wanbaohe.icons.ornament.OrnamentCloudRed
@@ -86,23 +98,6 @@ object CalendarShareCardRenderer {
     private const val FESTIVAL_BLOCK_TWO_ROWS = 96f
     private const val FESTIVAL_BLOCK_ONE_ROW = 70f
     private const val NOTE_BLOCK_HEIGHT = 120f
-
-    /** 项目内置的实心生肖马（Apache-2.0，见 core/resources/.../Horse.kt），24×24。 */
-    private const val HORSE_PATH =
-        "M22 6 v3.5 l-1.5 .5 l-1.54 -2.46 c-.13 -.21 -.46 -.12 -.46 .13 v3.58 " +
-            "c0 .98 -.39 1.86 -1 2.53 V21 H15 v-6 h-.25 c-.21 0 -.42 -.03 -.62 -.06 " +
-            "l-4.44 -.74 l-1.12 2.01 l.96 4.79 H7 l-1 -4.75 c-.03 -.3 0 -.6 .16 -.86 " +
-            "l1.02 -1.81 a3.27 3.27 0 0 1 -1.68 -2.77 c-.04 .15 -.06 .37 -.03 .69 " +
-            "c.03 .44 .14 1.09 .07 1.81 c-.04 .72 -.37 1.46 -.79 1.95 " +
-            "c-.43 .49 -.9 .83 -1.4 1.09 l-.7 -.7 c.19 -.47 .38 -.89 .42 -1.28 " +
-            "c.06 -.37 -.01 -.67 -.12 -.94 l-.53 -1.13 c-.21 -.51 -.47 -1.25 -.42 -2.12 " +
-            "c.03 -.85 .5 -1.96 1.39 -2.57 c.9 -.61 1.87 -.69 2.66 -.53 " +
-            "c.5 .1 1.01 .34 1.45 .68 c.37 -.17 .8 -.26 1.25 -.26 h5.75 V7 " +
-            "c0 -2.21 1.79 -4 4 -4 H22 l-.89 1.34 c.54 .36 .89 .97 .89 1.66"
-
-    private val horsePath: Path? by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
-        runCatching { PathParser().parsePathString(HORSE_PATH).toPath() }.getOrNull()
-    }
 
     fun render(
         data: CalendarShareCardData,
@@ -525,13 +520,15 @@ object CalendarShareCardRenderer {
             style = verticalStyle
         )
 
-        val horse = horsePath
-        if (horse != null) {
-            drawHorse(
-                path = horse,
-                center = Offset(150f, 790f),
-                size = 88f,
-                color = accent
+        val zodiac = zodiacVector(data.zodiac)
+        if (zodiac != null) {
+            drawVectorAsset(
+                vector = zodiac,
+                left = 150f - 44f,
+                top = 790f - 44f,
+                width = 88f,
+                height = 88f,
+                tint = accent
             )
         } else {
             drawZodiacSeal(
@@ -565,26 +562,12 @@ object CalendarShareCardRenderer {
         drawVectorAsset(
             vector = Icons.Filled.OrnamentChineseKnot,
             left = 930f - rightKnotSize / 2f,
-            top = 762f - rightKnotSize / 2f,
+            top = 834f - rightKnotSize,
             width = rightKnotSize,
             height = rightKnotSize,
             alpha = 0.95f,
             tint = accent
         )
-    }
-
-    private fun DrawScope.drawHorse(
-        path: Path,
-        center: Offset,
-        size: Float,
-        color: Color,
-    ) {
-        val scale = size / 24f
-        translate(center.x - size / 2f, center.y - size / 2f) {
-            scale(scaleX = scale, scaleY = scale, pivot = Offset.Zero) {
-                drawPath(path, color)
-            }
-        }
     }
 
     private fun DrawScope.drawVerticalRule(
@@ -617,6 +600,22 @@ object CalendarShareCardRenderer {
                 baselineY = firstBaseline + index * step
             )
         }
+    }
+
+    private fun zodiacVector(zodiac: String): ImageVector? = when (zodiac) {
+        "鼠" -> MaterialIcons.Filled.Rat
+        "牛" -> MaterialIcons.Filled.Ox
+        "虎" -> MaterialIcons.Filled.Tiger
+        "兔" -> MaterialIcons.Filled.Rabbit
+        "龙" -> MaterialIcons.Filled.Dragon
+        "蛇" -> MaterialIcons.Filled.Snake
+        "马" -> MaterialIcons.Filled.Horse
+        "羊" -> MaterialIcons.Filled.Goat
+        "猴" -> MaterialIcons.Filled.Monkey
+        "鸡" -> MaterialIcons.Filled.Rooster
+        "狗" -> MaterialIcons.Filled.Dog
+        "猪" -> MaterialIcons.Filled.Pig
+        else -> null
     }
 
     private fun DrawScope.drawZodiacSeal(
@@ -1083,22 +1082,21 @@ object CalendarShareCardRenderer {
         vector: ImageVector,
         tint: Color,
     ) {
-        val width = 128f
-        val height = 118f
+        val width = 86f
+        val height = 79f
         drawVectorAsset(
             vector = vector,
             left = center.x - width / 2f,
             top = center.y - height / 2f,
             width = width,
             height = height,
-            alpha = 0.36f,
             tint = tint,
             preserveLight = true
         )
 
         val glyphLayout = textMeasurer.oneLine(
             text = glyph,
-            style = serif(size = 52f, color = onFill.copy(alpha = 0.36f))
+            style = serif(size = 35f, color = onFill)
         )
         drawCenteredInBox(glyphLayout, center)
     }
@@ -1866,6 +1864,17 @@ object CalendarShareCardRenderer {
         var currentY = 0f
         var contourX = 0f
         var contourY = 0f
+        var lastCubicCtrlX = 0f
+        var lastCubicCtrlY = 0f
+        var lastQuadCtrlX = 0f
+        var lastQuadCtrlY = 0f
+
+        fun resetControls() {
+            lastCubicCtrlX = currentX
+            lastCubicCtrlY = currentY
+            lastQuadCtrlX = currentX
+            lastQuadCtrlY = currentY
+        }
 
         for (node in this) {
             when (node) {
@@ -1875,12 +1884,54 @@ object CalendarShareCardRenderer {
                     currentY = node.y
                     contourX = node.x
                     contourY = node.y
+                    resetControls()
+                }
+
+                is PathNode.RelativeMoveTo -> {
+                    path.relativeMoveTo(node.dx, node.dy)
+                    currentX += node.dx
+                    currentY += node.dy
+                    contourX = currentX
+                    contourY = currentY
+                    resetControls()
                 }
 
                 is PathNode.LineTo -> {
                     path.lineTo(node.x, node.y)
                     currentX = node.x
                     currentY = node.y
+                    resetControls()
+                }
+
+                is PathNode.RelativeLineTo -> {
+                    path.relativeLineTo(node.dx, node.dy)
+                    currentX += node.dx
+                    currentY += node.dy
+                    resetControls()
+                }
+
+                is PathNode.HorizontalTo -> {
+                    path.lineTo(node.x, currentY)
+                    currentX = node.x
+                    resetControls()
+                }
+
+                is PathNode.RelativeHorizontalTo -> {
+                    path.relativeLineTo(node.dx, 0f)
+                    currentX += node.dx
+                    resetControls()
+                }
+
+                is PathNode.VerticalTo -> {
+                    path.lineTo(currentX, node.y)
+                    currentY = node.y
+                    resetControls()
+                }
+
+                is PathNode.RelativeVerticalTo -> {
+                    path.relativeLineTo(0f, node.dy)
+                    currentY += node.dy
+                    resetControls()
                 }
 
                 is PathNode.CurveTo -> {
@@ -1889,14 +1940,104 @@ object CalendarShareCardRenderer {
                     )
                     currentX = node.x3
                     currentY = node.y3
+                    lastCubicCtrlX = node.x2
+                    lastCubicCtrlY = node.y2
+                    lastQuadCtrlX = currentX
+                    lastQuadCtrlY = currentY
+                }
+
+                is PathNode.RelativeCurveTo -> {
+                    val c2x = currentX + node.dx2
+                    val c2y = currentY + node.dy2
+                    val endX = currentX + node.dx3
+                    val endY = currentY + node.dy3
+                    path.relativeCubicTo(
+                        node.dx1, node.dy1, node.dx2, node.dy2, node.dx3, node.dy3
+                    )
+                    currentX = endX
+                    currentY = endY
+                    lastCubicCtrlX = c2x
+                    lastCubicCtrlY = c2y
+                    lastQuadCtrlX = currentX
+                    lastQuadCtrlY = currentY
+                }
+
+                is PathNode.ReflectiveCurveTo -> {
+                    val c1x = 2f * currentX - lastCubicCtrlX
+                    val c1y = 2f * currentY - lastCubicCtrlY
+                    path.cubicTo(c1x, c1y, node.x1, node.y1, node.x2, node.y2)
+                    currentX = node.x2
+                    currentY = node.y2
+                    lastCubicCtrlX = node.x1
+                    lastCubicCtrlY = node.y1
+                    lastQuadCtrlX = currentX
+                    lastQuadCtrlY = currentY
+                }
+
+                is PathNode.RelativeReflectiveCurveTo -> {
+                    val c1x = 2f * currentX - lastCubicCtrlX
+                    val c1y = 2f * currentY - lastCubicCtrlY
+                    val c2x = currentX + node.dx1
+                    val c2y = currentY + node.dy1
+                    val endX = currentX + node.dx2
+                    val endY = currentY + node.dy2
+                    path.cubicTo(c1x, c1y, c2x, c2y, endX, endY)
+                    currentX = endX
+                    currentY = endY
+                    lastCubicCtrlX = c2x
+                    lastCubicCtrlY = c2y
+                    lastQuadCtrlX = currentX
+                    lastQuadCtrlY = currentY
                 }
 
                 is PathNode.QuadTo -> {
-                    path.quadraticBezierTo(
-                        node.x1, node.y1, node.x2, node.y2
-                    )
+                    path.quadraticBezierTo(node.x1, node.y1, node.x2, node.y2)
                     currentX = node.x2
                     currentY = node.y2
+                    lastQuadCtrlX = node.x1
+                    lastQuadCtrlY = node.y1
+                    lastCubicCtrlX = currentX
+                    lastCubicCtrlY = currentY
+                }
+
+                is PathNode.RelativeQuadTo -> {
+                    val cx = currentX + node.dx1
+                    val cy = currentY + node.dy1
+                    val endX = currentX + node.dx2
+                    val endY = currentY + node.dy2
+                    path.quadraticBezierTo(cx, cy, endX, endY)
+                    currentX = endX
+                    currentY = endY
+                    lastQuadCtrlX = cx
+                    lastQuadCtrlY = cy
+                    lastCubicCtrlX = currentX
+                    lastCubicCtrlY = currentY
+                }
+
+                is PathNode.ReflectiveQuadTo -> {
+                    val cx = 2f * currentX - lastQuadCtrlX
+                    val cy = 2f * currentY - lastQuadCtrlY
+                    path.quadraticBezierTo(cx, cy, node.x, node.y)
+                    currentX = node.x
+                    currentY = node.y
+                    lastQuadCtrlX = cx
+                    lastQuadCtrlY = cy
+                    lastCubicCtrlX = currentX
+                    lastCubicCtrlY = currentY
+                }
+
+                is PathNode.RelativeReflectiveQuadTo -> {
+                    val cx = 2f * currentX - lastQuadCtrlX
+                    val cy = 2f * currentY - lastQuadCtrlY
+                    val endX = currentX + node.dx
+                    val endY = currentY + node.dy
+                    path.quadraticBezierTo(cx, cy, endX, endY)
+                    currentX = endX
+                    currentY = endY
+                    lastQuadCtrlX = cx
+                    lastQuadCtrlY = cy
+                    lastCubicCtrlX = currentX
+                    lastCubicCtrlY = currentY
                 }
 
                 is PathNode.ArcTo -> {
@@ -1908,12 +2049,35 @@ object CalendarShareCardRenderer {
                     )
                     currentX = node.arcStartX
                     currentY = node.arcStartY
+                    resetControls()
+                }
+
+                is PathNode.RelativeArcTo -> {
+                    val arc = PathNode.ArcTo(
+                        horizontalEllipseRadius = node.horizontalEllipseRadius,
+                        verticalEllipseRadius = node.verticalEllipseRadius,
+                        theta = node.theta,
+                        isMoreThanHalf = node.isMoreThanHalf,
+                        isPositiveArc = node.isPositiveArc,
+                        arcStartX = currentX + node.arcStartDx,
+                        arcStartY = currentY + node.arcStartDy
+                    )
+                    appendSvgArc(
+                        path = path,
+                        startX = currentX,
+                        startY = currentY,
+                        node = arc
+                    )
+                    currentX = arc.arcStartX
+                    currentY = arc.arcStartY
+                    resetControls()
                 }
 
                 PathNode.Close -> {
                     path.close()
                     currentX = contourX
                     currentY = contourY
+                    resetControls()
                 }
 
                 else -> Unit
