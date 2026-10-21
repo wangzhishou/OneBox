@@ -502,7 +502,11 @@ object CalendarShareCardRenderer {
         )
         drawCentered(day, centerX = WIDTH / 2f, baselineY = 700f)
 
-        val verticalStyle = serif(size = 47f, color = accent)
+        val verticalStyle = serif(
+            size = 47f,
+            color = accent,
+            weight = FontWeight.Bold
+        )
         drawVerticalChars(
             text = data.ganZhiYear + data.labels.yearSuffix,
             centerX = 150f,
@@ -550,12 +554,21 @@ object CalendarShareCardRenderer {
             style = TextStyle(
                 fontFamily = FontFamily.SansSerif,
                 fontSize = 29.sp,
+                fontWeight = FontWeight.Bold,
                 color = accent,
                 letterSpacing = 10.sp
             )
         )
         drawCentered(weekdayEn, centerX = 930f, baselineY = 636f)
-        drawKnot(center = Offset(930f, 762f), color = accent)
+        val rightKnotSize = 82f
+        drawVectorAsset(
+            vector = Icons.Filled.OrnamentChineseKnot,
+            left = 930f - rightKnotSize / 2f,
+            top = 762f - rightKnotSize / 2f,
+            width = rightKnotSize,
+            height = rightKnotSize,
+            alpha = 0.95f
+        )
     }
 
     private fun DrawScope.drawHorse(
@@ -622,39 +635,6 @@ object CalendarShareCardRenderer {
             style = serif(size = 46f, color = palette.onAccent)
         )
         drawCenteredInBox(layout, center)
-    }
-
-    private fun DrawScope.drawKnot(center: Offset, color: Color) {
-        rotate(degrees = 45f, pivot = center) {
-            drawRoundRect(
-                color = color,
-                topLeft = Offset(center.x - 34f, center.y - 34f),
-                size = Size(68f, 68f),
-                cornerRadius = CornerRadius(6f),
-                style = Stroke(width = 3f)
-            )
-            drawRoundRect(
-                color = color,
-                topLeft = Offset(center.x - 18f, center.y - 18f),
-                size = Size(36f, 36f),
-                cornerRadius = CornerRadius(4f),
-                style = Stroke(width = 3f)
-            )
-        }
-        drawCircle(color = color, radius = 5f, center = center)
-        drawLine(
-            color = color,
-            start = Offset(center.x, center.y + 50f),
-            end = Offset(center.x, center.y + 72f),
-            strokeWidth = 3f
-        )
-        val tassel = Path().apply {
-            moveTo(center.x - 7f, center.y + 72f)
-            lineTo(center.x, center.y + 84f)
-            lineTo(center.x + 7f, center.y + 72f)
-            close()
-        }
-        drawPath(tassel, color)
     }
 
     // ─── 农历横幅 ────────────────────────────────────────────────────
@@ -1074,8 +1054,7 @@ object CalendarShareCardRenderer {
             top = 1274f - knotSize / 2f,
             width = knotSize,
             height = knotSize,
-            alpha = 0.9f,
-            tint = accent
+            alpha = 0.9f
         )
         drawMeanderStrip(
             left = 180f,
@@ -1158,13 +1137,67 @@ object CalendarShareCardRenderer {
         drawPath(card, palette.accent.copy(alpha = 0.035f))
         drawPath(card, palette.accent.copy(alpha = 0.75f), style = Stroke(width = 1.5f))
 
+        val innerFrame = Path().apply {
+            addRoundRect(
+                RoundRect(
+                    left = left + 8f,
+                    top = top + 8f,
+                    right = right - 8f,
+                    bottom = top + WEATHER_CARD_HEIGHT - 8f,
+                    radiusX = 12f,
+                    radiusY = 12f
+                )
+            )
+        }
+        drawPath(
+            path = innerFrame,
+            color = palette.accent.copy(alpha = 0.3f),
+            style = Stroke(width = 1f)
+        )
+
+        val borderClouds = listOf(
+            left + 54f,
+            (left + right) / 2f,
+            right - 54f
+        )
+        borderClouds.forEachIndexed { index, x ->
+            drawCloudOrnament(
+                center = Offset(x, top + 8f),
+                scale = 0.45f,
+                color = palette.accent,
+                alpha = 0.5f,
+                mirrored = index == 2
+            )
+            drawCloudOrnament(
+                center = Offset(x, top + WEATHER_CARD_HEIGHT - 8f),
+                scale = 0.45f,
+                color = palette.accent,
+                alpha = 0.5f,
+                mirrored = index == 0
+            )
+        }
+
         drawLeft(
             layout = textMeasurer.oneLine(
                 text = labels.weatherTitle,
                 style = serif(20f, palette.accent, FontWeight.SemiBold, letterSpacing = 4f)
             ),
             x = left + 22f,
-            baselineY = top + 34f
+            baselineY = top + 38f
+        )
+
+        drawCloudOrnament(
+            center = Offset(left + 12f, top + 75f),
+            scale = 0.3f,
+            color = palette.accent,
+            alpha = 0.45f
+        )
+        drawCloudOrnament(
+            center = Offset(right - 12f, top + 75f),
+            scale = 0.3f,
+            color = palette.accent,
+            alpha = 0.45f,
+            mirrored = true
         )
 
         val iconCenter = Offset(left + 74f, top + 92f)
@@ -1242,19 +1275,6 @@ object CalendarShareCardRenderer {
             )
         }
 
-        drawCloudOrnament(
-            center = Offset(left + 28f, top + WEATHER_CARD_HEIGHT - 14f),
-            scale = 0.6f,
-            color = palette.accent,
-            alpha = 0.3f
-        )
-        drawCloudOrnament(
-            center = Offset(right - 28f, top + WEATHER_CARD_HEIGHT - 14f),
-            scale = 0.6f,
-            color = palette.accent,
-            alpha = 0.3f,
-            mirrored = true
-        )
     }
 
     private fun DrawScope.drawWeatherIcon(
