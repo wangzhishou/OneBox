@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathOperation
 import androidx.compose.ui.graphics.SolidColor
@@ -460,22 +461,22 @@ object CalendarShareCardRenderer {
         drawCornerAsset(
             vector = Icons.Filled.OrnamentCornerTlRed,
             x = 246f, y = 326f, width = 72f, height = 44f,
-            xDir = 1f, yDir = 1f, alpha = 0.75f
+            xDir = 1f, yDir = 1f, alpha = 0.75f, tint = accent
         )
         drawCornerAsset(
             vector = Icons.Filled.OrnamentCornerTlRed,
             x = 834f, y = 326f, width = 72f, height = 44f,
-            xDir = -1f, yDir = 1f, alpha = 0.75f
+            xDir = -1f, yDir = 1f, alpha = 0.75f, tint = accent
         )
         drawCornerAsset(
             vector = Icons.Filled.OrnamentCornerTlRed,
             x = 246f, y = 826f, width = 72f, height = 44f,
-            xDir = 1f, yDir = -1f, alpha = 0.75f
+            xDir = 1f, yDir = -1f, alpha = 0.75f, tint = accent
         )
         drawCornerAsset(
             vector = Icons.Filled.OrnamentCornerTlRed,
             x = 834f, y = 826f, width = 72f, height = 44f,
-            xDir = -1f, yDir = -1f, alpha = 0.75f
+            xDir = -1f, yDir = -1f, alpha = 0.75f, tint = accent
         )
         drawCloudOrnament(
             center = Offset(195f, 798f),
@@ -567,7 +568,8 @@ object CalendarShareCardRenderer {
             top = 762f - rightKnotSize / 2f,
             width = rightKnotSize,
             height = rightKnotSize,
-            alpha = 0.95f
+            alpha = 0.95f,
+            tint = accent
         )
     }
 
@@ -675,7 +677,8 @@ object CalendarShareCardRenderer {
             height = 48f,
             xDir = 1f,
             yDir = 1f,
-            alpha = 0.95f
+            alpha = 0.95f,
+            tint = accent
         )
         drawCornerAsset(
             vector = Icons.Filled.OrnamentCornerTlRed,
@@ -685,7 +688,8 @@ object CalendarShareCardRenderer {
             height = 48f,
             xDir = -1f,
             yDir = 1f,
-            alpha = 0.95f
+            alpha = 0.95f,
+            tint = accent
         )
         drawCornerAsset(
             vector = Icons.Filled.OrnamentCornerTlRed,
@@ -695,7 +699,8 @@ object CalendarShareCardRenderer {
             height = 48f,
             xDir = 1f,
             yDir = -1f,
-            alpha = 0.95f
+            alpha = 0.95f,
+            tint = accent
         )
         drawCornerAsset(
             vector = Icons.Filled.OrnamentCornerTlRed,
@@ -705,7 +710,8 @@ object CalendarShareCardRenderer {
             height = 48f,
             xDir = -1f,
             yDir = -1f,
-            alpha = 0.95f
+            alpha = 0.95f,
+            tint = accent
         )
 
         val text = textMeasurer.oneLine(
@@ -781,22 +787,22 @@ object CalendarShareCardRenderer {
         drawCornerAsset(
             vector = Icons.Filled.OrnamentCornerTlGray,
             x = left + 12f, y = top + 12f, width = 72f, height = 44f,
-            xDir = 1f, yDir = 1f, alpha = 0.8f
+            xDir = 1f, yDir = 1f, alpha = 0.8f, tint = palette.inkSoft
         )
         drawCornerAsset(
             vector = Icons.Filled.OrnamentCornerTlRed,
             x = right - 12f, y = top + 12f, width = 72f, height = 44f,
-            xDir = -1f, yDir = 1f, alpha = 0.8f
+            xDir = -1f, yDir = 1f, alpha = 0.8f, tint = accent
         )
         drawCornerAsset(
             vector = Icons.Filled.OrnamentCornerTlGray,
             x = left + 12f, y = bottom - 12f, width = 72f, height = 44f,
-            xDir = 1f, yDir = -1f, alpha = 0.8f
+            xDir = 1f, yDir = -1f, alpha = 0.8f, tint = palette.inkSoft
         )
         drawCornerAsset(
             vector = Icons.Filled.OrnamentCornerTlRed,
             x = right - 12f, y = bottom - 12f, width = 72f, height = 44f,
-            xDir = -1f, yDir = -1f, alpha = 0.8f
+            xDir = -1f, yDir = -1f, alpha = 0.8f, tint = accent
         )
 
         listOf(left + columnWidth, left + columnWidth * 2f).forEach { x ->
@@ -822,14 +828,16 @@ object CalendarShareCardRenderer {
             glyph = data.labels.yiSeal,
             onFill = palette.onYiSeal,
             textMeasurer = textMeasurer,
-            vector = Icons.Filled.OrnamentSealGreen
+            vector = Icons.Filled.OrnamentSealGreen,
+            tint = palette.yiSeal
         )
         drawSeal(
             center = Offset(centers[2], 1050f),
             glyph = data.labels.jiSeal,
             onFill = palette.onJiSeal,
             textMeasurer = textMeasurer,
-            vector = Icons.Filled.OrnamentSealRed
+            vector = Icons.Filled.OrnamentSealRed,
+            tint = palette.jiSeal
         )
 
         drawAlmanacList(
@@ -865,7 +873,7 @@ object CalendarShareCardRenderer {
                     style = serif(size = 28f, color = palette.inkSoft)
                 ),
                 centerX = centerX,
-                baselineY = 1170f
+                baselineY = 1180f
             )
             return
         }
@@ -895,7 +903,7 @@ object CalendarShareCardRenderer {
             drawItem(
                 item = shown[index],
                 x = columns[index % 2],
-                baselineY = 1132f + (index / 2) * 40f
+                baselineY = 1152f + (index / 2) * 40f
             )
         }
         if (shown.size % 2 == 1) {
@@ -903,7 +911,7 @@ object CalendarShareCardRenderer {
             drawItem(
                 item = shown.last(),
                 x = centerX,
-                baselineY = 1132f + (paired / 2) * 40f
+                baselineY = 1152f + (paired / 2) * 40f
             )
         }
     }
@@ -1054,14 +1062,16 @@ object CalendarShareCardRenderer {
             top = 1274f - knotSize / 2f,
             width = knotSize,
             height = knotSize,
-            alpha = 0.9f
+            alpha = 0.9f,
+            tint = accent
         )
         drawMeanderStrip(
             left = 180f,
             right = 900f,
             top = 1311f,
             height = 13f,
-            alpha = 0.6f
+            alpha = 0.6f,
+            tint = accent
         )
     }
 
@@ -1071,6 +1081,7 @@ object CalendarShareCardRenderer {
         onFill: Color,
         textMeasurer: TextMeasurer,
         vector: ImageVector,
+        tint: Color,
     ) {
         val width = 128f
         val height = 118f
@@ -1079,12 +1090,15 @@ object CalendarShareCardRenderer {
             left = center.x - width / 2f,
             top = center.y - height / 2f,
             width = width,
-            height = height
+            height = height,
+            alpha = 0.36f,
+            tint = tint,
+            preserveLight = true
         )
 
         val glyphLayout = textMeasurer.oneLine(
             text = glyph,
-            style = serif(size = 52f, color = onFill)
+            style = serif(size = 52f, color = onFill.copy(alpha = 0.36f))
         )
         drawCenteredInBox(glyphLayout, center)
     }
@@ -1708,6 +1722,7 @@ object CalendarShareCardRenderer {
         xDir: Float,
         yDir: Float,
         alpha: Float,
+        tint: Color?,
     ) {
         drawVectorAsset(
             vector = vector,
@@ -1716,6 +1731,7 @@ object CalendarShareCardRenderer {
             width = width,
             height = height,
             alpha = alpha,
+            tint = tint,
             flipX = xDir < 0f,
             flipY = yDir < 0f
         )
@@ -1728,6 +1744,7 @@ object CalendarShareCardRenderer {
         top: Float,
         height: Float,
         alpha: Float,
+        tint: Color?,
     ) {
         val tileWidth = height * (233f / 47f)
         clipRect(left = left, top = top, right = right, bottom = top + height) {
@@ -1739,7 +1756,8 @@ object CalendarShareCardRenderer {
                     top = top,
                     width = tileWidth,
                     height = height,
-                    alpha = alpha
+                    alpha = alpha,
+                    tint = tint
                 )
                 x += tileWidth
             }
@@ -1756,6 +1774,7 @@ object CalendarShareCardRenderer {
         height: Float,
         alpha: Float = 1f,
         tint: Color? = null,
+        preserveLight: Boolean = false,
         flipX: Boolean = false,
         flipY: Boolean = false,
     ) {
@@ -1768,7 +1787,7 @@ object CalendarShareCardRenderer {
                 scaleY = (if (flipY) -height else height) / vector.viewportHeight,
                 pivot = Offset.Zero
             ) {
-                drawVectorGroup(vector.root, alpha = alpha, tint = tint)
+                drawVectorGroup(vector.root, alpha = alpha, tint = tint, preserveLight = preserveLight)
             }
         }
     }
@@ -1777,6 +1796,7 @@ object CalendarShareCardRenderer {
         group: VectorGroup,
         alpha: Float,
         tint: Color?,
+        preserveLight: Boolean,
     ) {
         translate(left = group.translationX, top = group.translationY) {
             rotate(degrees = group.rotation, pivot = Offset(group.pivotX, group.pivotY)) {
@@ -1787,8 +1807,8 @@ object CalendarShareCardRenderer {
                 ) {
                     group.forEach { node ->
                         when (node) {
-                            is VectorGroup -> drawVectorGroup(node, alpha, tint)
-                            is VectorPath -> drawVectorPath(node, alpha, tint)
+                            is VectorGroup -> drawVectorGroup(node, alpha, tint, preserveLight)
+                            is VectorPath -> drawVectorPath(node, alpha, tint, preserveLight)
                         }
                     }
                 }
@@ -1800,24 +1820,35 @@ object CalendarShareCardRenderer {
         path: VectorPath,
         alpha: Float,
         tint: Color?,
+        preserveLight: Boolean,
     ) {
         val composePath = path.pathData.toComposePath()
         composePath.fillType = path.pathFillType
 
         val fill = path.fill
         if (fill is SolidColor) {
+            val color = if (tint != null && (!preserveLight || fill.value.luminance() < 0.8f)) {
+                tint
+            } else {
+                fill.value
+            }
             drawPath(
                 path = composePath,
-                color = tint ?: fill.value,
+                color = color,
                 alpha = alpha * path.fillAlpha
             )
         }
 
         val stroke = path.stroke
         if (stroke is SolidColor) {
+            val color = if (tint != null && (!preserveLight || stroke.value.luminance() < 0.8f)) {
+                tint
+            } else {
+                stroke.value
+            }
             drawPath(
                 path = composePath,
-                color = tint ?: stroke.value,
+                color = color,
                 alpha = alpha * path.strokeAlpha,
                 style = Stroke(
                     width = path.strokeLineWidth,
