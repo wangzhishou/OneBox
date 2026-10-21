@@ -534,6 +534,11 @@ open class AIChatComponent @AssistedInject internal constructor(
 
     override fun loadMessages() {
         if (_conversation.value.id.isNotEmpty()) {
+            // 先修上次进程被杀留下的流式草稿（补「已中断」标记），再开始观察消息流，
+            // 避免用户首先看到一条没有下文的空气泡。
+            componentScope.launch(ioDispatcher) {
+                messagePersistenceWorker.recoverInterruptedStreamDrafts(_conversation.value.id)
+            }
             observeMessages()
         } else {
             "loadMessages skipped: conversation id is empty".makeLog("AIChatComponent")
@@ -725,6 +730,14 @@ open class AIChatComponent @AssistedInject internal constructor(
     ) {
         // P0 #11: 进入新一轮请求时清空 watchdog flag, 避免上轮超时的残留.
         streamTimeoutByWatchdog = false
+
+        // 回合级前台保活：覆盖"首轮流 → 工具执行 → 续轮流"之间的空窗，
+        // 与逐流引用计数叠加，回合结束时在下面的 finally 里释放。
+        messageRemoteMediator.beginTurnKeepAlive()
+
+        // 先落一条草稿(问题 + 空回答), 之后每 2 秒把已生成内容写回同一行。
+        // 进程被系统杀掉时, 重新打开会话仍能看到已生成的部分; 正常结束复用这组 id 原地更新。
+        messagePersistenceWorker.beginStreamDraft()
         try {
             agentLoopOrchestrator.reset()
             streamContentProcessor.resetBuffers()
@@ -932,6 +945,9 @@ open class AIChatComponent @AssistedInject internal constructor(
                     renderErrorUIForChat(error, questionMessageEntityList)
                 }
             }
+        } finally {
+            // 与上面的 beginTurnKeepAlive 成对；任何退出路径（正常/取消/异常）都会释放。
+            messageRemoteMediator.endTurnKeepAlive()
         }
         // P1 #6: chatActive 清理已上移到 [startChatWithStreaming] 的 launch lambda finally,
         // 由 chatGeneration 代际号守卫, 避免旧 job 误杀新 job 的 UI 状态.
@@ -990,10 +1006,12 @@ open class AIChatComponent @AssistedInject internal constructor(
 
             is LlmStreamEvent.TextDelta -> {
                 processTextDelta(streamEvent.text)
+                persistStreamDraftIfNeeded()
             }
 
             is LlmStreamEvent.ReasoningDelta -> {
                 processReasoningDelta(streamEvent.text)
+                persistStreamDraftIfNeeded()
             }
 
             is LlmStreamEvent.Completed -> {
@@ -1143,6 +1161,20 @@ open class AIChatComponent @AssistedInject internal constructor(
     }
 
     /**
+     * 流式内容兜底落库（节流）：每 2 秒最多写一次，异步 IO，写失败不影响正在进行的流。
+     *
+     * 目的只有一个——进程被系统杀掉时，用户重新打开会话还能看到已经生成的部分，
+     * 而不是整段回答凭空消失。正常完成时由 [MessagePersistenceWorker.onChatCompletionEnd]
+     * 复用同一组行 id 原地更新。
+     */
+    private fun persistStreamDraftIfNeeded() {
+        if (!messagePersistenceWorker.shouldPersistStreamDraft()) return
+        componentScope.launch(ioDispatcher) {
+            messagePersistenceWorker.persistStreamDraft()
+        }
+    }
+
+    /**
      * 持久化已中断的聊天内容：不再标 expired，正常入库，
      * 用户可在聊天历史中查看已生成的内容。
      */
@@ -1176,7 +1208,9 @@ open class AIChatComponent @AssistedInject internal constructor(
             entryRefId = _conversation.value.entryRefId,
             title = _conversation.value.title,
             reasoningTime = streamContentProcessor.reasoningTime,
-            answer = answerWithSuffix
+            answer = answerWithSuffix,
+            // 主动标记为「已中断」：草稿哨兵被覆盖，下次打开会话不会重复补标记
+            finishReason = MessagePersistenceWorker.INTERRUPTED_FINISH_REASON
         ).also { it.uId = MessageUIState.NORMAL.value }
         // 正常入库（expired = false），用户可在聊天列表中看到这条消息
         val questionEntityForDb = _questionMessageEntity.value.let { entity ->

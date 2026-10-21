@@ -125,6 +125,23 @@ interface MessageDao {
     @Query("UPDATE message SET expired = :expired WHERE completion_id = :completionId")
     suspend fun updateMessageEntityExpiredByCompletionId(completionId: String, expired: Boolean = true): Int
 
+    /**
+     * 流式草稿增量落库：只更新已生成正文，不动其余列。
+     *
+     * 用 UPDATE 而不是 REPLACE，避免行被删除重建时连带清掉关联行
+     * （图片/搜索结果都是按 message.id 外键挂在这条消息上的）。
+     */
+    @Query("UPDATE message SET answer = :answer, reasoning_content = :reasoning WHERE id = :id")
+    suspend fun updateStreamDraft(id: Int, answer: String, reasoning: String): Int
+
+    /** 按 finish_reason 取某个会话的消息，用于识别上次进程被杀留下的流式草稿。 */
+    @Query("SELECT * FROM message WHERE conversation_id = :conversationId AND role = 'assistant' AND finish_reason = :finishReason")
+    suspend fun getMessagesByFinishReason(conversationId: String, finishReason: String): List<MessageEntity>
+
+    /** 草稿恢复：补中断标记并改写 finish_reason，避免重复处理。 */
+    @Query("UPDATE message SET answer = :answer, finish_reason = :finishReason WHERE id = :id")
+    suspend fun updateMessageAnswerAndFinishReason(id: Int, answer: String, finishReason: String): Int
+
     @Query("SELECT * FROM message WHERE completion_id = :completionId")
     fun queryQuestionAndAnswerByCompletionId(completionId: String): List<MessageEntity>
 

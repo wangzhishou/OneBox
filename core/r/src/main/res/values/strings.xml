@@ -1809,6 +1809,8 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="ai_chat_empty_response_error">The model returned nothing to display. Try again — if it keeps failing, switch engines or check protocol compatibility.</string>
     <string name="ai_empty_response_error">The model returned no content. Please try again.</string>
     <string name="ai_chat_stream_interrupted">Connection interrupted before the response completed. Please try again.</string>
+    <!-- 生成期间的前台服务通知标题。只写状态，不带任何问题/回答内容（锁屏可见）。 -->
+    <string name="ai_stream_foreground_title">AI is replying</string>
 
     <!-- AI chat error card -->
     <string name="ai_chat_error_title_offline">No internet connection</string>

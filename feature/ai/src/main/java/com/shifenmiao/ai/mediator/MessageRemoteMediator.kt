@@ -1,5 +1,6 @@
 package com.shifenmiao.ai.mediator
 
+import com.shifenmiao.ai.request.AiStreamKeepAlive
 import com.shifenmiao.ai.request.LlmContextBudgetService
 import com.shifenmiao.ai.request.LlmRequestGateway
 import com.shifenmiao.ai.upload.AttachmentContentResolver
@@ -17,6 +18,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onStart
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -34,7 +37,27 @@ class MessageRemoteMediator @Inject constructor(
     private val contextBudgetService: LlmContextBudgetService,
     private val attachmentContentResolver: AttachmentContentResolver,
     private val imageDao: ImageDao,
+    private val streamKeepAlive: AiStreamKeepAlive,
 ) {
+
+    /**
+     * 生成期间挂前台服务，退后台/锁屏时不让系统冻结进程或 defer 网络。
+     *
+     * 放在所有流（首轮、Agent 续轮、双人对话）的共同入口，用引用计数保证
+     * 最后一条流结束才停服务；停服务失败/启动被拒都只降级，不影响数据流。
+     */
+    private fun Flow<LlmStreamEvent>.withAiForegroundKeepAlive(): Flow<LlmStreamEvent> =
+        onStart { streamKeepAlive.begin() }
+            .onCompletion { streamKeepAlive.end() }
+
+    /**
+     * 回合级保活：一个回合可能包含"首轮流 → 工具执行 → 续轮流"多段，
+     * 只在流期间挂服务的话，工具执行那段空窗会被停掉，锁屏后下一段流就起不来。
+     * 调用方在回合开始/结束时成对调用，与逐流引用计数叠加。
+     */
+    fun beginTurnKeepAlive() = streamKeepAlive.begin()
+
+    fun endTurnKeepAlive() = streamKeepAlive.end()
 
     suspend fun fetchAndSaveMessages(
         conversation: Conversation,
@@ -66,6 +89,7 @@ class MessageRemoteMediator @Inject constructor(
                 }
                 emit(LlmStreamEvent.Error(errorMessage = errorMsg))
             }
+            .withAiForegroundKeepAlive()
     } catch (e: Exception) {
         if (e is CancellationException) throw e
         flowOf(LlmStreamEvent.Error(errorMessage = e.message ?: "Error initializing chat request"))
@@ -83,6 +107,7 @@ class MessageRemoteMediator @Inject constructor(
                 if (e is CancellationException) throw e
                 emit(LlmStreamEvent.Error(errorMessage = e.message ?: "Unknown error occurred"))
             }
+            .withAiForegroundKeepAlive()
     } catch (e: Exception) {
         if (e is CancellationException) throw e
         flowOf(LlmStreamEvent.Error(errorMessage = e.message ?: "Error initializing direct request"))

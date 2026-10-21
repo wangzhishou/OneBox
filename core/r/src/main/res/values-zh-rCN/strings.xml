@@ -935,6 +935,8 @@
     <string name="ai_chat_empty_response_error">模型没有返回可展示的内容，请重试一次；如果仍然失败，可切换引擎或检查当前协议兼容性。</string>
     <string name="ai_empty_response_error">模型没有返回内容，请重试。</string>
     <string name="ai_chat_stream_interrupted">连接中断，回答未完成。请重试。</string>
+    <!-- 生成期间的前台服务通知标题。只写状态，不带任何问题/回答内容（锁屏可见）。 -->
+    <string name="ai_stream_foreground_title">AI 正在回复</string>
 
     <!-- AI 聊天错误卡片 -->
     <string name="ai_chat_error_title_offline">网络未连接</string>

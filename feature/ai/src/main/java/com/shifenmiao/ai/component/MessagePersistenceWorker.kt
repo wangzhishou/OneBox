@@ -25,6 +25,7 @@ import com.wanbaohe.core.ui.review.ReviewPromptTrigger
 import com.t8rin.logger.makeLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Date
 
 /**
@@ -53,9 +54,175 @@ class MessagePersistenceWorker(
         const val TOKEN_WARNING_THRESHOLD = 20_000
 
         /**
+         * 流式草稿写库的最小间隔：写太频会跟渲染抢 IO，写太稀又失去"进程被杀少丢字"的意义。
+         */
+        private const val STREAM_DRAFT_INTERVAL_MS = 2_000L
+
+        /**
+         * 草稿行的 finish_reason 哨兵值。
+         *
+         * 正常结束时完成路径会用 provider 的结束原因覆盖它；进程被杀则保留，
+         * 下次打开会话时据此识别"这条回答没写完"，补中断标记，避免留下没有下文的空气泡。
+         */
+        const val STREAM_DRAFT_FINISH_REASON = "streaming"
+
+        /** 中断回合的 finish_reason，与 [STREAM_DRAFT_FINISH_REASON] 区分开，避免重复补标记。 */
+        const val INTERRUPTED_FINISH_REASON = "interrupted"
+
+        /**
          * 同一会话只提示一次。超过阈值后每轮结束都弹，会盖住输入区。
          */
         private val warnedConversationIds = mutableSetOf<String>()
+    }
+
+    // ── 流式草稿（进程被杀兜底） ────────────────────────────────
+    //
+    // 直播期间每 [STREAM_DRAFT_INTERVAL_MS] 把已生成内容写回草稿行。
+    // 正常结束时 onChatCompletionEnd / renderErrorUIForChat / persistInterruptedChat
+    // 复用同一组 id 走 REPLACE，行被原地更新，不会产生重复消息。
+    // 进程被杀时草稿行留在库里 = 用户重新打开会话还能看到已生成的部分。
+    private var draftQuestionId: Int = 0
+    private var draftAnswerId: Int = 0
+    private var draftLastWriteAt: Long = 0L
+    private var draftLastLength: Int = -1
+
+    /**
+     * 新一轮开始前插入草稿行，并把 id 写回 sharedState，
+     * 让后续完成路径的 copy() 自动带上 id（REPLACE 即原地更新）。
+     */
+    suspend fun beginStreamDraft(): Boolean {
+        draftQuestionId = 0
+        draftAnswerId = 0
+        draftLastWriteAt = 0L
+        draftLastLength = -1
+
+        val question = sharedState.questionMessageEntity.value
+        if (question.question.isBlank() || question.completionId.isBlank()) return false
+
+        val answer = sharedState.answerMessageEntity.value
+        val now = Date()
+        return runCatching {
+            // 幂等：同一 completionId 已经有行（重复执行/上次进程内已开局）就复用，
+            // 不再插一对新的，否则完成时 REPLACE 只会更新最新那对，旧的会变成孤儿消息。
+            val existing = withContext(Dispatchers.IO) {
+                appDatabase.messageDao()
+                    .queryQuestionAndAnswerByCompletionId(question.completionId)
+            }
+            val existingQuestion = existing.firstOrNull { it.role == RoleType.USER.value }
+            val existingAnswer = existing.firstOrNull { it.role == RoleType.ASSISTANT.value }
+
+            if (existingQuestion != null && existingAnswer != null) {
+                draftQuestionId = existingQuestion.id
+                draftAnswerId = existingAnswer.id
+            } else {
+                val (questionId, answerId) = appDatabase.messageDao().insertQuestionAndAnswer(
+                    question.copy(
+                        id = 0,
+                        // 本地 base64 附件不入库，与完成路径 stripLocalContentFromAttachments 保持一致
+                        attachmentsJson = AttachmentPayloadUtils.stripLocalContent(question.attachmentsJson),
+                        createdAt = now,
+                        expired = false,
+                    ),
+                    answer.copy(
+                        id = 0,
+                        answer = "",
+                        reasoningContent = "",
+                        finishReason = STREAM_DRAFT_FINISH_REASON,
+                        createdAt = Date(now.time + 1),
+                        expired = false,
+                    ),
+                )
+                draftQuestionId = questionId.toInt()
+                draftAnswerId = answerId.toInt()
+            }
+            sharedState.setQuestionMessage(
+                sharedState.questionMessageEntity.value.copy(id = draftQuestionId)
+            )
+            sharedState.setAnswerMessage(
+                sharedState.answerMessageEntity.value.copy(id = draftAnswerId)
+            )
+            true
+        }.getOrElse { throwable ->
+            throwable.makeLog("MessagePersistenceWorker")
+            "beginStreamDraft failed, fallback to final-only persist".makeLog("MessagePersistenceWorker")
+            false
+        }
+    }
+
+    /**
+     * 节流判断：距离上次写库够久、且内容确实变长了才值得写。
+     *
+     * 返回 true 时立刻占住时间片（[draftLastWriteAt]），避免同一窗口内的
+     * 连续 chunk 各自通过判断、排队写库把 IO 打满。
+     */
+    fun shouldPersistStreamDraft(): Boolean {
+        if (draftAnswerId <= 0) return false
+        val now = System.currentTimeMillis()
+        if (now - draftLastWriteAt < STREAM_DRAFT_INTERVAL_MS) return false
+        val answer = sharedState.answerMessageEntity.value
+        if (answer.answer.length + answer.reasoningContent.length == draftLastLength) return false
+        draftLastWriteAt = now
+        return true
+    }
+
+    /** 把当前已生成内容写回草稿行；失败只记日志，绝不影响正在进行的流。 */
+    suspend fun persistStreamDraft() {
+        if (draftAnswerId <= 0) return
+        val answer = sharedState.answerMessageEntity.value
+        draftLastLength = answer.answer.length + answer.reasoningContent.length
+        runCatching {
+            appDatabase.messageDao().updateStreamDraft(
+                id = draftAnswerId,
+                answer = answer.answer,
+                reasoning = answer.reasoningContent,
+            )
+        }.onFailure { throwable ->
+            throwable.makeLog("MessagePersistenceWorker")
+            "persistStreamDraft failed".makeLog("MessagePersistenceWorker")
+        }
+    }
+
+    /**
+     * 打开会话时修复上次进程被杀留下的草稿行。
+     *
+     * 仍带 [STREAM_DRAFT_FINISH_REASON] 的 assistant 行 = 那一轮没走完：
+     * - 有已生成内容 → 末尾补一条「已中断」标记；
+     * - 一个字都没生成 → 整条替换成标记文案，避免留下没有下文的空气泡。
+     * 然后把 finish_reason 改成 [INTERRUPTED_FINISH_REASON]，重复打开不会重复补。
+     */
+    suspend fun recoverInterruptedStreamDrafts(conversationId: String) {
+        if (conversationId.isBlank()) return
+        // 正在生成的那一轮不要动，草稿行此刻就是 live 消息的落库副本
+        if (sharedState.chatUIState.value.chatActive) return
+
+        val drafts = runCatching {
+            appDatabase.messageDao()
+                .getMessagesByFinishReason(conversationId, STREAM_DRAFT_FINISH_REASON)
+        }.getOrElse { throwable ->
+            throwable.makeLog("MessagePersistenceWorker")
+            return
+        }
+        if (drafts.isEmpty()) return
+
+        val suffix = sharedState.applicationContext.getString(R.string.ai_chat_interrupted)
+        drafts.forEach { draft ->
+            val answer = when {
+                draft.answer.isBlank() -> suffix
+                draft.answer.endsWith(suffix) -> draft.answer
+                else -> draft.answer + "\n\n" + suffix
+            }
+            runCatching {
+                appDatabase.messageDao().updateMessageAnswerAndFinishReason(
+                    id = draft.id,
+                    answer = answer,
+                    finishReason = INTERRUPTED_FINISH_REASON,
+                )
+            }.onFailure { throwable ->
+                throwable.makeLog("MessagePersistenceWorker")
+                "recoverInterruptedStreamDrafts failed for id=${draft.id}".makeLog("MessagePersistenceWorker")
+            }
+        }
+        streamContentProcessor.invalidateMessageCache()
     }
 
     /**
