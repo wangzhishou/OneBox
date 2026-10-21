@@ -116,6 +116,7 @@ fun CalendarShareScreen(component: CalendarShareComponent) {
         monthSuffix = stringResource(R.string.calendar_share_month_suffix),
         daySuffix = stringResource(R.string.calendar_share_day_suffix),
         todayPrefix = stringResource(R.string.calendar_share_today_prefix),
+        selectedDayPrefix = stringResource(R.string.calendar_share_selected_day_prefix),
         auspiciousTitle = stringResource(R.string.calendar_share_auspicious_title),
         upcomingPrefix = stringResource(R.string.calendar_share_upcoming_prefix),
         noteTitle = stringResource(R.string.calendar_share_note_title),

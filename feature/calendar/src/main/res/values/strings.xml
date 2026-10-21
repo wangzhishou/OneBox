@@ -53,6 +53,7 @@
     <string name="calendar_share_auspicious_title">吉时</string>
     <string name="calendar_share_transparent_background">Transparent background</string>
     <string name="calendar_share_today_prefix">今日</string>
+    <string name="calendar_share_selected_day_prefix">当日</string>
     <string name="calendar_share_upcoming_prefix">未来</string>
     <string name="calendar_share_note_title">今日心语</string>
     <string name="calendar_share_air_prefix">空气</string>

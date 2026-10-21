@@ -66,6 +66,7 @@ data class CalendarShareLabels(
     val monthSuffix: String,
     val daySuffix: String,
     val todayPrefix: String,
+    val selectedDayPrefix: String,
     val auspiciousTitle: String,
     val upcomingPrefix: String,
     val noteTitle: String,

@@ -242,6 +242,9 @@ object CalendarShareCardRenderer {
 
         drawHeader(data, textMeasurer)
         drawMainDay(data, textMeasurer)
+        if (options.showTodayFestival && data.todayFestivals.isNotEmpty()) {
+            drawTodayFestivalTag(data, textMeasurer)
+        }
         drawLunarBanner(data, textMeasurer)
         drawAlmanacBand(data, textMeasurer)
 
@@ -601,6 +604,73 @@ object CalendarShareCardRenderer {
         }
     }
 
+    /**
+     * 当天有节日时，在大号日期正下方显示醒目且带日期的节日条。
+     * 日期取所选日，不是系统今天，避免「今日」造成误解。
+     */
+    private fun DrawScope.drawTodayFestivalTag(
+        data: CalendarShareCardData,
+        textMeasurer: TextMeasurer,
+    ) {
+        if (data.todayFestivals.isEmpty()) return
+        val palette = data.palette
+        val labels = data.labels
+        val festivalNames = data.todayFestivals
+            .take(3)
+            .joinToString(" · ") { it.name }
+        val text = buildString {
+            append(data.solarMonth)
+            append(labels.monthSuffix)
+            append(data.solarDay)
+            append(labels.daySuffix)
+            append(" · ")
+            append(festivalNames)
+        }
+
+        var style = serif(
+            size = 22f,
+            color = palette.onAccent,
+            weight = FontWeight.SemiBold,
+            letterSpacing = 1.5f
+        )
+        var layout = textMeasurer.oneLine(text, style)
+        val maxTextWidth = 500f
+        if (layout.size.width > maxTextWidth) {
+            val scale = maxTextWidth / layout.size.width
+            style = style.copy(fontSize = style.fontSize * scale)
+            layout = textMeasurer.oneLine(text, style)
+        }
+
+        val horizontalPadding = 24f
+        val width = layout.size.width + horizontalPadding * 2f
+        val height = 40f
+        val left = WIDTH / 2f - width / 2f
+        val top = 736f
+        val pill = Path().apply {
+            addRoundRect(
+                RoundRect(
+                    left = left,
+                    top = top,
+                    right = left + width,
+                    bottom = top + height,
+                    radiusX = 20f,
+                    radiusY = 20f
+                )
+            )
+        }
+        drawPath(pill, palette.accent)
+        drawPath(
+            path = pill,
+            color = palette.onAccent.copy(alpha = 0.28f),
+            style = Stroke(width = 1f)
+        )
+        drawCentered(
+            layout = layout,
+            centerX = WIDTH / 2f,
+            baselineY = top + 27f
+        )
+    }
+
     private fun zodiacVector(zodiac: String): ImageVector? = when (zodiac) {
         "鼠" -> MaterialIcons.Filled.Rat
         "牛" -> MaterialIcons.Filled.Ox
@@ -925,7 +995,7 @@ object CalendarShareCardRenderer {
 
         drawCentered(
             layout = textMeasurer.oneLine(
-                text = labels.todayPrefix,
+                text = labels.selectedDayPrefix,
                 style = serif(
                     size = 18f,
                     color = accent,
@@ -1389,7 +1459,7 @@ object CalendarShareCardRenderer {
         var baseline = top + if (both) 40f else 48f
         todayText?.let {
             drawInfoLine(
-                prefix = data.labels.todayPrefix,
+                prefix = data.labels.selectedDayPrefix,
                 content = it,
                 centerX = WIDTH / 2f,
                 baselineY = baseline,
