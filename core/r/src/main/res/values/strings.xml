@@ -1273,6 +1273,10 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <!-- Compass -->
     <string name="compass">Compass</string>
     <string name="compass_description">Luopan and compass dials with real-time bearing and sitting direction.</string>
+
+    <!-- Device status -->
+    <string name="device_status">Device Status</string>
+    <string name="device_status_description">Copy the local IP, network, and device details</string>
     <string name="compass_calibrate">Low sensor accuracy. Draw a figure-8 in the air to calibrate the compass.</string>
     <string name="compass_unavailable">This device does not support rotation vector sensors. Compass is unavailable.</string>
     <string name="compass_tab_luopan">Luopan</string>

@@ -60,6 +60,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineLink
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineManageSearch
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineNote
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePhone
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineShield
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSpeedTest
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDrawerCabinet
@@ -705,6 +706,7 @@ private fun demoNavigationEntries(): List<DemoNavigationEntry> = listOf(
     DemoNavigationEntry("远程存储", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCloudStorage) { Screen.CloudStorage() },
     DemoNavigationEntry("海拔仪", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAltitude) { Screen.Altitude },
     DemoNavigationEntry("网络测速", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSpeedTest) { Screen.SpeedTest },
+    DemoNavigationEntry(getString(R.string.device_status), com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePhone) { Screen.DeviceStatus },
     DemoNavigationEntry("DSH 客户端", com.t8rin.imagetoolbox.core.resources.Icons.Rounded.DshWhale) { Screen.DshClient },
     DemoNavigationEntry("计算转换", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCalculate) { Screen.UnitConverter() },
     DemoNavigationEntry("计算器 Demo", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCalculate) {

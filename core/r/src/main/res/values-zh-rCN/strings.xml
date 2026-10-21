@@ -1374,6 +1374,10 @@
     <!-- Compass -->
     <string name="compass">电子罗盘</string>
     <string name="compass_description">罗经盘与指南针双表盘，实时方位与坐向显示</string>
+
+    <!-- 本机状态 -->
+    <string name="device_status">本机状态</string>
+    <string name="device_status_description">复制本机 IP、网络和设备信息</string>
     <string name="compass_calibrate">传感器精度低，请在空中画"8"字形以校准指南针</string>
     <string name="compass_unavailable">当前设备不支持旋转向量传感器，无法使用指南针功能</string>
     <string name="compass_tab_luopan">罗经盘</string>

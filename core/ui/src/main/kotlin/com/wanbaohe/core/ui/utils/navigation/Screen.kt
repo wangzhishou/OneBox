@@ -1651,6 +1651,14 @@ sealed class Screen(
     )
 
     @Serializable
+    @SerialName("DeviceStatus")
+    data object DeviceStatus : Screen(
+        id = 1121,
+        title = com.shifenmiao.core.R.string.device_status,
+        subtitle = com.shifenmiao.core.R.string.device_status_description,
+    )
+
+    @Serializable
     @SerialName("DeadPixelTest")
     data object DeadPixelTest : Screen(
         id = 1081,

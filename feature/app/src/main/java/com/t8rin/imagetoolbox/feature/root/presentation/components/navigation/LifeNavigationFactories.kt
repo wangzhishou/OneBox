@@ -29,6 +29,7 @@ import com.wanbaohe.calendar.router.screenLogic.CalendarRouterComponent
 import com.wanbaohe.camera.watermark.presentation.screenLogic.CameraWatermarkComponent
 import com.wanbaohe.cloud.storage.screenLogic.CloudStorageComponent
 import com.wanbaohe.compass.component.CompassComponent
+import com.wanbaohe.devicestatus.component.DeviceStatusComponent
 import com.wanbaohe.measurement.component.MeasurementComponent
 import com.wanbaohe.deadpixeltest.component.DeadPixelTestComponent
 import com.wanbaohe.diceroller.component.DiceRollerComponent
@@ -91,6 +92,7 @@ class LifeNavigationFactories @Inject constructor(
     val adWatchComponentFactory: com.wanbaohe.adwatch.component.AdWatchComponent.Factory,
     val altitudeComponentFactory: AltitudeComponent.Factory,
     val compassComponentFactory: CompassComponent.Factory,
+    val deviceStatusComponentFactory: DeviceStatusComponent.Factory,
     val speedTestComponentFactory: SpeedTestComponent.Factory,
     val dshRootComponentFactory: DshRootComponent.Factory,
     val measurementComponentFactory: MeasurementComponent.Factory,

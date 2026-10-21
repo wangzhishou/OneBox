@@ -100,6 +100,7 @@ dependencies {
     implementation(projects.feature.dshClient)
     implementation(projects.feature.unitConverter)
     implementation(projects.feature.compass)
+    implementation(projects.feature.deviceStatus)
     implementation(projects.feature.measurement)
     implementation(projects.feature.calendar)
     implementation(projects.feature.schedule)

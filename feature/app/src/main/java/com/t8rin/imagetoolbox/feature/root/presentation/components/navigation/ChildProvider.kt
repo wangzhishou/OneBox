@@ -1252,6 +1252,13 @@ class ChildProvider @Inject constructor(
             )
         )
 
+        is Screen.DeviceStatus -> NavigationChild.DeviceStatus(
+            component = lifeFactories.get().deviceStatusComponentFactory(
+                componentContext = componentContext,
+                onGoBack = ::navigateBack
+            )
+        )
+
         is Screen.MeasurementTools -> NavigationChild.MeasurementTools(
             measurementComponent = lifeFactories.get().measurementComponentFactory(
                 componentContext = componentContext,

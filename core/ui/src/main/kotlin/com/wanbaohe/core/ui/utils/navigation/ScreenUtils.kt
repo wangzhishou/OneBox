@@ -118,6 +118,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineOnline
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePaletteTools
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePasswordVault
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePdfTools
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePhone
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePickColor
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePoem
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineProfile
@@ -344,6 +345,7 @@ internal fun Screen.simpleName(): String = when (this) {
     is Screen.DshClient -> "DshClient"
     is Screen.UnitConverter -> "UnitConverter"
     is Screen.Compass -> "Compass"
+    is Screen.DeviceStatus -> "DeviceStatus"
     is Screen.DeadPixelTest -> "DeadPixelTest"
     is Screen.Bookkeeping -> "Bookkeeping"
     is Screen.HouseholdItems -> "HouseholdItems"
@@ -517,6 +519,7 @@ internal fun Screen.icon(): ImageVector? = when (this) {
     is Screen.AuthCodeSettings -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineLock
     is Screen.CloudStorage -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCloudStorage
     is Screen.Compass -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCompass
+    is Screen.DeviceStatus -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePhone
     is Screen.DeadPixelTest -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDeadPixelTest
     is Screen.Minesweeper -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMinesweeper
     is Screen.Sudoku -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineGrid4x4
@@ -807,6 +810,7 @@ internal object ScreenConstantsImpl : ScreenConstants {
                     Screen.CodeEditor(),
                     Screen.CloudStorage(),
                     Screen.Compass,
+                    Screen.DeviceStatus,
                     Screen.DeadPixelTest,
                     Screen.Minesweeper,
                     Screen.Sudoku,

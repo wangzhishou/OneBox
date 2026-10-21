@@ -385,6 +385,7 @@ object IconRegistry {
         "CodeEditor" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCodeEditor },
         "CloudStorage" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCloudStorage },
         "Compass" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCompass },
+        "DeviceStatus" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePhone },
         "DeadPixelTest" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDeadPixelTest },
         "Minesweeper" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMinesweeper },
         "Community" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineGroup },

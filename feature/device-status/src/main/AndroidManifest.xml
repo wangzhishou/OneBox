@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 读当前网络的地址、DNS、网关。普通权限，安装时授予。 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- API 28 及以下从 WifiManager 读速率和频率。普通权限。名称和 MAC 仍然拿不到。 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+</manifest>

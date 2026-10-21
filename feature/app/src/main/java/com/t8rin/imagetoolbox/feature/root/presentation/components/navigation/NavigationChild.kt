@@ -218,6 +218,8 @@ import com.wanbaohe.camera.watermark.presentation.screen.CameraWatermarkScreen
 import com.wanbaohe.camera.watermark.presentation.screenLogic.CameraWatermarkComponent
 import com.wanbaohe.compass.component.CompassComponent
 import com.wanbaohe.compass.screen.CompassScreen
+import com.wanbaohe.devicestatus.component.DeviceStatusComponent
+import com.wanbaohe.devicestatus.screen.DeviceStatusScreen
 import com.wanbaohe.cloud.storage.screen.CloudStorageScreen
 import com.wanbaohe.measurement.component.MeasurementComponent
 import com.wanbaohe.measurement.screen.MeasurementScreen
@@ -1308,6 +1310,15 @@ sealed interface NavigationChild {
         @Composable
         override fun Content() {
             CompassScreen(component = compassComponent)
+        }
+    }
+
+    class DeviceStatus(
+        val component: DeviceStatusComponent
+    ) : NavigationChild {
+        @Composable
+        override fun Content() {
+            DeviceStatusScreen(component = component)
         }
     }
 
