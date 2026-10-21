@@ -1,16 +1,13 @@
 package com.wanbaohe.calendar.calendar_view.screenLogic
 
-import android.graphics.Bitmap
 import androidx.compose.runtime.Immutable
 import com.arkivanov.decompose.ComponentContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.domain.image.ImageShareProvider
-import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
-import com.t8rin.imagetoolbox.core.domain.image.model.ImageInfo
 import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.calendar.data.CalendarDayInfo
-import com.wanbaohe.calendar.data.FestivalType
+import com.wanbaohe.calendar.data.CalendarFestivalResolver
+
 import com.wanbaohe.calendar.data.FotoData
 import com.wanbaohe.calendar.data.LunarCalendarCalculator
 import com.wanbaohe.calendar.data.TaoData
@@ -63,7 +60,6 @@ class CalendarViewComponent @AssistedInject internal constructor(
     @Assisted val onGoBack: () -> Unit,
     @Assisted val onNavigate: (Screen) -> Unit,
     dispatchersHolder: DispatchersHolder,
-    private val shareProvider: ImageShareProvider<Bitmap>,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
     private val _uiState = MutableStateFlow(
@@ -133,21 +129,6 @@ class CalendarViewComponent @AssistedInject internal constructor(
         return CalendarViewState(currentYear = year, currentMonth = month, selectedDay = day)
     }
 
-    /** 截图分享 */
-    fun shareBitmap(bitmap: Bitmap, onComplete: () -> Unit = {}) {
-        componentScope.launch {
-            shareProvider.shareImage(
-                imageInfo = ImageInfo(
-                    width = bitmap.width,
-                    height = bitmap.height,
-                    imageFormat = ImageFormat.Png.Lossless
-                ),
-                image = bitmap,
-                onComplete = onComplete
-            )
-        }
-    }
-
     // ─── 内部刷新方法 ────────────────────────────────────────────────
 
     private fun refreshCalendar() {
@@ -190,7 +171,7 @@ class CalendarViewComponent @AssistedInject internal constructor(
             // 第二阶段：后台加载节日数据
             launch {
                 val upcomingItems = withContext(defaultDispatcher) {
-                    buildUpcomingFestivalItems(year, month, day)
+                    CalendarFestivalResolver.upcoming(year, month, day)
                 }
                 ensureActive()
                 _uiState.value = _uiState.value.copy(
@@ -212,68 +193,6 @@ class CalendarViewComponent @AssistedInject internal constructor(
                 )
             }
         }
-    }
-
-    private fun buildUpcomingFestivalItems(
-        year: Int,
-        month: Int,
-        day: Int
-    ): List<UpcomingFestivalItem> {
-        val start = Calendar.getInstance().apply {
-            set(Calendar.YEAR, year)
-            set(Calendar.MONTH, month - 1)
-            set(Calendar.DAY_OF_MONTH, day)
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-        }
-
-        val result = linkedSetOf<UpcomingFestivalItem>()
-        repeat(31) { offset ->
-            val cal = start.clone() as Calendar
-            cal.add(Calendar.DAY_OF_MONTH, offset)
-
-            val y = cal.get(Calendar.YEAR)
-            val m = cal.get(Calendar.MONTH) + 1
-            val d = cal.get(Calendar.DAY_OF_MONTH)
-            val lunarDay = LunarCalendarCalculator.solarToLunar(y, m, d)
-            val dateText = "${m}月${d}日"
-
-            lunarDay.solarTerm?.takeIf { it.isNotBlank() }?.let { name ->
-                result += UpcomingFestivalItem(name, dateText, offset, FestivalType.SolarTerm)
-            }
-            val lunarFestivals = if (lunarDay.lunarFestivals.isNotEmpty()) {
-                lunarDay.lunarFestivals
-            } else {
-                listOfNotNull(lunarDay.lunarFestival)
-            }
-            lunarFestivals.filter { it.isNotBlank() }.forEach { name ->
-                result += UpcomingFestivalItem(name, dateText, offset, FestivalType.LunarFestival)
-            }
-
-            val solarFestivals = if (lunarDay.solarFestivals.isNotEmpty()) {
-                lunarDay.solarFestivals
-            } else {
-                listOfNotNull(lunarDay.solarFestival)
-            }
-            solarFestivals.filter { it.isNotBlank() }.forEach { name ->
-                result += UpcomingFestivalItem(name, dateText, offset, FestivalType.SolarFestival)
-            }
-
-            if (lunarDay.isLegalHoliday && !lunarDay.legalHolidayName.isNullOrBlank()) {
-                result += UpcomingFestivalItem(
-                    lunarDay.legalHolidayName,
-                    dateText,
-                    offset,
-                    FestivalType.LegalHoliday
-                )
-            }
-        }
-
-        return result
-            .sortedBy { it.daysUntil }
-            .take(12)
     }
 
     @AssistedFactory

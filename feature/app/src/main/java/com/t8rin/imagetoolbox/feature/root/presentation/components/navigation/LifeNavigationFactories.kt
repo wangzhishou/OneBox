@@ -76,6 +76,7 @@ class LifeNavigationFactories @Inject constructor(
     val householdItemsComponentFactory: HouseholdItemsComponent.Factory,
     val periodRouterComponentFactory: PeriodRouterComponent.Factory,
     val calendarRouterComponentFactory: CalendarRouterComponent.Factory,
+    val calendarShareComponentFactory: com.wanbaohe.calendar.share.CalendarShareComponent.Factory,
     val scheduleComponentFactory: ScheduleComponent.Factory,
     val markTodoRouterComponentFactory: MarkTodoRouterComponent.Factory,
     val unitConverterComponentFactory: UnitConverterComponent.Factory,

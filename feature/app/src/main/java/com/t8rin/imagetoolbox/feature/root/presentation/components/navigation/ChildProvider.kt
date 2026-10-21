@@ -747,6 +747,16 @@ class ChildProvider @Inject constructor(
             )
         )
 
+        is Screen.CalendarShare -> NavigationChild.CalendarShare(
+            shareComponent = lifeFactories.get().calendarShareComponentFactory(
+                componentContext = componentContext,
+                year = config.year,
+                month = config.month,
+                day = config.day,
+                onGoBack = ::navigateBack,
+            )
+        )
+
         is Screen.Schedule -> NavigationChild.Schedule(
             scheduleComponent = lifeFactories.get().scheduleComponentFactory(
                 componentContext = componentContext,

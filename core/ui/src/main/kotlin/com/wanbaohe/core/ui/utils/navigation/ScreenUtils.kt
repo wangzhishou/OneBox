@@ -63,6 +63,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineBook
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBookkeeping
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDrawerCabinet
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCalendar
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCameraWatermark
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCheckCircleOutline
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChecksumTools
@@ -165,6 +166,7 @@ import com.wanbaohe.core.ui.utils.navigation.Screen.AudioCoverExtractor
 import com.wanbaohe.core.ui.utils.navigation.Screen.Base64Tools
 import com.wanbaohe.core.ui.utils.navigation.Screen.BuyCoffee
 import com.wanbaohe.core.ui.utils.navigation.Screen.Calendar
+import com.wanbaohe.core.ui.utils.navigation.Screen.CalendarShare
 import com.wanbaohe.core.ui.utils.navigation.Screen.ChecksumTools
 import com.wanbaohe.core.ui.utils.navigation.Screen.Cipher
 import com.wanbaohe.core.ui.utils.navigation.Screen.CollageMaker
@@ -276,6 +278,7 @@ internal fun Screen.simpleName(): String = when (this) {
     is App -> "App"
     is NewApp -> "NewApp"
     is Calendar -> "App"
+    is CalendarShare -> "CalendarShare"
     is Feedback -> "Feedback"
     is Marquee -> "Marquee"
     is Online -> "Online"
@@ -447,6 +450,7 @@ internal fun Screen.icon(): ImageVector? = when (this) {
     is App -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineApp
     is NewApp -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineApp
     is Calendar -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCalendar
+    is CalendarShare -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineShare
     is Feedback -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBlog
     is Marquee -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMarquee
     is Online -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineOnline
@@ -725,6 +729,7 @@ internal object ScreenConstantsImpl : ScreenConstants {
                     Zip(),
                     AsciiArt(),
                     Calendar(),
+                    CalendarShare(),
                     WebpTools(),
                     Screen.CreateNote(),
                     Screen.CreateHtml(),

@@ -879,6 +879,28 @@ object AppNavigationRegistry {
             ),
             AppNavigationTarget(
                 targetType = AppNavigationTargetType.SCREEN,
+                routeKey = "calendar_share",
+                canonicalName = "screen.calendar_share",
+                title = "分享日历",
+                description = "把万年历做成可分享的卡片，支持版式、配色、节日、天气与心语",
+                aliases = listOf(
+                    "calendar_share", "share_calendar", "calendar_card",
+                    "日历分享", "分享日历", "日历卡片", "黄历分享", "分享图"
+                ),
+                deeplink = buildStructuredDeeplink(
+                    AppNavigationTargetType.SCREEN,
+                    "calendar_share"
+                ),
+                screenBuilder = { params ->
+                    Screen.CalendarShare(
+                        year = params["year"]?.toIntOrNull() ?: -1,
+                        month = params["month"]?.toIntOrNull() ?: -1,
+                        day = params["day"]?.toIntOrNull() ?: -1,
+                    )
+                }
+            ),
+            AppNavigationTarget(
+                targetType = AppNavigationTargetType.SCREEN,
                 routeKey = "file_browser",
                 canonicalName = "screen.file_browser",
                 title = "文件浏览器",

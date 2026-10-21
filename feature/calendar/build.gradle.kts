@@ -11,6 +11,7 @@ dependencies {
     implementation(libs.androidxCore)
     implementation(libs.appCompat)
     implementation(libs.lunar.java)
+    implementation(projects.core.weather)
     implementation(libs.androidx.room.runtime)
 
     api(projects.core.base)

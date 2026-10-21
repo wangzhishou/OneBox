@@ -598,6 +598,15 @@ sealed interface NavigationChild {
         )
     }
 
+    class CalendarShare(
+        private val shareComponent: com.wanbaohe.calendar.share.CalendarShareComponent
+    ) : NavigationChild {
+        @Composable
+        override fun Content() = com.wanbaohe.calendar.share.CalendarShareScreen(
+            component = shareComponent
+        )
+    }
+
     class Schedule(
         private val scheduleComponent: ScheduleComponent
     ) : NavigationChild {

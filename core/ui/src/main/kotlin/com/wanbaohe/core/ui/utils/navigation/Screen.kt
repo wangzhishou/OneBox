@@ -1027,6 +1027,18 @@ sealed class Screen(
     }
 
     @Serializable
+    @SerialName("CalendarShare")
+    class CalendarShare(
+        val year: Int = -1,
+        val month: Int = -1,
+        val day: Int = -1,
+    ) : Screen(
+        id = 1120,
+        title = com.shifenmiao.core.R.string.calendar,
+        subtitle = com.shifenmiao.core.R.string.calendar_description,
+    )
+
+    @Serializable
     @SerialName("Schedule")
     class Schedule(
         val linkedTaskId: String? = null,

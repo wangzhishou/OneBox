@@ -8,6 +8,54 @@
     <string name="share_current_tab">Share</string>
     <string name="yi">Auspicious</string>
     <string name="ji">Inauspicious</string>
+
+    <!-- Share card. The card face keeps Chinese glyphs on purpose: the lunar
+         month/day names, Yi/Ji items, seals and card labels are design elements.
+         Only the customization page UI follows the app language. -->
+    <string name="calendar_share_page_title">Share Calendar</string>
+    <string name="calendar_share_preview_size">%1$d × %2$d · PNG</string>
+    <string name="calendar_share_color_title">Colors</string>
+    <string name="calendar_share_content_title">Show on card</string>
+    <string name="calendar_share_style_theme">Theme</string>
+    <string name="calendar_share_style_vermilion">Vermilion</string>
+    <string name="calendar_share_style_ink_green">Ink Green</string>
+    <string name="calendar_share_style_gold_ink">Gold Ink</string>
+    <string name="calendar_share_toggle_today">Today\'s festival</string>
+    <string name="calendar_share_toggle_upcoming">Upcoming</string>
+    <string name="calendar_share_toggle_weather">Weather</string>
+    <string name="calendar_share_toggle_note">Note</string>
+    <string name="calendar_share_weather_loading">Weather…</string>
+    <string name="calendar_share_weather_title">天气</string>
+    <string name="calendar_share_weather_unavailable">Weather unavailable</string>
+    <string name="calendar_share_weather_today_only">Weather is only available for today.</string>
+    <string name="calendar_share_note_title_section">A line for today</string>
+    <string name="calendar_share_note_label">Your note</string>
+    <string name="calendar_share_note_placeholder">Leave blank to hide; up to 80 characters</string>
+    <string name="calendar_share_note_counter">%1$d/%2$d</string>
+    <string name="calendar_share_ai_write">AI write</string>
+    <string name="calendar_share_ai_generating">Generating…</string>
+    <string name="calendar_share_ai_hint">Generated from the date, lunar date, Yi/Ji and weather. You can edit it.</string>
+    <string name="calendar_share_save">Save</string>
+    <string name="calendar_share_share">Share</string>
+    <string name="calendar_share_saved_gallery">Saved to gallery</string>
+    <string name="calendar_share_saved_app">Saved to app pictures</string>
+    <string name="calendar_share_save_failed">Save failed</string>
+    <string name="calendar_share_render_failed">Couldn\'t render the card</string>
+    <string name="calendar_share_retry">Retry</string>
+    <string name="calendar_share_lunar_prefix">农历</string>
+    <string name="calendar_share_yi_seal">宜</string>
+    <string name="calendar_share_ji_seal">忌</string>
+    <string name="calendar_share_blessing">万事如意 平安顺遂</string>
+    <string name="calendar_share_brand">万宝盒 · 万年历</string>
+    <string name="calendar_share_year_suffix">年</string>
+    <string name="calendar_share_month_suffix">月</string>
+    <string name="calendar_share_day_suffix">日</string>
+    <string name="calendar_share_auspicious_title">吉时</string>
+    <string name="calendar_share_transparent_background">Transparent background</string>
+    <string name="calendar_share_today_prefix">今日</string>
+    <string name="calendar_share_upcoming_prefix">未来</string>
+    <string name="calendar_share_note_title">今日心语</string>
+    <string name="calendar_share_air_prefix">空气</string>
     <string name="solar_term_label">Solar Term</string>
     <string name="today">Today</string>
     <string name="natal_chart">Birth Chart (BaZi)</string>

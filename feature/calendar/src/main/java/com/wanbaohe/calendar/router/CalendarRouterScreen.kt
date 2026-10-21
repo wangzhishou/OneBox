@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +26,7 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
 import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBar
+import com.wanbaohe.core.ui.widget.other.TopAppBarEmoji
 import com.wanbaohe.calendar.R
 import com.wanbaohe.calendar.bazi.screenLogic.BaZiScreen
 import com.wanbaohe.calendar.calendar_view.screenLogic.CalendarViewScreen
@@ -34,10 +37,12 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineCalendar
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineEventAvailable
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCompareArrows
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
 
 @Composable
 fun CalendarRouterScreen(component: CalendarRouterComponent) {
     val currentType by component.currentType.collectAsState()
+    val calendarState by component.calendarViewComponent.uiState.collectAsState()
 
     val titleText = when (currentType) {
         is Screen.Calendar.Type.CalendarView -> stringResource(R.string.calendar_tab)
@@ -57,6 +62,27 @@ fun CalendarRouterScreen(component: CalendarRouterComponent) {
         isShowDefaultActions = true,
         showNavigationBarsPadding = false,
         supportGlassEffect = true,
+        actions = {
+            if (currentType is Screen.Calendar.Type.CalendarView) {
+                IconButton(
+                    onClick = {
+                        component.onNavigate(
+                            Screen.CalendarShare(
+                                year = calendarState.currentYear,
+                                month = calendarState.currentMonth,
+                                day = calendarState.selectedDay,
+                            )
+                        )
+                    }
+                ) {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineShare,
+                        contentDescription = stringResource(R.string.calendar_share_page_title)
+                    )
+                }
+            }
+            TopAppBarEmoji()
+        },
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Box(
