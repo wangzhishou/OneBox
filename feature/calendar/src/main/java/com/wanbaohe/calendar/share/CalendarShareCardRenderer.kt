@@ -1091,7 +1091,8 @@ object CalendarShareCardRenderer {
             width = width,
             height = height,
             tint = tint,
-            preserveLight = true
+            preserveLight = true,
+            lightTint = onFill
         )
 
         val glyphLayout = textMeasurer.oneLine(
@@ -1773,6 +1774,7 @@ object CalendarShareCardRenderer {
         alpha: Float = 1f,
         tint: Color? = null,
         preserveLight: Boolean = false,
+        lightTint: Color? = null,
         flipX: Boolean = false,
         flipY: Boolean = false,
     ) {
@@ -1785,7 +1787,7 @@ object CalendarShareCardRenderer {
                 scaleY = (if (flipY) -height else height) / vector.viewportHeight,
                 pivot = Offset.Zero
             ) {
-                drawVectorGroup(vector.root, alpha = alpha, tint = tint, preserveLight = preserveLight)
+                drawVectorGroup(vector.root, alpha = alpha, tint = tint, preserveLight = preserveLight, lightTint = lightTint)
             }
         }
     }
@@ -1795,6 +1797,7 @@ object CalendarShareCardRenderer {
         alpha: Float,
         tint: Color?,
         preserveLight: Boolean,
+        lightTint: Color?,
     ) {
         translate(left = group.translationX, top = group.translationY) {
             rotate(degrees = group.rotation, pivot = Offset(group.pivotX, group.pivotY)) {
@@ -1805,8 +1808,8 @@ object CalendarShareCardRenderer {
                 ) {
                     group.forEach { node ->
                         when (node) {
-                            is VectorGroup -> drawVectorGroup(node, alpha, tint, preserveLight)
-                            is VectorPath -> drawVectorPath(node, alpha, tint, preserveLight)
+                            is VectorGroup -> drawVectorGroup(node, alpha, tint, preserveLight, lightTint)
+                            is VectorPath -> drawVectorPath(node, alpha, tint, preserveLight, lightTint)
                         }
                     }
                 }
@@ -1819,6 +1822,7 @@ object CalendarShareCardRenderer {
         alpha: Float,
         tint: Color?,
         preserveLight: Boolean,
+        lightTint: Color?,
     ) {
         val composePath = path.pathData.toComposePath()
         composePath.fillType = path.pathFillType
@@ -1827,6 +1831,8 @@ object CalendarShareCardRenderer {
         if (fill is SolidColor) {
             val color = if (tint != null && (!preserveLight || fill.value.luminance() < 0.8f)) {
                 tint
+            } else if (preserveLight && fill.value.luminance() >= 0.8f && lightTint != null) {
+                lightTint
             } else {
                 fill.value
             }
@@ -1841,6 +1847,8 @@ object CalendarShareCardRenderer {
         if (stroke is SolidColor) {
             val color = if (tint != null && (!preserveLight || stroke.value.luminance() < 0.8f)) {
                 tint
+            } else if (preserveLight && stroke.value.luminance() >= 0.8f && lightTint != null) {
+                lightTint
             } else {
                 stroke.value
             }

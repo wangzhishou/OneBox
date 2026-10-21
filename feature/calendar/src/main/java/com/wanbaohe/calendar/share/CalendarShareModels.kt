@@ -118,10 +118,10 @@ data class CalendarSharePalette(
                 inkSoft = scheme.onSurfaceVariant,
                 accent = scheme.primary,
                 onAccent = scheme.onPrimary,
-                yiSeal = scheme.tertiary,
-                onYiSeal = scheme.onTertiary,
-                jiSeal = scheme.error,
-                onJiSeal = scheme.onError,
+                yiSeal = scheme.primaryContainer,
+                onYiSeal = scheme.onPrimaryContainer,
+                jiSeal = scheme.errorContainer,
+                onJiSeal = scheme.onErrorContainer,
                 isDark = isDark
             )
         }
@@ -133,10 +133,10 @@ data class CalendarSharePalette(
             inkSoft = Color(0xFF75695A),
             accent = Color(0xFFA43B2A),
             onAccent = Color(0xFFFBF4E7),
-            yiSeal = Color(0xFF4E7A63),
-            onYiSeal = Color(0xFFF6EFE0),
-            jiSeal = Color(0xFFA43B2A),
-            onJiSeal = Color(0xFFFBF4E7),
+            yiSeal = Color(0xFFF0D9D2),
+            onYiSeal = Color(0xFF5A1E16),
+            jiSeal = Color(0xFFE9C6C0),
+            onJiSeal = Color(0xFF4A1511),
             isDark = false
         )
 
@@ -147,10 +147,10 @@ data class CalendarSharePalette(
             inkSoft = Color(0xFF64706A),
             accent = Color(0xFF2F5D57),
             onAccent = Color(0xFFF3F7F2),
-            yiSeal = Color(0xFF5E7F5A),
-            onYiSeal = Color(0xFFF3F7F2),
-            jiSeal = Color(0xFFA64836),
-            onJiSeal = Color(0xFFFBF2ED),
+            yiSeal = Color(0xFFD7E4D9),
+            onYiSeal = Color(0xFF21372A),
+            jiSeal = Color(0xFFEFD2CC),
+            onJiSeal = Color(0xFF4A1D17),
             isDark = false
         )
 
@@ -161,10 +161,10 @@ data class CalendarSharePalette(
             inkSoft = Color(0xFFA79D8B),
             accent = Color(0xFFD9B36C),
             onAccent = Color(0xFF2A2113),
-            yiSeal = Color(0xFF8FB39B),
-            onYiSeal = Color(0xFF122019),
-            jiSeal = Color(0xFFC96A5A),
-            onJiSeal = Color(0xFF2A100C),
+            yiSeal = Color(0xFF3D2F1C),
+            onYiSeal = Color(0xFFF3DFB4),
+            jiSeal = Color(0xFF3D211C),
+            onJiSeal = Color(0xFFF2C7BA),
             isDark = true
         )
     }
