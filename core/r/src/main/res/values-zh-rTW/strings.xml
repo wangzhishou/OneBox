@@ -2009,6 +2009,46 @@
 
 
     <string name="viewer_unsupported_caveat">如果不是文字，你會看到一堆亂碼。</string>
+
+
+
+    <string name="viewer_webview_old_title">Android System WebView 版本太舊，無法顯示 {what}</string>
+
+
+
+    <string name="viewer_webview_old_body">本應用程式用內建的 Android System WebView 顯示 {what}。{what} 需要 {needs} 版或更新的引擎，目前是 {have}。更新 Android System WebView 後重新開啟檔案即可。</string>
+
+
+
+    <string name="viewer_webview_old_body_short">本應用程式用內建的 Android System WebView 顯示 {what}。更新 Android System WebView 後重新開啟檔案即可。</string>
+
+
+
+    <string name="viewer_webview_locked_title">這台手機無法顯示 {what}</string>
+
+
+
+    <string name="viewer_webview_locked_body">{what} 需要手機內建瀏覽器引擎為 {needs} 版或更新，目前是 {have}。這台手機的引擎由廠商提供，無法更新或替換，所以安裝 Android System WebView 也沒有用。</string>
+
+
+
+    <string name="viewer_webview_locked_body_short">{what} 需要比手機內建引擎更新的瀏覽器引擎。這台手機的引擎由廠商提供，無法更新或替換，所以安裝 Android System WebView 也沒有用。</string>
+
+
+
+    <string name="viewer_webview_format_pdf">PDF 檔</string>
+
+
+
+    <string name="viewer_webview_format_word">Word 文件</string>
+
+
+
+    <string name="viewer_webview_format_markdown">Markdown 檔案</string>
+
+
+
+    <string name="viewer_webview_older">更舊的版本</string>
     <string name="viewer_epub_locked">這本書已加密</string>
     <string name="viewer_epub_part_unreadable">這一部分內容讀不出來。</string>
     <string name="ai_duel_language_instruction">除對話裡另有要求外，請用%1$s思考和回答，思考過程也寫成%1$s。</string>

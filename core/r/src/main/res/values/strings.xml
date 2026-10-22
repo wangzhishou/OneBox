@@ -2210,6 +2210,46 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
 
 
     <string name="viewer_unsupported_caveat">If it isn\'t text, you\'ll see random characters.</string>
+
+
+
+    <string name="viewer_webview_old_title">Android System WebView is too old to show {what}</string>
+
+
+
+    <string name="viewer_webview_old_body">This app shows {what} using Android System WebView, the browser engine built into your phone. {what} need version {needs} or newer, and this one is {have}. Updating Android System WebView and reopening the file will fix it.</string>
+
+
+
+    <string name="viewer_webview_old_body_short">This app shows {what} using Android System WebView, the browser engine built into your phone. Updating Android System WebView and reopening the file will fix it.</string>
+
+
+
+    <string name="viewer_webview_locked_title">{what} cannot be shown on this phone</string>
+
+
+
+    <string name="viewer_webview_locked_body">{what} need the browser engine built into your phone to be version {needs} or newer, and this one is {have}. On this phone that engine comes from the manufacturer and cannot be updated or replaced, so installing Android System WebView will not help.</string>
+
+
+
+    <string name="viewer_webview_locked_body_short">{what} need a newer browser engine than the one built into your phone. On this phone that engine comes from the manufacturer and cannot be updated or replaced, so installing Android System WebView will not help.</string>
+
+
+
+    <string name="viewer_webview_format_pdf">PDFs</string>
+
+
+
+    <string name="viewer_webview_format_word">Word documents</string>
+
+
+
+    <string name="viewer_webview_format_markdown">Markdown files</string>
+
+
+
+    <string name="viewer_webview_older">older</string>
     <string name="viewer_epub_locked">This book is locked</string>
     <string name="viewer_epub_part_unreadable">This part of the book could not be read.</string>
 

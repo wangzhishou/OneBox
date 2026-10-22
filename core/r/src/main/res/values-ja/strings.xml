@@ -2008,6 +2008,46 @@
 
 
     <string name="viewer_unsupported_caveat">テキストでない場合、意味のない文字が並びます。</string>
+
+
+
+    <string name="viewer_webview_old_title">Android System WebView が古いため{what}を表示できません</string>
+
+
+
+    <string name="viewer_webview_old_body">このアプリは{what}の表示に、端末内蔵の Android System WebView を使います。{what}にはバージョン {needs} 以降が必要ですが、ここでは {have} です。Android System WebView を更新してからファイルを開き直してください。</string>
+
+
+
+    <string name="viewer_webview_old_body_short">このアプリは{what}の表示に、端末内蔵の Android System WebView を使います。Android System WebView を更新してからファイルを開き直してください。</string>
+
+
+
+    <string name="viewer_webview_locked_title">この端末では{what}を表示できません</string>
+
+
+
+    <string name="viewer_webview_locked_body">{what}には端末内蔵のブラウザエンジンのバージョン {needs} 以降が必要ですが、ここでは {have} です。この端末のエンジンはメーカー提供で、更新も交換もできません。Android System WebView をインストールしても解決しません。</string>
+
+
+
+    <string name="viewer_webview_locked_body_short">{what}には端末内蔵より新しいブラウザエンジンが必要です。この端末のエンジンはメーカー提供で、更新も交換もできません。Android System WebView をインストールしても解決しません。</string>
+
+
+
+    <string name="viewer_webview_format_pdf">PDF</string>
+
+
+
+    <string name="viewer_webview_format_word">Word 文書</string>
+
+
+
+    <string name="viewer_webview_format_markdown">Markdown ファイル</string>
+
+
+
+    <string name="viewer_webview_older">それより古い</string>
     <string name="viewer_epub_locked">この書籍は暗号化されています</string>
     <string name="viewer_epub_part_unreadable">この部分の内容を読み取れません。</string>
     <string name="ai_duel_language_instruction">会話で別の言語を求められない限り、%1$sで考えて回答し、思考過程も%1$sで書いてください。</string>

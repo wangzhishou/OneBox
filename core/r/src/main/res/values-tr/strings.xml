@@ -2019,6 +2019,46 @@
 
 
     <string name="viewer_unsupported_caveat">Metin değilse anlamsız karakterler görürsünüz.</string>
+
+
+
+    <string name="viewer_webview_old_title">Android System WebView, {what} göstermek için çok eski</string>
+
+
+
+    <string name="viewer_webview_old_body">Bu uygulama {what} için telefonunuzdaki Android System WebView motorunu kullanır. {what} için {needs} veya daha yeni bir sürüm gerekir; bu cihazdaki sürüm {have}. Android System WebView\'ı güncelleyip dosyayı yeniden açın.</string>
+
+
+
+    <string name="viewer_webview_old_body_short">Bu uygulama {what} için telefonunuzdaki Android System WebView motorunu kullanır. Android System WebView\'ı güncelleyip dosyayı yeniden açın.</string>
+
+
+
+    <string name="viewer_webview_locked_title">{what} bu telefonda gösterilemiyor</string>
+
+
+
+    <string name="viewer_webview_locked_body">{what} için telefonunuzdaki yerleşik tarayıcı motorunun {needs} veya daha yeni sürümü gerekir; bu cihazdaki sürüm {have}. Bu telefonda motor üreticiden gelir; güncellenemez veya değiştirilemez, bu yüzden Android System WebView kurmak işe yaramaz.</string>
+
+
+
+    <string name="viewer_webview_locked_body_short">{what} için telefonunuzdaki yerleşik motordan daha yeni bir tarayıcı motoru gerekir. Bu telefonda motor üreticiden gelir; güncellenemez veya değiştirilemez, bu yüzden Android System WebView kurmak işe yaramaz.</string>
+
+
+
+    <string name="viewer_webview_format_pdf">PDF\'ler</string>
+
+
+
+    <string name="viewer_webview_format_word">Word belgeleri</string>
+
+
+
+    <string name="viewer_webview_format_markdown">Markdown dosyaları</string>
+
+
+
+    <string name="viewer_webview_older">daha eski</string>
     <string name="viewer_epub_locked">Bu kitap şifrelenmiş</string>
     <string name="viewer_epub_part_unreadable">Kitabın bu bölümü okunamadı.</string>
     <string name="ai_duel_language_instruction">Konuşma başka bir dil istemedikçe %1$s dilinde düşün ve yanıtla; akıl yürütmeni de %1$s dilinde yaz.</string>

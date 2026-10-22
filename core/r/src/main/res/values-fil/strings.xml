@@ -2019,6 +2019,46 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
 
 
     <string name="viewer_unsupported_caveat">Kung hindi teksto, makikita mo ang mga basurang karakter.</string>
+
+
+
+    <string name="viewer_webview_old_title">Masyadong luma ang Android System WebView para ipakita ang {what}</string>
+
+
+
+    <string name="viewer_webview_old_body">Ginagamit ng app na ito ang Android System WebView, ang browser engine na nasa telepono, para ipakita ang {what}. Kailangan ng {what} ng bersyon {needs} o mas bago, at ito ay {have}. I-update ang Android System WebView at buksan muli ang file.</string>
+
+
+
+    <string name="viewer_webview_old_body_short">Ginagamit ng app na ito ang Android System WebView, ang browser engine na nasa telepono, para ipakita ang {what}. I-update ang Android System WebView at buksan muli ang file.</string>
+
+
+
+    <string name="viewer_webview_locked_title">Hindi maipakita ang {what} sa teleponong ito</string>
+
+
+
+    <string name="viewer_webview_locked_body">Kailangan ng {what} ng browser engine sa telepono na bersyon {needs} o mas bago, at ito ay {have}. Sa teleponong ito, galing sa manufacturer ang engine at hindi ito maaaring i-update o palitan, kaya walang tulong ang pag-install ng Android System WebView.</string>
+
+
+
+    <string name="viewer_webview_locked_body_short">Kailangan ng {what} ng mas bagong browser engine kaysa sa nasa telepono. Sa teleponong ito, galing sa manufacturer ang engine at hindi ito maaaring i-update o palitan, kaya walang tulong ang pag-install ng Android System WebView.</string>
+
+
+
+    <string name="viewer_webview_format_pdf">mga PDF</string>
+
+
+
+    <string name="viewer_webview_format_word">mga Word document</string>
+
+
+
+    <string name="viewer_webview_format_markdown">mga Markdown file</string>
+
+
+
+    <string name="viewer_webview_older">mas luma</string>
     <string name="viewer_epub_locked">Naka-lock ang aklat na ito</string>
     <string name="viewer_epub_part_unreadable">Hindi mabasa ang bahaging ito ng aklat.</string>
     <string name="ai_duel_language_instruction">Maliban kung may ibang wikang hinihingi ang usapan, mag-isip at sumagot sa %1$s — isulat din sa %1$s ang iyong pangangatwiran.</string>

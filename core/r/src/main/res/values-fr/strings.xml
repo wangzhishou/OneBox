@@ -2007,6 +2007,46 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
 
 
     <string name="viewer_unsupported_caveat">Si ce n\'est pas du texte, vous verrez des caractères illisibles.</string>
+
+
+
+    <string name="viewer_webview_old_title">Android System WebView est trop ancien pour afficher {what}</string>
+
+
+
+    <string name="viewer_webview_old_body">Cette app affiche {what} avec Android System WebView, le moteur de navigateur intégré au téléphone. {what} nécessitent la version {needs} ou plus récente, et celle-ci est {have}. Mettez à jour Android System WebView puis rouvrez le fichier.</string>
+
+
+
+    <string name="viewer_webview_old_body_short">Cette app affiche {what} avec Android System WebView, le moteur de navigateur intégré au téléphone. Mettez à jour Android System WebView puis rouvrez le fichier.</string>
+
+
+
+    <string name="viewer_webview_locked_title">{what} ne peuvent pas être affichés sur ce téléphone</string>
+
+
+
+    <string name="viewer_webview_locked_body">{what} nécessitent le moteur de navigateur intégré au téléphone en version {needs} ou plus récente, et celui-ci est {have}. Sur ce téléphone, le moteur est fourni par le fabricant et ne peut être ni mis à jour ni remplacé ; installer Android System WebView n\'y changera rien.</string>
+
+
+
+    <string name="viewer_webview_locked_body_short">{what} nécessitent un moteur de navigateur plus récent que celui intégré au téléphone. Sur ce téléphone, le moteur est fourni par le fabricant et ne peut être ni mis à jour ni remplacé ; installer Android System WebView n\'y changera rien.</string>
+
+
+
+    <string name="viewer_webview_format_pdf">PDF</string>
+
+
+
+    <string name="viewer_webview_format_word">documents Word</string>
+
+
+
+    <string name="viewer_webview_format_markdown">fichiers Markdown</string>
+
+
+
+    <string name="viewer_webview_older">plus ancien</string>
     <string name="viewer_epub_locked">Ce livre est chiffré</string>
     <string name="viewer_epub_part_unreadable">Cette partie du contenu est illisible.</string>
     <string name="ai_duel_language_instruction">Sauf demande contraire dans la conversation, réfléchis et réponds en %1$s, en rédigeant aussi ton raisonnement en %1$s.</string>

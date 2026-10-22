@@ -2006,6 +2006,46 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
 
 
     <string name="viewer_unsupported_caveat">Nếu không phải văn bản, bạn sẽ thấy các ký tự lộn xộn.</string>
+
+
+
+    <string name="viewer_webview_old_title">Android System WebView quá cũ để hiển thị {what}</string>
+
+
+
+    <string name="viewer_webview_old_body">Ứng dụng này hiển thị {what} bằng Android System WebView, công cụ trình duyệt tích hợp trong điện thoại. {what} cần phiên bản {needs} trở lên, còn máy này là {have}. Hãy cập nhật Android System WebView rồi mở lại tệp.</string>
+
+
+
+    <string name="viewer_webview_old_body_short">Ứng dụng này hiển thị {what} bằng Android System WebView, công cụ trình duyệt tích hợp trong điện thoại. Hãy cập nhật Android System WebView rồi mở lại tệp.</string>
+
+
+
+    <string name="viewer_webview_locked_title">Không thể hiển thị {what} trên điện thoại này</string>
+
+
+
+    <string name="viewer_webview_locked_body">{what} cần công cụ trình duyệt tích hợp trong điện thoại ở phiên bản {needs} trở lên, còn máy này là {have}. Trên điện thoại này công cụ do nhà sản xuất cung cấp, không thể cập nhật hay thay thế, nên cài Android System WebView cũng không giúp được.</string>
+
+
+
+    <string name="viewer_webview_locked_body_short">{what} cần công cụ trình duyệt mới hơn công cụ tích hợp trong điện thoại. Trên điện thoại này công cụ do nhà sản xuất cung cấp, không thể cập nhật hay thay thế, nên cài Android System WebView cũng không giúp được.</string>
+
+
+
+    <string name="viewer_webview_format_pdf">tệp PDF</string>
+
+
+
+    <string name="viewer_webview_format_word">tài liệu Word</string>
+
+
+
+    <string name="viewer_webview_format_markdown">tệp Markdown</string>
+
+
+
+    <string name="viewer_webview_older">cũ hơn</string>
     <string name="viewer_epub_locked">Sách này đã được mã hóa</string>
     <string name="viewer_epub_part_unreadable">Không thể đọc phần nội dung này.</string>
     <string name="ai_duel_language_instruction">Trừ khi cuộc trò chuyện yêu cầu ngôn ngữ khác, hãy suy nghĩ và trả lời bằng %1$s, quá trình suy nghĩ cũng viết bằng %1$s.</string>

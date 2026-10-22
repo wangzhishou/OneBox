@@ -2053,6 +2053,46 @@
 
 
     <string name="viewer_unsupported_caveat">إن لم يكن نصًا، فسترى رموزًا غير مفهومة.</string>
+
+
+
+    <string name="viewer_webview_old_title">إصدار Android System WebView قديم جدًا لعرض {what}</string>
+
+
+
+    <string name="viewer_webview_old_body">يستخدم هذا التطبيق Android System WebView، محرك المتصفح المدمج في الهاتف، لعرض {what}. تحتاج {what} إلى الإصدار {needs} أو أحدث، وهذا الإصدار {have}. حدّث Android System WebView ثم أعد فتح الملف.</string>
+
+
+
+    <string name="viewer_webview_old_body_short">يستخدم هذا التطبيق Android System WebView، محرك المتصفح المدمج في الهاتف، لعرض {what}. حدّث Android System WebView ثم أعد فتح الملف.</string>
+
+
+
+    <string name="viewer_webview_locked_title">لا يمكن عرض {what} على هذا الهاتف</string>
+
+
+
+    <string name="viewer_webview_locked_body">تحتاج {what} إلى محرك المتصفح المدمج في الهاتف بالإصدار {needs} أو أحدث، وهذا الإصدار {have}. في هذا الهاتف يأتي المحرك من الشركة المصنعة ولا يمكن تحديثه أو استبداله، لذا لن يفيد تثبيت Android System WebView.</string>
+
+
+
+    <string name="viewer_webview_locked_body_short">تحتاج {what} إلى محرك متصفح أحدث من المدمج في الهاتف. في هذا الهاتف يأتي المحرك من الشركة المصنعة ولا يمكن تحديثه أو استبداله، لذا لن يفيد تثبيت Android System WebView.</string>
+
+
+
+    <string name="viewer_webview_format_pdf">ملفات PDF</string>
+
+
+
+    <string name="viewer_webview_format_word">مستندات Word</string>
+
+
+
+    <string name="viewer_webview_format_markdown">ملفات Markdown</string>
+
+
+
+    <string name="viewer_webview_older">أقدم</string>
     <string name="viewer_epub_locked">هذا الكتاب مشفّر</string>
     <string name="viewer_epub_part_unreadable">تعذّرت قراءة هذا الجزء من الكتاب.</string>
     <string name="ai_duel_language_instruction">ما لم تطلب المحادثة لغة أخرى، فكّر وأجب بـ%1$s، واكتب عملية تفكيرك بـ%1$s أيضًا.</string>

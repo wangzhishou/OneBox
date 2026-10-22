@@ -2175,6 +2175,46 @@
 
 
     <string name="viewer_unsupported_caveat">如果不是文本，你会看到一串乱码。</string>
+
+
+
+    <string name="viewer_webview_old_title">Android System WebView 版本太旧，无法显示 {what}</string>
+
+
+
+    <string name="viewer_webview_old_body">本应用用手机内置的 Android System WebView 显示 {what}。{what} 需要 {needs} 版或更新的引擎，而当前是 {have}。更新 Android System WebView 后重新打开文件即可。</string>
+
+
+
+    <string name="viewer_webview_old_body_short">本应用用手机内置的 Android System WebView 显示 {what}。更新 Android System WebView 后重新打开文件即可。</string>
+
+
+
+    <string name="viewer_webview_locked_title">这台手机上无法显示 {what}</string>
+
+
+
+    <string name="viewer_webview_locked_body">{what} 需要手机内置浏览器引擎为 {needs} 版或更新，而当前是 {have}。这台手机的引擎由厂商提供，无法更新或替换，所以安装 Android System WebView 也没有用。</string>
+
+
+
+    <string name="viewer_webview_locked_body_short">{what} 需要比手机内置引擎更新的浏览器引擎。这台手机的引擎由厂商提供，无法更新或替换，所以安装 Android System WebView 也没有用。</string>
+
+
+
+    <string name="viewer_webview_format_pdf">PDF 文件</string>
+
+
+
+    <string name="viewer_webview_format_word">Word 文档</string>
+
+
+
+    <string name="viewer_webview_format_markdown">Markdown 文件</string>
+
+
+
+    <string name="viewer_webview_older">更旧的版本</string>
     <string name="viewer_epub_locked">这本书已加密</string>
     <string name="viewer_epub_part_unreadable">这一部分内容读不出来。</string>
 

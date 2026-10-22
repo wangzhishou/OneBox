@@ -361,6 +361,31 @@ class FileViewerComponent @AssistedInject internal constructor(
         "View as text" to context.getString(CoreR.string.viewer_unsupported_as_text),
         "If it isn't text, you'll see random characters." to
                 context.getString(CoreR.string.viewer_unsupported_caveat),
+        // WebView 过旧那张卡：整句模板，{what} 换成下面的格式名，{needs}/{have} 是版本号
+        "Android System WebView is too old to show {what}" to
+                context.getString(CoreR.string.viewer_webview_old_title),
+        "This app shows {what} using Android System WebView, the browser engine built into " +
+                "your phone. {what} need version {needs} or newer, and this one is {have}. " +
+                "Updating Android System WebView and reopening the file will fix it." to
+                context.getString(CoreR.string.viewer_webview_old_body),
+        "This app shows {what} using Android System WebView, the browser engine built into " +
+                "your phone. Updating Android System WebView and reopening the file will fix it." to
+                context.getString(CoreR.string.viewer_webview_old_body_short),
+        "{what} cannot be shown on this phone" to
+                context.getString(CoreR.string.viewer_webview_locked_title),
+        "{what} need the browser engine built into your phone to be version {needs} or newer, " +
+                "and this one is {have}. On this phone that engine comes from the manufacturer " +
+                "and cannot be updated or replaced, so installing Android System WebView will " +
+                "not help." to
+                context.getString(CoreR.string.viewer_webview_locked_body),
+        "{what} need a newer browser engine than the one built into your phone. On this phone " +
+                "that engine comes from the manufacturer and cannot be updated or replaced, so " +
+                "installing Android System WebView will not help." to
+                context.getString(CoreR.string.viewer_webview_locked_body_short),
+        "PDFs" to context.getString(CoreR.string.viewer_webview_format_pdf),
+        "Word documents" to context.getString(CoreR.string.viewer_webview_format_word),
+        "Markdown files" to context.getString(CoreR.string.viewer_webview_format_markdown),
+        "older" to context.getString(CoreR.string.viewer_webview_older),
     )
 
     /** 按格式拼对照表：公共外壳 + 该页面自己的文案。 */

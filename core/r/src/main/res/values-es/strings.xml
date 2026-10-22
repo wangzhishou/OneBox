@@ -2019,6 +2019,46 @@ Consejo: si eliges «Ocultar para siempre», podrás devolverme más tarde en Aj
 
 
     <string name="viewer_unsupported_caveat">Si no es texto, verás caracteres ilegibles.</string>
+
+
+
+    <string name="viewer_webview_old_title">Android System WebView es demasiado antiguo para mostrar {what}</string>
+
+
+
+    <string name="viewer_webview_old_body">Esta app muestra {what} con Android System WebView, el motor del navegador integrado en el teléfono. {what} necesitan la versión {needs} o posterior, y esta es {have}. Actualiza Android System WebView y vuelve a abrir el archivo.</string>
+
+
+
+    <string name="viewer_webview_old_body_short">Esta app muestra {what} con Android System WebView, el motor del navegador integrado en el teléfono. Actualiza Android System WebView y vuelve a abrir el archivo.</string>
+
+
+
+    <string name="viewer_webview_locked_title">{what} no se pueden mostrar en este teléfono</string>
+
+
+
+    <string name="viewer_webview_locked_body">{what} necesitan el motor del navegador integrado en el teléfono en la versión {needs} o posterior, y esta es {have}. En este teléfono el motor lo proporciona el fabricante y no se puede actualizar ni sustituir, así que instalar Android System WebView no ayudará.</string>
+
+
+
+    <string name="viewer_webview_locked_body_short">{what} necesitan un motor de navegador más reciente que el integrado en el teléfono. En este teléfono el motor lo proporciona el fabricante y no se puede actualizar ni sustituir, así que instalar Android System WebView no ayudará.</string>
+
+
+
+    <string name="viewer_webview_format_pdf">PDF</string>
+
+
+
+    <string name="viewer_webview_format_word">documentos de Word</string>
+
+
+
+    <string name="viewer_webview_format_markdown">archivos Markdown</string>
+
+
+
+    <string name="viewer_webview_older">anterior</string>
     <string name="viewer_epub_locked">Este libro está cifrado</string>
     <string name="viewer_epub_part_unreadable">No se pudo leer esta parte del libro.</string>
     <string name="ai_duel_language_instruction">A menos que la conversación pida otro idioma, piensa y responde en %1$s; escribe también tu razonamiento en %1$s.</string>

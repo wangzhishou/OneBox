@@ -2019,6 +2019,46 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
 
 
     <string name="viewer_unsupported_caveat">Se não for texto, você verá caracteres ilegíveis.</string>
+
+
+
+    <string name="viewer_webview_old_title">O Android System WebView é antigo demais para exibir {what}</string>
+
+
+
+    <string name="viewer_webview_old_body">Este app exibe {what} com o Android System WebView, o mecanismo do navegador embutido no telefone. {what} precisam da versão {needs} ou mais recente, e esta é {have}. Atualize o Android System WebView e abra o arquivo de novo.</string>
+
+
+
+    <string name="viewer_webview_old_body_short">Este app exibe {what} com o Android System WebView, o mecanismo do navegador embutido no telefone. Atualize o Android System WebView e abra o arquivo de novo.</string>
+
+
+
+    <string name="viewer_webview_locked_title">{what} não podem ser exibidos neste telefone</string>
+
+
+
+    <string name="viewer_webview_locked_body">{what} precisam do mecanismo do navegador embutido no telefone na versão {needs} ou mais recente, e este é {have}. Neste telefone o mecanismo vem do fabricante e não pode ser atualizado nem substituído, então instalar o Android System WebView não ajuda.</string>
+
+
+
+    <string name="viewer_webview_locked_body_short">{what} precisam de um mecanismo de navegador mais recente que o embutido no telefone. Neste telefone o mecanismo vem do fabricante e não pode ser atualizado nem substituído, então instalar o Android System WebView não ajuda.</string>
+
+
+
+    <string name="viewer_webview_format_pdf">PDFs</string>
+
+
+
+    <string name="viewer_webview_format_word">documentos do Word</string>
+
+
+
+    <string name="viewer_webview_format_markdown">arquivos Markdown</string>
+
+
+
+    <string name="viewer_webview_older">mais antiga</string>
     <string name="viewer_epub_locked">Este livro está bloqueado</string>
     <string name="viewer_epub_part_unreadable">Não foi possível ler esta parte do livro.</string>
     <string name="ai_duel_language_instruction">A menos que a conversa peça outro idioma, pense e responda em %1$s — escreva seu raciocínio em %1$s também.</string>

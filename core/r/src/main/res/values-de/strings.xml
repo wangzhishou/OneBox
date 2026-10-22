@@ -2019,6 +2019,46 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
 
 
     <string name="viewer_unsupported_caveat">Wenn es kein Text ist, erscheinen unlesbare Zeichen.</string>
+
+
+
+    <string name="viewer_webview_old_title">Android System WebView ist zu alt, um {what} anzuzeigen</string>
+
+
+
+    <string name="viewer_webview_old_body">Diese App zeigt {what} mit Android System WebView an, der Browser-Engine deines Telefons. {what} benötigen Version {needs} oder neuer, diese ist {have}. Aktualisiere Android System WebView und öffne die Datei erneut.</string>
+
+
+
+    <string name="viewer_webview_old_body_short">Diese App zeigt {what} mit Android System WebView an, der Browser-Engine deines Telefons. Aktualisiere Android System WebView und öffne die Datei erneut.</string>
+
+
+
+    <string name="viewer_webview_locked_title">{what} können auf diesem Telefon nicht angezeigt werden</string>
+
+
+
+    <string name="viewer_webview_locked_body">{what} benötigen die im Telefon eingebaute Browser-Engine in Version {needs} oder neuer, diese ist {have}. Auf diesem Telefon stammt die Engine vom Hersteller und lässt sich weder aktualisieren noch ersetzen; die Installation von Android System WebView hilft daher nicht.</string>
+
+
+
+    <string name="viewer_webview_locked_body_short">{what} benötigen eine neuere Browser-Engine als die im Telefon eingebaute. Auf diesem Telefon stammt die Engine vom Hersteller und lässt sich weder aktualisieren noch ersetzen; die Installation von Android System WebView hilft daher nicht.</string>
+
+
+
+    <string name="viewer_webview_format_pdf">PDFs</string>
+
+
+
+    <string name="viewer_webview_format_word">Word-Dokumente</string>
+
+
+
+    <string name="viewer_webview_format_markdown">Markdown-Dateien</string>
+
+
+
+    <string name="viewer_webview_older">älter</string>
     <string name="viewer_epub_locked">Dieses Buch ist verschlüsselt</string>
     <string name="viewer_epub_part_unreadable">Dieser Teil des Inhalts kann nicht gelesen werden.</string>
     <string name="ai_duel_language_instruction">Sofern das Gespräch nichts anderes verlangt, denke und antworte auf %1$s – schreibe auch deine Überlegungen auf %1$s.</string>

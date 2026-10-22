@@ -2053,6 +2053,46 @@
 
 
     <string name="viewer_unsupported_caveat">Если это не текст, вы увидите нечитаемые символы.</string>
+
+
+
+    <string name="viewer_webview_old_title">Android System WebView слишком старый, чтобы показать {what}</string>
+
+
+
+    <string name="viewer_webview_old_body">Это приложение показывает {what} через Android System WebView — браузерный движок, встроенный в телефон. {what} требуют версии {needs} или новее, а здесь {have}. Обновите Android System WebView и откройте файл снова.</string>
+
+
+
+    <string name="viewer_webview_old_body_short">Это приложение показывает {what} через Android System WebView — браузерный движок, встроенный в телефон. Обновите Android System WebView и откройте файл снова.</string>
+
+
+
+    <string name="viewer_webview_locked_title">На этом телефоне нельзя показать {what}</string>
+
+
+
+    <string name="viewer_webview_locked_body">{what} требуют встроенного в телефон движка версии {needs} или новее, а здесь {have}. На этом телефоне движок поставляет производитель, его нельзя обновить или заменить, поэтому установка Android System WebView не поможет.</string>
+
+
+
+    <string name="viewer_webview_locked_body_short">{what} требуют более нового движка, чем встроенный в телефон. На этом телефоне движок поставляет производитель, его нельзя обновить или заменить, поэтому установка Android System WebView не поможет.</string>
+
+
+
+    <string name="viewer_webview_format_pdf">PDF</string>
+
+
+
+    <string name="viewer_webview_format_word">документы Word</string>
+
+
+
+    <string name="viewer_webview_format_markdown">файлы Markdown</string>
+
+
+
+    <string name="viewer_webview_older">старше</string>
     <string name="viewer_epub_locked">Эта книга зашифрована</string>
     <string name="viewer_epub_part_unreadable">Эту часть книги не удалось прочитать.</string>
     <string name="ai_duel_language_instruction">Если в разговоре не требуется другой язык, думайте и отвечайте на языке %1$s, а рассуждения также записывайте на языке %1$s.</string>

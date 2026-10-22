@@ -91,27 +91,52 @@ function vwWebViewTooOld(what) {
  * fail as well: on the WebView 64 of issue #31, PDFs, Word documents and Markdown all did.
  */
 function vwNeedsNewerWebView(what, have, needs, locked) {
+  var name = vwText(what);
+  var version = have || vwText("older");
+  var lockedWithVersion = vwText(
+    "{what} need the browser engine built into your phone to be version {needs} or newer, " +
+    "and this one is {have}. On this phone that engine comes from the manufacturer and " +
+    "cannot be updated or replaced, so installing Android System WebView will not help."
+  );
+  var lockedShort = vwText(
+    "{what} need a newer browser engine than the one built into your phone. On this phone " +
+    "that engine comes from the manufacturer and cannot be updated or replaced, so " +
+    "installing Android System WebView will not help."
+  );
+  var oldWithVersion = vwText(
+    "This app shows {what} using Android System WebView, the browser engine built into " +
+    "your phone. {what} need version {needs} or newer, and this one is {have}. Updating " +
+    "Android System WebView and reopening the file will fix it."
+  );
+  var oldShort = vwText(
+    "This app shows {what} using Android System WebView, the browser engine built into " +
+    "your phone. Updating Android System WebView and reopening the file will fix it."
+  );
+
   if (locked) {
     vwError(
-      what + " cannot be shown on this phone",
-      (needs
-        ? what + " need the browser engine built into your phone to be version " +
-          needs + " or newer, and this one is " + (have || "older") + ". "
-        : what + " need a newer browser engine than the one built into your phone. ") +
-      "On this phone that engine comes from the manufacturer and cannot be " +
-      "updated or replaced, so installing Android System WebView will not help."
+      vwFill(vwText("{what} cannot be shown on this phone"), { what: name }),
+      vwFill(needs && have ? lockedWithVersion : lockedShort, {
+        what: name, needs: needs, have: version
+      })
     );
     return;
   }
   vwError(
-    "Android System WebView is too old to show " + what,
-    "Gander opens " + what + " using Android System WebView, the browser engine built " +
-    "into your phone. " +
-    (have && needs
-      ? what + " need version " + needs + " or newer, and this one is " + have + ". "
-      : "") +
-    "Updating Android System WebView and reopening the file will fix it."
+    vwFill(vwText("Android System WebView is too old to show {what}"), { what: name }),
+    vwFill(have && needs ? oldWithVersion : oldShort, {
+      what: name, needs: needs, have: version
+    })
   );
+}
+
+/* 模板里 {name} 是唯一会被替换的东西，其余字符原样留下 */
+function vwFill(text, values) {
+  return String(text).replace(/\{(\w+)\}/g, function (whole, key) {
+    return values[key] !== undefined && values[key] !== null && values[key] !== ""
+      ? values[key]
+      : whole;
+  });
 }
 
 /*

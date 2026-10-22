@@ -2008,6 +2008,46 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
 
 
     <string name="viewer_unsupported_caveat">Jika bukan teks, Anda akan melihat karakter acak.</string>
+
+
+
+    <string name="viewer_webview_old_title">Android System WebView terlalu lama untuk menampilkan {what}</string>
+
+
+
+    <string name="viewer_webview_old_body">Aplikasi ini menampilkan {what} dengan Android System WebView, mesin browser bawaan ponsel. {what} memerlukan versi {needs} atau lebih baru, sedangkan ini {have}. Perbarui Android System WebView lalu buka lagi berkasnya.</string>
+
+
+
+    <string name="viewer_webview_old_body_short">Aplikasi ini menampilkan {what} dengan Android System WebView, mesin browser bawaan ponsel. Perbarui Android System WebView lalu buka lagi berkasnya.</string>
+
+
+
+    <string name="viewer_webview_locked_title">{what} tidak dapat ditampilkan di ponsel ini</string>
+
+
+
+    <string name="viewer_webview_locked_body">{what} memerlukan mesin browser bawaan ponsel versi {needs} atau lebih baru, sedangkan ini {have}. Di ponsel ini mesin tersebut disediakan pabrikan dan tidak dapat diperbarui atau diganti, jadi memasang Android System WebView tidak akan membantu.</string>
+
+
+
+    <string name="viewer_webview_locked_body_short">{what} memerlukan mesin browser yang lebih baru daripada yang tertanam di ponsel. Di ponsel ini mesin tersebut disediakan pabrikan dan tidak dapat diperbarui atau diganti, jadi memasang Android System WebView tidak akan membantu.</string>
+
+
+
+    <string name="viewer_webview_format_pdf">PDF</string>
+
+
+
+    <string name="viewer_webview_format_word">dokumen Word</string>
+
+
+
+    <string name="viewer_webview_format_markdown">berkas Markdown</string>
+
+
+
+    <string name="viewer_webview_older">lebih lama</string>
     <string name="viewer_epub_locked">Buku ini terenkripsi</string>
     <string name="viewer_epub_part_unreadable">Bagian ini tidak dapat dibaca.</string>
     <string name="ai_duel_language_instruction">Kecuali percakapan meminta bahasa lain, berpikir dan jawablah dalam %1$s, tulis proses berpikir juga dalam %1$s.</string>

@@ -169,6 +169,14 @@ body {
 }
 
 .vw-error {
+  /*
+   * 报错卡按内容撑开。980 布局的页面（docx/pptx/imgweb）上，100vh 与 WebView 实际
+   * 视口对不上时，继承来的 max-height 会把卡片压成一两行高，正文被 overflow 裁掉。
+   * 报错只有两三行，不需要滚动，取消这两条限制。
+   */
+  max-height: none;
+  overflow: visible;
+  height: auto;
   background: #fdecea;
   background: var(--vw-error);
   color: #8c1d18;
