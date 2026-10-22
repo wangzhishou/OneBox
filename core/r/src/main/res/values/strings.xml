@@ -2143,6 +2143,16 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="viewer_epub_copy_address">Copy address</string>
     <string name="viewer_epub_copied">Copied</string>
     <string name="viewer_epub_open_failed">Could not open this book</string>
+
+    <string name="viewer_presentation_loading">Loading presentation…</string>
+
+    <string name="viewer_presentation_error">Could not open this presentation</string>
+
+    <string name="viewer_ppt_legacy_title">Legacy PowerPoint file (.ppt)</string>
+
+    <string name="viewer_ppt_legacy_note">This format keeps its slides as binary drawing records, which this viewer does not draw. The text of the deck is shown below, slide by slide. Re-save it as .pptx to see the slides themselves.</string>
+
+    <string name="viewer_ppt_slide_label">SLIDE</string>
     <string name="viewer_epub_locked">This book is locked</string>
     <string name="viewer_epub_part_unreadable">This part of the book could not be read.</string>
 

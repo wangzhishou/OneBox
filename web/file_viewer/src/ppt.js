@@ -154,18 +154,22 @@ function outlineOf(stream) {
     .filter(function (lines) { return lines.length > 0; });
 }
 
+/* 页面外壳的英文原文 → 当前语言，由 i18n.js 从 URL 里的对照表提供（见 FileViewerComponent） */
+function t(text) {
+  return window.vwT ? window.vwT(text) : text;
+}
+
 function renderSlides(slides) {
   var deck = document.getElementById("deck");
   var note = document.createElement("div");
   note.className = "ppt-note";
   var title = document.createElement("strong");
-  title.textContent = "Legacy PowerPoint file (.ppt)";
+  title.textContent = t("Legacy PowerPoint file (.ppt)");
   note.appendChild(title);
-  note.appendChild(document.createTextNode(
-    "This format stores its slides as binary drawing records, which this viewer does not " +
-    "draw. The text of the deck is shown below, slide by slide. Re-save it as .pptx to see " +
-    "the slides themselves."
-  ));
+  note.appendChild(document.createTextNode(t(
+    "This format keeps its slides as binary drawing records, which this viewer does not draw. " +
+    "The text of the deck is shown below, slide by slide. Re-save it as .pptx to see the slides themselves."
+  )));
   deck.appendChild(note);
 
   for (var i = 0; i < slides.length; i++) {
@@ -173,7 +177,7 @@ function renderSlides(slides) {
     card.className = "ppt-slide";
     var num = document.createElement("div");
     num.className = "ppt-num";
-    num.textContent = "SLIDE " + (i + 1);
+    num.textContent = t("SLIDE") + " " + (i + 1);
     card.appendChild(num);
     for (var j = 0; j < slides[i].length; j++) {
       var el = document.createElement(j === 0 ? "div" : "p");

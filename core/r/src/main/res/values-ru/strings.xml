@@ -1986,6 +1986,16 @@
     <string name="viewer_epub_copy_address">Копировать адрес</string>
     <string name="viewer_epub_copied">Скопировано</string>
     <string name="viewer_epub_open_failed">Не удалось открыть эту книгу</string>
+
+    <string name="viewer_presentation_loading">Открытие презентации…</string>
+
+    <string name="viewer_presentation_error">Не удалось открыть эту презентацию</string>
+
+    <string name="viewer_ppt_legacy_title">Устаревший файл PowerPoint (.ppt)</string>
+
+    <string name="viewer_ppt_legacy_note">Этот формат хранит слайды как двоичные записи рисования, которые этот просмотрщик не отрисовывает. Ниже показан текст презентации по слайдам. Сохраните её как .pptx, чтобы увидеть сами слайды.</string>
+
+    <string name="viewer_ppt_slide_label">СЛАЙД</string>
     <string name="viewer_epub_locked">Эта книга зашифрована</string>
     <string name="viewer_epub_part_unreadable">Эту часть книги не удалось прочитать.</string>
     <string name="ai_duel_language_instruction">Если в разговоре не требуется другой язык, думайте и отвечайте на языке %1$s, а рассуждения также записывайте на языке %1$s.</string>

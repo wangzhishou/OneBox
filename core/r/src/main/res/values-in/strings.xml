@@ -1941,6 +1941,16 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
     <string name="viewer_epub_copy_address">Salin alamat</string>
     <string name="viewer_epub_copied">Disalin</string>
     <string name="viewer_epub_open_failed">Buku ini tidak dapat dibuka</string>
+
+    <string name="viewer_presentation_loading">Membuka presentasi…</string>
+
+    <string name="viewer_presentation_error">Tidak dapat membuka presentasi ini</string>
+
+    <string name="viewer_ppt_legacy_title">File PowerPoint lama (.ppt)</string>
+
+    <string name="viewer_ppt_legacy_note">Format ini menyimpan slide sebagai rekaman gambar biner yang tidak digambar oleh penampil ini. Teks presentasi ditampilkan di bawah, slide demi slide. Simpan ulang sebagai .pptx untuk melihat slide-nya.</string>
+
+    <string name="viewer_ppt_slide_label">SLIDE</string>
     <string name="viewer_epub_locked">Buku ini terenkripsi</string>
     <string name="viewer_epub_part_unreadable">Bagian ini tidak dapat dibaca.</string>
     <string name="ai_duel_language_instruction">Kecuali percakapan meminta bahasa lain, berpikir dan jawablah dalam %1$s, tulis proses berpikir juga dalam %1$s.</string>

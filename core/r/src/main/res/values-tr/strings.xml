@@ -1952,6 +1952,16 @@
     <string name="viewer_epub_copy_address">Adresi kopyala</string>
     <string name="viewer_epub_copied">Kopyalandı</string>
     <string name="viewer_epub_open_failed">Bu kitap açılamadı</string>
+
+    <string name="viewer_presentation_loading">Sunum açılıyor…</string>
+
+    <string name="viewer_presentation_error">Bu sunum açılamadı</string>
+
+    <string name="viewer_ppt_legacy_title">Eski PowerPoint dosyası (.ppt)</string>
+
+    <string name="viewer_ppt_legacy_note">Bu biçim slaytları ikili çizim kayıtları olarak saklar; bu görüntüleyici bunları çizmez. Sunumun metni aşağıda slayt slayt gösterilir. Slaytların kendisini görmek için .pptx olarak yeniden kaydedin.</string>
+
+    <string name="viewer_ppt_slide_label">SLAYT</string>
     <string name="viewer_epub_locked">Bu kitap şifrelenmiş</string>
     <string name="viewer_epub_part_unreadable">Kitabın bu bölümü okunamadı.</string>
     <string name="ai_duel_language_instruction">Konuşma başka bir dil istemedikçe %1$s dilinde düşün ve yanıtla; akıl yürütmeni de %1$s dilinde yaz.</string>

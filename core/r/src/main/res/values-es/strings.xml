@@ -1952,6 +1952,16 @@ Consejo: si eliges «Ocultar para siempre», podrás devolverme más tarde en Aj
     <string name="viewer_epub_copy_address">Copiar dirección</string>
     <string name="viewer_epub_copied">Copiado</string>
     <string name="viewer_epub_open_failed">No se pudo abrir este libro</string>
+
+    <string name="viewer_presentation_loading">Abriendo presentación…</string>
+
+    <string name="viewer_presentation_error">No se pudo abrir esta presentación</string>
+
+    <string name="viewer_ppt_legacy_title">Archivo de PowerPoint heredado (.ppt)</string>
+
+    <string name="viewer_ppt_legacy_note">Este formato guarda las diapositivas como registros de dibujo binarios, que este visor no dibuja. El texto de la presentación se muestra abajo, diapositiva por diapositiva. Vuelve a guardarlo como .pptx para ver las diapositivas.</string>
+
+    <string name="viewer_ppt_slide_label">DIAPOSITIVA</string>
     <string name="viewer_epub_locked">Este libro está cifrado</string>
     <string name="viewer_epub_part_unreadable">No se pudo leer esta parte del libro.</string>
     <string name="ai_duel_language_instruction">A menos que la conversación pida otro idioma, piensa y responde en %1$s; escribe también tu razonamiento en %1$s.</string>

@@ -117,8 +117,13 @@ class FileViewerComponent @AssistedInject internal constructor(
                 nightMode = _uiState.value.isNight && format.supportsNight,
                 // 电子书的进度是页面自己认的字符串，加载时直接给它
                 bookPosition = saved?.takeIf { format == ViewerFormat.EPUB },
-                // 只有电子书阅读器自带英文外壳，其余页面用的是 App 自己的顶栏
-                uiLabels = if (format == ViewerFormat.EPUB) epubUiLabels() else emptyMap(),
+                // 自带英文外壳的页面（电子书、演示文稿）把对照表交给页面，其余页面用 App 自己的顶栏
+                uiLabels = when (format) {
+                    ViewerFormat.EPUB -> epubUiLabels()
+                    ViewerFormat.PPT -> pptUiLabels()
+                    ViewerFormat.ODP -> presentationUiLabels()
+                    else -> emptyMap()
+                },
             )
         }
     }
@@ -329,6 +334,27 @@ class FileViewerComponent @AssistedInject internal constructor(
         "This book is locked" to context.getString(CoreR.string.viewer_epub_locked),
         "This part of the book could not be read." to
                 context.getString(CoreR.string.viewer_epub_part_unreadable),
+    )
+
+    /** 演示文稿页面的外壳文案：加载中、打不开。 */
+    private fun presentationUiLabels(): Map<String, String> = mapOf(
+        "Loading presentation…" to context.getString(CoreR.string.viewer_presentation_loading),
+        "Could not open this presentation" to context.getString(CoreR.string.viewer_presentation_error),
+    )
+
+    /**
+     * 旧版 PPT 大纲页的外壳：说明卡片与页码标签。
+     *
+     * key 必须和 ppt.js 里写死的英文逐字一致（那里用 window.vwT 取译文），对不上就
+     * 原样显示英文，不会出乱码。
+     */
+    private fun pptUiLabels(): Map<String, String> = presentationUiLabels() + mapOf(
+        "Legacy PowerPoint file (.ppt)" to context.getString(CoreR.string.viewer_ppt_legacy_title),
+        "This format keeps its slides as binary drawing records, which this viewer does not draw. " +
+                "The text of the deck is shown below, slide by slide. " +
+                "Re-save it as .pptx to see the slides themselves." to
+                context.getString(CoreR.string.viewer_ppt_legacy_note),
+        "SLIDE" to context.getString(CoreR.string.viewer_ppt_slide_label),
     )
 
     private fun extensionFromMime(mime: String?): String = when (mime?.lowercase()) {

@@ -1952,6 +1952,16 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <string name="viewer_epub_copy_address">Kopyahin ang address</string>
     <string name="viewer_epub_copied">Nakopya</string>
     <string name="viewer_epub_open_failed">Hindi mabuksan ang aklat na ito</string>
+
+    <string name="viewer_presentation_loading">Binubuksan ang presentasyon…</string>
+
+    <string name="viewer_presentation_error">Hindi mabuksan ang presentasyong ito</string>
+
+    <string name="viewer_ppt_legacy_title">Lumang PowerPoint file (.ppt)</string>
+
+    <string name="viewer_ppt_legacy_note">Iniimbak ng format na ito ang mga slide bilang binary drawing records, na hindi iginuguhit ng viewer na ito. Ang teksto ng presentasyon ay ipinapakita sa ibaba, slide by slide. I-save muli bilang .pptx upang makita ang mga slide.</string>
+
+    <string name="viewer_ppt_slide_label">SLIDE</string>
     <string name="viewer_epub_locked">Naka-lock ang aklat na ito</string>
     <string name="viewer_epub_part_unreadable">Hindi mabasa ang bahaging ito ng aklat.</string>
     <string name="ai_duel_language_instruction">Maliban kung may ibang wikang hinihingi ang usapan, mag-isip at sumagot sa %1$s — isulat din sa %1$s ang iyong pangangatwiran.</string>

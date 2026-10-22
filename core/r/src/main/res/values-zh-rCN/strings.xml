@@ -2108,6 +2108,16 @@
     <string name="viewer_epub_copy_address">复制地址</string>
     <string name="viewer_epub_copied">已复制</string>
     <string name="viewer_epub_open_failed">这本书打不开</string>
+
+    <string name="viewer_presentation_loading">正在打开演示文稿…</string>
+
+    <string name="viewer_presentation_error">这个演示文稿打不开</string>
+
+    <string name="viewer_ppt_legacy_title">旧版 PowerPoint 文件（.ppt）</string>
+
+    <string name="viewer_ppt_legacy_note">这种格式把幻灯片存成二进制绘图记录，这里画不出来。下面是演示文稿里的文字，按页排列。另存为 .pptx 就能看到幻灯片本身。</string>
+
+    <string name="viewer_ppt_slide_label">幻灯片</string>
     <string name="viewer_epub_locked">这本书已加密</string>
     <string name="viewer_epub_part_unreadable">这一部分内容读不出来。</string>
 

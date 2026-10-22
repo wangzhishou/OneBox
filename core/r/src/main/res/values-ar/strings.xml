@@ -1986,6 +1986,16 @@
     <string name="viewer_epub_copy_address">نسخ العنوان</string>
     <string name="viewer_epub_copied">تم النسخ</string>
     <string name="viewer_epub_open_failed">تعذّر فتح هذا الكتاب</string>
+
+    <string name="viewer_presentation_loading">جارٍ فتح العرض التقديمي…</string>
+
+    <string name="viewer_presentation_error">تعذّر فتح هذا العرض التقديمي</string>
+
+    <string name="viewer_ppt_legacy_title">ملف PowerPoint قديم (.ppt)</string>
+
+    <string name="viewer_ppt_legacy_note">يخزّن هذا التنسيق الشرائح كسجلات رسم ثنائية لا يرسمها هذا العارض. يُعرض نص العرض أدناه شريحة بشريحة. احفظه بصيغة .pptx لرؤية الشرائح نفسها.</string>
+
+    <string name="viewer_ppt_slide_label">شريحة</string>
     <string name="viewer_epub_locked">هذا الكتاب مشفّر</string>
     <string name="viewer_epub_part_unreadable">تعذّرت قراءة هذا الجزء من الكتاب.</string>
     <string name="ai_duel_language_instruction">ما لم تطلب المحادثة لغة أخرى، فكّر وأجب بـ%1$s، واكتب عملية تفكيرك بـ%1$s أيضًا.</string>

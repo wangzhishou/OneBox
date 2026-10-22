@@ -1941,6 +1941,16 @@
     <string name="viewer_epub_copy_address">アドレスをコピー</string>
     <string name="viewer_epub_copied">コピーしました</string>
     <string name="viewer_epub_open_failed">この書籍を開けません</string>
+
+    <string name="viewer_presentation_loading">プレゼンテーションを開いています…</string>
+
+    <string name="viewer_presentation_error">このプレゼンテーションを開けませんでした</string>
+
+    <string name="viewer_ppt_legacy_title">旧形式の PowerPoint ファイル（.ppt）</string>
+
+    <string name="viewer_ppt_legacy_note">この形式はスライドをバイナリの描画レコードとして保存するため、このビューアでは描画できません。以下にデッキのテキストをスライドごとに表示します。.pptx で保存し直すとスライド自体を表示できます。</string>
+
+    <string name="viewer_ppt_slide_label">スライド</string>
     <string name="viewer_epub_locked">この書籍は暗号化されています</string>
     <string name="viewer_epub_part_unreadable">この部分の内容を読み取れません。</string>
     <string name="ai_duel_language_instruction">会話で別の言語を求められない限り、%1$sで考えて回答し、思考過程も%1$sで書いてください。</string>

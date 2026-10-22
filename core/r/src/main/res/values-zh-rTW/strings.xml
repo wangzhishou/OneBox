@@ -1942,6 +1942,16 @@
     <string name="viewer_epub_copy_address">複製位址</string>
     <string name="viewer_epub_copied">已複製</string>
     <string name="viewer_epub_open_failed">這本書打不開</string>
+
+    <string name="viewer_presentation_loading">正在開啟簡報…</string>
+
+    <string name="viewer_presentation_error">這個簡報打不開</string>
+
+    <string name="viewer_ppt_legacy_title">舊版 PowerPoint 檔案（.ppt）</string>
+
+    <string name="viewer_ppt_legacy_note">這種格式把投影片存成二進位繪圖記錄，這裡畫不出來。下面是簡報裡的文字，按頁排列。另存為 .pptx 就能看到投影片本身。</string>
+
+    <string name="viewer_ppt_slide_label">投影片</string>
     <string name="viewer_epub_locked">這本書已加密</string>
     <string name="viewer_epub_part_unreadable">這一部分內容讀不出來。</string>
     <string name="ai_duel_language_instruction">除對話裡另有要求外，請用%1$s思考和回答，思考過程也寫成%1$s。</string>

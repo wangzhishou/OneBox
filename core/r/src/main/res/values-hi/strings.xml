@@ -1952,6 +1952,16 @@
     <string name="viewer_epub_copy_address">पता कॉपी करें</string>
     <string name="viewer_epub_copied">कॉपी हो गया</string>
     <string name="viewer_epub_open_failed">यह किताब नहीं खुल सकी</string>
+
+    <string name="viewer_presentation_loading">प्रस्तुति खोली जा रही है…</string>
+
+    <string name="viewer_presentation_error">यह प्रस्तुति नहीं खुल सकी</string>
+
+    <string name="viewer_ppt_legacy_title">पुरानी PowerPoint फ़ाइल (.ppt)</string>
+
+    <string name="viewer_ppt_legacy_note">यह फ़ॉर्मैट स्लाइडों को बाइनरी ड्रॉइंग रिकॉर्ड के रूप में रखता है, जिन्हें यह व्यूअर नहीं बनाता। प्रस्तुति का टेक्स्ट नीचे स्लाइड-दर-स्लाइड दिखाया गया है। स्लाइड स्वयं देखने के लिए इसे .pptx के रूप में फिर से सहेजें।</string>
+
+    <string name="viewer_ppt_slide_label">स्लाइड</string>
     <string name="viewer_epub_locked">यह किताब एन्क्रिप्टेड है</string>
     <string name="viewer_epub_part_unreadable">किताब का यह हिस्सा पढ़ा नहीं जा सका।</string>
     <string name="ai_duel_language_instruction">जब तक बातचीत में किसी और भाषा के लिए न कहा जाए, %1$s में सोचें और उत्तर दें, सोचने की प्रक्रिया भी %1$s में लिखें।</string>

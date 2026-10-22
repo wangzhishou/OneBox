@@ -1940,6 +1940,16 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="viewer_epub_copy_address">Copier l\'adresse</string>
     <string name="viewer_epub_copied">Copié</string>
     <string name="viewer_epub_open_failed">Impossible d\'ouvrir ce livre</string>
+
+    <string name="viewer_presentation_loading">Ouverture de la présentation…</string>
+
+    <string name="viewer_presentation_error">Impossible d\'ouvrir cette présentation</string>
+
+    <string name="viewer_ppt_legacy_title">Fichier PowerPoint hérité (.ppt)</string>
+
+    <string name="viewer_ppt_legacy_note">Ce format stocke les diapositives sous forme d\'enregistrements de dessin binaires, que ce visualiseur ne dessine pas. Le texte de la présentation est affiché ci-dessous, diapositive par diapositive. Enregistrez-le au format .pptx pour voir les diapositives elles-mêmes.</string>
+
+    <string name="viewer_ppt_slide_label">DIAPOSITIVE</string>
     <string name="viewer_epub_locked">Ce livre est chiffré</string>
     <string name="viewer_epub_part_unreadable">Cette partie du contenu est illisible.</string>
     <string name="ai_duel_language_instruction">Sauf demande contraire dans la conversation, réfléchis et réponds en %1$s, en rédigeant aussi ton raisonnement en %1$s.</string>
