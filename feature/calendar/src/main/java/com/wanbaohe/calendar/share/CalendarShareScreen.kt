@@ -34,7 +34,6 @@ import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -67,6 +66,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
+import com.wanbaohe.base.ui.button.SecondaryButton
 import android.widget.Toast
 import com.wanbaohe.calendar.R
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
@@ -76,6 +76,7 @@ import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.core.ui.widget.other.TopAppBarEmoji
+import com.wanbaohe.core.ui.widget.system.OneBoxButtonIcon
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -565,28 +566,26 @@ private fun BottomActions(
                 .padding(horizontal = 16.dp, vertical = 10.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            OutlinedButton(
-                onClick = onSave,
-                enabled = enabled && !isSaving,
+            SecondaryButton(
+                text = stringResource(R.string.calendar_share_save),
                 modifier = Modifier
                     .weight(1f)
-                    .height(50.dp)
-            ) {
-                if (isSaving) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(16.dp),
-                        strokeWidth = 2.dp
-                    )
-                } else {
-                    Icon(
-                        imageVector = Icons.Outlined.LineSave,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp)
-                    )
+                    .height(50.dp),
+                enable = enabled && !isSaving,
+                onClick = onSave,
+                style = MaterialTheme.typography.labelLarge,
+                icon = {
+                    if (isSaving) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(16.dp),
+                            strokeWidth = 2.dp,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer
+                        )
+                    } else {
+                        OneBoxButtonIcon(Icons.Outlined.LineSave)
+                    }
                 }
-                Spacer(Modifier.width(6.dp))
-                Text(stringResource(R.string.calendar_share_save))
-            }
+            )
             Button(
                 onClick = onShare,
                 enabled = enabled,
