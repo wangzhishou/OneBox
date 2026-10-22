@@ -1,0 +1,5 @@
+• Thẻ chia sẻ lịch Trung Hoa tùy biến, hiển thị lễ hội rõ hơn
+• AI tạo nội dung vẫn hoạt động ở nền trước; nội dung được lưu theo thời gian thực
+• Bộ chọn màu thiết kế lại với lịch sử màu cục bộ
+• Sao chép một chạm ở trang trạng thái thiết bị
+• Nhiều cải tiến giao diện và tương tác

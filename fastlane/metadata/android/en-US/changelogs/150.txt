@@ -1,0 +1,5 @@
+• Customizable Chinese calendar share cards with clearer holiday display
+• AI generation stays active in the foreground; streamed content is saved as it arrives
+• Redesigned color picker with local color history
+• One-tap copy on the device status page
+• Various UI and interaction refinements

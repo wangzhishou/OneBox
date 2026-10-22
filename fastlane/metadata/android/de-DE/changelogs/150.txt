@@ -1,0 +1,5 @@
+• Anpassbare Share-Cards für den chinesischen Kalender mit klarerer Feiertagsanzeige
+• KI-Generierung bleibt im Vordergrund aktiv; gestreamte Inhalte werden sofort gespeichert
+• Überarbeitete Farbauswahl mit lokalem Farbverlauf
+• Gerätestatus-Seite mit Ein-Tipp-Kopieren
+• Diverse UI- und Interaktionsverbesserungen

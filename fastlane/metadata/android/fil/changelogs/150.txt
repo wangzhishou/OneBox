@@ -1,0 +1,5 @@
+• Mga nako-customize na share card ng Chinese calendar, mas naaaninag ang mga piyesta
+• Mananatiling aktibo sa foreground ang AI generation; real-time na nase-save ang content
+• Bagong disenyo ng color picker na may lokal na history
+• One-tap copy sa device status page
+• Iba't ibang pagpapahusay ng UI at interaction
