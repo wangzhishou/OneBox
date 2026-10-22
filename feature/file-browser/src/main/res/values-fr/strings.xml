@@ -78,4 +78,6 @@
 
     <string name="empty_folder_storage_limited_title">Impossible de lister ce dossier</string>
     <string name="empty_folder_storage_limited_message">En raison des restrictions de stockage du système, l\'application ne voit pas les documents, archives et autres fichiers non multimédias ici. Touchez le bouton ci-dessous pour autoriser un dossier, ou ouvrez le fichier depuis « Ouvrir avec » du gestionnaire de fichiers du système.</string>
+
+    <string name="file_browser_restricted_files_hint">Android a besoin d\'une autorisation pour ouvrir ces documents. Accordez l\'accès à ce dossier.</string>
 </resources>

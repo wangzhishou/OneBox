@@ -14,6 +14,7 @@ import java.util.Date
  * @property createdAt The creation date if available (may be null)
  * @property mimeType The MIME type of the file
  * @property path The file path
+ * @property isAccessible 元数据读得到、内容打得开；分区存储下非媒体文件可能只列得出名字
  */
 data class FileItem(
     val uri: Uri,
@@ -24,6 +25,7 @@ data class FileItem(
     val createdAt: Date? = null,
     val mimeType: String?,
     val path: String,
+    val isAccessible: Boolean = true,
     val isHighlighted: Boolean = false,
     val isSelected: Boolean = false
 ) {
@@ -40,6 +42,7 @@ data class FileItem(
      */
     fun getFormattedSize(): String {
         if (isDirectory) return ""
+        if (size < 0) return "—"
 
         return when {
             size < 1024 -> "$size B"

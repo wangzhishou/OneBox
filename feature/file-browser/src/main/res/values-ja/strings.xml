@@ -78,4 +78,6 @@
 
     <string name="empty_folder_storage_limited_title">このフォルダを表示できません</string>
     <string name="empty_folder_storage_limited_message">システムのストレージ制限により、アプリはここにあるドキュメントや圧縮ファイルなどの非メディアファイルを表示できません。下のボタンでフォルダを許可するか、システムのファイルマネージャーの「アプリで開く」から開いてください。</string>
+
+    <string name="file_browser_restricted_files_hint">これらの文書を開くには Android の許可が必要です。このフォルダへのアクセスを許可してください。</string>
 </resources>

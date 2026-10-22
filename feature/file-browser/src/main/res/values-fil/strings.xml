@@ -78,4 +78,6 @@
 
     <string name="empty_folder_storage_limited_title">Hindi mailista ang folder na ito</string>
     <string name="empty_folder_storage_limited_message">Itinatago ng system storage limit ang mga dokumento, archive at iba pang non-media na file dito. Pumili ng folder para magbigay ng access, o buksan ang file mula sa system file manager.</string>
+
+    <string name="file_browser_restricted_files_hint">Kailangan ng Android ng pahintulot para buksan ang mga dokumentong ito. Bigyan ng access ang folder na ito.</string>
 </resources>

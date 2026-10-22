@@ -78,4 +78,6 @@
 
     <string name="empty_folder_storage_limited_title">Tidak dapat menampilkan folder ini</string>
     <string name="empty_folder_storage_limited_message">Karena batasan penyimpanan sistem, aplikasi tidak dapat melihat dokumen, arsip, dan file non-media lainnya di sini. Ketuk tombol di bawah untuk memberi akses folder, atau buka dari \"Buka dengan\" di pengelola file sistem.</string>
+
+    <string name="file_browser_restricted_files_hint">Android memerlukan izin untuk membuka dokumen ini. Beri akses ke folder ini.</string>
 </resources>

@@ -78,4 +78,6 @@
 
     <string name="empty_folder_storage_limited_title">No se puede mostrar esta carpeta</string>
     <string name="empty_folder_storage_limited_message">Por las restricciones de almacenamiento del sistema, la app no puede ver documentos, archivos comprimidos ni otros archivos que no sean multimedia. Pulsa el botón de abajo para autorizar una carpeta, o abre el archivo desde el administrador de archivos del sistema con «Abrir con».</string>
+
+    <string name="file_browser_restricted_files_hint">Android necesita permiso para abrir estos documentos. Concede acceso a esta carpeta.</string>
 </resources>

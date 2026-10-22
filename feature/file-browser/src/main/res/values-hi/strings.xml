@@ -78,4 +78,6 @@
 
     <string name="empty_folder_storage_limited_title">यह फ़ोल्डर सूचीबद्ध नहीं किया जा सकता</string>
     <string name="empty_folder_storage_limited_message">सिस्टम स्टोरेज प्रतिबंध के कारण ऐप यहाँ के दस्तावेज़, संग्रह और अन्य गैर-मीडिया फ़ाइलें नहीं देख सकता। नीचे दिए बटन से किसी फ़ोल्डर को अनुमति दें, या सिस्टम फ़ाइल मैनेजर के \"खोलने का तरीका\" से खोलें।</string>
+
+    <string name="file_browser_restricted_files_hint">इन दस्तावेज़ों को खोलने के लिए Android को अनुमति चाहिए। इस फ़ोल्डर को अनुमति दें।</string>
 </resources>

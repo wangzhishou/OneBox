@@ -484,33 +484,42 @@ class FileHelper @Inject constructor(
                 return Result.failure(IllegalArgumentException("Not a directory: ${file.path}"))
             }
 
-            val files = file.listFiles()?.mapNotNull { childFile ->
-                try {
-                    val mimeType = getMimeType(childFile)
+            /*
+             * 分区存储下（Google 渠道没有「所有文件访问」），目录的 readdir 列得出全部
+             * 名字，但非媒体文件的 stat / open 会被拒：isDirectory、length、lastModified
+             * 都抛 SecurityException。以前整条 catch 掉，于是 Download 里只看得见图片，
+             * 文档像是"不存在"。现在每个字段单独兜底，条目照样出现：大小 -1（UI 显示
+             * 「—」）、日期 0、isAccessible = false；点它的时候再去申请这个目录的授权。
+             */
+            val files = file.listFiles()?.map { childFile ->
+                val isDirectory = runCatching { childFile.isDirectory }.getOrDefault(false)
+                val size = runCatching {
+                    if (isDirectory) 0L else childFile.length()
+                }.getOrDefault(-1L)
 
-                    val createdAt = runCatching {
-                        val path = childFile.toPath()
-                        java.nio.file.Files.readAttributes(
-                            path,
-                            java.nio.file.attribute.BasicFileAttributes::class.java
-                        ).creationTime().toMillis().let { millis ->
-                            if (millis > 0) Date(millis) else null
-                        }
-                    }.getOrNull()
+                val createdAt = runCatching {
+                    val path = childFile.toPath()
+                    java.nio.file.Files.readAttributes(
+                        path,
+                        java.nio.file.attribute.BasicFileAttributes::class.java
+                    ).creationTime().toMillis().let { millis ->
+                        if (millis > 0) Date(millis) else null
+                    }
+                }.getOrNull()
 
-                    FileItem(
-                        uri = Uri.fromFile(childFile),
-                        name = childFile.name,
-                        isDirectory = childFile.isDirectory,
-                        size = if (childFile.isDirectory) 0 else childFile.length(),
-                        lastModified = Date(childFile.lastModified()),
-                        createdAt = createdAt,
-                        mimeType = mimeType,
-                        path = childFile.absolutePath
-                    )
-                } catch (_: Exception) {
-                    null // Skip files that can't be read
-                }
+                FileItem(
+                    uri = Uri.fromFile(childFile),
+                    name = childFile.name,
+                    isDirectory = isDirectory,
+                    size = size,
+                    lastModified = Date(
+                        runCatching { childFile.lastModified() }.getOrNull()?.takeIf { it > 0L } ?: 0L
+                    ),
+                    createdAt = createdAt,
+                    mimeType = runCatching { getMimeType(childFile) }.getOrNull(),
+                    path = childFile.absolutePath,
+                    isAccessible = size >= 0L
+                )
             } ?: emptyList()
 
             Result.success(files)

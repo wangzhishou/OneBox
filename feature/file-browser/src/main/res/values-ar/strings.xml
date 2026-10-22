@@ -78,4 +78,6 @@
 
     <string name="empty_folder_storage_limited_title">تعذر عرض محتويات هذا المجلد</string>
     <string name="empty_folder_storage_limited_message">يخفي نظام أندرويد المستندات والملفات المضغوطة وغيرها من الملفات غير الوسائطية عن التطبيقات التي لا تملك صلاحية الوصول الكامل إلى التخزين. اختر مجلدًا لمنح الصلاحية، أو افتح الملف من مدير الملفات في النظام.</string>
+
+    <string name="file_browser_restricted_files_hint">يحتاج Android إلى إذن لفتح هذه المستندات. امنح هذا المجلد للوصول إليها.</string>
 </resources>

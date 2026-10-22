@@ -1,5 +1,8 @@
 package com.wanbaohe.file.browser.screen
 
+import android.net.Uri
+import android.os.Environment
+import android.provider.DocumentsContract
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -70,6 +73,7 @@ import com.wanbaohe.base.ui.card.AllFilesAccessPermissionCard
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.utils.helper.isPortraitOrientationAsState
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineLock
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
@@ -149,15 +153,31 @@ fun FileBrowserScreen(
     val coroutineScope = rememberCoroutineScope()
 
     /*
+     * 分区存储下读不到的非媒体文件（列表里显示「—」的那几个）：点它先请用户授权
+     * 这个目录，拿到 SAF 的持久授权后浏览器整体切到该目录的 tree 视图，之后都能开。
+     */
+    val openItem: (com.wanbaohe.file.browser.model.FileItem) -> Unit = { item ->
+        if (item.isAccessible) {
+            fileBrowserComponent.onItemClick(item)
+        } else {
+            folderPicker.pickFolder(initialFolderUri(currentUri))
+        }
+    }
+
+    /*
      * Google 渠道没有 MANAGE_EXTERNAL_STORAGE，分区存储会把文档/压缩包这类非媒体文件
      * 从 File.listFiles() 里直接过滤掉，目录看起来是空的。这种情况不能只显示
      * "空文件夹"，否则用户既没权限也没解释 —— 空态里要给 SAF 选目录的入口。
      * 声明了权限但还没授权的渠道由顶部的授权卡片负责引导，这里不重复。
      */
     val storageListingRestricted = remember(context, currentUri) {
-        !context.isAllFilesAccessDeclared() &&
+        // 根目录只列目录，不摆这条提示；进了具体文件夹才提醒
+        currentUri != null &&
+                !context.isAllFilesAccessDeclared() &&
                 !context.hasAllFilesAccess() &&
-                (currentUri == null || currentUri?.scheme == "file")
+                (currentUri == null || currentUri?.scheme == "file") &&
+                // App 自己的目录（files / cache / Android/data/<pkg>）不受分区存储影响，别提示
+                !isAppOwnedPath(context, currentUri)
     }
 
     val showDeleteDialog = remember { mutableStateOf(false) }
@@ -337,7 +357,7 @@ fun FileBrowserScreen(
         if (isPortrait) {
             FileBrowserContent(
                 state = state,
-                onItemClick = fileBrowserComponent::onItemClick,
+                onItemClick = openItem,
                 onItemLongClick = fileBrowserComponent::onItemLongClick,
                 onRetry = fileBrowserComponent::refresh,
                 isPortrait = true,
@@ -345,7 +365,7 @@ fun FileBrowserScreen(
                 viewMode = viewMode,
                 searchQuery = if (isSearchMode.value) searchQuery.value else "",
                 storageListingRestricted = storageListingRestricted,
-                onPickFolder = { folderPicker.pickFolder() }
+                onPickFolder = { folderPicker.pickFolder(initialFolderUri(currentUri)) }
             )
 
             if (selectionMode != FileBrowserComponent.SelectionMode.NONE) {
@@ -406,7 +426,7 @@ fun FileBrowserScreen(
                 ) {
                     FileBrowserContent(
                         state = state,
-                        onItemClick = fileBrowserComponent::onItemClick,
+                        onItemClick = openItem,
                         onItemLongClick = fileBrowserComponent::onItemLongClick,
                         onRetry = fileBrowserComponent::refresh,
                         isPortrait = false,
@@ -414,7 +434,7 @@ fun FileBrowserScreen(
                         viewMode = viewMode,
                         searchQuery = if (isSearchMode.value) searchQuery.value else "",
                         storageListingRestricted = storageListingRestricted,
-                        onPickFolder = { folderPicker.pickFolder() }
+                        onPickFolder = { folderPicker.pickFolder(initialFolderUri(currentUri)) }
                     )
 
                     if (selectionMode != FileBrowserComponent.SelectionMode.NONE) {
@@ -864,6 +884,73 @@ private fun NavigationToolbar(
 
 
 /**
+ * 这个目录是不是 App 自己的（files / cache / Android/data/<pkg>）。
+ * 这些位置不受分区存储限制，一直能完整读，不需要提示授权。
+ */
+private fun isAppOwnedPath(context: android.content.Context, uri: Uri?): Boolean {
+    val path = uri?.takeIf { it.scheme == "file" }?.path ?: return false
+    val own = listOfNotNull(
+        context.getExternalFilesDir(null)?.path,
+        context.filesDir?.path,
+        context.cacheDir?.path
+    )
+    return own.any { path == it || path.startsWith("$it/") }
+}
+
+/**
+ * SAF 的目录选择器认 content:// 的 document URI；把 file:// 的当前目录翻成外置存储
+ * provider 的 document URI，选择器就能直接停在用户正在看的目录上。
+ * 别的 scheme（已经是 content://）原样传，翻不出来就给 null，选择器退回默认位置。
+ */
+private fun initialFolderUri(uri: Uri?): Uri? {
+    if (uri == null || uri.scheme != "file") return uri
+    val path = uri.path ?: return null
+    val root = Environment.getExternalStorageDirectory().path
+    val relative = when {
+        path.startsWith("$root/") -> path.removePrefix("$root/")
+        path.startsWith("/sdcard/") -> path.removePrefix("/sdcard/")
+        else -> return null
+    }
+    return runCatching {
+        DocumentsContract.buildDocumentUri("com.android.externalstorage.documents", "primary:$relative")
+    }.getOrNull()
+}
+
+/**
+ * 列表顶上的提示条：这个目录里有读不到的文件（分区存储没授权），点按钮授权整个目录。
+ */
+@Composable
+private fun RestrictedStorageHint(onPickFolder: () -> Unit) {
+    GlassCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = AppTheme.dimens.paddingNormal, vertical = 4.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineLock,
+                contentDescription = null,
+                modifier = Modifier.size(18.dp),
+                tint = MaterialTheme.colorScheme.onTertiaryContainer
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            Text(
+                text = stringResource(R.string.file_browser_restricted_files_hint),
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            TextButton(onClick = onPickFolder) {
+                Text(text = stringResource(R.string.open_folder))
+            }
+        }
+    }
+}
+
+/**
  * File browser content area
  */
 @Composable
@@ -906,6 +993,15 @@ private fun ColumnScope.FileBrowserContent(
             Column(
                 modifier = Modifier.weight(1f)
             ) {
+                /*
+                 * 分区存储受限时，文档在 readdir 阶段就被系统藏掉了，列表里只剩图片，
+                 * 而且不会报错；有条目读不到元数据（stat 被拒）时也一样。两种情况都在
+                 * 列表顶上摆一条"授权这个文件夹"，点开就是 SAF 的目录选择器。
+                 */
+                val hiddenDocuments = storageListingRestricted && state.files.any { !it.isDirectory }
+                if ((hiddenDocuments || state.files.any { !it.isAccessible }) && onPickFolder != null) {
+                    RestrictedStorageHint(onPickFolder = onPickFolder)
+                }
                 FileList(
                     files = filteredFiles,
                     onItemClick = onItemClick,

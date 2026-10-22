@@ -78,4 +78,6 @@
 
     <string name="empty_folder_storage_limited_title">Не удаётся показать папку</string>
     <string name="empty_folder_storage_limited_message">Из-за системных ограничений хранилища приложение не видит документы, архивы и другие файлы, не являющиеся медиа. Нажмите кнопку ниже, чтобы предоставить доступ к папке, или откройте файл через «Открыть с помощью» в системном файловом менеджере.</string>
+
+    <string name="file_browser_restricted_files_hint">Android требует разрешения, чтобы открыть эти документы. Предоставьте доступ к этой папке.</string>
 </resources>

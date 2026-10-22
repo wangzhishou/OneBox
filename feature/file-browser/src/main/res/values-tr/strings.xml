@@ -78,4 +78,6 @@
 
     <string name="empty_folder_storage_limited_title">Bu klasör listelenemiyor</string>
     <string name="empty_folder_storage_limited_message">Sistem depolama kısıtlamaları nedeniyle uygulama buradaki belgeleri, arşivleri ve diğer medya dışı dosyaları göremez. Erişim vermek için aşağıdaki düğmeye dokunup bir klasör seçin veya sistem dosya yöneticisindeki «Birlikte aç» ile girin.</string>
+
+    <string name="file_browser_restricted_files_hint">Android\'in bu belgeleri açması için izin gerekir. Bu klasöre erişim verin.</string>
 </resources>

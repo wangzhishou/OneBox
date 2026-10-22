@@ -78,4 +78,6 @@
 
     <string name="empty_folder_storage_limited_title">無法列出此資料夾</string>
     <string name="empty_folder_storage_limited_message">受系統儲存限制，應用程式看不到這裡的文件、壓縮檔等非媒體檔案。點下方按鈕授權一個資料夾，或從系統檔案管理器的「開啟方式」進入。</string>
+
+    <string name="file_browser_restricted_files_hint">受系統儲存限制，這些文件需要授權這個資料夾後才能開啟。</string>
 </resources>

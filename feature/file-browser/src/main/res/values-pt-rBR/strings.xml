@@ -78,4 +78,6 @@
 
     <string name="empty_folder_storage_limited_title">Não é possível listar esta pasta</string>
     <string name="empty_folder_storage_limited_message">Devido às restrições de armazenamento do sistema, o app não consegue ver documentos, arquivos compactados e outros arquivos que não são de mídia aqui. Toque no botão abaixo para autorizar uma pasta ou abra pelo \"Abrir com\" do gerenciador de arquivos do sistema.</string>
+
+    <string name="file_browser_restricted_files_hint">O Android precisa de permissão para abrir estes documentos. Conceda acesso a esta pasta.</string>
 </resources>

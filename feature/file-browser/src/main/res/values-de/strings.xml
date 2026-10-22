@@ -78,4 +78,6 @@
 
     <string name="empty_folder_storage_limited_title">Ordner kann nicht aufgelistet werden</string>
     <string name="empty_folder_storage_limited_message">Aufgrund der Systemspeicher-Beschränkung kann die App Dokumente, Archive und andere Nicht-Mediendateien hier nicht sehen. Unten auf die Schaltfläche tippen, um einen Ordner zu autorisieren, oder die Datei über „Öffnen mit“ im Dateimanager des Systems öffnen.</string>
+
+    <string name="file_browser_restricted_files_hint">Android benötigt eine Berechtigung, um diese Dokumente zu öffnen. Gewähren Sie Zugriff auf diesen Ordner.</string>
 </resources>

@@ -184,7 +184,10 @@ private fun FileMetadata(item: FileItem) {
     val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
     val modifiedString = dateFormat.format(item.lastModified)
 
-    val metadataText = buildString {
+    // 读不到元数据的条目（分区存储下的文档）显示破折号：名字还在，点开时再申请授权
+    val metadataText = if (!item.isAccessible) {
+        "—"
+    } else buildString {
         if (!item.isDirectory) {
             append(item.getFormattedSize())
             append(" · ")

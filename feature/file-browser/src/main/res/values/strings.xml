@@ -115,4 +115,6 @@
     <string name="empty_folder_storage_limited_title">Folder can\'t be listed</string>
     <string name="empty_folder_storage_limited_message">Android hides documents, archives and other non-media files from apps without full storage access. Choose a folder to grant access, or open the file from your system file manager.</string>
 
+    <string name="file_browser_restricted_files_hint">Android needs permission to open these documents. Grant this folder to read them.</string>
+
 </resources>
