@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
+import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.fileviewer.component.FileViewerComponent
 import com.wanbaohe.fileviewer.component.FileViewerError
@@ -68,8 +69,15 @@ fun FileViewerScreen(component: FileViewerComponent) {
     val state by component.uiState.collectAsState()
     var goToPageDialogVisible by remember { mutableStateOf(false) }
 
-    // 夜间 = 全局日夜模式的生效值；顶栏由 BaseScreen 跟着主题走，这里不另画一套颜色
-    val isNight = state.isNight
+    /*
+     * 夜间 = 全局日夜模式的生效值；顶栏由 BaseScreen 跟着主题走，这里不另画一套颜色。
+     *
+     * 现算而不是读 state.isNight：组件在配置变化时是 retained 的，里面那份 isNight
+     * 只在设置流发新值时重算，系统深浅色在文档打开期间切换（黄昏、控制中心）它不知道。
+     * UiSettingsState.isNightMode 是 toUiState 里算好的，那里读了 isSystemInDarkTheme，
+     * 配置一变整条就重组，所以这里拿到的是此刻的值。
+     */
+    val isNight = LocalSettingsState.current.isNightMode
     LaunchedEffect(isNight) { component.applyNightMode(isNight) }
 
     BaseScreen(
