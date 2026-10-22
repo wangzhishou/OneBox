@@ -71,6 +71,41 @@ function cutSheet(ws, range) {
   return pieces;
 }
 
+/*
+ * A sheet is fitted to the width of the screen, so that a twelve-row budget fills it
+ * instead of sitting in the corner of it. Narrow sheets are drawn larger and a sheet a
+ * little wider than the screen a little smaller; a sheet much wider than that is left at
+ * 1:1 and scrolls, because shrinking it to fit would only make its text too small to read.
+ * Only a sheet drawn as a single table qualifies: a large sheet's pieces share column
+ * widths measured in CSS px (see columnWidths), which pin its columns, so changing the
+ * type would not change its width.
+ *
+ * Two passes, because a table does not change width in exact proportion to its type: a
+ * border stays a px wide, and a column of digits may still be at its floor. The first pass
+ * gets close and the second corrects it; a third would not move a pixel.
+ */
+var MIN_FIT = 0.8;
+var MAX_FIT = 2.5;
+
+function fitWidth(table) {
+  var root = document.getElementById("sheet");
+  root.style.setProperty("--vw-sheet", "1");
+  var avail = root.clientWidth - 16;      // the padding either side
+  var width = table.getBoundingClientRect().width;
+  if (!(width > 0) || !(avail > 0)) return;
+  var want = avail / width;
+  if (want < MIN_FIT) return;             // too wide to fit legibly: scroll it as it is
+  var fit = Math.min(MAX_FIT, want);
+  if (Math.abs(fit - 1) < 0.02) return;
+  for (var pass = 0; pass < 2; pass++) {
+    root.style.setProperty("--vw-sheet", String(fit));
+    var now = table.getBoundingClientRect().width;
+    if (!(now > 0)) return;
+    fit = Math.min(MAX_FIT, Math.max(MIN_FIT, fit * avail / now));
+  }
+  root.style.setProperty("--vw-sheet", String(fit));
+}
+
 function Sheet(ws) {
   this.ws = ws;
   this.range = ws["!ref"] ? XLSX.utils.decode_range(ws["!ref"]) : null;
@@ -258,6 +293,8 @@ vwFetchDoc("buffer")
           else place(k);
         }
         if (fillAll) fill(idx, shows);
+      } else {
+        fitWidth(top);
       }
       var btns = tabs.querySelectorAll("button");
       for (var i = 0; i < btns.length; i++) btns[i].className = i === idx ? "active" : "";
@@ -271,6 +308,12 @@ vwFetchDoc("buffer")
     });
     if (wb.SheetNames.length > 1) tabs.style.display = "";
     show(0);
+
+    // Turning the phone changes the width a sheet is fitted to
+    addEventListener("resize", function () {
+      var sheet = sheets[current];
+      if (sheet.pieces.length === 1) fitWidth(sheet.table(0));
+    });
 
     /*
      * Find reaches every row of every sheet, not only those drawn: see find.js. Each piece of

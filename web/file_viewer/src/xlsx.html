@@ -5,14 +5,16 @@
 <!-- The policy in ViewerPolicy.kt, which says why each part is there. ViewerPolicyTest
      keeps this copy word for word the same as that one, in every page. -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self'; worker-src 'self'; frame-src 'none'; object-src 'none'; form-action 'none'; base-uri 'none'">
+<!-- A spreadsheet is read as a grid of numbers, not as a page of paper: laid out at the
+     WebView's 980 px default it is scaled to about 0.45 and a twelve-row budget becomes
+     unreadable in the top-left corner. This page therefore declares the screen's own
+     width, so a cell is a CSS px like anywhere else, and xlsx.js widens a sheet that is
+     still narrower than the screen. No other viewer does this: a PDF page and a slide
+     are meant to be shown whole, and the zoom-out is what keeps them sharp. -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Spreadsheet</title>
 <link rel="stylesheet" href="app.css">
 <style>
-  /* No viewport meta on this page, so the WebView lays out at its 980 CSS px default
-     and zooms that down to fit the screen. That shrinks the status card along with
-     everything else; app.css multiplies it back up by this. See the token there. */
-  :root { --vw-zoom: 2.75; }
-
   body { background: #ffffff; }
   /* Held under as much of the title bar floating over the sheet as is on screen, which changes
      as the bar follows the reader's scrolling */
@@ -43,13 +45,23 @@
     border-color: var(--vw-accent);
     color: var(--vw-accent-ink);
   }
+  /*
+   * The sheet, at a size the reader can read.
+   *
+   * --vw-sheet is how much the cells are scaled so that the sheet fills the width; xlsx.js
+   * measures and sets it, and it is 1 for a sheet that already fits and for one too wide to
+   * fit legibly, which scrolls instead. It scales the type, the padding and the cell floor
+   * together, so the grid grows rather than just the space in it, and it is a layout size
+   * rather than a transform, so scrolling and the pieces of a large sheet (see xlsx.js)
+   * keep working in the same units.
+   */
   #sheet { padding: 8px; overflow: auto; }
-  #sheet table { border-collapse: collapse; font-size: 13px; }
+  #sheet table { border-collapse: collapse; font-size: calc(13px * var(--vw-sheet, 1)); }
   #sheet td, #sheet th {
     border: 1px solid #CFC5B2;
-    padding: 4px 8px;
+    padding: calc(4px * var(--vw-sheet, 1)) calc(8px * var(--vw-sheet, 1));
     white-space: pre;
-    min-width: 40px;
+    min-width: calc(40px * var(--vw-sheet, 1));
   }
   /* The sheet's first row, which only the first of a large sheet's pieces has: see xlsx.js */
   #sheet table.vw-top tr:first-child td { background: #F2EDE4; font-weight: 600; }

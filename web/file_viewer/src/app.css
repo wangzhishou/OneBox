@@ -30,8 +30,9 @@
    * arrives at about 6 dp and the 420px cap at under half the screen, so the sentence
    * that is the only thing on the screen is the one thing on it nobody can read.
    *
-   * So the card multiplies every measurement back up by this, and the five viewers with
-   * no viewport meta - pdf, docx, pptx, xlsx and imgweb - set it to 980/360 rounded up.
+   * So the card multiplies every measurement back up by this, and the four viewers with
+   * no viewport meta - pdf, docx, pptx and imgweb - set it to 980/360 rounded up. The
+   * spreadsheet page declares the screen's own width, so it wants none of this.
    * Sized for the narrowest phone, so a wide one gets a card that is a little generous
    * rather than one nobody can read. Written as calc() against the dp the card would
    * otherwise use, so the relationship stays legible instead of arriving as
