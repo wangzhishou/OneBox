@@ -43,8 +43,16 @@
    * landscape page, which at 1056 px is wider than the 980 the WebView lays out at, and
    * where 100vh stops being the height the reader can see.
    */
+  /*
+   * The desk is the app's background, seen through a transparent WebView, as xlsx.html's
+   * is: a Word page is paper, but the space around it should not be a second, warmer
+   * surface inside a glassy app. Pages keep their own white, and the night theme below
+   * keeps its black desk, which is part of that look.
+   */
+  body { background: transparent; }
+
   .docx-wrapper {
-    background: var(--vw-ground) !important;
+    background: transparent !important;
     padding: 16px 8px !important;
     box-sizing: border-box;
     /* Less the room kept for the title bar above, as pdf.html does */

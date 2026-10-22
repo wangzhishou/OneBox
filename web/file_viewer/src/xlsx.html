@@ -15,7 +15,14 @@
 <title>Spreadsheet</title>
 <link rel="stylesheet" href="app.css">
 <style>
-  body { background: #ffffff; }
+  /*
+   * The desk is the app's own background, seen through a transparent WebView; the sheet
+   * itself is a surface on top of it. A spreadsheet has no paper to be faithful to, so
+   * leaving the whole page white only puts a hard white block inside an otherwise glassy
+   * app. Cells keep a ground of their own (see #sheet table) so the grid and its numbers
+   * read the same over any backdrop.
+   */
+  body { background: transparent; }
   /* Held under as much of the title bar floating over the sheet as is on screen, which changes
      as the bar follows the reader's scrolling */
   #tabs {
@@ -28,7 +35,7 @@
     overflow-x: auto;
     gap: 6px;
     padding: 8px;
-    background: #ECE8DF;
+    background: var(--vw-card);
     border-bottom: 1px solid #CFC5B2;
   }
   #tabs button {
@@ -56,7 +63,11 @@
    * keep working in the same units.
    */
   #sheet { padding: 8px; overflow: auto; }
-  #sheet table { border-collapse: collapse; font-size: calc(13px * var(--vw-sheet, 1)); }
+  #sheet table {
+    border-collapse: collapse;
+    background: var(--vw-card);
+    font-size: calc(13px * var(--vw-sheet, 1));
+  }
   #sheet td, #sheet th {
     border: 1px solid #CFC5B2;
     padding: calc(4px * var(--vw-sheet, 1)) calc(8px * var(--vw-sheet, 1));
@@ -76,8 +87,8 @@
      clears 3:1 against the ground so the structure is still legible, while staying
      far enough behind the cell text not to compete with the numbers. */
   @media (prefers-color-scheme: dark) {
-    body { background: var(--vw-ground); }
-    #tabs { background: #221F19; border-bottom-color: #4D4636; }
+    /* The desk stays the app's background, as it does in the light theme */
+    #tabs { background: var(--vw-card); border-bottom-color: #4D4636; }
     #tabs button { background: var(--vw-card); border-color: #4D4636; color: var(--vw-ink); }
     #sheet td, #sheet th { border-color: #6B6250; color: var(--vw-ink); }
     #sheet table.vw-top tr:first-child td { background: var(--vw-card); }

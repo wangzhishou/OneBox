@@ -34,6 +34,8 @@ internal data class ViewerRequest(
     val bookPosition: String? = null,
     /** 页面外壳文案：英文原文 → 当前语言译文（见 assets/viewer/i18n.js） */
     val uiLabels: Map<String, String> = emptyMap(),
+    /** 正文文字的缩放百分比，跟 App 的文字大小设置；100 表示原始大小 */
+    val textZoomPercent: Int = 100,
 )
 
 /** 页面通过 message port 回报的东西。全在主线程回调。 */
@@ -80,6 +82,8 @@ internal class ViewerWebHost(
     fun create(context: Context, request: ViewerRequest): WebView {
         val web = WebView(context)
         webView = web
+        // 页面自己决定底色：表格的桌布、Word 的页间都透明，让 App 的玻璃背景透出来
+        web.setBackgroundColor(android.graphics.Color.TRANSPARENT)
 
         with(web.settings) {
             javaScriptEnabled = true
@@ -95,6 +99,8 @@ internal class ViewerWebHost(
             // 页面与文档都来自 APK 和这台手机，缓存只会让它显示旧字节：
             // 同名替换过的文档、升级过的 xlsx.js 都可能被缓存原样奉还。
             cacheMode = WebSettings.LOAD_NO_CACHE
+            // 只有可重排的阅读页跟随 App 的文字大小；固定版式保持文档自己的字号
+            textZoom = request.textZoomPercent.coerceIn(50, 300)
         }
 
         runCatching { android.webkit.CookieManager.getInstance() }

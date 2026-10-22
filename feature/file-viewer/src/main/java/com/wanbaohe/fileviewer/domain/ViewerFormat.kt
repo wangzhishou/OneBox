@@ -11,6 +11,8 @@ package com.wanbaohe.fileviewer.domain
  * @property supportsFind 页面带 `find.js`，能通过 message port 做页内查找
  * @property supportsPages 页面会回报"第几页 / 共几页"，可以显示页码并跳页
  * @property supportsNight 页面支持独立夜间模式（不跟系统深浅色）
+ * @property followsTextSize 正文是可重排的文字，跟随 App 的文字大小设置；
+ *   固定版式的文档（Word 页、幻灯片、表格格子）不跟：字号一变，分页和列宽就散了
  */
 enum class ViewerFormat(
     val page: String,
@@ -18,6 +20,7 @@ enum class ViewerFormat(
     val supportsFind: Boolean = false,
     val supportsPages: Boolean = false,
     val supportsNight: Boolean = false,
+    val followsTextSize: Boolean = false,
 ) {
     /** Word 2007+ 与模板/宏包，docx-preview 渲染 */
     DOCX(
@@ -38,13 +41,13 @@ enum class ViewerFormat(
     PPTX("pptx.html", 80, supportsFind = true),
 
     /** EPUB（无 DRM），gander 自研 reader；进度用 `at <章> <偏移>` 回报 */
-    EPUB("epub.html", 80, supportsFind = true),
+    EPUB("epub.html", 80, supportsFind = true, followsTextSize = true),
 
     /** Markdown，marked + DOMPurify */
-    MARKDOWN("md.html", 92, supportsFind = true),
+    MARKDOWN("md.html", 92, supportsFind = true, followsTextSize = true),
 
     /** 纯文本 / 代码 / 日志，按 5MB 分页 */
-    TEXT("text.html", 0, supportsFind = true),
+    TEXT("text.html", 0, supportsFind = true, followsTextSize = true),
 
     /** GIF / SVG / AVIF / ICO，交给 WebView 原生解码 */
     IMAGE("imgweb.html", 0),

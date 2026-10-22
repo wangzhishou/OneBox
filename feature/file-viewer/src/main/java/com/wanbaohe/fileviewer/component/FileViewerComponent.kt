@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 /**
  * 文件预览页的 Decompose 组件。
@@ -133,12 +134,17 @@ class FileViewerComponent @AssistedInject internal constructor(
         if (!state.canRender) return null
         val target = request ?: return null
         val supportsNight = state.format?.supportsNight == true
+        // App 的"文字大小"是 Activity 的 fontScale；可重排的阅读页跟，固定版式的文档不跟
+        val textZoom = if (state.format?.followsTextSize == true) {
+            (webViewContext.resources.configuration.fontScale * 100f).roundToInt()
+        } else 100
         return webHost.create(
             webViewContext,
             target.copy(
                 // Word 有自己的夜间矩阵；其余页面交给 WebView 算法暗化
                 nightMode = nightMode && supportsNight,
                 forceDark = nightMode && !supportsNight,
+                textZoomPercent = textZoom,
             ),
         )
     }
