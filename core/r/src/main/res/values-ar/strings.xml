@@ -1996,6 +1996,63 @@
     <string name="viewer_ppt_legacy_note">يخزّن هذا التنسيق الشرائح كسجلات رسم ثنائية لا يرسمها هذا العارض. يُعرض نص العرض أدناه شريحة بشريحة. احفظه بصيغة .pptx لرؤية الشرائح نفسها.</string>
 
     <string name="viewer_ppt_slide_label">شريحة</string>
+
+
+    <string name="viewer_status_rendering_document">تجهيز المستند…</string>
+
+
+    <string name="viewer_status_rendering">جارٍ التجهيز…</string>
+
+
+    <string name="viewer_status_rendering_slides">تجهيز الشرائح…</string>
+
+
+    <string name="viewer_status_loading">جارٍ التحميل…</string>
+
+
+    <string name="viewer_status_loading_spreadsheet">تحميل جدول البيانات…</string>
+
+
+    <string name="viewer_error_word">تعذّر عرض مستند Word هذا</string>
+
+
+    <string name="viewer_error_markdown">تعذّر عرض ملف Markdown هذا</string>
+
+
+    <string name="viewer_error_image">تعذّر عرض هذه الصورة</string>
+
+
+    <string name="viewer_error_document">تعذّر فتح هذا المستند</string>
+
+
+    <string name="viewer_error_file">تعذّر قراءة هذا الملف</string>
+
+
+    <string name="viewer_error_file_rest">تعذّر قراءة بقية هذا الملف</string>
+
+
+    <string name="viewer_error_spreadsheet">تعذّر فتح جدول البيانات هذا</string>
+
+
+    <string name="viewer_error_slides">تعذّر عرض هذا العرض التقديمي</string>
+
+
+    <string name="viewer_error_generic">حدث خطأ أثناء العرض</string>
+
+
+    <string name="viewer_error_slides_detail">قد يستخدم ملف .pptx هذا ميزات لا يعرفها العارض المدمج بعد.</string>
+
+
+    <string name="viewer_error_read">تعذّر قراءة الملف</string>
+
+
+    <string name="viewer_unsupported_title">لا يمكن معاينة هذا الملف هنا</string>
+
+
+    <string name="viewer_unsupported_as_text">عرض كنص</string>
+
+
+    <string name="viewer_unsupported_caveat">إن لم يكن نصًا، فسترى رموزًا غير مفهومة.</string>
     <string name="viewer_epub_locked">هذا الكتاب مشفّر</string>
     <string name="viewer_epub_part_unreadable">تعذّرت قراءة هذا الجزء من الكتاب.</string>
     <string name="ai_duel_language_instruction">ما لم تطلب المحادثة لغة أخرى، فكّر وأجب بـ%1$s، واكتب عملية تفكيرك بـ%1$s أيضًا.</string>

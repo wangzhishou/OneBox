@@ -1951,6 +1951,63 @@
     <string name="viewer_ppt_legacy_note">이 형식은 슬라이드를 바이너리 그리기 레코드로 저장하므로 이 뷰어에서는 그리지 못합니다. 아래에 슬라이드별로 텍스트를 표시합니다. .pptx로 다시 저장하면 슬라이드 자체를 볼 수 있습니다.</string>
 
     <string name="viewer_ppt_slide_label">슬라이드</string>
+
+
+    <string name="viewer_status_rendering_document">문서를 배치하는 중…</string>
+
+
+    <string name="viewer_status_rendering">배치하는 중…</string>
+
+
+    <string name="viewer_status_rendering_slides">슬라이드를 배치하는 중…</string>
+
+
+    <string name="viewer_status_loading">불러오는 중…</string>
+
+
+    <string name="viewer_status_loading_spreadsheet">스프레드시트를 불러오는 중…</string>
+
+
+    <string name="viewer_error_word">이 Word 문서를 표시할 수 없습니다</string>
+
+
+    <string name="viewer_error_markdown">이 Markdown 파일을 표시할 수 없습니다</string>
+
+
+    <string name="viewer_error_image">이 이미지를 표시할 수 없습니다</string>
+
+
+    <string name="viewer_error_document">이 문서를 열 수 없습니다</string>
+
+
+    <string name="viewer_error_file">이 파일을 읽을 수 없습니다</string>
+
+
+    <string name="viewer_error_file_rest">이 파일의 나머지를 읽을 수 없습니다</string>
+
+
+    <string name="viewer_error_spreadsheet">이 스프레드시트를 열 수 없습니다</string>
+
+
+    <string name="viewer_error_slides">이 프레젠테이션을 표시할 수 없습니다</string>
+
+
+    <string name="viewer_error_generic">표시하는 중 오류가 발생했습니다</string>
+
+
+    <string name="viewer_error_slides_detail">이 .pptx는 내장 렌더러가 아직 지원하지 않는 기능을 사용했을 수 있습니다.</string>
+
+
+    <string name="viewer_error_read">파일을 읽을 수 없습니다</string>
+
+
+    <string name="viewer_unsupported_title">이 파일은 여기서 미리 볼 수 없습니다</string>
+
+
+    <string name="viewer_unsupported_as_text">텍스트로 보기</string>
+
+
+    <string name="viewer_unsupported_caveat">텍스트가 아니면 알 수 없는 문자가 보입니다.</string>
     <string name="viewer_epub_locked">이 책은 암호화되어 있습니다</string>
     <string name="viewer_epub_part_unreadable">이 부분의 내용을 읽을 수 없습니다.</string>
     <string name="ai_duel_language_instruction">대화에서 다른 언어를 요구하지 않는 한 %1$s로 생각하고 답하며, 사고 과정도 %1$s로 작성하세요.</string>

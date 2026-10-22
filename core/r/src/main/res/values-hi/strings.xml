@@ -1962,6 +1962,63 @@
     <string name="viewer_ppt_legacy_note">यह फ़ॉर्मैट स्लाइडों को बाइनरी ड्रॉइंग रिकॉर्ड के रूप में रखता है, जिन्हें यह व्यूअर नहीं बनाता। प्रस्तुति का टेक्स्ट नीचे स्लाइड-दर-स्लाइड दिखाया गया है। स्लाइड स्वयं देखने के लिए इसे .pptx के रूप में फिर से सहेजें।</string>
 
     <string name="viewer_ppt_slide_label">स्लाइड</string>
+
+
+    <string name="viewer_status_rendering_document">दस्तावेज़ सजाया जा रहा है…</string>
+
+
+    <string name="viewer_status_rendering">सजाया जा रहा है…</string>
+
+
+    <string name="viewer_status_rendering_slides">स्लाइडें सजाई जा रही हैं…</string>
+
+
+    <string name="viewer_status_loading">लोड हो रहा है…</string>
+
+
+    <string name="viewer_status_loading_spreadsheet">स्प्रेडशीट लोड हो रही है…</string>
+
+
+    <string name="viewer_error_word">यह Word दस्तावेज़ दिखाया नहीं जा सका</string>
+
+
+    <string name="viewer_error_markdown">यह Markdown फ़ाइल दिखाई नहीं जा सकी</string>
+
+
+    <string name="viewer_error_image">यह छवि दिखाई नहीं जा सकी</string>
+
+
+    <string name="viewer_error_document">यह दस्तावेज़ खोला नहीं जा सका</string>
+
+
+    <string name="viewer_error_file">यह फ़ाइल पढ़ी नहीं जा सकी</string>
+
+
+    <string name="viewer_error_file_rest">इस फ़ाइल का बाकी हिस्सा पढ़ा नहीं जा सका</string>
+
+
+    <string name="viewer_error_spreadsheet">यह स्प्रेडशीट खोली नहीं जा सकी</string>
+
+
+    <string name="viewer_error_slides">यह प्रस्तुति दिखाई नहीं जा सकी</string>
+
+
+    <string name="viewer_error_generic">दिखाते समय कोई त्रुटि हुई</string>
+
+
+    <string name="viewer_error_slides_detail">हो सकता है यह .pptx ऐसी सुविधाएँ इस्तेमाल करता हो जिन्हें अंतर्निहित रेंडरर अभी नहीं पहचानता।</string>
+
+
+    <string name="viewer_error_read">फ़ाइल पढ़ी नहीं जा सकी</string>
+
+
+    <string name="viewer_unsupported_title">यह फ़ाइल यहाँ पूर्वावलोकित नहीं की जा सकती</string>
+
+
+    <string name="viewer_unsupported_as_text">टेक्स्ट के रूप में देखें</string>
+
+
+    <string name="viewer_unsupported_caveat">अगर यह टेक्स्ट नहीं है, तो आपको अटपटे अक्षर दिखेंगे।</string>
     <string name="viewer_epub_locked">यह किताब एन्क्रिप्टेड है</string>
     <string name="viewer_epub_part_unreadable">किताब का यह हिस्सा पढ़ा नहीं जा सका।</string>
     <string name="ai_duel_language_instruction">जब तक बातचीत में किसी और भाषा के लिए न कहा जाए, %1$s में सोचें और उत्तर दें, सोचने की प्रक्रिया भी %1$s में लिखें।</string>

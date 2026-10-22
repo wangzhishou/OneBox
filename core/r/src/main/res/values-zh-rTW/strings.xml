@@ -1952,6 +1952,63 @@
     <string name="viewer_ppt_legacy_note">這種格式把投影片存成二進位繪圖記錄，這裡畫不出來。下面是簡報裡的文字，按頁排列。另存為 .pptx 就能看到投影片本身。</string>
 
     <string name="viewer_ppt_slide_label">投影片</string>
+
+
+    <string name="viewer_status_rendering_document">正在排版文件…</string>
+
+
+    <string name="viewer_status_rendering">正在排版…</string>
+
+
+    <string name="viewer_status_rendering_slides">正在排版投影片…</string>
+
+
+    <string name="viewer_status_loading">正在載入…</string>
+
+
+    <string name="viewer_status_loading_spreadsheet">正在載入試算表…</string>
+
+
+    <string name="viewer_error_word">這份 Word 文件無法呈現</string>
+
+
+    <string name="viewer_error_markdown">這個 Markdown 檔案無法呈現</string>
+
+
+    <string name="viewer_error_image">這張圖片無法顯示</string>
+
+
+    <string name="viewer_error_document">這個文件打不開</string>
+
+
+    <string name="viewer_error_file">讀不到這個檔案</string>
+
+
+    <string name="viewer_error_file_rest">讀不到這個檔案的後續內容</string>
+
+
+    <string name="viewer_error_spreadsheet">這個試算表打不開</string>
+
+
+    <string name="viewer_error_slides">這個簡報無法呈現</string>
+
+
+    <string name="viewer_error_generic">呈現時發生錯誤</string>
+
+
+    <string name="viewer_error_slides_detail">這份 .pptx 可能用到了內建呈現器還不認識的功能。</string>
+
+
+    <string name="viewer_error_read">讀不到這個檔案</string>
+
+
+    <string name="viewer_unsupported_title">這個檔案無法預覽</string>
+
+
+    <string name="viewer_unsupported_as_text">以文字檢視</string>
+
+
+    <string name="viewer_unsupported_caveat">如果不是文字，你會看到一堆亂碼。</string>
     <string name="viewer_epub_locked">這本書已加密</string>
     <string name="viewer_epub_part_unreadable">這一部分內容讀不出來。</string>
     <string name="ai_duel_language_instruction">除對話裡另有要求外，請用%1$s思考和回答，思考過程也寫成%1$s。</string>

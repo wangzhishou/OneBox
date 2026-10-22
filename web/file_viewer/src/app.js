@@ -4,6 +4,11 @@ var vwParams = new URLSearchParams(location.search);
 var vwName = vwParams.get("name") || "file";
 var vwExt = (vwParams.get("ext") || "").toLowerCase();
 
+/* 页面外壳文案的翻译：对照表由 i18n.js 从 URL 的 ui 参数解出；没有就原样返回 */
+function vwText(text) {
+  return window.vwT ? window.vwT(text) : text;
+}
+
 function vwStatus(msg) {
   var el = document.getElementById("vw-status");
   if (!el) {
@@ -34,10 +39,12 @@ function vwError(title, detail) {
   el.innerHTML = "";
   var t = document.createElement("div");
   t.className = "vw-error-title";
-  t.textContent = title;
+  // 标题由页面用英文原文传入，这里按对照表翻译；没有对照表时原样显示
+  t.textContent = vwText(title);
   var d = document.createElement("div");
   d.className = "vw-error-detail";
-  d.textContent = detail || "";
+  // JS 的 Error 前缀是技术细节，卡片上只留消息本身
+  d.textContent = String(detail || "").replace(/^Error:\s*/, "");
   el.appendChild(t);
   el.appendChild(d);
 }
@@ -284,7 +291,7 @@ function vwShowBusy(doc, size) {
 /* Fetch the document being viewed. kind: "buffer" | "text" */
 function vwFetchDoc(kind) {
   return fetch(vwDocUrl()).then(function (r) {
-    if (!r.ok) throw new Error("Could not read the file (HTTP " + r.status + ")");
+    if (!r.ok) throw new Error(vwText("Could not read the file") + " (HTTP " + r.status + ")");
     return kind === "text" ? r.text() : r.arrayBuffer();
   }).then(function (doc) {
     return vwShowBusy(doc, kind === "text" ? doc.length : doc.byteLength);
@@ -321,7 +328,7 @@ function vwOpenText() {
 
 function vwOpenTextPages() {
   return fetch(vwDocUrl()).then(function (r) {
-    if (!r.ok) throw new Error("Could not read the file (HTTP " + r.status + ")");
+    if (!r.ok) throw new Error(vwText("Could not read the file") + " (HTTP " + r.status + ")");
 
     // One streaming decoder across every page, so a multi-byte character split
     // by a page boundary still comes out whole. Decoding stays lenient, so an

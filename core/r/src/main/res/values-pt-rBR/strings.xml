@@ -1962,6 +1962,63 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
     <string name="viewer_ppt_legacy_note">Este formato guarda os slides como registros de desenho binários, que este visualizador não desenha. O texto da apresentação é mostrado abaixo, slide a slide. Salve novamente como .pptx para ver os slides.</string>
 
     <string name="viewer_ppt_slide_label">SLIDE</string>
+
+
+    <string name="viewer_status_rendering_document">Renderizando o documento…</string>
+
+
+    <string name="viewer_status_rendering">Renderizando…</string>
+
+
+    <string name="viewer_status_rendering_slides">Renderizando os slides…</string>
+
+
+    <string name="viewer_status_loading">Carregando…</string>
+
+
+    <string name="viewer_status_loading_spreadsheet">Carregando a planilha…</string>
+
+
+    <string name="viewer_error_word">Não foi possível exibir este documento do Word</string>
+
+
+    <string name="viewer_error_markdown">Não foi possível exibir este arquivo Markdown</string>
+
+
+    <string name="viewer_error_image">Não foi possível exibir esta imagem</string>
+
+
+    <string name="viewer_error_document">Não foi possível abrir este documento</string>
+
+
+    <string name="viewer_error_file">Não foi possível ler este arquivo</string>
+
+
+    <string name="viewer_error_file_rest">Não foi possível ler o restante deste arquivo</string>
+
+
+    <string name="viewer_error_spreadsheet">Não foi possível abrir esta planilha</string>
+
+
+    <string name="viewer_error_slides">Não foi possível exibir esta apresentação</string>
+
+
+    <string name="viewer_error_generic">Ocorreu um erro ao exibir o conteúdo</string>
+
+
+    <string name="viewer_error_slides_detail">Este .pptx pode usar recursos que o renderizador integrado ainda não entende.</string>
+
+
+    <string name="viewer_error_read">Não foi possível ler o arquivo</string>
+
+
+    <string name="viewer_unsupported_title">Este arquivo não pode ser pré-visualizado aqui</string>
+
+
+    <string name="viewer_unsupported_as_text">Ver como texto</string>
+
+
+    <string name="viewer_unsupported_caveat">Se não for texto, você verá caracteres ilegíveis.</string>
     <string name="viewer_epub_locked">Este livro está bloqueado</string>
     <string name="viewer_epub_part_unreadable">Não foi possível ler esta parte do livro.</string>
     <string name="ai_duel_language_instruction">A menos que a conversa peça outro idioma, pense e responda em %1$s — escreva seu raciocínio em %1$s também.</string>

@@ -1962,6 +1962,63 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <string name="viewer_ppt_legacy_note">Iniimbak ng format na ito ang mga slide bilang binary drawing records, na hindi iginuguhit ng viewer na ito. Ang teksto ng presentasyon ay ipinapakita sa ibaba, slide by slide. I-save muli bilang .pptx upang makita ang mga slide.</string>
 
     <string name="viewer_ppt_slide_label">SLIDE</string>
+
+
+    <string name="viewer_status_rendering_document">Inaayos ang dokumento…</string>
+
+
+    <string name="viewer_status_rendering">Inaayos…</string>
+
+
+    <string name="viewer_status_rendering_slides">Inaayos ang mga slide…</string>
+
+
+    <string name="viewer_status_loading">Naglo-load…</string>
+
+
+    <string name="viewer_status_loading_spreadsheet">Naglo-load ng spreadsheet…</string>
+
+
+    <string name="viewer_error_word">Hindi maipakita ang Word document na ito</string>
+
+
+    <string name="viewer_error_markdown">Hindi maipakita ang Markdown file na ito</string>
+
+
+    <string name="viewer_error_image">Hindi maipakita ang larawang ito</string>
+
+
+    <string name="viewer_error_document">Hindi mabuksan ang dokumentong ito</string>
+
+
+    <string name="viewer_error_file">Hindi mabasa ang file na ito</string>
+
+
+    <string name="viewer_error_file_rest">Hindi mabasa ang natitirang bahagi ng file na ito</string>
+
+
+    <string name="viewer_error_spreadsheet">Hindi mabuksan ang spreadsheet na ito</string>
+
+
+    <string name="viewer_error_slides">Hindi maipakita ang presentasyong ito</string>
+
+
+    <string name="viewer_error_generic">May error habang ipinapakita</string>
+
+
+    <string name="viewer_error_slides_detail">Maaaring gumagamit ang .pptx na ito ng mga feature na hindi pa alam ng built-in na renderer.</string>
+
+
+    <string name="viewer_error_read">Hindi mabasa ang file</string>
+
+
+    <string name="viewer_unsupported_title">Hindi ma-preview ang file na ito dito</string>
+
+
+    <string name="viewer_unsupported_as_text">Tingnan bilang teksto</string>
+
+
+    <string name="viewer_unsupported_caveat">Kung hindi teksto, makikita mo ang mga basurang karakter.</string>
     <string name="viewer_epub_locked">Naka-lock ang aklat na ito</string>
     <string name="viewer_epub_part_unreadable">Hindi mabasa ang bahaging ito ng aklat.</string>
     <string name="ai_duel_language_instruction">Maliban kung may ibang wikang hinihingi ang usapan, mag-isip at sumagot sa %1$s — isulat din sa %1$s ang iyong pangangatwiran.</string>

@@ -1951,6 +1951,63 @@
     <string name="viewer_ppt_legacy_note">この形式はスライドをバイナリの描画レコードとして保存するため、このビューアでは描画できません。以下にデッキのテキストをスライドごとに表示します。.pptx で保存し直すとスライド自体を表示できます。</string>
 
     <string name="viewer_ppt_slide_label">スライド</string>
+
+
+    <string name="viewer_status_rendering_document">文書をレイアウトしています…</string>
+
+
+    <string name="viewer_status_rendering">レイアウトしています…</string>
+
+
+    <string name="viewer_status_rendering_slides">スライドをレイアウトしています…</string>
+
+
+    <string name="viewer_status_loading">読み込み中…</string>
+
+
+    <string name="viewer_status_loading_spreadsheet">表計算を読み込んでいます…</string>
+
+
+    <string name="viewer_error_word">この Word 文書を表示できませんでした</string>
+
+
+    <string name="viewer_error_markdown">この Markdown ファイルを表示できませんでした</string>
+
+
+    <string name="viewer_error_image">この画像を表示できませんでした</string>
+
+
+    <string name="viewer_error_document">この文書を開けませんでした</string>
+
+
+    <string name="viewer_error_file">このファイルを読み取れませんでした</string>
+
+
+    <string name="viewer_error_file_rest">このファイルの続きを読み取れませんでした</string>
+
+
+    <string name="viewer_error_spreadsheet">この表計算を開けませんでした</string>
+
+
+    <string name="viewer_error_slides">このプレゼンテーションを表示できませんでした</string>
+
+
+    <string name="viewer_error_generic">表示中にエラーが発生しました</string>
+
+
+    <string name="viewer_error_slides_detail">この .pptx は、内蔵レンダラーがまだ対応していない機能を使っている可能性があります。</string>
+
+
+    <string name="viewer_error_read">ファイルを読み取れませんでした</string>
+
+
+    <string name="viewer_unsupported_title">このファイルはここでプレビューできません</string>
+
+
+    <string name="viewer_unsupported_as_text">テキストとして表示</string>
+
+
+    <string name="viewer_unsupported_caveat">テキストでない場合、意味のない文字が並びます。</string>
     <string name="viewer_epub_locked">この書籍は暗号化されています</string>
     <string name="viewer_epub_part_unreadable">この部分の内容を読み取れません。</string>
     <string name="ai_duel_language_instruction">会話で別の言語を求められない限り、%1$sで考えて回答し、思考過程も%1$sで書いてください。</string>

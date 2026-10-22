@@ -2153,6 +2153,63 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="viewer_ppt_legacy_note">This format keeps its slides as binary drawing records, which this viewer does not draw. The text of the deck is shown below, slide by slide. Re-save it as .pptx to see the slides themselves.</string>
 
     <string name="viewer_ppt_slide_label">SLIDE</string>
+
+
+    <string name="viewer_status_rendering_document">Rendering document…</string>
+
+
+    <string name="viewer_status_rendering">Rendering…</string>
+
+
+    <string name="viewer_status_rendering_slides">Rendering slides…</string>
+
+
+    <string name="viewer_status_loading">Loading…</string>
+
+
+    <string name="viewer_status_loading_spreadsheet">Loading spreadsheet…</string>
+
+
+    <string name="viewer_error_word">Could not render this Word document</string>
+
+
+    <string name="viewer_error_markdown">Could not render this Markdown file</string>
+
+
+    <string name="viewer_error_image">Could not display this image</string>
+
+
+    <string name="viewer_error_document">Could not open this document</string>
+
+
+    <string name="viewer_error_file">Could not read this file</string>
+
+
+    <string name="viewer_error_file_rest">Could not read the rest of this file</string>
+
+
+    <string name="viewer_error_spreadsheet">Could not open this spreadsheet</string>
+
+
+    <string name="viewer_error_slides">Could not render this presentation</string>
+
+
+    <string name="viewer_error_generic">Something went wrong while rendering</string>
+
+
+    <string name="viewer_error_slides_detail">This .pptx may use features the built-in renderer does not understand yet.</string>
+
+
+    <string name="viewer_error_read">Could not read the file</string>
+
+
+    <string name="viewer_unsupported_title">This file can\'t be previewed here</string>
+
+
+    <string name="viewer_unsupported_as_text">View as text</string>
+
+
+    <string name="viewer_unsupported_caveat">If it isn\'t text, you\'ll see random characters.</string>
     <string name="viewer_epub_locked">This book is locked</string>
     <string name="viewer_epub_part_unreadable">This part of the book could not be read.</string>
 

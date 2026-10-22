@@ -1962,6 +1962,63 @@ Consejo: si eliges «Ocultar para siempre», podrás devolverme más tarde en Aj
     <string name="viewer_ppt_legacy_note">Este formato guarda las diapositivas como registros de dibujo binarios, que este visor no dibuja. El texto de la presentación se muestra abajo, diapositiva por diapositiva. Vuelve a guardarlo como .pptx para ver las diapositivas.</string>
 
     <string name="viewer_ppt_slide_label">DIAPOSITIVA</string>
+
+
+    <string name="viewer_status_rendering_document">Componiendo el documento…</string>
+
+
+    <string name="viewer_status_rendering">Componiendo…</string>
+
+
+    <string name="viewer_status_rendering_slides">Componiendo las diapositivas…</string>
+
+
+    <string name="viewer_status_loading">Cargando…</string>
+
+
+    <string name="viewer_status_loading_spreadsheet">Cargando la hoja de cálculo…</string>
+
+
+    <string name="viewer_error_word">No se pudo mostrar este documento de Word</string>
+
+
+    <string name="viewer_error_markdown">No se pudo mostrar este archivo Markdown</string>
+
+
+    <string name="viewer_error_image">No se pudo mostrar esta imagen</string>
+
+
+    <string name="viewer_error_document">No se pudo abrir este documento</string>
+
+
+    <string name="viewer_error_file">No se pudo leer este archivo</string>
+
+
+    <string name="viewer_error_file_rest">No se pudo leer el resto de este archivo</string>
+
+
+    <string name="viewer_error_spreadsheet">No se pudo abrir esta hoja de cálculo</string>
+
+
+    <string name="viewer_error_slides">No se pudo mostrar esta presentación</string>
+
+
+    <string name="viewer_error_generic">Se produjo un error al mostrar el contenido</string>
+
+
+    <string name="viewer_error_slides_detail">Es posible que este .pptx use funciones que el motor integrado aún no admite.</string>
+
+
+    <string name="viewer_error_read">No se pudo leer el archivo</string>
+
+
+    <string name="viewer_unsupported_title">Este archivo no se puede previsualizar aquí</string>
+
+
+    <string name="viewer_unsupported_as_text">Ver como texto</string>
+
+
+    <string name="viewer_unsupported_caveat">Si no es texto, verás caracteres ilegibles.</string>
     <string name="viewer_epub_locked">Este libro está cifrado</string>
     <string name="viewer_epub_part_unreadable">No se pudo leer esta parte del libro.</string>
     <string name="ai_duel_language_instruction">A menos que la conversación pida otro idioma, piensa y responde en %1$s; escribe también tu razonamiento en %1$s.</string>

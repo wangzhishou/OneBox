@@ -1962,6 +1962,63 @@
     <string name="viewer_ppt_legacy_note">Bu biçim slaytları ikili çizim kayıtları olarak saklar; bu görüntüleyici bunları çizmez. Sunumun metni aşağıda slayt slayt gösterilir. Slaytların kendisini görmek için .pptx olarak yeniden kaydedin.</string>
 
     <string name="viewer_ppt_slide_label">SLAYT</string>
+
+
+    <string name="viewer_status_rendering_document">Belge düzenleniyor…</string>
+
+
+    <string name="viewer_status_rendering">Düzenleniyor…</string>
+
+
+    <string name="viewer_status_rendering_slides">Slaytlar düzenleniyor…</string>
+
+
+    <string name="viewer_status_loading">Yükleniyor…</string>
+
+
+    <string name="viewer_status_loading_spreadsheet">Hesap tablosu yükleniyor…</string>
+
+
+    <string name="viewer_error_word">Bu Word belgesi görüntülenemedi</string>
+
+
+    <string name="viewer_error_markdown">Bu Markdown dosyası görüntülenemedi</string>
+
+
+    <string name="viewer_error_image">Bu görsel gösterilemedi</string>
+
+
+    <string name="viewer_error_document">Bu belge açılamadı</string>
+
+
+    <string name="viewer_error_file">Bu dosya okunamadı</string>
+
+
+    <string name="viewer_error_file_rest">Bu dosyanın kalanı okunamadı</string>
+
+
+    <string name="viewer_error_spreadsheet">Bu hesap tablosu açılamadı</string>
+
+
+    <string name="viewer_error_slides">Bu sunum görüntülenemedi</string>
+
+
+    <string name="viewer_error_generic">Görüntülenirken bir hata oluştu</string>
+
+
+    <string name="viewer_error_slides_detail">Bu .pptx, yerleşik işleyicinin henüz tanımadığı özellikler kullanıyor olabilir.</string>
+
+
+    <string name="viewer_error_read">Dosya okunamadı</string>
+
+
+    <string name="viewer_unsupported_title">Bu dosya burada önizlenemiyor</string>
+
+
+    <string name="viewer_unsupported_as_text">Metin olarak görüntüle</string>
+
+
+    <string name="viewer_unsupported_caveat">Metin değilse anlamsız karakterler görürsünüz.</string>
     <string name="viewer_epub_locked">Bu kitap şifrelenmiş</string>
     <string name="viewer_epub_part_unreadable">Kitabın bu bölümü okunamadı.</string>
     <string name="ai_duel_language_instruction">Konuşma başka bir dil istemedikçe %1$s dilinde düşün ve yanıtla; akıl yürütmeni de %1$s dilinde yaz.</string>

@@ -1949,6 +1949,63 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <string name="viewer_ppt_legacy_note">Định dạng này lưu các trang chiếu dưới dạng bản ghi vẽ nhị phân mà trình xem này không vẽ được. Nội dung văn bản của bài trình bày được hiển thị bên dưới, theo từng trang. Hãy lưu lại thành .pptx để xem chính các trang chiếu.</string>
 
     <string name="viewer_ppt_slide_label">TRANG CHIẾU</string>
+
+
+    <string name="viewer_status_rendering_document">Đang dàn trang tài liệu…</string>
+
+
+    <string name="viewer_status_rendering">Đang dàn trang…</string>
+
+
+    <string name="viewer_status_rendering_slides">Đang dàn trang chiếu…</string>
+
+
+    <string name="viewer_status_loading">Đang tải…</string>
+
+
+    <string name="viewer_status_loading_spreadsheet">Đang tải bảng tính…</string>
+
+
+    <string name="viewer_error_word">Không hiển thị được tài liệu Word này</string>
+
+
+    <string name="viewer_error_markdown">Không hiển thị được tệp Markdown này</string>
+
+
+    <string name="viewer_error_image">Không hiển thị được ảnh này</string>
+
+
+    <string name="viewer_error_document">Không mở được tài liệu này</string>
+
+
+    <string name="viewer_error_file">Không đọc được tệp này</string>
+
+
+    <string name="viewer_error_file_rest">Không đọc được phần còn lại của tệp này</string>
+
+
+    <string name="viewer_error_spreadsheet">Không mở được bảng tính này</string>
+
+
+    <string name="viewer_error_slides">Không hiển thị được bài trình bày này</string>
+
+
+    <string name="viewer_error_generic">Đã xảy ra lỗi khi hiển thị</string>
+
+
+    <string name="viewer_error_slides_detail">Tệp .pptx này có thể dùng tính năng mà trình kết xuất tích hợp chưa hiểu.</string>
+
+
+    <string name="viewer_error_read">Không đọc được tệp</string>
+
+
+    <string name="viewer_unsupported_title">Không xem trước được tệp này tại đây</string>
+
+
+    <string name="viewer_unsupported_as_text">Xem dạng văn bản</string>
+
+
+    <string name="viewer_unsupported_caveat">Nếu không phải văn bản, bạn sẽ thấy các ký tự lộn xộn.</string>
     <string name="viewer_epub_locked">Sách này đã được mã hóa</string>
     <string name="viewer_epub_part_unreadable">Không thể đọc phần nội dung này.</string>
     <string name="ai_duel_language_instruction">Trừ khi cuộc trò chuyện yêu cầu ngôn ngữ khác, hãy suy nghĩ và trả lời bằng %1$s, quá trình suy nghĩ cũng viết bằng %1$s.</string>

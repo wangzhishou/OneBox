@@ -1996,6 +1996,63 @@
     <string name="viewer_ppt_legacy_note">Этот формат хранит слайды как двоичные записи рисования, которые этот просмотрщик не отрисовывает. Ниже показан текст презентации по слайдам. Сохраните её как .pptx, чтобы увидеть сами слайды.</string>
 
     <string name="viewer_ppt_slide_label">СЛАЙД</string>
+
+
+    <string name="viewer_status_rendering_document">Верстаем документ…</string>
+
+
+    <string name="viewer_status_rendering">Верстаем…</string>
+
+
+    <string name="viewer_status_rendering_slides">Верстаем слайды…</string>
+
+
+    <string name="viewer_status_loading">Загрузка…</string>
+
+
+    <string name="viewer_status_loading_spreadsheet">Загрузка таблицы…</string>
+
+
+    <string name="viewer_error_word">Не удалось отобразить этот документ Word</string>
+
+
+    <string name="viewer_error_markdown">Не удалось отобразить этот файл Markdown</string>
+
+
+    <string name="viewer_error_image">Не удалось показать это изображение</string>
+
+
+    <string name="viewer_error_document">Не удалось открыть этот документ</string>
+
+
+    <string name="viewer_error_file">Не удалось прочитать этот файл</string>
+
+
+    <string name="viewer_error_file_rest">Не удалось прочитать остаток файла</string>
+
+
+    <string name="viewer_error_spreadsheet">Не удалось открыть эту таблицу</string>
+
+
+    <string name="viewer_error_slides">Не удалось отобразить эту презентацию</string>
+
+
+    <string name="viewer_error_generic">При отображении произошла ошибка</string>
+
+
+    <string name="viewer_error_slides_detail">Возможно, в этом .pptx есть возможности, которые встроенный обработчик ещё не понимает.</string>
+
+
+    <string name="viewer_error_read">Не удалось прочитать файл</string>
+
+
+    <string name="viewer_unsupported_title">Этот файл нельзя здесь предварительно просмотреть</string>
+
+
+    <string name="viewer_unsupported_as_text">Открыть как текст</string>
+
+
+    <string name="viewer_unsupported_caveat">Если это не текст, вы увидите нечитаемые символы.</string>
     <string name="viewer_epub_locked">Эта книга зашифрована</string>
     <string name="viewer_epub_part_unreadable">Эту часть книги не удалось прочитать.</string>
     <string name="ai_duel_language_instruction">Если в разговоре не требуется другой язык, думайте и отвечайте на языке %1$s, а рассуждения также записывайте на языке %1$s.</string>

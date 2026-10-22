@@ -27,8 +27,11 @@
     var hasWords = Object.keys(dict).length > 0;
     if (!hasWords) return;
 
-    // 外壳容器：只观察这些节点，书页正文与目录条目不在其中
-    var CHROME = [
+    // 外壳容器：只观察这些节点，书页正文与目录条目不在其中。
+    // 页面可以用 <body data-vw-i18n="选择器,选择器"> 换成自己的（页面 CSP 不允许内联
+    // 脚本，所以用属性而不是 window 变量）；没写就用电子书阅读器那套默认值。
+    var declared = document.body && document.body.getAttribute("data-vw-i18n");
+    var CHROME = declared ? declared.split(",") : [
         "#vw-status",
         "#epub-bar",
         "#epub-turn",

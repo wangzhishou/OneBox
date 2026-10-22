@@ -2118,6 +2118,63 @@
     <string name="viewer_ppt_legacy_note">这种格式把幻灯片存成二进制绘图记录，这里画不出来。下面是演示文稿里的文字，按页排列。另存为 .pptx 就能看到幻灯片本身。</string>
 
     <string name="viewer_ppt_slide_label">幻灯片</string>
+
+
+    <string name="viewer_status_rendering_document">正在排版文档…</string>
+
+
+    <string name="viewer_status_rendering">正在排版…</string>
+
+
+    <string name="viewer_status_rendering_slides">正在排版幻灯片…</string>
+
+
+    <string name="viewer_status_loading">正在加载…</string>
+
+
+    <string name="viewer_status_loading_spreadsheet">正在加载表格…</string>
+
+
+    <string name="viewer_error_word">这份 Word 文档渲染不了</string>
+
+
+    <string name="viewer_error_markdown">这个 Markdown 文件渲染不了</string>
+
+
+    <string name="viewer_error_image">这张图片显示不了</string>
+
+
+    <string name="viewer_error_document">这个文档打不开</string>
+
+
+    <string name="viewer_error_file">读不到这个文件</string>
+
+
+    <string name="viewer_error_file_rest">读不到这个文件的后续内容</string>
+
+
+    <string name="viewer_error_spreadsheet">这个表格打不开</string>
+
+
+    <string name="viewer_error_slides">这个演示文稿渲染不了</string>
+
+
+    <string name="viewer_error_generic">渲染时出错了</string>
+
+
+    <string name="viewer_error_slides_detail">这份 .pptx 可能用到了内置渲染器还不认识的特性。</string>
+
+
+    <string name="viewer_error_read">读不到这个文件</string>
+
+
+    <string name="viewer_unsupported_title">这个文件无法预览</string>
+
+
+    <string name="viewer_unsupported_as_text">按文本查看</string>
+
+
+    <string name="viewer_unsupported_caveat">如果不是文本，你会看到一串乱码。</string>
     <string name="viewer_epub_locked">这本书已加密</string>
     <string name="viewer_epub_part_unreadable">这一部分内容读不出来。</string>
 

@@ -117,13 +117,8 @@ class FileViewerComponent @AssistedInject internal constructor(
                 nightMode = _uiState.value.isNight && format.supportsNight,
                 // 电子书的进度是页面自己认的字符串，加载时直接给它
                 bookPosition = saved?.takeIf { format == ViewerFormat.EPUB },
-                // 自带英文外壳的页面（电子书、演示文稿）把对照表交给页面，其余页面用 App 自己的顶栏
-                uiLabels = when (format) {
-                    ViewerFormat.EPUB -> epubUiLabels()
-                    ViewerFormat.PPT -> pptUiLabels()
-                    ViewerFormat.ODP -> presentationUiLabels()
-                    else -> emptyMap()
-                },
+                // 预览页的外壳文案一律交给页面翻译（顶栏仍用 App 自己的）
+                uiLabels = uiLabelsFor(format),
             )
         }
     }
@@ -336,19 +331,55 @@ class FileViewerComponent @AssistedInject internal constructor(
                 context.getString(CoreR.string.viewer_epub_part_unreadable),
     )
 
-    /** 演示文稿页面的外壳文案：加载中、打不开。 */
-    private fun presentationUiLabels(): Map<String, String> = mapOf(
+    /**
+     * 页面外壳文案：加载中、各类"打不开"、不认识格式的卡片。
+     *
+     * key 是页面里写死的英文原文，页面侧 i18n.js 逐字匹配（匹配不上就原样显示英文，
+     * 页面升级后失配也不会坏）。演示文稿本身的文字不在其中，那些属于文档内容。
+     */
+    private fun viewerUiLabels(): Map<String, String> = mapOf(
+        "Rendering document…" to context.getString(CoreR.string.viewer_status_rendering_document),
+        "Rendering…" to context.getString(CoreR.string.viewer_status_rendering),
+        "Rendering slides…" to context.getString(CoreR.string.viewer_status_rendering_slides),
+        "Loading…" to context.getString(CoreR.string.viewer_status_loading),
+        "Loading spreadsheet…" to context.getString(CoreR.string.viewer_status_loading_spreadsheet),
         "Loading presentation…" to context.getString(CoreR.string.viewer_presentation_loading),
+        "Could not render this Word document" to context.getString(CoreR.string.viewer_error_word),
+        "Could not render this Markdown file" to context.getString(CoreR.string.viewer_error_markdown),
+        "Could not display this image" to context.getString(CoreR.string.viewer_error_image),
+        "Could not open this document" to context.getString(CoreR.string.viewer_error_document),
+        "Could not read this file" to context.getString(CoreR.string.viewer_error_file),
+        "Could not read the rest of this file" to context.getString(CoreR.string.viewer_error_file_rest),
+        "Could not open this spreadsheet" to context.getString(CoreR.string.viewer_error_spreadsheet),
+        "Could not render this presentation" to context.getString(CoreR.string.viewer_error_slides),
         "Could not open this presentation" to context.getString(CoreR.string.viewer_presentation_error),
+        "Something went wrong while rendering" to context.getString(CoreR.string.viewer_error_generic),
+        "This .pptx may use features the built-in renderer does not understand yet." to
+                context.getString(CoreR.string.viewer_error_slides_detail),
+        "Could not read the file" to context.getString(CoreR.string.viewer_error_read),
+        "This file can't be previewed here" to context.getString(CoreR.string.viewer_unsupported_title),
+        "View as text" to context.getString(CoreR.string.viewer_unsupported_as_text),
+        "If it isn't text, you'll see random characters." to
+                context.getString(CoreR.string.viewer_unsupported_caveat),
     )
 
+    /** 按格式拼对照表：公共外壳 + 该页面自己的文案。 */
+    private fun uiLabelsFor(format: ViewerFormat): Map<String, String> = buildMap {
+        putAll(viewerUiLabels())
+        when (format) {
+            ViewerFormat.EPUB -> putAll(epubUiLabels())
+            ViewerFormat.PPT -> putAll(pptUiLabels())
+            else -> Unit
+        }
+    }
+
     /**
-     * 旧版 PPT 大纲页的外壳：说明卡片与页码标签。
+     * 旧版 PPT 大纲页自己的文案：说明卡片与页码标签。
      *
      * key 必须和 ppt.js 里写死的英文逐字一致（那里用 window.vwT 取译文），对不上就
      * 原样显示英文，不会出乱码。
      */
-    private fun pptUiLabels(): Map<String, String> = presentationUiLabels() + mapOf(
+    private fun pptUiLabels(): Map<String, String> = mapOf(
         "Legacy PowerPoint file (.ppt)" to context.getString(CoreR.string.viewer_ppt_legacy_title),
         "This format keeps its slides as binary drawing records, which this viewer does not draw. " +
                 "The text of the deck is shown below, slide by slide. " +

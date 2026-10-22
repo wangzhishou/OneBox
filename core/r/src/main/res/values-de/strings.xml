@@ -1962,6 +1962,63 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
     <string name="viewer_ppt_legacy_note">Dieses Format speichert Folien als binäre Zeichnungsdatensätze, die dieser Betrachter nicht zeichnet. Der Text der Präsentation wird unten Folie für Folie angezeigt. Speichern Sie sie als .pptx, um die Folien selbst zu sehen.</string>
 
     <string name="viewer_ppt_slide_label">FOLIE</string>
+
+
+    <string name="viewer_status_rendering_document">Dokument wird gesetzt…</string>
+
+
+    <string name="viewer_status_rendering">Wird gesetzt…</string>
+
+
+    <string name="viewer_status_rendering_slides">Folien werden gesetzt…</string>
+
+
+    <string name="viewer_status_loading">Wird geladen…</string>
+
+
+    <string name="viewer_status_loading_spreadsheet">Tabelle wird geladen…</string>
+
+
+    <string name="viewer_error_word">Dieses Word-Dokument konnte nicht dargestellt werden</string>
+
+
+    <string name="viewer_error_markdown">Diese Markdown-Datei konnte nicht dargestellt werden</string>
+
+
+    <string name="viewer_error_image">Dieses Bild konnte nicht angezeigt werden</string>
+
+
+    <string name="viewer_error_document">Dieses Dokument konnte nicht geöffnet werden</string>
+
+
+    <string name="viewer_error_file">Diese Datei konnte nicht gelesen werden</string>
+
+
+    <string name="viewer_error_file_rest">Der Rest dieser Datei konnte nicht gelesen werden</string>
+
+
+    <string name="viewer_error_spreadsheet">Diese Tabelle konnte nicht geöffnet werden</string>
+
+
+    <string name="viewer_error_slides">Diese Präsentation konnte nicht dargestellt werden</string>
+
+
+    <string name="viewer_error_generic">Beim Darstellen ist ein Fehler aufgetreten</string>
+
+
+    <string name="viewer_error_slides_detail">Diese .pptx nutzt möglicherweise Funktionen, die der eingebaute Renderer noch nicht kennt.</string>
+
+
+    <string name="viewer_error_read">Die Datei konnte nicht gelesen werden</string>
+
+
+    <string name="viewer_unsupported_title">Diese Datei kann hier nicht angezeigt werden</string>
+
+
+    <string name="viewer_unsupported_as_text">Als Text anzeigen</string>
+
+
+    <string name="viewer_unsupported_caveat">Wenn es kein Text ist, erscheinen unlesbare Zeichen.</string>
     <string name="viewer_epub_locked">Dieses Buch ist verschlüsselt</string>
     <string name="viewer_epub_part_unreadable">Dieser Teil des Inhalts kann nicht gelesen werden.</string>
     <string name="ai_duel_language_instruction">Sofern das Gespräch nichts anderes verlangt, denke und antworte auf %1$s – schreibe auch deine Überlegungen auf %1$s.</string>
