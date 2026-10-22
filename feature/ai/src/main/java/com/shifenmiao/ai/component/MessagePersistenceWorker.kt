@@ -24,6 +24,7 @@ import com.wanbaohe.core.ui.review.ReviewPromptHost
 import com.wanbaohe.core.ui.review.ReviewPromptTrigger
 import com.t8rin.logger.makeLog
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Date
@@ -81,27 +82,58 @@ class MessagePersistenceWorker(
     // 正常结束时 onChatCompletionEnd / renderErrorUIForChat / persistInterruptedChat
     // 复用同一组 id 走 REPLACE，行被原地更新，不会产生重复消息。
     // 进程被杀时草稿行留在库里 = 用户重新打开会话还能看到已生成的部分。
-    private var draftQuestionId: Int = 0
-    private var draftAnswerId: Int = 0
-    private var draftLastWriteAt: Long = 0L
-    private var draftLastLength: Int = -1
+    //
+    // 每个回合持有自己的 [StreamDraft] 句柄：草稿行一旦写入，就必须由该回合自己的
+    // 退出路径（完成/错误/取消/被新消息顶掉）收尾。不能依赖 worker 上的共享字段，
+    // 否则新一轮开始后旧回合的迟到写入或清理会落到新回合的行上。
+
+    /**
+     * 一次流式回合的草稿句柄。
+     *
+     * [active] 在回合进入终态（完成/错误/中断/被顶掉）时置 false，之后迟到的
+     * 流式写入直接丢弃，避免覆盖已经 REPLACE 的最终消息。
+     */
+    class StreamDraft internal constructor(
+        val questionId: Int,
+        val answerId: Int,
+        val completionId: String,
+    ) {
+        @Volatile
+        internal var active: Boolean = true
+
+        // 事件线程与 ioDispatcher 会并发读写这两个节流字段；最坏只是多/少写一次库，
+        // 但保持 volatile 让实测行为稳定，避免不同设备上节流窗口漂移。
+        @Volatile
+        internal var lastWriteAt: Long = 0L
+
+        @Volatile
+        internal var lastLength: Int = -1
+    }
 
     /**
      * 新一轮开始前插入草稿行，并把 id 写回 sharedState，
      * 让后续完成路径的 copy() 自动带上 id（REPLACE 即原地更新）。
+     *
+     * 全程 [NonCancellable]：调用方可能在插入途中被取消，草稿行一旦写入
+     * 就必须把句柄返回给清理路径，否则会留下没有归属的孤儿行。
+     *
+     * @param expectedCompletionId 本回合发送时生成的 completionId。若 live state 已被
+     *                             更新的回合接管（快速连发），直接放弃，避免把新回合的
+     *                             问题插成旧回合的草稿。
+     * @return 本回合的草稿句柄；问题为空、回合已被接管或写库失败时返回 null。
      */
-    suspend fun beginStreamDraft(): Boolean {
-        draftQuestionId = 0
-        draftAnswerId = 0
-        draftLastWriteAt = 0L
-        draftLastLength = -1
-
+    suspend fun beginStreamDraft(expectedCompletionId: String): StreamDraft? = withContext(NonCancellable) {
         val question = sharedState.questionMessageEntity.value
-        if (question.question.isBlank() || question.completionId.isBlank()) return false
+        if (expectedCompletionId.isBlank() || question.completionId != expectedCompletionId) {
+            "beginStreamDraft skipped: live completionId=${question.completionId} " +
+                "expected=$expectedCompletionId".makeLog("MessagePersistenceWorker")
+            return@withContext null
+        }
+        if (question.question.isBlank()) return@withContext null
 
         val answer = sharedState.answerMessageEntity.value
         val now = Date()
-        return runCatching {
+        runCatching {
             // 幂等：同一 completionId 已经有行（重复执行/上次进程内已开局）就复用，
             // 不再插一对新的，否则完成时 REPLACE 只会更新最新那对，旧的会变成孤儿消息。
             val existing = withContext(Dispatchers.IO) {
@@ -111,75 +143,118 @@ class MessagePersistenceWorker(
             val existingQuestion = existing.firstOrNull { it.role == RoleType.USER.value }
             val existingAnswer = existing.firstOrNull { it.role == RoleType.ASSISTANT.value }
 
+            val questionId: Int
+            val answerId: Int
             if (existingQuestion != null && existingAnswer != null) {
-                draftQuestionId = existingQuestion.id
-                draftAnswerId = existingAnswer.id
+                questionId = existingQuestion.id
+                answerId = existingAnswer.id
             } else {
-                val (questionId, answerId) = appDatabase.messageDao().insertQuestionAndAnswer(
-                    question.copy(
-                        id = 0,
-                        // 本地 base64 附件不入库，与完成路径 stripLocalContentFromAttachments 保持一致
-                        attachmentsJson = AttachmentPayloadUtils.stripLocalContent(question.attachmentsJson),
-                        createdAt = now,
-                        expired = false,
-                    ),
-                    answer.copy(
-                        id = 0,
-                        answer = "",
-                        reasoningContent = "",
-                        finishReason = STREAM_DRAFT_FINISH_REASON,
-                        createdAt = Date(now.time + 1),
-                        expired = false,
-                    ),
-                )
-                draftQuestionId = questionId.toInt()
-                draftAnswerId = answerId.toInt()
+                val (insertedQuestionId, insertedAnswerId) = appDatabase.messageDao()
+                    .insertQuestionAndAnswer(
+                        question.copy(
+                            id = 0,
+                            // 本地 base64 附件不入库，与完成路径 stripLocalContentFromAttachments 保持一致
+                            attachmentsJson = AttachmentPayloadUtils.stripLocalContent(question.attachmentsJson),
+                            createdAt = now,
+                            expired = false,
+                        ),
+                        answer.copy(
+                            id = 0,
+                            answer = "",
+                            reasoningContent = "",
+                            finishReason = STREAM_DRAFT_FINISH_REASON,
+                            createdAt = Date(now.time + 1),
+                            expired = false,
+                        ),
+                    )
+                questionId = insertedQuestionId.toInt()
+                answerId = insertedAnswerId.toInt()
             }
             sharedState.setQuestionMessage(
-                sharedState.questionMessageEntity.value.copy(id = draftQuestionId)
+                sharedState.questionMessageEntity.value.copy(id = questionId)
             )
             sharedState.setAnswerMessage(
-                sharedState.answerMessageEntity.value.copy(id = draftAnswerId)
+                sharedState.answerMessageEntity.value.copy(id = answerId)
             )
-            true
+            StreamDraft(
+                questionId = questionId,
+                answerId = answerId,
+                completionId = question.completionId,
+            )
         }.getOrElse { throwable ->
             throwable.makeLog("MessagePersistenceWorker")
             "beginStreamDraft failed, fallback to final-only persist".makeLog("MessagePersistenceWorker")
-            false
+            null
         }
     }
 
     /**
      * 节流判断：距离上次写库够久、且内容确实变长了才值得写。
      *
-     * 返回 true 时立刻占住时间片（[draftLastWriteAt]），避免同一窗口内的
+     * 返回 true 时立刻占住时间片（[StreamDraft.lastWriteAt]），避免同一窗口内的
      * 连续 chunk 各自通过判断、排队写库把 IO 打满。
      */
-    fun shouldPersistStreamDraft(): Boolean {
-        if (draftAnswerId <= 0) return false
+    fun shouldPersistStreamDraft(draft: StreamDraft?): Boolean {
+        if (draft == null || !draft.active || draft.answerId <= 0) return false
         val now = System.currentTimeMillis()
-        if (now - draftLastWriteAt < STREAM_DRAFT_INTERVAL_MS) return false
+        if (now - draft.lastWriteAt < STREAM_DRAFT_INTERVAL_MS) return false
         val answer = sharedState.answerMessageEntity.value
-        if (answer.answer.length + answer.reasoningContent.length == draftLastLength) return false
-        draftLastWriteAt = now
+        if (answer.answer.length + answer.reasoningContent.length == draft.lastLength) return false
+        draft.lastWriteAt = now
         return true
     }
 
     /** 把当前已生成内容写回草稿行；失败只记日志，绝不影响正在进行的流。 */
-    suspend fun persistStreamDraft() {
-        if (draftAnswerId <= 0) return
+    suspend fun persistStreamDraft(draft: StreamDraft?) {
+        if (draft == null || !draft.active || draft.answerId <= 0) return
         val answer = sharedState.answerMessageEntity.value
-        draftLastLength = answer.answer.length + answer.reasoningContent.length
+        draft.lastLength = answer.answer.length + answer.reasoningContent.length
         runCatching {
             appDatabase.messageDao().updateStreamDraft(
-                id = draftAnswerId,
+                id = draft.answerId,
                 answer = answer.answer,
                 reasoning = answer.reasoningContent,
+                // 只更新仍是草稿的行：完成/中断路径把哨兵改写之后，迟到的写入自动失效。
+                draftFinishReason = STREAM_DRAFT_FINISH_REASON,
             )
         }.onFailure { throwable ->
             throwable.makeLog("MessagePersistenceWorker")
             "persistStreamDraft failed".makeLog("MessagePersistenceWorker")
         }
+    }
+
+    /**
+     * 作废草稿句柄：回合已有终态结果，后续迟到的流式写入不能再覆盖已落库的消息。
+     */
+    fun finishStreamDraft(draft: StreamDraft?) {
+        if (draft == null) return
+        draft.active = false
+    }
+
+    /**
+     * 丢弃未完成回合的草稿行。
+     *
+     * 用于回合被新消息顶掉（stale generation）的路径：这一轮不会再走完成/错误/取消
+     * 中的任何一个收尾路径，草稿行若保留，稍后就会以一条与后续回答重复的半截消息出现。
+     * 删除条件带 finish_reason 哨兵，避免与完成路径的原地 REPLACE 竞争时误删最终消息。
+     */
+    suspend fun discardStreamDraft(draft: StreamDraft?) {
+        if (draft == null) return
+        finishStreamDraft(draft)
+        withContext(NonCancellable) {
+            runCatching {
+                appDatabase.messageDao().deleteDraftPair(
+                    questionId = draft.questionId,
+                    answerId = draft.answerId,
+                    finishReason = STREAM_DRAFT_FINISH_REASON,
+                )
+            }.onFailure { throwable ->
+                throwable.makeLog("MessagePersistenceWorker")
+                "discardStreamDraft failed for completionId=${draft.completionId} " +
+                    "ids=${draft.questionId}/${draft.answerId}".makeLog("MessagePersistenceWorker")
+            }
+        }
+        streamContentProcessor.invalidateMessageCache()
     }
 
     /**
@@ -236,7 +311,10 @@ class MessagePersistenceWorker(
         toolCallsChainJson: String,
         startQuestionTime: Long,
         fallbackQuestion: String = "",
+        draft: StreamDraft? = null,
     ) {
+        // 终态已到：封住本回合还在排队的草稿写入，随后用同一组 id REPLACE 成最终消息。
+        finishStreamDraft(draft)
         val currentTime = Date()
         val insertCompletionId = sharedState.questionMessageEntity.value.completionId
         // 实体在流式期间被竞态重置为空时, 用发送时固化的原文兜底, 避免写空 question 行
@@ -349,7 +427,10 @@ class MessagePersistenceWorker(
         questionMessageEntityList: List<MessageEntity>? = null,
         reasoningTime: Long = 0L,
         skipPoints: Boolean = false,
+        draft: StreamDraft? = null,
     ) {
+        // 终态已到：封住本回合还在排队的草稿写入，错误消息随后复用同一组 id 落库。
+        finishStreamDraft(draft)
         sharedState.updateChatUiState {
             it.copy(
             pageState = PageState.ERROR

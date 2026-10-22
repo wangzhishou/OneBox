@@ -76,6 +76,7 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -232,7 +233,7 @@ open class AIChatComponent @AssistedInject internal constructor(
             try {
                 flow.collect { streamEvent ->
                     processingMutex.withLock {
-                        handleLlmEvent(streamEvent, pendingQuestionMessages)
+                        handleLlmEvent(streamEvent, pendingQuestionMessages, activeStreamDraft)
                     }
                 }
             } finally {
@@ -270,7 +271,9 @@ open class AIChatComponent @AssistedInject internal constructor(
                 startQuestionTime = streamContentProcessor.startQuestionTime,
                 fallbackQuestion = questionMessages
                     .lastOrNull { it.role == RoleType.USER.value }
-                    ?.question.orEmpty()
+                    ?.question.orEmpty(),
+                // 续跑没有新草稿，这里通常为 null；显式带上句柄与直走路径保持一致。
+                draft = activeStreamDraft
             )
         },
     )
@@ -325,6 +328,15 @@ open class AIChatComponent @AssistedInject internal constructor(
 
     private var questionMessageEntityList: MutableList<MessageEntity> = mutableListOf()
     val messageDao = appDatabase.messageDao()
+
+    /**
+     * 当前回合的草稿句柄，供 Agent Loop 续轮的公共 streamCollector 读取。
+     *
+     * 句柄按回合持有；旧回合退出时只有在它还指向自己时才清空，
+     * 不会误清新回合的句柄。
+     */
+    @Volatile
+    private var activeStreamDraft: MessagePersistenceWorker.StreamDraft? = null
 
     companion object {
         @Volatile
@@ -685,13 +697,15 @@ open class AIChatComponent @AssistedInject internal constructor(
     private suspend fun renderErrorUIForChat(
         error: AiChatError,
         questionMessageEntityList: List<MessageEntity>? = null,
+        draft: MessagePersistenceWorker.StreamDraft? = null,
         skipPoints: Boolean = false
     ) {
         messagePersistenceWorker.renderErrorUIForChat(
             error = error,
             questionMessageEntityList = questionMessageEntityList,
             reasoningTime = streamContentProcessor.reasoningTime,
-            skipPoints = skipPoints
+            skipPoints = skipPoints,
+            draft = draft
         )
     }
 
@@ -731,14 +745,26 @@ open class AIChatComponent @AssistedInject internal constructor(
         // P0 #11: 进入新一轮请求时清空 watchdog flag, 避免上轮超时的残留.
         streamTimeoutByWatchdog = false
 
-        // 回合级前台保活：覆盖"首轮流 → 工具执行 → 续轮流"之间的空窗，
-        // 与逐流引用计数叠加，回合结束时在下面的 finally 里释放。
-        messageRemoteMediator.beginTurnKeepAlive()
-
-        // 先落一条草稿(问题 + 空回答), 之后每 2 秒把已生成内容写回同一行。
-        // 进程被系统杀掉时, 重新打开会话仍能看到已生成的部分; 正常结束复用这组 id 原地更新。
-        messagePersistenceWorker.beginStreamDraft()
+        // 草稿句柄按回合持有。beginStreamDraft 与保活都放在 try 内：
+        // 任何在请求启动阶段发生的取消/异常都必须走同一条收尾路径，
+        // 否则已经插入的草稿行会留在库里，变成一条与后续回答重复的半截消息。
+        var draft: MessagePersistenceWorker.StreamDraft? = null
         try {
+            // 回合级前台保活：覆盖"首轮流 → 工具执行 → 续轮流"之间的空窗，
+            // 与逐流引用计数叠加，回合结束时在下面的 finally 里释放。
+            messageRemoteMediator.beginTurnKeepAlive()
+
+            // 先落一条草稿(问题 + 空回答), 之后每 2 秒把已生成内容写回同一行。
+            // 进程被系统杀掉时, 重新打开会话仍能看到已生成的部分; 正常结束复用这组 id 原地更新。
+            // 传本回合的 completionId：快速连发时 live state 可能已被下一轮接管，此时放弃插草稿。
+            val expectedCompletionId = questionMessageEntityList
+                .lastOrNull { it.role == RoleType.USER.value }
+                ?.completionId
+                .orEmpty()
+            draft = messagePersistenceWorker.beginStreamDraft(expectedCompletionId)
+            if (draft != null && chatGeneration.get() == generation) {
+                activeStreamDraft = draft
+            }
             agentLoopOrchestrator.reset()
             streamContentProcessor.resetBuffers()
             agentLoopOrchestrator.showToolUiIdle()
@@ -848,7 +874,7 @@ open class AIChatComponent @AssistedInject internal constructor(
                     }
                 }.collect { streamEvent: LlmStreamEvent ->
                     processingMutex.withLock {
-                        handleLlmEvent(streamEvent, questionMessageEntityList)
+                        handleLlmEvent(streamEvent, questionMessageEntityList, draft)
                     }
                 }
             } catch (e: CancellationException) {
@@ -873,7 +899,8 @@ open class AIChatComponent @AssistedInject internal constructor(
                     AiChatErrorFactory.interrupted(
                         applicationContext.getString(R.string.ai_chat_stream_interrupted)
                     ),
-                    questionMessageEntityList
+                    questionMessageEntityList,
+                    draft = draft
                 )
                 return
             }
@@ -892,7 +919,8 @@ open class AIChatComponent @AssistedInject internal constructor(
                     startQuestionTime = streamContentProcessor.startQuestionTime,
                     fallbackQuestion = questionMessageEntityList
                         .lastOrNull { it.role == RoleType.USER.value }
-                        ?.question.orEmpty()
+                        ?.question.orEmpty(),
+                    draft = draft
                 )
             }
         } catch (e: Exception) {
@@ -903,6 +931,9 @@ open class AIChatComponent @AssistedInject internal constructor(
                 // executeStreamingChat 开头的 deleteByConversation 统一清理.
                 "stale generation $generation (current=${chatGeneration.get()}) catch, " +
                     "skip cleanup & persist: ${e.javaClass.name}".makeLog("AIChatComponent")
+                // 旧回合不会再走完成/错误/取消中的任何一个收尾路径，它自己的草稿行
+                // 必须在这里删掉，否则下一轮落库后它会以重复消息的形式留在会话里。
+                messagePersistenceWorker.discardStreamDraft(draft)
                 return
             }
             streamContentProcessor.stopStreamWatchdog()
@@ -928,24 +959,33 @@ open class AIChatComponent @AssistedInject internal constructor(
             // persistInterruptedChat 双路径并发写 _answerMessageEntity + 双重 DB insert + 双重扣分.
             val isWatchdogTimeout = streamTimeoutByWatchdog
             streamTimeoutByWatchdog = false   // 重置 flag, 避免影响下一轮请求
-            when {
-                e is CancellationException && !isWatchdogTimeout -> {
-                    persistInterruptedChat()
-                }
-                else -> {
-                    val error = when {
-                        isWatchdogTimeout -> AiChatErrorFactory.timeout(
-                            applicationContext.getString(R.string.agent_stream_timeout)
-                        )
-                        e is LlmStreamAbortedException -> AiChatErrorFactory.interrupted(
-                            applicationContext.getString(R.string.ai_chat_stream_interrupted)
-                        )
-                        else -> AiChatErrorFactory.fromThrowable(e)
+            // 取消/看门狗超时两条路径都是在本 job 已 cancel 后进来的；不切到 NonCancellable
+            // 的话，第一条 suspend DB 调用就会再次抛 CancellationException，草稿行永远等不到
+            // 收尾，用户重新打开会话时会看到一条没有中断标记的半截消息。
+            withContext(NonCancellable) {
+                when {
+                    e is CancellationException && !isWatchdogTimeout -> {
+                        persistInterruptedChat(draft, generation)
                     }
-                    renderErrorUIForChat(error, questionMessageEntityList)
+                    else -> {
+                        val error = when {
+                            isWatchdogTimeout -> AiChatErrorFactory.timeout(
+                                applicationContext.getString(R.string.agent_stream_timeout)
+                            )
+                            e is LlmStreamAbortedException -> AiChatErrorFactory.interrupted(
+                                applicationContext.getString(R.string.ai_chat_stream_interrupted)
+                            )
+                            else -> AiChatErrorFactory.fromThrowable(e)
+                        }
+                        renderErrorUIForChat(error, questionMessageEntityList, draft = draft)
+                    }
                 }
             }
         } finally {
+            // 只有句柄还属于本回合时才清，避免旧回合退出误清新回合的句柄。
+            if (activeStreamDraft === draft) {
+                activeStreamDraft = null
+            }
             // 与上面的 beginTurnKeepAlive 成对；任何退出路径（正常/取消/异常）都会释放。
             messageRemoteMediator.endTurnKeepAlive()
         }
@@ -955,7 +995,8 @@ open class AIChatComponent @AssistedInject internal constructor(
 
     private suspend fun handleLlmEvent(
         streamEvent: LlmStreamEvent,
-        questionMessageEntityList: List<MessageEntity>
+        questionMessageEntityList: List<MessageEntity>,
+        draft: MessagePersistenceWorker.StreamDraft?
     ) {
         streamContentProcessor.recordChunkReceived()
 
@@ -978,6 +1019,7 @@ open class AIChatComponent @AssistedInject internal constructor(
                         errorMessage = streamEvent.errorMessage,
                     ),
                     questionMessageEntityList,
+                    draft = draft,
                     skipPoints = skipPoints
                 )
             }
@@ -1006,12 +1048,12 @@ open class AIChatComponent @AssistedInject internal constructor(
 
             is LlmStreamEvent.TextDelta -> {
                 processTextDelta(streamEvent.text)
-                persistStreamDraftIfNeeded()
+                persistStreamDraftIfNeeded(draft)
             }
 
             is LlmStreamEvent.ReasoningDelta -> {
                 processReasoningDelta(streamEvent.text)
-                persistStreamDraftIfNeeded()
+                persistStreamDraftIfNeeded(draft)
             }
 
             is LlmStreamEvent.Completed -> {
@@ -1027,7 +1069,8 @@ open class AIChatComponent @AssistedInject internal constructor(
                         AiChatErrorFactory.emptyResponse(
                             applicationContext.getString(R.string.ai_chat_empty_response_error)
                         ),
-                        questionMessageEntityList
+                        questionMessageEntityList,
+                        draft = draft
                     )
                     return
                 }
@@ -1041,7 +1084,8 @@ open class AIChatComponent @AssistedInject internal constructor(
                     startQuestionTime = streamContentProcessor.startQuestionTime,
                     fallbackQuestion = questionMessageEntityList
                         .lastOrNull { it.role == RoleType.USER.value }
-                        ?.question.orEmpty()
+                        ?.question.orEmpty(),
+                    draft = draft
                 )
             }
 
@@ -1166,26 +1210,53 @@ open class AIChatComponent @AssistedInject internal constructor(
      * 目的只有一个——进程被系统杀掉时，用户重新打开会话还能看到已经生成的部分，
      * 而不是整段回答凭空消失。正常完成时由 [MessagePersistenceWorker.onChatCompletionEnd]
      * 复用同一组行 id 原地更新。
+     *
+     * @param draft 本回合的草稿句柄；回合已在退出路径上时会变为 inactive，写入直接丢弃。
      */
-    private fun persistStreamDraftIfNeeded() {
-        if (!messagePersistenceWorker.shouldPersistStreamDraft()) return
+    private fun persistStreamDraftIfNeeded(draft: MessagePersistenceWorker.StreamDraft?) {
+        if (!messagePersistenceWorker.shouldPersistStreamDraft(draft)) return
         componentScope.launch(ioDispatcher) {
-            messagePersistenceWorker.persistStreamDraft()
+            messagePersistenceWorker.persistStreamDraft(draft)
         }
     }
 
     /**
      * 持久化已中断的聊天内容：不再标 expired，正常入库，
      * 用户可在聊天历史中查看已生成的内容。
+     *
+     * @param draft 本回合的草稿句柄；中断消息复用它的行 id 原地 REPLACE。
+     * @param generation 本回合的代际号。用户取消后立刻重发时，新回合可能在本方法
+     *                   执行期间接管 live state；此时只按本回合快照落库，不能覆盖新实体。
      */
-    private suspend fun persistInterruptedChat() {
-        // 保留已累积的服务器 usage，仅在无累积值时才降级到本地估算
-        messagePersistenceWorker.calculateUsageIfNull(null, questionMessageEntityList)
+    private suspend fun persistInterruptedChat(
+        draft: MessagePersistenceWorker.StreamDraft?,
+        generation: Int,
+    ) {
+        // 中断消息复用草稿行原地 REPLACE；作废句柄，防止排队中的草稿写入覆盖中断后缀。
+        messagePersistenceWorker.finishStreamDraft(draft)
+
+        // 保留已累积的服务器 usage，仅在无累积值时才降级到本地估算。
+        // 只在仍是当前回合时写 live usage，避免污染已接管的新回合；随后取快照，
+        // 让中断消息带上刚补算的 usage。
+        if (chatGeneration.get() == generation) {
+            messagePersistenceWorker.calculateUsageIfNull(null, questionMessageEntityList)
+        }
+        // 先取本回合自己的 Q/A 快照，后面不再读 live state：
+        // 新回合若在落库期间启动，读 live state 会把新问题写进旧回合的中断消息。
+        val questionSnapshot = _questionMessageEntity.value
+        val answerSnapshot = _answerMessageEntity.value
+        if (draft != null && questionSnapshot.id != draft.questionId) {
+            // live state 已归新回合所有（草稿 id 已被换掉），这一轮实际上被顶掉了：
+            // 删掉自己的草稿行，不再生成一条与新回答重复的中断消息。
+            messagePersistenceWorker.discardStreamDraft(draft)
+            return
+        }
+
         val currentTime = Date()
-        val insertCompletionId = _questionMessageEntity.value.completionId
-        _questionMessageEntity.value = _questionMessageEntity.value.copy(
+        val insertCompletionId = questionSnapshot.completionId
+        val interruptedQuestion = questionSnapshot.copy(
             completionId = insertCompletionId,
-            question = resolveQuestionTextForPersist(),
+            question = resolveQuestionTextForPersist(questionSnapshot.question, questionSnapshot.completionId),
             createdAt = currentTime,
             entryType = _conversation.value.entryType,
             entryRefId = _conversation.value.entryRefId,
@@ -1195,13 +1266,13 @@ open class AIChatComponent @AssistedInject internal constructor(
         // 在已生成内容末尾追加中断标记（而非取消标记）;
         // 幂等处理, 避免同一回答被重复追加标记
         val interruptedSuffix = applicationContext.getString(R.string.ai_chat_interrupted)
-        val currentAnswer = _answerMessageEntity.value.answer
+        val currentAnswer = answerSnapshot.answer
         val answerWithSuffix = when {
             currentAnswer.endsWith(interruptedSuffix) -> currentAnswer
             currentAnswer.isBlank() -> interruptedSuffix
             else -> currentAnswer + "\n\n$interruptedSuffix"
         }
-        _answerMessageEntity.value = _answerMessageEntity.value.copy(
+        val interruptedAnswer = answerSnapshot.copy(
             completionId = insertCompletionId,
             createdAt = Date(currentTime.time + 1),
             entryType = _conversation.value.entryType,
@@ -1212,26 +1283,35 @@ open class AIChatComponent @AssistedInject internal constructor(
             // 主动标记为「已中断」：草稿哨兵被覆盖，下次打开会话不会重复补标记
             finishReason = MessagePersistenceWorker.INTERRUPTED_FINISH_REASON
         ).also { it.uId = MessageUIState.NORMAL.value }
+
+        // 只有本回合仍是当前回合时才更新 live state；否则会把新回合的 Q/A 实体
+        // 覆盖成旧回合的 id，导致新回答落库时 REPLACE 到错误（或已删除）的行。
+        if (chatGeneration.get() == generation) {
+            _questionMessageEntity.value = interruptedQuestion
+            _answerMessageEntity.value = interruptedAnswer
+        }
         // 正常入库（expired = false），用户可在聊天列表中看到这条消息
-        val questionEntityForDb = _questionMessageEntity.value.let { entity ->
+        val questionEntityForDb = interruptedQuestion.let { entity ->
             val strippedJson = AttachmentPayloadUtils.stripLocalContent(entity.attachmentsJson)
             if (strippedJson == entity.attachmentsJson) entity
             else entity.copy(attachmentsJson = strippedJson)
         }
         messageListUseCase.insertQuestionAndAnswer(
             questionEntityForDb,
-            _answerMessageEntity.value,
+            interruptedAnswer,
             _conversation.value
         )
-        messagePersistenceWorker.syncPersistedMessageIds(insertCompletionId)
-        streamContentProcessor.updatePlaceHolderMessage(forceUpdate = true)
+        if (chatGeneration.get() == generation) {
+            messagePersistenceWorker.syncPersistedMessageIds(insertCompletionId)
+            streamContentProcessor.updatePlaceHolderMessage(forceUpdate = true)
+        }
         messagePersistenceWorker.persistConversationSnapshot(
-            userMessage = _questionMessageEntity.value.question,
-            assistantMessage = _answerMessageEntity.value.answer,
+            userMessage = interruptedQuestion.question,
+            assistantMessage = interruptedAnswer.answer,
             messageIncrement = 2,
             timestamp = currentTime.time
         )
-        consumePoints(_answerMessageEntity.value)
+        consumePoints(interruptedAnswer)
     }
 
     /**
@@ -1239,13 +1319,11 @@ open class AIChatComponent @AssistedInject internal constructor(
      * 从发送时固化的 [questionMessageEntityList] 兜底恢复原文;
      * 仍为空则记日志, 便于定位实体被清空的源头.
      */
-    private fun resolveQuestionTextForPersist(): String {
-        val current = _questionMessageEntity.value.question
+    private fun resolveQuestionTextForPersist(current: String, completionId: String): String {
         if (current.isNotBlank()) return current
         val fallback = questionMessageEntityList
             .lastOrNull { it.role == RoleType.USER.value }
             ?.question?.trim().orEmpty()
-        val completionId = _questionMessageEntity.value.completionId
         if (fallback.isNotBlank()) {
             "question blank at persist, recovered from send-time list (completionId=$completionId)"
                 .makeLog("AIChatComponent")

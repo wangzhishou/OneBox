@@ -130,9 +130,21 @@ interface MessageDao {
      *
      * 用 UPDATE 而不是 REPLACE，避免行被删除重建时连带清掉关联行
      * （图片/搜索结果都是按 message.id 外键挂在这条消息上的）。
+     *
+     * 条件里的 finish_reason 是草稿哨兵：回合一旦被完成/错误/中断路径原地改写，
+     * 排队中的草稿写入（可能在 REPLACE 之后才执行）就更新不到这一行，不会用旧内容
+     * 覆盖最终回答。
      */
-    @Query("UPDATE message SET answer = :answer, reasoning_content = :reasoning WHERE id = :id")
-    suspend fun updateStreamDraft(id: Int, answer: String, reasoning: String): Int
+    @Query(
+        "UPDATE message SET answer = :answer, reasoning_content = :reasoning " +
+            "WHERE id = :id AND finish_reason = :draftFinishReason"
+    )
+    suspend fun updateStreamDraft(
+        id: Int,
+        answer: String,
+        reasoning: String,
+        draftFinishReason: String,
+    ): Int
 
     /** 按 finish_reason 取某个会话的消息，用于识别上次进程被杀留下的流式草稿。 */
     @Query("SELECT * FROM message WHERE conversation_id = :conversationId AND role = 'assistant' AND finish_reason = :finishReason")
@@ -141,6 +153,25 @@ interface MessageDao {
     /** 草稿恢复：补中断标记并改写 finish_reason，避免重复处理。 */
     @Query("UPDATE message SET answer = :answer, finish_reason = :finishReason WHERE id = :id")
     suspend fun updateMessageAnswerAndFinishReason(id: Int, answer: String, finishReason: String): Int
+
+    /**
+     * 丢弃未完成回合的草稿行（问题 + 回答一对）。
+     *
+     * 先在同一事务里确认回答行仍是草稿哨兵，再删两条：这一轮若已被完成/错误路径
+     * 原地 REPLACE 过，行就不再是草稿，不能被清理路径误删；用户问题行的 finish_reason
+     * 是空串，不能直接用同一个条件过滤。
+     */
+    @Transaction
+    suspend fun deleteDraftPair(questionId: Int, answerId: Int, finishReason: String): Int {
+        if (getMessageFinishReason(answerId) != finishReason) return 0
+        return deleteMessagesByIds(listOf(questionId, answerId))
+    }
+
+    @Query("SELECT finish_reason FROM message WHERE id = :id LIMIT 1")
+    suspend fun getMessageFinishReason(id: Int): String?
+
+    @Query("DELETE FROM message WHERE id IN (:ids)")
+    suspend fun deleteMessagesByIds(ids: List<Int>): Int
 
     @Query("SELECT * FROM message WHERE completion_id = :completionId")
     fun queryQuestionAndAnswerByCompletionId(completionId: String): List<MessageEntity>
