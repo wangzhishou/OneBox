@@ -26,6 +26,7 @@ import android.webkit.MimeTypeMap
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
+import com.t8rin.imagetoolbox.feature.zip.domain.ArchiveAccessDeniedException
 import com.t8rin.imagetoolbox.feature.zip.domain.EncryptedArchiveException
 import com.t8rin.imagetoolbox.feature.zip.domain.UnsupportedArchiveFormatException
 import com.t8rin.imagetoolbox.feature.zip.domain.ZipArchive
@@ -39,6 +40,7 @@ import kotlinx.coroutines.withContext
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
@@ -229,7 +231,7 @@ internal class AndroidZipManager @Inject constructor(
 
         onProgress(ZipProgress(totalBytes = totalBytes))
         try {
-            context.contentResolver.openInputStream(uri)?.use { input ->
+            openArchiveInputStream(uri)?.use { input ->
                 BufferedInputStream(input).use { buffered ->
                     BufferedOutputStream(tempFile.outputStream()).use { output ->
                         copyWithProgress(buffered, output) { copied ->
@@ -238,13 +240,42 @@ internal class AndroidZipManager @Inject constructor(
                         }
                     }
                 }
-            } ?: throw IOException("Unable to read $uri")
+            } ?: throw archiveReadFailure(uri)
             report(force = true)
         } catch (t: Throwable) {
             tempFile.delete()
             throw t
         }
         return tempFile
+    }
+
+    /**
+     * file:// 直开无读权限时 openInputStream 会抛 SecurityException、返回 null，
+     * 或把 EACCES 包成 FileNotFoundException("... Permission denied")，
+     * 统一转成 [ArchiveAccessDeniedException]，页面据此走 SAF 授权引导而非笼统报错。
+     */
+    private fun openArchiveInputStream(uri: Uri): InputStream? {
+        return try {
+            context.contentResolver.openInputStream(uri)
+        } catch (e: SecurityException) {
+            throw if (uri.scheme == "file") ArchiveAccessDeniedException() else e
+        } catch (e: FileNotFoundException) {
+            throw if (uri.scheme == "file" && isFileAccessDenied(uri, e)) {
+                ArchiveAccessDeniedException()
+            } else e
+        }
+    }
+
+    private fun isFileAccessDenied(uri: Uri, e: FileNotFoundException): Boolean {
+        val message = e.message.orEmpty()
+        if (message.contains("EACCES") || message.contains("Permission denied")) return true
+        val file = uri.path?.let(::File) ?: return false
+        return file.exists() && !file.canRead()
+    }
+
+    private fun archiveReadFailure(uri: Uri): Exception {
+        return if (uri.scheme == "file") ArchiveAccessDeniedException()
+        else IOException("Unable to read $uri")
     }
 
     /**

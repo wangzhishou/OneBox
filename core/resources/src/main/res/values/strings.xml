@@ -918,8 +918,10 @@
     <string name="embedded_picker_sub">Use Image Toolbox\'s built-in image picker instead of the system-defined one</string>
     <string name="no_permissions">No permission</string>
     <string name="image_load_no_permission">Can\'t read this image. Grant access to preview it.</string>
+    <string name="file_load_no_permission">Can\'t read this file. Grant access to preview it.</string>
     <string name="grant_media_access">Allow access to photos</string>
     <string name="grant_folder_access">Grant folder access only</string>
+    <string name="grant_folder_access_single">Grant folder access</string>
     <string name="image_not_in_granted_folder">The image was not found in the selected folder</string>
     <string name="request">Request</string>
     <string name="show_settings_in_landscape">Show settings in landscape</string>

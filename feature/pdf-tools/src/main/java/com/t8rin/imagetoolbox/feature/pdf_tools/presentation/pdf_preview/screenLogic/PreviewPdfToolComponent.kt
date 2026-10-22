@@ -67,6 +67,11 @@ class PreviewPdfToolComponent @AssistedInject internal constructor(
     private val _uri: MutableState<Uri?> = mutableStateOf(null)
     val uri by _uri
 
+    // initialUri 直开加载失败(如 file:// 无读权限)时置位,驱动授权引导;
+    // 成功或用户另选文件时复位
+    private val _loadFailed: MutableState<Boolean> = mutableStateOf(false)
+    val loadFailed by _loadFailed
+
     private fun normalizePreviewUri(uri: Uri): Uri {
         val normalizedUri = uri.takePersistablePermission()
         val shouldCopyToAppStorage =
@@ -106,12 +111,18 @@ class PreviewPdfToolComponent @AssistedInject internal constructor(
         }
     }
 
+    private val onLoadFailure: (Throwable) -> Unit = {
+        if (initialUri != null) _loadFailed.update { true }
+    }
+
     init {
         if (initialUri != null) {
+            _loadFailed.update { false }
             checkPdf(
                 uri = initialUri,
                 onDecrypted = ::updatePreviewUri,
-                onSuccess = ::updatePreviewUri
+                onSuccess = ::updatePreviewUri,
+                onFailure = onLoadFailure
             )
         }
     }
@@ -120,10 +131,12 @@ class PreviewPdfToolComponent @AssistedInject internal constructor(
         registerChangesCleared()
         _uri.update { null }
         if (uri == null) return
+        _loadFailed.update { false }
         checkPdf(
             uri = uri,
             onDecrypted = ::updatePreviewUri,
-            onSuccess = ::updatePreviewUri
+            onSuccess = ::updatePreviewUri,
+            onFailure = onLoadFailure
         )
     }
 

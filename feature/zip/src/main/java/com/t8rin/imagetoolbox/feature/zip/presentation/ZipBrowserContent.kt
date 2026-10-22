@@ -28,20 +28,28 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
+import com.wanbaohe.core.ui.utils.content.FileAccessGuidance
+import com.wanbaohe.core.ui.utils.content.rememberFileAccessController
 import com.wanbaohe.core.ui.utils.content_pickers.rememberFolderPicker
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.helper.ContextUtils.takePersistablePermission
@@ -49,6 +57,7 @@ import com.t8rin.imagetoolbox.feature.zip.R
 import com.t8rin.imagetoolbox.feature.zip.domain.ArchiveUnavailableException
 import com.t8rin.imagetoolbox.feature.zip.domain.EncryptedArchiveException
 import com.t8rin.imagetoolbox.feature.zip.domain.ZipArchiveEntry
+import com.t8rin.imagetoolbox.feature.zip.domain.ZipProgress
 import com.t8rin.imagetoolbox.feature.zip.presentation.components.ZipArchiveErrorState
 import com.t8rin.imagetoolbox.feature.zip.presentation.components.ZipArchiveHeaderCard
 import com.t8rin.imagetoolbox.feature.zip.presentation.components.ZipBottomActionBar
@@ -149,11 +158,15 @@ fun ZipBrowserContent(component: ZipBrowserComponent) {
 
             is ZipBrowserComponent.State.Error -> {
                 Box(modifier = Modifier.weight(1f)) {
-                    ZipArchiveErrorState(
-                        isUnsupportedFormat = state.isUnsupportedFormat,
-                        isEncrypted = state.isEncrypted,
-                        onRetry = component::retry
-                    )
+                    if (state.isAccessDenied) {
+                        ZipAccessDeniedState(component)
+                    } else {
+                        ZipArchiveErrorState(
+                            isUnsupportedFormat = state.isUnsupportedFormat,
+                            isEncrypted = state.isEncrypted,
+                            onRetry = { component.retry() }
+                        )
+                    }
                 }
             }
 
@@ -273,3 +286,56 @@ private fun showZipFailure(resources: Resources, throwable: Throwable) {
         else -> AppToastHost.showFailureToast(throwable)
     }
 }
+
+/**
+ * file:// 无读权限:接入统一授权引导(zip 非媒体文件,只有 SAF 文件夹授权一条路)。
+ * 授权成功后用恢复出的文档 Uri 重试加载。
+ */
+@Composable
+private fun ZipAccessDeniedState(component: ZipBrowserComponent) {
+    val accessController = rememberFileAccessController(
+        uriString = component.sourceUri.toString(),
+        isLoadFailed = true,
+        mediaReadPermission = null
+    )
+
+    LaunchedEffect(accessController.recoveredUriString) {
+        accessController.recoveredUriString?.let { component.retry(it) }
+    }
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        when {
+            // 静默检查已持久化的授权,期间不闪错误卡
+            accessController.isCheckingPersistedGrants -> {
+                ZipLoadingState(progress = ZipProgress())
+            }
+
+            accessController.isGuidanceVisible -> {
+                // 引导面板是深色设计(固定白字),浅色页面垫一层深色容器
+                Surface(
+                    modifier = Modifier
+                        .padding(24.dp)
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(28.dp),
+                    color = AccessDeniedGuidanceContainerColor
+                ) {
+                    FileAccessGuidance(accessController)
+                }
+            }
+
+            else -> {
+                ZipArchiveErrorState(
+                    isUnsupportedFormat = false,
+                    isEncrypted = false,
+                    onRetry = { component.retry() }
+                )
+            }
+        }
+    }
+}
+
+/** FileAccessGuidance 固定白字,浅色页面下垫的深色容器色(不随主题)。 */
+private val AccessDeniedGuidanceContainerColor = Color(0xFF1B1C20)

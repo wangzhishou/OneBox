@@ -3,19 +3,18 @@ package com.wanbaohe.fileviewer.data
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
-import android.os.Environment
-import android.provider.DocumentsContract
 import android.provider.OpenableColumns
 import android.webkit.MimeTypeMap
+import com.wanbaohe.core.ui.utils.content.FileAccessResolver
 import com.wanbaohe.fileviewer.domain.DocumentSource
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.Closeable
-import java.io.File
 import java.io.FileInputStream
 import java.io.FilterInputStream
 import java.io.InputStream
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.runBlocking
 
 /**
  * [DocumentSource] 的 ContentResolver 实现。
@@ -29,6 +28,8 @@ internal class ContentResolverDocumentSource @Inject constructor(
 ) : DocumentSource {
 
     private val resolver: ContentResolver get() = context.contentResolver
+
+    private val fileAccessResolver = FileAccessResolver(context)
 
     override fun displayName(uri: Uri): String? {
         if (uri.scheme == ContentResolver.SCHEME_CONTENT) {
@@ -124,39 +125,18 @@ internal class ContentResolverDocumentSource @Inject constructor(
      *
      * Android 11 起，没有「所有文件访问」的 App 读不了共享存储里的文档（Google 渠道
      * 按 Play 政策拿不到这条权限）。但用户如果曾经用「选择文件夹」把某个目录授权给
-     * App，那次授权就是一棵可以读到子树里全部文件的 SAF 树——外部递进来的
-     * `file:///storage/emulated/0/Download/camp/x.xlsx` 因此可以改写成
-     * `content://…/tree/primary%3ADownload%2Fcamp/document/primary%3A…%2Fx.xlsx`
-     * 去读，文件本身没有被复制，也不需要用户再点一次。
+     * App，那次授权就是一棵可以读到子树里全部文件的 SAF 树。
      *
-     * 只认主存储（`primary:`）下的路径：其他卷的 docId 前缀不同，猜错会打开别的文件。
+     * 实现在 core-ui 的 [FileAccessResolver]：遍历已持久化的目录授权，按相对路径
+     * 在授权树里找回这个文件并确认它真的在；找不到（没授权过、文件不在树里）返回 null。
+     * 这里是同步签名——调用方是 WebView 的后台线程（见类头注释），runBlocking
+     * 只堵这些后台线程，不上主线程。
      */
     private fun pathDocumentUri(uri: Uri): Uri? {
         if (uri.scheme != ContentResolver.SCHEME_FILE) return null
-        val path = uri.path ?: return null
-        val root = Environment.getExternalStorageDirectory().path
-        // 外部递进来的路径可能写成 /sdcard/...，也可能已经解析成 /storage/emulated/0/...
-        val canonical = runCatching { File(path).canonicalPath }.getOrDefault(path)
-        val relative = when {
-            canonical.startsWith("$root/") -> canonical.removePrefix("$root/")
-            path.startsWith("$root/") -> path.removePrefix("$root/")
-            canonical.startsWith("/sdcard/") -> canonical.removePrefix("/sdcard/")
-            path.startsWith("/sdcard/") -> path.removePrefix("/sdcard/")
-            else -> return null
-        }
-        val documentId = "primary:$relative"
-        val granted = runCatching { resolver.persistedUriPermissions }.getOrNull() ?: return null
-        for (permission in granted) {
-            if (!permission.isReadPermission) continue
-            val tree = permission.uri
-            val treeId = runCatching { DocumentsContract.getTreeDocumentId(tree) }.getOrNull()
-                ?: continue
-            if (documentId != treeId && !documentId.startsWith("$treeId/")) continue
-            return runCatching {
-                DocumentsContract.buildDocumentUriUsingTree(tree, documentId)
-            }.getOrNull()
-        }
-        return null
+        return runBlocking {
+            fileAccessResolver.resolveFromPersistedGrants(uri.toString())
+        }?.let(Uri::parse)
     }
 
     private companion object {

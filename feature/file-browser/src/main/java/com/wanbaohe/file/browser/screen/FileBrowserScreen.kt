@@ -1,7 +1,6 @@
 package com.wanbaohe.file.browser.screen
 
 import android.net.Uri
-import android.os.Environment
 import android.provider.DocumentsContract
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
@@ -78,6 +77,7 @@ import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.utils.content.FileAccessResolver
 import com.wanbaohe.core.ui.utils.content_pickers.rememberFolderPicker
 import com.wanbaohe.core.ui.utils.helper.ContextUtils.hasAllFilesAccess
 import com.wanbaohe.core.ui.utils.helper.ContextUtils.isAllFilesAccessDeclared
@@ -160,7 +160,7 @@ fun FileBrowserScreen(
         if (item.isAccessible) {
             fileBrowserComponent.onItemClick(item)
         } else {
-            folderPicker.pickFolder(initialFolderUri(currentUri))
+            folderPicker.pickFolder(initialFolderUri(context, currentUri))
         }
     }
 
@@ -365,7 +365,7 @@ fun FileBrowserScreen(
                 viewMode = viewMode,
                 searchQuery = if (isSearchMode.value) searchQuery.value else "",
                 storageListingRestricted = storageListingRestricted,
-                onPickFolder = { folderPicker.pickFolder(initialFolderUri(currentUri)) }
+                onPickFolder = { folderPicker.pickFolder(initialFolderUri(context, currentUri)) }
             )
 
             if (selectionMode != FileBrowserComponent.SelectionMode.NONE) {
@@ -434,7 +434,7 @@ fun FileBrowserScreen(
                         viewMode = viewMode,
                         searchQuery = if (isSearchMode.value) searchQuery.value else "",
                         storageListingRestricted = storageListingRestricted,
-                        onPickFolder = { folderPicker.pickFolder(initialFolderUri(currentUri)) }
+                        onPickFolder = { folderPicker.pickFolder(initialFolderUri(context, currentUri)) }
                     )
 
                     if (selectionMode != FileBrowserComponent.SelectionMode.NONE) {
@@ -898,22 +898,21 @@ private fun isAppOwnedPath(context: android.content.Context, uri: Uri?): Boolean
 }
 
 /**
- * SAF 的目录选择器认 content:// 的 document URI；把 file:// 的当前目录翻成外置存储
- * provider 的 document URI，选择器就能直接停在用户正在看的目录上。
- * 别的 scheme（已经是 content://）原样传，翻不出来就给 null，选择器退回默认位置。
+ * SAF 目录选择器的初始定位：停在用户正在看的目录上。
+ * file:// 目录委托公共的 [FileAccessResolver.initialFolderTreeUri]——它按"文件路径
+ * 取父目录"定位，这里给当前目录补一个占位段，定位正好回落到当前目录本身；
+ * SAF tree 视图把 tree 形态转成 document 形态（tree 形态会被 DocumentsUI 静默忽略）。
+ * 翻不出来就给 null，选择器退回默认位置。
  */
-private fun initialFolderUri(uri: Uri?): Uri? {
-    if (uri == null || uri.scheme != "file") return uri
-    val path = uri.path ?: return null
-    val root = Environment.getExternalStorageDirectory().path
-    val relative = when {
-        path.startsWith("$root/") -> path.removePrefix("$root/")
-        path.startsWith("/sdcard/") -> path.removePrefix("/sdcard/")
-        else -> return null
+private fun initialFolderUri(context: android.content.Context, uri: Uri?): Uri? {
+    when {
+        uri == null -> return null
+        uri.scheme == "file" -> return FileAccessResolver(context).initialFolderTreeUri("$uri/.")
+        DocumentsContract.isTreeUri(uri) -> return runCatching {
+            DocumentsContract.buildDocumentUriUsingTree(uri, DocumentsContract.getTreeDocumentId(uri))
+        }.getOrNull()
+        else -> return uri
     }
-    return runCatching {
-        DocumentsContract.buildDocumentUri("com.android.externalstorage.documents", "primary:$relative")
-    }.getOrNull()
 }
 
 /**

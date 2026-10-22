@@ -43,6 +43,9 @@ class EncryptedArchiveException : Exception("Encrypted archive entry")
 /** 组件已经释放/压缩包已关闭时仍尝试解压。 */
 class ArchiveUnavailableException : Exception("Archive is not available")
 
+/** file:// 直开但没有读权限（openInputStream 返回 null 或抛 SecurityException），页面据此走授权引导。 */
+class ArchiveAccessDeniedException : Exception("Archive access denied")
+
 /**
  * 压缩/解压进度。优先按字节算百分比（大文件也能连续走动），
  * 拿不到字节总量时退回按文件数算。

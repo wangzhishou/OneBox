@@ -80,6 +80,8 @@ internal class ViewerWebHost(
 
     @SuppressLint("SetJavaScriptEnabled")
     fun create(context: Context, request: ViewerRequest): WebView {
+        // 重建（授权重试、配置变化）后命令通道要重新可用，release() 不是终态
+        released = false
         val web = WebView(context)
         webView = web
         // 页面自己决定底色：表格的桌布、Word 的页间都透明，让 App 的玻璃背景透出来

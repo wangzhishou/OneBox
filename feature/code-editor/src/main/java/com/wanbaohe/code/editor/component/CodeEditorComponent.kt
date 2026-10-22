@@ -40,6 +40,8 @@ data class CodeEditorUiState(
     val language: String = "plaintext",
     val isDirty: Boolean = false,
     val isLoading: Boolean = false,
+    /** file:// 加载失败(无读权限)标记,驱动统一授权引导;成功加载/新建时复位 */
+    val loadFailed: Boolean = false,
     val editDraftId: Long = 0L,
     val editTitle: String? = null,
     val historyList: List<RecentAccessEntity> = emptyList()
@@ -176,7 +178,8 @@ class CodeEditorComponent @AssistedInject internal constructor(
                             fileUri = uri,
                             language = language,
                             isDirty = false,
-                            isLoading = false
+                            isLoading = false,
+                            loadFailed = false
                         )
                     }
                 }
@@ -184,7 +187,12 @@ class CodeEditorComponent @AssistedInject internal constructor(
                 recordRecent(uri, displayName)
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    _uiState.update { it.copy(isLoading = false) }
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            loadFailed = uri.scheme == "file"
+                        )
+                    }
                     // 失败时给用户 Toast 提示,否则静默失败毫无线索
                     AppToastHost.showToast(
                         e.message ?: AppContext.getString(R.string.error_message)

@@ -41,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -51,6 +52,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
+import com.wanbaohe.core.ui.utils.content.FileAccessGuidance
+import com.wanbaohe.core.ui.utils.content.rememberFileAccessController
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.fileviewer.component.FileViewerComponent
 import com.wanbaohe.fileviewer.component.FileViewerError
@@ -80,6 +83,20 @@ fun FileViewerScreen(component: FileViewerComponent) {
     val isNight = LocalSettingsState.current.isNightMode
     LaunchedEffect(isNight) { component.applyNightMode(isNight) }
 
+    /*
+     * file:// 直开无权限时走统一授权引导：只挂 SAF 文件夹授权这条路（文档不是
+     * 媒体文件，没有运行时媒体权限）；已持久化的授权会静默恢复成文档 Uri，
+     * recoveredUriString 一非空就自动重试。
+     */
+    val accessController = rememberFileAccessController(
+        uriString = component.uriString.orEmpty(),
+        isLoadFailed = state.error == FileViewerError.CannotOpen,
+        mediaReadPermission = null,
+    )
+    LaunchedEffect(accessController.recoveredUriString) {
+        accessController.recoveredUriString?.let(component::retry)
+    }
+
     BaseScreen(
         title = state.displayName.ifBlank { stringResource(R.string.file_viewer_title) },
         onGoBack = component.onGoBack,
@@ -103,9 +120,22 @@ fun FileViewerScreen(component: FileViewerComponent) {
             Column(modifier = Modifier.fillMaxWidth().weight(1f)) {
                 Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
                     when {
-                        state.isLoading -> CircularProgressIndicator(
-                            modifier = Modifier.align(Alignment.Center),
-                        )
+                        // 静默恢复检查期间也停在 loading：错误卡片闪一下再消失更像卡死
+                        state.isLoading || accessController.isCheckingPersistedGrants ->
+                            CircularProgressIndicator(
+                                modifier = Modifier.align(Alignment.Center),
+                            )
+
+                        accessController.isGuidanceVisible ->
+                            // 引导面板是深色设计，本页底色可能很浅，垫一层深色容器
+                            Surface(
+                                modifier = Modifier.fillMaxSize(),
+                                color = GuidanceBackground,
+                            ) {
+                                Box(contentAlignment = Alignment.Center) {
+                                    FileAccessGuidance(accessController)
+                                }
+                            }
 
                         state.error != null -> ViewerErrorContent(
                             state = state,
@@ -321,6 +351,9 @@ private fun SearchUiState.countLabel(): String = when {
     !done -> "…"
     else -> "$at/$total"
 }
+
+/** 授权引导面板的衬底色：面板文案固定白色，跟主题无关，给一个恒深色底 */
+private val GuidanceBackground = Color(0xFF16181C)
 
 @Composable
 private fun ViewerErrorContent(

@@ -20,10 +20,12 @@ package com.t8rin.imagetoolbox.feature.pdf_tools.presentation.common
 import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.displayCutout
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyListState
@@ -90,7 +92,8 @@ internal fun BasePdfToolContent(
     onPrimaryButtonLongClick: (() -> Unit)? = null,
     drawBottomShadow: Boolean = true,
     shareDialogTitle: String = "PDF",
-    shareDialogIcon: ImageVector = Icons.Outlined.Pdf
+    shareDialogIcon: ImageVector = Icons.Outlined.Pdf,
+    noDataOverlay: (@Composable () -> Unit)? = null
 ) {
     val saveLauncher = rememberFileCreator(
         mimeType = component.mimeType,
@@ -213,10 +216,16 @@ internal fun BasePdfToolContent(
             )
         },
         noDataControls = {
-            FileNotPickedWidget(
-                text = noDataText,
-                onPickFile = contentPicker::launch
-            )
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                FileNotPickedWidget(
+                    text = noDataText,
+                    onPickFile = contentPicker::launch
+                )
+                noDataOverlay?.invoke()
+            }
         },
         portraitTopPadding = 20.dp,
         canShowScreenData = canShowScreenData

@@ -28,6 +28,7 @@ import com.t8rin.imagetoolbox.core.domain.utils.runSuspendCatching
 import com.t8rin.imagetoolbox.core.domain.utils.smartJob
 import com.t8rin.imagetoolbox.core.settings.domain.SettingsProvider
 import com.wanbaohe.core.ui.utils.BaseComponent
+import com.t8rin.imagetoolbox.feature.zip.domain.ArchiveAccessDeniedException
 import com.t8rin.imagetoolbox.feature.zip.domain.ArchiveUnavailableException
 import com.t8rin.imagetoolbox.feature.zip.domain.EncryptedArchiveException
 import com.t8rin.imagetoolbox.feature.zip.domain.UnsupportedArchiveFormatException
@@ -47,7 +48,7 @@ import kotlin.math.roundToInt
 
 class ZipBrowserComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted private val sourceUri: Uri,
+    @Assisted val sourceUri: Uri,
     @Assisted val onGoBack: () -> Unit,
     private val zipManager: ZipManager,
     private val extractPrefs: ZipExtractPrefs,
@@ -65,7 +66,8 @@ class ZipBrowserComponent @AssistedInject internal constructor(
 
         data class Error(
             val isUnsupportedFormat: Boolean,
-            val isEncrypted: Boolean = false
+            val isEncrypted: Boolean = false,
+            val isAccessDenied: Boolean = false
         ) : State
     }
 
@@ -132,20 +134,24 @@ class ZipBrowserComponent @AssistedInject internal constructor(
         // 缓存/压缩包归组件生命周期：旋转、切语言、暗色切换时组合会重建，
         // 但 retainedComponent 还活着，不能在 onDispose 里关掉。
         componentContext.lifecycle.doOnDestroy { release() }
-        loadArchive()
+        loadArchive(sourceUri.toString())
     }
 
-    fun retry() = loadArchive()
+    /**
+     * 重试加载。SAF 授权恢复后 file:// 仍然不可读，此时应传入恢复出的文档 Uri
+     * （见 FileAccessController.recoveredUriString）；无参走原始 sourceUri。
+     */
+    fun retry(uriString: String? = null) = loadArchive(uriString ?: sourceUri.toString())
 
-    private fun loadArchive() {
+    private fun loadArchive(uriString: String) {
         loadJob = componentScope.launch {
             _state.value = State.Loading
             _loadProgress.value = ZipProgress()
-            _archiveName.value = zipManager.displayName(sourceUri.toString())
+            _archiveName.value = zipManager.displayName(uriString)
                 ?.takeIf { it.isNotBlank() }
                 ?: _archiveName.value
             runSuspendCatching {
-                zipManager.openArchive(sourceUri.toString()) { progress ->
+                zipManager.openArchive(uriString) { progress ->
                     publishLoadProgress(progress)
                 }
             }.onSuccess { opened ->
@@ -166,7 +172,8 @@ class ZipBrowserComponent @AssistedInject internal constructor(
             }.onFailure { throwable ->
                 _state.value = State.Error(
                     isUnsupportedFormat = throwable is UnsupportedArchiveFormatException,
-                    isEncrypted = throwable is EncryptedArchiveException
+                    isEncrypted = throwable is EncryptedArchiveException,
+                    isAccessDenied = throwable is ArchiveAccessDeniedException
                 )
             }
         }

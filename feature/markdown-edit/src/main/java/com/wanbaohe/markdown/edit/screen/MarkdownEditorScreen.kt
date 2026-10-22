@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.NoteAdd
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -23,13 +24,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import com.wanbaohe.base.ui.button.CancelButton
 import com.wanbaohe.base.ui.button.ConfirmButton
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
+import com.wanbaohe.core.ui.utils.content.FileAccessGuidance
+import com.wanbaohe.core.ui.utils.content.rememberFileAccessController
 import com.wanbaohe.core.ui.utils.content_pickers.rememberFileCreator
 import com.wanbaohe.core.ui.utils.content_pickers.rememberFilePicker
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
@@ -106,6 +112,22 @@ fun MarkdownEditorScreen(
             component.loadFile(context, uri)
         }
     )
+
+    // file:// 直开无读权限时走统一授权引导(md 是非媒体文件,仅 SAF 文件夹授权这条路)
+    val accessController = rememberFileAccessController(
+        uriString = uiState.loadFailedUri?.toString() ?: "",
+        isLoadFailed = uiState.loadFailed,
+        mediaReadPermission = null
+    )
+
+    // 权限恢复(SAF 授权/已持久化授权命中)后用解析出的可读 Uri 重新加载
+    LaunchedEffect(accessController.recoveredUriString) {
+        accessController.recoveredUriString?.let { recovered ->
+            runCatching { Uri.parse(recovered) }.getOrNull()?.let { uri ->
+                component.loadFile(context, uri)
+            }
+        }
+    }
 
     // 当 uiState.content 变化时，设置到编辑器
     // 不使用 uiState.fileName 作为 key：保存后 fileName 可能变化但 content 未更新，
@@ -342,17 +364,44 @@ fun MarkdownEditorScreen(
         isBackHandler = false,
         showNavigationBarsPadding = false
     ) {
-        WebViewMarkdownEditor(
-            modifier = Modifier.fillMaxSize().navigationBarsPadding(),
-            state = editorState,
-            initialValue = uiState.content,
-            placeholder = stringResource(R.string.note_placeholder),
-            textStyle = EditorUiDefaults.contentTextStyle(),
-            storageKey = "markdown_editor_screen",
-            onContentChanged = {
-                component.markAsDirty()
+        Box(modifier = Modifier.fillMaxSize()) {
+            WebViewMarkdownEditor(
+                modifier = Modifier.fillMaxSize().navigationBarsPadding(),
+                state = editorState,
+                initialValue = uiState.content,
+                placeholder = stringResource(R.string.note_placeholder),
+                textStyle = EditorUiDefaults.contentTextStyle(),
+                storageKey = "markdown_editor_screen",
+                onContentChanged = {
+                    component.markAsDirty()
+                }
+            )
+
+            // 授权引导覆盖层:面板是深色设计,浅色页面上垫深色容器;
+            // 静默检查已持久化授权期间只转 loading,不闪引导面板
+            if (accessController.isCheckingPersistedGrants || accessController.isGuidanceVisible) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color(0xFF121212))
+                        // 挡住触摸,避免穿透到底下被遮住的 WebView 编辑器
+                        .pointerInput(Unit) {
+                            awaitPointerEventScope {
+                                while (true) {
+                                    awaitPointerEvent().changes.forEach { it.consume() }
+                                }
+                            }
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    if (accessController.isGuidanceVisible) {
+                        FileAccessGuidance(accessController)
+                    } else {
+                        CircularProgressIndicator()
+                    }
+                }
             }
-        )
+        }
     }
 
     // 退出确认弹窗

@@ -84,7 +84,8 @@ abstract class BasePdfToolComponent(
     fun checkPdf(
         uri: Uri?,
         onDecrypted: (Uri) -> Unit,
-        onSuccess: (Uri) -> Unit = {}
+        onSuccess: (Uri) -> Unit = {},
+        onFailure: (Throwable) -> Unit = {}
     ) {
         if (uri == null) return
 
@@ -100,7 +101,10 @@ abstract class BasePdfToolComponent(
                     onSuccess(result.decryptedUri.toUri())
                 }
 
-                is PdfCheckResult.Failure -> result.throwable.makeLog("checkPdf")
+                is PdfCheckResult.Failure -> {
+                    result.throwable.makeLog("checkPdf")
+                    onFailure(result.throwable)
+                }
             }
         }
     }

@@ -1,21 +1,31 @@
 package com.t8rin.imagetoolbox.feature.pdf_tools.presentation.pdf_preview
 
+import android.net.Uri
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import com.t8rin.imagetoolbox.core.resources.Icons
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.Search
+import com.wanbaohe.core.ui.utils.content.FileAccessGuidance
+import com.wanbaohe.core.ui.utils.content.rememberFileAccessController
 import com.wanbaohe.core.ui.utils.content_pickers.rememberFilePicker
 import com.wanbaohe.core.ui.utils.helper.ContextUtils.rememberFilename
 import com.wanbaohe.core.ui.utils.helper.ImageUtils.rememberPdfPages
@@ -33,6 +43,18 @@ fun PdfPreviewScreen(component: PreviewPdfToolComponent) {
 
     var isSearching by remember(component.uri) {
         mutableStateOf(false)
+    }
+
+    // file:// 直开无读权限时走统一授权引导(PDF 非媒体文件,无媒体权限路径)
+    val accessController = rememberFileAccessController(
+        uriString = component.initialUri?.toString().orEmpty(),
+        isLoadFailed = component.loadFailed,
+        mediaReadPermission = null
+    )
+
+    // SAF 授权恢复出可读 Uri 后自动重载
+    LaunchedEffect(accessController.recoveredUriString) {
+        accessController.recoveredUriString?.let { component.setUri(Uri.parse(it)) }
     }
 
     BasePdfToolContent(
@@ -80,6 +102,26 @@ fun PdfPreviewScreen(component: PreviewPdfToolComponent) {
         },
         onFilledPassword = {
             component.setUri(component.uri)
+        },
+        noDataOverlay = {
+            // 授权引导覆盖层:面板是深色背景设计,页面浅色故垫深色容器
+            if (accessController.isGuidanceVisible || accessController.isCheckingPersistedGrants) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black),
+                    contentAlignment = Alignment.Center
+                ) {
+                    if (accessController.isGuidanceVisible) {
+                        FileAccessGuidance(accessController)
+                    } else {
+                        // 静默检查已持久化授权期间只出 loading,不闪引导面板
+                        CircularProgressIndicator(
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
+                }
+            }
         }
     )
 }

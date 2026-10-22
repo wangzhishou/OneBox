@@ -62,6 +62,12 @@ class FileViewerComponent @AssistedInject internal constructor(
     private var request: ViewerRequest? = null
     private var documentKey: String? = null
 
+    /** 目标文件的原始 Uri 字符串；file:// 授权引导要拿它判断 scheme、定位所在文件夹 */
+    val uriString: String? = uri?.toString()
+
+    /** 实际读取用的 Uri：SAF 授权恢复后换成文档 Uri，否则与原 [uri] 相同 */
+    private var activeUri: Uri? = uri
+
     /** 上次读到的页；第一次收到页面回报时用掉一次，之后按用户实际滚动保存。 */
     private var pendingPageRestore: Int? = null
     private var restoreConsumed = false
@@ -78,49 +84,65 @@ class FileViewerComponent @AssistedInject internal constructor(
             }
             .launchIn(componentScope)
 
-        componentScope.launch {
-            val resolved = resolve()
-            if (resolved == null) {
-                _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    error = FileViewerError.CannotOpen,
-                )
-                return@launch
-            }
+        componentScope.launch { load(uri) }
+    }
 
-            val target = resolved.request
-            val format = ViewerFormat.fromExtension(target.extension)
-            val tooLarge = ViewerFormat.loadsWholeFile(format) && target.length > MAX_INLINE_BYTES
+    /**
+     * 打不开时的重试：回到 loading 重新跑 resolve() 探针。
+     *
+     * [overrideUri] 非空时用它替代原 uri——SAF 引导授权后换来的是 content://
+     * 文档 Uri，之后的读取与「用其他应用打开」都以它为准。
+     */
+    fun retry(overrideUri: String? = null) {
+        val target = overrideUri?.let(Uri::parse) ?: activeUri
+        activeUri = target
+        request = null
+        _uiState.value = _uiState.value.copy(isLoading = true, error = null)
+        componentScope.launch { load(target) }
+    }
 
-            // 读不到的也把名字和大小填上：顶栏与卡片都要说清楚是哪个文件打不开
+    private suspend fun load(targetUri: Uri?) {
+        val resolved = resolve(targetUri)
+        if (resolved == null) {
             _uiState.value = _uiState.value.copy(
-                displayName = target.displayName,
-                extension = target.extension,
-                format = format,
-                sizeBytes = target.length,
                 isLoading = false,
-                error = when {
-                    !resolved.readable -> FileViewerError.CannotOpen
-                    tooLarge -> FileViewerError.TooLarge(target.length)
-                    else -> null
-                },
+                error = FileViewerError.CannotOpen,
             )
-            if (!resolved.readable) return@launch
-
-            val key = ViewerPreferences.keyFor(target.uri, target.length)
-            documentKey = key
-            val saved = preferences.position(key)
-            pendingPageRestore = saved?.toIntOrNull()
-
-            request = target.copy(
-                // 夜间跟全局主题走：只有支持独立夜间模式的页面（Word）才传 night
-                nightMode = _uiState.value.isNight && format.supportsNight,
-                // 电子书的进度是页面自己认的字符串，加载时直接给它
-                bookPosition = saved?.takeIf { format == ViewerFormat.EPUB },
-                // 预览页的外壳文案一律交给页面翻译（顶栏仍用 App 自己的）
-                uiLabels = uiLabelsFor(format),
-            )
+            return
         }
+
+        val target = resolved.request
+        val format = ViewerFormat.fromExtension(target.extension)
+        val tooLarge = ViewerFormat.loadsWholeFile(format) && target.length > MAX_INLINE_BYTES
+
+        // 读不到的也把名字和大小填上：顶栏与卡片都要说清楚是哪个文件打不开
+        _uiState.value = _uiState.value.copy(
+            displayName = target.displayName,
+            extension = target.extension,
+            format = format,
+            sizeBytes = target.length,
+            isLoading = false,
+            error = when {
+                !resolved.readable -> FileViewerError.CannotOpen
+                tooLarge -> FileViewerError.TooLarge(target.length)
+                else -> null
+            },
+        )
+        if (!resolved.readable) return
+
+        val key = ViewerPreferences.keyFor(target.uri, target.length)
+        documentKey = key
+        val saved = preferences.position(key)
+        pendingPageRestore = saved?.toIntOrNull()
+
+        request = target.copy(
+            // 夜间跟全局主题走：只有支持独立夜间模式的页面（Word）才传 night
+            nightMode = _uiState.value.isNight && format.supportsNight,
+            // 电子书的进度是页面自己认的字符串，加载时直接给它
+            bookPosition = saved?.takeIf { format == ViewerFormat.EPUB },
+            // 预览页的外壳文案一律交给页面翻译（顶栏仍用 App 自己的）
+            uiLabels = uiLabelsFor(format),
+        )
     }
 
     /**
@@ -244,7 +266,7 @@ class FileViewerComponent @AssistedInject internal constructor(
 
     /** 内部打不开时的出口：交给系统 chooser，和文件浏览器里点"打开方式"一致。 */
     fun openWithOtherApp() {
-        val target = uri ?: return
+        val target = activeUri ?: return
         runCatching {
             val type = mimeType ?: source.mimeType(target, _uiState.value.extension)
             val intent = Intent(Intent.ACTION_VIEW).apply {
@@ -273,8 +295,8 @@ class FileViewerComponent @AssistedInject internal constructor(
      */
     private data class Resolved(val request: ViewerRequest, val readable: Boolean)
 
-    private suspend fun resolve(): Resolved? {
-        val target = uri ?: return null
+    private suspend fun resolve(targetUri: Uri?): Resolved? {
+        val target = targetUri ?: return null
         val name = source.displayName(target) ?: target.lastPathSegment ?: return null
         val extension = name.substringAfterLast('.', "")
             .lowercase()

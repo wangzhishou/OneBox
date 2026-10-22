@@ -66,6 +66,9 @@ data class MarkdownEditorUiState(
     val isSaving: Boolean = false,
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
+    // file:// 直开读权限缺失时置位,UI 据此挂统一授权引导(FileAccessGuidance)
+    val loadFailed: Boolean = false,
+    val loadFailedUri: Uri? = null,
     val editDraftId: Long = 0L,
     val editTitle: String? = null,
     val historyList: List<MarkdownHistoryEntry> = emptyList()
@@ -247,7 +250,14 @@ class MarkdownEditorComponent @AssistedInject internal constructor(
      * 加载文件
      */
     fun loadFile(context: Context, uri: Uri) {
-        _uiState.update { it.copy(isLoading = true, errorMessage = null) }
+        _uiState.update {
+            it.copy(
+                isLoading = true,
+                errorMessage = null,
+                loadFailed = false,
+                loadFailedUri = null
+            )
+        }
 
         componentScope.launch(ioDispatcher) {
             try {
@@ -281,7 +291,9 @@ class MarkdownEditorComponent @AssistedInject internal constructor(
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            errorMessage = AppContext.getString(R.string.error_message)
+                            errorMessage = AppContext.getString(R.string.error_message),
+                            loadFailed = uri.scheme == "file",
+                            loadFailedUri = uri.takeIf { u -> u.scheme == "file" }
                         )
                     }
                 }

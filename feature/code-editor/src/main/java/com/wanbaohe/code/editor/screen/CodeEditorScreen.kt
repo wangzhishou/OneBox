@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.icons.automirrored.outlined.NoteAdd
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -21,7 +22,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.wanbaohe.base.ui.button.CancelButton
 import com.wanbaohe.base.ui.button.ConfirmButton
@@ -29,6 +32,8 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
 import com.t8rin.imagetoolbox.core.data.utils.getPath
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
+import com.wanbaohe.core.ui.utils.content.FileAccessGuidance
+import com.wanbaohe.core.ui.utils.content.rememberFileAccessController
 import com.wanbaohe.core.ui.utils.content_pickers.rememberFileCreator
 import com.wanbaohe.core.ui.utils.content_pickers.rememberFilePicker
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
@@ -83,6 +88,19 @@ fun CodeEditorScreen(
             editorState.setContent(uiState.content)
             editorState.setLanguage(uiState.language)
         }
+    }
+
+    // file:// 直开无读权限时走统一授权引导(代码文本非媒体文件,无媒体权限路径)
+    val accessController = rememberFileAccessController(
+        uriString = uiState.fileUri?.toString().orEmpty(),
+        isLoadFailed = uiState.loadFailed,
+        mediaReadPermission = null
+    )
+
+    // SAF 授权恢复出可读 Uri 后自动重载
+    LaunchedEffect(accessController.recoveredUriString) {
+        val recovered = accessController.recoveredUriString ?: return@LaunchedEffect
+        runCatching { Uri.parse(recovered) }.getOrNull()?.let { component.loadFile(context, it) }
     }
 
     // 退出确认处理
@@ -300,18 +318,39 @@ fun CodeEditorScreen(
         val storageKey = remember(uiState.fileUri) {
             uiState.fileUri?.toString() ?: "code_editor_new_file"
         }
-        WebViewCodeEditor(
-            modifier = Modifier
-                .fillMaxSize()
-                .navigationBarsPadding(),
-            state = editorState,
-            initialValue = uiState.content,
-            language = uiState.language,
-            placeholder = stringResource(com.wanbaohe.code.editor.R.string.code_editor_placeholder),
-            storageKey = storageKey,
-            textStyle = EditorUiDefaults.contentTextStyle(monospaced = true),
-            onContentChanged = { component.markAsDirty() }
-        )
+        Box(modifier = Modifier.fillMaxSize()) {
+            WebViewCodeEditor(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .navigationBarsPadding(),
+                state = editorState,
+                initialValue = uiState.content,
+                language = uiState.language,
+                placeholder = stringResource(com.wanbaohe.code.editor.R.string.code_editor_placeholder),
+                storageKey = storageKey,
+                textStyle = EditorUiDefaults.contentTextStyle(monospaced = true),
+                onContentChanged = { component.markAsDirty() }
+            )
+
+            // 授权引导覆盖层:面板是深色背景设计,页面浅色故垫深色容器
+            if (accessController.isGuidanceVisible || accessController.isCheckingPersistedGrants) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black),
+                    contentAlignment = Alignment.Center
+                ) {
+                    if (accessController.isGuidanceVisible) {
+                        FileAccessGuidance(accessController)
+                    } else {
+                        // 静默检查已持久化授权期间只出 loading,不闪引导面板
+                        CircularProgressIndicator(
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
+                }
+            }
+        }
     }
 
     // 退出确认弹窗
