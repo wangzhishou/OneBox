@@ -73,6 +73,10 @@ import kotlin.random.Random
 /**
  * 把 [CalendarShareCardData] 画成一张 1080 宽、按内容自适应高度的 PNG。
  *
+ * 版心按 [CONTENT_LEFT]..[CONTENT_RIGHT] 缩放到画布左右各留 [MARGIN_X]，上沿紧贴撕口；
+ * 纸页左右下三边铺满画布，顶部只留 [TEAR_TOP] 高的透明带露出撕口，两个打孔圆是真正的透明缺口。
+ * 保存下来的 PNG 只有顶部撕口和圆孔处透明，其余都是卡面内容。
+ *
  * 所有图形都是矢量的：纸页撕口、打孔、纸纤维、祥云、如意印、回纹角、铜钱、
  * 盘长结、田字、生肖马剪影，以及可选的节日/天气/心语信息栏。
  *
@@ -84,9 +88,19 @@ object CalendarShareCardRenderer {
 
     const val WIDTH = 1080
 
-    private const val TEAR_TOP = 58f
-    /** 纸页四周留出的透明边，保存成 PNG 后是真正的透明背景。 */
-    private const val PAPER_INSET = 24f
+    /** 顶部透明带高度：纸页撕口离画布上沿的距离。 */
+    private const val TEAR_TOP = 24f
+    /** 撕口到打孔圆上沿的间距，撕口要紧贴版心。 */
+    private const val GAP_BELOW_TEAR = 14f
+    /** 版心在设计坐标里的左右边界（纹样、边框的最外沿）。 */
+    private const val CONTENT_LEFT = 71f
+    private const val CONTENT_RIGHT = 1008f
+    /** 渲染后画布左右留白，版心按此缩放到满幅。 */
+    private const val MARGIN_X = 32f
+    /** 品牌行下方的留白。 */
+    private const val MARGIN_BOTTOM = 24f
+    /** 品牌字基线到字底的距离，用来算画布高度。 */
+    private const val BRAND_DESCENT = 9f
     private const val TEAR_STEPS = 90
     private const val HOLE_LEFT_X = 270f
     private const val HOLE_RIGHT_X = 810f
@@ -104,7 +118,7 @@ object CalendarShareCardRenderer {
         textMeasurer: TextMeasurer,
     ): ImageBitmap {
         val layout = buildLayout(data, options)
-        val paper = buildPaperGeometry(layout.height)
+        val paper = buildPaperGeometry(layout.height, layout)
         val image = ImageBitmap(
             width = WIDTH,
             height = layout.height.toInt(),
@@ -138,6 +152,10 @@ object CalendarShareCardRenderer {
         val noteTop: Float?,
         val footerLineY: Float,
         val brandBaseline: Float,
+        /** 版心缩放：设计坐标 → 画布坐标。 */
+        val contentScale: Float,
+        val contentDx: Float,
+        val contentDy: Float,
     )
 
     /**
@@ -182,13 +200,20 @@ object CalendarShareCardRenderer {
 
         val footerLine = y + 26f
         val brand = footerLine + 50f
+        val contentScale = (WIDTH - MARGIN_X * 2f) / (CONTENT_RIGHT - CONTENT_LEFT)
+        val contentDx = MARGIN_X - CONTENT_LEFT * contentScale
+        val contentDy = TEAR_TOP + GAP_BELOW_TEAR -
+            (HOLE_Y - HOLE_RADIUS) * contentScale
         return CardLayout(
-            height = brand + 20f + PAPER_INSET,
+            height = contentDy + (brand + BRAND_DESCENT) * contentScale + MARGIN_BOTTOM,
             weatherTop = weatherTop,
             festivalTop = festivalTop,
             noteTop = noteTop,
             footerLineY = footerLine,
             brandBaseline = brand,
+            contentScale = contentScale,
+            contentDx = contentDx,
+            contentDy = contentDy,
         )
     }
 
@@ -199,28 +224,39 @@ object CalendarShareCardRenderer {
         val tornEdge: List<Offset>,
     )
 
-    private fun buildPaperGeometry(height: Float): PaperGeometry {
+    private fun buildPaperGeometry(height: Float, layout: CardLayout): PaperGeometry {
         val random = Random(20261020)
         val edge = ArrayList<Offset>(TEAR_STEPS + 1)
         val outline = Path()
-        val start = Offset(PAPER_INSET, TEAR_TOP + 3f)
+        val start = Offset(0f, TEAR_TOP + 3f)
         outline.moveTo(start.x, start.y)
         edge += start
 
         for (i in 1..TEAR_STEPS) {
-            val x = PAPER_INSET + i * (WIDTH - PAPER_INSET * 2f) / TEAR_STEPS
+            val x = i * WIDTH.toFloat() / TEAR_STEPS
             var y = TEAR_TOP + sin(i * 1.9f) * 1.8f + (random.nextFloat() - 0.5f) * 3.6f
             if (i % 11 == 0) y += 5f
             outline.lineTo(x, y)
             edge += Offset(x, y)
         }
-        outline.lineTo(WIDTH - PAPER_INSET, height - PAPER_INSET)
-        outline.lineTo(PAPER_INSET, height - PAPER_INSET)
+        outline.lineTo(WIDTH.toFloat(), height)
+        outline.lineTo(0f, height)
         outline.close()
 
+        val holeRadius = HOLE_RADIUS * layout.contentScale
+        val holeCenterY = layout.contentDy + HOLE_Y * layout.contentScale
         val holes = Path().apply {
-            addOval(Rect(center = Offset(HOLE_LEFT_X, HOLE_Y), radius = HOLE_RADIUS))
-            addOval(Rect(center = Offset(HOLE_RIGHT_X, HOLE_Y), radius = HOLE_RADIUS))
+            listOf(HOLE_LEFT_X, HOLE_RIGHT_X).forEach { cx ->
+                addOval(
+                    Rect(
+                        center = Offset(
+                            layout.contentDx + cx * layout.contentScale,
+                            holeCenterY
+                        ),
+                        radius = holeRadius
+                    )
+                )
+            }
         }
         val path = Path()
         val cut = path.op(outline, holes, PathOperation.Difference)
@@ -238,48 +274,56 @@ object CalendarShareCardRenderer {
         paper: PaperGeometry,
         layout: CardLayout,
     ) {
-        drawPaper(paper, data.palette, layout.height)
+        drawPaper(paper, data.palette, layout.height, layout)
 
-        drawHeader(data, textMeasurer)
-        drawMainDay(data, textMeasurer)
-        if (options.showTodayFestival && data.todayFestivals.isNotEmpty()) {
-            drawTodayFestivalTag(data, textMeasurer)
-        }
-        drawLunarBanner(data, textMeasurer)
-        drawAlmanacBand(data, textMeasurer)
+        translate(left = layout.contentDx, top = layout.contentDy) {
+            scale(
+                scaleX = layout.contentScale,
+                scaleY = layout.contentScale,
+                pivot = Offset.Zero
+            ) {
+                drawHeader(data, textMeasurer)
+                drawMainDay(data, textMeasurer)
+                if (options.showTodayFestival && data.todayFestivals.isNotEmpty()) {
+                    drawTodayFestivalTag(data, textMeasurer)
+                }
+                drawLunarBanner(data, textMeasurer)
+                drawAlmanacBand(data, textMeasurer)
 
-        layout.weatherTop?.let { top ->
-            data.weather?.let { weather ->
-                drawWeatherCard(
-                    weather = weather,
-                    top = top,
-                    palette = data.palette,
-                    labels = data.labels,
-                    textMeasurer = textMeasurer
-                )
+                layout.weatherTop?.let { top ->
+                    data.weather?.let { weather ->
+                        drawWeatherCard(
+                            weather = weather,
+                            top = top,
+                            palette = data.palette,
+                            labels = data.labels,
+                            textMeasurer = textMeasurer
+                        )
+                    }
+                }
+                layout.festivalTop?.let { top ->
+                    drawFestivalBlock(
+                        data = data,
+                        options = options,
+                        textMeasurer = textMeasurer,
+                        top = top
+                    )
+                }
+                layout.noteTop?.let { top ->
+                    drawNoteBlock(
+                        data = data,
+                        textMeasurer = textMeasurer,
+                        top = top
+                    )
+                }
+
+                drawFooter(
+                    data = data,
+                    textMeasurer = textMeasurer,
+                    layout = layout
+        )
             }
         }
-        layout.festivalTop?.let { top ->
-            drawFestivalBlock(
-                data = data,
-                options = options,
-                textMeasurer = textMeasurer,
-                top = top
-            )
-        }
-        layout.noteTop?.let { top ->
-            drawNoteBlock(
-                data = data,
-                textMeasurer = textMeasurer,
-                top = top
-            )
-        }
-
-        drawFooter(
-            data = data,
-            textMeasurer = textMeasurer,
-            layout = layout
-        )
 
         for (i in 1 until paper.tornEdge.size) {
             drawLine(
@@ -295,6 +339,7 @@ object CalendarShareCardRenderer {
         paper: PaperGeometry,
         palette: CalendarSharePalette,
         height: Float,
+        layout: CardLayout,
     ) {
         drawPath(paper.path, palette.paper)
 
@@ -325,21 +370,27 @@ object CalendarShareCardRenderer {
             drawPaperFibers(palette.ink, height)
         }
 
+        val holeRadius = HOLE_RADIUS * layout.contentScale
+        val holeCenterY = layout.contentDy + HOLE_Y * layout.contentScale
         listOf(HOLE_LEFT_X, HOLE_RIGHT_X).forEach { cx ->
+            val holeCenterX = layout.contentDx + cx * layout.contentScale
             drawCircle(
                 color = palette.accent.copy(alpha = 0.22f),
-                radius = HOLE_RADIUS,
-                center = Offset(cx, HOLE_Y),
-                style = Stroke(width = 2f)
+                radius = holeRadius,
+                center = Offset(holeCenterX, holeCenterY),
+                style = Stroke(width = 2f * layout.contentScale)
             )
             drawArc(
                 color = palette.ink.copy(alpha = 0.07f),
                 startAngle = 20f,
                 sweepAngle = 140f,
                 useCenter = false,
-                topLeft = Offset(cx - HOLE_RADIUS + 1f, HOLE_Y - HOLE_RADIUS + 1f),
-                size = Size((HOLE_RADIUS - 1f) * 2f, (HOLE_RADIUS - 1f) * 2f),
-                style = Stroke(width = 3f)
+                topLeft = Offset(
+                    holeCenterX - holeRadius + 1f,
+                    holeCenterY - holeRadius + 1f
+                ),
+                size = Size((holeRadius - 1f) * 2f, (holeRadius - 1f) * 2f),
+                style = Stroke(width = 3f * layout.contentScale)
             )
         }
     }

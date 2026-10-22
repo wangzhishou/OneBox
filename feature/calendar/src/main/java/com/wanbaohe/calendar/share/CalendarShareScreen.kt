@@ -50,7 +50,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -246,7 +246,7 @@ fun CalendarShareScreen(component: CalendarShareComponent) {
             ) {
                 val previewAspect = previewBitmap
                     ?.let { it.width.toFloat() / it.height.toFloat() }
-                    ?: (1080f / 1600f)
+                    ?: (1080f / 1520f)
 
                 PreviewCard(
                     image = previewBitmap,
@@ -481,13 +481,7 @@ private fun PreviewCard(
             modifier = Modifier
                 .width(cardWidth)
                 .aspectRatio(aspectRatio)
-                .shadow(
-                    elevation = 18.dp,
-                    shape = RoundedCornerShape(18.dp),
-                    ambientColor = androidx.compose.ui.graphics.Color.Black.copy(alpha = 0.35f),
-                    spotColor = androidx.compose.ui.graphics.Color.Black.copy(alpha = 0.4f)
-                )
-                .clip(RoundedCornerShape(18.dp)),
+                .clipToBounds(),
             contentAlignment = Alignment.Center
         ) {
         Checkerboard(Modifier.fillMaxSize())
@@ -495,10 +489,9 @@ private fun PreviewCard(
             Image(
                 bitmap = image,
                 contentDescription = stringResource(R.string.calendar_share_page_title),
-                contentScale = ContentScale.Fit,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp)
+                // 预览框和位图比例一致，用 FillBounds 保证铺满，避免 Fit 在边缘留出棋盘格
+                contentScale = ContentScale.FillBounds,
+                modifier = Modifier.fillMaxSize()
             )
         } else if (renderFailed) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
