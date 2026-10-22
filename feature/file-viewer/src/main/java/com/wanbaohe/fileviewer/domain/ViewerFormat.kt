@@ -40,6 +40,12 @@ enum class ViewerFormat(
     /** PowerPoint 2007+，PPTXjs 渲染 */
     PPTX("pptx.html", 80, supportsFind = true),
 
+    /** PowerPoint 97-2003，二进制，只读得出文字大纲 */
+    PPT("ppt.html", 80, supportsFind = true, followsTextSize = true),
+
+    /** OpenDocument Presentation，按幻灯片绘制 */
+    ODP("odp.html", 80, supportsFind = true),
+
     /** EPUB（无 DRM），gander 自研 reader；进度用 `at <章> <偏移>` 回报 */
     EPUB("epub.html", 80, supportsFind = true, followsTextSize = true),
 
@@ -61,6 +67,8 @@ enum class ViewerFormat(
         private val PROSE_EXT = setOf("doc", "dot", "odt", "ott", "fodt", "rtf")
         private val SHEET_EXT = setOf("xlsx", "xls", "xlsm", "xlsb", "xltx", "csv", "ods")
         private val SLIDE_EXT = setOf("pptx", "ppsx", "pptm", "potx")
+        private val PPT_EXT = setOf("ppt")
+        private val ODP_EXT = setOf("odp", "otp")
         private val EPUB_EXT = setOf("epub")
         private val MARKDOWN_EXT = setOf("md", "markdown", "mkd", "mdown")
         private val IMAGE_EXT = setOf("gif", "svg", "avif", "ico")
@@ -76,6 +84,8 @@ enum class ViewerFormat(
                 ext in PROSE_EXT -> PROSE
                 ext in SHEET_EXT -> XLSX
                 ext in SLIDE_EXT -> PPTX
+                ext in PPT_EXT -> PPT
+                ext in ODP_EXT -> ODP
                 ext in EPUB_EXT -> EPUB
                 ext in MARKDOWN_EXT -> MARKDOWN
                 ext in IMAGE_EXT -> IMAGE
@@ -86,7 +96,7 @@ enum class ViewerFormat(
 
         /** 这些页面会把整个文件读进 JS 内存，超过上限就不该硬开。 */
         fun loadsWholeFile(format: ViewerFormat): Boolean = when (format) {
-            DOCX, PROSE, XLSX, PPTX, EPUB, MARKDOWN -> true
+            DOCX, PROSE, XLSX, PPTX, PPT, ODP, EPUB, MARKDOWN -> true
             TEXT, IMAGE, UNSUPPORTED -> false
         }
     }

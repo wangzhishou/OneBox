@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<!-- The policy in ViewerPolicy.kt, which says why each part is there. ViewerPolicyTest
+     keeps this copy word for word the same as that one, in every page. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self'; worker-src 'self'; frame-src 'none'; object-src 'none'; form-action 'none'; base-uri 'none'">
+<!-- A slide is a fixed canvas, so the page declares the screen's own width and the
+     slides are zoomed to it by odp.js; see the note there. A page left at the WebView's
+     980 px default would scale the whole deck down and shrink the status card with it. -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Presentation</title>
+<link rel="stylesheet" href="app.css">
+<style>
+  html { touch-action: manipulation; }
+
+  /* The desk is the app's background, seen through a transparent WebView: a slide is
+     the paper, the space around it belongs to the app. */
+  body { background: transparent; }
+
+  #deck { padding: 12px 8px 24px; }
+
+  /*
+   * One slide, laid out at the size the deck was authored at (centimetres from the
+   * page layout, turned into CSS px by odp.js) and then zoomed to the screen. Zoom
+   * rather than a transform: it scales the layout, so the absolutely positioned frames
+   * inside keep their places and the box the slide takes up is the box it draws.
+   */
+  .odp-slide {
+    position: relative;
+    margin: 0 auto 14px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 1px 4px var(--vw-shadow);
+    color: #1E1B15;
+  }
+
+  .odp-shape { position: absolute; box-sizing: border-box; overflow: hidden; }
+  .odp-shape p { margin: 0; white-space: pre-wrap; }
+  .odp-shape img { width: 100%; height: 100%; object-fit: contain; display: block; }
+
+  /* Nothing here is a document to be faithful to but a shape; night turns the slide
+     over as a whole, as xlsx.html does. Text keeps the colour the deck gave it. */
+  @media (prefers-color-scheme: dark) {
+    .odp-slide { background: var(--vw-card); }
+  }
+</style>
+<script src="lib/jszip3.min.js"></script>
+</head>
+<body>
+<div id="vw-status" class="vw-status vw-wait">Loading presentation…</div>
+<div id="deck" data-vw-find></div>
+<script src="app.js"></script>
+<script src="find.js"></script>
+<script src="odp.js"></script>
+</body>
+</html>
