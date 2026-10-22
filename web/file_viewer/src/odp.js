@@ -274,14 +274,46 @@ function renderShape(el, styles, images) {
   return shape;
 }
 
-function pageSize(stylesDoc) {
-  var props = byTag(stylesDoc, NS.style, "page-layout-properties");
-  for (var i = 0; i < props.length; i++) {
-    var w = px(attr(props[i], NS.fo, "page-width"));
-    var h = px(attr(props[i], NS.fo, "page-height"));
+/*
+ * The slide's size, from the page layout its master page names.
+ *
+ * Not the first page layout in styles.xml: a deck keeps one layout per paper it might be
+ * printed on, and a 16:9 deck's file lists an A4 portrait one before the 16:9 landscape
+ * one it actually uses. The master page is what says which.
+ */
+function pageSize(stylesDoc, masterName) {
+  var layoutName = null;
+  var masters = byTag(stylesDoc, NS.style, "master-page");
+  for (var m = 0; m < masters.length; m++) {
+    if (attr(masters[m], NS.style, "name") !== masterName) continue;
+    layoutName = attr(masters[m], NS.style, "page-layout-name");
+  }
+  var layouts = byTag(stylesDoc, NS.style, "page-layout");
+  for (var i = 0; i < layouts.length; i++) {
+    if (layoutName && attr(layouts[i], NS.style, "name") !== layoutName) continue;
+    var props = byTag(layouts[i], NS.style, "page-layout-properties")[0];
+    var w = props && px(attr(props, NS.fo, "page-width"));
+    var h = props && px(attr(props, NS.fo, "page-height"));
     if (w && h) return { w: w, h: h };
   }
+  var all = byTag(stylesDoc, NS.style, "page-layout-properties");
+  for (var k = 0; k < all.length; k++) {
+    var aw = px(attr(all[k], NS.fo, "page-width"));
+    var ah = px(attr(all[k], NS.fo, "page-height"));
+    if (aw && ah) return { w: aw, h: ah };
+  }
   return { w: 1058, h: 794 };   // 28 x 21 cm, the 4:3 default
+}
+
+/* The drawing-page style a master page paints its slides with, if it paints one. */
+function masterStyle(stylesDoc, masterName) {
+  var masters = byTag(stylesDoc, NS.style, "master-page");
+  for (var i = 0; i < masters.length; i++) {
+    if (attr(masters[i], NS.style, "name") === masterName) {
+      return attr(masters[i], NS.draw, "style-name");
+    }
+  }
+  return null;
 }
 
 /* Pictures, as blob URLs by their zip path. */
@@ -316,8 +348,9 @@ function readPresentation(bytes) {
     var stylesDoc = parts[1] ? parser.parseFromString(parts[1], "text/xml") : content;
     var styles = collectStyles(content, {});
     collectStyles(stylesDoc, styles);
-    var size = pageSize(stylesDoc);
     var pages = byTag(content, NS.draw, "page");
+    var firstMaster = pages.length ? attr(pages[0], NS.draw, "master-page-name") : null;
+    var size = pageSize(stylesDoc, firstMaster);
     var deck = document.getElementById("deck");
     if (!pages.length) throw new Error("This presentation has no slides");
 
@@ -328,7 +361,10 @@ function readPresentation(bytes) {
       slide.className = "odp-slide";
       slide.style.width = size.w + "px";
       slide.style.height = size.h + "px";
-      var background = pageFill(styles, attr(page, NS.draw, "style-name"));
+      // A page may paint its own background; when it does not, its master page's is the
+      // one the deck is written against
+      var background = pageFill(styles, attr(page, NS.draw, "style-name")) ||
+        pageFill(styles, masterStyle(stylesDoc, attr(page, NS.draw, "master-page-name")));
       if (background) slide.style.backgroundColor = background;
       slideButtonless(slide);
 

@@ -10,6 +10,8 @@
  *
  *   #sheet / #tabs   Excel
  *   #result          幻灯片（只翻纸，不翻本来就深的画布）
+ *   .odp-slide       OpenDocument 演示的一页
+ *   .ppt-*           旧版 PPT 文字大纲的卡片
  *   section          Word 97 / ODT / RTF 的纸
  *   .vw-page         EPUB 章节
  *
@@ -39,6 +41,17 @@ html.vw-force-dark #result {
 /* Word 97 / OpenDocument / RTF（由宿主给纸打上 .vw-dark-sheet，避免误伤 EPUB 的 section） */
 html.vw-force-dark .vw-dark-sheet {
   background: #fff;
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* OpenDocument 演示：幻灯片就是纸；图片在外面那条通用规则里再翻回来 */
+html.vw-force-dark .odp-slide {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* 旧版 PPT 的文字大纲：卡片是纸 */
+html.vw-force-dark .ppt-note,
+html.vw-force-dark .ppt-slide {
   filter: invert(1) hue-rotate(180deg);
 }
 

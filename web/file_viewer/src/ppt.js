@@ -73,53 +73,85 @@ function decodeBytes(bytes, from, length) {
 }
 
 /*
- * The outline as slides of paragraphs. Text atoms hold a paragraph per \r (and a soft
- * break per vertical tab); a SlidePersistAtom opens a new slide. A deck whose outline
- * is empty, or was never written, falls back to one slide holding every text atom in
- * the stream in order.
+ * The outline as slides of paragraphs.
+ *
+ * A deck has more than one SlideListWithText: the same slides are listed again for each
+ * kind of text a deck can have, so the same slide's text turns up in several containers,
+ * and a slide's title and body may be separate atoms. Two things follow, and both were
+ * learned from a real file whose two slides came out as five:
+ *
+ *   - the slide a text belongs to is the SlidePersistAtom above it, by persistIdRef, not
+ *     the position in the container, so texts are merged under that id;
+ *   - the same atom is listed in each container that repeats the slide, so a paragraph
+ *     is added to a slide once. Containers do not always agree to the character (one
+ *     fixture's last paragraph reads "…formatting" in one and "…formattingT" in
+ *     another), so a paragraph counts as already there when either it contains an
+ *     existing one or the other way round.
+ *
+ * A text atom holds a paragraph per \r; consecutive atoms of one slide are separate text
+ * objects (a title, a body), so each atom starts a paragraph of its own.
  */
 function outlineOf(stream) {
-  var slides = [];
-  var current = null;
+  var order = [];
+  var slides = {};
 
-  function pushText(text) {
-    if (!current) {
-      current = [];
-      slides.push(current);
+  function slide(id) {
+    if (!slides[id]) {
+      slides[id] = { lines: [] };
+      order.push(id);
     }
+    return slides[id];
+  }
+
+  function known(target, line) {
+    for (var i = 0; i < target.lines.length; i++) {
+      var other = target.lines[i];
+      if (other === line || other.indexOf(line) === 0 || line.indexOf(other) === 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function addAtom(id, text) {
+    var target = slide(id);
     var parts = text.split(/[\r\u000B]/);
     for (var i = 0; i < parts.length; i++) {
       var line = parts[i].replace(/\u0000/g, "").trim();
-      if (line) current.push(line);
+      if (line && !known(target, line)) target.lines.push(line);
     }
   }
 
+  var currentId = 0;
   var found = false;
   walkRecords(stream, 0, stream.length, function (type, body, length) {
     if (type !== PPT.slideList) return;
     found = true;
     walkRecords(stream, body, body + length, function (inner, innerBody, innerLength) {
       if (inner === PPT.slidePersist) {
-        current = [];
-        slides.push(current);
+        currentId = u32(stream, innerBody);
+        slide(currentId);
       } else if (inner === PPT.textChars) {
-        pushText(decodeChars(stream, innerBody, innerLength));
+        addAtom(currentId, decodeChars(stream, innerBody, innerLength));
       } else if (inner === PPT.textBytes) {
-        pushText(decodeBytes(stream, innerBody, innerLength));
+        addAtom(currentId, decodeBytes(stream, innerBody, innerLength));
       }
     });
   });
 
   if (!found) {
-    current = [];
-    slides.push(current);
+    // No outline at all: every text atom the stream holds, in order, as one slide
+    var only = slide(0);
     walkRecords(stream, 0, stream.length, function (type, body, length) {
-      if (type === PPT.textChars) pushText(decodeChars(stream, body, length));
-      else if (type === PPT.textBytes) pushText(decodeBytes(stream, body, length));
+      if (type === PPT.textChars) addAtom(0, decodeChars(stream, body, length));
+      else if (type === PPT.textBytes) addAtom(0, decodeBytes(stream, body, length));
     });
+    if (!only.lines.length) order = [];
   }
 
-  return slides.filter(function (lines) { return lines.length > 0; });
+  return order
+    .map(function (id) { return slides[id].lines; })
+    .filter(function (lines) { return lines.length > 0; });
 }
 
 function renderSlides(slides) {
