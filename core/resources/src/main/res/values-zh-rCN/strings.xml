@@ -917,6 +917,10 @@
     <string name="embedded_picker">嵌入式选取器</string>
     <string name="embedded_picker_sub">使用 Image Toolbox 自带的图片拾取器，而不是系统预定义的图片拾取器</string>
     <string name="no_permissions">未获许可</string>
+    <string name="image_load_no_permission">无法读取这张图片，授权后即可预览</string>
+    <string name="grant_media_access">允许访问照片</string>
+    <string name="grant_folder_access">仅授权所在文件夹</string>
+    <string name="image_not_in_granted_folder">所选文件夹里没有这张图片</string>
     <string name="request">请求</string>
     <string name="show_settings_in_landscape">横向显示设置</string>
     <string name="try_again">再试一次</string>

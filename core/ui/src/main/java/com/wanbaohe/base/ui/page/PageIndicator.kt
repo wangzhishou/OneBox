@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
@@ -26,7 +27,7 @@ fun PageIndicator(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .glassBackground(
-                style = GlassStyle.None,
+                style = GlassStyle.Thin,
                 shape = RoundedCornerShape(16.dp),
                 color = MaterialTheme.colorScheme.surfaceContainer
             )
@@ -35,7 +36,7 @@ fun PageIndicator(
         Text(
             text = "${currentPage + 1} / $pageCount",
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = Color.White
         )
     }
 }

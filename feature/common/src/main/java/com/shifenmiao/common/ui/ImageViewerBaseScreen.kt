@@ -18,7 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.wanbaohe.core.ui.widget.glass.GlassTonalIconButton
+import com.wanbaohe.core.ui.widget.glass.GlassIconButton
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDownload
 
@@ -44,7 +44,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineDownload
  *     immersiveModeState = immersiveModeState,
  *     title = { PageIndicator(pageCount = 10, currentPage = 0) },
  *     actions = {
- *         IconButton(onClick = { /* 下载 */ }) {
+ *         ViewerActionButton(onClick = { /* 下载 */ }) {
  *             Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDownload, contentDescription = "Download")
  *         }
  *     }
@@ -118,19 +118,21 @@ fun ImageViewerBaseScreen(
 
 /**
  * 图片查看器返回按钮
- * 半透明背景的圆形按钮
+ * 与顶部进度胶囊同一 GlassStyle.Thin 梯队、同一 surfaceContainer 显色,
+ * 玻璃开关两侧都与胶囊保持一致(关闭玻璃时同走 flat 覆盖率)。
+ * 查看器背景固定深色,内容色用白色,不随主题走。
  */
 @Composable
 fun ViewerBackButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    GlassTonalIconButton(
+    GlassIconButton(
         onClick = onClick,
         modifier = modifier,
-        colors = IconButtonDefaults.filledTonalIconButtonColors().copy(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.7f),
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+        colors = IconButtonDefaults.iconButtonColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+            contentColor = Color.White
         )
     ) {
         Icon(
@@ -142,7 +144,7 @@ fun ViewerBackButton(
 
 /**
  * 图片查看器操作按钮
- * 半透明背景的圆形按钮，用于下载、分享等操作
+ * 与返回键同款 glass 圆形按钮,用于编辑、下载、分享等操作
  */
 @Composable
 fun ViewerActionButton(
@@ -150,12 +152,12 @@ fun ViewerActionButton(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
-    GlassTonalIconButton(
+    GlassIconButton(
         onClick = onClick,
         modifier = modifier,
-        colors = IconButtonDefaults.filledTonalIconButtonColors().copy(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.7f),
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+        colors = IconButtonDefaults.iconButtonColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+            contentColor = Color.White
         )
     ) {
         content()

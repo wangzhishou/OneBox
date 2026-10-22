@@ -1198,6 +1198,7 @@ class ChildProvider @Inject constructor(
                 componentContext = componentContext,
                 imageViewerInfo = config.imageViewerInfo,
                 onGoBack = ::navigateBack,
+                onEditImage = { uri -> navigateTo(Screen.MarkupLayers(uri)) },
             )
         )
 

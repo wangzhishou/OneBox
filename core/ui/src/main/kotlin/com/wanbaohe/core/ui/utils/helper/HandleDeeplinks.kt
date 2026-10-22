@@ -22,6 +22,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.material.icons.Icons
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.shifenmiao.model.image.ImageViewerInfo
 import com.t8rin.imagetoolbox.core.domain.BackupFileExtension
 import com.wanbaohe.core.ui.utils.content.ContentRouter
 import com.t8rin.imagetoolbox.core.domain.model.ExtraDataType
@@ -87,8 +88,22 @@ fun Intent?.handleDeeplinks(
                     val uris =
                         clipData?.clipList() ?: data?.let { listOf(it) } ?: return@runCatching
 
-                    // 系统"打开/编辑图片"默认进图片创作(该 Screen 支持外部传入图片 Uri)
-                    onNavigate(Screen.MarkupLayers(uris.firstOrNull()))
+                    if (intent.action == Intent.ACTION_EDIT || isOpenEditInsteadOfPreview) {
+                        // 明确的编辑意图 / 用户设置了「打开编辑而不是预览」: 直接进图层创作
+                        onNavigate(Screen.MarkupLayers(uris.firstOrNull()))
+                    } else {
+                        // 系统"打开图片"默认进图片预览页(页内可再跳图层创作)
+                        val images = uris.map { it.toString() }
+                        onNavigate(
+                            Screen.ImageViewer(
+                                ImageViewerInfo(
+                                    images = images,
+                                    initialIndex = images.indexOf(data?.toString())
+                                        .coerceAtLeast(0)
+                                )
+                            )
+                        )
+                    }
                 }
 
                 Intent.ACTION_SEND -> {
