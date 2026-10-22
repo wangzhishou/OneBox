@@ -87,29 +87,37 @@ class FileViewerComponent @AssistedInject internal constructor(
                 return@launch
             }
 
-            val key = ViewerPreferences.keyFor(resolved.uri, resolved.length)
+            val target = resolved.request
+            val format = ViewerFormat.fromExtension(target.extension)
+            val tooLarge = ViewerFormat.loadsWholeFile(format) && target.length > MAX_INLINE_BYTES
+
+            // 读不到的也把名字和大小填上：顶栏与卡片都要说清楚是哪个文件打不开
+            _uiState.value = _uiState.value.copy(
+                displayName = target.displayName,
+                extension = target.extension,
+                format = format,
+                sizeBytes = target.length,
+                isLoading = false,
+                error = when {
+                    !resolved.readable -> FileViewerError.CannotOpen
+                    tooLarge -> FileViewerError.TooLarge(target.length)
+                    else -> null
+                },
+            )
+            if (!resolved.readable) return@launch
+
+            val key = ViewerPreferences.keyFor(target.uri, target.length)
             documentKey = key
             val saved = preferences.position(key)
             pendingPageRestore = saved?.toIntOrNull()
 
-            val format = ViewerFormat.fromExtension(resolved.extension)
-            request = resolved.copy(
+            request = target.copy(
                 // 夜间跟全局主题走：只有支持独立夜间模式的页面（Word）才传 night
                 nightMode = _uiState.value.isNight && format.supportsNight,
                 // 电子书的进度是页面自己认的字符串，加载时直接给它
                 bookPosition = saved?.takeIf { format == ViewerFormat.EPUB },
                 // 只有电子书阅读器自带英文外壳，其余页面用的是 App 自己的顶栏
                 uiLabels = if (format == ViewerFormat.EPUB) epubUiLabels() else emptyMap(),
-            )
-
-            val tooLarge = ViewerFormat.loadsWholeFile(format) && resolved.length > MAX_INLINE_BYTES
-            _uiState.value = _uiState.value.copy(
-                displayName = resolved.displayName,
-                extension = resolved.extension,
-                format = format,
-                sizeBytes = resolved.length,
-                isLoading = false,
-                error = if (tooLarge) FileViewerError.TooLarge(resolved.length) else null,
             )
         }
     }
@@ -253,22 +261,43 @@ class FileViewerComponent @AssistedInject internal constructor(
                 Configuration.UI_MODE_NIGHT_YES
     }
 
-    private suspend fun resolve(): ViewerRequest? {
+    /**
+     * [request] 是页面要的东西，[readable] 为 false 说明这份文件现在读不到
+     * （被移走、被撤销授权，或者共享存储不给权限），不要交给 WebView。
+     */
+    private data class Resolved(val request: ViewerRequest, val readable: Boolean)
+
+    private suspend fun resolve(): Resolved? {
         val target = uri ?: return null
         val name = source.displayName(target) ?: target.lastPathSegment ?: return null
         val extension = name.substringAfterLast('.', "")
             .lowercase()
             .ifBlank { extensionFromMime(mimeType) }
         val format = ViewerFormat.fromExtension(extension)
+
+        /*
+         * 读不到的文件不进 WebView。
+         *
+         * 页面自己能报的只有一句英文 "Could not open this spreadsheet"，说不出是权限、
+         * 是被删了，还是该换个应用；而且空页面比错误卡片更像卡死。这里先探一次：
+         * 打不开就交给 App 自己的错误卡片，那里有文件名、有说明、有出口。
+         * 探针也把 SAF 那条后路算进去（见 ContentResolverDocumentSource）。
+         */
+        val readable = kotlinx.coroutines.withContext(ioDispatcher) {
+            source.open(target)?.use { true } ?: false
+        }
         val length = kotlinx.coroutines.withContext(ioDispatcher) { source.length(target) }
 
-        return ViewerRequest(
-            uri = target,
-            page = format.page,
-            webViewFloor = format.webViewFloor,
-            extension = extension,
-            displayName = name,
-            length = length,
+        return Resolved(
+            request = ViewerRequest(
+                uri = target,
+                page = format.page,
+                webViewFloor = format.webViewFloor,
+                extension = extension,
+                displayName = name,
+                length = length,
+            ),
+            readable = readable,
         )
     }
 
