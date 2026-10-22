@@ -8,6 +8,7 @@ import android.os.Looper
 import android.util.Log
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
+import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.webkit.WebMessageCompat
 import androidx.webkit.WebMessagePortCompat
@@ -91,6 +92,9 @@ internal class ViewerWebHost(
             loadWithOverviewMode = true
             allowFileAccess = false
             allowContentAccess = false
+            // 页面与文档都来自 APK 和这台手机，缓存只会让它显示旧字节：
+            // 同名替换过的文档、升级过的 xlsx.js 都可能被缓存原样奉还。
+            cacheMode = WebSettings.LOAD_NO_CACHE
         }
 
         runCatching { android.webkit.CookieManager.getInstance() }
@@ -387,8 +391,17 @@ internal class ViewerWebHost(
         }
     }
 
+    /**
+     * 页面资源（HTML/JS/CSS/font）统一补两份响应头。
+     *
+     * `no-store` 与 `/doc/` 那边保持一致：这些字节都随 APK 走，缓存下来没有任何收益，
+     * 却会在原地替换（升级 APK、换掉同名资源）之后继续把旧页面交给 WebView。
+     */
     private fun WebResourceResponse.withViewerPolicy(): WebResourceResponse = apply {
-        responseHeaders = responseHeaders.orEmpty() + ("Content-Security-Policy" to VIEWER_CSP)
+        responseHeaders = responseHeaders.orEmpty() + mapOf(
+            "Content-Security-Policy" to VIEWER_CSP,
+            "Cache-Control" to "no-store",
+        )
     }
 
     private fun notFound() = WebResourceResponse(
