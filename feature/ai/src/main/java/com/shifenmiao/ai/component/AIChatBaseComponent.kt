@@ -367,11 +367,22 @@ open class AIChatBaseComponent @AssistedInject internal constructor(
                 ActionUtils.showToast(applicationContext.getString(R.string.already_new_chat))
             }
             clearMessages()
+            // 全新会话（新 id）必须重置统计与预览：否则会话快照沿用上一次的
+            // messageCount/预览，新会话首轮流完 messageCount 从旧值继续累加，
+            // 既虚增历史中心计数，也让标题摘要的 messageCount==2 门槛永远失效。
+            // 加载已有会话（loadHistoryById 命中时 newId 与当前 id 相同）不动这些字段。
+            val isFreshConversation = _conversation.value.id != newId
             _conversation.value = _conversation.value.copy(
                 id = newId,
                 title = "",
                 titleSource = com.shifenmiao.model.ai.AIConversationTitleSource.SYSTEM
-            )
+            ).let { copied ->
+                if (isFreshConversation) copied.copy(
+                    messageCount = 0,
+                    lastMessagePreview = "",
+                    lastUserMessagePreview = ""
+                ) else copied
+            }
             clearCurrentQuestionAndAnswer()
             loadMessages()
             hideHistory()

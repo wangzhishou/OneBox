@@ -257,7 +257,10 @@ class StreamContentProcessor(
         val showExpandedReasoning = AppSharedStorage.isExpandedReasoningChat.value
 
         val messagesCopy = sharedState.getMessagesSnapshot()
-            .groupBy { "${it.completionId}_${it.role}" }
+            // 同一 DB 行在内存里可能滞留多份快照（cid 随 Agent 轮次漂移后按 cid 去重失效）,
+            // 已落库的行优先按行主键归组; 未落库(id<=0)的占位仍按 cid+role。
+            // 组内同 id 并列时 maxByOrNull 取列表序首个最大者, 即列表头部的 live 拷贝。
+            .groupBy { if (it.id > 0) "row_${it.id}_${it.role}" else "${it.completionId}_${it.role}" }
             .mapValues { (_, msgs) -> msgs.maxByOrNull { it.id }!! }
             .values
             .sortedByDescending { it.createdAt }
@@ -341,19 +344,26 @@ class StreamContentProcessor(
         }
         lastPlaceholderUpdateTime = now
 
-        val currentCompletionId = sharedState.questionMessageEntity.value.completionId
+        val liveQuestion = sharedState.questionMessageEntity.value
+        val liveAnswer = sharedState.answerMessageEntity.value
+        val currentCompletionId = liveQuestion.completionId
 
         sharedState.mutateMessages { msgs ->
             msgs.removeIf {
                 it.uId <= MessageUIState.STREAMING.value ||
                         it.id <= 0 ||
-                        it.completionId == currentCompletionId
+                        it.completionId == currentCompletionId ||
+                        // 同一对 DB 行的旧快照按行主键驱逐：cid 会随 Agent 轮次
+                        // (processResponseStarted) 漂移、uId 会随终态翻转，上面三个条件
+                        // 都可能漏掉本回合的旧占位，导致同一问题/回答在列表里渲染两次。
+                        (liveQuestion.id > 0 && it.id == liveQuestion.id) ||
+                        (liveAnswer.id > 0 && it.id == liveAnswer.id)
             }
             msgs.addAll(
                 0,
                 listOf(
-                    sharedState.answerMessageEntity.value,
-                    sharedState.questionMessageEntity.value
+                    liveAnswer,
+                    liveQuestion
                 )
             )
         }

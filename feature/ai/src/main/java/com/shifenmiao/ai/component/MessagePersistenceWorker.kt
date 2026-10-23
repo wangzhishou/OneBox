@@ -59,6 +59,9 @@ class MessagePersistenceWorker(
          */
         private const val STREAM_DRAFT_INTERVAL_MS = 2_000L
 
+        /** 同一 cid 的完成落库去重窗口（Runner 内与 loop 返回后的两次调用间隔在毫秒级）。 */
+        private const val DUPLICATE_COMPLETION_GUARD_MS = 2_000L
+
         /**
          * 草稿行的 finish_reason 哨兵值。
          *
@@ -86,6 +89,16 @@ class MessagePersistenceWorker(
     // 每个回合持有自己的 [StreamDraft] 句柄：草稿行一旦写入，就必须由该回合自己的
     // 退出路径（完成/错误/取消/被新消息顶掉）收尾。不能依赖 worker 上的共享字段，
     // 否则新一轮开始后旧回合的迟到写入或清理会落到新回合的行上。
+
+    // Agent 回合的完成落库会被调两次（Runner 最终轮 Completed 一次、executeAgentLoop
+    // 返回后一次），行级 REPLACE 幂等，但扣分/会话 messageCount/评价计数不幂等。
+    // 同一 cid 在短窗口内的第二次调用整体跳过；续跑/重试都是新 cid 或跨流（远超窗口），
+    // 不会被误伤。
+    @Volatile
+    private var lastCompletionEndCid: String? = null
+
+    @Volatile
+    private var lastCompletionEndAt: Long = 0L
 
     /**
      * 一次流式回合的草稿句柄。
@@ -315,8 +328,22 @@ class MessagePersistenceWorker(
     ) {
         // 终态已到：封住本回合还在排队的草稿写入，随后用同一组 id REPLACE 成最终消息。
         finishStreamDraft(draft)
-        val currentTime = Date()
         val insertCompletionId = sharedState.questionMessageEntity.value.completionId
+        // 同一回合的重复完成落库（Runner 最终轮 Completed + executeAgentLoop 返回后各调一次）
+        // 整体跳过：行级 REPLACE 幂等，但扣分/messageCount/评价计数不幂等。
+        val nowMs = System.currentTimeMillis()
+        if (insertCompletionId.isNotBlank() &&
+            insertCompletionId == lastCompletionEndCid &&
+            nowMs - lastCompletionEndAt < DUPLICATE_COMPLETION_GUARD_MS
+        ) {
+            "onChatCompletionEnd skipped: duplicate finalize for cid=$insertCompletionId"
+                .makeLog("MessagePersistenceWorker")
+            return
+        }
+        lastCompletionEndCid = insertCompletionId
+        lastCompletionEndAt = nowMs
+
+        val currentTime = Date()
         // 实体在流式期间被竞态重置为空时, 用发送时固化的原文兜底, 避免写空 question 行
         val questionText = resolvePersistQuestion(
             current = sharedState.questionMessageEntity.value.question,
