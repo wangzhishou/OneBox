@@ -381,6 +381,27 @@ object SaveSuccessNotifier {
         )
 
     /**
+     * 把自行拼好的保存文案里的文件名/保存目录换成可点击链接,规则与标准保存提示一致:
+     * 文件名指向文件本身,保存目录指向 FileBrowser(dir://)。
+     *
+     * @param message 文案原文,必须包含 [fileName] 或 [savingPath] 的原文才能命中
+     * @param linkableFileUri 可打开的文件 URI;为空时只链接目录
+     */
+    fun linkifiedMessage(
+        message: String,
+        fileName: String,
+        linkableFileUri: String,
+        savingPath: String,
+    ): String = SaveResultHandlerImpl.linkifiedSaveMessage(
+        SaveResult.Success(
+            message = message,
+            savingPath = savingPath.ifBlank { null },
+            fileUri = linkableFileUri.ifBlank { null },
+            fileName = fileName.ifBlank { null },
+        )
+    ) ?: message
+
+    /**
      * 只写 ActivityLog、不弹 toast 不撒花:AI Agent 工具等结果走对话流、
      * 不打扰用户的场景。描述消息同样会做文件名/目录的链接化处理。
      */

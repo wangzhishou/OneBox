@@ -23,6 +23,7 @@ import com.wanbaohe.calendar.data.YiJiCalculator
 import com.wanbaohe.core.ui.review.ReviewPromptTrigger
 import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.helper.SaveSuccessNotifier
 import com.wanbaohe.core.weather.domain.model.CityInfo
 import com.wanbaohe.core.weather.domain.model.PlaceWeather
 import com.wanbaohe.core.weather.domain.repository.WeatherRepository
@@ -254,19 +255,29 @@ class CalendarShareComponent @AssistedInject internal constructor(
             trigger = ReviewPromptTrigger.SAVE_SUCCESS
         )
         val lunar = _uiState.value.lunarDate
-        val description = buildString {
-            append("保存分享卡 · ")
-            append(dateKey)
-            if (lunar != null) {
-                append(" 农历")
-                append(lunar.monthName)
-                append(lunar.dayName)
-            }
-            if (savePath.isNotBlank()) {
-                append(" · ")
-                append(savePath)
-            }
-        }
+        val description = SaveSuccessNotifier.linkifiedMessage(
+            message = buildString {
+                append("保存分享卡 · ")
+                append(dateKey)
+                if (lunar != null) {
+                    append(" 农历")
+                    append(lunar.monthName)
+                    append(lunar.dayName)
+                }
+                if (fileName.isNotBlank()) {
+                    append(" · ")
+                    append(fileName)
+                }
+                if (savePath.isNotBlank()) {
+                    append(" 保存到 ")
+                    append(savePath)
+                }
+            },
+            fileName = fileName,
+            // 应用专属目录里的文件没有可打开的 URI，只留目录链接
+            linkableFileUri = uri?.toString().orEmpty(),
+            savingPath = savePath,
+        )
         componentScope.launch {
             runCatching {
                 activityLogRecorder.recordImageSave(

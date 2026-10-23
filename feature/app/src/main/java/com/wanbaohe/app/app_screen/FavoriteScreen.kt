@@ -909,7 +909,7 @@ private fun ActivityLogCardContent(
                         ),
                         onHyperlinkClick = { localUrlNavigator.navigate(it) },
                         overflow = TextOverflow.Ellipsis,
-                        maxLines = 2,
+                        maxLines = 4,
                         enableAutoLinkify = false
                     )
                 }
