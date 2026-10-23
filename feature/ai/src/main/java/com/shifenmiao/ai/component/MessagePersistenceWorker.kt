@@ -59,9 +59,6 @@ class MessagePersistenceWorker(
          */
         private const val STREAM_DRAFT_INTERVAL_MS = 2_000L
 
-        /** 同一 cid 的完成落库去重窗口（Runner 内与 loop 返回后的两次调用间隔在毫秒级）。 */
-        private const val DUPLICATE_COMPLETION_GUARD_MS = 2_000L
-
         /**
          * 草稿行的 finish_reason 哨兵值。
          *
@@ -90,15 +87,41 @@ class MessagePersistenceWorker(
     // 退出路径（完成/错误/取消/被新消息顶掉）收尾。不能依赖 worker 上的共享字段，
     // 否则新一轮开始后旧回合的迟到写入或清理会落到新回合的行上。
 
-    // Agent 回合的完成落库会被调两次（Runner 最终轮 Completed 一次、executeAgentLoop
-    // 返回后一次），行级 REPLACE 幂等，但扣分/会话 messageCount/评价计数不幂等。
-    // 同一 cid 在短窗口内的第二次调用整体跳过；续跑/重试都是新 cid 或跨流（远超窗口），
-    // 不会被误伤。
-    @Volatile
-    private var lastCompletionEndCid: String? = null
+    // ── 结算幂等（落库与结算分离） ────────────────────────────
+    //
+    // 同一对 Q/A 行会经历多次 finalize：Agent 回合 Runner 最终轮 Completed 一次、
+    // executeAgentLoop 返回后一次；触顶暂停时在 executeStreamingChat 尾部结算一次，
+    // 用户点「继续」跑完后再结算一次；续跑中被停止/报错还会走进中断/错误路径。
+    // 落库 REPLACE 幂等，但扣分、messageCount、评价/标题不是，所以：
+    // - 积分按「该回答行累计 token 的增量」扣（totalTokens 跨轮累加，整扣会重复）；
+    // - messageCount 每对行只 +2 一次；
+    // - 评价弹层/标题摘要每对行只在「非暂停的终态」触发一次（暂停结算跳过，续跑结束补发）。
+    // 调用基本串行（同一回合协程内顺序执行），这里用锁兜底而非追求无锁。
+    private val settlementLock = Any()
 
     @Volatile
-    private var lastCompletionEndAt: Long = 0L
+    private var lastChargedAnswerId: Int = 0
+
+    @Volatile
+    private var lastChargedTokens: Int = 0
+
+    private val countedPairAnswerIds = HashSet<Int>()
+    private val terminalEffectsAnswerIds = HashSet<Int>()
+
+    /** messageCount 增量：同一回答行只计一次 +2；id<=0（草稿插入失败的兜底直写）按新对计。 */
+    fun messagePairCountIncrement(answerId: Int): Int {
+        if (answerId <= 0) return 2
+        return synchronized(settlementLock) {
+            if (countedPairAnswerIds.add(answerId)) 2 else 0
+        }
+    }
+
+    /** 终态副作用（评价/标题摘要）每对行只发一次；返回 true 表示本次应触发。 */
+    private fun shouldFireTerminalEffects(answerId: Int, paused: Boolean): Boolean {
+        if (paused) return false
+        if (answerId <= 0) return true
+        return synchronized(settlementLock) { terminalEffectsAnswerIds.add(answerId) }
+    }
 
     /**
      * 一次流式回合的草稿句柄。
@@ -319,29 +342,21 @@ class MessagePersistenceWorker(
      * 2. 写入 DB
      * 3. 消费积分
      * 4. 触发标题摘要
+     *
+     * @param paused true 表示本次是「达到最大迭代、等待用户继续」的暂停落库：
+     *               内容/草稿照常 REPLACE，积分按增量照扣，但评价/标题摘要等
+     *               终态副作用延后到续跑真正结束的那次 finalize。
      */
     suspend fun onChatCompletionEnd(
         toolCallsChainJson: String,
         startQuestionTime: Long,
         fallbackQuestion: String = "",
         draft: StreamDraft? = null,
+        paused: Boolean = false,
     ) {
         // 终态已到：封住本回合还在排队的草稿写入，随后用同一组 id REPLACE 成最终消息。
         finishStreamDraft(draft)
         val insertCompletionId = sharedState.questionMessageEntity.value.completionId
-        // 同一回合的重复完成落库（Runner 最终轮 Completed + executeAgentLoop 返回后各调一次）
-        // 整体跳过：行级 REPLACE 幂等，但扣分/messageCount/评价计数不幂等。
-        val nowMs = System.currentTimeMillis()
-        if (insertCompletionId.isNotBlank() &&
-            insertCompletionId == lastCompletionEndCid &&
-            nowMs - lastCompletionEndAt < DUPLICATE_COMPLETION_GUARD_MS
-        ) {
-            "onChatCompletionEnd skipped: duplicate finalize for cid=$insertCompletionId"
-                .makeLog("MessagePersistenceWorker")
-            return
-        }
-        lastCompletionEndCid = insertCompletionId
-        lastCompletionEndAt = nowMs
 
         val currentTime = Date()
         // 实体在流式期间被竞态重置为空时, 用发送时固化的原文兜底, 避免写空 question 行
@@ -359,7 +374,8 @@ class MessagePersistenceWorker(
             defaultTitle = sharedState.applicationContext.getString(R.string.ai_chat_title),
             userMessage = questionText,
             assistantMessage = persistedAnswerText,
-            messageIncrement = 2,
+            // 同一对行多次 finalize（暂停→续跑等）只计一次 +2
+            messageIncrement = messagePairCountIncrement(sharedState.answerMessageEntity.value.id),
             timestamp = currentTime.time
         )
         sharedState.setConversation(updatedConversation)
@@ -428,15 +444,17 @@ class MessagePersistenceWorker(
         consumePoints(sharedState.answerMessageEntity.value)
         checkAndWarnTokenUsage()
 
-        requestConversationTitleSummary(
-            conversation = updatedConversation,
-            userMessage = sharedState.questionMessageEntity.value.question,
-            assistantMessage = persistedAnswerEntity.answer
-        )
+        if (shouldFireTerminalEffects(persistedAnswerEntity.id, paused)) {
+            requestConversationTitleSummary(
+                conversation = updatedConversation,
+                userMessage = sharedState.questionMessageEntity.value.question,
+                assistantMessage = persistedAnswerEntity.answer
+            )
 
-        // 一轮问答完整落库 = 用户刚拿到价值,报给应用内评分弹层做门控判断
-        // (次数门槛/冷却/每安装上限都在 InAppReviewPrompt 里,失败静默,不影响落库主流程)
-        ReviewPromptHost.notifySuccess(ReviewPromptTrigger.AI_ANSWER_SUCCESS)
+            // 一轮问答完整落库 = 用户刚拿到价值,报给应用内评分弹层做门控判断
+            // (次数门槛/冷却/每安装上限都在 InAppReviewPrompt 里,失败静默,不影响落库主流程)
+            ReviewPromptHost.notifySuccess(ReviewPromptTrigger.AI_ANSWER_SUCCESS)
+        }
     }
 
     /**
@@ -510,7 +528,7 @@ class MessagePersistenceWorker(
             persistConversationSnapshot(
                 userMessage = sharedState.questionMessageEntity.value.question,
                 assistantMessage = sharedState.answerMessageEntity.value.answer,
-                messageIncrement = 2,
+                messageIncrement = messagePairCountIncrement(sharedState.answerMessageEntity.value.id),
                 timestamp = currentTime.time
             )
             if (!skipPoints) {
@@ -618,12 +636,36 @@ class MessagePersistenceWorker(
         }
     }
 
-    /** 消费积分 */
+    /**
+     * 消费积分。
+     *
+     * 按「该回答行累计 token 的增量」扣费：同一对行会被多次结算（Agent 暂停时已扣过
+     * 暂停前的累计量，续跑/中断/错误的收尾路径拿到的是跨轮累加后的 totalTokens），
+     * 直接按累计值扣会把已结算部分再扣一遍。token→积分是线性换算（tokenToPoints），
+     * 按增量折算不会少扣。
+     */
     fun consumePoints(messageEntity: MessageEntity) {
+        val totalTokens = messageEntity.totalTokens
+        if (totalTokens <= 0) return
+        val answerId = messageEntity.id
+        val chargeTokens = synchronized(settlementLock) {
+            if (answerId > 0 && answerId == lastChargedAnswerId) {
+                (totalTokens - lastChargedTokens).also { delta ->
+                    if (delta > 0) lastChargedTokens = totalTokens
+                }
+            } else {
+                if (answerId > 0) {
+                    lastChargedAnswerId = answerId
+                    lastChargedTokens = totalTokens
+                }
+                totalTokens
+            }
+        }
+        if (chargeTokens <= 0) return
         sharedState.componentScope.launch {
-            if (messageEntity.totalTokens > 0 && AiUtils.isNotFree(sharedState.conversation.value)) {
+            if (AiUtils.isNotFree(sharedState.conversation.value)) {
                 BaseUtils.consumePointsByToken(
-                    messageEntity.totalTokens,
+                    chargeTokens,
                     sharedState.conversation.value,
                     desc = messageEntity.completionId
                 )
@@ -710,8 +752,15 @@ class MessagePersistenceWorker(
         assistantMessage: String,
     ) {
         sharedState.componentScope.launch(sharedState.ioDispatcher) {
+            // 标题摘要门槛用 message 表的实际行数，而不是 conversations 表存的 messageCount：
+            // 后者历史上被「新会话沿用旧计数 / 暂停重复计数」污染过，脏值会让首轮门槛永远失效。
+            val exactCount = runCatching {
+                appDatabase.messageDao()
+                    .getActiveMessageCountsByConversationIds(listOf(conversation.id))
+                    .firstOrNull()?.messageCount
+            }.getOrNull() ?: conversation.messageCount
             val title = conversationTitleSummaryService.generateTitle(
-                conversation = conversation,
+                conversation = conversation.copy(messageCount = exactCount),
                 userMessage = userMessage,
                 assistantMessage = assistantMessage
             ) ?: return@launch

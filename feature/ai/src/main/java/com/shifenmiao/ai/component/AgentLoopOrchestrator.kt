@@ -94,6 +94,10 @@ class AgentLoopOrchestrator(
     /** Agent Loop 暂停上下文 */
     private var pausedAgentLoopContext: PausedAgentLoopContext? = null
 
+    /** 当前是否处于「达到最大迭代、等待用户点继续」的暂停态。 */
+    val isAgentLoopPaused: Boolean
+        get() = pausedAgentLoopContext != null
+
     /**
      * P1 review M1: 会话取消/超时后的 shutdown 标记.
      *

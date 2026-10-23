@@ -259,9 +259,11 @@ class StreamContentProcessor(
         val messagesCopy = sharedState.getMessagesSnapshot()
             // 同一 DB 行在内存里可能滞留多份快照（cid 随 Agent 轮次漂移后按 cid 去重失效）,
             // 已落库的行优先按行主键归组; 未落库(id<=0)的占位仍按 cid+role。
-            // 组内同 id 并列时 maxByOrNull 取列表序首个最大者, 即列表头部的 live 拷贝。
-            .groupBy { if (it.id > 0) "row_${it.id}_${it.role}" else "${it.completionId}_${it.role}" }
-            .mapValues { (_, msgs) -> msgs.maxByOrNull { it.id }!! }
+            // 组内即列表顺序, first() 取列表头部的 live 拷贝。
+            .groupBy {
+                if (it.id > 0) RenderRowKey(it.id, it.role) else RenderCidKey(it.completionId, it.role)
+            }
+            .mapValues { (_, msgs) -> msgs.first() }
             .values
             .sortedByDescending { it.createdAt }
             .toList()
@@ -518,3 +520,8 @@ class StreamContentProcessor(
         blockReuseCache.clear()
     }
 }
+
+/** 渲染归组键：已落库的行按行主键，未落库的占位按 cid+role；类型化避免与 cid 字符串撞 key。 */
+private data class RenderRowKey(val id: Int, val role: String)
+
+private data class RenderCidKey(val cid: String, val role: String)

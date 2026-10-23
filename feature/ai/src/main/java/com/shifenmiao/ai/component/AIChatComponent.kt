@@ -388,12 +388,12 @@ open class AIChatComponent @AssistedInject internal constructor(
         componentScope.launch {
             val fillIn = guide.template?.trim().orEmpty()
             clearMessages()
-            _conversation.value = _conversation.value.copy(
-                id = Date().time.toString(),
-                title = guide.title,
-                titleSource = com.shifenmiao.model.ai.AIConversationTitleSource.SYSTEM,
-                template = null,
-            )
+            // 引导会话也是全新会话：与 changeConversationId 共用同一套重置，
+            // 统计/预览不沿用上一个会话。
+            _conversation.value = _conversation.value.resetForNewConversation(
+                newId = Date().time.toString(),
+                newTitle = guide.title,
+            ).copy(template = null)
             clearCurrentQuestionAndAnswer()
             loadMessages()
             hideHistory()
@@ -912,7 +912,8 @@ open class AIChatComponent @AssistedInject internal constructor(
                     enableWebSearch = enableWebSearch,
                     tools = tools,
                 )
-                // Agent Loop 完成后持久化消息（包含工具调用链 JSON）
+                // Agent Loop 完成后持久化消息（包含工具调用链 JSON）。
+                // 触顶暂停时 paused=true：内容照常落库，评价/标题等终态副作用延后到续跑结束。
                 messagePersistenceWorker.calculateUsageIfNull(null, questionMessageEntityList)
                 messagePersistenceWorker.onChatCompletionEnd(
                     toolCallsChainJson = agentLoopOrchestrator.toolCallsChainJson,
@@ -920,7 +921,8 @@ open class AIChatComponent @AssistedInject internal constructor(
                     fallbackQuestion = questionMessageEntityList
                         .lastOrNull { it.role == RoleType.USER.value }
                         ?.question.orEmpty(),
-                    draft = draft
+                    draft = draft,
+                    paused = agentLoopOrchestrator.isAgentLoopPaused
                 )
             }
         } catch (e: Exception) {
@@ -1308,7 +1310,7 @@ open class AIChatComponent @AssistedInject internal constructor(
         messagePersistenceWorker.persistConversationSnapshot(
             userMessage = interruptedQuestion.question,
             assistantMessage = interruptedAnswer.answer,
-            messageIncrement = 2,
+            messageIncrement = messagePersistenceWorker.messagePairCountIncrement(interruptedAnswer.id),
             timestamp = currentTime.time
         )
         consumePoints(interruptedAnswer)

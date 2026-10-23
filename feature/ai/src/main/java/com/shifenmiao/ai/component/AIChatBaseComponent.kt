@@ -361,27 +361,38 @@ open class AIChatBaseComponent @AssistedInject internal constructor(
         }
     }
 
+    /**
+     * 把当前会话快照改建成「全新空会话」：换新 id、清标题/统计/预览。
+     * 新建会话与首页引导会话共用：否则 messageCount/预览会沿用上一次的会话，
+     * 新会话首轮流完从旧值继续累加，标题摘要的首轮门槛（messageCount==2）随之失效。
+     */
+    protected fun Conversation.resetForNewConversation(
+        newId: String,
+        newTitle: String,
+    ): Conversation = copy(
+        id = newId,
+        title = newTitle,
+        titleSource = com.shifenmiao.model.ai.AIConversationTitleSource.SYSTEM,
+        messageCount = 0,
+        lastMessagePreview = "",
+        lastUserMessagePreview = ""
+    )
+
     fun changeConversationId(newId: String) {
         componentScope.launch {
             if (messages.isEmpty()) {
                 ActionUtils.showToast(applicationContext.getString(R.string.already_new_chat))
             }
             clearMessages()
-            // 全新会话（新 id）必须重置统计与预览：否则会话快照沿用上一次的
-            // messageCount/预览，新会话首轮流完 messageCount 从旧值继续累加，
-            // 既虚增历史中心计数，也让标题摘要的 messageCount==2 门槛永远失效。
-            // 加载已有会话（loadHistoryById 命中时 newId 与当前 id 相同）不动这些字段。
-            val isFreshConversation = _conversation.value.id != newId
-            _conversation.value = _conversation.value.copy(
-                id = newId,
-                title = "",
-                titleSource = com.shifenmiao.model.ai.AIConversationTitleSource.SYSTEM
-            ).let { copied ->
-                if (isFreshConversation) copied.copy(
-                    messageCount = 0,
-                    lastMessagePreview = "",
-                    lastUserMessagePreview = ""
-                ) else copied
+            // 加载已有会话（loadHistoryById 命中时 newId 与当前 id 相同）不动统计与预览。
+            _conversation.value = if (_conversation.value.id != newId) {
+                _conversation.value.resetForNewConversation(newId, newTitle = "")
+            } else {
+                _conversation.value.copy(
+                    id = newId,
+                    title = "",
+                    titleSource = com.shifenmiao.model.ai.AIConversationTitleSource.SYSTEM
+                )
             }
             clearCurrentQuestionAndAnswer()
             loadMessages()
