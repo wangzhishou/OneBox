@@ -415,6 +415,8 @@ jobs:
           # matrix 各分支产物名必须唯一 (artifact v4 不可变), 发布时按前缀归集
           name: built-apk-${{ matrix.app_flavor }}-${{ matrix.abi_flavor }}
           path: ${{ steps.package_apk.outputs.output_apk_path }}
+          # 海外包在同一次 run 里就传进 Release, 国内包传进 GitCode, artifact 不长期保留
+          retention-days: 3
 
 
 
