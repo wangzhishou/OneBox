@@ -35,8 +35,8 @@
     <string name="calendar_share_ai_hint">AI 会结合日期、农历、宜忌和天气生成一句，生成后可继续修改。</string>
     <string name="calendar_share_save">保存图片</string>
     <string name="calendar_share_share">分享图片</string>
-    <string name="calendar_share_saved_gallery">已保存到相册</string>
-    <string name="calendar_share_saved_app">已保存到应用图片目录</string>
+    <string name="calendar_share_saved_gallery">已保存到相册（%1$s）</string>
+    <string name="calendar_share_saved_app">已保存到应用目录（%1$s）</string>
     <string name="calendar_share_save_failed">保存失败</string>
     <string name="calendar_share_render_failed">卡片渲染失败</string>
     <string name="calendar_share_retry">重试</string>

@@ -208,7 +208,10 @@ class CalendarShareComponent @AssistedInject internal constructor(
                 is CalendarShareSaveOutcome.Gallery -> {
                     showSavedToast(
                         uri = outcome.uri,
-                        message = AppContext.getString(R.string.calendar_share_saved_gallery),
+                        message = AppContext.getString(
+                            R.string.calendar_share_saved_gallery,
+                            outcome.relativePath
+                        ),
                         fileName = outcome.fileName,
                         fileUri = outcome.uri.toString(),
                         savePath = outcome.relativePath
@@ -218,7 +221,10 @@ class CalendarShareComponent @AssistedInject internal constructor(
                 is CalendarShareSaveOutcome.AppStorage -> {
                     showSavedToast(
                         uri = null,
-                        message = AppContext.getString(R.string.calendar_share_saved_app),
+                        message = AppContext.getString(
+                            R.string.calendar_share_saved_app,
+                            outcome.relativePath
+                        ),
                         fileName = outcome.fileName,
                         fileUri = Uri.fromFile(outcome.file).toString(),
                         savePath = outcome.relativePath
@@ -255,6 +261,10 @@ class CalendarShareComponent @AssistedInject internal constructor(
                 append(" 农历")
                 append(lunar.monthName)
                 append(lunar.dayName)
+            }
+            if (savePath.isNotBlank()) {
+                append(" · ")
+                append(savePath)
             }
         }
         componentScope.launch {

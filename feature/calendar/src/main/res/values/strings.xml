@@ -37,8 +37,8 @@
     <string name="calendar_share_ai_hint">Generated from the date, lunar date, Yi/Ji and weather. You can edit it.</string>
     <string name="calendar_share_save">Save</string>
     <string name="calendar_share_share">Share</string>
-    <string name="calendar_share_saved_gallery">Saved to gallery</string>
-    <string name="calendar_share_saved_app">Saved to app pictures</string>
+    <string name="calendar_share_saved_gallery">Saved to gallery (%1$s)</string>
+    <string name="calendar_share_saved_app">Saved to app folder (%1$s)</string>
     <string name="calendar_share_save_failed">Save failed</string>
     <string name="calendar_share_render_failed">Couldn\'t render the card</string>
     <string name="calendar_share_retry">Retry</string>
