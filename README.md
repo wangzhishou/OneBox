@@ -6,7 +6,8 @@
   **English** | [简体中文](README.zh-CN.md)
 
   A free AI agent & toolbox for Android: say what you need and the built-in agent drives
-  90+ in-app tools to get it done — plus image & document tools, productivity and daily utilities.
+  90+ in-app tools to get it done — plus image & document tools, productivity and daily
+  utilities, and 100+ file formats you can open right away.
 
   [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
   [![Google Play](https://img.shields.io/badge/Google%20Play-OneBox-green?logo=google-play)](https://play.google.com/store/apps/details?id=com.shifenmiao.app)
@@ -49,9 +50,27 @@ It understands, acts, and reports back — in one flow.
 - **Models that run on the phone — fully offline**: download a local model (Gemma 3 1B or Qwen3 0.6B) inside the app, or import your own `.litertlm` file, and chat without network, account or token cost — inference runs entirely on-device via LiteRT-LM (Google Play and FOSS builds only).
 - **Transparent by source**: every line is public — how data is processed locally and what never leaves the device is something you can verify, not a promise you have to trust.
 
+## File Opening: 100+ Formats in One App
+
+OneBox is also a file viewer. Tap an attachment in a chat app, a file in a file manager, or share one over from another app — it lands on the right screen, with no separate Office, PDF, media player or unzip app.
+
+| Type | Count | Common formats | Opens in |
+| --- | --- | --- | --- |
+| Images | 24 | jpg / png / gif / webp / heic / tiff / svg / avif / jxl / qoi … | Built-in viewer with swipe and zoom |
+| PDF | 1 | pdf | Built-in PDF preview |
+| Documents | 11 | doc / docx / xls / xlsx / ppt / pptx / odt / ods / odp / rtf / epub | Built-in offline preview (`feature/file-viewer`) with find; Word adds page numbers and night mode |
+| Markdown | 4 | md / markdown / mkd / mdown | Built-in editor, preview + edit |
+| HTML | 3 | html / htm / xhtml | Built-in browser |
+| Text / code / config | 42 | txt / log / json / xml / yaml / csv / kt / java / py / go / rs / sql / sh … | Built-in code editor with syntax highlighting |
+| Audio | 12 | mp3 / wav / flac / ogg / aac / m4a / opus … | Built-in player, background playback + notification controls |
+| Video | 13 | mp4 / mkv / mov / webm / avi / 3gp … | Built-in player with picture-in-picture |
+| Archives | 14 | zip / rar / 7z / tar / gz / xz … | ZIP browsed and extracted in-app; others handed to installed apps |
+
+**124 unique extensions.** Every single-file entry point — file browser, external intents, deep links, AI agent tool calls — goes through the same `ContentRouter` in `core/ui`, so a file opens the same way wherever it comes from. A few pro formats (camera RAW, uncommon audio codecs) depend on the system decoder; when they can't be decoded, OneBox says so or hands them off.
+
 ## Features
 
-OneBox ships **104 feature modules**. Local tools run entirely on-device; only the conversation with your chosen AI model goes online. The tables below list every module — names refer to the `feature/*` directories in this repo.
+OneBox ships **107 feature modules**. Local tools run entirely on-device; only the conversation with your chosen AI model goes online. The tables below list every module — names refer to the `feature/*` directories in this repo.
 
 ### AI & Assistant
 
@@ -107,7 +126,7 @@ OneBox ships **104 feature modules**. Local tools run entirely on-device; only t
 | `feature/apng-tools` | APNG Tools | Multi-image APNGs with frame delay and repeat count |
 | `feature/webp-tools` | WebP Tools | Multi-image animated WebP with frame delay and repeat count |
 | `feature/svg-maker` | SVG Maker | Convert bitmaps into SVG vector graphics |
-| `feature/zip` | ZIP Archive | Pack images into a ZIP archive |
+| `feature/zip` | ZIP Archive | Pack images into a ZIP; open a ZIP to browse its tree and extract one file or all |
 
 ### Metadata & Encoding
 
@@ -127,6 +146,7 @@ OneBox ships **104 feature modules**. Local tools run entirely on-device; only t
 | `feature/document-scanner` | Document Scanner | Scan paper documents into images / PDF |
 | `feature/markdown-edit` | Markdown Editor | WYSIWYG Markdown editing, export to PDF |
 | `feature/code-editor` | Code Editor | Syntax highlighting, file I/O and history |
+| `feature/file-viewer` | Document Preview | Offline preview for Word / Excel / PowerPoint / OpenDocument / RTF / EPUB with page jump, find and night mode |
 
 ### Watermark & ID Photo
 
@@ -158,6 +178,7 @@ OneBox ships **104 feature modules**. Local tools run entirely on-device; only t
 | `feature/dead-pixel-test` | Dead Pixel Test | Fullscreen solid colors with color switching and grid overlay |
 | `feature/marquee` | Marquee | Fullscreen scrolling text, LED style and subtitle modes |
 | `feature/audio-cover-extractor` | Cover Extractor | Extract album covers from audio files |
+| `feature/device-status` | Device Status | View and copy the local IP, network and device details |
 
 ### Security & Encryption
 
@@ -206,13 +227,14 @@ OneBox ships **104 feature modules**. Local tools run entirely on-device; only t
 | `feature/notification` | Notifications | Message center with unread badges |
 | `feature/ad-watch` | Watch & Earn | Watch rewarded ads to earn points, with a daily cap |
 
-### Files & Transfer
+### Files & Media
 
 | Module | Feature | Description |
 | --- | --- | --- |
 | `feature/file-browser` | File Browser | Directory navigation, search, sort, multi-select operations |
 | `feature/file-transfer` | File Transfer | LAN file transfer with QR pairing and encryption |
 | `feature/cloud-storage` | Cloud Storage | Browse, upload, download and delete cloud files |
+| `feature/media-player` | Media Player | Unified local audio / video playback: video picture-in-picture, background audio with notification controls, media library, favorites and queue |
 | `feature/media-picker` | Media Picker | Image / video picking shared by the other tools |
 
 ### App Shell & System

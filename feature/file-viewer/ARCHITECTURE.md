@@ -20,6 +20,33 @@ data/                             ContentResolverDocumentSource
 UI 层不碰 `ContentResolver`，读文件全部经 `DocumentSource`；页面能力（能不能查找、
 有没有页码、支不支持夜间）由 `ViewerFormat` 描述，UI 只是照着显示控件。
 
+## 支持的格式
+
+整个 App 的文件打开共覆盖 124 种扩展名（见根目录 README 的“文件打开”一节）。
+下表是本模块能渲染的全部页面；实际从系统或文件浏览器打开时，`ContentRouter` 会优先把
+图片、PDF、音视频、ZIP、HTML、Markdown 分给各自模块，只有文档类落到这里，
+`md` / `text` 页面用于直接进入预览或兜底。
+
+扩展名 → 页面 的唯一入口是 `ViewerFormat.fromExtension`；页面能力由枚举项声明。
+
+| 页面 | 扩展名 | 渲染器 | 能力 |
+|---|---|---|---|
+| `docx.html` | docx / docm / dotx | docx-preview | 页码、查找、夜间 |
+| `prose.html` | doc / dot / odt / ott / fodt / rtf | 自研 prose reader | 查找 |
+| `xlsx.html` | xlsx / xls / xlsm / xlsb / xltx / csv / ods | SheetJS | 查找 |
+| `pptx.html` | pptx / ppsx / pptm / potx | PPTXjs | 查找 |
+| `ppt.html` | ppt | 二进制文字大纲 | 查找 |
+| `odp.html` | odp / otp | 按幻灯片绘制 | 查找 |
+| `epub.html` | epub | 自研 EPUB reader | 查找、阅读进度 |
+| `md.html` | md / markdown / mkd / mdown | marked + DOMPurify | 查找 |
+| `text.html` | txt / log / json / xml / yaml / ini / cfg / conf / properties / toml / srt / vtt / m3u / nfo | text.js | 5MB 分页、查找 |
+| `imgweb.html` | gif / svg / avif / ico | WebView 原生解码 | — |
+| `unsupported.html` | 其他后缀 | 兜底页 | 按文本查看 |
+
+新增格式时，除了在 `ViewerFormat` 里加页面和后缀，还要同步
+`ContentType.DOCUMENT_EXTENSIONS`（`core/domain`）与 `app/src/main/AndroidManifest.xml`
+的 VIEW filter，外部“打开方式”才进得来。
+
 ## 页面从哪来
 
 ```

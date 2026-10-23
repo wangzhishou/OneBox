@@ -6,7 +6,7 @@
   [English](README.md) | **简体中文**
 
   免费的 Android AI 智能体 & 工具箱:说句话,内置 Agent 就能驱动 90+ 应用内工具替你干活;
-  图片与文档处理、效率与生活工具,一个入口完成日常百事。
+  图片与文档处理、效率与生活工具,一个入口完成日常百事,还能直接打开 100+ 种格式的文件。
 
   [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
   [![Google Play](https://img.shields.io/badge/Google%20Play-OneBox-green?logo=google-play)](https://play.google.com/store/apps/details?id=com.shifenmiao.app)
@@ -48,9 +48,27 @@ AI 理解、执行、反馈,一气呵成。
 - **模型跑在手机上,全程离线**:在 App 内直接下载本地模型(Gemma 3 1B 或 Qwen3 0.6B),也可以从存储导入自己的 `.litertlm` 文件,断网也能聊——不登录、不消耗积分,推理全部在端侧由 LiteRT-LM 完成(仅 Google Play 版与 FOSS 构建;国内渠道不编入端侧推理库)。
 - **代码透明,隐私可见**:所有代码公开可查——数据如何在本地处理、哪些信息绝不上传,一目了然。你不再需要“相信”我们,而是可以亲自验证。
 
+## 文件打开:一个 App 打开 100+ 种文件
+
+万宝盒同时是一个文件查看器。在聊天软件里点开附件、在文件管理器里点开文件,或用别的 App 分享过来,都能直接落到对应页面——不用再装 Office、PDF、音视频、解压一堆 App。
+
+| 类型 | 数量 | 常见格式 | 打开方式 |
+| --- | --- | --- | --- |
+| 图片 | 24 | jpg / png / gif / webp / heic / tiff / svg / avif / jxl / qoi … | 内置图片查看器,多图滑动、缩放 |
+| PDF | 1 | pdf | 内置 PDF 预览 |
+| 文档 | 11 | doc / docx / xls / xlsx / ppt / pptx / odt / ods / odp / rtf / epub | 内置离线预览(`feature/file-viewer`),支持查找;Word 另有页码与夜间 |
+| Markdown | 4 | md / markdown / mkd / mdown | 内置 Markdown 编辑器,预览 + 编辑 |
+| HTML | 3 | html / htm / xhtml | 内置浏览器 |
+| 文本 / 代码 / 配置 | 42 | txt / log / json / xml / yaml / csv / kt / java / py / go / rs / sql / sh … | 内置代码编辑器,语法高亮 |
+| 音频 | 12 | mp3 / wav / flac / ogg / aac / m4a / opus … | 内置播放器,后台播放 + 通知栏控制 |
+| 视频 | 13 | mp4 / mkv / mov / webm / avi / 3gp … | 内置播放器,支持画中画 |
+| 压缩包 | 14 | zip / rar / 7z / tar / gz / xz … | zip 在 App 内浏览、解压;其余转交系统已安装应用 |
+
+去重后共 **124 种扩展名**。单文件打开统一走 `core/ui` 里的 `ContentRouter`:文件浏览器、外部 Intent、深链和 AI Agent 工具调用都走同一条决策链,不会出现“从这里能开、从那里打不开”。少数专业格式(如相机 RAW、少见音频编码)受系统解码能力限制,打不开时会提示或转交系统。
+
 ## 功能总览
 
-万宝盒共 **104 个功能模块**。本地工具全程本机执行,只有与所选大模型的对话会联网。下表按分类列出全部模块——模块名对应仓库里的 `feature/*` 目录。
+万宝盒共 **107 个功能模块**。本地工具全程本机执行,只有与所选大模型的对话会联网。下表按分类列出全部模块——模块名对应仓库里的 `feature/*` 目录。
 
 ### AI 与智能
 
@@ -106,7 +124,7 @@ AI 理解、执行、反馈,一气呵成。
 | `feature/apng-tools` | APNG 工具 | 多图合成 APNG,可配置帧延迟、重复次数 |
 | `feature/webp-tools` | WebP 工具 | 多图合成 WebP 动图,可配置帧延迟、重复次数 |
 | `feature/svg-maker` | SVG 生成器 | 将位图转换为 SVG 矢量格式 |
-| `feature/zip` | 压缩归档 | 将图片打包为 ZIP |
+| `feature/zip` | ZIP 压缩与解压 | 把图片打包为 ZIP;打开 ZIP 浏览包内目录,解压单个文件或全部 |
 
 ### 元数据与编码
 
@@ -126,6 +144,7 @@ AI 理解、执行、反馈,一气呵成。
 | `feature/document-scanner` | 文档扫描 | 扫描纸质文档生成图片 / PDF |
 | `feature/markdown-edit` | Markdown 编辑器 | 所见即所得编辑,支持导出 PDF |
 | `feature/code-editor` | 代码编辑器 | 语法高亮、文件读写与历史记录 |
+| `feature/file-viewer` | 文件预览 | 内置离线预览 Word / Excel / PowerPoint / OpenDocument / RTF / EPUB,支持页码跳转、查找与夜间模式 |
 
 ### 水印与证件
 
@@ -157,6 +176,7 @@ AI 理解、执行、反馈,一气呵成。
 | `feature/dead-pixel-test` | 坏点检测 | 纯色色板全屏检测屏幕坏点,支持颜色切换与网格叠加 |
 | `feature/marquee` | 跑马灯 | 全屏滚动文字,LED 风格与字幕模式 |
 | `feature/audio-cover-extractor` | 音频封面提取 | 从音频文件提取专辑封面图片 |
+| `feature/device-status` | 设备状态 | 查看并一键复制本机 IP、网络与设备信息 |
 
 ### 加密与安全
 
@@ -205,13 +225,14 @@ AI 理解、执行、反馈,一气呵成。
 | `feature/notification` | 消息中心 | 通知列表与未读角标 |
 | `feature/ad-watch` | 广告看看看 | 看激励广告赚积分,每日有次数上限 |
 
-### 文件与传输
+### 文件与媒体
 
 | 模块 | 功能 | 简介 |
 | --- | --- | --- |
 | `feature/file-browser` | 文件浏览器 | 目录导航/搜索/排序/多选操作 |
 | `feature/file-transfer` | 文件传输 | 局域网文件传输,二维码配对、加密传输 |
 | `feature/cloud-storage` | 云存储 | 云端文件浏览/上传/下载/删除 |
+| `feature/media-player` | 影音播放 | 本地音视频统一打开:视频画中画、音乐后台播放与通知栏控制,含媒体库、收藏与播放队列 |
 | `feature/media-picker` | 媒体选择器 | 供其他工具复用的图片/视频选择能力 |
 
 ### 系统与框架
