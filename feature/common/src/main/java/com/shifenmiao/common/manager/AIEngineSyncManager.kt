@@ -88,10 +88,16 @@ class AIEngineSyncManager @Inject constructor(
         val existingModelsByIdentity = existingModelList.associateBy {
             AiModelEntity.buildIdentityKey(it.name, it.engineName)
         }
+        val existingModelsByRemoteIdentity = existingModelList.mapNotNull { model ->
+            model.remoteId?.let { remoteId ->
+                AiModelEntity.buildRemoteIdentityKey(remoteId, model.engineName) to model
+            }
+        }.toMap()
         val availableModelNamesByEngine = existingModelList
             .groupBy { it.engineName.lowercase() }
             .mapValues { (_, models) -> models.mapTo(linkedSetOf()) { it.name } }
             .toMutableMap()
+        val renamedModelNamesByEngine = mutableMapOf<String, MutableMap<String, String>>()
 
         makeLog { "AIEngineSyncManager: Received ${configData.engines.size} engines, ${configData.models.size} models from server" }
 
@@ -102,10 +108,16 @@ class AIEngineSyncManager @Inject constructor(
                 .mapNotNull { config ->
                     val modelName = config.name?.trim().orEmpty()
                     val engineName = config.provider?.trim().orEmpty()
-                    val existingByIdentity = existingModelsByIdentity[
+                    val existingByName = existingModelsByIdentity[
                         AiModelEntity.buildIdentityKey(modelName, engineName)
                     ]
-                    val existing = existingByIdentity
+                    val existing = config.remoteId?.let { remoteId ->
+                        existingModelsByRemoteIdentity[
+                            AiModelEntity.buildRemoteIdentityKey(remoteId, engineName)
+                        ]
+                    } ?: existingByName?.takeIf {
+                        config.remoteId == null || it.remoteId == null || it.remoteId == config.remoteId
+                    }
 
                     when {
                         modelName.isBlank() -> {
@@ -118,7 +130,7 @@ class AIEngineSyncManager @Inject constructor(
                             null
                         }
 
-                        existingByIdentity?.isLocalOwned() == true -> {
+                        existingByName?.isLocalOwned() == true || existing?.isLocalOwned() == true -> {
                             makeLog {
                                 "AIEngineSyncManager: Skip remote model '$modelName' for engine '$engineName' because local-owned config exists"
                             }
@@ -133,6 +145,15 @@ class AIEngineSyncManager @Inject constructor(
             modelEntities.forEach { model ->
                 val engineName = model.engineName.lowercase()
                 val modelNames = availableModelNamesByEngine.getOrPut(engineName) { linkedSetOf() }
+                val previous = model.remoteId?.let { remoteId ->
+                    existingModelsByRemoteIdentity[
+                        AiModelEntity.buildRemoteIdentityKey(remoteId, model.engineName)
+                    ]
+                }
+                if (previous != null && previous.name != model.name) {
+                    modelNames -= previous.name
+                    renamedModelNamesByEngine.getOrPut(engineName) { mutableMapOf() }[previous.name] = model.name
+                }
                 modelNames += model.name
             }
             makeLog { "AIEngineSyncManager: Updated ${modelEntities.size} models" }
@@ -164,7 +185,9 @@ class AIEngineSyncManager @Inject constructor(
                             else -> AiEngineEntity.fromEngineConfig(config, existingByIdentity).copy(
                                 selectedModelName = resolveSyncedModelName(
                                     engineName = engineName,
-                                    existingSelectedModelName = existingByIdentity?.selectedModelName,
+                                    existingSelectedModelName = existingByIdentity?.selectedModelName?.let { selected ->
+                                        renamedModelNamesByEngine[engineName.lowercase()]?.get(selected) ?: selected
+                                    },
                                     availableModelNamesByEngine = availableModelNamesByEngine,
                                 )
                             )

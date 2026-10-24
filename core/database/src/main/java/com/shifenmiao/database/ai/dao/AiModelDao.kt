@@ -21,6 +21,9 @@ interface AiModelDao {
     @Query("SELECT * FROM ai_models WHERE name = :name AND engine_name = :engineName LIMIT 1")
     suspend fun getModelByNameAndEngineName(name: String, engineName: String): AiModelEntity?
 
+    @Query("SELECT * FROM ai_models WHERE remote_id = :remoteId AND engine_name = :engineName LIMIT 1")
+    suspend fun getModelByRemoteIdAndEngineName(remoteId: Int, engineName: String): AiModelEntity?
+
     @Query("SELECT * FROM ai_models WHERE provider = :provider")
     suspend fun getModelsByProvider(provider: String): List<AiModelEntity>
 
@@ -71,10 +74,18 @@ interface AiModelDao {
 
     @Transaction
     suspend fun upsertModelByIdentity(model: AiModelEntity): Int {
-        val existing = getModelByNameAndEngineName(
+        val existingByName = getModelByNameAndEngineName(
             name = model.name,
             engineName = model.engineName,
         )
+        val existing = model.remoteId?.let { remoteId ->
+            getModelByRemoteIdAndEngineName(
+                remoteId = remoteId,
+                engineName = model.engineName,
+            )
+        } ?: existingByName?.takeIf {
+            model.remoteId == null || it.remoteId == null || it.remoteId == model.remoteId
+        }
         return if (existing != null) {
             insertModel(model.copy(id = existing.id))
             existing.id

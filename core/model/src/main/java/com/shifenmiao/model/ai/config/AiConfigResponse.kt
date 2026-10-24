@@ -66,6 +66,8 @@ data class EngineConfig(
  */
 @Serializable
 data class ModelConfig(
+    @SerialName("id")
+    val remoteId: Int? = null,
     val name: String? = null,
     val title: String? = null,
     val description: String? = null,

@@ -13,12 +13,14 @@ import java.util.Date
 @Entity(
     tableName = "ai_models",
     indices = [
-        Index(value = ["name", "engine_name"], unique = true)
+        Index(value = ["name", "engine_name"], unique = true),
+        Index(value = ["engine_name", "remote_id"], unique = true)
     ]
 )
 data class AiModelEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id") val id: Int = 0,
+    @ColumnInfo(name = "remote_id") val remoteId: Int? = null,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "description") val description: String = "",
@@ -162,6 +164,10 @@ data class AiModelEntity(
             return "${name.trim().lowercase()}#${engineName.trim().lowercase()}"
         }
 
+        fun buildRemoteIdentityKey(remoteId: Int, engineName: String): String {
+            return "$remoteId#${engineName.trim().lowercase()}"
+        }
+
         fun fromAiModel(
             model: AiModel,
             existingEntity: AiModelEntity? = null,
@@ -170,6 +176,7 @@ data class AiModelEntity(
             val resolvedEngineName = existingEntity?.engineName ?: model.engineName.ifBlank { model.provider.value }
             return AiModelEntity(
                 id = existingEntity?.id ?: model.id.takeIf { source != AiConfigSource.REMOTE && it > 0 } ?: 0,
+                remoteId = existingEntity?.remoteId?.takeIf { source == AiConfigSource.REMOTE },
                 name = model.name,
                 title = model.title,
                 description = model.description,
@@ -230,6 +237,7 @@ data class AiModelEntity(
 
             return AiModelEntity(
                 id = existingEntity?.id ?: 0,
+                remoteId = config.remoteId,
                 name = config.name.orEmpty(),
                 title = config.title.orEmpty(),
                 description = config.description ?: "",
