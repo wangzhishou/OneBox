@@ -177,7 +177,7 @@ def upload_with_retry(edits, package, edit_id, locale, image_type, path, attempt
             time.sleep(wait)
 
 
-def commit_with_retry(edits, package, edit_id, attempts=4):
+def commit_with_retry(edits, package, edit_id, attempts=12):
     for i in range(attempts):
         try:
             edits.commit(packageName=package, editId=edit_id).execute()
@@ -187,7 +187,7 @@ def commit_with_retry(edits, package, edit_id, attempts=4):
             retriable = e.resp.status == 403 and "more than 8 screenshots" in message
             if not retriable or i == attempts - 1:
                 raise
-            wait = 10 * (i + 1)
+            wait = min(10 * (i + 1), 30)
             print(f"  ! Play 截图删除状态未同步,{wait}s 后重试提交 ({i + 1}/{attempts - 1})")
             time.sleep(wait)
 
@@ -206,12 +206,68 @@ def wait_images_deleted(edits, package, edit_id, locale, image_type, attempts=12
     raise RuntimeError(f"{locale}/{image_type} 旧截图未能删除,已停止上传")
 
 
+def run_batch(args, edits, local):
+    edit = edits.insert(body={}, packageName=args.package).execute()
+    edit_id = edit["id"]
+    print(f"batch edit created: {edit_id}")
+    committed = False
+    try:
+        changed = []
+        for locale, types in sorted(local.items()):
+            for image_type, entries in sorted(types.items()):
+                try:
+                    online = edits.images().list(
+                        packageName=args.package, editId=edit_id,
+                        language=locale, imageType=image_type,
+                    ).execute().get("images", [])
+                except HttpError as e:
+                    if e.resp.status == 404:
+                        online = []
+                    else:
+                        raise
+                online_hashes = [img.get("sha256", "") for img in online]
+                local_hashes = [h for _, h in entries]
+                if online_hashes == local_hashes:
+                    print(f"[{locale}/{image_type}] 无变化({len(entries)} 张)")
+                    continue
+                print(f"[{locale}/{image_type}] 变更:线上 {len(online)} 张 → 本地 {len(entries)} 张")
+                changed.append((locale, image_type, entries))
+
+        if args.dry_run:
+            print(f"\n[dry-run] 单次 edit 包含 {len(changed)} 个 locale/类型组合,未提交")
+            return
+        if not changed:
+            print("所有 locale 均无变化,无需提交")
+            return
+
+        for locale, image_type, entries in changed:
+            edits.images().deleteall(
+                packageName=args.package, editId=edit_id,
+                language=locale, imageType=image_type,
+            ).execute()
+            wait_images_deleted(edits, args.package, edit_id, locale, image_type)
+            for path, _ in entries:
+                upload_with_retry(edits, args.package, edit_id, locale, image_type, path)
+                print(f"uploaded: {locale}/{image_type}/{os.path.basename(path)}")
+        commit_with_retry(edits, args.package, edit_id)
+        committed = True
+        print(f"batch edit committed: {len(changed)} 个 locale/类型组合一次提交上线")
+    finally:
+        if not committed:
+            try:
+                edits.delete(packageName=args.package, editId=edit_id).execute()
+                print("batch edit deleted (未提交,线上未改动)")
+            except HttpError:
+                pass
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--key")
     ap.add_argument("--package", default="com.shifenmiao.app")
     ap.add_argument("--locale", help="只推某个语言(如 es-ES);默认推 metadata/android/ 下全部含 images/ 的语言")
     ap.add_argument("--dry-run", action="store_true", help="只校验和预览差异,不改动线上")
+    ap.add_argument("--batch", action="store_true", help="所有 locale 共用一个 edit,只提交一次")
     args = ap.parse_args()
 
     if args.locale:
@@ -232,6 +288,8 @@ def main():
 
     service = make_service(resolve_key(args.key))
     edits = service.edits()
+    if args.batch:
+        return run_batch(args, edits, local)
 
     # 每个 locale 独立 edit + commit:单语言失败不影响已完成的语言,重跑时靠 sha256 自动跳过
     total_changed = 0
