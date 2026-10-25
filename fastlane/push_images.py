@@ -192,6 +192,20 @@ def commit_with_retry(edits, package, edit_id, attempts=4):
             time.sleep(wait)
 
 
+def wait_images_deleted(edits, package, edit_id, locale, image_type, attempts=12):
+    for i in range(attempts):
+        remaining = edits.images().list(
+            packageName=package, editId=edit_id,
+            language=locale, imageType=image_type,
+        ).execute().get("images", [])
+        if not remaining:
+            return
+        if i < attempts - 1:
+            print(f"  ! 旧截图尚有 {len(remaining)} 张,5s 后复查删除状态")
+            time.sleep(5)
+    raise RuntimeError(f"{locale}/{image_type} 旧截图未能删除,已停止上传")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--key")
@@ -258,10 +272,29 @@ def main():
                     packageName=args.package, editId=edit_id,
                     language=locale, imageType=image_type,
                 ).execute()
+                wait_images_deleted(edits, args.package, edit_id, locale, image_type)
                 for path, _ in entries:
                     upload_with_retry(edits, args.package, edit_id, locale, image_type, path)
                     print(f"uploaded: {locale}/{image_type}/{os.path.basename(path)}")
-            commit_with_retry(edits, args.package, edit_id)
+            try:
+                commit_with_retry(edits, args.package, edit_id)
+            except HttpError as e:
+                if e.resp.status != 403 or "more than 8 screenshots" not in str(e):
+                    raise
+                print("  ! Play 仍拒绝替换,改为先提交删除再上传新截图")
+                for image_type, entries in changed:
+                    edits.images().deleteall(
+                        packageName=args.package, editId=edit_id,
+                        language=locale, imageType=image_type,
+                    ).execute()
+                edits.commit(packageName=args.package, editId=edit_id).execute()
+                edit = edits.insert(body={}, packageName=args.package).execute()
+                edit_id = edit["id"]
+                for image_type, entries in changed:
+                    for path, _ in entries:
+                        upload_with_retry(edits, args.package, edit_id, locale, image_type, path)
+                        print(f"uploaded: {locale}/{image_type}/{os.path.basename(path)}")
+                edits.commit(packageName=args.package, editId=edit_id).execute()
             committed = True
             total_changed += len(changed)
             print(f"edit committed: {locale} 的 {len(changed)} 个类型已上线")
