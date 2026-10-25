@@ -177,6 +177,21 @@ def upload_with_retry(edits, package, edit_id, locale, image_type, path, attempt
             time.sleep(wait)
 
 
+def commit_with_retry(edits, package, edit_id, attempts=4):
+    for i in range(attempts):
+        try:
+            edits.commit(packageName=package, editId=edit_id).execute()
+            return
+        except HttpError as e:
+            message = str(e)
+            retriable = e.resp.status == 403 and "more than 8 screenshots" in message
+            if not retriable or i == attempts - 1:
+                raise
+            wait = 10 * (i + 1)
+            print(f"  ! Play 截图删除状态未同步,{wait}s 后重试提交 ({i + 1}/{attempts - 1})")
+            time.sleep(wait)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--key")
@@ -246,7 +261,7 @@ def main():
                 for path, _ in entries:
                     upload_with_retry(edits, args.package, edit_id, locale, image_type, path)
                     print(f"uploaded: {locale}/{image_type}/{os.path.basename(path)}")
-            edits.commit(packageName=args.package, editId=edit_id).execute()
+            commit_with_retry(edits, args.package, edit_id)
             committed = True
             total_changed += len(changed)
             print(f"edit committed: {locale} 的 {len(changed)} 个类型已上线")
