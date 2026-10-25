@@ -1,4 +1,4 @@
-OneBox là bộ công cụ tất cả trong một miễn phí: hơn 90 công cụ cho hình ảnh, PDF, tệp tin và cuộc sống hằng ngày — kèm một trợ lý AI thực thụ, không chỉ trả lời câu hỏi mà còn dùng bộ công cụ thay bạn.
+OneBox là bộ công cụ tất cả trong một miễn phí: mở trực tiếp 100+ định dạng tệp, hơn 90 công cụ cho hình ảnh, PDF, tệp tin và cuộc sống hằng ngày — kèm một trợ lý AI thực thụ, không chỉ trả lời câu hỏi mà còn dùng bộ công cụ thay bạn.
 
 【Trò chuyện AI với đúng mô hình bạn chọn】
 • Một điểm truy cập cho các mô hình phổ biến: OpenAI GPT, Claude, Gemini, Grok, DeepSeek, Qwen, OpenRouter
@@ -20,6 +20,10 @@ OneBox là bộ công cụ tất cả trong một miễn phí: hơn 90 công c�
 • Câu trả lời hiện ra dưới dạng điều khiển thật — biểu mẫu, thanh trượt, bộ chọn ngày, giờ, màu sắc và tệp tin hiển thị native ngay trong chat, không phải một đống chữ
 • Tạo ảnh từ prompt văn bản, rồi chỉnh sửa, nén hoặc chuyển đổi bằng chính bộ công cụ đó
 • Mọi công cụ cần nhập liệu đều có lối vào AI create: mô tả nó, và AI sẽ viết cho bạn
+
+【100+ tệp】
+• Từ đính kèm chat, app khác hoặc file manager
+• Word, Excel, PowerPoint, PDF, EPUB, ảnh và ZIP – không cần trình xem riêng
 
 【Bộ công cụ, dành cho khi bạn muốn tự tay chạm】
 • Hình ảnh: trình chỉnh sửa ảnh đầy đủ — cắt, bộ lọc, ghép ảnh, nối ảnh dài, GIF, Image Studio với layer, cọ vẽ và văn bản — kèm chuyển đổi định dạng (HEIC / WebP / AVIF), công cụ nén ảnh, chuyển bitmap sang SVG và tạo hình nền gradient, tất cả xử lý cục bộ

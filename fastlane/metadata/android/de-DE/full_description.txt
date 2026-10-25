@@ -1,4 +1,4 @@
-OneBox ist eine kostenlose All-in-One-Toolbox: 90+ Werkzeuge für Bilder, PDFs, Dateien und den Alltag — plus ein echter KI-Assistent, der nicht nur Fragen beantwortet, sondern die Toolbox für dich bedient.
+OneBox: gratis KI-Toolbox, die 100+ Dateiformate direkt öffnet.
 
 【KI-Chat mit den Modellen, die du wählst】
 • Ein Einstieg für die gängigsten Modelle: OpenAI GPT, Claude, Gemini, Grok, DeepSeek, Qwen, OpenRouter
@@ -20,6 +20,10 @@ Kein Suchen mehr in Menüs. Sag, was du willst, und OneBox macht daraus ein funk
 • Antworten kommen als echte Bedienelemente — Formulare, Slider, Datums-, Zeit-, Farb- und Dateiauswahl, nativ im Chat, keine Textwand
 • Erzeuge Bilder aus einem Text-Prompt und bearbeite, komprimiere oder konvertiere sie mit derselben Toolbox
 • Jedes Werkzeug mit Eingabe hat einen KI-Erstellen-Einstieg: beschreib es, und die KI schreibt es für dich
+
+【100+ Dateien】
+• Aus Chat, App oder Dateimanager
+• Word, Excel, PowerPoint, PDF, EPUB, Bilder und ZIP ohne Extra-Viewer
 
 【Die Toolbox fürs Selbsttippen】
 • Bilder: ein voller Foto-Editor — Zuschneiden, Filter, Collage, Langbild-Stitching, GIF, Image Studio mit Ebenen, Pinseln und Text — dazu Formatkonvertierung (HEIC / WebP / AVIF), Bildkompressor, Bitmap-zu-SVG und Verlaufshintergrund-Generator, alles lokal

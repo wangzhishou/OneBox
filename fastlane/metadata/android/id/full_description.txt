@@ -1,4 +1,4 @@
-OneBox adalah kotak peralatan serbaguna gratis: 90+ alat untuk gambar, PDF, file, dan kebutuhan sehari-hari — plus asisten AI sungguhan yang bukan cuma menjawab, tapi memakai kotak peralatan itu untuk Anda.
+OneBox adalah kotak peralatan gratis: buka 100+ format file secara langsung, gunakan 90+ alat, dan biarkan asisten AI memakainya untuk Anda.
 
 【Obrolan AI dengan model pilihan Anda】
 • Satu pintu masuk untuk model-model utama: OpenAI GPT, Claude, Gemini, Grok, DeepSeek, Qwen, OpenRouter
@@ -20,6 +20,10 @@ Tak perlu cari di menu. Katakan yang Anda mau dan OneBox mengubahnya jadi alat a
 • Jawaban datang sebagai kontrol nyata — formulir, slider, pemilih tanggal, waktu, warna, dan file, dirender langsung di obrolan, bukan dinding teks
 • Buat gambar dari deskripsi teks, lalu edit, kompres, atau konversi dengan kotak peralatan yang sama
 • Setiap alat yang butuh masukan punya pintu AI create: deskripsikan, dan AI menuliskannya untuk Anda
+
+【Buka 100+ jenis file】
+• Dari lampiran chat, app lain, atau pengelola file
+• Word, Excel, PowerPoint, PDF, EPUB, gambar, teks/kode, audio/video, dan ZIP tanpa penampil terpisah
 
 【Kotak peralatan, saat Anda lebih suka mengetuk sendiri】
 • Gambar: editor foto lengkap — pangkas, filter, kolase, gabung gambar panjang, GIF, Image Studio dengan lapisan, kuas, dan teks — plus konversi format (HEIC / WebP / AVIF), kompresor gambar, bitmap-ke-SVG, dan pembuat wallpaper gradien, semuanya lokal

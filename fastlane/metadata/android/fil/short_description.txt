@@ -1,1 +1,1 @@
-Libreng AI agent & toolbox: AI chat, notes, gastos, prompt manager, speed test
+Libreng AI toolbox: magbukas ng 100+ file, mag-edit ng photo at PDF, chat, notes

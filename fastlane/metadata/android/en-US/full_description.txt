@@ -1,4 +1,4 @@
-OneBox is a free all-in-one toolbox: 90+ tools for images, PDFs, files and everyday life — plus a real AI assistant that doesn't just answer questions, it uses the toolbox for you.
+OneBox is a free all-in-one toolbox: open 100+ file formats directly, with 90+ tools for images, PDFs, files and everyday life — plus a real AI assistant that doesn't just answer questions, it uses the toolbox for you.
 
 【AI chat, with the models you choose】
 • One entry point for mainstream models: OpenAI GPT, Claude, Gemini, Grok, DeepSeek, Qwen, OpenRouter
@@ -20,6 +20,10 @@ Stop hunting through menus. Say what you want and OneBox turns it into a working
 • Answers arrive as real controls — forms, sliders, date, time, color and file pickers rendered natively in the chat, not a wall of text
 • Generate images from a text prompt, then edit, compress or convert them with the same toolbox
 • Every tool that needs input has an AI create entry: describe it, and the AI writes it for you
+
+【Open 100+ file types】
+• Open files directly from chat attachments, shares from other apps, or your file manager
+• Handle common Word, Excel, PowerPoint, PDF, EPUB, image, text and code, audio and video, and ZIP formats without installing separate viewers for each type
 
 【The toolbox, for when you'd rather tap】
 • Images: a full photo editor — crop, filters, collage, long-image stitching, GIF, Image Studio with layers, brushes and text — plus format conversion (HEIC / WebP / AVIF), an image compressor, bitmap-to-SVG and a gradient wallpaper maker, all local

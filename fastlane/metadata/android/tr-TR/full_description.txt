@@ -1,4 +1,4 @@
-OneBox; görseller, PDF'ler, dosyalar ve günlük işler için 90'dan fazla aracı, bir de soruları yanıtlamakla kalmayıp araçları sizin için kullanan gerçek bir yapay zeka asistanını sunan ücretsiz araç kutusudur.
+OneBox ücretsiz araç kutusudur: 100+ dosya biçimini doğrudan açın, 90+ aracı kullanın ve işleri yapay zeka asistanına bırakın.
 
 【Seçtiğiniz modellerle AI sohbeti】
 • Popüler modellere tek giriş noktası: OpenAI GPT, Claude, Gemini, Grok, DeepSeek, Qwen, OpenRouter
@@ -20,6 +20,10 @@ Menülerde araç aramak yok. Ne istediğinizi söyleyin; OneBox onu çalışan b
 • Yanıtlar gerçek kontroller olarak gelir — formlar, kaydırıcılar, tarih, saat, renk ve dosya seçicileri sohbette çizilir; metin duvarı değil
 • Metinden görsel üretin, sonra aynı araç kutusuyla düzenleyin, sıkıştırın, dönüştürün
 • Girdi gereken her araçta AI ile oluşturma var: anlatın, AI sizin için yazsın
+
+【100+ dosya türünü doğrudan açın】
+• Sohbet eklerindeki, diğer uygulamalardan paylaşılan veya dosya yöneticinizdeki dosyaları doğrudan açın
+• Word, Excel, PowerPoint, PDF, EPUB, görsel, metin ve kod, ses ve video ile ZIP gibi yaygın biçimleri her dosya türü için ayrı bir görüntüleyici kurmadan açın
 
 【Dokunmayı tercih ettiğiniz anlar için araç kutusu】
 • Görseller: kırpma, filtreler, kolaj, uzun görsel birleştirme, GIF, katmanlar, fırçalar ve metinle görsel stüdyosu, format dönüştürme (HEIC / WebP / AVIF), görsel sıkıştırma, bitmap'ten SVG'ye dönüştürme ve gradyan duvar kağıdı oluşturucu — hepsi cihazda

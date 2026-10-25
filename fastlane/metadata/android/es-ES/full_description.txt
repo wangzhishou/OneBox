@@ -1,4 +1,4 @@
-OneBox es una caja de herramientas todo en uno y gratis: 90+ herramientas para imágenes, PDF, archivos y el día a día — y un asistente de IA real que no solo responde: usa las herramientas por ti.
+OneBox: toolbox de IA gratis para abrir 100+ formatos directamente.
 
 【Chat de IA, con los modelos que elijas】
 • Una sola entrada para los principales modelos: OpenAI GPT, Claude, Gemini, Grok, DeepSeek, Qwen, OpenRouter
@@ -20,6 +20,10 @@ Deja de buscar en menús. Di lo que quieres y OneBox lo vuelve una herramienta o
 • Las respuestas llegan como controles reales — formularios, deslizadores y selectores de fecha, hora, color y archivo, nativos en el chat, no un muro de texto
 • Genera imágenes desde un texto y edítalas, comprímelas o conviértelas con la misma caja de herramientas
 • Toda herramienta con datos de entrada tiene creación con IA: descríbela y la IA la escribe por ti
+
+【Abre 100+ tipos de archivo】
+• Desde chats, otras apps o el gestor de archivos
+• Word, Excel, PowerPoint, PDF, EPUB, imágenes, texto/código, audio/vídeo y ZIP, sin visores separados
 
 【La caja de herramientas, si prefieres tocar】
 • Imágenes: editor de fotos completo — recortar, filtros, collage, unir imágenes largas, GIF, Image Studio con capas, pinceles y texto — más conversión de formatos (HEIC / WebP / AVIF), compresor de imágenes, bitmap a SVG y creador de fondos degradados, todo local
