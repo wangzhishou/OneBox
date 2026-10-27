@@ -45,7 +45,7 @@ enum class PaperKind(@param:StringRes val labelRes: Int) {
     Colorful(R.string.textcard_paper_colorful),
 }
 
-/** 内置 mesh 渐变色卡(设计稿 02 的淡紫/粉橙/青绿风格,3×3 网格) */
+/** 内置 mesh 渐变色卡(淡紫/粉橙/青绿/暖杏,3×3 网格) */
 object GradientPresets {
 
     private val lattice = listOf(0f, 0.5f, 1f)

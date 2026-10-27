@@ -1,24 +1,18 @@
 package com.wanbaohe.textcard.presentation.screenLogic
 
 import android.graphics.Bitmap
-import android.util.Base64
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.net.toUri
 import com.arkivanov.decompose.ComponentContext
-import com.shifenmiao.base.utils.aiImageProcessPointsCost
-import com.shifenmiao.common.utils.BaseUtils
-import com.shifenmiao.imagegeneration.loader.ImageGenerationLoader
-import com.shifenmiao.imagegeneration.model.ImageGenerationRequest
+import com.arkivanov.essenty.lifecycle.doOnStop
+import com.shifenmiao.common.creation.BackgroundHandoffBus
 import com.shifenmiao.interfaces.logging.ImageSaveLogger
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.domain.image.ImageCompressor
-import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
+import com.t8rin.imagetoolbox.core.domain.history.DocumentHistory
+import com.t8rin.imagetoolbox.core.domain.image.ImageShareProvider
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageInfo
-import com.t8rin.imagetoolbox.core.domain.saving.FileController
-import com.t8rin.imagetoolbox.core.domain.saving.model.ImageSaveTarget
-import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
 import com.t8rin.imagetoolbox.core.domain.utils.smartJob
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineInfo
 import com.t8rin.imagetoolbox.core.settings.domain.model.FontType
@@ -27,913 +21,965 @@ import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.helper.SaveSuccessNotifier
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.utils.state.update
-import com.wanbaohe.core.ui.widget.editor.StickerSource
 import com.wanbaohe.core.ui.widget.other.ToastDuration
 import com.t8rin.imagetoolbox.core.utils.appContext
 import com.t8rin.logger.makeLog
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.CustomCanvasStore
 import com.wanbaohe.textcard.domain.TextCardExportRenderer
+import com.wanbaohe.textcard.domain.TextCardExportService
 import com.wanbaohe.textcard.domain.TextCardPaperRepository
+import com.wanbaohe.textcard.domain.TextCardProjectStore
+import com.wanbaohe.textcard.domain.TextCardProjectSummary
 import com.wanbaohe.textcard.domain.model.BackgroundSpec
 import com.wanbaohe.textcard.domain.model.CanvasSpec
-import com.wanbaohe.textcard.domain.model.CardDrawStroke
-import com.wanbaohe.textcard.domain.model.CardShapeKind
-import com.wanbaohe.textcard.domain.model.CardStrokePoint
-import com.wanbaohe.textcard.domain.model.DEFAULT_DRAW_COLOR
-import com.wanbaohe.textcard.domain.model.DEFAULT_DRAW_WIDTH_RATIO
-import com.wanbaohe.textcard.domain.model.DecorationSpec
-import com.wanbaohe.textcard.domain.model.DrawElementSpec
-import com.wanbaohe.textcard.domain.model.ElementLayer
-import com.wanbaohe.textcard.domain.model.GradientPresets
-import com.wanbaohe.textcard.domain.model.ImageElementSpec
-import com.wanbaohe.textcard.domain.model.ImageElementStatus
 import com.wanbaohe.textcard.domain.model.RemotePaper
-import com.wanbaohe.textcard.domain.model.ShapeElementSpec
 import com.wanbaohe.textcard.domain.model.TextBlock
+import com.wanbaohe.textcard.domain.model.TextCardDocument
+import com.wanbaohe.textcard.domain.model.TextCardFontSpan
+import com.wanbaohe.textcard.domain.model.TextCardOutputMode
 import com.wanbaohe.textcard.domain.model.TextCardRenderState
+import com.wanbaohe.textcard.domain.model.TextCardRole
+import com.wanbaohe.textcard.domain.model.TextCardSegment
+import com.wanbaohe.textcard.domain.model.TextCardSourceSelection
+import com.wanbaohe.textcard.domain.model.TextCardTemplate
 import com.wanbaohe.textcard.domain.model.TextStyleSpan
-import com.wanbaohe.textcard.domain.model.adjustForTrim
-import com.wanbaohe.textcard.domain.render.CardLayout
+import com.wanbaohe.textcard.domain.model.clearSourceRangeStyles
+import com.wanbaohe.textcard.domain.model.replaceSourceFonts
+import com.wanbaohe.textcard.domain.model.replaceSourceStyles
+import com.wanbaohe.textcard.domain.model.replaceSourceText
+import com.wanbaohe.textcard.domain.render.TextCardLayout
+import com.wanbaohe.textcard.domain.render.TextCardLayoutEngine
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
-import kotlin.math.roundToInt
-import kotlin.math.sqrt
+import java.util.UUID
 
-/** 底部编辑面板 */
 enum class EditorPanel {
-    Basic, Background, TextStyle, Layers
+    Content, Templates, Typography, Background, Pages
 }
 
-/**
- * 文字卡片页面组件(设计稿「文字卡片」)。
- *
- * [canvas] 为 null 时显示选择画布页,非空时进入编辑页(单 Component 双页面,
- * 同 markup-layers 的 hasImage 模式)。离散修改直接 set,不建历史栈(范围裁剪:
- * 不做撤销/重做)。字体选择走全局共享的 PickFontFamilySheet(core/ui)。
- */
 class TextCardComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted val onGoBack: () -> Unit,
     @Assisted val onNavigate: (Screen) -> Unit,
     dispatchersHolder: DispatchersHolder,
-    private val fileController: FileController,
-    private val imageCompressor: ImageCompressor<Bitmap>,
     private val exportRenderer: TextCardExportRenderer,
+    private val exportService: TextCardExportService,
+    private val layoutEngine: TextCardLayoutEngine,
     private val paperRepository: TextCardPaperRepository,
     private val customCanvasStore: CustomCanvasStore,
+    private val projectStore: TextCardProjectStore,
+    private val shareProvider: ImageShareProvider<Bitmap>,
     private val imageSaveLogger: ImageSaveLogger,
-    private val imageGenerationLoader: ImageGenerationLoader,
+    private val backgroundHandoffBus: BackgroundHandoffBus,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
-    // ---------------- 画布与卡片状态 ----------------
+    private val _document = mutableStateOf(TextCardDocument())
+    val document: TextCardDocument by _document
 
-    private val _canvas: MutableState<CanvasSpec?> = mutableStateOf(null)
-    val canvas: CanvasSpec? by _canvas
+    private val _isEditing = mutableStateOf(false)
+    val isEditing: Boolean by _isEditing
 
-    /** 选择画布页中选中的规格(未开始制作前) */
-    private val _pendingCanvas: MutableState<CanvasSpec> = mutableStateOf(CanvasSpec.Portrait)
+    private val _pendingCanvas = mutableStateOf<CanvasSpec>(CanvasSpec.Portrait)
     val pendingCanvas: CanvasSpec by _pendingCanvas
+    private var pendingCanvasExplicitlySelected = false
 
-    /** 上次自定义画布尺寸(持久化记忆,null = 从未自定义) */
-    private val _lastCustomCanvas: MutableState<CanvasSpec.Custom?> =
-        mutableStateOf(customCanvasStore.lastCustom()?.let { (w, h) ->
-            CanvasSpec.Custom(w, h)
-        })
+    private val _pendingTemplate = mutableStateOf(TextCardTemplate.all.first())
+    val pendingTemplate: TextCardTemplate by _pendingTemplate
+
+    private val _lastCustomCanvas = mutableStateOf<CanvasSpec.Custom?>(
+        customCanvasStore.lastCustom()?.let { (width, height) -> CanvasSpec.Custom(width, height) }
+    )
     val lastCustomCanvas: CanvasSpec.Custom? by _lastCustomCanvas
 
-    private val _background: MutableState<BackgroundSpec> = mutableStateOf(GradientPresets.default)
-    val background: BackgroundSpec by _background
+    private val _layout = mutableStateOf<TextCardLayout?>(null)
+    val layout: TextCardLayout? by _layout
 
-    private val _backgroundOpacity: MutableState<Float> = mutableStateOf(1f)
-    val backgroundOpacity: Float by _backgroundOpacity
+    private val _layoutError = mutableStateOf<String?>(null)
+    val layoutError: String? by _layoutError
 
-    /** 文字块列表(任意多条;默认标题 + 正文两块),列表顺序即绘制顺序 */
-    private val _textBlocks: MutableState<List<TextBlock>> = mutableStateOf(
-        listOf(
-            TextBlock(
-                content = appContext.getString(R.string.textcard_default_title),
-                baseSizeRatio = CardLayout.TITLE_BASE_SIZE_RATIO,
-                baseTopRatio = CardLayout.CONTENT_PADDING_RATIO,
-                isBold = true
-            ),
-            TextBlock(
-                content = appContext.getString(R.string.textcard_default_body),
-                baseSizeRatio = CardLayout.BODY_BASE_SIZE_RATIO,
-                baseTopRatio = CardLayout.BODY_BASE_TOP_RATIO
-            )
-        )
-    )
-    val textBlocks: List<TextBlock> by _textBlocks
+    private val _isLayoutComputing = mutableStateOf(false)
+    val isLayoutComputing: Boolean by _isLayoutComputing
 
-    /** 装饰贴纸列表(支持多个;每个装饰一个图层) */
-    private val _decorations: MutableState<List<DecorationSpec>> = mutableStateOf(emptyList())
-    val decorations: List<DecorationSpec> by _decorations
+    private val _currentPage = mutableStateOf(0)
+    val currentPage: Int by _currentPage
 
-    /** AI 生成图片元素列表(支持多个;每个图片一个图层) */
-    private val _imageElements: MutableState<List<ImageElementSpec>> = mutableStateOf(emptyList())
-    val imageElements: List<ImageElementSpec> by _imageElements
-
-    /** 形状元素列表(对照图片创作形状工具,每个一个图层) */
-    private val _shapeElements: MutableState<List<ShapeElementSpec>> = mutableStateOf(emptyList())
-    val shapeElements: List<ShapeElementSpec> by _shapeElements
-
-    /** 画笔元素列表(每个绘制会话一个图层) */
-    private val _drawElements: MutableState<List<DrawElementSpec>> = mutableStateOf(emptyList())
-    val drawElements: List<DrawElementSpec> by _drawElements
-
-    /** AI 生图进行中(生成图片图层弹窗的 loading) */
-    private val _isGeneratingImage: MutableState<Boolean> = mutableStateOf(false)
-    val isGeneratingImage: Boolean by _isGeneratingImage
-
-    /** AI 生成贴纸进行中(共享贴纸弹层 AI tab 的 loading) */
-    private val _isGeneratingSticker: MutableState<Boolean> = mutableStateOf(false)
-    val isGeneratingSticker: Boolean by _isGeneratingSticker
-
-    /** 元素图层(文字块/装饰,列表顺序即 z 序、底层在前);背景钉在最底不进列表 */
-    private val _elementLayers: MutableState<List<ElementLayer>> =
-        mutableStateOf(
-            _textBlocks.value.map { ElementLayer(elementId = it.id, kind = ElementLayer.Kind.Text) }
-        )
-    val elementLayers: List<ElementLayer> by _elementLayers
-
-    /** 背景层显隐(钉在最底,不参与排序) */
-    private val _backgroundVisible: MutableState<Boolean> = mutableStateOf(true)
-    val backgroundVisible: Boolean by _backgroundVisible
-
-    private val _activePanel: MutableState<EditorPanel?> = mutableStateOf(null)
+    private val _activePanel = mutableStateOf<EditorPanel?>(null)
     val activePanel: EditorPanel? by _activePanel
 
-    /**
-     * 「当前选中文字块」单一事实源:画布点选(selectElement 同步)、面板按钮组
-     * 切换(selectTextBlock 同步)、字体应用目标(selectedFontTarget)全部读写它。
-     */
-    private val _selectedTextBlockId: MutableState<String> =
-        mutableStateOf(_textBlocks.value.first().id)
-    val selectedTextBlockId: String by _selectedTextBlockId
+    private val _selectedRole = mutableStateOf<TextCardRole?>(null)
+    val selectedRole: TextCardRole? by _selectedRole
 
-    /** 画布当前选中的元素 id(文字块或装饰),null = 未选中 */
-    private val _selectedElementId: MutableState<String?> = mutableStateOf(null)
-    val selectedElementId: String? by _selectedElementId
+    private val _pageSelection = mutableStateOf<TextCardSourceSelection?>(null)
+    val pageSelection: TextCardSourceSelection? by _pageSelection
 
-    /** 就地编辑中的文字块 id,null = 非编辑态(编辑内容实时写回对应块) */
-    private val _editingTextBlockId: MutableState<String?> = mutableStateOf(null)
-    val editingTextBlockId: String? by _editingTextBlockId
+    private val _canvasTextEditSession = mutableStateOf<CanvasTextEditSession?>(null)
+    internal val canvasTextEditSession: CanvasTextEditSession? by _canvasTextEditSession
 
-    private val _isSaving: MutableState<Boolean> = mutableStateOf(false)
+    private val _contentResetVersion = mutableStateOf(0)
+    val contentResetVersion: Int by _contentResetVersion
+
+    private val _canUndo = mutableStateOf(false)
+    val canUndo: Boolean by _canUndo
+    private val _canRedo = mutableStateOf(false)
+    val canRedo: Boolean by _canRedo
+
+    private val _projects = mutableStateOf<List<TextCardProjectSummary>>(emptyList())
+    val projects: List<TextCardProjectSummary> by _projects
+
+    private val _isProjectSaving = mutableStateOf(false)
+    val isProjectSaving: Boolean by _isProjectSaving
+
+    private val _isLoadingProject = mutableStateOf(false)
+    val isLoadingProject: Boolean by _isLoadingProject
+
+    private val _isSaving = mutableStateOf(false)
     val isSaving: Boolean by _isSaving
 
-    private var savingJob: Job? by smartJob {
+    private val _isPreparingHandoff = mutableStateOf(false)
+    val isPreparingHandoff: Boolean by _isPreparingHandoff
+
+    private var projectId: String? = null
+    private var projectName: String = ""
+    private var documentRevision = 0L
+    private var layoutJob: Job? = null
+    private var autosaveJob: Job? = null
+    private var projectSaveJob: Job? = null
+    private var handoffJob: Job? = null
+    private var activeHandoffId: String? = null
+    private var exportJob: Job? by smartJob {
         _isSaving.update { false }
     }
+    private var contentEditSession = false
+    private var contentSnapshotTaken = false
+    private var canvasTextSnapshotTaken = false
+    private var nextCanvasTextEditSessionId = 0L
+    private var continuousEditActive = false
+    private var continuousEditSnapshotTaken = false
 
-    // ---------------- 画布选择 ----------------
+    private val history = DocumentHistory<TextCardDocument> { it }
+
+    val textBlocks: List<TextBlock> get() = document.textBlocks
+    val background: BackgroundSpec get() = document.background
+    val backgroundOpacity: Float get() = document.backgroundOpacity
+    val hasSelectedTextBlock: Boolean get() = selectedRole != null
+    val selectedTextBlockId: String? get() = selectedRole?.let(document::block)?.id
+    val editingTextBlockId: String?
+        get() = selectedTextBlockId.takeIf { contentEditSession }
+    val longImageRequiredHeight: Int? get() = layout?.longImageRequiredHeight
+
+    init {
+        componentScope.launch {
+            projectStore.projects.collect { _projects.value = it }
+        }
+        componentScope.launch {
+            runCatching { projectStore.refresh() }
+                .onFailure { it.makeLog("TextCardProjects") }
+        }
+        componentScope.launch {
+            backgroundHandoffBus.result.collect { result ->
+                val requestId = activeHandoffId
+                if (requestId != null && result?.id == requestId) {
+                    val uri = backgroundHandoffBus.consumeResult(requestId)
+                    activeHandoffId = null
+                    if (uri != null) updateBackground(BackgroundSpec.Image(uri))
+                }
+            }
+        }
+        componentScope.launch {
+            backgroundHandoffBus.request.collect { request ->
+                if (request == null && backgroundHandoffBus.result.value == null) {
+                    activeHandoffId = null
+                }
+            }
+        }
+        recomputeLayout(immediate = true)
+        lifecycle.doOnStop {
+            if (_isEditing.value) saveProject()
+        }
+    }
+
+    override fun resetState() = Unit
 
     fun selectPendingCanvas(spec: CanvasSpec) {
+        pendingCanvasExplicitlySelected = true
         _pendingCanvas.value = spec
     }
 
-    /** 自定义画布确认:钳制 256..4096,持久化并选中该规格 */
+    fun selectPendingTemplate(template: TextCardTemplate) {
+        _pendingTemplate.value = template
+        if (!pendingCanvasExplicitlySelected) {
+            _pendingCanvas.value = template.applyTo(TextCardDocument()).canvas
+        }
+    }
+
     fun selectCustomCanvas(width: Int, height: Int) {
         val safeWidth = width.coerceIn(256, 4096)
         val safeHeight = height.coerceIn(256, 4096)
         val custom = CanvasSpec.Custom(safeWidth, safeHeight)
+        pendingCanvasExplicitlySelected = true
         customCanvasStore.saveLastCustom(safeWidth, safeHeight)
         _lastCustomCanvas.value = custom
         _pendingCanvas.value = custom
     }
 
-    /** 「开始制作」:进入编辑页;拉取远程纸张(失败静默降级) */
-    fun startEditing() {
-        _canvas.value = _pendingCanvas.value
-        loadRemotePapers()
-        registerChanges()
-    }
-
-    /** 编辑页返回:回到选择画布页 */
-    fun backToSelection() {
-        _canvas.value = null
+    fun startEditing(initialText: String) {
+        endContinuousEdit()
+        _canvasTextEditSession.value = null
+        _layout.value = null
+        _layoutError.value = null
+        val base = pendingTemplate.applyTo(TextCardDocument()).copy(canvas = pendingCanvas)
+        val newDocument = base.updateBlock(TextCardRole.Body) {
+            it.copy(content = initialText.trim())
+        }
+        projectId = UUID.randomUUID().toString()
+        projectName = newDocument.displayName()
+        history.clear()
+        refreshHistoryFlags()
+        contentEditSession = false
+        contentSnapshotTaken = false
+        canvasTextSnapshotTaken = false
+        _document.value = newDocument
+        _currentPage.value = 0
+        _selectedRole.value = null
+        _pageSelection.value = null
         _activePanel.value = null
-        _selectedElementId.value = null
-        _editingTextBlockId.value = null
+        _isEditing.value = true
+        _contentResetVersion.update { it + 1 }
+        registerChangesCleared()
+        recomputeLayout(immediate = true)
+        loadRemotePapers()
     }
 
-    /**
-     * 页面被压在栈内(如跳转图片创作)时组合销毁,1.5s 后 BaseComponent 回调这里。
-     * 绝不能回退导航——navigateBack 弹的是栈顶(被跳转的页面会被立刻误弹回去)。
-     * 组件实例仍在栈中,状态保留,返回时原样继续编辑。
-     */
-    override fun resetState() = Unit
+    fun openProject(id: String) {
+        if (_isLoadingProject.value) return
+        endContinuousEdit()
+        _canvasTextEditSession.value = null
+        _layout.value = null
+        _layoutError.value = null
+        componentScope.launch {
+            _isLoadingProject.value = true
+            runCatching { projectStore.load(id) }
+                .onSuccess { stored ->
+                    projectId = id
+                    projectName = stored.summary.name
+                    _document.value = stored.document
+                    _currentPage.value = 0
+                    _selectedRole.value = null
+                    _pageSelection.value = null
+                    _activePanel.value = null
+                    _isEditing.value = true
+                    _contentResetVersion.update { it + 1 }
+                    history.clear()
+                    refreshHistoryFlags()
+                    contentEditSession = false
+                    canvasTextSnapshotTaken = false
+                    registerChangesCleared()
+                    recomputeLayout(immediate = true)
+                    loadRemotePapers()
+                }
+                .onFailure(AppToastHost::showFailureToast)
+            _isLoadingProject.value = false
+        }
+    }
 
-    // ---------------- 背景 ----------------
+    fun renameProject(id: String, name: String) {
+        val normalized = name.trim()
+        if (normalized.isEmpty()) return
+        componentScope.launch {
+            runCatching { projectStore.rename(id, normalized) }
+                .onFailure(AppToastHost::showFailureToast)
+        }
+    }
+
+    fun deleteProject(id: String) {
+        componentScope.launch {
+            runCatching { projectStore.delete(id) }
+                .onFailure(AppToastHost::showFailureToast)
+        }
+    }
+
+    fun closeEditor() {
+        endContinuousEdit()
+        endCanvasTextEdit(recompute = false)
+        contentEditSession = false
+        _activePanel.value = null
+        _selectedRole.value = null
+        _pageSelection.value = null
+        if (layoutError != null) {
+            _isEditing.value = false
+            return
+        }
+        if (document.hasContent) {
+            saveProject {
+                _isEditing.value = false
+            }
+        } else {
+            deleteEmptyProject {
+                _isEditing.value = false
+            }
+        }
+    }
+
+    fun selectRole(role: TextCardRole) {
+        if (canvasTextEditSession?.role != role) endCanvasTextEdit()
+        _selectedRole.value = role
+        _pageSelection.value = null
+    }
+
+    fun clearTextSelection() {
+        _selectedRole.value = null
+        _pageSelection.value = null
+    }
+
+    fun selectTextBlock(id: String) {
+        val role = TextCardRole.entries.firstOrNull { document.block(it).id == id } ?: return
+        if (contentEditSession) beginTextEdit(id) else selectRole(role)
+    }
+
+    fun selectedTextBlock(): TextBlock? = selectedRole?.let(document::block)
+    fun selectedFontTarget(): TextBlock? = selectedTextBlock()
+
+    fun pageSelectionBlock(): TextBlock? = pageSelection?.let { selection ->
+        canvasTextEditSession?.takeIf { it.role == selection.role }?.block
+            ?: document.block(selection.role)
+    }
+
+    fun beginCanvasTextEdit(segment: TextCardSegment, pageIndex: Int, cursor: Int) {
+        endCanvasTextEdit(recompute = false)
+        layoutJob?.cancel()
+        contentEditSession = false
+        canvasTextSnapshotTaken = false
+        _selectedRole.value = segment.role
+        _pageSelection.value = null
+        _activePanel.value = null
+        _currentPage.value = pageIndex.coerceAtLeast(0)
+        _canvasTextEditSession.value = CanvasTextEditSession(
+            id = ++nextCanvasTextEditSessionId,
+            role = segment.role,
+            pageIndex = pageIndex,
+            sourceStart = segment.sourceStart,
+            initialCursor = cursor.coerceIn(0, segment.block.content.length),
+            block = segment.block,
+            previousText = segment.block.content
+        )
+    }
+
+    fun endCanvasTextEdit(recompute: Boolean = true) {
+        val hadSession = _canvasTextEditSession.value != null
+        _canvasTextEditSession.value = null
+        _pageSelection.value = null
+        canvasTextSnapshotTaken = false
+        if (hadSession && recompute) recomputeLayout(immediate = true)
+    }
+
+    fun updateCanvasTextSelection(sessionId: Long, start: Int, end: Int) {
+        val session = _canvasTextEditSession.value?.takeIf { it.id == sessionId } ?: return
+        val localStart = start.coerceIn(0, session.block.content.length)
+        val localEnd = end.coerceIn(0, session.block.content.length)
+        val from = minOf(localStart, localEnd)
+        val to = maxOf(localStart, localEnd)
+        _selectedRole.value = session.role
+        _pageSelection.value = if (from < to) {
+            TextCardSourceSelection(
+                role = session.role,
+                start = session.sourceStart + from,
+                end = session.sourceStart + to
+            )
+        } else null
+    }
+
+    fun clearPageSelection() {
+        _pageSelection.value = null
+    }
+
+    fun syncCanvasTextEdit(
+        sessionId: Long,
+        content: String,
+        spans: List<TextStyleSpan>,
+    ) {
+        val session = _canvasTextEditSession.value?.takeIf { it.id == sessionId } ?: return
+        if (session.previousText == content && session.block.styleSpans == spans) return
+
+        val textChanged = session.previousText != content
+        val prefix = session.previousText.commonPrefixWith(content).length
+        val suffixCapacity = minOf(session.previousText.length, content.length) - prefix
+        val suffix = if (textChanged) {
+            session.previousText.commonSuffixWith(content).length.coerceAtMost(suffixCapacity)
+        } else 0
+        val oldLocalEnd = session.previousText.length - suffix
+        val newLocalEnd = content.length - suffix
+        val replacement = content.substring(prefix, newLocalEnd)
+        val updatedLocalBlock = if (textChanged) {
+            session.block.replaceSourceText(
+                start = prefix,
+                end = oldLocalEnd,
+                replacement = replacement,
+                insertedStyles = emptyList(),
+                insertedFonts = replacementFonts(session.block, prefix, oldLocalEnd, replacement.length)
+            )
+        } else session.block
+        val styledLocalBlock = updatedLocalBlock.replaceSourceStyles(0, content.length, spans)
+        val sourceEnd = session.sourceStart + content.length
+
+        mutateDocument(recordHistory = !textChanged || !canvasTextSnapshotTaken) { current ->
+            current.updateBlock(session.role) { whole ->
+                val updatedWhole = if (textChanged) {
+                    val sourceChangeStart = session.sourceStart + prefix
+                    val sourceChangeEnd = session.sourceStart + oldLocalEnd
+                    whole.replaceSourceText(
+                        start = sourceChangeStart,
+                        end = sourceChangeEnd,
+                        replacement = replacement,
+                        insertedStyles = emptyList(),
+                        insertedFonts = replacementFonts(
+                            whole,
+                            sourceChangeStart,
+                            sourceChangeEnd,
+                            replacement.length
+                        )
+                    )
+                } else whole
+                updatedWhole.replaceSourceStyles(
+                    start = session.sourceStart,
+                    end = sourceEnd,
+                    inserted = spans.map { span ->
+                        span.copy(
+                            start = span.start + session.sourceStart,
+                            end = span.end + session.sourceStart
+                        )
+                    }
+                )
+            }
+        }
+        if (textChanged) canvasTextSnapshotTaken = true
+        _canvasTextEditSession.value = session.copy(
+            block = styledLocalBlock,
+            previousText = content
+        )
+    }
+
+    private fun replacementFonts(
+        block: TextBlock,
+        start: Int,
+        end: Int,
+        replacementLength: Int,
+    ): List<TextCardFontSpan> {
+        if (replacementLength == 0) return emptyList()
+        val override = if (start == end) {
+            block.fontSpans.lastOrNull { start >= it.start && start < it.end }
+        } else {
+            block.fontSpans.lastOrNull { it.start < end && it.end > start }
+        }
+        return override?.let {
+            listOf(TextCardFontSpan(start, start + replacementLength, it.font))
+        }.orEmpty()
+    }
+
+    fun applyPageSelectionFont(font: FontType?) {
+        val selection = _pageSelection.value ?: return
+        mutateDocument { current ->
+            current.updateBlock(selection.role) {
+                it.replaceSourceFonts(
+                    start = selection.start,
+                    end = selection.end,
+                    inserted = listOf(TextCardFontSpan(selection.start, selection.end, font))
+                )
+            }
+        }
+        _canvasTextEditSession.update { session ->
+            session?.takeIf { it.role == selection.role }?.let { active ->
+                val start = selection.start - active.sourceStart
+                val end = selection.end - active.sourceStart
+                active.copy(
+                    block = active.block.replaceSourceFonts(
+                        start = start,
+                        end = end,
+                        inserted = listOf(TextCardFontSpan(start, end, font))
+                    )
+                )
+            }
+        }
+    }
+
+    fun clearPageSelectionStyles() {
+        val selection = _pageSelection.value ?: return
+        mutateDocument { current ->
+            current.updateBlock(selection.role) {
+                it.clearSourceRangeStyles(selection.start, selection.end)
+            }
+        }
+        _canvasTextEditSession.update { session ->
+            session?.takeIf { it.role == selection.role }?.let { active ->
+                active.copy(
+                    block = active.block.clearSourceRangeStyles(
+                        selection.start - active.sourceStart,
+                        selection.end - active.sourceStart
+                    )
+                )
+            }
+        }
+    }
+
+    fun beginTextEdit(id: String) {
+        val role = TextCardRole.entries.firstOrNull { document.block(it).id == id } ?: return
+        if (_canvasTextEditSession.value != null) endCanvasTextEdit()
+        if (contentEditSession && selectedRole != role) endTextEdit()
+        _selectedRole.value = role
+        _pageSelection.value = null
+        if (!contentEditSession) {
+            contentEditSession = true
+            contentSnapshotTaken = false
+        }
+    }
+
+    fun endTextEdit() {
+        contentEditSession = false
+    }
+
+    fun syncEditingTextBlock(
+        id: String,
+        content: String,
+        spans: List<TextStyleSpan>,
+    ) {
+        val role = TextCardRole.entries.firstOrNull { document.block(it).id == id } ?: return
+        val current = document.block(role)
+        if (current.content == content && current.styleSpans == spans) return
+        if (!contentSnapshotTaken) {
+            history.snapshot(document)
+            contentSnapshotTaken = true
+            refreshHistoryFlags()
+        }
+        mutateDocument(recordHistory = false) { document ->
+            document.updateBlock(role) { it.copy(content = content, styleSpans = spans) }
+        }
+    }
+
+    fun updateTextBlock(id: String, transform: (TextBlock) -> TextBlock) {
+        val role = TextCardRole.entries.firstOrNull { document.block(it).id == id } ?: return
+        mutateDocument { current -> current.updateBlock(role, transform) }
+    }
+
+    fun moveTextBlock(id: String, dx: Float, dy: Float) {
+        beginContinuousEdit()
+        updateTextBlock(id) {
+            it.copy(
+                offsetX = (it.offsetX + dx).coerceIn(-1f, 1f),
+                offsetY = (it.offsetY + dy).coerceIn(-1f, 1f)
+            )
+        }
+    }
+
+    fun applyFont(font: FontType?) {
+        selectedTextBlockId?.let { id -> updateTextBlock(id) { it.copy(font = font) } }
+    }
+
+    fun beginContinuousEdit() {
+        if (!continuousEditActive) {
+            continuousEditActive = true
+            continuousEditSnapshotTaken = false
+        }
+    }
+
+    fun endContinuousEdit() {
+        continuousEditActive = false
+        continuousEditSnapshotTaken = false
+    }
+
+    fun applyTemplate(template: TextCardTemplate) {
+        endContinuousEdit()
+        endCanvasTextEdit()
+        val canvas = document.canvas
+        mutateDocument { template.applyTo(it).copy(canvas = canvas) }
+        _pendingTemplate.value = template
+        _pendingCanvas.value = canvas
+    }
 
     fun updateBackground(spec: BackgroundSpec) {
-        if (spec == _background.value) return
-        _background.value = spec
-        registerChanges()
+        endContinuousEdit()
+        mutateDocument { it.copy(background = spec) }
     }
 
     fun updateBackgroundOpacity(opacity: Float) {
-        _backgroundOpacity.value = opacity.coerceIn(0f, 1f)
-        registerChanges()
+        beginContinuousEdit()
+        mutateDocument { it.copy(backgroundOpacity = opacity.coerceIn(0f, 1f)) }
     }
 
-    // ---------------- 文字(任意多块,按 id 寻址) ----------------
-
-    /** 面板按钮组切换选中块:与画布元素选中同步(选中框高亮同一块) */
-    fun selectTextBlock(id: String) {
-        if (_textBlocks.value.none { it.id == id }) return
-        _selectedTextBlockId.value = id
-        _selectedElementId.value = id
-    }
-
-    /**
-     * 当前真正选中的文字块。只有画布/面板明确选中文字块时才非空——
-     * 不再兜底到第一块,避免选中图片/空白时文字设置面板偷偷改到别的块。
-     */
-    fun selectedTextBlock(): TextBlock? =
-        _textBlocks.value.find { it.id == _selectedElementId.value }
-
-    /** 当前是否有文字块被选中(底部「文字设置」Tab 的可用性判定) */
-    val hasSelectedTextBlock: Boolean
-        get() = _textBlocks.value.any { it.id == _selectedElementId.value }
-
-    fun updateTextBlock(id: String, transform: (TextBlock) -> TextBlock) {
-        if (_textBlocks.value.none { it.id == id }) return
-        _textBlocks.update { list -> list.map { if (it.id == id) transform(it) else it } }
-        registerChanges()
-    }
-
-    /** 新增文字块:正文样式,默认排在现有最后一块基准往下,同步建图层并选中(样式面板需再点 Tab 或选中文字后的浮动工具条) */
-    fun addTextBlock() {
-        val last = _textBlocks.value.lastOrNull()
-        val block = TextBlock(
-            content = appContext.getString(R.string.textcard_new_block_content),
-            baseSizeRatio = CardLayout.BODY_BASE_SIZE_RATIO,
-            baseTopRatio = ((last?.baseTopRatio ?: CardLayout.BODY_BASE_TOP_RATIO) +
-                CardLayout.NEW_BLOCK_STEP_RATIO).coerceAtMost(0.9f)
-        )
-        _textBlocks.update { it + block }
-        _elementLayers.update { it + ElementLayer(block.id, ElementLayer.Kind.Text) }
-        // 新增文字直接进就地编辑:添加后立刻能打字,不用再点一次(对齐图片创作侧栏「文字」)
-        beginTextEdit(block.id)
-        registerChanges()
-    }
-
-    /** 删除文字块:至少保留一块,同步移除图层 */
-    fun removeTextBlock(id: String) {
-        if (_textBlocks.value.size <= 1) return
-        _textBlocks.update { list -> list.filterNot { it.id == id } }
-        _elementLayers.update { list -> list.filterNot { it.elementId == id } }
-        if (_selectedTextBlockId.value == id) {
-            _selectedTextBlockId.value = _textBlocks.value.first().id
-        }
-        if (_selectedElementId.value == id) _selectedElementId.value = null
-        if (_editingTextBlockId.value == id) _editingTextBlockId.value = null
-        registerChanges()
-    }
-
-    /** 画布内拖动自定义背景图:仅背景为相册图时生效;钳制在过扫余量内,不出边 */
     fun updateBackgroundImageOffset(dx: Float, dy: Float) {
-        val background = _background.value as? BackgroundSpec.Image ?: return
-        val maxOffset = CardLayout.BACKGROUND_IMAGE_MAX_OFFSET
-        _background.value = background.copy(
-            offsetX = (background.offsetX + dx).coerceIn(-maxOffset, maxOffset),
-            offsetY = (background.offsetY + dy).coerceIn(-maxOffset, maxOffset)
-        )
-        registerChanges()
-    }
-
-    /** 字体应用目标:当前选中文字块(面板切换与画布点选都汇聚到它) */
-    fun selectedFontTarget(): TextBlock? = selectedTextBlock()
-
-    /** 字体作用于当前选中文字块 */
-    fun applyFont(font: FontType?) {
-        val target = selectedFontTarget() ?: return
-        updateTextBlock(target.id) { it.copy(font = font) }
-    }
-
-    // ---------------- 元素选中与变换(文字块/装饰通用) ----------------
-
-    /**
-     * 画布点按元素=选中;点空白传 null 取消选中。
-     *
-     * 选中文字块只同步「文字设置」的作用目标,不自动弹面板:
-     * 面板/浮动操作条要等用户真正框选文字(或主动点底部 Tab)才出现,
-     * 避免点一下文字就糊住半屏。选中非文字元素或空白时收起已打开的文字面板,
-     * 防止面板继续改到上一块文字。
-     */
-    fun selectElement(id: String?) {
-        _selectedElementId.value = id
-        if (id != null && _textBlocks.value.any { it.id == id }) {
-            _selectedTextBlockId.value = id
-        } else if (_activePanel.value == EditorPanel.TextStyle) {
-            setActivePanel(null)
+        val image = document.background as? BackgroundSpec.Image ?: return
+        beginContinuousEdit()
+        mutateDocument { current ->
+            current.copy(
+                background = image.copy(
+                    offsetX = (image.offsetX + dx).coerceIn(-0.075f, 0.075f),
+                    offsetY = (image.offsetY + dy).coerceIn(-0.075f, 0.075f)
+                )
+            )
         }
     }
 
-    /** 进入就地编辑态(再次点已选中的文字块):选中并标记编辑中 */
-    fun beginTextEdit(id: String) {
-        if (_textBlocks.value.none { it.id == id }) return
-        selectElement(id)
-        _editingTextBlockId.value = id
+    fun updateOutputMode(mode: TextCardOutputMode) {
+        endContinuousEdit()
+        endCanvasTextEdit()
+        mutateDocument { it.copy(outputMode = mode) }
     }
 
-    /**
-     * 就地编辑器实时回写(内容 + 块内局部样式区间):编辑态唯一写入口,
-     * 编辑器内 TextFieldState 是唯一事实源,这里只做镜像。
-     * 与当前块完全一致时跳过——仅进入编辑态(初始同步)不应标记未保存变更。
-     */
-    fun syncEditingTextBlock(id: String, content: String, spans: List<TextStyleSpan>) {
-        val current = _textBlocks.value.find { it.id == id } ?: return
-        if (current.content == content && current.styleSpans == spans) return
-        updateTextBlock(id) { it.copy(content = content, styleSpans = spans) }
+    fun updateShowPageNumber(show: Boolean) {
+        mutateDocument { it.copy(showPageNumber = show) }
     }
 
-    /**
-     * 提交并退出就地编辑:trim 内容(局部样式区间同步平移/钳制),
-     * 空内容置占位提示文案并清空局部样式(不删块)。
-     * 编辑中内容实时写回,这里只做收尾。
-     */
-    fun endTextEdit() {
-        val id = _editingTextBlockId.value ?: return
-        updateTextBlock(id) { block ->
-            val trimmed = block.content.trim()
-            if (trimmed.isEmpty()) {
-                block.copy(
-                    content = appContext.getString(R.string.textcard_empty_text_hint),
-                    styleSpans = emptyList()
-                )
-            } else {
-                block.copy(
-                    content = trimmed,
-                    styleSpans = block.styleSpans.adjustForTrim(block.content, trimmed)
-                )
-            }
-        }
-        _editingTextBlockId.value = null
-    }
-
-    /**
-     * 应用手势后的元素变换(绝对值,预览侧已完成 pan 的缩放/旋转换算与归一化)。
-     * 锁定图层忽略。
-     */
-    fun setElementTransform(
-        id: String,
-        offsetX: Float,
-        offsetY: Float,
-        scale: Float,
-        rotation: Float,
+    fun updateExportSettings(
+        format: com.wanbaohe.textcard.domain.model.TextCardExportFormat = document.exportFormat,
+        quality: Int = document.exportQuality,
+        shareAfterSave: Boolean = document.shareAfterSave,
     ) {
-        val layer = _elementLayers.value.find { it.elementId == id }
-        if (layer?.locked == true) return
-        val safeScale = scale.coerceIn(0.2f, 5f)
-        when {
-            _textBlocks.value.any { it.id == id } -> updateTextBlock(id) {
-                it.copy(
-                    offsetX = offsetX.coerceIn(-1f, 1f),
-                    offsetY = offsetY.coerceIn(-1f, 1f),
-                    scale = safeScale,
-                    rotation = rotation
-                )
-            }
-
-            _decorations.value.any { it.id == id } -> {
-                _decorations.update { list ->
-                    list.map {
-                        if (it.id == id) {
-                            it.copy(
-                                offsetX = offsetX.coerceIn(-0.5f, 1f),
-                                offsetY = offsetY.coerceIn(-0.5f, 1f),
-                                scale = safeScale,
-                                rotation = rotation
-                            )
-                        } else it
-                    }
-                }
-                registerChanges()
-            }
-
-            _imageElements.value.any { it.id == id } -> {
-                _imageElements.update { list ->
-                    list.map {
-                        if (it.id == id) {
-                            it.copy(
-                                offsetX = offsetX.coerceIn(-0.5f, 1f),
-                                offsetY = offsetY.coerceIn(-0.5f, 1f),
-                                scale = safeScale,
-                                rotation = rotation
-                            )
-                        } else it
-                    }
-                }
-                registerChanges()
-            }
-
-            _shapeElements.value.any { it.id == id } -> {
-                _shapeElements.update { list ->
-                    list.map {
-                        if (it.id == id) {
-                            it.copy(
-                                offsetX = offsetX.coerceIn(-0.5f, 1f),
-                                offsetY = offsetY.coerceIn(-0.5f, 1f),
-                                scale = safeScale,
-                                rotation = rotation
-                            )
-                        } else it
-                    }
-                }
-                registerChanges()
-            }
-
-            _drawElements.value.any { it.id == id } -> {
-                _drawElements.update { list ->
-                    list.map {
-                        if (it.id == id) {
-                            it.copy(
-                                offsetX = offsetX.coerceIn(-0.5f, 1f),
-                                offsetY = offsetY.coerceIn(-0.5f, 1f),
-                                scale = safeScale,
-                                rotation = rotation
-                            )
-                        } else it
-                    }
-                }
-                registerChanges()
-            }
-        }
-    }
-
-    /**
-     * 文字框尺寸调整(拖 8 向手柄):框宽/最小框高 + 锚点补偿后的位置偏移,绝对值。
-     * 只改框尺寸不改字号,文字在新框宽内折行;锁定图层忽略。
-     */
-    fun setTextBlockBounds(
-        id: String,
-        widthRatio: Float,
-        heightRatio: Float,
-        offsetX: Float,
-        offsetY: Float,
-    ) {
-        if (_elementLayers.value.find { it.elementId == id }?.locked == true) return
-        updateTextBlock(id) {
+        mutateDocument(recordHistory = false) {
             it.copy(
-                widthRatio = widthRatio.coerceIn(CardLayout.MIN_TEXT_WIDTH_RATIO, 1f),
-                widthManuallySet = true,
-                heightRatio = heightRatio.coerceIn(0f, 1f),
-                offsetX = offsetX.coerceIn(-1f, 1f),
-                offsetY = offsetY.coerceIn(-1f, 1f)
+                exportFormat = format,
+                exportQuality = quality.coerceIn(10, 100),
+                shareAfterSave = shareAfterSave
             )
         }
     }
 
-    /** 删除选中元素(文字块至少保留一块,装饰/图片/形状/画笔不限),同步移除图层 */
-    fun removeElement(id: String) {
-        when {
-            _textBlocks.value.any { it.id == id } -> removeTextBlock(id)
-            _decorations.value.any { it.id == id } -> {
-                _decorations.update { list -> list.filterNot { it.id == id } }
-                _elementLayers.update { list -> list.filterNot { it.elementId == id } }
-                if (_selectedElementId.value == id) _selectedElementId.value = null
-                registerChanges()
-            }
+    fun setCurrentPage(index: Int, preservePageSelection: Boolean = false) {
+        val count = layout?.pages?.size ?: return
+        val target = index.coerceIn(0, (count - 1).coerceAtLeast(0))
+        if (target != _currentPage.value) {
+            endContinuousEdit()
+            endCanvasTextEdit()
+            if (!preservePageSelection) clearPageSelection()
+        }
+        _currentPage.value = target
+    }
 
-            _imageElements.value.any { it.id == id } -> {
-                _imageElements.update { list -> list.filterNot { it.id == id } }
-                _elementLayers.update { list -> list.filterNot { it.elementId == id } }
-                if (_selectedElementId.value == id) _selectedElementId.value = null
-                registerChanges()
-            }
-
-            _shapeElements.value.any { it.id == id } -> {
-                _shapeElements.update { list -> list.filterNot { it.id == id } }
-                _elementLayers.update { list -> list.filterNot { it.elementId == id } }
-                if (_selectedElementId.value == id) _selectedElementId.value = null
-                registerChanges()
-            }
-
-            _drawElements.value.any { it.id == id } -> {
-                _drawElements.update { list -> list.filterNot { it.id == id } }
-                _elementLayers.update { list -> list.filterNot { it.elementId == id } }
-                if (_selectedElementId.value == id) _selectedElementId.value = null
-                registerChanges()
-            }
+    fun previewState(): TextCardRenderState? {
+        val currentLayout = layout ?: return null
+        return if (document.outputMode == TextCardOutputMode.LongImage) {
+            currentLayout.longImage ?: currentLayout.pages.getOrNull(currentPage)
+        } else {
+            currentLayout.pages.getOrNull(currentPage) ?: currentLayout.pages.firstOrNull()
         }
     }
-
-    // ---------------- 形状(对照图片创作形状工具) ----------------
-
-    /** 添加形状元素:按种类的默认参数落画布中心,置顶并选中 */
-    fun addShapeElement(kind: CardShapeKind, colorArgb: Long, filled: Boolean) {
-        val element = ShapeElementSpec.defaultFor(kind).copy(
-            colorArgb = colorArgb,
-            filled = if (kind == CardShapeKind.Line) false else filled
-        )
-        _shapeElements.update { it + element }
-        _elementLayers.update { it + ElementLayer(element.id, ElementLayer.Kind.Shape) }
-        _selectedElementId.value = element.id
-        registerChanges()
-    }
-
-    // ---------------- 画笔 ----------------
-
-    /** 画布绘制模式:true 时画布叠加采集层,底部换取消/完成操作条 */
-    private val _isDrawing: MutableState<Boolean> = mutableStateOf(false)
-    val isDrawing: Boolean by _isDrawing
-
-    /** 本次绘制会话已完成的笔画(画布实时预览用) */
-    private val _drawStrokes: MutableState<List<CardDrawStroke>> = mutableStateOf(emptyList())
-    val drawStrokes: List<CardDrawStroke> by _drawStrokes
-
-    /** 当前画笔颜色/粗细(绘制态可调,默认与图片创作画笔一致) */
-    private val _drawBrushColor: MutableState<Long> = mutableStateOf(DEFAULT_DRAW_COLOR)
-    val drawBrushColor: Long by _drawBrushColor
-
-    private val _drawBrushWidthRatio: MutableState<Float> =
-        mutableStateOf(DEFAULT_DRAW_WIDTH_RATIO)
-    val drawBrushWidthRatio: Float by _drawBrushWidthRatio
-
-    fun updateDrawBrushColor(colorArgb: Long) {
-        _drawBrushColor.value = colorArgb
-    }
-
-    fun updateDrawBrushWidth(widthRatio: Float) {
-        _drawBrushWidthRatio.value = widthRatio.coerceIn(0.004f, 0.04f)
-    }
-
-    /** 侧栏「画笔」:进入绘制态(清空上次会话残留),取消元素选中避免手势冲突 */
-    fun startDrawMode() {
-        _isDrawing.value = true
-        _drawStrokes.value = emptyList()
-        _selectedElementId.value = null
-    }
-
-    /** 收笔一笔:追加到本次会话(用当前画笔颜色/粗细) */
-    fun addSessionStroke(points: List<CardStrokePoint>) {
-        if (points.isEmpty()) return
-        _drawStrokes.update {
-            it + CardDrawStroke(
-                points = points,
-                colorArgb = _drawBrushColor.value,
-                widthRatio = _drawBrushWidthRatio.value
-            )
-        }
-    }
-
-    /** 「完成」:会话笔画落成画笔图层元素并选中,退出绘制态 */
-    fun finishDrawMode() {
-        val strokes = _drawStrokes.value
-        if (strokes.isNotEmpty()) {
-            val element = DrawElementSpec(strokes = strokes)
-            _drawElements.update { it + element }
-            _elementLayers.update { it + ElementLayer(element.id, ElementLayer.Kind.Draw) }
-            _selectedElementId.value = element.id
-            registerChanges()
-        }
-        _isDrawing.value = false
-        _drawStrokes.value = emptyList()
-    }
-
-    /** 「取消」:丢弃本次会话,退出绘制态 */
-    fun cancelDrawMode() {
-        _isDrawing.value = false
-        _drawStrokes.value = emptyList()
-    }
-
-    // ---------------- 装饰 ----------------
-
-    /** 共享贴纸面板的确认动作:emoji(下标)/素材贴纸(assets 路径)/AI 生成(本地文件),默认落左上角,置顶并选中 */
-    fun addStickerDecoration(source: StickerSource) {
-        val canvas = _canvas.value ?: return
-        val decoration = when (source) {
-            is StickerSource.Emoji ->
-                DecorationSpec.defaultPositionFor(canvas, source.emojiIndex)
-
-            is StickerSource.Asset ->
-                DecorationSpec.defaultPositionFor(canvas, 0).copy(
-                    emojiIndex = null,
-                    assetPath = source.path
-                )
-
-            is StickerSource.Generated ->
-                DecorationSpec.defaultPositionFor(canvas, 0).copy(
-                    emojiIndex = null,
-                    imagePath = source.path
-                )
-        }
-        _decorations.update { it + decoration }
-        _elementLayers.update { it + ElementLayer(decoration.id, ElementLayer.Kind.Decoration) }
-        _selectedElementId.value = decoration.id
-        registerChanges()
-    }
-
-    /** 清空所有装饰(装饰选择 Sheet 的「无」) */
-    fun clearDecorations() {
-        if (_decorations.value.isEmpty()) return
-        val ids = _decorations.value.map { it.id }.toSet()
-        _decorations.value = emptyList()
-        _elementLayers.update { list -> list.filterNot { it.elementId in ids } }
-        if (_selectedElementId.value in ids) _selectedElementId.value = null
-        registerChanges()
-    }
-
-    // ---------------- AI 生成图片图层(core:image-generation) ----------------
-
-    private var generateImageJob: Job? by smartJob {
-        _isGeneratingImage.update { false }
-    }
-
-    /** 当前选中的 Ready 图片元素(非空时,生成弹层为「AI 编辑图片」图生图模式) */
-    fun selectedReadyImageElement(): ImageElementSpec? = _imageElements.value
-        .firstOrNull { it.id == _selectedElementId.value && it.status == ImageElementStatus.Ready }
-
-    /**
-     * 生成图片图层:先落 Loading 占位再异步生成,[onStarted] 在占位落地后回调
-     * (弹窗据此立即关闭,不阻塞用户其它操作);生成中重复调用 toast 提示并忽略。
-     *
-     * 两种模式:
-     * - 新建(无选中图片):占位铺满画布、图层垫底(背景之上文字之下,不挡文字),
-     *   按画布尺寸指定 outputSize;成功换图,失败标 Error(可删)。
-     * - 编辑(选中 Ready 图片):原图保留转 Loading(预览叠加转圈),图生图;
-     *   成功换图并把旧图压入 historyUris,失败恢复 Ready 原图不动。
-     * 仅真实生成成功扣积分,复用本地缓存(fromCache)不重复扣。
-     */
-    fun generateImageLayer(prompt: String, onStarted: () -> Unit = {}) {
-        val trimmed = prompt.trim()
-        if (trimmed.isEmpty()) {
-            AppToastHost.showToast(
-                message = appContext.getString(R.string.textcard_generate_image_empty),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineInfo,
-                duration = ToastDuration.Short
-            )
-            return
-        }
-        if (_isGeneratingImage.value) {
-            AppToastHost.showToast(
-                message = appContext.getString(R.string.textcard_generate_image_running),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineInfo,
-                duration = ToastDuration.Short
-            )
-            return
-        }
-        val canvas = _canvas.value ?: return
-        val editTarget = selectedReadyImageElement()
-        val outputSize = canvas.qwenOutputSize()
-
-        // 占位落地:新建 = 铺满画布的 Loading 图层垫底;编辑 = 原图转 Loading
-        val placeholder = if (editTarget == null) {
-            ImageElementSpec.fullCanvas(uri = "", status = ImageElementStatus.Loading)
-        } else null
-        if (placeholder != null) {
-            _imageElements.update { it + placeholder }
-            _elementLayers.update {
-                listOf(ElementLayer(placeholder.id, ElementLayer.Kind.Image)) + it
-            }
-            _selectedElementId.value = placeholder.id
-            registerChanges()
-        } else if (editTarget != null) {
-            updateImageElement(editTarget.id) { it.copy(status = ImageElementStatus.Loading) }
-        }
-        onStarted()
-        val pendingId = placeholder?.id ?: editTarget?.id ?: return
-
-        generateImageJob = componentScope.launch {
-            _isGeneratingImage.value = true
-            // 编辑模式:本地图片读成 base64 data URI 作为输入图(服务商不接受本地路径)
-            val inputImages = if (editTarget != null) {
-                runCatching {
-                    listOf(withContext(defaultDispatcher) { encodeImageAsDataUri(editTarget.uri) })
-                }.getOrElse { error ->
-                    updateImageElement(pendingId) { it.copy(status = ImageElementStatus.Ready) }
-                    AppToastHost.showFailureToast(throwable = error)
-                    _isGeneratingImage.value = false
-                    return@launch
-                }
-            } else emptyList()
-
-            imageGenerationLoader.load(
-                ImageGenerationRequest(
-                    prompt = trimmed,
-                    inputImages = inputImages,
-                    outputSize = outputSize
-                )
-            ).onSuccess { image ->
-                updateImageElement(pendingId) {
-                    it.copy(
-                        uri = image.file.absolutePath,
-                        status = ImageElementStatus.Ready,
-                        // 编辑模式:旧图压入历史,可在弹层里回退
-                        historyUris = if (editTarget != null) it.historyUris + it.uri
-                        else it.historyUris
-                    )
-                }
-                if (!image.fromCache) {
-                    BaseUtils.consumePoints(
-                        degree = aiImageProcessPointsCost(),
-                        desc = appContext.getString(R.string.textcard_add_image_layer),
-                        source = AI_IMAGE_POINTS_SOURCE,
-                        showToast = true
-                    )
-                }
-            }.onFailure { error ->
-                updateImageElement(pendingId) {
-                    // 新建失败标 Error;编辑失败恢复原图
-                    it.copy(
-                        status = if (editTarget == null) {
-                            ImageElementStatus.Error
-                        } else ImageElementStatus.Ready
-                    )
-                }
-                AppToastHost.showFailureToast(throwable = error)
-            }
-            _isGeneratingImage.value = false
-        }
-    }
-
-    /** AI 编辑历史回退:把历史版本换回当前图,当前图进历史尾部 */
-    fun revertImageElement(id: String, uri: String) {
-        updateImageElement(id) { element ->
-            if (uri == element.uri || uri !in element.historyUris) {
-                return@updateImageElement element
-            }
-            element.copy(
-                uri = uri,
-                historyUris = element.historyUris - uri + element.uri
-            )
-        }
-    }
-
-    // ---------------- AI 生成贴纸(共享贴纸弹层 AI tab) ----------------
-
-    private var generateStickerJob: Job? by smartJob {
-        _isGeneratingSticker.update { false }
-    }
-
-    /**
-     * AI 生成贴纸:文生图(提示词追加贴纸风格描述,正方形输出),成功落装饰元素
-     *(与素材贴纸同等待遇:选中/拖动/缩放/图层面板/导出),[onSuccess] 供弹层关闭。
-     * 登录与积分预检由调用方(UI 层 ActionUtils.ensureLoginAndCheckPoints)完成;
-     * 仅非缓存结果(!fromCache)扣积分,失败 toast 不扣。
-     */
-    fun generateSticker(prompt: String, onSuccess: () -> Unit = {}) {
-        val trimmed = prompt.trim()
-        if (trimmed.isEmpty() || _isGeneratingSticker.value) return
-        generateStickerJob = componentScope.launch {
-            _isGeneratingSticker.value = true
-            imageGenerationLoader.load(
-                ImageGenerationRequest(
-                    prompt = "$trimmed, $STICKER_PROMPT_STYLE_SUFFIX",
-                    outputSize = STICKER_OUTPUT_SIZE
-                )
-            ).onSuccess { image ->
-                addStickerDecoration(StickerSource.Generated(image.file.absolutePath))
-                if (!image.fromCache) {
-                    BaseUtils.consumePoints(
-                        degree = aiImageProcessPointsCost(),
-                        desc = appContext.getString(
-                            com.t8rin.imagetoolbox.core.resources.R.string.sticker_category_ai
-                        ),
-                        source = AI_IMAGE_POINTS_SOURCE,
-                        showToast = true
-                    )
-                }
-                onSuccess()
-            }.onFailure { error ->
-                AppToastHost.showFailureToast(throwable = error)
-            }
-            _isGeneratingSticker.value = false
-        }
-    }
-
-    /** 本地图片文件 → base64 data URI(图生图输入) */
-    private fun encodeImageAsDataUri(path: String): String {
-        val file = File(path)
-        val mime = when (file.extension.lowercase()) {
-            "jpg", "jpeg" -> "image/jpeg"
-            "webp" -> "image/webp"
-            else -> "image/png"
-        }
-        return "data:$mime;base64," + Base64.encodeToString(file.readBytes(), Base64.NO_WRAP)
-    }
-
-    /** 生成输出尺寸(服务商限制:像素总数 512²..2048²、宽高比 ≤ 8:1),按画布等比收窄 */
-    private fun CanvasSpec.qwenOutputSize(): String {
-        val maxPixels = 2048.0 * 2048.0
-        val pixels = width.toDouble() * height
-        val scale = if (pixels > maxPixels) sqrt(maxPixels / pixels) else 1.0
-        return "${(width * scale).roundToInt()}*${(height * scale).roundToInt()}"
-    }
-
-    fun cancelGeneratingImage() {
-        generateImageJob = null
-    }
-
-    /** 重置元素变换到初始位置(文字回基准位、装饰回左上角、图片回铺满/居中;文字框尺寸不动) */
-    fun resetElementTransform(id: String) {
-        val canvas = _canvas.value
-        when {
-            _textBlocks.value.any { it.id == id } -> updateTextBlock(id) {
-                it.copy(offsetX = 0f, offsetY = 0f, scale = 1f, rotation = 0f)
-            }
-
-            _decorations.value.any { it.id == id } -> {
-                val initial = _decorations.value.first { it.id == id }.let { decoration ->
-                    canvas?.let {
-                        DecorationSpec.defaultPositionFor(it, decoration.emojiIndex ?: 0)
-                    }
-                }
-                _decorations.update { list ->
-                    list.map {
-                        if (it.id == id) {
-                            it.copy(
-                                offsetX = initial?.offsetX ?: it.offsetX,
-                                offsetY = initial?.offsetY ?: it.offsetY,
-                                scale = 1f,
-                                rotation = 0f
-                            )
-                        } else it
-                    }
-                }
-                registerChanges()
-            }
-
-            _imageElements.value.any { it.id == id } -> updateImageElement(id) { element ->
-                val initial = canvas?.let {
-                    ImageElementSpec.defaultPositionFor(it, element.uri)
-                }
-                element.copy(
-                    offsetX = if (element.fullCanvas) 0f else initial?.offsetX ?: element.offsetX,
-                    offsetY = if (element.fullCanvas) 0f else initial?.offsetY ?: element.offsetY,
-                    scale = 1f,
-                    rotation = 0f
-                )
-            }
-        }
-    }
-
-    /** 按 id 更新图片元素(占位图层状态机:Loading → Ready/Error) */
-    private fun updateImageElement(id: String, transform: (ImageElementSpec) -> ImageElementSpec) {
-        if (_imageElements.value.none { it.id == id }) return
-        _imageElements.update { list -> list.map { if (it.id == id) transform(it) else it } }
-        registerChanges()
-    }
-
-    // ---------------- 图层(元素层,背景钉最底另算) ----------------
-
-    fun toggleBackgroundVisible() {
-        _backgroundVisible.update { !it }
-        registerChanges()
-    }
-
-    fun toggleLayerVisible(elementId: String) {
-        updateElementLayer(elementId) {
-            if (it.locked) it else it.copy(visible = !it.visible)
-        }
-    }
-
-    fun toggleLayerLocked(elementId: String) {
-        updateElementLayer(elementId) { it.copy(locked = !it.locked) }
-    }
-
-    private fun updateElementLayer(elementId: String, transform: (ElementLayer) -> ElementLayer) {
-        if (_elementLayers.value.none { it.elementId == elementId }) return
-        _elementLayers.update { list ->
-            list.map { if (it.elementId == elementId) transform(it) else it }
-        }
-        registerChanges()
-    }
-
-    /** 拖拽排序提交:参数为完整新 z 序(底层在前,仅文字/装饰层) */
-    fun reorderLayers(newOrder: List<ElementLayer>) {
-        if (newOrder == _elementLayers.value || newOrder.size != _elementLayers.value.size) return
-        _elementLayers.value = newOrder
-        registerChanges()
-    }
-
-    // ---------------- 底部面板 ----------------
 
     fun togglePanel(panel: EditorPanel) {
-        setActivePanel(if (_activePanel.value == panel) null else panel)
+        _activePanel.update { if (it == panel) null else panel }
     }
 
     fun setActivePanel(panel: EditorPanel?) {
         _activePanel.value = panel
     }
 
-    // ---------------- 远程纸张(Strapi 可配,失败/无网静默降级) ----------------
+    fun undo() {
+        endContinuousEdit()
+        endCanvasTextEdit(recompute = false)
+        endTextEdit()
+        val restored = history.undo(document) ?: return
+        applyHistory(restored)
+    }
 
-    /** 已就绪(图片已下载到本地)的远程纸张,追加在纸张列表尾部 */
-    private val _remotePapers: MutableState<List<RemotePaper>> = mutableStateOf(emptyList())
+    fun redo() {
+        endContinuousEdit()
+        endCanvasTextEdit(recompute = false)
+        endTextEdit()
+        val restored = history.redo(document) ?: return
+        applyHistory(restored)
+    }
+
+    private fun applyHistory(restored: TextCardDocument) {
+        _document.value = restored.copy(
+            exportFormat = document.exportFormat,
+            exportQuality = document.exportQuality,
+            shareAfterSave = document.shareAfterSave
+        )
+        _pageSelection.value = null
+        _contentResetVersion.update { it + 1 }
+        documentRevision++
+        refreshHistoryFlags()
+        registerChanges()
+        recomputeLayout(immediate = true)
+        scheduleAutosave()
+    }
+
+    private fun mutateDocument(
+        recordHistory: Boolean = true,
+        transform: (TextCardDocument) -> TextCardDocument,
+    ) {
+        val updated = transform(document)
+        if (updated == document) return
+        val shouldSnapshot = when {
+            !recordHistory -> false
+            continuousEditActive -> !continuousEditSnapshotTaken
+            else -> true
+        }
+        if (shouldSnapshot) {
+            history.snapshot(document)
+            if (continuousEditActive) continuousEditSnapshotTaken = true
+        }
+        _document.value = updated
+        documentRevision++
+        refreshHistoryFlags()
+        registerChanges()
+        if (_canvasTextEditSession.value == null) recomputeLayout()
+        scheduleAutosave()
+    }
+
+    private fun refreshHistoryFlags() {
+        _canUndo.value = history.canUndo
+        _canRedo.value = history.canRedo
+    }
+
+    private fun recomputeLayout(immediate: Boolean = false) {
+        layoutJob?.cancel()
+        if (_canvasTextEditSession.value != null) return
+        val snapshot = document
+        val revision = documentRevision
+        layoutJob = componentScope.launch {
+            if (!immediate) delay(120)
+            _layoutError.value = null
+            _isLayoutComputing.value = true
+            val result = runCatching {
+                withContext(defaultDispatcher) { layoutEngine.layout(snapshot) }
+            }
+            if (revision == documentRevision && _canvasTextEditSession.value == null) {
+                result.onSuccess { newLayout ->
+                    _layout.value = newLayout
+                    val lastPage = (newLayout.pages.size - 1).coerceAtLeast(0)
+                    _currentPage.value = _currentPage.value.coerceIn(0, lastPage)
+                    syncPageSelectionAfterLayout(newLayout)
+                }.onFailure { error ->
+                    _layout.value = null
+                    _layoutError.value = error.message
+                    error.makeLog("TextCardLayout")
+                    AppToastHost.showFailureToast(error)
+                }
+                _isLayoutComputing.value = false
+            }
+        }
+    }
+
+    private fun syncPageSelectionAfterLayout(newLayout: TextCardLayout) {
+        if (_canvasTextEditSession.value != null) return
+        val selection = _pageSelection.value ?: return
+        val index = newLayout.pages.indexOfFirst { state ->
+            state.segments.any { segment ->
+                segment.role == selection.role &&
+                    segment.sourceStart < selection.end &&
+                    segment.sourceEnd > selection.start
+            }
+        }
+        if (index >= 0) {
+            setCurrentPage(index, preservePageSelection = true)
+        } else {
+            clearPageSelection()
+        }
+    }
+
+    private fun scheduleAutosave() {
+        autosaveJob?.cancel()
+        projectSaveJob?.cancel()
+        if (!_isEditing.value) return
+        autosaveJob = componentScope.launch {
+            delay(900)
+            autosaveJob = null
+            if (document.hasContent) saveProject() else deleteEmptyProject()
+        }
+    }
+
+    fun saveProject(onComplete: () -> Unit = {}) {
+        if (!_isEditing.value) {
+            onComplete()
+            return
+        }
+        if (!document.hasContent) {
+            deleteEmptyProject(onComplete)
+            return
+        }
+        autosaveJob?.cancel()
+        projectSaveJob?.cancel()
+        val id = projectId ?: return
+        val snapshot = document
+        val revision = documentRevision
+        val name = projectName.ifBlank { snapshot.displayName() }
+        projectSaveJob = componentScope.launch {
+            _isProjectSaving.value = true
+            try {
+                runCatching {
+                    val layout = withContext(defaultDispatcher) { layoutEngine.layout(snapshot) }
+                    val thumbnail = withContext(defaultDispatcher) {
+                        exportRenderer.render(layout.pages.first())
+                    }
+                    projectStore.save(
+                        id = id,
+                        name = name,
+                        document = snapshot,
+                        pageCount = layout.pages.size,
+                        thumbnail = thumbnail
+                    )
+                }.onSuccess { durable ->
+                    if (revision == documentRevision) {
+                        _document.value = durable
+                        registerSave()
+                    }
+                    onComplete()
+                }.onFailure { error ->
+                    if (error is kotlinx.coroutines.CancellationException) throw error
+                    error.makeLog("TextCardProjectSave")
+                    AppToastHost.showFailureToast(error)
+                }
+            } finally {
+                _isProjectSaving.value = false
+            }
+        }
+    }
+
+    private fun deleteEmptyProject(onComplete: () -> Unit = {}) {
+        if (document.hasContent) {
+            saveProject(onComplete)
+            return
+        }
+        val id = projectId ?: run {
+            onComplete()
+            return
+        }
+        autosaveJob?.cancel()
+        projectSaveJob?.cancel()
+        projectSaveJob = componentScope.launch {
+            _isProjectSaving.value = true
+            try {
+                runCatching { projectStore.delete(id) }
+                    .onSuccess { onComplete() }
+                    .onFailure { error ->
+                        if (error is kotlinx.coroutines.CancellationException) throw error
+                        error.makeLog("TextCardProjectDelete")
+                        AppToastHost.showFailureToast(error)
+                    }
+            } finally {
+                _isProjectSaving.value = false
+            }
+        }
+    }
+
+    fun saveCard() {
+        if (_isSaving.value || !document.hasContent) return
+        exportJob = componentScope.launch {
+            _isSaving.value = true
+            runCatching {
+                val currentLayout = withContext(defaultDispatcher) {
+                    layoutEngine.layout(document)
+                }
+                exportService.export(document, currentLayout)
+            }.onSuccess { result ->
+                result.saved.firstOrNull()?.let { first ->
+                    runCatching {
+                        imageSaveLogger.recordImageSave(
+                            screenId = Screen.TextCard.id.toString(),
+                            screenName = appContext.getString(
+                                com.shifenmiao.core.R.string.text_card
+                            ),
+                            description = "Text card export: ${result.saved.size} page(s)",
+                            fileUri = first.uri,
+                            fileName = first.fileName,
+                            savePath = first.savingPath
+                        )
+                    }
+                }
+                if (result.saved.isNotEmpty()) {
+                    val first = result.saved.first()
+                    AppToastHost.showFileSuccessToast(
+                        uri = first.uri.takeIf(String::isNotBlank)?.toUri(),
+                        message = if (result.saved.size == 1) {
+                            SaveSuccessNotifier.successMessage(
+                                fileName = first.fileName,
+                                savingPath = first.savingPath
+                            )
+                        } else {
+                            appContext.getString(
+                                R.string.textcard_export_pages_success,
+                                result.saved.size
+                            )
+                        }
+                    )
+                    AppToastHost.showConfetti()
+                    registerSave()
+                }
+                if (result.failedPages.isNotEmpty()) {
+                    AppToastHost.showToast(
+                        message = appContext.getString(
+                            R.string.textcard_export_partial_failure,
+                            result.failedPages.size
+                        ),
+                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineInfo,
+                        duration = ToastDuration.Long
+                    )
+                } else if (result.saved.isEmpty()) {
+                    AppToastHost.showToast(
+                        message = appContext.getString(R.string.textcard_save_failed),
+                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineInfo,
+                        duration = ToastDuration.Short
+                    )
+                }
+                if (result.shareFailed) {
+                    AppToastHost.showToast(
+                        message = appContext.getString(
+                            com.shifenmiao.core.R.string.webview_share_failed
+                        ),
+                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineInfo,
+                        duration = ToastDuration.Long
+                    )
+                }
+            }.onFailure(AppToastHost::showFailureToast)
+            _isSaving.value = false
+        }
+    }
+
+    fun cancelSaving() {
+        exportJob = null
+    }
+
+    fun startBackgroundHandoff() {
+        if (_isPreparingHandoff.value || activeHandoffId != null) return
+        handoffJob?.cancel()
+        handoffJob = componentScope.launch {
+            _isPreparingHandoff.value = true
+            runCatching {
+                val state = withContext(defaultDispatcher) {
+                    layoutEngine.layout(document).pages.first().copy(textBlocks = emptyList())
+                }
+                val rendered = withContext(defaultDispatcher) { exportRenderer.render(state) }
+                shareProvider.cacheImage(
+                    image = rendered,
+                    imageInfo = ImageInfo(
+                        width = rendered.width,
+                        height = rendered.height,
+                        imageFormat = com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat.Png.Lossless
+                    )
+                ) ?: error("Could not cache the background")
+            }.onSuccess { uri ->
+                val request = BackgroundHandoffBus.Request(
+                    id = UUID.randomUUID().toString(),
+                    width = document.canvas.width,
+                    height = document.canvas.height
+                )
+                activeHandoffId = request.id
+                backgroundHandoffBus.begin(request)
+                onNavigate(Screen.MarkupLayers(uri = uri.toUri(), handoffId = request.id))
+            }.onFailure {
+                activeHandoffId = null
+                AppToastHost.showFailureToast(it)
+            }
+            _isPreparingHandoff.value = false
+        }
+    }
+
+    private val _remotePapers = mutableStateOf<List<RemotePaper>>(emptyList())
     val remotePapers: List<RemotePaper> by _remotePapers
-
     private var papersJob: Job? by smartJob()
-
-    /** 远程纸张刷新中(刷新按钮 loading 态) */
     private val _remotePapersRefreshing = mutableStateOf(false)
     val remotePapersRefreshing: Boolean by _remotePapersRefreshing
 
@@ -944,7 +990,6 @@ class TextCardComponent @AssistedInject internal constructor(
         }
     }
 
-    /** 手动刷新远程纸张(后台新发布纸张后客户端列表不更新时重拉);失败/为空保留现有列表 */
     fun refreshRemotePapers() {
         if (papersJob != null) return
         papersJob = componentScope.launch {
@@ -953,115 +998,6 @@ class TextCardComponent @AssistedInject internal constructor(
             if (papers.isNotEmpty()) _remotePapers.value = papers
             _remotePapersRefreshing.value = false
         }
-    }
-
-    // ---------------- 渲染与保存 ----------------
-
-    fun renderState(): TextCardRenderState? {
-        val spec = _canvas.value ?: return null
-        return TextCardRenderState(
-            canvas = spec,
-            background = _background.value,
-            backgroundOpacity = _backgroundOpacity.value,
-            backgroundVisible = _backgroundVisible.value,
-            textBlocks = _textBlocks.value,
-            decorations = _decorations.value,
-            imageElements = _imageElements.value,
-            shapeElements = _shapeElements.value,
-            drawElements = _drawElements.value,
-            layers = _elementLayers.value
-        )
-    }
-
-    /**
-     * 保存:离屏重绘 1080 宽 PNG,经 FileController 落盘(模板见 id-photo)。
-     * 结果处理不走 parseSaveResult:其内部异步读当前页面名,保存后切页会把
-     * 活动记录标成别的页面;这里同步显式记录为本页面(图文卡片)。
-     */
-    fun saveCard() {
-        // 导出长边超上限(2048)时等比缩小渲染,防 OOM;预览仍按原规格
-        val state = renderState()?.let { it.copy(canvas = it.canvas.exportScaled()) } ?: return
-        if (_isSaving.value) return
-        savingJob = componentScope.launch {
-            _isSaving.value = true
-            val result = runCatching {
-                val rendered = withContext(defaultDispatcher) {
-                    exportRenderer.render(state)
-                }
-                val imageInfo = ImageInfo(
-                    imageFormat = ImageFormat.Png.Lossless,
-                    width = rendered.width,
-                    height = rendered.height
-                )
-                fileController.save(
-                    saveTarget = ImageSaveTarget(
-                        imageInfo = imageInfo,
-                        originalUri = "text_card",
-                        sequenceNumber = null,
-                        metadata = null,
-                        filename = "TextCard_${System.currentTimeMillis()}",
-                        data = imageCompressor.compressAndTransform(
-                            image = rendered,
-                            imageInfo = imageInfo
-                        )
-                    ),
-                    keepOriginalMetadata = false,
-                    oneTimeSaveLocationUri = null
-                ).onSuccess { success -> registerSave(success) }
-            }.getOrElse { SaveResult.Error.Exception(it) }
-
-            handleSaveResult(result)
-            _isSaving.value = false
-        }
-    }
-
-    /** parseSaveResult 的等价行为 + 显式 ActivityLog(页面名固定为图文卡片) */
-    private suspend fun handleSaveResult(result: SaveResult) {
-        when (result) {
-            is SaveResult.Success -> {
-                AppToastHost.showFileSuccessToast(
-                    uri = result.fileUri?.takeIf(String::isNotBlank)?.toUri(),
-                    message = SaveSuccessNotifier.successMessage(
-                        fileName = result.fileName.orEmpty(),
-                        savingPath = result.savingPath.orEmpty()
-                    )
-                )
-                AppToastHost.showConfetti()
-                runCatching {
-                    imageSaveLogger.recordImageSave(
-                        screenId = Screen.TextCard.id.toString(),
-                        screenName = appContext.getString(
-                            com.shifenmiao.core.R.string.text_card
-                        ),
-                        description = linkifiedSaveMessage(result).orEmpty(),
-                        fileUri = result.fileUri.orEmpty(),
-                        fileName = result.fileName.orEmpty(),
-                        savePath = result.savingPath.orEmpty()
-                    )
-                }.onFailure { it.makeLog("TextCardSaveLog") }
-            }
-
-            is SaveResult.Skipped -> AppToastHost.showToast(
-                message = appContext.getString(
-                    com.t8rin.imagetoolbox.core.resources.R.string.skipped_saving
-                ),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineInfo,
-                duration = ToastDuration.Short
-            )
-
-            is SaveResult.Error.Exception -> {
-                result.throwable.makeLog("TextCardSave")
-                AppToastHost.showFailureToast(throwable = result.throwable)
-            }
-
-            SaveResult.Error.MissingPermissions -> {
-                AppToastHost.showToast(AppToastHost.PERMISSION)
-            }
-        }
-    }
-
-    fun cancelSaving() {
-        savingJob = null
     }
 
     @AssistedFactory
@@ -1073,12 +1009,3 @@ class TextCardComponent @AssistedInject internal constructor(
         ): TextCardComponent
     }
 }
-
-/** AI 生成图片积分消耗/预检的来源标识 */
-internal const val AI_IMAGE_POINTS_SOURCE = "text_card_ai"
-
-/** AI 生成贴纸:提示词追加的贴纸风格描述(文生图模型对英文风格词更稳定) */
-private const val STICKER_PROMPT_STYLE_SUFFIX = "sticker style, clean simple solid background"
-
-/** AI 生成贴纸输出尺寸(正方形,服务商像素限制内的固定值) */
-private const val STICKER_OUTPUT_SIZE = "1024*1024"

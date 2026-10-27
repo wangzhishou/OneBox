@@ -1,5 +1,6 @@
 package com.wanbaohe.markuplayers.domain.history
 
+import com.t8rin.imagetoolbox.core.domain.history.DocumentHistory
 import com.t8rin.imagetoolbox.core.filters.presentation.serialization.UiFilterCodec
 import com.wanbaohe.markuplayers.domain.model.LayerEffect
 import com.wanbaohe.markuplayers.domain.model.LayerMask
@@ -10,56 +11,27 @@ import com.wanbaohe.markuplayers.domain.project.MarkupDocument
  * Snapshot the complete document before an edit, including base edits and export preferences.
  * A gesture can take one pre-edit snapshot and apply any number of transient updates.
  */
-class LayerHistory(
-    private val maxSize: Int = 50,
-) {
+class LayerHistory(maxSize: Int = 50) {
 
-    init {
-        require(maxSize in 1..50) { "History capacity must be between 1 and 50" }
-    }
+    private val history = DocumentHistory<MarkupDocument>(
+        maxSize = maxSize,
+        freeze = { it.frozen() },
+    )
 
-    private val undoStack = ArrayDeque<MarkupDocument>()
-    private val redoStack = ArrayDeque<MarkupDocument>()
+    val canUndo: Boolean get() = history.canUndo
+    val canRedo: Boolean get() = history.canRedo
 
-    val canUndo: Boolean get() = undoStack.isNotEmpty()
-    val canRedo: Boolean get() = redoStack.isNotEmpty()
-
-    fun snapshot(document: MarkupDocument) {
-        pushUndo(document)
-        redoStack.clear()
-    }
+    fun snapshot(document: MarkupDocument) = history.snapshot(document)
 
     /** Replace a coalesced edit's pre-edit snapshot; an empty history is left unchanged. */
-    fun replaceLastSnapshot(document: MarkupDocument): Boolean {
-        if (undoStack.isEmpty()) return false
-        val frozen = document.frozen()
-        undoStack.removeLast()
-        undoStack.addLast(frozen)
-        redoStack.clear()
-        return true
-    }
+    fun replaceLastSnapshot(document: MarkupDocument): Boolean =
+        history.replaceLastSnapshot(document)
 
-    fun undo(current: MarkupDocument): MarkupDocument? {
-        if (undoStack.isEmpty()) return null
-        redoStack.addLast(current.frozen())
-        return undoStack.removeLast()
-    }
+    fun undo(current: MarkupDocument): MarkupDocument? = history.undo(current)
 
-    fun redo(current: MarkupDocument): MarkupDocument? {
-        if (redoStack.isEmpty()) return null
-        pushUndo(current)
-        return redoStack.removeLast()
-    }
+    fun redo(current: MarkupDocument): MarkupDocument? = history.redo(current)
 
-    fun clear() {
-        undoStack.clear()
-        redoStack.clear()
-    }
-
-    private fun pushUndo(document: MarkupDocument) {
-        undoStack.addLast(document.frozen())
-        if (undoStack.size > maxSize) undoStack.removeFirst()
-    }
+    fun clear() = history.clear()
 
     private fun MarkupDocument.frozen(): MarkupDocument = copy(
         baseEffects = baseEffects.frozenEffects(),

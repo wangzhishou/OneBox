@@ -18,7 +18,9 @@ import androidx.compose.ui.unit.IntSize
 import androidx.core.net.toUri
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
+import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.essenty.lifecycle.doOnStop
+import com.shifenmiao.common.creation.BackgroundHandoffBus
 import com.shifenmiao.common.recent.RecentAccessRepository
 import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.database.recent_access.entity.RecentAccessEntity
@@ -132,9 +134,11 @@ import kotlin.math.sin
 class MarkupLayersComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted initialUri: Uri?,
+    @Assisted handoffId: String?,
     @Assisted val onGoBack: () -> Unit,
     @Assisted val onNavigate: (Screen) -> Unit,
     dispatchersHolder: DispatchersHolder,
+    private val backgroundHandoffBus: BackgroundHandoffBus,
     private val fileController: FileController,
     private val imageCompressor: ImageCompressor<Bitmap>,
     private val imageGetter: ImageGetter<Bitmap>,
@@ -173,7 +177,16 @@ class MarkupLayersComponent @AssistedInject internal constructor(
             )
         )
 
+    val backgroundHandoffRequest: BackgroundHandoffBus.Request? = handoffId?.let { id ->
+        backgroundHandoffBus.request.value?.takeIf { it.id == id }
+    }
+    val isBackgroundHandoff: Boolean get() = backgroundHandoffRequest != null
+    private var isBackgroundHandoffCompleted = false
+
     init {
+        lifecycle.doOnDestroy {
+            if (!isBackgroundHandoffCompleted) handoffId?.let(backgroundHandoffBus::cancel)
+        }
         debounce {
             observeRecentProjects()
             observeProjects()
@@ -186,6 +199,15 @@ class MarkupLayersComponent @AssistedInject internal constructor(
             }
             lifecycle.doOnStop {
                 if (hasImage && haveChanges) saveProject()
+            }
+            if (initialUri == null) {
+                backgroundHandoffRequest?.let { request ->
+                    startWithBlankCanvas(
+                        width = request.width,
+                        height = request.height,
+                        backgroundColor = null
+                    )
+                }
             }
             initialUri?.let {
                 setUri(
@@ -2753,6 +2775,17 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         }
     }
 
+    fun completeBackgroundHandoff() {
+        val request = backgroundHandoffRequest ?: return
+        if (isBackgroundHandoffCompleted) return
+        cacheCurrentImage { uri ->
+            if (backgroundHandoffBus.complete(request.id, uri.toString())) {
+                isBackgroundHandoffCompleted = true
+                onGoBack()
+            }
+        }
+    }
+
     fun cancelSaving() {
         savingJob?.cancel()
         savingJob = null
@@ -2776,6 +2809,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         operator fun invoke(
             componentContext: ComponentContext,
             initialUri: Uri?,
+            handoffId: String?,
             onGoBack: () -> Unit,
             onNavigate: (Screen) -> Unit,
         ): MarkupLayersComponent

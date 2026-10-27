@@ -1,6 +1,5 @@
 package com.wanbaohe.markuplayers.presentation.home
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,6 +32,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.model.canvas.CreationCanvasSpec
 import com.wanbaohe.base.ui.button.ConfirmButton
 import com.wanbaohe.core.ui.widget.color_picker.ColorSelectionRow
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedChip
@@ -103,9 +103,8 @@ fun BlankCanvasSheet(
                         row.forEach { index ->
                             val preset = canvasPresets.getOrNull(index)
                             PresetChip(
-                                label = stringResource(
-                                    preset?.ratioLabelRes ?: R.string.markup_blank_canvas_custom
-                                ),
+                                label = preset?.ratioLabel
+                                    ?: stringResource(R.string.markup_blank_canvas_custom),
                                 dimensions = preset?.let {
                                     stringResource(R.string.markup_export_dimensions, it.width, it.height)
                                 },
@@ -279,16 +278,10 @@ private fun SizeField(
     )
 }
 
-private class CanvasPreset(
-    @StringRes val ratioLabelRes: Int,
-    val width: Int,
-    val height: Int,
-)
-
 private val canvasPresets = listOf(
-    CanvasPreset(R.string.studio_ratio_square, 1080, 1080),
-    CanvasPreset(R.string.studio_ratio_landscape, 1440, 1080),
-    CanvasPreset(R.string.studio_ratio_wide, 1920, 1080),
-    CanvasPreset(R.string.studio_ratio_portrait, 1080, 1440),
-    CanvasPreset(R.string.studio_ratio_story, 1080, 1920)
+    CreationCanvasSpec.SQUARE,
+    CreationCanvasSpec.LANDSCAPE,
+    CreationCanvasSpec.WIDE,
+    CreationCanvasSpec.PORTRAIT,
+    CreationCanvasSpec.STORY,
 )

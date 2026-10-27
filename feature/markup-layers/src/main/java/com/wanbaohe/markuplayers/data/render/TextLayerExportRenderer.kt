@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Typeface
+import android.os.Build
 import android.text.Layout
 import android.text.SpannableString
 import android.text.Spanned
@@ -83,12 +84,20 @@ class TextLayerExportRenderer @Inject constructor(
         }
 
         val exportText = type.exportText()
-        fun buildLayout(p: TextPaint, width: Int): StaticLayout = StaticLayout.Builder
-            .obtain(exportText, 0, exportText.length, p, width)
-            .setAlignment(alignment)
-            .setLineSpacing(0f, type.lineHeight)
-            .setIncludePad(false)
-            .build()
+        fun buildLayout(p: TextPaint, width: Int): StaticLayout {
+            val builder = StaticLayout.Builder
+                .obtain(exportText, 0, exportText.length, p, width)
+                .setAlignment(alignment)
+                .setLineSpacing(0f, type.lineHeight)
+                .setIncludePad(false)
+            if (
+                type.alignment == LayerType.Text.TextAlignment.Justify &&
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+            ) {
+                builder.setJustificationMode(Layout.JUSTIFICATION_MODE_INTER_WORD)
+            }
+            return builder.build()
+        }
 
         val probe = buildLayout(paint, layoutWidth)
         // 固定框宽:直接用设定框宽;自适应:按折行后最长行收紧(与 Compose hug 一致),

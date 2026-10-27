@@ -3,6 +3,7 @@
 package com.wanbaohe.textcard.presentation.editor
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,367 +13,553 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AutoAwesome
+import androidx.compose.material.icons.outlined.CropSquare
+import androidx.compose.material.icons.outlined.Layers
+import androidx.compose.material.icons.outlined.TextFields
+import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.unit.dp
-import com.wanbaohe.base.ui.button.CancelButton
-import com.wanbaohe.base.ui.button.ConfirmButton
-import com.wanbaohe.base.ui.button.PrimaryButton
-import com.shifenmiao.base.utils.ActionUtils
-import com.shifenmiao.base.utils.aiImageProcessPointsCost
+import com.shifenmiao.common.components.text.clearSelectionStyles
 import com.shifenmiao.common.ui.BaseScreen
-import com.t8rin.imagetoolbox.core.resources.icons.Close
-import com.t8rin.imagetoolbox.core.resources.icons.FreeDraw
-import com.t8rin.imagetoolbox.core.resources.icons.Star
-import com.t8rin.imagetoolbox.core.resources.icons.TextFields
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineContentCut
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineStickerEmoji
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineText
-import com.wanbaohe.core.ui.widget.color_picker.ColorSelectionRow
-import com.wanbaohe.core.ui.widget.dialogs.ExitWithoutSavingDialog
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
+import com.t8rin.imagetoolbox.core.settings.presentation.model.toUiFont
+import com.wanbaohe.base.ui.button.PrimaryButton
 import com.wanbaohe.core.ui.widget.dialogs.LoadingDialog
-import com.wanbaohe.core.ui.widget.editor.AiStickerGeneration
-import com.wanbaohe.core.ui.widget.editor.EditorRailTool
 import com.wanbaohe.core.ui.widget.editor.EditorToolLabel
-import com.wanbaohe.core.ui.widget.editor.EditorToolRail
-import com.wanbaohe.core.ui.widget.editor.StickerToolSheet
-import com.wanbaohe.core.ui.widget.editor.VerticalDraggable
-import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
-import com.wanbaohe.core.ui.widget.enhanced.EnhancedSliderItem
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedLoadingIndicator
 import com.wanbaohe.core.ui.widget.glass.glassDense
 import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.TextBlock
+import com.wanbaohe.textcard.domain.model.TextCardOutputMode
+import com.wanbaohe.textcard.domain.model.TextCardRole
+import com.wanbaohe.textcard.domain.model.TextCardSegment
 import com.wanbaohe.textcard.domain.model.toTextStyleSpan
-import kotlin.math.roundToInt
 import com.wanbaohe.textcard.presentation.editor.panels.BackgroundPanel
-import com.wanbaohe.textcard.presentation.editor.panels.LayersPanel
+import com.wanbaohe.textcard.presentation.editor.panels.ContentPanel
+import com.wanbaohe.textcard.presentation.editor.panels.PageSelectionPanel
+import com.wanbaohe.textcard.presentation.editor.panels.PagesPanel
+import com.wanbaohe.textcard.presentation.editor.panels.TemplatesPanel
 import com.wanbaohe.textcard.presentation.editor.panels.TextStylePanel
-import com.wanbaohe.textcard.presentation.screenLogic.AI_IMAGE_POINTS_SOURCE
 import com.wanbaohe.textcard.presentation.screenLogic.EditorPanel
 import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
-import androidx.compose.material.icons.Icons as MaterialIcons
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.AutoAwesome
-import androidx.compose.material.icons.outlined.CropSquare
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.EmojiEmotions
-import androidx.compose.material.icons.outlined.Layers
-import androidx.compose.material.icons.outlined.Tune
+import kotlinx.coroutines.flow.drop
 
-/**
- * 编辑首页(设计稿 01):画布预览 + 底部常驻栏(面板 Tab + 保存按钮,
- * 结构对齐图片创作 EditorBottomBar:玻璃容器 + Tab 区窄屏横滑 + 保存固定右端)。
- * Tab 点击后以 [EnhancedModalBottomSheet] 弹出对应面板(标题栏 + 关闭按钮,
- * 模式参考 DemoScreen);文字块就地编辑:点选 → 再点进入编辑态(自动弹键盘),
- * 点空白/返回键/完成键提交退出;「文字设置」面板统一承担文字样式:
- * 默认作用于整块,编辑中长按选中块内局部文字时自动切换为选区作用域
- * (同一套控件,只改作用域);元素选中后支持拖动/缩放/旋转(手势在
- * [CardCanvasPreview] 内)。
- */
 @Composable
-fun TextCardEditorScreen(
-    component: TextCardComponent,
-) {
-    var showDecorationSheet by rememberSaveable { mutableStateOf(false) }
-    var showShapeSheet by rememberSaveable { mutableStateOf(false) }
-    var showGenerateImageSheet by rememberSaveable { mutableStateOf(false) }
-    var showExitDialog by rememberSaveable { mutableStateOf(false) }
+fun TextCardEditorScreen(component: TextCardComponent) {
+    var showExportSheet by rememberSaveable { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
-
-    // 编辑页返回(顶栏 + 系统返回键/手势):有未保存变更先弹退出确认,选择页不拦截
-    val onBack = {
-        if (component.haveChanges) {
-            showExitDialog = true
-        } else {
-            component.backToSelection()
+    val focusManager = LocalFocusManager.current
+    val fieldStates = remember(component.contentResetVersion) {
+        TextCardRole.entries.associateWith { role ->
+            val block = component.document.block(role)
+            TextFieldState(block.content, TextRange(block.content.length)).also { state ->
+                block.styleSpans.forEach { span ->
+                    span.clamped(block.content.length)?.let { clamped ->
+                        state.edit { addStyle(clamped.toSpanStyle(), clamped.start, clamped.end) }
+                    }
+                }
+            }
         }
     }
-
-    // 就地编辑的 TextFieldState 按块创建(keyed,切换编辑块即重建),
-    // 画布内编辑器与文字设置面板(选区作用域)共享同一实例;内容/局部样式经 syncEditing 回写模型
-    val editingBlockId = component.editingTextBlockId
-    val editingBlock = component.textBlocks.firstOrNull { it.id == editingBlockId }
-    val editingTextFieldState = editingBlock?.let { block ->
-        key(block.id) {
-            rememberTextFieldState(block.content, TextRange(block.content.length))
+    val syncRole: (TextCardRole) -> Unit = { role ->
+        val state = fieldStates.getValue(role)
+        component.syncEditingTextBlock(
+            id = component.document.block(role).id,
+            content = state.text.toString(),
+            spans = state.modelStyles()
+        )
+    }
+    val canvasSession = component.canvasTextEditSession
+    val canvasFontFamilies = canvasSession?.block?.fontSpans?.map {
+        it.font.toUiFont().fontFamily
+    }
+    val canvasFieldState = remember(canvasSession?.id) {
+        canvasSession?.let { session ->
+            TextFieldState(
+                initialText = session.block.content,
+                initialSelection = TextRange(session.initialCursor)
+            ).also { state ->
+                session.block.styleSpans.forEach { span ->
+                    span.clamped(session.block.content.length)?.let { clamped ->
+                        state.edit { addStyle(clamped.toSpanStyle(), clamped.start, clamped.end) }
+                    }
+                }
+                session.block.fontSpans.forEachIndexed { index, span ->
+                    span.clamped(session.block.content.length)?.let { clamped ->
+                        state.edit {
+                            addStyle(
+                                SpanStyle(fontFamily = canvasFontFamilies?.get(index)),
+                                clamped.start,
+                                clamped.end
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
-    val syncEditing: () -> Unit = {
-        val state = editingTextFieldState
-        val id = editingBlockId
-        if (state != null && id != null) {
-            component.syncEditingTextBlock(
-                id = id,
+    val syncCanvasState = {
+        val session = component.canvasTextEditSession
+        val state = canvasFieldState
+        if (session != null && state != null) {
+            component.syncCanvasTextEdit(
+                sessionId = session.id,
                 content = state.text.toString(),
-                spans = state.textStyles
-                    .getSpanStyles(TextRange(0, state.text.length))
-                    .mapNotNull { it.toTextStyleSpan() }
+                spans = state.modelStyles()
             )
+        }
+    }
+    val refreshContentRole: (TextCardRole) -> Unit = { role ->
+        val block = component.document.block(role)
+        val state = fieldStates.getValue(role)
+        val previousSelection = state.selection
+        state.replaceWith(block, previousSelection)
+    }
+    val finishCanvasEditing = {
+        val role = component.canvasTextEditSession?.role
+        syncCanvasState()
+        component.endCanvasTextEdit()
+        if (role != null) refreshContentRole(role)
+    }
+    val onSegmentTap: (TextCardSegment, Int, Int) -> Unit = { segment, pageIndex, cursor ->
+        if (component.canvasTextEditSession != null) finishCanvasEditing()
+        if (component.selectedRole == segment.role) {
+            component.beginCanvasTextEdit(segment, pageIndex, cursor)
+        } else {
+            component.selectRole(segment.role)
+        }
+    }
+    val onSegmentEdit: (TextCardSegment, Int, Int) -> Unit = { segment, pageIndex, cursor ->
+        if (component.canvasTextEditSession != null) finishCanvasEditing()
+        component.beginCanvasTextEdit(segment, pageIndex, cursor)
+    }
+    val onCanvasTap = {
+        finishCanvasEditing()
+        component.endTextEdit()
+        component.clearTextSelection()
+        focusManager.clearFocus()
+        keyboardController?.hide()
+        Unit
+    }
+    val onTextEditCommit = {
+        finishCanvasEditing()
+        focusManager.clearFocus()
+        keyboardController?.hide()
+        Unit
+    }
+    val onOpenStylePanel = {
+        component.setActivePanel(EditorPanel.Typography)
+        keyboardController?.hide()
+        Unit
+    }
+    val onClearSelectionStyles = {
+        val state = canvasFieldState
+        if (state != null) {
+            component.beginContinuousEdit()
+            state.clearSelectionStyles(onChanged = syncCanvasState)
+            component.clearPageSelectionStyles()
+            component.endContinuousEdit()
+        }
+    }
+
+    LaunchedEffect(canvasFieldState, canvasSession?.id) {
+        val state = canvasFieldState ?: return@LaunchedEffect
+        snapshotFlow { state.text.toString() to state.modelStyles() }
+            .drop(1)
+            .collect { syncCanvasState() }
+    }
+    LaunchedEffect(canvasFieldState, canvasSession?.id) {
+        val state = canvasFieldState ?: return@LaunchedEffect
+        val sessionId = canvasSession?.id ?: return@LaunchedEffect
+        snapshotFlow { state.selection }.collect { selection ->
+            component.updateCanvasTextSelection(
+                sessionId = sessionId,
+                start = selection.start,
+                end = selection.end
+            )
+        }
+    }
+    fieldStates.forEach { (role, state) ->
+        LaunchedEffect(state) {
+            snapshotFlow { state.text.toString() to state.modelStyles() }
+                .drop(1)
+                .collect { syncRole(role) }
+        }
+    }
+
+    val closePanel = {
+        component.endContinuousEdit()
+        component.setActivePanel(null)
+        if (component.canvasTextEditSession == null) {
+            component.endTextEdit()
+            component.clearPageSelection()
+        }
+        keyboardController?.hide()
+    }
+    val openPanel: (EditorPanel) -> Unit = { panel ->
+        if (component.activePanel == panel) {
+            closePanel()
+        } else {
+            component.endContinuousEdit()
+            if (panel != EditorPanel.Typography) {
+                finishCanvasEditing()
+                component.clearPageSelection()
+            }
+            if (panel != EditorPanel.Content && panel != EditorPanel.Typography) {
+                component.endTextEdit()
+            }
+            component.setActivePanel(panel)
         }
     }
 
     BaseScreen(
         title = stringResource(R.string.textcard_title),
-        onGoBack = onBack,
-        // 顶栏透明,透出画布背景,与选择画布页观感一致
+        onGoBack = {
+            finishCanvasEditing()
+            component.closeEditor()
+        },
         colors = androidx.compose.material3.TopAppBarDefaults.topAppBarColors().copy(
-            containerColor = androidx.compose.ui.graphics.Color.Transparent,
-            scrolledContainerColor = androidx.compose.ui.graphics.Color.Transparent
+            containerColor = Color.Transparent,
+            scrolledContainerColor = Color.Transparent
         ),
         showNavigationBarsPadding = false,
-        content = {
-            // 就地编辑态下返回键 = 提交退出编辑(优先于页面返回)
-            BackHandler(enabled = component.editingTextBlockId != null) {
-                component.endTextEdit()
+        isBackHandler = component.canvasTextEditSession == null &&
+            component.editingTextBlockId == null &&
+            component.activePanel == null,
+        actions = {
+            IconButton(
+                onClick = {
+                    syncCanvasState()
+                    component.undo()
+                    focusManager.clearFocus()
+                    keyboardController?.hide()
+                },
+                enabled = component.canUndo
+            ) {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUndo,
+                    contentDescription = stringResource(R.string.textcard_undo)
+                )
             }
-            // 绘制态下返回键 = 取消绘制
-            BackHandler(enabled = component.isDrawing) {
-                component.cancelDrawMode()
+            IconButton(
+                onClick = {
+                    syncCanvasState()
+                    component.redo()
+                    focusManager.clearFocus()
+                    keyboardController?.hide()
+                },
+                enabled = component.canRedo
+            ) {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRedo,
+                    contentDescription = stringResource(R.string.textcard_redo)
+                )
+            }
+        },
+        content = {
+            BackHandler(
+                enabled = component.canvasTextEditSession != null ||
+                    component.editingTextBlockId != null ||
+                    component.activePanel != null
+            ) {
+                when {
+                    component.activePanel != null -> closePanel()
+                    component.canvasTextEditSession != null -> onTextEditCommit()
+                    else -> {
+                        component.endTextEdit()
+                        focusManager.clearFocus()
+                        keyboardController?.hide()
+                    }
+                }
             }
             BoxWithConstraints(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
-                    // 就地编辑文字时键盘弹出,画布区整体上移,输入位置不被遮挡
                     .imePadding()
-                    .padding(20.dp),
+                    .padding(horizontal = 20.dp, vertical = 8.dp),
                 contentAlignment = Alignment.Center
             ) {
-                component.renderState()?.let { state ->
-                    CardCanvasPreview(
-                        state = state,
-                        selectedElementId = component.selectedElementId,
-                        editingTextBlockId = component.editingTextBlockId,
-                        onElementTap = { id ->
-                            // 编辑别的块时点其他元素 = 先提交当前编辑
-                            val editingId = component.editingTextBlockId
-                            if (editingId != null && editingId != id) {
-                                component.endTextEdit()
-                            }
-                            // 再点已选中的文字块 = 进入就地编辑;否则仅选中
-                            if (component.editingTextBlockId == null &&
-                                component.selectedElementId == id &&
-                                component.textBlocks.any { it.id == id }
+                val pages = component.layout?.pages.orEmpty()
+                when {
+                    component.document.outputMode == TextCardOutputMode.LongImage -> {
+                        val state = component.previewState()
+                        if (state == null) {
+                            LayoutStatus(component)
+                        } else {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .verticalScroll(rememberScrollState())
                             ) {
-                                component.beginTextEdit(id)
-                            } else {
-                                component.selectElement(id)
+                                CardCanvasPreview(
+                                    state = state,
+                                    liveDocument = component.document,
+                                    selectedRole = component.selectedRole,
+                                    editingSession = canvasSession,
+                                    editingState = canvasFieldState,
+                                    pageIndex = component.currentPage,
+                                    onSegmentTap = { segment, cursor ->
+                                        onSegmentTap(segment, component.currentPage, cursor)
+                                    },
+                                    onSegmentEdit = { segment, cursor ->
+                                        onSegmentEdit(segment, component.currentPage, cursor)
+                                    },
+                                    onSegmentDrag = { segment, dx, dy ->
+                                        component.moveTextBlock(
+                                            component.document.block(segment.role).id,
+                                            dx,
+                                            dy
+                                        )
+                                    },
+                                    onGestureEnd = component::endContinuousEdit,
+                                    onCanvasTap = onCanvasTap,
+                                    onBackgroundDrag = component::updateBackgroundImageOffset,
+                                    onEditingSync = syncCanvasState,
+                                    onTextEditCommit = onTextEditCommit,
+                                    onOpenStylePanel = onOpenStylePanel,
+                                    onClearSelectionStyles = onClearSelectionStyles,
+                                    selectionToolbarVisible = component.activePanel != EditorPanel.Typography,
+                                    modifier = Modifier.fillMaxWidth()
+                                )
                             }
-                        },
-                        onElementTransform = component::setElementTransform,
-                        onElementDelete = component::removeElement,
-                        onTextBoxResize = component::setTextBlockBounds,
-                        editingTextFieldState = editingTextFieldState,
-                        onEditingSync = syncEditing,
-                        onTextEditCommit = component::endTextEdit,
-                        onOpenStylePanel = {
-                            // 浮动操作条的「更多样式」:收键盘,打开完整文字设置面板
-                            keyboardController?.hide()
-                            component.setActivePanel(EditorPanel.TextStyle)
-                        },
-                        // 完整面板打开时收起浮动工具条,避免压在面板上/重复操作
-                        selectionToolbarVisible = component.activePanel != EditorPanel.TextStyle,
-                        onCanvasTap = {
-                            // 编辑中点空白 = 提交并退出编辑态
-                            component.endTextEdit()
-                            component.selectElement(null)
-                        },
-                        onBackgroundDrag = component::updateBackgroundImageOffset,
-                        isDrawing = component.isDrawing,
-                        drawSessionStrokes = component.drawStrokes,
-                        drawBrushColorArgb = component.drawBrushColor,
-                        drawBrushWidthRatio = component.drawBrushWidthRatio,
-                        onDrawStroke = component::addSessionStroke,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-
-                // 「基础」Tab = 左侧浮动工具竖栏开关(图片创作式):
-                // 添加文字 / 添加装饰 / AI 生成图片 / 删除选中;可垂直拖动
-                val railVisible = component.activePanel == EditorPanel.Basic
-                androidx.compose.animation.AnimatedVisibility(
-                    visible = railVisible,
-                    modifier = Modifier.align(Alignment.CenterStart)
-                ) {
-                    VerticalDraggable(
-                        containerHeightPx = constraints.maxHeight.toFloat(),
-                        consumeTap = true
-                    ) {
-                        EditorToolRail(
-                            tools = basicRailTools(component),
-                            activeId = null,
-                            onToolClick = { tool ->
-                                when (tool.id) {
-                                    RAIL_ADD_TEXT -> component.addTextBlock()
-                                    RAIL_ADD_DECORATION -> showDecorationSheet = true
-                                    RAIL_ADD_SHAPE -> showShapeSheet = true
-                                    RAIL_DRAW -> component.startDrawMode()
-                                    RAIL_AI_GENERATE -> showGenerateImageSheet = true
-                                    RAIL_DELETE -> component.selectedElementId
-                                        ?.let(component::removeElement)
-                                }
-                            }
+                        }
+                    }
+                    pages.isEmpty() -> LayoutStatus(component)
+                    else -> {
+                        val pagerState = rememberPagerState(
+                            initialPage = component.currentPage.coerceIn(0, pages.size - 1),
+                            pageCount = { pages.size }
                         )
+                        LaunchedEffect(pagerState.currentPage) {
+                            component.setCurrentPage(pagerState.currentPage)
+                        }
+                        LaunchedEffect(component.currentPage, pages.size) {
+                            if (pagerState.currentPage != component.currentPage) {
+                                pagerState.scrollToPage(component.currentPage)
+                            }
+                        }
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            HorizontalPager(
+                                state = pagerState,
+                                userScrollEnabled = canvasSession == null,
+                                modifier = Modifier.fillMaxWidth()
+                            ) { index ->
+                                CardCanvasPreview(
+                                    state = pages[index],
+                                    liveDocument = component.document,
+                                    selectedRole = component.selectedRole,
+                                    editingSession = canvasSession,
+                                    editingState = canvasFieldState,
+                                    pageIndex = index,
+                                    onSegmentTap = { segment, cursor ->
+                                        onSegmentTap(segment, index, cursor)
+                                    },
+                                    onSegmentEdit = { segment, cursor ->
+                                        onSegmentEdit(segment, index, cursor)
+                                    },
+                                    onSegmentDrag = { segment, dx, dy ->
+                                        component.moveTextBlock(
+                                            component.document.block(segment.role).id,
+                                            dx,
+                                            dy
+                                        )
+                                    },
+                                    onGestureEnd = component::endContinuousEdit,
+                                    onCanvasTap = onCanvasTap,
+                                    onBackgroundDrag = component::updateBackgroundImageOffset,
+                                    onEditingSync = syncCanvasState,
+                                    onTextEditCommit = onTextEditCommit,
+                                    onOpenStylePanel = onOpenStylePanel,
+                                    onClearSelectionStyles = onClearSelectionStyles,
+                                    selectionToolbarVisible = component.activePanel != EditorPanel.Typography,
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                            }
+                            if (pages.size > 1) {
+                                Text(
+                                    text = stringResource(
+                                        R.string.textcard_page_indicator,
+                                        pagerState.currentPage + 1,
+                                        pages.size
+                                    ),
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    modifier = Modifier.padding(top = 8.dp)
+                                )
+                            }
+                        }
                     }
                 }
             }
 
-            // 绘制模式:底部 Tab 栏换成取消/完成操作条(对齐图片创作);
-            // 就地编辑态底部仍是常驻 Tab 栏(文字设置面板在选区存在时自动切换为选区作用域)
-            if (component.isDrawing) {
-                DrawModeActionBar(
-                    component = component,
-                    onCancel = component::cancelDrawMode,
-                    onConfirm = component::finishDrawMode
-                )
-            } else {
-                EditorBottomBar(
-                    component = component,
-                    onSaveClick = component::saveCard
-                )
-            }
-        }
-    )
-
-    EditorPanelSheet(
-        component = component,
-        editingState = editingTextFieldState,
-        editingBlock = editingBlock,
-        onEditingSync = syncEditing
-    )
-
-    // 贴纸共享弹层(与图片创作同款):emoji + assets/stickers 素材,确认落装饰元素;
-    // AI 生成贴纸 tab 由宿主注入(登录+积分预检通过后组件生成,成功落装饰元素并关弹层)
-    StickerToolSheet(
-        visible = showDecorationSheet,
-        onDismiss = { showDecorationSheet = false },
-        onStickerClick = component::addStickerDecoration,
-        aiGeneration = AiStickerGeneration(
-            isGenerating = component.isGeneratingSticker,
-            pointsCost = aiImageProcessPointsCost(),
-            onGenerate = { prompt ->
-                ActionUtils.ensureLoginAndCheckPoints(
-                    source = AI_IMAGE_POINTS_SOURCE,
-                    point = aiImageProcessPointsCost()
+            AnimatedVisibility(visible = component.activePanel != null) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .glassDense(
+                            shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
+                        )
+                        .heightIn(max = 440.dp)
+                        .verticalScroll(rememberScrollState())
+                        .imePadding()
+                        .padding(horizontal = 16.dp, vertical = 12.dp)
                 ) {
-                    component.generateSticker(
-                        prompt = prompt,
-                        onSuccess = { showDecorationSheet = false }
-                    )
+                    when (component.activePanel) {
+                        EditorPanel.Content -> ContentPanel(
+                            states = fieldStates,
+                            selectedRole = component.selectedRole,
+                            onFocusRole = { role ->
+                                component.beginTextEdit(component.document.block(role).id)
+                            }
+                        )
+                        EditorPanel.Templates -> TemplatesPanel(component)
+                        EditorPanel.Typography -> {
+                            val state = canvasFieldState
+                            if (state != null && component.pageSelection != null) {
+                                PageSelectionPanel(
+                                    component = component,
+                                    state = state,
+                                    onClose = {
+                                        state.edit {
+                                            this.selection = TextRange(state.selection.end)
+                                        }
+                                        component.setActivePanel(null)
+                                    },
+                                    onStylesChanged = syncCanvasState
+                                )
+                            } else {
+                                val role = component.selectedRole
+                                TextStylePanel(
+                                    component = component,
+                                    editingState = if (
+                                        component.editingTextBlockId != null && role != null
+                                    ) {
+                                        fieldStates.getValue(role)
+                                    } else null,
+                                    editingBlock = component.selectedTextBlock(),
+                                    onEditingSync = {
+                                        if (role != null) syncRole(role)
+                                    },
+                                    onWholeBlockStyleApplied = {
+                                        if (role != null) {
+                                            val state = fieldStates.getValue(role)
+                                            val spans = component.document.block(role).styleSpans
+                                            state.edit {
+                                                getSpanStyles(TextRange(0, state.text.length)).forEach {
+                                                    removeStyle(it)
+                                                }
+                                                spans.forEach { span ->
+                                                    span.clamped(state.text.length)?.let { clamped ->
+                                                        addStyle(
+                                                            clamped.toSpanStyle(),
+                                                            clamped.start,
+                                                            clamped.end
+                                                        )
+                                                    }
+                                                }
+                                            }
+                                            syncRole(role)
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                        EditorPanel.Background -> BackgroundPanel(component)
+                        EditorPanel.Pages -> PagesPanel(component)
+                        null -> Unit
+                    }
                 }
             }
-        )
-    )
-
-    ShapePickerSheet(
-        visible = showShapeSheet,
-        component = component,
-        onDismiss = { showShapeSheet = false }
-    )
-
-    GenerateImageSheet(
-        visible = showGenerateImageSheet,
-        component = component,
-        onDismiss = { showGenerateImageSheet = false }
-    )
-
-    ExitWithoutSavingDialog(
-        onExit = { component.backToSelection() },
-        onDismiss = { showExitDialog = false },
-        visible = showExitDialog
-    )
-
-    LoadingDialog(
-        visible = component.isSaving,
-        onCancelLoading = component::cancelSaving,
-        canCancel = true
-    )
-}
-
-/** 面板底部弹层:标题栏(居中标题 + 关闭按钮) + 对应面板内容。
- * 「基础」Tab 不走弹层(左侧浮动工具竖栏,见编辑页画布区)。
- * 文字设置面板在就地编辑且有活选区时切换为选区作用域(共享 [editingState])。 */
-@Composable
-private fun EditorPanelSheet(
-    component: TextCardComponent,
-    editingState: TextFieldState?,
-    editingBlock: TextBlock?,
-    onEditingSync: () -> Unit,
-) {
-    val activePanel = component.activePanel
-    EnhancedModalBottomSheet(
-        visible = activePanel != null && activePanel != EditorPanel.Basic,
-        title = activePanel?.let { stringResource(it.labelRes()) }.orEmpty(),
-        onDismiss = { component.setActivePanel(null) },
-        sheetContent = {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    // 导航栏留白挂在滚动区外侧(同 markup-layers 各 Sheet 的成熟用法):
-                    // 滚动视口整体抬到手势条上方,内容滚到任意位置都不会被遮挡
-                    .navigationBarsPadding()
-                    .heightIn(max = 480.dp)
-                    .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-            ) {
-                when (activePanel) {
-                    EditorPanel.Background -> BackgroundPanel(component)
-                    EditorPanel.TextStyle -> TextStylePanel(
-                        component = component,
-                        editingState = editingState,
-                        editingBlock = editingBlock,
-                        onEditingSync = onEditingSync
-                    )
-                    EditorPanel.Layers -> LayersPanel(component = component)
-
-                    // Basic 走左侧浮动工具竖栏,不进弹层
-                    else -> Unit
+            EditorBottomBar(
+                component = component,
+                onPanelClick = openPanel,
+                onExportClick = {
+                    finishCanvasEditing()
+                    focusManager.clearFocus()
+                    keyboardController?.hide()
+                    showExportSheet = true
                 }
-            }
+            )
         }
     )
+
+    TextCardExportSheet(
+        visible = showExportSheet,
+        component = component,
+        onDismiss = { showExportSheet = false }
+    )
+    LoadingDialog(
+        visible = component.isSaving || component.isPreparingHandoff,
+        onCancelLoading = component::cancelSaving,
+        canCancel = component.isSaving
+    )
 }
 
-/**
- * 底部常驻栏(对齐图片创作 EditorBottomBar):玻璃容器(顶部圆角)+
- * Tab 区窄屏横滑/宽屏均分 + 「保存」固定右端。
- */
+private fun TextFieldState.modelStyles() = textStyles
+    .getSpanStyles(TextRange(0, text.length))
+    .mapNotNull { it.toTextStyleSpan() }
+
+private fun TextFieldState.replaceWith(block: TextBlock, previousSelection: TextRange) {
+    edit {
+        replace(0, length, block.content)
+        block.styleSpans.forEach { span ->
+            span.clamped(block.content.length)?.let { clamped ->
+                addStyle(clamped.toSpanStyle(), clamped.start, clamped.end)
+            }
+        }
+        selection = TextRange(
+            previousSelection.start.coerceIn(0, block.content.length),
+            previousSelection.end.coerceIn(0, block.content.length)
+        )
+    }
+}
+
 @Composable
 private fun EditorBottomBar(
     component: TextCardComponent,
-    onSaveClick: () -> Unit,
+    onPanelClick: (EditorPanel) -> Unit,
+    onExportClick: () -> Unit,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -383,34 +570,28 @@ private fun EditorBottomBar(
             .padding(horizontal = 8.dp, vertical = 8.dp)
     ) {
         BoxWithConstraints(modifier = Modifier.weight(1f)) {
-            val tabs = EditorPanel.entries
-            // 每项规定最小宽度:放得下就均分填满,放不下收窄到最小宽度并可横滑
-            val itemWidth = maxOf(TAB_ITEM_MIN_WIDTH, maxWidth / tabs.size)
-            val keyboardController = LocalSoftwareKeyboardController.current
+            val tabs = listOf(
+                EditorPanel.Content,
+                EditorPanel.Templates,
+                EditorPanel.Background,
+                EditorPanel.Pages
+            )
+            val itemWidth = maxOf(64.dp, maxWidth / tabs.size)
             Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
                 tabs.forEach { panel ->
-                    // 「文字设置」只在选中文字块时可用:未选中文字时打开面板没有作用目标,
-                    // 旧实现会兜底改到第一块,容易误改
-                    val enabled = panel != EditorPanel.TextStyle || component.hasSelectedTextBlock
                     BottomTab(
                         panel = panel,
                         active = component.activePanel == panel,
-                        enabled = enabled,
-                        onClick = {
-                            // 就地编辑中打开面板先收键盘(文字选区存在 TextFieldState 里,不随焦点丢失)
-                            if (component.editingTextBlockId != null) keyboardController?.hide()
-                            component.togglePanel(panel)
-                        },
+                        onClick = { onPanelClick(panel) },
                         modifier = Modifier.width(itemWidth)
                     )
                 }
             }
         }
         Spacer(Modifier.width(8.dp))
-        // 「保存」固定右端:实心主按钮 + 保存图标(同 ConfirmButton 样式,图标换 LineSave)
         PrimaryButton(
-            text = stringResource(R.string.textcard_save),
-            onClick = onSaveClick,
+            text = stringResource(R.string.textcard_export_action),
+            onClick = onExportClick,
             icon = {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSave,
@@ -423,33 +604,22 @@ private fun EditorBottomBar(
     }
 }
 
-/** 底部 Tab 单项的最小宽度,窄屏低于该宽度时 Tab 区进入横滑 */
-private val TAB_ITEM_MIN_WIDTH = 64.dp
-
-/** Tab 单项:图标 + 小字 + 选中态着色(参考 markup-layers EditorToolItem) */
 @Composable
 private fun BottomTab(
     panel: EditorPanel,
     active: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true,
 ) {
-    val contentColor = when {
-        !enabled -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
-        active -> MaterialTheme.colorScheme.onPrimaryContainer
-        else -> MaterialTheme.colorScheme.onSurfaceVariant
-    }
+    val contentColor = if (active) {
+        MaterialTheme.colorScheme.onPrimaryContainer
+    } else MaterialTheme.colorScheme.onSurfaceVariant
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .clip(ShapeDefaults.default)
-            .background(
-                if (active) {
-                    MaterialTheme.colorScheme.primaryContainer
-                } else Color.Transparent
-            )
-            .clickable(enabled = enabled, onClick = onClick)
+            .background(if (active) MaterialTheme.colorScheme.primaryContainer else Color.Transparent)
+            .clickable(onClick = onClick)
             .padding(horizontal = 4.dp, vertical = 6.dp)
     ) {
         Icon(
@@ -458,8 +628,7 @@ private fun BottomTab(
             tint = contentColor,
             modifier = Modifier.size(22.dp)
         )
-        Spacer(Modifier.height(2.dp))
-        // 长标签(背景/文字设置等)按可用宽度自动降字号,整词显示不被硬裁
+        Spacer(Modifier.size(2.dp))
         EditorToolLabel(
             text = stringResource(panel.labelRes()),
             color = contentColor
@@ -467,107 +636,33 @@ private fun BottomTab(
     }
 }
 
+@Composable
+private fun LayoutStatus(component: TextCardComponent) {
+    if (component.layoutError != null) {
+        Text(
+            text = stringResource(R.string.textcard_layout_error),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.error,
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+            modifier = Modifier.padding(24.dp)
+        )
+    } else {
+        EnhancedLoadingIndicator()
+    }
+}
+
 private fun EditorPanel.icon(): ImageVector = when (this) {
-    EditorPanel.Basic -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineContentCut
-    EditorPanel.Background -> MaterialIcons.Outlined.CropSquare
-    EditorPanel.TextStyle -> MaterialIcons.Outlined.Tune
-    EditorPanel.Layers -> MaterialIcons.Outlined.Layers
+    EditorPanel.Content -> Icons.Outlined.TextFields
+    EditorPanel.Templates -> Icons.Outlined.AutoAwesome
+    EditorPanel.Typography -> Icons.Outlined.Tune
+    EditorPanel.Background -> Icons.Outlined.CropSquare
+    EditorPanel.Pages -> Icons.Outlined.Layers
 }
 
 private fun EditorPanel.labelRes(): Int = when (this) {
-    EditorPanel.Basic -> R.string.textcard_tab_basic
+    EditorPanel.Content -> R.string.textcard_tab_content
+    EditorPanel.Templates -> R.string.textcard_templates
+    EditorPanel.Typography -> R.string.textcard_text_settings
     EditorPanel.Background -> R.string.textcard_tab_background
-    EditorPanel.TextStyle -> R.string.textcard_tab_text_style
-    EditorPanel.Layers -> R.string.textcard_tab_layers
-}
-
-// ---------------- 「基础」侧栏 ----------------
-
-private const val RAIL_ADD_TEXT = "add_text"
-private const val RAIL_ADD_DECORATION = "add_decoration"
-private const val RAIL_ADD_SHAPE = "add_shape"
-private const val RAIL_DRAW = "draw"
-private const val RAIL_AI_GENERATE = "ai_generate"
-private const val RAIL_DELETE = "delete_selected"
-
-/** 「基础」侧栏项(与图片创作侧栏同款),固定顺序:文字、贴纸、形状、画笔、AI、删除 */
-@Composable
-private fun basicRailTools(component: TextCardComponent): List<EditorRailTool> = listOf(
-    EditorRailTool(
-        id = RAIL_ADD_TEXT,
-        icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.TextFields,
-        label = stringResource(R.string.textcard_add_text)
-    ),
-    EditorRailTool(
-        id = RAIL_ADD_DECORATION,
-        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStickerEmoji,
-        label = stringResource(R.string.textcard_add_decoration)
-    ),
-    EditorRailTool(
-        id = RAIL_ADD_SHAPE,
-        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Star,
-        label = stringResource(R.string.textcard_add_shape)
-    ),
-    EditorRailTool(
-        id = RAIL_DRAW,
-        icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.FreeDraw,
-        label = stringResource(R.string.textcard_draw)
-    ),
-    EditorRailTool(
-        id = RAIL_AI_GENERATE,
-        icon = MaterialIcons.Outlined.AutoAwesome,
-        label = stringResource(R.string.textcard_rail_ai)
-    ),
-    EditorRailTool(
-        id = RAIL_DELETE,
-        icon = MaterialIcons.Outlined.Delete,
-        label = stringResource(R.string.textcard_delete_selected),
-        enabled = component.selectedElementId != null
-    )
-)
-
-/**
- * 绘制模式底部操作条(对齐图片创作):画笔设置(颜色色板 + 粗细滑杆)
- * + 左「取消」丢弃退出,右「完成」落成画笔图层。
- */
-@Composable
-private fun DrawModeActionBar(
-    component: TextCardComponent,
-    onCancel: () -> Unit,
-    onConfirm: () -> Unit,
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .glassDense(shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
-            .navigationBarsPadding()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-    ) {
-        // 画笔设置(复用图片创作画笔的最小选项集:颜色 + 粗细)
-        ColorSelectionRow(
-            value = Color(component.drawBrushColor),
-            onValueChange = { component.updateDrawBrushColor(it.toArgb().toLong() and 0xFFFF_FFFFL) },
-            allowAlpha = false
-        )
-        EnhancedSliderItem(
-            value = component.drawBrushWidthRatio,
-            title = stringResource(R.string.textcard_draw_width),
-            valueRange = 0.004f..0.04f,
-            onValueChange = component::updateDrawBrushWidth,
-            internalStateTransformation = { (it * 1000).roundToInt() }
-        )
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            CancelButton(
-                onClick = onCancel
-            )
-            Spacer(Modifier.weight(1f))
-            ConfirmButton(
-                text = stringResource(R.string.textcard_draw_done),
-                onClick = onConfirm
-            )
-        }
-    }
+    EditorPanel.Pages -> R.string.textcard_tab_pages
 }

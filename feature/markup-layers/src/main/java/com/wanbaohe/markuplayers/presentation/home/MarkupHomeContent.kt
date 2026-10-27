@@ -70,6 +70,7 @@ import com.wanbaohe.core.ui.utils.content_pickers.Picker
 import com.wanbaohe.core.ui.utils.content_pickers.rememberImagePicker
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.helper.rememberClipboardData
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
@@ -100,6 +101,7 @@ fun MarkupHomeContent(
     )
     val clipboardUris by rememberClipboardData()
     var showBlankCanvasSheet by rememberSaveable { mutableStateOf(false) }
+    var showCoverTypeDialog by rememberSaveable { mutableStateOf(false) }
     val canvasBudget = remember { ImageMemoryBudget() }
 
     BaseScreen(
@@ -175,7 +177,7 @@ fun MarkupHomeContent(
                         QuickTasksSection(
                             component = component,
                             setImage = setImage,
-                            onMakeCover = { showBlankCanvasSheet = true }
+                            onMakeCover = { showCoverTypeDialog = true }
                         )
                         Spacer(Modifier.height(24.dp))
                         SavedProjectsSection(component = component)
@@ -202,6 +204,39 @@ fun MarkupHomeContent(
                 backgroundColor = backgroundColor
             )
         }
+    )
+
+    EnhancedAlertDialog(
+        visible = showCoverTypeDialog,
+        onDismissRequest = { showCoverTypeDialog = false },
+        title = { Text(stringResource(R.string.studio_task_make_cover)) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                ConfirmButton(
+                    text = stringResource(R.string.studio_cover_option_text_card),
+                    onClick = {
+                        showCoverTypeDialog = false
+                        component.onNavigate(Screen.TextCard)
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                ConfirmButton(
+                    text = stringResource(R.string.studio_cover_option_image_cover),
+                    onClick = {
+                        showCoverTypeDialog = false
+                        showBlankCanvasSheet = true
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        },
+        dismissButton = {
+            CancelButton(
+                text = stringResource(R.string.markup_cancel),
+                onClick = { showCoverTypeDialog = false }
+            )
+        },
+        confirmButton = {}
     )
 }
 

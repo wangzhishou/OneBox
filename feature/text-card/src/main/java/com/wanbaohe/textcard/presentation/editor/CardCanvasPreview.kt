@@ -6,71 +6,50 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.material3.Icon
+import androidx.compose.material.icons.Icons as MaterialIcons
+import androidx.compose.material.icons.outlined.FormatClear
+import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
-import androidx.compose.ui.graphics.TransformOrigin
-import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.input.pointer.positionChanged
 import androidx.compose.ui.layout.boundsInWindow
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -79,111 +58,90 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.t8rin.imagetoolbox.core.resources.emoji.Emoji
-import com.t8rin.imagetoolbox.core.resources.icons.Close
-import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
-import com.t8rin.imagetoolbox.core.resources.icons.ContentPaste
-import com.t8rin.imagetoolbox.core.settings.presentation.model.toUiFont
 import com.shifenmiao.common.components.text.MAX_SELECTION_SIZE_SCALE
 import com.shifenmiao.common.components.text.MIN_SELECTION_SIZE_SCALE
 import com.shifenmiao.common.components.text.SuppressSystemTextSelectionMenu
 import com.shifenmiao.common.components.text.TextSelectionAction
 import com.shifenmiao.common.components.text.TextSelectionToolbar
 import com.shifenmiao.common.components.text.applySelectionStyle
-import com.shifenmiao.common.components.text.clearSelectionStyles
 import com.shifenmiao.common.components.text.copySelection
 import com.shifenmiao.common.components.text.pasteAtSelection
-import com.wanbaohe.core.ui.widget.editor.AnimatedSelectionBorder
-import com.wanbaohe.core.ui.widget.editor.BoxResizeConfig
-import com.wanbaohe.core.ui.widget.editor.BoxResizeHandles
-import com.wanbaohe.core.ui.widget.editor.HANDLE_SIZE
-import com.wanbaohe.core.ui.widget.editor.RotationHandle
-import com.wanbaohe.core.ui.widget.editor.ScaleHandle
+import com.t8rin.imagetoolbox.core.resources.Icons
+import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
+import com.t8rin.imagetoolbox.core.resources.icons.ContentPaste
+import com.t8rin.imagetoolbox.core.settings.presentation.model.toUiFont
+import com.t8rin.imagetoolbox.core.utils.toTypeface
 import com.wanbaohe.core.ui.widget.color_picker.ColorSelectionRow
-import com.wanbaohe.core.ui.widget.enhanced.EnhancedLoadingIndicator
+import com.wanbaohe.core.ui.widget.editor.AnimatedSelectionBorder
 import com.wanbaohe.core.ui.widget.image.Picture
 import com.wanbaohe.core.ui.widget.modifier.meshGradient
 import com.wanbaohe.core.ui.widget.text.OutlineParams
 import com.wanbaohe.core.ui.widget.text.OutlinedText
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.BackgroundSpec
-import androidx.compose.material.icons.Icons as MaterialIcons
-import androidx.compose.material.icons.outlined.ErrorOutline
-import androidx.compose.material.icons.outlined.FormatClear
-import androidx.compose.material.icons.outlined.Tune
-import com.wanbaohe.textcard.domain.model.CardDrawStroke
-import com.wanbaohe.textcard.domain.model.CardShapeKind
-import com.wanbaohe.textcard.domain.model.CardStrokePoint
 import com.wanbaohe.textcard.domain.model.CardTextAlignment
-import com.wanbaohe.textcard.domain.model.DEFAULT_DRAW_COLOR
-import com.wanbaohe.textcard.domain.model.DEFAULT_DRAW_WIDTH_RATIO
-import com.wanbaohe.textcard.domain.model.DecorationSpec
-import com.wanbaohe.textcard.domain.model.DrawElementSpec
-import com.wanbaohe.textcard.domain.model.ElementLayer
-import com.wanbaohe.textcard.domain.model.ElementTransform
-import com.wanbaohe.textcard.domain.model.ImageElementSpec
-import com.wanbaohe.textcard.domain.model.ImageElementStatus
-import com.wanbaohe.textcard.domain.model.ShapeElementSpec
 import com.wanbaohe.textcard.domain.model.TextBlock
+import com.wanbaohe.textcard.domain.model.TextCardDocument
 import com.wanbaohe.textcard.domain.model.TextCardRenderState
+import com.wanbaohe.textcard.domain.model.TextCardRole
+import com.wanbaohe.textcard.domain.model.TextCardSegment
 import com.wanbaohe.textcard.domain.model.buildAnnotatedContent
 import com.wanbaohe.textcard.domain.model.effectiveColorAt
 import com.wanbaohe.textcard.domain.model.effectiveSizeScaleAt
 import com.wanbaohe.textcard.domain.model.isRangeEffectivelyBold
 import com.wanbaohe.textcard.domain.model.isRangeEffectivelyItalic
-import com.wanbaohe.textcard.domain.model.contentBounds
 import com.wanbaohe.textcard.domain.render.CardLayout
-import com.wanbaohe.textcard.domain.render.CardShapeGeometry
 import com.wanbaohe.textcard.domain.render.MESH_RESOLUTION
 import com.wanbaohe.textcard.domain.render.toPointPairs
-import java.io.File
-import kotlin.math.atan2
-import kotlin.math.cos
-import kotlin.math.min
+import com.wanbaohe.textcard.presentation.screenLogic.CanvasTextEditSession
 import kotlin.math.roundToInt
-import kotlin.math.sin
-import kotlinx.coroutines.flow.drop
 
-/**
- * 卡片画布预览(Compose):与导出渲染器共用 [CardLayout] 几何/颜色常量。
- * 渲染顺序:背景(钉最底,可经 [onBackgroundDrag] 拖动相册图/点按取消选中)
- * → 按元素图层 z 序逐层画文字块/装饰贴纸。
- * 元素手势(参照 markup-layers EditBox):点按=选中([onElementTap],选中态画边框),
- * 选中后单指拖动 + 双指缩放/旋转(detectTransformGestures,
- * pan 乘缩放并按当前旋转角转回画布坐标系后归一化,fit 缩放天然抵消);
- * [onElementTransform] 回调绝对值(offsetX/offsetY/scale/rotation)。
- * 文字块就地编辑:state 版 BasicTextField([editingTextFieldState] 由页面层按块创建,
- * 与选区样式工具栏共享同一实例);块内局部样式(styleSpans)经 addStyle 样式层呈现,
- * 内容/样式变化统一经 [onEditingSync] 回写组件(本预览不回读模型,无同步循环)。
- */
 @Composable
-fun CardCanvasPreview(
+internal fun CardCanvasPreview(
     state: TextCardRenderState,
     modifier: Modifier = Modifier,
     cornerRadius: Dp = 20.dp,
-    onElementTap: (String) -> Unit = {},
-    onElementTransform: (String, Float, Float, Float, Float) -> Unit = { _, _, _, _, _ -> },
-    onElementDelete: (String) -> Unit = {},
-    onTextBoxResize: (String, Float, Float, Float, Float) -> Unit = { _, _, _, _, _ -> },
-    selectedElementId: String? = null,
-    editingTextBlockId: String? = null,
-    editingTextFieldState: TextFieldState? = null,
+    interactive: Boolean = true,
+    liveDocument: TextCardDocument? = null,
+    selectedRole: TextCardRole? = null,
+    editingSession: CanvasTextEditSession? = null,
+    editingState: TextFieldState? = null,
+    pageIndex: Int = 0,
+    onSegmentTap: (TextCardSegment, Int) -> Unit = { _, _ -> },
+    onSegmentEdit: (TextCardSegment, Int) -> Unit = { _, _ -> },
+    onSegmentDrag: (TextCardSegment, Float, Float) -> Unit = { _, _, _ -> },
+    onGestureEnd: () -> Unit = {},
+    onCanvasTap: () -> Unit = {},
+    onBackgroundDrag: (Float, Float) -> Unit = { _, _ -> },
     onEditingSync: () -> Unit = {},
     onTextEditCommit: () -> Unit = {},
     onOpenStylePanel: () -> Unit = {},
+    onClearSelectionStyles: () -> Unit = {},
     selectionToolbarVisible: Boolean = true,
-    onCanvasTap: () -> Unit = {},
-    onBackgroundDrag: (Float, Float) -> Unit = { _, _ -> },
-    isDrawing: Boolean = false,
-    drawSessionStrokes: List<CardDrawStroke> = emptyList(),
-    drawBrushColorArgb: Long = DEFAULT_DRAW_COLOR,
-    drawBrushWidthRatio: Float = DEFAULT_DRAW_WIDTH_RATIO,
-    onDrawStroke: (List<CardStrokePoint>) -> Unit = {},
 ) {
+    val segments = state.segments.map { segment ->
+        val source = liveDocument?.block(segment.role)
+        if (source == null) segment else {
+            segment.copy(
+                block = segment.block.copy(
+                    offsetX = source.offsetX,
+                    offsetY = source.offsetY,
+                    scale = source.scale,
+                    rotation = source.rotation
+                )
+            )
+        }
+    }
+    val segmentBlocks = segments.associate { it.block.id to it.block }
+    val renderState = state.copy(
+        background = liveDocument?.background ?: state.background,
+        backgroundOpacity = liveDocument?.backgroundOpacity ?: state.backgroundOpacity,
+        textBlocks = state.textBlocks.map { segmentBlocks[it.id] ?: it },
+        segments = segments
+    )
     BoxWithConstraints(
         modifier = modifier
             .aspectRatio(state.canvas.aspectRatio)
@@ -192,109 +150,43 @@ fun CardCanvasPreview(
     ) {
         val canvasWidthPx = constraints.maxWidth.toFloat()
         val canvasHeightPx = constraints.maxHeight.toFloat()
-
-        if (state.backgroundVisible) {
-            BackgroundLayerContent(
-                state = state,
-                canvasWidthPx = canvasWidthPx,
-                canvasHeightPx = canvasHeightPx,
-                onBackgroundDrag = onBackgroundDrag,
-                onCanvasTap = onCanvasTap,
-                modifier = Modifier.fillMaxSize()
-            )
-        }
-
-        state.visibleLayers.forEach { layer ->
-            when (layer.kind) {
-                ElementLayer.Kind.Text -> state.blockOf(layer.elementId)?.let { block ->
-                    key(block.id) {
-                        CardTextElement(
-                            block = block,
-                            isSelected = selectedElementId == block.id && !layer.locked,
-                            isEditing = editingTextBlockId == block.id,
-                            // 文字块至少保留一块,最后一块不出删除按钮
-                            canDelete = state.textBlocks.size > 1,
-                            canvasWidthPx = canvasWidthPx,
-                            canvasHeightPx = canvasHeightPx,
-                            onElementTap = onElementTap,
-                            onElementTransform = onElementTransform,
-                            onElementDelete = onElementDelete,
-                            onTextBoxResize = onTextBoxResize,
-                            editingTextFieldState = editingTextFieldState,
-                            onEditingSync = onEditingSync,
-                            onTextEditCommit = onTextEditCommit,
-                            onOpenStylePanel = onOpenStylePanel,
-                            selectionToolbarVisible = selectionToolbarVisible
-                        )
-                    }
-                }
-
-                ElementLayer.Kind.Decoration -> state.decorationOf(layer.elementId)?.let {
-                    key(it.id) {
-                        CardDecorationElement(
-                            decoration = it,
-                            isSelected = selectedElementId == it.id && !layer.locked,
-                            canvasWidthPx = canvasWidthPx,
-                            canvasHeightPx = canvasHeightPx,
-                            onElementTap = onElementTap,
-                            onElementTransform = onElementTransform,
-                            onElementDelete = onElementDelete
-                        )
-                    }
-                }
-
-                ElementLayer.Kind.Image -> state.imageElementOf(layer.elementId)?.let {
-                    key(it.id) {
-                        CardImageElement(
-                            element = it,
-                            isSelected = selectedElementId == it.id && !layer.locked,
-                            canvasWidthPx = canvasWidthPx,
-                            canvasHeightPx = canvasHeightPx,
-                            onElementTap = onElementTap,
-                            onElementTransform = onElementTransform,
-                            onElementDelete = onElementDelete
-                        )
-                    }
-                }
-
-                ElementLayer.Kind.Shape -> state.shapeElementOf(layer.elementId)?.let {
-                    key(it.id) {
-                        CardShapeElement(
-                            element = it,
-                            isSelected = selectedElementId == it.id && !layer.locked,
-                            canvasWidthPx = canvasWidthPx,
-                            canvasHeightPx = canvasHeightPx,
-                            onElementTap = onElementTap,
-                            onElementTransform = onElementTransform,
-                            onElementDelete = onElementDelete
-                        )
-                    }
-                }
-
-                ElementLayer.Kind.Draw -> state.drawElementOf(layer.elementId)?.let {
-                    key(it.id) {
-                        CardDrawElement(
-                            element = it,
-                            isSelected = selectedElementId == it.id && !layer.locked,
-                            canvasWidthPx = canvasWidthPx,
-                            canvasHeightPx = canvasHeightPx,
-                            onElementTap = onElementTap,
-                            onElementTransform = onElementTransform,
-                            onElementDelete = onElementDelete
-                        )
-                    }
-                }
+        BackgroundLayerContent(
+            state = renderState,
+            canvasWidthPx = canvasWidthPx,
+            canvasHeightPx = canvasHeightPx,
+            interactive = interactive,
+            onBackgroundDrag = onBackgroundDrag,
+            onGestureEnd = onGestureEnd,
+            onCanvasTap = onCanvasTap,
+            modifier = Modifier.fillMaxSize()
+        )
+        renderState.textBlocks.forEach { block ->
+            val segment = renderState.segments.firstOrNull { it.block.id == block.id }
+            val isEditing = segment != null &&
+                editingSession?.block?.id == block.id &&
+                editingSession.pageIndex == pageIndex &&
+                editingState != null
+            if (block.content.isNotBlank() || isEditing) {
+                CardTextElement(
+                    block = block,
+                    segment = segment,
+                    isSelected = segment?.role == selectedRole,
+                    editingSession = editingSession.takeIf { isEditing },
+                    editingState = editingState.takeIf { isEditing },
+                    canvasWidthPx = canvasWidthPx,
+                    canvasHeightPx = canvasHeightPx,
+                    interactive = interactive,
+                    onSegmentTap = onSegmentTap,
+                    onSegmentEdit = onSegmentEdit,
+                    onSegmentDrag = onSegmentDrag,
+                    onGestureEnd = onGestureEnd,
+                    onEditingSync = onEditingSync,
+                    onTextEditCommit = onTextEditCommit,
+                    onOpenStylePanel = onOpenStylePanel,
+                    onClearSelectionStyles = onClearSelectionStyles,
+                    selectionToolbarVisible = selectionToolbarVisible
+                )
             }
-        }
-
-        // 绘制模式:会话笔画采集层置顶(含进行中笔画实时预览,跟随当前画笔设置)
-        if (isDrawing) {
-            DrawCaptureOverlay(
-                sessionStrokes = drawSessionStrokes,
-                brushColorArgb = drawBrushColorArgb,
-                brushWidthRatio = drawBrushWidthRatio,
-                onStroke = onDrawStroke
-            )
         }
     }
 }
@@ -304,7 +196,9 @@ private fun BackgroundLayerContent(
     state: TextCardRenderState,
     canvasWidthPx: Float,
     canvasHeightPx: Float,
+    interactive: Boolean,
     onBackgroundDrag: (Float, Float) -> Unit,
+    onGestureEnd: () -> Unit,
     onCanvasTap: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -312,359 +206,162 @@ private fun BackgroundLayerContent(
     Box(
         modifier = modifier
             .background(Color(CardLayout.CARD_BASE_COLOR))
-            .graphicsLayer { alpha = state.backgroundOpacity.coerceIn(0f, 1f) }
-            // 点按空白=取消元素选中;背景为相册图时空白处拖动调整图片位置
-            .pointerInput(canvasWidthPx, canvasHeightPx) {
-                detectTapGestures { onCanvasTap() }
-            }
-            .pointerInput(isImageBackground, canvasWidthPx, canvasHeightPx) {
-                if (!isImageBackground) return@pointerInput
-                detectTransformGestures { _, pan, _, _ ->
-                    onBackgroundDrag(pan.x / canvasWidthPx, pan.y / canvasHeightPx)
-                }
+            .then(if (interactive) Modifier.clickable(onClick = onCanvasTap) else Modifier)
+            .pointerInput(interactive, isImageBackground, canvasWidthPx, canvasHeightPx) {
+                if (!interactive || !isImageBackground) return@pointerInput
+                detectDragGestures(
+                    onDragEnd = onGestureEnd,
+                    onDragCancel = onGestureEnd,
+                    onDrag = { change, dragAmount ->
+                        change.consume()
+                        onBackgroundDrag(
+                            dragAmount.x / canvasWidthPx,
+                            dragAmount.y / canvasHeightPx
+                        )
+                    }
+                )
             }
     ) {
-        when (val background = state.background) {
-            BackgroundSpec.None -> Unit
-            is BackgroundSpec.Paper -> Canvas(modifier = Modifier.fillMaxSize()) {
-                drawPaperTexture(background.kind)
-            }
-
-            is BackgroundSpec.Gradient -> Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .meshGradient(
-                        points = background.toPointPairs(),
-                        resolutionX = MESH_RESOLUTION,
-                        resolutionY = MESH_RESOLUTION
-                    )
-            )
-
-            // 居中裁剪铺满 + 过扫放大(拖动余量,不露底色) + 归一化拖动偏移
-            // (与导出侧 RectF 平移一致);透明区域透出卡片底色,不画棋盘格
-            is BackgroundSpec.Image -> Picture(
-                model = background.uri,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                showTransparencyChecker = false,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .graphicsLayer {
-                        scaleX = CardLayout.BACKGROUND_IMAGE_OVERSCAN
-                        scaleY = CardLayout.BACKGROUND_IMAGE_OVERSCAN
-                        translationX = background.offsetX * canvasWidthPx
-                        translationY = background.offsetY * canvasHeightPx
-                    }
-            )
-        }
-    }
-}
-
-/**
- * 元素容器:offset 定位 + 选中后 transform 手势 + 蚂蚁线动效选框与拖拽手柄
- * (选框为共享 [AnimatedSelectionBorder],与图片创作同一动效)。
- * detectTransformGestures 的 pan 在元素本地(已变换)坐标系,乘新缩放并按
- * 新旋转角转回画布坐标系再归一化(同 markup-layers LayerTransform.applyGesture)。
- * [gesturesEnabled]=false(就地编辑态)时手势与手柄全部关闭,避免与文本选择/光标冲突,
- * 编辑态选框弱化显示。
- * [resizeConfig] 非空(文字块)= 8 向框尺寸手柄(改框宽/高,文字重排,字号不变);
- * 为空(装饰/图片/形状/画笔)= 四角缩放手柄。删除按钮统一放选中框下方居中,
- * 避开四角缩放手柄与顶部旋转手柄,不与变换操作冲突。
- */
-@Composable
-private fun ElementBox(
-    elementId: String,
-    transform: ElementTransform,
-    leftPx: Float,
-    topPx: Float,
-    isSelected: Boolean,
-    canvasWidthPx: Float,
-    canvasHeightPx: Float,
-    onElementTap: (String) -> Unit,
-    onElementTransform: (String, Float, Float, Float, Float) -> Unit,
-    onDelete: (() -> Unit)? = null,
-    gesturesEnabled: Boolean = true,
-    width: Dp? = null,
-    maxWidth: Dp? = null,
-    minHeight: Dp? = null,
-    resizeConfig: BoxResizeConfig? = null,
-    content: @Composable () -> Unit,
-) {
-    // 手势回调以「最新状态 + 本次增量」算绝对值:pointerInput 协程不随重组重启,
-    // 必须经 rememberUpdatedState 取最新 transform,否则每次事件都从旧基准叠加,表现为拖不动
-    val currentTransform by rememberUpdatedState(transform)
-    val currentLeftPx by rememberUpdatedState(leftPx)
-    val currentTopPx by rememberUpdatedState(topPx)
-    var boxSizePx by remember { mutableStateOf(IntSize.Zero) }
-    // 选中框 chrome(虚线框/手柄圆点/删除钮)反缩放:元素被双指放大时,
-    // 这些操作件的视觉尺寸保持恒定,不随元素一起变大(拖动手势数学不受影响:
-    // 热区仍在元素本地坐标系,仅圆点视觉反缩放)
-    val inverseChromeScale = 1f / transform.scale.coerceIn(0.2f, 5f)
-    Box(
-        modifier = Modifier
-            .offset { IntOffset(leftPx.roundToInt(), topPx.roundToInt()) }
-            .then(if (width != null) Modifier.width(width) else Modifier)
-            // width 为空时的可选上限:框随内容收缩(wrap)但不超 maxWidth(文字框自适应模式)
-            .then(if (width == null && maxWidth != null) Modifier.widthIn(max = maxWidth) else Modifier)
-            .then(if (minHeight != null) Modifier.heightIn(min = minHeight) else Modifier)
-            .onSizeChanged { boxSizePx = it }
-            .graphicsLayer {
-                scaleX = transform.scale
-                scaleY = transform.scale
-                rotationZ = transform.rotation
-                transformOrigin = TransformOrigin.Center
-            }
-            // 选中态接管 transform 手势;点按(选中/再点编辑)由独立 tap 检测器承担,
-            // 拖动消费位移后 tap 自动取消
-            .pointerInput(elementId, isSelected, gesturesEnabled, canvasWidthPx, canvasHeightPx) {
-                if (!isSelected || !gesturesEnabled) return@pointerInput
-                detectTransformGestures { _, pan, zoom, rotation ->
-                    val base = currentTransform
-                    val newScale = (base.scale * zoom).coerceIn(0.2f, 5f)
-                    val newRotation = base.rotation + rotation
-                    val panInCanvas = (pan * newScale).rotateBy(newRotation)
-                    onElementTransform(
-                        elementId,
-                        base.offsetX + panInCanvas.x / canvasWidthPx,
-                        base.offsetY + panInCanvas.y / canvasHeightPx,
-                        newScale,
-                        newRotation
-                    )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .graphicsLayer { alpha = state.backgroundOpacity.coerceIn(0f, 1f) }
+        ) {
+            when (val background = state.background) {
+                BackgroundSpec.None -> Unit
+                is BackgroundSpec.Paper -> Canvas(modifier = Modifier.fillMaxSize()) {
+                    drawPaperTexture(background.kind)
                 }
-            }
-            .then(
-                if (gesturesEnabled) {
-                    Modifier.pointerInput(elementId) {
-                        detectTapGestures { onElementTap(elementId) }
-                    }
-                } else Modifier
-            )
-    ) {
-        content()
-        // 蚂蚁线动效选框(与图片创作共享 [AnimatedSelectionBorder]):scale 反算线宽,
-        // 元素放大时线宽/虚线间隔视觉恒定;就地编辑态弱化显示
-        AnimatedSelectionBorder(
-            isVisible = isSelected,
-            scale = transform.scale,
-            modifier = Modifier.matchParentSize(),
-            cornerRadius = 4.dp,
-            alphaScale = if (gesturesEnabled) 1f else 0.4f
-        )
-        // 删除按钮:独立 clickable,事件在子级被消费,不会触发元素的拖动/点选手势。
-        // 统一放选中框下方居中(避开四角缩放手柄与顶部旋转手柄)
-        if (isSelected && onDelete != null) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .offset(y = 40.dp)
-                    .graphicsLayer {
-                        scaleX = inverseChromeScale
-                        scaleY = inverseChromeScale
-                    }
-                    .size(24.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.errorContainer)
-                    .clickable(onClick = onDelete)
-            ) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
-                    contentDescription = stringResource(R.string.textcard_delete_selected),
-                    tint = MaterialTheme.colorScheme.onErrorContainer,
-                    modifier = Modifier.size(18.dp)
+                is BackgroundSpec.Gradient -> Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .meshGradient(
+                            points = background.toPointPairs(),
+                            resolutionX = MESH_RESOLUTION,
+                            resolutionY = MESH_RESOLUTION
+                        )
                 )
-            }
-        }
-        // 选中框手柄:文字块 = 8 向框尺寸手柄;装饰 = 四角圆形缩放手柄。
-        // 两者都有顶部中心旋转手柄;手柄随元素一起被 graphicsLayer 变换(旋转/缩放时跟随元素)
-        if (isSelected && gesturesEnabled && boxSizePx != IntSize.Zero) {
-            if (resizeConfig != null) {
-                BoxResizeHandles(
-                    sizeProvider = { boxSizePx },
-                    leftProvider = { currentLeftPx },
-                    topProvider = { currentTopPx },
-                    inverseScale = inverseChromeScale,
-                    config = resizeConfig,
-                    rotationProvider = { currentTransform.rotation },
-                    scaleProvider = { currentTransform.scale }
-                )
-                RotationHandle(
-                    handlePx = with(LocalDensity.current) { HANDLE_SIZE.toPx() },
-                    elementCenter = Offset(boxSizePx.width / 2f, boxSizePx.height / 2f),
-                    inverseScale = inverseChromeScale,
-                    rotationProvider = { currentTransform.rotation },
-                    onRotation = { newRotation ->
-                        val t = currentTransform
-                        onElementTransform(elementId, t.offsetX, t.offsetY, t.scale, newRotation)
-                    }
-                )
-            } else {
-                CornerScaleHandles(
-                    elementId = elementId,
-                    sizePx = boxSizePx,
-                    transformProvider = { currentTransform },
-                    inverseScale = inverseChromeScale,
-                    onElementTransform = onElementTransform
+                is BackgroundSpec.Image -> Picture(
+                    model = background.uri,
+                    contentDescription = null,
+                    contentScale = androidx.compose.ui.layout.ContentScale.Crop,
+                    showTransparencyChecker = false,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .graphicsLayer {
+                            scaleX = CardLayout.BACKGROUND_IMAGE_OVERSCAN
+                            scaleY = CardLayout.BACKGROUND_IMAGE_OVERSCAN
+                            translationX = background.offsetX * canvasWidthPx
+                            translationY = background.offsetY * canvasHeightPx
+                        }
                 )
             }
         }
     }
 }
 
-/** 四角缩放手柄 + 顶部中心旋转手柄(装饰元素):共享 chrome + 本模块 5 元组回调适配 */
-@Composable
-private fun androidx.compose.foundation.layout.BoxScope.CornerScaleHandles(
-    elementId: String,
-    sizePx: IntSize,
-    transformProvider: () -> ElementTransform,
-    inverseScale: Float,
-    onElementTransform: (String, Float, Float, Float, Float) -> Unit,
-) {
-    val density = LocalDensity.current
-    val handlePx = with(density) { HANDLE_SIZE.toPx() }
-    val center = Offset(sizePx.width / 2f, sizePx.height / 2f)
-
-    // 四角:handle 中心 = 角点
-    val corners = listOf(
-        Triple(Alignment.TopStart, Offset(0f, 0f), IntOffset(-1, -1)),
-        Triple(Alignment.TopEnd, Offset(sizePx.width.toFloat(), 0f), IntOffset(1, -1)),
-        Triple(Alignment.BottomStart, Offset(0f, sizePx.height.toFloat()), IntOffset(-1, 1)),
-        Triple(Alignment.BottomEnd, Offset(sizePx.width.toFloat(), sizePx.height.toFloat()), IntOffset(1, 1)),
-    )
-    corners.forEach { (alignment, corner, offsetSign) ->
-        ScaleHandle(
-            alignment = alignment,
-            cornerInElement = corner,
-            offsetSign = offsetSign,
-            handlePx = handlePx,
-            elementCenter = center,
-            inverseScale = inverseScale,
-            scaleProvider = { transformProvider().scale },
-            onScale = { newScale ->
-                val t = transformProvider()
-                onElementTransform(elementId, t.offsetX, t.offsetY, newScale, t.rotation)
-            }
-        )
-    }
-
-    // 顶部中心旋转手柄(handle 中心在 (w/2, -H/2),即顶边中点上方)
-    RotationHandle(
-        handlePx = handlePx,
-        elementCenter = center,
-        inverseScale = inverseScale,
-        rotationProvider = { transformProvider().rotation },
-        onRotation = { newRotation ->
-            val t = transformProvider()
-            onElementTransform(elementId, t.offsetX, t.offsetY, t.scale, newRotation)
-        }
-    )
-}
-
-/** 文字块元素:编辑态就地渲染 BasicTextField(原位同尺寸同样式),手势关闭。
- * 框宽 = widthRatio·画布宽(文字在框内折行),框高 = max(内容高, heightRatio·画布高);
- * 8 向尺寸手柄经 [onTextBoxResize] 回报新框尺寸与锚点补偿后的位置。 */
 @Composable
 private fun CardTextElement(
     block: TextBlock,
+    segment: TextCardSegment?,
     isSelected: Boolean,
-    isEditing: Boolean,
-    canDelete: Boolean,
+    editingSession: CanvasTextEditSession?,
+    editingState: TextFieldState?,
     canvasWidthPx: Float,
     canvasHeightPx: Float,
-    onElementTap: (String) -> Unit,
-    onElementTransform: (String, Float, Float, Float, Float) -> Unit,
-    onElementDelete: (String) -> Unit,
-    onTextBoxResize: (String, Float, Float, Float, Float) -> Unit,
-    editingTextFieldState: TextFieldState?,
+    interactive: Boolean,
+    onSegmentTap: (TextCardSegment, Int) -> Unit,
+    onSegmentEdit: (TextCardSegment, Int) -> Unit,
+    onSegmentDrag: (TextCardSegment, Float, Float) -> Unit,
+    onGestureEnd: () -> Unit,
     onEditingSync: () -> Unit,
     onTextEditCommit: () -> Unit,
     onOpenStylePanel: () -> Unit,
+    onClearSelectionStyles: () -> Unit,
     selectionToolbarVisible: Boolean,
 ) {
-    // 编辑态空内容也保留输入框:否则退格删空的瞬间整个元素被移出组合,焦点/键盘/选中态全丢
-    if (block.content.isBlank() && !isEditing) return
     val density = LocalDensity.current
     val paddingPx = canvasWidthPx * CardLayout.CONTENT_PADDING_RATIO
-    val baseTopPx = canvasWidthPx * block.baseTopRatio
-    ElementBox(
-        elementId = block.id,
-        transform = block,
-        leftPx = paddingPx + block.offsetX * canvasWidthPx,
-        topPx = baseTopPx + block.offsetY * canvasHeightPx,
-        isSelected = isSelected,
-        canvasWidthPx = canvasWidthPx,
-        canvasHeightPx = canvasHeightPx,
-        onElementTap = onElementTap,
-        onElementTransform = onElementTransform,
-        // 编辑态也保留删除(底部居中独立位,打字时不会被误触区覆盖)
-        onDelete = if (canDelete) {
-            { onElementDelete(block.id) }
-        } else null,
-        gesturesEnabled = !isEditing,
-        // 未手动拖宽:框随文字宽度收缩(wrap,widthRatio 为上限);拖宽后固定该宽
-        width = if (block.widthManuallySet) {
-            with(density) { (canvasWidthPx * block.widthRatio).toDp() }
-        } else null,
-        maxWidth = with(density) { (canvasWidthPx * block.widthRatio).toDp() },
-        minHeight = if (block.heightRatio > 0f) {
-            with(density) { (canvasHeightPx * block.heightRatio).toDp() }
-        } else null,
-        resizeConfig = BoxResizeConfig(
-            minWidthPx = canvasWidthPx * CardLayout.MIN_TEXT_WIDTH_RATIO,
-            maxWidthPx = canvasWidthPx,
-            minHeightPx = canvasHeightPx * CardLayout.MIN_TEXT_HEIGHT_RATIO,
-            maxHeightPx = canvasHeightPx,
-            onResize = { newWPx, newHPx, newLeftPx, newTopPx ->
-                onTextBoxResize(
-                    block.id,
-                    newWPx / canvasWidthPx,
-                    newHPx / canvasHeightPx,
-                    (newLeftPx - paddingPx) / canvasWidthPx,
-                    (newTopPx - baseTopPx) / canvasHeightPx
-                )
+    val leftPx = paddingPx + block.offsetX * canvasWidthPx
+    val topPx = canvasWidthPx * block.baseTopRatio + block.offsetY * canvasHeightPx
+    val widthDp = with(density) { (canvasWidthPx * block.widthRatio).toDp() }
+    var textLayout by remember(block.id) { mutableStateOf<TextLayoutResult?>(null) }
+    val isEditing = editingSession != null && editingState != null
+
+    fun cursorFor(position: androidx.compose.ui.geometry.Offset): Int =
+        textLayout?.getOffsetForPosition(position) ?: block.content.length
+
+    Box(
+        modifier = Modifier
+            .offset { IntOffset(leftPx.roundToInt(), topPx.roundToInt()) }
+            .width(widthDp)
+            .graphicsLayer {
+                scaleX = block.scale
+                scaleY = block.scale
+                rotationZ = block.rotation
             }
-        )
+            .then(
+                if (interactive && segment != null && !isEditing) {
+                    Modifier
+                        .pointerInput(block.id, isSelected) {
+                            detectTapGestures(
+                                onDoubleTap = { position ->
+                                    onSegmentEdit(segment, cursorFor(position))
+                                },
+                                onTap = { position ->
+                                    onSegmentTap(segment, cursorFor(position))
+                                }
+                            )
+                        }
+                        .pointerInput(block.id, isSelected, canvasWidthPx, canvasHeightPx) {
+                            if (!isSelected) return@pointerInput
+                            detectDragGestures(
+                                onDragEnd = onGestureEnd,
+                                onDragCancel = onGestureEnd,
+                                onDrag = { change, dragAmount ->
+                                    change.consume()
+                                    onSegmentDrag(
+                                        segment,
+                                        dragAmount.x / canvasWidthPx,
+                                        dragAmount.y / canvasHeightPx
+                                    )
+                                }
+                            )
+                        }
+                } else Modifier
+            )
     ) {
-        // 自适应模式下内容 wrap(输入框给个最小宽,空内容时仍有点击区);固定宽时铺满框
-        val contentModifier = if (block.widthManuallySet) {
-            Modifier.fillMaxWidth()
-        } else {
-            Modifier.defaultMinSize(minWidth = 32.dp)
-        }
-        if (isEditing && editingTextFieldState != null) {
+        if (isEditing) {
             InPlaceTextEditor(
-                block = block,
-                baseSizePx = canvasWidthPx * block.baseSizeRatio,
-                state = editingTextFieldState,
+                block = editingSession.block,
+                baseSizePx = canvasWidthPx * editingSession.block.baseSizeRatio,
+                state = editingState,
                 onSync = onEditingSync,
                 onCommit = onTextEditCommit,
                 onOpenStylePanel = onOpenStylePanel,
+                onClearSelectionStyles = onClearSelectionStyles,
                 selectionToolbarVisible = selectionToolbarVisible,
-                modifier = contentModifier
+                modifier = Modifier.fillMaxWidth()
             )
         } else {
             CardText(
                 block = block,
                 baseSizePx = canvasWidthPx * block.baseSizeRatio,
                 canvasWidthPx = canvasWidthPx,
-                modifier = contentModifier
+                onTextLayout = { textLayout = it },
+                modifier = Modifier.fillMaxWidth()
             )
         }
+        AnimatedSelectionBorder(
+            isVisible = isSelected,
+            scale = block.scale,
+            modifier = Modifier.matchParentSize(),
+            cornerRadius = 4.dp,
+            alphaScale = if (isEditing) 0.4f else 1f
+        )
     }
 }
 
-/**
- * 就地文字编辑:原位同样式 state 版 BasicTextField(背景透明无装饰线),
- * 进入时自动聚焦弹键盘、光标落末尾;[state] 由页面层按块创建(选区样式工具栏共享),
- * 块内局部样式经 Compose addStyle 样式层呈现(增删文字由 TrackedRange 自动跟随),
- * 内容/样式变化统一经 [onSync] 回写组件(state 为唯一事实源,模型只是镜像)。
- *
- * 选中文字后:
- * - 系统 Copy/Paste ActionMode 被 [SuppressSystemTextSelectionMenu] 屏蔽;
- * - 在输入框附近弹自绘 [TextSelectionToolbar](B/I/颜色/字号/复制/粘贴/清除/更多);
- * - 所有操作只作用于当前选区,经 [TextFieldState.applySelectionStyle] 写局部样式;
- * - 工具条 Popup 非 focusable,点按钮不会让输入框失焦、选区坍缩。
- */
 @Composable
 private fun InPlaceTextEditor(
     block: TextBlock,
@@ -673,6 +370,7 @@ private fun InPlaceTextEditor(
     onSync: () -> Unit,
     onCommit: () -> Unit,
     onOpenStylePanel: () -> Unit,
+    onClearSelectionStyles: () -> Unit,
     selectionToolbarVisible: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -685,19 +383,10 @@ private fun InPlaceTextEditor(
     val hasSelection = !selection.collapsed
 
     LaunchedEffect(state) {
-        // 灌回模型已有的局部样式(钳制到当前内容长度,防御脏区间)
-        block.styleSpans.forEach { span ->
-            span.clamped(block.content.length)?.let { clamped ->
-                state.edit { addStyle(clamped.toSpanStyle(), clamped.start, clamped.end) }
-            }
-        }
+        showColors = false
         focusRequester.requestFocus()
         keyboardController?.show()
-        // 内容变化(键入/删除/粘贴)时回写;样式变化由工具栏应用后显式调 onSync。
-        // drop(1) 跳过初始值:仅进入编辑态不应标记未保存变更
-        snapshotFlow { state.text.toString() }.drop(1).collect { onSync() }
     }
-    // 选区消失后下次重新选中时不要保留上次展开的色板
     LaunchedEffect(hasSelection) {
         if (!hasSelection) showColors = false
     }
@@ -714,8 +403,6 @@ private fun InPlaceTextEditor(
             },
             modifier = modifier
                 .graphicsLayer { alpha = block.alpha.coerceIn(0f, 1f) }
-                // 编辑态输入框内留白,避免文字贴着虚线框
-                .padding(horizontal = 8.dp, vertical = 4.dp)
                 .focusRequester(focusRequester)
                 .onGloballyPositioned { anchorBounds = it.boundsInWindow() }
         )
@@ -729,22 +416,6 @@ private fun InPlaceTextEditor(
         val currentColor = Color(block.effectiveColorAt(start, end))
         val currentSize = block.effectiveSizeScaleAt(start, end)
 
-        val applyBold = {
-            state.applySelectionStyle(
-                style = SpanStyle(
-                    fontWeight = if (bold) FontWeight.Normal else FontWeight.Bold
-                ),
-                onChanged = onSync
-            )
-        }
-        val applyItalic = {
-            state.applySelectionStyle(
-                style = SpanStyle(
-                    fontStyle = if (italic) FontStyle.Normal else FontStyle.Italic
-                ),
-                onChanged = onSync
-            )
-        }
         val stepSize: (Boolean) -> Unit = { increase ->
             val next = (if (increase) currentSize * 1.15f else currentSize / 1.15f)
                 .coerceIn(MIN_SELECTION_SIZE_SCALE, MAX_SELECTION_SIZE_SCALE)
@@ -753,21 +424,34 @@ private fun InPlaceTextEditor(
                 onChanged = onSync
             )
         }
-
         val actions = listOf(
             TextSelectionAction(
                 key = "bold",
                 label = stringResource(R.string.textcard_bold),
                 glyph = "B",
                 selected = bold,
-                onClick = applyBold
+                onClick = {
+                    state.applySelectionStyle(
+                        style = SpanStyle(
+                            fontWeight = if (bold) FontWeight.Normal else FontWeight.Bold
+                        ),
+                        onChanged = onSync
+                    )
+                }
             ),
             TextSelectionAction(
                 key = "italic",
                 label = stringResource(R.string.textcard_italic),
                 glyph = "I",
                 selected = italic,
-                onClick = applyItalic
+                onClick = {
+                    state.applySelectionStyle(
+                        style = SpanStyle(
+                            fontStyle = if (italic) FontStyle.Normal else FontStyle.Italic
+                        ),
+                        onChanged = onSync
+                    )
+                }
             ),
             TextSelectionAction(
                 key = "color",
@@ -791,20 +475,20 @@ private fun InPlaceTextEditor(
             TextSelectionAction(
                 key = "copy",
                 label = stringResource(android.R.string.copy),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                icon = Icons.Rounded.ContentCopy,
                 onClick = { state.copySelection(clipboard) }
             ),
             TextSelectionAction(
                 key = "paste",
                 label = stringResource(android.R.string.paste),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentPaste,
+                icon = Icons.Rounded.ContentPaste,
                 onClick = { state.pasteAtSelection(clipboard, onSync) }
             ),
             TextSelectionAction(
                 key = "clear",
                 label = stringResource(R.string.textcard_clear_selection_style),
                 icon = MaterialIcons.Outlined.FormatClear,
-                onClick = { state.clearSelectionStyles(onSync) }
+                onClick = onClearSelectionStyles
             ),
             TextSelectionAction(
                 key = "more",
@@ -836,159 +520,14 @@ private fun InPlaceTextEditor(
     }
 }
 
-/** 装饰贴纸元素:透明底,不画棋盘格 */
-@Composable
-private fun CardDecorationElement(
-    decoration: DecorationSpec,
-    isSelected: Boolean,
-    canvasWidthPx: Float,
-    canvasHeightPx: Float,
-    onElementTap: (String) -> Unit,
-    onElementTransform: (String, Float, Float, Float, Float) -> Unit,
-    onElementDelete: (String) -> Unit,
-) {
-    val emojis = Emoji.allIcons()
-    // AI 生成贴纸(本地文件)> 素材贴纸(assets SVG)> emoji 下标
-    val model = decoration.imagePath?.let(::File)
-        ?: decoration.assetPath?.let { "file:///android_asset/$it" }
-        ?: decoration.emojiIndex?.let { emojis.getOrNull(it) }
-        ?: return
-    val density = LocalDensity.current
-    val sizePx = canvasWidthPx * CardLayout.DECORATION_SIZE_RATIO
-    ElementBox(
-        elementId = decoration.id,
-        transform = decoration,
-        leftPx = decoration.offsetX * canvasWidthPx,
-        topPx = decoration.offsetY * canvasHeightPx,
-        isSelected = isSelected,
-        canvasWidthPx = canvasWidthPx,
-        canvasHeightPx = canvasHeightPx,
-        onElementTap = onElementTap,
-        onElementTransform = onElementTransform,
-        onDelete = { onElementDelete(decoration.id) }
-    ) {
-        Picture(
-            model = model,
-            contentDescription = null,
-            contentScale = ContentScale.Fit,
-            showTransparencyChecker = false,
-            modifier = Modifier
-                .size(with(density) { sizePx.toDp() })
-                .graphicsLayer { alpha = decoration.alpha.coerceIn(0f, 1f) }
-        )
-    }
-}
-
-/** AI 生成图片元素:fullCanvas 铺满画布(Crop),否则正方形框 fit 居中;
- * Loading 占位(编辑态叠加原图 + 转圈)/Error 错误态直接画在框内,均可选中/拖动/删除 */
-@Composable
-private fun CardImageElement(
-    element: ImageElementSpec,
-    isSelected: Boolean,
-    canvasWidthPx: Float,
-    canvasHeightPx: Float,
-    onElementTap: (String) -> Unit,
-    onElementTransform: (String, Float, Float, Float, Float) -> Unit,
-    onElementDelete: (String) -> Unit,
-) {
-    val density = LocalDensity.current
-    val sizePx = canvasWidthPx * CardLayout.IMAGE_ELEMENT_SIZE_RATIO
-    val widthDp = with(density) {
-        (if (element.fullCanvas) canvasWidthPx else sizePx).toDp()
-    }
-    val heightDp = with(density) {
-        (if (element.fullCanvas) canvasHeightPx else sizePx).toDp()
-    }
-    val contentScale = if (element.fullCanvas) ContentScale.Crop else ContentScale.Fit
-    ElementBox(
-        elementId = element.id,
-        transform = element,
-        leftPx = element.offsetX * canvasWidthPx,
-        topPx = element.offsetY * canvasHeightPx,
-        isSelected = isSelected,
-        canvasWidthPx = canvasWidthPx,
-        canvasHeightPx = canvasHeightPx,
-        onElementTap = onElementTap,
-        onElementTransform = onElementTransform,
-        onDelete = { onElementDelete(element.id) }
-    ) {
-        val boxModifier = Modifier
-            .size(width = widthDp, height = heightDp)
-            .graphicsLayer { alpha = element.alpha.coerceIn(0f, 1f) }
-        when (element.status) {
-            ImageElementStatus.Ready -> Picture(
-                model = element.uri,
-                contentDescription = null,
-                contentScale = contentScale,
-                showTransparencyChecker = false,
-                modifier = boxModifier
-            )
-
-            // Loading/Error 占位:圆角浅底容器 + 居中状态内容;编辑再生成时垫底显示原图
-            ImageElementStatus.Loading, ImageElementStatus.Error -> Box(
-                contentAlignment = Alignment.Center,
-                modifier = boxModifier
-                    .clip(RoundedCornerShape(if (element.fullCanvas) 0.dp else 12.dp))
-                    .background(MaterialTheme.colorScheme.surfaceContainer)
-            ) {
-                if (element.status == ImageElementStatus.Loading && element.uri.isNotBlank()) {
-                    Picture(
-                        model = element.uri,
-                        contentDescription = null,
-                        contentScale = contentScale,
-                        showTransparencyChecker = false,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .graphicsLayer { alpha = 0.45f }
-                    )
-                }
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    if (element.status == ImageElementStatus.Loading) {
-                        EnhancedLoadingIndicator(modifier = Modifier.size(36.dp))
-                        Text(
-                            text = stringResource(R.string.textcard_image_layer_loading),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(top = 6.dp)
-                        )
-                    } else {
-                        Icon(
-                            imageVector = MaterialIcons.Outlined.ErrorOutline,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onErrorContainer
-                        )
-                        Text(
-                            text = stringResource(R.string.textcard_image_layer_error),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onErrorContainer,
-                            modifier = Modifier.padding(top = 6.dp)
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-private fun Offset.rotateBy(degrees: Float): Offset {
-    val radians = Math.toRadians(degrees.toDouble())
-    return Offset(
-        x = (x * cos(radians) - y * sin(radians)).toFloat(),
-        y = (x * sin(radians) + y * cos(radians)).toFloat()
-    )
-}
-
-/** 单个文字块预览:字号 px→sp 等比缩放,letterSpacing(em)/行距倍率/对齐/粗斜与导出侧一致;
- * 块内局部样式(styleSpans)以 AnnotatedString 区间叠加在块级样式之上;
- * 描边经共享 OutlinedText 双线叠绘(描边层垫底),粗细 = outlineWidthRatio × 画布宽 */
 @Composable
 private fun CardText(
     block: TextBlock,
     baseSizePx: Float,
     canvasWidthPx: Float,
+    onTextLayout: (TextLayoutResult) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    if (block.content.isBlank()) return
     val outlineParams = if (block.outlineWidthRatio > 0f) {
         OutlineParams(
             color = Color(block.outlineColor),
@@ -1003,12 +542,11 @@ private fun CardText(
         text = block.buildAnnotatedContent(),
         outlineParams = outlineParams,
         style = cardTextStyle(block, baseSizePx),
+        onTextLayout = onTextLayout,
         modifier = modifier.graphicsLayer { alpha = block.alpha.coerceIn(0f, 1f) }
     )
 }
 
-/** 文字块统一样式:CardText 与就地编辑器共用,保证编辑态与渲染态观感一致;
- * 下划线/删除线/逐行底色也在这里(就地编辑态可见);描边仅渲染态(编辑器不支持双线叠绘) */
 @Composable
 private fun cardTextStyle(
     block: TextBlock,
@@ -1016,10 +554,23 @@ private fun cardTextStyle(
 ): TextStyle {
     val density = LocalDensity.current
     val fontSize = with(density) { (baseSizePx * block.sizeScale).toSp() }
+    val metrics = android.text.TextPaint().apply {
+        textSize = baseSizePx * block.sizeScale
+        val base = runCatching { block.font.toTypeface() }.getOrNull()
+            ?: android.graphics.Typeface.DEFAULT
+        val style = (if (block.isBold) android.graphics.Typeface.BOLD else 0) or
+            (if (block.isItalic) android.graphics.Typeface.ITALIC else 0)
+        typeface = if (style != 0) {
+            android.graphics.Typeface.create(base, style)
+        } else base
+    }.fontMetrics
+    val lineHeight = with(density) {
+        ((metrics.descent - metrics.ascent) * block.lineSpacingMultiplier).toSp()
+    }
     return TextStyle(
         color = Color(block.color),
         fontSize = fontSize,
-        lineHeight = (fontSize.value * block.lineSpacingMultiplier).sp,
+        lineHeight = lineHeight,
         letterSpacing = block.letterSpacingEm.em,
         fontFamily = block.font.toUiFont().fontFamily,
         fontWeight = if (block.isBold) FontWeight.Bold else FontWeight.Normal,
@@ -1041,253 +592,3 @@ private fun cardTextStyle(
         }
     )
 }
-
-/** 形状元素(对照图片创作形状工具):外接框内绘制,选中走共享 chrome 手柄 */
-@Composable
-private fun CardShapeElement(
-    element: ShapeElementSpec,
-    isSelected: Boolean,
-    canvasWidthPx: Float,
-    canvasHeightPx: Float,
-    onElementTap: (String) -> Unit,
-    onElementTransform: (String, Float, Float, Float, Float) -> Unit,
-    onElementDelete: (String) -> Unit,
-) {
-    val density = LocalDensity.current
-    ElementBox(
-        elementId = element.id,
-        transform = element,
-        leftPx = element.offsetX * canvasWidthPx,
-        topPx = element.offsetY * canvasHeightPx,
-        isSelected = isSelected,
-        canvasWidthPx = canvasWidthPx,
-        canvasHeightPx = canvasHeightPx,
-        onElementTap = onElementTap,
-        onElementTransform = onElementTransform,
-        onDelete = { onElementDelete(element.id) },
-        width = with(density) { (element.widthRatio * canvasWidthPx).toDp() }
-    ) {
-        Canvas(
-            modifier = Modifier
-                .size(
-                    width = with(density) { (element.widthRatio * canvasWidthPx).toDp() },
-                    height = with(density) { (element.heightRatio * canvasHeightPx).toDp() }
-                )
-                .graphicsLayer { alpha = element.alpha.coerceIn(0f, 1f) }
-        ) {
-            drawCardShapeContent(element, canvasWidthPx)
-        }
-    }
-}
-
-/** 形状内容绘制(自 markup-layers drawShapeContent 移植):外接框 = 当前 DrawScope size */
-private fun DrawScope.drawCardShapeContent(
-    spec: ShapeElementSpec,
-    canvasWidthPx: Float,
-) {
-    val color = Color(spec.colorArgb)
-    val stroke = Stroke(width = (spec.strokeWidthRatio * canvasWidthPx).coerceAtLeast(1f))
-    when (spec.kind) {
-        CardShapeKind.Rectangle -> {
-            val radius = (spec.cornerRadiusRatio * canvasWidthPx)
-                .coerceIn(0f, min(size.width, size.height) / 2f)
-            drawRoundRect(
-                color = color,
-                topLeft = Offset.Zero,
-                size = size,
-                cornerRadius = CornerRadius(radius),
-                style = if (spec.filled) Fill else stroke
-            )
-        }
-
-        CardShapeKind.Circle -> {
-            // 圆形始终为正圆:直径取外接框短边,居中
-            val diameter = min(size.width, size.height)
-            drawOval(
-                color = color,
-                topLeft = Offset(
-                    (size.width - diameter) / 2f,
-                    (size.height - diameter) / 2f
-                ),
-                size = Size(diameter, diameter),
-                style = if (spec.filled) Fill else stroke
-            )
-        }
-
-        CardShapeKind.Line -> {
-            // 线条无填充概念,始终按描边绘制(圆头横线,与外接框同宽)
-            drawLine(
-                color = color,
-                start = Offset(0f, size.height / 2f),
-                end = Offset(size.width, size.height / 2f),
-                strokeWidth = stroke.width,
-                cap = StrokeCap.Round
-            )
-        }
-
-        CardShapeKind.Triangle, CardShapeKind.Arrow, CardShapeKind.Star -> {
-            val path = Path().apply {
-                CardShapeGeometry.polygonPoints(spec.kind, size.width, size.height)
-                    .forEachIndexed { index, (x, y) ->
-                        if (index == 0) moveTo(x, y) else lineTo(x, y)
-                    }
-                close()
-            }
-            drawPath(
-                path = path,
-                color = color,
-                style = if (spec.filled) Fill else stroke
-            )
-        }
-    }
-}
-
-/** 画笔元素:外接框 = 笔画包围盒(选中 chrome 贴着笔迹,不再铺满画布被裁掉) */
-@Composable
-private fun CardDrawElement(
-    element: DrawElementSpec,
-    isSelected: Boolean,
-    canvasWidthPx: Float,
-    canvasHeightPx: Float,
-    onElementTap: (String) -> Unit,
-    onElementTransform: (String, Float, Float, Float, Float) -> Unit,
-    onElementDelete: (String) -> Unit,
-) {
-    val bounds = element.contentBounds() ?: return
-    val density = LocalDensity.current
-    ElementBox(
-        elementId = element.id,
-        transform = element,
-        leftPx = (element.offsetX + bounds.left) * canvasWidthPx,
-        topPx = (element.offsetY + bounds.top) * canvasHeightPx,
-        isSelected = isSelected,
-        canvasWidthPx = canvasWidthPx,
-        canvasHeightPx = canvasHeightPx,
-        onElementTap = onElementTap,
-        onElementTransform = onElementTransform,
-        onDelete = { onElementDelete(element.id) },
-        width = with(density) { (bounds.width * canvasWidthPx).toDp() }
-    ) {
-        Canvas(
-            modifier = Modifier
-                .size(
-                    width = with(density) { (bounds.width * canvasWidthPx).toDp() },
-                    height = with(density) { (bounds.height * canvasHeightPx).toDp() }
-                )
-                .graphicsLayer { alpha = element.alpha.coerceIn(0f, 1f) }
-        ) {
-            element.strokes.forEach { stroke ->
-                drawCardStroke(
-                    stroke = stroke,
-                    canvasWidth = canvasWidthPx,
-                    canvasHeight = canvasHeightPx,
-                    offsetX = bounds.left,
-                    offsetY = bounds.top
-                )
-            }
-        }
-    }
-}
-
-/** 单笔画绘制:采样点连成圆头圆接折线(可带包围盒偏移);单点退化为圆点 */
-private fun DrawScope.drawCardStroke(
-    stroke: CardDrawStroke,
-    canvasWidth: Float,
-    canvasHeight: Float,
-    offsetX: Float = 0f,
-    offsetY: Float = 0f,
-) {
-    val strokeWidth = (stroke.widthRatio * canvasWidth).coerceAtLeast(1f)
-    val color = Color(stroke.colorArgb)
-    if (stroke.points.size == 1) {
-        val p = stroke.points.first()
-        drawCircle(
-            color = color,
-            radius = strokeWidth / 2f,
-            center = Offset((p.x - offsetX) * canvasWidth, (p.y - offsetY) * canvasHeight)
-        )
-        return
-    }
-    val path = Path()
-    stroke.points.forEachIndexed { index, point ->
-        val x = (point.x - offsetX) * canvasWidth
-        val y = (point.y - offsetY) * canvasHeight
-        if (index == 0) path.moveTo(x, y) else path.lineTo(x, y)
-    }
-    drawPath(
-        path = path,
-        color = color,
-        style = Stroke(
-            width = strokeWidth,
-            cap = StrokeCap.Round,
-            join = StrokeJoin.Round
-        )
-    )
-}
-
-/**
- * 绘制采集层(绘制模式置顶):会话已完成笔画 + 进行中笔画实时预览;
- * 手势移植自 markup-layers DrawOverlay(收笔结算为会话笔画,第二指落下即收笔)。
- */
-@Composable
-private fun androidx.compose.foundation.layout.BoxWithConstraintsScope.DrawCaptureOverlay(
-    sessionStrokes: List<CardDrawStroke>,
-    brushColorArgb: Long,
-    brushWidthRatio: Float,
-    onStroke: (List<CardStrokePoint>) -> Unit,
-) {
-    val canvasWidthPx = constraints.maxWidth.toFloat()
-    val canvasHeightPx = constraints.maxHeight.toFloat()
-    var currentPoints by remember { mutableStateOf<List<CardStrokePoint>>(emptyList()) }
-    Canvas(
-        modifier = Modifier
-            .fillMaxSize()
-            .pointerInput(canvasWidthPx, canvasHeightPx) {
-                awaitEachGesture {
-                    val down = awaitFirstDown(requireUnconsumed = false)
-                    if (down.isConsumed) return@awaitEachGesture
-                    currentPoints = listOf(
-                        CardStrokePoint(
-                            down.position.x / canvasWidthPx,
-                            down.position.y / canvasHeightPx
-                        )
-                    )
-                    try {
-                        while (true) {
-                            val event = awaitPointerEvent()
-                            if (event.changes.count { it.pressed } > 1) break
-                            val change = event.changes.firstOrNull { it.id == down.id } ?: break
-                            if (!change.pressed) break
-                            if (change.positionChanged()) {
-                                currentPoints = currentPoints + CardStrokePoint(
-                                    change.position.x / canvasWidthPx,
-                                    change.position.y / canvasHeightPx
-                                )
-                                change.consume()
-                            }
-                        }
-                    } finally {
-                        // 手势被取消(如模式切换)也要收笔结算,避免进行中的笔画残留
-                        val points = currentPoints
-                        currentPoints = emptyList()
-                        if (points.isNotEmpty()) onStroke(points)
-                    }
-                }
-            }
-    ) {
-        sessionStrokes.forEach { drawCardStroke(it, size.width, size.height) }
-        if (currentPoints.isNotEmpty()) {
-            drawCardStroke(
-                CardDrawStroke(
-                    points = currentPoints,
-                    colorArgb = brushColorArgb,
-                    widthRatio = brushWidthRatio
-                ),
-                size.width,
-                size.height
-            )
-        }
-    }
-}
-
-

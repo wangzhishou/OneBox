@@ -1,8 +1,8 @@
 package com.wanbaohe.textcard.domain.model
 
 import androidx.annotation.StringRes
+import com.shifenmiao.model.canvas.CreationCanvasSpec
 import com.wanbaohe.textcard.R
-import kotlin.math.roundToInt
 
 /**
  * 画布规格:导出位图尺寸即 width × height。
@@ -18,19 +18,19 @@ sealed class CanvasSpec(
 ) {
 
     data object Portrait : CanvasSpec(
-        width = 1080,
-        height = 1350,
+        width = CreationCanvasSpec.PORTRAIT.width,
+        height = CreationCanvasSpec.PORTRAIT.height,
         titleRes = R.string.textcard_canvas_portrait,
         descRes = R.string.textcard_canvas_portrait_desc,
-        ratioLabel = "3:4"
+        ratioLabel = CreationCanvasSpec.PORTRAIT.ratioLabel
     )
 
     data object Square : CanvasSpec(
-        width = 1080,
-        height = 1080,
+        width = CreationCanvasSpec.SQUARE.width,
+        height = CreationCanvasSpec.SQUARE.height,
         titleRes = R.string.textcard_canvas_square,
         descRes = R.string.textcard_canvas_square_desc,
-        ratioLabel = "1:1"
+        ratioLabel = CreationCanvasSpec.SQUARE.ratioLabel
     )
 
     /** 用户自定义宽高(px,输入侧钳制 256..4096) */
@@ -46,17 +46,6 @@ sealed class CanvasSpec(
     )
 
     val aspectRatio: Float get() = width.toFloat() / height.toFloat()
-
-    /** 导出尺寸:长边超过 [maxSide] 时等比缩小(防 OOM),否则原样返回 */
-    fun exportScaled(maxSide: Int = 2048): CanvasSpec {
-        val longSide = maxOf(width, height)
-        if (longSide <= maxSide) return this
-        val scale = maxSide.toFloat() / longSide
-        return Custom(
-            customWidth = (width * scale).roundToInt().coerceAtLeast(1),
-            customHeight = (height * scale).roundToInt().coerceAtLeast(1)
-        )
-    }
 
     companion object {
         /**

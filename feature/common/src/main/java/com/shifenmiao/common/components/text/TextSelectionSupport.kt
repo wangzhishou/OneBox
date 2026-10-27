@@ -160,12 +160,13 @@ private fun AnnotatedString.Range<SpanStyle>.withoutAttribute(
         ?.let { add(item.strippedOf(newStyle) to it) }
 }
 
-/** 剥掉 [other] 中设置了的四个属性(颜色/字号/粗/斜),其余保留 */
+/** 剥掉 [other] 中显式设置的属性,其余保留 */
 private fun SpanStyle.strippedOf(other: SpanStyle): SpanStyle = SpanStyle(
     color = if (other.color != Color.Unspecified) Color.Unspecified else color,
     fontSize = if (other.fontSize != TextUnit.Unspecified) TextUnit.Unspecified else fontSize,
     fontWeight = if (other.fontWeight != null) null else fontWeight,
     fontStyle = if (other.fontStyle != null) null else fontStyle,
+    fontFamily = if (other.fontFamily != null) null else fontFamily,
 )
 
 /** 区间裁掉 [start, end) 部分,保留两侧残段(0~2 段) */

@@ -1581,7 +1581,7 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="nav_image_creation">Image Creation</string>
     <string name="nav_text_card">Text Card</string>
     <string name="text_card">Text Card</string>
-    <string name="text_card_sub">Turn quotes into beautiful shareable cards</string>
+    <string name="text_card_sub">Auto layout for text, multipage cards, and long images</string>
 
     <!-- Game 2048 -->
     <string name="game_2048_title">2048</string>

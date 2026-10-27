@@ -68,11 +68,13 @@ internal fun PanelSliderRow(
     valueText: String,
     onValueChange: (Float) -> Unit,
     enabled: Boolean = true,
+    onValueChangeFinished: () -> Unit = {},
 ) {
     PanelSettingRow(label = label) {
         EnhancedSlider(
             value = value,
             onValueChange = onValueChange,
+            onValueChangeFinished = onValueChangeFinished,
             valueRange = valueRange,
             // 滑杆不带背景容器,直接排布
             enabled = enabled,

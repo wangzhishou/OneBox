@@ -1,12 +1,17 @@
 package com.wanbaohe.textcard.domain.model
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.buildAnnotatedString
 import com.shifenmiao.common.components.text.RichTextStyleSpan
 import com.shifenmiao.common.components.text.adjustForTrim as adjustRichTextForTrim
 import com.shifenmiao.common.components.text.buildRichText
 import com.shifenmiao.common.components.text.toRichTextStyleSpan
 import com.t8rin.imagetoolbox.core.settings.domain.model.FontType
+import com.t8rin.imagetoolbox.core.settings.presentation.model.toUiFont
 import com.wanbaohe.textcard.domain.render.CardLayout
 import java.util.UUID
 
@@ -19,14 +24,14 @@ interface ElementTransform {
 }
 
 /**
- * 卡片上的文字块(任意多条,默认标题 + 正文两块;每条一个图层)。
+ * 文字角色及分页片段的样式模型。源文档使用稳定的角色 id,分页片段由排版引擎生成。
  *
- * @param id 稳定 id,图层/选中/编辑/拖动都按它寻址
- * @param baseTopRatio 基准 top(相对画布宽),新块在上一块基础上递增
- * @param sizeScale 字号缩放倍率,作用于块的基础字号比例 [baseSizeRatio](与手势 scale 叠乘)
- * @param widthRatio 文字框宽(相对画布宽),文字在框内折行;拖框手柄改它,字号不变。
- * [widthManuallySet]=false 时它是框宽上限,框随文字宽度收缩;拖宽后为固定框宽
- * @param widthManuallySet 是否被 8 向手柄手动拖宽过:false = 框宽随内容收缩(wrap),true = 固定 [widthRatio] 宽
+ * @param id 源文字角色或分页片段的稳定 id
+ * @param baseTopRatio 当前渲染片段的 top(相对画布宽),由排版引擎计算
+ * @param sizeScale 字号缩放倍率,作用于块的基础字号比例 [baseSizeRatio]
+ * @param widthRatio 文字框宽(相对画布宽),文字在框内折行
+ * [widthManuallySet]=false 时它是框宽上限,框随文字宽度收缩;正式排版使用固定内容宽
+ * @param widthManuallySet 是否使用固定 [widthRatio] 宽
  * @param heightRatio 文字框最小高(相对画布高),0 = 随内容自适应;实际框高 = max(内容高, 设定高)
  * @param letterSpacingEm 字间距(em),直接给 TextPaint.letterSpacing / Compose letterSpacing
  * @param lineSpacingMultiplier 行距倍率,StaticLayout setLineSpacing 的 multiplier
@@ -69,6 +74,7 @@ data class TextBlock(
     val outlineColor: Long = 0xFFFFFFFF,
     val outlineWidthRatio: Float = 0f,
     val styleSpans: List<TextStyleSpan> = emptyList(),
+    val fontSpans: List<TextCardFontSpan> = emptyList(),
     override val offsetX: Float = 0f,
     override val offsetY: Float = 0f,
     override val scale: Float = 1f,
@@ -78,12 +84,49 @@ data class TextBlock(
 /** 块内局部样式区间(富文本);模型与图片创作共用 [RichTextStyleSpan] */
 typealias TextStyleSpan = RichTextStyleSpan
 
+data class TextCardFontSpan(
+    val start: Int,
+    val end: Int,
+    val font: FontType?,
+) {
+    fun clamped(length: Int): TextCardFontSpan? {
+        val safeStart = start.coerceIn(0, length)
+        val safeEnd = end.coerceIn(0, length)
+        return if (safeStart < safeEnd) {
+            copy(start = safeStart, end = safeEnd)
+        } else null
+    }
+}
+
 /** 编辑器样式层读回(getSpanStyles)→ 模型 span;四字段全空(未设置)或空区间返回 null */
 fun AnnotatedString.Range<SpanStyle>.toTextStyleSpan(): TextStyleSpan? =
     toRichTextStyleSpan()
 
-/** 预览渲染用:content + 局部样式叠加成 AnnotatedString(块级粗斜由 textStyle 承担,这里只叠加区间覆盖) */
-fun TextBlock.buildAnnotatedContent(): AnnotatedString = buildRichText(content, styleSpans)
+@Composable
+fun TextBlock.buildAnnotatedContent(
+    highlightRange: TextRange? = null,
+    highlightColor: Color? = null,
+): AnnotatedString {
+    val baseContent = buildRichText(content, styleSpans)
+    val fontFamilies = fontSpans.map { it.font.toUiFont().fontFamily }
+    return buildAnnotatedString {
+        append(baseContent)
+        fontSpans.forEachIndexed { index, span ->
+            span.clamped(content.length)?.let { clamped ->
+                addStyle(
+                    SpanStyle(fontFamily = fontFamilies[index]),
+                    clamped.start,
+                    clamped.end
+                )
+            }
+        }
+        if (highlightRange != null && highlightColor != null) {
+            val start = highlightRange.min.coerceIn(0, content.length)
+            val end = highlightRange.max.coerceIn(0, content.length)
+            if (start < end) addStyle(SpanStyle(background = highlightColor), start, end)
+        }
+    }
+}
 
 /** endTextEdit trim 时同步调整局部样式区间(实现在 common,图片创作同一份逻辑) */
 fun List<TextStyleSpan>.adjustForTrim(
@@ -123,82 +166,4 @@ private fun TextBlock.isRangeEffectivelyStyled(
 
 enum class CardTextAlignment {
     Left, Center, Right, Justify
-}
-
-/**
- * 装饰贴纸(支持多个;每个装饰一个图层,可独立拖动/缩放/旋转)。
- * 来源:emoji(core emoji 表下标)、素材贴纸(assetPath,assets/stickers/ 下的 SVG)
- * 或 AI 生成贴纸(imagePath,本地文件绝对路径);三者恰有一个非空,
- * 与图片创作共享 StickerSource 落地。
- * offsetX/offsetY 为贴纸左上角的归一化坐标(X 相对画布宽、Y 相对画布高)。
- * alpha 为元素级不透明度(0..1)。
- */
-data class DecorationSpec(
-    val id: String = UUID.randomUUID().toString(),
-    val emojiIndex: Int? = null,
-    /** 素材贴纸:assets 内相对路径(如 stickers/decor/flower.svg) */
-    val assetPath: String? = null,
-    /** AI 生成贴纸:本地文件绝对路径 */
-    val imagePath: String? = null,
-    val alpha: Float = 1f,
-    override val offsetX: Float = 0f,
-    override val offsetY: Float = 0f,
-    override val scale: Float = 1f,
-    override val rotation: Float = 0f,
-) : ElementTransform {
-    companion object {
-        /** 新装饰默认落左上角(留 DECORATION_MARGIN_RATIO 边距,不贴边) */
-        fun defaultPositionFor(canvas: CanvasSpec, emojiIndex: Int): DecorationSpec {
-            val margin = CardLayout.DECORATION_MARGIN_RATIO
-            return DecorationSpec(
-                emojiIndex = emojiIndex,
-                offsetX = margin,
-                offsetY = margin * canvas.aspectRatio
-            )
-        }
-    }
-}
-
-/**
- * AI 生成图片元素(支持多个;每个一个图层,可独立拖动/缩放/旋转,同装饰)。
- * offsetX/offsetY 为元素左上角的归一化坐标(X 相对画布宽、Y 相对画布高),
- * 图片在 IMAGE_ELEMENT_SIZE_RATIO 正方形框内 fit 居中。
- *
- * 生成是异步的:发起时先加 [ImageElementStatus.Loading] 占位图层(uri 为空),
- * 用户可继续其它操作;成功回填 uri 转 [ImageElementStatus.Ready],失败转
- * [ImageElementStatus.Error](错误态直接画在图层上,可删除)。导出只画 Ready。
- */
-data class ImageElementSpec(
-    val id: String = UUID.randomUUID().toString(),
-    val uri: String,
-    val status: ImageElementStatus = ImageElementStatus.Ready,
-    /** true = 元素铺满整张画布(生成背景图场景),图层垫底于文字之下 */
-    val fullCanvas: Boolean = false,
-    /** AI 编辑历史:历次编辑前的图片本地路径(旧→新) */
-    val historyUris: List<String> = emptyList(),
-    val alpha: Float = 1f,
-    override val offsetX: Float = 0f,
-    override val offsetY: Float = 0f,
-    override val scale: Float = 1f,
-    override val rotation: Float = 0f,
-) : ElementTransform {
-    companion object {
-        /** 新图片元素默认落画布中心 */
-        fun defaultPositionFor(canvas: CanvasSpec, uri: String): ImageElementSpec {
-            val size = CardLayout.IMAGE_ELEMENT_SIZE_RATIO
-            return ImageElementSpec(
-                uri = uri,
-                offsetX = 0.5f - size / 2,
-                offsetY = 0.5f - size * canvas.aspectRatio / 2
-            )
-        }
-
-        /** 铺满画布的图片元素(占位/生成背景图用),offset 0 起点 */
-        fun fullCanvas(uri: String, status: ImageElementStatus): ImageElementSpec =
-            ImageElementSpec(uri = uri, status = status, fullCanvas = true)
-    }
-}
-
-enum class ImageElementStatus {
-    Loading, Ready, Error
 }

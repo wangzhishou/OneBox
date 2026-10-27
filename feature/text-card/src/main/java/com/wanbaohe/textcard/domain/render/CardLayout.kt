@@ -15,31 +15,13 @@ object CardLayout {
     /** 正文基础字号(相对画布宽) */
     const val BODY_BASE_SIZE_RATIO = 0.032f
 
-    /** 正文基准 top(相对画布宽):文字块可独立拖动,正文不再跟随标题高度流动排布 */
+    /** 模板预览的正文起始位置;正式排版由排版引擎根据真实行高计算 */
     const val BODY_BASE_TOP_RATIO = 0.30f
-
-    /** 新增文字块的基准 top 递增步进(相对画布宽) */
-    const val NEW_BLOCK_STEP_RATIO = 0.12f
-
-    /** 装饰贴纸边长(相对画布宽) */
-    const val DECORATION_SIZE_RATIO = 0.24f
-
-    /** 装饰贴纸距角落的外边距(相对画布宽) */
-    const val DECORATION_MARGIN_RATIO = 0.05f
-
-    /** AI 生成图片元素边长(相对画布宽),图片在该正方形框内 fit 居中 */
-    const val IMAGE_ELEMENT_SIZE_RATIO = 0.4f
 
     // ---- 文字框尺寸 ----
 
     /** 文字块默认框宽(相对画布宽):内容区宽 */
     const val DEFAULT_TEXT_WIDTH_RATIO = 1f - CONTENT_PADDING_RATIO * 2
-
-    /** 文字块最小框宽(相对画布宽),拖拽手柄时下限 */
-    const val MIN_TEXT_WIDTH_RATIO = 0.2f
-
-    /** 文字块最小框高(相对画布高),拖拽手柄时下限;实际框高 = max(内容高, 设定高) */
-    const val MIN_TEXT_HEIGHT_RATIO = 0.04f
 
     /** 卡片底色(背景层半透明时透出) */
     const val CARD_BASE_COLOR = 0xFFFFFFFF

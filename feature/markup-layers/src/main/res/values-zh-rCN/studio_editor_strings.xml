@@ -27,6 +27,9 @@
     <string name="studio_task_remove_bg">去背景</string>
     <string name="studio_task_repair_photo">修复照片</string>
     <string name="studio_task_make_cover">做封面</string>
+    <string name="studio_cover_option_text_card">文字卡片</string>
+    <string name="studio_cover_option_image_cover">图片封面</string>
+    <string name="markup_use_as_card_background">应用</string>
     <string name="studio_blank_invalid_size">宽高请输入 1 至 %1$d 像素。</string>
     <string name="studio_blank_pixel_limit">画布过大，请控制在 %1$d 像素以内。</string>
     <string name="studio_blank_create_failed">无法创建画布，请尝试更小的尺寸。</string>

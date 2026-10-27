@@ -28,6 +28,9 @@
     <string name="studio_task_remove_bg">Remove background</string>
     <string name="studio_task_repair_photo">Repair photo</string>
     <string name="studio_task_make_cover">Make a cover</string>
+    <string name="studio_cover_option_text_card">Text Card</string>
+    <string name="studio_cover_option_image_cover">Image Cover</string>
+    <string name="markup_use_as_card_background">Apply</string>
     <string name="studio_blank_invalid_size">Enter a width and height from 1 to %1$d pixels.</string>
     <string name="studio_blank_pixel_limit">This canvas is too large. Use at most %1$d pixels.</string>
     <string name="studio_blank_create_failed">Could not create the canvas. Try a smaller size.</string>

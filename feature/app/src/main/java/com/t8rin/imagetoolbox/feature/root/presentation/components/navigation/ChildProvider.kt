@@ -606,6 +606,7 @@ class ChildProvider @Inject constructor(
             imageFactories.get().markupLayersComponentFactory(
                 componentContext = componentContext,
                 initialUri = config.uri,
+                handoffId = config.handoffId,
                 onGoBack = ::navigateBack,
                 onNavigate = ::navigateTo
             )

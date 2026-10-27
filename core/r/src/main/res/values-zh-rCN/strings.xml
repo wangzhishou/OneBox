@@ -1686,9 +1686,9 @@
     <string name="nav_check_in">打卡</string>
     <string name="nav_blessing">祈福</string>
     <string name="nav_image_creation">图片创作</string>
-    <string name="nav_text_card">图文卡片</string>
-    <string name="text_card">图文卡片</string>
-    <string name="text_card_sub">把语录文字生成精美的图文卡片</string>
+    <string name="nav_text_card">文字卡片</string>
+    <string name="text_card">文字卡片</string>
+    <string name="text_card_sub">文字自动排版，支持长文分页与连续长图</string>
 
     <!-- Game 2048 -->
     <string name="game_2048_title">2048</string>

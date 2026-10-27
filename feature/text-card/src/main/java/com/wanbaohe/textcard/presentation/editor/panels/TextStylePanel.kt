@@ -91,12 +91,24 @@ import com.t8rin.imagetoolbox.core.resources.R as CoreR
 @Composable
 private fun TextBlock.displayLabel(): String {
     val firstLine = content.lineSequence().firstOrNull()?.take(12).orEmpty()
-    return firstLine.ifEmpty { stringResource(R.string.textcard_block_fallback) }
+    return firstLine.ifEmpty {
+        when (id) {
+            com.wanbaohe.textcard.domain.model.TextCardDocument.ROLE_TITLE ->
+                stringResource(R.string.textcard_role_title)
+            com.wanbaohe.textcard.domain.model.TextCardDocument.ROLE_BODY ->
+                stringResource(R.string.textcard_role_body)
+            com.wanbaohe.textcard.domain.model.TextCardDocument.ROLE_AUTHOR ->
+                stringResource(R.string.textcard_role_author)
+            com.wanbaohe.textcard.domain.model.TextCardDocument.ROLE_SOURCE ->
+                stringResource(R.string.textcard_role_source)
+            else -> stringResource(R.string.textcard_block_fallback)
+        }
+    }
 }
 
 /**
- * 文字设置面板(设计稿 04):一套控件,作用目标随选中状态切换——
- * 默认作用于当前选中文字块(任意多块,按 id);就地编辑中长按选中块内
+ * 文字设置面板:一套控件,作用目标随选中状态切换——
+ * 默认作用于当前文字角色;内容编辑区选中块内
  * 局部文字时,字号/加粗/斜体/颜色改作用于选区(局部样式,叠加在块级之上),
  * 行间距/字间距/对齐为行级属性,置灰不可调,面板顶部提示「正在调整:选中的文字」
  * 并提供「清除样式」(移除选区全部局部样式)。取消选中即回到整块模式。
@@ -111,6 +123,7 @@ fun TextStylePanel(
     editingState: TextFieldState? = null,
     editingBlock: TextBlock? = null,
     onEditingSync: () -> Unit = {},
+    onWholeBlockStyleApplied: () -> Unit = {},
 ) {
     // 有活选区(就地编辑中选中了块内局部文字)时,面板控件切换到选区作用域;
     // 选区写在 TextFieldState 里,snapshot 感知,选中变化即重组
@@ -122,19 +135,17 @@ fun TextStylePanel(
 
     val blocks = component.textBlocks
     val block = component.selectedTextBlock()
+
+    PanelTitle(R.string.textcard_text_settings)
     if (block == null) {
-        PanelTitle(R.string.textcard_text_settings)
         Text(
             text = stringResource(R.string.textcard_select_text_first),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(vertical = 12.dp)
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         return
     }
     val blockId = block.id
-
-    PanelTitle(R.string.textcard_text_settings)
 
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         // 选区激活提示:告诉用户现在调的是选中的局部文字;「清除样式」移除选区全部局部样式
@@ -161,7 +172,7 @@ fun TextStylePanel(
             }
         }
 
-        // 文本块切换:固定宽小卡单行横滑,卡内文字最多两行(增删走「基础」面板与图层面板)
+        // 四类文字角色切换:固定宽小卡单行横滑,卡内文字最多两行
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier.fillMaxWidth()
@@ -220,8 +231,9 @@ fun TextStylePanel(
             } else 0.5f..4f,
             valueText = selectionCtx?.let { (_, blk, sel) ->
                 "${(blk.effectiveSizeScaleAt(sel.min, sel.max) * 100).roundToInt()}%"
-            } ?: "${(block.sizeScale * 36).roundToInt()}",
+            } ?: "${(block.baseSizeRatio * component.document.canvas.width * block.sizeScale).roundToInt()}px",
             onValueChange = { value ->
+                component.beginContinuousEdit()
                 val ctx = selectionCtx
                 if (ctx != null) {
                     ctx.first.applySelectionStyle(
@@ -231,7 +243,8 @@ fun TextStylePanel(
                 } else {
                     component.updateTextBlock(blockId) { it.copy(sizeScale = value) }
                 }
-            }
+            },
+            onValueChangeFinished = component::endContinuousEdit
         )
         // 文字颜色(高频操作,紧跟字号):与图片创作一致的横向滚动色板(首项支持自定义取色);
         // 选区激活时给选中文字上色(恢复跟随整块用顶部「清除样式」)
@@ -260,6 +273,7 @@ fun TextStylePanel(
                                 )
                             )
                         }
+                        onWholeBlockStyleApplied()
                     }
                 },
                 allowAlpha = false,
@@ -273,9 +287,11 @@ fun TextStylePanel(
             valueRange = 1f..3f,
             valueText = formatDecimal((block.lineSpacingMultiplier * 10).roundToInt() / 10f),
             onValueChange = { value ->
+                component.beginContinuousEdit()
                 component.updateTextBlock(blockId) { it.copy(lineSpacingMultiplier = value) }
             },
-            enabled = selectionCtx == null
+            enabled = selectionCtx == null,
+            onValueChangeFinished = component::endContinuousEdit
         )
         PanelSliderRow(
             label = stringResource(R.string.textcard_letter_spacing),
@@ -283,9 +299,11 @@ fun TextStylePanel(
             valueRange = 0f..1f,
             valueText = formatDecimal((block.letterSpacingEm * 100).roundToInt() / 100f),
             onValueChange = { value ->
+                component.beginContinuousEdit()
                 component.updateTextBlock(blockId) { it.copy(letterSpacingEm = value) }
             },
-            enabled = selectionCtx == null
+            enabled = selectionCtx == null,
+            onValueChangeFinished = component::endContinuousEdit
         )
         // 元素级不透明度:每个文字块独立(背景透明度在「纸张背景」面板);整体属性,选区激活时仍可用
         PanelSliderRow(
@@ -294,8 +312,10 @@ fun TextStylePanel(
             valueRange = 0f..1f,
             valueText = "${(block.alpha * 100).roundToInt()}%",
             onValueChange = { value ->
+                component.beginContinuousEdit()
                 component.updateTextBlock(blockId) { it.copy(alpha = value) }
-            }
+            },
+            onValueChangeFinished = component::endContinuousEdit
         )
 
         // 对齐分段(左/居中/右/两端四个图标按钮):行级属性,选区激活时置灰
@@ -480,10 +500,12 @@ fun TextStylePanel(
                         valueRange = 0.001f..0.02f,
                         valueText = "${formatDecimal((block.outlineWidthRatio * 1000).roundToInt() / 10f)}%",
                         onValueChange = { value ->
+                            component.beginContinuousEdit()
                             component.updateTextBlock(blockId) {
                                 it.copy(outlineWidthRatio = value)
                             }
-                        }
+                        },
+                        onValueChangeFinished = component::endContinuousEdit
                     )
                 }
             }
@@ -497,9 +519,10 @@ fun TextStylePanel(
  * 导入/移除/导出走 LocalSettingsManager(与系统字体切换同一数据源 SettingsState.customFonts)。
  */
 @Composable
-private fun FontPickerRow(
+internal fun FontPickerRow(
     component: TextCardComponent,
     block: TextBlock,
+    onFontSelected: ((FontType?) -> Unit)? = null,
 ) {
     var showFontSheet by remember { mutableStateOf(false) }
     val settingsManager = LocalSettingsManager.current
@@ -565,19 +588,20 @@ private fun FontPickerRow(
         }
     )
 
+    val applyFont = onFontSelected ?: component::applyFont
     PickFontFamilySheet(
         visible = showFontSheet,
         onDismiss = { showFontSheet = false },
         onFontSelected = { font ->
             // UiFontFamily.System 的 type 为 null = 默认字体
-            component.applyFont(font.type)
+            applyFont(font.type)
             showFontSheet = false
         },
         onAddFont = { uri ->
             scope.launch {
                 val imported = settingsManager.importCustomFont(uri.toString())
                 if (imported != null) {
-                    component.applyFont(FontType.File(imported.filePath))
+                    applyFont(FontType.File(imported.filePath))
                     AppToastHost.showConfetti()
                 } else {
                     AppToastHost.showToast(

@@ -336,11 +336,12 @@ fun EditorScaffold(
         startAiOp(op)
     }
 
-    // 返回键由 BaseScreen 处理(沉浸态先退沉浸):框选/绘制模式下返回 = 取消当前模式,否则按原逻辑退出
+    // 框选/绘制模式下返回先取消当前模式;接力模式直接返回发起页,普通编辑保持原逻辑
     val onBack = {
         when {
             aiRectSelect -> aiRectSelect = false
             isDrawMode -> onDrawCancel()
+            component.isBackgroundHandoff -> component.onGoBack()
             else -> component.closeProject()
         }
     }
@@ -1860,11 +1861,19 @@ private fun EditorBottomBar(
             }
         }
         Spacer(Modifier.width(8.dp))
-        // 「保存」主操作走项目封装的实心确认按钮
-        ConfirmButton(
-            text = stringResource(R.string.studio_export_image),
-            onClick = onExportClick
-        )
+        if (component.isBackgroundHandoff) {
+            ConfirmButton(
+                text = stringResource(R.string.markup_use_as_card_background),
+                enabled = component.hasImage && !component.isSaving,
+                onClick = component::completeBackgroundHandoff
+            )
+        } else {
+            // 「保存」主操作走项目封装的实心确认按钮
+            ConfirmButton(
+                text = stringResource(R.string.studio_export_image),
+                onClick = onExportClick
+            )
+        }
     }
 }
 

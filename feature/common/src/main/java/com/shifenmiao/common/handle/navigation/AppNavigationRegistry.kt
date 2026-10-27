@@ -143,6 +143,24 @@ object AppNavigationRegistry {
 
     private val extraScreenTargets: List<AppNavigationTarget>
         get() = HomeTabKey.entries.map(::homeTabTarget) + listOf(
+            staticScreen(
+                screen = Screen.TextCard,
+                aliases = listOf("textcard", "text_card", "文字卡片", "图文卡片")
+            ),
+            staticScreen(
+                screen = Screen.MarkupLayers(),
+                aliases = listOf(
+                    "markuplayers", "markup_layers", "image_creation", "图片创作", "高级图片编辑"
+                )
+            ).copy(
+                screenBuilder = { params ->
+                    Screen.MarkupLayers(
+                        uri = params.mediaUri(),
+                        handoffId = (params["handoff_id"] ?: params["handoffId"])
+                            ?.takeIf { it.isNotBlank() }
+                    )
+                }
+            ),
             AppNavigationTarget(
                 targetType = AppNavigationTargetType.SCREEN,
                 routeKey = Screen.Bookkeeping().routeKey,

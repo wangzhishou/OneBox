@@ -838,7 +838,8 @@ sealed class Screen(
     @Serializable
     @SerialName("MarkupLayers")
     data class MarkupLayers(
-        val uri: Uri? = null
+        val uri: Uri? = null,
+        val handoffId: String? = null,
     ) : Screen(
         id = 34,
         title = R.string.markup_layers,
