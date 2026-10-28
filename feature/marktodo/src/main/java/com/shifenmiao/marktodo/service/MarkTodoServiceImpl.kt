@@ -17,7 +17,15 @@ import com.shifenmiao.model.todo.MarkTodoServiceInterface
 import com.shifenmiao.model.todo.TaskInput
 import com.shifenmiao.model.todo.TodoCategoryDto
 import com.shifenmiao.model.todo.TodoTaskDto
+import com.t8rin.imagetoolbox.core.domain.coroutines.AppScope
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.schedule.service.ScheduleService
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import java.util.UUID
 import javax.inject.Inject
@@ -39,7 +47,25 @@ import javax.inject.Singleton
 class MarkTodoServiceImpl @Inject constructor(
     private val repository: MarkTodoRepository,
     private val activityLogRecorder: ActivityLogRecorder,
+    private val scheduleService: ScheduleService,
+    private val appScope: AppScope,
 ) : MarkTodoServiceInterface {
+
+    private val deletionMutex = Mutex()
+    private val pendingDeletionJobs = mutableMapOf<String, Job>()
+    private val pendingDeletionTimestamps = mutableMapOf<String, Long>()
+
+    init {
+        appScope.launch {
+            repository.getSoftDeletedTasks().forEach { task ->
+                task.deletedAt?.let { deletedAt -> purgeDeletedTask(task.id, deletedAt) }
+            }
+        }
+    }
+
+    private companion object {
+        const val UNDO_WINDOW_MILLIS = 6500L
+    }
 
     // ── 分类操作 ────────────────────────────────────
 
@@ -63,7 +89,7 @@ class MarkTodoServiceImpl @Inject constructor(
             )
             repository.upsertCategory(entity)
 
-            activityLogRecorder.recordMarkTodo(
+            recordMarkTodoSafely(
                 entityId = categoryId,
                 entityType = "CATEGORY",
                 actionType = "CREATE",
@@ -95,7 +121,7 @@ class MarkTodoServiceImpl @Inject constructor(
             )
             repository.upsertCategory(entity)
 
-            activityLogRecorder.recordMarkTodo(
+            recordMarkTodoSafely(
                 entityId = categoryId,
                 entityType = "CATEGORY",
                 actionType = "UPDATE",
@@ -112,9 +138,19 @@ class MarkTodoServiceImpl @Inject constructor(
         source: String,
     ): Result<Unit> = withContext(Dispatchers.IO) {
         runCatching {
-            repository.deleteCategory(categoryId)
+            deletionMutex.withLock {
+                val tasks = repository.getAllTasksByCategoryIdIncludingDeleted(categoryId)
+                tasks.forEach { task ->
+                    scheduleService.deleteEventsByLinkedTaskId(task.id).getOrThrow()
+                }
+                tasks.forEach { task ->
+                    pendingDeletionJobs.remove(task.id)?.cancel()
+                    pendingDeletionTimestamps.remove(task.id)
+                }
+                repository.deleteCategory(categoryId)
+            }
 
-            activityLogRecorder.recordMarkTodo(
+            recordMarkTodoSafely(
                 entityId = categoryId,
                 entityType = "CATEGORY",
                 actionType = "DELETE",
@@ -134,7 +170,7 @@ class MarkTodoServiceImpl @Inject constructor(
                 repository.updateCategoryOrder(categoryId, index)
             }
 
-            activityLogRecorder.recordMarkTodo(
+            recordMarkTodoSafely(
                 entityId = "batch",
                 entityType = "CATEGORY",
                 actionType = "REORDER",
@@ -153,24 +189,27 @@ class MarkTodoServiceImpl @Inject constructor(
     ): Result<String> = withContext(Dispatchers.IO) {
         runCatching {
             val taskId = UUID.randomUUID().toString()
+            val now = System.currentTimeMillis()
             val entity = MarkTodoTaskEntity(
                 id = taskId,
                 categoryId = input.categoryId,
                 title = input.title.trim(),
                 note = input.note?.trim()?.takeIf { it.isNotBlank() },
-                startDate = System.currentTimeMillis(),
+                startDate = now,
                 dueDate = input.dueDateMillis,
+                hasDueTime = input.hasDueTime && input.dueDateMillis != null,
                 tags = input.tags,
                 isCompleted = false,
                 isStarred = false,
                 priority = input.priority.coerceIn(0, 2),
                 completedAt = null,
-                // repository.addTask 会按分类内 max(sortOrder)+1 覆盖此值
                 sortOrder = 0,
+                createdAt = now,
+                updatedAt = now,
             )
             repository.addTask(entity)
 
-            activityLogRecorder.recordMarkTodo(
+            recordMarkTodoSafely(
                 entityId = taskId,
                 entityType = "TASK",
                 actionType = "CREATE",
@@ -188,26 +227,27 @@ class MarkTodoServiceImpl @Inject constructor(
         source: String,
     ): Result<Unit> = withContext(Dispatchers.IO) {
         runCatching {
-            val existing = repository.getTaskById(taskId)
+            val existing = repository.getTaskById(taskId) ?: error("Task not found: $taskId")
             val entity = MarkTodoTaskEntity(
                 id = taskId,
                 categoryId = input.categoryId,
                 title = input.title.trim(),
                 note = input.note?.trim()?.takeIf { it.isNotBlank() },
-                startDate = existing?.startDate ?: System.currentTimeMillis(),
+                startDate = existing.startDate,
                 dueDate = input.dueDateMillis,
+                hasDueTime = input.hasDueTime && input.dueDateMillis != null,
                 tags = input.tags,
-                isCompleted = existing?.isCompleted ?: false,
-                isStarred = existing?.isStarred ?: false,
+                isCompleted = existing.isCompleted,
+                isStarred = existing.isStarred,
                 priority = input.priority.coerceIn(0, 2),
-                completedAt = existing?.completedAt,
-                sortOrder = existing?.sortOrder ?: 0,
-                createdAt = existing?.createdAt ?: System.currentTimeMillis(),
+                completedAt = existing.completedAt,
+                sortOrder = existing.sortOrder,
+                createdAt = existing.createdAt,
                 updatedAt = System.currentTimeMillis(),
             )
             repository.updateTask(entity)
 
-            activityLogRecorder.recordMarkTodo(
+            recordMarkTodoSafely(
                 entityId = taskId,
                 entityType = "TASK",
                 actionType = "UPDATE",
@@ -223,16 +263,66 @@ class MarkTodoServiceImpl @Inject constructor(
         taskTitle: String,
         source: String,
     ): Result<Unit> = withContext(Dispatchers.IO) {
-        runCatching {
-            repository.deleteTask(taskId)
-
-            activityLogRecorder.recordMarkTodo(
+        val result = runCatching {
+            deletionMutex.withLock {
+                checkNotNull(repository.getTaskById(taskId)) { "Task not found: $taskId" }
+                val deletedAt = System.currentTimeMillis()
+                check(repository.softDeleteTask(taskId, deletedAt)) { "Task was already deleted" }
+                schedulePurgeLocked(taskId, deletedAt)
+            }
+        }
+        result.onSuccess {
+            runCatching {
+                AppToastHost.showActionToast(
+                    message = AppContext.getString(R.string.snackbar_task_deleted),
+                    actionLabel = AppContext.getString(R.string.action_undo),
+                    onAction = {
+                        appScope.launch { undoDeleteTask(taskId, "$source:Undo") }
+                    },
+                )
+            }
+            recordMarkTodoSafely(
                 entityId = taskId,
                 entityType = "TASK",
                 actionType = "DELETE",
                 source = source,
                 title = AppContext.getString(R.string.marktodo_log_task_deleted, taskTitle),
                 description = AppContext.getString(R.string.marktodo_log_task_deleted, taskTitle)
+            )
+        }
+        result
+    }
+
+    override suspend fun undoDeleteTask(
+        taskId: String,
+        source: String,
+    ): Result<Unit> = withContext(Dispatchers.IO) {
+        var restoredTaskTitle = ""
+        runCatching {
+            deletionMutex.withLock {
+                val task = repository.getTaskByIdIncludingDeleted(taskId)
+                    ?: error("Task not found: $taskId")
+                restoredTaskTitle = task.title
+                val deletedAt = pendingDeletionTimestamps[taskId]
+                    ?: error("No pending deletion for task: $taskId")
+                pendingDeletionJobs[taskId]?.cancel()
+                try {
+                    check(repository.restoreTask(taskId, deletedAt)) { "Task deletion state changed" }
+                    pendingDeletionJobs.remove(taskId)
+                    pendingDeletionTimestamps.remove(taskId)
+                } catch (error: Throwable) {
+                    schedulePurgeLocked(taskId, deletedAt)
+                    throw error
+                }
+            }
+
+            recordMarkTodoSafely(
+                entityId = taskId,
+                entityType = "TASK",
+                actionType = "RESTORE",
+                source = source,
+                title = AppContext.getString(R.string.marktodo_log_task_restored, restoredTaskTitle),
+                description = AppContext.getString(R.string.marktodo_log_task_restored, restoredTaskTitle)
             )
         }
     }
@@ -246,7 +336,7 @@ class MarkTodoServiceImpl @Inject constructor(
         runCatching {
             repository.setTaskCompleted(taskId, isCompleted)
 
-            activityLogRecorder.recordMarkTodo(
+            recordMarkTodoSafely(
                 entityId = taskId,
                 entityType = "TASK",
                 actionType = "TOGGLE_COMPLETE",
@@ -274,7 +364,7 @@ class MarkTodoServiceImpl @Inject constructor(
         runCatching {
             repository.setTaskStarred(taskId, isStarred)
 
-            activityLogRecorder.recordMarkTodo(
+            recordMarkTodoSafely(
                 entityId = taskId,
                 entityType = "TASK",
                 actionType = "TOGGLE_STAR",
@@ -294,7 +384,7 @@ class MarkTodoServiceImpl @Inject constructor(
     }
 
     override suspend fun reorderTasks(
-        categoryId: String,
+        categoryId: String?,
         orderedIds: List<String>,
         source: String,
     ): Result<Unit> = withContext(Dispatchers.IO) {
@@ -303,8 +393,8 @@ class MarkTodoServiceImpl @Inject constructor(
                 repository.updateTaskOrder(taskId, index)
             }
 
-            activityLogRecorder.recordMarkTodo(
-                entityId = categoryId,
+            recordMarkTodoSafely(
+                entityId = categoryId ?: "inbox",
                 entityType = "TASK",
                 actionType = "REORDER",
                 source = source,
@@ -365,7 +455,7 @@ class MarkTodoServiceImpl @Inject constructor(
                 )
             )
 
-            activityLogRecorder.recordMarkTodo(
+            recordMarkTodoSafely(
                 entityId = tagId,
                 entityType = "TAG",
                 actionType = "CREATE",
@@ -386,7 +476,7 @@ class MarkTodoServiceImpl @Inject constructor(
         runCatching {
             repository.deleteTag(tagId)
 
-            activityLogRecorder.recordMarkTodo(
+            recordMarkTodoSafely(
                 entityId = tagId,
                 entityType = "TAG",
                 actionType = "DELETE",
@@ -434,40 +524,17 @@ class MarkTodoServiceImpl @Inject constructor(
                 description = rel.category.description,
                 colorArgb = rel.category.colorArgb,
                 isPinned = rel.category.isPinned,
-                tasks = rel.tasks.map { task ->
-                    TodoTaskDto(
-                        id = task.id,
-                        title = task.title,
-                        note = task.note,
-                        startDate = task.startDate,
-                        dueDate = task.dueDate,
-                        tags = task.tags,
-                        isCompleted = task.isCompleted,
-                        isStarred = task.isStarred,
-                        priority = task.priority,
-                        completedAt = task.completedAt
-                    )
-                }
+                tasks = rel.tasks.map { it.toDto() }
             )
         }
     }
 
     override suspend fun getTaskDto(taskId: String): TodoTaskDto? = withContext(Dispatchers.IO) {
-        repository.getTaskById(taskId)
-            ?.let { task ->
-                TodoTaskDto(
-                    id = task.id,
-                    title = task.title,
-                    note = task.note,
-                    startDate = task.startDate,
-                    dueDate = task.dueDate,
-                    tags = task.tags,
-                    isCompleted = task.isCompleted,
-                    isStarred = task.isStarred,
-                    priority = task.priority,
-                    completedAt = task.completedAt
-                )
-            }
+        repository.getTaskById(taskId)?.toDto()
+    }
+
+    override suspend fun getInboxTasksDto(): List<TodoTaskDto> = withContext(Dispatchers.IO) {
+        repository.getInboxTasks().map { it.toDto() }
     }
 
     override suspend fun findCategoryByTitle(title: String): CategoryLookup? = withContext(Dispatchers.IO) {
@@ -475,7 +542,66 @@ class MarkTodoServiceImpl @Inject constructor(
             .find { it.category.title.equals(title, ignoreCase = true) }
             ?.let { CategoryLookup(id = it.category.id, title = it.category.title) }
     }
+
+    private fun schedulePurgeLocked(taskId: String, deletedAt: Long) {
+        pendingDeletionJobs.remove(taskId)?.cancel()
+        pendingDeletionTimestamps[taskId] = deletedAt
+        pendingDeletionJobs[taskId] = appScope.launch {
+            delay(UNDO_WINDOW_MILLIS)
+            purgeDeletedTask(taskId, deletedAt)
+        }
+    }
+
+    private suspend fun purgeDeletedTask(taskId: String, expectedDeletedAt: Long): Result<Unit> =
+        runCatching {
+            deletionMutex.withLock {
+                val task = repository.getTaskByIdIncludingDeleted(taskId) ?: return@withLock
+                val deletedAt = task.deletedAt ?: return@withLock
+                if (deletedAt != expectedDeletedAt) return@withLock
+
+                scheduleService.deleteEventsByLinkedTaskId(taskId).getOrThrow()
+                check(repository.purgeTask(taskId, deletedAt)) { "Task purge state changed" }
+                pendingDeletionJobs.remove(taskId)
+                pendingDeletionTimestamps.remove(taskId)
+            }
+        }
+
+    private suspend fun recordMarkTodoSafely(
+        entityId: String,
+        entityType: String,
+        actionType: String,
+        source: String,
+        title: String,
+        description: String,
+    ) {
+        runCatching {
+            activityLogRecorder.recordMarkTodo(
+                entityId = entityId,
+                entityType = entityType,
+                actionType = actionType,
+                source = source,
+                title = title,
+                description = description,
+            )
+        }
+    }
 }
+
+private fun MarkTodoTaskEntity.toDto(): TodoTaskDto = TodoTaskDto(
+    id = id,
+    title = title,
+    note = note,
+    startDate = startDate,
+    dueDate = dueDate,
+    tags = tags,
+    isCompleted = isCompleted,
+    isStarred = isStarred,
+    priority = priority,
+    completedAt = completedAt,
+    categoryId = categoryId,
+    hasDueTime = hasDueTime,
+    createdAt = createdAt,
+)
 
 /** 预置标签 id → ARGB 颜色（与 raw/marktodo_presets.sql 中的 color_argb 一致） */
 private val PRESET_TAG_COLORS: Map<String, Int> = mapOf(

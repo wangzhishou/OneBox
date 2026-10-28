@@ -62,7 +62,7 @@ internal fun MarkTodoTagEntity.toModel(): TodoTag {
 
 // ── Task 转换 ──────────────────────────────────────────
 
-internal fun TodoTask.toEntity(categoryId: String): MarkTodoTaskEntity {
+internal fun TodoTask.toEntity(categoryId: String? = this.categoryId): MarkTodoTaskEntity {
     return MarkTodoTaskEntity(
         id = id,
         categoryId = categoryId,
@@ -70,12 +70,14 @@ internal fun TodoTask.toEntity(categoryId: String): MarkTodoTaskEntity {
         note = note,
         startDate = startDate,
         dueDate = dueDate,
+        hasDueTime = hasDueTime && dueDate != null,
         tags = tags,
         isCompleted = isCompleted,
         isStarred = isStarred,
         priority = priority,
         completedAt = completedAt,
         sortOrder = sortOrder,
+        createdAt = createdAt,
         updatedAt = System.currentTimeMillis(),
     )
 }
@@ -88,12 +90,15 @@ internal fun MarkTodoTaskEntity.toModel(): TodoTask {
         note = note,
         startDate = startDate,
         dueDate = dueDate,
+        hasDueTime = hasDueTime,
         tags = tags,
         isCompleted = isCompleted,
         isStarred = isStarred,
         priority = priority,
         completedAt = completedAt,
-        sortOrder = sortOrder
+        sortOrder = sortOrder,
+        createdAt = createdAt,
+        updatedAt = updatedAt,
     )
 }
 

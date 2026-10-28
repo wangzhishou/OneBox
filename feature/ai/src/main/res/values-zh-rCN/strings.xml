@@ -636,10 +636,11 @@
     <string name="agent_tool_manage_todo_title">待办管理</string>
     <string name="agent_tool_manage_todo_summary">列出、创建、完成、收藏、删除待办事项</string>
     <string name="agent_tool_manage_todo_param_action">操作类型: create_list(一次建好清单+全部条目，建清单首选), create_task(加一条任务), create_category(只建空分类), list(列出全部), toggle_complete(完成/重开), toggle_star(收藏/取消), delete_task(删除)</string>
-    <string name="agent_tool_manage_todo_param_category_name">分类名称，create_task/create_category/list(可选过滤)时使用</string>
+    <string name="agent_tool_manage_todo_param_category_name">分类名称，create_task/list 时使用；create_task 缺省时写入收集箱</string>
     <string name="agent_tool_manage_todo_param_title">标题，create_task/create_category/create_list(清单名)时必填</string>
     <string name="agent_tool_manage_todo_param_note">备注，create_task时可选</string>
     <string name="agent_tool_manage_todo_param_due_date_millis">截止日期时间戳(毫秒)，create_task时可选</string>
+    <string name="agent_tool_manage_todo_param_has_due_time">due_date_millis 是否包含精确时间；false 表示纯日期，create_task 时可选</string>
     <string name="agent_tool_manage_todo_param_tags">标签数组，create_task时可选</string>
     <string name="agent_tool_manage_todo_param_tasks">条目标题数组，create_list时必填，例如 ["学会用 AI 剪视频", "读完 12 本书"]</string>
     <string name="agent_tool_manage_todo_param_icon_key">图标名称，create_category时可选，默认 inbox</string>

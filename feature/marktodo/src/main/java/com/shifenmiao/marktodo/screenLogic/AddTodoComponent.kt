@@ -62,6 +62,8 @@ class AddTodoComponent @AssistedInject internal constructor(
                     categories.first { it.id == currentSelected.id }
                 } else if (initialCategoryId != null && categories.any { it.id == initialCategoryId }) {
                     categories.first { it.id == initialCategoryId }
+                } else if (editingTaskId != null) {
+                    null
                 } else {
                     categories.firstOrNull()
                 }
@@ -92,6 +94,7 @@ class AddTodoComponent @AssistedInject internal constructor(
                         selectedTagNames = task.tags.toSet(),
                         priority = task.priority,
                         dueDateMillis = task.dueDate,
+                        hasDueTime = task.hasDueTime,
                     )
                 } else {
                     AppToastHost.showToast(context.getString(R.string.error_todo_not_found))
@@ -144,14 +147,23 @@ class AddTodoComponent @AssistedInject internal constructor(
                 true
             }
             is AddTodoUiEvent.UpdateDueDate -> {
-                _uiState.value = _uiState.value.copy(
-                    dueDateMillis = event.dateMillis,
-                    showDatePicker = false
-                )
+                updateDueDate(event.dateMillis)
+                true
+            }
+            is AddTodoUiEvent.UpdateDueTime -> {
+                updateDueTime(event.hour, event.minute)
+                true
+            }
+            AddTodoUiEvent.ClearDueTime -> {
+                clearDueTime()
                 true
             }
             is AddTodoUiEvent.ToggleDatePicker -> {
                 _uiState.value = _uiState.value.copy(showDatePicker = event.show)
+                true
+            }
+            is AddTodoUiEvent.ToggleTimePicker -> {
+                _uiState.value = _uiState.value.copy(showTimePicker = event.show)
                 true
             }
             is AddTodoUiEvent.CreateLinkedSchedule -> {
@@ -184,75 +196,145 @@ class AddTodoComponent @AssistedInject internal constructor(
         }
     }
 
+    private fun updateDueDate(dateMillis: Long?) {
+        val current = _uiState.value
+        val updatedDate = dateMillis?.let { date ->
+            java.util.Calendar.getInstance().apply {
+                timeInMillis = date
+                if (current.hasDueTime && current.dueDateMillis != null) {
+                    val previousTime = java.util.Calendar.getInstance().apply {
+                        timeInMillis = current.dueDateMillis
+                    }
+                    set(java.util.Calendar.HOUR_OF_DAY, previousTime.get(java.util.Calendar.HOUR_OF_DAY))
+                    set(java.util.Calendar.MINUTE, previousTime.get(java.util.Calendar.MINUTE))
+                } else {
+                    set(java.util.Calendar.HOUR_OF_DAY, 0)
+                    set(java.util.Calendar.MINUTE, 0)
+                }
+                set(java.util.Calendar.SECOND, 0)
+                set(java.util.Calendar.MILLISECOND, 0)
+            }.timeInMillis
+        }
+        _uiState.value = current.copy(
+            dueDateMillis = updatedDate,
+            hasDueTime = updatedDate != null && current.hasDueTime,
+            showDatePicker = false,
+        )
+    }
+
+    private fun updateDueTime(hour: Int, minute: Int) {
+        val current = _uiState.value
+        val date = current.dueDateMillis ?: return
+        val updatedDate = java.util.Calendar.getInstance().apply {
+            timeInMillis = date
+            set(java.util.Calendar.HOUR_OF_DAY, hour)
+            set(java.util.Calendar.MINUTE, minute)
+            set(java.util.Calendar.SECOND, 0)
+            set(java.util.Calendar.MILLISECOND, 0)
+        }.timeInMillis
+        _uiState.value = current.copy(
+            dueDateMillis = updatedDate,
+            hasDueTime = true,
+            showTimePicker = false,
+        )
+    }
+
+    private fun clearDueTime() {
+        val current = _uiState.value
+        val updatedDate = current.dueDateMillis?.let { date ->
+            java.util.Calendar.getInstance().apply {
+                timeInMillis = date
+                set(java.util.Calendar.HOUR_OF_DAY, 0)
+                set(java.util.Calendar.MINUTE, 0)
+                set(java.util.Calendar.SECOND, 0)
+                set(java.util.Calendar.MILLISECOND, 0)
+            }.timeInMillis
+        }
+        _uiState.value = current.copy(
+            dueDateMillis = updatedDate,
+            hasDueTime = false,
+        )
+    }
+
     private fun submitTask(): Boolean {
         val currentState = _uiState.value
         val title = currentState.taskTitle.trim()
 
+        if (currentState.isSaving) return false
         // 编辑模式下原任务未加载成功时不允许保存（防止空表单 REPLACE 掉原数据）
         if (editingTaskId != null && !currentState.editingTaskLoaded) return false
 
-        if (title.isBlank() || currentState.selectedCategory == null) {
+        if (title.isBlank()) {
             _uiState.value = currentState.copy(showValidationErrors = true)
             return false
         }
 
         val input = TaskInput(
-            categoryId = currentState.selectedCategory.id,
+            categoryId = currentState.selectedCategory?.id,
             title = title,
             note = currentState.taskNote.takeIf { it.isNotBlank() },
             dueDateMillis = currentState.dueDateMillis,
             tags = currentState.selectedTagNames.toList(),
-            priority = currentState.priority
+            priority = currentState.priority,
+            hasDueTime = currentState.hasDueTime,
         )
+        _uiState.value = currentState.copy(isSaving = true)
 
         componentScope.launch {
-            if (editingTaskId != null) {
+            val result = if (editingTaskId != null) {
                 service.updateTask(
                     taskId = editingTaskId,
                     input = input,
                     source = "UI:EditTodoScreen"
-                ).onSuccess {
-                    // 日程联动：有截止日期则同步已有日程事件，没有则删除关联事件
-                    syncLinkedSchedule(editingTaskId, input)
-                }
+                )
             } else {
                 service.createTask(
                     input = input,
                     source = "UI:AddTodoScreen"
                 )
             }
-            onGoBack()
+            result.onSuccess {
+                if (editingTaskId != null && !syncLinkedSchedule(editingTaskId, input)) {
+                    AppToastHost.showToast(context.getString(R.string.schedule_sync_failed))
+                }
+                onGoBack()
+            }.onFailure {
+                _uiState.value = _uiState.value.copy(isSaving = false)
+                AppToastHost.showToast(context.getString(R.string.error_save_failed))
+            }
         }
 
         return true
     }
 
-    private suspend fun syncLinkedSchedule(taskId: String, input: TaskInput) {
-        runCatching {
+    private suspend fun syncLinkedSchedule(taskId: String, input: TaskInput): Boolean {
+        return runCatching {
             input.dueDateMillis?.let { dueDate ->
                 scheduleService.syncTaskDeadlineEventIfExists(
                     linkedTaskId = taskId,
                     title = input.title,
                     description = input.note,
                     dueAtMillis = dueDate,
-                    source = "UI:EditTodoScreen:SyncSchedule"
-                )
-            } ?: scheduleService.deleteEventsByLinkedTaskId(taskId)
-        }
+                    source = "UI:EditTodoScreen:SyncSchedule",
+                    isAllDay = !input.hasDueTime,
+                ).isSuccess
+            } ?: scheduleService.deleteEventsByLinkedTaskId(taskId).isSuccess
+        }.getOrDefault(false)
     }
 
     private fun confirmDelete() {
         val taskId = editingTaskId ?: return
         _uiState.value = _uiState.value.copy(showDeleteConfirm = false)
         componentScope.launch {
-            // 级联删除关联日程事件
-            runCatching { scheduleService.deleteEventsByLinkedTaskId(taskId) }
             service.deleteTask(
                 taskId = taskId,
                 taskTitle = _uiState.value.taskTitle,
                 source = "UI:EditTodoScreen"
-            )
-            onGoBack()
+            ).onSuccess {
+                onGoBack()
+            }.onFailure {
+                AppToastHost.showToast(context.getString(R.string.error_delete_failed))
+            }
         }
     }
 
@@ -312,7 +394,8 @@ class AddTodoComponent @AssistedInject internal constructor(
                 title = state.taskTitle.trim(),
                 description = state.taskNote.takeIf { it.isNotBlank() },
                 dueAtMillis = dueDate,
-                source = "UI:EditTodoScreen"
+                source = "UI:EditTodoScreen",
+                isAllDay = !state.hasDueTime,
             )
             _uiState.value = _uiState.value.copy(isCreatingSchedule = false)
 

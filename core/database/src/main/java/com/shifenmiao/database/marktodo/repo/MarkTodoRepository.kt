@@ -9,6 +9,7 @@ import com.shifenmiao.database.marktodo.entity.MarkTodoTagEntity
 import com.shifenmiao.database.marktodo.entity.MarkTodoTaskEntity
 import com.shifenmiao.database.marktodo.model.CategoryWithTasks
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -28,19 +29,19 @@ class MarkTodoRepository @Inject constructor(
     }
 
     suspend fun getDashboard(): List<CategoryWithTasks> {
-        return dashboardDao.getCategoriesWithTasks()
+        return dashboardDao.getCategoriesWithTasks().activeTasksOnly()
     }
 
-    /**
-     * 观察仪表板数据变化（响应式）
-     * 当数据库中的分类或任务发生任何变化时，会自动发出新的数据
-     */
     fun observeDashboard(): Flow<List<CategoryWithTasks>> {
-        return dashboardDao.observeCategoriesWithTasks()
+        return dashboardDao.observeCategoriesWithTasks().map { it.activeTasksOnly() }
     }
+
+    fun observeAll(): Flow<List<MarkTodoTaskEntity>> = taskDao.observeAll()
+
+    suspend fun getInboxTasks(): List<MarkTodoTaskEntity> = taskDao.getByCategoryId(null)
 
     suspend fun getCategoryWithTasks(categoryId: String): CategoryWithTasks? {
-        return dashboardDao.getCategoriesWithTasks().find { it.category.id == categoryId }
+        return getDashboard().find { it.category.id == categoryId }
     }
 
     suspend fun upsertCategory(category: MarkTodoCategoryEntity) {
@@ -65,6 +66,9 @@ class MarkTodoRepository @Inject constructor(
 
     suspend fun getTaskById(taskId: String): MarkTodoTaskEntity? = taskDao.getById(taskId)
 
+    suspend fun getTaskByIdIncludingDeleted(taskId: String): MarkTodoTaskEntity? =
+        taskDao.getByIdIncludingDeleted(taskId)
+
     suspend fun updateTask(task: MarkTodoTaskEntity) {
         taskDao.upsert(task)
     }
@@ -81,9 +85,26 @@ class MarkTodoRepository @Inject constructor(
         taskDao.setStarred(taskId, isStarred)
     }
 
-    suspend fun deleteTask(taskId: String) {
-        taskDao.deleteById(taskId)
+    suspend fun softDeleteTask(taskId: String, deletedAt: Long): Boolean {
+        return taskDao.softDeleteById(taskId, deletedAt) == 1
     }
+
+    suspend fun restoreTask(taskId: String, deletedAt: Long): Boolean {
+        return taskDao.restoreByIdAndDeletedAt(
+            taskId = taskId,
+            deletedAt = deletedAt,
+            restoredAt = System.currentTimeMillis(),
+        ) == 1
+    }
+
+    suspend fun purgeTask(taskId: String, deletedAt: Long): Boolean {
+        return taskDao.purgeByIdAndDeletedAt(taskId, deletedAt) == 1
+    }
+
+    suspend fun getSoftDeletedTasks(): List<MarkTodoTaskEntity> = taskDao.getSoftDeleted()
+
+    suspend fun getAllTasksByCategoryIdIncludingDeleted(categoryId: String): List<MarkTodoTaskEntity> =
+        taskDao.getAllByCategoryIdIncludingDeleted(categoryId)
 
     suspend fun getMaxCategorySortOrder(): Int? = categoryDao.getMaxSortOrder()
 
@@ -91,7 +112,7 @@ class MarkTodoRepository @Inject constructor(
         return categoryDao.countByNormalizedTitle(title) > 0
     }
 
-    suspend fun existsTaskTitleInCategory(categoryId: String, title: String): Boolean {
+    suspend fun existsTaskTitleInCategory(categoryId: String?, title: String): Boolean {
         return taskDao.countByCategoryIdAndNormalizedTitle(categoryId = categoryId, title = title) > 0
     }
 
@@ -113,4 +134,7 @@ class MarkTodoRepository @Inject constructor(
             tagDao.insertIgnore(presets)
         }
     }
+
+    private fun List<CategoryWithTasks>.activeTasksOnly(): List<CategoryWithTasks> =
+        map { relation -> relation.copy(tasks = relation.tasks.filter { it.deletedAt == null }) }
 }

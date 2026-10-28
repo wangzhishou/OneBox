@@ -44,7 +44,7 @@ fun TaskDateField(
         trailingIcon = {
             if (dueDateMillis != null) {
                 IconButton(
-                    modifier = Modifier.size(24.dp),
+                    modifier = Modifier.size(48.dp),
                     onClick = onClearDate
                 ) {
                     Icon(
@@ -55,7 +55,7 @@ fun TaskDateField(
                 }
             } else {
                 IconButton(
-                    modifier = Modifier.size(24.dp),
+                    modifier = Modifier.size(48.dp),
                     onClick = onSelectDate
                 ) {
                     Icon(

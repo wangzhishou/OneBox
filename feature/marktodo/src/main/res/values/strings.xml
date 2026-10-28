@@ -204,4 +204,24 @@
     <string name="marktodo_log_category_deleted_desc">Deleted category “%1$s” and all its tasks</string>
     <string name="marktodo_log_categories_reordered_desc">Reordered %1$d categories</string>
     <string name="marktodo_log_tasks_reordered_desc">Reordered %1$d tasks</string>
+    <string name="marktodo_log_task_restored">Restored task: %1$s</string>
+    <string name="action_undo">Undo</string>
+    <string name="error_save_failed">Failed to save. Please try again</string>
+    <string name="error_delete_failed">Failed to delete. Please try again</string>
+    <string name="schedule_sync_failed">To-do saved, but the linked schedule could not be updated</string>
+
+    <!-- Quick add and exact due time -->
+    <string name="quick_add_title">Quick Add</string>
+    <string name="quick_add_title_hint">Task title, e.g. Tomorrow 9:30 #Work !high</string>
+    <string name="quick_add_show_details">Add date, priority, tags, topic or notes</string>
+    <string name="quick_add_hide_details">Hide details</string>
+    <string name="quick_add_recognized">Recognized from title</string>
+    <string name="quick_add_remove_token">Remove recognized value</string>
+    <string name="quick_add_inbox">Inbox</string>
+    <string name="quick_add_save_continue">Save &amp; add another</string>
+    <string name="quick_add_saving">Saving…</string>
+    <string name="quick_add_submit">Add</string>
+    <string name="select_exact_time_hint">Add exact time (optional)</string>
+    <string name="action_select_time">Select time</string>
+    <string name="action_clear_time">Clear time</string>
 </resources>

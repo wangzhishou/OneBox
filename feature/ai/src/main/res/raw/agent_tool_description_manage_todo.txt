@@ -1,8 +1,8 @@
 管理待办事项（待办清单）。支持操作:
 1) create_list —— 【建一份清单时首选这个】一次建好一个分类(主题)并写入其中全部条目。需传 title(清单名)与 tasks(条目数组，每项是一个字符串标题)；可选 icon_key。用户说"帮我建一个 XX 清单/待办/计划/目标"时用本操作，不要先 create_category 再逐条 create_task。
-2) create_task —— 往已有分类里加一条任务。需传 category_name 与 title，可选 note/due_date_millis/tags；若该分类名不存在会自动创建同名分类。
+2) create_task —— 新建一条任务。需传 title；category_name 缺省时写入收集箱，提供时写入对应分类，分类不存在会自动创建。可选 note/due_date_millis/has_due_time/tags；has_due_time=false 表示纯日期，true 表示精确到时刻。
 3) create_category —— 只建一个空的分类(主题)。需传 title，可选 icon_key。
-4) list —— 列出所有分类和任务，可选 category_name 过滤。
+4) list —— 列出所有分类和任务，另在 inbox_tasks 返回收集箱任务；可选 category_name 过滤分类，过滤时 inbox_tasks 为空。任务包含 has_due_time 和真实 created_at。
 5) toggle_complete —— 完成或重开任务，需传 task_id。
 6) toggle_star —— 收藏或取消收藏，需传 task_id。
 7) delete_task —— 删除任务，需传 task_id。

@@ -23,12 +23,13 @@ data class CategoryInput(
  * @param priority 0=低，1=中（默认），2=高
  */
 data class TaskInput(
-    val categoryId: String,
+    val categoryId: String?,
     val title: String,
     val note: String?,
     val dueDateMillis: Long?,
     val tags: List<String>,
     val priority: Int = 1,
+    val hasDueTime: Boolean = false,
 )
 
 // ── 读取 DTO（供 AgentTool 使用，不依赖 Compose） ──────────
@@ -59,4 +60,7 @@ data class TodoTaskDto(
     val isStarred: Boolean,
     val priority: Int = 1,
     val completedAt: Long? = null,
+    val categoryId: String? = null,
+    val hasDueTime: Boolean = false,
+    val createdAt: Long = startDate,
 )

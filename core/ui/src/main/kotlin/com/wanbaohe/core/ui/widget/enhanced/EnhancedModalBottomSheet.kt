@@ -86,6 +86,7 @@ fun EnhancedModalBottomSheet(
     startContent: @Composable RowScope.() -> Unit = {},
     endContent: @Composable RowScope.() -> Unit = {},
     confirmButton: (@Composable RowScope.() -> Unit)? = null,
+    confirmBarModifier: Modifier = Modifier,
     endConfirmButtonPadding: Dp = 16.dp,
     nestedScrollEnabled: Boolean = false,
     cancelable: Boolean = true,
@@ -122,6 +123,7 @@ fun EnhancedModalBottomSheet(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .then(confirmBarModifier)
                         .then(if (useGlass) {
                             Modifier.background(
                                 color = EnhancedBottomSheetDefaults.barContainerColor,

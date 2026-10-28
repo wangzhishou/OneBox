@@ -13,12 +13,15 @@ data class TodoDetailUiState(
     val error: String? = null,
     val isCreatingSchedule: Boolean = false,
     val isEditing: Boolean = false,
+    val isSaving: Boolean = false,
     // 编辑表单状态
     val editTitle: String = "",
     val editNote: String = "",
     val editTagsText: String = "",
     val editDueDateMillis: Long? = null,
+    val editHasDueTime: Boolean = false,
     val showDatePicker: Boolean = false,
+    val showTimePicker: Boolean = false,
     val showValidationErrors: Boolean = false,
 ) {
     val isTitleValid: Boolean get() = editTitle.isNotBlank()
@@ -58,7 +61,10 @@ sealed interface TodoDetailUiEvent {
     data class UpdateEditNote(val note: String) : TodoDetailUiEvent
     data class UpdateEditTags(val tags: String) : TodoDetailUiEvent
     data class UpdateEditDueDate(val dateMillis: Long?) : TodoDetailUiEvent
+    data class UpdateEditDueTime(val hour: Int, val minute: Int) : TodoDetailUiEvent
+    data object ClearEditDueTime : TodoDetailUiEvent
     data class ToggleDatePicker(val show: Boolean) : TodoDetailUiEvent
+    data class ToggleTimePicker(val show: Boolean) : TodoDetailUiEvent
 
     // 导航
     data object NavigateBack : TodoDetailUiEvent

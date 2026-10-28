@@ -206,4 +206,24 @@
     <string name="marktodo_log_category_deleted_desc">删除了待办分类「%1$s」及其所有任务</string>
     <string name="marktodo_log_categories_reordered_desc">调整了 %1$d 个分类的排序</string>
     <string name="marktodo_log_tasks_reordered_desc">调整了 %1$d 个任务的排序</string>
+    <string name="marktodo_log_task_restored">恢复待办: %1$s</string>
+    <string name="action_undo">撤销</string>
+    <string name="error_save_failed">保存失败，请重试</string>
+    <string name="error_delete_failed">删除失败，请重试</string>
+    <string name="schedule_sync_failed">待办已保存，但关联日程更新失败</string>
+
+    <!-- 快速添加与精确时间 -->
+    <string name="quick_add_title">快速添加</string>
+    <string name="quick_add_title_hint">待办标题，如：明天 9:30 #工作 !高</string>
+    <string name="quick_add_show_details">添加日期、优先级、标签、主题或备注</string>
+    <string name="quick_add_hide_details">收起详情</string>
+    <string name="quick_add_recognized">从标题识别</string>
+    <string name="quick_add_remove_token">移除识别结果</string>
+    <string name="quick_add_inbox">收集箱</string>
+    <string name="quick_add_save_continue">保存并继续</string>
+    <string name="quick_add_saving">保存中…</string>
+    <string name="quick_add_submit">添加</string>
+    <string name="select_exact_time_hint">添加具体时间（可选）</string>
+    <string name="action_select_time">选择时间</string>
+    <string name="action_clear_time">清除时间</string>
 </resources>

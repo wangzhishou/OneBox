@@ -53,10 +53,10 @@ import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
  * 图标徽章 + 标题 + 进度（n/m · 百分比/已完成）+ 圆头玻璃进度条 + 任务行列表。
  *
  * 卡片按主题色系染色（背景浅染 + 徽章/进度条用强调色）。
- * 交互：点击进主题详情；长按弹出「编辑/删除主题」菜单。
+ * 交互：点击进主题详情；右上角或长按打开「编辑/删除主题」菜单。
  *
- * @param visibleTasks 当前页签/标签过滤后的可见任务（头部进度仍按全部任务统计）
- * @param showMenu 是否显示「…」菜单（已完成页显示）
+ * @param visibleTasks 当前查询过滤后的可见任务（头部进度仍按全部任务统计）
+ * @param showMenu 是否显示「…」菜单（拖拽排序时隐藏）
  */
 @Composable
 fun ThemeGroupCard(
@@ -72,7 +72,9 @@ fun ThemeGroupCard(
     modifier: Modifier = Modifier,
     isReorderMode: Boolean = false,
     onEnterReorder: () -> Unit = {},
-    onTagClick: ((String) -> Unit)? = null
+    onTagClick: ((String) -> Unit)? = null,
+    onToggleStar: ((TodoTask) -> Unit)? = null,
+    onDeleteTask: ((TodoTask) -> Unit)? = null,
 ) {
     val accentColor = categoryAccentColor(category)
     val accentContainerColor = categoryAccentContainerColor(category)
@@ -130,7 +132,9 @@ fun ThemeGroupCard(
                             tagsByName = tagsByName,
                             onToggleComplete = onToggleComplete,
                             onClick = onTaskClick,
-                            onTagClick = onTagClick
+                            onTagClick = onTagClick,
+                            onToggleStar = onToggleStar,
+                            onDelete = onDeleteTask
                         )
                     }
                 }
@@ -157,7 +161,9 @@ fun ThemeGroupGridCard(
     isReorderMode: Boolean = false,
     onEnterReorder: () -> Unit = {},
     maxPreviewTasks: Int = 2,
-    onTagClick: ((String) -> Unit)? = null
+    onTagClick: ((String) -> Unit)? = null,
+    onToggleStar: ((TodoTask) -> Unit)? = null,
+    onDeleteTask: ((TodoTask) -> Unit)? = null,
 ) {
     val accentColor = categoryAccentColor(category)
     val accentContainerColor = categoryAccentContainerColor(category)
@@ -201,7 +207,7 @@ fun ThemeGroupGridCard(
                 )
                 // 菜单锚点（长按弹出，锚定在卡片右上角）
                 ThemeMenuAnchor(
-                    showMenuButton = false,
+                    showMenuButton = !isReorderMode,
                     expanded = menuExpanded,
                     onExpandedChange = { menuExpanded = it },
                     onEdit = { onEditCategory(category) },
@@ -240,6 +246,8 @@ fun ThemeGroupGridCard(
                             onToggleComplete = onToggleComplete,
                             onClick = onTaskClick,
                             onTagClick = onTagClick,
+                            onToggleStar = onToggleStar,
+                            onDelete = onDeleteTask,
                             compact = true
                         )
                     }
@@ -342,7 +350,7 @@ private fun ThemeMenuAnchor(
 ) {
     Box {
         if (showMenuButton) {
-            IconButton(onClick = { onExpandedChange(true) }, modifier = Modifier.size(32.dp)) {
+            IconButton(onClick = { onExpandedChange(true) }, modifier = Modifier.size(48.dp)) {
                 Icon(
                     imageVector = Icons.Outlined.MoreVert,
                     contentDescription = stringResource(R.string.action_menu),

@@ -11,6 +11,8 @@ import com.wanbaohe.schedule.model.ScheduleSyncStatus
 import com.wanbaohe.schedule.model.toModel
 import com.wanbaohe.schedule.model.toStorageValue
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.time.Instant
+import java.time.ZoneId
 import java.util.TimeZone
 import java.util.UUID
 import javax.inject.Inject
@@ -109,11 +111,24 @@ class ScheduleService @Inject constructor(
         description: String?,
         dueAtMillis: Long,
         source: String,
+        isAllDay: Boolean = false,
     ): Result<String> = withContext(Dispatchers.IO) {
         runCatching {
             val now = System.currentTimeMillis()
             val safeTitle = title.trim().ifBlank { throw IllegalArgumentException("title cannot be blank") }
             val safeDescription = description?.trim()?.takeIf { it.isNotBlank() }
+            val zoneId = ZoneId.systemDefault()
+            val dueDate = Instant.ofEpochMilli(dueAtMillis).atZone(zoneId).toLocalDate()
+            val startAtMillis = if (isAllDay) {
+                dueDate.atStartOfDay(zoneId).toInstant().toEpochMilli()
+            } else {
+                dueAtMillis
+            }
+            val endAtMillis = if (isAllDay) {
+                dueDate.plusDays(1).atStartOfDay(zoneId).toInstant().toEpochMilli()
+            } else {
+                dueAtMillis
+            }
             val existingLocalTaskEvent = repository
                 .getEventsByLinkedTaskId(linkedTaskId)
                 .firstOrNull { it.providerType == ScheduleProviderType.LOCAL.toStorageValue() }
@@ -127,9 +142,10 @@ class ScheduleService @Inject constructor(
                     linkedTaskId = linkedTaskId,
                     title = safeTitle,
                     description = safeDescription,
-                    startUtcMillis = dueAtMillis,
-                    endUtcMillis = dueAtMillis,
-                    timeZoneId = TimeZone.getDefault().id,
+                    startUtcMillis = startAtMillis,
+                    endUtcMillis = endAtMillis,
+                    isAllDay = isAllDay,
+                    timeZoneId = zoneId.id,
                     syncStatus = ScheduleSyncStatus.LOCAL_ONLY.toStorageValue(),
                     providerPayload = source,
                     createdAt = existingLocalTaskEvent?.createdAt ?: now,
@@ -148,6 +164,7 @@ class ScheduleService @Inject constructor(
         description: String?,
         dueAtMillis: Long,
         source: String,
+        isAllDay: Boolean = false,
     ): Result<Boolean> = withContext(Dispatchers.IO) {
         runCatching {
             repository
@@ -161,6 +178,7 @@ class ScheduleService @Inject constructor(
                 description = description,
                 dueAtMillis = dueAtMillis,
                 source = source,
+                isAllDay = isAllDay,
             ).getOrThrow()
             true
         }

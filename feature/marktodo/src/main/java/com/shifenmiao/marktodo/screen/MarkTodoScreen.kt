@@ -3,12 +3,14 @@ package com.shifenmiao.marktodo.screen
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -26,29 +28,46 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.marktodo.R
+import com.shifenmiao.marktodo.components.QuickAddTodoSheet
+import com.shifenmiao.marktodo.components.TaskFilterSortSheet
+import com.shifenmiao.marktodo.components.TaskListContent
+import com.shifenmiao.marktodo.components.TaskListEmptyState
+import com.shifenmiao.marktodo.components.TaskListItem
 import com.shifenmiao.marktodo.components.ThemeGroupCard
 import com.shifenmiao.marktodo.components.ThemeGroupGridCard
+import com.shifenmiao.marktodo.components.taskSortDirectionLabel
+import com.shifenmiao.marktodo.components.taskSortModeLabel
+import com.shifenmiao.marktodo.domain.TodoTaskQuery
 import com.shifenmiao.marktodo.model.DialogState
+import com.shifenmiao.marktodo.model.HomeView
 import com.shifenmiao.marktodo.model.MarkTodoUiEvent
+import com.shifenmiao.marktodo.model.TaskCompletionFilter
+import com.shifenmiao.marktodo.model.TaskDateScope
+import com.shifenmiao.marktodo.model.TaskFilter
+import com.shifenmiao.marktodo.model.TaskSortConfig
+import com.shifenmiao.marktodo.model.TaskWithCategory
+import com.shifenmiao.marktodo.model.TodayGroup
+import com.shifenmiao.marktodo.model.TodayTaskGroup
 import com.shifenmiao.marktodo.model.TodoCategory
-import com.shifenmiao.marktodo.model.TodoStatusTab
 import com.shifenmiao.marktodo.model.TodoTag
 import com.shifenmiao.marktodo.model.TodoTask
 import com.shifenmiao.marktodo.screenLogic.MarkTodoComponent
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Check
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineAccessTime
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineCheckCircleOutline
+import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFeatures
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineFilterAlt
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineInbox
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineQuickTiles
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineViewList
 import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
+import com.wanbaohe.core.ui.widget.glass.GlassSearchTextField
 import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
 import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.core.ui.widget.system.OneBoxDangerButton
@@ -57,29 +76,65 @@ import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyGridState
 
-/**
- * 待办事项首页 —— 原型设计稿重做：
- * - 顶部：标签筛选 chips（默认隐藏，点任务上的标签呼出；点「全部」或已选中标签收起）
- * - 内容：按主题分组的卡片（列表 / 网格两种视图，顶栏单图标切换，偏好持久化）
- * - 底部：状态页签（全部 / 进行中 / 已完成，复用 BottomNavigationBar，与万年历一致）
- * - 主题编辑/删除走长按卡片菜单，无独立编辑模式
- */
 @Composable
 fun MarkTodoScreen(
     markTodoComponent: MarkTodoComponent,
-    onGoBack: () -> Unit
+    onGoBack: () -> Unit,
 ) {
     val uiState by markTodoComponent.uiState.collectAsState()
     val dialogState by markTodoComponent.dialogState.collectAsState()
     val categories by markTodoComponent.categoriesState.collectAsState()
+    val tasks by markTodoComponent.tasksState.collectAsState()
     val tags by markTodoComponent.tagsState.collectAsState()
 
-    // 标签名 → 标签 的查找表（任务行标签配色）
     val tagsByName = remember(tags) { tags.associateBy { it.name } }
-
-    // 页签 + 标签过滤后的可见分类
-    val visibleCategories = remember(categories, uiState.statusTab, uiState.selectedTagName) {
-        MarkTodoComponent.filterCategories(categories, uiState.statusTab, uiState.selectedTagName)
+    val fullCategories = remember(categories, tasks) {
+        categories.map { category ->
+            category.copy(
+                tasks = tasks.filter { it.categoryId == category.id }.sortedBy { it.sortOrder }
+            )
+        }
+    }
+    val flattened = remember(tasks, fullCategories) {
+        TodoTaskQuery.flatten(tasks = tasks, categories = fullCategories)
+    }
+    val scopedTasks = remember(flattened, uiState.homeView, uiState.searchQuery) {
+        if (uiState.searchQuery.isBlank() && uiState.homeView == HomeView.INBOX) {
+            flattened.filter { it.task.categoryId == null }
+        } else {
+            flattened
+        }
+    }
+    val visibleTasks = remember(
+        scopedTasks,
+        uiState.searchQuery,
+        uiState.filter,
+        uiState.sort,
+        uiState.pendingCompletionIds,
+    ) {
+        TodoTaskQuery.filterAndSort(
+            tasks = scopedTasks,
+            searchQuery = uiState.searchQuery,
+            filter = uiState.filter,
+            sort = uiState.sort,
+            retainedCompletedTaskIds = uiState.pendingCompletionIds,
+        )
+    }
+    val todayGroups = remember(visibleTasks) { TodoTaskQuery.groupForToday(visibleTasks) }
+    val tasksByCategory = remember(visibleTasks) {
+        visibleTasks.filter { it.task.categoryId != null }.groupBy { it.task.categoryId!! }
+    }
+    val hasNarrowingQuery = uiState.searchQuery.isNotBlank() ||
+        uiState.filter.completion != TaskCompletionFilter.ALL ||
+        uiState.filter.hasCategoryFilter ||
+        uiState.filter.tagNames.isNotEmpty() ||
+        uiState.filter.priorities.isNotEmpty() ||
+        uiState.filter.hasDateFilter ||
+        uiState.filter.starredOnly
+    val visibleCategories = remember(fullCategories, tasksByCategory, hasNarrowingQuery) {
+        fullCategories.filter { category ->
+            !hasNarrowingQuery || tasksByCategory[category.id]?.isNotEmpty() == true
+        }
     }
 
     BaseScreen(
@@ -88,265 +143,487 @@ fun MarkTodoScreen(
             MarkTodoScreenActions(
                 isGridView = uiState.isGridView,
                 isReorderMode = uiState.isReorderMode,
-                onViewModeChange = { isGrid ->
-                    markTodoComponent.handleEvent(MarkTodoUiEvent.SetGridView(isGrid))
+                showViewMode = uiState.homeView == HomeView.THEMES &&
+                    uiState.searchQuery.isBlank() &&
+                    !uiState.filter.hasSmartDateFilter,
+                onViewModeChange = {
+                    markTodoComponent.handleEvent(MarkTodoUiEvent.SetGridView(it))
                 },
                 onExitReorder = {
                     markTodoComponent.handleEvent(MarkTodoUiEvent.SetReorderMode(false))
                 },
                 onAddTask = {
                     markTodoComponent.handleEvent(MarkTodoUiEvent.AddTaskClicked())
-                }
+                },
             )
         },
         onGoBack = onGoBack,
-        isShowDefaultActions = false
+        isShowDefaultActions = false,
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            // 标签筛选 chips（默认隐藏，点击任务上的标签后呼出；排序模式下隐藏）
-            AnimatedVisibility(visible = uiState.tagFilterVisible && !uiState.isReorderMode) {
-                TagFilterRow(
-                    tags = tags,
-                    selectedTagName = uiState.selectedTagName,
-                    onSelectTag = {
-                        markTodoComponent.handleEvent(MarkTodoUiEvent.SelectTag(it))
-                    }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = OneBoxDesignSystem.screenPadding,
+                        end = OneBoxDesignSystem.microSpacing,
+                        top = OneBoxDesignSystem.compactSpacing,
+                    ),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                GlassSearchTextField(
+                    value = uiState.searchQuery,
+                    onValueChange = {
+                        markTodoComponent.handleEvent(MarkTodoUiEvent.SearchQueryChanged(it))
+                    },
+                    modifier = Modifier.weight(1f),
+                    placeholder = stringResource(R.string.p1_search_tasks),
                 )
-            }
-
-            // 主题分组内容（列表 / 网格）
-            CategoriesContent(
-                categories = visibleCategories,
-                allCategories = categories,
-                isFiltered = uiState.statusTab != TodoStatusTab.ALL || uiState.selectedTagName != null,
-                tagsByName = tagsByName,
-                statusTab = uiState.statusTab,
-                isGridView = uiState.isGridView,
-                isReorderMode = uiState.isReorderMode,
-                onCategoryClick = {
-                    markTodoComponent.handleEvent(MarkTodoUiEvent.CategoryClicked(it))
-                },
-                onTaskClick = {
-                    markTodoComponent.handleEvent(MarkTodoUiEvent.TaskClicked(it))
-                },
-                onTaskToggleComplete = {
-                    markTodoComponent.handleEvent(MarkTodoUiEvent.ToggleTaskComplete(it))
-                },
-                onEditCategory = {
-                    markTodoComponent.handleEvent(MarkTodoUiEvent.EditCategoryClicked(it))
-                },
-                onDeleteCategory = {
-                    markTodoComponent.handleEvent(MarkTodoUiEvent.DeleteCategory(it))
-                },
-                onEnterReorder = {
-                    markTodoComponent.handleEvent(MarkTodoUiEvent.SetReorderMode(true))
-                },
-                onTagClick = { tagName ->
-                    markTodoComponent.handleEvent(MarkTodoUiEvent.TagOnTaskClicked(tagName))
-                },
-                onReorder = { from, to ->
-                    markTodoComponent.handleEvent(MarkTodoUiEvent.ReorderCategories(from, to))
-                },
-                modifier = Modifier.weight(1f)
-            )
-
-            // 底部状态页签（与万年历共用 BottomNavigationBar；排序模式下隐藏防误触）
-            AnimatedVisibility(visible = !uiState.isReorderMode) {
-                StatusBottomBar(
-                    selectedTab = uiState.statusTab,
-                    onSelectTab = {
-                        markTodoComponent.handleEvent(MarkTodoUiEvent.SelectStatusTab(it))
-                    }
-                )
-            }
-        }
-    }
-
-    // 删除主题确认对话框
-    when (val state = dialogState) {
-        is DialogState.DeleteCategoryConfirm -> {
-            AlertDialog(
-                containerColor = AppTheme.colors.getContainerSurfaceColor(),
-                onDismissRequest = {
-                    markTodoComponent.handleEvent(MarkTodoUiEvent.DismissDialog)
-                },
-                title = { Text(stringResource(R.string.dialog_delete_category_title)) },
-                text = {
-                    Text(stringResource(R.string.dialog_delete_category_message, state.category.title))
-                },
-                confirmButton = {
-                    OneBoxDangerButton(
-                        text = stringResource(R.string.action_delete),
-                        onClick = {
-                            markTodoComponent.handleEvent(
-                                MarkTodoUiEvent.ConfirmDeleteCategory(state.category)
-                            )
-                        }
-                    )
-                },
-                dismissButton = {
-                    OneSecondaryButton(
-                        text = stringResource(R.string.action_cancel),
-                        onClick = {
-                            markTodoComponent.handleEvent(MarkTodoUiEvent.DismissDialog)
-                        }
+                IconButton(
+                    onClick = {
+                        markTodoComponent.handleEvent(MarkTodoUiEvent.ShowFilterSortSheet)
+                    },
+                    modifier = Modifier.size(48.dp),
+                ) {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFilterAlt,
+                        contentDescription = stringResource(R.string.p1_filter_sort),
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
                 }
+            }
+
+            ActiveQueryChips(
+                filter = uiState.filter,
+                sort = uiState.sort,
+                onFilterChange = {
+                    markTodoComponent.handleEvent(MarkTodoUiEvent.SetFilter(it))
+                },
+                onSortChange = {
+                    markTodoComponent.handleEvent(MarkTodoUiEvent.SetSort(it))
+                },
+                onReset = {
+                    markTodoComponent.handleEvent(MarkTodoUiEvent.ResetQuery)
+                },
             )
+
+            val contentModifier = Modifier.weight(1f)
+            when {
+                uiState.searchQuery.isNotBlank() -> {
+                    if (visibleTasks.isEmpty()) {
+                        TaskListEmptyState(
+                            message = stringResource(R.string.p1_empty_search),
+                            modifier = contentModifier,
+                        )
+                    } else {
+                        SearchTaskList(
+                            tasks = visibleTasks,
+                            tagsByName = tagsByName,
+                            component = markTodoComponent,
+                            modifier = contentModifier,
+                        )
+                    }
+                }
+                uiState.filter.hasSmartDateFilter -> TodayTaskList(
+                    groups = todayGroups,
+                    tagsByName = tagsByName,
+                    component = markTodoComponent,
+                    modifier = contentModifier,
+                )
+                uiState.homeView == HomeView.INBOX -> {
+                    if (visibleTasks.isEmpty()) {
+                        TaskListEmptyState(
+                            message = stringResource(R.string.p1_empty_inbox),
+                            modifier = contentModifier,
+                        )
+                    } else {
+                        SearchTaskList(
+                            tasks = visibleTasks,
+                            tagsByName = tagsByName,
+                            component = markTodoComponent,
+                            modifier = contentModifier,
+                        )
+                    }
+                }
+                else -> CategoriesContent(
+                    categories = visibleCategories,
+                    hasAnyCategory = fullCategories.isNotEmpty(),
+                    tasksByCategory = tasksByCategory,
+                    tagsByName = tagsByName,
+                    isGridView = uiState.isGridView,
+                    isReorderMode = uiState.isReorderMode,
+                    component = markTodoComponent,
+                    modifier = contentModifier,
+                )
+            }
+
+            AnimatedVisibility(visible = !uiState.isReorderMode) {
+                HomeBottomBar(
+                    selectedView = uiState.homeView,
+                    onSelectView = {
+                        markTodoComponent.handleEvent(MarkTodoUiEvent.SelectHomeView(it))
+                    },
+                )
+            }
         }
-        else -> { /* No dialog to show */ }
     }
 
-    BackHandler(enabled = dialogState !is DialogState.Dismissed) {
-        markTodoComponent.handleEvent(MarkTodoUiEvent.DismissDialog)
+    QuickAddTodoSheet(markTodoComponent.quickAddTodoComponent)
+
+    if (uiState.isFilterSortSheetVisible) {
+        TaskFilterSortSheet(
+            visible = true,
+            categories = fullCategories,
+            tags = tags,
+            initialFilter = uiState.filter,
+            initialSort = uiState.sort,
+            onDismiss = {
+                markTodoComponent.handleEvent(MarkTodoUiEvent.DismissFilterSortSheet)
+            },
+            onApply = { filter, sort ->
+                markTodoComponent.handleEvent(MarkTodoUiEvent.ApplyFilterSort(filter, sort))
+            },
+        )
     }
 
-    BackHandler(enabled = dialogState is DialogState.Dismissed && uiState.isReorderMode) {
-        markTodoComponent.handleEvent(MarkTodoUiEvent.SetReorderMode(false))
+    when (val state = dialogState) {
+        is DialogState.DeleteCategoryConfirm -> AlertDialog(
+            containerColor = AppTheme.colors.getContainerSurfaceColor(),
+            onDismissRequest = {
+                markTodoComponent.handleEvent(MarkTodoUiEvent.DismissDialog)
+            },
+            title = { Text(stringResource(R.string.dialog_delete_category_title)) },
+            text = {
+                Text(
+                    stringResource(
+                        R.string.p1_delete_category_message_count,
+                        state.category.title,
+                        state.category.totalCount,
+                    )
+                )
+            },
+            confirmButton = {
+                OneBoxDangerButton(
+                    text = stringResource(R.string.action_delete),
+                    enabled = !uiState.isDeletingCategory,
+                    onClick = {
+                        markTodoComponent.handleEvent(
+                            MarkTodoUiEvent.ConfirmDeleteCategory(state.category)
+                        )
+                    },
+                )
+            },
+            dismissButton = {
+                OneSecondaryButton(
+                    text = stringResource(R.string.action_cancel),
+                    enabled = !uiState.isDeletingCategory,
+                    onClick = {
+                        markTodoComponent.handleEvent(MarkTodoUiEvent.DismissDialog)
+                    },
+                )
+            },
+        )
+        else -> Unit
     }
 
-    BackHandler(enabled = dialogState is DialogState.Dismissed && !uiState.isReorderMode) {
-        onGoBack()
+    BackHandler(enabled = !uiState.isFilterSortSheetVisible) {
+        when {
+            dialogState !is DialogState.Dismissed -> {
+                markTodoComponent.handleEvent(MarkTodoUiEvent.DismissDialog)
+            }
+            uiState.isReorderMode -> {
+                markTodoComponent.handleEvent(MarkTodoUiEvent.SetReorderMode(false))
+            }
+            else -> onGoBack()
+        }
     }
 }
 
-/**
- * 顶栏操作：视图切换（单图标，用双列/单列图标）+ 新增待办；排序模式下显示「完成」退出排序。
- * 编辑/删除/排序主题走长按卡片菜单。
- */
 @Composable
 private fun MarkTodoScreenActions(
     isGridView: Boolean,
     isReorderMode: Boolean,
+    showViewMode: Boolean,
     onViewModeChange: (Boolean) -> Unit,
     onExitReorder: () -> Unit,
     onAddTask: () -> Unit,
-    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.microSpacing),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         if (isReorderMode) {
-            // 退出排序模式
             IconButton(onClick = onExitReorder) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check,
                     contentDescription = stringResource(R.string.cd_edit_mode_done),
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
             }
             return@Row
         }
-        // 视图切换：当前双列时显示单列图标（点击切单列），反之亦然
-        IconButton(onClick = { onViewModeChange(!isGridView) }) {
-            Icon(
-                imageVector = if (isGridView) {
-                    com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineViewList
-                } else {
-                    com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineQuickTiles
-                },
-                contentDescription = if (isGridView) {
-                    stringResource(R.string.cd_switch_to_list_view)
-                } else {
-                    stringResource(R.string.cd_switch_to_grid_view)
-                },
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+        if (showViewMode) {
+            IconButton(onClick = { onViewModeChange(!isGridView) }) {
+                Icon(
+                    imageVector = if (isGridView) {
+                        com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineViewList
+                    } else {
+                        com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineQuickTiles
+                    },
+                    contentDescription = stringResource(
+                        if (isGridView) R.string.cd_switch_to_list_view else R.string.cd_switch_to_grid_view
+                    ),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
         }
-        // 新增待办
         IconButton(onClick = onAddTask) {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
                 contentDescription = stringResource(R.string.action_add_task),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }
 }
 
-/**
- * 标签筛选行：「全部」+ 标签表驱动的 chips。
- * 点「全部」或已选中的标签 = 清除筛选并收起筛选行。
- */
 @Composable
-private fun TagFilterRow(
-    tags: List<TodoTag>,
-    selectedTagName: String?,
-    onSelectTag: (String?) -> Unit,
-    modifier: Modifier = Modifier
+private fun SearchTaskList(
+    tasks: List<TaskWithCategory>,
+    tagsByName: Map<String, TodoTag>,
+    component: MarkTodoComponent,
+    modifier: Modifier = Modifier,
+) {
+    TaskListContent(
+        tasks = tasks,
+        tagsByName = tagsByName,
+        onTaskClick = { component.handleEvent(MarkTodoUiEvent.TaskClicked(it)) },
+        onToggleComplete = { component.handleEvent(MarkTodoUiEvent.ToggleTaskComplete(it)) },
+        onToggleStar = { component.handleEvent(MarkTodoUiEvent.ToggleTaskStar(it)) },
+        onDelete = { component.handleEvent(MarkTodoUiEvent.DeleteTask(it)) },
+        onTagClick = { component.handleEvent(MarkTodoUiEvent.TagOnTaskClicked(it)) },
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun TodayTaskList(
+    groups: List<TodayTaskGroup>,
+    tagsByName: Map<String, TodoTag>,
+    component: MarkTodoComponent,
+    modifier: Modifier = Modifier,
+) {
+    if (groups.isEmpty()) {
+        TaskListEmptyState(
+            message = stringResource(R.string.p1_empty_today),
+            modifier = modifier,
+        )
+        return
+    }
+    LazyColumn(
+        modifier = modifier.fillMaxSize(),
+        contentPadding = PaddingValues(
+            horizontal = OneBoxDesignSystem.screenPadding,
+            vertical = OneBoxDesignSystem.compactSpacing,
+        ),
+        verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
+    ) {
+        groups.forEach { group ->
+            item(key = "today_group_${group.group}", contentType = "today_group_header") {
+                Text(
+                    text = stringResource(
+                        when (group.group) {
+                            TodayGroup.OVERDUE -> R.string.p1_group_overdue
+                            TodayGroup.TODAY -> R.string.p1_group_today
+                            TodayGroup.UPCOMING -> R.string.p1_group_upcoming
+                            TodayGroup.NO_DATE -> R.string.p1_group_no_date
+                        }
+                    ),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    modifier = Modifier.padding(
+                        top = OneBoxDesignSystem.compactSpacing,
+                        bottom = OneBoxDesignSystem.microSpacing,
+                    ),
+                )
+            }
+            items(
+                items = group.tasks,
+                key = { it.task.id },
+                contentType = { "today_task" },
+            ) { item ->
+                TaskListItem(
+                    item = item,
+                    tagsByName = tagsByName,
+                    onClick = { component.handleEvent(MarkTodoUiEvent.TaskClicked(it)) },
+                    onToggleComplete = {
+                        component.handleEvent(MarkTodoUiEvent.ToggleTaskComplete(it))
+                    },
+                    onToggleStar = { component.handleEvent(MarkTodoUiEvent.ToggleTaskStar(it)) },
+                    onDelete = { component.handleEvent(MarkTodoUiEvent.DeleteTask(it)) },
+                    onTagClick = { component.handleEvent(MarkTodoUiEvent.TagOnTaskClicked(it)) },
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ActiveQueryChips(
+    filter: TaskFilter,
+    sort: TaskSortConfig,
+    onFilterChange: (TaskFilter) -> Unit,
+    onSortChange: (TaskSortConfig) -> Unit,
+    onReset: () -> Unit,
 ) {
     LazyRow(
-        modifier = modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(horizontal = OneBoxDesignSystem.screenPadding),
+        modifier = Modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(
+            horizontal = OneBoxDesignSystem.screenPadding,
+            vertical = OneBoxDesignSystem.microSpacing,
+        ),
         horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        item(key = "tag_all") {
-            GlassFilterChip(
-                selected = selectedTagName == null,
-                onClick = { onSelectTag(null) },
-                label = { Text(stringResource(R.string.filter_all)) }
-            )
-        }
-        items(items = tags, key = { it.id }, contentType = { "tag_chip" }) { tag ->
-            val tagColor = tag.colorArgb?.let { Color(it) }
-            val selected = selectedTagName == tag.name
-            GlassFilterChip(
-                selected = selected,
-                onClick = { onSelectTag(if (selected) null else tag.name) },
-                label = {
-                    Text(
-                        text = tag.name,
-                        color = if (selected) {
-                            tagColor ?: MaterialTheme.colorScheme.onPrimaryContainer
+        if (filter.completion != TaskCompletionFilter.ALL) {
+            item(key = "completion") {
+                ActiveConditionChip(
+                    label = stringResource(
+                        if (filter.completion == TaskCompletionFilter.ACTIVE) {
+                            R.string.filter_active
                         } else {
-                            Color.Unspecified
+                            R.string.filter_completed
                         }
-                    )
-                }
-            )
+                    ),
+                    onClear = { onFilterChange(filter.copy(completion = TaskCompletionFilter.ALL)) },
+                )
+            }
+        }
+        if (filter.hasCategoryFilter) {
+            item(key = "categories") {
+                val count = filter.categoryIds.size + if (filter.includeInbox) 1 else 0
+                ActiveConditionChip(
+                    label = if (count == 1 && filter.includeInbox) {
+                        stringResource(R.string.p1_inbox)
+                    } else {
+                        stringResource(R.string.p1_categories_selected, count)
+                    },
+                    onClear = {
+                        onFilterChange(filter.copy(categoryIds = emptySet(), includeInbox = false))
+                    },
+                )
+            }
+        }
+        if (filter.tagNames.isNotEmpty()) {
+            item(key = "tags") {
+                ActiveConditionChip(
+                    label = stringResource(R.string.p1_tags_selected, filter.tagNames.size),
+                    onClear = { onFilterChange(filter.copy(tagNames = emptySet())) },
+                )
+            }
+        }
+        if (filter.priorities.isNotEmpty()) {
+            item(key = "priorities") {
+                ActiveConditionChip(
+                    label = stringResource(R.string.p1_priorities_selected, filter.priorities.size),
+                    onClear = { onFilterChange(filter.copy(priorities = emptySet())) },
+                )
+            }
+        }
+        if (filter.hasDateFilter) {
+            item(key = "date_scope") {
+                ActiveConditionChip(
+                    label = stringResource(
+                        when (filter.dateScope) {
+                            TaskDateScope.TODAY -> R.string.p1_today
+                            TaskDateScope.OVERDUE -> R.string.p1_group_overdue
+                            TaskDateScope.UPCOMING -> R.string.p1_group_upcoming
+                            TaskDateScope.NO_DATE -> R.string.p1_group_no_date
+                            TaskDateScope.ALL, TaskDateScope.RANGE -> R.string.p1_filter_due_range
+                        }
+                    ),
+                    onClear = {
+                        onFilterChange(
+                            filter.copy(
+                                dateScope = TaskDateScope.ALL,
+                                dueStartMillis = null,
+                                dueEndMillis = null,
+                            )
+                        )
+                    },
+                )
+            }
+        }
+        if (filter.starredOnly) {
+            item(key = "focus") {
+                ActiveConditionChip(
+                    label = stringResource(R.string.p1_focus),
+                    onClear = { onFilterChange(filter.copy(starredOnly = false)) },
+                )
+            }
+        }
+        if (sort != TaskSortConfig()) {
+            item(key = "sort") {
+                ActiveConditionChip(
+                    label = stringResource(
+                        R.string.p1_sort_chip,
+                        taskSortModeLabel(sort.mode),
+                        taskSortDirectionLabel(sort.ascending),
+                    ),
+                    onClear = { onSortChange(TaskSortConfig()) },
+                )
+            }
+        }
+        if (filter != TaskFilter() || sort != TaskSortConfig()) {
+            item(key = "reset") {
+                GlassFilterChip(
+                    selected = false,
+                    onClick = onReset,
+                    label = { Text(stringResource(R.string.p1_reset)) },
+                )
+            }
         }
     }
 }
 
-/**
- * 主题分组内容区：列表 / 网格两种视图；排序模式下卡片可拖拽（置顶项不参与拖拽）
- */
+@Composable
+private fun ActiveConditionChip(
+    label: String,
+    onClear: () -> Unit,
+) {
+    GlassFilterChip(
+        selected = true,
+        onClick = onClear,
+        label = { Text(label) },
+        trailingIcon = {
+            Icon(
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
+                contentDescription = stringResource(R.string.p1_clear_condition),
+                modifier = Modifier.size(14.dp),
+            )
+        },
+    )
+}
+
 @Composable
 private fun CategoriesContent(
     categories: List<TodoCategory>,
-    allCategories: List<TodoCategory>,
-    isFiltered: Boolean,
+    hasAnyCategory: Boolean,
+    tasksByCategory: Map<String, List<TaskWithCategory>>,
     tagsByName: Map<String, TodoTag>,
-    statusTab: TodoStatusTab,
     isGridView: Boolean,
     isReorderMode: Boolean,
-    onCategoryClick: (TodoCategory) -> Unit,
-    onTaskClick: (TodoTask) -> Unit,
-    onTaskToggleComplete: (TodoTask) -> Unit,
-    onEditCategory: (TodoCategory) -> Unit,
-    onDeleteCategory: (TodoCategory) -> Unit,
-    onEnterReorder: () -> Unit,
-    onTagClick: (String) -> Unit,
-    onReorder: (Int, Int) -> Unit,
-    modifier: Modifier = Modifier
+    component: MarkTodoComponent,
+    modifier: Modifier = Modifier,
 ) {
     if (categories.isEmpty()) {
-        // 区分「还没有待办」与「当前筛选无结果」
-        val emptyText = if (allCategories.isNotEmpty() || isFiltered) {
-            stringResource(R.string.empty_filtered_tasks)
-        } else {
-            stringResource(R.string.empty_tasks_title)
-        }
-        Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text(
-                text = emptyText,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
+        TaskListEmptyState(
+            message = stringResource(
+                if (hasAnyCategory) R.string.empty_filtered_tasks else R.string.p1_empty_themes
+            ),
+            modifier = modifier,
+        )
         return
     }
 
@@ -355,78 +632,93 @@ private fun CategoriesContent(
         lazyGridState = lazyGridState,
         onMove = { from, to ->
             if (isReorderMode) {
-                onReorder(from.index, to.index)
+                component.handleEvent(
+                    MarkTodoUiEvent.ReorderCategories(
+                        fromIndex = from.index,
+                        toIndex = to.index,
+                        visibleCategoryIds = categories.map { it.id },
+                    )
+                )
             }
-        }
+        },
     )
-
-    val columns = if (isGridView) {
-        GridCells.Adaptive(minSize = 180.dp)
-    } else {
-        GridCells.Fixed(1)
-    }
-
     LazyVerticalGrid(
-        columns = columns,
+        columns = if (isGridView) GridCells.Adaptive(minSize = 180.dp) else GridCells.Fixed(1),
         state = lazyGridState,
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(
             horizontal = OneBoxDesignSystem.screenPadding,
-            vertical = OneBoxDesignSystem.blockSpacing
+            vertical = OneBoxDesignSystem.compactSpacing,
         ),
         verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing),
-        horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing)
+        horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing),
     ) {
-        items(
-            items = categories,
-            key = { it.id },
-            contentType = { "theme_group_card" }
-        ) { category ->
-            // 头部进度按全量任务统计（category.tasks 已被页签/标签过滤）
-            val fullCategory = allCategories.firstOrNull { it.id == category.id } ?: category
-
-            // 置顶项始终固定在顶部（DAO 按 is_pinned DESC 排序），拖拽会弹回，直接禁用
+        items(items = categories, key = { it.id }, contentType = { "theme_group_card" }) { category ->
             ReorderableItem(
                 state = reorderableState,
                 key = category.id,
-                enabled = isReorderMode && !category.isPinned
-            ) { _ ->
+                enabled = isReorderMode && !category.isPinned,
+            ) {
                 val cardModifier = if (isReorderMode && !category.isPinned) {
                     Modifier.draggableHandle()
                 } else {
                     Modifier
                 }
-
+                val visibleTasks = tasksByCategory[category.id].orEmpty().map { it.task }
                 if (isGridView) {
                     ThemeGroupGridCard(
-                        category = fullCategory,
-                        visibleTasks = category.tasks,
+                        category = category,
+                        visibleTasks = visibleTasks,
                         tagsByName = tagsByName,
                         isReorderMode = isReorderMode,
-                        onEnterReorder = onEnterReorder,
-                        onCategoryClick = onCategoryClick,
-                        onTaskClick = onTaskClick,
-                        onToggleComplete = onTaskToggleComplete,
-                        onEditCategory = onEditCategory,
-                        onDeleteCategory = onDeleteCategory,
-                        onTagClick = onTagClick,
-                        modifier = cardModifier
+                        onEnterReorder = {
+                            component.handleEvent(MarkTodoUiEvent.SetReorderMode(true))
+                        },
+                        onCategoryClick = {
+                            component.handleEvent(MarkTodoUiEvent.CategoryClicked(it))
+                        },
+                        onTaskClick = { component.handleEvent(MarkTodoUiEvent.TaskClicked(it)) },
+                        onToggleComplete = {
+                            component.handleEvent(MarkTodoUiEvent.ToggleTaskComplete(it))
+                        },
+                        onToggleStar = { component.handleEvent(MarkTodoUiEvent.ToggleTaskStar(it)) },
+                        onDeleteTask = { component.handleEvent(MarkTodoUiEvent.DeleteTask(it)) },
+                        onEditCategory = {
+                            component.handleEvent(MarkTodoUiEvent.EditCategoryClicked(it))
+                        },
+                        onDeleteCategory = {
+                            component.handleEvent(MarkTodoUiEvent.DeleteCategory(it))
+                        },
+                        onTagClick = { component.handleEvent(MarkTodoUiEvent.TagOnTaskClicked(it)) },
+                        modifier = cardModifier,
                     )
                 } else {
                     ThemeGroupCard(
-                        category = fullCategory,
-                        visibleTasks = category.tasks,
+                        category = category,
+                        visibleTasks = visibleTasks,
                         tagsByName = tagsByName,
-                        showMenu = statusTab == TodoStatusTab.COMPLETED && !isReorderMode,
+                        showMenu = !isReorderMode,
                         isReorderMode = isReorderMode,
-                        onEnterReorder = onEnterReorder,
-                        onCategoryClick = onCategoryClick,
-                        onTaskClick = onTaskClick,
-                        onToggleComplete = onTaskToggleComplete,
-                        onEditCategory = onEditCategory,
-                        onDeleteCategory = onDeleteCategory,
-                        onTagClick = onTagClick,
-                        modifier = cardModifier
+                        onEnterReorder = {
+                            component.handleEvent(MarkTodoUiEvent.SetReorderMode(true))
+                        },
+                        onCategoryClick = {
+                            component.handleEvent(MarkTodoUiEvent.CategoryClicked(it))
+                        },
+                        onTaskClick = { component.handleEvent(MarkTodoUiEvent.TaskClicked(it)) },
+                        onToggleComplete = {
+                            component.handleEvent(MarkTodoUiEvent.ToggleTaskComplete(it))
+                        },
+                        onToggleStar = { component.handleEvent(MarkTodoUiEvent.ToggleTaskStar(it)) },
+                        onDeleteTask = { component.handleEvent(MarkTodoUiEvent.DeleteTask(it)) },
+                        onEditCategory = {
+                            component.handleEvent(MarkTodoUiEvent.EditCategoryClicked(it))
+                        },
+                        onDeleteCategory = {
+                            component.handleEvent(MarkTodoUiEvent.DeleteCategory(it))
+                        },
+                        onTagClick = { component.handleEvent(MarkTodoUiEvent.TagOnTaskClicked(it)) },
+                        modifier = cardModifier,
                     )
                 }
             }
@@ -434,37 +726,27 @@ private fun CategoriesContent(
     }
 }
 
-/**
- * 底部状态页签栏：全部 / 进行中 / 已完成（复用 BottomNavigationBar，与万年历一致）
- */
 @Composable
-private fun StatusBottomBar(
-    selectedTab: TodoStatusTab,
-    onSelectTab: (TodoStatusTab) -> Unit,
-    modifier: Modifier = Modifier
+private fun HomeBottomBar(
+    selectedView: HomeView,
+    onSelectView: (HomeView) -> Unit,
 ) {
     val items = listOf(
         BottomNavItem(
-            id = TodoStatusTab.ALL.name,
-            label = stringResource(R.string.filter_all),
-            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFeatures
+            id = HomeView.THEMES.name,
+            label = stringResource(R.string.p1_themes),
+            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFeatures,
         ),
         BottomNavItem(
-            id = TodoStatusTab.ACTIVE.name,
-            label = stringResource(R.string.label_active),
-            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAccessTime
-        ),
-        BottomNavItem(
-            id = TodoStatusTab.COMPLETED.name,
-            label = stringResource(R.string.filter_completed),
-            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCheckCircleOutline
+            id = HomeView.INBOX.name,
+            label = stringResource(R.string.p1_inbox),
+            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineInbox,
         ),
     )
-
     BottomNavigationBar(
         items = items,
-        selectedItemId = selectedTab.name,
-        onItemClick = { item -> onSelectTab(TodoStatusTab.valueOf(item.id)) },
-        modifier = modifier.fillMaxWidth(),
+        selectedItemId = selectedView.name,
+        onItemClick = { item -> onSelectView(HomeView.valueOf(item.id)) },
+        modifier = Modifier.fillMaxWidth(),
     )
 }

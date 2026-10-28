@@ -4,17 +4,15 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -37,22 +35,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.wanbaohe.base.ui.picker.ChineseDatePickerDialog
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.marktodo.R
+import com.shifenmiao.marktodo.components.CategorySelector
+import com.shifenmiao.marktodo.components.PrioritySelector
+import com.shifenmiao.marktodo.components.TagSelector
 import com.shifenmiao.marktodo.components.TaskDateField
+import com.shifenmiao.marktodo.components.TaskTimeField
 import com.shifenmiao.marktodo.model.AddTodoUiEvent
 import com.shifenmiao.marktodo.model.AddTodoUiState
-import com.shifenmiao.marktodo.model.TodoCategory
-import com.shifenmiao.marktodo.model.TodoTag
-import com.shifenmiao.marktodo.model.TodoTask
 import com.shifenmiao.marktodo.screenLogic.AddTodoComponent
 import com.shifenmiao.marktodo.theme.CategoryColorPalette
 import com.shifenmiao.marktodo.theme.categoryPaletteWithThemeColors
-import com.shifenmiao.marktodo.theme.categoryAccentColor
-import com.shifenmiao.marktodo.theme.priorityColor
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAccessTime
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCalendar
@@ -62,9 +57,10 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineFolder
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLabel
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSingleEdit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineStickyNote
+import com.wanbaohe.base.ui.picker.ChineseDatePickerDialog
+import com.wanbaohe.base.ui.picker.ChineseTimePickerDialog
 import com.wanbaohe.core.ui.widget.color_picker.ColorSelectionRow
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedChip
-import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
 import com.wanbaohe.core.ui.widget.system.OneBoxBottomActionBar
 import com.wanbaohe.core.ui.widget.system.OneBoxDangerButton
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
@@ -209,6 +205,17 @@ fun AddTodoScreen(
                     placeholder = { Text(text = stringResource(R.string.select_due_time_hint)) },
                     modifier = Modifier.fillMaxWidth()
                 )
+                if (uiState.dueDateMillis != null) {
+                    TaskTimeField(
+                        dueDateMillis = uiState.dueDateMillis,
+                        hasDueTime = uiState.hasDueTime,
+                        onSelectTime = {
+                            addTodoComponent.handleEvent(AddTodoUiEvent.ToggleTimePicker(true))
+                        },
+                        onClearTime = { addTodoComponent.handleEvent(AddTodoUiEvent.ClearDueTime) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
 
             // 日程联动（仅编辑模式：承接原详情页的「生成日程 / 在日历查看」）
@@ -296,6 +303,9 @@ fun AddTodoScreen(
                     onSelect = {
                         addTodoComponent.handleEvent(AddTodoUiEvent.SelectCategory(it))
                     },
+                    onSelectInbox = {
+                        addTodoComponent.handleEvent(AddTodoUiEvent.SelectCategory(null))
+                    },
                     onAddCategory = {
                         addTodoComponent.handleEvent(AddTodoUiEvent.AddCategoryClicked)
                     }
@@ -324,6 +334,20 @@ fun AddTodoScreen(
             onDateSelected = { millis ->
                 addTodoComponent.handleEvent(AddTodoUiEvent.UpdateDueDate(millis))
             }
+        )
+    }
+
+    if (uiState.showTimePicker) {
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = uiState.dueDateMillis ?: System.currentTimeMillis()
+        }
+        ChineseTimePickerDialog(
+            initialHour = calendar.get(Calendar.HOUR_OF_DAY),
+            initialMinute = calendar.get(Calendar.MINUTE),
+            onTimeSelected = { hour, minute ->
+                addTodoComponent.handleEvent(AddTodoUiEvent.UpdateDueTime(hour, minute))
+            },
+            onDismiss = { addTodoComponent.handleEvent(AddTodoUiEvent.ToggleTimePicker(false)) }
         )
     }
 
@@ -425,117 +449,6 @@ private fun ScheduleActionLabel(
 }
 
 /**
- * 优先级选择：高（粉）/ 中（橙）/ 低（绿）三等分 chips
- */
-@Composable
-private fun PrioritySelector(
-    priority: Int,
-    onSelect: (Int) -> Unit
-) {
-    val options = listOf(
-        TodoTask.PRIORITY_HIGH to R.string.priority_high,
-        TodoTask.PRIORITY_MEDIUM to R.string.priority_medium,
-        TodoTask.PRIORITY_LOW to R.string.priority_low,
-    )
-    Row(horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing)) {
-        options.forEach { (value, labelRes) ->
-            val color = priorityColor(value)
-            val selected = priority == value
-            EnhancedChip(
-                selected = selected,
-                onClick = { onSelect(value) },
-                selectedColor = color.copy(alpha = 0.2f),
-                selectedContentColor = color,
-                modifier = Modifier.weight(1f),
-                label = {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFlag,
-                            contentDescription = null,
-                            tint = if (selected) color else MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(14.dp)
-                        )
-                        Text(
-                            text = stringResource(labelRes),
-                            modifier = Modifier.padding(start = 4.dp)
-                        )
-                    }
-                }
-            )
-        }
-    }
-}
-
-/**
- * 标签多选 chips：标签表驱动；编辑时任务原有标签若不在池中则并入显示；末尾「+」新建自定义标签
- */
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun TagSelector(
-    tags: List<TodoTag>,
-    selectedTagNames: Set<String>,
-    onToggle: (String) -> Unit,
-    onAddTag: () -> Unit
-) {
-    val poolNames = tags.map { it.name }.toSet()
-    val extraNames = selectedTagNames.filter { it !in poolNames }
-
-    FlowRow(
-        horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
-        verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing)
-    ) {
-        tags.forEach { tag ->
-            val selected = tag.name in selectedTagNames
-            val tagColor = tag.colorArgb?.let { Color(it) }
-            GlassFilterChip(
-                selected = selected,
-                onClick = { onToggle(tag.name) },
-                label = {
-                    Text(
-                        text = tag.name,
-                        color = when {
-                            selected && tagColor != null -> tagColor
-                            else -> Color.Unspecified
-                        }
-                    )
-                }
-            )
-        }
-        // 任务原有的自定义标签（不在标签池中的历史数据）
-        extraNames.forEach { name ->
-            GlassFilterChip(
-                selected = true,
-                onClick = { onToggle(name) },
-                label = { Text(text = name) }
-            )
-        }
-        // 新建自定义标签
-        EnhancedChip(
-            selected = false,
-            onClick = onAddTag,
-            selectedColor = Color.Unspecified,
-            label = {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
-                        contentDescription = stringResource(R.string.action_add_tag),
-                        modifier = Modifier.size(14.dp)
-                    )
-                    Text(
-                        text = stringResource(R.string.action_add_tag),
-                        modifier = Modifier.padding(start = 4.dp)
-                    )
-                }
-            }
-        )
-    }
-}
-
-/**
  * 新建自定义标签对话框：名称 + 色板选色（与主题页统一走 ColorSelectionRow，含自定义取色）
  */
 @Composable
@@ -584,68 +497,12 @@ private fun AddTagDialog(
     )
 }
 
-/**
- * 所属主题单选 chips + 新建主题入口
- */
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun CategorySelector(
-    categories: List<TodoCategory>,
-    selectedCategory: TodoCategory?,
-    onSelect: (TodoCategory) -> Unit,
-    onAddCategory: () -> Unit
-) {
-    FlowRow(
-        horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
-        verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing)
-    ) {
-        categories.forEach { category ->
-            val selected = category.id == selectedCategory?.id
-            // 与首页卡片同一套配色：自定义色优先，否则按分类 ID 分配
-            val accent = categoryAccentColor(category)
-            EnhancedChip(
-                selected = selected,
-                onClick = { onSelect(category) },
-                selectedColor = accent.copy(alpha = 0.2f),
-                selectedContentColor = accent,
-                label = {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = category.icon,
-                            contentDescription = null,
-                            tint = if (selected) accent else MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(14.dp)
-                        )
-                        Text(
-                            text = category.title,
-                            modifier = Modifier.padding(start = 4.dp)
-                        )
-                    }
-                }
-            )
-        }
-        // 新建主题
-        EnhancedChip(
-            selected = false,
-            onClick = onAddCategory,
-            selectedColor = Color.Unspecified,
-            label = {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
-                    contentDescription = stringResource(R.string.action_add_category),
-                    modifier = Modifier.size(16.dp)
-                )
-            }
-        )
-    }
-}
-
 @Composable
 private fun ColumnScope.SpacerForBottomBar(isEditMode: Boolean) {
     androidx.compose.foundation.layout.Spacer(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = if (isEditMode) 72.dp else OneBoxDesignSystem.blockSpacing)
+            .padding(bottom = if (isEditMode) 112.dp else OneBoxDesignSystem.blockSpacing)
     )
 }
 

@@ -36,9 +36,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.base.ui.picker.ChineseDatePickerDialog
+import com.wanbaohe.base.ui.picker.ChineseTimePickerDialog
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.marktodo.R
 import com.shifenmiao.marktodo.components.TaskDateField
+import com.shifenmiao.marktodo.components.TaskTimeField
 import com.shifenmiao.marktodo.model.TodoDetailNotice
 import com.shifenmiao.marktodo.model.TodoDetailUiEvent
 import com.shifenmiao.marktodo.model.TodoTask
@@ -180,14 +182,21 @@ fun TodoDetailScreen(
                             note = uiState.editNote,
                             tagsText = uiState.editTagsText,
                             dueDateMillis = uiState.editDueDateMillis,
+                            hasDueTime = uiState.editHasDueTime,
                             titleError = uiState.hasTitleError,
                             showValidationErrors = uiState.showValidationErrors,
                             onTitleChange = { component.handleEvent(TodoDetailUiEvent.UpdateEditTitle(it)) },
                             onNoteChange = { component.handleEvent(TodoDetailUiEvent.UpdateEditNote(it)) },
                             onTagsChange = { component.handleEvent(TodoDetailUiEvent.UpdateEditTags(it)) },
                             onDueDateChange = { component.handleEvent(TodoDetailUiEvent.UpdateEditDueDate(it)) },
+                            onDueTimeChange = { hour, minute ->
+                                component.handleEvent(TodoDetailUiEvent.UpdateEditDueTime(hour, minute))
+                            },
+                            onClearTime = { component.handleEvent(TodoDetailUiEvent.ClearEditDueTime) },
                             onToggleDatePicker = { component.handleEvent(TodoDetailUiEvent.ToggleDatePicker(it)) },
+                            onToggleTimePicker = { component.handleEvent(TodoDetailUiEvent.ToggleTimePicker(it)) },
                             showDatePicker = uiState.showDatePicker,
+                            showTimePicker = uiState.showTimePicker,
                             onSave = { component.handleEvent(TodoDetailUiEvent.SaveEdit) },
                             onCancel = { component.handleEvent(TodoDetailUiEvent.CancelEdit) }
                         )
@@ -286,7 +295,10 @@ private fun TodoDetailContent(
         if (task.dueDate != null) {
             OneBoxSectionCard {
                 OneBoxSectionHeader(title = stringResource(R.string.task_date))
-                val dateStr = android.text.format.DateFormat.format("yyyy-MM-dd", task.dueDate).toString()
+                val dateStr = android.text.format.DateFormat.format(
+                    if (task.hasDueTime) "yyyy-MM-dd HH:mm" else "yyyy-MM-dd",
+                    task.dueDate
+                ).toString()
                 val isOverdue = task.isOverdue
                 Text(
                     text = dateStr,
@@ -385,14 +397,19 @@ private fun TodoEditContent(
     note: String,
     tagsText: String,
     dueDateMillis: Long?,
+    hasDueTime: Boolean,
     titleError: Boolean,
     showValidationErrors: Boolean,
     onTitleChange: (String) -> Unit,
     onNoteChange: (String) -> Unit,
     onTagsChange: (String) -> Unit,
     onDueDateChange: (Long?) -> Unit,
+    onDueTimeChange: (Int, Int) -> Unit,
+    onClearTime: () -> Unit,
     onToggleDatePicker: (Boolean) -> Unit,
+    onToggleTimePicker: (Boolean) -> Unit,
     showDatePicker: Boolean,
+    showTimePicker: Boolean,
     onSave: () -> Unit,
     onCancel: () -> Unit,
     modifier: Modifier = Modifier
@@ -430,7 +447,7 @@ private fun TodoEditContent(
             keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(imeAction = ImeAction.Next)
         )
 
-        // 截止日期
+        // 截止日期与可选具体时间
         TaskDateField(
             dueDateMillis = dueDateMillis,
             onClearDate = { onDueDateChange(null) },
@@ -438,6 +455,15 @@ private fun TodoEditContent(
             placeholder = { Text(text = stringResource(R.string.dialog_add_task_due_date)) },
             modifier = Modifier.fillMaxWidth()
         )
+        if (dueDateMillis != null) {
+            TaskTimeField(
+                dueDateMillis = dueDateMillis,
+                hasDueTime = hasDueTime,
+                onSelectTime = { onToggleTimePicker(true) },
+                onClearTime = onClearTime,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
 
         // 标签输入
         OneBoxOutlinedTextField(
@@ -450,22 +476,23 @@ private fun TodoEditContent(
         Spacer(modifier = Modifier.height(OneBoxDesignSystem.blockSpacing))
     }
 
-    // Date picker
     if (showDatePicker) {
         ChineseDatePickerDialog(
             initialDateMillis = dueDateMillis ?: System.currentTimeMillis(),
             onDismiss = { onToggleDatePicker(false) },
-            onDateSelected = { millis ->
-                val normalizedMillis = millis.let {
-                    val cal = Calendar.getInstance().apply { timeInMillis = it }
-                    cal.set(Calendar.HOUR_OF_DAY, 0)
-                    cal.set(Calendar.MINUTE, 0)
-                    cal.set(Calendar.SECOND, 0)
-                    cal.set(Calendar.MILLISECOND, 0)
-                    cal.timeInMillis
-                }
-                onDueDateChange(normalizedMillis)
-            }
+            onDateSelected = onDueDateChange
+        )
+    }
+
+    if (showTimePicker) {
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = dueDateMillis ?: System.currentTimeMillis()
+        }
+        ChineseTimePickerDialog(
+            initialHour = calendar.get(Calendar.HOUR_OF_DAY),
+            initialMinute = calendar.get(Calendar.MINUTE),
+            onTimeSelected = onDueTimeChange,
+            onDismiss = { onToggleTimePicker(false) }
         )
     }
 }

@@ -74,6 +74,10 @@ class ManageTodoTool @Inject constructor(
                 type = "integer",
                 description = textProvider.string(R.string.agent_tool_manage_todo_param_due_date_millis)
             ),
+            "has_due_time" to ToolParameterProperty(
+                type = "boolean",
+                description = textProvider.string(R.string.agent_tool_manage_todo_param_has_due_time)
+            ),
             "tags" to ToolParameterProperty(
                 type = "array",
                 description = textProvider.string(R.string.agent_tool_manage_todo_param_tags),
@@ -90,6 +94,13 @@ class ManageTodoTool @Inject constructor(
         ),
         required = listOf("action")
     )
+
+    override fun shouldRequireConfirmation(arguments: String): Boolean {
+        val action = runCatching {
+            AppJson.decodeFromString<ManageTodoParams>(arguments).action
+        }.getOrNull() ?: return false
+        return normalizeAction(action) == "delete_task"
+    }
 
     override suspend fun execute(arguments: String): AgentToolResult {
         return try {
@@ -176,7 +187,8 @@ class ManageTodoTool @Inject constructor(
                     title = title,
                     note = null,
                     dueDateMillis = params.due_date_millis,
-                    tags = tags
+                    tags = tags,
+                    hasDueTime = params.has_due_time == true,
                 ),
                 source = SOURCE_AGENT
             ).onSuccess { created += title }.onFailure { failed += title }
@@ -208,44 +220,44 @@ class ManageTodoTool @Inject constructor(
         } else {
             dashboard
         }
-        val data = filtered.map { it.toMap() }
+        val inboxTasks = if (params.category_name.isNullOrBlank()) {
+            todoService.getInboxTasksDto()
+        } else {
+            emptyList()
+        }
         val result = mapOf(
             "action" to "list",
             "success" to true,
-            "categories" to data,
+            "categories" to filtered.map { it.toMap() },
+            "inbox_tasks" to inboxTasks.map { it.toMap() },
             "deeplink" to markTodoDeeplink()
         )
         return AgentToolResult(content = jsonStringOf(result))
     }
 
     private suspend fun handleCreateTask(params: ManageTodoParams): AgentToolResult {
-        val catName = params.category_name
-        if (catName.isNullOrBlank()) {
-            return errorResult(R.string.agent_tool_manage_todo_missing_category_name)
-        }
+        val catName = params.category_name?.trim()?.takeIf { it.isNotEmpty() }
         val taskTitle = params.title
         if (taskTitle.isNullOrBlank()) {
             return errorResult(R.string.agent_tool_manage_todo_missing_title)
         }
-        // 分类不存在时自动建一个,而不是直接失败 —— 模型常把"建清单"拆成 create_task+"一个新分类名",
-        // 旧行为会以「未找到分类」结束整轮(实测)。
-        val lookup = todoService.findCategoryByTitle(catName)
-            ?: run {
+        val lookup = catName?.let { categoryName ->
+            todoService.findCategoryByTitle(categoryName) ?: run {
                 val newId = todoService.createCategory(
-                    CategoryInput(title = catName, iconKey = "Checklist", sortOrder = 0),
+                    CategoryInput(title = categoryName, iconKey = "Checklist", sortOrder = 0),
                     source = SOURCE_AGENT
                 ).getOrElse { return errorResult(R.string.agent_tool_manage_todo_failed, it.message ?: "unknown") }
-                CategoryLookup(id = newId, title = catName)
+                CategoryLookup(id = newId, title = categoryName)
             }
+        }
 
-        @Suppress("UNCHECKED_CAST")
-        val tags = params.tags ?: emptyList()
         val input = TaskInput(
-            categoryId = lookup.id,
+            categoryId = lookup?.id,
             title = taskTitle,
             note = params.note,
             dueDateMillis = params.due_date_millis,
-            tags = tags
+            tags = params.tags ?: emptyList(),
+            hasDueTime = params.has_due_time == true,
         )
         todoService.createTask(input, source = SOURCE_AGENT)
             .getOrElse { return errorResult(R.string.agent_tool_manage_todo_failed, it.message ?: "unknown") }
@@ -253,10 +265,11 @@ class ManageTodoTool @Inject constructor(
         val result = mapOf(
             "action" to "create_task",
             "success" to true,
-            "category" to lookup.title,
+            "category" to lookup?.title,
+            "is_inbox" to (lookup == null),
             "task_title" to taskTitle,
             "message" to textProvider.string(R.string.agent_tool_manage_todo_task_created, taskTitle),
-            "deeplink" to markTodoDeeplink("category_id" to lookup.id)
+            "deeplink" to (lookup?.let { markTodoDeeplink("category_id" to it.id) } ?: markTodoDeeplink())
         )
         return AgentToolResult(content = jsonStringOf(result))
     }
@@ -385,9 +398,12 @@ class ManageTodoTool @Inject constructor(
 
     private fun TodoTaskDto.toMap(): Map<String, Any?> = mapOf(
         "id" to id,
+        "category_id" to categoryId,
         "title" to title,
         "note" to note,
         "due_date" to dueDate,
+        "has_due_time" to hasDueTime,
+        "created_at" to createdAt,
         "tags" to tags,
         "is_completed" to isCompleted,
         "is_starred" to isStarred
@@ -400,6 +416,7 @@ class ManageTodoTool @Inject constructor(
         val title: String? = null,
         val note: String? = null,
         val due_date_millis: Long? = null,
+        val has_due_time: Boolean? = null,
         val tags: List<String>? = null,
         val tasks: List<String>? = null,
         val icon_key: String? = null,

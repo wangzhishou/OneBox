@@ -159,7 +159,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
         HouseholdItemEntity::class,
         PeriodRecordEntity::class,
     ],
-    version = Release148Migrations.VERSION,
+    version = Release151Migrations.VERSION,
     exportSchema = true
 )
 @TypeConverters(MarkTodoTypeConverters::class)
@@ -424,6 +424,7 @@ abstract class FeatureDatabase : RoomDatabase() {
                         *Release146Migrations.feature,
                         *Release147Migrations.feature,
                         *Release148Migrations.feature,
+                        *Release151Migrations.feature,
                     )
                     .fallbackToDestructiveMigration(true)
                     .addCallback(object : Callback() {
@@ -474,12 +475,12 @@ abstract class FeatureDatabase : RoomDatabase() {
             db.execSQL(
                 """
                 INSERT OR IGNORE INTO marktodo_task
-                    (id, category_id, title, note, start_date, due_date, tags, is_completed, is_starred, sort_order, created_at, updated_at)
-                VALUES (?, ?, ?, ?, ?, NULL, '', 0, 0, 0, ?, ?)
+                    (id, category_id, title, note, start_date, due_date, has_due_time, tags, is_completed, is_starred, sort_order, created_at, updated_at, deleted_at)
+                VALUES (?, ?, ?, ?, ?, NULL, 0, '', 0, 0, 0, ?, ?, NULL)
                 """.trimIndent(),
-                arrayOf<Any>(
+                arrayOf<Any?>(
                     "default_task_1",
-                    "default_theme",
+                    null,
                     context.getString(R.string.marktodo_preset_task_title),
                     context.getString(R.string.marktodo_preset_task_note),
                     now,

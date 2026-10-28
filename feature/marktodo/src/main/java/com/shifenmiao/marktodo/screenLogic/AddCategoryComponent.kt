@@ -3,11 +3,13 @@ package com.shifenmiao.marktodo.screenLogic
 import android.content.Context
 import com.arkivanov.decompose.ComponentContext
 import com.shifenmiao.database.marktodo.repo.MarkTodoRepository
+import com.shifenmiao.marktodo.R
 import com.shifenmiao.marktodo.service.MarkTodoServiceImpl
 import com.shifenmiao.marktodo.theme.CategoryColorPaletteArgb
 import com.shifenmiao.model.todo.CategoryInput
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -105,6 +107,7 @@ class AddCategoryComponent @AssistedInject internal constructor(
         val state = _uiState.value
         val title = state.title.trim()
 
+        if (state.isSaving) return false
         if (title.isBlank()) {
             _uiState.value = state.copy(showValidationErrors = true)
             return false
@@ -119,9 +122,10 @@ class AddCategoryComponent @AssistedInject internal constructor(
             isPinned = state.isPinned,
             id = newCategoryId
         )
+        _uiState.value = state.copy(isSaving = true)
 
         componentScope.launch {
-            if (editingCategoryId != null) {
+            val result = if (editingCategoryId != null) {
                 service.updateCategory(
                     categoryId = editingCategoryId,
                     input = input,
@@ -133,7 +137,12 @@ class AddCategoryComponent @AssistedInject internal constructor(
                     source = "UI:AddCategoryScreen"
                 )
             }
-            onGoBack()
+            result.onSuccess {
+                onGoBack()
+            }.onFailure {
+                _uiState.value = _uiState.value.copy(isSaving = false)
+                AppToastHost.showToast(context.getString(R.string.error_save_failed))
+            }
         }
 
         return true
@@ -156,7 +165,8 @@ data class AddCategoryUiState(
     // 占位默认色（新建时组件会按预生成 id 重新分配色板色；编辑时按原分类 id 派生兜底）
     val colorArgb: Int = 0xFF8B5CF6.toInt(),
     val isPinned: Boolean = false,
-    val showValidationErrors: Boolean = false
+    val showValidationErrors: Boolean = false,
+    val isSaving: Boolean = false,
 ) {
     val isTitleValid: Boolean get() = title.isNotBlank()
     val hasTitleError: Boolean get() = showValidationErrors && !isTitleValid

@@ -20,14 +20,15 @@ import androidx.room.PrimaryKey
     indices = [
         Index(value = ["category_id"]),
         Index(value = ["start_date"]),
-        Index(value = ["updated_at"])
+        Index(value = ["updated_at"]),
+        Index(value = ["deleted_at"])
     ]
 )
 data class MarkTodoTaskEntity(
     @PrimaryKey
     @ColumnInfo(name = "id") val id: String,
 
-    @ColumnInfo(name = "category_id") val categoryId: String,
+    @ColumnInfo(name = "category_id") val categoryId: String?,
 
     @ColumnInfo(name = "title") val title: String,
 
@@ -36,6 +37,8 @@ data class MarkTodoTaskEntity(
     @ColumnInfo(name = "start_date") val startDate: Long = System.currentTimeMillis(),
 
     @ColumnInfo(name = "due_date") val dueDate: Long? = null,
+
+    @ColumnInfo(name = "has_due_time", defaultValue = "0") val hasDueTime: Boolean = false,
 
     @ColumnInfo(name = "tags") val tags: List<String> = emptyList(),
 
@@ -58,4 +61,6 @@ data class MarkTodoTaskEntity(
     @ColumnInfo(name = "created_at") val createdAt: Long = System.currentTimeMillis(),
 
     @ColumnInfo(name = "updated_at") val updatedAt: Long = System.currentTimeMillis(),
+
+    @ColumnInfo(name = "deleted_at") val deletedAt: Long? = null,
 )

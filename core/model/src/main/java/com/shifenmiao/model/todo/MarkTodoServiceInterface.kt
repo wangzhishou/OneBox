@@ -18,6 +18,8 @@ interface MarkTodoServiceInterface {
 
     suspend fun getTaskDto(taskId: String): TodoTaskDto?
 
+    suspend fun getInboxTasksDto(): List<TodoTaskDto>
+
     suspend fun findCategoryByTitle(title: String): CategoryLookup?
 
     // ── 分类操作 ────────────────────────────────────
@@ -63,6 +65,11 @@ interface MarkTodoServiceInterface {
         source: String,
     ): Result<Unit>
 
+    suspend fun undoDeleteTask(
+        taskId: String,
+        source: String,
+    ): Result<Unit>
+
     suspend fun toggleTaskComplete(
         taskId: String,
         isCompleted: Boolean,
@@ -78,7 +85,7 @@ interface MarkTodoServiceInterface {
     ): Result<Unit>
 
     suspend fun reorderTasks(
-        categoryId: String,
+        categoryId: String?,
         orderedIds: List<String>,
         source: String,
     ): Result<Unit>
