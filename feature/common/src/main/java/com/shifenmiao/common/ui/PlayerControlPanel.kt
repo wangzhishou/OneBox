@@ -26,6 +26,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderState
 import com.wanbaohe.core.ui.widget.glass.GlassSwitch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -33,6 +34,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -338,11 +340,14 @@ private fun SliderSection(
         Spacer(Modifier.height(6.dp))
 
         // 自定义细轨道 Slider
+        val sliderState = remember(valueRange) {
+            SliderState(value = value, trackRange = valueRange)
+        }
+        sliderState.value = value
         Slider(
-            value = value,
+            state = sliderState,
             onValueChange = onValueChange,
             onValueChangeFinished = onValueChangeFinished,
-            valueRange = valueRange,
             modifier = Modifier.fillMaxWidth(),
             thumb = {
                 // 圆形 thumb（14dp）
@@ -353,9 +358,7 @@ private fun SliderSection(
                         .background(accentColor)
                 )
             },
-            track = { sliderState ->
-                val fraction = (sliderState.value - sliderState.valueRange.start) /
-                        (sliderState.valueRange.endInclusive - sliderState.valueRange.start)
+            track = { state ->
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -365,7 +368,7 @@ private fun SliderSection(
                 ) {
                     Box(
                         modifier = Modifier
-                            .fillMaxWidth(fraction.coerceIn(0f, 1f))
+                            .fillMaxWidth(state.coercedValueAsFraction)
                             .height(4.dp)
                             .clip(RoundedCornerShape(2.dp))
                             .background(accentColor)

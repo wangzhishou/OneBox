@@ -19,7 +19,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    `kotlin-dsl`
+    `kotlin-dsl` version "6.7.13"
 }
 
 group = "com.t8rin.imagetoolbox.buildlogic"

@@ -296,10 +296,10 @@ Paths beginning with `com.t8rin.*` are inherited from upstream ImageToolbox and 
 
 ### Requirements
 
-- Use the bundled **Gradle Wrapper 9.7.0**
+- Use the bundled **Gradle Wrapper 9.8.2**
 - **JDK 17** (build-logic and CI target it)
-- Android targets: **Compile SDK 37 / Target SDK 37 / Min SDK 24**
-- Toolchain: **Kotlin 2.4.0 / AGP 9.3.1**
+- Android targets: **Compile SDK 37.2 / Target SDK 37 / Min SDK 24**
+- Toolchain: **Kotlin 2.4.21 / AGP 9.4.1**
 - When in doubt, `gradle/libs.versions.toml` and `gradle/wrapper/gradle-wrapper.properties` are the source of truth
 
 ### Clone

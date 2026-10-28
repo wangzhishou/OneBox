@@ -13,21 +13,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.widget.Autocomplete
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.android.libraries.places.widget.BasicPlaceAutocomplete
 import com.shifenmiao.model.ui.picker.SelectedCountryData
 
-private val PLACE_FIELDS = listOf(
-    Place.Field.ID,
-    Place.Field.DISPLAY_NAME,
-    Place.Field.FORMATTED_ADDRESS,
-    Place.Field.ADDRESS_COMPONENTS,
-    Place.Field.LOCATION,
-)
 
-// Autocomplete 组件在 Places SDK 5.x 标记废弃,替代 API PlaceAutocomplete 只回 prediction
-// 还需二次请求详情,待其提供完整 Place 返回后再迁移;当前版本功能不受影响
-@Suppress("DEPRECATION")
 private class GoogleLocationPickerState(
     private val appContext: Context,
 ) : PlatformLocationPickerState {
@@ -55,8 +44,7 @@ private class GoogleLocationPickerState(
         }
         pendingOnChange = onChange
         pendingOnCancel = onCancel
-        val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, PLACE_FIELDS)
-            .setHint(title.orEmpty())
+        val intent = BasicPlaceAutocomplete.IntentBuilder()
             .setInitialQuery(
                 listOfNotNull(initData?.province, initData?.city, initData?.district)
                     .joinToString(" "),
@@ -70,8 +58,9 @@ private class GoogleLocationPickerState(
         val onCancel = pendingOnCancel
         pendingOnChange = null
         pendingOnCancel = null
-        if (result.resultCode == Activity.RESULT_OK && result.data != null) {
-            onChange?.invoke(Autocomplete.getPlaceFromIntent(result.data!!).toSelectedCountryData())
+        val place = result.data?.let(BasicPlaceAutocomplete::getPlaceFromIntent)
+        if (result.resultCode == Activity.RESULT_OK && place != null) {
+            onChange?.invoke(place.toSelectedCountryData())
         } else {
             onCancel?.invoke()
         }

@@ -3,12 +3,13 @@
 package com.shifenmiao.login.ui
 
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.auth.api.identity.GetSignInIntentRequest
+import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.common.api.ApiException
 import com.shifenmiao.base.utils.ActionUtils
 
@@ -21,34 +22,43 @@ fun rememberGoogleSignInAction(
     onIdToken: (String) -> Unit,
 ): () -> Unit {
     val context = LocalContext.current
-    val googleSignInClient = remember {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken("335920196432-dmphr6uuv6rjhvf0gh8cg3qjt23ivccu.apps.googleusercontent.com")
-            .requestEmail()
+    val signInClient = remember { Identity.getSignInClient(context) }
+    val signInRequest = remember {
+        GetSignInIntentRequest.builder()
+            .setServerClientId("335920196432-dmphr6uuv6rjhvf0gh8cg3qjt23ivccu.apps.googleusercontent.com")
             .build()
-        GoogleSignIn.getClient(context, gso)
+    }
+
+    fun showFailure(error: Exception) {
+        val statusCode = (error as? ApiException)?.statusCode
+        if (statusCode != 12501) {
+            ActionUtils.showToast("Google login failed: ${statusCode ?: error.message}")
+        }
     }
 
     val googleSignInLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
+        contract = ActivityResultContracts.StartIntentSenderForResult()
     ) { result ->
-        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
         try {
-            val account = task.getResult(ApiException::class.java)
-            val idToken = account?.idToken
+            val credential = result.data?.let(signInClient::getSignInCredentialFromIntent)
+            val idToken = credential?.googleIdToken
             if (idToken != null) {
                 onIdToken(idToken)
             } else {
                 ActionUtils.showToast("Google login failed: no id token")
             }
         } catch (e: ApiException) {
-            if (e.statusCode != 12501) { // 12501 = USER_CANCELED
-                ActionUtils.showToast("Google login failed: ${e.statusCode}")
-            }
+            showFailure(e)
         }
     }
 
     return {
-        googleSignInLauncher.launch(googleSignInClient.signInIntent)
+        signInClient.getSignInIntent(signInRequest)
+            .addOnSuccessListener { pendingIntent ->
+                googleSignInLauncher.launch(
+                    IntentSenderRequest.Builder(pendingIntent.intentSender).build()
+                )
+            }
+            .addOnFailureListener(::showFailure)
     }
 }

@@ -44,7 +44,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.TimeInput
+import androidx.compose.material3.TimeInputColors
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TimePickerColors
 import androidx.compose.material3.TimePickerDefaults
@@ -233,13 +235,32 @@ fun EnhancedTimePickerDialog(
                     } else {
                         TimeInput(
                             state = state,
-                            colors = colors
+                            colors = colors.toTimeInputColors()
                         )
                     }
                 }
             }
         )
     }
+}
+
+@Composable
+private fun TimePickerColors.toTimeInputColors(): TimeInputColors {
+    val textFieldColors = OutlinedTextFieldDefaults.colors(
+        focusedContainerColor = timeSelectorSelectedContainerColor,
+        unfocusedContainerColor = timeSelectorContainerColor,
+        focusedTextColor = timeSelectorSelectedContentColor,
+        unfocusedTextColor = timeSelectorContentColor
+    )
+    return TimeInputColors(
+        containerColor = containerColor,
+        periodSelectorBorderColor = periodSelectorBorderColor,
+        periodSelectorSelectedContainerColor = periodSelectorSelectedContainerColor,
+        periodSelectorContainerColor = periodSelectorContainerColor,
+        periodSelectorSelectedContentColor = periodSelectorSelectedContentColor,
+        periodSelectorContentColor = periodSelectorContentColor,
+        timeTextFieldColors = textFieldColors
+    )
 }
 
 @Composable

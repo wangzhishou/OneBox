@@ -3,9 +3,9 @@ alipaysdkAndroid = "15.8.42"
 androidMinSdk = "24"
 androidTargetSdk = "37"
 androidCompileSdk = "37"
-androidCompileSdkExtension = "-"
+androidCompileSdkMinor = "2"
 # NDK 版本单一来源:app 模块与 feature:xiangqi 的端侧引擎构建任务都引用它
-androidNdk = "28.1.13356709"
+androidNdk = "30.0.16248370"
 
 eddsa = "0.3.0"
 nanohttpd = "2.3.1"
@@ -15,124 +15,124 @@ versionCode = "151"
 gitVersion = "000"
 jvmTarget = "17"
 
-oneBoxLibs = "1.0.1"
-trickle = "1.8.1"
+oneBoxLibs = "1.1.1"
+trickle = "1.9.3"
 evaluator = "1.0.0"
 logger = "1.0.2"
 
-avifCoder = "2.1.4"
+avifCoder = "3.0.0"
 aire = "0.18.1"
 jxlCoder = "2.6.1"
 jxlCoderCoil = "2.6.1"
 jpegliCoder = "1.0.2"
 
-m3color = "2024.1"
-paletteKtx = "1.0.0"
-material3 = "1.5.0-alpha26"
-composeVersion = "1.13.0-alpha01"
+m3color = "2026.1"
+paletteKtx = "1.1.0"
+material3 = "1.5.0-beta02"
+composeVersion = "1.13.0-beta02"
 materialIconsExtended = "1.7.8"
-androidx-datastorePreferencesAndroid = "1.2.1"
-shadowGadgets = "2.5.0"
+androidx-datastorePreferencesAndroid = "1.3.0"
+shadowGadgets = "2.5.1"
 fadingEdges = "1.0.4"
 firebaseCrashlyticsKtx = "19.4.4"
-firebaseBom = "34.17.0"
-konfettiCompose = "2.0.5"
+firebaseBom = "35.1.0"
+konfettiCompose = "2.2.0"
 reimagined = "1.5.0"
 shadowsPlus = "1.0.4"
 exifinterface = "1.4.2"
 firebaseAnalyticsKtx = "22.5.0"
 detekt = "1.23.8"
-detektCompose = "0.6.4"
+detektCompose = "0.6.8"
 decompose = "3.5.0"
-essenty = "2.5.0"
+essenty = "2.7.0"
 
-kotlin = "2.4.0"
-agp = "9.3.1"
+kotlin = "2.4.21"
+agp = "9.4.1"
 hilt = "2.60.1"
 
-ktor = "3.5.2"
-coil = "3.5.0"
+ktor = "3.6.0"
+coil = "3.6.3"
 appCompat = "1.8.0"
-androidxCore = "1.19.0"
-camerax = "1.4.2"
+androidxCore = "1.19.1"
+camerax = "1.6.2"
 
 androidxLifecycle = "2.11.0"
 desugaring-version = "2.1.5"
 activityCompose = "1.13.0"
 media3 = "1.11.1"
-kotlinxCollectionsImmutable = "0.5.1"
-scrollbar = "2.2.0"
+kotlinxCollectionsImmutable = "0.5.2"
+scrollbar = "3.0.0"
 reorderable = "3.1.0"
 splashScreen = "1.2.0"
-room = "2.8.4"
+room = "2.8.5"
 
 espresso = "3.7.0"
-kotlinxSerializationJson = "1.11.0"
-ksp = "2.3.9"
+kotlinxSerializationJson = "1.12.0"
+ksp = "2.3.12"
 
 androidx-test-ext-junit = "1.3.0"
 documentfile = "1.1.0"
 uiautomator = "2.4.0"
-androidxMacroBenchmark = "1.5.0-rc01"
-quickie = "1.18.1"
-playServicesAuth = "21.6.0"
-playServicesAds = "25.4.0"
+androidxMacroBenchmark = "1.6.0-alpha01"
+quickie = "1.19.0"
+playServicesAuth = "22.0.0"
+playServicesAds = "25.5.0"
 mlkitDocumentScanner = "16.0.0"
 groMoreMediationSdk = "7.8.1.4"
 playReview = "2.0.2"
-places = "5.3.0"
-squircle-shape = "5.3.0"
+places = "6.0.2"
+squircle-shape = "5.4.0"
 #人肉添加开始
 coroutines = "1.11.0"
 retrofit = "3.0.0"
-okhttp = "5.4.0"
+okhttp = "5.5.1"
 junit = "4.13.2"
 material = "1.14.0"
 jsoup = "1.23.2"
-materialKolor = "5.0.0"
-juniversalchardet = "2.5.0"
+materialKolor = "5.0.1"
+juniversalchardet = "2.5.2"
 kotlinxCoroutinesCore = "1.11.0"
-androidliquidglass = "1.0.0-rc01"
-capsule = "2.1.0"
+androidliquidglass = "2.0.1"
+capsule = "2.1.3"
 zxingAndroidEmbedded = "4.3.0"
 capturable = "3.0.1"
-smbj = "0.14.0"
+smbj = "0.15.0"
 
-bouncycastle = "1.85"
+bouncycastle = "1.86"
 androidxSecurityCrypto = "1.1.0"
 
 pdfviewer = "1.0.0-alpha18" # alpha19 起 minSdk 提到 28,与项目 minSdk 24 冲突
-fragmentCompose = "1.9.0"
-aboutlibraries = "14.2.1"
+fragmentCompose = "1.9.1"
+aboutlibraries = "15.3.0"
 
 ksoup = "0.6.0"
-jetbrainsMarkdown = "0.7.8"
-uiAndroid = "1.13.0-alpha01"
+jetbrainsMarkdown = "0.7.18"
+uiAndroid = "1.13.0-beta02"
 window = "1.5.1"
 
-moduleGraphGradle = "0.13.0"
-dataStore = "1.2.1"
+moduleGraphGradle = "0.15.0"
+dataStore = "1.3.0"
 lunarJava = "v1.7.7"
 
 markwon = "4.6.2"
 prism4j = "2.0.0"
 constraintlayout = "2.2.2"
-webkitVersion = "1.17.1"
-foundationLayout = "1.13.0-alpha01"
-ui = "1.13.0-alpha01"
-animationCore = "1.13.0-alpha01"
+webkitVersion = "1.18.0"
+foundationLayout = "1.13.0-beta02"
+ui = "1.13.0-beta02"
+animationCore = "1.13.0-beta02"
 pdfbox = "2.0.27.0"
 flinger = "2.0.2"
 opencv = "5.0.0.1"
 coilResvg = "1.1.2"
-litertlm = "0.16.1"
+litertlm = "0.18.1"
 [libraries]
 litertlm-android = { group = "com.google.ai.edge.litertlm", name = "litertlm-android", version.ref = "litertlm" }
 coil-resvg = { module = "com.hashsequence:coil-resvg", version.ref = "coilResvg" }
 flinger = { module = "com.github.iamjosephmj.flinger:flinger", version.ref = "flinger" }
 pdfbox = { module = "com.tom-roush:pdfbox-android", version.ref = "pdfbox" }
 squircle-shape = { group = "com.stoyanvuchev", name = "squircle-shape-android", version.ref = "squircle-shape" }
-capsule = { module = "com.github.Kyant0:Capsule", version.ref = "capsule" }
+capsule = { module = "io.github.kyant0:capsule", version.ref = "capsule" }
 eddsa = { module = "net.i2p.crypto:eddsa", version.ref = "eddsa" }
 ksoup-html = { module = "com.mohamedrejeb.ksoup:ksoup-html", version.ref = "ksoup" }
 ksoup-entities = { module = "com.mohamedrejeb.ksoup:ksoup-entities", version.ref = "ksoup" }
@@ -144,7 +144,7 @@ nanohttpd-websocket = { module = "org.nanohttpd:nanohttpd-websocket", version.re
 alipaysdk-android = { module = "com.alipay.sdk:alipaysdk-android", version.ref = "alipaysdkAndroid" }
 com-android-billingclient-billing-ktx = "com.android.billingclient:billing-ktx:9.1.0"
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
-androidliquidglass = { module = "com.github.Kyant0:AndroidLiquidGlass", version.ref = "androidliquidglass" }
+androidliquidglass = { module = "io.github.kyant0:backdrop-android", version.ref = "androidliquidglass" }
 materialKolor = { module = "com.materialkolor:material-kolor", version.ref = "materialKolor" }
 #noinspection Aligned16KB
 opencv = { module = "org.opencv:opencv", version.ref = "opencv" }
@@ -153,7 +153,7 @@ androidx-lifecycle = { module = "androidx.lifecycle:lifecycle-livedata-ktx", ver
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
 androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "composeVersion" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
-com-tencent-mmkv = "com.tencent:mmkv:2.4.1"
+com-tencent-mmkv = "com.tencent:mmkv:2.4.3"
 com-tencent-opensdk = "com.tencent.mm.opensdk:wechat-sdk-android:6.8.40"
 org-greenrebot-eventbus = "org.greenrobot:eventbus:3.3.1"
 com-airbnb-lottie = "com.airbnb.android:lottie-compose:6.7.1"
@@ -161,10 +161,10 @@ androidx-security-crypto = { module = "androidx.security:security-crypto-ktx", v
 com-squareup-retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 com-squareup-retrofit2-converter-kotlinx-serialization = { module = "com.squareup.retrofit2:converter-kotlinx-serialization", version.ref = "retrofit" }
 com-squareup-okhttp3-okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
-okhttp3-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version = "5.4.0" }
+okhttp3-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version = "5.5.1" }
 hierynomus-smbj = { module = "com.hierynomus:smbj", version.ref = "smbj" }
-androidx-paging-compose = { module = "androidx.paging:paging-compose", version = "3.5.1" }
-androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version = "3.5.1" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version = "3.5.3" }
+androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version = "3.5.3" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
@@ -225,8 +225,8 @@ androidx-exifinterface = { module = "androidx.exifinterface:exifinterface", vers
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 androidx-palette-ktx = { module = "androidx.palette:palette-ktx", version.ref = "paletteKtx" }
 androidx-ui-text = { module = "androidx.compose.ui:ui-text", version.ref = "composeVersion" }
-avif-coder = { module = "com.github.awxkee:avif-coder", version.ref = "avifCoder" }
-avif-coder-coil = { module = "com.github.awxkee:avif-coder-coil", version.ref = "avifCoder" }
+avif-coder = { module = "io.github.awxkee:avif-coder", version.ref = "avifCoder" }
+avif-coder-coil = { module = "io.github.awxkee:avif-coder-coil", version.ref = "avifCoder" }
 shadowGadgets = { module = "com.github.zed-alpha.shadow-gadgets:compose", version.ref = "shadowGadgets" }
 datastore-preferences-android = { module = "androidx.datastore:datastore-preferences-android", version.ref = "androidx-datastorePreferencesAndroid" }
 fadingEdges = { module = "com.github.t8rin:ComposeFadingEdges", version.ref = "fadingEdges" }
@@ -260,7 +260,7 @@ camera-core = { module = "androidx.camera:camera-core", version.ref = "camerax" 
 camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "camerax" }
 camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "camerax" }
 camera-view = { module = "androidx.camera:camera-view", version.ref = "camerax" }
-scrollbar = { module = "com.github.nanihadesuka:LazyColumnScrollbar", version.ref = "scrollbar" }
+scrollbar = { module = "com.github.nanihadesuka.LazyColumnScrollbar:lazycolumnscrollbar-android", version.ref = "scrollbar" }
 reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reorderable" }
 splashScreen = { module = "androidx.core:core-splashscreen", version.ref = "splashScreen" }
 activityCompose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }

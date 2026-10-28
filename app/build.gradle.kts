@@ -590,7 +590,7 @@ allprojects {
             dependencySubstitution {
                 substitute(module("com.caverock:androidsvg-aar:1.4")).using(module("com.github.deckerst:androidsvg:cc9d59a88f"))
                 substitute(module("org.jetbrains.kotlin:kotlin-android-extensions-runtime:1.4.0")).using(
-                    module("org.jetbrains.kotlin:kotlin-parcelize-runtime:2.2.20")
+                    module("org.jetbrains.kotlin:kotlin-parcelize-runtime:2.4.21")
                 )
             }
         }

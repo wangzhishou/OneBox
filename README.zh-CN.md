@@ -292,10 +292,10 @@ AI 理解、执行、反馈,一气呵成。
 
 ### 环境建议
 
-- 使用仓库根目录下的 **Gradle Wrapper 9.7.0**
+- 使用仓库根目录下的 **Gradle Wrapper 9.8.2**
 - 本仓库的 build-logic 与 CI 均以 **JDK 17** 为目标
-- Android 构建目标：**Compile SDK 37 / Target SDK 37 / Min SDK 24**
-- 当前构建工具版本：**Kotlin 2.4.0 / AGP 9.3.1**
+- Android 构建目标：**Compile SDK 37.2 / Target SDK 37 / Min SDK 24**
+- 当前构建工具版本：**Kotlin 2.4.21 / AGP 9.4.1**
 - 版本信息以 `gradle/libs.versions.toml` 和 `gradle/wrapper/gradle-wrapper.properties` 为准，避免重复维护过期说明
 
 ### 常用命令
