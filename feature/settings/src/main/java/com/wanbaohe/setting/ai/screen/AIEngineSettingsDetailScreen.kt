@@ -20,12 +20,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -43,9 +48,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import kotlin.math.roundToInt
 import com.wanbaohe.base.ui.ClearTextFieldTrailingIcon
 import com.wanbaohe.base.ui.PasswordTextField
 import com.shifenmiao.base.utils.LoginUtils
@@ -114,6 +124,10 @@ fun AIEngineSettingsDetailScreen(
         }
     } == true
 
+    // 导出入口独立判定(F20): 目前与删除同为本地自有引擎, 拆开是为了后续可按协议收紧
+    // (导出 codec 已带 proxyUrl/proxyPath, Jev 导出再导入可以完整还原)
+    val canExportEngine = canDeleteEngine
+
     val coroutineScope = rememberCoroutineScope()
 
     var showExitConfirmDialog by remember { mutableStateOf(false) }
@@ -123,8 +137,11 @@ fun AIEngineSettingsDetailScreen(
     var showRemoteModelPicker by remember { mutableStateOf(false) }
     var showModelValidationErrors by remember { mutableStateOf(false) }
     var showModelExitConfirmDialog by remember { mutableStateOf(false) }
+    // 保存成功后、引擎还不是当前对话引擎时, 弹「设为当前引擎」轻确认
+    var showSetDefaultPrompt by rememberSaveable { mutableStateOf(false) }
 
     val hasUnsavedChanges = component.hasDraftChanged()
+    val loginState = LocalLoginState.current
 
     BackHandler(enabled = hasUnsavedChanges) {
         showExitConfirmDialog = true
@@ -134,13 +151,23 @@ fun AIEngineSettingsDetailScreen(
         AiEngineTestDialog(
             aiEngine = draftEngine,
             onDismiss = { showTestDialog = false },
-            onApiTestSuccess = {
+            onApiTestSuccess = { testedEngine ->
                 component.markTestPassed()
                 showTestDialog = false
                 coroutineScope.launch {
                     AppToastHost.showToast(
                         getString(CoreR.string.connection_successful)
                     )
+                }
+                // 测通后顺手把服务商模型拉进来: 与模型卡「从服务商拉取模型」同一套门控
+                // (isDetestPassed 刚由 markTestPassed 置真, 这里只需复核渠道能力与协议)。
+                // 成功不直接弹选择器, 模型卡顶部出现「发现 N 个可用模型」行内提示, 用户点了再看
+                val canLoadRemote = !testedEngine.requestProtocol.isNonChat &&
+                    (AiEngineConfig.getCapabilities().canLoadRemoteModels ||
+                        loginState.vipLevel == 10)
+                if (canLoadRemote) {
+                    // 自动触发的拉取失败时静默处理, 用户仍可走模型卡的手动入口看错误
+                    component.loadRemoteModels()
                 }
             }
         )
@@ -404,6 +431,8 @@ fun AIEngineSettingsDetailScreen(
                 ModelSelectionCard(
                     engine = engine,
                     models = modelsByProvider[engine.name.lowercase()].orEmpty(),
+                    remoteModelsAvailable = remoteModels.size,
+                    onShowRemoteModels = { showRemoteModelPicker = true },
                     onModelSelected = component::updateModel,
                     onModelEdit = component::beginEditModel,
                     onModelDelete = { pendingDeleteModel = it },
@@ -471,6 +500,65 @@ fun AIEngineSettingsDetailScreen(
             cancelEnabled = true,
             saveEnabled = draftEngine != null && !isSaving,
             saveText = stringResource(R.string.ai_engine_save_action),
+            extraActions = if (canExportEngine) {
+                {
+                    // 本地自有引擎支持导出配置到剪贴板(含 Token, 用于备份/分享);
+                    // 两种形态: JSON 原文 / 导入深链(onebox://action/import_engine?config=...)
+                    var showExportMenu by remember { mutableStateOf(false) }
+                    Box {
+                        IconButton(onClick = { showExportMenu = true }) {
+                            Icon(
+                                imageVector = Icons.Outlined.ContentCopy,
+                                contentDescription = stringResource(R.string.ai_engine_export_action),
+                                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = showExportMenu,
+                            onDismissRequest = { showExportMenu = false },
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.ai_engine_export_menu_json)) },
+                                onClick = {
+                                    showExportMenu = false
+                                    val exported = component.exportConfigToClipboard()
+                                    coroutineScope.launch {
+                                        if (exported) {
+                                            AppToastHost.showToast(
+                                                getString(R.string.ai_engine_export_success)
+                                            )
+                                        } else {
+                                            AppToastHost.showFailureToast(
+                                                getString(R.string.ai_engine_export_failed)
+                                            )
+                                        }
+                                    }
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.ai_engine_export_menu_link)) },
+                                onClick = {
+                                    showExportMenu = false
+                                    val exported = component.exportImportLinkToClipboard()
+                                    coroutineScope.launch {
+                                        if (exported) {
+                                            AppToastHost.showToast(
+                                                getString(R.string.ai_engine_export_success)
+                                            )
+                                        } else {
+                                            AppToastHost.showFailureToast(
+                                                getString(R.string.ai_engine_export_failed)
+                                            )
+                                        }
+                                    }
+                                },
+                            )
+                        }
+                    }
+                }
+            } else {
+                null
+            },
             dangerText = if (canDeleteEngine) {
                 stringResource(R.string.ai_engine_delete_action)
             } else {
@@ -514,7 +602,12 @@ fun AIEngineSettingsDetailScreen(
                             AppToastHost.showToast(
                                 getString(R.string.ai_engine_save_success)
                             )
-                            component.onGoBack()
+                            // 已是当前对话引擎直接退出; 否则给用户一个「保存即用」的轻确认
+                            if (component.isDraftCurrentDefault()) {
+                                component.onGoBack()
+                            } else {
+                                showSetDefaultPrompt = true
+                            }
                         } else {
                             AppToastHost.showFailureToast(
                                 getString(R.string.ai_engine_save_failed)
@@ -529,7 +622,7 @@ fun AIEngineSettingsDetailScreen(
     if (showExitConfirmDialog) {
         ExitWithoutSavingDialog(
             title = stringResource(R.string.ai_engine_discard_title),
-            text = stringResource(R.string.ai_engine_discard_message),
+            text = stringResource(R.string.ai_engine_discard_message_engine),
             onExit = {
                 showExitConfirmDialog = false
                 component.restoreDraft()
@@ -537,6 +630,48 @@ fun AIEngineSettingsDetailScreen(
             },
             onDismiss = { showExitConfirmDialog = false },
             visible = showExitConfirmDialog
+        )
+    }
+
+    if (showSetDefaultPrompt && draftEngine != null) {
+        val engine = draftEngine!!
+        val dismissAndExit = {
+            showSetDefaultPrompt = false
+            component.onGoBack()
+        }
+        EnhancedAlertDialog(
+            visible = true,
+            onDismissRequest = dismissAndExit,
+            title = { Text(stringResource(R.string.ai_engine_saved_title)) },
+            text = {
+                Text(
+                    stringResource(
+                        R.string.ai_engine_set_default_prompt_message,
+                        engine.title.ifBlank { engine.name },
+                    )
+                )
+            },
+            confirmButton = {
+                OnePrimaryButton(
+                    text = stringResource(R.string.ai_engine_set_default_confirm),
+                    onClick = {
+                        if (!component.setDraftAsCurrentDefault()) {
+                            coroutineScope.launch {
+                                AppToastHost.showFailureToast(
+                                    getString(R.string.ai_engine_set_default_failed)
+                                )
+                            }
+                        }
+                        dismissAndExit()
+                    },
+                )
+            },
+            dismissButton = {
+                OneSecondaryButton(
+                    text = stringResource(R.string.ai_engine_set_default_later),
+                    onClick = dismissAndExit,
+                )
+            },
         )
     }
 
@@ -1056,6 +1191,8 @@ private fun ServerConnectivityCard(
 private fun ModelSelectionCard(
     engine: AiEngine,
     models: List<AiModel>,
+    remoteModelsAvailable: Int = 0,
+    onShowRemoteModels: () -> Unit = {},
     onModelSelected: (AiModel) -> Unit,
     onModelEdit: (AiModel) -> Unit,
     onModelDelete: (AiModel) -> Unit,
@@ -1070,6 +1207,28 @@ private fun ModelSelectionCard(
             (remember { AiEngineConfig.getCapabilities() }.canLoadRemoteModels ||
             loginState.vipLevel == 10) && engine.isDetestPassed
     SettingCard {
+        // 测通后自动拉到的服务商模型: 行内提示, 点了「查看」才弹选择器, 不打断用户
+        if (remoteModelsAvailable > 0) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = stringResource(
+                        R.string.ai_engine_remote_models_found,
+                        remoteModelsAvailable
+                    ),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    modifier = Modifier.weight(1f),
+                )
+                OneSecondaryButton(
+                    text = stringResource(R.string.ai_engine_view_models),
+                    onClick = onShowRemoteModels
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+        }
         if (models.isEmpty()) {
             Text(
                 text = stringResource(R.string.ai_engine_model_no_items),
@@ -1178,6 +1337,24 @@ private fun ModelSelectionCard(
     }
 }
 
+// maxTokens 滑杆档位(F5): 线性 256..65536 会把常用区间(1k-8k)挤进滑轨最左 12%,
+// 改离散档位让常用值均分行程; 不在档位上的存量值就近靠档、显示真实存储值, 精确值走输入弹窗
+private val MaxTokensStops = listOf(256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536)
+
+private fun maxTokensToSliderPosition(maxTokens: Int): Float {
+    val index = MaxTokensStops.withIndex()
+        .minByOrNull { kotlin.math.abs(it.value - maxTokens) }?.index ?: 0
+    return index / (MaxTokensStops.size - 1).toFloat()
+}
+
+private fun sliderPositionToMaxTokens(position: Float): Int {
+    // 四舍五入取档(R6): 截断会让最后一档只占 position==1.0 一个点, 其余档各占 12.5%
+    val index = (position * (MaxTokensStops.size - 1))
+        .roundToInt()
+        .coerceIn(0, MaxTokensStops.size - 1)
+    return MaxTokensStops[index]
+}
+
 @Composable
 private fun ParameterCard(
     engine: AiEngine,
@@ -1266,6 +1443,12 @@ private fun ParameterCardContent(
         description = stringResource(R.string.ai_engine_temperature_desc),
         value = engine.model.temperature.toFloat(),
         onValueChange = onTemperatureChange,
+        inputSpec = ParameterInputSpec(
+            min = 0f,
+            max = 1f,
+            isInteger = false,
+            onSubmit = onTemperatureChange,
+        ),
     )
 
     ParameterSliderRow(
@@ -1274,15 +1457,27 @@ private fun ParameterCardContent(
         description = stringResource(R.string.ai_engine_top_p_desc),
         value = engine.model.topP.toFloat(),
         onValueChange = onTopPChange,
+        inputSpec = ParameterInputSpec(
+            min = 0f,
+            max = 1f,
+            isInteger = false,
+            onSubmit = onTopPChange,
+        ),
     )
 
     ParameterSliderRow(
         icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTune,
         title = stringResource(R.string.ai_engine_max_tokens),
         description = stringResource(R.string.ai_engine_max_tokens_desc),
-        value = (engine.model.maxTokens.coerceAtMost(8192) / 8192f),
-        onValueChange = { onMaxTokensChange((it * 8192).toInt().coerceAtLeast(256)) },
-        displayText = "${engine.model.maxTokens.coerceAtMost(8192)}",
+        value = maxTokensToSliderPosition(engine.model.maxTokens),
+        onValueChange = { onMaxTokensChange(sliderPositionToMaxTokens(it)) },
+        displayText = "${engine.model.maxTokens}",
+        inputSpec = ParameterInputSpec(
+            min = 256f,
+            max = 65536f,
+            isInteger = true,
+            onSubmit = { onMaxTokensChange(it.toInt()) },
+        ),
     )
 
     CapabilitySwitchRow(
@@ -1470,6 +1665,14 @@ private fun CapabilitySwitchRow(
     )
 }
 
+/** 参数值标签的精确输入规格; 为 null 时值标签纯展示不可点击 */
+private class ParameterInputSpec(
+    val min: Float,
+    val max: Float,
+    val isInteger: Boolean,
+    val onSubmit: (Float) -> Unit,
+)
+
 @Composable
 private fun ParameterSliderRow(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
@@ -1478,11 +1681,18 @@ private fun ParameterSliderRow(
     value: Float,
     onValueChange: (Float) -> Unit,
     displayText: String? = null,
+    inputSpec: ParameterInputSpec? = null,
 ) {
     OneBoxSectionCard(
         contentPadding = androidx.compose.foundation.layout.PaddingValues(OneBoxDesignSystem.cardPadding),
         verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
     ) {
+        var showValueInputDialog by rememberSaveable { mutableStateOf(false) }
+        val valueText = displayText ?: String.format(
+            LocalLocale.current.platformLocale,
+            "%.1f",
+            value
+        )
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -1502,20 +1712,29 @@ private fun ParameterSliderRow(
             )
             Box(
                 modifier = Modifier
+                    // 触摸目标至少 48dp(F17): 原来只有文字行高 + 8dp padding, 约 28dp 太难点
+                    .heightIn(min = 48.dp)
                     .glassBackground(
                         style = GlassStyle.Thin,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                         shape = OneBoxDesignSystem.pillShape,
                         borderWidth = 0.dp,
                     )
-                    .padding(horizontal = 10.dp, vertical = 4.dp)
+                    // 滑杆仍是主交互, 点值标签弹出精确输入作为增强
+                    .then(
+                        if (inputSpec != null) {
+                            Modifier
+                                .semantics { role = Role.Button }
+                                .clickable { showValueInputDialog = true }
+                        } else {
+                            Modifier
+                        }
+                    )
+                    .padding(horizontal = 10.dp, vertical = 4.dp),
+                contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    text = displayText ?: String.format(
-                        LocalLocale.current.platformLocale,
-                        "%.1f",
-                        value
-                    ),
+                    text = valueText,
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
@@ -1534,7 +1753,102 @@ private fun ParameterSliderRow(
             onValueChange = onValueChange,
             valueRange = 0f..1f,
         )
+
+        if (showValueInputDialog && inputSpec != null) {
+            ParameterValueInputDialog(
+                title = title,
+                initialText = valueText,
+                spec = inputSpec,
+                onDismiss = { showValueInputDialog = false },
+            )
+        }
     }
+}
+
+/** 参数精确输入对话框: 数值校验(合法数字 + 范围 + 整数约束), 非法输入就地提示不关闭 */
+@Composable
+private fun ParameterValueInputDialog(
+    title: String,
+    initialText: String,
+    spec: ParameterInputSpec,
+    onDismiss: () -> Unit,
+) {
+    var input by rememberSaveable { mutableStateOf(initialText) }
+    // 错误态: null=无错误; Invalid=非法数字; OutOfRange=超出范围
+    var inputError by remember { mutableStateOf<ParameterInputError?>(null) }
+    val minText = formatParameterBound(spec.min)
+    val maxText = formatParameterBound(spec.max)
+
+    fun submit() {
+        val parsed = input.trim().toFloatOrNull()
+        when {
+            parsed == null || (spec.isInteger && parsed % 1f != 0f) -> {
+                inputError = ParameterInputError.Invalid
+            }
+            parsed < spec.min || parsed > spec.max -> {
+                inputError = ParameterInputError.OutOfRange
+            }
+            else -> {
+                spec.onSubmit(parsed)
+                onDismiss()
+            }
+        }
+    }
+
+    EnhancedAlertDialog(
+        visible = true,
+        onDismissRequest = onDismiss,
+        title = { Text(title) },
+        text = {
+            OneBoxOutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = input,
+                onValueChange = {
+                    input = it
+                    inputError = null
+                },
+                // 标题已在对话框顶部, 输入框不再重复 label(F16)
+                placeholder = { Text(title) },
+                singleLine = true,
+                isError = inputError != null,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = if (spec.isInteger) KeyboardType.Number else KeyboardType.Decimal,
+                    imeAction = ImeAction.Done,
+                ),
+                keyboardActions = KeyboardActions(onDone = { submit() }),
+                supportingText = {
+                    Text(
+                        text = when (inputError) {
+                            ParameterInputError.Invalid ->
+                                stringResource(R.string.ai_engine_parameter_input_invalid)
+                            ParameterInputError.OutOfRange ->
+                                stringResource(R.string.ai_engine_parameter_input_out_of_range, minText, maxText)
+                            null ->
+                                stringResource(R.string.ai_engine_parameter_input_range_hint, minText, maxText)
+                        },
+                    )
+                },
+            )
+        },
+        confirmButton = {
+            OnePrimaryButton(
+                text = stringResource(CoreR.string.button_confirm),
+                onClick = ::submit,
+            )
+        },
+        dismissButton = {
+            OneSecondaryButton(
+                text = stringResource(CoreR.string.button_cancel),
+                onClick = onDismiss,
+            )
+        },
+    )
+}
+
+private enum class ParameterInputError { Invalid, OutOfRange }
+
+private fun formatParameterBound(value: Float): String {
+    return if (value % 1f == 0f) value.toInt().toString() else value.toString()
 }
 
 

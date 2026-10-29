@@ -218,6 +218,7 @@
     <string name="ai_engine_api_url">API URL</string>
     <string name="ai_engine_api_path">API Path</string>
     <string name="ai_engine_api_url_hint">Auto-fills https:// and a trailing / when you leave the field</string>
+    <string name="ai_engine_api_url_example">Example: %1$s</string>
     <string name="ai_engine_jev_proxy_hint">Enter your Jev API key and pass the connection test to connect directly; you can also use it right away without a key.</string>
     <string name="ai_engine_auth_token">Auth Token</string>
     <string name="ai_engine_auth_type_label">Authentication Type</string>
@@ -254,6 +255,7 @@
     <string name="ai_engine_invalid_server">Please check that the API URL and path are filled in correctly.</string>
     <string name="ai_engine_discard_title">Discard Service Changes</string>
     <string name="ai_engine_discard_message">The current model service configuration has not been saved. Discard these changes?</string>
+    <string name="ai_engine_discard_message_engine">The current model service configuration has not been saved. Discard these changes? Note: a passed connection test only takes effect after saving — discarding will not keep the verified status.</string>
     <string name="ai_engine_list_empty">No model services yet. Tap the icon in the top-right to add one.</string>
     <string name="ai_engine_jev_list_empty">No Jev engines yet. Tap the icon in the top-right to add one.</string>
     <string name="ai_engine_not_found">The model service does not exist or has been deleted.</string>
@@ -265,6 +267,11 @@
     <string name="ai_engine_remote_models_retry">Retry</string>
     <string name="ai_engine_remote_models_empty">No models retrieved</string>
     <string name="ai_engine_remote_models_submit_count">Submit Selected (%1$d)</string>
+    <string name="ai_engine_remote_models_found">Found %1$d available models from this provider</string>
+    <string name="ai_engine_view_models">View</string>
+    <string name="ai_engine_import_empty_clipboard">Clipboard is empty — copy an engine config first</string>
+    <string name="ai_engine_export_menu_json">Copy config (JSON)</string>
+    <string name="ai_engine_export_menu_link">Copy import link</string>
     <string name="ai_engine_load_from_provider">Load Models from Provider</string>
     <string name="ai_engine_file_upload_strategy_title">File Upload Strategy</string>
     <string name="ai_engine_file_upload_strategy_base64">Base64 Inline</string>
@@ -277,6 +284,23 @@
     <string name="ai_engine_cloud_storage_prefix_hint">e.g., ai-uploads/</string>
     <string name="ai_engine_cloud_storage_no_connection">No cloud storage connection configured yet. Please configure one first.</string>
     <string name="ai_engine_test_button_disabled_hint">Fill in the auth token before testing</string>
+    <string name="ai_engine_parameter_input_range_hint">Range: %1$s to %2$s</string>
+    <string name="ai_engine_parameter_input_invalid">Please enter a valid number</string>
+    <string name="ai_engine_parameter_input_out_of_range">Value must be between %1$s and %2$s</string>
+    <string name="ai_engine_token_detected_protocol_hint">This key looks like it belongs to a different service. Tap to switch to the %1$s protocol.</string>
+    <string name="ai_engine_set_current_after_save">Set as current engine after saving</string>
+    <string name="ai_engine_saved_title">Saved</string>
+    <string name="ai_engine_set_default_prompt_message">Set \"%1$s\" as the current chat engine?</string>
+    <string name="ai_engine_set_default_confirm">Set as Current</string>
+    <string name="ai_engine_set_default_later">Not Now</string>
+    <string name="ai_engine_set_default_failed">Saved, but failed to set it as the current engine</string>
+    <string name="ai_engine_export_action">Export Config</string>
+    <string name="ai_engine_export_success">Configuration copied to clipboard. It contains the auth token — share with care.</string>
+    <string name="ai_engine_export_failed">Export failed. Please try again.</string>
+    <string name="ai_engine_import_action">Import from Clipboard</string>
+    <string name="ai_engine_import_invalid">Clipboard content is not a valid engine configuration</string>
+    <string name="ai_engine_import_success">Imported \"%1$s\". Review and save.</string>
+    <string name="ai_engine_import_success_renamed">Imported as \"%1$s\" (the original service key was taken)</string>
 
     <string name="tts_settings_engine_section">Speech Synthesis Engine</string>
     <string name="tts_settings_connection_section">Direct Connection</string>

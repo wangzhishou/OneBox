@@ -340,8 +340,9 @@ private fun EngineListCard(
                 ) {
                     // 协议徽章:同名不同协议的引擎一眼能分开
                     EngineBadge(text = protocolBadgeLabel(engine.requestProtocol))
-                    // 链路状态:可用 / 不可用(不可用红色警示)
-                    val routeAvailable = engine.hasAvailableChatRoute()
+                    // 链路状态:可用 / 不可用(不可用红色警示);
+                    // isUrlError(保存后静默连通性复查失败的标记)同样判为不可用
+                    val routeAvailable = engine.hasAvailableChatRoute() && !engine.isUrlError
                     EngineBadge(
                         text = stringResource(
                             if (routeAvailable) R.string.ai_engine_status_available

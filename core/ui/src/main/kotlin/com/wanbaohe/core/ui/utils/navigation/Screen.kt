@@ -2126,6 +2126,8 @@ sealed class Screen(
             data class AddEngine(
                 /** 非空时按协议名预选(如 "JEV"),空串为默认 OPENAI_COMPATIBLE */
                 val initialProtocol: String = "",
+                /** 深链 onebox://action/import_engine 带入的引擎配置(JSON 或 base64), 进页后预填表单 */
+                val importConfig: String = "",
             ) : Type()
 
             // 聚合页初始 Tab: 本地模型

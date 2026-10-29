@@ -857,6 +857,13 @@
     <string name="connection_successful">Connection successful!</string>
     <string name="connection_failed">Connection failed!</string>
     <string name="test_connection">Test Connection</string>
+    <string name="ai_test_failure_connect_failed">Can\'t reach the server. Check the URL and your network.</string>
+    <string name="ai_test_failure_response_timeout">The server took too long to respond. Try again later.</string>
+    <string name="ai_test_failure_auth_invalid">Invalid auth token. Check your Token.</string>
+    <string name="ai_test_failure_model_not_found">Model or request path not found. Check the model name and API path.</string>
+    <string name="ai_test_failure_rate_limited">Rate limited or insufficient quota. Try again later.</string>
+    <string name="ai_test_failure_server_error">The provider\'s server is having issues. Try again later.</string>
+    <string name="ai_test_failure_unknown">Test failed. See the error details below.</string>
     <string name="api_path">API Path</string>
     <string name="edit_custom_model">Custom Model Name</string>
     <string name="edit_custom_name">Parameters</string>

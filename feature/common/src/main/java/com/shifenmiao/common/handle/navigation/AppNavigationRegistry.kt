@@ -1121,6 +1121,31 @@ object AppNavigationRegistry {
                     val uri = params["uri"]?.takeIf { it.isNotBlank() }?.let { Uri.parse(it) }
                     Screen.FileBrowser(initialUri = uri)
                 }
+            ),
+            AppNavigationTarget(
+                targetType = AppNavigationTargetType.ACTION,
+                routeKey = "import_engine",
+                canonicalName = "action.import_engine",
+                title = "导入引擎配置",
+                description = "打开新增模型服务页，并用 config 参数中的引擎配置（JSON 或 base64 包裹的 JSON）预填表单",
+                aliases = listOf(
+                    "import_ai_engine",
+                    "engine_import",
+                    "add_engine",
+                    "导入引擎",
+                    "导入模型服务"
+                ),
+                deeplink = buildStructuredDeeplink(
+                    targetType = AppNavigationTargetType.ACTION,
+                    routeKey = "import_engine"
+                ),
+                screenBuilder = { params ->
+                    Screen.AISettings(
+                        Screen.AISettings.Type.AddEngine(
+                            importConfig = params["config"].orEmpty()
+                        )
+                    )
+                }
             )
         )
 

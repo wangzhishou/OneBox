@@ -218,6 +218,7 @@
     <string name="ai_engine_api_url">API地址</string>
     <string name="ai_engine_api_path">API路径</string>
     <string name="ai_engine_api_url_hint">失焦时自动补全 https:// 和结尾 /</string>
+    <string name="ai_engine_api_url_example">示例：%1$s</string>
     <string name="ai_engine_jev_proxy_hint">填写你的 Jev 官网授权码并通过连通性测试后即可直连使用；留空也可以直接使用。</string>
     <string name="ai_engine_auth_token">授权码</string>
     <string name="ai_engine_auth_type_label">鉴权方式</string>
@@ -254,6 +255,7 @@
     <string name="ai_engine_invalid_server">请检查 API 地址和路径是否填写正确。</string>
     <string name="ai_engine_discard_title">放弃服务修改</string>
     <string name="ai_engine_discard_message">当前模型服务配置尚未保存，确定要放弃这些修改吗？</string>
+    <string name="ai_engine_discard_message_engine">当前模型服务配置尚未保存，确定要放弃这些修改吗？注意：连接测试通过的验证状态只在保存后生效，放弃修改将不会保留。</string>
     <string name="ai_engine_list_empty">暂无模型服务，点击右上角新增</string>
     <string name="ai_engine_jev_list_empty">暂无 Jev 引擎，点击右上角新增</string>
     <string name="ai_engine_not_found">模型服务不存在或已被删除</string>
@@ -265,6 +267,11 @@
     <string name="ai_engine_remote_models_retry">重试</string>
     <string name="ai_engine_remote_models_empty">未获取到模型列表</string>
     <string name="ai_engine_remote_models_submit_count">提交选中模型 (%1$d)</string>
+    <string name="ai_engine_remote_models_found">发现 %1$d 个可用模型</string>
+    <string name="ai_engine_view_models">查看</string>
+    <string name="ai_engine_import_empty_clipboard">剪贴板是空的,先复制一份引擎配置</string>
+    <string name="ai_engine_export_menu_json">复制配置(JSON)</string>
+    <string name="ai_engine_export_menu_link">复制导入链接</string>
     <string name="ai_engine_load_from_provider">从服务商加载模型</string>
     <string name="ai_engine_file_upload_strategy_title">文件上传策略</string>
     <string name="ai_engine_file_upload_strategy_base64">Base64 直嵌</string>
@@ -277,6 +284,23 @@
     <string name="ai_engine_cloud_storage_prefix_hint">例如: ai-uploads/</string>
     <string name="ai_engine_cloud_storage_no_connection">还没有配置过云存储连接，请前往配置</string>
     <string name="ai_engine_test_button_disabled_hint">请先填写授权码后再测试</string>
+    <string name="ai_engine_parameter_input_range_hint">取值范围：%1$s ~ %2$s</string>
+    <string name="ai_engine_parameter_input_invalid">请输入有效数字</string>
+    <string name="ai_engine_parameter_input_out_of_range">数值需在 %1$s 到 %2$s 之间</string>
+    <string name="ai_engine_token_detected_protocol_hint">这个密钥看起来对应其他服务商，点击切换到「%1$s」协议</string>
+    <string name="ai_engine_set_current_after_save">保存后设为当前引擎</string>
+    <string name="ai_engine_saved_title">已保存</string>
+    <string name="ai_engine_set_default_prompt_message">要把「%1$s」设为当前对话引擎吗？</string>
+    <string name="ai_engine_set_default_confirm">设为当前引擎</string>
+    <string name="ai_engine_set_default_later">暂不</string>
+    <string name="ai_engine_set_default_failed">已保存，但设为当前引擎失败</string>
+    <string name="ai_engine_export_action">导出配置</string>
+    <string name="ai_engine_export_success">配置已复制到剪贴板（含鉴权 Token，请注意保密）</string>
+    <string name="ai_engine_export_failed">导出失败，请稍后重试</string>
+    <string name="ai_engine_import_action">从剪贴板导入</string>
+    <string name="ai_engine_import_invalid">剪贴板内容不是有效的引擎配置</string>
+    <string name="ai_engine_import_success">已导入「%1$s」，请检查后保存</string>
+    <string name="ai_engine_import_success_renamed">服务标识已被占用，已自动改为「%1$s」，请检查后保存</string>
 
     <string name="tts_settings_engine_section">语音合成引擎</string>
     <string name="tts_settings_connection_section">直连配置</string>

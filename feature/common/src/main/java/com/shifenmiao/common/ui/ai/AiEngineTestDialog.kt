@@ -31,28 +31,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.shifenmiao.base.utils.ActionUtils
-import com.shifenmiao.base.utils.StringUtils
+import com.shifenmiao.common.ai.AiEngineConnectivityTester
+import com.shifenmiao.common.ai.AiEngineTestFailureKind
+import com.shifenmiao.common.ai.AiEngineTestResult
 import com.shifenmiao.core.R
-import com.shifenmiao.core.constants.UrlConstants
 import com.shifenmiao.model.ai.AiEngine
-import com.shifenmiao.model.ai.AiRequestProtocol
-import com.shifenmiao.model.ai.AuthType
-import com.shifenmiao.network.AiRequestUrlResolver
-import com.shifenmiao.network.AiRequestUrlResolver.normalizeBaseUrl
-import com.shifenmiao.network.NetworkBuilder
 import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.Response
-import okhttp3.logging.HttpLoggingInterceptor
-import org.json.JSONArray
-import org.json.JSONObject
-import java.util.concurrent.TimeUnit
 
 @Composable
 fun AiEngineTestDialog(
@@ -66,13 +53,13 @@ fun AiEngineTestDialog(
         return
     }
     var isLoading by remember { mutableStateOf(autoTest) }
-    var testResult by remember { mutableStateOf<TestResult?>(null) }
+    var testResult by remember { mutableStateOf<AiEngineTestResult?>(null) }
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         if (autoTest) {
             coroutineScope.launch(Dispatchers.IO) {
-                val result = testAiEngine(aiEngine)
+                val result = AiEngineConnectivityTester.test(aiEngine)
                 testResult = result
                 isLoading = false
                 if (result.success) {
@@ -129,6 +116,21 @@ fun AiEngineTestDialog(
                             },
                             fontWeight = FontWeight.Bold
                         )
+
+                        // 失败归因: 按连接/鉴权/限流/服务商故障分类给可操作的排查提示,
+                        // 详细 HTTP 日志仍保留在下方
+                        testResult
+                            ?.takeIf { !it.success }
+                            ?.failureKind
+                            ?.let { kind ->
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(
+                                    text = failureKindText(kind),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onErrorContainer,
+                                    fontWeight = FontWeight.Medium,
+                                )
+                            }
 
                         Spacer(modifier = Modifier.height(8.dp))
 
@@ -193,7 +195,7 @@ fun AiEngineTestDialog(
                         testResult = null
                         isLoading = true
                         coroutineScope.launch(Dispatchers.IO) {
-                            testResult = testAiEngine(aiEngine)
+                            testResult = AiEngineConnectivityTester.test(aiEngine)
                             isLoading = false
                         }
                     }
@@ -220,171 +222,17 @@ fun AiEngineTestDialog(
     )
 }
 
-data class TestResult(
-    val success: Boolean,
-    val errorMessage: String? = null,
-    val httpLogs: String? = null,
-)
-
-private fun testAiEngine(aiEngine: AiEngine): TestResult {
-    return try {
-        val logBuffer = StringBuilder()
-
-        val loggingInterceptor = HttpLoggingInterceptor { message ->
-            logBuffer.append(message).append("\n")
-        }.apply {
-            level = HttpLoggingInterceptor.Level.BODY
+@Composable
+private fun failureKindText(kind: AiEngineTestFailureKind): String {
+    return stringResource(
+        when (kind) {
+            AiEngineTestFailureKind.CONNECT_FAILED -> R.string.ai_test_failure_connect_failed
+            AiEngineTestFailureKind.RESPONSE_TIMEOUT -> R.string.ai_test_failure_response_timeout
+            AiEngineTestFailureKind.AUTH_INVALID -> R.string.ai_test_failure_auth_invalid
+            AiEngineTestFailureKind.MODEL_NOT_FOUND -> R.string.ai_test_failure_model_not_found
+            AiEngineTestFailureKind.RATE_LIMITED -> R.string.ai_test_failure_rate_limited
+            AiEngineTestFailureKind.SERVER_ERROR -> R.string.ai_test_failure_server_error
+            AiEngineTestFailureKind.UNKNOWN -> R.string.ai_test_failure_unknown
         }
-
-        val client = OkHttpClient.Builder()
-            .connectTimeout(150, TimeUnit.SECONDS)
-            .readTimeout(150, TimeUnit.SECONDS)
-            .addInterceptor(loggingInterceptor)
-            .build()
-
-        val isJev = aiEngine.requestProtocol == AiRequestProtocol.JEV
-        val isAnthropic = aiEngine.requestProtocol == AiRequestProtocol.ANTHROPIC_COMPATIBLE
-
-        // 与 AiRequestUrlResolver 保持同一套默认路径, 避免"聊天能通、测试 404"
-        val requestPath = when {
-            isJev -> StringUtils.normalizeApiPath(aiEngine.requestPath)
-                .ifBlank { UrlConstants.JEV_SYSTEMONE_ENDPOINT }
-            isAnthropic -> StringUtils.normalizeApiPath(aiEngine.requestPath)
-                .ifBlank { "/v1/messages" }
-            aiEngine.requestProtocol == AiRequestProtocol.RESPONSES_COMPATIBLE ->
-                StringUtils.normalizeApiPath(aiEngine.requestPath)
-                    .ifBlank { "/v1/responses" }
-            else -> StringUtils.normalizeApiPath(aiEngine.requestPath)
-                .ifBlank { "/v1/chat/completions" }
-        }
-
-        val url = AiRequestUrlResolver.joinUrl(
-            baseUrl = normalizeBaseUrl(
-                baseUrl = StringUtils.normalizeApiBaseUrl(aiEngine.requestUrl),
-                fallbackBaseUrl = NetworkBuilder.ensureValidBaseUrl(aiEngine)
-            ),
-            path = requestPath
-        )
-
-        val jsonBody = if (isJev) {
-            JSONObject().apply {
-                put("state", "ping")
-                put("model", aiEngine.model.name.takeIf { it.startsWith("jev") } ?: "jev-latest")
-                put("questions", JSONObject().apply {
-                    put("ping", JSONObject().apply {
-                        put("type", "noul")
-                        put("instructions", "Is this a connectivity test?")
-                    })
-                })
-            }
-        } else if (aiEngine.requestProtocol == AiRequestProtocol.RESPONSES_COMPATIBLE) {
-            JSONObject().apply {
-                put("model", aiEngine.model.name)
-                put("input", JSONArray().apply {
-                    put(JSONObject().apply {
-                        put("type", "message")
-                        put("role", "user")
-                        put("content", JSONArray().apply {
-                            put(JSONObject().apply {
-                                put("type", "input_text")
-                                put("text", "Say this is a test!")
-                            })
-                        })
-                    })
-                })
-                put("stream", true)
-            }
-        } else {
-            JSONObject().apply {
-                put("model", aiEngine.model.name)
-                // Anthropic Messages 必填 max_tokens; OpenAI 兼容端点多会忽略多余字段
-                if (isAnthropic) {
-                    put("max_tokens", aiEngine.model.maxTokens.coerceIn(1, 8192))
-                }
-                put("messages", JSONArray().apply {
-                    put(JSONObject().apply {
-                        put("role", "user")
-                        put("content", "Say this is a test!")
-                    })
-                })
-                put("stream", true)
-            }
-        }
-
-        val requestBuilder = Request.Builder()
-            .url(url)
-            .addHeader("Content-Type", "application/json")
-
-        if (aiEngine.authorizationCode.isNotBlank()) {
-            when {
-                aiEngine.requestProtocol == AiRequestProtocol.ANTHROPIC_COMPATIBLE -> {
-                    requestBuilder.addHeader("x-api-key", aiEngine.authorizationCode)
-                }
-                aiEngine.authType == AuthType.API_KEY -> {
-                    requestBuilder.addHeader("api-key", aiEngine.authorizationCode)
-                }
-                aiEngine.requestProtocol != AiRequestProtocol.OWN_PROXY -> {
-                    requestBuilder.addHeader("Authorization", "Bearer ${aiEngine.authorizationCode}")
-                }
-            }
-        }
-
-        val request = requestBuilder
-            .post(jsonBody.toString().toRequestBody("application/json".toMediaType()))
-            .build()
-
-        val response = client.newCall(request).execute()
-
-        if (response.isSuccessful) {
-            // Jev 的 systemone 非流式接口, HTTP 200 即通过; 其余协议仍需流式响应特征
-            if (isJev || response.looksLikeStreamingResponse()) {
-                TestResult(success = true, httpLogs = logBuffer.toString())
-            } else {
-                TestResult(
-                    success = false,
-                    errorMessage = buildString {
-                        append("Response received but does not appear to be a stream response")
-                        response.body.contentType().toString().takeIf { it.isNotBlank() }?.let {
-                            append(" (content-type=")
-                            append(it)
-                            append(')')
-                        }
-                    },
-                    httpLogs = logBuffer.toString()
-                )
-            }
-        } else {
-            TestResult(
-                success = false,
-                errorMessage = "HTTP ${response.code}: ${response.message}",
-                httpLogs = logBuffer.toString()
-            )
-        }
-    } catch (e: Exception) {
-        TestResult(
-            success = false,
-            errorMessage = e.message ?: "Unknown error",
-            httpLogs = null
-        )
-    }
+    )
 }
-
-private fun Response.looksLikeStreamingResponse(): Boolean {
-    val responseBody = body
-    val contentType = responseBody.contentType().toString()
-    if (contentType.contains("text/event-stream", ignoreCase = true)) {
-        return true
-    }
-
-    if (header("x-dashscope-finished")?.equals("false", ignoreCase = true) == true) {
-        return true
-    }
-
-    val bodyString = runCatching { responseBody.string() }.getOrDefault("")
-
-    return bodyString.contains("data: ") ||
-        bodyString.contains("\"delta\"") ||
-        bodyString.contains("\"chunk\"") ||
-        bodyString.contains("\"response.output_text.delta\"")
-}
-

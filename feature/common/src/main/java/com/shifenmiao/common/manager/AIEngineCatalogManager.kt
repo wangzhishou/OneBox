@@ -1,5 +1,7 @@
 package com.shifenmiao.common.manager
 
+import com.shifenmiao.common.ai.AiEngineConnectivityTester
+import com.shifenmiao.common.ai.AiEngineTestFailureKind
 import com.shifenmiao.database.ai.entity.AiEngineEntity
 import com.shifenmiao.database.ai.entity.AiModelEntity
 import com.shifenmiao.model.ai.AiConfigSource
@@ -246,6 +248,9 @@ class AIEngineCatalogManager @Inject constructor(
                     isLocalOwnedEngine = existing.isLocalOwned(),
                 )
 
+                // 详情页原位编辑不走 persistEngineConfig, 静默复查在这里补触发(F8)
+                scheduleSilentConnectivityCheck(engine.copy(name = newName))
+
                 onComplete(true)
             } catch (e: Exception) {
                 makeLog { "AIEngineCatalogManager: Save edited engine failed: $e" }
@@ -348,6 +353,11 @@ class AIEngineCatalogManager @Inject constructor(
 
                 // 同步更新模型配置（canUploadFile、canImage 等字段存储在模型表中）
                 persistEngineModelConfig(engine = engine, isLocalOwnedEngine = isLocalOwnedEngine)
+
+                // 保存后的静默连通性复查统一在这里触发(F8): 新增(addLocalEngine)与
+                // 编辑(saveEngineConfigOnly / saveEditedLocalEngine 兜底路径)都会走到,
+                // 不再只挂在详情页保存上
+                scheduleSilentConnectivityCheck(engine)
 
                 onComplete(AddEngineResult.Success)
             } catch (e: Exception) {
@@ -466,6 +476,62 @@ class AIEngineCatalogManager @Inject constructor(
             }.onFailure {
                 makeLog { "AIEngineCatalogManager: Update model failed: $it" }
             }
+        }
+    }
+
+    /**
+     * 保存后静默连通性复查。
+     *
+     * 针对「走直连路由但本次未通过测试」的引擎(典型场景: 海外渠道填了 token 直接保存,
+     * canChatDirectly 因 hasOwnToken 成立, 但 isDetestPassed 从未置真): 在 managerScope 里
+     * 后台跑一次真实连通测试, 不阻塞保存流程、不弹窗。
+     *
+     * 结果处理(F2/R2):
+     * - 成功: 显式清掉 isUrlError(可能之前失败留下过), 引擎恢复可用;
+     * - 失败且是 MODEL_NOT_FOUND(404, 地址/路径确实错): 落库 isUrlError=true,
+     *   用户可见反馈就是引擎列表页已有的红色「不可用」徽章;
+     *   AUTH_INVALID(401/403) 真因在 Token 不在 URL, 不落这个位(否则详情页 URL 框
+     *   无辜变红且文案指错方向);
+     * - 超时/限流 429/5xx 等瞬时故障: 只记日志不落库, 不让一次网络抖动变成永久红徽章。
+     *
+     * 中期方案(未做): 把布尔位升级为 lastTestedAt + lastTestError, 列表徽章带时间语义。
+     */
+    fun scheduleSilentConnectivityCheck(engine: AiEngine) {
+        if (engine.requestProtocol.isNonChat) return
+        if (engine.requestUrl.isBlank()) return
+        if (!engine.canChatDirectly() || engine.isDetestPassed) return
+        managerScope.launch {
+            val result = AiEngineConnectivityTester.test(engine)
+            when {
+                result.success -> setEngineUrlError(engine, hasError = false)
+                // 只落「地址/路径确实错」的 404(R2): AUTH_INVALID(401/403) 真因在 Token,
+                // 落 isUrlError 会让详情页 URL 框无辜变红、文案指错方向, 不落
+                result.failureKind == AiEngineTestFailureKind.MODEL_NOT_FOUND -> {
+                    makeLog {
+                        "AIEngineCatalogManager: Silent connectivity check failed for " +
+                            "'${engine.name}' (${result.failureKind}), marking isUrlError"
+                    }
+                    setEngineUrlError(engine, hasError = true)
+                }
+                else -> makeLog {
+                    "AIEngineCatalogManager: Silent connectivity check transiently failed for " +
+                        "'${engine.name}' (${result.failureKind}), not marking isUrlError"
+                }
+            }
+        }
+    }
+
+    private suspend fun setEngineUrlError(engine: AiEngine, hasError: Boolean) {
+        runCatching {
+            val row = aiEngineRepository.getEngineByNameAndProtocol(
+                name = engine.name,
+                requestProtocol = engine.requestProtocol.name,
+            ) ?: return@runCatching
+            if (row.isUrlError != hasError) {
+                aiEngineRepository.updateEngine(row.copy(isUrlError = hasError))
+            }
+        }.onFailure {
+            makeLog { "AIEngineCatalogManager: Update engine url error flag failed: $it" }
         }
     }
 

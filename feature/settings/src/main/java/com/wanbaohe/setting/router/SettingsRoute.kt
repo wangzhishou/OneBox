@@ -6,8 +6,8 @@ sealed class SettingsRoute {
     data class AIServiceHub(val initialTab: AIServiceHubTab = AIServiceHubTab.Text) : SettingsRoute()
     data class AIEngineDetail(val engineName: String, val requestProtocol: String) : SettingsRoute()
     data object AIWorkingModel : SettingsRoute()
-    /** initialProtocol 非空时按该协议预选(如从 Jev tab 进入时预选 JEV) */
-    data class AIAddEngine(val initialProtocol: String = "") : SettingsRoute()
+    /** initialProtocol 非空时按该协议预选(如从 Jev tab 进入时预选 JEV); importConfig 为深链导入的配置文本 */
+    data class AIAddEngine(val initialProtocol: String = "", val importConfig: String = "") : SettingsRoute()
     data object ThemeSettings : SettingsRoute()
     data object SystemPromptManagement : SettingsRoute()
     data class SystemPromptDetail(val promptId: Int) : SettingsRoute()

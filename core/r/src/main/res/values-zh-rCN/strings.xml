@@ -893,6 +893,13 @@
     <string name="connection_successful">连接成功!</string>
     <string name="connection_failed">连接失败!</string>
     <string name="test_connection">测试API连接</string>
+    <string name="ai_test_failure_connect_failed">连不上服务器，请检查 URL 与网络</string>
+    <string name="ai_test_failure_response_timeout">服务器响应超时，请稍后重试</string>
+    <string name="ai_test_failure_auth_invalid">密钥无效，请检查 Token</string>
+    <string name="ai_test_failure_model_not_found">模型或请求路径不存在，请检查模型名与 API 路径</string>
+    <string name="ai_test_failure_rate_limited">请求被限流或额度不足，请稍后重试</string>
+    <string name="ai_test_failure_server_error">服务商服务器故障，请稍后重试</string>
+    <string name="ai_test_failure_unknown">测试未通过，详见下方错误详情</string>
     <string name="api_path">API路径</string>
     <string name="edit_custom_model">自定义模型名称</string>
     <string name="edit_custom_name">参数</string>
