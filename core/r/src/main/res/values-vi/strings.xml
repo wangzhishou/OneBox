@@ -2049,4 +2049,11 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <string name="viewer_epub_locked">Sách này đã được mã hóa</string>
     <string name="viewer_epub_part_unreadable">Không thể đọc phần nội dung này.</string>
     <string name="ai_duel_language_instruction">Trừ khi cuộc trò chuyện yêu cầu ngôn ngữ khác, hãy suy nghĩ và trả lời bằng %1$s, quá trình suy nghĩ cũng viết bằng %1$s.</string>
+    <string name="ai_test_failure_connect_failed">Không thể kết nối máy chủ, vui lòng kiểm tra URL và mạng</string>
+    <string name="ai_test_failure_response_timeout">Máy chủ phản hồi quá thời gian, vui lòng thử lại sau</string>
+    <string name="ai_test_failure_auth_invalid">Khóa không hợp lệ, vui lòng kiểm tra Token</string>
+    <string name="ai_test_failure_model_not_found">Mô hình hoặc đường dẫn yêu cầu không tồn tại, vui lòng kiểm tra tên mô hình và đường dẫn API</string>
+    <string name="ai_test_failure_rate_limited">Yêu cầu bị giới hạn tần suất hoặc không đủ hạn mức, vui lòng thử lại sau</string>
+    <string name="ai_test_failure_server_error">Máy chủ nhà cung cấp dịch vụ gặp sự cố, vui lòng thử lại sau</string>
+    <string name="ai_test_failure_unknown">Kiểm tra không đạt, xem chi tiết lỗi bên dưới</string>
 </resources>

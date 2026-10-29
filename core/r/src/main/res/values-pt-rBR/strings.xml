@@ -2062,4 +2062,11 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
     <string name="viewer_epub_locked">Este livro está bloqueado</string>
     <string name="viewer_epub_part_unreadable">Não foi possível ler esta parte do livro.</string>
     <string name="ai_duel_language_instruction">A menos que a conversa peça outro idioma, pense e responda em %1$s — escreva seu raciocínio em %1$s também.</string>
+    <string name="ai_test_failure_connect_failed">Não foi possível conectar ao servidor. Verifique a URL e a rede</string>
+    <string name="ai_test_failure_response_timeout">O servidor demorou para responder. Tente novamente mais tarde</string>
+    <string name="ai_test_failure_auth_invalid">Chave inválida. Verifique o Token</string>
+    <string name="ai_test_failure_model_not_found">Modelo ou caminho da requisição não encontrado. Verifique o nome do modelo e o caminho da API</string>
+    <string name="ai_test_failure_rate_limited">Requisição limitada ou cota insuficiente. Tente novamente mais tarde</string>
+    <string name="ai_test_failure_server_error">Falha no servidor do provedor. Tente novamente mais tarde</string>
+    <string name="ai_test_failure_unknown">Teste não aprovado. Veja os detalhes do erro abaixo</string>
 </resources>

@@ -2050,4 +2050,11 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="viewer_epub_locked">Ce livre est chiffré</string>
     <string name="viewer_epub_part_unreadable">Cette partie du contenu est illisible.</string>
     <string name="ai_duel_language_instruction">Sauf demande contraire dans la conversation, réfléchis et réponds en %1$s, en rédigeant aussi ton raisonnement en %1$s.</string>
+    <string name="ai_test_failure_connect_failed">Impossible de se connecter au serveur, veuillez vérifier l\'URL et le réseau</string>
+    <string name="ai_test_failure_response_timeout">Délai de réponse du serveur dépassé, veuillez réessayer plus tard</string>
+    <string name="ai_test_failure_auth_invalid">Clé invalide, veuillez vérifier le Token</string>
+    <string name="ai_test_failure_model_not_found">Modèle ou chemin de requête introuvable, veuillez vérifier le nom du modèle et le chemin de l\'API</string>
+    <string name="ai_test_failure_rate_limited">Requête limitée ou quota insuffisant, veuillez réessayer plus tard</string>
+    <string name="ai_test_failure_server_error">Panne du serveur du fournisseur, veuillez réessayer plus tard</string>
+    <string name="ai_test_failure_unknown">Test échoué, voir les détails de l\'erreur ci-dessous</string>
 </resources>

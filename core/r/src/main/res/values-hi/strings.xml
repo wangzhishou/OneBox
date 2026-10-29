@@ -2062,4 +2062,11 @@
     <string name="viewer_epub_locked">यह किताब एन्क्रिप्टेड है</string>
     <string name="viewer_epub_part_unreadable">किताब का यह हिस्सा पढ़ा नहीं जा सका।</string>
     <string name="ai_duel_language_instruction">जब तक बातचीत में किसी और भाषा के लिए न कहा जाए, %1$s में सोचें और उत्तर दें, सोचने की प्रक्रिया भी %1$s में लिखें।</string>
+    <string name="ai_test_failure_connect_failed">सर्वर से कनेक्ट नहीं हो सका, कृपया URL और नेटवर्क जाँचें</string>
+    <string name="ai_test_failure_response_timeout">सर्वर प्रतिक्रिया का समय समाप्त, कृपया बाद में पुनः प्रयास करें</string>
+    <string name="ai_test_failure_auth_invalid">कुंजी अमान्य है, कृपया Token जाँचें</string>
+    <string name="ai_test_failure_model_not_found">मॉडल या अनुरोध पथ मौजूद नहीं है, कृपया मॉडल नाम और API पथ जाँचें</string>
+    <string name="ai_test_failure_rate_limited">अनुरोध दर-सीमित है या कोटा अपर्याप्त है, कृपया बाद में पुनः प्रयास करें</string>
+    <string name="ai_test_failure_server_error">सेवा प्रदाता के सर्वर में खराबी, कृपया बाद में पुनः प्रयास करें</string>
+    <string name="ai_test_failure_unknown">परीक्षण विफल, विवरण नीचे त्रुटि विवरण में देखें</string>
 </resources>

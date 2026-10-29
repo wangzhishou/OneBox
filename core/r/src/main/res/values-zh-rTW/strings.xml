@@ -2052,4 +2052,11 @@
     <string name="viewer_epub_locked">這本書已加密</string>
     <string name="viewer_epub_part_unreadable">這一部分內容讀不出來。</string>
     <string name="ai_duel_language_instruction">除對話裡另有要求外，請用%1$s思考和回答，思考過程也寫成%1$s。</string>
+    <string name="ai_test_failure_connect_failed">連不上伺服器，請檢查 URL 與網路</string>
+    <string name="ai_test_failure_response_timeout">伺服器回應逾時，請稍後重試</string>
+    <string name="ai_test_failure_auth_invalid">金鑰無效，請檢查 Token</string>
+    <string name="ai_test_failure_model_not_found">模型或請求路徑不存在，請檢查模型名稱與 API 路徑</string>
+    <string name="ai_test_failure_rate_limited">請求被限流或額度不足，請稍後重試</string>
+    <string name="ai_test_failure_server_error">服務商伺服器故障，請稍後重試</string>
+    <string name="ai_test_failure_unknown">測試未通過，詳見下方錯誤詳情</string>
 </resources>

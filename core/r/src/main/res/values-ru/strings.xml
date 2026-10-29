@@ -2096,4 +2096,11 @@
     <string name="viewer_epub_locked">Эта книга зашифрована</string>
     <string name="viewer_epub_part_unreadable">Эту часть книги не удалось прочитать.</string>
     <string name="ai_duel_language_instruction">Если в разговоре не требуется другой язык, думайте и отвечайте на языке %1$s, а рассуждения также записывайте на языке %1$s.</string>
+    <string name="ai_test_failure_connect_failed">Не удаётся подключиться к серверу, проверьте URL и сеть</string>
+    <string name="ai_test_failure_response_timeout">Сервер не отвечает, повторите попытку позже</string>
+    <string name="ai_test_failure_auth_invalid">Недействительный ключ, проверьте Token</string>
+    <string name="ai_test_failure_model_not_found">Модель или путь запроса не существует, проверьте имя модели и путь API</string>
+    <string name="ai_test_failure_rate_limited">Превышен лимит запросов или недостаточно квоты, повторите попытку позже</string>
+    <string name="ai_test_failure_server_error">Сбой сервера провайдера, повторите попытку позже</string>
+    <string name="ai_test_failure_unknown">Проверка не пройдена, подробности ошибки ниже</string>
 </resources>

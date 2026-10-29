@@ -2062,4 +2062,11 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <string name="viewer_epub_locked">Naka-lock ang aklat na ito</string>
     <string name="viewer_epub_part_unreadable">Hindi mabasa ang bahaging ito ng aklat.</string>
     <string name="ai_duel_language_instruction">Maliban kung may ibang wikang hinihingi ang usapan, mag-isip at sumagot sa %1$s — isulat din sa %1$s ang iyong pangangatwiran.</string>
+    <string name="ai_test_failure_connect_failed">Hindi makakonekta sa server, pakisuri ang URL at network</string>
+    <string name="ai_test_failure_response_timeout">Nag-timeout ang tugon ng server, pakisubukang muli mamaya</string>
+    <string name="ai_test_failure_auth_invalid">Di-wasto ang key, pakisuri ang Token</string>
+    <string name="ai_test_failure_model_not_found">Wala ang modelo o path ng kahilingan, pakisuri ang pangalan ng modelo at API path</string>
+    <string name="ai_test_failure_rate_limited">Na-rate limit o kulang ang quota, pakisubukang muli mamaya</string>
+    <string name="ai_test_failure_server_error">May problema sa server ng provider, pakisubukang muli mamaya</string>
+    <string name="ai_test_failure_unknown">Bigo ang pagsubok, tingnan ang detalye ng error sa ibaba</string>
 </resources>

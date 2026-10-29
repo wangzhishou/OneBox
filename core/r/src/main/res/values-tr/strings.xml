@@ -2062,4 +2062,11 @@
     <string name="viewer_epub_locked">Bu kitap şifrelenmiş</string>
     <string name="viewer_epub_part_unreadable">Kitabın bu bölümü okunamadı.</string>
     <string name="ai_duel_language_instruction">Konuşma başka bir dil istemedikçe %1$s dilinde düşün ve yanıtla; akıl yürütmeni de %1$s dilinde yaz.</string>
+    <string name="ai_test_failure_connect_failed">Sunucuya bağlanılamıyor, lütfen URL\'yi ve ağı kontrol edin</string>
+    <string name="ai_test_failure_response_timeout">Sunucu yanıtı zaman aşımına uğradı, lütfen daha sonra tekrar deneyin</string>
+    <string name="ai_test_failure_auth_invalid">Anahtar geçersiz, lütfen Token\'ı kontrol edin</string>
+    <string name="ai_test_failure_model_not_found">Model veya istek yolu mevcut değil, lütfen model adını ve API yolunu kontrol edin</string>
+    <string name="ai_test_failure_rate_limited">İstek hız sınırına takıldı veya kota yetersiz, lütfen daha sonra tekrar deneyin</string>
+    <string name="ai_test_failure_server_error">Sağlayıcı sunucu arızası, lütfen daha sonra tekrar deneyin</string>
+    <string name="ai_test_failure_unknown">Test başarısız oldu, ayrıntılar için aşağıdaki hata ayrıntılarına bakın</string>
 </resources>

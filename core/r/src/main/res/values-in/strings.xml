@@ -2051,4 +2051,11 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
     <string name="viewer_epub_locked">Buku ini terenkripsi</string>
     <string name="viewer_epub_part_unreadable">Bagian ini tidak dapat dibaca.</string>
     <string name="ai_duel_language_instruction">Kecuali percakapan meminta bahasa lain, berpikir dan jawablah dalam %1$s, tulis proses berpikir juga dalam %1$s.</string>
+    <string name="ai_test_failure_connect_failed">Tidak dapat terhubung ke server, periksa URL dan jaringan</string>
+    <string name="ai_test_failure_response_timeout">Respons server habis waktu, coba lagi nanti</string>
+    <string name="ai_test_failure_auth_invalid">Kunci tidak valid, periksa Token</string>
+    <string name="ai_test_failure_model_not_found">Model atau jalur permintaan tidak ditemukan, periksa nama model dan jalur API</string>
+    <string name="ai_test_failure_rate_limited">Permintaan dibatasi atau kuota tidak cukup, coba lagi nanti</string>
+    <string name="ai_test_failure_server_error">Server penyedia layanan bermasalah, coba lagi nanti</string>
+    <string name="ai_test_failure_unknown">Tes gagal, lihat detail kesalahan di bawah</string>
 </resources>

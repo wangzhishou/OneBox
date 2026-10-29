@@ -2051,4 +2051,11 @@
     <string name="viewer_epub_locked">この書籍は暗号化されています</string>
     <string name="viewer_epub_part_unreadable">この部分の内容を読み取れません。</string>
     <string name="ai_duel_language_instruction">会話で別の言語を求められない限り、%1$sで考えて回答し、思考過程も%1$sで書いてください。</string>
+    <string name="ai_test_failure_connect_failed">サーバーに接続できません。URLとネットワークを確認してください</string>
+    <string name="ai_test_failure_response_timeout">サーバーの応答がタイムアウトしました。しばらくしてから再試行してください</string>
+    <string name="ai_test_failure_auth_invalid">キーが無効です。Tokenを確認してください</string>
+    <string name="ai_test_failure_model_not_found">モデルまたはリクエストパスが存在しません。モデル名とAPIパスを確認してください</string>
+    <string name="ai_test_failure_rate_limited">リクエストがレート制限されているか、クォータが不足しています。しばらくしてから再試行してください</string>
+    <string name="ai_test_failure_server_error">プロバイダーのサーバー障害です。しばらくしてから再試行してください</string>
+    <string name="ai_test_failure_unknown">テストに失敗しました。詳細は下記のエラー詳細をご覧ください</string>
 </resources>

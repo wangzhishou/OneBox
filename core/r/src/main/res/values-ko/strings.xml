@@ -2051,4 +2051,11 @@
     <string name="viewer_epub_locked">이 책은 암호화되어 있습니다</string>
     <string name="viewer_epub_part_unreadable">이 부분의 내용을 읽을 수 없습니다.</string>
     <string name="ai_duel_language_instruction">대화에서 다른 언어를 요구하지 않는 한 %1$s로 생각하고 답하며, 사고 과정도 %1$s로 작성하세요.</string>
+    <string name="ai_test_failure_connect_failed">서버에 연결할 수 없습니다. URL과 네트워크를 확인하세요</string>
+    <string name="ai_test_failure_response_timeout">서버 응답 시간이 초과되었습니다. 잠시 후 다시 시도하세요</string>
+    <string name="ai_test_failure_auth_invalid">키가 유효하지 않습니다. Token을 확인하세요</string>
+    <string name="ai_test_failure_model_not_found">모델 또는 요청 경로가 존재하지 않습니다. 모델명과 API 경로를 확인하세요</string>
+    <string name="ai_test_failure_rate_limited">요청이 제한되었거나 할당량이 부족합니다. 잠시 후 다시 시도하세요</string>
+    <string name="ai_test_failure_server_error">서비스 제공업체 서버 오류입니다. 잠시 후 다시 시도하세요</string>
+    <string name="ai_test_failure_unknown">테스트에 실패했습니다. 아래 오류 상세를 참고하세요</string>
 </resources>

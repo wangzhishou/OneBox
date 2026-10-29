@@ -2062,4 +2062,11 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
     <string name="viewer_epub_locked">Dieses Buch ist verschlüsselt</string>
     <string name="viewer_epub_part_unreadable">Dieser Teil des Inhalts kann nicht gelesen werden.</string>
     <string name="ai_duel_language_instruction">Sofern das Gespräch nichts anderes verlangt, denke und antworte auf %1$s – schreibe auch deine Überlegungen auf %1$s.</string>
+    <string name="ai_test_failure_connect_failed">Keine Verbindung zum Server, bitte URL und Netzwerk prüfen</string>
+    <string name="ai_test_failure_response_timeout">Zeitüberschreitung bei der Serverantwort, bitte später erneut versuchen</string>
+    <string name="ai_test_failure_auth_invalid">Ungültiger Schlüssel, bitte Token prüfen</string>
+    <string name="ai_test_failure_model_not_found">Modell oder Anfragepfad nicht vorhanden, bitte Modellname und API-Pfad prüfen</string>
+    <string name="ai_test_failure_rate_limited">Anfrage limitiert oder Kontingent erschöpft, bitte später erneut versuchen</string>
+    <string name="ai_test_failure_server_error">Serverfehler beim Anbieter, bitte später erneut versuchen</string>
+    <string name="ai_test_failure_unknown">Test fehlgeschlagen, Details siehe Fehlerbeschreibung unten</string>
 </resources>

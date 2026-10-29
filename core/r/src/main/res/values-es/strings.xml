@@ -2062,4 +2062,11 @@ Consejo: si eliges «Ocultar para siempre», podrás devolverme más tarde en Aj
     <string name="viewer_epub_locked">Este libro está cifrado</string>
     <string name="viewer_epub_part_unreadable">No se pudo leer esta parte del libro.</string>
     <string name="ai_duel_language_instruction">A menos que la conversación pida otro idioma, piensa y responde en %1$s; escribe también tu razonamiento en %1$s.</string>
+    <string name="ai_test_failure_connect_failed">No se puede conectar al servidor, verifica la URL y la red</string>
+    <string name="ai_test_failure_response_timeout">El servidor no respondió a tiempo, inténtalo de nuevo más tarde</string>
+    <string name="ai_test_failure_auth_invalid">Clave no válida, verifica el Token</string>
+    <string name="ai_test_failure_model_not_found">El modelo o la ruta de solicitud no existe, verifica el nombre del modelo y la ruta de la API</string>
+    <string name="ai_test_failure_rate_limited">Solicitud limitada o cuota insuficiente, inténtalo de nuevo más tarde</string>
+    <string name="ai_test_failure_server_error">Fallo del servidor del proveedor, inténtalo de nuevo más tarde</string>
+    <string name="ai_test_failure_unknown">La prueba no se superó, consulta los detalles del error abajo</string>
 </resources>

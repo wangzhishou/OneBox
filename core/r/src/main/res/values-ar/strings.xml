@@ -2096,4 +2096,11 @@
     <string name="viewer_epub_locked">هذا الكتاب مشفّر</string>
     <string name="viewer_epub_part_unreadable">تعذّرت قراءة هذا الجزء من الكتاب.</string>
     <string name="ai_duel_language_instruction">ما لم تطلب المحادثة لغة أخرى، فكّر وأجب بـ%1$s، واكتب عملية تفكيرك بـ%1$s أيضًا.</string>
+    <string name="ai_test_failure_connect_failed">تعذر الاتصال بالخادم، يرجى التحقق من عنوان URL والشبكة</string>
+    <string name="ai_test_failure_response_timeout">انتهت مهلة استجابة الخادم، يرجى المحاولة لاحقًا</string>
+    <string name="ai_test_failure_auth_invalid">المفتاح غير صالح، يرجى التحقق من الرمز المميز</string>
+    <string name="ai_test_failure_model_not_found">النموذج أو مسار الطلب غير موجود، يرجى التحقق من اسم النموذج ومسار API</string>
+    <string name="ai_test_failure_rate_limited">تم تقييد الطلبات أو الحصة غير كافية، يرجى المحاولة لاحقًا</string>
+    <string name="ai_test_failure_server_error">عطل في خادم مزود الخدمة، يرجى المحاولة لاحقًا</string>
+    <string name="ai_test_failure_unknown">لم ينجح الاختبار، راجع تفاصيل الخطأ أدناه</string>
 </resources>
