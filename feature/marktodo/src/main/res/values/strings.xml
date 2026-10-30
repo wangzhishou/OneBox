@@ -106,11 +106,26 @@
     <string name="dialog_add_task_clear">Clear</string>
     <string name="toast_select_category_first">Please select or add a group first</string>
     <string name="schedule_section_title">Schedule</string>
+    <string name="schedule_hint_set_due">Set a due date to add this task to your schedule</string>
+    <string name="schedule_action_join">Add to schedule</string>
+    <string name="schedule_joining">Adding…</string>
+    <string name="schedule_when_all_day">%1$s, all day</string>
+    <string name="schedule_status_joined">%1$s · On your schedule</string>
+    <string name="schedule_status_joined_remind">%1$s · On your schedule, with a reminder</string>
+    <string name="schedule_action_view">View</string>
+    <string name="schedule_action_remove">Remove</string>
+    <string name="schedule_removed">Removed from schedule</string>
+    <string name="schedule_pending_join">This task will be added to your schedule when you save</string>
+    <string name="schedule_pending_cancel">Cancel</string>
+    <string name="schedule_will_update">Saving will move the schedule to the new time</string>
+    <string name="schedule_will_remove">Saving will remove it from the schedule</string>
+    <string name="schedule_notification_off">Notifications are off, so the reminder will not arrive</string>
+    <string name="schedule_join_failed">Could not add this task to the schedule. Try again</string>
     <string name="action_open_schedule">Open schedule hub</string>
     <string name="action_create_schedule">Create local schedule</string>
     <string name="schedule_creating">Creating schedule…</string>
     <string name="schedule_missing_due_date">Please set a due date for this task first</string>
-    <string name="schedule_created_success">Local schedule created</string>
+    <string name="schedule_created_success">Added to your schedule. You will be reminded when it is due</string>
     <string name="schedule_created_failed">Failed to create schedule. Please try again later</string>
 
     <!-- Delete Confirmation -->

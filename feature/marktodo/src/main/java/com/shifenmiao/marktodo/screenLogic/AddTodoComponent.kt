@@ -101,6 +101,11 @@ class AddTodoComponent @AssistedInject internal constructor(
                     onGoBack()
                 }
             }
+            componentScope.launch {
+                scheduleService.observeLinkedSchedule(editingTaskId).collect { linked ->
+                    _uiState.value = _uiState.value.copy(linkedSchedule = linked)
+                }
+            }
         }
     }
 
@@ -180,12 +185,20 @@ class AddTodoComponent @AssistedInject internal constructor(
                 _uiState.value = _uiState.value.copy(showTimePicker = event.show)
                 true
             }
-            is AddTodoUiEvent.CreateLinkedSchedule -> {
-                createLinkedSchedule()
+            AddTodoUiEvent.JoinSchedule -> {
+                joinSchedule()
                 true
             }
-            is AddTodoUiEvent.OpenScheduleHub -> {
-                openScheduleHub()
+            AddTodoUiEvent.RemoveLinkedSchedule -> {
+                removeLinkedSchedule()
+                true
+            }
+            AddTodoUiEvent.CancelPendingJoin -> {
+                _uiState.value = _uiState.value.copy(joinScheduleOnSave = false)
+                true
+            }
+            AddTodoUiEvent.OpenSchedule -> {
+                openSchedule()
                 true
             }
             is AddTodoUiEvent.SubmitTask -> {
@@ -233,6 +246,7 @@ class AddTodoComponent @AssistedInject internal constructor(
             dueDateMillis = updatedDate,
             hasDueTime = updatedDate != null && current.hasDueTime,
             showDatePicker = false,
+            joinScheduleOnSave = updatedDate != null && current.joinScheduleOnSave,
         )
     }
 
@@ -295,26 +309,43 @@ class AddTodoComponent @AssistedInject internal constructor(
         _uiState.value = currentState.copy(isSaving = true)
 
         componentScope.launch {
-            val result = if (editingTaskId != null) {
+            if (editingTaskId != null) {
                 service.updateTask(
                     taskId = editingTaskId,
                     input = input,
-                    source = "UI:EditTodoScreen"
-                )
+                    source = "UI:EditTodoScreen",
+                ).onSuccess {
+                    if (!syncLinkedSchedule(editingTaskId, input)) {
+                        AppToastHost.showToast(context.getString(R.string.schedule_sync_failed))
+                    }
+                    onGoBack()
+                }.onFailure {
+                    _uiState.value = _uiState.value.copy(isSaving = false)
+                    AppToastHost.showToast(context.getString(R.string.error_save_failed))
+                }
             } else {
                 service.createTask(
                     input = input,
-                    source = "UI:AddTodoScreen"
-                )
-            }
-            result.onSuccess {
-                if (editingTaskId != null && !syncLinkedSchedule(editingTaskId, input)) {
-                    AppToastHost.showToast(context.getString(R.string.schedule_sync_failed))
+                    source = "UI:AddTodoScreen",
+                ).onSuccess { newTaskId ->
+                    if (_uiState.value.joinScheduleOnSave && input.dueDateMillis != null) {
+                        val joined = scheduleService.createTaskDeadlineEvent(
+                            linkedTaskId = newTaskId,
+                            title = input.title,
+                            description = input.note,
+                            dueAtMillis = input.dueDateMillis,
+                            source = "UI:AddTodoScreen",
+                            isAllDay = !input.hasDueTime,
+                        ).isSuccess
+                        if (!joined) {
+                            AppToastHost.showToast(context.getString(R.string.schedule_join_failed))
+                        }
+                    }
+                    onGoBack()
+                }.onFailure {
+                    _uiState.value = _uiState.value.copy(isSaving = false)
+                    AppToastHost.showToast(context.getString(R.string.error_save_failed))
                 }
-                onGoBack()
-            }.onFailure {
-                _uiState.value = _uiState.value.copy(isSaving = false)
-                AppToastHost.showToast(context.getString(R.string.error_save_failed))
             }
         }
 
@@ -380,28 +411,32 @@ class AddTodoComponent @AssistedInject internal constructor(
         }
     }
 
-    // ── 日程联动（承接原 TodoDetailScreen 的能力） ──────────────
+    // ── 日程：加入后留在编辑页，查看再打开按天排列的全部日程 ──
 
-    private fun openScheduleHub() {
-        val taskId = editingTaskId ?: return
+    private fun openSchedule() {
+        val state = _uiState.value
         onNavigate(
             Screen.Schedule(
-                linkedTaskId = taskId,
-                focusDateMillis = _uiState.value.dueDateMillis
+                linkedTaskId = editingTaskId,
+                focusDateMillis = state.linkedSchedule?.startUtcMillis ?: state.dueDateMillis,
             )
         )
     }
 
-    private fun createLinkedSchedule() {
-        val taskId = editingTaskId ?: return
+    private fun joinSchedule() {
         val state = _uiState.value
-        val dueDate = state.dueDateMillis ?: run {
-            AppToastHost.showToast(context.getString(R.string.schedule_missing_due_date))
+        if (state.isJoiningSchedule) return
+        if (state.taskTitle.isBlank()) {
+            _uiState.value = state.copy(showValidationErrors = true)
             return
         }
-        if (state.isCreatingSchedule) return
-
-        _uiState.value = state.copy(isCreatingSchedule = true)
+        val dueDate = state.dueDateMillis ?: return
+        val taskId = editingTaskId
+        if (taskId == null) {
+            _uiState.value = state.copy(joinScheduleOnSave = true, isDirty = true)
+            return
+        }
+        _uiState.value = state.copy(isJoiningSchedule = true)
         componentScope.launch {
             val result = scheduleService.createTaskDeadlineEvent(
                 linkedTaskId = taskId,
@@ -411,15 +446,26 @@ class AddTodoComponent @AssistedInject internal constructor(
                 source = "UI:EditTodoScreen",
                 isAllDay = !state.hasDueTime,
             )
-            _uiState.value = _uiState.value.copy(isCreatingSchedule = false)
+            _uiState.value = _uiState.value.copy(isJoiningSchedule = false)
+            result.onFailure {
+                AppToastHost.showToast(context.getString(R.string.schedule_join_failed))
+            }
+        }
+    }
 
-            result
+    private fun removeLinkedSchedule() {
+        if (editingTaskId == null) {
+            _uiState.value = _uiState.value.copy(joinScheduleOnSave = false)
+            return
+        }
+        val taskId = editingTaskId
+        componentScope.launch {
+            scheduleService.deleteEventsByLinkedTaskId(taskId)
                 .onSuccess {
-                    AppToastHost.showToast(context.getString(R.string.schedule_created_success))
-                    openScheduleHub()
+                    AppToastHost.showToast(context.getString(R.string.schedule_removed))
                 }
                 .onFailure {
-                    AppToastHost.showToast(context.getString(R.string.schedule_created_failed))
+                    AppToastHost.showToast(context.getString(R.string.schedule_join_failed))
                 }
         }
     }

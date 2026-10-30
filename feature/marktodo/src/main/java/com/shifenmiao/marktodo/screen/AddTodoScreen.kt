@@ -24,19 +24,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.marktodo.R
 import com.shifenmiao.marktodo.components.CategorySelector
 import com.shifenmiao.marktodo.components.PrioritySelector
+import com.shifenmiao.marktodo.components.ScheduleLinkStatus
 import com.shifenmiao.marktodo.components.TagSelector
 import com.shifenmiao.marktodo.components.TaskDateField
 import com.shifenmiao.marktodo.components.TaskTimeField
@@ -47,8 +45,6 @@ import com.shifenmiao.marktodo.theme.CategoryColorPalette
 import com.shifenmiao.marktodo.theme.categoryPaletteWithThemeColors
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAccessTime
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineCalendar
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineEventAvailable
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFlag
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFolder
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLabel
@@ -58,7 +54,6 @@ import com.wanbaohe.base.ui.picker.ChineseDatePickerDialog
 import com.wanbaohe.base.ui.picker.ChineseTimePickerDialog
 import com.wanbaohe.core.ui.widget.color_picker.ColorSelectionRow
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
-import com.wanbaohe.core.ui.widget.enhanced.EnhancedChip
 import com.wanbaohe.core.ui.widget.system.OneBoxBottomActionBar
 import com.wanbaohe.core.ui.widget.system.OneBoxDangerButton
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
@@ -212,52 +207,17 @@ fun AddTodoScreen(
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
-            }
-
-            // 日程联动（仅编辑模式：承接原详情页的「生成日程 / 在日历查看」）
-            if (uiState.isEditMode) {
-                TodoFormSection(
-                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCalendar,
-                    label = stringResource(R.string.schedule_section_title)
-                ) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing)) {
-                        EnhancedChip(
-                            selected = false,
-                            onClick = {
-                                if (!uiState.isCreatingSchedule) {
-                                    addTodoComponent.handleEvent(AddTodoUiEvent.CreateLinkedSchedule)
-                                }
-                            },
-                            selectedColor = Color.Unspecified,
-                            modifier = Modifier
-                                .weight(1f)
-                                .alpha(if (uiState.isCreatingSchedule) 0.5f else 1f),
-                            label = {
-                                ScheduleActionLabel(
-                                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineEventAvailable,
-                                    text = stringResource(
-                                        if (uiState.isCreatingSchedule) R.string.schedule_creating
-                                        else R.string.action_create_schedule
-                                    )
-                                )
-                            }
-                        )
-                        EnhancedChip(
-                            selected = false,
-                            onClick = {
-                                addTodoComponent.handleEvent(AddTodoUiEvent.OpenScheduleHub)
-                            },
-                            selectedColor = Color.Unspecified,
-                            modifier = Modifier.weight(1f),
-                            label = {
-                                ScheduleActionLabel(
-                                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCalendar,
-                                    text = stringResource(R.string.action_open_schedule)
-                                )
-                            }
-                        )
-                    }
-                }
+                ScheduleLinkStatus(
+                    dueDateMillis = uiState.dueDateMillis,
+                    hasDueTime = uiState.hasDueTime,
+                    linked = uiState.linkedSchedule,
+                    joinOnSave = uiState.joinScheduleOnSave,
+                    joining = uiState.isJoiningSchedule,
+                    onJoin = { addTodoComponent.handleEvent(AddTodoUiEvent.JoinSchedule) },
+                    onView = { addTodoComponent.handleEvent(AddTodoUiEvent.OpenSchedule) },
+                    onRemove = { addTodoComponent.handleEvent(AddTodoUiEvent.RemoveLinkedSchedule) },
+                    onCancelJoinOnSave = { addTodoComponent.handleEvent(AddTodoUiEvent.CancelPendingJoin) },
+                )
             }
 
             // 优先级（高/中/低 三色 chips）
@@ -436,34 +396,6 @@ private fun TodoFormSection(
             )
         }
         content()
-    }
-}
-
-/**
- * 日程操作 chip 的内容：图标 + 文案居中
- */
-@Composable
-private fun ScheduleActionLabel(
-    icon: ImageVector,
-    text: String
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-            modifier = Modifier.size(14.dp)
-        )
-        Text(
-            text = text,
-            modifier = Modifier.padding(start = 4.dp),
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
     }
 }
 

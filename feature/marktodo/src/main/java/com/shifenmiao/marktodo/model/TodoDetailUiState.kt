@@ -1,6 +1,7 @@
 package com.shifenmiao.marktodo.model
 
 import androidx.compose.runtime.Immutable
+import com.wanbaohe.schedule.model.LinkedScheduleSnapshot
 
 /**
  * 待办详情页的 UI 状态
@@ -12,6 +13,7 @@ data class TodoDetailUiState(
     val isLoading: Boolean = false,
     val error: String? = null,
     val isCreatingSchedule: Boolean = false,
+    val linkedSchedule: LinkedScheduleSnapshot? = null,
     val isEditing: Boolean = false,
     val isSaving: Boolean = false,
     // 编辑表单状态
@@ -50,6 +52,7 @@ sealed interface TodoDetailUiEvent {
     data object ConfirmDelete : TodoDetailUiEvent
     data object OpenScheduleHub : TodoDetailUiEvent
     data object CreateLinkedSchedule : TodoDetailUiEvent
+    data object RemoveLinkedSchedule : TodoDetailUiEvent
 
     // 编辑模式
     data object EnterEditMode : TodoDetailUiEvent

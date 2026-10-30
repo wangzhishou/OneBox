@@ -1,12 +1,13 @@
 package com.shifenmiao.marktodo.model
 
 import androidx.compose.runtime.Immutable
+import com.wanbaohe.schedule.model.LinkedScheduleSnapshot
 
 /**
  * 新增/编辑待办页状态。
  *
  * 编辑模式（[editingTaskId] 非空）进入时加载原任务，底部显示「删除 + 保存」，
- * 保存成功后同步日程；删除与日程清理由 Service 统一处理。
+ * 保存成功后，已加入的日程会跟着截止日期改时间；清空日期则会移除日程。
  */
 @Immutable
 data class AddTodoUiState(
@@ -25,7 +26,10 @@ data class AddTodoUiState(
     val showTimePicker: Boolean = false,
     val showValidationErrors: Boolean = false,
     val showDeleteConfirm: Boolean = false,
-    val isCreatingSchedule: Boolean = false,
+    val isJoiningSchedule: Boolean = false,
+    val linkedSchedule: LinkedScheduleSnapshot? = null,
+    /** 新任务还没有 id，先记下，保存成功后再写入日程。 */
+    val joinScheduleOnSave: Boolean = false,
     val isSaving: Boolean = false,
     val isDirty: Boolean = false,
 ) {
@@ -54,9 +58,11 @@ sealed interface AddTodoUiEvent {
     data class ToggleDatePicker(val show: Boolean) : AddTodoUiEvent
     data class ToggleTimePicker(val show: Boolean) : AddTodoUiEvent
 
-    // 日程联动（仅编辑模式可用）
-    data object CreateLinkedSchedule : AddTodoUiEvent
-    data object OpenScheduleHub : AddTodoUiEvent
+    // 日程：加入后留在本页；查看再进入按天排列的日程
+    data object JoinSchedule : AddTodoUiEvent
+    data object RemoveLinkedSchedule : AddTodoUiEvent
+    data object CancelPendingJoin : AddTodoUiEvent
+    data object OpenSchedule : AddTodoUiEvent
 
     data object SubmitTask : AddTodoUiEvent
     data object DeleteTask : AddTodoUiEvent

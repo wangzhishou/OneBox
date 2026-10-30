@@ -20,6 +20,7 @@ import android.content.Context
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 class TodoDetailComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
@@ -45,6 +46,11 @@ class TodoDetailComponent @AssistedInject internal constructor(
     init {
         componentScope.launch {
             loadTask()
+        }
+        componentScope.launch {
+            scheduleService.observeLinkedSchedule(taskId).collect { linked ->
+                _uiState.value = _uiState.value.copy(linkedSchedule = linked)
+            }
         }
     }
 
@@ -72,6 +78,10 @@ class TodoDetailComponent @AssistedInject internal constructor(
             }
             is TodoDetailUiEvent.CreateLinkedSchedule -> {
                 createLinkedSchedule()
+                true
+            }
+            is TodoDetailUiEvent.RemoveLinkedSchedule -> {
+                removeLinkedSchedule()
                 true
             }
             is TodoDetailUiEvent.EnterEditMode -> {
@@ -303,13 +313,22 @@ class TodoDetailComponent @AssistedInject internal constructor(
             )
             _uiState.value = _uiState.value.copy(isCreatingSchedule = false)
 
-            result
+            result.onSuccess {
+                _scheduleActionNotice.value = TodoDetailNotice.ScheduleCreated
+            }.onFailure {
+                _scheduleActionNotice.value = TodoDetailNotice.ScheduleCreateFailed
+            }
+        }
+    }
+
+    private fun removeLinkedSchedule() {
+        componentScope.launch {
+            scheduleService.deleteEventsByLinkedTaskId(taskId)
                 .onSuccess {
-                    _scheduleActionNotice.value = TodoDetailNotice.ScheduleCreated
-                    openScheduleHub()
+                    AppToastHost.showToast(context.getString(R.string.schedule_removed))
                 }
                 .onFailure {
-                    _scheduleActionNotice.value = TodoDetailNotice.ScheduleCreateFailed
+                    AppToastHost.showToast(context.getString(R.string.schedule_join_failed))
                 }
         }
     }

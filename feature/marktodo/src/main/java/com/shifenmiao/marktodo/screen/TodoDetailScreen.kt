@@ -42,8 +42,10 @@ import com.shifenmiao.marktodo.components.TaskDateField
 import com.shifenmiao.marktodo.components.TaskTimeField
 import com.shifenmiao.marktodo.model.TodoDetailNotice
 import com.shifenmiao.marktodo.model.TodoDetailUiEvent
+import com.shifenmiao.marktodo.components.ScheduleLinkStatus
 import com.shifenmiao.marktodo.model.TodoTask
 import com.shifenmiao.marktodo.screenLogic.TodoDetailComponent
+import com.wanbaohe.schedule.model.LinkedScheduleSnapshot
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCheckbox
@@ -203,10 +205,12 @@ fun TodoDetailScreen(
                     } else {
                         TodoDetailContent(
                             task = uiState.task!!,
+                            linkedSchedule = uiState.linkedSchedule,
                             isCreatingSchedule = uiState.isCreatingSchedule,
                             onToggleComplete = { component.handleEvent(TodoDetailUiEvent.ToggleComplete) },
                             onOpenSchedule = { component.handleEvent(TodoDetailUiEvent.OpenScheduleHub) },
-                            onCreateSchedule = { component.handleEvent(TodoDetailUiEvent.CreateLinkedSchedule) }
+                            onCreateSchedule = { component.handleEvent(TodoDetailUiEvent.CreateLinkedSchedule) },
+                            onRemoveSchedule = { component.handleEvent(TodoDetailUiEvent.RemoveLinkedSchedule) },
                         )
                     }
                 }
@@ -249,10 +253,12 @@ fun TodoDetailScreen(
 @Composable
 private fun TodoDetailContent(
     task: TodoTask,
+    linkedSchedule: LinkedScheduleSnapshot?,
     isCreatingSchedule: Boolean,
     onToggleComplete: () -> Unit,
     onOpenSchedule: () -> Unit,
     onCreateSchedule: () -> Unit,
+    onRemoveSchedule: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -335,22 +341,18 @@ private fun TodoDetailContent(
 
         OneBoxSectionCard {
             OneBoxSectionHeader(title = stringResource(R.string.schedule_section_title))
-            Column(verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing)) {
-                if (task.dueDate != null) {
-                    OnePrimaryButton(
-                        text = if (isCreatingSchedule) {
-                            stringResource(R.string.schedule_creating)
-                        } else {
-                            stringResource(R.string.action_create_schedule)
-                        },
-                        onClick = onCreateSchedule,
-                    )
-                }
-                OneSecondaryButton(
-                    text = stringResource(R.string.action_open_schedule),
-                    onClick = onOpenSchedule,
-                )
-            }
+            ScheduleLinkStatus(
+                dueDateMillis = task.dueDate,
+                hasDueTime = task.hasDueTime,
+                linked = linkedSchedule,
+                joinOnSave = false,
+                joining = isCreatingSchedule,
+                explainPendingSave = false,
+                onJoin = onCreateSchedule,
+                onView = onOpenSchedule,
+                onRemove = onRemoveSchedule,
+                onCancelJoinOnSave = {},
+            )
         }
 
         // 状态信息

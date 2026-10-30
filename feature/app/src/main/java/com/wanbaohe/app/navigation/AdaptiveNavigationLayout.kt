@@ -289,8 +289,8 @@ private fun NavigationRailLayout(
         Box(
             modifier = Modifier
                 .weight(1f)
-                // 横屏时页面会紧贴 rail 与助手栏, 两侧各留呼吸位, 大屏上不至于顶边
-                .padding(horizontal = OneBoxDesignSystem.screenPadding)
+                // 横屏时页面会紧贴 rail 与助手栏, 两侧各留一点呼吸位, 大屏上不至于顶边
+                .padding(horizontal = OneBoxDesignSystem.compactSpacing)
         ) {
             NavigationContent(
                 childStack = childStack,
