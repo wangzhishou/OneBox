@@ -261,10 +261,11 @@ private fun TaskMetadata(
                         modifier = Modifier.size(14.dp),
                     )
                 }
-                task.tags.forEach { tagName ->
+                task.tags.forEachIndexed { index, tagName ->
                     TodoTagChip(
                         tagName = tagName,
                         tag = tagsByName[tagName],
+                        themeIndex = tagsByName.keys.indexOf(tagName).takeIf { it >= 0 } ?: index,
                         onClick = onTagClick?.let { callback -> { callback(tagName) } },
                     )
                 }

@@ -81,10 +81,11 @@ fun TodoTaskRow(
                             modifier = Modifier.size(12.dp),
                         )
                     }
-                    task.tags.take(2).forEach { tagName ->
+                    task.tags.take(2).forEachIndexed { index, tagName ->
                         TodoTagChip(
                             tagName = tagName,
                             tag = tagsByName[tagName],
+                            themeIndex = tagsByName.keys.indexOf(tagName).takeIf { it >= 0 } ?: index,
                             onClick = onTagClick?.let { callback -> { callback(tagName) } },
                         )
                     }
@@ -140,14 +141,15 @@ fun TodoTaskRow(
 fun TodoTagChip(
     tagName: String,
     tag: TodoTag?,
+    themeIndex: Int,
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
 ) {
-    val tagColor = com.shifenmiao.marktodo.theme.tagAccentColor(tag?.colorArgb)
+    val tagColor = com.shifenmiao.marktodo.theme.tagAccentColor(tag?.colorArgb, themeIndex)
     Row(
         modifier = modifier
             .background(
-                color = com.shifenmiao.marktodo.theme.tagContainerColor(tag?.colorArgb),
+                color = com.shifenmiao.marktodo.theme.tagContainerColor(tag?.colorArgb, themeIndex),
                 shape = RoundedCornerShape(4.dp),
             )
             .then(

@@ -5,6 +5,7 @@ import androidx.compose.runtime.Immutable
 @Immutable
 data class CategoryDetailUiState(
     val category: TodoCategory? = null,
+    val themeIndex: Int = 0,
     val tags: List<TodoTag> = emptyList(),
     val filterMode: TaskFilterMode = TaskFilterMode.ALL,
     val sort: TaskSortConfig = TaskSortConfig(),

@@ -159,7 +159,8 @@ fun CategoryDetailScreen(
                 category != null -> Column(modifier = Modifier.fillMaxSize()) {
                     CategoryHeaderCard(
                         category = category,
-                        accentColor = categoryAccentColor(category),
+                        themeIndex = uiState.themeIndex,
+                        accentColor = categoryAccentColor(category, uiState.themeIndex),
                         onEditCategory = {
                             component.handleEvent(CategoryDetailUiEvent.EditCategoryClicked)
                         },
@@ -274,6 +275,7 @@ fun CategoryDetailScreen(
 @Composable
 private fun CategoryHeaderCard(
     category: TodoCategory,
+    themeIndex: Int,
     accentColor: Color,
     onEditCategory: () -> Unit,
     onDeleteCategory: () -> Unit,
@@ -282,7 +284,7 @@ private fun CategoryHeaderCard(
     GlassCard(
         modifier = modifier.fillMaxWidth(),
         colors = com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors(
-            categoryCardTintColor(category)
+            categoryCardTintColor(category, themeIndex)
         ),
     ) {
         Column(
@@ -298,7 +300,7 @@ private fun CategoryHeaderCard(
                     modifier = Modifier
                         .size(48.dp)
                         .clip(RoundedCornerShape(OneBoxDesignSystem.smallRadius))
-                        .background(categoryAccentContainerColor(category)),
+                        .background(categoryAccentContainerColor(category, themeIndex)),
                     contentAlignment = Alignment.Center,
                 ) {
                     Icon(

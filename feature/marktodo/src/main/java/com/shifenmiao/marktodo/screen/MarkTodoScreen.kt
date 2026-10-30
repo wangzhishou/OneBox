@@ -250,6 +250,9 @@ fun MarkTodoScreen(
                 }
                 else -> CategoriesContent(
                     categories = visibleCategories,
+                    themeIndexById = fullCategories.mapIndexed { index, category ->
+                        category.id to index
+                    }.toMap(),
                     hasAnyCategory = fullCategories.isNotEmpty(),
                     tasksByCategory = tasksByCategory,
                     tagsByName = tagsByName,
@@ -695,6 +698,7 @@ private fun ActiveConditionChip(
 @Composable
 private fun CategoriesContent(
     categories: List<TodoCategory>,
+    themeIndexById: Map<String, Int>,
     hasAnyCategory: Boolean,
     tasksByCategory: Map<String, List<TaskWithCategory>>,
     tagsByName: Map<String, TodoTag>,
@@ -770,6 +774,7 @@ private fun CategoriesContent(
                 if (isGridView) {
                     ThemeGroupGridCard(
                         category = category,
+                        themeIndex = themeIndexById[category.id] ?: 0,
                         visibleTasks = visibleTasks,
                         tagsByName = tagsByName,
                         isReorderMode = isReorderMode,
@@ -797,6 +802,7 @@ private fun CategoriesContent(
                 } else {
                     ThemeGroupCard(
                         category = category,
+                        themeIndex = themeIndexById[category.id] ?: 0,
                         visibleTasks = visibleTasks,
                         tagsByName = tagsByName,
                         showMenu = !isReorderMode,

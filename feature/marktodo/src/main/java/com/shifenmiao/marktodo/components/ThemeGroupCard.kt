@@ -60,6 +60,7 @@ import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 @Composable
 fun ThemeGroupCard(
     category: TodoCategory,
+    themeIndex: Int,
     visibleTasks: List<TodoTask>,
     tagsByName: Map<String, TodoTag>,
     showMenu: Boolean,
@@ -75,14 +76,14 @@ fun ThemeGroupCard(
     onToggleStar: ((TodoTask) -> Unit)? = null,
     onDeleteTask: ((TodoTask) -> Unit)? = null,
 ) {
-    val accentColor = categoryAccentColor(category)
-    val accentContainerColor = categoryAccentContainerColor(category)
+    val accentColor = categoryAccentColor(category, themeIndex)
+    val accentContainerColor = categoryAccentContainerColor(category, themeIndex)
     var menuExpanded by remember { mutableStateOf(false) }
 
     GlassCard(
         modifier = modifier.fillMaxWidth(),
         colors = com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors(
-            categoryCardTintColor(category)
+            categoryCardTintColor(category, themeIndex)
         )
     ) {
         Column(
@@ -149,6 +150,7 @@ fun ThemeGroupCard(
 @Composable
 fun ThemeGroupGridCard(
     category: TodoCategory,
+    themeIndex: Int,
     visibleTasks: List<TodoTask>,
     tagsByName: Map<String, TodoTag>,
     onCategoryClick: (TodoCategory) -> Unit,
@@ -164,8 +166,8 @@ fun ThemeGroupGridCard(
     onToggleStar: ((TodoTask) -> Unit)? = null,
     onDeleteTask: ((TodoTask) -> Unit)? = null,
 ) {
-    val accentColor = categoryAccentColor(category)
-    val accentContainerColor = categoryAccentContainerColor(category)
+    val accentColor = categoryAccentColor(category, themeIndex)
+    val accentContainerColor = categoryAccentContainerColor(category, themeIndex)
     var menuExpanded by remember { mutableStateOf(false) }
     val previewTasks = remember(visibleTasks, maxPreviewTasks) {
         visibleTasks.take(maxPreviewTasks)
@@ -174,7 +176,7 @@ fun ThemeGroupGridCard(
     GlassCard(
         modifier = modifier.fillMaxWidth(),
         colors = com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors(
-            categoryCardTintColor(category)
+            categoryCardTintColor(category, themeIndex)
         )
     ) {
         Column(

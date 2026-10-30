@@ -98,9 +98,9 @@ fun TagSelector(
         horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
         verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
     ) {
-        tags.forEach { tag ->
+        tags.forEachIndexed { index, tag ->
             val selected = tag.name in selectedTagNames
-            val tagColor = com.shifenmiao.marktodo.theme.tagAccentColor(tag.colorArgb)
+            val tagColor = com.shifenmiao.marktodo.theme.tagAccentColor(tag.colorArgb, index)
             GlassFilterChip(
                 selected = selected,
                 onClick = { onToggle(tag.name) },
@@ -181,9 +181,9 @@ fun CategorySelector(
                 },
             )
         }
-        categories.forEach { category ->
+        categories.forEachIndexed { index, category ->
             val selected = category.id == selectedCategory?.id
-            val accent = categoryAccentColor(category)
+            val accent = categoryAccentColor(category, index)
             EnhancedChip(
                 selected = selected,
                 onClick = { onSelect(category) },

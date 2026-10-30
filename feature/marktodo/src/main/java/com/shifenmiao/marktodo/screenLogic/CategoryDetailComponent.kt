@@ -71,6 +71,8 @@ class CategoryDetailComponent @AssistedInject internal constructor(
                                 icon = iconFromKey(safeIconKey),
                                 tasks = relation.tasks.map { it.toModel() }.sortedBy { it.sortOrder },
                             ),
+                            themeIndex = dashboard.indexOfFirst { it.category.id == categoryId }
+                                .coerceAtLeast(0),
                             isLoading = false,
                             error = null,
                         )
