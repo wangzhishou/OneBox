@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">Pusat Jadwal</string>
+    <string name="schedule_screen_title">Schedule</string>
     <string name="schedule_sync_card_title">Fondasi sinkronisasi siap</string>
     <string name="schedule_sync_card_description">Modul ini sudah memiliki model acara, status kursor sinkronisasi, dan bidang jembatan tugas, sehingga Google Calendar dapat ditambahkan nanti tanpa mengotori modul almanak atau tugas.</string>
     <string name="schedule_sync_ready">Kursor sinkronisasi disimpan</string>
@@ -14,8 +14,8 @@
     <string name="schedule_action_open_todo">Buka tugas</string>
     <string name="schedule_action_open_calendar">Buka kalender</string>
     <string name="schedule_event_section_title">Acara</string>
-    <string name="schedule_empty_title">Belum ada acara jadwal</string>
-    <string name="schedule_empty_description">Mulai dengan acara lokal terlebih dahulu, lalu tambahkan autentikasi akun Google, sinkronisasi delta, dan penanganan konflik secara bertahap.</string>
+    <string name="schedule_empty_title">Nothing on your schedule</string>
+    <string name="schedule_empty_description">Add a task with a due date, then put it on the schedule. You will be reminded when it is due.</string>
     <string name="schedule_provider_local">Lokal</string>
     <string name="schedule_provider_system">Kalender Sistem</string>
     <string name="schedule_provider_google">Google Calendar</string>

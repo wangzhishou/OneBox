@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">Schedule Hub</string>
+    <string name="schedule_screen_title">Schedule</string>
     <string name="schedule_sync_card_title">Sync foundation is ready</string>
     <string name="schedule_sync_card_description">This module already owns its event model, sync cursor state, and todo bridge fields, so Google Calendar can be added later without polluting the almanac or todo modules.</string>
     <string name="schedule_sync_ready">Sync cursor saved</string>
@@ -14,8 +14,19 @@
     <string name="schedule_action_open_todo">Open todo</string>
     <string name="schedule_action_open_calendar">Open calendar</string>
     <string name="schedule_event_section_title">Events</string>
-    <string name="schedule_empty_title">No schedule events yet</string>
-    <string name="schedule_empty_description">Start with local events first, then add Google account auth, delta sync, and conflict handling incrementally.</string>
+    <string name="schedule_empty_title">Nothing on your schedule</string>
+    <string name="schedule_empty_description">Add a task with a due date, then put it on the schedule. You will be reminded when it is due.</string>
+    <string name="schedule_all_day">All day</string>
+    <string name="schedule_day_empty">Nothing scheduled this day</string>
+    <string name="schedule_day_today">Today · %1$s</string>
+    <string name="schedule_day_tomorrow">Tomorrow · %1$s</string>
+    <string name="schedule_day_yesterday">Yesterday · %1$s</string>
+    <string name="schedule_current_task">This task</string>
+    <string name="schedule_open_task">Open task</string>
+    <string name="schedule_notification_channel_name">Schedule</string>
+    <string name="schedule_notification_channel_desc">Reminders for tasks on your schedule</string>
+    <string name="schedule_notification_timed">It is time</string>
+    <string name="schedule_notification_all_day">Due today</string>
     <string name="schedule_provider_local">Local</string>
     <string name="schedule_provider_system">System Calendar</string>
     <string name="schedule_provider_google">Google Calendar</string>

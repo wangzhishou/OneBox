@@ -6,10 +6,13 @@ import com.shifenmiao.database.schedule.entity.ScheduleProviderBindingEntity
 import com.shifenmiao.database.schedule.entity.ScheduleSyncStateEntity
 import com.shifenmiao.database.schedule.repo.ScheduleRepository
 import com.wanbaohe.schedule.integration.SystemCalendarProviderAdapter
+import com.wanbaohe.schedule.model.LinkedScheduleSnapshot
 import com.wanbaohe.schedule.model.ScheduleProviderType
 import com.wanbaohe.schedule.model.ScheduleSyncStatus
 import com.wanbaohe.schedule.model.toModel
 import com.wanbaohe.schedule.model.toStorageValue
+import com.wanbaohe.schedule.reminder.ScheduleReminderScheduler
+import com.wanbaohe.schedule.reminder.ScheduleReminders
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Instant
 import java.time.ZoneId
@@ -18,7 +21,9 @@ import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlin.math.max
 
@@ -34,6 +39,7 @@ import kotlin.math.max
 class ScheduleService @Inject constructor(
     @ApplicationContext private val context: Context,
     private val repository: ScheduleRepository,
+    private val reminderScheduler: ScheduleReminderScheduler,
 ) {
 
     companion object {
@@ -101,6 +107,13 @@ class ScheduleService @Inject constructor(
                     updatedAt = now,
                 )
             )
+            armReminder(
+                eventId = eventId,
+                title = safeTitle,
+                startUtcMillis = safeStart,
+                isAllDay = input.isAllDay,
+                timeZoneId = input.timeZoneId,
+            )
             eventId
         }
     }
@@ -127,7 +140,7 @@ class ScheduleService @Inject constructor(
             val endAtMillis = if (isAllDay) {
                 dueDate.plusDays(1).atStartOfDay(zoneId).toInstant().toEpochMilli()
             } else {
-                dueAtMillis
+                ScheduleReminders.timedEndMillis(startAtMillis)
             }
             val existingLocalTaskEvent = repository
                 .getEventsByLinkedTaskId(linkedTaskId)
@@ -154,7 +167,53 @@ class ScheduleService @Inject constructor(
             )
 
             syncSystemCalendarBindingIfPresent(eventId = eventId)
+            armReminder(
+                eventId = eventId,
+                title = safeTitle,
+                startUtcMillis = startAtMillis,
+                isAllDay = isAllDay,
+                timeZoneId = zoneId.id,
+            )
             eventId
+        }
+    }
+
+    fun observeLinkedSchedule(linkedTaskId: String): Flow<LinkedScheduleSnapshot?> {
+        return repository.observeEventsByLinkedTaskId(linkedTaskId).map { events ->
+            events
+                .filter { it.providerType == ScheduleProviderType.LOCAL.toStorageValue() }
+                .maxByOrNull { it.updatedAt }
+                ?.let { event ->
+                    LinkedScheduleSnapshot(
+                        eventId = event.id,
+                        startUtcMillis = event.startUtcMillis,
+                        isAllDay = event.isAllDay,
+                    )
+                }
+        }
+    }
+
+    /** 补上以前写成零时长的事件，并重新登记还没到点的提醒。 */
+    suspend fun refreshReminders() = withContext(Dispatchers.IO) {
+        val now = System.currentTimeMillis()
+        repository.observeEvents().first().forEach { event ->
+            val fixed = if (!event.isAllDay && event.endUtcMillis <= event.startUtcMillis) {
+                val updated = event.copy(
+                    endUtcMillis = ScheduleReminders.timedEndMillis(event.startUtcMillis),
+                    updatedAt = now,
+                )
+                repository.upsertEvent(updated)
+                updated
+            } else {
+                event
+            }
+            armReminder(
+                eventId = fixed.id,
+                title = fixed.title,
+                startUtcMillis = fixed.startUtcMillis,
+                isAllDay = fixed.isAllDay,
+                timeZoneId = fixed.timeZoneId,
+            )
         }
     }
 
@@ -242,6 +301,7 @@ class ScheduleService @Inject constructor(
 
     suspend fun deleteEventWithProviderBindings(localEventId: String): Result<Unit> = withContext(Dispatchers.IO) {
         runCatching {
+            reminderScheduler.cancel(localEventId)
             repository.getProviderBindings(localEventId).forEach { binding ->
                 when (binding.providerType) {
                     ScheduleProviderType.SYSTEM_CALENDAR.toStorageValue() -> {
@@ -268,6 +328,22 @@ class ScheduleService @Inject constructor(
                 deleteEventWithProviderBindings(event.id).getOrThrow()
             }
         }
+    }
+
+    private fun armReminder(
+        eventId: String,
+        title: String,
+        startUtcMillis: Long,
+        isAllDay: Boolean,
+        timeZoneId: String,
+    ) {
+        reminderScheduler.sync(
+            eventId = eventId,
+            title = title,
+            startUtcMillis = startUtcMillis,
+            isAllDay = isAllDay,
+            timeZoneId = timeZoneId,
+        )
     }
 
     private suspend fun syncSystemCalendarBindingIfPresent(eventId: String) {

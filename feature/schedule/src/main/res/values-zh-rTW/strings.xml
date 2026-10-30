@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">日程中心</string>
+    <string name="schedule_screen_title">日程</string>
     <string name="schedule_sync_card_title">同步架構已就緒</string>
     <string name="schedule_sync_card_description">該模組已拆出獨立事件域、同步游標與待辦橋接欄位，後續接入 Google 日曆時無需污染萬年曆與待辦模組。</string>
     <string name="schedule_sync_ready">已記錄同步游標</string>
@@ -14,8 +14,8 @@
     <string name="schedule_action_open_todo">開啟待辦</string>
     <string name="schedule_action_open_calendar">開啟萬年曆</string>
     <string name="schedule_event_section_title">事件列表</string>
-    <string name="schedule_empty_title">還沒有日程事件</string>
-    <string name="schedule_empty_description">先建立本地事件，再逐步補齊 Google Calendar 帳號接入、增量同步與衝突處理。</string>
+    <string name="schedule_empty_title">還沒有日程</string>
+    <string name="schedule_empty_description">在待辦裡設好截止日期，再加入日程。到點會提醒你。</string>
     <string name="schedule_provider_local">本地</string>
     <string name="schedule_provider_system">系統日曆</string>
     <string name="schedule_provider_google">Google 日曆</string>

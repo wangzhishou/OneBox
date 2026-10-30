@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">Central de Agenda</string>
+    <string name="schedule_screen_title">Schedule</string>
     <string name="schedule_sync_card_title">Base de sincronização pronta</string>
     <string name="schedule_sync_card_description">Este módulo já possui seu próprio modelo de eventos, estado do cursor de sincronização e campos de ponte de tarefas, então o Google Agenda pode ser adicionado posteriormente sem poluir os módulos de almanaque ou tarefas.</string>
     <string name="schedule_sync_ready">Cursor de sincronização salvo</string>
@@ -14,8 +14,8 @@
     <string name="schedule_action_open_todo">Abrir tarefa</string>
     <string name="schedule_action_open_calendar">Abrir agenda</string>
     <string name="schedule_event_section_title">Eventos</string>
-    <string name="schedule_empty_title">Nenhum evento de agenda ainda</string>
-    <string name="schedule_empty_description">Comece com eventos locais primeiro, depois adicione autenticação de conta Google, sincronização delta e tratamento de conflitos incrementalmente.</string>
+    <string name="schedule_empty_title">Nothing on your schedule</string>
+    <string name="schedule_empty_description">Add a task with a due date, then put it on the schedule. You will be reminded when it is due.</string>
     <string name="schedule_provider_local">Local</string>
     <string name="schedule_provider_system">Agenda do Sistema</string>
     <string name="schedule_provider_google">Google Agenda</string>

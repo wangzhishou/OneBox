@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">日程中心</string>
+    <string name="schedule_screen_title">日程</string>
     <string name="schedule_sync_card_title">同步架构已就绪</string>
     <string name="schedule_sync_card_description">该模块已拆出独立事件域、同步游标与待办桥接字段，后续接入 Google 日历时无需污染万年历与待办模块。</string>
     <string name="schedule_sync_ready">已记录同步游标</string>
@@ -14,8 +14,19 @@
     <string name="schedule_action_open_todo">打开待办</string>
     <string name="schedule_action_open_calendar">打开万年历</string>
     <string name="schedule_event_section_title">事件列表</string>
-    <string name="schedule_empty_title">还没有日程事件</string>
-    <string name="schedule_empty_description">先创建本地事件，再逐步补齐 Google Calendar 账号接入、增量同步与冲突处理。</string>
+    <string name="schedule_empty_title">还没有日程</string>
+    <string name="schedule_empty_description">在待办里设好截止日期，再加入日程。到点会提醒你。</string>
+    <string name="schedule_all_day">全天</string>
+    <string name="schedule_day_empty">这一天还没有安排</string>
+    <string name="schedule_day_today">今天 · %1$s</string>
+    <string name="schedule_day_tomorrow">明天 · %1$s</string>
+    <string name="schedule_day_yesterday">昨天 · %1$s</string>
+    <string name="schedule_current_task">当前待办</string>
+    <string name="schedule_open_task">打开待办</string>
+    <string name="schedule_notification_channel_name">日程</string>
+    <string name="schedule_notification_channel_desc">待办加入日程后的到点提醒</string>
+    <string name="schedule_notification_timed">到点了</string>
+    <string name="schedule_notification_all_day">今天到期</string>
     <string name="schedule_provider_local">本地</string>
     <string name="schedule_provider_system">系统日历</string>
     <string name="schedule_provider_google">Google 日历</string>

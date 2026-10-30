@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">Program Merkezi</string>
+    <string name="schedule_screen_title">Schedule</string>
     <string name="schedule_sync_card_title">Senkronizasyon altyapısı hazır</string>
     <string name="schedule_sync_card_description">Bu modül zaten kendi etkinlik modeline, senkron imleç durumuna ve görev köprüsü alanlarına sahiptir, böylece Google Takvim daha sonra almanak veya görev modüllerini kirletmeden eklenebilir.</string>
     <string name="schedule_sync_ready">Senkron imleci kaydedildi</string>
@@ -14,8 +14,8 @@
     <string name="schedule_action_open_todo">Görevi aç</string>
     <string name="schedule_action_open_calendar">Takvimi aç</string>
     <string name="schedule_event_section_title">Etkinlikler</string>
-    <string name="schedule_empty_title">Henüz program etkinliği yok</string>
-    <string name="schedule_empty_description">Önce yerel etkinliklerle başlayın, ardından Google hesap kimlik doğrulaması, delta senkronizasyonu ve çakışma yönetimini kademeli olarak ekleyin.</string>
+    <string name="schedule_empty_title">Nothing on your schedule</string>
+    <string name="schedule_empty_description">Add a task with a due date, then put it on the schedule. You will be reminded when it is due.</string>
     <string name="schedule_provider_local">Yerel</string>
     <string name="schedule_provider_system">Sistem Takvimi</string>
     <string name="schedule_provider_google">Google Takvim</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">Schedule Hub</string>
+    <string name="schedule_screen_title">Schedule</string>
     <string name="schedule_sync_card_title">Handa na ang sync foundation</string>
     <string name="schedule_sync_card_description">Ang modyul na ito ay may sariling event model, sync cursor state, at todo bridge fields, kaya maaaring idagdag ang Google Calendar mamaya nang hindi nadudumihan ang almanac o todo modules.</string>
     <string name="schedule_sync_ready">Nai-save ang sync cursor</string>
@@ -14,8 +14,8 @@
     <string name="schedule_action_open_todo">Buksan ang todo</string>
     <string name="schedule_action_open_calendar">Buksan ang kalendaryo</string>
     <string name="schedule_event_section_title">Mga Event</string>
-    <string name="schedule_empty_title">Wala pang schedule events</string>
-    <string name="schedule_empty_description">Magsimula sa mga lokal na event muna, pagkatapos ay idagdag ang Google account auth, delta sync, at conflict handling nang paunti-unti.</string>
+    <string name="schedule_empty_title">Nothing on your schedule</string>
+    <string name="schedule_empty_description">Add a task with a due date, then put it on the schedule. You will be reminded when it is due.</string>
     <string name="schedule_provider_local">Lokal</string>
     <string name="schedule_provider_system">System Calendar</string>
     <string name="schedule_provider_google">Google Calendar</string>

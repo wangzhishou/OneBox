@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">일정 허브</string>
+    <string name="schedule_screen_title">Schedule</string>
     <string name="schedule_sync_card_title">동기화 기반 준비 완료</string>
     <string name="schedule_sync_card_description">이 모듈은 이미 자체 이벤트 모델, 동기화 커서 상태 및 할 일 브리지 필드를 보유하고 있어, 나중에 Google 캘린더를 추가해도 연감이나 할 일 모듈을 오염시키지 않습니다.</string>
     <string name="schedule_sync_ready">동기화 커서 저장됨</string>
@@ -14,8 +14,8 @@
     <string name="schedule_action_open_todo">할 일 열기</string>
     <string name="schedule_action_open_calendar">캘린더 열기</string>
     <string name="schedule_event_section_title">이벤트</string>
-    <string name="schedule_empty_title">아직 일정 이벤트 없음</string>
-    <string name="schedule_empty_description">먼저 로컬 이벤트로 시작한 다음 Google 계정 인증, 델타 동기화 및 충돌 처리를 점진적으로 추가하세요.</string>
+    <string name="schedule_empty_title">Nothing on your schedule</string>
+    <string name="schedule_empty_description">Add a task with a due date, then put it on the schedule. You will be reminded when it is due.</string>
     <string name="schedule_provider_local">로컬</string>
     <string name="schedule_provider_system">시스템 캘린더</string>
     <string name="schedule_provider_google">Google 캘린더</string>

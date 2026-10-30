@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">Centre d\'agenda</string>
+    <string name="schedule_screen_title">Schedule</string>
     <string name="schedule_sync_card_title">Architecture de synchronisation prête</string>
     <string name="schedule_sync_card_description">Ce module dispose désormais d\'un domaine d\'événements indépendant, d\'un curseur de synchronisation et de champs de pontage vers les tâches. L\'intégration future de Google Agenda n\'affectera ni le calendrier perpétuel ni le module des tâches.</string>
     <string name="schedule_sync_ready">Curseur de synchronisation enregistré</string>
@@ -14,8 +14,8 @@
     <string name="schedule_action_open_todo">Ouvrir les tâches</string>
     <string name="schedule_action_open_calendar">Ouvrir le calendrier perpétuel</string>
     <string name="schedule_event_section_title">Liste des événements</string>
-    <string name="schedule_empty_title">Aucun événement pour le moment</string>
-    <string name="schedule_empty_description">Créez d\'abord des événements locaux, puis ajoutez progressivement la connexion au compte Google Calendar, la synchronisation incrémentielle et la gestion des conflits.</string>
+    <string name="schedule_empty_title">Nothing on your schedule</string>
+    <string name="schedule_empty_description">Add a task with a due date, then put it on the schedule. You will be reminded when it is due.</string>
     <string name="schedule_provider_local">Local</string>
     <string name="schedule_provider_system">Calendrier système</string>
     <string name="schedule_provider_google">Google Agenda</string>

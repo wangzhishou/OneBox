@@ -328,12 +328,13 @@ class AddTodoComponent @AssistedInject internal constructor(
                     input = input,
                     source = "UI:AddTodoScreen",
                 ).onSuccess { newTaskId ->
-                    if (_uiState.value.joinScheduleOnSave && input.dueDateMillis != null) {
+                    val dueAt = input.dueDateMillis
+                    if (_uiState.value.joinScheduleOnSave && dueAt != null) {
                         val joined = scheduleService.createTaskDeadlineEvent(
                             linkedTaskId = newTaskId,
                             title = input.title,
                             description = input.note,
-                            dueAtMillis = input.dueDateMillis,
+                            dueAtMillis = dueAt,
                             source = "UI:AddTodoScreen",
                             isAllDay = !input.hasDueTime,
                         ).isSuccess

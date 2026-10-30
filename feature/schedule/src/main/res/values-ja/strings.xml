@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">スケジュールハブ</string>
+    <string name="schedule_screen_title">Schedule</string>
     <string name="schedule_sync_card_title">同期基盤の準備ができました</string>
     <string name="schedule_sync_card_description">このモジュールは既に独自のイベントモデル、同期カーソル状態、Todoブリッジフィールドを所有しているため、Googleカレンダーは後で追加しても、アルマナックやTodoモジュールを汚染しません。</string>
     <string name="schedule_sync_ready">同期カーソルが保存されました</string>
@@ -14,8 +14,8 @@
     <string name="schedule_action_open_todo">Todoを開く</string>
     <string name="schedule_action_open_calendar">カレンダーを開く</string>
     <string name="schedule_event_section_title">イベント</string>
-    <string name="schedule_empty_title">スケジュールイベントはまだありません</string>
-    <string name="schedule_empty_description">まずローカルイベントから始め、その後Googleアカウント認証、デルタ同期、競合処理を段階的に追加します。</string>
+    <string name="schedule_empty_title">Nothing on your schedule</string>
+    <string name="schedule_empty_description">Add a task with a due date, then put it on the schedule. You will be reminded when it is due.</string>
     <string name="schedule_provider_local">ローカル</string>
     <string name="schedule_provider_system">システムカレンダー</string>
     <string name="schedule_provider_google">Googleカレンダー</string>

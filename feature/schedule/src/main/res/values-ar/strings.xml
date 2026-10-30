@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">مركز الجدول</string>
+    <string name="schedule_screen_title">Schedule</string>
     <string name="schedule_sync_card_title">أساس المزامنة جاهز</string>
     <string name="schedule_sync_card_description">هذه الوحدة تملك بالفعل نموذج الأحداث الخاص بها وحالة مؤشر المزامنة وحقول جسر المهام، لذا يمكن إضافة Google Calendar لاحقًا دون إرباك وحدتي التقويم الفلكي أو المهام.</string>
     <string name="schedule_sync_ready">تم حفظ مؤشر المزامنة</string>
@@ -14,8 +14,8 @@
     <string name="schedule_action_open_todo">فتح المهام</string>
     <string name="schedule_action_open_calendar">فتح التقويم</string>
     <string name="schedule_event_section_title">الأحداث</string>
-    <string name="schedule_empty_title">لا توجد أحداث في الجدول بعد</string>
-    <string name="schedule_empty_description">ابدأ بالأحداث المحلية أولًا، ثم أضف مصادقة حساب Google والمزامنة التفاضلية ومعالجة التعارضات تدريجيًا.</string>
+    <string name="schedule_empty_title">Nothing on your schedule</string>
+    <string name="schedule_empty_description">Add a task with a due date, then put it on the schedule. You will be reminded when it is due.</string>
     <string name="schedule_provider_local">محلي</string>
     <string name="schedule_provider_system">تقويم النظام</string>
     <string name="schedule_provider_google">تقويم Google</string>

@@ -2,6 +2,7 @@ package com.shifenmiao.marktodo.screen
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -26,6 +27,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -75,6 +78,8 @@ fun AddTodoScreen(
     val uiState by addTodoComponent.uiState.collectAsState()
     var showAddTagDialog by remember { mutableStateOf(false) }
     var showDiscardChanges by remember { mutableStateOf(false) }
+    var bottomBarHeight by remember { mutableStateOf(0.dp) }
+    val density = LocalDensity.current
     val requestGoBack = {
         if (uiState.isDirty && !uiState.isSaving) {
             showDiscardChanges = true
@@ -92,28 +97,25 @@ fun AddTodoScreen(
                 )
             )
         },
-        foreground = {
-            if (uiState.isEditMode) {
-                OneBoxBottomActionBar(
-                    primaryText = stringResource(R.string.action_save),
-                    onPrimaryClick = { addTodoComponent.handleEvent(AddTodoUiEvent.SubmitTask) },
-                    dangerText = stringResource(R.string.action_delete),
-                    onDangerClick = { addTodoComponent.handleEvent(AddTodoUiEvent.DeleteTask) },
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .navigationBarsPadding()
-                )
-            }
-        },
         onGoBack = requestGoBack,
         isShowDefaultActions = false
     ) {
-        Column(
+        // 底栏浮在内容上。滚动区域在底栏外侧收住，分组卡片才不会从玻璃底下透出来。
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .imePadding()
+        ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = if (uiState.isEditMode) bottomBarHeight else 0.dp)
+                .then(
+                    if (uiState.isEditMode) Modifier else Modifier.navigationBarsPadding()
+                )
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = OneBoxDesignSystem.screenPadding),
+                .padding(horizontal = OneBoxDesignSystem.screenPadding)
+                .padding(bottom = OneBoxDesignSystem.blockSpacing),
             verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing)
         ) {
             // 待办标题
@@ -268,7 +270,7 @@ fun AddTodoScreen(
                 )
             }
 
-            // 新增模式：底部大保存按钮（编辑模式用 OneBoxBottomActionBar）
+            // 新增模式：底部大保存按钮（编辑模式用浮在下方的 OneBoxBottomActionBar）
             if (!uiState.isEditMode) {
                 OnePrimaryButton(
                     text = stringResource(R.string.action_save),
@@ -276,9 +278,20 @@ fun AddTodoScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-
-            // 底部留白（编辑模式给 bottom bar 让位）
-            SpacerForBottomBar(uiState.isEditMode)
+        }
+            if (uiState.isEditMode) {
+                OneBoxBottomActionBar(
+                    primaryText = stringResource(R.string.action_save),
+                    onPrimaryClick = { addTodoComponent.handleEvent(AddTodoUiEvent.SubmitTask) },
+                    dangerText = stringResource(R.string.action_delete),
+                    onDangerClick = { addTodoComponent.handleEvent(AddTodoUiEvent.DeleteTask) },
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .onSizeChanged { size ->
+                            bottomBarHeight = with(density) { size.height.toDp() }
+                        }
+                )
+            }
         }
     }
 
@@ -447,15 +460,6 @@ private fun AddTagDialog(
                 onClick = onDismiss
             )
         }
-    )
-}
-
-@Composable
-private fun ColumnScope.SpacerForBottomBar(isEditMode: Boolean) {
-    androidx.compose.foundation.layout.Spacer(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = if (isEditMode) 112.dp else OneBoxDesignSystem.blockSpacing)
     )
 }
 

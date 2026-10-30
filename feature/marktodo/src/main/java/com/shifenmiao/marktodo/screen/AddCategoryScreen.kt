@@ -29,8 +29,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -42,13 +40,10 @@ import com.shifenmiao.marktodo.R
 import com.shifenmiao.marktodo.data.iconFromKey
 import com.shifenmiao.marktodo.screenLogic.AddCategoryComponent
 import com.shifenmiao.marktodo.screenLogic.AddCategoryUiEvent
-import com.shifenmiao.marktodo.theme.categoryPaletteWithThemeColors
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineNote
-import com.t8rin.imagetoolbox.core.resources.icons.line.LinePaletteTools
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePinEnd
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSingleEdit
-import com.wanbaohe.core.ui.widget.controls.selection.ColorRowSelector
 import com.wanbaohe.core.ui.widget.preferences.PreferenceRowSwitch
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.system.OneBoxOutlinedTextField
@@ -56,8 +51,7 @@ import com.wanbaohe.core.ui.widget.system.OneBoxSectionCard
 import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
 
 /**
- * 新增/编辑主题页 —— 原型设计稿：
- * 主题名称 / 主题描述 / 图标 / 颜色 / 是否置顶 + 底部创建按钮。
+ * 新增/编辑分组页：名称 / 描述 / 图标 / 是否置顶 + 底部创建按钮。
  */
 @Composable
 fun AddCategoryScreen(
@@ -107,19 +101,18 @@ fun AddCategoryScreen(
                     singleLine = true,
                     placeholder = { Text(text = stringResource(R.string.dialog_add_category_hint)) },
                     leadingIcon = {
-                        val themeColor = Color(uiState.colorArgb)
                         Box(
                             modifier = Modifier
                                 .size(36.dp)
                                 .clip(RoundedCornerShape(OneBoxDesignSystem.smallRadius))
-                                .background(themeColor.copy(alpha = 0.15f))
+                                .background(MaterialTheme.colorScheme.primaryContainer)
                                 .clickable { showIconPicker = true },
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 imageVector = iconFromKey(uiState.iconKey),
                                 contentDescription = stringResource(R.string.dialog_add_category_icon),
-                                tint = themeColor,
+                                tint = MaterialTheme.colorScheme.onPrimaryContainer,
                                 modifier = Modifier.size(20.dp)
                             )
                         }
@@ -151,23 +144,6 @@ fun AddCategoryScreen(
                     minLines = 2,
                     maxLines = 4,
                     keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(imeAction = ImeAction.Done)
-                )
-            }
-
-            // 颜色（统一用 ColorRowSelector：色板 + 自定义取色，禁透明度避免脏数据）
-            CategoryFormSection(
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePaletteTools,
-                label = stringResource(R.string.dialog_add_category_color),
-                showLabel = false
-            ) {
-                ColorRowSelector(
-                    value = Color(uiState.colorArgb),
-                    onValueChange = { component.handleEvent(AddCategoryUiEvent.UpdateColor(it.toArgb())) },
-                    title = stringResource(R.string.dialog_add_category_color),
-                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePaletteTools,
-                    allowAlpha = false,
-                    defaultColors = categoryPaletteWithThemeColors(),
-                    contentHorizontalPadding = 0.dp
                 )
             }
 
@@ -212,37 +188,30 @@ fun AddCategoryScreen(
     }
 }
 
-/**
- * 表单分组：浅色玻璃卡片 + 图标标题行（与新增待办页一致）
- *
- * @param showLabel 分组内组件自带标题时（如 ColorRowSelector）传 false
- */
+/** 表单分组：浅色玻璃卡片 + 图标标题行（与新增待办页一致） */
 @Composable
 private fun CategoryFormSection(
     icon: ImageVector,
     label: String,
-    showLabel: Boolean = true,
     content: @Composable ColumnScope.() -> Unit
 ) {
     OneBoxSectionCard(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest) {
-        if (showLabel) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing)
-            ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier.size(18.dp)
-                )
-                Text(
-                    text = label,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-            }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing)
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier.size(18.dp)
+            )
+            Text(
+                text = label,
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface
+            )
         }
         content()
     }

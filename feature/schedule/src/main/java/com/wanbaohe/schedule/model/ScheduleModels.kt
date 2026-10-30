@@ -42,6 +42,14 @@ data class ScheduleEvent(
     val updatedAt: Long,
 )
 
+/** 待办编辑页用来展示「已在日程」的那一条本地事件。 */
+@Immutable
+data class LinkedScheduleSnapshot(
+    val eventId: String,
+    val startUtcMillis: Long,
+    val isAllDay: Boolean,
+)
+
 @Immutable
 data class ScheduleSyncState(
     val providerType: ScheduleProviderType,

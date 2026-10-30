@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">Центр расписания</string>
+    <string name="schedule_screen_title">Schedule</string>
     <string name="schedule_sync_card_title">База синхронизации готова</string>
     <string name="schedule_sync_card_description">Этот модуль уже владеет своей моделью событий, состоянием курсора синхронизации и полями моста задач, поэтому Google Calendar можно добавить позже, не загрязняя модули альманаха или задач.</string>
     <string name="schedule_sync_ready">Курсор синхронизации сохранён</string>
@@ -14,8 +14,8 @@
     <string name="schedule_action_open_todo">Открыть задачу</string>
     <string name="schedule_action_open_calendar">Открыть календарь</string>
     <string name="schedule_event_section_title">События</string>
-    <string name="schedule_empty_title">Пока нет событий расписания</string>
-    <string name="schedule_empty_description">Сначала начните с локальных событий, затем постепенно добавьте авторизацию Google-аккаунта, дельта-синхронизацию и обработку конфликтов.</string>
+    <string name="schedule_empty_title">Nothing on your schedule</string>
+    <string name="schedule_empty_description">Add a task with a due date, then put it on the schedule. You will be reminded when it is due.</string>
     <string name="schedule_provider_local">Локально</string>
     <string name="schedule_provider_system">Системный календарь</string>
     <string name="schedule_provider_google">Google Calendar</string>

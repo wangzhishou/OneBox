@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">Trung tâm lịch</string>
+    <string name="schedule_screen_title">Schedule</string>
     <string name="schedule_sync_card_title">Kiến trúc đồng bộ đã sẵn sàng</string>
     <string name="schedule_sync_card_description">Mô-đun này đã tách miền sự kiện độc lập, con trỏ đồng bộ và trường cầu nối việc cần làm, sau này khi tích hợp Google Lịch sẽ không cần gây ảnh hưởng đến mô-đun lịch vạn niên và việc cần làm.</string>
     <string name="schedule_sync_ready">Đã ghi con trỏ đồng bộ</string>
@@ -14,8 +14,8 @@
     <string name="schedule_action_open_todo">Mở việc cần làm</string>
     <string name="schedule_action_open_calendar">Mở lịch vạn niên</string>
     <string name="schedule_event_section_title">Danh sách sự kiện</string>
-    <string name="schedule_empty_title">Chưa có sự kiện lịch</string>
-    <string name="schedule_empty_description">Tạo sự kiện cục bộ trước, sau đó dần hoàn thiện kết nối tài khoản Google Calendar, đồng bộ tăng dần và xử lý xung đột.</string>
+    <string name="schedule_empty_title">Nothing on your schedule</string>
+    <string name="schedule_empty_description">Add a task with a due date, then put it on the schedule. You will be reminded when it is due.</string>
     <string name="schedule_provider_local">Cục bộ</string>
     <string name="schedule_provider_system">Lịch hệ thống</string>
     <string name="schedule_provider_google">Google Lịch</string>

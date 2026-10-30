@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">शेड्यूल हब</string>
+    <string name="schedule_screen_title">Schedule</string>
     <string name="schedule_sync_card_title">सिंक फाउंडेशन तैयार है</string>
     <string name="schedule_sync_card_description">इस मॉड्यूल के पास पहले से ही अपना इवेंट मॉडल, सिंक कर्सर स्थिति और टूडो ब्रिज फ़ील्ड हैं, इसलिए Google कैलेंडर को बाद में जोड़ा जा सकता है बिना अल्मनैक या टूडो मॉड्यूल को प्रदूषित किए।</string>
     <string name="schedule_sync_ready">सिंक कर्सर सहेजा गया</string>
@@ -14,8 +14,8 @@
     <string name="schedule_action_open_todo">टूडो खोलें</string>
     <string name="schedule_action_open_calendar">कैलेंडर खोलें</string>
     <string name="schedule_event_section_title">इवेंट</string>
-    <string name="schedule_empty_title">अभी तक कोई शेड्यूल इवेंट नहीं</string>
-    <string name="schedule_empty_description">पहले स्थानीय इवेंट से शुरू करें, फिर Google खाता प्रमाणीकरण, डेल्टा सिंक और संघर्ष प्रबंधन को धीरे-धीरे जोड़ें।</string>
+    <string name="schedule_empty_title">Nothing on your schedule</string>
+    <string name="schedule_empty_description">Add a task with a due date, then put it on the schedule. You will be reminded when it is due.</string>
     <string name="schedule_provider_local">स्थानीय</string>
     <string name="schedule_provider_system">सिस्टम कैलेंडर</string>
     <string name="schedule_provider_google">Google कैलेंडर</string>

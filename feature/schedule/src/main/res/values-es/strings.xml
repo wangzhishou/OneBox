@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">Centro de horarios</string>
+    <string name="schedule_screen_title">Schedule</string>
     <string name="schedule_sync_card_title">La base de sincronización está lista</string>
     <string name="schedule_sync_card_description">Este módulo ya posee su propio modelo de eventos, estado del cursor de sincronización y campos de puente de tareas, por lo que Google Calendar se puede agregar más adelante sin contaminar los módulos de almanaque o tareas.</string>
     <string name="schedule_sync_ready">Cursor de sincronización guardado</string>
@@ -14,8 +14,8 @@
     <string name="schedule_action_open_todo">Abrir tarea</string>
     <string name="schedule_action_open_calendar">Abrir calendario</string>
     <string name="schedule_event_section_title">Eventos</string>
-    <string name="schedule_empty_title">Aún no hay eventos de horario</string>
-    <string name="schedule_empty_description">Comienza con eventos locales primero, luego agrega autenticación de cuenta de Google, sincronización delta y manejo de conflictos de forma incremental.</string>
+    <string name="schedule_empty_title">Nothing on your schedule</string>
+    <string name="schedule_empty_description">Add a task with a due date, then put it on the schedule. You will be reminded when it is due.</string>
     <string name="schedule_provider_local">Local</string>
     <string name="schedule_provider_system">Calendario del sistema</string>
     <string name="schedule_provider_google">Google Calendar</string>
