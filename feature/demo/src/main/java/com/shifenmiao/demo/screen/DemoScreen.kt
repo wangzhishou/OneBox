@@ -41,6 +41,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.BrokenImageAlt
 import com.t8rin.imagetoolbox.core.resources.icons.Compass
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.DshWhale
+import com.t8rin.imagetoolbox.core.resources.icons.ImageToText
 import com.t8rin.imagetoolbox.core.resources.icons.TaijiBagua
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAccountBalance
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAltitude
