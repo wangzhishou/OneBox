@@ -37,6 +37,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
@@ -287,6 +288,10 @@ fun BasicEnhancedAlertDialog(
                 ) {
                     Box(
                         modifier = modifier
+                            // 大屏统一上限宽: 直接走 Basic 的弹窗(转盘结果、LUT 下载、加载圈等)
+                            // 原来内容 fillMaxWidth 会铺满整块屏幕, 与 EnhancedAlertDialog 的
+                            // 480dp 上限不一致。
+                            .widthIn(max = DialogMaxWidth)
                             .safeDrawingPadding()
                             .padding(horizontal = 16.dp, vertical = 24.dp),
                         contentAlignment = Alignment.Center,
