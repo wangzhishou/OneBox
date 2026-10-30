@@ -39,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
@@ -73,6 +74,11 @@ import com.wanbaohe.app.components.NavigationRailBar
 import com.wanbaohe.app.ui.MainBackHandler
 import kotlinx.coroutines.launch
 import java.util.Date
+
+// 横屏助手栏宽度: 随窗口宽度按比例伸缩, 窄横屏不至于把内容挤没, 大平板上又能读得开
+private const val AssistantPaneWidthRatio = 0.38f
+private val AssistantPaneMinWidth = 360.dp
+private val AssistantPaneMaxWidth = 560.dp
 
 // 导航状态数据类
 @Immutable
@@ -258,6 +264,8 @@ private fun NavigationRailLayout(
     var addMenuExpanded by rememberSaveable { mutableStateOf(false) }
     val overlayBottomPadding =
         WindowInsets.systemBars.asPaddingValues().calculateBottomPadding() + 24.dp
+    val assistantPaneWidth = (LocalWindowInfo.current.containerDpSize.width * AssistantPaneWidthRatio)
+        .coerceIn(AssistantPaneMinWidth, AssistantPaneMaxWidth)
 
     Row(
         modifier = Modifier.fillMaxSize()
@@ -305,7 +313,7 @@ private fun NavigationRailLayout(
             appComponent = appComponent,
             modifier = Modifier.navigationBarsPadding().statusBarsPadding()
                 .fillMaxHeight()
-                .width(420.dp)
+                .width(assistantPaneWidth)
                 .padding(
                     end = OneBoxDesignSystem.screenPadding,
                 )
