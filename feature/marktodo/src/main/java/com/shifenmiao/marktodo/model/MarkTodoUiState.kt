@@ -46,7 +46,7 @@ sealed interface MarkTodoUiEvent {
     data object ShowFilterSortSheet : MarkTodoUiEvent
     data object DismissFilterSortSheet : MarkTodoUiEvent
     data class ApplyFilterSort(val filter: TaskFilter, val sort: TaskSortConfig) : MarkTodoUiEvent
-    data object ResetQuery : MarkTodoUiEvent
+    data object ClearFilters : MarkTodoUiEvent
     data class SetGridView(val isGrid: Boolean) : MarkTodoUiEvent
 
     data class SetReorderMode(val enabled: Boolean) : MarkTodoUiEvent

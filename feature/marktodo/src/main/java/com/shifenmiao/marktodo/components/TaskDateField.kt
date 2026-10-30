@@ -1,5 +1,10 @@
 package com.shifenmiao.marktodo.components
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
@@ -20,8 +25,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineCalendar
  * 统一的任务日期选择输入框组件。
  *
  * 特性：
- * - 日期值为空时显示日历选择图标
- * - 日期值不为空时显示清除图标（互斥）
+ * - 点击整个字段可打开日期选择器
+ * - 日期值不为空时可单独清除
  * - 只读，禁止键盘输入
  * - 统一日期格式化
  */
@@ -35,39 +40,48 @@ fun TaskDateField(
 ) {
     val dateFormatter = rememberDateFormatter()
 
-    OneBoxOutlinedTextField(
-        value = dueDateMillis?.let { dateFormatter.format(it) } ?: "",
-        onValueChange = {},
-        readOnly = true,
-        singleLine = true,
-        placeholder = placeholder,
-        trailingIcon = {
-            if (dueDateMillis != null) {
-                IconButton(
-                    modifier = Modifier.size(48.dp),
-                    onClick = onClearDate
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineClear,
-                        contentDescription = stringResource(R.string.dialog_add_task_clear),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+    Box(modifier = modifier) {
+        OneBoxOutlinedTextField(
+            value = dueDateMillis?.let { dateFormatter.format(it) } ?: "",
+            onValueChange = {},
+            readOnly = true,
+            singleLine = true,
+            placeholder = placeholder,
+            trailingIcon = {
+                Row {
+                    IconButton(
+                        modifier = Modifier.size(48.dp),
+                        onClick = onSelectDate
+                    ) {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCalendar,
+                            contentDescription = stringResource(R.string.dialog_add_task_due_date),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    if (dueDateMillis != null) {
+                        IconButton(
+                            modifier = Modifier.size(48.dp),
+                            onClick = onClearDate
+                        ) {
+                            Icon(
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineClear,
+                                contentDescription = stringResource(R.string.dialog_add_task_clear),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
                 }
-            } else {
-                IconButton(
-                    modifier = Modifier.size(48.dp),
-                    onClick = onSelectDate
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCalendar,
-                        contentDescription = stringResource(R.string.dialog_add_task_due_date),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-        },
-        modifier = modifier
-    )
+            },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Box(
+            modifier = Modifier
+                .matchParentSize()
+                .padding(end = if (dueDateMillis != null) 96.dp else 48.dp)
+                .clickable(onClick = onSelectDate)
+        )
+    }
 }
 
 @Composable

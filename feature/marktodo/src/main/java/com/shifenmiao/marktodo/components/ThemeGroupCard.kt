@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MoreVert
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -82,8 +81,8 @@ fun ThemeGroupCard(
 
     GlassCard(
         modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = categoryCardTintColor(category)
+        colors = com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors(
+            categoryCardTintColor(category)
         )
     ) {
         Column(
@@ -174,8 +173,8 @@ fun ThemeGroupGridCard(
 
     GlassCard(
         modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = categoryCardTintColor(category)
+        colors = com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors(
+            categoryCardTintColor(category)
         )
     ) {
         Column(

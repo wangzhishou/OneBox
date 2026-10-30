@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="marktodo">待辦事項</string>
-    <string name="action_add_category">新增分類</string>
-    <string name="dialog_add_category_title">新增待辦主題</string>
-    <string name="dialog_edit_category_title">編輯待辦主題</string>
-    <string name="dialog_add_category_hint">請輸入主題名稱</string>
+    <string name="action_add_category">新增分組</string>
+    <string name="dialog_add_category_title">新增待辦分組</string>
+    <string name="dialog_edit_category_title">編輯待辦分組</string>
+    <string name="dialog_add_category_hint">請輸入分組名稱</string>
     <string name="dialog_add_category_icon">圖示</string>
     <string name="dialog_add_category_color">顏色</string>
     <string name="dialog_add_category_color_auto">自動配色</string>
@@ -45,11 +45,11 @@
     <string name="empty_tasks_title">暫無待辦</string>
     <string name="empty_tasks_message">點擊新增按鈕建立新的待辦事項</string>
     <string name="more_tasks_indicator">還有 %1$d 個任務…</string>
-    <string name="validation_category_title_required">分類名稱不能為空</string>
-    <string name="validation_category_title_duplicate">分類名稱已存在</string>
+    <string name="validation_category_title_required">分組名稱不能為空</string>
+    <string name="validation_category_title_duplicate">分組名稱已存在</string>
     <string name="validation_task_title_required">待辦標題不能為空</string>
-    <string name="validation_task_title_duplicate">該分類下已有同名待辦</string>
-    <string name="snackbar_category_added">已新增分類</string>
+    <string name="validation_task_title_duplicate">該分組下已有同名待辦</string>
+    <string name="snackbar_category_added">已新增分組</string>
     <string name="snackbar_task_added">已新增待辦</string>
     <string name="snackbar_task_updated">已更新待辦</string>
     <string name="snackbar_task_deleted">已刪除待辦</string>
@@ -73,7 +73,7 @@
     <string name="edit_mode_title">已選 %1$d 項</string>
     <string name="snackbar_tasks_deleted">已刪除 %1$d 個待辦</string>
     <string name="dialog_add_task_clear">清理</string>
-    <string name="toast_select_category_first">請先選擇或新增一個分類</string>
+    <string name="toast_select_category_first">請先選擇或新增一個分組</string>
     <string name="schedule_section_title">排程</string>
     <string name="action_open_schedule">開啟排程中心</string>
     <string name="action_create_schedule">產生本機排程</string>
@@ -81,19 +81,19 @@
     <string name="schedule_missing_due_date">請先為該待辦設定截止日期</string>
     <string name="schedule_created_success">已產生本機排程</string>
     <string name="schedule_created_failed">產生排程失敗，請稍後重試</string>
-    <string name="dialog_delete_category_title">刪除分類</string>
-    <string name="dialog_delete_category_message">確定要刪除「%1$s」嗎？\n該分類下的所有任務也會被刪除。</string>
+    <string name="dialog_delete_category_title">刪除分組</string>
+    <string name="dialog_delete_category_message">確定要刪除「%1$s」嗎？\n該分組下的所有任務也會被刪除。</string>
     <string name="dialog_delete_task_message">確定要刪除「%1$s」嗎？</string>
     <string name="cd_switch_to_list_view">切換到清單檢視</string>
     <string name="cd_switch_to_grid_view">切換到格狀檢視</string>
     <string name="cd_edit_mode_done">完成</string>
     <string name="label_status">狀態</string>
     <string name="status_overdue">已過期</string>
-    <string name="category_unnamed">未命名分類</string>
+    <string name="category_unnamed">未命名分組</string>
     <string name="snackbar_batch_tasks_deleted">已刪除 %1$d 個任務</string>
     <string name="action_delete_selected_cd">刪除選取</string>
     <string name="error_todo_not_found">待辦不存在</string>
-    <string name="error_category_not_found">分類不存在</string>
+    <string name="error_category_not_found">分組不存在</string>
     <string name="error_load_failed">載入失敗</string>
     <string name="error_create_tag_failed">建立標籤失敗</string>
     <string name="tag_already_exists">標籤已存在</string>
@@ -123,16 +123,16 @@
     <string name="priority_high">高</string>
     <string name="priority_medium">中</string>
     <string name="priority_low">低</string>
-    <string name="task_category">所屬主題</string>
+    <string name="task_category">所屬分組</string>
     <string name="note_char_count">%1$d/%2$d</string>
 
     <!-- Redesign: add/edit topic form -->
-    <string name="category_name">主題名稱</string>
-    <string name="category_description">主題描述</string>
-    <string name="dialog_add_category_desc_hint">請輸入主題描述（可選）</string>
+    <string name="category_name">分組名稱</string>
+    <string name="category_description">分組描述</string>
+    <string name="dialog_add_category_desc_hint">請輸入分組描述（可選）</string>
     <string name="category_pin_top">是否置頂</string>
-    <string name="category_pin_top_hint">開啟後，該主題將在列表頂部顯示</string>
-    <string name="action_create_category">建立主題</string>
+    <string name="category_pin_top_hint">開啟後，該分組將在列表頂部顯示</string>
+    <string name="action_create_category">建立分組</string>
     <string name="category_task_count">%1$d 個任務</string>
     <string name="view_grid">雙列</string>
     <string name="view_list">單列</string>
@@ -143,11 +143,11 @@
     <string name="action_add_tag">新增標籤</string>
     <string name="dialog_add_tag_title">新增標籤</string>
     <string name="tag_name_hint">標籤名稱</string>
-    <string name="action_sort_categories">排序主題</string>
-    <string name="marktodo_log_category_created">新增分類: %1$s</string>
-    <string name="marktodo_log_category_updated">編輯分類: %1$s</string>
-    <string name="marktodo_log_category_deleted">刪除分類: %1$s</string>
-    <string name="marktodo_log_categories_reordered">重排分類</string>
+    <string name="action_sort_categories">排序分組</string>
+    <string name="marktodo_log_category_created">新增分組: %1$s</string>
+    <string name="marktodo_log_category_updated">編輯分組: %1$s</string>
+    <string name="marktodo_log_category_deleted">刪除分組: %1$s</string>
+    <string name="marktodo_log_categories_reordered">重排分組</string>
     <string name="marktodo_log_task_created">新增待辦: %1$s</string>
     <string name="marktodo_log_task_updated">編輯待辦: %1$s</string>
     <string name="marktodo_log_task_deleted">刪除待辦: %1$s</string>
@@ -158,7 +158,7 @@
     <string name="marktodo_log_tasks_reordered">重排任務</string>
     <string name="marktodo_log_tag_created">新增標籤: %1$s</string>
     <string name="marktodo_log_tag_deleted">刪除標籤: %1$s</string>
-    <string name="marktodo_log_category_deleted_desc">刪除了待辦分類「%1$s」及其所有任務</string>
-    <string name="marktodo_log_categories_reordered_desc">調整了 %1$d 個分類的排序</string>
+    <string name="marktodo_log_category_deleted_desc">刪除了待辦分組「%1$s」及其所有任務</string>
+    <string name="marktodo_log_categories_reordered_desc">調整了 %1$d 個分組的排序</string>
     <string name="marktodo_log_tasks_reordered_desc">調整了 %1$d 個任務的排序</string>
 </resources>

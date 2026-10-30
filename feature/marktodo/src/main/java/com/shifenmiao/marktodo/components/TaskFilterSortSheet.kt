@@ -87,10 +87,9 @@ fun TaskFilterSortSheet(
         confirmButton = {
             if (showFilters) {
                 OneSecondaryButton(
-                    text = stringResource(R.string.p1_reset),
+                    text = stringResource(R.string.p1_clear_filters),
                     onClick = {
                         draftFilter = TaskFilter()
-                        draftSort = TaskSortConfig()
                     },
                     modifier = Modifier.weight(1f),
                 )

@@ -2,6 +2,8 @@ package com.shifenmiao.marktodo.screen
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -63,6 +64,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFeatures
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFilterAlt
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineFolder
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineInbox
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineQuickTiles
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineViewList
@@ -98,24 +100,31 @@ fun MarkTodoScreen(
     val flattened = remember(tasks, fullCategories) {
         TodoTaskQuery.flatten(tasks = tasks, categories = fullCategories)
     }
-    val scopedTasks = remember(flattened, uiState.homeView, uiState.searchQuery) {
-        if (uiState.searchQuery.isBlank() && uiState.homeView == HomeView.INBOX) {
+    val scopedTasks = remember(flattened, uiState.homeView) {
+        if (uiState.homeView == HomeView.INBOX) {
             flattened.filter { it.task.categoryId == null }
         } else {
             flattened
         }
     }
+    val effectiveFilter = remember(uiState.searchQuery, uiState.filter) {
+        if (uiState.searchQuery.isNotBlank() && uiState.filter == TaskFilter()) {
+            uiState.filter.copy(completion = TaskCompletionFilter.ALL)
+        } else {
+            uiState.filter
+        }
+    }
     val visibleTasks = remember(
         scopedTasks,
         uiState.searchQuery,
-        uiState.filter,
+        effectiveFilter,
         uiState.sort,
         uiState.pendingCompletionIds,
     ) {
         TodoTaskQuery.filterAndSort(
             tasks = scopedTasks,
             searchQuery = uiState.searchQuery,
-            filter = uiState.filter,
+            filter = effectiveFilter,
             sort = uiState.sort,
             retainedCompletedTaskIds = uiState.pendingCompletionIds,
         )
@@ -125,7 +134,6 @@ fun MarkTodoScreen(
         visibleTasks.filter { it.task.categoryId != null }.groupBy { it.task.categoryId!! }
     }
     val hasNarrowingQuery = uiState.searchQuery.isNotBlank() ||
-        uiState.filter.completion != TaskCompletionFilter.ALL ||
         uiState.filter.hasCategoryFilter ||
         uiState.filter.tagNames.isNotEmpty() ||
         uiState.filter.priorities.isNotEmpty() ||
@@ -141,13 +149,11 @@ fun MarkTodoScreen(
         title = { Text(text = stringResource(R.string.marktodo)) },
         actions = {
             MarkTodoScreenActions(
-                isGridView = uiState.isGridView,
                 isReorderMode = uiState.isReorderMode,
-                showViewMode = uiState.homeView == HomeView.THEMES &&
-                    uiState.searchQuery.isBlank() &&
-                    !uiState.filter.hasSmartDateFilter,
-                onViewModeChange = {
-                    markTodoComponent.handleEvent(MarkTodoUiEvent.SetGridView(it))
+                showAddCategory = uiState.homeView == HomeView.THEMES &&
+                    uiState.searchQuery.isBlank(),
+                onAddCategory = {
+                    markTodoComponent.handleEvent(MarkTodoUiEvent.AddCategoryClicked)
                 },
                 onExitReorder = {
                     markTodoComponent.handleEvent(MarkTodoUiEvent.SetReorderMode(false))
@@ -161,49 +167,38 @@ fun MarkTodoScreen(
         isShowDefaultActions = false,
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            Row(
+            GlassSearchTextField(
+                value = uiState.searchQuery,
+                onValueChange = {
+                    markTodoComponent.handleEvent(MarkTodoUiEvent.SearchQueryChanged(it))
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        start = OneBoxDesignSystem.screenPadding,
-                        end = OneBoxDesignSystem.microSpacing,
-                        top = OneBoxDesignSystem.compactSpacing,
+                        horizontal = OneBoxDesignSystem.screenPadding,
+                        vertical = OneBoxDesignSystem.compactSpacing,
                     ),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                GlassSearchTextField(
-                    value = uiState.searchQuery,
-                    onValueChange = {
-                        markTodoComponent.handleEvent(MarkTodoUiEvent.SearchQueryChanged(it))
-                    },
-                    modifier = Modifier.weight(1f),
-                    placeholder = stringResource(R.string.p1_search_tasks),
-                )
-                IconButton(
-                    onClick = {
-                        markTodoComponent.handleEvent(MarkTodoUiEvent.ShowFilterSortSheet)
-                    },
-                    modifier = Modifier.size(48.dp),
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFilterAlt,
-                        contentDescription = stringResource(R.string.p1_filter_sort),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-                }
-            }
+                placeholder = stringResource(R.string.p1_search_tasks),
+            )
 
-            ActiveQueryChips(
+            QueryShortcutBar(
                 filter = uiState.filter,
                 sort = uiState.sort,
+                isGridView = uiState.isGridView,
+                showViewMode = uiState.homeView == HomeView.THEMES &&
+                    uiState.searchQuery.isBlank() &&
+                    !uiState.filter.hasSmartDateFilter,
                 onFilterChange = {
                     markTodoComponent.handleEvent(MarkTodoUiEvent.SetFilter(it))
                 },
                 onSortChange = {
                     markTodoComponent.handleEvent(MarkTodoUiEvent.SetSort(it))
                 },
-                onReset = {
-                    markTodoComponent.handleEvent(MarkTodoUiEvent.ResetQuery)
+                onViewModeChange = {
+                    markTodoComponent.handleEvent(MarkTodoUiEvent.SetGridView(it))
+                },
+                onShowFilterSort = {
+                    markTodoComponent.handleEvent(MarkTodoUiEvent.ShowFilterSortSheet)
                 },
             )
 
@@ -213,6 +208,10 @@ fun MarkTodoScreen(
                     if (visibleTasks.isEmpty()) {
                         TaskListEmptyState(
                             message = stringResource(R.string.p1_empty_search),
+                            actionLabel = stringResource(R.string.p1_clear_search),
+                            onAction = {
+                                markTodoComponent.handleEvent(MarkTodoUiEvent.SearchQueryChanged(""))
+                            },
                             modifier = contentModifier,
                         )
                     } else {
@@ -234,6 +233,10 @@ fun MarkTodoScreen(
                     if (visibleTasks.isEmpty()) {
                         TaskListEmptyState(
                             message = stringResource(R.string.p1_empty_inbox),
+                            actionLabel = stringResource(R.string.action_add_task),
+                            onAction = {
+                                markTodoComponent.handleEvent(MarkTodoUiEvent.AddTaskClicked())
+                            },
                             modifier = contentModifier,
                         )
                     } else {
@@ -341,10 +344,9 @@ fun MarkTodoScreen(
 
 @Composable
 private fun MarkTodoScreenActions(
-    isGridView: Boolean,
     isReorderMode: Boolean,
-    showViewMode: Boolean,
-    onViewModeChange: (Boolean) -> Unit,
+    showAddCategory: Boolean,
+    onAddCategory: () -> Unit,
     onExitReorder: () -> Unit,
     onAddTask: () -> Unit,
 ) {
@@ -362,17 +364,11 @@ private fun MarkTodoScreenActions(
             }
             return@Row
         }
-        if (showViewMode) {
-            IconButton(onClick = { onViewModeChange(!isGridView) }) {
+        if (showAddCategory) {
+            IconButton(onClick = onAddCategory) {
                 Icon(
-                    imageVector = if (isGridView) {
-                        com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineViewList
-                    } else {
-                        com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineQuickTiles
-                    },
-                    contentDescription = stringResource(
-                        if (isGridView) R.string.cd_switch_to_list_view else R.string.cd_switch_to_grid_view
-                    ),
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFolder,
+                    contentDescription = stringResource(R.string.action_add_category),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
@@ -470,101 +466,55 @@ private fun TodayTaskList(
 }
 
 @Composable
-private fun ActiveQueryChips(
+private fun QueryShortcutBar(
     filter: TaskFilter,
     sort: TaskSortConfig,
+    isGridView: Boolean,
+    showViewMode: Boolean,
     onFilterChange: (TaskFilter) -> Unit,
     onSortChange: (TaskSortConfig) -> Unit,
-    onReset: () -> Unit,
+    onViewModeChange: (Boolean) -> Unit,
+    onShowFilterSort: () -> Unit,
 ) {
-    LazyRow(
-        modifier = Modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(
-            horizontal = OneBoxDesignSystem.screenPadding,
-            vertical = OneBoxDesignSystem.microSpacing,
-        ),
-        horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                start = OneBoxDesignSystem.screenPadding,
+                end = OneBoxDesignSystem.microSpacing,
+            ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (filter.completion != TaskCompletionFilter.ALL) {
-            item(key = "completion") {
-                ActiveConditionChip(
-                    label = stringResource(
-                        if (filter.completion == TaskCompletionFilter.ACTIVE) {
-                            R.string.filter_active
-                        } else {
-                            R.string.filter_completed
-                        }
-                    ),
-                    onClear = { onFilterChange(filter.copy(completion = TaskCompletionFilter.ALL)) },
+        Row(
+            modifier = Modifier
+                .weight(1f)
+                .horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.microSpacing),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            if (filter.hasAdvancedFilters) {
+                ActiveConditionChips(filter = filter, onFilterChange = onFilterChange)
+            } else {
+                QuickDateFilterChip(
+                    label = stringResource(R.string.p1_group_overdue),
+                    scope = TaskDateScope.OVERDUE,
+                    filter = filter,
+                    onFilterChange = onFilterChange,
+                )
+                QuickDateFilterChip(
+                    label = stringResource(R.string.p1_today),
+                    scope = TaskDateScope.TODAY,
+                    filter = filter,
+                    onFilterChange = onFilterChange,
+                )
+                QuickDateFilterChip(
+                    label = stringResource(R.string.p1_next_7_days),
+                    scope = TaskDateScope.NEXT_7_DAYS,
+                    filter = filter,
+                    onFilterChange = onFilterChange,
                 )
             }
-        }
-        if (filter.hasCategoryFilter) {
-            item(key = "categories") {
-                val count = filter.categoryIds.size + if (filter.includeInbox) 1 else 0
-                ActiveConditionChip(
-                    label = if (count == 1 && filter.includeInbox) {
-                        stringResource(R.string.p1_inbox)
-                    } else {
-                        stringResource(R.string.p1_categories_selected, count)
-                    },
-                    onClear = {
-                        onFilterChange(filter.copy(categoryIds = emptySet(), includeInbox = false))
-                    },
-                )
-            }
-        }
-        if (filter.tagNames.isNotEmpty()) {
-            item(key = "tags") {
-                ActiveConditionChip(
-                    label = stringResource(R.string.p1_tags_selected, filter.tagNames.size),
-                    onClear = { onFilterChange(filter.copy(tagNames = emptySet())) },
-                )
-            }
-        }
-        if (filter.priorities.isNotEmpty()) {
-            item(key = "priorities") {
-                ActiveConditionChip(
-                    label = stringResource(R.string.p1_priorities_selected, filter.priorities.size),
-                    onClear = { onFilterChange(filter.copy(priorities = emptySet())) },
-                )
-            }
-        }
-        if (filter.hasDateFilter) {
-            item(key = "date_scope") {
-                ActiveConditionChip(
-                    label = stringResource(
-                        when (filter.dateScope) {
-                            TaskDateScope.TODAY -> R.string.p1_today
-                            TaskDateScope.OVERDUE -> R.string.p1_group_overdue
-                            TaskDateScope.UPCOMING -> R.string.p1_group_upcoming
-                            TaskDateScope.NO_DATE -> R.string.p1_group_no_date
-                            TaskDateScope.ALL, TaskDateScope.RANGE -> R.string.p1_filter_due_range
-                        }
-                    ),
-                    onClear = {
-                        onFilterChange(
-                            filter.copy(
-                                dateScope = TaskDateScope.ALL,
-                                dueStartMillis = null,
-                                dueEndMillis = null,
-                            )
-                        )
-                    },
-                )
-            }
-        }
-        if (filter.starredOnly) {
-            item(key = "focus") {
-                ActiveConditionChip(
-                    label = stringResource(R.string.p1_focus),
-                    onClear = { onFilterChange(filter.copy(starredOnly = false)) },
-                )
-            }
-        }
-        if (sort != TaskSortConfig()) {
-            item(key = "sort") {
+            if (sort != TaskSortConfig()) {
                 ActiveConditionChip(
                     label = stringResource(
                         R.string.p1_sort_chip,
@@ -575,16 +525,145 @@ private fun ActiveQueryChips(
                 )
             }
         }
-        if (filter != TaskFilter() || sort != TaskSortConfig()) {
-            item(key = "reset") {
-                GlassFilterChip(
-                    selected = false,
-                    onClick = onReset,
-                    label = { Text(stringResource(R.string.p1_reset)) },
+        IconButton(onClick = onShowFilterSort, modifier = Modifier.size(48.dp)) {
+            Icon(
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFilterAlt,
+                contentDescription = stringResource(R.string.p1_filter_sort),
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+            )
+        }
+        if (showViewMode) {
+            IconButton(
+                onClick = { onViewModeChange(!isGridView) },
+                modifier = Modifier.size(48.dp),
+            ) {
+                Icon(
+                    imageVector = if (isGridView) {
+                        com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineViewList
+                    } else {
+                        com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineQuickTiles
+                    },
+                    contentDescription = stringResource(
+                        if (isGridView) R.string.cd_switch_to_list_view else R.string.cd_switch_to_grid_view
+                    ),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
     }
+}
+
+@Composable
+private fun ActiveConditionChips(
+    filter: TaskFilter,
+    onFilterChange: (TaskFilter) -> Unit,
+) {
+    if (filter.completion != TaskCompletionFilter.ACTIVE) {
+        ActiveConditionChip(
+            label = stringResource(
+                if (filter.completion == TaskCompletionFilter.ALL) {
+                    R.string.filter_all
+                } else {
+                    R.string.filter_completed
+                }
+            ),
+            onClear = {
+                onFilterChange(filter.copy(completion = TaskCompletionFilter.ACTIVE))
+            },
+        )
+    }
+    if (filter.hasCategoryFilter) {
+        val count = filter.categoryIds.size + if (filter.includeInbox) 1 else 0
+        ActiveConditionChip(
+            label = if (count == 1 && filter.includeInbox) {
+                stringResource(R.string.p1_inbox)
+            } else {
+                stringResource(R.string.p1_categories_selected, count)
+            },
+            onClear = {
+                onFilterChange(filter.copy(categoryIds = emptySet(), includeInbox = false))
+            },
+        )
+    }
+    if (filter.tagNames.isNotEmpty()) {
+        ActiveConditionChip(
+            label = stringResource(R.string.p1_tags_selected, filter.tagNames.size),
+            onClear = { onFilterChange(filter.copy(tagNames = emptySet())) },
+        )
+    }
+    if (filter.priorities.isNotEmpty()) {
+        ActiveConditionChip(
+            label = stringResource(R.string.p1_priorities_selected, filter.priorities.size),
+            onClear = { onFilterChange(filter.copy(priorities = emptySet())) },
+        )
+    }
+    if (filter.hasDueRange ||
+        filter.dateScope == TaskDateScope.UPCOMING ||
+        filter.dateScope == TaskDateScope.NO_DATE
+    ) {
+        ActiveConditionChip(
+            label = stringResource(
+                when (filter.dateScope) {
+                    TaskDateScope.UPCOMING -> R.string.p1_group_upcoming
+                    TaskDateScope.NO_DATE -> R.string.p1_group_no_date
+                    else -> R.string.p1_filter_due_range
+                }
+            ),
+            onClear = {
+                onFilterChange(
+                    filter.copy(
+                        dateScope = TaskDateScope.ALL,
+                        dueStartMillis = null,
+                        dueEndMillis = null,
+                    )
+                )
+            },
+        )
+    }
+    if (filter.starredOnly) {
+        ActiveConditionChip(
+            label = stringResource(R.string.p1_focus),
+            onClear = { onFilterChange(filter.copy(starredOnly = false)) },
+        )
+    }
+}
+
+@Composable
+private fun QuickDateFilterChip(
+    label: String,
+    scope: TaskDateScope,
+    filter: TaskFilter,
+    onFilterChange: (TaskFilter) -> Unit,
+) {
+    GlassFilterChip(
+        selected = filter.dateScope == scope,
+        onClick = {
+            onFilterChange(
+                TaskFilter(
+                    dateScope = if (filter.dateScope == scope) TaskDateScope.ALL else scope
+                )
+            )
+        },
+        label = {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelMedium,
+                maxLines = 1,
+            )
+        },
+        trailingIcon = if (filter.dateScope == scope) {
+            {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
+                    contentDescription = stringResource(R.string.p1_clear_condition),
+                    modifier = Modifier.size(14.dp),
+                )
+            }
+        } else {
+            null
+        },
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
+    )
 }
 
 @Composable
@@ -595,7 +674,13 @@ private fun ActiveConditionChip(
     GlassFilterChip(
         selected = true,
         onClick = onClear,
-        label = { Text(label) },
+        label = {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelMedium,
+                maxLines = 1,
+            )
+        },
         trailingIcon = {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
@@ -603,6 +688,7 @@ private fun ActiveConditionChip(
                 modifier = Modifier.size(14.dp),
             )
         },
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
     )
 }
 
@@ -622,6 +708,18 @@ private fun CategoriesContent(
             message = stringResource(
                 if (hasAnyCategory) R.string.empty_filtered_tasks else R.string.p1_empty_themes
             ),
+            actionLabel = stringResource(
+                if (hasAnyCategory) R.string.p1_clear_filters else R.string.action_add_category
+            ),
+            onAction = {
+                component.handleEvent(
+                    if (hasAnyCategory) {
+                        MarkTodoUiEvent.ClearFilters
+                    } else {
+                        MarkTodoUiEvent.AddCategoryClicked
+                    }
+                )
+            },
             modifier = modifier,
         )
         return
@@ -643,7 +741,11 @@ private fun CategoriesContent(
         },
     )
     LazyVerticalGrid(
-        columns = if (isGridView) GridCells.Adaptive(minSize = 180.dp) else GridCells.Fixed(1),
+        columns = if (isGridView && categories.size > 1) {
+            GridCells.Adaptive(minSize = 180.dp)
+        } else {
+            GridCells.Fixed(1)
+        },
         state = lazyGridState,
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(

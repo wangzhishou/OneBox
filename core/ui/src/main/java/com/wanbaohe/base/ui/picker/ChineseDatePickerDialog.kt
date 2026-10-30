@@ -20,9 +20,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -551,26 +548,30 @@ private fun CalendarGrid(
         },
         label = "calendar"
     ) { currentDays ->
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(7),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(240.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            items(currentDays) { date ->
-                val isDisabled = date != null && (
-                    (minDate != null && date.isBefore(minDate)) ||
-                    (maxDate != null && date.isAfter(maxDate))
-                )
-                DayCell(
-                    date = date,
-                    isSelected = date == selectedDate,
-                    isToday = date == LocalDate.now(),
-                    isDisabled = isDisabled,
-                    onClick = { date?.let { if (!isDisabled) onDateClick(it) } }
-                )
+            currentDays.chunked(7).forEach { week ->
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    week.forEach { date ->
+                        val isDisabled = date != null && (
+                            (minDate != null && date.isBefore(minDate)) ||
+                            (maxDate != null && date.isAfter(maxDate))
+                        )
+                        DayCell(
+                            date = date,
+                            isSelected = date == selectedDate,
+                            isToday = date == LocalDate.now(),
+                            isDisabled = isDisabled,
+                            onClick = { date?.let { if (!isDisabled) onDateClick(it) } },
+                            modifier = Modifier.weight(1f),
+                        )
+                    }
+                    repeat(7 - week.size) {
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
+                }
             }
         }
     }
@@ -591,10 +592,11 @@ private fun DayCell(
     isSelected: Boolean,
     isToday: Boolean,
     isDisabled: Boolean = false,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .aspectRatio(1f)
             .padding(2.dp)
             .clip(CircleShape)

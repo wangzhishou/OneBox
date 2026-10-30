@@ -27,6 +27,7 @@ data class AddTodoUiState(
     val showDeleteConfirm: Boolean = false,
     val isCreatingSchedule: Boolean = false,
     val isSaving: Boolean = false,
+    val isDirty: Boolean = false,
 ) {
     val isEditMode: Boolean get() = editingTaskId != null
     val isTitleValid: Boolean get() = taskTitle.isNotBlank()

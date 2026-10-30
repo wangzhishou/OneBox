@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.vector.ImageVector
 
 /**
- * Represents a category (主题) of todo tasks.
+ * Represents a category (分组) of todo tasks.
  *
  * @property id Unique identifier for the category.
  * @property title Display name of the category.
@@ -43,7 +43,7 @@ data class TodoCategory(
         get() = if (totalCount == 0) 0 else (completedCount * 100) / totalCount
 
     /**
-     * 该分类下任务是否全部完成
+     * 该分组下任务是否全部完成
      */
     val isAllCompleted: Boolean
         get() = totalCount > 0 && completedCount == totalCount

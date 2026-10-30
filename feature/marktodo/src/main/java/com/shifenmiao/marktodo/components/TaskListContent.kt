@@ -59,6 +59,7 @@ import com.wanbaohe.core.ui.widget.other.RevealValue
 import com.wanbaohe.core.ui.widget.other.SwipeToReveal
 import com.wanbaohe.core.ui.widget.other.rememberRevealState
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
+import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
 import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.util.Date
@@ -203,38 +204,34 @@ private fun TaskMetadata(
                 overflow = TextOverflow.Ellipsis,
             )
         }
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-        ) {
-            Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAccessTime,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(12.dp),
-            )
-            Text(
-                text = stringResource(R.string.p1_created_at, formatTaskDate(task.createdAt)),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
         task.dueDate?.let { dueDate ->
-            Text(
-                text = buildString {
-                    append(formatTodoDate(dueDate))
-                    if (task.hasDueTime) {
-                        append(' ')
-                        append(formatTaskTime(dueDate))
-                    }
-                },
-                style = MaterialTheme.typography.labelSmall,
-                color = if (task.isOverdue) {
-                    MaterialTheme.colorScheme.onErrorContainer
-                } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                },
-            )
+            val dateColor = if (task.isOverdue) {
+                MaterialTheme.colorScheme.onErrorContainer
+            } else {
+                MaterialTheme.colorScheme.onSurfaceVariant
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAccessTime,
+                    contentDescription = null,
+                    tint = dateColor,
+                    modifier = Modifier.size(12.dp),
+                )
+                Text(
+                    text = buildString {
+                        append(formatTodoDate(dueDate))
+                        if (task.hasDueTime) {
+                            append(' ')
+                            append(formatTaskTime(dueDate))
+                        }
+                    },
+                    style = MaterialTheme.typography.labelSmall,
+                    color = dateColor,
+                )
+            }
         }
         if (!task.note.isNullOrBlank()) {
             Text(
@@ -416,13 +413,26 @@ fun TaskOverflowMenu(
 fun TaskListEmptyState(
     message: String,
     modifier: Modifier = Modifier,
+    actionLabel: String? = null,
+    onAction: (() -> Unit)? = null,
 ) {
-    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
         Text(
             text = message,
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+        if (actionLabel != null && onAction != null) {
+            OneSecondaryButton(
+                text = actionLabel,
+                onClick = onAction,
+                modifier = Modifier.padding(top = OneBoxDesignSystem.itemSpacing),
+            )
+        }
     }
 }
 
@@ -482,9 +492,6 @@ private fun SwipeableTaskListItem(
         },
     )
 }
-
-private fun formatTaskDate(timestamp: Long): String =
-    DateFormat.getDateInstance(DateFormat.MEDIUM).format(Date(timestamp))
 
 private fun formatTaskTime(timestamp: Long): String =
     DateFormat.getTimeInstance(DateFormat.SHORT).format(Date(timestamp))

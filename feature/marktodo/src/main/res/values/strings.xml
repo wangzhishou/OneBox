@@ -3,11 +3,11 @@
     <!-- Module Name -->
     <string name="marktodo">To-do List</string>
 
-    <!-- Add Category / Add Task Dialog -->
-    <string name="action_add_category">Add Category</string>
-    <string name="dialog_add_category_title">Add To-do Topic</string>
-    <string name="dialog_edit_category_title">Edit To-do Topic</string>
-    <string name="dialog_add_category_hint">Enter a topic name</string>
+    <!-- Add Group / Add Task Dialog -->
+    <string name="action_add_category">Add Group</string>
+    <string name="dialog_add_category_title">Add To-do Group</string>
+    <string name="dialog_edit_category_title">Edit To-do Group</string>
+    <string name="dialog_add_category_hint">Enter a group name</string>
     <string name="dialog_add_category_icon">Icon</string>
     <string name="dialog_add_category_color">Color</string>
     <string name="dialog_add_category_color_auto">Auto Color</string>
@@ -64,16 +64,16 @@
     <string name="more_tasks_indicator">%1$d more tasks…</string>
 
     <!-- Validation / Snackbar -->
-    <string name="validation_category_title_required">Category name cannot be empty</string>
-    <string name="validation_category_title_duplicate">Category name already exists</string>
+    <string name="validation_category_title_required">Group name cannot be empty</string>
+    <string name="validation_category_title_duplicate">Group name already exists</string>
     <string name="validation_task_title_required">Task title cannot be empty</string>
-    <string name="validation_task_title_duplicate">A task with the same name already exists in this category</string>
-    <string name="snackbar_category_added">Category added</string>
+    <string name="validation_task_title_duplicate">A task with the same name already exists in this group</string>
+    <string name="snackbar_category_added">Group added</string>
     <string name="snackbar_task_added">To-do added</string>
     <string name="snackbar_task_updated">To-do updated</string>
     <string name="snackbar_task_deleted">To-do deleted</string>
 
-    <!-- Category Detail Screen -->
+    <!-- Group Detail Screen -->
     <string name="action_add_task">Add To-do</string>
     <string name="action_filter">Filter</string>
     <string name="action_sort">Sort</string>
@@ -104,7 +104,7 @@
     <string name="edit_mode_title">%1$d selected</string>
     <string name="snackbar_tasks_deleted">%1$d to-dos deleted</string>
     <string name="dialog_add_task_clear">Clear</string>
-    <string name="toast_select_category_first">Please select or add a category first</string>
+    <string name="toast_select_category_first">Please select or add a group first</string>
     <string name="schedule_section_title">Schedule</string>
     <string name="action_open_schedule">Open schedule hub</string>
     <string name="action_create_schedule">Create local schedule</string>
@@ -114,8 +114,8 @@
     <string name="schedule_created_failed">Failed to create schedule. Please try again later</string>
 
     <!-- Delete Confirmation -->
-    <string name="dialog_delete_category_title">Delete Category</string>
-    <string name="dialog_delete_category_message">Are you sure you want to delete \"%1$s\"?\nAll tasks under this category will also be deleted.</string>
+    <string name="dialog_delete_category_title">Delete Group</string>
+    <string name="dialog_delete_category_message">Are you sure you want to delete \"%1$s\"?\nAll tasks under this group will also be deleted.</string>
     <string name="dialog_delete_task_message">Are you sure you want to delete \"%1$s\"?</string>
 
     <!-- View Mode Descriptions -->
@@ -126,7 +126,7 @@
     <!-- Status Labels -->
     <string name="label_status">Status</string>
     <string name="status_overdue">Overdue</string>
-    <string name="category_unnamed">Unnamed Category</string>
+    <string name="category_unnamed">Unnamed Group</string>
 
     <!-- Batch Operations -->
     <string name="snackbar_batch_tasks_deleted">%1$d tasks deleted</string>
@@ -134,7 +134,7 @@
 
     <!-- Error Messages (used by Component) -->
     <string name="error_todo_not_found">To-do not found</string>
-    <string name="error_category_not_found">Category not found</string>
+    <string name="error_category_not_found">Group not found</string>
     <string name="error_load_failed">Failed to load</string>
     <string name="error_create_tag_failed">Failed to create tag</string>
     <string name="tag_already_exists">Tag already exists</string>
@@ -166,16 +166,16 @@
     <string name="priority_high">High</string>
     <string name="priority_medium">Medium</string>
     <string name="priority_low">Low</string>
-    <string name="task_category">Topic</string>
+    <string name="task_category">Group</string>
     <string name="note_char_count">%1$d/%2$d</string>
 
-    <!-- Redesign: add/edit topic form -->
-    <string name="category_name">Topic Name</string>
-    <string name="category_description">Topic Description</string>
+    <!-- Redesign: add/edit group form -->
+    <string name="category_name">Group Name</string>
+    <string name="category_description">Group Description</string>
     <string name="dialog_add_category_desc_hint">Enter a description (optional)</string>
     <string name="category_pin_top">Pin to Top</string>
-    <string name="category_pin_top_hint">When enabled, this topic appears at the top of the list</string>
-    <string name="action_create_category">Create Topic</string>
+    <string name="category_pin_top_hint">When enabled, this group appears at the top of the list</string>
+    <string name="action_create_category">Create Group</string>
     <string name="category_task_count">%1$d tasks</string>
     <string name="view_grid">Grid</string>
     <string name="view_list">List</string>
@@ -186,10 +186,10 @@
     <string name="action_add_tag">New tag</string>
     <string name="dialog_add_tag_title">New Tag</string>
     <string name="tag_name_hint">Tag name</string>
-    <string name="action_sort_categories">Sort topics</string>
-    <string name="marktodo_log_category_created">New category: %1$s</string>
-    <string name="marktodo_log_category_updated">Edit category: %1$s</string>
-    <string name="marktodo_log_category_deleted">Delete category: %1$s</string>
+    <string name="action_sort_categories">Sort groups</string>
+    <string name="marktodo_log_category_created">New group: %1$s</string>
+    <string name="marktodo_log_category_updated">Edit group: %1$s</string>
+    <string name="marktodo_log_category_deleted">Delete group: %1$s</string>
     <string name="marktodo_log_categories_reordered">Reorder categories</string>
     <string name="marktodo_log_task_created">New task: %1$s</string>
     <string name="marktodo_log_task_updated">Edit task: %1$s</string>
@@ -201,7 +201,7 @@
     <string name="marktodo_log_tasks_reordered">Reorder tasks</string>
     <string name="marktodo_log_tag_created">New tag: %1$s</string>
     <string name="marktodo_log_tag_deleted">Delete tag: %1$s</string>
-    <string name="marktodo_log_category_deleted_desc">Deleted category “%1$s” and all its tasks</string>
+    <string name="marktodo_log_category_deleted_desc">Deleted group “%1$s” and all its tasks</string>
     <string name="marktodo_log_categories_reordered_desc">Reordered %1$d categories</string>
     <string name="marktodo_log_tasks_reordered_desc">Reordered %1$d tasks</string>
     <string name="marktodo_log_task_restored">Restored task: %1$s</string>
@@ -213,7 +213,7 @@
     <!-- Quick add and exact due time -->
     <string name="quick_add_title">Quick Add</string>
     <string name="quick_add_title_hint">Task title, e.g. Tomorrow 9:30 #Work !high</string>
-    <string name="quick_add_show_details">Add date, priority, tags, topic or notes</string>
+    <string name="quick_add_show_details">Add date, priority, tags, group or notes</string>
     <string name="quick_add_hide_details">Hide details</string>
     <string name="quick_add_recognized">Recognized from title</string>
     <string name="quick_add_remove_token">Remove recognized value</string>

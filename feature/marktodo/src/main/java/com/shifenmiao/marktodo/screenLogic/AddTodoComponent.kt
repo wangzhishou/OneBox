@@ -105,6 +105,20 @@ class AddTodoComponent @AssistedInject internal constructor(
     }
 
     fun handleEvent(event: AddTodoUiEvent): Boolean {
+        when (event) {
+            is AddTodoUiEvent.SelectCategory,
+            is AddTodoUiEvent.UpdateTaskTitle,
+            is AddTodoUiEvent.UpdateTaskNote,
+            is AddTodoUiEvent.ToggleTag,
+            is AddTodoUiEvent.AddCustomTag,
+            is AddTodoUiEvent.SelectPriority,
+            is AddTodoUiEvent.UpdateDueDate,
+            is AddTodoUiEvent.UpdateDueTime,
+            AddTodoUiEvent.ClearDueTime -> {
+                _uiState.value = _uiState.value.copy(isDirty = true)
+            }
+            else -> Unit
+        }
         return when (event) {
             is AddTodoUiEvent.SelectCategory -> {
                 _uiState.value = _uiState.value.copy(selectedCategory = event.category)

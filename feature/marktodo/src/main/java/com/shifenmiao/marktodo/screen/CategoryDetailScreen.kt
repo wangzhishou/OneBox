@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -282,7 +281,9 @@ private fun CategoryHeaderCard(
 ) {
     GlassCard(
         modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = categoryCardTintColor(category)),
+        colors = com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors(
+            categoryCardTintColor(category)
+        ),
     ) {
         Column(
             modifier = Modifier

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -142,16 +143,18 @@ fun TodoTagChip(
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
 ) {
-    val tagColor = tag?.colorArgb?.let { Color(it) } ?: MaterialTheme.colorScheme.onPrimaryContainer
+    val tagColor = com.shifenmiao.marktodo.theme.tagAccentColor(tag?.colorArgb)
     Row(
         modifier = modifier
             .background(
-                color = tagColor.copy(alpha = 0.12f),
+                color = com.shifenmiao.marktodo.theme.tagContainerColor(tag?.colorArgb),
                 shape = RoundedCornerShape(4.dp),
             )
             .then(
                 if (onClick != null) {
-                    Modifier.clickable(onClick = onClick)
+                    Modifier
+                        .heightIn(min = 32.dp)
+                        .clickable(onClick = onClick)
                 } else {
                     Modifier
                 }

@@ -15,7 +15,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -48,7 +47,6 @@ import com.shifenmiao.marktodo.screenLogic.AddTodoComponent
 import com.shifenmiao.marktodo.theme.CategoryColorPalette
 import com.shifenmiao.marktodo.theme.categoryPaletteWithThemeColors
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAccessTime
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCalendar
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineEventAvailable
@@ -81,6 +79,14 @@ fun AddTodoScreen(
 ) {
     val uiState by addTodoComponent.uiState.collectAsState()
     var showAddTagDialog by remember { mutableStateOf(false) }
+    var showDiscardChanges by remember { mutableStateOf(false) }
+    val requestGoBack = {
+        if (uiState.isDirty && !uiState.isSaving) {
+            showDiscardChanges = true
+        } else {
+            onGoBack()
+        }
+    }
 
     BaseScreen(
         title = {
@@ -90,16 +96,6 @@ fun AddTodoScreen(
                     else R.string.dialog_add_task_title
                 )
             )
-        },
-        actions = {
-            IconButton(
-                onClick = { addTodoComponent.handleEvent(AddTodoUiEvent.SubmitTask) }
-            ) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check,
-                    contentDescription = stringResource(R.string.action_save)
-                )
-            }
         },
         foreground = {
             if (uiState.isEditMode) {
@@ -114,7 +110,7 @@ fun AddTodoScreen(
                 )
             }
         },
-        onGoBack = onGoBack,
+        onGoBack = requestGoBack,
         isShowDefaultActions = false
     ) {
         Column(
@@ -384,8 +380,29 @@ fun AddTodoScreen(
         )
     }
 
+    if (showDiscardChanges) {
+        AlertDialog(
+            containerColor = AppTheme.colors.getContainerSurfaceColor(),
+            onDismissRequest = { showDiscardChanges = false },
+            title = { Text(stringResource(com.shifenmiao.core.R.string.theme_discard_title)) },
+            text = { Text(stringResource(com.shifenmiao.core.R.string.theme_discard_message)) },
+            confirmButton = {
+                OneBoxDangerButton(
+                    text = stringResource(com.shifenmiao.core.R.string.theme_discard_title),
+                    onClick = onGoBack,
+                )
+            },
+            dismissButton = {
+                OneSecondaryButton(
+                    text = stringResource(com.shifenmiao.core.R.string.theme_discard_dismiss),
+                    onClick = { showDiscardChanges = false },
+                )
+            },
+        )
+    }
+
     BackHandler {
-        onGoBack()
+        requestGoBack()
     }
 }
 

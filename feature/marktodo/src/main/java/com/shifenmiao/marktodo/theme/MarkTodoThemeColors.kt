@@ -41,26 +41,37 @@ fun categoryPaletteWithThemeColors(): List<Color> {
 fun categoryPaletteColorForId(categoryId: String): Color =
     CategoryColorPalette[abs(categoryId.hashCode()) % CategoryColorPalette.size]
 
-/**
- * 主题强调色：自定义色优先（全透明为历史脏数据按未设置），否则按分类 ID 分配。
- */
-fun categoryAccentColor(category: TodoCategory): Color =
-    category.colorArgb?.let { Color(it) }?.takeIf { it.alpha > 0f }
+@Composable
+private fun themedAccentColor(color: Color): Color =
+    color.blend(MaterialTheme.colorScheme.primary, 0.24f)
+
+/** 分组强调色：保留自定义色相，并随当前主题调整明暗与饱和度。 */
+@Composable
+fun categoryAccentColor(category: TodoCategory): Color {
+    val rawColor = category.colorArgb?.let { Color(it) }?.takeIf { it.alpha > 0f }
         ?: categoryPaletteColorForId(category.id)
+    return themedAccentColor(rawColor)
+}
 
-/** 同色系浅容器色（图标徽章/标签底色等） */
+/** 与当前主题容器色协调的分组徽章底色。 */
+@Composable
 fun categoryAccentContainerColor(category: TodoCategory): Color =
-    categoryAccentColor(category).copy(alpha = 0.14f)
+    categoryAccentColor(category).blend(MaterialTheme.colorScheme.primaryContainer, 0.55f)
 
-/**
- * 卡片玻璃底色：把强调色向页面底色 blend 成粉彩色（16% 色相），再交给玻璃管线。
- * 管线的 tint overlay 层不随 containerAlpha 线性变化，直接传饱和色会过浓；
- * 预混合成 pastel 后色相保留（RGB 通道极差 > 12，不会被判成中性玻璃）、观感只剩淡淡一层。
- * 非玻璃降级路径下 Card 直接用这个粉彩色，观感一致。
- */
+/** 分组卡片底色：保留分组色相，并适配当前主题的明暗与玻璃管线。 */
 @Composable
 fun categoryCardTintColor(category: TodoCategory): Color =
-    categoryAccentColor(category).blend(MaterialTheme.colorScheme.surface, 0.84f)
+    categoryAccentColor(category).blend(MaterialTheme.colorScheme.surfaceContainer, 0.82f)
+
+/** 标签强调色：使用标签原始色相，并跟随主题配色。 */
+@Composable
+fun tagAccentColor(colorArgb: Int?): Color =
+    themedAccentColor(colorArgb?.let(::Color) ?: MaterialTheme.colorScheme.onPrimaryContainer)
+
+/** 标签容器色：在浅色和深色主题下均保持可读性。 */
+@Composable
+fun tagContainerColor(colorArgb: Int?): Color =
+    tagAccentColor(colorArgb).blend(MaterialTheme.colorScheme.surfaceContainer, 0.86f)
 
 /** 预置标签 id → 颜色（与 FeatureDatabase 种子及 service PRESET_TAG_COLORS 一致） */
 val PresetTagColors: Map<String, Color> = mapOf(

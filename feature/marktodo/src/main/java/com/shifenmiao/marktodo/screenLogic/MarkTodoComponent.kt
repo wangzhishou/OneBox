@@ -15,6 +15,7 @@ import com.shifenmiao.marktodo.model.TaskSortMode
 import com.shifenmiao.marktodo.model.TodoCategory
 import com.shifenmiao.marktodo.model.TodoTag
 import com.shifenmiao.marktodo.model.TodoTask
+import com.shifenmiao.marktodo.model.withQuickDateExclusivity
 import com.shifenmiao.marktodo.service.MarkTodoServiceImpl
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.tencent.mmkv.MMKV
@@ -57,7 +58,7 @@ class MarkTodoComponent @AssistedInject internal constructor(
                     ?: TaskSortMode.MANUAL,
                 ascending = prefs.decodeBool(KEY_SORT_ASCENDING, true),
             ),
-            isGridView = prefs.decodeBool(KEY_GRID_VIEW, true),
+            isGridView = prefs.decodeBool(KEY_GRID_VIEW, false),
         )
     )
     val uiState: StateFlow<MarkTodoUiState> = _uiState.asStateFlow()
@@ -145,11 +146,13 @@ class MarkTodoComponent @AssistedInject internal constructor(
                 _uiState.value = _uiState.value.copy(
                     filter = filter.copy(
                         tagNames = if (selected) setOf(event.tagName) else filter.tagNames - event.tagName,
-                    )
+                    ).withQuickDateExclusivity()
                 )
             }
             is MarkTodoUiEvent.SetFilter -> {
-                _uiState.value = _uiState.value.copy(filter = event.filter)
+                _uiState.value = _uiState.value.copy(
+                    filter = event.filter.withQuickDateExclusivity()
+                )
             }
             is MarkTodoUiEvent.SetSort -> updateSort(event.sort)
             MarkTodoUiEvent.ShowFilterSortSheet -> {
@@ -160,14 +163,13 @@ class MarkTodoComponent @AssistedInject internal constructor(
             }
             is MarkTodoUiEvent.ApplyFilterSort -> {
                 _uiState.value = _uiState.value.copy(
-                    filter = event.filter,
+                    filter = event.filter.withQuickDateExclusivity(),
                     isFilterSortSheetVisible = false,
                 )
                 updateSort(event.sort)
             }
-            MarkTodoUiEvent.ResetQuery -> {
+            MarkTodoUiEvent.ClearFilters -> {
                 _uiState.value = _uiState.value.copy(filter = com.shifenmiao.marktodo.model.TaskFilter())
-                updateSort(TaskSortConfig())
             }
             is MarkTodoUiEvent.SetGridView -> {
                 _uiState.value = _uiState.value.copy(isGridView = event.isGrid)

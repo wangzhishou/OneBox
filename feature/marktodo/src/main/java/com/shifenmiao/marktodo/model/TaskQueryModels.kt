@@ -14,7 +14,7 @@ enum class TaskCompletionFilter {
 
 @Immutable
 enum class TaskDateScope {
-    ALL, TODAY, OVERDUE, UPCOMING, NO_DATE, RANGE
+    ALL, TODAY, OVERDUE, NEXT_7_DAYS, UPCOMING, NO_DATE, RANGE
 }
 
 @Immutable
@@ -33,6 +33,26 @@ data class TaskFilter(
     val hasDueRange: Boolean get() = dueStartMillis != null || dueEndMillis != null
     val hasDateFilter: Boolean get() = hasSmartDateFilter || hasDueRange
     val hasSmartDateFilter: Boolean get() = dateScope != TaskDateScope.ALL && dateScope != TaskDateScope.RANGE
+    val hasAdvancedFilters: Boolean
+        get() = completion != TaskCompletionFilter.ACTIVE ||
+            hasCategoryFilter ||
+            tagNames.isNotEmpty() ||
+            priorities.isNotEmpty() ||
+            hasDueRange ||
+            dateScope == TaskDateScope.UPCOMING ||
+            dateScope == TaskDateScope.NO_DATE ||
+            starredOnly
+}
+
+fun TaskFilter.withQuickDateExclusivity(): TaskFilter {
+    val hasQuickDate = dateScope == TaskDateScope.TODAY ||
+        dateScope == TaskDateScope.OVERDUE ||
+        dateScope == TaskDateScope.NEXT_7_DAYS
+    return if (hasAdvancedFilters && hasQuickDate) {
+        copy(dateScope = TaskDateScope.ALL, dueStartMillis = null, dueEndMillis = null)
+    } else {
+        this
+    }
 }
 
 @Immutable

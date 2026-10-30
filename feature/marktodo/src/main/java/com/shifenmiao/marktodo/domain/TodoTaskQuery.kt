@@ -116,6 +116,9 @@ object TodoTaskQuery {
                 today = today,
                 zoneId = zoneId,
             )
+            TaskDateScope.NEXT_7_DAYS -> dueDate?.toLocalDate(zoneId)?.let {
+                it > today && it <= today.plusDays(7)
+            } == true
             TaskDateScope.UPCOMING -> dueDate?.toLocalDate(zoneId)?.let { it > today } == true
             TaskDateScope.NO_DATE -> dueDate == null
         }

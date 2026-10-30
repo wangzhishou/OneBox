@@ -100,17 +100,17 @@ fun TagSelector(
     ) {
         tags.forEach { tag ->
             val selected = tag.name in selectedTagNames
-            val tagColor = tag.colorArgb?.let { Color(it) }
+            val tagColor = com.shifenmiao.marktodo.theme.tagAccentColor(tag.colorArgb)
             GlassFilterChip(
                 selected = selected,
                 onClick = { onToggle(tag.name) },
                 label = {
                     Text(
                         text = tag.name,
-                        color = when {
-                            selected -> MaterialTheme.colorScheme.onPrimaryContainer
-                            tagColor != null -> tagColor
-                            else -> Color.Unspecified
+                        color = if (selected) {
+                            MaterialTheme.colorScheme.onPrimaryContainer
+                        } else {
+                            tagColor
                         },
                     )
                 },
