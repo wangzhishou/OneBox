@@ -513,11 +513,11 @@ private fun LandscapeRailUtilityActions(
         icon = {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDrawer,
-                contentDescription = stringResource(id = com.shifenmiao.core.R.string.quick_setting),
+                contentDescription = stringResource(id = com.shifenmiao.core.R.string.settings),
             )
         },
         label = {
-            Text(text = stringResource(id = com.shifenmiao.core.R.string.quick_setting))
+            Text(text = stringResource(id = com.shifenmiao.core.R.string.settings))
         }
     )
 }

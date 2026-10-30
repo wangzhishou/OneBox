@@ -121,7 +121,7 @@ fun DrawerMenu(
         }
         item {
             Text(
-                text = stringResource(id = R.string.quick_setting),
+                text = stringResource(id = R.string.settings),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
