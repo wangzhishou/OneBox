@@ -4,8 +4,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,7 +16,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -33,8 +31,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -43,21 +39,28 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.getSystemService
 import com.shifenmiao.common.ui.BaseScreen
-import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
+import com.t8rin.imagetoolbox.core.data.utils.getPath
+import com.t8rin.imagetoolbox.core.domain.model.MimeType
+import com.t8rin.imagetoolbox.core.resources.Icons
+import com.t8rin.imagetoolbox.core.resources.icons.CopyAll
 import com.t8rin.imagetoolbox.core.resources.icons.ImageToText
 import com.t8rin.imagetoolbox.core.resources.icons.Share
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCameraAlt
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineImagePreview
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineSaveAs
 import com.wanbaohe.core.ui.utils.content_pickers.ImagePickerMode
+import com.wanbaohe.core.ui.utils.content_pickers.rememberFileCreator
 import com.wanbaohe.core.ui.utils.content_pickers.rememberImagePicker
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.helper.SaveSuccessNotifier
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassLinearProgressIndicator
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.ocr.R
 import com.wanbaohe.ocr.component.OnDeviceOcrComponent
 import com.wanbaohe.ocr.component.OnDeviceOcrUiState
-import com.t8rin.imagetoolbox.core.resources.Icons
+import com.wanbaohe.ocr.domain.markdownFileName
+import com.wanbaohe.ocr.domain.toPlainText
 import com.shifenmiao.core.R as CoreR
 
 @Composable
@@ -68,7 +71,25 @@ fun OnDeviceOcrScreen(component: OnDeviceOcrComponent) {
     val camera = rememberImagePicker(mode = ImagePickerMode.CameraCapture) { uris ->
         uris.firstOrNull()?.let(component::onImagePicked)
     }
-    val text = state.lines.joinToString(separator = "\n") { it.text }
+    val text = state.lines.toPlainText()
+    val markdownFileName = state.lines.markdownFileName()
+    val fileSaver = rememberFileCreator(
+        mimeType = MimeType.Markdown,
+        onSuccess = { uri ->
+            component.saveMarkdown(uri) { saved ->
+                if (saved) {
+                    val fullPath = uri.toString().getPath(context)
+                    SaveSuccessNotifier.notifyFileSaved(
+                        fileUri = uri.toString(),
+                        fileName = fullPath.substringAfterLast('/').ifBlank { markdownFileName },
+                        savingPath = fullPath.substringBeforeLast('/', ""),
+                    )
+                } else {
+                    AppToastHost.showToast(R.string.ocr_save_failed)
+                }
+            }
+        },
+    )
     BaseScreen(
         title = stringResource(CoreR.string.on_device_ocr),
         onGoBack = component.onGoBack,
@@ -76,8 +97,18 @@ fun OnDeviceOcrScreen(component: OnDeviceOcrComponent) {
             if (text.isNotEmpty()) {
                 IconButton(onClick = { copyText(context, text) }) {
                     Icon(
-                        Icons.Rounded.ContentCopy,
-                        contentDescription = stringResource(R.string.ocr_copy),
+                        Icons.Outlined.CopyAll,
+                        contentDescription = stringResource(R.string.ocr_copy_all),
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                    )
+                }
+                IconButton(
+                    onClick = { fileSaver.make(markdownFileName) },
+                    enabled = !state.isSavingMarkdown,
+                ) {
+                    Icon(
+                        Icons.Outlined.LineSaveAs,
+                        contentDescription = stringResource(R.string.ocr_save_markdown),
                         tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
                 }
@@ -106,10 +137,8 @@ fun OnDeviceOcrScreen(component: OnDeviceOcrComponent) {
                 state.preview != null -> ResultPane(
                     state = state,
                     text = text,
-                    onSelect = { index ->
-                        component.select(index)
-                        copyText(context, state.lines[index].text)
-                    },
+                    onSelect = component::select,
+                    onCopyLine = { copyText(context, it) },
                     onCamera = camera::pickImage,
                     onGallery = gallery::pickImage,
                     modifier = Modifier.weight(1f),
@@ -284,17 +313,21 @@ private fun PickCard(
 private fun ResultPane(
     state: OnDeviceOcrUiState,
     text: String,
-    onSelect: (Int) -> Unit,
+    onSelect: (Int?) -> Unit,
+    onCopyLine: (String) -> Unit,
     onCamera: () -> Unit,
     onGallery: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val preview = state.preview ?: return
-    Column(modifier = modifier.fillMaxWidth()) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState()),
+    ) {
         BoxRecognizing(
             recognizing = state.isRecognizing,
             modifier = Modifier
-                .weight(1f)
                 .fillMaxWidth()
                 .padding(top = 8.dp),
         ) {
@@ -303,21 +336,62 @@ private fun ResultPane(
                 lines = state.lines,
                 selectedIndex = state.selectedIndex,
                 onSelect = onSelect,
-                modifier = Modifier.fillMaxSize(),
+                onCopyLine = onCopyLine,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 560.dp),
             )
         }
         Spacer(Modifier.height(12.dp))
         GlassCard(style = GlassStyle.Medium, modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = when {
-                        state.isRecognizing -> stringResource(R.string.ocr_recognizing)
-                        state.lines.isEmpty() -> stringResource(R.string.ocr_empty)
-                        else -> stringResource(R.string.ocr_result_count, state.lines.size)
-                    },
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Medium,
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = when {
+                            state.isRecognizing -> stringResource(R.string.ocr_recognizing)
+                            state.lines.isEmpty() -> stringResource(R.string.ocr_empty)
+                            else -> stringResource(R.string.ocr_text_result)
+                        },
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Medium,
+                    )
+                    if (state.lines.isNotEmpty()) {
+                        Text(
+                            text = stringResource(R.string.ocr_result_count, state.lines.size),
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+                state.errorRes?.let { error ->
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        text = stringResource(error),
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
+                if (text.isNotEmpty()) {
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        text = stringResource(R.string.ocr_tap_hint),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    Spacer(Modifier.height(12.dp))
+                    SelectionContainer {
+                        Text(
+                            text = text,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    }
+                }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End,
@@ -327,52 +401,6 @@ private fun ResultPane(
                     }
                     TextButton(onClick = onGallery, enabled = !state.isRecognizing) {
                         Text(stringResource(R.string.ocr_replace))
-                    }
-                }
-                state.errorRes?.let { error ->
-                    Text(
-                        text = stringResource(error),
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
-                }
-                if (text.isNotEmpty()) {
-                    Text(
-                        text = stringResource(R.string.ocr_tap_hint),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                    Spacer(Modifier.height(8.dp))
-                    Column(
-                        modifier = Modifier
-                            .heightIn(max = 220.dp)
-                            .verticalScroll(rememberScrollState()),
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                    ) {
-                        state.lines.forEachIndexed { index, line ->
-                            val selected = index == state.selectedIndex
-                            Text(
-                                text = line.text,
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = if (selected) {
-                                    MaterialTheme.colorScheme.onPrimaryContainer
-                                } else {
-                                    MaterialTheme.colorScheme.onSurface
-                                },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clip(RoundedCornerShape(12.dp))
-                                    .background(
-                                        if (selected) {
-                                            MaterialTheme.colorScheme.primaryContainer
-                                        } else {
-                                            Color.Transparent
-                                        },
-                                    )
-                                    .clickable { onSelect(index) }
-                                    .padding(horizontal = 12.dp, vertical = 8.dp),
-                            )
-                        }
                     }
                 }
             }

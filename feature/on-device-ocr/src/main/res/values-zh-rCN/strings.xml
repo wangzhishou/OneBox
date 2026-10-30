@@ -17,10 +17,17 @@
     <string name="ocr_recognize_failed">识别失败，换一张试试</string>
     <string name="ocr_copied">已复制</string>
     <string name="ocr_copy">复制</string>
+    <string name="ocr_copy_all">复制全部文字</string>
+    <string name="ocr_copy_line">复制整行</string>
+    <string name="ocr_copy_selection">复制所选文字</string>
+    <string name="ocr_select_line">全选整行</string>
+    <string name="ocr_save_markdown">另存为 Markdown</string>
+    <string name="ocr_save_failed">Markdown 文件保存失败</string>
     <string name="ocr_share">分享</string>
     <string name="ocr_result_count">%d 行</string>
+    <string name="ocr_text_result">识别文本</string>
     <string name="ocr_image">待识别的照片</string>
-    <string name="ocr_tap_hint">点文字框可复制这一行</string>
+    <string name="ocr_tap_hint">点按文字打开操作菜单，长按拖动可选择部分文字；下方完整文本也可选择</string>
     <string name="ocr_retake">重拍</string>
     <string name="ocr_replace">换一张</string>
 </resources>

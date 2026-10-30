@@ -8,9 +8,11 @@ import com.t8rin.logger.makeLog
 import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.ocr.R
 import com.wanbaohe.ocr.data.OcrBitmapDecoder
+import com.wanbaohe.ocr.data.OcrMarkdownWriter
 import com.wanbaohe.ocr.data.OcrModelStore
 import com.wanbaohe.ocr.data.PpOcrV6Engine
 import com.wanbaohe.ocr.domain.RecognizedLine
+import com.wanbaohe.ocr.domain.toMarkdown
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -20,12 +22,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 data class OnDeviceOcrUiState(
     val modelReady: Boolean = false,
     val isDownloading: Boolean = false,
     val downloadProgress: Float? = null,
     val isRecognizing: Boolean = false,
+    val isSavingMarkdown: Boolean = false,
     val preview: Bitmap? = null,
     val lines: List<RecognizedLine> = emptyList(),
     val selectedIndex: Int? = null,
@@ -39,6 +43,7 @@ class OnDeviceOcrComponent @AssistedInject constructor(
     private val modelStore: OcrModelStore,
     private val decoder: OcrBitmapDecoder,
     private val engine: PpOcrV6Engine,
+    private val markdownWriter: OcrMarkdownWriter,
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
@@ -125,9 +130,34 @@ class OnDeviceOcrComponent @AssistedInject constructor(
         }
     }
 
-    fun select(index: Int) {
+    fun select(index: Int?) {
         _uiState.update { state ->
-            if (index !in state.lines.indices) state else state.copy(selectedIndex = index)
+            when {
+                index == null -> state.copy(selectedIndex = null)
+                index in state.lines.indices -> state.copy(selectedIndex = index)
+                else -> state
+            }
+        }
+    }
+
+    fun saveMarkdown(uri: Uri, onComplete: (Boolean) -> Unit) {
+        val content = _uiState.value.lines.toMarkdown()
+        if (content.isBlank() || _uiState.value.isSavingMarkdown) return
+        componentScope.launch(ioDispatcher) {
+            _uiState.update { it.copy(isSavingMarkdown = true) }
+            val saved = try {
+                markdownWriter.write(uri, content)
+                true
+            } catch (cancelled: CancellationException) {
+                throw cancelled
+            } catch (error: Exception) {
+                error.makeLog("OnDeviceOcr")
+                false
+            }
+            withContext(uiDispatcher) {
+                _uiState.update { it.copy(isSavingMarkdown = false) }
+                onComplete(saved)
+            }
         }
     }
 
