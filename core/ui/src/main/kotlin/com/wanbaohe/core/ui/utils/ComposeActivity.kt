@@ -34,6 +34,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -132,16 +134,14 @@ abstract class ComposeActivity : AppCompatActivity() {
             handleSystemBarsBehavior()
             handleSecureMode()
         }
-        val baseConfig = newBase.resources.configuration
-        val newOverride = Configuration(baseConfig).apply {
-            setLocales(baseConfig.locales)
-        }
+        // 不要 applyOverrideConfiguration 整份配置:它会把创建时的 orientation / screenSize
+        // 一起钉死,旋转后配置仍是旧值(壳层停在 rail 或底栏,竖屏还按横屏画)。
+        // 自定义字号改由 Compose 的 LocalDensity 覆盖(见 renderContent),语言交给 AppCompat
+        // 的 per-app locale,两者都不需要冻结整份 Configuration。
         settingsState.fontScale?.let {
-            newOverride.fontScale = it
             AppTheme.fontScale = it
         }
         appliedFontScale = settingsState.fontScale
-        applyOverrideConfiguration(newOverride)
         super.attachBaseContext(newBase)
         StartupTrace.mark("ComposeActivity.attachBaseContext.exit")
     }
@@ -305,7 +305,13 @@ abstract class ComposeActivity : AppCompatActivity() {
         }
         startupPhaseController.advanceTo(StartupPhase.SPLASH_RENDERING)
         setContentWithWindowSizeClass {
+            // 自定义字号:只覆盖 fontScale,不动 density(否则 dp 尺寸会跟着缩)。
+            val baseDensity = LocalDensity.current
+            val customFontScale = settingsState.fontScale
             CompositionLocalProvider(
+                LocalDensity provides if (customFontScale != null) {
+                    Density(density = baseDensity.density, fontScale = customFontScale)
+                } else baseDensity,
                 LocalSimpleSettingsInteractor provides settingsManager.toSimpleSettingsInteractor(),
                 LocalMetadataProvider provides fileController.toMetadataProvider(),
                 content = ::Content

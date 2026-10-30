@@ -27,8 +27,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import com.wanbaohe.core.ui.utils.provider.LocalWindowSizeClass
 
@@ -74,10 +74,14 @@ fun isPortraitOrientationAsState(): State<Boolean> = rememberUpdatedState(true)
  */
 @Composable
 fun isShellPortraitOrientationAsState(): State<Boolean> {
-    val configuration = LocalConfiguration.current
+    // 用窗口实际尺寸判断横竖, 不读 configuration.orientation:
+    // Activity 声明了 configChanges 后旋转不会重建, 而配置快照在本机实测会停在上一次的朝向上,
+    // 结果是"已经横过来了, 壳层还按竖屏画"(rail 不出现 / 底栏不消失)。
+    // 窗口尺寸一定跟着旋转更新, 和 Compose 的测量结果是同一份数据。
+    val windowInfo = LocalWindowInfo.current
 
     return rememberUpdatedState(
-        configuration.orientation != Configuration.ORIENTATION_LANDSCAPE
+        windowInfo.containerSize.height >= windowInfo.containerSize.width
     )
 }
 
@@ -87,17 +91,17 @@ fun isShellPortraitOrientationAsState(): State<Boolean> {
  * This helper is the clearer version of [isPortraitOrientationAsState]. It is suitable for
  * adaptive shells that should remain in the compact layout on narrow landscape windows.
  *
- * The returned [State] always reflects the latest [LocalConfiguration]. Do not wrap this in an
+ * The returned [State] always follows the live window size. Do not wrap this in an
  * additional `remember { derivedStateOf { ... } }`, otherwise configuration changes may stop
  * propagating until the process is recreated.
  */
 @Composable
 fun isPortraitOrCompactWidthLayoutAsState(): State<Boolean> {
-    val configuration = LocalConfiguration.current
+    val windowInfo = LocalWindowInfo.current
     val sizeClass = LocalWindowSizeClass.current
 
     return rememberUpdatedState(
-        configuration.orientation != Configuration.ORIENTATION_LANDSCAPE ||
+        windowInfo.containerSize.height >= windowInfo.containerSize.width ||
             sizeClass.widthSizeClass == WindowWidthSizeClass.Compact
     )
 }
