@@ -3,7 +3,6 @@ package com.wanbaohe.base.ui.picker
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
@@ -16,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.R
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 
 /**
  * 时间选择器对话框
@@ -48,7 +48,9 @@ fun ChineseTimePickerDialog(
         is24Hour = true,
     )
 
-    AlertDialog(
+    EnhancedAlertDialog(
+
+        visible = true,
         containerColor = AppTheme.colors.getContainerSurfaceColor(),
         onDismissRequest = onDismiss,
         confirmButton = {

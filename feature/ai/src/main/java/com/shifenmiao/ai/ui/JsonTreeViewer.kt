@@ -1,5 +1,6 @@
 package com.shifenmiao.ai.ui
 
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -13,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -315,7 +315,8 @@ private fun JsonLeafNode(
 
     if (showEditDialog) {
         var editText by remember { mutableStateOf(rawValue) }
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             onDismissRequest = { showEditDialog = false },
             title = {
                 Text(

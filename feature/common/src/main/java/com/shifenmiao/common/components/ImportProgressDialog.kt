@@ -2,7 +2,6 @@ package com.shifenmiao.common.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.LinearProgressIndicator
@@ -10,6 +9,7 @@ import androidx.compose.ui.res.stringResource
 import com.shifenmiao.common.logic.CommonComponent
 import com.shifenmiao.core.R
 import com.shifenmiao.model.common.ProgressType
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 
 @Composable
 fun ImportProgressDialog(
@@ -17,7 +17,8 @@ fun ImportProgressDialog(
 ) {
     val progressState = commonComponent.importOrExportProgress.collectAsState().value
     if (progressState.visible) {
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             onDismissRequest = {},
             title = {
                 if(progressState.type == ProgressType.EXPORT) {

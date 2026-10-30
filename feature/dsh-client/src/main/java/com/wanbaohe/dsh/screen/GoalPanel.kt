@@ -11,12 +11,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Flag
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.material3.Text
@@ -179,7 +179,8 @@ private fun GoalEditorDialog(
 ) {
     var objective by remember(mode) { mutableStateOf(initialObjective) }
     var maxRounds by remember(mode) { mutableStateOf("") }
-    AlertDialog(
+    EnhancedAlertDialog(
+        visible = true,
         onDismissRequest = onDismiss,
         title = {
             Text(

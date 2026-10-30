@@ -1,5 +1,6 @@
 package com.wanbaohe.altitude.ui
 
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -40,7 +40,9 @@ internal fun SaveNoteDialog(
 ) {
     var note by remember { mutableStateOf("") }
 
-    AlertDialog(
+    EnhancedAlertDialog(
+
+        visible = true,
         onDismissRequest = onDismiss,
         shape = RoundedCornerShape(20.dp),
         title = {

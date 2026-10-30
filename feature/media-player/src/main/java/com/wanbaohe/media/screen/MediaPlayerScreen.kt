@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -50,6 +49,7 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Close
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
 import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBar
@@ -274,7 +274,8 @@ fun MediaPlayerScreen(component: MediaPlayerComponent) {
     }
 
     if (showPermissionSettings) {
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             onDismissRequest = { showPermissionSettings = false },
             title = { Text(stringResource(R.string.media_permission_settings_title)) },
             text = { Text(stringResource(R.string.media_permission_settings_message)) },
@@ -303,7 +304,8 @@ fun MediaPlayerScreen(component: MediaPlayerComponent) {
     }
 
     if (state.showClearRecentDialog) {
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             onDismissRequest = { component.showClearRecentDialog(false) },
             title = { Text(stringResource(R.string.media_clear_recent_confirm_title)) },
             text = { Text(stringResource(R.string.media_clear_recent_confirm_message)) },

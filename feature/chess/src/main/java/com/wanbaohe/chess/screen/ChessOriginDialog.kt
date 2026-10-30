@@ -3,7 +3,6 @@ package com.wanbaohe.chess.screen
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -18,10 +17,12 @@ import com.wanbaohe.chess.domain.FenCodec
 import com.wanbaohe.chess.domain.model.GameOrigin
 import com.wanbaohe.chess.ui.board.ChessBoard
 import com.wanbaohe.boardgame.ui.accentTextButtonColors
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 
 @Composable
 internal fun ChessOriginDialog(origin: GameOrigin, onContinueSource: () -> Unit, onDismiss: () -> Unit) {
-    AlertDialog(
+    EnhancedAlertDialog(
+        visible = true,
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.chess_setup_source)) },
         text = {

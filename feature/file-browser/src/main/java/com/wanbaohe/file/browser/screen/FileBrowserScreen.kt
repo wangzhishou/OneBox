@@ -38,7 +38,6 @@ import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenuItem
@@ -47,6 +46,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -580,7 +580,8 @@ fun FileBrowserScreen(
     }
 
     if (showRenameDialog.value) {
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             onDismissRequest = { showRenameDialog.value = false },
             title = { Text(stringResource(R.string.dialog_rename_title)) },
             text = {
@@ -615,7 +616,8 @@ fun FileBrowserScreen(
     }
 
     if (showClearRecentsDialog.value) {
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             containerColor = AppTheme.colors.getContainerSurfaceColor(),
             onDismissRequest = { showClearRecentsDialog.value = false },
             title = { Text(stringResource(R.string.dialog_clear_recents_title)) },
@@ -639,7 +641,8 @@ fun FileBrowserScreen(
     }
 
     if (errorMessage.value != null) {
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             containerColor = AppTheme.colors.getContainerSurfaceColor(),
             onDismissRequest = { errorMessage.value = null },
             title = { Text(stringResource(R.string.error_loading_title)) },

@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -59,6 +58,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineQuickTiles
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSort
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineViewList
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
 import com.wanbaohe.core.ui.widget.glass.GlassLinearProgressIndicator
@@ -235,7 +235,8 @@ fun CategoryDetailScreen(
     }
 
     if (showDeleteCategoryConfirm && category != null) {
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             containerColor = AppTheme.colors.getContainerSurfaceColor(),
             onDismissRequest = {
                 component.handleEvent(CategoryDetailUiEvent.DismissDeleteCategory)

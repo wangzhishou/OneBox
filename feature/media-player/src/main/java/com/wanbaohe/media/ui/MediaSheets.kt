@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -29,6 +28,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Check
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.glass.glassRegular
 import com.wanbaohe.media.R
@@ -235,7 +235,9 @@ fun MediaInfoDialog(
         }
     }
 
-    AlertDialog(
+    EnhancedAlertDialog(
+
+        visible = true,
         onDismissRequest = onDismiss,
         // 文件信息是独立浮层，底色用最浅的中性容器色，和页面玻璃卡片区分开
         containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,

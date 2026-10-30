@@ -24,7 +24,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Refresh
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -65,6 +64,7 @@ import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.node.AstNode
 import com.shifenmiao.theme.AppTheme
 import com.shifenmiao.webview.mermaid.ProvideMermaidRenderer
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -217,7 +217,8 @@ fun AIStreamAnswerScreen(
     }
 
     if (showInterruptDialog) {
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             onDismissRequest = { showInterruptDialog = false },
             confirmButton = {
                 TextButton(

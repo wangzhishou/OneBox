@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -41,6 +40,7 @@ import com.shifenmiao.database.aidetect.entity.AiDetectRecordEntity
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDeleteForever
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDescription
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineImage
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.aidetect.R
 import com.wanbaohe.aidetect.component.AiDetectComponent
@@ -95,7 +95,8 @@ fun AiDetectHistoryScreen(component: AiDetectComponent) {
     }
 
     if (isClearDialogVisible) {
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             onDismissRequest = { isClearDialogVisible = false },
             title = { Text(stringResource(R.string.ai_detect_clear_all)) },
             text = { Text(stringResource(R.string.ai_detect_clear_confirm)) },

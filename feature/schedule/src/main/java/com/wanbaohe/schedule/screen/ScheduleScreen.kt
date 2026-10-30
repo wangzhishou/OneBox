@@ -21,7 +21,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -45,6 +44,7 @@ import androidx.core.app.ActivityCompat
 import com.shifenmiao.common.ui.BaseScreen
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedButton
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.schedule.R
@@ -233,7 +233,8 @@ fun ScheduleScreen(component: ScheduleComponent) {
 
     val selectedEvent = calendarPickerEvent
     if (selectedEvent != null) {
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             onDismissRequest = { calendarPickerEvent = null },
             title = {
                 Text(text = stringResource(R.string.schedule_choose_calendar_title))
@@ -294,7 +295,8 @@ fun ScheduleScreen(component: ScheduleComponent) {
     }
 
     if (isCalendarPermissionPermanentlyDenied) {
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             onDismissRequest = { isCalendarPermissionPermanentlyDenied = false },
             title = {
                 Text(text = stringResource(R.string.schedule_permission_dialog_title))

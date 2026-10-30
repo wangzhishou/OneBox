@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ScreenLockRotation
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
@@ -53,6 +52,7 @@ import com.shifenmiao.marquee.screen.components.FireworksBackground
 import com.shifenmiao.marquee.screenLogic.MarqueeComponent
 import com.wanbaohe.core.ui.utils.provider.LocalScreenSize
 import com.shifenmiao.marquee.R as MarqueeR
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.modifier.alertDialogBorder
 import com.wanbaohe.core.ui.widget.other.LockScreenOrientation
 import kotlinx.coroutines.Job
@@ -321,7 +321,8 @@ fun ShowExitAlertDialog(
     onGoBack: () -> Unit,
     onDismiss: () -> Unit
 ) {
-    AlertDialog(
+    EnhancedAlertDialog(
+        visible = true,
         modifier = Modifier.alertDialogBorder(),
         onDismissRequest = {
         },

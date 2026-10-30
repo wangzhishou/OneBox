@@ -45,6 +45,7 @@ import com.wanbaohe.core.ui.utils.capturable.CaptureController
 import com.wanbaohe.core.ui.utils.capturable.capturable
 import com.wanbaohe.core.ui.utils.capturable.rememberCaptureController
 import com.wanbaohe.core.ui.utils.provider.LocalImageShareProvider
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
@@ -153,7 +154,8 @@ fun ChessGameScreen(component: ChessGameComponent, modifier: Modifier = Modifier
     )
     if (component.showRenameDialog) {
         var title by remember { mutableStateOf(state.title) }
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             onDismissRequest = { component.showRenameDialog = false },
             title = { Text(stringResource(R.string.chess_rename_game)) },
             text = {
@@ -215,7 +217,8 @@ private fun Confirmation(
     onDismiss: () -> Unit,
     danger: Boolean = false,
 ) {
-    AlertDialog(
+    EnhancedAlertDialog(
+        visible = true,
         onDismissRequest = onDismiss,
         title = { Text(title) }, text = { Text(message) },
         confirmButton = {
@@ -375,7 +378,8 @@ private fun gameOverTitleColor(status: GameStatus, winnerSide: String): Color {
 
 @Composable
 private fun CompactGameOverDialog(component: ChessGameComponent, state: ChessGameUiState) {
-    AlertDialog(
+    EnhancedAlertDialog(
+        visible = true,
         onDismissRequest = component::dismissGameOverOverlay,
         // 与竖屏的 BoardGameOverOverlay 卡片同底:弹层要实色,别让棋盘透上来
         containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,

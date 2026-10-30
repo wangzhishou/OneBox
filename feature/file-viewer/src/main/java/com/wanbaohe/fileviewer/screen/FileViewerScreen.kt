@@ -17,7 +17,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -54,6 +53,7 @@ import com.shifenmiao.core.R
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.wanbaohe.core.ui.utils.content.FileAccessGuidance
 import com.wanbaohe.core.ui.utils.content.rememberFileAccessController
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.fileviewer.component.FileViewerComponent
 import com.wanbaohe.fileviewer.component.FileViewerError
@@ -311,7 +311,9 @@ private fun GoToPageDialog(
 ) {
     var input by remember { mutableStateOf(currentPage.toString()) }
 
-    AlertDialog(
+    EnhancedAlertDialog(
+
+        visible = true,
         onDismissRequest = onDismiss,
         title = { Text(text = stringResource(R.string.file_viewer_go_to_page)) },
         text = {

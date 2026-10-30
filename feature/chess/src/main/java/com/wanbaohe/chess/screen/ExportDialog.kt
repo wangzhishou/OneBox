@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.core.ui.utils.helper.Clipboard
 import com.wanbaohe.core.ui.utils.helper.ContextUtils.shareText
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.chess.R
 
@@ -44,7 +44,9 @@ fun ExportDialog(
     val context = LocalContext.current
     val hasContent = exportContent.isNotBlank()
 
-    AlertDialog(
+    EnhancedAlertDialog(
+
+        visible = true,
         modifier = modifier,
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.chess_export_dialog_title)) },

@@ -20,7 +20,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -42,6 +41,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.common.ui.BaseScreen
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
@@ -343,7 +343,8 @@ private fun GameCard(
     }
 
     if (showDeleteConfirm) {
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             onDismissRequest = { showDeleteConfirm = false },
             title = { Text(stringResource(R.string.xiangqi_delete_confirm_title)) },
             text = { Text(stringResource(R.string.xiangqi_delete_confirm_message)) },
@@ -423,7 +424,8 @@ private fun RenameGameDialog(
     onConfirm: (String) -> Unit,
 ) {
     var text by remember { mutableStateOf(currentTitle) }
-    AlertDialog(
+    EnhancedAlertDialog(
+        visible = true,
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.xiangqi_rename_game)) },
         text = {

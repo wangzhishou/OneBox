@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -45,6 +44,7 @@ import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
@@ -103,7 +103,8 @@ fun DecisionWheelListScreen(
     }
 
     pendingDelete?.let { wheel ->
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             containerColor = AppTheme.colors.getContainerSurfaceColor(),
             onDismissRequest = { pendingDelete = null },
             title = { Text(stringResource(R.string.delete), fontWeight = FontWeight.Bold) },

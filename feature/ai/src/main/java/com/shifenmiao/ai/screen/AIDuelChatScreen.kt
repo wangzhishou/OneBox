@@ -33,7 +33,6 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.CircularProgressIndicator
@@ -99,6 +98,7 @@ import com.wanbaohe.core.ui.widget.dialogs.ExitBackHandler
 import com.wanbaohe.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassCardSegment
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
@@ -250,7 +250,8 @@ fun AIDuelChatScreen(
 
         // 互聊进行中新建确认
         if (showNewConfirm.value) {
-            AlertDialog(
+            EnhancedAlertDialog(
+                visible = true,
                 onDismissRequest = { showNewConfirm.value = false },
                 confirmButton = {
                     TextButton(
@@ -514,7 +515,8 @@ private fun DuelChatContent(
     }
 
     if (isExporting.value) {
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             onDismissRequest = { isExporting.value = false },
             confirmButton = { },
             title = {

@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilterChip
@@ -31,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.dsh.R
 import com.wanbaohe.dsh.component.DshRootComponent
@@ -79,7 +79,9 @@ fun ModelPickerDialog(
         picked?.let { c.catalogEntryOf(it)?.reasoning?.efforts }
     }.orEmpty()
 
-    AlertDialog(
+    EnhancedAlertDialog(
+
+        visible = true,
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.dsh_model_picker)) },
         text = {

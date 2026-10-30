@@ -1,11 +1,11 @@
 package com.wanbaohe.bookkeeping.screen.tab
 
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.shifenmiao.model.money.AppCurrency
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.clickable
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.AlertDialog
 import android.content.Context
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -586,7 +586,8 @@ private fun CurrencyPickerDialog(
     onDismiss: () -> Unit,
     onSelect: (AppCurrency) -> Unit,
 ) {
-    AlertDialog(
+    EnhancedAlertDialog(
+        visible = true,
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.bookkeeping_currency_title)) },
         text = {

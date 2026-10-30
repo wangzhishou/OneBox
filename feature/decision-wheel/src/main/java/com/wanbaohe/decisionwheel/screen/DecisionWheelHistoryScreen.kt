@@ -19,7 +19,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -51,6 +50,7 @@ import com.shifenmiao.database.decision_wheel.entity.WheelHistoryEntity
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.core.ui.widget.glass.glassMedium
@@ -147,7 +147,8 @@ fun DecisionWheelHistoryScreen(
     }
 
     if (showClearConfirm) {
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             containerColor = AppTheme.colors.getContainerSurfaceColor(),
             onDismissRequest = { showClearConfirm = false },
             title = { Text(stringResource(R.string.clear_history), fontWeight = FontWeight.Bold) },

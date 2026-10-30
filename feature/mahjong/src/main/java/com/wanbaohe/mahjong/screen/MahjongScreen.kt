@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -27,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHelp
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedButton
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.system.OneBoxSectionCard
@@ -47,7 +47,8 @@ fun MahjongScreen(component: MahjongComponent) {
     }
 
     if (state.showRules) {
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             onDismissRequest = { component.showRules(false) },
             title = { Text(stringResource(R.string.mahjong_rules)) },
             text = {
@@ -72,7 +73,8 @@ fun MahjongScreen(component: MahjongComponent) {
             result.wins.any { it.seat == Tiles.HUMAN_SEAT } -> R.string.mahjong_round_win
             else -> R.string.mahjong_round_loss
         }
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             onDismissRequest = component::returnHome,
             title = { Text(stringResource(title)) },
             text = {

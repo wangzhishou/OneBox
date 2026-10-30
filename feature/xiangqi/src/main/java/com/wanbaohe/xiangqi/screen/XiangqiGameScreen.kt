@@ -25,7 +25,6 @@ import androidx.compose.material.icons.outlined.Fullscreen
 import androidx.compose.material.icons.outlined.FullscreenExit
 import androidx.compose.material.icons.outlined.GridOn
 import androidx.compose.material.icons.outlined.MoreVert
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -53,6 +52,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.ImmersiveModeState
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.xiangqi.ui.XiangqiOpponentPicker
 import com.shifenmiao.common.utils.BaseUtils
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
@@ -203,7 +203,8 @@ fun XiangqiGameScreen(
 
     // Resign confirmation dialog
     if (component.showResignConfirm) {
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             onDismissRequest = { component.showResignConfirm = false },
             title = { Text(stringResource(R.string.xiangqi_resign_confirm_title)) },
             text = { Text(stringResource(R.string.xiangqi_resign_confirm_message)) },
@@ -222,7 +223,8 @@ fun XiangqiGameScreen(
 
     // 重新开局确认
     if (component.showRestartConfirm) {
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             onDismissRequest = { component.showRestartConfirm = false },
             title = { Text(stringResource(R.string.xiangqi_restart_confirm_title)) },
             text = { Text(stringResource(R.string.xiangqi_restart_confirm_message)) },
@@ -240,7 +242,8 @@ fun XiangqiGameScreen(
     }
 
     if (component.showStandardGameConfirm) {
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             onDismissRequest = { component.showStandardGameConfirm = false },
             title = { Text(stringResource(R.string.xiangqi_standard_game)) },
             text = { Text(stringResource(R.string.xiangqi_standard_game_confirm)) },
@@ -268,7 +271,8 @@ fun XiangqiGameScreen(
     // Rename dialog
     if (component.showRenameDialog) {
         var renameText by remember { mutableStateOf(state.title) }
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             onDismissRequest = { component.showRenameDialog = false },
             title = { Text(stringResource(R.string.xiangqi_rename_game)) },
             text = {

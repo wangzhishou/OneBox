@@ -45,7 +45,6 @@ import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Timeline
 import androidx.compose.material.icons.outlined.WorkOutline
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
@@ -89,6 +88,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.utils.fileProviderAuthority
@@ -829,7 +829,8 @@ private fun RenameSessionDialog(
     var title by rememberSaveable(target.sessionId) {
         mutableStateOf(target.displayTitle().orEmpty())
     }
-    AlertDialog(
+    EnhancedAlertDialog(
+        visible = true,
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.dsh_rename_title)) },
         text = {
@@ -1439,7 +1440,8 @@ private fun CreateWorkspaceDialog(
     onConfirm: (String) -> Unit
 ) {
     var path by rememberSaveable { mutableStateOf("") }
-    AlertDialog(
+    EnhancedAlertDialog(
+        visible = true,
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.dsh_workspace_new)) },
         text = {
@@ -1475,7 +1477,8 @@ private fun RenameWorkspaceDialog(
     onConfirm: (String) -> Unit
 ) {
     var title by rememberSaveable(target.workspaceId) { mutableStateOf(target.title) }
-    AlertDialog(
+    EnhancedAlertDialog(
+        visible = true,
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.dsh_workspace_rename)) },
         text = {
@@ -1510,7 +1513,8 @@ private fun DeleteWorkspaceDialog(
     onDismiss: () -> Unit,
     onConfirm: () -> Unit
 ) {
-    AlertDialog(
+    EnhancedAlertDialog(
+        visible = true,
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.dsh_workspace_delete_title, target.title)) },
         text = { Text(stringResource(R.string.dsh_workspace_delete_detail)) },

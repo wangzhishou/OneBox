@@ -23,7 +23,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -55,6 +54,7 @@ import com.t8rin.imagetoolbox.core.settings.domain.model.NightMode
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsManager
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalThemeRepository
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.glassBackground
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -204,7 +204,8 @@ fun ThemePresetSelector(
 
     // ── 删除确认弹窗 ──
     pendingDeletePreset?.let { preset ->
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             onDismissRequest = { pendingDeletePreset = null },
             title = { Text(stringResource(R.string.theme_delete_confirm_title)) },
             text = {

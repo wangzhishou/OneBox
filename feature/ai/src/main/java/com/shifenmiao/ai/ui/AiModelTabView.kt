@@ -1,5 +1,6 @@
 package com.shifenmiao.ai.ui
 
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.foundation.MarqueeSpacing
 import androidx.compose.foundation.basicMarquee
@@ -14,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -187,7 +187,8 @@ fun CustomModelEditDialog(
 ) {
     var nameInput by remember { mutableStateOf(model.name) }
     var titleInput by remember { mutableStateOf(model.title) }
-    AlertDialog(
+    EnhancedAlertDialog(
+        visible = true,
         onDismissRequest = onDismiss,
         shape = AppTheme.shapes.getLargeShape(),
         containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,

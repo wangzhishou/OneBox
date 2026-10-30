@@ -19,7 +19,6 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.StarBorder
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -46,6 +45,7 @@ import com.shifenmiao.marktodo.model.TodoDetailUiEvent
 import com.shifenmiao.marktodo.model.TodoTask
 import com.shifenmiao.marktodo.screenLogic.TodoDetailComponent
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCheckbox
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
@@ -216,7 +216,8 @@ fun TodoDetailScreen(
 
     // 删除确认对话框
     if (showDeleteConfirm && uiState.task != null) {
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             containerColor = MaterialTheme.colorScheme.surface,
             onDismissRequest = { component.dismissDeleteConfirm() },
             title = { Text(stringResource(R.string.action_delete)) },

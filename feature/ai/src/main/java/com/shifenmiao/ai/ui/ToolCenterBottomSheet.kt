@@ -17,9 +17,9 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassSwitch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -269,7 +269,8 @@ fun ToolCenterBottomSheet(
     }
 
     pendingSystemToolDisable?.let { tool ->
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             onDismissRequest = { pendingSystemToolDisable = null },
             title = {
                 Text(text = stringResource(R.string.ai_tools_system_disable_confirm_title))

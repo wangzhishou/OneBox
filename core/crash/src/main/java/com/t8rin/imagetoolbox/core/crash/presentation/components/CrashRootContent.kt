@@ -42,7 +42,6 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ContentCopy
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Icon
@@ -70,6 +69,7 @@ import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.helper.Clipboard
 import com.wanbaohe.core.ui.utils.provider.ImageToolboxCompositionLocals
 import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedButton
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedFloatingActionButton
 import com.wanbaohe.core.ui.widget.modifier.alertDialogBorder
@@ -297,7 +297,8 @@ internal fun CrashRootContent(component: CrashComponent) {
 
         if (showWechatTipsDialog.value) {
             Clipboard.copy(crashInfo.textToSend)
-            AlertDialog(
+            EnhancedAlertDialog(
+                visible = true,
                 modifier = Modifier.alertDialogBorder(),
                 onDismissRequest = {
                     showWechatTipsDialog.value = false

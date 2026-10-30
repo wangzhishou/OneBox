@@ -14,7 +14,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FullscreenExit
 import androidx.compose.material.icons.outlined.GridOn
 import androidx.compose.material.icons.outlined.MoreVert
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -44,6 +43,7 @@ import com.wanbaohe.core.ui.utils.capturable.capturable
 import com.wanbaohe.core.ui.utils.capturable.rememberCaptureController
 import com.wanbaohe.core.ui.utils.provider.LocalImageShareProvider
 import com.wanbaohe.core.ui.utils.provider.LocalLoginState
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.boardgame.R as BoardGameR
 import com.wanbaohe.boardgame.model.BoardGameAction
@@ -144,7 +144,8 @@ fun GomokuGameScreen(component: GomokuGameComponent, modifier: Modifier = Modifi
     }
     if (component.showRenameDialog) {
         var title by remember { mutableStateOf(state.title) }
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             onDismissRequest = { component.showRenameDialog = false },
             title = { Text(stringResource(R.string.gomoku_rename_game)) },
             text = { GlassOutlinedTextField(value = title, onValueChange = { title = it }, modifier = Modifier.fillMaxWidth(),
@@ -178,7 +179,8 @@ private fun ConfirmDialog(
     onDismiss: () -> Unit,
     danger: Boolean = false,
 ) {
-    AlertDialog(
+    EnhancedAlertDialog(
+        visible = true,
         onDismissRequest = onDismiss,
         title = { Text(stringResource(title)) },
         text = { Text(stringResource(message)) },

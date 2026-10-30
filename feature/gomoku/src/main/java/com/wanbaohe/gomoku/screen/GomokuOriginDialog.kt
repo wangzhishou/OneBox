@@ -3,7 +3,6 @@ package com.wanbaohe.gomoku.screen
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -13,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.gomoku.R
 import com.wanbaohe.gomoku.domain.FenCodec
 import com.wanbaohe.gomoku.domain.model.GameOrigin
@@ -21,7 +21,8 @@ import com.wanbaohe.boardgame.ui.accentTextButtonColors
 
 @Composable
 internal fun GomokuOriginDialog(origin: GameOrigin, onOpenSource: () -> Unit, onDismiss: () -> Unit) {
-    AlertDialog(
+    EnhancedAlertDialog(
+        visible = true,
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.gomoku_setup_source)) },
         text = {

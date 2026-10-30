@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -34,6 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedLoadingIndicator
 import com.wanbaohe.core.ui.widget.text.AutoSizeText
 import com.t8rin.imagetoolbox.feature.zip.domain.ZipProgress
@@ -295,7 +295,9 @@ internal fun ZipEntryDetailsDialog(
     val compressedSize = rememberFormattedSize(entry.compressedSize)
     val modified = formatZipTimestamp(entry.lastModified)
 
-    AlertDialog(
+    EnhancedAlertDialog(
+
+        visible = true,
         containerColor = AppTheme.colors.getContainerSurfaceColor(),
         onDismissRequest = onDismiss,
         icon = {

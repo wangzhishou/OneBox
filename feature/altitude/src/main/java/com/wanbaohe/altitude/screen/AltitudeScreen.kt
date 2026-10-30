@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -61,6 +60,7 @@ import com.wanbaohe.altitude.ui.SaveNoteDialog
 import com.wanbaohe.altitude.ui.TrendBarChartSection
 import com.wanbaohe.altitude.ui.WeatherBoard
 import com.wanbaohe.altitude.ui.altitudeHistoryItems
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import kotlinx.coroutines.launch
 import com.shifenmiao.core.R as CoreR
 
@@ -352,7 +352,8 @@ private fun AltitudeDialogs(
     }
 
     if (state.showClearAllDialog) {
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             onDismissRequest = component::dismissClearAllDialog,
             title = { Text(stringResource(CoreR.string.altitude_clear_all)) },
             text = {
@@ -378,7 +379,8 @@ private fun AltitudeDialogs(
     }
 
     if (state.pendingDeleteId != null) {
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             onDismissRequest = component::dismissDeleteDialog,
             title = { Text(stringResource(CoreR.string.altitude_record_deleted)) },
             text = { Text(stringResource(CoreR.string.altitude_delete_confirm)) },

@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -58,6 +57,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineStickyNote
 import com.wanbaohe.base.ui.picker.ChineseDatePickerDialog
 import com.wanbaohe.base.ui.picker.ChineseTimePickerDialog
 import com.wanbaohe.core.ui.widget.color_picker.ColorSelectionRow
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedChip
 import com.wanbaohe.core.ui.widget.system.OneBoxBottomActionBar
 import com.wanbaohe.core.ui.widget.system.OneBoxDangerButton
@@ -349,7 +349,8 @@ fun AddTodoScreen(
 
     // 删除确认
     if (uiState.showDeleteConfirm) {
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             containerColor = AppTheme.colors.getContainerSurfaceColor(),
             onDismissRequest = { addTodoComponent.handleEvent(AddTodoUiEvent.DismissDeleteConfirm) },
             title = { Text(stringResource(R.string.action_delete)) },
@@ -381,7 +382,8 @@ fun AddTodoScreen(
     }
 
     if (showDiscardChanges) {
-        AlertDialog(
+        EnhancedAlertDialog(
+            visible = true,
             containerColor = AppTheme.colors.getContainerSurfaceColor(),
             onDismissRequest = { showDiscardChanges = false },
             title = { Text(stringResource(com.shifenmiao.core.R.string.theme_discard_title)) },
@@ -476,7 +478,9 @@ private fun AddTagDialog(
     var tagName by remember { mutableStateOf("") }
     var selectedColor by remember { mutableStateOf(CategoryColorPalette.first()) }
 
-    AlertDialog(
+    EnhancedAlertDialog(
+
+        visible = true,
         containerColor = AppTheme.colors.getContainerSurfaceColor(),
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.dialog_add_tag_title)) },
