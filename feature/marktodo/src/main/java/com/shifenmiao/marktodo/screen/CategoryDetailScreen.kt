@@ -15,7 +15,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -54,13 +57,13 @@ import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineQuickTiles
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSort
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineViewList
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
 import com.wanbaohe.core.ui.widget.glass.GlassLinearProgressIndicator
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.system.OneBoxDangerButton
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
@@ -72,7 +75,6 @@ fun CategoryDetailScreen(
 ) {
     val uiState by component.uiState.collectAsState()
     val showDeleteCategoryConfirm by component.showDeleteCategoryConfirm.collectAsState()
-    var isShowGrid by remember { mutableStateOf(false) }
 
     val category = uiState.category
     val visibleTasks = remember(
@@ -108,37 +110,12 @@ fun CategoryDetailScreen(
             )
         },
         actions = {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.microSpacing),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                IconButton(onClick = { component.handleEvent(CategoryDetailUiEvent.ShowSortSheet) }) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSort,
-                        contentDescription = stringResource(R.string.action_sort),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-                }
-                IconButton(onClick = { isShowGrid = !isShowGrid }) {
-                    Icon(
-                        imageVector = if (isShowGrid) {
-                            com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineViewList
-                        } else {
-                            com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineQuickTiles
-                        },
-                        contentDescription = stringResource(
-                            if (isShowGrid) R.string.cd_switch_to_list_view else R.string.cd_switch_to_grid_view
-                        ),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-                IconButton(onClick = { component.handleEvent(CategoryDetailUiEvent.AddTaskClicked) }) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
-                        contentDescription = stringResource(R.string.action_add_task),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
+            IconButton(onClick = { component.handleEvent(CategoryDetailUiEvent.AddTaskClicked) }) {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
+                    contentDescription = stringResource(R.string.action_add_task),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             }
         },
         isShowDefaultActions = false,
@@ -160,6 +137,9 @@ fun CategoryDetailScreen(
                         category = category,
                         themeIndex = uiState.themeIndex,
                         accentColor = categoryAccentColor(category, uiState.themeIndex),
+                        onSort = {
+                            component.handleEvent(CategoryDetailUiEvent.ShowSortSheet)
+                        },
                         onEditCategory = {
                             component.handleEvent(CategoryDetailUiEvent.EditCategoryClicked)
                         },
@@ -206,7 +186,6 @@ fun CategoryDetailScreen(
                                 component.handleEvent(CategoryDetailUiEvent.DeleteTask(it))
                             },
                             showCategory = false,
-                            isGrid = isShowGrid,
                             enableSwipeDelete = true,
                             modifier = Modifier.weight(1f),
                         )
@@ -277,10 +256,12 @@ private fun CategoryHeaderCard(
     category: TodoCategory,
     themeIndex: Int,
     accentColor: Color,
+    onSort: () -> Unit,
     onEditCategory: () -> Unit,
     onDeleteCategory: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var menuExpanded by remember { mutableStateOf(false) }
     GlassCard(
         modifier = modifier.fillMaxWidth(),
         colors = com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors(
@@ -325,21 +306,73 @@ private fun CategoryHeaderCard(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
-                IconButton(onClick = onEditCategory, modifier = Modifier.size(48.dp)) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
-                        contentDescription = stringResource(R.string.action_edit),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(19.dp),
-                    )
-                }
-                IconButton(onClick = onDeleteCategory, modifier = Modifier.size(48.dp)) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
-                        contentDescription = stringResource(R.string.action_delete),
-                        tint = MaterialTheme.colorScheme.onErrorContainer,
-                        modifier = Modifier.size(19.dp),
-                    )
+                Box {
+                    IconButton(
+                        onClick = { menuExpanded = true },
+                        modifier = Modifier.size(36.dp),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.MoreVert,
+                            contentDescription = stringResource(R.string.action_menu),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(18.dp),
+                        )
+                    }
+                    EnhancedDropdownMenu(
+                        expanded = menuExpanded,
+                        onDismissRequest = { menuExpanded = false },
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.p1_filter_sort)) },
+                            onClick = {
+                                menuExpanded = false
+                                onSort()
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSort,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    modifier = Modifier.size(18.dp),
+                                )
+                            },
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.action_edit)) },
+                            onClick = {
+                                menuExpanded = false
+                                onEditCategory()
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    modifier = Modifier.size(18.dp),
+                                )
+                            },
+                        )
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = stringResource(R.string.action_delete),
+                                    color = MaterialTheme.colorScheme.onErrorContainer,
+                                )
+                            },
+                            onClick = {
+                                menuExpanded = false
+                                onDeleteCategory()
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onErrorContainer,
+                                    modifier = Modifier.size(18.dp),
+                                )
+                            },
+                        )
+                    }
                 }
             }
             Row(
@@ -398,6 +431,8 @@ private fun StatFilterRow(
                 GlassFilterChip(
                     selected = filterMode == mode,
                     onClick = { onFilterChange(mode) },
+                    style = GlassStyle.Dense,
+                    glassContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
                     label = {
                         Text(
                             text = stringResource(

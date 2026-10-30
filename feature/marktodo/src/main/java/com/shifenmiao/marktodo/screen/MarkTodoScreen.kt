@@ -70,6 +70,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineQuickTiles
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineViewList
 import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
 import com.wanbaohe.core.ui.widget.glass.GlassSearchTextField
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
 import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.core.ui.widget.system.OneBoxDangerButton
@@ -528,17 +529,18 @@ private fun QueryShortcutBar(
                 )
             }
         }
-        IconButton(onClick = onShowFilterSort, modifier = Modifier.size(48.dp)) {
+        IconButton(onClick = onShowFilterSort, modifier = Modifier.size(36.dp)) {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFilterAlt,
                 contentDescription = stringResource(R.string.p1_filter_sort),
-                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(18.dp),
             )
         }
         if (showViewMode) {
             IconButton(
                 onClick = { onViewModeChange(!isGridView) },
-                modifier = Modifier.size(48.dp),
+                modifier = Modifier.size(36.dp),
             ) {
                 Icon(
                     imageVector = if (isGridView) {
@@ -550,6 +552,7 @@ private fun QueryShortcutBar(
                         if (isGridView) R.string.cd_switch_to_list_view else R.string.cd_switch_to_grid_view
                     ),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(18.dp),
                 )
             }
         }
@@ -647,6 +650,8 @@ private fun QuickDateFilterChip(
                 )
             )
         },
+        style = GlassStyle.Dense,
+        glassContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         label = {
             Text(
                 text = label,
