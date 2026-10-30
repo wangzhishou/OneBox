@@ -1712,6 +1712,8 @@
 
     <string name="sudoku_title">数独</string>
     <string name="sudoku_description">经典的数独游戏，在 9×9 宫格里锻炼逻辑与推理。</string>
+    <string name="mahjong_title">单机麻将</string>
+    <string name="mahjong_description">四人离线对局，与三位本地 AI 对手吃碰杠胡。</string>
 
     <string name="ad_watch_title">广告看看看</string>
     <string name="ad_watch_description">看激励广告赚积分。</string>

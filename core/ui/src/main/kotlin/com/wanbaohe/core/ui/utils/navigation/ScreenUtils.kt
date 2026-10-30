@@ -90,6 +90,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineFileTransfer
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFilters
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFormatConversion
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineGame2048
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMahjong
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineGifTools
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineGradientMaker
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHealing
@@ -368,6 +369,7 @@ internal fun Screen.simpleName(): String = when (this) {
     is Screen.CreateAIChatPrompt -> "CreateAIChatPrompt"
     is Screen.Minesweeper -> "Minesweeper"
     is Screen.Sudoku -> "Sudoku"
+    is Screen.Mahjong -> "Mahjong"
     is Screen.Survive30s -> "Survive30s"
     is Screen.DisplaySettings -> "DisplaySettings"
     is Screen.StartEntrySettings -> "StartEntrySettings"
@@ -527,6 +529,7 @@ internal fun Screen.icon(): ImageVector? = when (this) {
     is Screen.DeadPixelTest -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDeadPixelTest
     is Screen.Minesweeper -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMinesweeper
     is Screen.Sudoku -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineGrid4x4
+    is Screen.Mahjong -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMahjong
     is Screen.Community -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineGroup
     is Screen.MeasurementTools -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMeasurement
     is Screen.Prompt -> com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Lightbulb
@@ -819,6 +822,7 @@ internal object ScreenConstantsImpl : ScreenConstants {
                     Screen.DeadPixelTest,
                     Screen.Minesweeper,
                     Screen.Sudoku,
+                    Screen.Mahjong,
                     Screen.Community,
                     Screen.MeasurementTools,
                     Screen.XiangqiRouter(),
@@ -843,5 +847,5 @@ internal object ScreenConstantsImpl : ScreenConstants {
         typedEntries.flatMap { it.entries }.sortedBy { it.id }
     }
 
-    override val FEATURES_COUNT = 82
+    override val FEATURES_COUNT = 83
 }

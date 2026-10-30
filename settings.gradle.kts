@@ -181,6 +181,7 @@ include(":feature:visual-automation")
 include(":feature:password-vault")
 include(":feature:poem")
 include(":feature:record-center")
+include(":feature:mahjong")
 
 include(":core:a2ui")
 include(":core:settings")

@@ -240,6 +240,8 @@ import com.wanbaohe.file_transfer.screen.FileTransferScreen
 import com.wanbaohe.file_transfer.screenLogic.FileTransferComponent
 import com.wanbaohe.game2048.component.Game2048Component
 import com.wanbaohe.game2048.screen.Game2048Screen
+import com.wanbaohe.mahjong.component.MahjongComponent
+import com.wanbaohe.mahjong.screen.MahjongScreen
 import com.wanbaohe.xiangqi.router.XiangqiRouterScreen
 import com.wanbaohe.gomoku.router.GomokuRouterScreen
 import com.wanbaohe.gomoku.router.screenLogic.GomokuRouterComponent
@@ -1409,6 +1411,15 @@ sealed interface NavigationChild {
         @Composable
         override fun Content() {
             Game2048Screen(component = game2048Component)
+        }
+    }
+
+    class Mahjong(
+        val component: MahjongComponent
+    ) : NavigationChild {
+        @Composable
+        override fun Content() {
+            MahjongScreen(component = component)
         }
     }
 

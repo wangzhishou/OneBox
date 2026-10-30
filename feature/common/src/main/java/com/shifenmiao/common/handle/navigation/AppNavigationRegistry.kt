@@ -148,6 +148,10 @@ object AppNavigationRegistry {
                 aliases = listOf("textcard", "text_card", "文字卡片", "图文卡片")
             ),
             staticScreen(
+                screen = Screen.Mahjong,
+                aliases = listOf("mahjong", "majiang", "麻将", "单机麻将", "离线麻将")
+            ),
+            staticScreen(
                 screen = Screen.MarkupLayers(),
                 aliases = listOf(
                     "markuplayers", "markup_layers", "image_creation", "图片创作", "高级图片编辑"

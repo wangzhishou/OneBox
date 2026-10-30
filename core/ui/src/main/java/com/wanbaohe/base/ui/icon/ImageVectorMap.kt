@@ -65,6 +65,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineFileTransfer
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFilters
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFormatConversion
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineGame2048
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMahjong
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineGifTools
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineGradientMaker
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
@@ -380,6 +381,7 @@ object IconRegistry {
         "DiceRoller" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDiceRoller },
         "IChingDivination" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.TaijiBagua },
         "Game2048" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineGame2048 },
+        "Mahjong" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMahjong },
         "Survive30s" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSurvive30s },
         "WebBrowser" to { com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Language },
         "CodeEditor" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCodeEditor },

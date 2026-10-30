@@ -169,6 +169,7 @@ import com.wanbaohe.diceroller.component.DiceRollerComponent
 import com.wanbaohe.file.browser.screenLogic.FileBrowserComponent
 import com.wanbaohe.file_transfer.screenLogic.FileTransferComponent
 import com.wanbaohe.game2048.component.Game2048Component
+import com.wanbaohe.mahjong.component.MahjongComponent
 import com.wanbaohe.xiangqi.router.screenLogic.XiangqiRouterComponent
 import com.wanbaohe.gomoku.router.screenLogic.GomokuRouterComponent
 import com.wanbaohe.chess.router.screenLogic.ChessRouterComponent
@@ -1340,6 +1341,13 @@ class ChildProvider @Inject constructor(
             game2048Component = lifeFactories.get().game2048ComponentFactory(
                 componentContext = componentContext,
                 onGoBack = ::navigateBack
+            )
+        )
+
+        is Screen.Mahjong -> NavigationChild.Mahjong(
+            component = lifeFactories.get().mahjongComponentFactory(
+                componentContext = componentContext,
+                onGoBack = ::navigateBack,
             )
         )
 

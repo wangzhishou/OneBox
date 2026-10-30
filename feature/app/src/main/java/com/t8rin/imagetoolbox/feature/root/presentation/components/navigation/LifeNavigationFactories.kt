@@ -36,6 +36,7 @@ import com.wanbaohe.diceroller.component.DiceRollerComponent
 import com.wanbaohe.iching.component.IChingDivinationComponent
 import com.wanbaohe.iching.component.IChingHistoryComponent
 import com.wanbaohe.game2048.component.Game2048Component
+import com.wanbaohe.mahjong.component.MahjongComponent
 import com.wanbaohe.xiangqi.router.screenLogic.XiangqiRouterComponent
 import com.wanbaohe.gomoku.router.screenLogic.GomokuRouterComponent
 import com.wanbaohe.chess.router.screenLogic.ChessRouterComponent
@@ -84,6 +85,7 @@ class LifeNavigationFactories @Inject constructor(
     val iChingDivinationComponentFactory: IChingDivinationComponent.Factory,
     val iChingHistoryComponentFactory: IChingHistoryComponent.Factory,
     val game2048ComponentFactory: Game2048Component.Factory,
+    val mahjongComponentFactory: MahjongComponent.Factory,
     val xiangqiRouterComponentFactory: XiangqiRouterComponent.Factory,
     val gomokuRouterComponentFactory: GomokuRouterComponent.Factory,
     val chessRouterComponentFactory: ChessRouterComponent.Factory,

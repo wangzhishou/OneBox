@@ -58,6 +58,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineGrid4x4
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineImportExport
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLink
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMahjong
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineManageSearch
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineNote
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePhone
@@ -729,6 +730,10 @@ private fun demoNavigationEntries(): List<DemoNavigationEntry> = listOf(
     DemoNavigationEntry("2048", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineGrid4x4) { Screen.Game2048 },
     DemoNavigationEntry("扫雷", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCasino) { Screen.Minesweeper },
     DemoNavigationEntry("数独", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineGrid4x4) { Screen.Sudoku },
+    DemoNavigationEntry(
+        getString(R.string.mahjong_title),
+        com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMahjong,
+    ) { Screen.Mahjong },
     DemoNavigationEntry(
         getString(DemoR.string.demo_blessing_wall_entry_title),
         com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic,

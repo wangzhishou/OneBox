@@ -1605,6 +1605,8 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
 
     <string name="sudoku_title">Sudoku</string>
     <string name="sudoku_description">Classic Sudoku — fill the 9×9 grid with logic.</string>
+    <string name="mahjong_title">Mahjong</string>
+    <string name="mahjong_description">Offline four-player Mahjong against three local opponents.</string>
 
     <string name="ad_watch_title">Ad Watch</string>
     <string name="ad_watch_description">Watch rewarded ads to earn points.</string>
