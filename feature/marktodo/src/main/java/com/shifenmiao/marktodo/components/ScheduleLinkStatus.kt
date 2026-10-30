@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -25,6 +26,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.shifenmiao.marktodo.R
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
+import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
 import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
 import com.wanbaohe.schedule.model.LinkedScheduleSnapshot
 import com.wanbaohe.schedule.reminder.ScheduleReminders
@@ -77,27 +79,29 @@ fun ScheduleLinkStatus(
                     text = stringResource(R.string.schedule_pending_join),
                     style = MaterialTheme.typography.bodyMedium,
                 )
-                OneSecondaryButton(
-                    text = stringResource(R.string.schedule_pending_cancel),
-                    onClick = onCancelJoinOnSave,
-                    modifier = Modifier.fillMaxWidth(),
-                )
+                ActionRow {
+                    OneSecondaryButton(
+                        text = stringResource(R.string.schedule_pending_cancel),
+                        onClick = onCancelJoinOnSave,
+                    )
+                }
                 if (!notificationsEnabled) {
                     Hint(stringResource(R.string.schedule_notification_off))
                 }
             }
             linked == null && dueDateMillis != null -> {
-                OneSecondaryButton(
-                    text = stringResource(
-                        if (joining) R.string.schedule_joining else R.string.schedule_action_join,
-                    ),
-                    onClick = {
-                        requestNotifications()
-                        onJoin()
-                    },
-                    enabled = !joining,
-                    modifier = Modifier.fillMaxWidth(),
-                )
+                ActionRow {
+                    OnePrimaryButton(
+                        text = stringResource(
+                            if (joining) R.string.schedule_joining else R.string.schedule_action_join,
+                        ),
+                        onClick = {
+                            requestNotifications()
+                            onJoin()
+                        },
+                        enabled = !joining,
+                    )
+                }
             }
             linked != null -> {
                 val whenText = formatScheduleWhen(linked.startUtcMillis, linked.isAllDay)
@@ -115,20 +119,32 @@ fun ScheduleLinkStatus(
                 } else if (reminds && !notificationsEnabled) {
                     Hint(stringResource(R.string.schedule_notification_off))
                 }
-                Row(horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing)) {
-                    OneSecondaryButton(
-                        text = stringResource(R.string.schedule_action_view),
-                        onClick = onView,
-                        modifier = Modifier.weight(1f),
-                    )
+                ActionRow {
                     OneSecondaryButton(
                         text = stringResource(R.string.schedule_action_remove),
                         onClick = onRemove,
-                        modifier = Modifier.weight(1f),
+                    )
+                    OnePrimaryButton(
+                        text = stringResource(R.string.schedule_action_view),
+                        onClick = onView,
                     )
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun ActionRow(content: @Composable () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(
+            OneBoxDesignSystem.compactSpacing,
+            Alignment.End,
+        ),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        content()
     }
 }
 

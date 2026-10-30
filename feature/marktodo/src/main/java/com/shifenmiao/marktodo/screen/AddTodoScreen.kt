@@ -270,13 +270,16 @@ fun AddTodoScreen(
                 )
             }
 
-            // 新增模式：底部大保存按钮（编辑模式用浮在下方的 OneBoxBottomActionBar）
             if (!uiState.isEditMode) {
-                OnePrimaryButton(
-                    text = stringResource(R.string.action_save),
-                    onClick = { addTodoComponent.handleEvent(AddTodoUiEvent.SubmitTask) },
-                    modifier = Modifier.fillMaxWidth()
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                ) {
+                    OnePrimaryButton(
+                        text = stringResource(R.string.action_save),
+                        onClick = { addTodoComponent.handleEvent(AddTodoUiEvent.SubmitTask) },
+                    )
+                }
             }
         }
             if (uiState.isEditMode) {

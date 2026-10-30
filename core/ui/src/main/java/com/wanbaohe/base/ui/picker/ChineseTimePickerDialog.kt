@@ -1,15 +1,19 @@
 package com.wanbaohe.base.ui.picker
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TimePicker
+import androidx.compose.material3.TimePickerLayoutType
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -73,7 +77,7 @@ fun ChineseTimePickerDialog(
         },
         title = null,
         text = {
-            Column {
+            Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = title ?: stringResource(R.string.time_picker_title),
                     style = MaterialTheme.typography.labelMedium,
@@ -82,7 +86,16 @@ fun ChineseTimePickerDialog(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                TimePicker(state = timePickerState)
+                // 对话框正文按内容宽度靠左排, 表盘会被挤到左侧。强制竖排并在整行里居中。
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    TimePicker(
+                        state = timePickerState,
+                        layoutType = TimePickerLayoutType.Vertical,
+                    )
+                }
             }
         },
     )

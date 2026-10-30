@@ -91,14 +91,12 @@ fun TaskFilterSortSheet(
                     onClick = {
                         draftFilter = TaskFilter()
                     },
-                    modifier = Modifier.weight(1f),
                 )
                 Spacer(modifier = Modifier.width(OneBoxDesignSystem.compactSpacing))
             }
             OnePrimaryButton(
                 text = stringResource(R.string.p1_apply),
                 onClick = { onApply(draftFilter, draftSort) },
-                modifier = if (showFilters) Modifier.weight(2f) else Modifier.fillMaxWidth(),
             )
         },
     ) {

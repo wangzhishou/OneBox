@@ -69,7 +69,6 @@ fun QuickAddTodoSheet(
                 text = stringResource(R.string.quick_add_save_continue),
                 onClick = { component.handleEvent(QuickAddTodoUiEvent.SubmitAndContinue) },
                 enabled = !uiState.isSaving,
-                modifier = Modifier.weight(1f),
             )
             Spacer(modifier = Modifier.width(OneBoxDesignSystem.compactSpacing))
             OnePrimaryButton(
@@ -78,7 +77,6 @@ fun QuickAddTodoSheet(
                 ),
                 onClick = { component.handleEvent(QuickAddTodoUiEvent.Submit) },
                 enabled = !uiState.isSaving,
-                modifier = Modifier.weight(1f),
             )
         },
     ) {
@@ -113,17 +111,19 @@ fun QuickAddTodoSheet(
             )
 
             if (!uiState.showDetails) {
-                OneSecondaryButton(
-                    text = stringResource(R.string.quick_add_show_details),
-                    onClick = { component.handleEvent(QuickAddTodoUiEvent.ToggleDetails) },
-                    modifier = Modifier.fillMaxWidth(),
-                )
+                QuickAddActionRow {
+                    OneSecondaryButton(
+                        text = stringResource(R.string.quick_add_show_details),
+                        onClick = { component.handleEvent(QuickAddTodoUiEvent.ToggleDetails) },
+                    )
+                }
             } else {
-                OneSecondaryButton(
-                    text = stringResource(R.string.quick_add_hide_details),
-                    onClick = { component.handleEvent(QuickAddTodoUiEvent.ToggleDetails) },
-                    modifier = Modifier.fillMaxWidth(),
-                )
+                QuickAddActionRow {
+                    OneSecondaryButton(
+                        text = stringResource(R.string.quick_add_hide_details),
+                        onClick = { component.handleEvent(QuickAddTodoUiEvent.ToggleDetails) },
+                    )
+                }
 
                 QuickAddSectionLabel(stringResource(R.string.field_due_time))
                 TaskDateField(
@@ -239,6 +239,17 @@ private fun RecognizedTokenChips(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun QuickAddActionRow(content: @Composable () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.End,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        content()
     }
 }
 

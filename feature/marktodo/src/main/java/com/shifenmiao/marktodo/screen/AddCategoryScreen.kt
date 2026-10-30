@@ -156,14 +156,17 @@ fun AddCategoryScreen(
                 startIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePinEnd
             )
 
-            // 底部创建/保存按钮
-            OnePrimaryButton(
-                text = stringResource(
-                    if (isEditMode) R.string.action_save else R.string.action_create_category
-                ),
-                onClick = { component.handleEvent(AddCategoryUiEvent.Submit) },
-                modifier = Modifier.fillMaxWidth()
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+            ) {
+                OnePrimaryButton(
+                    text = stringResource(
+                        if (isEditMode) R.string.action_save else R.string.action_create_category
+                    ),
+                    onClick = { component.handleEvent(AddCategoryUiEvent.Submit) },
+                )
+            }
 
             androidx.compose.foundation.layout.Spacer(
                 modifier = Modifier.padding(bottom = OneBoxDesignSystem.blockSpacing)

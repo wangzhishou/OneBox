@@ -2,6 +2,8 @@ package com.wanbaohe.schedule.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,6 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -26,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
 import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
 import com.wanbaohe.schedule.R
 import com.wanbaohe.schedule.component.ScheduleComponent
@@ -237,18 +241,34 @@ private fun EventCard(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            OneSecondaryButton(
-                text = stringResource(R.string.schedule_export_to_system_calendar),
-                onClick = onAddToSystemCalendar,
-                modifier = Modifier.fillMaxWidth(),
+            EventActions(
+                onAddToSystemCalendar = onAddToSystemCalendar,
+                onOpenTask = onOpenTask,
             )
-            if (onOpenTask != null) {
-                OneSecondaryButton(
-                    text = stringResource(R.string.schedule_open_task),
-                    onClick = onOpenTask,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun EventActions(
+    onAddToSystemCalendar: () -> Unit,
+    onOpenTask: (() -> Unit)?,
+) {
+    FlowRow(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        OneSecondaryButton(
+            text = stringResource(R.string.schedule_export_to_system_calendar),
+            onClick = onAddToSystemCalendar,
+        )
+        if (onOpenTask != null) {
+            OnePrimaryButton(
+                text = stringResource(R.string.schedule_open_task),
+                onClick = onOpenTask,
+            )
         }
     }
 }
