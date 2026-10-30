@@ -149,7 +149,7 @@ fun TodoTagChip(
     Row(
         modifier = modifier
             .background(
-                color = com.shifenmiao.marktodo.theme.tagContainerColor(tag?.colorArgb, themeIndex),
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
                 shape = RoundedCornerShape(4.dp),
             )
             .then(

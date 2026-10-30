@@ -37,7 +37,6 @@ import com.shifenmiao.marktodo.model.TodoCategory
 import com.shifenmiao.marktodo.model.TodoTag
 import com.shifenmiao.marktodo.model.TodoTask
 import com.shifenmiao.marktodo.theme.categoryAccentColor
-import com.shifenmiao.marktodo.theme.categoryCardTintColor
 import com.shifenmiao.marktodo.theme.categoryAccentContainerColor
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
@@ -83,7 +82,7 @@ fun ThemeGroupCard(
     GlassCard(
         modifier = modifier.fillMaxWidth(),
         colors = com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors(
-            categoryCardTintColor(category, themeIndex)
+            MaterialTheme.colorScheme.surfaceContainerLow
         )
     ) {
         Column(
@@ -176,7 +175,7 @@ fun ThemeGroupGridCard(
     GlassCard(
         modifier = modifier.fillMaxWidth(),
         colors = com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors(
-            categoryCardTintColor(category, themeIndex)
+            MaterialTheme.colorScheme.surfaceContainerLow
         )
     ) {
         Column(

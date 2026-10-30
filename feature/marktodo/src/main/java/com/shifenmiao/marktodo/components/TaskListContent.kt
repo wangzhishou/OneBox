@@ -136,6 +136,9 @@ fun TaskListItem(
     GlassCard(
         modifier = modifier.fillMaxWidth(),
         onClick = { onClick(task) },
+        colors = com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors(
+            MaterialTheme.colorScheme.surfaceContainerLow
+        ),
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             Row(

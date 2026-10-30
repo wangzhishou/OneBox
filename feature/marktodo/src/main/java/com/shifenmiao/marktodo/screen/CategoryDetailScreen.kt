@@ -50,7 +50,6 @@ import com.shifenmiao.marktodo.model.TodoCategory
 import com.shifenmiao.marktodo.screenLogic.CategoryDetailComponent
 import com.shifenmiao.marktodo.theme.categoryAccentColor
 import com.shifenmiao.marktodo.theme.categoryAccentContainerColor
-import com.shifenmiao.marktodo.theme.categoryCardTintColor
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
@@ -285,7 +284,7 @@ private fun CategoryHeaderCard(
     GlassCard(
         modifier = modifier.fillMaxWidth(),
         colors = com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors(
-            categoryCardTintColor(category, themeIndex)
+            MaterialTheme.colorScheme.surfaceContainerLow
         ),
     ) {
         Column(

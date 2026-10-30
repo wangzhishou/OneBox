@@ -315,6 +315,9 @@ private fun FilterSection(
     GlassCard(
         shape = RoundedCornerShape(OneBoxDesignSystem.mediumRadius),
         style = GlassStyle.Regular,
+        colors = com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors(
+            MaterialTheme.colorScheme.surfaceContainerLow
+        ),
     ) {
         Column(
             modifier = Modifier
@@ -434,6 +437,9 @@ private fun DueRangeButton(
         GlassCard(
             onClick = onPick,
             modifier = Modifier.fillMaxWidth(),
+            colors = com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors(
+                MaterialTheme.colorScheme.surfaceContainerLow
+            ),
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,

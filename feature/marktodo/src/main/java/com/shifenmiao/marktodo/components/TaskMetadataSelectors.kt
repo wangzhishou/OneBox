@@ -55,6 +55,7 @@ fun PrioritySelector(
                 onClick = { onSelect(value) },
                 selectedColor = MaterialTheme.colorScheme.primaryContainer,
                 selectedContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                unselectedColor = MaterialTheme.colorScheme.surfaceContainerLow,
                 modifier = Modifier.weight(1f),
                 label = {
                     Row(
@@ -128,6 +129,7 @@ fun TagSelector(
                 selected = false,
                 onClick = onAddTag,
                 selectedColor = Color.Unspecified,
+                unselectedColor = MaterialTheme.colorScheme.surfaceContainerLow,
                 label = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
@@ -166,6 +168,7 @@ fun CategorySelector(
                 onClick = onSelectInbox,
                 selectedColor = MaterialTheme.colorScheme.primaryContainer,
                 selectedContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                unselectedColor = MaterialTheme.colorScheme.surfaceContainerLow,
                 label = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
@@ -189,6 +192,7 @@ fun CategorySelector(
                 onClick = { onSelect(category) },
                 selectedColor = MaterialTheme.colorScheme.primaryContainer,
                 selectedContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                unselectedColor = MaterialTheme.colorScheme.surfaceContainerLow,
                 label = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
@@ -210,6 +214,7 @@ fun CategorySelector(
                 selected = false,
                 onClick = onAddCategory,
                 selectedColor = Color.Unspecified,
+                unselectedColor = MaterialTheme.colorScheme.surfaceContainerLow,
                 label = {
                     Icon(
                         imageVector = Icons.Outlined.Add,

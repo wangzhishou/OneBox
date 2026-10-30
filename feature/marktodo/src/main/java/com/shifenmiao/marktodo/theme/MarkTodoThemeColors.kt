@@ -77,29 +77,11 @@ fun categoryAccentContainerColor(category: TodoCategory, themeIndex: Int): Color
     }
 
 @Composable
-fun categoryCardTintColor(category: TodoCategory, themeIndex: Int): Color =
-    if (hasCustomColor(category.colorArgb)) {
-        categoryAccentColor(category, themeIndex)
-            .blend(MaterialTheme.colorScheme.surfaceContainer, 0.82f)
-    } else {
-        sectionContainerColor(markTodoSectionThemeForIndex(themeIndex))
-    }
-
-@Composable
 fun tagAccentColor(colorArgb: Int?, themeIndex: Int): Color =
     if (hasCustomColor(colorArgb)) {
         themedAccentColor(Color(colorArgb!!))
     } else {
         sectionContentColor(markTodoSectionThemeForIndex(themeIndex))
-    }
-
-@Composable
-fun tagContainerColor(colorArgb: Int?, themeIndex: Int): Color =
-    if (hasCustomColor(colorArgb)) {
-        tagAccentColor(colorArgb, themeIndex)
-            .blend(MaterialTheme.colorScheme.surfaceContainer, 0.86f)
-    } else {
-        sectionContainerColor(markTodoSectionThemeForIndex(themeIndex))
     }
 
 /** 预置标签 id → 颜色（与 FeatureDatabase 种子及 service PRESET_TAG_COLORS 一致） */

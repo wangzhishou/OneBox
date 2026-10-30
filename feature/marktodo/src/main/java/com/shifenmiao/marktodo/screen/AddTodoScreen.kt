@@ -390,7 +390,7 @@ private fun TodoFormSection(
     label: String,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    OneBoxSectionCard(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest) {
+    OneBoxSectionCard(containerColor = MaterialTheme.colorScheme.surfaceContainerLow) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing)
