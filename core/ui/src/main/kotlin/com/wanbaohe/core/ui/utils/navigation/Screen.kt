@@ -1522,6 +1522,15 @@ sealed class Screen(
     )
 
     @Serializable
+    @SerialName("OnDeviceOcr")
+    class OnDeviceOcr : Screen(
+        id = 1123,
+        title = com.shifenmiao.core.R.string.on_device_ocr,
+        subtitle = com.shifenmiao.core.R.string.on_device_ocr_description,
+        description = ""
+    )
+
+    @Serializable
     @SerialName("DocConvertDocument")
     class DocConvertDocument : Screen(
         id = 1045,

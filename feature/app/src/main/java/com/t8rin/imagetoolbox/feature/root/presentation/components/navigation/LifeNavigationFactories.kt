@@ -15,6 +15,7 @@ import com.shifenmiao.marktodo.screenLogic.MarkTodoRouterComponent
 import com.shifenmiao.webview.browser.BrowserComponent
 import com.wanbaohe.a2ui.viewModel.A2uiComponent
 import com.wanbaohe.altitude.component.AltitudeComponent
+import com.wanbaohe.ocr.component.OnDeviceOcrComponent
 import com.wanbaohe.blessingwall.component.BlessingRecordComponent
 import com.wanbaohe.blessingwall.component.BlessingWallComponent
 import com.wanbaohe.poem.component.PoemComponent
@@ -94,6 +95,7 @@ class LifeNavigationFactories @Inject constructor(
     val sudokuComponentFactory: com.wanbaohe.sudoku.component.SudokuComponent.Factory,
     val adWatchComponentFactory: com.wanbaohe.adwatch.component.AdWatchComponent.Factory,
     val altitudeComponentFactory: AltitudeComponent.Factory,
+    val onDeviceOcrComponentFactory: OnDeviceOcrComponent.Factory,
     val compassComponentFactory: CompassComponent.Factory,
     val deviceStatusComponentFactory: DeviceStatusComponent.Factory,
     val speedTestComponentFactory: SpeedTestComponent.Factory,

@@ -668,6 +668,13 @@ object AppNavigationRegistry {
                     "文本识别", "文字识别"
                 )
             ),
+            staticScreen(
+                screen = Screen.OnDeviceOcr(),
+                aliases = listOf(
+                    "on_device_ocr", "snap_text", "local_ocr",
+                    "拍照取字", "离线识别"
+                )
+            ),
             AppNavigationTarget(
                 targetType = AppNavigationTargetType.SCREEN,
                 routeKey = "library_details",

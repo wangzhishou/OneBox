@@ -193,6 +193,8 @@ import com.t8rin.imagetoolbox.noise_generation.presentation.NoiseGenerationConte
 import com.t8rin.imagetoolbox.noise_generation.presentation.screenLogic.NoiseGenerationComponent
 import com.wanbaohe.altitude.component.AltitudeComponent
 import com.wanbaohe.altitude.screen.AltitudeScreen
+import com.wanbaohe.ocr.component.OnDeviceOcrComponent
+import com.wanbaohe.ocr.screen.OnDeviceOcrScreen
 import com.wanbaohe.app.app_screen.FavoriteScreen
 import com.wanbaohe.app.app_screen.NewAppScreen
 import com.wanbaohe.app.component.ActivityLogComponent
@@ -1264,6 +1266,15 @@ sealed interface NavigationChild {
                 component = ocrTaskListComponent,
                 onBack = ocrTaskListComponent.onGoBack
             )
+        }
+    }
+
+    class OnDeviceOcr(
+        val component: OnDeviceOcrComponent
+    ) : NavigationChild {
+        @Composable
+        override fun Content() {
+            OnDeviceOcrScreen(component = component)
         }
     }
 

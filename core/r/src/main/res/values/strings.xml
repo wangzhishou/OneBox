@@ -1167,6 +1167,8 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="pdf_url_not_found">PDF file not found. You may not have permission.</string>
     <string name="ocr_document">PDF &amp; Image to Text</string>
     <string name="ocr_document_description">Extract handwritten text, tables, formulas, and diagrams from images and PDFs with intelligent layout detection.</string>
+    <string name="on_device_ocr">Snap Text</string>
+    <string name="on_device_ocr_description">Read text from a photo on this phone, offline.</string>
     <string name="doc_convert_document">PDF &amp; Image to Word</string>
     <string name="doc_convert_document_description">Recognize document layouts, extract text, and convert to Word/Excel with preserved formatting.</string>
     <string name="file_loading">Reading file...</string>

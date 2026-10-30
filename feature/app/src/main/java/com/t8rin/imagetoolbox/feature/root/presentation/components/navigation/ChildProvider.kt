@@ -149,6 +149,7 @@ import com.t8rin.imagetoolbox.image_splitting.presentation.screenLogic.ImageSpli
 import com.t8rin.imagetoolbox.library_details.presentation.screenLogic.LibraryDetailsComponent
 import com.t8rin.imagetoolbox.noise_generation.presentation.screenLogic.NoiseGenerationComponent
 import com.wanbaohe.altitude.component.AltitudeComponent
+import com.wanbaohe.ocr.component.OnDeviceOcrComponent
 import com.wanbaohe.app.component.ActivityLogComponent
 import com.wanbaohe.app.component.FavoriteComponent
 import com.wanbaohe.blog.logic.BlogComponent
@@ -1218,6 +1219,14 @@ class ChildProvider @Inject constructor(
             ocrTaskListComponent = imageFactories.get().ocrTaskListComponent(
                 componentContext = componentContext,
                 onGoBack = ::navigateBack
+            )
+        )
+
+        is Screen.OnDeviceOcr -> NavigationChild.OnDeviceOcr(
+            component = lifeFactories.get().onDeviceOcrComponentFactory(
+                componentContext = componentContext,
+                onGoBack = ::navigateBack,
+                onOpenCloudOcr = { navigateTo(Screen.OcrDocument()) },
             )
         )
 

@@ -343,6 +343,7 @@ internal fun Screen.simpleName(): String = when (this) {
     is Screen.CreateHtml -> "CreateHtml"
     is Screen.EditPromptItem -> "EditPromptItem"
     is Screen.OcrDocument -> "OcrDocument"
+    is Screen.OnDeviceOcr -> "OnDeviceOcr"
     is Screen.DocConvertDocument -> "DocConvertDocument"
     is Screen.Altitude -> "Altitude"
     is Screen.SpeedTest -> "SpeedTest"
@@ -490,6 +491,7 @@ internal fun Screen.icon(): ImageVector? = when (this) {
     is Screen.CreateHtml -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCodeEditor
     is Screen.EditPromptItem -> com.t8rin.imagetoolbox.core.resources.Icons.Rounded.EditAlt
     is Screen.OcrDocument -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineOcrDocument
+    is Screen.OnDeviceOcr -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ImageToText
     is Screen.DocConvertDocument -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFormatConversion
     is Screen.Bookkeeping -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBookkeeping
     is Screen.HouseholdItems -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDrawerCabinet
@@ -799,6 +801,7 @@ internal object ScreenConstantsImpl : ScreenConstants {
                     Screen.LifeTime,
                     Screen.MarkdownEditor(),
                     Screen.OcrDocument(),
+                    Screen.OnDeviceOcr(),
                     Screen.DocConvertDocument(),
                     Screen.AIDuelChatScreen(),
                     Screen.Teleprompter(),

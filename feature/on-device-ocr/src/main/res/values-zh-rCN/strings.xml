@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ocr_intro_title">在手机上识别文字</string>
+    <string name="ocr_intro_body">首次下载 PP-OCRv6 small 模型（约 26 MB）。之后照片不出设备，不用登录，不耗积分。</string>
+    <string name="ocr_download">下载模型</string>
+    <string name="ocr_downloading">正在下载…</string>
+    <string name="ocr_download_percent">正在下载 %1$d%%</string>
+    <string name="ocr_download_failed">模型下载失败，检查网络后再试</string>
+    <string name="ocr_need_model">先下载模型，再识别照片。</string>
+    <string name="ocr_pick_camera">拍照</string>
+    <string name="ocr_pick_gallery">从相册选择</string>
+    <string name="ocr_pick_hint">支持中文、英文、日文和常见拉丁字母。长文档和表格仍走云端解析。</string>
+    <string name="ocr_open_cloud">打开云端解析</string>
+    <string name="ocr_recognizing">正在识别…</string>
+    <string name="ocr_empty">这张图里没有识别到文字</string>
+    <string name="ocr_decode_failed">这张图片打不开</string>
+    <string name="ocr_recognize_failed">识别失败，换一张试试</string>
+    <string name="ocr_copied">已复制</string>
+    <string name="ocr_copy">复制</string>
+    <string name="ocr_share">分享</string>
+    <string name="ocr_result_count">%d 行</string>
+    <string name="ocr_image">待识别的照片</string>
+    <string name="ocr_tap_hint">点文字框可复制这一行</string>
+    <string name="ocr_retake">重拍</string>
+    <string name="ocr_replace">换一张</string>
+</resources>

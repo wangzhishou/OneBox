@@ -124,6 +124,7 @@ animationCore = "1.13.0-beta02"
 pdfbox = "2.0.27.0"
 flinger = "2.0.2"
 opencv = "5.0.0.1"
+onnxruntime = "1.31.1"
 coilResvg = "1.1.2"
 litertlm = "0.18.1"
 [libraries]
@@ -148,6 +149,7 @@ androidliquidglass = { module = "io.github.kyant0:backdrop-android", version.ref
 materialKolor = { module = "com.materialkolor:material-kolor", version.ref = "materialKolor" }
 #noinspection Aligned16KB
 opencv = { module = "org.opencv:opencv", version.ref = "opencv" }
+onnxruntime-android = { module = "com.microsoft.onnxruntime:onnxruntime-android", version.ref = "onnxruntime" }
 androidx-webkit = { module = "androidx.webkit:webkit", version.ref = "webkitVersion" }
 androidx-lifecycle = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "androidxLifecycle" }
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }

@@ -1268,6 +1268,8 @@
     <string name="pdf_url_not_found">Pdf文件不存在,可能没权限</string>
     <string name="ocr_document">PDF和图片转文本</string>
     <string name="ocr_document_description">图像和PDF文件中的手写文本、表格、公式和图表等复杂元素，智能推断符合人类阅读习惯的排列顺序.</string>
+    <string name="on_device_ocr">拍照取字</string>
+    <string name="on_device_ocr_description">在手机上离线识别照片里的文字。</string>
     <string name="doc_convert_document">PDF和图片转Word</string>
     <string name="doc_convert_document_description">识别图片/PDF 文档版面布局，提取文字内容，并转换为保留版式的 Word/Excel.</string>
     <string name="file_loading">文件努力读取中...</string>

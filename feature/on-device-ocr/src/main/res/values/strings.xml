@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ocr_intro_title">Read text on this phone</string>
+    <string name="ocr_intro_body">Downloads the PP-OCRv6 small model once (about 26 MB). After that, photos stay on the device. No account and no points.</string>
+    <string name="ocr_download">Download model</string>
+    <string name="ocr_downloading">Downloading…</string>
+    <string name="ocr_download_percent">Downloading %1$d%%</string>
+    <string name="ocr_download_failed">Could not download the model. Check the network and try again.</string>
+    <string name="ocr_need_model">Download the model before reading a photo.</string>
+    <string name="ocr_pick_camera">Take photo</string>
+    <string name="ocr_pick_gallery">Choose photo</string>
+    <string name="ocr_pick_hint">Chinese, English, Japanese, and common Latin scripts. Long documents and tables still go to cloud parsing.</string>
+    <string name="ocr_open_cloud">Open cloud parsing</string>
+    <string name="ocr_recognizing">Reading…</string>
+    <string name="ocr_empty">No text found in this photo.</string>
+    <string name="ocr_decode_failed">Could not open this image.</string>
+    <string name="ocr_recognize_failed">Recognition failed. Try another photo.</string>
+    <string name="ocr_copied">Copied</string>
+    <string name="ocr_copy">Copy</string>
+    <string name="ocr_share">Share</string>
+    <string name="ocr_result_count">%d lines</string>
+    <string name="ocr_image">Photo to read</string>
+    <string name="ocr_tap_hint">Tap a box to copy that line</string>
+    <string name="ocr_retake">Retake</string>
+    <string name="ocr_replace">Another photo</string>
+</resources>

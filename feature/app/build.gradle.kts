@@ -95,6 +95,7 @@ dependencies {
     implementation(projects.feature.idPhoto)
     implementation(projects.feature.imageViewer)
     implementation(projects.feature.ocrDocument)
+    implementation(projects.feature.onDeviceOcr)
     implementation(projects.feature.altitude)
     implementation(projects.feature.speedTest)
     implementation(projects.feature.dshClient)
