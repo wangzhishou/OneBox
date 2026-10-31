@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItemColors
@@ -351,6 +352,7 @@ fun OneBoxPillButton(
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
+    textAutoSize: TextAutoSize? = null,
     contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
 ) {
     val shape = OneBoxDesignSystem.pillShape
@@ -374,6 +376,8 @@ fun OneBoxPillButton(
         Text(
             text = text,
             style = textStyle.copy(color = contentColor),
+            maxLines = if (textAutoSize == null) Int.MAX_VALUE else 1,
+            autoSize = textAutoSize,
         )
     }
 }

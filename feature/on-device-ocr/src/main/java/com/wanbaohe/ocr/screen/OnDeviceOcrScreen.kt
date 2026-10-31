@@ -42,9 +42,7 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.data.utils.getPath
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
 import com.t8rin.imagetoolbox.core.resources.Icons
-import com.t8rin.imagetoolbox.core.resources.icons.CopyAll
 import com.t8rin.imagetoolbox.core.resources.icons.ImageToText
-import com.t8rin.imagetoolbox.core.resources.icons.Share
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCameraAlt
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDeleteForever
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
@@ -59,7 +57,6 @@ import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.helper.SaveSuccessNotifier
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
-import com.wanbaohe.core.ui.widget.glass.GlassFilledIconButton
 import com.wanbaohe.core.ui.widget.glass.GlassLinearProgressIndicator
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
@@ -130,15 +127,6 @@ fun OnDeviceOcrScreen(component: OnDeviceOcrComponent) {
                     }
                 }
             } else if (state.preview != null) {
-                if (text.isNotEmpty()) {
-                    IconButton(onClick = { copyText(context, text) }) {
-                        Icon(
-                            Icons.Outlined.CopyAll,
-                            contentDescription = stringResource(R.string.ocr_copy_all),
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                        )
-                    }
-                }
                 IconButton(onClick = { showResultSheet = !showResultSheet }) {
                     Icon(
                         imageVector = if (showResultSheet) {
@@ -173,10 +161,8 @@ fun OnDeviceOcrScreen(component: OnDeviceOcrComponent) {
                         )
                         state.preview != null -> ResultPane(
                             state = state,
-                            text = text,
                             onSelect = component::select,
                             onCopyLine = { copyText(context, it) },
-                            onShare = { shareText(context, text) },
                             modifier = Modifier.weight(1f),
                         )
                         else -> PickPane(
@@ -211,6 +197,8 @@ fun OnDeviceOcrScreen(component: OnDeviceOcrComponent) {
         state = state,
         text = text,
         onDismiss = { showResultSheet = false },
+        onCopy = { copyText(context, text) },
+        onShare = { shareText(context, text) },
         onSaveMarkdown = {
             showResultSheet = false
             fileSaver.make(markdownFileName)
@@ -434,10 +422,8 @@ private fun PickCard(
 @Composable
 private fun ResultPane(
     state: OnDeviceOcrUiState,
-    text: String,
     onSelect: (Int?) -> Unit,
     onCopyLine: (String) -> Unit,
-    onShare: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val preview = state.preview ?: return
@@ -464,22 +450,6 @@ private fun ResultPane(
                 onCopyLine = onCopyLine,
                 modifier = Modifier.fillMaxWidth(),
             )
-            if (text.isNotBlank()) {
-                GlassFilledIconButton(
-                    onClick = onShare,
-                    enabled = !state.isRecognizing,
-                    style = GlassStyle.Thick,
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(12.dp),
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Share,
-                        contentDescription = stringResource(R.string.ocr_share),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-                }
-            }
         }
         Spacer(Modifier.height(12.dp))
     }
