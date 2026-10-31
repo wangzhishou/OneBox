@@ -28,6 +28,23 @@
     <string name="ocr_text_result">识别文本</string>
     <string name="ocr_image">待识别的照片</string>
     <string name="ocr_tap_hint">点按文字打开操作菜单，长按拖动可选择部分文字；下方完整文本也可选择</string>
-    <string name="ocr_retake">重拍</string>
-    <string name="ocr_replace">换一张</string>
+    <string name="ocr_save_note">保存为笔记</string>
+    <string name="ocr_note_saved">已保存到笔记</string>
+    <string name="ocr_note_save_failed">笔记保存失败</string>
+    <string name="ocr_recognize_again">重新识别</string>
+    <string name="ocr_new_image">新的图片</string>
+    <string name="ocr_recognize_tab">文字识别</string>
+    <string name="ocr_history_tab">识别历史</string>
+    <string name="ocr_history_title">识别历史</string>
+    <string name="ocr_history_empty">还没有识别历史</string>
+    <string name="ocr_history_empty_hint">识别过的图片和文字会保存在这里，方便随时查看。</string>
+    <string name="ocr_start_recognizing">识别一张图片</string>
+    <string name="ocr_history_no_text">未识别到文字</string>
+    <string name="ocr_delete_history">删除这条识别记录</string>
+    <string name="ocr_clear_history">清空历史</string>
+    <string name="ocr_clear_history_confirm">确定删除全部识别历史和已保存的图片吗？</string>
+    <string name="ocr_history_open_failed">这条识别记录打不开</string>
+    <string name="ocr_history_save_failed">文字已识别，但历史记录保存失败</string>
+    <string name="ocr_show_result_panel">查看识别面板</string>
+    <string name="ocr_hide_result_panel">收起识别面板</string>
 </resources>

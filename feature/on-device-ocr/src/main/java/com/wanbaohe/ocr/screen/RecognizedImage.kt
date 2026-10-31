@@ -34,11 +34,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
@@ -56,7 +54,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.components.text.SuppressSystemTextSelectionMenu
@@ -68,6 +65,7 @@ import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.SelectAll
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.widget.editor.AnimatedSelectionBorder
 import com.wanbaohe.ocr.R
 import com.wanbaohe.ocr.domain.PixelPoint
 import com.wanbaohe.ocr.domain.PpOcrSpec
@@ -87,7 +85,6 @@ internal fun RecognizedImage(
     modifier: Modifier = Modifier,
 ) {
     val image = remember(bitmap) { bitmap.asImageBitmap() }
-    val stroke = MaterialTheme.colorScheme.onPrimaryContainer
     val plate = MaterialTheme.colorScheme.surfaceContainer
     val plateSelected = MaterialTheme.colorScheme.primaryContainer
     val density = LocalDensity.current
@@ -96,8 +93,7 @@ internal fun RecognizedImage(
             modifier = modifier.fillMaxWidth(),
             contentAlignment = Alignment.Center,
         ) {
-            val availableHeight = if (maxHeight == Dp.Infinity) maxWidth else maxHeight
-            val drawWidth = fittedWidth(maxWidth, availableHeight, bitmap.width, bitmap.height)
+            val drawWidth = maxWidth
             val drawHeight = drawWidth * bitmap.height / bitmap.width
             val widthPx = with(density) { drawWidth.toPx() }
             val heightPx = with(density) { drawHeight.toPx() }
@@ -139,11 +135,7 @@ internal fun RecognizedImage(
                                 canvas.rotate(placement.angleDegrees)
                                 val verticalPadding = placement.height * PLATE_VERTICAL_PADDING
                                 drawRoundRect(
-                                    color = if (selected) {
-                                        plateSelected.copy(alpha = SELECTED_PLATE)
-                                    } else {
-                                        plate.copy(alpha = PLATE_ALPHA)
-                                    },
+                                    color = if (selected) plateSelected else plate,
                                     topLeft = Offset(0f, placement.top - verticalPadding),
                                     size = Size(
                                         placement.width,
@@ -157,18 +149,40 @@ internal fun RecognizedImage(
                                 canvas.restore()
                             }
                         }
-                        if (selected) {
-                            drawPath(
-                                path = polygon(lines[index].corners, scaleX, scaleY),
-                                color = stroke,
-                                style = Stroke(width = SELECTED_STROKE.toPx()),
-                            )
-                        }
                     }
                 }
                 lines.forEachIndexed { index, line ->
                     val placement = placements[index] ?: return@forEachIndexed
                     key(index, line.text) {
+                        val verticalPadding = placement.height * PLATE_VERTICAL_PADDING
+                        AnimatedSelectionBorder(
+                            isVisible = index == selectedIndex,
+                            scale = 1f,
+                            cornerRadius = with(density) { (placement.height * PLATE_RADIUS).toDp() },
+                            modifier = Modifier
+                                .offset {
+                                    IntOffset(
+                                        placement.origin.x.roundToInt(),
+                                        placement.origin.y.roundToInt(),
+                                    )
+                                }
+                                .graphicsLayer {
+                                    rotationZ = placement.angleDegrees
+                                    transformOrigin = TransformOrigin(0f, 0f)
+                                }
+                                .offset {
+                                    IntOffset(
+                                        0,
+                                        (placement.top - verticalPadding).roundToInt(),
+                                    )
+                                }
+                                .requiredSize(
+                                    width = with(density) { placement.width.toDp() },
+                                    height = with(density) {
+                                        (placement.height + verticalPadding * 2f).toDp()
+                                    },
+                                ),
+                        )
                         SelectableRecognizedLine(
                             line = line,
                             placement = placement,
@@ -348,23 +362,6 @@ private fun textPlacement(corners: List<PixelPoint>, scaleX: Float, scaleY: Floa
     )
 }
 
-private fun fittedWidth(maxWidth: Dp, maxHeight: Dp, imageWidth: Int, imageHeight: Int): Dp {
-    if (imageWidth <= 0 || imageHeight <= 0) return maxWidth
-    val imageRatio = imageWidth.toFloat() / imageHeight
-    val boxRatio = maxWidth / maxHeight
-    return if (imageRatio > boxRatio) maxWidth else maxHeight * imageRatio
-}
-
-private fun polygon(corners: List<PixelPoint>, scaleX: Float, scaleY: Float): Path {
-    val path = Path()
-    corners.forEachIndexed { index, point ->
-        val offset = Offset(point.x * scaleX, point.y * scaleY)
-        if (index == 0) path.moveTo(offset.x, offset.y) else path.lineTo(offset.x, offset.y)
-    }
-    path.close()
-    return path
-}
-
 private fun contains(corners: List<PixelPoint>, x: Float, y: Float): Boolean {
     if (corners.size < 3) return false
     var inside = false
@@ -384,10 +381,7 @@ private fun contains(corners: List<PixelPoint>, x: Float, y: Float): Boolean {
 }
 
 private val IMAGE_CORNER = 20.dp
-private val SELECTED_STROKE = 2.dp
-private const val PLATE_ALPHA = 1f
-private const val SELECTED_PLATE = 1f
-private const val PLATE_RADIUS = 0.12f
+private const val PLATE_RADIUS = 0.24f
 private const val PLATE_VERTICAL_PADDING = 0.14f
 private const val TEXT_HEIGHT_RATIO = 0.76f
 private const val TEXT_LINE_HEIGHT = 1.08f

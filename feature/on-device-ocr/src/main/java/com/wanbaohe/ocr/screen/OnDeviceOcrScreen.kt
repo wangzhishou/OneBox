@@ -6,20 +6,17 @@ import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,14 +24,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.getSystemService
@@ -46,17 +46,26 @@ import com.t8rin.imagetoolbox.core.resources.icons.CopyAll
 import com.t8rin.imagetoolbox.core.resources.icons.ImageToText
 import com.t8rin.imagetoolbox.core.resources.icons.Share
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCameraAlt
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineDeleteForever
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineImagePreview
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineSaveAs
+import com.wanbaohe.base.ui.button.CancelButton
+import com.wanbaohe.base.ui.button.ConfirmButton
+import com.wanbaohe.base.ui.button.PrimaryButton
 import com.wanbaohe.core.ui.utils.content_pickers.ImagePickerMode
 import com.wanbaohe.core.ui.utils.content_pickers.rememberFileCreator
 import com.wanbaohe.core.ui.utils.content_pickers.rememberImagePicker
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.helper.SaveSuccessNotifier
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassFilledIconButton
 import com.wanbaohe.core.ui.widget.glass.GlassLinearProgressIndicator
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
+import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.ocr.R
+import com.wanbaohe.ocr.component.OcrTab
 import com.wanbaohe.ocr.component.OnDeviceOcrComponent
 import com.wanbaohe.ocr.component.OnDeviceOcrUiState
 import com.wanbaohe.ocr.domain.markdownFileName
@@ -73,6 +82,8 @@ fun OnDeviceOcrScreen(component: OnDeviceOcrComponent) {
     }
     val text = state.lines.toPlainText()
     val markdownFileName = state.lines.markdownFileName()
+    var showClearHistory by remember { mutableStateOf(false) }
+    var showResultSheet by remember { mutableStateOf(false) }
     val fileSaver = rememberFileCreator(
         mimeType = MimeType.Markdown,
         onSuccess = { uri ->
@@ -90,68 +101,184 @@ fun OnDeviceOcrScreen(component: OnDeviceOcrComponent) {
             }
         },
     )
+    LaunchedEffect(state.activeHistoryId, state.isRecognizing) {
+        if (!state.isRecognizing &&
+            state.activeHistoryId != null &&
+            state.preview != null &&
+            state.errorRes == null
+        ) {
+            showResultSheet = true
+        }
+    }
     BaseScreen(
-        title = stringResource(CoreR.string.on_device_ocr),
+        title = stringResource(
+            if (state.currentTab == OcrTab.HISTORY) R.string.ocr_history_title
+            else CoreR.string.on_device_ocr
+        ),
         onGoBack = component.onGoBack,
+        showNavigationBarsPadding = false,
+        supportGlassEffect = true,
         actions = {
-            if (text.isNotEmpty()) {
-                IconButton(onClick = { copyText(context, text) }) {
-                    Icon(
-                        Icons.Outlined.CopyAll,
-                        contentDescription = stringResource(R.string.ocr_copy_all),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
+            if (state.currentTab == OcrTab.HISTORY) {
+                if (state.history.isNotEmpty()) {
+                    IconButton(onClick = { showClearHistory = true }) {
+                        Icon(
+                            Icons.Outlined.LineDeleteForever,
+                            contentDescription = stringResource(R.string.ocr_clear_history),
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        )
+                    }
                 }
-                IconButton(
-                    onClick = { fileSaver.make(markdownFileName) },
-                    enabled = !state.isSavingMarkdown,
-                ) {
-                    Icon(
-                        Icons.Outlined.LineSaveAs,
-                        contentDescription = stringResource(R.string.ocr_save_markdown),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
+            } else if (state.preview != null) {
+                if (text.isNotEmpty()) {
+                    IconButton(onClick = { copyText(context, text) }) {
+                        Icon(
+                            Icons.Outlined.CopyAll,
+                            contentDescription = stringResource(R.string.ocr_copy_all),
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        )
+                    }
                 }
-                IconButton(onClick = { shareText(context, text) }) {
+                IconButton(onClick = { showResultSheet = !showResultSheet }) {
                     Icon(
-                        Icons.Outlined.Share,
-                        contentDescription = stringResource(R.string.ocr_share),
+                        imageVector = if (showResultSheet) {
+                            Icons.Outlined.LineImagePreview
+                        } else {
+                            Icons.Outlined.ImageToText
+                        },
+                        contentDescription = stringResource(
+                            if (showResultSheet) R.string.ocr_hide_result_panel
+                            else R.string.ocr_show_result_panel
+                        ),
                         tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
                 }
             }
         },
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp),
-        ) {
-            when {
-                !state.modelReady -> DownloadPane(
-                    state = state,
-                    onDownload = component::downloadModel,
-                    onOpenCloud = component.onOpenCloudOcr,
-                    modifier = Modifier.weight(1f),
-                )
-                state.preview != null -> ResultPane(
-                    state = state,
-                    text = text,
-                    onSelect = component::select,
-                    onCopyLine = { copyText(context, it) },
-                    onCamera = camera::pickImage,
-                    onGallery = gallery::pickImage,
-                    modifier = Modifier.weight(1f),
-                )
-                else -> PickPane(
-                    onCamera = camera::pickImage,
-                    onGallery = gallery::pickImage,
-                    onOpenCloud = component.onOpenCloudOcr,
+        Column(modifier = Modifier.fillMaxSize()) {
+            when (state.currentTab) {
+                OcrTab.RECOGNIZE -> Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                ) {
+                    when {
+                        !state.modelReady -> DownloadPane(
+                            state = state,
+                            onDownload = component::downloadModel,
+                            onOpenCloud = component.onOpenCloudOcr,
+                            modifier = Modifier.weight(1f),
+                        )
+                        state.preview != null -> ResultPane(
+                            state = state,
+                            text = text,
+                            onSelect = component::select,
+                            onCopyLine = { copyText(context, it) },
+                            onShare = { shareText(context, text) },
+                            modifier = Modifier.weight(1f),
+                        )
+                        else -> PickPane(
+                            onCamera = camera::pickImage,
+                            onGallery = gallery::pickImage,
+                            onOpenCloud = component.onOpenCloudOcr,
+                            modifier = Modifier.weight(1f),
+                        )
+                    }
+                }
+                OcrTab.HISTORY -> OcrHistoryPane(
+                    records = state.history,
+                    onOpen = { record ->
+                        component.openHistory(record) {
+                            AppToastHost.showToast(R.string.ocr_history_open_failed)
+                        }
+                    },
+                    onDelete = component::deleteHistory,
+                    onStartRecognizing = { component.selectTab(OcrTab.RECOGNIZE) },
                     modifier = Modifier.weight(1f),
                 )
             }
+            OcrBottomBar(
+                currentTab = state.currentTab,
+                onSelect = component::selectTab,
+            )
         }
     }
+
+    OcrResultSheet(
+        visible = showResultSheet && state.preview != null && state.currentTab == OcrTab.RECOGNIZE,
+        state = state,
+        text = text,
+        onDismiss = { showResultSheet = false },
+        onSaveMarkdown = {
+            showResultSheet = false
+            fileSaver.make(markdownFileName)
+        },
+        onSaveNote = {
+            component.saveAsNote { saved ->
+                AppToastHost.showToast(
+                    if (saved) R.string.ocr_note_saved else R.string.ocr_note_save_failed
+                )
+            }
+        },
+        onReRecognize = {
+            showResultSheet = false
+            component.recognizeAgain()
+        },
+        onNewImage = {
+            showResultSheet = false
+            gallery.pickImage()
+        },
+    )
+
+    if (showClearHistory) {
+        EnhancedAlertDialog(
+            visible = true,
+            onDismissRequest = { showClearHistory = false },
+            title = { Text(stringResource(R.string.ocr_clear_history)) },
+            text = { Text(stringResource(R.string.ocr_clear_history_confirm)) },
+            confirmButton = {
+                ConfirmButton(
+                    text = stringResource(R.string.ocr_clear_history),
+                    onClick = {
+                        component.clearHistory()
+                        showClearHistory = false
+                    },
+                )
+            },
+            dismissButton = {
+                CancelButton(onClick = { showClearHistory = false })
+            },
+        )
+    }
+}
+
+@Composable
+private fun OcrBottomBar(
+    currentTab: OcrTab,
+    onSelect: (OcrTab) -> Unit,
+) {
+    val items = listOf(
+        BottomNavItem(
+            id = OcrTab.RECOGNIZE.name,
+            label = stringResource(R.string.ocr_recognize_tab),
+            icon = Icons.Outlined.ImageToText,
+        ),
+        BottomNavItem(
+            id = OcrTab.HISTORY.name,
+            label = stringResource(R.string.ocr_history_tab),
+            icon = Icons.Outlined.LineHistory,
+        ),
+    )
+    BottomNavigationBar(
+        items = items,
+        selectedItemId = currentTab.name,
+        onItemClick = { item ->
+            runCatching { OcrTab.valueOf(item.id) }.getOrNull()?.let(onSelect)
+        },
+        modifier = Modifier.fillMaxWidth(),
+    )
 }
 
 @Composable
@@ -222,15 +349,10 @@ private fun DownloadPane(
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
                 } else {
-                    Button(
+                    PrimaryButton(
+                        text = stringResource(R.string.ocr_download),
                         onClick = onDownload,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primaryContainer,
-                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                        ),
-                    ) {
-                        Text(stringResource(R.string.ocr_download))
-                    }
+                    )
                 }
             }
         }
@@ -315,15 +437,18 @@ private fun ResultPane(
     text: String,
     onSelect: (Int?) -> Unit,
     onCopyLine: (String) -> Unit,
-    onCamera: () -> Unit,
-    onGallery: () -> Unit,
+    onShare: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val preview = state.preview ?: return
+    val scrollState = rememberScrollState()
+    LaunchedEffect(state.isRecognizing) {
+        if (state.isRecognizing) scrollState.scrollTo(0)
+    }
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(scrollState),
     ) {
         BoxRecognizing(
             recognizing = state.isRecognizing,
@@ -337,71 +462,22 @@ private fun ResultPane(
                 selectedIndex = state.selectedIndex,
                 onSelect = onSelect,
                 onCopyLine = onCopyLine,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(max = 560.dp),
+                modifier = Modifier.fillMaxWidth(),
             )
-        }
-        Spacer(Modifier.height(12.dp))
-        GlassCard(style = GlassStyle.Medium, modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
+            if (text.isNotBlank()) {
+                GlassFilledIconButton(
+                    onClick = onShare,
+                    enabled = !state.isRecognizing,
+                    style = GlassStyle.Thick,
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(12.dp),
                 ) {
-                    Text(
-                        text = when {
-                            state.isRecognizing -> stringResource(R.string.ocr_recognizing)
-                            state.lines.isEmpty() -> stringResource(R.string.ocr_empty)
-                            else -> stringResource(R.string.ocr_text_result)
-                        },
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Medium,
+                    Icon(
+                        imageVector = Icons.Outlined.Share,
+                        contentDescription = stringResource(R.string.ocr_share),
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
-                    if (state.lines.isNotEmpty()) {
-                        Text(
-                            text = stringResource(R.string.ocr_result_count, state.lines.size),
-                            style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                }
-                state.errorRes?.let { error ->
-                    Spacer(Modifier.height(8.dp))
-                    Text(
-                        text = stringResource(error),
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
-                }
-                if (text.isNotEmpty()) {
-                    Spacer(Modifier.height(8.dp))
-                    Text(
-                        text = stringResource(R.string.ocr_tap_hint),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                    Spacer(Modifier.height(12.dp))
-                    SelectionContainer {
-                        Text(
-                            text = text,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier.fillMaxWidth(),
-                        )
-                    }
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End,
-                ) {
-                    TextButton(onClick = onCamera, enabled = !state.isRecognizing) {
-                        Text(stringResource(R.string.ocr_retake))
-                    }
-                    TextButton(onClick = onGallery, enabled = !state.isRecognizing) {
-                        Text(stringResource(R.string.ocr_replace))
-                    }
                 }
             }
         }
@@ -413,14 +489,16 @@ private fun ResultPane(
 private fun BoxRecognizing(
     recognizing: Boolean,
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
+    content: @Composable BoxScope.() -> Unit,
 ) {
     Box(modifier) {
         content()
         if (recognizing) {
             GlassCard(
                 style = GlassStyle.Thick,
-                modifier = Modifier.align(Alignment.Center),
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .padding(top = 16.dp),
             ) {
                 CircularProgressIndicator(
                     modifier = Modifier

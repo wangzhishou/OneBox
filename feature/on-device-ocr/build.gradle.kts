@@ -11,4 +11,6 @@ dependencies {
     implementation(projects.libs.opencvTools)
     implementation(projects.feature.common)
     implementation(libs.onnxruntime.android)
+    implementation(libs.kotlinx.serialization.json)
+    "arm64Api"(libs.com.tencent.mmkv)
 }

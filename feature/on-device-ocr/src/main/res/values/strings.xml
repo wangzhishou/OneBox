@@ -28,6 +28,23 @@
     <string name="ocr_text_result">Recognized text</string>
     <string name="ocr_image">Photo to read</string>
     <string name="ocr_tap_hint">Tap text for actions, or long-press and drag to select. The full text below is selectable too.</string>
-    <string name="ocr_retake">Retake</string>
-    <string name="ocr_replace">Another photo</string>
+    <string name="ocr_save_note">Save as note</string>
+    <string name="ocr_note_saved">Saved to Notes</string>
+    <string name="ocr_note_save_failed">Could not save the note</string>
+    <string name="ocr_recognize_again">Recognize again</string>
+    <string name="ocr_new_image">New image</string>
+    <string name="ocr_recognize_tab">Recognize</string>
+    <string name="ocr_history_tab">History</string>
+    <string name="ocr_history_title">Recognition history</string>
+    <string name="ocr_history_empty">No recognition history</string>
+    <string name="ocr_history_empty_hint">Your recognized images and text will appear here.</string>
+    <string name="ocr_start_recognizing">Recognize an image</string>
+    <string name="ocr_history_no_text">No text recognized</string>
+    <string name="ocr_delete_history">Delete recognition</string>
+    <string name="ocr_clear_history">Clear history</string>
+    <string name="ocr_clear_history_confirm">Delete all recognition history and saved images?</string>
+    <string name="ocr_history_open_failed">Could not open this recognition</string>
+    <string name="ocr_history_save_failed">Text recognized, but the history could not be saved</string>
+    <string name="ocr_show_result_panel">Show recognized text</string>
+    <string name="ocr_hide_result_panel">Hide recognized text</string>
 </resources>

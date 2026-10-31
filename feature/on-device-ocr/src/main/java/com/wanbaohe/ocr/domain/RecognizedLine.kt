@@ -1,12 +1,15 @@
 package com.wanbaohe.ocr.domain
 
+import kotlinx.serialization.Serializable
 import kotlin.math.abs
 
+@Serializable
 data class PixelPoint(
     val x: Float,
     val y: Float,
 )
 
+@Serializable
 data class RecognizedLine(
     val text: String,
     val confidence: Float,
