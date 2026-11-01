@@ -170,7 +170,7 @@ internal fun CardCanvasPreview(
                 CardTextElement(
                     block = block,
                     segment = segment,
-                    isSelected = segment?.role == selectedRole,
+                    isSelected = interactive && segment != null && segment.role == selectedRole,
                     editingSession = editingSession.takeIf { isEditing },
                     editingState = editingState.takeIf { isEditing },
                     canvasWidthPx = canvasWidthPx,

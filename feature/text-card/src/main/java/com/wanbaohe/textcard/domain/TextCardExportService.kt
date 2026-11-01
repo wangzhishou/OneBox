@@ -13,12 +13,18 @@ data class SavedTextCardImage(
 data class TextCardExportResult(
     val saved: List<SavedTextCardImage>,
     val failedPages: List<Int>,
-    val shareFailed: Boolean = false,
 )
 
 interface TextCardExportService {
     suspend fun export(
         document: TextCardDocument,
         layout: TextCardLayout,
+        pageIndices: Set<Int>? = null,
     ): TextCardExportResult
+
+    suspend fun share(
+        document: TextCardDocument,
+        layout: TextCardLayout,
+        pageIndices: Set<Int>? = null,
+    )
 }

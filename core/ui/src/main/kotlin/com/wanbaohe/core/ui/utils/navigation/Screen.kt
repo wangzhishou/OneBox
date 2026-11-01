@@ -848,7 +848,9 @@ sealed class Screen(
 
     @Serializable
     @SerialName("TextCard")
-    data object TextCard : Screen(
+    data class TextCard(
+        val initialText: String = ""
+    ) : Screen(
         id = 1097,
         title = com.shifenmiao.core.R.string.text_card,
         subtitle = com.shifenmiao.core.R.string.text_card_sub

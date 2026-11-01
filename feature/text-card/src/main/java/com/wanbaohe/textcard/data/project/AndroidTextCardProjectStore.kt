@@ -108,6 +108,24 @@ internal class AndroidTextCardProjectStore @Inject constructor(
         publishProjects(directories, cancellation)
     }
 
+    override suspend fun duplicate(id: String, newId: String, newName: String) =
+        onDisk { directories, cancellation ->
+            checkProjectId(newId)
+            val current = readProject(id, directories, cancellation)
+            val duplicated = current.copy(
+                summary = current.summary.copy(
+                    id = newId,
+                    name = newName,
+                    updatedAt = System.currentTimeMillis()
+                )
+            )
+            val bytes = TextCardProjectCodec.encode(duplicated).toByteArray(Charsets.UTF_8)
+            if (bytes.size > MaxProjectBytes) throw IOException("Project JSON exceeds the size limit")
+            cancellation.ensureActive()
+            atomicWrite(projectFile(newId, directories), bytes, cancellation)
+            publishProjects(directories, cancellation)
+        }
+
     override suspend fun delete(id: String) = onDisk { directories, cancellation ->
         checkProjectId(id)
         val file = projectFile(id, directories)

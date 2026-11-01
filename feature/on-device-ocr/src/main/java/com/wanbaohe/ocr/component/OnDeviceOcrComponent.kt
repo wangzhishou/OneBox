@@ -55,6 +55,7 @@ class OnDeviceOcrComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted("onGoBack") val onGoBack: () -> Unit,
     @Assisted("onOpenCloudOcr") val onOpenCloudOcr: () -> Unit,
+    @Assisted("onOpenTextCard") val onOpenTextCard: (String) -> Unit,
     private val modelStore: OcrModelStore,
     private val decoder: OcrBitmapDecoder,
     private val engine: PpOcrV6Engine,
@@ -321,6 +322,7 @@ class OnDeviceOcrComponent @AssistedInject constructor(
             componentContext: ComponentContext,
             @Assisted("onGoBack") onGoBack: () -> Unit,
             @Assisted("onOpenCloudOcr") onOpenCloudOcr: () -> Unit,
+            @Assisted("onOpenTextCard") onOpenTextCard: (String) -> Unit,
         ): OnDeviceOcrComponent
     }
 }

@@ -200,6 +200,19 @@ class PoemComponent @AssistedInject internal constructor(
         onNavigate(Screen.PoemSearch())
     }
 
+    fun createTextCard() {
+        val poem = uiState.value.poem ?: return
+        val text = buildList {
+            add(poem.title)
+            addAll(poem.content)
+            if (poem.authorWithDynasty.isNotBlank()) {
+                add("")
+                add(poem.authorWithDynasty)
+            }
+        }.joinToString("\n")
+        onNavigate(Screen.TextCard(initialText = text))
+    }
+
     /** 手动触发生成拼音(按钮入口):无拼音时生成,已有(含对齐失败的)时强制重新生成 */
     fun generatePinyin() {
         val poem = uiState.value.poem ?: return

@@ -34,5 +34,7 @@ interface TextCardProjectStore {
 
     suspend fun rename(id: String, name: String)
 
+    suspend fun duplicate(id: String, newId: String, newName: String)
+
     suspend fun delete(id: String)
 }

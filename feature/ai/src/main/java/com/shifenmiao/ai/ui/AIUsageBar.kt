@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import com.wanbaohe.base.ui.ActionButton
 import com.wanbaohe.base.ui.DeleteConfirmDialog
 import com.shifenmiao.core.R
@@ -28,6 +29,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.NoteAdd
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineTextCard
 
 @Composable
 fun AIUsageBar(
@@ -38,6 +40,7 @@ fun AIUsageBar(
     reGenerate: () -> Unit = {},
     onShare: (String) -> Unit = {},
     onNoteAdd: () -> Unit = {},
+    onCreateCard: () -> Unit = {},
 ) {
     val showDeleteDialog = remember { mutableStateOf(false) }
 
@@ -67,6 +70,13 @@ fun AIUsageBar(
             onClick = {
                 Clipboard.copy(message.answer)
             }
+        )
+        Spacer(modifier = Modifier.width(AppTheme.dimens.spaceSmall))
+        ActionButton(
+            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTextCard,
+            contentDescription = stringResource(R.string.text_card),
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+            onClick = onCreateCard
         )
         Spacer(modifier = Modifier.width(AppTheme.dimens.spaceSmall))
         ActionButton(

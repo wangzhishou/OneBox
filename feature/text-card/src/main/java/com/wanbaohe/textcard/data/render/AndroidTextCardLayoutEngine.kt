@@ -90,7 +90,14 @@ class AndroidTextCardLayoutEngine @Inject internal constructor() : TextCardLayou
                     finishPage()
                     continue
                 }
-                var remaining = source.slice(start, source.content.length)
+                val chunkEnd = source.content.indexOf(TextCardDocument.MANUAL_PAGE_BREAK, start)
+                    .takeIf { it >= 0 } ?: source.content.length
+                if (chunkEnd == start) {
+                    finishPage()
+                    start++
+                    continue
+                }
+                var remaining = source.slice(start, chunkEnd)
                 var layout = remaining.createTextLayout(width, contentWidth)
                 var fittingLines = fittingLineCount(layout, available)
                 if (fittingLines == 0 && current.isNotEmpty()) {
@@ -111,7 +118,12 @@ class AndroidTextCardLayoutEngine @Inject internal constructor() : TextCardLayou
                 val end = if (fittingLines == layout.lineCount) {
                     remaining.content.length
                 } else {
-                    layout.getLineEnd(fittingLines - 1).coerceIn(1, remaining.content.length)
+                    val visibleLines = if (layout.lineCount - fittingLines == 1 && fittingLines > 2) {
+                        fittingLines - 1
+                    } else fittingLines
+                    val lineEnd = layout.getLineEnd(visibleLines - 1)
+                        .coerceIn(1, remaining.content.length)
+                    preferredBreakEnd(remaining.content, lineEnd)
                 }
                 val segment = remaining.slice(0, end)
                 val segmentLayout = if (end == remaining.content.length) {
@@ -122,7 +134,12 @@ class AndroidTextCardLayoutEngine @Inject internal constructor() : TextCardLayou
                 current += positioned(segment, role, start, start + end, y)
                 y += segmentLayout.height
                 start += end
-                if (start < source.content.length) finishPage()
+                if (start < chunkEnd) {
+                    finishPage()
+                } else if (chunkEnd < source.content.length) {
+                    finishPage()
+                    start = chunkEnd + 1
+                }
             }
         }
         if (current.isNotEmpty() || pages.isEmpty()) pages += current
@@ -157,7 +174,13 @@ class AndroidTextCardLayoutEngine @Inject internal constructor() : TextCardLayou
         var segmentIndex = 0
 
         TextCardRole.entries.forEachIndexed { roleIndex, role ->
-            val block = document.block(role)
+            val block = document.block(role).let { source ->
+                if (source.content.contains(TextCardDocument.MANUAL_PAGE_BREAK)) {
+                    source.copy(
+                        content = source.content.replace(TextCardDocument.MANUAL_PAGE_BREAK, '\n')
+                    )
+                } else source
+            }
             if (block.content.isBlank()) return@forEachIndexed
             if (blocks.isNotEmpty()) {
                 y += when (roleIndex) {
@@ -197,6 +220,21 @@ class AndroidTextCardLayoutEngine @Inject internal constructor() : TextCardLayou
             CanvasSpec.Custom(width, requiredHeight)
         }
         return document.renderState(outputCanvas, blocks)
+    }
+
+    private fun preferredBreakEnd(text: String, lineEnd: Int): Int {
+        if (lineEnd <= 0 || lineEnd >= text.length) return lineEnd
+        val searchEnd = lineEnd - 1
+        val minimum = (lineEnd * 0.55f).toInt()
+        val paragraph = text.lastIndexOf("\n\n", startIndex = searchEnd)
+            .takeIf { it >= minimum }?.plus(2)?.coerceAtMost(lineEnd) ?: 0
+        val newline = text.lastIndexOf('\n', startIndex = searchEnd)
+            .takeIf { it >= minimum }?.plus(1) ?: 0
+        val sentence = text.lastIndexOfAny(
+            chars = charArrayOf('。', '！', '？', '!', '?', '；', ';', '.'),
+            startIndex = searchEnd
+        ).takeIf { it >= minimum }?.plus(1) ?: 0
+        return maxOf(paragraph, newline, sentence).takeIf { it >= minimum } ?: lineEnd
     }
 
     private fun fittingLineCount(layout: StaticLayout, availableHeight: Float): Int {

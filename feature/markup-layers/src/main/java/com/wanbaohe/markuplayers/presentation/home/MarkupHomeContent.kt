@@ -216,7 +216,7 @@ fun MarkupHomeContent(
                     text = stringResource(R.string.studio_cover_option_text_card),
                     onClick = {
                         showCoverTypeDialog = false
-                        component.onNavigate(Screen.TextCard)
+                        component.onNavigate(Screen.TextCard())
                     },
                     modifier = Modifier.fillMaxWidth()
                 )

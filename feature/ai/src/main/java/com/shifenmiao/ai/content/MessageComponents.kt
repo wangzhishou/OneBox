@@ -509,6 +509,9 @@ fun RobotMessageFooter(
                     )
                     localNavigator.navigate(Screen.CreateNote(draftId = draftId))
                 }
+            },
+            onCreateCard = {
+                appComponent.onNavigate(Screen.TextCard(initialText = messageEntity.answer))
             }
         )
         Spacer(modifier = Modifier.height(12.dp))

@@ -765,7 +765,7 @@ internal object ScreenConstantsImpl : ScreenConstants {
                     Filter(),
                     Draw(),
                     MarkupLayers(),
-                    TextCard,
+                    TextCard(),
                     CollageMaker(),
                     ImageStitching(),
                     ImageStacking(),

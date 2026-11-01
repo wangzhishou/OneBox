@@ -33,25 +33,19 @@ class AndroidTextCardExportService @Inject internal constructor(
     override suspend fun export(
         document: TextCardDocument,
         layout: TextCardLayout,
+        pageIndices: Set<Int>?,
     ): TextCardExportResult {
-        val states = when (document.outputMode) {
-            TextCardOutputMode.Pages -> layout.pages
-            TextCardOutputMode.LongImage -> listOf(
-                layout.longImage ?: throw TextCardLayoutException.LongImageTooLarge(
-                    layout.longImageRequiredHeight ?: 0
-                )
-            )
-        }
-        check(states.isNotEmpty()) { "There is no card page to export" }
+        val states = selectStates(document, layout, pageIndices)
         val format = document.exportFormat.toImageFormat()
         val timestamp = System.currentTimeMillis()
         val saved = mutableListOf<SavedTextCardImage>()
         val failed = mutableListOf<Int>()
-        states.forEachIndexed { index, state ->
+        states.forEachIndexed { position, indexedState ->
             coroutineContext.ensureActive()
+            val index = indexedState.index
             val page = index + 1
             try {
-                val rendered = exportRenderer.render(state)
+                val rendered = exportRenderer.render(indexedState.value)
                 val imageInfo = ImageInfo(
                     width = rendered.width,
                     height = rendered.height,
@@ -63,7 +57,7 @@ class AndroidTextCardExportService @Inject internal constructor(
                     saveTarget = ImageSaveTarget(
                         imageInfo = imageInfo,
                         originalUri = "text_card",
-                        sequenceNumber = index.takeIf { states.size > 1 },
+                        sequenceNumber = position.takeIf { states.size > 1 },
                         filename = "TextCard_${timestamp}_p${page.toString().padStart(2, '0')}",
                         data = bytes
                     ),
@@ -86,21 +80,49 @@ class AndroidTextCardExportService @Inject internal constructor(
                 failed += page
             }
         }
-        var shareFailed = false
-        if (document.shareAfterSave && saved.isNotEmpty() && failed.isEmpty()) {
-            try {
-                shareProvider.shareUris(saved.mapNotNull { it.uri.takeIf(String::isNotBlank) })
-            } catch (cancelled: CancellationException) {
-                throw cancelled
-            } catch (_: Throwable) {
-                shareFailed = true
-            }
+        return TextCardExportResult(saved = saved, failedPages = failed)
+    }
+
+    override suspend fun share(
+        document: TextCardDocument,
+        layout: TextCardLayout,
+        pageIndices: Set<Int>?,
+    ) {
+        val states = selectStates(document, layout, pageIndices)
+        val format = document.exportFormat.toImageFormat()
+        val timestamp = System.currentTimeMillis()
+        val uris = states.map { indexedState ->
+            coroutineContext.ensureActive()
+            val rendered = exportRenderer.render(indexedState.value)
+            shareProvider.cacheImage(
+                image = rendered,
+                imageInfo = ImageInfo(
+                    width = rendered.width,
+                    height = rendered.height,
+                    quality = Quality.Base(document.exportQuality),
+                    imageFormat = format
+                ),
+                filename = "TextCard_${timestamp}_p${indexedState.index + 1}"
+            ) ?: error("Could not cache card for sharing")
         }
-        return TextCardExportResult(
-            saved = saved,
-            failedPages = failed,
-            shareFailed = shareFailed
+        shareProvider.shareUris(uris)
+    }
+
+    private fun selectStates(
+        document: TextCardDocument,
+        layout: TextCardLayout,
+        pageIndices: Set<Int>?,
+    ) = when (document.outputMode) {
+        TextCardOutputMode.Pages -> layout.pages
+        TextCardOutputMode.LongImage -> listOf(
+            layout.longImage ?: throw TextCardLayoutException.LongImageTooLarge(
+                layout.longImageRequiredHeight ?: 0
+            )
         )
+    }.withIndex().filter { indexed ->
+        pageIndices == null || indexed.index in pageIndices
+    }.also { selected ->
+        check(selected.isNotEmpty()) { "There is no card page to export" }
     }
 }
 

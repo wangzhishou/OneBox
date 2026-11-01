@@ -251,6 +251,9 @@ class RootComponent @AssistedInject internal constructor(
     }
 
     fun updateExtraDataType(type: ExtraDataType?) {
+        if (type is ExtraDataType.Text) {
+            navigateTo(Screen.TextCard(initialText = type.text))
+        }
     }
 
     fun showToast(

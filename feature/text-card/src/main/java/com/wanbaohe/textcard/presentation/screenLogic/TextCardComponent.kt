@@ -26,6 +26,9 @@ import com.t8rin.imagetoolbox.core.utils.appContext
 import com.t8rin.logger.makeLog
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.CustomCanvasStore
+import com.wanbaohe.textcard.domain.CustomTextCardTemplateStore
+import com.wanbaohe.textcard.domain.StoredTextCardTemplate
+import com.wanbaohe.textcard.domain.TextCardImportService
 import com.wanbaohe.textcard.domain.TextCardExportRenderer
 import com.wanbaohe.textcard.domain.TextCardExportService
 import com.wanbaohe.textcard.domain.TextCardPaperRepository
@@ -65,6 +68,7 @@ enum class EditorPanel {
 
 class TextCardComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
+    @Assisted initialText: String,
     @Assisted val onGoBack: () -> Unit,
     @Assisted val onNavigate: (Screen) -> Unit,
     dispatchersHolder: DispatchersHolder,
@@ -73,6 +77,8 @@ class TextCardComponent @AssistedInject internal constructor(
     private val layoutEngine: TextCardLayoutEngine,
     private val paperRepository: TextCardPaperRepository,
     private val customCanvasStore: CustomCanvasStore,
+    private val customTemplateStore: CustomTextCardTemplateStore,
+    private val importService: TextCardImportService,
     private val projectStore: TextCardProjectStore,
     private val shareProvider: ImageShareProvider<Bitmap>,
     private val imageSaveLogger: ImageSaveLogger,
@@ -91,6 +97,10 @@ class TextCardComponent @AssistedInject internal constructor(
 
     private val _pendingTemplate = mutableStateOf(TextCardTemplate.all.first())
     val pendingTemplate: TextCardTemplate by _pendingTemplate
+
+    private val _customTemplates = mutableStateOf<List<TextCardTemplate>>(emptyList())
+    val customTemplates: List<TextCardTemplate> by _customTemplates
+    val allTemplates: List<TextCardTemplate> get() = TextCardTemplate.all + customTemplates
 
     private val _lastCustomCanvas = mutableStateOf<CanvasSpec.Custom?>(
         customCanvasStore.lastCustom()?.let { (width, height) -> CanvasSpec.Custom(width, height) }
@@ -132,8 +142,17 @@ class TextCardComponent @AssistedInject internal constructor(
     private val _projects = mutableStateOf<List<TextCardProjectSummary>>(emptyList())
     val projects: List<TextCardProjectSummary> by _projects
 
+    private val _homeInputText = mutableStateOf(initialText)
+    val homeInputText: String by _homeInputText
+
     private val _isProjectSaving = mutableStateOf(false)
     val isProjectSaving: Boolean by _isProjectSaving
+
+    private val _lastSavedAt = mutableStateOf<Long?>(null)
+    val lastSavedAt: Long? by _lastSavedAt
+
+    private val _exportRequested = mutableStateOf(false)
+    val exportRequested: Boolean by _exportRequested
 
     private val _isLoadingProject = mutableStateOf(false)
     val isLoadingProject: Boolean by _isLoadingProject
@@ -181,6 +200,7 @@ class TextCardComponent @AssistedInject internal constructor(
             runCatching { projectStore.refresh() }
                 .onFailure { it.makeLog("TextCardProjects") }
         }
+        refreshCustomTemplates()
         componentScope.launch {
             backgroundHandoffBus.result.collect { result ->
                 val requestId = activeHandoffId
@@ -205,6 +225,28 @@ class TextCardComponent @AssistedInject internal constructor(
     }
 
     override fun resetState() = Unit
+
+    fun updateHomeInputText(text: String) {
+        _homeInputText.value = text
+    }
+
+    fun fillHomeWithSample() {
+        _homeInputText.value = listOf(
+            appContext.getString(R.string.textcard_default_title),
+            appContext.getString(R.string.textcard_default_body)
+        ).joinToString("\n")
+    }
+
+    fun importHomeText(uri: String) {
+        if (_isLoadingProject.value) return
+        componentScope.launch {
+            _isLoadingProject.value = true
+            runCatching { importService.readText(uri) }
+                .onSuccess { _homeInputText.value = it }
+                .onFailure(AppToastHost::showFailureToast)
+            _isLoadingProject.value = false
+        }
+    }
 
     fun selectPendingCanvas(spec: CanvasSpec) {
         pendingCanvasExplicitlySelected = true
@@ -245,6 +287,8 @@ class TextCardComponent @AssistedInject internal constructor(
         contentSnapshotTaken = false
         canvasTextSnapshotTaken = false
         _document.value = newDocument
+        _lastSavedAt.value = null
+        _exportRequested.value = false
         _currentPage.value = 0
         _selectedRole.value = null
         _pageSelection.value = null
@@ -256,7 +300,7 @@ class TextCardComponent @AssistedInject internal constructor(
         loadRemotePapers()
     }
 
-    fun openProject(id: String) {
+    fun openProject(id: String, openExport: Boolean = false) {
         if (_isLoadingProject.value) return
         endContinuousEdit()
         _canvasTextEditSession.value = null
@@ -269,6 +313,8 @@ class TextCardComponent @AssistedInject internal constructor(
                     projectId = id
                     projectName = stored.summary.name
                     _document.value = stored.document
+                    _lastSavedAt.value = stored.summary.updatedAt
+                    _exportRequested.value = openExport
                     _currentPage.value = 0
                     _selectedRole.value = null
                     _pageSelection.value = null
@@ -295,6 +341,24 @@ class TextCardComponent @AssistedInject internal constructor(
             runCatching { projectStore.rename(id, normalized) }
                 .onFailure(AppToastHost::showFailureToast)
         }
+    }
+
+    fun duplicateProject(id: String) {
+        val source = projects.firstOrNull { it.id == id } ?: return
+        componentScope.launch {
+            runCatching {
+                projectStore.duplicate(
+                    id = id,
+                    newId = UUID.randomUUID().toString(),
+                    newName = appContext.getString(R.string.textcard_project_name_copy, source.name)
+                )
+            }.onSuccess { projectStore.refresh() }
+                .onFailure(AppToastHost::showFailureToast)
+        }
+    }
+
+    fun consumeExportRequest() {
+        _exportRequested.value = false
     }
 
     fun deleteProject(id: String) {
@@ -600,6 +664,75 @@ class TextCardComponent @AssistedInject internal constructor(
         _pendingCanvas.value = canvas
     }
 
+    fun saveCurrentTemplate(name: String) {
+        val normalized = name.trim()
+        if (normalized.isEmpty()) return
+        val id = "custom_${UUID.randomUUID()}"
+        val styleDocument = document.copy(
+            title = document.title.copy(content = "", styleSpans = emptyList(), fontSpans = emptyList()),
+            body = document.body.copy(content = "", styleSpans = emptyList(), fontSpans = emptyList()),
+            author = document.author.copy(content = "", styleSpans = emptyList(), fontSpans = emptyList()),
+            source = document.source.copy(content = "", styleSpans = emptyList(), fontSpans = emptyList()),
+            templateId = id
+        )
+        val stored = StoredTextCardTemplate(id = id, name = normalized, document = styleDocument)
+        componentScope.launch {
+            runCatching { customTemplateStore.save(stored) }
+                .onSuccess {
+                    refreshCustomTemplates()
+                    AppToastHost.showToast(R.string.textcard_template_saved)
+                }
+                .onFailure(AppToastHost::showFailureToast)
+        }
+    }
+
+    fun deleteCustomTemplate(template: TextCardTemplate) {
+        componentScope.launch {
+            runCatching { customTemplateStore.delete(template.id) }
+                .onSuccess {
+                    if (pendingTemplate.id == template.id) {
+                        _pendingTemplate.value = TextCardTemplate.all.first()
+                    }
+                    refreshCustomTemplates()
+                }
+                .onFailure(AppToastHost::showFailureToast)
+        }
+    }
+
+    private fun refreshCustomTemplates() {
+        componentScope.launch {
+            runCatching { customTemplateStore.list() }
+                .onSuccess { stored -> _customTemplates.value = stored.map(::toTemplate) }
+                .onFailure { it.makeLog("TextCardCustomTemplates") }
+        }
+    }
+
+    private fun toTemplate(stored: StoredTextCardTemplate): TextCardTemplate {
+        fun TextBlock.withStyleOf(source: TextBlock): TextBlock = source.copy(
+            id = id,
+            content = content,
+            styleSpans = styleSpans,
+            fontSpans = fontSpans
+        )
+        return TextCardTemplate(
+            id = stored.id,
+            customTitle = stored.name,
+            customDescription = appContext.getString(R.string.textcard_custom_template_desc),
+            applyStyle = {
+                copy(
+                    canvas = stored.document.canvas,
+                    background = stored.document.background,
+                    backgroundOpacity = stored.document.backgroundOpacity,
+                    title = title.withStyleOf(stored.document.title),
+                    body = body.withStyleOf(stored.document.body),
+                    author = author.withStyleOf(stored.document.author),
+                    source = source.withStyleOf(stored.document.source),
+                    templateId = stored.id
+                )
+            }
+        )
+    }
+
     fun updateBackground(spec: BackgroundSpec) {
         endContinuousEdit()
         mutateDocument { it.copy(background = spec) }
@@ -636,13 +769,11 @@ class TextCardComponent @AssistedInject internal constructor(
     fun updateExportSettings(
         format: com.wanbaohe.textcard.domain.model.TextCardExportFormat = document.exportFormat,
         quality: Int = document.exportQuality,
-        shareAfterSave: Boolean = document.shareAfterSave,
     ) {
         mutateDocument(recordHistory = false) {
             it.copy(
                 exportFormat = format,
-                exportQuality = quality.coerceIn(10, 100),
-                shareAfterSave = shareAfterSave
+                exportQuality = quality.coerceIn(10, 100)
             )
         }
     }
@@ -694,8 +825,7 @@ class TextCardComponent @AssistedInject internal constructor(
     private fun applyHistory(restored: TextCardDocument) {
         _document.value = restored.copy(
             exportFormat = document.exportFormat,
-            exportQuality = document.exportQuality,
-            shareAfterSave = document.shareAfterSave
+            exportQuality = document.exportQuality
         )
         _pageSelection.value = null
         _contentResetVersion.update { it + 1 }
@@ -822,6 +952,7 @@ class TextCardComponent @AssistedInject internal constructor(
                         thumbnail = thumbnail
                     )
                 }.onSuccess { durable ->
+                    _lastSavedAt.value = System.currentTimeMillis()
                     if (revision == documentRevision) {
                         _document.value = durable
                         registerSave()
@@ -865,20 +996,22 @@ class TextCardComponent @AssistedInject internal constructor(
         }
     }
 
-    fun saveCard() {
+    fun saveCard(currentPageOnly: Boolean = false) {
         if (_isSaving.value || !document.hasContent) return
+        val snapshot = document
+        val pageIndices = snapshot.exportPageIndices(currentPage, currentPageOnly)
         exportJob = componentScope.launch {
             _isSaving.value = true
             runCatching {
                 val currentLayout = withContext(defaultDispatcher) {
-                    layoutEngine.layout(document)
+                    layoutEngine.layout(snapshot)
                 }
-                exportService.export(document, currentLayout)
+                exportService.export(snapshot, currentLayout, pageIndices)
             }.onSuccess { result ->
                 result.saved.firstOrNull()?.let { first ->
                     runCatching {
                         imageSaveLogger.recordImageSave(
-                            screenId = Screen.TextCard.id.toString(),
+                            screenId = Screen.TextCard().id.toString(),
                             screenName = appContext.getString(
                                 com.shifenmiao.core.R.string.text_card
                             ),
@@ -924,19 +1057,35 @@ class TextCardComponent @AssistedInject internal constructor(
                         duration = ToastDuration.Short
                     )
                 }
-                if (result.shareFailed) {
-                    AppToastHost.showToast(
-                        message = appContext.getString(
-                            com.shifenmiao.core.R.string.webview_share_failed
-                        ),
-                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineInfo,
-                        duration = ToastDuration.Long
-                    )
-                }
             }.onFailure(AppToastHost::showFailureToast)
             _isSaving.value = false
         }
     }
+
+    fun shareCard(currentPageOnly: Boolean = false) {
+        if (_isSaving.value || !document.hasContent) return
+        val snapshot = document
+        val pageIndices = snapshot.exportPageIndices(currentPage, currentPageOnly)
+        exportJob = componentScope.launch {
+            _isSaving.value = true
+            runCatching {
+                val currentLayout = withContext(defaultDispatcher) {
+                    layoutEngine.layout(snapshot)
+                }
+                exportService.share(snapshot, currentLayout, pageIndices)
+            }.onFailure {
+                AppToastHost.showFailureToast(appContext.getString(R.string.textcard_share_failed))
+            }
+            _isSaving.value = false
+        }
+    }
+
+    private fun TextCardDocument.exportPageIndices(
+        currentPage: Int,
+        currentPageOnly: Boolean,
+    ): Set<Int>? = if (currentPageOnly && outputMode == TextCardOutputMode.Pages) {
+        setOf(currentPage)
+    } else null
 
     fun cancelSaving() {
         exportJob = null
@@ -1004,6 +1153,7 @@ class TextCardComponent @AssistedInject internal constructor(
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
+            initialText: String,
             onGoBack: () -> Unit,
             onNavigate: (Screen) -> Unit,
         ): TextCardComponent

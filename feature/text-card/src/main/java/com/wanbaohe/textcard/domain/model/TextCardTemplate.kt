@@ -5,8 +5,10 @@ import com.wanbaohe.textcard.R
 
 data class TextCardTemplate(
     val id: String,
-    @get:StringRes val titleRes: Int,
-    @get:StringRes val descRes: Int,
+    @get:StringRes val titleRes: Int? = null,
+    @get:StringRes val descRes: Int? = null,
+    val customTitle: String? = null,
+    val customDescription: String? = null,
     val applyStyle: TextCardDocument.() -> TextCardDocument,
 ) {
     fun applyTo(document: TextCardDocument): TextCardDocument =

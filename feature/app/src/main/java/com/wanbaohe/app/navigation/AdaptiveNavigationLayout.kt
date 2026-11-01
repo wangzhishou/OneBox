@@ -486,7 +486,7 @@ private fun QuickCreateFloatingPanel(
         },
         onNavigateToTextCard = {
             onDismiss()
-            rootComponent.navigateToNew(Screen.TextCard)
+            rootComponent.navigateToNew(Screen.TextCard())
         },
         onNavigateToHouseholdItems = {
             onDismiss()

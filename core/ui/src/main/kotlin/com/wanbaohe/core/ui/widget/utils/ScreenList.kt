@@ -209,6 +209,7 @@ internal fun List<Uri>.screenList(
         derivedStateOf {
             val text = (extraDataType as? ExtraDataType.Text)?.text ?: ""
             listOf(
+                Screen.TextCard(text),
                 Screen.ScanQrCode(text),
                 Screen.LoadNetImage(text)
             )

@@ -59,17 +59,19 @@ internal object TextCardDocumentCodec {
             "outputMode" to json(document.outputMode.name),
             "exportFormat" to json(document.exportFormat.name),
             "exportQuality" to json(document.exportQuality),
-            "shareAfterSave" to json(document.shareAfterSave),
         )
         formatErrors { decodeDocument(result) }
         return result
     }
 
     internal fun decodeDocument(element: JsonElement): TextCardDocument {
-        val value = element.objectWith(
-            "title", "body", "author", "source", "canvas", "background",
-            "backgroundOpacity", "templateId", "showPageNumber", "outputMode",
-            "exportFormat", "exportQuality", "shareAfterSave"
+        val value = element.objectWithOptional(
+            required = arrayOf(
+                "title", "body", "author", "source", "canvas", "background",
+                "backgroundOpacity", "templateId", "showPageNumber", "outputMode",
+                "exportFormat", "exportQuality"
+            ),
+            optional = setOf("shareAfterSave")
         )
         return TextCardDocument(
             title = decodeTextBlock(value.getValue("title")),
@@ -86,7 +88,6 @@ internal object TextCardDocumentCodec {
             exportQuality = value.int("exportQuality").also {
                 if (it !in 0..100) invalid("Export quality must be between 0 and 100")
             },
-            shareAfterSave = value.boolean("shareAfterSave"),
         )
     }
 

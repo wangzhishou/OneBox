@@ -87,6 +87,12 @@ import kotlinx.coroutines.flow.drop
 @Composable
 fun TextCardEditorScreen(component: TextCardComponent) {
     var showExportSheet by rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(component.exportRequested) {
+        if (component.exportRequested) {
+            showExportSheet = true
+            component.consumeExportRequest()
+        }
+    }
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
     val fieldStates = remember(component.contentResetVersion) {
@@ -379,42 +385,48 @@ fun TextCardEditorScreen(component: TextCardComponent) {
                                 pagerState.scrollToPage(component.currentPage)
                             }
                         }
+                        val previewMaxHeight = maxHeight - if (pages.size > 1) 28.dp else 0.dp
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             HorizontalPager(
                                 state = pagerState,
                                 userScrollEnabled = canvasSession == null,
                                 modifier = Modifier.fillMaxWidth()
                             ) { index ->
-                                CardCanvasPreview(
-                                    state = pages[index],
-                                    liveDocument = component.document,
-                                    selectedRole = component.selectedRole,
-                                    editingSession = canvasSession,
-                                    editingState = canvasFieldState,
-                                    pageIndex = index,
-                                    onSegmentTap = { segment, cursor ->
-                                        onSegmentTap(segment, index, cursor)
-                                    },
-                                    onSegmentEdit = { segment, cursor ->
-                                        onSegmentEdit(segment, index, cursor)
-                                    },
-                                    onSegmentDrag = { segment, dx, dy ->
-                                        component.moveTextBlock(
-                                            component.document.block(segment.role).id,
-                                            dx,
-                                            dy
-                                        )
-                                    },
-                                    onGestureEnd = component::endContinuousEdit,
-                                    onCanvasTap = onCanvasTap,
-                                    onBackgroundDrag = component::updateBackgroundImageOffset,
-                                    onEditingSync = syncCanvasState,
-                                    onTextEditCommit = onTextEditCommit,
-                                    onOpenStylePanel = onOpenStylePanel,
-                                    onClearSelectionStyles = onClearSelectionStyles,
-                                    selectionToolbarVisible = component.activePanel != EditorPanel.Typography,
+                                Box(
+                                    contentAlignment = Alignment.Center,
                                     modifier = Modifier.fillMaxWidth()
-                                )
+                                ) {
+                                    CardCanvasPreview(
+                                        state = pages[index],
+                                        liveDocument = component.document,
+                                        selectedRole = component.selectedRole,
+                                        editingSession = canvasSession,
+                                        editingState = canvasFieldState,
+                                        pageIndex = index,
+                                        onSegmentTap = { segment, cursor ->
+                                            onSegmentTap(segment, index, cursor)
+                                        },
+                                        onSegmentEdit = { segment, cursor ->
+                                            onSegmentEdit(segment, index, cursor)
+                                        },
+                                        onSegmentDrag = { segment, dx, dy ->
+                                            component.moveTextBlock(
+                                                component.document.block(segment.role).id,
+                                                dx,
+                                                dy
+                                            )
+                                        },
+                                        onGestureEnd = component::endContinuousEdit,
+                                        onCanvasTap = onCanvasTap,
+                                        onBackgroundDrag = component::updateBackgroundImageOffset,
+                                        onEditingSync = syncCanvasState,
+                                        onTextEditCommit = onTextEditCommit,
+                                        onOpenStylePanel = onOpenStylePanel,
+                                        onClearSelectionStyles = onClearSelectionStyles,
+                                        selectionToolbarVisible = component.activePanel != EditorPanel.Typography,
+                                        modifier = Modifier.heightIn(max = previewMaxHeight)
+                                    )
+                                }
                             }
                             if (pages.size > 1) {
                                 Text(
@@ -561,46 +573,67 @@ private fun EditorBottomBar(
     onPanelClick: (EditorPanel) -> Unit,
     onExportClick: () -> Unit,
 ) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .glassDense(shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
             .navigationBarsPadding()
-            .padding(horizontal = 8.dp, vertical = 8.dp)
     ) {
-        BoxWithConstraints(modifier = Modifier.weight(1f)) {
-            val tabs = listOf(
-                EditorPanel.Content,
-                EditorPanel.Templates,
-                EditorPanel.Background,
-                EditorPanel.Pages
+        if (component.isProjectSaving || component.lastSavedAt != null) {
+            Text(
+                text = stringResource(
+                    if (component.isProjectSaving) {
+                        R.string.textcard_autosave_saving
+                    } else R.string.textcard_autosave_saved
+                ),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.align(Alignment.End).padding(end = 12.dp, top = 4.dp)
             )
-            val itemWidth = maxOf(64.dp, maxWidth / tabs.size)
-            Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
-                tabs.forEach { panel ->
-                    BottomTab(
-                        panel = panel,
-                        active = component.activePanel == panel,
-                        onClick = { onPanelClick(panel) },
-                        modifier = Modifier.width(itemWidth)
-                    )
+        }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 8.dp)
+        ) {
+            BoxWithConstraints(modifier = Modifier.weight(1f)) {
+                val tabs = listOf(
+                    EditorPanel.Content,
+                    EditorPanel.Typography,
+                    EditorPanel.Templates,
+                    EditorPanel.Background,
+                    EditorPanel.Pages
+                )
+                val itemWidth = maxOf(56.dp, maxWidth / tabs.size)
+                Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
+                    tabs.forEach { panel ->
+                        BottomTab(
+                            panel = panel,
+                            active = component.activePanel == panel,
+                            onClick = {
+                                if (panel == EditorPanel.Typography && component.selectedRole == null) {
+                                    component.selectRole(TextCardRole.Body)
+                                }
+                                onPanelClick(panel)
+                            },
+                            modifier = Modifier.width(itemWidth)
+                        )
+                    }
                 }
             }
+            Spacer(Modifier.width(8.dp))
+            PrimaryButton(
+                text = stringResource(R.string.textcard_export_action),
+                onClick = onExportClick,
+                icon = {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSave,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.width(16.dp)
+                    )
+                }
+            )
         }
-        Spacer(Modifier.width(8.dp))
-        PrimaryButton(
-            text = stringResource(R.string.textcard_export_action),
-            onClick = onExportClick,
-            icon = {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSave,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier.width(16.dp)
-                )
-            }
-        )
     }
 }
 

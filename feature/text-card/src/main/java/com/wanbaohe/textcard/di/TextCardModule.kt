@@ -6,7 +6,11 @@ import com.wanbaohe.textcard.data.paper.RemotePaperRepository
 import com.wanbaohe.textcard.data.project.AndroidTextCardProjectStore
 import com.wanbaohe.textcard.data.render.AndroidTextCardExportRenderer
 import com.wanbaohe.textcard.data.render.AndroidTextCardLayoutEngine
+import com.wanbaohe.textcard.data.template.PrefsCustomTextCardTemplateStore
+import com.wanbaohe.textcard.data.textimport.AndroidTextCardImportService
 import com.wanbaohe.textcard.domain.CustomCanvasStore
+import com.wanbaohe.textcard.domain.CustomTextCardTemplateStore
+import com.wanbaohe.textcard.domain.TextCardImportService
 import com.wanbaohe.textcard.domain.TextCardExportRenderer
 import com.wanbaohe.textcard.domain.TextCardExportService
 import com.wanbaohe.textcard.domain.TextCardPaperRepository
@@ -35,6 +39,16 @@ internal interface TextCardModule {
     fun customCanvasStore(
         impl: PrefsCustomCanvasStore
     ): CustomCanvasStore
+
+    @Binds
+    fun customTemplateStore(
+        impl: PrefsCustomTextCardTemplateStore
+    ): CustomTextCardTemplateStore
+
+    @Binds
+    fun importService(
+        impl: AndroidTextCardImportService
+    ): TextCardImportService
 
     @Binds
     fun projectStore(

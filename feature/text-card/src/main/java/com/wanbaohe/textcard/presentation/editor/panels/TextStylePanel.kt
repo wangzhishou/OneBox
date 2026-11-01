@@ -133,8 +133,8 @@ fun TextStylePanel(
         }
     }
 
-    val blocks = component.textBlocks
-    val block = component.selectedTextBlock()
+    val blocks = listOf(component.document.body)
+    val block = component.selectedTextBlock() ?: component.document.body
 
     PanelTitle(R.string.textcard_text_settings)
     if (block == null) {
@@ -172,7 +172,7 @@ fun TextStylePanel(
             }
         }
 
-        // 四类文字角色切换:固定宽小卡单行横滑,卡内文字最多两行
+        // 新流程只编辑正文;旧作品的其他角色仍由文档与渲染层兼容
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier.fillMaxWidth()

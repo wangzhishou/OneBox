@@ -155,4 +155,27 @@
     <string name="textcard_export_pages_success">已保存 %1$d 页到 OneBox 文件夹</string>
     <string name="textcard_export_partial_failure">%1$d 页导出失败</string>
     <string name="textcard_layout_error">当前画布无法容纳文字样式，请调整画布尺寸或文字大小。</string>
+    <string name="textcard_try_sample">试试示例</string>
+    <string name="textcard_paste_clipboard">粘贴</string>
+    <string name="textcard_import_text">导入 TXT/MD</string>
+    <string name="textcard_hide_options">收起</string>
+    <string name="textcard_create_summary">%1$s · %2$s · %3$s</string>
+    <string name="textcard_insert_page_break">在此处分页</string>
+    <string name="textcard_export_scope">导出范围</string>
+    <string name="textcard_export_all_pages">全部页面</string>
+    <string name="textcard_export_current_page">当前页</string>
+    <string name="textcard_save_images">保存图片</string>
+    <string name="textcard_share_images">分享图片</string>
+    <string name="textcard_share_failed">分享失败</string>
+    <string name="textcard_autosave_saving">正在自动保存…</string>
+    <string name="textcard_autosave_saved">已自动保存</string>
+    <string name="textcard_duplicate_project">复制作品</string>
+    <string name="textcard_project_name_copy">%1$s 副本</string>
+    <string name="textcard_export_again">再次导出</string>
+    <string name="textcard_save_as_template">保存当前样式为我的模板</string>
+    <string name="textcard_template_name">模板名称</string>
+    <string name="textcard_custom_template_desc">我保存的文字与背景样式</string>
+    <string name="textcard_template_saved">模板已保存</string>
+    <string name="textcard_delete_template">删除模板</string>
+    <string name="textcard_more_actions">更多操作</string>
 </resources>

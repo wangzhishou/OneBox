@@ -30,6 +30,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Share
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineNote
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRestartAlt
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSaveAs
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineTextCard
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.system.OneBoxPillButton
 import com.wanbaohe.ocr.R
@@ -89,6 +90,7 @@ internal fun OcrResultSheet(
     onShare: () -> Unit,
     onSaveMarkdown: () -> Unit,
     onSaveNote: () -> Unit,
+    onCreateCard: () -> Unit,
     onReRecognize: () -> Unit,
     onNewImage: () -> Unit,
 ) {
@@ -169,6 +171,14 @@ internal fun OcrResultSheet(
                         primary = true,
                     )
                 }
+                Spacer(Modifier.height(8.dp))
+                OcrActionButton(
+                    text = stringResource(R.string.ocr_make_card),
+                    icon = Icons.Outlined.LineTextCard,
+                    enabled = text.isNotBlank() && !state.isRecognizing,
+                    onClick = onCreateCard,
+                    modifier = Modifier.fillMaxWidth(),
+                )
             }
         },
     ) {

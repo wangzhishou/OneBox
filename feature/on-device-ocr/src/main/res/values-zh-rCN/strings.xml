@@ -47,4 +47,5 @@
     <string name="ocr_history_save_failed">文字已识别，但历史记录保存失败</string>
     <string name="ocr_show_result_panel">查看识别面板</string>
     <string name="ocr_hide_result_panel">收起识别面板</string>
+    <string name="ocr_make_card">生成卡片</string>
 </resources>

@@ -10,16 +10,17 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.wanbaohe.base.ui.button.CancelButton
 import com.wanbaohe.base.ui.button.ConfirmButton
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedSliderItem
 import com.wanbaohe.core.ui.widget.glass.GlassSegmentedButtonRow
-import com.wanbaohe.core.ui.widget.glass.GlassSwitch
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.TextCardExportFormat
 import com.wanbaohe.textcard.domain.model.TextCardOutputMode
@@ -32,20 +33,33 @@ fun TextCardExportSheet(
     component: TextCardComponent,
     onDismiss: () -> Unit,
 ) {
+    var currentPageOnly by rememberSaveable(component.document.outputMode) {
+        mutableStateOf(false)
+    }
+    val pages = component.layout?.pages.orEmpty()
+    val canExport = component.document.hasContent && when (component.document.outputMode) {
+        TextCardOutputMode.Pages -> pages.isNotEmpty()
+        TextCardOutputMode.LongImage -> component.layout?.longImage != null
+    }
     EnhancedModalBottomSheet(
         visible = visible,
         title = stringResource(R.string.textcard_export_title),
         onDismiss = { onDismiss() },
         confirmButton = {
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                CancelButton(onClick = onDismiss)
                 ConfirmButton(
-                    text = stringResource(R.string.textcard_export_action),
-                    enabled = component.document.hasContent &&
-                        (component.document.outputMode == TextCardOutputMode.Pages ||
-                            component.layout?.longImage != null),
+                    text = stringResource(R.string.textcard_share_images),
+                    enabled = canExport,
                     onClick = {
-                        component.saveCard()
+                        component.shareCard(currentPageOnly)
+                        onDismiss()
+                    }
+                )
+                ConfirmButton(
+                    text = stringResource(R.string.textcard_save_images),
+                    enabled = canExport,
+                    onClick = {
+                        component.saveCard(currentPageOnly)
                         onDismiss()
                     }
                 )
@@ -58,7 +72,6 @@ fun TextCardExportSheet(
                     .verticalScroll(rememberScrollState())
                     .padding(horizontal = 16.dp)
             ) {
-                val pages = component.layout?.pages.orEmpty()
                 val dimensions = if (component.document.outputMode == TextCardOutputMode.LongImage) {
                     component.layout?.longImage?.canvas?.let { "${it.width}×${it.height}" }
                         ?: component.layout?.longImageRequiredHeight?.let { height ->
@@ -77,6 +90,46 @@ fun TextCardExportSheet(
                     ),
                     style = MaterialTheme.typography.bodyMedium
                 )
+                Text(
+                    text = stringResource(R.string.textcard_output_mode),
+                    style = MaterialTheme.typography.titleSmall
+                )
+                GlassSegmentedButtonRow(
+                    options = TextCardOutputMode.entries,
+                    selectedOption = component.document.outputMode,
+                    onOptionSelected = component::updateOutputMode,
+                    label = { mode ->
+                        Text(
+                            stringResource(
+                                if (mode == TextCardOutputMode.Pages) {
+                                    R.string.textcard_output_pages
+                                } else R.string.textcard_output_long_image
+                            )
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                if (component.document.outputMode == TextCardOutputMode.Pages && pages.size > 1) {
+                    Text(
+                        text = stringResource(R.string.textcard_export_scope),
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                    GlassSegmentedButtonRow(
+                        options = listOf(false, true),
+                        selectedOption = currentPageOnly,
+                        onOptionSelected = { currentPageOnly = it },
+                        label = { currentOnly ->
+                            Text(
+                                stringResource(
+                                    if (currentOnly) {
+                                        R.string.textcard_export_current_page
+                                    } else R.string.textcard_export_all_pages
+                                )
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
                 Text(
                     text = stringResource(R.string.textcard_export_format),
                     style = MaterialTheme.typography.titleSmall
@@ -105,20 +158,6 @@ fun TextCardExportSheet(
                             component.updateExportSettings(quality = it.roundToInt())
                         },
                         valueSuffix = "%"
-                    )
-                }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(
-                        text = stringResource(R.string.textcard_share_after_export),
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.weight(1f)
-                    )
-                    GlassSwitch(
-                        checked = component.document.shareAfterSave,
-                        onCheckedChange = { component.updateExportSettings(shareAfterSave = it) }
                     )
                 }
             }

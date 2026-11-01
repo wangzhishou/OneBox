@@ -155,4 +155,27 @@
     <string name="textcard_export_pages_success">%1$d pages saved to the OneBox folder</string>
     <string name="textcard_export_partial_failure">%1$d page(s) failed to export</string>
     <string name="textcard_layout_error">This canvas cannot fit the current text style. Adjust the canvas or text size.</string>
+    <string name="textcard_try_sample">Try a sample</string>
+    <string name="textcard_paste_clipboard">Paste</string>
+    <string name="textcard_import_text">Import TXT/MD</string>
+    <string name="textcard_hide_options">Hide</string>
+    <string name="textcard_create_summary">%1$s · %2$s · %3$s</string>
+    <string name="textcard_insert_page_break">Insert page break</string>
+    <string name="textcard_export_scope">Pages to export</string>
+    <string name="textcard_export_all_pages">All pages</string>
+    <string name="textcard_export_current_page">Current page</string>
+    <string name="textcard_save_images">Save images</string>
+    <string name="textcard_share_images">Share images</string>
+    <string name="textcard_share_failed">Share failed</string>
+    <string name="textcard_autosave_saving">Saving…</string>
+    <string name="textcard_autosave_saved">Saved automatically</string>
+    <string name="textcard_duplicate_project">Duplicate project</string>
+    <string name="textcard_project_name_copy">%1$s copy</string>
+    <string name="textcard_export_again">Export again</string>
+    <string name="textcard_save_as_template">Save current style as my template</string>
+    <string name="textcard_template_name">Template name</string>
+    <string name="textcard_custom_template_desc">My saved text and background style</string>
+    <string name="textcard_template_saved">Template saved</string>
+    <string name="textcard_delete_template">Delete template</string>
+    <string name="textcard_more_actions">More actions</string>
 </resources>

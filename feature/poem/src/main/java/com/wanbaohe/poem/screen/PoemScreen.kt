@@ -53,6 +53,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineRecordVoiceOver
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRestartAlt
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSearch
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineStopCircle
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineTextCard
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.poem.R
 import com.wanbaohe.poem.component.PoemComponent
@@ -95,6 +96,16 @@ fun PoemScreen(component: PoemComponent) {
                         contentDescription = stringResource(R.string.poem_recite),
                     )
                 }
+            }
+            IconButton(
+                onClick = component::createTextCard,
+                enabled = uiState.poem != null,
+                colors = AppTheme.colors.iconButtonColors(),
+            ) {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTextCard,
+                    contentDescription = stringResource(R.string.poem_make_card),
+                )
             }
             IconButton(
                 onClick = component::navigateToSearch,

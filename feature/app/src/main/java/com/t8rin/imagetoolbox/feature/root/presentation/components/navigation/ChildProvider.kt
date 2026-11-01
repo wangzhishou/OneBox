@@ -617,6 +617,7 @@ class ChildProvider @Inject constructor(
         is Screen.TextCard -> TextCard(
             imageFactories.get().textCardComponentFactory(
                 componentContext = componentContext,
+                initialText = config.initialText,
                 onGoBack = ::navigateBack,
                 onNavigate = ::navigateTo
             )
@@ -1227,6 +1228,7 @@ class ChildProvider @Inject constructor(
                 componentContext = componentContext,
                 onGoBack = ::navigateBack,
                 onOpenCloudOcr = { navigateTo(Screen.OcrDocument()) },
+                onOpenTextCard = { text -> navigateTo(Screen.TextCard(initialText = text)) },
             )
         )
 

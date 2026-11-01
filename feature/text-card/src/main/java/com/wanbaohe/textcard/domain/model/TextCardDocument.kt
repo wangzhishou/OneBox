@@ -52,7 +52,6 @@ data class TextCardDocument(
     val outputMode: TextCardOutputMode = TextCardOutputMode.Pages,
     val exportFormat: TextCardExportFormat = TextCardExportFormat.Png,
     val exportQuality: Int = 90,
-    val shareAfterSave: Boolean = false,
 ) {
     val textBlocks: List<TextBlock>
         get() = listOf(title, body, author, source)
@@ -88,6 +87,7 @@ data class TextCardDocument(
         const val ROLE_AUTHOR = "author"
         const val ROLE_SOURCE = "source"
         const val ROLE_PAGE_NUMBER = "page_number"
+        const val MANUAL_PAGE_BREAK = '\u000C'
         const val MAX_LONG_IMAGE_SIDE = 16384
         const val MAX_LONG_IMAGE_PIXELS = 24_000_000L
     }

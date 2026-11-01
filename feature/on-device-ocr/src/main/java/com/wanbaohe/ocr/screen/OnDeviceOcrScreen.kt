@@ -199,6 +199,7 @@ fun OnDeviceOcrScreen(component: OnDeviceOcrComponent) {
         onDismiss = { showResultSheet = false },
         onCopy = { copyText(context, text) },
         onShare = { shareText(context, text) },
+        onCreateCard = { component.onOpenTextCard(text) },
         onSaveMarkdown = {
             showResultSheet = false
             fileSaver.make(markdownFileName)
