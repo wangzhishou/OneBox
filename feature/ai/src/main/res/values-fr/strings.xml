@@ -498,7 +498,7 @@
     <string name="agent_tool_search_web_title">Recherche web</string>
     <string name="agent_tool_search_web_summary">Rechercher des informations à l\'aide d\'un moteur de recherche</string>
     <string name="agent_tool_search_web_param_query">Mots-clés de recherche</string>
-    <string name="agent_tool_search_web_param_engine">Moteur de recherche : baidu (Baidu), google, bing, duckduckgo, Baidu par défaut</string>
+    <string name="agent_tool_search_web_param_engine">Moteur de recherche : baidu (Baidu), google, bing, duckduckgo, keenable, Baidu par défaut</string>
     <string name="agent_tool_search_web_param_num_results">Nombre de résultats à renvoyer, 5 par défaut</string>
     <string name="agent_tool_search_web_success">Recherche terminée, %1$d résultats trouvés</string>
     <string name="agent_tool_search_web_failed">Échec de la recherche : %1$s</string>

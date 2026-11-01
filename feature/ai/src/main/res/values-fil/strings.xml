@@ -497,7 +497,7 @@
     <string name="agent_tool_search_web_title">Paghahanap sa Web</string>
     <string name="agent_tool_search_web_summary">Maghanap ng impormasyon gamit ang search engine</string>
     <string name="agent_tool_search_web_param_query">Mga keyword sa paghahanap</string>
-    <string name="agent_tool_search_web_param_engine">Search engine: baidu (百度), google, bing, duckduckgo. Default baidu</string>
+    <string name="agent_tool_search_web_param_engine">Search engine: baidu (百度), google, bing, duckduckgo, keenable. Default baidu</string>
     <string name="agent_tool_search_web_param_num_results">Bilang ng mga resulta, default 5</string>
     <string name="agent_tool_search_web_success">Kumpleto ang paghahanap, natagpuan ang %1$d na mga resulta</string>
     <string name="agent_tool_search_web_failed">Nabigo ang paghahanap: %1$s</string>

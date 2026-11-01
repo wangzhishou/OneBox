@@ -497,7 +497,7 @@
     <string name="agent_tool_search_web_title">Websuche</string>
     <string name="agent_tool_search_web_summary">Suche nach Informationen mit einer Suchmaschine</string>
     <string name="agent_tool_search_web_param_query">Suchbegriffe</string>
-    <string name="agent_tool_search_web_param_engine">Suchmaschine: baidu (百度), google, bing, duckduckgo. Standard baidu</string>
+    <string name="agent_tool_search_web_param_engine">Suchmaschine: baidu (百度), google, bing, duckduckgo, keenable. Standard baidu</string>
     <string name="agent_tool_search_web_param_num_results">Anzahl der Ergebnisse, Standard 5</string>
     <string name="agent_tool_search_web_success">Suche abgeschlossen, %1$d Ergebnisse gefunden</string>
     <string name="agent_tool_search_web_failed">Suche fehlgeschlagen: %1$s</string>

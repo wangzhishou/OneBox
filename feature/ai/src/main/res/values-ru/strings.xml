@@ -497,7 +497,7 @@
     <string name="agent_tool_search_web_title">Веб-поиск</string>
     <string name="agent_tool_search_web_summary">Поиск информации с помощью поисковой системы</string>
     <string name="agent_tool_search_web_param_query">Ключевые слова для поиска</string>
-    <string name="agent_tool_search_web_param_engine">Поисковая система: baidu (百度), google, bing, duckduckgo. По умолчанию baidu</string>
+    <string name="agent_tool_search_web_param_engine">Поисковая система: baidu (百度), google, bing, duckduckgo, keenable. По умолчанию baidu</string>
     <string name="agent_tool_search_web_param_num_results">Количество результатов, по умолчанию 5</string>
     <string name="agent_tool_search_web_success">Поиск завершен, найдено результатов: %1$d</string>
     <string name="agent_tool_search_web_failed">Поиск не удался: %1$s</string>

@@ -497,7 +497,7 @@
     <string name="agent_tool_search_web_title">वेब खोज</string>
     <string name="agent_tool_search_web_summary">खोज इंजन का उपयोग करके जानकारी खोजें</string>
     <string name="agent_tool_search_web_param_query">खोज कीवर्ड</string>
-    <string name="agent_tool_search_web_param_engine">खोज इंजन: baidu (बैदू), google, bing, duckduckgo। डिफ़ॉल्ट baidu</string>
+    <string name="agent_tool_search_web_param_engine">खोज इंजन: baidu (बैदू), google, bing, duckduckgo, keenable। डिफ़ॉल्ट baidu</string>
     <string name="agent_tool_search_web_param_num_results">परिणामों की संख्या, डिफ़ॉल्ट 5</string>
     <string name="agent_tool_search_web_success">खोज पूर्ण, %1$d परिणाम मिले</string>
     <string name="agent_tool_search_web_failed">खोज विफल: %1$s</string>

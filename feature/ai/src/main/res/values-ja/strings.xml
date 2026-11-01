@@ -497,7 +497,7 @@
     <string name="agent_tool_search_web_title">ウェブ検索</string>
     <string name="agent_tool_search_web_summary">検索エンジンを使用して情報を検索します</string>
     <string name="agent_tool_search_web_param_query">検索キーワード</string>
-    <string name="agent_tool_search_web_param_engine">検索エンジン: baidu（百度）、google、bing、duckduckgo。デフォルトはbaidu</string>
+    <string name="agent_tool_search_web_param_engine">検索エンジン: baidu（百度）、google、bing、duckduckgo、keenable。デフォルトはbaidu</string>
     <string name="agent_tool_search_web_param_num_results">結果の数。デフォルトは5</string>
     <string name="agent_tool_search_web_success">検索が完了し、%1$d件の結果が見つかりました</string>
     <string name="agent_tool_search_web_failed">検索に失敗しました: %1$s</string>

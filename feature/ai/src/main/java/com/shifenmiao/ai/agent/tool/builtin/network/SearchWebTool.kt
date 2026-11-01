@@ -18,7 +18,7 @@ import kotlinx.serialization.decodeFromString
 /**
  * Agent 工具：网络搜索
  *
- * 支持多个搜索引擎：百度、Google、Bing、DuckDuckGo
+ * 支持多个搜索引擎：百度、Google、Bing、DuckDuckGo、Keenable
  */
 class SearchWebTool @Inject constructor(
     private val textProvider: AgentToolTextProvider,
@@ -58,7 +58,7 @@ class SearchWebTool @Inject constructor(
             "engine" to ToolParameterProperty(
                 type = "string",
                 description = textProvider.string(R.string.agent_tool_search_web_param_engine),
-                enum = listOf("baidu", "google", "bing", "duckduckgo")
+                enum = listOf("baidu", "google", "bing", "duckduckgo", "keenable")
             ),
             "num_results" to ToolParameterProperty(
                 type = "integer",
@@ -75,6 +75,7 @@ class SearchWebTool @Inject constructor(
                 "google" -> WebSearchService.SearchEngine.GOOGLE
                 "bing" -> WebSearchService.SearchEngine.BING
                 "duckduckgo" -> WebSearchService.SearchEngine.DUCKDUCKGO
+                "keenable" -> WebSearchService.SearchEngine.KEENABLE
                 else -> WebSearchService.SearchEngine.BAIDU
             }
 

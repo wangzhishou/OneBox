@@ -497,7 +497,7 @@
     <string name="agent_tool_search_web_title">Web Arama</string>
     <string name="agent_tool_search_web_summary">Bir arama motoru kullanarak bilgi arayın</string>
     <string name="agent_tool_search_web_param_query">Arama anahtar kelimeleri</string>
-    <string name="agent_tool_search_web_param_engine">Arama motoru: baidu (百度), google, bing, duckduckgo. Varsayılan baidu</string>
+    <string name="agent_tool_search_web_param_engine">Arama motoru: baidu (百度), google, bing, duckduckgo, keenable. Varsayılan baidu</string>
     <string name="agent_tool_search_web_param_num_results">Sonuç sayısı, varsayılan 5</string>
     <string name="agent_tool_search_web_success">Arama tamamlandı, %1$d sonuç bulundu</string>
     <string name="agent_tool_search_web_failed">Arama başarısız oldu: %1$s</string>

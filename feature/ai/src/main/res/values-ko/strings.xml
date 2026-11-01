@@ -497,7 +497,7 @@
     <string name="agent_tool_search_web_title">웹 검색</string>
     <string name="agent_tool_search_web_summary">검색 엔진을 사용하여 정보를 검색합니다.</string>
     <string name="agent_tool_search_web_param_query">검색 키워드</string>
-    <string name="agent_tool_search_web_param_engine">검색 엔진: baidu(百度), google, bing, duckduckgo. 기본값은 baidu입니다.</string>
+    <string name="agent_tool_search_web_param_engine">검색 엔진: baidu(百度), google, bing, duckduckgo, keenable. 기본값은 baidu입니다.</string>
     <string name="agent_tool_search_web_param_num_results">결과 수, 기본값 5</string>
     <string name="agent_tool_search_web_success">검색 완료, %1$d개의 결과를 찾았습니다.</string>
     <string name="agent_tool_search_web_failed">검색 실패: %1$s</string>

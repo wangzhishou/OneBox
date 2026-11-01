@@ -552,7 +552,7 @@
     <string name="agent_tool_search_web_title">网络搜索</string>
     <string name="agent_tool_search_web_summary">使用搜索引擎搜索信息</string>
     <string name="agent_tool_search_web_param_query">搜索关键词</string>
-    <string name="agent_tool_search_web_param_engine">搜索引擎: baidu(百度)、google、bing、duckduckgo，默认百度</string>
+    <string name="agent_tool_search_web_param_engine">搜索引擎: baidu(百度)、google、bing、duckduckgo、keenable，默认百度</string>
     <string name="agent_tool_search_web_param_num_results">返回结果数量，默认5</string>
     <string name="agent_tool_search_web_success">搜索完成，找到 %1$d 条结果</string>
     <string name="agent_tool_search_web_failed">搜索失败: %1$s</string>

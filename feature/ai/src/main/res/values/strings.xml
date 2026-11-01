@@ -552,7 +552,7 @@
     <string name="agent_tool_search_web_title">Web Search</string>
     <string name="agent_tool_search_web_summary">Search for information using a search engine</string>
     <string name="agent_tool_search_web_param_query">Search keywords</string>
-    <string name="agent_tool_search_web_param_engine">Search engine: baidu (百度), google, bing, duckduckgo. Default baidu</string>
+    <string name="agent_tool_search_web_param_engine">Search engine: baidu (百度), google, bing, duckduckgo, keenable. Default baidu</string>
     <string name="agent_tool_search_web_param_num_results">Number of results, default 5</string>
     <string name="agent_tool_search_web_success">Search complete, found %1$d results</string>
     <string name="agent_tool_search_web_failed">Search failed: %1$s</string>

@@ -498,7 +498,7 @@
     <string name="agent_tool_search_web_title">Tìm kiếm trên web</string>
     <string name="agent_tool_search_web_summary">Sử dụng công cụ tìm kiếm để tìm thông tin</string>
     <string name="agent_tool_search_web_param_query">Từ khóa tìm kiếm</string>
-    <string name="agent_tool_search_web_param_engine">Công cụ tìm kiếm: baidu(Baidu)、google、bing、duckduckgo, mặc định Baidu</string>
+    <string name="agent_tool_search_web_param_engine">Công cụ tìm kiếm: baidu(Baidu)、google、bing、duckduckgo、keenable, mặc định Baidu</string>
     <string name="agent_tool_search_web_param_num_results">Số lượng kết quả trả về, mặc định 5</string>
     <string name="agent_tool_search_web_success">Tìm kiếm hoàn tất, tìm thấy %1$d kết quả</string>
     <string name="agent_tool_search_web_failed">Tìm kiếm thất bại: %1$s</string>

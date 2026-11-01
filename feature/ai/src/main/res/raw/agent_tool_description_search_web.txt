@@ -1,7 +1,7 @@
 使用搜索引擎搜索信息。
 
 功能说明：
-- 支持多个搜索引擎：百度（默认）、Google、Bing、DuckDuckGo
+- 支持多个搜索引擎：百度（默认）、Google、Bing、DuckDuckGo、Keenable
 - 返回结构化的搜索结果（标题、链接、摘要）
 - 可配置返回结果数量
 

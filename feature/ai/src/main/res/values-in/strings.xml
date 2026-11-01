@@ -497,7 +497,7 @@
     <string name="agent_tool_search_web_title">Pencarian Web</string>
     <string name="agent_tool_search_web_summary">Cari informasi menggunakan mesin pencari</string>
     <string name="agent_tool_search_web_param_query">Kata kunci pencarian</string>
-    <string name="agent_tool_search_web_param_engine">Mesin pencari: baidu (百度), google, bing, duckduckgo. Default baidu</string>
+    <string name="agent_tool_search_web_param_engine">Mesin pencari: baidu (百度), google, bing, duckduckgo, keenable. Default baidu</string>
     <string name="agent_tool_search_web_param_num_results">Jumlah hasil, default 5</string>
     <string name="agent_tool_search_web_success">Pencarian selesai, ditemukan %1$d hasil</string>
     <string name="agent_tool_search_web_failed">Pencarian gagal: %1$s</string>

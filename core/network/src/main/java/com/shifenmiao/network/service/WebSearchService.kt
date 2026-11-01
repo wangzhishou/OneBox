@@ -1,18 +1,30 @@
 package com.shifenmiao.network.service
 
+import com.shifenmiao.model.ModelProvider.AppJson
 import com.shifenmiao.network.downloader.HtmlDownloadConfig
 import com.shifenmiao.network.downloader.HtmlDownloadResult
 import com.shifenmiao.network.downloader.OkHttpHtmlDownloader
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.put
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.jsoup.Jsoup
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
  * 网络搜索服务
  *
- * 支持多个搜索引擎：百度、Google、Bing、DuckDuckGo
+ * 支持多个搜索引擎：百度、Google、Bing、DuckDuckGo、Keenable
  * 返回结构化的搜索结果
  */
 @Singleton
@@ -23,6 +35,23 @@ class WebSearchService @Inject constructor(
     companion object {
         private const val DEFAULT_NUM_RESULTS = 5
         private const val MAX_NUM_RESULTS = 20
+
+        /** Keenable 免 Key 公共端点要求的应用标识 */
+        private const val KEENABLE_APP_TITLE = "OneBox"
+
+        /** Keenable 的 snippet 是 2-4k 字的页面正文,截断到与其它引擎摘要相近的长度 */
+        private const val KEENABLE_SNIPPET_MAX_LENGTH = 500
+
+        /** 与 HTML 引擎的 15 秒连接/读取超时保持一致 */
+        private const val KEENABLE_TIMEOUT_SECONDS = 15L
+    }
+
+    // Keenable 走 JSON API(POST),不经过 HTML 下载器
+    private val keenableClient by lazy {
+        OkHttpClient.Builder()
+            .connectTimeout(KEENABLE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .readTimeout(KEENABLE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .build()
     }
 
     /**
@@ -49,6 +78,10 @@ class WebSearchService @Inject constructor(
         DUCKDUCKGO(
             displayName = "DuckDuckGo",
             searchUrlTemplate = "https://duckduckgo.com/html/?q=%s"
+        ),
+        KEENABLE(
+            displayName = "Keenable",
+            searchUrlTemplate = "https://api.keenable.ai/v1/search/public"
         );
 
         fun buildSearchUrl(query: String, numResults: Int = DEFAULT_NUM_RESULTS): String {
@@ -91,6 +124,9 @@ class WebSearchService @Inject constructor(
     ): Result<SearchResult> = withContext(Dispatchers.IO) {
         try {
             val limitedResults = numResults.coerceIn(1, MAX_NUM_RESULTS)
+            if (engine == SearchEngine.KEENABLE) {
+                return@withContext searchKeenable(query, limitedResults)
+            }
             val searchUrl = engine.buildSearchUrl(query, limitedResults)
 
             val config = HtmlDownloadConfig.DEFAULT.copy(
@@ -136,6 +172,57 @@ class WebSearchService @Inject constructor(
             SearchEngine.GOOGLE -> parseGoogleResults(doc, maxResults)
             SearchEngine.BING -> parseBingResults(doc, maxResults)
             SearchEngine.DUCKDUCKGO -> parseDuckDuckGoResults(doc, maxResults)
+            // JSON API,在 searchKeenable 中处理,不会走到 HTML 解析
+            SearchEngine.KEENABLE -> emptyList()
+        }
+    }
+
+    /**
+     * Keenable 搜索(JSON API,免 Key)
+     *
+     * POST /v1/search/public,需带 X-Keenable-Title 请求头;
+     * 结果正文在 snippet 字段(description 恒为空)。
+     */
+    private fun searchKeenable(query: String, maxResults: Int): Result<SearchResult> {
+        val body = buildJsonObject {
+            put("query", query)
+            put("max_results", maxResults)
+        }.toString().toRequestBody("application/json".toMediaType())
+        val request = Request.Builder()
+            .url(SearchEngine.KEENABLE.searchUrlTemplate)
+            .header("X-Keenable-Title", KEENABLE_APP_TITLE)
+            .post(body)
+            .build()
+
+        return keenableClient.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) {
+                return Result.failure(Exception("HTTP ${response.code}"))
+            }
+            val results = AppJson.parseToJsonElement(response.body.string())
+                .jsonObject["results"]?.jsonArray.orEmpty()
+                .map { it.jsonObject }
+                .filter { !it["url"]?.jsonPrimitive?.contentOrNull.isNullOrBlank() }
+                .take(maxResults)
+                .mapIndexed { index, item ->
+                    SearchResultItem(
+                        title = item["title"]?.jsonPrimitive?.contentOrNull.orEmpty().trim(),
+                        url = item["url"]?.jsonPrimitive?.contentOrNull.orEmpty(),
+                        snippet = item["snippet"]?.jsonPrimitive?.contentOrNull.orEmpty()
+                            .replace(Regex("\\s+"), " ")
+                            .trim()
+                            .take(KEENABLE_SNIPPET_MAX_LENGTH),
+                        position = index + 1
+                    )
+                }
+
+            Result.success(
+                SearchResult(
+                    query = query,
+                    engine = SearchEngine.KEENABLE,
+                    results = results,
+                    totalResults = results.size
+                )
+            )
         }
     }
 

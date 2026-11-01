@@ -497,7 +497,7 @@
     <string name="agent_tool_search_web_title">網路搜尋</string>
     <string name="agent_tool_search_web_summary">使用搜尋引擎搜尋資訊</string>
     <string name="agent_tool_search_web_param_query">搜尋關鍵字</string>
-    <string name="agent_tool_search_web_param_engine">搜尋引擎: baidu(百度)、google、bing、duckduckgo，預設百度</string>
+    <string name="agent_tool_search_web_param_engine">搜尋引擎: baidu(百度)、google、bing、duckduckgo、keenable，預設百度</string>
     <string name="agent_tool_search_web_param_num_results">回傳結果數量，預設5</string>
     <string name="agent_tool_search_web_success">搜尋完成，找到 %1$d 筆結果</string>
     <string name="agent_tool_search_web_failed">搜尋失敗: %1$s</string>

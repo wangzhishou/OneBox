@@ -497,7 +497,7 @@
     <string name="agent_tool_search_web_title">Pesquisa na Web</string>
     <string name="agent_tool_search_web_summary">Pesquisar informações usando um mecanismo de busca</string>
     <string name="agent_tool_search_web_param_query">Palavras-chave da pesquisa</string>
-    <string name="agent_tool_search_web_param_engine">Mecanismo de busca: baidu (百度), google, bing, duckduckgo. Padrão baidu</string>
+    <string name="agent_tool_search_web_param_engine">Mecanismo de busca: baidu (百度), google, bing, duckduckgo, keenable. Padrão baidu</string>
     <string name="agent_tool_search_web_param_num_results">Número de resultados, padrão 5</string>
     <string name="agent_tool_search_web_success">Pesquisa concluída, encontrados %1$d resultados</string>
     <string name="agent_tool_search_web_failed">Falha na pesquisa: %1$s</string>

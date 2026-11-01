@@ -498,7 +498,7 @@
     <string name="agent_tool_search_web_title">البحث في الويب</string>
     <string name="agent_tool_search_web_summary">البحث عن معلومات باستخدام محرّك بحث</string>
     <string name="agent_tool_search_web_param_query">كلمات البحث</string>
-    <string name="agent_tool_search_web_param_engine">محرّك البحث: baidu (百度)، google، bing، duckduckgo. الافتراضي baidu</string>
+    <string name="agent_tool_search_web_param_engine">محرّك البحث: baidu (百度)، google، bing، duckduckgo، keenable. الافتراضي baidu</string>
     <string name="agent_tool_search_web_param_num_results">عدد النتائج، الافتراضي 5</string>
     <string name="agent_tool_search_web_success">اكتمل البحث، وتم العثور على %1$d نتيجة</string>
     <string name="agent_tool_search_web_failed">فشل البحث: %1$s</string>
