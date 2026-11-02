@@ -247,6 +247,7 @@ internal object TextCardDocumentCodec {
     private fun encodeCanvas(canvas: CanvasSpec): JsonObject = when (canvas) {
         CanvasSpec.Portrait -> obj("type" to json("portrait"))
         CanvasSpec.Square -> obj("type" to json("square"))
+        CanvasSpec.Screen -> obj("type" to json("screen"))
         is CanvasSpec.Custom -> obj(
             "type" to json("custom"),
             "width" to json(canvas.customWidth),
@@ -264,6 +265,10 @@ internal object TextCardDocumentCodec {
             "square" -> {
                 value.objectWith("type")
                 CanvasSpec.Square
+            }
+            "screen" -> {
+                value.objectWith("type")
+                CanvasSpec.Screen
             }
             "custom" -> {
                 value.objectWith("type", "width", "height")

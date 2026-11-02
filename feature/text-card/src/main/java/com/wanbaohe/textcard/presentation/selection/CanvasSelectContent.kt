@@ -78,8 +78,6 @@ import androidx.compose.material.icons.outlined.MoreVert
 
 @Composable
 fun CanvasSelectContent(component: TextCardComponent) {
-    var showCustomSizeDialog by remember { mutableStateOf(false) }
-    var showCanvasOptions by remember { mutableStateOf(false) }
     var renameProject by remember { mutableStateOf<TextCardProjectSummary?>(null) }
     var deleteProject by remember { mutableStateOf<TextCardProjectSummary?>(null) }
     val clipboard = LocalClipboardManager.current
@@ -159,17 +157,6 @@ fun CanvasSelectContent(component: TextCardComponent) {
                         }
                     }
                 }
-                TemplateSection(
-                    selected = component.pendingTemplate,
-                    onSelect = component::selectPendingTemplate,
-                    templates = component.allTemplates
-                )
-                CanvasSection(
-                    component = component,
-                    expanded = showCanvasOptions,
-                    onToggle = { showCanvasOptions = !showCanvasOptions },
-                    onCustomClick = { showCustomSizeDialog = true }
-                )
             }
             GlassSurface(
                 modifier = Modifier
@@ -178,45 +165,19 @@ fun CanvasSelectContent(component: TextCardComponent) {
                 style = GlassStyle.Dense,
                 shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
             ) {
-                Column(
+                PrimaryButton(
+                    text = stringResource(R.string.textcard_create),
+                    enable = component.homeInputText.isNotBlank(),
+                    onClick = { component.startEditing(component.homeInputText) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .navigationBarsPadding()
                         .padding(horizontal = 20.dp, vertical = 12.dp)
-                ) {
-                    Text(
-                        text = stringResource(
-                            R.string.textcard_create_summary,
-                            textCardTemplateTitle(component.pendingTemplate),
-                            component.pendingCanvas.ratioLabel,
-                            stringResource(R.string.textcard_output_pages)
-                        ),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 6.dp)
-                    )
-                    PrimaryButton(
-                        text = stringResource(R.string.textcard_create),
-                        enable = component.homeInputText.isNotBlank(),
-                        onClick = { component.startEditing(component.homeInputText) },
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
+                )
             }
         }
     )
 
-    if (showCustomSizeDialog) {
-        CustomSizeDialog(
-            initial = component.lastCustomCanvas,
-            onConfirm = { width, height ->
-                component.selectCustomCanvas(width, height)
-                showCustomSizeDialog = false
-            },
-            onDismiss = { showCustomSizeDialog = false }
-        )
-    }
     renameProject?.let { project ->
         var name by remember(project.id) { mutableStateOf(project.name) }
         EnhancedAlertDialog(
@@ -491,94 +452,12 @@ internal fun templatePreviewState(
 }
 
 @Composable
-private fun CanvasSection(
-    component: TextCardComponent,
-    expanded: Boolean,
-    onToggle: () -> Unit,
-    onCustomClick: () -> Unit,
-) {
-    Column {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(Modifier.weight(1f)) {
-                SectionTitle(stringResource(R.string.textcard_select_canvas_title))
-            }
-            TextButton(onClick = onToggle) {
-                Text(
-                    if (expanded) {
-                        stringResource(R.string.textcard_hide_options)
-                    } else {
-                        "${stringResource(component.pendingCanvas.titleRes)} · ${component.pendingCanvas.ratioLabel}"
-                    }
-                )
-            }
-        }
-        AnimatedVisibility(visible = expanded) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 12.dp)
-            ) {
-                CanvasSpec.builtIn.forEach { spec ->
-                    GlassCard(
-                        onClick = { component.selectPendingCanvas(spec) },
-                        colors = if (component.pendingCanvas == spec) {
-                            tintedGlassCardColors(MaterialTheme.colorScheme.primaryContainer)
-                        } else null,
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier.padding(vertical = 16.dp)
-                        ) {
-                            Text(
-                                stringResource(spec.titleRes),
-                                style = MaterialTheme.typography.titleSmall
-                            )
-                            Text(
-                                text = spec.ratioLabel,
-                                style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-                }
-                GlassCard(
-                    onClick = onCustomClick,
-                    colors = if (component.pendingCanvas is CanvasSpec.Custom) {
-                        tintedGlassCardColors(MaterialTheme.colorScheme.primaryContainer)
-                    } else null,
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.padding(vertical = 16.dp)
-                    ) {
-                        Text(
-                            text = stringResource(R.string.textcard_canvas_custom),
-                            style = MaterialTheme.typography.titleSmall,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Text(
-                            text = component.lastCustomCanvas?.ratioLabel ?: "+",
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
 private fun SectionTitle(text: String) {
     Text(text = text, style = MaterialTheme.typography.titleSmall)
 }
 
 @Composable
-private fun CustomSizeDialog(
+internal fun CustomSizeDialog(
     initial: CanvasSpec.Custom?,
     onConfirm: (Int, Int) -> Unit,
     onDismiss: () -> Unit,

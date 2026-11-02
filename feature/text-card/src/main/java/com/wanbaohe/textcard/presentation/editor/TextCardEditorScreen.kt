@@ -66,6 +66,7 @@ import com.wanbaohe.base.ui.button.PrimaryButton
 import com.wanbaohe.core.ui.widget.dialogs.LoadingDialog
 import com.wanbaohe.core.ui.widget.editor.EditorToolLabel
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedLoadingIndicator
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.glass.glassDense
 import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.textcard.R
@@ -445,84 +446,6 @@ fun TextCardEditorScreen(component: TextCardComponent) {
                 }
             }
 
-            AnimatedVisibility(visible = component.activePanel != null) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .glassDense(
-                            shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
-                        )
-                        .heightIn(max = 440.dp)
-                        .verticalScroll(rememberScrollState())
-                        .imePadding()
-                        .padding(horizontal = 16.dp, vertical = 12.dp)
-                ) {
-                    when (component.activePanel) {
-                        EditorPanel.Content -> ContentPanel(
-                            states = fieldStates,
-                            selectedRole = component.selectedRole,
-                            onFocusRole = { role ->
-                                component.beginTextEdit(component.document.block(role).id)
-                            }
-                        )
-                        EditorPanel.Templates -> TemplatesPanel(component)
-                        EditorPanel.Typography -> {
-                            val state = canvasFieldState
-                            if (state != null && component.pageSelection != null) {
-                                PageSelectionPanel(
-                                    component = component,
-                                    state = state,
-                                    onClose = {
-                                        state.edit {
-                                            this.selection = TextRange(state.selection.end)
-                                        }
-                                        component.setActivePanel(null)
-                                    },
-                                    onStylesChanged = syncCanvasState
-                                )
-                            } else {
-                                val role = component.selectedRole
-                                TextStylePanel(
-                                    component = component,
-                                    editingState = if (
-                                        component.editingTextBlockId != null && role != null
-                                    ) {
-                                        fieldStates.getValue(role)
-                                    } else null,
-                                    editingBlock = component.selectedTextBlock(),
-                                    onEditingSync = {
-                                        if (role != null) syncRole(role)
-                                    },
-                                    onWholeBlockStyleApplied = {
-                                        if (role != null) {
-                                            val state = fieldStates.getValue(role)
-                                            val spans = component.document.block(role).styleSpans
-                                            state.edit {
-                                                getSpanStyles(TextRange(0, state.text.length)).forEach {
-                                                    removeStyle(it)
-                                                }
-                                                spans.forEach { span ->
-                                                    span.clamped(state.text.length)?.let { clamped ->
-                                                        addStyle(
-                                                            clamped.toSpanStyle(),
-                                                            clamped.start,
-                                                            clamped.end
-                                                        )
-                                                    }
-                                                }
-                                            }
-                                            syncRole(role)
-                                        }
-                                    }
-                                )
-                            }
-                        }
-                        EditorPanel.Background -> BackgroundPanel(component)
-                        EditorPanel.Pages -> PagesPanel(component)
-                        null -> Unit
-                    }
-                }
-            }
             EditorBottomBar(
                 component = component,
                 onPanelClick = openPanel,
@@ -535,6 +458,85 @@ fun TextCardEditorScreen(component: TextCardComponent) {
             )
         }
     )
+
+    EnhancedModalBottomSheet(
+        visible = component.activePanel != null,
+        onDismiss = { closePanel() },
+        nestedScrollEnabled = true
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = 440.dp)
+                .verticalScroll(rememberScrollState())
+                .imePadding()
+                .padding(horizontal = 16.dp, vertical = 12.dp)
+        ) {
+            when (component.activePanel) {
+                EditorPanel.Content -> ContentPanel(
+                    states = fieldStates,
+                    selectedRole = component.selectedRole,
+                    onFocusRole = { role ->
+                        component.beginTextEdit(component.document.block(role).id)
+                    }
+                )
+                EditorPanel.Typography -> {
+                    val state = canvasFieldState
+                    if (state != null && component.pageSelection != null) {
+                        PageSelectionPanel(
+                            component = component,
+                            state = state,
+                            onClose = {
+                                state.edit {
+                                    this.selection = TextRange(state.selection.end)
+                                }
+                                component.setActivePanel(null)
+                            },
+                            onStylesChanged = syncCanvasState
+                        )
+                    } else {
+                        val role = component.selectedRole
+                        TextStylePanel(
+                            component = component,
+                            editingState = if (
+                                component.editingTextBlockId != null && role != null
+                            ) {
+                                fieldStates.getValue(role)
+                            } else null,
+                            editingBlock = component.selectedTextBlock(),
+                            onEditingSync = {
+                                if (role != null) syncRole(role)
+                            },
+                            onWholeBlockStyleApplied = {
+                                if (role != null) {
+                                    val state = fieldStates.getValue(role)
+                                    val spans = component.document.block(role).styleSpans
+                                    state.edit {
+                                        getSpanStyles(TextRange(0, state.text.length)).forEach {
+                                            removeStyle(it)
+                                        }
+                                        spans.forEach { span ->
+                                            span.clamped(state.text.length)?.let { clamped ->
+                                                addStyle(
+                                                    clamped.toSpanStyle(),
+                                                    clamped.start,
+                                                    clamped.end
+                                                )
+                                            }
+                                        }
+                                    }
+                                    syncRole(role)
+                                }
+                            }
+                        )
+                    }
+                }
+                EditorPanel.Background -> BackgroundPanel(component)
+                EditorPanel.Pages -> PagesPanel(component)
+                null -> Unit
+            }
+        }
+    }
 
     TextCardExportSheet(
         visible = showExportSheet,
@@ -599,7 +601,6 @@ private fun EditorBottomBar(
                 val tabs = listOf(
                     EditorPanel.Content,
                     EditorPanel.Typography,
-                    EditorPanel.Templates,
                     EditorPanel.Background,
                     EditorPanel.Pages
                 )
@@ -686,7 +687,6 @@ private fun LayoutStatus(component: TextCardComponent) {
 
 private fun EditorPanel.icon(): ImageVector = when (this) {
     EditorPanel.Content -> Icons.Outlined.TextFields
-    EditorPanel.Templates -> Icons.Outlined.AutoAwesome
     EditorPanel.Typography -> Icons.Outlined.Tune
     EditorPanel.Background -> Icons.Outlined.CropSquare
     EditorPanel.Pages -> Icons.Outlined.Layers
@@ -694,7 +694,6 @@ private fun EditorPanel.icon(): ImageVector = when (this) {
 
 private fun EditorPanel.labelRes(): Int = when (this) {
     EditorPanel.Content -> R.string.textcard_tab_content
-    EditorPanel.Templates -> R.string.textcard_templates
     EditorPanel.Typography -> R.string.textcard_text_settings
     EditorPanel.Background -> R.string.textcard_tab_background
     EditorPanel.Pages -> R.string.textcard_tab_pages

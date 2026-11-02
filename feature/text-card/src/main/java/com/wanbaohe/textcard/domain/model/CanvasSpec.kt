@@ -6,8 +6,7 @@ import com.wanbaohe.textcard.R
 
 /**
  * 画布规格:导出位图尺寸即 width × height。
- * 内置竖版 3:4 / 方形 1:1 两个社交尺寸 + 用户自定义尺寸([Custom],持久化记忆上次输入)。
- * 文案按比例命名,不绑定平台名(海外用户不认识小红书/微信)。
+ * 内置竖版 3:4 / 方形 1:1 / 屏幕 9:16 + 用户自定义尺寸([Custom],持久化记忆上次输入)。
  */
 sealed class CanvasSpec(
     val width: Int,
@@ -33,6 +32,14 @@ sealed class CanvasSpec(
         ratioLabel = CreationCanvasSpec.SQUARE.ratioLabel
     )
 
+    data object Screen : CanvasSpec(
+        width = CreationCanvasSpec.STORY.width,
+        height = CreationCanvasSpec.STORY.height,
+        titleRes = R.string.textcard_canvas_screen,
+        descRes = R.string.textcard_canvas_screen_desc,
+        ratioLabel = CreationCanvasSpec.STORY.ratioLabel
+    )
+
     /** 用户自定义宽高(px,输入侧钳制 256..4096) */
     data class Custom(
         val customWidth: Int,
@@ -54,6 +61,6 @@ sealed class CanvasSpec(
          * 因类初始化循环(父类 clinit 读取尚在初始化中的子类静态字段)
          * 读到 null。
          */
-        val builtIn: List<CanvasSpec> by lazy { listOf(Portrait, Square) }
+        val builtIn: List<CanvasSpec> by lazy { listOf(Portrait, Square, Screen) }
     }
 }

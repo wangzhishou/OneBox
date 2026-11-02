@@ -63,7 +63,7 @@ import kotlinx.coroutines.withContext
 import java.util.UUID
 
 enum class EditorPanel {
-    Content, Templates, Typography, Background, Pages
+    Content, Typography, Background, Pages
 }
 
 class TextCardComponent @AssistedInject internal constructor(
@@ -248,26 +248,21 @@ class TextCardComponent @AssistedInject internal constructor(
         }
     }
 
-    fun selectPendingCanvas(spec: CanvasSpec) {
-        pendingCanvasExplicitlySelected = true
-        _pendingCanvas.value = spec
+    fun updateCanvas(canvas: CanvasSpec) {
+        if (document.canvas == canvas) return
+        endContinuousEdit()
+        endCanvasTextEdit()
+        _currentPage.value = 0
+        mutateDocument { it.copy(canvas = canvas) }
     }
 
-    fun selectPendingTemplate(template: TextCardTemplate) {
-        _pendingTemplate.value = template
-        if (!pendingCanvasExplicitlySelected) {
-            _pendingCanvas.value = template.applyTo(TextCardDocument()).canvas
-        }
-    }
-
-    fun selectCustomCanvas(width: Int, height: Int) {
+    fun updateCustomCanvas(width: Int, height: Int) {
         val safeWidth = width.coerceIn(256, 4096)
         val safeHeight = height.coerceIn(256, 4096)
         val custom = CanvasSpec.Custom(safeWidth, safeHeight)
-        pendingCanvasExplicitlySelected = true
         customCanvasStore.saveLastCustom(safeWidth, safeHeight)
         _lastCustomCanvas.value = custom
-        _pendingCanvas.value = custom
+        updateCanvas(custom)
     }
 
     fun startEditing(initialText: String) {
@@ -275,8 +270,7 @@ class TextCardComponent @AssistedInject internal constructor(
         _canvasTextEditSession.value = null
         _layout.value = null
         _layoutError.value = null
-        val base = pendingTemplate.applyTo(TextCardDocument()).copy(canvas = pendingCanvas)
-        val newDocument = base.updateBlock(TextCardRole.Body) {
+        val newDocument = TextCardDocument().updateBlock(TextCardRole.Body) {
             it.copy(content = initialText.trim())
         }
         projectId = UUID.randomUUID().toString()

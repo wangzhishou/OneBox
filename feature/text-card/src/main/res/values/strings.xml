@@ -7,6 +7,8 @@
     <string name="textcard_canvas_portrait_desc">Best for social media posts</string>
     <string name="textcard_canvas_square">Square Post</string>
     <string name="textcard_canvas_square_desc">Best for feeds and covers</string>
+    <string name="textcard_canvas_screen">Screen</string>
+    <string name="textcard_canvas_screen_desc">Full-screen 9:16 canvas</string>
     <string name="textcard_canvas_custom">Custom Size</string>
     <string name="textcard_canvas_custom_desc">Enter custom width × height</string>
     <string name="textcard_custom_size_title">Custom Canvas Size</string>
