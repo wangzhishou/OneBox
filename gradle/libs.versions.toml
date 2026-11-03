@@ -9,9 +9,8 @@ androidNdk = "30.0.16248370"
 
 eddsa = "0.3.0"
 nanohttpd = "2.3.1"
-versionName = "1.5.1"
-# 147 已被一次未送审的待审发布占用(Play 不允许复用 versionCode),只好跳号
-versionCode = "151"
+versionName = "1.5.2"
+versionCode = "152"
 gitVersion = "000"
 jvmTarget = "17"
 
