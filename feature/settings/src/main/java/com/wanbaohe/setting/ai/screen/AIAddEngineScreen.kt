@@ -46,7 +46,9 @@ import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.system.OneBoxListItem
 import com.wanbaohe.core.ui.widget.system.OneBoxOutlinedTextField
 import com.wanbaohe.core.ui.widget.system.OneBoxSectionCard
+import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
 import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineCloudDownload
 import com.t8rin.imagetoolbox.core.utils.getString
 import com.wanbaohe.setting.ai.component.AIAddEngineComponent
 import com.wanbaohe.setting.ai.component.AIEngineSettingsDetailComponent
@@ -307,7 +309,7 @@ fun AIAddEngineScreen(
                     if (!isJevProtocol && !isPikafishProtocol) {
                         ModelIdField(component = component, draft = draft)
                         // 手输模型 ID 容易打错: URL/授权码填好后直接从服务商拉列表挑
-                        OneSecondaryButton(
+                        OnePrimaryButton(
                             text = stringResource(R.string.ai_engine_load_from_provider),
                             onClick = {
                                 if (trimmedRequestUrl.isBlank()) {
@@ -322,6 +324,7 @@ fun AIAddEngineScreen(
                                 }
                             },
                             modifier = Modifier.fillMaxWidth(),
+                            leadingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCloudDownload,
                         )
                     }
                 }

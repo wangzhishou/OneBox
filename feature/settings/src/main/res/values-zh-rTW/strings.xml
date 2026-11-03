@@ -224,7 +224,7 @@
     <string name="ai_engine_remote_models_loading">載入中…</string>
     <string name="ai_engine_remote_models_retry">重試</string>
     <string name="ai_engine_remote_models_empty">未取得模型列表</string>
-    <string name="ai_engine_load_from_provider">從服務商載入模型</string>
+    <string name="ai_engine_load_from_provider">擷取模型</string>
     <string name="ai_engine_file_upload_strategy_title">檔案上傳策略</string>
     <string name="ai_engine_file_upload_strategy_base64">Base64 直嵌</string>
     <string name="ai_engine_file_upload_strategy_cloud">雲端儲存</string>

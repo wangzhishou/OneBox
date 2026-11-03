@@ -228,7 +228,7 @@
     <string name="ai_engine_remote_models_loading">جارٍ التحميل…</string>
     <string name="ai_engine_remote_models_retry">إعادة المحاولة</string>
     <string name="ai_engine_remote_models_empty">لم يتم جلب أي نماذج</string>
-    <string name="ai_engine_load_from_provider">تحميل النماذج من المزوّد</string>
+    <string name="ai_engine_load_from_provider">جلب النماذج</string>
     <string name="ai_engine_file_upload_strategy_title">استراتيجية رفع الملفات</string>
     <string name="ai_engine_file_upload_strategy_base64">Base64 مضمّن</string>
     <string name="ai_engine_file_upload_strategy_cloud">التخزين السحابي</string>

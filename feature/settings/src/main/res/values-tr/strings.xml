@@ -214,7 +214,7 @@
     <string name="ai_engine_remote_models_loading">Yükleniyor…</string>
     <string name="ai_engine_remote_models_retry">Yeniden Dene</string>
     <string name="ai_engine_remote_models_empty">Model alınamadı</string>
-    <string name="ai_engine_load_from_provider">Sağlayıcıdan Modelleri Yükle</string>
+    <string name="ai_engine_load_from_provider">Modelleri getir</string>
     <string name="ai_engine_file_upload_strategy_title">Dosya Yükleme Stratejisi</string>
     <string name="ai_engine_file_upload_strategy_base64">Base64 Satır İçi</string>
     <string name="ai_engine_file_upload_strategy_cloud">Bulut Depolama</string>

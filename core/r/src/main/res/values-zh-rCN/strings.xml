@@ -892,7 +892,7 @@
     <string name="model">模型名称</string>
     <string name="connection_successful">连接成功!</string>
     <string name="connection_failed">连接失败!</string>
-    <string name="test_connection">测试API连接</string>
+    <string name="test_connection">测试</string>
     <string name="ai_test_failure_connect_failed">连不上服务器，请检查 URL 与网络</string>
     <string name="ai_test_failure_response_timeout">服务器响应超时，请稍后重试</string>
     <string name="ai_test_failure_auth_invalid">密钥无效，请检查 Token</string>

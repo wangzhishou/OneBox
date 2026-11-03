@@ -98,6 +98,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTune
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHeat
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHighQuality
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineLink
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineCloudDownload
 
 @Composable
 fun AIEngineSettingsDetailScreen(
@@ -955,10 +957,12 @@ private fun ServerConnectivityCard(
                 engine.requestProtocol == AiRequestProtocol.OWN_PROXY ||
                 engine.authorizationCode.isNotBlank()
 
-        OneSecondaryButton(
+        OnePrimaryButton(
             text = stringResource(CoreR.string.test_connection),
             onClick = onTestClick,
+            modifier = Modifier.fillMaxWidth(),
             enabled = canTest,
+            leadingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineLink,
         )
         if (!canTest) {
             Text(
@@ -986,9 +990,12 @@ private fun ModelSelectionCard(
     // 渠道能力(如 Google 全量放开)或高等级用户可从服务商拉取模型列表;
     // 但直连未验证(测试未通过)时拉取必然无权限,入口一并隐藏;
     // Jev 模型目录由客户端内置, 不支持从服务商拉取
+    // 有 API 地址就露出入口: 没测试过的引擎也可能公开 /models, 失败交给弹窗的
+    // 错误提示 + 重试兜底, 不再把「补模型」藏起来
     val canLoadRemote = !engine.requestProtocol.isNonChat &&
             (remember { AiEngineConfig.getCapabilities() }.canLoadRemoteModels ||
-            loginState.vipLevel == 10) && engine.isDetestPassed
+            loginState.vipLevel == 10) &&
+            engine.requestUrl.isNotBlank()
     SettingCard {
         // 测通后自动拉到的服务商模型: 行内提示, 点了「查看」才弹选择器, 不打断用户
         if (remoteModelsAvailable > 0) {
@@ -1024,9 +1031,11 @@ private fun ModelSelectionCard(
             )
             if (canLoadRemote) {
                 Spacer(modifier = Modifier.height(8.dp))
-                OneSecondaryButton(
+                OnePrimaryButton(
                     text = stringResource(R.string.ai_engine_load_from_provider),
-                    onClick = onLoadRemoteModels
+                    onClick = onLoadRemoteModels,
+                    modifier = Modifier.fillMaxWidth(),
+                    leadingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCloudDownload,
                 )
             }
         } else {
@@ -1104,9 +1113,11 @@ private fun ModelSelectionCard(
             }
 
             if (canLoadRemote) {
-                OneSecondaryButton(
+                OnePrimaryButton(
                     text = stringResource(R.string.ai_engine_load_from_provider),
-                    onClick = onLoadRemoteModels
+                    onClick = onLoadRemoteModels,
+                    modifier = Modifier.fillMaxWidth(),
+                    leadingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCloudDownload,
                 )
             }
         }

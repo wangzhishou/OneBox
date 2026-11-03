@@ -210,7 +210,7 @@
     <string name="ai_engine_remote_models_loading">로딩 중…</string>
     <string name="ai_engine_remote_models_retry">재시도</string>
     <string name="ai_engine_remote_models_empty">검색된 모델이 없습니다</string>
-    <string name="ai_engine_load_from_provider">공급자에서 모델 불러오기</string>
+    <string name="ai_engine_load_from_provider">모델 가져오기</string>
     <string name="ai_engine_file_upload_strategy_title">파일 업로드 전략</string>
     <string name="ai_engine_file_upload_strategy_base64">Base64 인라인</string>
     <string name="ai_engine_file_upload_strategy_cloud">클라우드 스토리지</string>

@@ -232,7 +232,7 @@
     <string name="ai_engine_remote_models_loading">Đang tải…</string>
     <string name="ai_engine_remote_models_retry">Thử lại</string>
     <string name="ai_engine_remote_models_empty">Không lấy được danh sách mô hình</string>
-    <string name="ai_engine_load_from_provider">Tải mô hình từ nhà cung cấp</string>
+    <string name="ai_engine_load_from_provider">Lấy mô hình</string>
     <string name="ai_engine_file_upload_strategy_title">Chiến lược tải tệp lên</string>
     <string name="ai_engine_file_upload_strategy_base64">Nhúng trực tiếp Base64</string>
     <string name="ai_engine_file_upload_strategy_cloud">Lưu trữ đám mây</string>

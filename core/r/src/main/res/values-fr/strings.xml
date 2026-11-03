@@ -813,7 +813,7 @@
     <string name="model">Nom du modèle</string>
     <string name="connection_successful">Connexion réussie !</string>
     <string name="connection_failed">Échec de la connexion !</string>
-    <string name="test_connection">Tester la connexion API</string>
+    <string name="test_connection">Tester</string>
     <string name="api_path">Chemin de l\'API</string>
     <string name="edit_custom_model">Nom du modèle personnalisé</string>
     <string name="edit_custom_name">Paramètres</string>

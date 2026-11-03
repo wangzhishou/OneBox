@@ -210,7 +210,7 @@
     <string name="ai_engine_remote_models_loading">Wird geladen…</string>
     <string name="ai_engine_remote_models_retry">Erneut versuchen</string>
     <string name="ai_engine_remote_models_empty">Keine Modelle abgerufen</string>
-    <string name="ai_engine_load_from_provider">Modelle vom Anbieter laden</string>
+    <string name="ai_engine_load_from_provider">Modelle abrufen</string>
     <string name="ai_engine_file_upload_strategy_title">Datei-Upload-Strategie</string>
     <string name="ai_engine_file_upload_strategy_base64">Base64-Inline</string>
     <string name="ai_engine_file_upload_strategy_cloud">Cloud-Speicher</string>

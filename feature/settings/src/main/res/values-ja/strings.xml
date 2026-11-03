@@ -210,7 +210,7 @@
     <string name="ai_engine_remote_models_loading">読み込み中…</string>
     <string name="ai_engine_remote_models_retry">再試行</string>
     <string name="ai_engine_remote_models_empty">モデルが取得されませんでした</string>
-    <string name="ai_engine_load_from_provider">プロバイダーからモデルを読み込む</string>
+    <string name="ai_engine_load_from_provider">モデルを取得</string>
     <string name="ai_engine_file_upload_strategy_title">ファイルアップロード方式</string>
     <string name="ai_engine_file_upload_strategy_base64">Base64インライン</string>
     <string name="ai_engine_file_upload_strategy_cloud">クラウドストレージ</string>

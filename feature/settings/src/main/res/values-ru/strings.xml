@@ -210,7 +210,7 @@
     <string name="ai_engine_remote_models_loading">Загрузка…</string>
     <string name="ai_engine_remote_models_retry">Повторить</string>
     <string name="ai_engine_remote_models_empty">Модели не получены</string>
-    <string name="ai_engine_load_from_provider">Загрузить модели от провайдера</string>
+    <string name="ai_engine_load_from_provider">Загрузить модели</string>
     <string name="ai_engine_file_upload_strategy_title">Стратегия загрузки файлов</string>
     <string name="ai_engine_file_upload_strategy_base64">Base64 встроенный</string>
     <string name="ai_engine_file_upload_strategy_cloud">Облачное хранилище</string>

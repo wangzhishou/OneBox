@@ -210,7 +210,7 @@
     <string name="ai_engine_remote_models_loading">Memuat…</string>
     <string name="ai_engine_remote_models_retry">Coba lagi</string>
     <string name="ai_engine_remote_models_empty">Tidak ada model yang diambil</string>
-    <string name="ai_engine_load_from_provider">Muat Model dari Penyedia</string>
+    <string name="ai_engine_load_from_provider">Ambil model</string>
     <string name="ai_engine_file_upload_strategy_title">Strategi Unggah File</string>
     <string name="ai_engine_file_upload_strategy_base64">Base64 Inline</string>
     <string name="ai_engine_file_upload_strategy_cloud">Penyimpanan Cloud</string>

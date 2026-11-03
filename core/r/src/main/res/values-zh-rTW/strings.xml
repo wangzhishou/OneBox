@@ -795,7 +795,7 @@
     <string name="model">模型名稱</string>
     <string name="connection_successful">連線成功!</string>
     <string name="connection_failed">連線失敗!</string>
-    <string name="test_connection">測試 API 連線</string>
+    <string name="test_connection">測試</string>
     <string name="api_path">API 路徑</string>
     <string name="edit_custom_model">自訂模型名稱</string>
     <string name="edit_custom_name">參數</string>

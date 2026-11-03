@@ -232,7 +232,7 @@
     <string name="ai_engine_remote_models_loading">Chargement…</string>
     <string name="ai_engine_remote_models_retry">Réessayer</string>
     <string name="ai_engine_remote_models_empty">Aucune liste de modèles obtenue</string>
-    <string name="ai_engine_load_from_provider">Charger les modèles depuis le fournisseur</string>
+    <string name="ai_engine_load_from_provider">Charger les modèles</string>
     <string name="ai_engine_file_upload_strategy_title">Stratégie de téléversement de fichiers</string>
     <string name="ai_engine_file_upload_strategy_base64">Intégration directe en Base64</string>
     <string name="ai_engine_file_upload_strategy_cloud">Stockage cloud</string>

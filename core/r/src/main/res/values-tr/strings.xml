@@ -719,7 +719,7 @@
     <string name="model">Model Adı</string>
     <string name="connection_successful">Bağlantı başarılı!</string>
     <string name="connection_failed">Bağlantı başarısız!</string>
-    <string name="test_connection">Bağlantıyı Test Et</string>
+    <string name="test_connection">Test et</string>
     <string name="api_path">API Yolu</string>
     <string name="edit_custom_model">Özel Model Adı</string>
     <string name="edit_custom_name">Parametreler</string>

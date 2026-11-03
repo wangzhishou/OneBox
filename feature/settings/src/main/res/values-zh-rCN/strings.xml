@@ -268,7 +268,7 @@
     <string name="ai_engine_import_empty_clipboard">剪贴板是空的,先复制一份引擎配置</string>
     <string name="ai_engine_export_menu_json">复制配置(JSON)</string>
     <string name="ai_engine_export_menu_link">复制导入链接</string>
-    <string name="ai_engine_load_from_provider">从服务商加载模型</string>
+    <string name="ai_engine_load_from_provider">拉取模型</string>
     <string name="ai_engine_file_upload_strategy_title">文件上传策略</string>
     <string name="ai_engine_file_upload_strategy_base64">Base64 直嵌</string>
     <string name="ai_engine_file_upload_strategy_cloud">云存储</string>

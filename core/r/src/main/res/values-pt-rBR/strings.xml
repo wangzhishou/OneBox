@@ -719,7 +719,7 @@
     <string name="model">Nome do modelo</string>
     <string name="connection_successful">Conexão bem-sucedida!</string>
     <string name="connection_failed">Falha na conexão!</string>
-    <string name="test_connection">Testar conexão</string>
+    <string name="test_connection">Testar</string>
     <string name="api_path">Caminho da API</string>
     <string name="edit_custom_model">Nome personalizado do modelo</string>
     <string name="edit_custom_name">Parâmetros</string>

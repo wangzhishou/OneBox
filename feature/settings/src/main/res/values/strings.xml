@@ -268,7 +268,7 @@
     <string name="ai_engine_import_empty_clipboard">Clipboard is empty — copy an engine config first</string>
     <string name="ai_engine_export_menu_json">Copy config (JSON)</string>
     <string name="ai_engine_export_menu_link">Copy import link</string>
-    <string name="ai_engine_load_from_provider">Load Models from Provider</string>
+    <string name="ai_engine_load_from_provider">Fetch Models</string>
     <string name="ai_engine_file_upload_strategy_title">File Upload Strategy</string>
     <string name="ai_engine_file_upload_strategy_base64">Base64 Inline</string>
     <string name="ai_engine_file_upload_strategy_cloud">Cloud Storage</string>

@@ -210,7 +210,7 @@
     <string name="ai_engine_remote_models_loading">Carregando…</string>
     <string name="ai_engine_remote_models_retry">Tentar novamente</string>
     <string name="ai_engine_remote_models_empty">Nenhum modelo recuperado</string>
-    <string name="ai_engine_load_from_provider">Carregar Modelos do Provedor</string>
+    <string name="ai_engine_load_from_provider">Buscar modelos</string>
     <string name="ai_engine_file_upload_strategy_title">Estratégia de Upload de Arquivo</string>
     <string name="ai_engine_file_upload_strategy_base64">Base64 Inline</string>
     <string name="ai_engine_file_upload_strategy_cloud">Armazenamento em Nuvem</string>

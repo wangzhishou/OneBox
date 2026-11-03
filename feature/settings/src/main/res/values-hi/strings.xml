@@ -210,7 +210,7 @@
     <string name="ai_engine_remote_models_loading">लोड हो रहा है…</string>
     <string name="ai_engine_remote_models_retry">पुनः प्रयास करें</string>
     <string name="ai_engine_remote_models_empty">कोई मॉडल प्राप्त नहीं हुआ</string>
-    <string name="ai_engine_load_from_provider">प्रदाता से मॉडल लोड करें</string>
+    <string name="ai_engine_load_from_provider">मॉडल लाएँ</string>
     <string name="ai_engine_file_upload_strategy_title">फ़ाइल अपलोड रणनीति</string>
     <string name="ai_engine_file_upload_strategy_base64">बेस64 इनलाइन</string>
     <string name="ai_engine_file_upload_strategy_cloud">क्लाउड स्टोरेज</string>
