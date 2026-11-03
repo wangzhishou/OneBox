@@ -139,8 +139,7 @@ class TextCardComponent @AssistedInject internal constructor(
     private val _canRedo = mutableStateOf(false)
     val canRedo: Boolean by _canRedo
 
-    private val _projects = mutableStateOf<List<TextCardProjectSummary>>(emptyList())
-    val projects: List<TextCardProjectSummary> by _projects
+    val projects = projectStore.projects
 
     private val _homeInputText = mutableStateOf(initialText)
     val homeInputText: String by _homeInputText
@@ -193,9 +192,6 @@ class TextCardComponent @AssistedInject internal constructor(
     val longImageRequiredHeight: Int? get() = layout?.longImageRequiredHeight
 
     init {
-        componentScope.launch {
-            projectStore.projects.collect { _projects.value = it }
-        }
         componentScope.launch {
             runCatching { projectStore.refresh() }
                 .onFailure { it.makeLog("TextCardProjects") }
@@ -338,7 +334,7 @@ class TextCardComponent @AssistedInject internal constructor(
     }
 
     fun duplicateProject(id: String) {
-        val source = projects.firstOrNull { it.id == id } ?: return
+        val source = projects.value.firstOrNull { it.id == id } ?: return
         componentScope.launch {
             runCatching {
                 projectStore.duplicate(

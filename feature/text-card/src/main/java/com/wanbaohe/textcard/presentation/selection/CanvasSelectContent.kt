@@ -29,14 +29,15 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.UploadFile
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -59,6 +60,7 @@ import com.wanbaohe.base.ui.button.PrimaryButton
 import com.wanbaohe.base.ui.button.SecondaryButton
 import com.wanbaohe.core.ui.widget.dialogs.LoadingDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
@@ -87,12 +89,12 @@ fun CanvasSelectContent(component: TextCardComponent) {
     ) { uri ->
         uri?.let { component.importHomeText(it.toString()) }
     }
-
     BaseScreen(
         title = stringResource(R.string.textcard_title),
         onGoBack = component.onGoBack,
         showNavigationBarsPadding = false,
         content = {
+            val projects by component.projects.collectAsState()
             Column(
                 verticalArrangement = Arrangement.spacedBy(20.dp),
                 modifier = Modifier
@@ -101,15 +103,17 @@ fun CanvasSelectContent(component: TextCardComponent) {
                     .verticalScroll(rememberScrollState())
                     .padding(horizontal = 20.dp)
             ) {
-                if (component.projects.isNotEmpty()) {
-                    RecentProjects(
-                        projects = component.projects,
-                        onOpen = { component.openProject(it) },
-                        onRename = { renameProject = it },
-                        onDuplicate = component::duplicateProject,
-                        onExport = { component.openProject(it, openExport = true) },
-                        onDelete = { deleteProject = it }
-                    )
+                if (projects.isNotEmpty()) {
+                    key(projects) {
+                        RecentProjects(
+                            projects = projects,
+                            onOpen = { component.openProject(it) },
+                            onRename = { renameProject = it },
+                            onDuplicate = component::duplicateProject,
+                            onExport = { component.openProject(it, openExport = true) },
+                            onDelete = { deleteProject = it }
+                        )
+                    }
                 }
                 GlassCard(
                     shape = RoundedCornerShape(24.dp),
@@ -176,22 +180,26 @@ fun CanvasSelectContent(component: TextCardComponent) {
                 style = GlassStyle.Dense,
                 shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
             ) {
-                PrimaryButton(
-                    text = stringResource(R.string.textcard_create),
-                    enable = component.homeInputText.isNotBlank(),
-                    onClick = { component.startEditing(component.homeInputText) },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Outlined.Add,
-                            contentDescription = null,
-                            modifier = Modifier.size(18.dp)
-                        )
-                    },
+                Row(
+                    horizontalArrangement = Arrangement.End,
                     modifier = Modifier
                         .fillMaxWidth()
                         .navigationBarsPadding()
                         .padding(horizontal = 20.dp, vertical = 16.dp)
-                )
+                ) {
+                    PrimaryButton(
+                        text = stringResource(R.string.textcard_create),
+                        enable = component.homeInputText.isNotBlank(),
+                        onClick = { component.startEditing(component.homeInputText) },
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Outlined.Add,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp)
+                            )
+                        }
+                    )
+                }
             }
         }
     )
@@ -345,7 +353,7 @@ private fun RecentProjects(
                                         modifier = Modifier.size(18.dp)
                                     )
                                 }
-                                DropdownMenu(
+                                EnhancedDropdownMenu(
                                     expanded = menuExpanded,
                                     onDismissRequest = { menuExpanded = false }
                                 ) {
