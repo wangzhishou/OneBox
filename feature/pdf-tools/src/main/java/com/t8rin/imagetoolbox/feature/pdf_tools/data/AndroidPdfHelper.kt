@@ -167,6 +167,22 @@ internal class AndroidPdfHelper @Inject constructor(
         }.isSuccess
     }
 
+    override suspend fun deleteSignature(signature: String): Boolean {
+        return runSuspendCatching {
+            withContext(ioDispatcher) {
+                val file = signature.toUri().toFile()
+                if (file.canonicalFile.parentFile != signaturesDir.canonicalFile) {
+                    error("Signature is not from the saved list")
+                }
+                if (!file.exists()) error("Signature not found")
+                if (!file.delete()) error("Could not delete the signature")
+                updateFlow.emit(Unit)
+            }
+        }.onFailure {
+            it.makeLog("deleteSignature")
+        }.isSuccess
+    }
+
     override fun setMasterPassword(password: String?) {
         _masterPassword = password
     }

@@ -59,8 +59,8 @@ import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.pageIndices
 import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.rasterizePdfText
 import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.save
 import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.setAlpha
-import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.setColor
 import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.transformImages
+import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.visualBox
 import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.writePage
 import com.t8rin.imagetoolbox.feature.pdf_tools.domain.PdfHelper
 import com.t8rin.imagetoolbox.feature.pdf_tools.domain.PdfManager
@@ -347,10 +347,10 @@ internal class AndroidPdfManager @Inject constructor(
                 val text = label.replace("{n}", (idx + 1).toString())
                 if (text.isBlank()) return@forEachIndexed
 
-                val cropBox = page.cropBox
+                val pageBox = page.visualBox()
                 val stamp = rasterizePdfText(
                     lines = listOf(text),
-                    targetWidthPt = cropBox.width * params.fontSize / 100f,
+                    targetWidthPt = pageBox.width * params.fontSize / 100f,
                     color = color.copy(alpha = 1f).toArgb(),
                 )
 
@@ -361,22 +361,22 @@ internal class AndroidPdfManager @Inject constructor(
 
                     Position.TopCenter,
                     Position.Center,
-                    Position.BottomCenter -> (cropBox.width - stamp.widthPt) / 2f
+                    Position.BottomCenter -> (pageBox.width - stamp.widthPt) / 2f
 
                     Position.TopRight,
                     Position.CenterRight,
                     Position.BottomRight ->
-                        cropBox.width - PAGE_NUMBER_HORIZONTAL_MARGIN - stamp.widthPt
+                        pageBox.width - PAGE_NUMBER_HORIZONTAL_MARGIN - stamp.widthPt
                 }
                 val y = when (params.position) {
                     Position.TopLeft,
                     Position.TopCenter,
                     Position.TopRight ->
-                        cropBox.height - PAGE_NUMBER_VERTICAL_MARGIN - stamp.heightPt
+                        pageBox.height - PAGE_NUMBER_VERTICAL_MARGIN - stamp.heightPt
 
                     Position.CenterLeft,
                     Position.Center,
-                    Position.CenterRight -> (cropBox.height - stamp.heightPt) / 2f
+                    Position.CenterRight -> (pageBox.height - stamp.heightPt) / 2f
 
                     Position.BottomLeft,
                     Position.BottomCenter,
@@ -385,14 +385,9 @@ internal class AndroidPdfManager @Inject constructor(
 
                 val image = LosslessFactory.createFromImage(document, stamp.bitmap)
                 document.writePage(page) {
+                    transform(pageBox.matrix)
                     setAlpha(color.alpha)
-                    drawImage(
-                        image,
-                        x + cropBox.lowerLeftX,
-                        y + cropBox.lowerLeftY,
-                        stamp.widthPt,
-                        stamp.heightPt,
-                    )
+                    drawImage(image, x, y, stamp.widthPt, stamp.heightPt)
                 }
                 stamped = true
             }
@@ -434,13 +429,14 @@ internal class AndroidPdfManager @Inject constructor(
 
                 params.pages.forEach { pageIndex ->
                     val page = document.getPageSafe(pageIndex)
-                    val cropBox = page.cropBox
-                    val width = cropBox.width * params.fontSize / 100f
+                    val pageBox = page.visualBox()
+                    val width = pageBox.width * params.fontSize / 100f
                     val height = width * stamp.aspectRatio
-                    val centerX = cropBox.lowerLeftX + cropBox.width / 2f
-                    val centerY = cropBox.lowerLeftY + cropBox.height / 2f
+                    val centerX = pageBox.width / 2f
+                    val centerY = pageBox.height / 2f
 
                     document.writePage(page) {
+                        transform(pageBox.matrix)
                         saveGraphicsState()
                         setAlpha(params.opacity * color.alpha)
                         transform(
@@ -484,13 +480,10 @@ internal class AndroidPdfManager @Inject constructor(
 
             params.pages.forEach { pageIndex ->
                 val page = document.getPageSafe(pageIndex)
+                val pageBox = page.visualBox()
 
-                val crop = page.cropBox
-
-                val pageWidth = crop.width
-                val pageHeight = crop.height
-                val originX = crop.lowerLeftX
-                val originY = crop.lowerLeftY
+                val pageWidth = pageBox.width
+                val pageHeight = pageBox.height
 
                 val targetWidth = pageWidth * params.size
                 val targetHeight = targetWidth / imageAspect
@@ -498,16 +491,13 @@ internal class AndroidPdfManager @Inject constructor(
                 val centerX = pageWidth * params.x
                 val centerY = pageHeight * (1f - params.y)
 
-                var x = centerX - targetWidth / 2f
-                var y = centerY - targetHeight / 2f
-
-                x = x.coerceIn(0f, pageWidth - targetWidth)
-                y = y.coerceIn(0f, pageHeight - targetHeight)
-
-                x += originX
-                y += originY
+                val x = (centerX - targetWidth / 2f)
+                    .coerceIn(0f, pageWidth - targetWidth)
+                val y = (centerY - targetHeight / 2f)
+                    .coerceIn(0f, pageHeight - targetHeight)
 
                 document.writePage(page) {
+                    transform(pageBox.matrix)
                     saveGraphicsState()
                     setAlpha(params.opacity)
                     transform(

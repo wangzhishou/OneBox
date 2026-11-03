@@ -7,12 +7,13 @@ import android.graphics.Path
 import androidx.compose.foundation.Canvas as ComposeCanvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.drag
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -68,6 +69,8 @@ internal fun SignatureDrawDialog(
                 enabled = finished.isNotEmpty(),
                 onClick = {
                     renderSignature(canvasSize, finished.toList())?.let(onConfirm)
+                    finished.clear()
+                    active = emptyList()
                     onDismiss()
                 },
             ) {
@@ -124,15 +127,31 @@ internal fun SignatureDrawDialog(
                     }
                 }
                 Spacer(Modifier.height(8.dp))
-                EnhancedButton(
-                    onClick = {
-                        finished.clear()
-                        active = emptyList()
-                    },
+                Row(
                     modifier = Modifier.fillMaxWidth(),
-                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    Text(stringResource(R.string.clear))
+                    EnhancedButton(
+                        onClick = {
+                            finished.removeLastOrNull()
+                            active = emptyList()
+                        },
+                        enabled = finished.isNotEmpty(),
+                        modifier = Modifier.weight(1f),
+                        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    ) {
+                        Text(stringResource(R.string.undo))
+                    }
+                    EnhancedButton(
+                        onClick = {
+                            finished.clear()
+                            active = emptyList()
+                        },
+                        modifier = Modifier.weight(1f),
+                        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    ) {
+                        Text(stringResource(R.string.clear))
+                    }
                 }
             }
         },
@@ -169,6 +188,7 @@ private fun renderSignature(
 internal fun SavedSignatureRow(
     signatures: List<String>,
     onSelect: (String) -> Unit,
+    onDeleteRequest: (String) -> Unit,
 ) {
     if (signatures.isEmpty()) return
     Column(
@@ -180,6 +200,12 @@ internal fun SavedSignatureRow(
             text = stringResource(R.string.saved_signatures),
             style = MaterialTheme.typography.titleSmall,
             modifier = Modifier.padding(start = 16.dp, top = 12.dp, end = 16.dp),
+        )
+        Text(
+            text = stringResource(R.string.saved_signatures_hint),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(start = 16.dp, top = 2.dp, end = 16.dp),
         )
         LazyRow(
             contentPadding = PaddingValues(16.dp),
@@ -196,7 +222,10 @@ internal fun SavedSignatureRow(
                             shape = ShapeDefaults.small,
                         )
                         .clip(ShapeDefaults.small)
-                        .clickable { onSelect(signature) },
+                        .combinedClickable(
+                            onClick = { onSelect(signature) },
+                            onLongClick = { onDeleteRequest(signature) },
+                        ),
                     showTransparencyChecker = true,
                 )
             }

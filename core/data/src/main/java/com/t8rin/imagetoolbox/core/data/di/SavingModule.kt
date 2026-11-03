@@ -20,11 +20,13 @@ package com.t8rin.imagetoolbox.core.data.di
 import com.t8rin.imagetoolbox.core.data.saving.AndroidFileController
 import com.t8rin.imagetoolbox.core.data.saving.AndroidFilenameCreator
 import com.t8rin.imagetoolbox.core.data.saving.AndroidKeepAliveService
+import com.t8rin.imagetoolbox.core.data.saving.AndroidRandomStringGenerator
 import com.t8rin.imagetoolbox.core.domain.image.MetadataProvider
 import com.t8rin.imagetoolbox.core.domain.saving.FileController
 import com.t8rin.imagetoolbox.core.domain.saving.FileController.Companion.toMetadataProvider
 import com.t8rin.imagetoolbox.core.domain.saving.FilenameCreator
 import com.t8rin.imagetoolbox.core.domain.saving.KeepAliveService
+import com.t8rin.imagetoolbox.core.domain.saving.RandomStringGenerator
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -53,6 +55,12 @@ internal interface SavingModule {
     fun service(
         impl: AndroidKeepAliveService
     ): KeepAliveService
+
+    @Singleton
+    @Binds
+    fun randomStringGenerator(
+        impl: AndroidRandomStringGenerator
+    ): RandomStringGenerator
 
     companion object {
         @Singleton

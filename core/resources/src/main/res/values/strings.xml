@@ -505,6 +505,9 @@
     <string name="page_number_format_default">Page {n} of {total}</string>
     <string name="page_number_size">Number size</string>
     <string name="signature_drag_hint">Drag the signature on the preview</string>
+    <string name="undo">Undo</string>
+    <string name="delete_signature">Delete this signature?</string>
+    <string name="saved_signatures_hint">Long-press a signature to delete it</string>
     <string name="saved_signatures">Saved signatures</string>
     <string name="remove_pages_pdf">Remove pages</string>
     <string name="remove_pages_pdf_sub">Remove the specified pages from a PDF</string>

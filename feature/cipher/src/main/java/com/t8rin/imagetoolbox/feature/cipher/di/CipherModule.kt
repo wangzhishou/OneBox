@@ -17,9 +17,7 @@
 
 package com.t8rin.imagetoolbox.feature.cipher.di
 
-import com.t8rin.imagetoolbox.core.domain.saving.RandomStringGenerator
 import com.t8rin.imagetoolbox.feature.cipher.data.AndroidCryptographyManager
-import com.t8rin.imagetoolbox.feature.cipher.data.AndroidRandomStringGenerator
 import com.t8rin.imagetoolbox.feature.cipher.domain.CryptographyManager
 import dagger.Binds
 import dagger.Module
@@ -37,11 +35,5 @@ internal interface CipherModule {
     fun cryptographyManager(
         impl: AndroidCryptographyManager
     ): CryptographyManager
-
-    @Singleton
-    @Binds
-    fun provideRandomStringGenerator(
-        impl: AndroidRandomStringGenerator
-    ): RandomStringGenerator
 
 }

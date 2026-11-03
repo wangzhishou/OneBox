@@ -48,6 +48,7 @@ import com.tom_roush.pdfbox.pdmodel.graphics.image.JPEGFactory
 import com.tom_roush.pdfbox.pdmodel.graphics.image.LosslessFactory
 import com.tom_roush.pdfbox.pdmodel.graphics.image.PDImageXObject
 import com.tom_roush.pdfbox.pdmodel.graphics.state.PDExtendedGraphicsState
+import com.tom_roush.pdfbox.util.Matrix
 import java.util.Calendar
 import kotlin.math.roundToInt
 
@@ -139,6 +140,51 @@ internal fun PDDocument.getPageSafe(index: Int): PDPage = getPage(
 )
 
 internal val PDDocument.pageIndices: List<Int> get() = List(numberOfPages) { it }
+/**
+ * The page as the reader sees it: width/height are swapped for quarter turns and
+ * [matrix] maps coordinates of that displayed page (origin bottom-left) back to the
+ * page content stream, crop box offset included.
+ */
+internal class PdfVisualBox(
+    val width: Float,
+    val height: Float,
+    val matrix: Matrix,
+)
+
+internal fun PDPage.visualBox(): PdfVisualBox {
+    val crop = cropBox
+    val width = crop.width
+    val height = crop.height
+    val left = crop.lowerLeftX
+    val bottom = crop.lowerLeftY
+
+    return when (((rotation % 360) + 360) % 360) {
+        90 -> PdfVisualBox(
+            width = height,
+            height = width,
+            matrix = Matrix(0f, 1f, -1f, 0f, width + left, bottom),
+        )
+
+        180 -> PdfVisualBox(
+            width = width,
+            height = height,
+            matrix = Matrix(-1f, 0f, 0f, -1f, width + left, height + bottom),
+        )
+
+        270 -> PdfVisualBox(
+            width = height,
+            height = width,
+            matrix = Matrix(0f, -1f, 1f, 0f, left, height + bottom),
+        )
+
+        else -> PdfVisualBox(
+            width = width,
+            height = height,
+            matrix = Matrix(1f, 0f, 0f, 1f, left, bottom),
+        )
+    }
+}
+
 
 internal fun PDPageContentStream.setAlpha(alpha: Float) {
     val gs = PDExtendedGraphicsState().apply {

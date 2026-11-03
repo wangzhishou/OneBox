@@ -14,7 +14,7 @@ import com.t8rin.imagetoolbox.core.domain.utils.smartJob
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.utils.state.update
 import com.t8rin.imagetoolbox.feature.pdf_tools.domain.PdfManager
-import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.common.BasePdfToolComponent
+import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.common.BasePdfProcessComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -27,23 +27,20 @@ class UnlockPdfToolComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted onGoBack: () -> Unit,
     @Assisted onNavigate: (Screen) -> Unit,
-    private val pdfManager: PdfManager,
-    private val shareProvider: ImageShareProvider<Bitmap>,
-    private val fileController: FileController,
+    pdfManager: PdfManager,
+    shareProvider: ImageShareProvider<Bitmap>,
+    fileController: FileController,
     dispatchersHolder: DispatchersHolder,
-) : BasePdfToolComponent(
+) : BasePdfProcessComponent(
+    initialUri = initialUri,
     onGoBack = onGoBack,
     onNavigate = onNavigate,
     dispatchersHolder = dispatchersHolder,
     componentContext = componentContext,
     pdfManager = pdfManager,
+    shareProvider = shareProvider,
+    fileController = fileController,
 ) {
-    override val _haveChanges: MutableState<Boolean> = mutableStateOf(initialUri != null)
-    override val haveChanges: Boolean by _haveChanges
-
-    private val _uri: MutableState<Uri?> = mutableStateOf(initialUri)
-    val uri by _uri
-
     private val _previewUri: MutableState<Uri?> = mutableStateOf(null)
     val previewUri by _previewUri
 
@@ -73,8 +70,7 @@ class UnlockPdfToolComponent @AssistedInject internal constructor(
     }
 
     fun setUri(uri: Uri?) {
-        if (uri == null) registerChangesCleared() else registerChanges()
-        _uri.update { uri }
+        setSourceUri(uri)
         _password.update { "" }
         _passwordRejected.update { false }
         _cannotOpen.update { false }
@@ -145,52 +141,10 @@ class UnlockPdfToolComponent @AssistedInject internal constructor(
         }
     }
 
-    override fun saveTo(uri: Uri) {
-        doSaving {
-            val processed = pdfManager.unlockPdf(
-                uri = _uri.value.toString(),
-                password = password,
-            )
-            fileController.transferBytes(
-                fromUri = processed,
-                toUri = uri.toString(),
-            ).onSuccess(::registerSave)
-        }
-    }
-
-    override fun performSharing(
-        onSuccess: () -> Unit,
-        onFailure: (Throwable) -> Unit,
-    ) {
-        prepareForSharing(
-            onSuccess = {
-                shareProvider.shareUris(it.map(Uri::toString))
-                registerSave()
-                onSuccess()
-            },
-            onFailure = onFailure,
-        )
-    }
-
-    override fun prepareForSharing(
-        onSuccess: suspend (List<Uri>) -> Unit,
-        onFailure: (Throwable) -> Unit,
-    ) {
-        doSharing(
-            action = {
-                onSuccess(
-                    listOf(
-                        pdfManager.unlockPdf(
-                            uri = _uri.value.toString(),
-                            password = password,
-                        ).toUri()
-                    )
-                )
-                registerSave()
-            },
-            onFailure = onFailure,
-        )
-    }
+    override suspend fun processPdf(uri: String): String = pdfManager.unlockPdf(
+        uri = uri,
+        password = password,
+    )
 
     private companion object {
         private const val PASSWORD_CHECK_DEBOUNCE = 400L

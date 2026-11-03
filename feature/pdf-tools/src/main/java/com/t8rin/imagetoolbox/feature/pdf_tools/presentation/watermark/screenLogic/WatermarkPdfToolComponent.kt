@@ -8,7 +8,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.core.net.toUri
 import com.arkivanov.decompose.ComponentContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.image.ImageShareProvider
@@ -17,7 +16,7 @@ import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.utils.state.update
 import com.t8rin.imagetoolbox.feature.pdf_tools.domain.PdfManager
 import com.t8rin.imagetoolbox.feature.pdf_tools.domain.model.PdfWatermarkParams
-import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.common.BasePdfToolComponent
+import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.common.BasePdfProcessComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -28,23 +27,20 @@ class WatermarkPdfToolComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted onGoBack: () -> Unit,
     @Assisted onNavigate: (Screen) -> Unit,
-    private val pdfManager: PdfManager,
-    private val shareProvider: ImageShareProvider<Bitmap>,
-    private val fileController: FileController,
+    pdfManager: PdfManager,
+    shareProvider: ImageShareProvider<Bitmap>,
+    fileController: FileController,
     dispatchersHolder: DispatchersHolder,
-) : BasePdfToolComponent(
+) : BasePdfProcessComponent(
+    initialUri = initialUri,
     onGoBack = onGoBack,
     onNavigate = onNavigate,
     dispatchersHolder = dispatchersHolder,
     componentContext = componentContext,
     pdfManager = pdfManager,
+    shareProvider = shareProvider,
+    fileController = fileController,
 ) {
-    override val _haveChanges: MutableState<Boolean> = mutableStateOf(initialUri != null)
-    override val haveChanges: Boolean by _haveChanges
-
-    private val _uri: MutableState<Uri?> = mutableStateOf(initialUri)
-    val uri by _uri
-
     private val _params: MutableState<PdfWatermarkParams> = mutableStateOf(
         PdfWatermarkParams(color = Color.Gray.toArgb())
     )
@@ -71,8 +67,7 @@ class WatermarkPdfToolComponent @AssistedInject internal constructor(
     override fun getKey(): Pair<String, Uri?> = "watermarked" to uri
 
     fun setUri(uri: Uri?) {
-        if (uri == null) registerChangesCleared() else registerChanges()
-        _uri.update { uri }
+        setSourceUri(uri)
         refreshPageSizes(uri)
         checkPdf(
             uri = uri,
@@ -93,52 +88,10 @@ class WatermarkPdfToolComponent @AssistedInject internal constructor(
         _params.update { it.copy(pages = pages) }
     }
 
-    override fun saveTo(uri: Uri) {
-        doSaving {
-            val processed = pdfManager.addWatermark(
-                uri = _uri.value.toString(),
-                params = params,
-            )
-            fileController.transferBytes(
-                fromUri = processed,
-                toUri = uri.toString(),
-            ).onSuccess(::registerSave)
-        }
-    }
-
-    override fun performSharing(
-        onSuccess: () -> Unit,
-        onFailure: (Throwable) -> Unit,
-    ) {
-        prepareForSharing(
-            onSuccess = {
-                shareProvider.shareUris(it.map(Uri::toString))
-                registerSave()
-                onSuccess()
-            },
-            onFailure = onFailure,
-        )
-    }
-
-    override fun prepareForSharing(
-        onSuccess: suspend (List<Uri>) -> Unit,
-        onFailure: (Throwable) -> Unit,
-    ) {
-        doSharing(
-            action = {
-                onSuccess(
-                    listOf(
-                        pdfManager.addWatermark(
-                            uri = _uri.value.toString(),
-                            params = params,
-                        ).toUri()
-                    )
-                )
-                registerSave()
-            },
-            onFailure = onFailure,
-        )
-    }
+    override suspend fun processPdf(uri: String): String = pdfManager.addWatermark(
+        uri = uri,
+        params = params,
+    )
 
     @AssistedFactory
     fun interface Factory {

@@ -505,6 +505,9 @@
     <string name="page_number_format_default">第 {n} 页 / 共 {total} 页</string>
     <string name="page_number_size">页码大小</string>
     <string name="signature_drag_hint">在预览上拖动签名，调整位置</string>
+    <string name="undo">撤销</string>
+    <string name="delete_signature">删除这个签名?</string>
+    <string name="saved_signatures_hint">长按签名可以删除</string>
     <string name="saved_signatures">已保存的签名</string>
     <string name="remove_pages_pdf">删除页面</string>
     <string name="remove_pages_pdf_sub">从 PDF 中删除指定页面</string>

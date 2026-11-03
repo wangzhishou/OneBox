@@ -27,6 +27,8 @@ interface PdfHelper {
 
     suspend fun saveSignature(signature: Any): Boolean
 
+    suspend fun deleteSignature(signature: String): Boolean
+
     fun setMasterPassword(
         password: String?
     )

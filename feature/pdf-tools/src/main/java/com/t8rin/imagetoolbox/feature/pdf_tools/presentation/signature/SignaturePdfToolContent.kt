@@ -34,6 +34,8 @@ import com.wanbaohe.core.ui.utils.helper.ImageUtils.rememberPdfPages
 import com.wanbaohe.core.ui.widget.controls.page.PageSelectionItem
 import com.wanbaohe.core.ui.widget.controls.selection.AlphaSelector
 import com.wanbaohe.core.ui.widget.controls.selection.ImageSelector
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedButton
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedSliderItem
 import com.wanbaohe.core.ui.widget.image.Picture
 import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
@@ -50,6 +52,7 @@ fun SignaturePdfToolContent(
     val pageCount by rememberPdfPages(component.uri)
     val savedSignatures by component.savedSignatures.collectAsStateWithLifecycle()
     var showDrawDialog by rememberSaveable { mutableStateOf(false) }
+    var signatureToDelete by rememberSaveable { mutableStateOf<String?>(null) }
 
     LaunchedEffect(pageCount) {
         if (pageCount > 0) {
@@ -148,6 +151,7 @@ fun SignaturePdfToolContent(
             SavedSignatureRow(
                 signatures = savedSignatures,
                 onSelect = { component.updateSignature(it) },
+                onDeleteRequest = { signatureToDelete = it },
             )
             Spacer(Modifier.height(8.dp))
             PageSelectionItem(
@@ -190,5 +194,29 @@ fun SignaturePdfToolContent(
         visible = showDrawDialog,
         onDismiss = { showDrawDialog = false },
         onConfirm = { component.updateSignature(it, save = true) },
+    )
+
+    EnhancedAlertDialog(
+        visible = signatureToDelete != null,
+        onDismissRequest = { signatureToDelete = null },
+        title = { Text(stringResource(R.string.delete_signature)) },
+        confirmButton = {
+            EnhancedButton(
+                onClick = {
+                    signatureToDelete?.let(component::deleteSignature)
+                    signatureToDelete = null
+                },
+            ) {
+                Text(stringResource(R.string.delete))
+            }
+        },
+        dismissButton = {
+            EnhancedButton(
+                onClick = { signatureToDelete = null },
+                containerColor = MaterialTheme.colorScheme.surfaceContainer,
+            ) {
+                Text(stringResource(R.string.cancel))
+            }
+        },
     )
 }
