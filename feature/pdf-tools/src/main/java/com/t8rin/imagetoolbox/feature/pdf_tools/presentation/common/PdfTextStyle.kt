@@ -1,31 +1,39 @@
+/*
+ * ImageToolbox is an image editor for android
+ * Copyright (c) 2026 T8RIN (Malik Mukhametzyanov)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * You should have received a copy of the Apache License
+ * along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+ */
+
 package com.t8rin.imagetoolbox.feature.pdf_tools.presentation.common
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import com.t8rin.imagetoolbox.core.utils.appContext
-import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.defaultPdfFontFile
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
+/**
+ * Style used by the PDF stamp previews.
+ *
+ * Stamps are rasterized with [android.graphics.Typeface.DEFAULT_BOLD] on the data layer,
+ * so the preview uses the default font family too and the two stay identical for any
+ * script the device can render.
+ */
 @Composable
-internal fun rememberPdfTextStyle(): TextStyle {
-    val style by produceState(
-        initialValue = TextStyle(fontWeight = FontWeight.Bold)
-    ) {
-        val fontFile = withContext(Dispatchers.IO) {
-            runCatching { appContext.defaultPdfFontFile() }.getOrNull()
-        }
-        value = TextStyle(
-            fontFamily = fontFile?.let {
-                FontFamily(Font(file = it, weight = FontWeight.Bold))
-            } ?: FontFamily.Default,
-            fontWeight = FontWeight.Bold,
-        )
-    }
-    return style
+internal fun rememberPdfTextStyle(): TextStyle = remember {
+    TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Bold,
+    )
 }

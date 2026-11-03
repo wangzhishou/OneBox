@@ -10,6 +10,8 @@ import com.arkivanov.decompose.ComponentContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.image.ImageShareProvider
 import com.t8rin.imagetoolbox.core.domain.saving.FileController
+import com.t8rin.imagetoolbox.core.resources.R
+import com.t8rin.imagetoolbox.core.utils.appContext
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.utils.state.update
 import com.t8rin.imagetoolbox.feature.pdf_tools.domain.PdfManager
@@ -41,7 +43,11 @@ class PageNumbersPdfToolComponent @AssistedInject internal constructor(
     private val _uri: MutableState<Uri?> = mutableStateOf(initialUri)
     val uri by _uri
 
-    private val _params: MutableState<PdfPageNumbersParams> = mutableStateOf(PdfPageNumbersParams())
+    private val _params: MutableState<PdfPageNumbersParams> = mutableStateOf(
+        PdfPageNumbersParams(
+            labelFormat = appContext.getString(R.string.page_number_format_default)
+        )
+    )
     val params by _params
 
     init {
@@ -68,12 +74,6 @@ class PageNumbersPdfToolComponent @AssistedInject internal constructor(
                 refreshPageSizes(it)
             },
         )
-    }
-
-    fun applyLocalizedFormat(format: String) {
-        if (_params.value.labelFormat == "Page {n} of {total}" && format != _params.value.labelFormat) {
-            _params.update { it.copy(labelFormat = format) }
-        }
     }
 
     fun updateParams(params: PdfPageNumbersParams) {

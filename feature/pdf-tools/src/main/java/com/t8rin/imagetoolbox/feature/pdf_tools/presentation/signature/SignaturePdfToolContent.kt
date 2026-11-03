@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -86,6 +87,11 @@ fun SignaturePdfToolContent(
                         val markHeight = markWidth / aspect.coerceAtLeast(0.2f)
                         val maxX = (maxWidth - markWidth).coerceAtLeast(0.dp)
                         val maxY = (maxHeight - markHeight).coerceAtLeast(0.dp)
+                        // Drag deltas arrive in pixels of the page preview, while x/y are
+                        // fractions of the page, so normalize by the page size (not by the
+                        // signature size, which would make the mark move faster than the finger).
+                        val pageWidthPx = with(LocalDensity.current) { maxWidth.toPx() }
+                        val pageHeightPx = with(LocalDensity.current) { maxHeight.toPx() }
                         Picture(
                             model = params.signatureImage,
                             contentScale = ContentScale.Fit,
@@ -110,8 +116,8 @@ fun SignaturePdfToolContent(
                                         val current = component.params
                                         component.updateParams(
                                             current.copy(
-                                                x = (current.x + drag.x / size.width).coerceIn(0f, 1f),
-                                                y = (current.y + drag.y / size.height).coerceIn(0f, 1f),
+                                                x = (current.x + drag.x / pageWidthPx).coerceIn(0f, 1f),
+                                                y = (current.y + drag.y / pageHeightPx).coerceIn(0f, 1f),
                                             )
                                         )
                                     }

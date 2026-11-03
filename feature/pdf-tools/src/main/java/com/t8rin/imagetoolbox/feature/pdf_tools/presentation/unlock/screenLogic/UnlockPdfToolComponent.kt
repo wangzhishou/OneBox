@@ -56,6 +56,9 @@ class UnlockPdfToolComponent @AssistedInject internal constructor(
     private val _passwordRejected: MutableState<Boolean> = mutableStateOf(false)
     val passwordRejected by _passwordRejected
 
+    private val _cannotOpen: MutableState<Boolean> = mutableStateOf(false)
+    val cannotOpen by _cannotOpen
+
     private var inspectJob: Job? by smartJob()
     private var previewJob: Job? by smartJob()
 
@@ -74,6 +77,7 @@ class UnlockPdfToolComponent @AssistedInject internal constructor(
         _uri.update { uri }
         _password.update { "" }
         _passwordRejected.update { false }
+        _cannotOpen.update { false }
         _previewUri.update { null }
         _locked.update { null }
         inspect(uri)
@@ -83,24 +87,41 @@ class UnlockPdfToolComponent @AssistedInject internal constructor(
         registerChanges()
         _password.update { password }
         _passwordRejected.update { false }
-        _previewUri.update { null }
-        val source = _uri.value
-        if (source == null || password.isEmpty() || _locked.value != true) {
-            previewJob = null
-            return
-        }
+        _cannotOpen.update { false }
+        // Cancel the pending check, the old preview stays visible until the new one is
+        // ready so the preview does not blink on every keystroke.
+        previewJob = null
+        schedulePreview()
+    }
+
+    private fun schedulePreview() {
+        val source = _uri.value ?: return
+        val typedPassword = _password.value
+        if (typedPassword.isEmpty() || _locked.value != true) return
+
         previewJob = componentScope.launch {
-            delay(400)
+            delay(PASSWORD_CHECK_DEBOUNCE)
             ensureActive()
-            val matches = pdfManager.passwordMatches(source.toString(), password)
+            val matches = runCatching {
+                pdfManager.passwordMatches(source.toString(), typedPassword)
+            }.getOrElse {
+                ensureActive()
+                _cannotOpen.value = true
+                return@launch
+            }
             ensureActive()
             if (!matches) {
                 _passwordRejected.value = true
                 return@launch
             }
-            val decrypted = pdfManager.unlockPdf(source.toString(), password)
-            ensureActive()
-            _previewUri.value = decrypted.toUri()
+            runCatching {
+                pdfManager.unlockPdf(source.toString(), typedPassword)
+            }.onSuccess {
+                _previewUri.value = it.toUri()
+            }.onFailure {
+                ensureActive()
+                _cannotOpen.value = true
+            }
         }
     }
 
@@ -109,10 +130,18 @@ class UnlockPdfToolComponent @AssistedInject internal constructor(
         inspectJob = componentScope.launch {
             val open = runCatching {
                 pdfManager.opensWithoutPassword(uri.toString())
-            }.getOrDefault(false)
+            }.getOrElse {
+                ensureActive()
+                _cannotOpen.value = true
+                return@launch
+            }
             if (_uri.value != uri) return@launch
             _locked.value = !open
-            if (open) _previewUri.value = uri
+            if (open) {
+                _previewUri.value = uri
+            } else {
+                schedulePreview()
+            }
         }
     }
 
@@ -161,6 +190,10 @@ class UnlockPdfToolComponent @AssistedInject internal constructor(
             },
             onFailure = onFailure,
         )
+    }
+
+    private companion object {
+        private const val PASSWORD_CHECK_DEBOUNCE = 400L
     }
 
     @AssistedFactory

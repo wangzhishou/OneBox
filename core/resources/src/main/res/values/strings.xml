@@ -499,6 +499,7 @@
     <string name="passwords_do_not_match">Passwords do not match</string>
     <string name="password_copied">Password copied. Keep it somewhere safe</string>
     <string name="pdf_has_no_password">This file has no password</string>
+    <string name="pdf_cannot_be_opened">This PDF cannot be opened</string>
     <string name="pdf_enter_password_to_preview">Encrypted. Enter the password to preview</string>
     <string name="wrong_password">Wrong password</string>
     <string name="page_number_format_default">Page {n} of {total}</string>

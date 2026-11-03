@@ -56,6 +56,7 @@ import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.getPageSafe
 import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.metadata
 import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.orAll
 import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.pageIndices
+import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.rasterizePdfText
 import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.save
 import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.setAlpha
 import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.setColor
@@ -83,6 +84,7 @@ import com.tom_roush.pdfbox.pdmodel.PDDocument
 import com.tom_roush.pdfbox.pdmodel.PDPage
 import com.tom_roush.pdfbox.pdmodel.common.PDRectangle
 import com.tom_roush.pdfbox.pdmodel.encryption.InvalidPasswordException
+import com.tom_roush.pdfbox.pdmodel.graphics.image.LosslessFactory
 import com.tom_roush.pdfbox.pdmodel.graphics.state.RenderingMode
 import com.tom_roush.pdfbox.pdmodel.interactive.annotation.PDAnnotationFileAttachment
 import com.tom_roush.pdfbox.pdmodel.interactive.annotation.PDAnnotationLine
@@ -193,8 +195,10 @@ internal class AndroidPdfManager @Inject constructor(
                             .toList()
                     }
 
+                val font = document.defaultFont
+
                 words.forEach { word ->
-                    val text = word.text.cleanPdfText()
+                    val text = word.text.cleanPdfText(font)
                     if (text.isBlank()) return@forEach
 
                     val left = word.left * scaleX
@@ -206,7 +210,7 @@ internal class AndroidPdfManager @Inject constructor(
                     val targetWidth = (right - left).coerceAtLeast(1f)
                     val x = left.coerceIn(0f, pageWidth - 1f)
 
-                    val glyphWidthEm = (document.defaultFont.getStringWidth(text) / 1000f)
+                    val glyphWidthEm = (font.getStringWidth(text) / 1000f)
                         .coerceAtLeast(0.001f)
 
                     val fontByHeight = (boxHeight * 0.84f).coerceAtLeast(1f)
@@ -224,7 +228,7 @@ internal class AndroidPdfManager @Inject constructor(
 
                     beginText()
                     setRenderingMode(RenderingMode.NEITHER)
-                    setFont(document.defaultFont, fontSize)
+                    setFont(font, fontSize)
                     setHorizontalScaling(horizontalScale)
                     newLineAtOffset(x, y)
                     showText(text)
@@ -334,101 +338,67 @@ internal class AndroidPdfManager @Inject constructor(
         params: PdfPageNumbersParams
     ): String = catchPdf {
         usePdf(uri) { document ->
-            val font = document.defaultFont
-            val fontDescriptor = font.fontDescriptor
             val totalPages = document.numberOfPages
-            val label = params.labelFormat
-                .replace("{total}", totalPages.toString())
+            val label = params.labelFormat.replace("{total}", totalPages.toString())
+            val color = Color(params.color)
             var stamped = false
 
             document.pages.forEachIndexed { idx, page ->
-                val text = label
-                    .replace("{n}", (idx + 1).toString())
-                    .cleanPdfText(font)
-
+                val text = label.replace("{n}", (idx + 1).toString())
                 if (text.isBlank()) return@forEachIndexed
-                stamped = true
 
                 val cropBox = page.cropBox
-                val pageWidth = cropBox.width
-                val pageHeight = cropBox.height
-                val originX = cropBox.lowerLeftX
-                val originY = cropBox.lowerLeftY
+                val stamp = rasterizePdfText(
+                    lines = listOf(text),
+                    targetWidthPt = cropBox.width * params.fontSize / 100f,
+                    color = color.copy(alpha = 1f).toArgb(),
+                )
 
-                val glyphWidthEm = (font.getStringWidth(text) / 1000f).coerceAtLeast(0.001f)
-                val fontSize = pageWidth * params.fontSize / 100f / glyphWidthEm
-                val textWidth = glyphWidthEm * fontSize
-                val textAscent = fontDescriptor.ascent / 1000f * fontSize
-                val textDescent = fontDescriptor.descent / 1000f * fontSize
-                val textVerticalCenter =
-                    (fontDescriptor.ascent + fontDescriptor.descent) / 2000f * fontSize
-
-                val baseX = when (params.position) {
+                val x = when (params.position) {
                     Position.TopLeft,
                     Position.CenterLeft,
-                    Position.BottomLeft -> 10f
+                    Position.BottomLeft -> PAGE_NUMBER_HORIZONTAL_MARGIN
 
                     Position.TopCenter,
                     Position.Center,
-                    Position.BottomCenter -> pageWidth / 2f
+                    Position.BottomCenter -> (cropBox.width - stamp.widthPt) / 2f
 
                     Position.TopRight,
                     Position.CenterRight,
-                    Position.BottomRight -> pageWidth - 10f
+                    Position.BottomRight ->
+                        cropBox.width - PAGE_NUMBER_HORIZONTAL_MARGIN - stamp.widthPt
                 }
-
-                val baseY = when (params.position) {
+                val y = when (params.position) {
                     Position.TopLeft,
                     Position.TopCenter,
-                    Position.TopRight -> pageHeight - 20f
+                    Position.TopRight ->
+                        cropBox.height - PAGE_NUMBER_VERTICAL_MARGIN - stamp.heightPt
 
                     Position.CenterLeft,
                     Position.Center,
-                    Position.CenterRight -> pageHeight / 2f
+                    Position.CenterRight -> (cropBox.height - stamp.heightPt) / 2f
 
                     Position.BottomLeft,
                     Position.BottomCenter,
-                    Position.BottomRight -> 20f
+                    Position.BottomRight -> PAGE_NUMBER_VERTICAL_MARGIN
                 }
 
-                val adjustedX = when (params.position) {
-                    Position.TopCenter,
-                    Position.Center,
-                    Position.BottomCenter -> baseX - textWidth / 2f
-
-                    Position.TopRight,
-                    Position.CenterRight,
-                    Position.BottomRight -> baseX - textWidth
-
-                    else -> baseX
-                }
-
-                val adjustedY = when (params.position) {
-                    Position.TopLeft,
-                    Position.TopCenter,
-                    Position.TopRight -> baseY - textAscent
-
-                    Position.CenterLeft,
-                    Position.Center,
-                    Position.CenterRight -> baseY - textVerticalCenter
-
-                    Position.BottomLeft,
-                    Position.BottomCenter,
-                    Position.BottomRight -> baseY - textDescent
-                }
-
+                val image = LosslessFactory.createFromImage(document, stamp.bitmap)
                 document.writePage(page) {
-                    beginText()
-                    setFont(font, fontSize)
-                    setColor(params.color)
-                    newLineAtOffset(adjustedX + originX, adjustedY + originY)
-                    showText(text)
-                    endText()
+                    setAlpha(color.alpha)
+                    drawImage(
+                        image,
+                        x + cropBox.lowerLeftX,
+                        y + cropBox.lowerLeftY,
+                        stamp.widthPt,
+                        stamp.heightPt,
+                    )
                 }
+                stamped = true
             }
 
-            if (document.numberOfPages > 0 && !stamped) {
-                error("The current font cannot draw this page number")
+            if (totalPages > 0 && !stamped) {
+                error("Could not draw the page number")
             }
 
             document.save(
@@ -447,53 +417,44 @@ internal class AndroidPdfManager @Inject constructor(
         val color = Color(params.color)
 
         usePdf(uri) { document ->
-            val font = document.defaultFont
-            val fontDescriptor = font.fontDescriptor
             val lines = params.text
                 .replace("\r\n", "\n")
                 .split('\n')
-                .map { it.cleanPdfText(font) }
                 .filter { it.isNotBlank() }
-            if (lines.isEmpty()) {
-                if (params.text.isNotBlank()) {
-                    error("The current font cannot draw this watermark")
-                }
-            } else {
-                val longest = lines.maxBy { font.getStringWidth(it) }
+
+            if (lines.isNotEmpty()) {
+                val widestPageWidth = document.pages.maxOf { it.cropBox.width }
+                val stamp = rasterizePdfText(
+                    lines = lines,
+                    targetWidthPt = widestPageWidth * params.fontSize / 100f,
+                    color = color.copy(alpha = 1f).toArgb(),
+                )
+                val image = LosslessFactory.createFromImage(document, stamp.bitmap)
+                val radians = Math.toRadians(-params.rotation.toDouble())
 
                 params.pages.forEach { pageIndex ->
                     val page = document.getPageSafe(pageIndex)
                     val cropBox = page.cropBox
-                    val glyphWidthEm =
-                        (font.getStringWidth(longest) / 1000f).coerceAtLeast(0.001f)
-                    val fontSize = cropBox.width * params.fontSize / 100f / glyphWidthEm
-                    val lineHeight =
-                        (fontDescriptor.ascent - fontDescriptor.descent) / 1000f * fontSize
-                    val textVerticalCenter =
-                        (fontDescriptor.ascent + fontDescriptor.descent) / 2000f * fontSize
-                    val blockShift = lineHeight * (lines.size - 1) / 2f
+                    val width = cropBox.width * params.fontSize / 100f
+                    val height = width * stamp.aspectRatio
                     val centerX = cropBox.lowerLeftX + cropBox.width / 2f
                     val centerY = cropBox.lowerLeftY + cropBox.height / 2f
-                    val matrix = Matrix.getRotateInstance(
-                        Math.toRadians(-params.rotation.toDouble()),
-                        centerX,
-                        centerY
-                    )
 
                     document.writePage(page) {
-                        lines.forEachIndexed { index, line ->
-                            val lineWidth = font.getStringWidth(line) / 1000f * fontSize
-                            beginText()
-                            setFont(font, fontSize)
-                            setColor(color.copy(params.opacity))
-                            setTextMatrix(matrix)
-                            newLineAtOffset(
-                                -lineWidth / 2f,
-                                -textVerticalCenter + blockShift - index * lineHeight
-                            )
-                            showText(line)
-                            endText()
-                        }
+                        saveGraphicsState()
+                        setAlpha(params.opacity * color.alpha)
+                        transform(
+                            Matrix.getRotateInstance(
+                                radians,
+                                centerX,
+                                centerY
+                            ).apply {
+                                translate(-width / 2f, -height / 2f)
+                                scale(width, height)
+                            }
+                        )
+                        drawImage(image, 0f, 0f, 1f, 1f)
+                        restoreGraphicsState()
                     }
                 }
             }
@@ -1074,5 +1035,10 @@ internal class AndroidPdfManager @Inject constructor(
         input = this,
         color = Color.White.toArgb()
     )
+
+    private companion object {
+        private const val PAGE_NUMBER_HORIZONTAL_MARGIN = 10f
+        private const val PAGE_NUMBER_VERTICAL_MARGIN = 20f
+    }
 
 }

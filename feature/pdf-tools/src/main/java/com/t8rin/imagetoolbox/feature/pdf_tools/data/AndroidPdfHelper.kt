@@ -106,7 +106,6 @@ internal class AndroidPdfHelper @Inject constructor(
             options = setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL)
         )
         val HOCR_TAG_REGEX = Regex("<[^>]+>")
-        val PDF_CONTROL_REGEX = Regex("[\\p{Cntrl}&&[^\\n\\r\\t]]")
     }
 
     private val pagesCache = hashMapOf<String, List<IntegerSize>>()
@@ -136,22 +135,33 @@ internal class AndroidPdfHelper @Inject constructor(
 
     override suspend fun saveSignature(signature: Any): Boolean {
         return runSuspendCatching {
-            val currentSignatures = savedSignatures.value
+            val bitmap = imageGetter.getImage(signature)
+                ?: error("Could not read the signature")
 
-            if (currentSignatures.size + 1 > SIGNATURES_LIMIT) {
-                currentSignatures.last().toUri().toFile().delete()
-            }
+            withContext(ioDispatcher) {
+                val existing = signaturesDir
+                    .listFiles()
+                    .orEmpty()
+                    .sortedBy(File::lastModified)
+                val excess = existing.size + 1 - SIGNATURES_LIMIT
+                existing.take(excess.coerceAtLeast(0)).forEach { it.delete() }
 
-            File(signaturesDir, "signature_${System.currentTimeMillis()}.png")
-                .outputStream()
-                .use { out ->
-                    imageGetter.getImage(signature)?.compress(
-                        Bitmap.CompressFormat.PNG,
-                        100,
-                        out
-                    )
+                val target = File(
+                    signaturesDir,
+                    "signature_${System.currentTimeMillis()}.png"
+                )
+                try {
+                    target.outputStream().use { out ->
+                        if (!bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)) {
+                            error("Could not encode the signature")
+                        }
+                    }
+                } catch (t: Throwable) {
+                    target.delete()
+                    throw t
                 }
-            updateFlow.emit(Unit)
+                updateFlow.emit(Unit)
+            }
         }.onFailure {
             it.makeLog("saveSignature")
         }.isSuccess
@@ -356,8 +366,6 @@ internal class AndroidPdfHelper @Inject constructor(
             words = words
         )
     }
-
-    internal fun String.cleanPdfText(): String = replace(PDF_CONTROL_REGEX, "").take(2000)
 
     internal suspend fun prepareImagesForPdf(
         imageUris: List<String>,

@@ -13,7 +13,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,10 +52,6 @@ fun PageNumbersPdfToolContent(
 ) {
     val pageCount by rememberPdfPages(component.uri)
     val params = component.params
-    val localizedFormat = stringResource(R.string.page_number_format_default)
-    LaunchedEffect(localizedFormat) {
-        component.applyLocalizedFormat(localizedFormat)
-    }
 
     BasePdfToolContent(
         component = component,

@@ -1,9 +1,12 @@
 package com.t8rin.imagetoolbox.feature.pdf_tools.presentation.protect.screenLogic
 
 import android.content.ClipData
+import android.content.ClipDescription
 import android.content.ClipboardManager
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
+import android.os.PersistableBundle
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -93,12 +96,19 @@ class ProtectPdfToolComponent @AssistedInject internal constructor(
 
     private fun copyPassword() {
         val clipboard = appContext.getSystemService(ClipboardManager::class.java) ?: return
-        clipboard.setPrimaryClip(ClipData.newPlainText("pdf-password", password))
+        val clip = ClipData.newPlainText(PdfPasswordClipLabel, password).apply {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                // Keep the generated password out of the system clipboard preview.
+                description.extras = PersistableBundle().apply {
+                    putBoolean(ClipDescription.EXTRA_IS_SENSITIVE, true)
+                }
+            }
+        }
+        clipboard.setPrimaryClip(clip)
         _passwordCopied.value = true
     }
 
     override fun saveTo(uri: Uri) {
-        copyPassword()
         doSaving {
             val processed = pdfManager.protectPdf(
                 uri = _uri.value.toString(),
@@ -143,6 +153,10 @@ class ProtectPdfToolComponent @AssistedInject internal constructor(
             },
             onFailure = onFailure,
         )
+    }
+
+    private companion object {
+        private const val PdfPasswordClipLabel = "pdf-password"
     }
 
     @AssistedFactory

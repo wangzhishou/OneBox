@@ -48,7 +48,8 @@ fun UnlockPdfToolContent(
         title = stringResource(R.string.unlock_pdf),
         canSave = component.locked == true &&
             component.password.isNotEmpty() &&
-            !component.passwordRejected,
+            !component.passwordRejected &&
+            !component.cannotOpen,
         controls = {
             component.previewUri?.let {
                 PdfPreviewItem(
@@ -57,7 +58,13 @@ fun UnlockPdfToolContent(
                 )
                 Spacer(Modifier.height(16.dp))
             }
-            when (component.locked) {
+            if (component.cannotOpen) {
+                Text(
+                    text = stringResource(R.string.pdf_cannot_be_opened),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.error,
+                )
+            } else when (component.locked) {
                 false -> Text(
                     text = stringResource(R.string.pdf_has_no_password),
                     style = MaterialTheme.typography.bodyMedium,

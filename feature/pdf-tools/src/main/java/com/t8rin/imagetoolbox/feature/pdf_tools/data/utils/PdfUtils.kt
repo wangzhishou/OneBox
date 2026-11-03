@@ -17,7 +17,6 @@
 
 package com.t8rin.imagetoolbox.feature.pdf_tools.data.utils
 
-import android.content.Context
 import android.graphics.Bitmap
 import androidx.compose.ui.graphics.Color
 import androidx.core.net.toUri
@@ -49,9 +48,7 @@ import com.tom_roush.pdfbox.pdmodel.graphics.image.JPEGFactory
 import com.tom_roush.pdfbox.pdmodel.graphics.image.LosslessFactory
 import com.tom_roush.pdfbox.pdmodel.graphics.image.PDImageXObject
 import com.tom_roush.pdfbox.pdmodel.graphics.state.PDExtendedGraphicsState
-import java.io.File
 import java.util.Calendar
-import java.util.zip.GZIPInputStream
 import kotlin.math.roundToInt
 
 internal fun PDDocument.save(
@@ -105,55 +102,16 @@ internal fun PDDocument.setMetadata(value: PdfMetadata?) {
     }
 }
 
+/**
+ * Roboto Bold, the only embeddable font shipped with the app. It covers Latin only,
+ * so it is used exclusively for the invisible OCR text layer, and the text written
+ * with it has to be filtered through [cleanPdfText] first.
+ *
+ * Visible stamps (page numbers, watermarks) never use it: they are rasterized with
+ * the system font instead, see `PdfTextStamp`.
+ */
 internal val PDDocument.defaultFont: PDType0Font
-    get() = PDType0Font.load(this, appContext.defaultPdfFontFile().inputStream())
-
-internal fun Context.defaultPdfFontFile(): File = PdfFontCache.file(this)
-
-private object PdfFontCache {
-    @Volatile
-    private var cached: File? = null
-
-    fun file(context: Context): File {
-        cached?.takeIf { it.isFile && it.length() > 100_000 }?.let { return it }
-        return synchronized(this) {
-            cached?.takeIf { it.isFile && it.length() > 100_000 } ?: unpack(context).also {
-                cached = it
-            }
-        }
-    }
-
-    private fun unpack(context: Context): File {
-        val directory = File(context.filesDir, "pdf-fonts")
-        if (!directory.isDirectory && !directory.mkdirs()) {
-            return fallback(context)
-        }
-        val target = File(directory, "universal-bold.ttf")
-        if (target.isFile && target.length() > 100_000) return target
-        return try {
-            context.resources.openRawResource(R.raw.image_toolbox_universal_bold).use { raw ->
-                GZIPInputStream(raw).use { input ->
-                    target.outputStream().use { output -> input.copyTo(output) }
-                }
-            }
-            if (target.isFile && target.length() > 100_000) target else fallback(context)
-        } catch (t: Throwable) {
-            t.makeLog("pdf-font")
-            fallback(context)
-        }
-    }
-
-    private fun fallback(context: Context): File {
-        val directory = File(context.filesDir, "pdf-fonts")
-        directory.mkdirs()
-        val target = File(directory, "roboto-bold.ttf")
-        if (target.isFile && target.length() > 0) return target
-        context.resources.openRawResource(R.raw.roboto_bold).use { input ->
-            target.outputStream().use { output -> input.copyTo(output) }
-        }
-        return target
-    }
-}
+    get() = PDType0Font.load(this, appContext.resources.openRawResource(R.raw.roboto_bold))
 
 internal fun String.cleanPdfText(font: PDFont): String {
     val text = replace(PdfControlChars, "").take(2000)

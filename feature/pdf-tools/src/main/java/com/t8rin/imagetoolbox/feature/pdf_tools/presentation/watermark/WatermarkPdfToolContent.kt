@@ -155,16 +155,17 @@ private fun androidx.compose.foundation.layout.BoxScope.WatermarkOverlay(
     BoxWithConstraints(Modifier.matchParentSize()) {
         val density = LocalDensity.current
         val textMeasurer = rememberTextMeasurer()
-        val longest = lines.maxBy { it.length }
         val targetWidth = maxWidth * fontSize / 100f
         val scaledFontSize = run {
-            val measured = textMeasurer.measure(
-                text = longest,
-                style = pdfTextStyle.copy(fontSize = 100.sp),
-                maxLines = 1,
-                softWrap = false,
-            ).size.width.coerceAtLeast(1)
-            with(density) { 100.sp * (targetWidth.toPx() / measured) }
+            val widestLine = lines.maxOf { line ->
+                textMeasurer.measure(
+                    text = line,
+                    style = pdfTextStyle.copy(fontSize = 100.sp),
+                    maxLines = 1,
+                    softWrap = false,
+                ).size.width
+            }.coerceAtLeast(1)
+            with(density) { 100.sp * (targetWidth.toPx() / widestLine) }
         }
         Column(
             modifier = Modifier
