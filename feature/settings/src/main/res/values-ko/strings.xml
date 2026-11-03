@@ -206,13 +206,10 @@
     <string name="ai_engine_list_empty">모델 서비스가 없습니다. 오른쪽 상단의 아이콘을 탭하여 추가하세요.</string>
     <string name="ai_engine_not_found">모델 서비스가 존재하지 않거나 삭제되었습니다.</string>
     <string name="ai_engine_remote_models_load_failed">원격 모델을 불러오지 못했습니다.</string>
-    <string name="ai_engine_remote_models_submit_success">모델이 제출되었습니다.</string>
-    <string name="ai_engine_remote_models_submit_failed">모델 제출에 실패했습니다.</string>
     <string name="ai_engine_remote_models_picker_title">공급자에서 모델 불러오기</string>
     <string name="ai_engine_remote_models_loading">로딩 중…</string>
     <string name="ai_engine_remote_models_retry">재시도</string>
     <string name="ai_engine_remote_models_empty">검색된 모델이 없습니다</string>
-    <string name="ai_engine_remote_models_submit_count">선택 항목 제출 (%1$d)</string>
     <string name="ai_engine_load_from_provider">공급자에서 모델 불러오기</string>
     <string name="ai_engine_file_upload_strategy_title">파일 업로드 전략</string>
     <string name="ai_engine_file_upload_strategy_base64">Base64 인라인</string>

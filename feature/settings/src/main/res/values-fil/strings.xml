@@ -206,13 +206,10 @@
     <string name="ai_engine_list_empty">Wala pang serbisyo ng modelo. I-tap ang icon sa kanang-itaas upang magdagdag.</string>
     <string name="ai_engine_not_found">Ang serbisyo ng modelo ay hindi umiiral o na-delete na.</string>
     <string name="ai_engine_remote_models_load_failed">Nabigong i-load ang mga remote na modelo</string>
-    <string name="ai_engine_remote_models_submit_success">Na-submit ang mga modelo</string>
-    <string name="ai_engine_remote_models_submit_failed">Nabigong i-submit ang mga modelo</string>
     <string name="ai_engine_remote_models_picker_title">I-load ang Mga Modelo mula sa Provider</string>
     <string name="ai_engine_remote_models_loading">Naglo-load…</string>
     <string name="ai_engine_remote_models_retry">Subukan Muli</string>
     <string name="ai_engine_remote_models_empty">Walang nakuha na mga modelo</string>
-    <string name="ai_engine_remote_models_submit_count">Isumite ang Napili (%1$d)</string>
     <string name="ai_engine_load_from_provider">I-load ang mga Modelo mula sa Provider</string>
     <string name="ai_engine_file_upload_strategy_title">Estratehiya sa Pag-upload ng File</string>
     <string name="ai_engine_file_upload_strategy_base64">Base64 Inline</string>

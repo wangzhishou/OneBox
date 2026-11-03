@@ -12,10 +12,7 @@ import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.model.ai.AiModel
 import com.shifenmiao.model.ai.AiRequestProtocol
 import com.shifenmiao.model.ai.AuthType
-import com.shifenmiao.model.ai.ModelDraft
-import com.shifenmiao.model.ai.SubmitModelsRequest
 import com.shifenmiao.model.ai.openai.OpenAIModelItem
-import com.shifenmiao.network.api.ApiService
 import com.wanbaohe.cloud.storage.data.CloudStorageRepository
 import com.wanbaohe.cloud.storage.model.CloudStorageConnection
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
@@ -41,7 +38,6 @@ class AIEngineSettingsDetailComponent @AssistedInject internal constructor(
     private val aiEngineCatalogManager: AIEngineCatalogManager,
     private val aiEngineManager: AIEngineManager,
     private val modelsFetcher: AiEngineModelsFetcher,
-    private val apiService: ApiService,
     private val cloudStorageRepository: CloudStorageRepository,
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
@@ -457,25 +453,38 @@ class AIEngineSettingsDetailComponent @AssistedInject internal constructor(
         }
     }
 
-    fun submitSelectedModels(selectedIds: List<String>, onComplete: (Boolean) -> Unit = {}) {
+    /**
+     * 把服务商列表里的模型加成本地模型（模型管理只走本地，不再提交到服务端）。
+     *
+     * 已经存在的同名本地模型直接选中，避免重复添加把用户改过的参数覆盖掉。
+     */
+    fun addProviderModelLocally(model: OpenAIModelItem, onComplete: (Boolean) -> Unit = {}) {
         val engine = _draftEngine.value ?: return onComplete(false)
-        val selectedModels = _remoteModels.value
-            .filter { it.id in selectedIds }
-            .map { ModelDraft(name = it.id, title = it.id) }
+        if (model.id.isBlank()) return onComplete(false)
 
-        if (selectedModels.isEmpty()) return onComplete(false)
+        val existing = modelsByProvider.value[engine.name.lowercase()]
+            ?.firstOrNull { it.name == model.id }
+        if (existing != null) {
+            _draftEngine.value = _draftEngine.value?.copy(model = existing)
+            originalEngine = originalEngine?.copy(model = existing)
+            onComplete(true)
+            return
+        }
 
-        componentScope.launch {
-            try {
-                val request = SubmitModelsRequest(engineName = engine.name, models = selectedModels)
-                val response = apiService.submitAiModels(request)
-                if (response.isSuccessful) {
-                    _remoteModels.value = emptyList()
-                }
-                onComplete(response.isSuccessful)
-            } catch (_: Exception) {
-                onComplete(false)
+        val localModel = engine.model.copy(
+            id = 0,
+            name = model.id,
+            title = AIEngineSettingsDetailComponent.prettifyModelTitle(model.id),
+            engineName = engine.name,
+            canEdit = true,
+            hasLocalOverrides = false,
+        )
+        aiEngineCatalogManager.upsertLocalModel(localModel) { success, savedModel ->
+            if (success && savedModel != null) {
+                _draftEngine.value = _draftEngine.value?.copy(model = savedModel)
+                originalEngine = originalEngine?.copy(model = savedModel)
             }
+            onComplete(success)
         }
     }
 

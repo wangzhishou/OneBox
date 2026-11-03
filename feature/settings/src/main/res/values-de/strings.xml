@@ -206,13 +206,10 @@
     <string name="ai_engine_list_empty">Noch keine Modellservices. Tippe auf das Symbol oben rechts, um einen hinzuzufügen.</string>
     <string name="ai_engine_not_found">Der Modellservice existiert nicht oder wurde gelöscht.</string>
     <string name="ai_engine_remote_models_load_failed">Remote-Modelle konnten nicht geladen werden</string>
-    <string name="ai_engine_remote_models_submit_success">Modelle übermittelt</string>
-    <string name="ai_engine_remote_models_submit_failed">Modelle konnten nicht übermittelt werden</string>
     <string name="ai_engine_remote_models_picker_title">Modelle vom Anbieter laden</string>
     <string name="ai_engine_remote_models_loading">Wird geladen…</string>
     <string name="ai_engine_remote_models_retry">Erneut versuchen</string>
     <string name="ai_engine_remote_models_empty">Keine Modelle abgerufen</string>
-    <string name="ai_engine_remote_models_submit_count">Ausgewählte übermitteln (%1$d)</string>
     <string name="ai_engine_load_from_provider">Modelle vom Anbieter laden</string>
     <string name="ai_engine_file_upload_strategy_title">Datei-Upload-Strategie</string>
     <string name="ai_engine_file_upload_strategy_base64">Base64-Inline</string>

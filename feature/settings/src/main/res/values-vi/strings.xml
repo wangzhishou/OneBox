@@ -228,13 +228,10 @@
     <string name="ai_engine_jev_list_empty">Chưa có Jev engine, nhấn vào góc trên bên phải để thêm mới</string>
     <string name="ai_engine_not_found">Dịch vụ mô hình không tồn tại hoặc đã bị xóa</string>
     <string name="ai_engine_remote_models_load_failed">Tải mô hình từ xa thất bại</string>
-    <string name="ai_engine_remote_models_submit_success">Gửi mô hình thành công</string>
-    <string name="ai_engine_remote_models_submit_failed">Gửi mô hình thất bại</string>
     <string name="ai_engine_remote_models_picker_title">Tải mô hình từ nhà cung cấp</string>
     <string name="ai_engine_remote_models_loading">Đang tải…</string>
     <string name="ai_engine_remote_models_retry">Thử lại</string>
     <string name="ai_engine_remote_models_empty">Không lấy được danh sách mô hình</string>
-    <string name="ai_engine_remote_models_submit_count">Gửi mô hình đã chọn (%1$d)</string>
     <string name="ai_engine_load_from_provider">Tải mô hình từ nhà cung cấp</string>
     <string name="ai_engine_file_upload_strategy_title">Chiến lược tải tệp lên</string>
     <string name="ai_engine_file_upload_strategy_base64">Nhúng trực tiếp Base64</string>

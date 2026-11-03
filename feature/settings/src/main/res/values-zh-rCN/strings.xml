@@ -259,13 +259,10 @@
     <string name="ai_engine_jev_list_empty">暂无 Jev 引擎，点击右上角新增</string>
     <string name="ai_engine_not_found">模型服务不存在或已被删除</string>
     <string name="ai_engine_remote_models_load_failed">加载远程模型失败</string>
-    <string name="ai_engine_remote_models_submit_success">模型提交成功</string>
-    <string name="ai_engine_remote_models_submit_failed">模型提交失败</string>
     <string name="ai_engine_remote_models_picker_title">从服务商加载模型</string>
     <string name="ai_engine_remote_models_loading">加载中…</string>
     <string name="ai_engine_remote_models_retry">重试</string>
     <string name="ai_engine_remote_models_empty">未获取到模型列表</string>
-    <string name="ai_engine_remote_models_submit_count">提交选中模型 (%1$d)</string>
     <string name="ai_engine_remote_models_found">发现 %1$d 个可用模型</string>
     <string name="ai_engine_view_models">查看</string>
     <string name="ai_engine_import_empty_clipboard">剪贴板是空的,先复制一份引擎配置</string>

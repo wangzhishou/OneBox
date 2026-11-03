@@ -210,13 +210,10 @@
     <string name="ai_engine_list_empty">Henüz model hizmeti yok. Eklemek için sağ üstteki simgeye dokunun.</string>
     <string name="ai_engine_not_found">Model hizmeti mevcut değil veya silinmiş.</string>
     <string name="ai_engine_remote_models_load_failed">Uzak modeller yüklenemedi</string>
-    <string name="ai_engine_remote_models_submit_success">Modeller gönderildi</string>
-    <string name="ai_engine_remote_models_submit_failed">Modeller gönderilemedi</string>
     <string name="ai_engine_remote_models_picker_title">Sağlayıcıdan Modelleri Yükle</string>
     <string name="ai_engine_remote_models_loading">Yükleniyor…</string>
     <string name="ai_engine_remote_models_retry">Yeniden Dene</string>
     <string name="ai_engine_remote_models_empty">Model alınamadı</string>
-    <string name="ai_engine_remote_models_submit_count">Seçilenleri Gönder (%1$d)</string>
     <string name="ai_engine_load_from_provider">Sağlayıcıdan Modelleri Yükle</string>
     <string name="ai_engine_file_upload_strategy_title">Dosya Yükleme Stratejisi</string>
     <string name="ai_engine_file_upload_strategy_base64">Base64 Satır İçi</string>

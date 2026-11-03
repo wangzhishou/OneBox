@@ -228,13 +228,10 @@
     <string name="ai_engine_jev_list_empty">Aucun moteur Jev, appuyez en haut à droite pour en ajouter</string>
     <string name="ai_engine_not_found">Le service de modèle n\'existe pas ou a été supprimé</string>
     <string name="ai_engine_remote_models_load_failed">Échec du chargement des modèles distants</string>
-    <string name="ai_engine_remote_models_submit_success">Modèle soumis avec succès</string>
-    <string name="ai_engine_remote_models_submit_failed">Échec de la soumission du modèle</string>
     <string name="ai_engine_remote_models_picker_title">Charger les modèles depuis le fournisseur</string>
     <string name="ai_engine_remote_models_loading">Chargement…</string>
     <string name="ai_engine_remote_models_retry">Réessayer</string>
     <string name="ai_engine_remote_models_empty">Aucune liste de modèles obtenue</string>
-    <string name="ai_engine_remote_models_submit_count">Soumettre les modèles sélectionnés (%1$d)</string>
     <string name="ai_engine_load_from_provider">Charger les modèles depuis le fournisseur</string>
     <string name="ai_engine_file_upload_strategy_title">Stratégie de téléversement de fichiers</string>
     <string name="ai_engine_file_upload_strategy_base64">Intégration directe en Base64</string>

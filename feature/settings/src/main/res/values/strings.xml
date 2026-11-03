@@ -259,13 +259,10 @@
     <string name="ai_engine_jev_list_empty">No Jev engines yet. Tap the icon in the top-right to add one.</string>
     <string name="ai_engine_not_found">The model service does not exist or has been deleted.</string>
     <string name="ai_engine_remote_models_load_failed">Failed to load remote models</string>
-    <string name="ai_engine_remote_models_submit_success">Models submitted</string>
-    <string name="ai_engine_remote_models_submit_failed">Models failed to submit</string>
     <string name="ai_engine_remote_models_picker_title">Load Models from Provider</string>
     <string name="ai_engine_remote_models_loading">Loading…</string>
     <string name="ai_engine_remote_models_retry">Retry</string>
     <string name="ai_engine_remote_models_empty">No models retrieved</string>
-    <string name="ai_engine_remote_models_submit_count">Submit Selected (%1$d)</string>
     <string name="ai_engine_remote_models_found">Found %1$d available models from this provider</string>
     <string name="ai_engine_view_models">View</string>
     <string name="ai_engine_import_empty_clipboard">Clipboard is empty — copy an engine config first</string>

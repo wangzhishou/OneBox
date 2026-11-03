@@ -206,13 +206,10 @@
     <string name="ai_engine_list_empty">अभी कोई मॉडल सेवा नहीं है। एक जोड़ने के लिए ऊपर-दाएँ आइकन पर टैप करें।</string>
     <string name="ai_engine_not_found">मॉडल सेवा मौजूद नहीं है या हटा दी गई है।</string>
     <string name="ai_engine_remote_models_load_failed">दूरस्थ मॉडल लोड करने में विफल</string>
-    <string name="ai_engine_remote_models_submit_success">मॉडल सबमिट किए गए</string>
-    <string name="ai_engine_remote_models_submit_failed">मॉडल सबमिट करने में विफल</string>
     <string name="ai_engine_remote_models_picker_title">प्रदाता से मॉडल लोड करें</string>
     <string name="ai_engine_remote_models_loading">लोड हो रहा है…</string>
     <string name="ai_engine_remote_models_retry">पुनः प्रयास करें</string>
     <string name="ai_engine_remote_models_empty">कोई मॉडल प्राप्त नहीं हुआ</string>
-    <string name="ai_engine_remote_models_submit_count">चयनित सबमिट करें (%1$d)</string>
     <string name="ai_engine_load_from_provider">प्रदाता से मॉडल लोड करें</string>
     <string name="ai_engine_file_upload_strategy_title">फ़ाइल अपलोड रणनीति</string>
     <string name="ai_engine_file_upload_strategy_base64">बेस64 इनलाइन</string>

@@ -206,13 +206,10 @@
     <string name="ai_engine_list_empty">Belum ada layanan model. Ketuk ikon di kanan atas untuk menambahkan.</string>
     <string name="ai_engine_not_found">Layanan model tidak ada atau telah dihapus.</string>
     <string name="ai_engine_remote_models_load_failed">Gagal memuat model jarak jauh</string>
-    <string name="ai_engine_remote_models_submit_success">Model berhasil dikirim</string>
-    <string name="ai_engine_remote_models_submit_failed">Model gagal dikirim</string>
     <string name="ai_engine_remote_models_picker_title">Muat Model dari Penyedia</string>
     <string name="ai_engine_remote_models_loading">Memuat…</string>
     <string name="ai_engine_remote_models_retry">Coba lagi</string>
     <string name="ai_engine_remote_models_empty">Tidak ada model yang diambil</string>
-    <string name="ai_engine_remote_models_submit_count">Kirim yang Dipilih (%1$d)</string>
     <string name="ai_engine_load_from_provider">Muat Model dari Penyedia</string>
     <string name="ai_engine_file_upload_strategy_title">Strategi Unggah File</string>
     <string name="ai_engine_file_upload_strategy_base64">Base64 Inline</string>

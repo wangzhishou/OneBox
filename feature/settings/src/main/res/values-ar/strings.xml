@@ -224,13 +224,10 @@
     <string name="ai_engine_jev_list_empty">لا توجد محرّكات Jev بعد. اضغط على الأيقونة في الأعلى لليسار لإضافة واحد.</string>
     <string name="ai_engine_not_found">خدمة النموذج غير موجودة أو تم حذفها.</string>
     <string name="ai_engine_remote_models_load_failed">فشل تحميل النماذج البعيدة</string>
-    <string name="ai_engine_remote_models_submit_success">تم إرسال النماذج</string>
-    <string name="ai_engine_remote_models_submit_failed">فشل إرسال النماذج</string>
     <string name="ai_engine_remote_models_picker_title">تحميل النماذج من المزوّد</string>
     <string name="ai_engine_remote_models_loading">جارٍ التحميل…</string>
     <string name="ai_engine_remote_models_retry">إعادة المحاولة</string>
     <string name="ai_engine_remote_models_empty">لم يتم جلب أي نماذج</string>
-    <string name="ai_engine_remote_models_submit_count">إرسال المحدد (%1$d)</string>
     <string name="ai_engine_load_from_provider">تحميل النماذج من المزوّد</string>
     <string name="ai_engine_file_upload_strategy_title">استراتيجية رفع الملفات</string>
     <string name="ai_engine_file_upload_strategy_base64">Base64 مضمّن</string>

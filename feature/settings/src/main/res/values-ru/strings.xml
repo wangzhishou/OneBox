@@ -206,13 +206,10 @@
     <string name="ai_engine_list_empty">Сервисы моделей отсутствуют. Нажмите значок в правом верхнем углу, чтобы добавить.</string>
     <string name="ai_engine_not_found">Сервис модели не существует или был удален.</string>
     <string name="ai_engine_remote_models_load_failed">Не удалось загрузить удаленные модели</string>
-    <string name="ai_engine_remote_models_submit_success">Модели отправлены</string>
-    <string name="ai_engine_remote_models_submit_failed">Не удалось отправить модели</string>
     <string name="ai_engine_remote_models_picker_title">Загрузить модели от провайдера</string>
     <string name="ai_engine_remote_models_loading">Загрузка…</string>
     <string name="ai_engine_remote_models_retry">Повторить</string>
     <string name="ai_engine_remote_models_empty">Модели не получены</string>
-    <string name="ai_engine_remote_models_submit_count">Отправить выбранные (%1$d)</string>
     <string name="ai_engine_load_from_provider">Загрузить модели от провайдера</string>
     <string name="ai_engine_file_upload_strategy_title">Стратегия загрузки файлов</string>
     <string name="ai_engine_file_upload_strategy_base64">Base64 встроенный</string>

@@ -206,13 +206,10 @@
     <string name="ai_engine_list_empty">Aún no hay servicios de modelos. Toca el icono en la esquina superior derecha para añadir uno.</string>
     <string name="ai_engine_not_found">El servicio de modelos no existe o ha sido eliminado.</string>
     <string name="ai_engine_remote_models_load_failed">Error al cargar los modelos remotos</string>
-    <string name="ai_engine_remote_models_submit_success">Modelos enviados</string>
-    <string name="ai_engine_remote_models_submit_failed">Error al enviar los modelos</string>
     <string name="ai_engine_remote_models_picker_title">Cargar modelos del proveedor</string>
     <string name="ai_engine_remote_models_loading">Cargando…</string>
     <string name="ai_engine_remote_models_retry">Reintentar</string>
     <string name="ai_engine_remote_models_empty">No se recuperaron modelos</string>
-    <string name="ai_engine_remote_models_submit_count">Enviar seleccionados (%1$d)</string>
     <string name="ai_engine_load_from_provider">Cargar modelos del proveedor</string>
     <string name="ai_engine_file_upload_strategy_title">Estrategia de carga de archivos</string>
     <string name="ai_engine_file_upload_strategy_base64">Base64 en línea</string>

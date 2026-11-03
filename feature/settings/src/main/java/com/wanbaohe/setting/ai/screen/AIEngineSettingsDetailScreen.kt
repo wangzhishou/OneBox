@@ -67,7 +67,6 @@ import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.model.ai.AiModel
 import com.shifenmiao.model.ai.AiRequestProtocol
 import com.shifenmiao.model.ai.AuthType
-import com.shifenmiao.model.ai.openai.OpenAIModelItem
 import com.shifenmiao.model.remote.AiEngineConfig
 import com.shifenmiao.storage.RemoteConfigStorage
 import com.shifenmiao.theme.AppTheme
@@ -433,18 +432,9 @@ fun AIEngineSettingsDetailScreen(
                     onModelDelete = { pendingDeleteModel = it },
                     onAddModel = component::beginAddLocalModel,
                     onLoadRemoteModels = {
-                        component.loadRemoteModels { success ->
-                            if (success) {
-                                showRemoteModelPicker = true
-                            } else {
-                                coroutineScope.launch {
-                                    AppToastHost.showFailureToast(
-                                        remoteModelsError
-                                            ?: getString(R.string.ai_engine_remote_models_load_failed)
-                                    )
-                                }
-                            }
-                        }
+                        // 弹窗自己展示加载/失败/重试, 失败不再打断页面
+                        showRemoteModelPicker = true
+                        component.loadRemoteModels()
                     },
                 )
 
@@ -765,30 +755,29 @@ fun AIEngineSettingsDetailScreen(
     }
 
     if (showRemoteModelPicker) {
-        RemoteModelPickerDialog(
+        ProviderModelsPickerDialog(
             models = remoteModels,
             isLoading = isLoadingRemoteModels,
             error = remoteModelsError,
+            selectedModelId = draftEngine?.model?.name.orEmpty(),
             onDismiss = {
                 showRemoteModelPicker = false
                 component.clearRemoteModels()
             },
-            onRefresh = {
-                component.loadRemoteModels { }
-            },
-            onSubmit = { selectedIds ->
-                component.submitSelectedModels(selectedIds) { success ->
+            onRefresh = { component.loadRemoteModels() },
+            onSelect = { model ->
+                // 只加本地模型: 拉回来的列表点一个就落一条本地模型, 不再提交服务端
+                component.addProviderModelLocally(model) { success ->
                     coroutineScope.launch {
                         if (success) {
-                            AppToastHost.showToast(getString(R.string.ai_engine_remote_models_submit_success))
                             showRemoteModelPicker = false
-                            component.clearRemoteModels()
+                            AppToastHost.showToast(getString(R.string.ai_engine_model_add_success))
                         } else {
-                            AppToastHost.showFailureToast(getString(R.string.ai_engine_remote_models_submit_failed))
+                            AppToastHost.showFailureToast(getString(R.string.ai_engine_model_add_failed))
                         }
                     }
                 }
-            }
+            },
         )
     }
 
@@ -805,144 +794,6 @@ fun AIEngineSettingsDetailScreen(
             visible = showModelExitConfirmDialog,
         )
     }
-}
-
-@Composable
-private fun RemoteModelPickerDialog(
-    models: List<OpenAIModelItem>,
-    isLoading: Boolean,
-    error: String?,
-    onDismiss: () -> Unit,
-    onRefresh: () -> Unit,
-    onSubmit: (List<String>) -> Unit,
-) {
-    var selectedIds by remember { mutableStateOf<Set<String>>(emptySet()) }
-
-    EnhancedAlertDialog(
-        visible = true,
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.ai_engine_remote_models_picker_title)) },
-        text = {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.heightIn(max = 400.dp)
-            ) {
-                when {
-                    isLoading -> {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(32.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                stringResource(R.string.ai_engine_remote_models_loading),
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-
-                    error != null -> {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            Text(
-                                text = error,
-                                color = MaterialTheme.colorScheme.onErrorContainer,
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                            OneSecondaryButton(
-                                text = stringResource(R.string.ai_engine_remote_models_retry),
-                                onClick = onRefresh
-                            )
-                        }
-                    }
-
-                    models.isEmpty() -> {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(32.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                stringResource(R.string.ai_engine_remote_models_empty),
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-
-                    else -> {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .verticalScroll(rememberScrollState()),
-                            verticalArrangement = Arrangement.spacedBy(4.dp)
-                        ) {
-                            models.forEach { model ->
-                                val isSelected = model.id in selectedIds
-                                OneBoxListItem(
-                                    headlineContent = {
-                                        Text(
-                                            text = model.id,
-                                            style = MaterialTheme.typography.bodyMedium.copy(
-                                                fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
-                                            )
-                                        )
-                                    },
-                                    subtitle = {
-                                        Text(
-                                            text = "${model.ownedBy} · ${model.obj}",
-                                            style = MaterialTheme.typography.bodySmall,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
-                                    },
-                                    contained = true,
-                                    trailingContent = {
-                                        if (isSelected) {
-                                            Icon(
-                                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check,
-                                                contentDescription = null,
-                                                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                                                modifier = Modifier.size(20.dp)
-                                            )
-                                        }
-                                    },
-                                    modifier = Modifier.clickable {
-                                        selectedIds = if (isSelected) {
-                                            selectedIds - model.id
-                                        } else {
-                                            selectedIds + model.id
-                                        }
-                                    }
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        confirmButton = {
-            OnePrimaryButton(
-                text = stringResource(
-                    R.string.ai_engine_remote_models_submit_count,
-                    selectedIds.size
-                ),
-                onClick = { onSubmit(selectedIds.toList()) },
-                enabled = selectedIds.isNotEmpty() && !isLoading
-            )
-        },
-        dismissButton = {
-            OneSecondaryButton(
-                text = stringResource(CoreR.string.button_cancel),
-                onClick = onDismiss
-            )
-        }
-    )
 }
 
 @Composable

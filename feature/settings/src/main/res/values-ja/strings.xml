@@ -206,13 +206,10 @@
     <string name="ai_engine_list_empty">モデルサービスがまだありません。右上のアイコンをタップして追加してください。</string>
     <string name="ai_engine_not_found">モデルサービスが存在しないか、削除されています。</string>
     <string name="ai_engine_remote_models_load_failed">リモートモデルの読み込みに失敗しました</string>
-    <string name="ai_engine_remote_models_submit_success">モデルが送信されました</string>
-    <string name="ai_engine_remote_models_submit_failed">モデルの送信に失敗しました</string>
     <string name="ai_engine_remote_models_picker_title">プロバイダーからモデルを読み込む</string>
     <string name="ai_engine_remote_models_loading">読み込み中…</string>
     <string name="ai_engine_remote_models_retry">再試行</string>
     <string name="ai_engine_remote_models_empty">モデルが取得されませんでした</string>
-    <string name="ai_engine_remote_models_submit_count">選択を送信 (%1$d)</string>
     <string name="ai_engine_load_from_provider">プロバイダーからモデルを読み込む</string>
     <string name="ai_engine_file_upload_strategy_title">ファイルアップロード方式</string>
     <string name="ai_engine_file_upload_strategy_base64">Base64インライン</string>
