@@ -322,7 +322,23 @@ data class RemoteConfig(
      * 默认 `null` = 未下发 = 不弹窗：不认识本字段的老客户端只会继续用设置页里的角标与副标题，
      * 所以新增本字段对线上老版本零影响。详见 [AppUpdateConfig]。
      */
-    val appUpdate: AppUpdateConfig? = null
+    val appUpdate: AppUpdateConfig? = null,
+
+    /**
+     * 端侧 OCR 模型压缩包下载地址，动态下发；未下发或为空时回退到内置地址。
+     * 仅用于换源，更换模型内容仍需同步更新客户端的包 ID 与 SHA-256。
+     */
+    val ocrModelPackUrl: String? = null,
+
+    /**
+     * Chat 端侧 Gemma 3 1B 模型下载地址，动态下发；未下发或为空时回退到内置地址。
+     */
+    val localChatGemma3ModelUrl: String? = null,
+
+    /**
+     * Chat 端侧 Qwen3 0.6B 模型下载地址，动态下发；未下发或为空时回退到内置地址。
+     */
+    val localChatQwen3ModelUrl: String? = null
 ) : Parcelable {
 
     /**
@@ -389,6 +405,9 @@ data class RemoteConfig(
         wechatGroupQrcodeUrl = mergeField(net.wechatGroupQrcodeUrl, wechatGroupQrcodeUrl) { !it.isNullOrBlank() },
         poemApiUrl = mergeField(net.poemApiUrl, poemApiUrl) { !it.isNullOrBlank() },
         xiangqiEngineWeightsUrl = mergeField(net.xiangqiEngineWeightsUrl, xiangqiEngineWeightsUrl) { !it.isNullOrBlank() },
+        ocrModelPackUrl = mergeField(net.ocrModelPackUrl, ocrModelPackUrl) { !it.isNullOrBlank() },
+        localChatGemma3ModelUrl = mergeField(net.localChatGemma3ModelUrl, localChatGemma3ModelUrl) { !it.isNullOrBlank() },
+        localChatQwen3ModelUrl = mergeField(net.localChatQwen3ModelUrl, localChatQwen3ModelUrl) { !it.isNullOrBlank() },
         canSetAiToken = mergeField(net.canSetAiToken, canSetAiToken),
         aigcSubjectUscc = mergeField(net.aigcSubjectUscc, aigcSubjectUscc) { !it.isNullOrBlank() },
         survive30sWinPoints = mergeField(net.survive30sWinPoints, survive30sWinPoints),
@@ -452,6 +471,9 @@ data class RemoteConfig(
                 wechatGroupQrcodeUrl == other.wechatGroupQrcodeUrl &&
                 poemApiUrl == other.poemApiUrl &&
                 xiangqiEngineWeightsUrl == other.xiangqiEngineWeightsUrl &&
+                ocrModelPackUrl == other.ocrModelPackUrl &&
+                localChatGemma3ModelUrl == other.localChatGemma3ModelUrl &&
+                localChatQwen3ModelUrl == other.localChatQwen3ModelUrl &&
                 canSetAiToken == other.canSetAiToken &&
                 aigcSubjectUscc == other.aigcSubjectUscc &&
                 survive30sWinPoints == other.survive30sWinPoints &&
@@ -501,6 +523,9 @@ data class RemoteConfig(
             wechatGroupQrcodeUrl,
             poemApiUrl,
             xiangqiEngineWeightsUrl,
+            ocrModelPackUrl,
+            localChatGemma3ModelUrl,
+            localChatQwen3ModelUrl,
             canSetAiToken,
             aigcSubjectUscc,
             survive30sWinPoints,

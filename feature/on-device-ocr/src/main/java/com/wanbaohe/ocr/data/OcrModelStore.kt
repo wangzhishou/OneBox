@@ -1,6 +1,7 @@
 package com.wanbaohe.ocr.data
 
 import android.content.Context
+import com.shifenmiao.storage.RemoteConfigStorage
 import com.wanbaohe.ocr.domain.PpOcrSpec
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -55,7 +56,10 @@ class OcrModelStore @Inject constructor(
     }
 
     private suspend fun downloadZip(onProgress: (Float?) -> Unit) {
-        val connection = (URL(PpOcrSpec.PACK_URL).openConnection() as HttpURLConnection).apply {
+        val downloadUrl = RemoteConfigStorage.getRemoteConfig().ocrModelPackUrl
+            ?.takeIf { it.isNotBlank() }
+            ?: PpOcrSpec.DEFAULT_PACK_URL
+        val connection = (URL(downloadUrl).openConnection() as HttpURLConnection).apply {
             connectTimeout = CONNECT_TIMEOUT_MS
             readTimeout = READ_TIMEOUT_MS
             instanceFollowRedirects = true

@@ -7,7 +7,7 @@ package com.wanbaohe.ocr.domain
  */
 object PpOcrSpec {
     const val PACK_ID = "ppocrv6-small-e47f928e"
-    const val PACK_URL = "https://images.oneboxable.com/models/$PACK_ID.zip"
+    const val DEFAULT_PACK_URL = "https://images.oneboxable.com/models/$PACK_ID.zip"
     const val PACK_SHA256 = "e47f928e47d2058a917827a121a15e8fe5b98fd2a214e1a91584f984fb427a1e"
 
     const val DET_FILE = "det.onnx"

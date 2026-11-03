@@ -14,6 +14,7 @@ import com.shifenmiao.model.ai.AiRequestProtocol
 import com.shifenmiao.model.ai.AiWorkingModelSlot
 import com.shifenmiao.model.ai.AuthType
 import com.shifenmiao.model.remote.AiEngineConfig
+import com.shifenmiao.storage.RemoteConfigStorage
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.setting.local.download.LocalModelDownloader
@@ -71,8 +72,8 @@ class LocalModelManagementComponent @AssistedInject internal constructor(
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
-    // 模型文件托管在 Cloudflare R2(onebox-images bucket)的 models/ 路径,
-    // 上新模型需先上传 R2 再在此登记;URL 失效时下载失败并在页面上提示重试。
+    // 默认模型文件托管在 Cloudflare R2(onebox-images bucket)的 models/ 路径,
+    // 上新模型需先上传 R2 再在此登记;下载时优先使用 RemoteConfig 下发的地址。
     // 推荐顺序:Gemma 在前——它是 LiteRT-LM GPU 后端的官方优化模型;
     // Qwen3-0.6B 在 Adreno(WebGPU)上会撞 128MB storage buffer 上限回退 CPU,推理明显更慢
     val recommendedModels: List<RecommendedLocalModel> = listOf(
@@ -132,7 +133,7 @@ class LocalModelManagementComponent @AssistedInject internal constructor(
         componentScope.launch(ioDispatcher) {
             when (
                 val result = downloader.download(
-                    url = model.url,
+                    url = resolveDownloadUrl(model),
                     destination = File(modelsDir, model.fileName),
                     onProgress = { downloadedBytes, totalBytes ->
                         _downloadStates.update {
@@ -160,6 +161,16 @@ class LocalModelManagementComponent @AssistedInject internal constructor(
                 }
             }
         }
+    }
+
+    private fun resolveDownloadUrl(model: RecommendedLocalModel): String {
+        val config = RemoteConfigStorage.getRemoteConfig()
+        val configuredUrl = when (model.fileName) {
+            "gemma3-1b-it-int4.litertlm" -> config.localChatGemma3ModelUrl
+            "Qwen3-0.6B.litertlm" -> config.localChatQwen3ModelUrl
+            else -> null
+        }
+        return configuredUrl?.takeIf { it.isNotBlank() } ?: model.url
     }
 
     fun cancelDownload(fileName: String) {
