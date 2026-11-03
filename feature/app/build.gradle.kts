@@ -9,6 +9,8 @@ android.namespace = "com.wanbaohe.app"
 
 dependencies {
 
+    implementation(projects.core.camera)
+
     /**
      * mmkv
      */

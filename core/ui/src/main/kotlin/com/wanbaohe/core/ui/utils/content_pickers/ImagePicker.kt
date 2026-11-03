@@ -39,6 +39,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.core.content.FileProvider
+import com.wanbaohe.camera.CameraCaptureContract
+import com.wanbaohe.camera.CameraCaptureRequest
 import com.t8rin.dynamic.theme.LocalDynamicThemeState
 import com.shifenmiao.model.event.PermissionRequest
 import com.t8rin.imagetoolbox.core.resources.Icons
@@ -70,7 +72,7 @@ private class ImagePickerImpl(
     private val photoPickerSingle: ManagedActivityResultLauncher<PickVisualMediaRequest, Uri?>,
     private val photoPickerMultiple: ManagedActivityResultLauncher<PickVisualMediaRequest, List<Uri>>,
     private val getContent: ManagedActivityResultLauncher<Intent, ActivityResult>,
-    private val takePhoto: ManagedActivityResultLauncher<Uri, Boolean>,
+    private val takePhoto: ManagedActivityResultLauncher<CameraCaptureRequest, Uri?>,
     private val onCreateTakePhotoUri: (Uri) -> Unit,
     private val imageExtension: String,
     private val pickerTitle: String?,
@@ -91,7 +93,7 @@ private class ImagePickerImpl(
                 it.makeLog("Image Picker")
             }.onSuccess {
                 onCreateTakePhotoUri(it)
-                takePhoto.launch(it)
+                takePhoto.launch(CameraCaptureRequest(outputUri = it))
             }
         }
         val singlePhotoPickerAction = {
@@ -385,13 +387,13 @@ fun rememberImagePicker(
         mutableStateOf<Uri?>(null)
     }
     val takePhoto = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.TakePicture(),
-        onResult = {
+        contract = CameraCaptureContract(),
+        onResult = { resultUri ->
             scope.launch {
                 val uri = takePhotoUri
                 delay(300.milliseconds)
-                if (it && uri != null && uri != Uri.EMPTY) {
-                    onSuccess(listOf(uri))
+                if (resultUri != null && uri != null && uri != Uri.EMPTY) {
+                    onSuccess(listOf(resultUri))
                 } else onFailure()
                 takePhotoUri = null
             }

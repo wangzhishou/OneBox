@@ -35,6 +35,7 @@ afterEvaluate {
 }
 
 dependencies {
+    api(projects.core.cameraApi)
     api(projects.core.resources)
     api(projects.core.domain)
     api(projects.core.utils)

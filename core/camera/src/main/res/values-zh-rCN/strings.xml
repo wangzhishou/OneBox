@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="camera_capture_title">拍照</string>
+    <string name="camera_confirm_title">确认照片</string>
+    <string name="camera_crop_title">裁剪</string>
+    <string name="camera_back">返回</string>
+    <string name="camera_flash_off">关闭闪光灯</string>
+    <string name="camera_flash_auto">自动闪光灯</string>
+    <string name="camera_flash_on">打开闪光灯</string>
+    <string name="camera_grid_on">显示网格</string>
+    <string name="camera_grid_off">隐藏网格</string>
+    <string name="camera_switch">切换摄像头</string>
+    <string name="camera_shutter">拍照</string>
+    <string name="camera_last_photo">上一张照片</string>
+    <string name="camera_ratio_original">原始</string>
+    <string name="camera_ratio_free">自由</string>
+    <string name="camera_retake">重拍</string>
+    <string name="camera_edit">编辑</string>
+    <string name="camera_use_photo">使用照片</string>
+    <string name="camera_rotate">旋转</string>
+    <string name="camera_flip">翻转</string>
+    <string name="camera_reset">还原</string>
+    <string name="camera_done">完成并保存</string>
+    <string name="camera_capture_failed">拍照失败，请重试。</string>
+    <string name="camera_unavailable">无法打开此设备的相机。</string>
+    <string name="camera_other_unavailable">另一个摄像头不可用。</string>
+    <string name="camera_image_failed">照片处理失败，请重试。</string>
+</resources>

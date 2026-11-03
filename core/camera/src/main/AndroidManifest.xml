@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <application>
+        <activity
+            android:name=".CameraCaptureActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:theme="@style/Theme.OneBox"
+            android:windowSoftInputMode="adjustNothing">
+            <intent-filter>
+                <action android:name="com.wanbaohe.camera.action.CAPTURE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

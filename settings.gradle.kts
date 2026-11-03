@@ -185,6 +185,8 @@ include(":feature:record-center")
 include(":feature:mahjong")
 
 include(":core:a2ui")
+include(":core:camera-api")
+include(":core:camera")
 include(":core:settings")
 include(":core:resources")
 include(":core:data")
