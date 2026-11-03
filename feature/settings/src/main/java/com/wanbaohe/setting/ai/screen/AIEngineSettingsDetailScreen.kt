@@ -990,9 +990,10 @@ private fun ModelSelectionCard(
     // 渠道能力(如 Google 全量放开)或高等级用户可从服务商拉取模型列表;
     // 但直连未验证(测试未通过)时拉取必然无权限,入口一并隐藏;
     // Jev 模型目录由客户端内置, 不支持从服务商拉取
-    // 有 API 地址就露出入口: 没测试过的引擎也可能公开 /models, 失败交给弹窗的
-    // 错误提示 + 重试兜底, 不再把「补模型」藏起来
+    // 直连引擎(含用户自带 token)才有意义: 代理中转链路的 token 在服务端,
+    // 客户端直接请求服务商只会 401, 这条链路的模型由服务端下发, 不露出入口
     val canLoadRemote = !engine.requestProtocol.isNonChat &&
+            !engine.usesProxyRoute() &&
             (remember { AiEngineConfig.getCapabilities() }.canLoadRemoteModels ||
             loginState.vipLevel == 10) &&
             engine.requestUrl.isNotBlank()

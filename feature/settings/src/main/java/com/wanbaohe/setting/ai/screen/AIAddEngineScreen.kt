@@ -286,24 +286,27 @@ fun AIAddEngineScreen(
                     // 留空则只能靠 AiProvider.Default 的兜底模型(名字和真实服务对不上)。
                     if (!isJevProtocol && !isPikafishProtocol) {
                         ModelIdField(component = component, draft = draft)
-                        // 手输模型 ID 容易打错: URL/授权码填好后直接从服务商拉列表挑
-                        OnePrimaryButton(
-                            text = stringResource(R.string.ai_engine_load_from_provider),
-                            onClick = {
-                                if (trimmedRequestUrl.isBlank()) {
-                                    coroutineScope.launch {
-                                        AppToastHost.showFailureToast(
-                                            getString(R.string.ai_engine_invalid_server)
-                                        )
+                        // 手输模型 ID 容易打错: URL/授权码填好后直接从服务商拉列表挑;
+                        // 代理中转链路(如导入的配置)token 在服务端, 直连拉取只会 401, 不显示
+                        if (!draft.usesProxyRoute()) {
+                            OnePrimaryButton(
+                                text = stringResource(R.string.ai_engine_load_from_provider),
+                                onClick = {
+                                    if (trimmedRequestUrl.isBlank()) {
+                                        coroutineScope.launch {
+                                            AppToastHost.showFailureToast(
+                                                getString(R.string.ai_engine_invalid_server)
+                                            )
+                                        }
+                                    } else {
+                                        showProviderModels = true
+                                        component.loadProviderModels()
                                     }
-                                } else {
-                                    showProviderModels = true
-                                    component.loadProviderModels()
-                                }
-                            },
-                            modifier = Modifier.fillMaxWidth(),
-                            leadingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCloudDownload,
-                        )
+                                },
+                                modifier = Modifier.fillMaxWidth(),
+                                leadingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCloudDownload,
+                            )
+                        }
                     }
                 }
             }
