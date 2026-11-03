@@ -42,7 +42,9 @@ import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.AddPhotoAlt
+import com.t8rin.imagetoolbox.core.resources.icons.ImageToText
 import com.wanbaohe.core.ui.utils.content_pickers.rememberFileCreator
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.utils.helper.isPortraitOrientationAsState
 import com.wanbaohe.core.ui.utils.helper.rememberDocumentScanner
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
@@ -174,6 +176,27 @@ fun DocumentScannerContent(
                 }
             )
             Spacer(modifier = Modifier.height(12.dp))
+            component.uris.singleOrNull()?.let { uri ->
+                GlassTonalButton(
+                    onClick = {
+                        component.onNavigate(Screen.OnDeviceOcr(initialUri = uri))
+                    },
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ImageToText,
+                        contentDescription = stringResource(R.string.recognize_text)
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    AutoSizeText(
+                        text = stringResource(R.string.recognize_text),
+                        maxLines = 2
+                    )
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+            }
             Column(
                 modifier = Modifier
                     .fillMaxWidth()

@@ -1226,6 +1226,7 @@ class ChildProvider @Inject constructor(
         is Screen.OnDeviceOcr -> NavigationChild.OnDeviceOcr(
             component = lifeFactories.get().onDeviceOcrComponentFactory(
                 componentContext = componentContext,
+                initialUri = config.initialUri,
                 onGoBack = ::navigateBack,
                 onOpenCloudOcr = { navigateTo(Screen.OcrDocument()) },
                 onOpenTextCard = { text -> navigateTo(Screen.TextCard(initialText = text)) },

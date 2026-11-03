@@ -1585,7 +1585,9 @@ sealed class Screen(
 
     @Serializable
     @SerialName("OnDeviceOcr")
-    class OnDeviceOcr : Screen(
+    data class OnDeviceOcr(
+        val initialUri: Uri? = null
+    ) : Screen(
         id = 1123,
         title = com.shifenmiao.core.R.string.on_device_ocr,
         subtitle = com.shifenmiao.core.R.string.on_device_ocr_description,

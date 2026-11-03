@@ -53,6 +53,7 @@ data class OnDeviceOcrUiState(
 
 class OnDeviceOcrComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
+    @Assisted initialUri: Uri?,
     @Assisted("onGoBack") val onGoBack: () -> Unit,
     @Assisted("onOpenCloudOcr") val onOpenCloudOcr: () -> Unit,
     @Assisted("onOpenTextCard") val onOpenTextCard: (String) -> Unit,
@@ -67,6 +68,7 @@ class OnDeviceOcrComponent @AssistedInject constructor(
 
     private val _uiState = MutableStateFlow(OnDeviceOcrUiState(modelReady = modelStore.isReady()))
     val uiState: StateFlow<OnDeviceOcrUiState> = _uiState.asStateFlow()
+    private var pendingUri: Uri? = null
 
     init {
         componentScope.launch {
@@ -74,6 +76,7 @@ class OnDeviceOcrComponent @AssistedInject constructor(
                 _uiState.update { it.copy(history = records) }
             }
         }
+        initialUri?.let(::onImagePicked)
     }
 
     fun downloadModel() {
@@ -85,6 +88,7 @@ class OnDeviceOcrComponent @AssistedInject constructor(
                     _uiState.update { state -> state.copy(downloadProgress = progress) }
                 }
                 _uiState.update { it.copy(isDownloading = false, modelReady = true, downloadProgress = 1f) }
+                pendingUri?.let(::onImagePicked)
             } catch (cancelled: CancellationException) {
                 throw cancelled
             } catch (error: Exception) {
@@ -102,6 +106,7 @@ class OnDeviceOcrComponent @AssistedInject constructor(
 
     fun onImagePicked(uri: Uri) {
         if (!modelStore.isReady()) {
+            pendingUri = uri
             _uiState.update {
                 it.copy(
                     modelReady = false,
@@ -115,6 +120,7 @@ class OnDeviceOcrComponent @AssistedInject constructor(
             }
             return
         }
+        pendingUri = null
         if (_uiState.value.isRecognizing) return
         componentScope.launch(decodingDispatcher) {
             _uiState.update {
@@ -134,6 +140,7 @@ class OnDeviceOcrComponent @AssistedInject constructor(
                 return@launch
             }
             if (!modelStore.isReady()) {
+                pendingUri = uri
                 _uiState.update {
                     it.copy(
                         modelReady = false,
@@ -320,6 +327,7 @@ class OnDeviceOcrComponent @AssistedInject constructor(
     interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
+            initialUri: Uri?,
             @Assisted("onGoBack") onGoBack: () -> Unit,
             @Assisted("onOpenCloudOcr") onOpenCloudOcr: () -> Unit,
             @Assisted("onOpenTextCard") onOpenTextCard: (String) -> Unit,
