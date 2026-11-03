@@ -1,14 +1,20 @@
 package com.wanbaohe.textcard.presentation.editor.panels
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -28,7 +35,9 @@ import com.wanbaohe.core.ui.widget.glass.GlassSwitch
 import com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.CanvasSpec
+import com.wanbaohe.textcard.domain.model.TextCardDocument
 import com.wanbaohe.textcard.domain.model.TextCardOutputMode
+import com.wanbaohe.textcard.domain.model.TextCardRenderState
 import com.wanbaohe.textcard.presentation.editor.CardCanvasPreview
 import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
 import com.wanbaohe.textcard.presentation.selection.CustomSizeDialog
@@ -39,45 +48,30 @@ fun PagesPanel(component: TextCardComponent) {
     val layout = component.layout
 
     LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier.padding(vertical = 8.dp)
     ) {
         items(CanvasSpec.builtIn, key = { it.ratioLabel }) { canvas ->
             CanvasCell(
                 canvas = canvas,
+                document = component.document,
                 selected = component.document.canvas == canvas,
                 onClick = { component.updateCanvas(canvas) }
             )
         }
         item(key = "custom") {
             val custom = component.document.canvas as? CanvasSpec.Custom
-            GlassCard(
-                onClick = { showCustomSizeDialog = true },
-                colors = if (custom != null) {
-                    tintedGlassCardColors(MaterialTheme.colorScheme.primaryContainer)
-                } else null,
-                modifier = Modifier.width(104.dp)
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(vertical = 12.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.textcard_canvas_custom),
-                        style = MaterialTheme.typography.titleSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    Text(
-                        text = custom?.ratioLabel
-                            ?: component.lastCustomCanvas?.ratioLabel
-                            ?: "+",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 1
-                    )
-                }
-            }
+            val previewCanvas = custom ?: component.lastCustomCanvas ?: CanvasSpec.Portrait
+            CanvasCell(
+                canvas = previewCanvas,
+                document = component.document,
+                title = stringResource(R.string.textcard_canvas_custom),
+                ratioLabel = custom?.ratioLabel
+                    ?: component.lastCustomCanvas?.ratioLabel
+                    ?: "+",
+                selected = custom != null,
+                onClick = { showCustomSizeDialog = true }
+            )
         }
     }
 
@@ -183,30 +177,72 @@ fun PagesPanel(component: TextCardComponent) {
 @Composable
 private fun CanvasCell(
     canvas: CanvasSpec,
+    document: TextCardDocument,
+    title: String = stringResource(canvas.titleRes),
+    ratioLabel: String = canvas.ratioLabel,
     selected: Boolean,
     onClick: () -> Unit,
 ) {
     GlassCard(
         onClick = onClick,
+        shape = RoundedCornerShape(16.dp),
         colors = if (selected) {
             tintedGlassCardColors(MaterialTheme.colorScheme.primaryContainer)
         } else null,
-        modifier = Modifier.width(104.dp)
+        border = if (selected) {
+            BorderStroke(1.5.dp, MaterialTheme.colorScheme.onPrimaryContainer)
+        } else null,
+        modifier = Modifier.width(116.dp)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(vertical = 12.dp)
+            modifier = Modifier.padding(10.dp)
         ) {
+            BoxWithConstraints(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(64.dp)
+            ) {
+                val fitHeight = maxWidth / maxHeight > canvas.aspectRatio
+                val previewWidth = if (fitHeight) {
+                    maxHeight * canvas.aspectRatio
+                } else maxWidth
+                val previewHeight = if (fitHeight) {
+                    maxHeight
+                } else maxWidth / canvas.aspectRatio
+                CardCanvasPreview(
+                    state = TextCardRenderState(
+                        canvas = canvas,
+                        background = document.background,
+                        backgroundOpacity = document.backgroundOpacity
+                    ),
+                    cornerRadius = 6.dp,
+                    interactive = false,
+                    modifier = Modifier.size(previewWidth, previewHeight)
+                )
+            }
+            Spacer(Modifier.height(8.dp))
             Text(
-                text = stringResource(canvas.titleRes),
+                text = title,
                 style = MaterialTheme.typography.titleSmall,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
+                textAlign = TextAlign.Center,
+                minLines = 2,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.fillMaxWidth()
             )
             Text(
-                text = canvas.ratioLabel,
+                text = ratioLabel,
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = if (selected) {
+                    MaterialTheme.colorScheme.onPrimaryContainer
+                } else MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(top = 2.dp)
             )
         }
     }

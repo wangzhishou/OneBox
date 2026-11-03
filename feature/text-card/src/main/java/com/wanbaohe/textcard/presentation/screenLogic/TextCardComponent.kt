@@ -619,12 +619,15 @@ class TextCardComponent @AssistedInject internal constructor(
         mutateDocument { current -> current.updateBlock(role, transform) }
     }
 
-    fun moveTextBlock(id: String, dx: Float, dy: Float) {
-        beginContinuousEdit()
+    fun updateTextBlockTransform(id: String, transformed: TextBlock) {
         updateTextBlock(id) {
             it.copy(
-                offsetX = (it.offsetX + dx).coerceIn(-1f, 1f),
-                offsetY = (it.offsetY + dy).coerceIn(-1f, 1f)
+                widthRatio = transformed.widthRatio.coerceIn(0.1f, 1f),
+                widthManuallySet = transformed.widthManuallySet,
+                offsetX = transformed.offsetX.coerceIn(-1f, 1f),
+                offsetY = transformed.offsetY.coerceIn(-1f, 1f),
+                scale = transformed.scale.coerceIn(0.1f, 10f),
+                rotation = transformed.rotation
             )
         }
     }

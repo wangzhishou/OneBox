@@ -180,4 +180,8 @@
     <string name="textcard_template_saved">模板已保存</string>
     <string name="textcard_delete_template">删除模板</string>
     <string name="textcard_more_actions">更多操作</string>
+    <string name="textcard_scale_text">缩放文字</string>
+    <string name="textcard_rotate_text">旋转文字</string>
+    <string name="textcard_resize_text_width">调整文字框宽度</string>
+    <string name="textcard_canvas_editing_hint">正在编辑文字，回车可换行</string>
 </resources>

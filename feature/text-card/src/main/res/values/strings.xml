@@ -180,4 +180,8 @@
     <string name="textcard_template_saved">Template saved</string>
     <string name="textcard_delete_template">Delete template</string>
     <string name="textcard_more_actions">More actions</string>
+    <string name="textcard_scale_text">Scale text</string>
+    <string name="textcard_rotate_text">Rotate text</string>
+    <string name="textcard_resize_text_width">Resize text width</string>
+    <string name="textcard_canvas_editing_hint">Editing text · Enter adds a new line</string>
 </resources>

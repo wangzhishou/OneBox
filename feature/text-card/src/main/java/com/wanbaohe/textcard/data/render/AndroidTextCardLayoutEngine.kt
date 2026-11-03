@@ -59,22 +59,26 @@ class AndroidTextCardLayoutEngine @Inject internal constructor() : TextCardLayou
             start: Int,
             end: Int,
             topPx: Float,
-        ): TextCardSegment = TextCardSegment(
-            block = block.copy(
-                id = "${block.id}_page_${pages.size}_segment_${segmentIndex++}",
-                baseTopRatio = topPx / width,
-                widthRatio = contentWidth.toFloat() / width,
-                widthManuallySet = true,
-                heightRatio = 0f
-            ),
-            role = role,
-            sourceStart = start,
-            sourceEnd = end
-        )
+        ): TextCardSegment {
+            val blockWidth = (width * block.widthRatio).toInt().coerceIn(1, contentWidth)
+            return TextCardSegment(
+                block = block.copy(
+                    id = "${block.id}_page_${pages.size}_segment_${segmentIndex++}",
+                    baseTopRatio = topPx / width,
+                    widthRatio = blockWidth.toFloat() / width,
+                    widthManuallySet = true,
+                    heightRatio = 0f
+                ),
+                role = role,
+                sourceStart = start,
+                sourceEnd = end
+            )
+        }
 
         TextCardRole.entries.forEachIndexed { roleIndex, role ->
             val source = document.block(role)
             if (source.content.isBlank()) return@forEachIndexed
+            val roleContentWidth = (width * source.widthRatio).toInt().coerceIn(1, contentWidth)
             if (current.isNotEmpty()) {
                 y += when (roleIndex) {
                     1 -> width * 0.04f
@@ -98,7 +102,7 @@ class AndroidTextCardLayoutEngine @Inject internal constructor() : TextCardLayou
                     continue
                 }
                 var remaining = source.slice(start, chunkEnd)
-                var layout = remaining.createTextLayout(width, contentWidth)
+                var layout = remaining.createTextLayout(width, roleContentWidth)
                 var fittingLines = fittingLineCount(layout, available)
                 if (fittingLines == 0 && current.isNotEmpty()) {
                     finishPage()
@@ -111,7 +115,7 @@ class AndroidTextCardLayoutEngine @Inject internal constructor() : TextCardLayou
                         sizeScale = (remaining.sizeScale * scale).coerceAtLeast(0.1f),
                         lineSpacingMultiplier = remaining.lineSpacingMultiplier.coerceAtMost(2f)
                     )
-                    layout = remaining.createTextLayout(width, contentWidth)
+                    layout = remaining.createTextLayout(width, roleContentWidth)
                     fittingLines = fittingLineCount(layout, available)
                     check(fittingLines > 0) { "Canvas is too small for the current text style" }
                 }
@@ -129,7 +133,7 @@ class AndroidTextCardLayoutEngine @Inject internal constructor() : TextCardLayou
                 val segmentLayout = if (end == remaining.content.length) {
                     layout
                 } else {
-                    segment.createTextLayout(width, contentWidth)
+                    segment.createTextLayout(width, roleContentWidth)
                 }
                 current += positioned(segment, role, start, start + end, y)
                 y += segmentLayout.height
@@ -189,11 +193,12 @@ class AndroidTextCardLayoutEngine @Inject internal constructor() : TextCardLayou
                     else -> width * 0.018f
                 }
             }
+            val blockWidth = (width * block.widthRatio).toInt().coerceIn(1, contentWidth)
             val laidOut = block.copy(
-                widthRatio = contentWidth.toFloat() / width,
+                widthRatio = blockWidth.toFloat() / width,
                 widthManuallySet = true
             )
-            val height = laidOut.createTextLayout(width, contentWidth).height
+            val height = laidOut.createTextLayout(width, blockWidth).height
             blocks += TextCardSegment(
                 block = laidOut.copy(
                     id = "${block.id}_long_${segmentIndex++}",

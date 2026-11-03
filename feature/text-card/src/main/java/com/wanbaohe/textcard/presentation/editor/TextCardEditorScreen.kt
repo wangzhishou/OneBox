@@ -196,6 +196,7 @@ fun TextCardEditorScreen(component: TextCardComponent) {
     }
     val onOpenStylePanel = {
         component.setActivePanel(EditorPanel.Typography)
+        focusManager.clearFocus()
         keyboardController?.hide()
         Unit
     }
@@ -241,6 +242,7 @@ fun TextCardEditorScreen(component: TextCardComponent) {
             component.endTextEdit()
             component.clearPageSelection()
         }
+        focusManager.clearFocus()
         keyboardController?.hide()
     }
     val openPanel: (EditorPanel) -> Unit = { panel ->
@@ -248,6 +250,8 @@ fun TextCardEditorScreen(component: TextCardComponent) {
             closePanel()
         } else {
             component.endContinuousEdit()
+            focusManager.clearFocus()
+            keyboardController?.hide()
             if (panel != EditorPanel.Typography) {
                 finishCanvasEditing()
                 component.clearPageSelection()
@@ -340,7 +344,6 @@ fun TextCardEditorScreen(component: TextCardComponent) {
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
-                    .imePadding()
                     .padding(horizontal = 20.dp, vertical = 8.dp),
                 contentAlignment = Alignment.Center
             ) {
@@ -369,18 +372,17 @@ fun TextCardEditorScreen(component: TextCardComponent) {
                                     onSegmentEdit = { segment, cursor ->
                                         onSegmentEdit(segment, component.currentPage, cursor)
                                     },
-                                    onSegmentDrag = { segment, dx, dy ->
-                                        component.moveTextBlock(
+                                    onSegmentTransform = { segment, transformed ->
+                                        component.updateTextBlockTransform(
                                             component.document.block(segment.role).id,
-                                            dx,
-                                            dy
+                                            transformed
                                         )
                                     },
+                                    onGestureStart = component::beginContinuousEdit,
                                     onGestureEnd = component::endContinuousEdit,
                                     onCanvasTap = onCanvasTap,
                                     onBackgroundDrag = component::updateBackgroundImageOffset,
                                     onEditingSync = syncCanvasState,
-                                    onTextEditCommit = onTextEditCommit,
                                     onOpenStylePanel = onOpenStylePanel,
                                     onClearSelectionStyles = onClearSelectionStyles,
                                     selectionToolbarVisible = component.activePanel != EditorPanel.Typography,
@@ -427,18 +429,17 @@ fun TextCardEditorScreen(component: TextCardComponent) {
                                         onSegmentEdit = { segment, cursor ->
                                             onSegmentEdit(segment, index, cursor)
                                         },
-                                        onSegmentDrag = { segment, dx, dy ->
-                                            component.moveTextBlock(
+                                        onSegmentTransform = { segment, transformed ->
+                                            component.updateTextBlockTransform(
                                                 component.document.block(segment.role).id,
-                                                dx,
-                                                dy
+                                                transformed
                                             )
                                         },
+                                        onGestureStart = component::beginContinuousEdit,
                                         onGestureEnd = component::endContinuousEdit,
                                         onCanvasTap = onCanvasTap,
                                         onBackgroundDrag = component::updateBackgroundImageOffset,
                                         onEditingSync = syncCanvasState,
-                                        onTextEditCommit = onTextEditCommit,
                                         onOpenStylePanel = onOpenStylePanel,
                                         onClearSelectionStyles = onClearSelectionStyles,
                                         selectionToolbarVisible = component.activePanel != EditorPanel.Typography,
@@ -465,6 +466,8 @@ fun TextCardEditorScreen(component: TextCardComponent) {
 
             EditorBottomBar(
                 component = component,
+                isCanvasEditing = canvasSession != null,
+                onDoneEditing = onTextEditCommit,
                 onPanelClick = openPanel,
                 onExportClick = {
                     finishCanvasEditing()
@@ -525,8 +528,8 @@ fun TextCardEditorScreen(component: TextCardComponent) {
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(max = 440.dp)
-                .verticalScroll(rememberScrollState())
                 .imePadding()
+                .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp, vertical = 12.dp)
         ) {
             when (component.activePanel) {
@@ -623,6 +626,8 @@ private fun TextFieldState.replaceWith(block: TextBlock, previousSelection: Text
 @Composable
 private fun EditorBottomBar(
     component: TextCardComponent,
+    isCanvasEditing: Boolean,
+    onDoneEditing: () -> Unit,
     onPanelClick: (EditorPanel) -> Unit,
     onExportClick: () -> Unit,
 ) {
@@ -631,48 +636,70 @@ private fun EditorBottomBar(
             .fillMaxWidth()
             .glassDense(shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
             .navigationBarsPadding()
+            .then(if (isCanvasEditing) Modifier.imePadding() else Modifier)
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 8.dp)
-        ) {
-            BoxWithConstraints(modifier = Modifier.weight(1f)) {
-                val tabs = listOf(
-                    EditorPanel.Content,
-                    EditorPanel.Typography,
-                    EditorPanel.Background,
-                    EditorPanel.Pages
+        if (isCanvasEditing) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.textcard_canvas_editing_hint),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.weight(1f)
                 )
-                val itemWidth = maxOf(56.dp, maxWidth / tabs.size)
-                Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
-                    tabs.forEach { panel ->
-                        BottomTab(
-                            panel = panel,
-                            active = component.activePanel == panel,
-                            onClick = {
-                                if (panel == EditorPanel.Typography && component.selectedRole == null) {
-                                    component.selectRole(TextCardRole.Body)
-                                }
-                                onPanelClick(panel)
-                            },
-                            modifier = Modifier.width(itemWidth)
-                        )
+                Spacer(Modifier.width(12.dp))
+                PrimaryButton(
+                    text = stringResource(R.string.textcard_draw_done),
+                    onClick = onDoneEditing
+                )
+            }
+        } else {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 8.dp)
+            ) {
+                BoxWithConstraints(modifier = Modifier.weight(1f)) {
+                    val tabs = listOf(
+                        EditorPanel.Content,
+                        EditorPanel.Typography,
+                        EditorPanel.Background,
+                        EditorPanel.Pages
+                    )
+                    val itemWidth = maxOf(56.dp, maxWidth / tabs.size)
+                    Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
+                        tabs.forEach { panel ->
+                            BottomTab(
+                                panel = panel,
+                                active = component.activePanel == panel,
+                                onClick = {
+                                    if (panel == EditorPanel.Typography && component.selectedRole == null) {
+                                        component.selectRole(TextCardRole.Body)
+                                    }
+                                    onPanelClick(panel)
+                                },
+                                modifier = Modifier.width(itemWidth)
+                            )
+                        }
                     }
                 }
+                Spacer(Modifier.width(8.dp))
+                PrimaryButton(
+                    text = stringResource(R.string.textcard_export_action),
+                    onClick = onExportClick,
+                    icon = {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSave,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                            modifier = Modifier.width(16.dp)
+                        )
+                    }
+                )
             }
-            Spacer(Modifier.width(8.dp))
-            PrimaryButton(
-                text = stringResource(R.string.textcard_export_action),
-                onClick = onExportClick,
-                icon = {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSave,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                        modifier = Modifier.width(16.dp)
-                    )
-                }
-            )
         }
     }
 }

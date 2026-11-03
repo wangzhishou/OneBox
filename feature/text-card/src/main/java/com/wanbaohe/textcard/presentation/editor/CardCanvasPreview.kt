@@ -28,6 +28,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,8 +43,10 @@ import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -58,6 +61,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -112,12 +116,12 @@ internal fun CardCanvasPreview(
     pageIndex: Int = 0,
     onSegmentTap: (TextCardSegment, Int) -> Unit = { _, _ -> },
     onSegmentEdit: (TextCardSegment, Int) -> Unit = { _, _ -> },
-    onSegmentDrag: (TextCardSegment, Float, Float) -> Unit = { _, _, _ -> },
+    onSegmentTransform: (TextCardSegment, TextBlock) -> Unit = { _, _ -> },
+    onGestureStart: () -> Unit = {},
     onGestureEnd: () -> Unit = {},
     onCanvasTap: () -> Unit = {},
     onBackgroundDrag: (Float, Float) -> Unit = { _, _ -> },
     onEditingSync: () -> Unit = {},
-    onTextEditCommit: () -> Unit = {},
     onOpenStylePanel: () -> Unit = {},
     onClearSelectionStyles: () -> Unit = {},
     selectionToolbarVisible: Boolean = true,
@@ -127,6 +131,8 @@ internal fun CardCanvasPreview(
         if (source == null) segment else {
             segment.copy(
                 block = segment.block.copy(
+                    widthRatio = source.widthRatio,
+                    widthManuallySet = source.widthManuallySet,
                     offsetX = source.offsetX,
                     offsetY = source.offsetY,
                     scale = source.scale,
@@ -178,10 +184,10 @@ internal fun CardCanvasPreview(
                     interactive = interactive,
                     onSegmentTap = onSegmentTap,
                     onSegmentEdit = onSegmentEdit,
-                    onSegmentDrag = onSegmentDrag,
+                    onSegmentTransform = onSegmentTransform,
+                    onGestureStart = onGestureStart,
                     onGestureEnd = onGestureEnd,
                     onEditingSync = onEditingSync,
-                    onTextEditCommit = onTextEditCommit,
                     onOpenStylePanel = onOpenStylePanel,
                     onClearSelectionStyles = onClearSelectionStyles,
                     selectionToolbarVisible = selectionToolbarVisible
@@ -272,33 +278,58 @@ private fun CardTextElement(
     interactive: Boolean,
     onSegmentTap: (TextCardSegment, Int) -> Unit,
     onSegmentEdit: (TextCardSegment, Int) -> Unit,
-    onSegmentDrag: (TextCardSegment, Float, Float) -> Unit,
+    onSegmentTransform: (TextCardSegment, TextBlock) -> Unit,
+    onGestureStart: () -> Unit,
     onGestureEnd: () -> Unit,
     onEditingSync: () -> Unit,
-    onTextEditCommit: () -> Unit,
     onOpenStylePanel: () -> Unit,
     onClearSelectionStyles: () -> Unit,
     selectionToolbarVisible: Boolean,
 ) {
     val density = LocalDensity.current
-    val paddingPx = canvasWidthPx * CardLayout.CONTENT_PADDING_RATIO
-    val leftPx = paddingPx + block.offsetX * canvasWidthPx
-    val topPx = canvasWidthPx * block.baseTopRatio + block.offsetY * canvasHeightPx
-    val widthDp = with(density) { (canvasWidthPx * block.widthRatio).toDp() }
+    var localBlock by remember(block.id) { mutableStateOf(block) }
+    var changing by remember(block.id) { mutableStateOf(false) }
+    var boxSize by remember(block.id) { mutableStateOf(IntSize.Zero) }
+    var elementCoordinates by remember(block.id) {
+        mutableStateOf<LayoutCoordinates?>(null)
+    }
     var textLayout by remember(block.id) { mutableStateOf<TextLayoutResult?>(null) }
     val isEditing = editingSession != null && editingState != null
+    val currentBlock by rememberUpdatedState(localBlock)
+
+    LaunchedEffect(block, changing) {
+        if (!changing) localBlock = block
+    }
+
+    val paddingPx = canvasWidthPx * CardLayout.CONTENT_PADDING_RATIO
+    val leftPx = paddingPx + localBlock.offsetX * canvasWidthPx
+    val topPx = canvasWidthPx * localBlock.baseTopRatio + localBlock.offsetY * canvasHeightPx
+    val widthDp = with(density) { (canvasWidthPx * localBlock.widthRatio).toDp() }
 
     fun cursorFor(position: androidx.compose.ui.geometry.Offset): Int =
-        textLayout?.getOffsetForPosition(position) ?: block.content.length
+        textLayout?.getOffsetForPosition(position) ?: localBlock.content.length
+
+    fun updateTransform(transformed: TextBlock) {
+        localBlock = transformed
+        segment?.let { onSegmentTransform(it, transformed) }
+    }
+
+    fun finishTransform() {
+        if (!changing) return
+        changing = false
+        onGestureEnd()
+    }
 
     Box(
         modifier = Modifier
             .offset { IntOffset(leftPx.roundToInt(), topPx.roundToInt()) }
             .width(widthDp)
+            .onSizeChanged { boxSize = it }
+            .onGloballyPositioned { elementCoordinates = it }
             .graphicsLayer {
-                scaleX = block.scale
-                scaleY = block.scale
-                rotationZ = block.rotation
+                scaleX = localBlock.scale
+                scaleY = localBlock.scale
+                rotationZ = localBlock.rotation
             }
             .then(
                 if (interactive && segment != null && !isEditing) {
@@ -316,14 +347,25 @@ private fun CardTextElement(
                         .pointerInput(block.id, isSelected, canvasWidthPx, canvasHeightPx) {
                             if (!isSelected) return@pointerInput
                             detectDragGestures(
-                                onDragEnd = onGestureEnd,
-                                onDragCancel = onGestureEnd,
+                                onDragStart = {
+                                    changing = true
+                                    onGestureStart()
+                                },
+                                onDragEnd = ::finishTransform,
+                                onDragCancel = ::finishTransform,
                                 onDrag = { change, dragAmount ->
                                     change.consume()
-                                    onSegmentDrag(
-                                        segment,
-                                        dragAmount.x / canvasWidthPx,
-                                        dragAmount.y / canvasHeightPx
+                                    val canvasDrag = dragAmount
+                                        .rotateBy(currentBlock.rotation) * currentBlock.scale
+                                    updateTransform(
+                                        currentBlock.copy(
+                                            offsetX = (
+                                                currentBlock.offsetX + canvasDrag.x / canvasWidthPx
+                                                ).coerceIn(-1f, 1f),
+                                            offsetY = (
+                                                currentBlock.offsetY + canvasDrag.y / canvasHeightPx
+                                                ).coerceIn(-1f, 1f)
+                                        )
                                     )
                                 }
                             )
@@ -337,7 +379,6 @@ private fun CardTextElement(
                 baseSizePx = canvasWidthPx * editingSession.block.baseSizeRatio,
                 state = editingState,
                 onSync = onEditingSync,
-                onCommit = onTextEditCommit,
                 onOpenStylePanel = onOpenStylePanel,
                 onClearSelectionStyles = onClearSelectionStyles,
                 selectionToolbarVisible = selectionToolbarVisible,
@@ -345,8 +386,8 @@ private fun CardTextElement(
             )
         } else {
             CardText(
-                block = block,
-                baseSizePx = canvasWidthPx * block.baseSizeRatio,
+                block = localBlock,
+                baseSizePx = canvasWidthPx * localBlock.baseSizeRatio,
                 canvasWidthPx = canvasWidthPx,
                 onTextLayout = { textLayout = it },
                 modifier = Modifier.fillMaxWidth()
@@ -354,11 +395,26 @@ private fun CardTextElement(
         }
         AnimatedSelectionBorder(
             isVisible = isSelected,
-            scale = block.scale,
+            scale = localBlock.scale,
             modifier = Modifier.matchParentSize(),
             cornerRadius = 4.dp,
             alphaScale = if (isEditing) 0.4f else 1f
         )
+        if (isSelected && !isEditing && segment != null) {
+            TextBlockTransformHandles(
+                block = localBlock,
+                boxSize = boxSize,
+                elementCoordinates = elementCoordinates,
+                canvasWidthPx = canvasWidthPx,
+                canvasHeightPx = canvasHeightPx,
+                onStart = {
+                    changing = true
+                    onGestureStart()
+                },
+                onChange = ::updateTransform,
+                onEnd = ::finishTransform
+            )
+        }
     }
 }
 
@@ -368,7 +424,6 @@ private fun InPlaceTextEditor(
     baseSizePx: Float,
     state: TextFieldState,
     onSync: () -> Unit,
-    onCommit: () -> Unit,
     onOpenStylePanel: () -> Unit,
     onClearSelectionStyles: () -> Unit,
     selectionToolbarVisible: Boolean,
@@ -396,11 +451,7 @@ private fun InPlaceTextEditor(
             state = state,
             textStyle = cardTextStyle(block, baseSizePx),
             cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            onKeyboardAction = {
-                onSync()
-                onCommit()
-            },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Default),
             modifier = modifier
                 .graphicsLayer { alpha = block.alpha.coerceIn(0f, 1f) }
                 .focusRequester(focusRequester)
