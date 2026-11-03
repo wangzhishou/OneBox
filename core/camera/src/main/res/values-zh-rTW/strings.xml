@@ -13,6 +13,7 @@
     <string name="camera_shutter">拍照</string>
     <string name="camera_last_photo">上一張照片</string>
     <string name="camera_ratio_original">原始</string>
+    <string name="camera_ratio_fullscreen">全螢幕</string>
     <string name="camera_ratio_free">自由</string>
     <string name="camera_retake">重拍</string>
     <string name="camera_edit">編輯</string>

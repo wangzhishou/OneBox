@@ -43,10 +43,10 @@ import com.t8rin.imagetoolbox.core.data.utils.getPath
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.ImageToText
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineCameraAlt
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineDeleteForever
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineImagePreview
+import com.t8rin.imagetoolbox.core.resources.icons.CameraAlt
+import com.t8rin.imagetoolbox.core.resources.icons.DeleteForever
+import com.t8rin.imagetoolbox.core.resources.icons.History
+import com.t8rin.imagetoolbox.core.resources.icons.ImagePreview
 import com.wanbaohe.base.ui.button.CancelButton
 import com.wanbaohe.base.ui.button.ConfirmButton
 import com.wanbaohe.base.ui.button.PrimaryButton
@@ -120,7 +120,7 @@ fun OnDeviceOcrScreen(component: OnDeviceOcrComponent) {
                 if (state.history.isNotEmpty()) {
                     IconButton(onClick = { showClearHistory = true }) {
                         Icon(
-                            Icons.Outlined.LineDeleteForever,
+                            Icons.Outlined.DeleteForever,
                             contentDescription = stringResource(R.string.ocr_clear_history),
                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
                         )
@@ -130,7 +130,7 @@ fun OnDeviceOcrScreen(component: OnDeviceOcrComponent) {
                 IconButton(onClick = { showResultSheet = !showResultSheet }) {
                     Icon(
                         imageVector = if (showResultSheet) {
-                            Icons.Outlined.LineImagePreview
+                            Icons.Outlined.ImagePreview
                         } else {
                             Icons.Outlined.ImageToText
                         },
@@ -257,7 +257,7 @@ private fun OcrBottomBar(
         BottomNavItem(
             id = OcrTab.HISTORY.name,
             label = stringResource(R.string.ocr_history_tab),
-            icon = Icons.Outlined.LineHistory,
+            icon = Icons.Outlined.History,
         ),
     )
     BottomNavigationBar(
@@ -364,13 +364,13 @@ private fun PickPane(
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             PickCard(
-                icon = Icons.Outlined.LineCameraAlt,
+                icon = Icons.Outlined.CameraAlt,
                 label = stringResource(R.string.ocr_pick_camera),
                 onClick = onCamera,
                 modifier = Modifier.weight(1f),
             )
             PickCard(
-                icon = Icons.Outlined.LineImagePreview,
+                icon = Icons.Outlined.ImagePreview,
                 label = stringResource(R.string.ocr_pick_gallery),
                 onClick = onGallery,
                 modifier = Modifier.weight(1f),

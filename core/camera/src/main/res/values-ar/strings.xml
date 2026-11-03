@@ -13,6 +13,7 @@
     <string name="camera_shutter">التقاط صورة</string>
     <string name="camera_last_photo">الصورة السابقة</string>
     <string name="camera_ratio_original">الأصلية</string>
+    <string name="camera_ratio_fullscreen">ملء الشاشة</string>
     <string name="camera_ratio_free">حر</string>
     <string name="camera_retake">إعادة الالتقاط</string>
     <string name="camera_edit">تعديل</string>

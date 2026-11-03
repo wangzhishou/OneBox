@@ -13,6 +13,7 @@
     <string name="camera_shutter">फ़ोटो लें</string>
     <string name="camera_last_photo">पिछली फ़ोटो</string>
     <string name="camera_ratio_original">मूल</string>
+    <string name="camera_ratio_fullscreen">फ़ुल स्क्रीन</string>
     <string name="camera_ratio_free">फ्री</string>
     <string name="camera_retake">फिर से फ़ोटो लें</string>
     <string name="camera_edit">संपादित करें</string>

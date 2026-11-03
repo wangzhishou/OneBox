@@ -13,6 +13,7 @@
     <string name="camera_shutter">Chụp ảnh</string>
     <string name="camera_last_photo">Ảnh trước đó</string>
     <string name="camera_ratio_original">Gốc</string>
+    <string name="camera_ratio_fullscreen">Toàn màn hình</string>
     <string name="camera_ratio_free">Tự do</string>
     <string name="camera_retake">Chụp lại</string>
     <string name="camera_edit">Chỉnh sửa</string>

@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.ImageVector.Builder
 import androidx.compose.ui.graphics.vector.path
+import androidx.compose.ui.graphics.vector.group
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
@@ -217,6 +218,26 @@ val com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack: ImageVector b
             curveTo(9.05f, 4.55f, 9.05f, 4.55f, 9.1f, 4.48f)
             curveTo(9.31f, 4.23f, 9.49f, 4.22f, 9.8f, 4.23f)
             close()
+        }
+    }.build()
+}
+
+val com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ArrowBack: ImageVector by lazy(LazyThreadSafetyMode.NONE) {
+    Builder(
+        name = "Outlined.ArrowBack",
+        defaultWidth = 24.dp,
+        defaultHeight = 24.dp,
+        viewportWidth = 960f,
+        viewportHeight = 960f,
+        autoMirror = true
+    ).apply {
+        group(translationY = 960f) {
+            addPath(
+                fill = SolidColor(Color.Black),
+                pathData = androidx.compose.ui.graphics.vector.addPathNodes(
+                    "m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"
+                )
+            )
         }
     }.build()
 }

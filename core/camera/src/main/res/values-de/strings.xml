@@ -13,6 +13,7 @@
     <string name="camera_shutter">Foto aufnehmen</string>
     <string name="camera_last_photo">Letztes Foto</string>
     <string name="camera_ratio_original">Original</string>
+    <string name="camera_ratio_fullscreen">Vollbild</string>
     <string name="camera_ratio_free">Frei</string>
     <string name="camera_retake">Neu aufnehmen</string>
     <string name="camera_edit">Bearbeiten</string>

@@ -13,6 +13,7 @@
     <string name="camera_shutter">Сделать фото</string>
     <string name="camera_last_photo">Последнее фото</string>
     <string name="camera_ratio_original">Исходное</string>
+    <string name="camera_ratio_fullscreen">Полный экран</string>
     <string name="camera_ratio_free">Свободное</string>
     <string name="camera_retake">Переснять</string>
     <string name="camera_edit">Редактировать</string>

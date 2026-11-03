@@ -272,7 +272,7 @@ private fun SelectableRecognizedLine(
                     label = stringResource(
                         if (hasSelection) R.string.ocr_copy_selection else R.string.ocr_copy_line
                     ),
-                    icon = Icons.Rounded.ContentCopy,
+                    icon = Icons.Outlined.ContentCopy,
                     onClick = {
                         if (hasSelection) {
                             if (state.copySelection(clipboard)) {

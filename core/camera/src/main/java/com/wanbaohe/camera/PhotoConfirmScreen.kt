@@ -12,9 +12,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.Check
+import com.t8rin.imagetoolbox.core.resources.Icons
+import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
+import com.t8rin.imagetoolbox.core.resources.icons.Check
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -28,8 +28,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.camera.R
-import com.wanbaohe.core.ui.widget.glass.GlassButton
 import com.wanbaohe.core.ui.widget.glass.GlassFilledIconButton
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 
 @Composable
@@ -51,7 +51,7 @@ internal fun PhotoConfirmScreen(
         CameraTopBar(
             title = stringResource(R.string.camera_confirm_title),
             onBack = onBack,
-            backIcon = Icons.Rounded.ArrowBack,
+            backIcon = Icons.Outlined.ArrowBack,
             actions = {
                 GlassFilledIconButton(
                     onClick = onConfirm,
@@ -60,10 +60,11 @@ internal fun PhotoConfirmScreen(
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
                         contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                     ),
+                    style = GlassStyle.None,
                     glassBorderWidth = 0.dp
                 ) {
                     Icon(
-                        imageVector = Icons.Rounded.Check,
+                        imageVector = Icons.Outlined.Check,
                         contentDescription = stringResource(R.string.camera_use_photo)
                     )
                 }
@@ -88,7 +89,11 @@ internal fun PhotoConfirmScreen(
                 } else {
                     Modifier.fillMaxSize()
                 },
-                contentScale = if (ratio != null) ContentScale.Crop else ContentScale.Fit
+                contentScale = if (ratio != null || aspectRatio == CameraAspectRatio.FULL_SCREEN) {
+                    ContentScale.Crop
+                } else {
+                    ContentScale.Fit
+                }
             )
         }
 
@@ -122,12 +127,13 @@ internal fun PhotoConfirmScreen(
                     Text(stringResource(R.string.camera_edit))
                 }
             }
-            GlassButton(
+            GlassTonalButton(
                 onClick = onConfirm,
                 enabled = !isProcessing,
                 modifier = Modifier.weight(1f),
                 color = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                style = GlassStyle.None,
                 borderWidth = 0.dp
             ) {
                 Text(stringResource(R.string.camera_done))

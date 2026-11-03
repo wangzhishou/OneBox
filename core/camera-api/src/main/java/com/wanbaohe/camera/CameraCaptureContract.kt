@@ -8,6 +8,7 @@ import androidx.activity.result.contract.ActivityResultContract
 
 enum class CameraAspectRatio {
     ORIGINAL,
+    FULL_SCREEN,
     FREE,
     RATIO_4_3,
     RATIO_1_1,
@@ -16,7 +17,7 @@ enum class CameraAspectRatio {
 
     val value: Float?
         get() = when (this) {
-            ORIGINAL, FREE -> null
+            ORIGINAL, FULL_SCREEN, FREE -> null
             RATIO_4_3 -> 4f / 3f
             RATIO_1_1 -> 1f
             RATIO_16_9 -> 16f / 9f

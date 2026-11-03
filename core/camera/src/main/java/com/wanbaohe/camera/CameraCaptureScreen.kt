@@ -5,6 +5,7 @@ import androidx.camera.core.ImageCapture
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,16 +19,16 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.CameraAlt
-import androidx.compose.material.icons.rounded.Cameraswitch
-import androidx.compose.material.icons.rounded.FlashAuto
-import androidx.compose.material.icons.rounded.FlashOff
-import androidx.compose.material.icons.rounded.FlashOn
-import androidx.compose.material.icons.rounded.GridOff
-import androidx.compose.material.icons.rounded.GridOn
-import androidx.compose.material.icons.rounded.PhotoLibrary
+import com.t8rin.imagetoolbox.core.resources.Icons
+import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
+import com.t8rin.imagetoolbox.core.resources.icons.CameraAlt
+import com.t8rin.imagetoolbox.core.resources.icons.Cameraswitch
+import com.t8rin.imagetoolbox.core.resources.icons.FlashAuto
+import com.t8rin.imagetoolbox.core.resources.icons.FlashOff
+import com.t8rin.imagetoolbox.core.resources.icons.FlashOn
+import com.t8rin.imagetoolbox.core.resources.icons.GridOff
+import com.t8rin.imagetoolbox.core.resources.icons.GridOn
+import com.t8rin.imagetoolbox.core.resources.icons.PhotoLibrary
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -71,7 +72,7 @@ internal fun CameraCaptureScreen(
         CameraTopBar(
             title = stringResource(R.string.camera_capture_title),
             onBack = onBack,
-            backIcon = Icons.Rounded.ArrowBack,
+            backIcon = Icons.Outlined.ArrowBack,
             actions = {
                 val actionColors = IconButtonDefaults.iconButtonColors(
                     containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
@@ -92,9 +93,9 @@ internal fun CameraCaptureScreen(
                 ) {
                     Icon(
                         imageVector = when (flashMode) {
-                            ImageCapture.FLASH_MODE_AUTO -> Icons.Rounded.FlashAuto
-                            ImageCapture.FLASH_MODE_ON -> Icons.Rounded.FlashOn
-                            else -> Icons.Rounded.FlashOff
+                            ImageCapture.FLASH_MODE_AUTO -> Icons.Outlined.FlashAuto
+                            ImageCapture.FLASH_MODE_ON -> Icons.Outlined.FlashOn
+                            else -> Icons.Outlined.FlashOff
                         },
                         contentDescription = stringResource(
                             when (flashMode) {
@@ -111,7 +112,7 @@ internal fun CameraCaptureScreen(
                     glassBorderWidth = 0.dp
                 ) {
                     Icon(
-                        imageVector = if (showGrid) Icons.Rounded.GridOn else Icons.Rounded.GridOff,
+                        imageVector = if (showGrid) Icons.Outlined.GridOn else Icons.Outlined.GridOff,
                         contentDescription = stringResource(
                             if (showGrid) R.string.camera_grid_off else R.string.camera_grid_on
                         )
@@ -133,9 +134,10 @@ internal fun CameraCaptureScreen(
                     .aspectRatio(ratio)
             } ?: Modifier.fillMaxSize()
 
-            Box(modifier = previewModifier) {
+            Box(modifier = previewModifier.clipToBounds()) {
                 CameraPreview(
                     engine = engine,
+                    aspectRatio = aspectRatio,
                     onError = onError,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -154,6 +156,7 @@ internal fun CameraCaptureScreen(
                 selected = aspectRatio,
                 ratios = listOf(
                     CameraAspectRatio.ORIGINAL,
+                    CameraAspectRatio.FULL_SCREEN,
                     CameraAspectRatio.RATIO_4_3,
                     CameraAspectRatio.RATIO_1_1,
                     CameraAspectRatio.RATIO_16_9
@@ -188,7 +191,7 @@ internal fun CameraCaptureScreen(
                         )
                     } else {
                         Icon(
-                            imageVector = Icons.Rounded.PhotoLibrary,
+                            imageVector = Icons.Outlined.PhotoLibrary,
                             contentDescription = null,
                             modifier = Modifier.padding(14.dp),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
@@ -205,11 +208,11 @@ internal fun CameraCaptureScreen(
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
                         contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                     ),
-                    style = GlassStyle.Medium,
+                    style = GlassStyle.None,
                     glassBorderWidth = 0.dp
                 ) {
                     Icon(
-                        imageVector = Icons.Rounded.CameraAlt,
+                        imageVector = Icons.Outlined.CameraAlt,
                         contentDescription = stringResource(R.string.camera_shutter),
                         modifier = Modifier.size(34.dp)
                     )
@@ -224,10 +227,11 @@ internal fun CameraCaptureScreen(
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
                         contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                     ),
+                    style = GlassStyle.None,
                     glassBorderWidth = 0.dp
                 ) {
                     Icon(
-                        imageVector = Icons.Rounded.Cameraswitch,
+                        imageVector = Icons.Outlined.Cameraswitch,
                         contentDescription = stringResource(R.string.camera_switch),
                         modifier = Modifier.size(28.dp)
                     )

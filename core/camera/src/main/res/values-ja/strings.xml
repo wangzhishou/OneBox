@@ -13,6 +13,7 @@
     <string name="camera_shutter">写真を撮る</string>
     <string name="camera_last_photo">前の写真</string>
     <string name="camera_ratio_original">元の比率</string>
+    <string name="camera_ratio_fullscreen">全画面</string>
     <string name="camera_ratio_free">自由</string>
     <string name="camera_retake">撮り直す</string>
     <string name="camera_edit">編集</string>

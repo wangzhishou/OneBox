@@ -112,6 +112,7 @@ internal fun CameraRatioSelector(
 internal val CameraAspectRatio.labelRes: Int
     get() = when (this) {
         CameraAspectRatio.ORIGINAL -> R.string.camera_ratio_original
+        CameraAspectRatio.FULL_SCREEN -> R.string.camera_ratio_fullscreen
         CameraAspectRatio.FREE -> R.string.camera_ratio_free
         CameraAspectRatio.RATIO_4_3 -> R.string.camera_ratio_4_3
         CameraAspectRatio.RATIO_1_1 -> R.string.camera_ratio_1_1

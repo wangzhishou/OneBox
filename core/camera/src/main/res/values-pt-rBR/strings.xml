@@ -13,6 +13,7 @@
     <string name="camera_shutter">Tirar foto</string>
     <string name="camera_last_photo">Última foto</string>
     <string name="camera_ratio_original">Original</string>
+    <string name="camera_ratio_fullscreen">Tela cheia</string>
     <string name="camera_ratio_free">Livre</string>
     <string name="camera_retake">Tirar novamente</string>
     <string name="camera_edit">Editar</string>

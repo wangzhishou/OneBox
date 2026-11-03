@@ -13,6 +13,7 @@
     <string name="camera_shutter">Ambil foto</string>
     <string name="camera_last_photo">Foto terakhir</string>
     <string name="camera_ratio_original">Asli</string>
+    <string name="camera_ratio_fullscreen">Layar penuh</string>
     <string name="camera_ratio_free">Bebas</string>
     <string name="camera_retake">Ambil ulang</string>
     <string name="camera_edit">Edit</string>

@@ -13,6 +13,7 @@
     <string name="camera_shutter">Kumuha ng litrato</string>
     <string name="camera_last_photo">Nakaraang litrato</string>
     <string name="camera_ratio_original">Orihinal</string>
+    <string name="camera_ratio_fullscreen">Buong screen</string>
     <string name="camera_ratio_free">Libre</string>
     <string name="camera_retake">Kunin muli</string>
     <string name="camera_edit">I-edit</string>

@@ -13,6 +13,7 @@
     <string name="camera_shutter">Fotoğraf çek</string>
     <string name="camera_last_photo">Son fotoğraf</string>
     <string name="camera_ratio_original">Orijinal</string>
+    <string name="camera_ratio_fullscreen">Tam ekran</string>
     <string name="camera_ratio_free">Serbest</string>
     <string name="camera_retake">Yeniden çek</string>
     <string name="camera_edit">Düzenle</string>

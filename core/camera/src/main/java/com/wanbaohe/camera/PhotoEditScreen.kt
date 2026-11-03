@@ -10,12 +10,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.Flip
-import androidx.compose.material.icons.rounded.RotateRight
-import androidx.compose.material.icons.rounded.Undo
+import com.t8rin.imagetoolbox.core.resources.Icons
+import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
+import com.t8rin.imagetoolbox.core.resources.icons.Check
+import com.t8rin.imagetoolbox.core.resources.icons.Flip
+import com.t8rin.imagetoolbox.core.resources.icons.RotateRight
+import com.t8rin.imagetoolbox.core.resources.icons.Undo
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -39,7 +39,7 @@ import com.smarttoolfactory.cropper.model.RectCropShape
 import com.smarttoolfactory.cropper.settings.CropDefaults
 import com.smarttoolfactory.cropper.settings.CropType
 import com.wanbaohe.camera.R
-import com.wanbaohe.core.ui.widget.glass.GlassButton
+import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.core.ui.widget.glass.GlassFilledIconButton
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassTonalIconButton
@@ -67,7 +67,8 @@ internal fun PhotoEditScreen(
             ),
             aspectRatio = aspectRatio.value?.let(::AspectRatio) ?: AspectRatio.Original,
             fixedAspectRatio = aspectRatio != CameraAspectRatio.FREE &&
-                    aspectRatio != CameraAspectRatio.ORIGINAL,
+                    aspectRatio != CameraAspectRatio.ORIGINAL &&
+                    aspectRatio != CameraAspectRatio.FULL_SCREEN,
             overlayRatio = 0.92f,
             handleSize = 52f,
             maxZoom = 8f,
@@ -83,7 +84,7 @@ internal fun PhotoEditScreen(
         CameraTopBar(
             title = stringResource(R.string.camera_crop_title),
             onBack = onBack,
-            backIcon = Icons.Rounded.ArrowBack,
+            backIcon = Icons.Outlined.ArrowBack,
             actions = {
                 GlassFilledIconButton(
                     onClick = {
@@ -95,10 +96,11 @@ internal fun PhotoEditScreen(
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
                         contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                     ),
+                    style = GlassStyle.None,
                     glassBorderWidth = 0.dp
                 ) {
                     Icon(
-                        imageVector = Icons.Rounded.Check,
+                        imageVector = Icons.Outlined.Check,
                         contentDescription = stringResource(R.string.camera_done)
                     )
                 }
@@ -156,25 +158,25 @@ internal fun PhotoEditScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 EditAction(
-                    icon = Icons.Rounded.RotateRight,
+                    icon = Icons.Outlined.RotateRight,
                     label = stringResource(R.string.camera_rotate),
                     enabled = !isProcessing && !cropRequested,
                     onClick = onRotate
                 )
                 EditAction(
-                    icon = Icons.Rounded.Flip,
+                    icon = Icons.Outlined.Flip,
                     label = stringResource(R.string.camera_flip),
                     enabled = !isProcessing && !cropRequested,
                     onClick = onFlip
                 )
                 EditAction(
-                    icon = Icons.Rounded.Undo,
+                    icon = Icons.Outlined.Undo,
                     label = stringResource(R.string.camera_reset),
                     enabled = !isProcessing && !cropRequested,
                     onClick = onReset
                 )
             }
-            GlassButton(
+            GlassTonalButton(
                 onClick = {
                     onCropStart()
                     cropRequested = true
@@ -185,6 +187,7 @@ internal fun PhotoEditScreen(
                     .padding(horizontal = 16.dp),
                 color = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                style = GlassStyle.None,
                 borderWidth = 0.dp
             ) {
                 Text(stringResource(R.string.camera_done))
@@ -208,7 +211,7 @@ private fun EditAction(
                 containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
                 contentColor = MaterialTheme.colorScheme.onSurface
             ),
-            style = GlassStyle.Thin,
+            style = GlassStyle.None,
             glassBorderWidth = 0.dp
         ) {
             Icon(

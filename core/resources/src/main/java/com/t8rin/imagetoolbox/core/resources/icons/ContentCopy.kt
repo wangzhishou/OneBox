@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.ImageVector.Builder
 import androidx.compose.ui.graphics.vector.path
+import androidx.compose.ui.graphics.vector.group
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
@@ -294,6 +295,25 @@ val com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy: ImageVector
             curveTo(17.84f, 6.74f, 17.66f, 6.71f, 17.48f, 6.7f)
             curveTo(17.48f, 6.53f, 17.48f, 6.36f, 17.48f, 6.19f)
             close()
+        }
+    }.build()
+}
+
+val com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy: ImageVector by lazy(LazyThreadSafetyMode.NONE) {
+    Builder(
+        name = "Outlined.ContentCopy",
+        defaultWidth = 24.dp,
+        defaultHeight = 24.dp,
+        viewportWidth = 960f,
+        viewportHeight = 960f
+    ).apply {
+        group(translationY = 960f) {
+            addPath(
+                fill = SolidColor(Color.Black),
+                pathData = androidx.compose.ui.graphics.vector.addPathNodes(
+                    "M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"
+                )
+            )
         }
     }.build()
 }

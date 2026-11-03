@@ -81,6 +81,7 @@ internal class CameraEngine(context: Context) {
 @Composable
 internal fun CameraPreview(
     engine: CameraEngine,
+    aspectRatio: CameraAspectRatio,
     onError: (Throwable) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -95,8 +96,14 @@ internal fun CameraPreview(
         modifier = modifier,
         factory = { context ->
             androidx.camera.view.PreviewView(context).apply {
-                scaleType = androidx.camera.view.PreviewView.ScaleType.FILL_CENTER
                 controller = engine.controller
+            }
+        },
+        update = { previewView ->
+            previewView.scaleType = if (aspectRatio == CameraAspectRatio.ORIGINAL) {
+                androidx.camera.view.PreviewView.ScaleType.FIT_CENTER
+            } else {
+                androidx.camera.view.PreviewView.ScaleType.FILL_CENTER
             }
         }
     )

@@ -127,7 +127,7 @@ internal fun CameraCaptureFlow(
                 processor.discard(originalUri, workingUri)
                 originalUriString = capturedUri.toString()
                 workingUriString = capturedUri.toString()
-                editRatio = if (captureRatio == CameraAspectRatio.ORIGINAL) {
+                editRatio = if (captureRatio == CameraAspectRatio.ORIGINAL || captureRatio == CameraAspectRatio.FULL_SCREEN) {
                     CameraAspectRatio.FREE
                 } else {
                     captureRatio
@@ -236,7 +236,7 @@ internal fun CameraCaptureFlow(
                         if (original != null && working != null) {
                             processor.discardWorkingCopy(original, working)
                             workingUriString = original.toString()
-                            editRatio = if (captureRatio == CameraAspectRatio.ORIGINAL) {
+                            editRatio = if (captureRatio == CameraAspectRatio.ORIGINAL || captureRatio == CameraAspectRatio.FULL_SCREEN) {
                                 CameraAspectRatio.FREE
                             } else {
                                 captureRatio

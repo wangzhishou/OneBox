@@ -27,10 +27,10 @@ import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.AddPhotoAlt
 import com.t8rin.imagetoolbox.core.resources.icons.CopyAll
 import com.t8rin.imagetoolbox.core.resources.icons.Share
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineNote
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineRestartAlt
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineSaveAs
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineTextCard
+import com.t8rin.imagetoolbox.core.resources.icons.Note
+import com.t8rin.imagetoolbox.core.resources.icons.RestartAlt
+import com.t8rin.imagetoolbox.core.resources.icons.SaveAs
+import com.t8rin.imagetoolbox.core.resources.icons.TextCard
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.system.OneBoxPillButton
 import com.wanbaohe.ocr.R
@@ -137,7 +137,7 @@ internal fun OcrResultSheet(
                     )
                     OcrActionButton(
                         text = stringResource(R.string.ocr_save_markdown),
-                        icon = Icons.Outlined.LineSaveAs,
+                        icon = Icons.Outlined.SaveAs,
                         enabled = text.isNotBlank() && !state.isSavingMarkdown && !state.isRecognizing,
                         onClick = onSaveMarkdown,
                         modifier = Modifier.weight(1f),
@@ -150,14 +150,14 @@ internal fun OcrResultSheet(
                 ) {
                     OcrActionButton(
                         text = stringResource(R.string.ocr_save_note),
-                        icon = Icons.Outlined.LineNote,
+                        icon = Icons.Outlined.Note,
                         enabled = text.isNotBlank() && !state.isSavingNote && !state.isRecognizing,
                         onClick = onSaveNote,
                         modifier = Modifier.weight(1f),
                     )
                     OcrActionButton(
                         text = stringResource(R.string.ocr_recognize_again),
-                        icon = Icons.Outlined.LineRestartAlt,
+                        icon = Icons.Outlined.RestartAlt,
                         enabled = !state.isRecognizing,
                         onClick = onReRecognize,
                         modifier = Modifier.weight(1f),
@@ -174,7 +174,7 @@ internal fun OcrResultSheet(
                 Spacer(Modifier.height(8.dp))
                 OcrActionButton(
                     text = stringResource(R.string.ocr_make_card),
-                    icon = Icons.Outlined.LineTextCard,
+                    icon = Icons.Outlined.TextCard,
                     enabled = text.isNotBlank() && !state.isRecognizing,
                     onClick = onCreateCard,
                     modifier = Modifier.fillMaxWidth(),

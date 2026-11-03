@@ -13,6 +13,7 @@
     <string name="camera_shutter">사진 촬영</string>
     <string name="camera_last_photo">이전 사진</string>
     <string name="camera_ratio_original">원본</string>
+    <string name="camera_ratio_fullscreen">전체 화면</string>
     <string name="camera_ratio_free">자유</string>
     <string name="camera_retake">다시 촬영</string>
     <string name="camera_edit">편집</string>
