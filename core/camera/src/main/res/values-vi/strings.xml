@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="camera_capture_title">Chụp ảnh</string>
+    <string name="camera_confirm_title">Xác nhận ảnh</string>
+    <string name="camera_crop_title">Cắt</string>
+    <string name="camera_back">Quay lại</string>
+    <string name="camera_flash_off">Tắt đèn flash</string>
+    <string name="camera_flash_auto">Đèn flash tự động</string>
+    <string name="camera_flash_on">Bật đèn flash</string>
+    <string name="camera_grid_on">Hiện lưới</string>
+    <string name="camera_grid_off">Ẩn lưới</string>
+    <string name="camera_switch">Chuyển camera</string>
+    <string name="camera_shutter">Chụp ảnh</string>
+    <string name="camera_last_photo">Ảnh trước đó</string>
+    <string name="camera_ratio_original">Gốc</string>
+    <string name="camera_ratio_free">Tự do</string>
+    <string name="camera_retake">Chụp lại</string>
+    <string name="camera_edit">Chỉnh sửa</string>
+    <string name="camera_use_photo">Dùng ảnh này</string>
+    <string name="camera_rotate">Xoay</string>
+    <string name="camera_flip">Lật</string>
+    <string name="camera_reset">Đặt lại</string>
+    <string name="camera_done">Xong</string>
+    <string name="camera_capture_failed">Không thể chụp ảnh. Vui lòng thử lại.</string>
+    <string name="camera_unavailable">Không thể mở camera trên thiết bị này.</string>
+    <string name="camera_other_unavailable">Camera còn lại không khả dụng.</string>
+    <string name="camera_image_failed">Không thể xử lý ảnh này. Vui lòng thử lại.</string>
+</resources>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="camera_capture_title">Ambil foto</string>
+    <string name="camera_confirm_title">Konfirmasi foto</string>
+    <string name="camera_crop_title">Potong</string>
+    <string name="camera_back">Kembali</string>
+    <string name="camera_flash_off">Matikan flash</string>
+    <string name="camera_flash_auto">Flash otomatis</string>
+    <string name="camera_flash_on">Nyalakan flash</string>
+    <string name="camera_grid_on">Tampilkan kisi</string>
+    <string name="camera_grid_off">Sembunyikan kisi</string>
+    <string name="camera_switch">Ganti kamera</string>
+    <string name="camera_shutter">Ambil foto</string>
+    <string name="camera_last_photo">Foto terakhir</string>
+    <string name="camera_ratio_original">Asli</string>
+    <string name="camera_ratio_free">Bebas</string>
+    <string name="camera_retake">Ambil ulang</string>
+    <string name="camera_edit">Edit</string>
+    <string name="camera_use_photo">Gunakan foto</string>
+    <string name="camera_rotate">Putar</string>
+    <string name="camera_flip">Balik</string>
+    <string name="camera_reset">Atur ulang</string>
+    <string name="camera_done">Selesai</string>
+    <string name="camera_capture_failed">Tidak dapat mengambil foto. Coba lagi.</string>
+    <string name="camera_unavailable">Kamera tidak dapat dibuka di perangkat ini.</string>
+    <string name="camera_other_unavailable">Kamera lainnya tidak tersedia.</string>
+    <string name="camera_image_failed">Foto ini tidak dapat diproses. Coba lagi.</string>
+</resources>

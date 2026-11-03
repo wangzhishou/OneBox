@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="camera_capture_title">Сделать фото</string>
+    <string name="camera_confirm_title">Подтвердить фото</string>
+    <string name="camera_crop_title">Обрезка</string>
+    <string name="camera_back">Назад</string>
+    <string name="camera_flash_off">Выключить вспышку</string>
+    <string name="camera_flash_auto">Автоматическая вспышка</string>
+    <string name="camera_flash_on">Включить вспышку</string>
+    <string name="camera_grid_on">Показать сетку</string>
+    <string name="camera_grid_off">Скрыть сетку</string>
+    <string name="camera_switch">Сменить камеру</string>
+    <string name="camera_shutter">Сделать фото</string>
+    <string name="camera_last_photo">Последнее фото</string>
+    <string name="camera_ratio_original">Исходное</string>
+    <string name="camera_ratio_free">Свободное</string>
+    <string name="camera_retake">Переснять</string>
+    <string name="camera_edit">Редактировать</string>
+    <string name="camera_use_photo">Использовать фото</string>
+    <string name="camera_rotate">Повернуть</string>
+    <string name="camera_flip">Отразить</string>
+    <string name="camera_reset">Сбросить</string>
+    <string name="camera_done">Готово</string>
+    <string name="camera_capture_failed">Не удалось сделать фото. Попробуйте ещё раз.</string>
+    <string name="camera_unavailable">Не удалось открыть камеру на этом устройстве.</string>
+    <string name="camera_other_unavailable">Другая камера недоступна.</string>
+    <string name="camera_image_failed">Не удалось обработать это фото. Попробуйте ещё раз.</string>
+</resources>

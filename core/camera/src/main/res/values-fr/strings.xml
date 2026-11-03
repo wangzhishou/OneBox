@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="camera_capture_title">Prendre une photo</string>
+    <string name="camera_confirm_title">Confirmer la photo</string>
+    <string name="camera_crop_title">Recadrer</string>
+    <string name="camera_back">Retour</string>
+    <string name="camera_flash_off">Désactiver le flash</string>
+    <string name="camera_flash_auto">Flash automatique</string>
+    <string name="camera_flash_on">Activer le flash</string>
+    <string name="camera_grid_on">Afficher la grille</string>
+    <string name="camera_grid_off">Masquer la grille</string>
+    <string name="camera_switch">Changer de caméra</string>
+    <string name="camera_shutter">Prendre une photo</string>
+    <string name="camera_last_photo">Dernière photo</string>
+    <string name="camera_ratio_original">Originale</string>
+    <string name="camera_ratio_free">Libre</string>
+    <string name="camera_retake">Reprendre</string>
+    <string name="camera_edit">Modifier</string>
+    <string name="camera_use_photo">Utiliser la photo</string>
+    <string name="camera_rotate">Pivoter</string>
+    <string name="camera_flip">Retourner</string>
+    <string name="camera_reset">Réinitialiser</string>
+    <string name="camera_done">Terminer</string>
+    <string name="camera_capture_failed">Impossible de prendre la photo. Veuillez réessayer.</string>
+    <string name="camera_unavailable">Impossible d\'ouvrir la caméra sur cet appareil.</string>
+    <string name="camera_other_unavailable">L\'autre caméra n\'est pas disponible.</string>
+    <string name="camera_image_failed">Impossible de traiter cette photo. Veuillez réessayer.</string>
+</resources>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="camera_capture_title">फ़ोटो लें</string>
+    <string name="camera_confirm_title">फ़ोटो की पुष्टि करें</string>
+    <string name="camera_crop_title">क्रॉप करें</string>
+    <string name="camera_back">वापस</string>
+    <string name="camera_flash_off">फ़्लैश बंद करें</string>
+    <string name="camera_flash_auto">ऑटो फ़्लैश</string>
+    <string name="camera_flash_on">फ़्लैश चालू करें</string>
+    <string name="camera_grid_on">ग्रिड दिखाएँ</string>
+    <string name="camera_grid_off">ग्रिड छिपाएँ</string>
+    <string name="camera_switch">कैमरा बदलें</string>
+    <string name="camera_shutter">फ़ोटो लें</string>
+    <string name="camera_last_photo">पिछली फ़ोटो</string>
+    <string name="camera_ratio_original">मूल</string>
+    <string name="camera_ratio_free">फ्री</string>
+    <string name="camera_retake">फिर से फ़ोटो लें</string>
+    <string name="camera_edit">संपादित करें</string>
+    <string name="camera_use_photo">फ़ोटो इस्तेमाल करें</string>
+    <string name="camera_rotate">घुमाएँ</string>
+    <string name="camera_flip">पलटें</string>
+    <string name="camera_reset">रीसेट करें</string>
+    <string name="camera_done">हो गया</string>
+    <string name="camera_capture_failed">फ़ोटो नहीं ली जा सकी। कृपया फिर से कोशिश करें।</string>
+    <string name="camera_unavailable">इस डिवाइस पर कैमरा नहीं खोला जा सका।</string>
+    <string name="camera_other_unavailable">दूसरा कैमरा उपलब्ध नहीं है।</string>
+    <string name="camera_image_failed">इस फ़ोटो को प्रोसेस नहीं किया जा सका। कृपया फिर से कोशिश करें।</string>
+</resources>

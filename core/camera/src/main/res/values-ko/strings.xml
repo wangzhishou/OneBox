@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="camera_capture_title">사진 촬영</string>
+    <string name="camera_confirm_title">사진 확인</string>
+    <string name="camera_crop_title">자르기</string>
+    <string name="camera_back">뒤로</string>
+    <string name="camera_flash_off">플래시 끄기</string>
+    <string name="camera_flash_auto">자동 플래시</string>
+    <string name="camera_flash_on">플래시 켜기</string>
+    <string name="camera_grid_on">격자 표시</string>
+    <string name="camera_grid_off">격자 숨기기</string>
+    <string name="camera_switch">카메라 전환</string>
+    <string name="camera_shutter">사진 촬영</string>
+    <string name="camera_last_photo">이전 사진</string>
+    <string name="camera_ratio_original">원본</string>
+    <string name="camera_ratio_free">자유</string>
+    <string name="camera_retake">다시 촬영</string>
+    <string name="camera_edit">편집</string>
+    <string name="camera_use_photo">사진 사용</string>
+    <string name="camera_rotate">회전</string>
+    <string name="camera_flip">뒤집기</string>
+    <string name="camera_reset">초기화</string>
+    <string name="camera_done">완료</string>
+    <string name="camera_capture_failed">사진을 촬영하지 못했습니다. 다시 시도해 주세요.</string>
+    <string name="camera_unavailable">이 기기에서 카메라를 열 수 없습니다.</string>
+    <string name="camera_other_unavailable">다른 카메라를 사용할 수 없습니다.</string>
+    <string name="camera_image_failed">사진을 처리하지 못했습니다. 다시 시도해 주세요.</string>
+</resources>

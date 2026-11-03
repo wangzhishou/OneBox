@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="camera_capture_title">التقاط صورة</string>
+    <string name="camera_confirm_title">تأكيد الصورة</string>
+    <string name="camera_crop_title">اقتصاص</string>
+    <string name="camera_back">رجوع</string>
+    <string name="camera_flash_off">إيقاف الفلاش</string>
+    <string name="camera_flash_auto">الفلاش التلقائي</string>
+    <string name="camera_flash_on">تشغيل الفلاش</string>
+    <string name="camera_grid_on">إظهار الشبكة</string>
+    <string name="camera_grid_off">إخفاء الشبكة</string>
+    <string name="camera_switch">تبديل الكاميرا</string>
+    <string name="camera_shutter">التقاط صورة</string>
+    <string name="camera_last_photo">الصورة السابقة</string>
+    <string name="camera_ratio_original">الأصلية</string>
+    <string name="camera_ratio_free">حر</string>
+    <string name="camera_retake">إعادة الالتقاط</string>
+    <string name="camera_edit">تعديل</string>
+    <string name="camera_use_photo">استخدام الصورة</string>
+    <string name="camera_rotate">تدوير</string>
+    <string name="camera_flip">قلب</string>
+    <string name="camera_reset">إعادة ضبط</string>
+    <string name="camera_done">تم</string>
+    <string name="camera_capture_failed">تعذّر التقاط الصورة. حاول مرة أخرى.</string>
+    <string name="camera_unavailable">تعذّر فتح الكاميرا على هذا الجهاز.</string>
+    <string name="camera_other_unavailable">الكاميرا الأخرى غير متاحة.</string>
+    <string name="camera_image_failed">تعذّرت معالجة هذه الصورة. حاول مرة أخرى.</string>
+</resources>

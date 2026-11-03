@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="camera_capture_title">Tirar foto</string>
+    <string name="camera_confirm_title">Confirmar foto</string>
+    <string name="camera_crop_title">Cortar</string>
+    <string name="camera_back">Voltar</string>
+    <string name="camera_flash_off">Desativar flash</string>
+    <string name="camera_flash_auto">Flash automático</string>
+    <string name="camera_flash_on">Ativar flash</string>
+    <string name="camera_grid_on">Mostrar grade</string>
+    <string name="camera_grid_off">Ocultar grade</string>
+    <string name="camera_switch">Alternar câmera</string>
+    <string name="camera_shutter">Tirar foto</string>
+    <string name="camera_last_photo">Última foto</string>
+    <string name="camera_ratio_original">Original</string>
+    <string name="camera_ratio_free">Livre</string>
+    <string name="camera_retake">Tirar novamente</string>
+    <string name="camera_edit">Editar</string>
+    <string name="camera_use_photo">Usar foto</string>
+    <string name="camera_rotate">Girar</string>
+    <string name="camera_flip">Espelhar</string>
+    <string name="camera_reset">Redefinir</string>
+    <string name="camera_done">Concluir</string>
+    <string name="camera_capture_failed">Não foi possível tirar a foto. Tente novamente.</string>
+    <string name="camera_unavailable">Não foi possível abrir a câmera neste dispositivo.</string>
+    <string name="camera_other_unavailable">A outra câmera não está disponível.</string>
+    <string name="camera_image_failed">Não foi possível processar esta foto. Tente novamente.</string>
+</resources>

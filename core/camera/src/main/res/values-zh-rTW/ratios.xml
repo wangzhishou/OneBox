@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="camera_ratio_4_3">4:3</string>
+    <string name="camera_ratio_1_1">1:1</string>
+    <string name="camera_ratio_16_9">16:9</string>
+    <string name="camera_ratio_9_16">9:16</string>
+</resources>

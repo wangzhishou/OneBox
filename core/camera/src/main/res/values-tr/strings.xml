@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="camera_capture_title">Fotoğraf çek</string>
+    <string name="camera_confirm_title">Fotoğrafı onayla</string>
+    <string name="camera_crop_title">Kırp</string>
+    <string name="camera_back">Geri</string>
+    <string name="camera_flash_off">Flaşı kapat</string>
+    <string name="camera_flash_auto">Otomatik flaş</string>
+    <string name="camera_flash_on">Flaşı aç</string>
+    <string name="camera_grid_on">Izgarayı göster</string>
+    <string name="camera_grid_off">Izgarayı gizle</string>
+    <string name="camera_switch">Kamerayı değiştir</string>
+    <string name="camera_shutter">Fotoğraf çek</string>
+    <string name="camera_last_photo">Son fotoğraf</string>
+    <string name="camera_ratio_original">Orijinal</string>
+    <string name="camera_ratio_free">Serbest</string>
+    <string name="camera_retake">Yeniden çek</string>
+    <string name="camera_edit">Düzenle</string>
+    <string name="camera_use_photo">Fotoğrafı kullan</string>
+    <string name="camera_rotate">Döndür</string>
+    <string name="camera_flip">Aynala</string>
+    <string name="camera_reset">Sıfırla</string>
+    <string name="camera_done">Tamam</string>
+    <string name="camera_capture_failed">Fotoğraf çekilemedi. Lütfen tekrar deneyin.</string>
+    <string name="camera_unavailable">Bu cihazda kamera açılamadı.</string>
+    <string name="camera_other_unavailable">Diğer kamera kullanılamıyor.</string>
+    <string name="camera_image_failed">Bu fotoğraf işlenemedi. Lütfen tekrar deneyin.</string>
+</resources>

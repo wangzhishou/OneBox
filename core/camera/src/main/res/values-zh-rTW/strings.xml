@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="camera_capture_title">拍照</string>
+    <string name="camera_confirm_title">確認照片</string>
+    <string name="camera_crop_title">裁切</string>
+    <string name="camera_back">返回</string>
+    <string name="camera_flash_off">關閉閃光燈</string>
+    <string name="camera_flash_auto">自動閃光燈</string>
+    <string name="camera_flash_on">開啟閃光燈</string>
+    <string name="camera_grid_on">顯示網格</string>
+    <string name="camera_grid_off">隱藏網格</string>
+    <string name="camera_switch">切換相機</string>
+    <string name="camera_shutter">拍照</string>
+    <string name="camera_last_photo">上一張照片</string>
+    <string name="camera_ratio_original">原始</string>
+    <string name="camera_ratio_free">自由</string>
+    <string name="camera_retake">重拍</string>
+    <string name="camera_edit">編輯</string>
+    <string name="camera_use_photo">使用照片</string>
+    <string name="camera_rotate">旋轉</string>
+    <string name="camera_flip">翻轉</string>
+    <string name="camera_reset">還原</string>
+    <string name="camera_done">完成並儲存</string>
+    <string name="camera_capture_failed">拍照失敗，請重試。</string>
+    <string name="camera_unavailable">無法開啟此裝置的相機。</string>
+    <string name="camera_other_unavailable">另一個相機無法使用。</string>
+    <string name="camera_image_failed">照片處理失敗，請重試。</string>
+</resources>

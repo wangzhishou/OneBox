@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="camera_capture_title">Kumuha ng litrato</string>
+    <string name="camera_confirm_title">Kumpirmahin ang litrato</string>
+    <string name="camera_crop_title">I-crop</string>
+    <string name="camera_back">Bumalik</string>
+    <string name="camera_flash_off">I-off ang flash</string>
+    <string name="camera_flash_auto">Awtomatikong flash</string>
+    <string name="camera_flash_on">I-on ang flash</string>
+    <string name="camera_grid_on">Ipakita ang grid</string>
+    <string name="camera_grid_off">Itago ang grid</string>
+    <string name="camera_switch">Lumipat ng camera</string>
+    <string name="camera_shutter">Kumuha ng litrato</string>
+    <string name="camera_last_photo">Nakaraang litrato</string>
+    <string name="camera_ratio_original">Orihinal</string>
+    <string name="camera_ratio_free">Libre</string>
+    <string name="camera_retake">Kunin muli</string>
+    <string name="camera_edit">I-edit</string>
+    <string name="camera_use_photo">Gamitin ang litrato</string>
+    <string name="camera_rotate">I-rotate</string>
+    <string name="camera_flip">Baligtarin</string>
+    <string name="camera_reset">I-reset</string>
+    <string name="camera_done">Tapos na</string>
+    <string name="camera_capture_failed">Hindi nakakuha ng litrato. Subukan ulit.</string>
+    <string name="camera_unavailable">Hindi mabuksan ang camera sa device na ito.</string>
+    <string name="camera_other_unavailable">Hindi available ang isa pang camera.</string>
+    <string name="camera_image_failed">Hindi maproseso ang litrato. Subukan ulit.</string>
+</resources>

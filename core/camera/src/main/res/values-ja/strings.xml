@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="camera_capture_title">写真を撮る</string>
+    <string name="camera_confirm_title">写真を確認</string>
+    <string name="camera_crop_title">トリミング</string>
+    <string name="camera_back">戻る</string>
+    <string name="camera_flash_off">フラッシュをオフ</string>
+    <string name="camera_flash_auto">自動フラッシュ</string>
+    <string name="camera_flash_on">フラッシュをオン</string>
+    <string name="camera_grid_on">グリッドを表示</string>
+    <string name="camera_grid_off">グリッドを非表示</string>
+    <string name="camera_switch">カメラを切り替え</string>
+    <string name="camera_shutter">写真を撮る</string>
+    <string name="camera_last_photo">前の写真</string>
+    <string name="camera_ratio_original">元の比率</string>
+    <string name="camera_ratio_free">自由</string>
+    <string name="camera_retake">撮り直す</string>
+    <string name="camera_edit">編集</string>
+    <string name="camera_use_photo">この写真を使う</string>
+    <string name="camera_rotate">回転</string>
+    <string name="camera_flip">反転</string>
+    <string name="camera_reset">リセット</string>
+    <string name="camera_done">完了</string>
+    <string name="camera_capture_failed">写真を撮影できませんでした。もう一度お試しください。</string>
+    <string name="camera_unavailable">このデバイスでカメラを起動できません。</string>
+    <string name="camera_other_unavailable">もう一方のカメラは利用できません。</string>
+    <string name="camera_image_failed">写真を処理できませんでした。もう一度お試しください。</string>
+</resources>
