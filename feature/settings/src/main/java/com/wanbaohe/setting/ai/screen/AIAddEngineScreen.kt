@@ -162,13 +162,8 @@ fun AIAddEngineScreen(
                 .fillMaxWidth()
                 .weight(1f)
                 .verticalScroll(rememberScrollState())
-                // 顶部间距直接用屏幕级 token: 原来的 Spacer + blockSpacing 叠出 20dp,
-                // 说明卡/导入行删掉后这段空白就显得多余了
-                .padding(
-                    start = OneBoxDesignSystem.screenPadding,
-                    end = OneBoxDesignSystem.screenPadding,
-                    top = OneBoxDesignSystem.screenTopSpacing,
-                ),
+                // 首屏直接贴住顶栏: 说明卡/导入行删掉后, 上面不再需要额外留白
+                .padding(horizontal = OneBoxDesignSystem.screenPadding),
             verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing),
         ) {
             SettingCard {
