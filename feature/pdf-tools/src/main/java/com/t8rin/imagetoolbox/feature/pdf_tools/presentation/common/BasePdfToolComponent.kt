@@ -26,6 +26,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.model.ExtraDataType
+import com.t8rin.imagetoolbox.core.domain.model.IntegerSize
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
 import com.t8rin.imagetoolbox.core.domain.saving.KeepAliveService
 import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
@@ -75,6 +76,23 @@ abstract class BasePdfToolComponent(
 
     fun hidePasswordRequestDialog() {
         _showPasswordRequestDialog.update { false }
+    }
+
+    private val _pageSizes = mutableStateOf<List<IntegerSize>>(emptyList())
+    val pageSizes: List<IntegerSize> by _pageSizes
+
+    fun refreshPageSizes(uri: Uri?) {
+        componentScope.launch {
+            _pageSizes.value = if (uri == null) {
+                emptyList()
+            } else {
+                pdfManager.getPdfPageSizes(uri.toString())
+            }
+        }
+    }
+
+    protected open fun onSecurityFailure() {
+        _showPasswordRequestDialog.update { true }
     }
 
     fun updateIsRtl(isRtl: Boolean) {
@@ -145,7 +163,7 @@ abstract class BasePdfToolComponent(
                 parseFileSaveResult(action())
             }.onFailure {
                 if (it is SecurityException) {
-                    _showPasswordRequestDialog.update { true }
+                    onSecurityFailure()
                 } else {
                     parseFileSaveResult(SaveResult.Error.Exception(it))
                 }
@@ -165,7 +183,7 @@ abstract class BasePdfToolComponent(
                 onSuccess(action())
             }.onFailure {
                 if (it is SecurityException) {
-                    _showPasswordRequestDialog.update { true }
+                    onSecurityFailure()
                 } else {
                     onFailure(it)
                 }

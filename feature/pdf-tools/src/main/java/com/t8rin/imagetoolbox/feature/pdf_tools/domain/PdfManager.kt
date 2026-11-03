@@ -96,6 +96,13 @@ interface PdfManager : PdfHelper {
         password: String
     ): String
 
+    suspend fun opensWithoutPassword(uri: String): Boolean
+
+    suspend fun passwordMatches(
+        uri: String,
+        password: String,
+    ): Boolean
+
     suspend fun extractPagesFromPdf(
         uri: String
     ): List<String>

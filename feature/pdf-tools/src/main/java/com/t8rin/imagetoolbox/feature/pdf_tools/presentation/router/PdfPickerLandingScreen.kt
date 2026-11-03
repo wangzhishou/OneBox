@@ -62,8 +62,13 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LinePdf
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSwapVert
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCompress
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineContentCut
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineDraw
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineLock
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMergeType
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineNumbers
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineUnlock
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRotate90
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineWatermarking
 
 @Composable
 internal fun PdfPickerLandingScreen(
@@ -139,6 +144,41 @@ internal fun PdfPickerLandingScreen(
             onPick(Screen.PdfTools.Type.Rearrange(uri))
         }
     )
+    val protectPdfPicker = rememberFilePicker(
+        mimeType = MimeType.Pdf,
+        onSuccess = { uri: Uri ->
+            onRecordAccess(uri)
+            onPick(Screen.PdfTools.Type.Protect(uri))
+        }
+    )
+    val unlockPdfPicker = rememberFilePicker(
+        mimeType = MimeType.Pdf,
+        onSuccess = { uri: Uri ->
+            onRecordAccess(uri)
+            onPick(Screen.PdfTools.Type.Unlock(uri))
+        }
+    )
+    val pageNumbersPdfPicker = rememberFilePicker(
+        mimeType = MimeType.Pdf,
+        onSuccess = { uri: Uri ->
+            onRecordAccess(uri)
+            onPick(Screen.PdfTools.Type.PageNumbers(uri))
+        }
+    )
+    val watermarkPdfPicker = rememberFilePicker(
+        mimeType = MimeType.Pdf,
+        onSuccess = { uri: Uri ->
+            onRecordAccess(uri)
+            onPick(Screen.PdfTools.Type.Watermark(uri))
+        }
+    )
+    val signaturePdfPicker = rememberFilePicker(
+        mimeType = MimeType.Pdf,
+        onSuccess = { uri: Uri ->
+            onRecordAccess(uri)
+            onPick(Screen.PdfTools.Type.Signature(uri))
+        }
+    )
 
     val tools = remember {
         listOf(
@@ -177,6 +217,36 @@ internal fun PdfPickerLandingScreen(
                 subtitleRes = R.string.rearrange_pdf_sub,
                 icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSwapVert,
                 launcher = { rearrangePdfPicker.pickFile() }
+            ),
+            PdfToolEntry(
+                titleRes = R.string.protect_pdf,
+                subtitleRes = R.string.protect_pdf_sub,
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineLock,
+                launcher = { protectPdfPicker.pickFile() }
+            ),
+            PdfToolEntry(
+                titleRes = R.string.unlock_pdf,
+                subtitleRes = R.string.unlock_pdf_sub,
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUnlock,
+                launcher = { unlockPdfPicker.pickFile() }
+            ),
+            PdfToolEntry(
+                titleRes = R.string.page_numbers,
+                subtitleRes = R.string.page_numbers_sub,
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineNumbers,
+                launcher = { pageNumbersPdfPicker.pickFile() }
+            ),
+            PdfToolEntry(
+                titleRes = R.string.watermark_pdf,
+                subtitleRes = R.string.watermark_pdf_sub,
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineWatermarking,
+                launcher = { watermarkPdfPicker.pickFile() }
+            ),
+            PdfToolEntry(
+                titleRes = R.string.signature,
+                subtitleRes = R.string.signature_sub,
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDraw,
+                launcher = { signaturePdfPicker.pickFile() }
             ),
             PdfToolEntry(
                 titleRes = R.string.images_to_pdf,

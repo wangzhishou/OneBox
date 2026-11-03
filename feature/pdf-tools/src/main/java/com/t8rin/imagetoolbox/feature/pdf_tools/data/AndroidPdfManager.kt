@@ -49,6 +49,7 @@ import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.asXObject
 import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.createPage
 import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.createPdf
 import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.crop
+import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.cleanPdfText
 import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.defaultFont
 import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.getAllImages
 import com.t8rin.imagetoolbox.feature.pdf_tools.data.utils.getPageSafe
@@ -334,12 +335,19 @@ internal class AndroidPdfManager @Inject constructor(
     ): String = catchPdf {
         usePdf(uri) { document ->
             val font = document.defaultFont
+            val fontDescriptor = font.fontDescriptor
             val totalPages = document.numberOfPages
             val label = params.labelFormat
                 .replace("{total}", totalPages.toString())
+            var stamped = false
 
             document.pages.forEachIndexed { idx, page ->
-                val text = label.replace("{n}", (idx + 1).toString())
+                val text = label
+                    .replace("{n}", (idx + 1).toString())
+                    .cleanPdfText(font)
+
+                if (text.isBlank()) return@forEachIndexed
+                stamped = true
 
                 val cropBox = page.cropBox
                 val pageWidth = cropBox.width
@@ -347,7 +355,13 @@ internal class AndroidPdfManager @Inject constructor(
                 val originX = cropBox.lowerLeftX
                 val originY = cropBox.lowerLeftY
 
-                val textWidth = font.getStringWidth(text) / 1000f * 12f
+                val glyphWidthEm = (font.getStringWidth(text) / 1000f).coerceAtLeast(0.001f)
+                val fontSize = pageWidth * params.fontSize / 100f / glyphWidthEm
+                val textWidth = glyphWidthEm * fontSize
+                val textAscent = fontDescriptor.ascent / 1000f * fontSize
+                val textDescent = fontDescriptor.descent / 1000f * fontSize
+                val textVerticalCenter =
+                    (fontDescriptor.ascent + fontDescriptor.descent) / 2000f * fontSize
 
                 val baseX = when (params.position) {
                     Position.TopLeft,
@@ -390,24 +404,31 @@ internal class AndroidPdfManager @Inject constructor(
                 }
 
                 val adjustedY = when (params.position) {
+                    Position.TopLeft,
+                    Position.TopCenter,
+                    Position.TopRight -> baseY - textAscent
+
                     Position.CenterLeft,
                     Position.Center,
-                    Position.CenterRight -> baseY - 6f
+                    Position.CenterRight -> baseY - textVerticalCenter
 
-                    else -> baseY
+                    Position.BottomLeft,
+                    Position.BottomCenter,
+                    Position.BottomRight -> baseY - textDescent
                 }
-
-                val adjustedXWithOrigin = adjustedX + originX
-                val adjustedYWithOrigin = adjustedY + originY
 
                 document.writePage(page) {
                     beginText()
-                    setFont(font, 12f)
+                    setFont(font, fontSize)
                     setColor(params.color)
-                    newLineAtOffset(adjustedXWithOrigin, adjustedYWithOrigin)
+                    newLineAtOffset(adjustedX + originX, adjustedY + originY)
                     showText(text)
                     endText()
                 }
+            }
+
+            if (document.numberOfPages > 0 && !stamped) {
+                error("The current font cannot draw this page number")
             }
 
             document.save(
@@ -427,36 +448,53 @@ internal class AndroidPdfManager @Inject constructor(
 
         usePdf(uri) { document ->
             val font = document.defaultFont
+            val fontDescriptor = font.fontDescriptor
+            val lines = params.text
+                .replace("\r\n", "\n")
+                .split('\n')
+                .map { it.cleanPdfText(font) }
+                .filter { it.isNotBlank() }
+            if (lines.isEmpty()) {
+                if (params.text.isNotBlank()) {
+                    error("The current font cannot draw this watermark")
+                }
+            } else {
+                val longest = lines.maxBy { font.getStringWidth(it) }
 
-            params.pages.orAll(document).forEach { pageIndex ->
-                val page = document.getPageSafe(pageIndex)
+                params.pages.forEach { pageIndex ->
+                    val page = document.getPageSafe(pageIndex)
+                    val cropBox = page.cropBox
+                    val glyphWidthEm =
+                        (font.getStringWidth(longest) / 1000f).coerceAtLeast(0.001f)
+                    val fontSize = cropBox.width * params.fontSize / 100f / glyphWidthEm
+                    val lineHeight =
+                        (fontDescriptor.ascent - fontDescriptor.descent) / 1000f * fontSize
+                    val textVerticalCenter =
+                        (fontDescriptor.ascent + fontDescriptor.descent) / 2000f * fontSize
+                    val blockShift = lineHeight * (lines.size - 1) / 2f
+                    val centerX = cropBox.lowerLeftX + cropBox.width / 2f
+                    val centerY = cropBox.lowerLeftY + cropBox.height / 2f
+                    val matrix = Matrix.getRotateInstance(
+                        Math.toRadians(-params.rotation.toDouble()),
+                        centerX,
+                        centerY
+                    )
 
-                val textWidth =
-                    font.getStringWidth(params.text) / 1000f * params.fontSize
-
-                val radians = Math.toRadians(-params.rotation.toDouble())
-                val cropBox = page.cropBox
-
-                val originX = cropBox.lowerLeftX
-                val originY = cropBox.lowerLeftY
-
-                val centerX = originX + cropBox.width / 2f
-                val centerY = originY + cropBox.height / 2f
-
-                val matrix = Matrix.getRotateInstance(
-                    radians,
-                    centerX,
-                    centerY
-                )
-
-                document.writePage(page) {
-                    beginText()
-                    setFont(font, params.fontSize)
-                    setColor(color.copy(params.opacity))
-                    setTextMatrix(matrix)
-                    newLineAtOffset(-textWidth / 2f, 0f)
-                    showText(params.text)
-                    endText()
+                    document.writePage(page) {
+                        lines.forEachIndexed { index, line ->
+                            val lineWidth = font.getStringWidth(line) / 1000f * fontSize
+                            beginText()
+                            setFont(font, fontSize)
+                            setColor(color.copy(params.opacity))
+                            setTextMatrix(matrix)
+                            newLineAtOffset(
+                                -lineWidth / 2f,
+                                -textVerticalCenter + blockShift - index * lineHeight
+                            )
+                            showText(line)
+                            endText()
+                        }
+                    }
                 }
             }
 
@@ -474,14 +512,16 @@ internal class AndroidPdfManager @Inject constructor(
         params: PdfSignatureParams
     ): String = catchPdf {
         usePdf(uri) { document ->
-            val signatureImage = imageGetter.getImage(data = params.signatureImage)!!.asXObject(
+            val signatureBitmap = imageGetter.getImage(data = params.signatureImage)
+                ?: error("Could not read the signature image")
+            val signatureImage = signatureBitmap.asXObject(
                 document = document,
                 quality = 1f
             )
 
             val imageAspect = signatureImage.width.toFloat() / signatureImage.height.toFloat()
 
-            params.pages.orAll(document).forEach { pageIndex ->
+            params.pages.forEach { pageIndex ->
                 val page = document.getPageSafe(pageIndex)
 
                 val crop = page.cropBox
@@ -507,8 +547,8 @@ internal class AndroidPdfManager @Inject constructor(
                 y += originY
 
                 document.writePage(page) {
-                    setAlpha(params.opacity)
                     saveGraphicsState()
+                    setAlpha(params.opacity)
                     transform(
                         Matrix(
                             targetWidth,
@@ -994,6 +1034,26 @@ internal class AndroidPdfManager @Inject constructor(
                     uri = uri
                 )
             )
+        }
+    }
+
+    override suspend fun opensWithoutPassword(uri: String): Boolean =
+        withContext(defaultDispatcher) {
+            try {
+                helper.usePdf(uri, password = "") { true }
+            } catch (_: InvalidPasswordException) {
+                false
+            }
+        }
+
+    override suspend fun passwordMatches(
+        uri: String,
+        password: String,
+    ): Boolean = withContext(defaultDispatcher) {
+        try {
+            helper.usePdf(uri, password = password) { true }
+        } catch (_: InvalidPasswordException) {
+            false
         }
     }
 

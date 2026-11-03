@@ -19,12 +19,17 @@ import com.t8rin.imagetoolbox.core.utils.path
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.compress.screenLogic.CompressPdfToolComponent
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.images_to_pdf.screenLogic.ImagesToPdfComponent
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.merge.screenLogic.MergePdfToolComponent
+import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.page_numbers.screenLogic.PageNumbersPdfToolComponent
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.pdf_to_images.screenLogic.ExtractPagesPdfToolComponent
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.preview.screenLogic.PreviewPdfToolComponent
+import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.protect.screenLogic.ProtectPdfToolComponent
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.rearrange.screenLogic.RearrangePdfToolComponent
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.remove_pages.screenLogic.RemovePagesPdfToolComponent
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.rotate.screenLogic.RotatePdfToolComponent
+import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.signature.screenLogic.SignaturePdfToolComponent
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.split.screenLogic.SplitPdfToolComponent
+import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.unlock.screenLogic.UnlockPdfToolComponent
+import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.watermark.screenLogic.WatermarkPdfToolComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -43,6 +48,11 @@ class PdfRouterComponent @AssistedInject internal constructor(
     private val rotatePdfFactory: RotatePdfToolComponent.Factory,
     private val removePagesPdfFactory: RemovePagesPdfToolComponent.Factory,
     private val rearrangePdfFactory: RearrangePdfToolComponent.Factory,
+    private val protectPdfFactory: ProtectPdfToolComponent.Factory,
+    private val unlockPdfFactory: UnlockPdfToolComponent.Factory,
+    private val pageNumbersPdfFactory: PageNumbersPdfToolComponent.Factory,
+    private val watermarkPdfFactory: WatermarkPdfToolComponent.Factory,
+    private val signaturePdfFactory: SignaturePdfToolComponent.Factory,
     private val activityLogRepository: ActivityLogRepository,
     private val recentAccessRepository: RecentAccessRepository,
     dispatchersHolder: DispatchersHolder,
@@ -196,6 +206,51 @@ class PdfRouterComponent @AssistedInject internal constructor(
             )
         )
 
+        is Screen.PdfTools.Type.Protect -> PdfChild.Protect(
+            protectPdfFactory(
+                initialUri = type.pdfUri,
+                componentContext = componentContext.childContext("protect_pdf"),
+                onGoBack = onGoBack,
+                onNavigate = onNavigate,
+            )
+        )
+
+        is Screen.PdfTools.Type.Unlock -> PdfChild.Unlock(
+            unlockPdfFactory(
+                initialUri = type.pdfUri,
+                componentContext = componentContext.childContext("unlock_pdf"),
+                onGoBack = onGoBack,
+                onNavigate = onNavigate,
+            )
+        )
+
+        is Screen.PdfTools.Type.PageNumbers -> PdfChild.PageNumbers(
+            pageNumbersPdfFactory(
+                initialUri = type.pdfUri,
+                componentContext = componentContext.childContext("page_numbers_pdf"),
+                onGoBack = onGoBack,
+                onNavigate = onNavigate,
+            )
+        )
+
+        is Screen.PdfTools.Type.Watermark -> PdfChild.Watermark(
+            watermarkPdfFactory(
+                initialUri = type.pdfUri,
+                componentContext = componentContext.childContext("watermark_pdf"),
+                onGoBack = onGoBack,
+                onNavigate = onNavigate,
+            )
+        )
+
+        is Screen.PdfTools.Type.Signature -> PdfChild.Signature(
+            signaturePdfFactory(
+                initialUri = type.pdfUri,
+                componentContext = componentContext.childContext("signature_pdf"),
+                onGoBack = onGoBack,
+                onNavigate = onNavigate,
+            )
+        )
+
         null -> PdfChild.Picker
     }
 
@@ -210,6 +265,11 @@ class PdfRouterComponent @AssistedInject internal constructor(
         class Rotate(val component: RotatePdfToolComponent) : PdfChild
         class RemovePages(val component: RemovePagesPdfToolComponent) : PdfChild
         class Rearrange(val component: RearrangePdfToolComponent) : PdfChild
+        class Protect(val component: ProtectPdfToolComponent) : PdfChild
+        class Unlock(val component: UnlockPdfToolComponent) : PdfChild
+        class PageNumbers(val component: PageNumbersPdfToolComponent) : PdfChild
+        class Watermark(val component: WatermarkPdfToolComponent) : PdfChild
+        class Signature(val component: SignaturePdfToolComponent) : PdfChild
     }
 
     @AssistedFactory

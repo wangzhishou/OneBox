@@ -58,9 +58,14 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineVisibility
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCompareArrows
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCompress
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineContentCut
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineDraw
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFilePresent
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineLock
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMergeType
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineNumbers
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineUnlock
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRotate90
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineWatermarking
 
 @Stable
 @Immutable
@@ -376,6 +381,11 @@ sealed class Screen(
                     is Rotate -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRotate90
                     is RemovePages -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete
                     is Rearrange -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSwapVert
+                    is Protect -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineLock
+                    is Unlock -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUnlock
+                    is PageNumbers -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineNumbers
+                    is Watermark -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineWatermarking
+                    is Signature -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDraw
                 }
 
             @Serializable
@@ -459,6 +469,51 @@ sealed class Screen(
                 subtitle = R.string.rearrange_pdf_sub
             )
 
+            @Serializable
+            @SerialName("ProtectPdf")
+            data class Protect(
+                val pdfUri: Uri? = null
+            ) : Type(
+                title = R.string.protect_pdf,
+                subtitle = R.string.protect_pdf_sub
+            )
+
+            @Serializable
+            @SerialName("UnlockPdf")
+            data class Unlock(
+                val pdfUri: Uri? = null
+            ) : Type(
+                title = R.string.unlock_pdf,
+                subtitle = R.string.unlock_pdf_sub
+            )
+
+            @Serializable
+            @SerialName("PageNumbersPdf")
+            data class PageNumbers(
+                val pdfUri: Uri? = null
+            ) : Type(
+                title = R.string.page_numbers,
+                subtitle = R.string.page_numbers_sub
+            )
+
+            @Serializable
+            @SerialName("WatermarkPdf")
+            data class Watermark(
+                val pdfUri: Uri? = null
+            ) : Type(
+                title = R.string.watermark_pdf,
+                subtitle = R.string.watermark_pdf_sub
+            )
+
+            @Serializable
+            @SerialName("SignaturePdf")
+            data class Signature(
+                val pdfUri: Uri? = null
+            ) : Type(
+                title = R.string.signature,
+                subtitle = R.string.signature_sub
+            )
+
             companion object {
                 val entries by lazy {
                     listOf(
@@ -470,7 +525,12 @@ sealed class Screen(
                         Compress(),
                         Rotate(),
                         RemovePages(),
-                        Rearrange()
+                        Rearrange(),
+                        Protect(),
+                        Unlock(),
+                        PageNumbers(),
+                        Watermark(),
+                        Signature(),
                     )
                 }
             }

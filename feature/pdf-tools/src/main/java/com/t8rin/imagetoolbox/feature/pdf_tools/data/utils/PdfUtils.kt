@@ -17,6 +17,7 @@
 
 package com.t8rin.imagetoolbox.feature.pdf_tools.data.utils
 
+import android.content.Context
 import android.graphics.Bitmap
 import androidx.compose.ui.graphics.Color
 import androidx.core.net.toUri
@@ -41,13 +42,16 @@ import com.tom_roush.pdfbox.pdmodel.common.PDRectangle
 import com.tom_roush.pdfbox.pdmodel.encryption.AccessPermission
 import com.tom_roush.pdfbox.pdmodel.encryption.InvalidPasswordException
 import com.tom_roush.pdfbox.pdmodel.encryption.StandardProtectionPolicy
+import com.tom_roush.pdfbox.pdmodel.font.PDFont
 import com.tom_roush.pdfbox.pdmodel.font.PDType0Font
 import com.tom_roush.pdfbox.pdmodel.graphics.form.PDFormXObject
 import com.tom_roush.pdfbox.pdmodel.graphics.image.JPEGFactory
 import com.tom_roush.pdfbox.pdmodel.graphics.image.LosslessFactory
 import com.tom_roush.pdfbox.pdmodel.graphics.image.PDImageXObject
 import com.tom_roush.pdfbox.pdmodel.graphics.state.PDExtendedGraphicsState
+import java.io.File
 import java.util.Calendar
+import java.util.zip.GZIPInputStream
 import kotlin.math.roundToInt
 
 internal fun PDDocument.save(
@@ -60,6 +64,7 @@ internal fun PDDocument.save(
         protect(
             StandardProtectionPolicy(password, password, AccessPermission()).apply {
                 encryptionKeyLength = 128
+                setPreferAES(true)
             }
         )
     }
@@ -100,10 +105,73 @@ internal fun PDDocument.setMetadata(value: PdfMetadata?) {
     }
 }
 
-internal val PDDocument.defaultFont
-    get() = PDType0Font.load(
-        this, appContext.resources.openRawResource(R.raw.roboto_bold)
-    )
+internal val PDDocument.defaultFont: PDType0Font
+    get() = PDType0Font.load(this, appContext.defaultPdfFontFile().inputStream())
+
+internal fun Context.defaultPdfFontFile(): File = PdfFontCache.file(this)
+
+private object PdfFontCache {
+    @Volatile
+    private var cached: File? = null
+
+    fun file(context: Context): File {
+        cached?.takeIf { it.isFile && it.length() > 100_000 }?.let { return it }
+        return synchronized(this) {
+            cached?.takeIf { it.isFile && it.length() > 100_000 } ?: unpack(context).also {
+                cached = it
+            }
+        }
+    }
+
+    private fun unpack(context: Context): File {
+        val directory = File(context.filesDir, "pdf-fonts")
+        if (!directory.isDirectory && !directory.mkdirs()) {
+            return fallback(context)
+        }
+        val target = File(directory, "universal-bold.ttf")
+        if (target.isFile && target.length() > 100_000) return target
+        return try {
+            context.resources.openRawResource(R.raw.image_toolbox_universal_bold).use { raw ->
+                GZIPInputStream(raw).use { input ->
+                    target.outputStream().use { output -> input.copyTo(output) }
+                }
+            }
+            if (target.isFile && target.length() > 100_000) target else fallback(context)
+        } catch (t: Throwable) {
+            t.makeLog("pdf-font")
+            fallback(context)
+        }
+    }
+
+    private fun fallback(context: Context): File {
+        val directory = File(context.filesDir, "pdf-fonts")
+        directory.mkdirs()
+        val target = File(directory, "roboto-bold.ttf")
+        if (target.isFile && target.length() > 0) return target
+        context.resources.openRawResource(R.raw.roboto_bold).use { input ->
+            target.outputStream().use { output -> input.copyTo(output) }
+        }
+        return target
+    }
+}
+
+internal fun String.cleanPdfText(font: PDFont): String {
+    val text = replace(PdfControlChars, "").take(2000)
+    return buildString(text.length) {
+        var index = 0
+        while (index < text.length) {
+            val codePoint = text.codePointAt(index)
+            if (font.canEncode(codePoint)) appendCodePoint(codePoint)
+            index += Character.charCount(codePoint)
+        }
+    }
+}
+
+private fun PDFont.canEncode(codePoint: Int): Boolean = runCatching {
+    encode(String(Character.toChars(codePoint)))
+}.isSuccess
+
+private val PdfControlChars = Regex("[\\p{Cntrl}&&[^\\n\\r\\t]]")
 
 internal fun PDDocument.getPageSafe(index: Int): PDPage = getPage(
     index.coerceIn(

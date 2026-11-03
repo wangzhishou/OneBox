@@ -5,13 +5,18 @@ import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.compress.CompressPdfToolContent
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.images_to_pdf.ImagesToPdfScreen
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.merge.MergePdfToolContent
+import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.page_numbers.PageNumbersPdfToolContent
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.pdf_preview.PdfPreviewScreen
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.pdf_to_images.PdfToImagesScreen
+import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.protect.ProtectPdfToolContent
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.rearrange.RearrangePdfToolContent
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.remove_pages.RemovePagesPdfToolContent
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.rotate.RotatePdfToolContent
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.router.screenLogic.PdfRouterComponent
+import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.signature.SignaturePdfToolContent
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.split.SplitPdfToolContent
+import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.unlock.UnlockPdfToolContent
+import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.watermark.WatermarkPdfToolContent
 
 @Composable
 fun PdfRouterScreen(component: PdfRouterComponent) {
@@ -35,5 +40,10 @@ fun PdfRouterScreen(component: PdfRouterComponent) {
         is PdfRouterComponent.PdfChild.Rotate -> RotatePdfToolContent(child.component)
         is PdfRouterComponent.PdfChild.RemovePages -> RemovePagesPdfToolContent(child.component)
         is PdfRouterComponent.PdfChild.Rearrange -> RearrangePdfToolContent(child.component)
+        is PdfRouterComponent.PdfChild.Protect -> ProtectPdfToolContent(child.component)
+        is PdfRouterComponent.PdfChild.Unlock -> UnlockPdfToolContent(child.component)
+        is PdfRouterComponent.PdfChild.PageNumbers -> PageNumbersPdfToolContent(child.component)
+        is PdfRouterComponent.PdfChild.Watermark -> WatermarkPdfToolContent(child.component)
+        is PdfRouterComponent.PdfChild.Signature -> SignaturePdfToolContent(child.component)
     }
 }
