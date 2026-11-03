@@ -435,7 +435,6 @@
     <string name="ai_engine_api_url_hint">Preenche automaticamente https:// e a barra final / ao sair do campo</string>
     <string name="ai_engine_model_dialog_primary_hint">Digite o ID do modelo exigido pelo serviço. O nome de exibição é gerado automaticamente.</string>
     <string name="ai_engine_model_display_name_hint">Deixe em branco para gerar a partir da chave do modelo</string>
-    <string name="ai_engine_name_edit_hint">Chave única do serviço; os modelos acompanham ao renomear — normalmente deixe como está</string>
     <string name="ai_engine_title_hint">Nome exibido nas listas e no chat; pode ser alterado a qualquer momento</string>
     <string name="ai_personalization_tab_prompts">Prompts</string>
     <string name="ai_engine_api_url_example">Exemplo: %1$s</string>

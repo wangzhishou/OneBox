@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -375,15 +374,11 @@ fun AIEngineSettingsDetailScreen(
             ) {
                 Spacer(modifier = Modifier.height(OneBoxDesignSystem.microSpacing))
 
-                // 服务商基本信息: 显示名/服务标识可改, 修掉「标题被填成 API Key 却改不了」
+                // 服务商基本信息: 只留显示名。服务标识是内部键、基本无需改动,
+                // 原来收在「更多选项」里反而多一层误导性的可操作感, 整块去掉
                 EngineBasicInfoCard(
                     engine = engine,
-                    canEditName = localOwnedEngineKeys.any { key ->
-                        key == engine.identityKey() ||
-                            key.startsWith("${engine.name.trim().lowercase()}#")
-                    },
                     onTitleChange = component::updateTitle,
-                    onNameChange = component::updateName,
                 )
 
                 // 渠道能力(如 Google 全量放开)或远程开关开放时, 展示服务器/Token 设置
@@ -953,12 +948,9 @@ private fun RemoteModelPickerDialog(
 @Composable
 private fun EngineBasicInfoCard(
     engine: AiEngine,
-    canEditName: Boolean,
     onTitleChange: (String) -> Unit,
-    onNameChange: (String) -> Unit,
 ) {
     SettingCard {
-        var showMore by rememberSaveable { mutableStateOf(false) }
         OneBoxOutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = engine.title,
@@ -975,37 +967,6 @@ private fun EngineBasicInfoCard(
                 Text(stringResource(R.string.ai_engine_title_hint))
             },
         )
-        CollapsibleSectionHeader(
-            title = stringResource(R.string.ai_engine_more_options),
-            expanded = showMore,
-            onToggle = { showMore = !showMore },
-            summary = engine.name,
-        )
-        AnimatedVisibility(visible = showMore) {
-            Column(verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing)) {
-                OneBoxOutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = engine.name,
-                    onValueChange = if (canEditName) onNameChange else {
-                        {}
-                    },
-                    label = { Text(stringResource(R.string.ai_engine_name_label)) },
-                    trailingIcon = {
-                        if (canEditName) {
-                            ClearTextFieldTrailingIcon(
-                                value = engine.name,
-                                onClear = { onNameChange("") },
-                            )
-                        }
-                    },
-                    singleLine = true,
-                    readOnly = !canEditName,
-                    supportingText = {
-                        Text(stringResource(R.string.ai_engine_name_edit_hint))
-                    },
-                )
-            }
-        }
     }
 }
 
@@ -1021,18 +982,11 @@ private fun ServerConnectivityCard(
     onTestClick: () -> Unit,
 ) {
     SettingCard {
-        var showAuthOptions by rememberSaveable { mutableStateOf(false) }
         val isJev = engine.requestProtocol.isNonChat
 
         if (!isJev) {
-            // 鉴权方式默认折叠(Bearer),点请求协议行尾箭头展开
-            CollapsibleSectionHeader(
-                title = stringResource(R.string.ai_engine_protocol_label),
-                expanded = showAuthOptions,
-                onToggle = { showAuthOptions = !showAuthOptions },
-            )
-
-            // 协议选项横向滚动,卡片样式与模型管理一致
+            // 协议是这屏最常改的一项, 改用选择器直接展示当前值: 原来的横排卡片里
+            // 第二个选型会被卡片边缘裁掉, 又看不出还能横滑, 看着像坏了
             val selectableProtocols = remember(engine.requestProtocol) {
                 // 「应用代理」是内置中转链路,不作为可选协议暴露;
                 // JEV 仅海外可选(国内无备案), 且仅当前已是 JEV 的引擎保留该项
@@ -1047,44 +1001,22 @@ private fun ServerConnectivityCard(
                         }
                     }
             }
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                items(selectableProtocols) { protocol ->
-                    SelectGridCard(
-                        title = protocolLabel(protocol),
-                        subtitle = null,
-                        isSelected = engine.requestProtocol == protocol,
-                        onClick = { onProtocolChange(protocol) },
-                        // LazyRow 给子项的宽度上限是 Infinity,SelectGridCard 内部标题列用了
-                        // Modifier.weight(1f),权重在无界主轴下会解析成 0 宽 → 文字不可见;
-                        // 这里用内容固有宽度给卡片定宽,文字才能测量出真实尺寸
-                        modifier = Modifier.width(IntrinsicSize.Max),
-                    )
-                }
-            }
+            SelectorField(
+                label = stringResource(R.string.ai_engine_protocol_label),
+                selected = engine.requestProtocol,
+                options = selectableProtocols,
+                optionLabel = { protocolLabel(it) },
+                onSelect = onProtocolChange,
+            )
 
-            AnimatedVisibility(visible = showAuthOptions) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
-                ) {
-                    Text(
-                        text = stringResource(R.string.ai_engine_auth_type_label),
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-
-                    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        items(AuthType.entries) { authType ->
-                            SelectGridCard(
-                                title = authTypeLabel(authType),
-                                subtitle = null,
-                                isSelected = engine.authType == authType,
-                                onClick = { onAuthTypeChange(authType) },
-                                modifier = Modifier.width(IntrinsicSize.Max),
-                            )
-                        }
-                    }
-                }
-            }
+            // 鉴权方式与协议同为二选一, 用同一种选择器: 当前值直接显示, 不藏在折叠里
+            SelectorField(
+                label = stringResource(R.string.ai_engine_auth_type_label),
+                selected = engine.authType,
+                options = AuthType.entries,
+                optionLabel = { authTypeLabel(it) },
+                onSelect = onAuthTypeChange,
+            )
         }
 
         if (isJev) {
@@ -1292,38 +1224,31 @@ private fun ModelSelectionCard(
                     maxLines = 2,
                     modifier = Modifier.weight(1f),
                 )
-                // 固定占位, 本地/远程切换时行高不跳; 远程模型不可编辑时按钮禁用而不是消失
-                IconButton(
-                    onClick = { if (selectedModel.canEdit) onModelEdit(selectedModel) },
-                    enabled = selectedModel.canEdit,
-                    modifier = Modifier.size(36.dp),
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
-                        contentDescription = stringResource(R.string.ai_engine_edit_action),
-                        tint = if (selectedModel.canEdit) {
-                            MaterialTheme.colorScheme.onPrimaryContainer
-                        } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.35f)
-                        },
-                        modifier = Modifier.size(20.dp),
-                    )
-                }
-                IconButton(
-                    onClick = { if (selectedModel.canEdit) onModelDelete(selectedModel) },
-                    enabled = selectedModel.canEdit,
-                    modifier = Modifier.size(36.dp),
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
-                        contentDescription = stringResource(R.string.ai_engine_delete_action),
-                        tint = if (selectedModel.canEdit) {
-                            MaterialTheme.colorScheme.onErrorContainer
-                        } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.35f)
-                        },
-                        modifier = Modifier.size(20.dp),
-                    )
+                // 远程下发模型没有编辑/删除权限, 这时整块按钮不渲染:
+                // 禁用态图标只会让用户以为自己点错了, 左侧提示已说明「仅支持选择」
+                if (selectedModel.canEdit) {
+                    IconButton(
+                        onClick = { onModelEdit(selectedModel) },
+                        modifier = Modifier.size(36.dp),
+                    ) {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
+                            contentDescription = stringResource(R.string.ai_engine_edit_action),
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                            modifier = Modifier.size(20.dp),
+                        )
+                    }
+                    IconButton(
+                        onClick = { onModelDelete(selectedModel) },
+                        modifier = Modifier.size(36.dp),
+                    ) {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
+                            contentDescription = stringResource(R.string.ai_engine_delete_action),
+                            tint = MaterialTheme.colorScheme.onErrorContainer,
+                            modifier = Modifier.size(20.dp),
+                        )
+                    }
                 }
             }
 

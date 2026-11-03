@@ -139,7 +139,6 @@
     <string name="ai_engine_more_options">更多选项</string>
     <string name="ai_engine_title_label">显示名称</string>
     <string name="ai_engine_title_hint">列表和对话里展示的名字，可随时修改</string>
-    <string name="ai_engine_name_edit_hint">服务唯一标识；修改后模型会跟着迁移，一般无需改动</string>
     <string name="ai_engine_model_dialog_primary_hint">填服务端要求的模型 ID，显示名会自动生成。</string>
     <string name="ai_engine_model_display_name_hint">留空则按模型标识自动生成</string>
     <string name="ai_engine_description_label">描述</string>

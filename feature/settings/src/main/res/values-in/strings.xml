@@ -435,7 +435,6 @@
     <string name="ai_engine_api_url_hint">Otomatis mengisi https:// dan tanda / di akhir saat Anda meninggalkan kolom</string>
     <string name="ai_engine_model_dialog_primary_hint">Masukkan ID model yang diminta layanan. Nama tampilan dibuat otomatis.</string>
     <string name="ai_engine_model_display_name_hint">Biarkan kosong untuk membuat dari kunci model</string>
-    <string name="ai_engine_name_edit_hint">Kunci layanan yang unik; model ikut berpindah saat diubah namanya — biasanya biarkan apa adanya</string>
     <string name="ai_engine_title_hint">Nama yang tampil di daftar dan chat; bisa diubah kapan saja</string>
     <string name="ai_personalization_tab_prompts">Prompt</string>
     <string name="ai_engine_api_url_example">Contoh: %1$s</string>

@@ -5,15 +5,11 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -88,8 +84,6 @@ fun AIAddEngineScreen(
     val coroutineScope = rememberCoroutineScope()
     var showExitConfirmDialog by rememberSaveable { mutableStateOf(false) }
     var showValidationErrors by rememberSaveable { mutableStateOf(false) }
-    // 鉴权方式跟随协议默认, 收进折叠; 行尾摘要展示当前取值
-    var authExpanded by rememberSaveable { mutableStateOf(false) }
     // 服务标识/描述等可选字段收进"更多选项", 默认收起
     var moreExpanded by rememberSaveable { mutableStateOf(false) }
     // 用户手动改过服务标识后停止跟随显示名称自动派生
@@ -274,27 +268,16 @@ fun AIAddEngineScreen(
                     ProtocolSelector(component = component, draft = draft)
 
                     if (!isJevProtocol && !isPikafishProtocol) {
-                        CollapsibleSectionHeader(
-                            title = stringResource(R.string.ai_engine_auth_type_label),
-                            expanded = authExpanded,
-                            onToggle = { authExpanded = !authExpanded },
-                            summary = authTypeLabel(draft.authType),
+                        // 鉴权方式与详情页同一种选择器: 当前值直接可见, 选项收进菜单
+                        SelectorField(
+                            label = stringResource(R.string.ai_engine_auth_type_label),
+                            selected = draft.authType,
+                            options = AuthType.entries,
+                            optionLabel = { authTypeLabel(it) },
+                            onSelect = { type ->
+                                component.updateDraft { it.copy(authType = type) }
+                            },
                         )
-                        AnimatedVisibility(visible = authExpanded) {
-                            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                items(AuthType.entries) { type ->
-                                    SelectGridCard(
-                                        title = authTypeLabel(type),
-                                        subtitle = null,
-                                        isSelected = draft.authType == type,
-                                        onClick = {
-                                            component.updateDraft { it.copy(authType = type) }
-                                        },
-                                        modifier = Modifier.width(IntrinsicSize.Max),
-                                    )
-                                }
-                            }
-                        }
                     }
 
                     if (isJevProtocol) {
@@ -381,10 +364,13 @@ fun AIAddEngineScreen(
                     }
                     return@BottomSaveCancelBar
                 }
-                // 服务标识留空时自动派生; 纯中文标题派生不出可用的 slug, 退化为时间戳后缀兜底
+                // 服务标识留空时自动派生: 优先用显示名压出的可读 slug(导出/日志里认得出),
+                // 纯中文标题压不出可用 slug 时退化为时间戳兜底。
+                // 兜底用完整毫秒的 36 进制, 不再对 1_000_000 取模 —— 取模会让每 ~16.7 分钟
+                // 出现一批相同的 key, 和已有引擎撞名后用户还得去折叠区手动改。
                 val resolvedName = draft.name.trim().ifBlank {
                     deriveAutoServiceKey(saveTitle).ifBlank {
-                        "engine-${System.currentTimeMillis() % 1_000_000}"
+                        "engine-${System.currentTimeMillis().toString(36)}"
                     }
                 }
                 if (resolvedName != draft.name) {
@@ -443,7 +429,7 @@ fun AIAddEngineScreen(
  *
  * 仅展示云端协议；LOCAL_ON_DEVICE 由独立的"本地模型管理"页处理（Phase 2）;
  * 锁定条件看入口协议而非当前草稿协议(F4): 从 Jev/Pikafish 专属入口进来(protocolLocked)
- * 时只展示一个固定选中项; 普通入口始终展示全量列表、可自由来回切换, 切到 Jev 的
+ * 时只展示一个固定选中项(选择器退化成只读); 普通入口可自由来回切换, 切到 Jev 的
  * 预填由 Component 的 updateRequestProtocol 负责(与详情页同一套)。
  * Jev(TypeSafe) 国内无备案, 协议选择器仅海外暴露;
  * 「应用代理」是内置中转链路、Pikafish 是象棋专用通道, 均不支持用户自建, 不作为可选协议暴露。
@@ -463,31 +449,14 @@ private fun ProtocolSelector(
         }
     }
 
-    Text(
-        text = stringResource(R.string.ai_engine_protocol_label),
-        style = MaterialTheme.typography.labelLarge,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
+    // 长协议名放进下方选择器: 当前值直接可见, 全部选项收进菜单, 不会被卡片边缘裁掉
+    SelectorField(
+        label = stringResource(R.string.ai_engine_protocol_label),
+        selected = draft.requestProtocol,
+        options = selectableProtocols,
+        optionLabel = { protocolLabel(it) },
+        onSelect = { protocol -> component.updateRequestProtocol(protocol) },
     )
-    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        items(selectableProtocols) { protocol ->
-            SelectGridCard(
-                title = protocolLabel(protocol),
-                subtitle = null,
-                isSelected = draft.requestProtocol == protocol,
-                onClick = {
-                    // 锁定入口或点击已选中的 chip 都是无操作(F3):
-                    // 默认值靠进页预填拿到, 不靠"再点一次"
-                    if (component.protocolLocked || draft.requestProtocol == protocol) {
-                        return@SelectGridCard
-                    }
-                    component.updateRequestProtocol(protocol)
-                },
-                // LazyRow 主轴无界, SelectGridCard 内部 weight(1f) 会塌成 0 宽,
-                // 用内容固有宽度定宽才能正确测量文字
-                modifier = Modifier.width(IntrinsicSize.Max),
-            )
-        }
-    }
 }
 
 /** URL/Path 字段(失焦时规范化) */

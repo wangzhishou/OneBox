@@ -108,7 +108,6 @@
     <string name="ai_engine_name_label">服務識別碼</string>
     <string name="ai_engine_title_label">顯示名稱</string>
     <string name="ai_engine_title_hint">列表和對話裡展示的名字，可隨時修改</string>
-    <string name="ai_engine_name_edit_hint">服務唯一識別碼；修改後模型會跟著遷移，一般無需改動</string>
     <string name="ai_engine_model_dialog_primary_hint">填服務端要求的模型 ID，顯示名會自動產生。</string>
     <string name="ai_engine_model_display_name_hint">留空則按模型識別碼自動產生</string>
     <string name="ai_engine_description_label">描述</string>

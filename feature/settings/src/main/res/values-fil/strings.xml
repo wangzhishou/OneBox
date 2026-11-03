@@ -435,7 +435,6 @@
     <string name="ai_engine_api_url_hint">Awtomatikong dinadagdag ang https:// at ang panghuling / kapag umalis ka sa field</string>
     <string name="ai_engine_model_dialog_primary_hint">Ilagay ang model ID na kailangan ng serbisyo. Awtomatikong nagagawa ang display name.</string>
     <string name="ai_engine_model_display_name_hint">Iwan na blangko para gawin mula sa model key</string>
-    <string name="ai_engine_name_edit_hint">Natatanging service key; sumasama ang mga model kapag pinalitan ang pangalan — karaniwang iwan lang</string>
     <string name="ai_engine_title_hint">Pangalang lumalabas sa mga listahan at chat; mababago anumang oras</string>
     <string name="ai_personalization_tab_prompts">Mga prompt</string>
     <string name="ai_engine_api_url_example">Halimbawa: %1$s</string>

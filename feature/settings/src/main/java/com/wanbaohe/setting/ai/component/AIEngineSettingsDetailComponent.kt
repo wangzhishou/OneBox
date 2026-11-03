@@ -118,10 +118,6 @@ class AIEngineSettingsDetailComponent @AssistedInject internal constructor(
         _draftEngine.value = _draftEngine.value?.copy(title = value)
     }
 
-    fun updateName(value: String) {
-        _draftEngine.value = _draftEngine.value?.copy(name = value)
-    }
-
     fun updateRequestUrl(value: String) {
         // 改 URL 时连同已验证标记一并复位(F10), 与 updateRequestPath 等字段行为对齐,
         // 否则改了地址仍是"已验证", 静默复查又以 isDetestPassed 为跳过条件, 新 URL 永远不会被检查

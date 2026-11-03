@@ -111,7 +111,6 @@
     <string name="ai_engine_more_options">Plus d\'options</string>
     <string name="ai_engine_title_label">Nom d\'affichage</string>
     <string name="ai_engine_title_hint">Nom affiché dans les listes et les conversations, modifiable à tout moment</string>
-    <string name="ai_engine_name_edit_hint">Identifiant unique du service ; après modification, le modèle sera migré en conséquence, généralement inutile de le changer</string>
     <string name="ai_engine_model_dialog_primary_hint">Saisissez l\'ID de modèle requis par le serveur, le nom d\'affichage sera généré automatiquement.</string>
     <string name="ai_engine_model_display_name_hint">Laisser vide pour générer automatiquement à partir de l\'identifiant du modèle</string>
     <string name="ai_engine_description_label">Description</string>

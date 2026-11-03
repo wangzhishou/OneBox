@@ -139,7 +139,6 @@
     <string name="ai_engine_more_options">More options</string>
     <string name="ai_engine_title_label">Display Name</string>
     <string name="ai_engine_title_hint">Name shown in lists and chat; can be changed anytime</string>
-    <string name="ai_engine_name_edit_hint">Unique service key; models follow when renamed — usually leave as-is</string>
     <string name="ai_engine_model_dialog_primary_hint">Enter the model ID required by the service. Display name is generated automatically.</string>
     <string name="ai_engine_model_display_name_hint">Leave blank to generate from the model key</string>
     <string name="ai_engine_description_label">Description</string>

@@ -111,7 +111,6 @@
     <string name="ai_engine_more_options">Tùy chọn khác</string>
     <string name="ai_engine_title_label">Tên hiển thị</string>
     <string name="ai_engine_title_hint">Tên hiển thị trong danh sách và hội thoại, có thể sửa bất cứ lúc nào</string>
-    <string name="ai_engine_name_edit_hint">Mã định danh duy nhất của dịch vụ; sau khi sửa, mô hình sẽ được di chuyển theo, thường không cần thay đổi</string>
     <string name="ai_engine_model_dialog_primary_hint">Điền ID mô hình theo yêu cầu của máy chủ, tên hiển thị sẽ được tạo tự động.</string>
     <string name="ai_engine_model_display_name_hint">Để trống sẽ tự động tạo theo mã định danh mô hình</string>
     <string name="ai_engine_description_label">Mô tả</string>

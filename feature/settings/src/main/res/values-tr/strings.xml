@@ -98,7 +98,6 @@
     <string name="ai_engine_name_label">Hizmet Anahtarı</string>
     <string name="ai_engine_title_label">Görünen Ad</string>
     <string name="ai_engine_title_hint">Listelerde ve sohbetlerde görüntülenen ad; istediğiniz zaman değiştirebilirsiniz.</string>
-    <string name="ai_engine_name_edit_hint">Hizmetin benzersiz tanımlayıcısı; değiştirdiğinizde modeller onunla birlikte taşınır, genellikle değiştirmeniz gerekmez.</string>
     <string name="ai_engine_description_label">Açıklama</string>
     <string name="ai_engine_protocol_label">İstek Protokolü</string>
     <string name="ai_engine_protocol_openai">OpenAI Chat/completions API</string>
