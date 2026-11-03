@@ -28,11 +28,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.CropSquare
 import androidx.compose.material.icons.outlined.Layers
+import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.TextFields
 import androidx.compose.material.icons.outlined.Tune
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -79,7 +80,6 @@ import com.wanbaohe.textcard.presentation.editor.panels.BackgroundPanel
 import com.wanbaohe.textcard.presentation.editor.panels.ContentPanel
 import com.wanbaohe.textcard.presentation.editor.panels.PageSelectionPanel
 import com.wanbaohe.textcard.presentation.editor.panels.PagesPanel
-import com.wanbaohe.textcard.presentation.editor.panels.TemplatesPanel
 import com.wanbaohe.textcard.presentation.editor.panels.TextStylePanel
 import com.wanbaohe.textcard.presentation.screenLogic.EditorPanel
 import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
@@ -260,7 +260,24 @@ fun TextCardEditorScreen(component: TextCardComponent) {
     }
 
     BaseScreen(
-        title = stringResource(R.string.textcard_title),
+        title = {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(stringResource(R.string.textcard_title))
+                AnimatedVisibility(
+                    visible = component.isProjectSaving || component.lastSavedAt != null
+                ) {
+                    Text(
+                        text = stringResource(
+                            if (component.isProjectSaving) {
+                                R.string.textcard_autosave_saving
+                            } else R.string.textcard_autosave_saved
+                        ),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                    )
+                }
+            }
+        },
         onGoBack = {
             finishCanvasEditing()
             component.closeEditor()
@@ -459,10 +476,50 @@ fun TextCardEditorScreen(component: TextCardComponent) {
         }
     )
 
+    val panelTitleRes = when (component.activePanel) {
+        EditorPanel.Content -> R.string.textcard_tab_content
+        EditorPanel.Typography -> if (component.pageSelection != null) {
+            R.string.textcard_editing_selection
+        } else R.string.textcard_text_settings
+        EditorPanel.Background -> R.string.textcard_paper_background
+        EditorPanel.Pages -> R.string.textcard_select_canvas_title
+        null -> R.string.textcard_title
+    }
+    val dismissPanel: () -> Unit = {
+        if (component.activePanel == EditorPanel.Typography && component.pageSelection != null) {
+            canvasFieldState?.let { state ->
+                state.edit { selection = TextRange(state.selection.end) }
+            }
+        }
+        closePanel()
+    }
     EnhancedModalBottomSheet(
         visible = component.activePanel != null,
-        onDismiss = { closePanel() },
-        nestedScrollEnabled = true
+        title = stringResource(panelTitleRes),
+        onDismiss = { dismissPanel() },
+        onClose = dismissPanel,
+        nestedScrollEnabled = true,
+        endContent = {
+            if (component.activePanel == EditorPanel.Background) {
+                IconButton(
+                    onClick = component::refreshRemotePapers,
+                    enabled = !component.remotePapersRefreshing
+                ) {
+                    if (component.remotePapersRefreshing) {
+                        CircularProgressIndicator(
+                            strokeWidth = 2.dp,
+                            modifier = Modifier.size(16.dp)
+                        )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Outlined.Refresh,
+                            contentDescription = stringResource(R.string.textcard_refresh_papers),
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                }
+            }
+        }
     ) {
         Column(
             modifier = Modifier
@@ -486,12 +543,6 @@ fun TextCardEditorScreen(component: TextCardComponent) {
                         PageSelectionPanel(
                             component = component,
                             state = state,
-                            onClose = {
-                                state.edit {
-                                    this.selection = TextRange(state.selection.end)
-                                }
-                                component.setActivePanel(null)
-                            },
                             onStylesChanged = syncCanvasState
                         )
                     } else {
@@ -581,18 +632,6 @@ private fun EditorBottomBar(
             .glassDense(shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
             .navigationBarsPadding()
     ) {
-        if (component.isProjectSaving || component.lastSavedAt != null) {
-            Text(
-                text = stringResource(
-                    if (component.isProjectSaving) {
-                        R.string.textcard_autosave_saving
-                    } else R.string.textcard_autosave_saved
-                ),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.align(Alignment.End).padding(end = 12.dp, top = 4.dp)
-            )
-        }
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 8.dp)

@@ -36,10 +36,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.pluralStringResource
@@ -70,7 +66,6 @@ import com.wanbaohe.core.ui.utils.content_pickers.Picker
 import com.wanbaohe.core.ui.utils.content_pickers.rememberImagePicker
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.helper.rememberClipboardData
-import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
@@ -101,7 +96,6 @@ fun MarkupHomeContent(
     )
     val clipboardUris by rememberClipboardData()
     var showBlankCanvasSheet by rememberSaveable { mutableStateOf(false) }
-    var showCoverTypeDialog by rememberSaveable { mutableStateOf(false) }
     val canvasBudget = remember { ImageMemoryBudget() }
 
     BaseScreen(
@@ -177,7 +171,7 @@ fun MarkupHomeContent(
                         QuickTasksSection(
                             component = component,
                             setImage = setImage,
-                            onMakeCover = { showCoverTypeDialog = true }
+                            onMakeCover = { showBlankCanvasSheet = true }
                         )
                         Spacer(Modifier.height(24.dp))
                         SavedProjectsSection(component = component)
@@ -205,39 +199,6 @@ fun MarkupHomeContent(
             )
         }
     )
-
-    EnhancedAlertDialog(
-        visible = showCoverTypeDialog,
-        onDismissRequest = { showCoverTypeDialog = false },
-        title = { Text(stringResource(R.string.studio_task_make_cover)) },
-        text = {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                ConfirmButton(
-                    text = stringResource(R.string.studio_cover_option_text_card),
-                    onClick = {
-                        showCoverTypeDialog = false
-                        component.onNavigate(Screen.TextCard())
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                ConfirmButton(
-                    text = stringResource(R.string.studio_cover_option_image_cover),
-                    onClick = {
-                        showCoverTypeDialog = false
-                        showBlankCanvasSheet = true
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-        },
-        dismissButton = {
-            CancelButton(
-                text = stringResource(R.string.markup_cancel),
-                onClick = { showCoverTypeDialog = false }
-            )
-        },
-        confirmButton = {}
-    )
 }
 
 @Composable
@@ -245,33 +206,15 @@ private fun ImportCard(
     onImportClick: () -> Unit,
     entries: @Composable () -> Unit,
 ) {
-    val dashColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.5f)
-    val cornerRadius = 24.dp
-    // 玻璃卡片打底;虚线描边由内层 drawBehind 叠加(绘制在玻璃背景之后,不被盖住),
-    // 保留设计稿「虚线导入框」语义
     GlassCard(
         onClick = onImportClick,
-        shape = RoundedCornerShape(cornerRadius),
+        shape = RoundedCornerShape(24.dp),
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .drawBehind {
-                    val strokeWidth = 1.5.dp.toPx()
-                    val radius = cornerRadius.toPx()
-                    drawRoundRect(
-                        color = dashColor,
-                        style = Stroke(
-                            width = strokeWidth,
-                            pathEffect = PathEffect.dashPathEffect(
-                                intervals = floatArrayOf(16f, 12f)
-                            )
-                        ),
-                        cornerRadius = CornerRadius(radius)
-                    )
-                }
                 .padding(horizontal = 24.dp, vertical = 40.dp)
         ) {
             Icon(

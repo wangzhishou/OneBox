@@ -2,15 +2,12 @@ package com.wanbaohe.textcard.presentation.selection
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,13 +21,20 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.AutoAwesome
+import androidx.compose.material.icons.outlined.ContentPaste
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.outlined.UploadFile
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +43,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.stringResource
@@ -47,34 +52,30 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.common.ui.BaseScreen
 import com.wanbaohe.base.ui.button.CancelButton
 import com.wanbaohe.base.ui.button.ConfirmButton
 import com.wanbaohe.base.ui.button.PrimaryButton
-import com.shifenmiao.common.ui.BaseScreen
+import com.wanbaohe.core.ui.widget.dialogs.LoadingDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors
 import com.wanbaohe.core.ui.widget.image.Picture
-import com.wanbaohe.core.ui.widget.dialogs.LoadingDialog
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.TextCardProjectSummary
 import com.wanbaohe.textcard.domain.model.CanvasSpec
 import com.wanbaohe.textcard.domain.model.TextCardDocument
 import com.wanbaohe.textcard.domain.model.TextCardRenderState
-import com.wanbaohe.textcard.domain.model.TextCardRole
 import com.wanbaohe.textcard.domain.model.TextCardTemplate
 import com.wanbaohe.textcard.domain.render.CardLayout
 import com.wanbaohe.textcard.presentation.editor.CardCanvasPreview
 import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
 import java.text.DateFormat
 import java.util.Date
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.MoreVert
 
 @Composable
 fun CanvasSelectContent(component: TextCardComponent) {
@@ -93,7 +94,7 @@ fun CanvasSelectContent(component: TextCardComponent) {
         showNavigationBarsPadding = false,
         content = {
             Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(1f)
@@ -110,51 +111,65 @@ fun CanvasSelectContent(component: TextCardComponent) {
                         onDelete = { deleteProject = it }
                     )
                 }
-                Column {
-                    Text(
-                        text = stringResource(R.string.textcard_home_hint),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                    Text(
-                        text = stringResource(R.string.textcard_home_subtitle),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(top = 4.dp, bottom = 12.dp)
-                    )
-                    GlassOutlinedTextField(
-                        value = component.homeInputText,
-                        onValueChange = component::updateHomeInputText,
-                        placeholder = {
-                            Text(stringResource(R.string.textcard_home_input_hint))
-                        },
-                        minLines = 4,
-                        maxLines = 8,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.horizontalScroll(rememberScrollState())
-                    ) {
-                        TextButton(onClick = component::fillHomeWithSample) {
-                            Text(stringResource(R.string.textcard_try_sample))
-                        }
-                        TextButton(
-                            onClick = {
-                                clipboard.getText()?.text?.let(component::updateHomeInputText)
-                            }
+                GlassCard(
+                    shape = RoundedCornerShape(24.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = stringResource(R.string.textcard_home_hint),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        Text(
+                            text = stringResource(R.string.textcard_home_subtitle),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(top = 4.dp, bottom = 16.dp)
+                        )
+                        GlassOutlinedTextField(
+                            value = component.homeInputText,
+                            onValueChange = component::updateHomeInputText,
+                            placeholder = {
+                                Text(stringResource(R.string.textcard_home_input_hint))
+                            },
+                            minLines = 4,
+                            maxLines = 8,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 12.dp)
                         ) {
-                            Text(stringResource(R.string.textcard_paste_clipboard))
+                            HomeActionButton(
+                                text = stringResource(R.string.textcard_try_sample),
+                                icon = Icons.Outlined.AutoAwesome,
+                                onClick = component::fillHomeWithSample,
+                                modifier = Modifier.weight(1f)
+                            )
+                            HomeActionButton(
+                                text = stringResource(R.string.textcard_paste_clipboard),
+                                icon = Icons.Outlined.ContentPaste,
+                                onClick = {
+                                    clipboard.getText()?.text?.let(component::updateHomeInputText)
+                                },
+                                modifier = Modifier.weight(1f)
+                            )
                         }
-                        TextButton(
+                        HomeActionButton(
+                            text = stringResource(R.string.textcard_import_text),
+                            icon = Icons.Outlined.UploadFile,
                             onClick = {
                                 importLauncher.launch(
                                     arrayOf("text/plain", "text/markdown", "text/x-markdown")
                                 )
-                            }
-                        ) {
-                            Text(stringResource(R.string.textcard_import_text))
-                        }
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 10.dp)
+                        )
                     }
                 }
             }
@@ -169,10 +184,17 @@ fun CanvasSelectContent(component: TextCardComponent) {
                     text = stringResource(R.string.textcard_create),
                     enable = component.homeInputText.isNotBlank(),
                     onClick = { component.startEditing(component.homeInputText) },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Add,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .navigationBarsPadding()
-                        .padding(horizontal = 20.dp, vertical = 12.dp)
+                        .padding(horizontal = 20.dp, vertical = 16.dp)
                 )
             }
         }
@@ -226,6 +248,35 @@ fun CanvasSelectContent(component: TextCardComponent) {
 }
 
 @Composable
+private fun HomeActionButton(
+    text: String,
+    icon: ImageVector,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    GlassTonalButton(
+        onClick = onClick,
+        color = MaterialTheme.colorScheme.primaryContainer,
+        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 10.dp),
+        modifier = modifier
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            modifier = Modifier.size(18.dp)
+        )
+        Spacer(Modifier.width(8.dp))
+        Text(
+            text = text,
+            style = MaterialTheme.typography.labelLarge,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
+}
+
+@Composable
 private fun RecentProjects(
     projects: List<TextCardProjectSummary>,
     onOpen: (String) -> Unit,
@@ -235,90 +286,118 @@ private fun RecentProjects(
     onDelete: (TextCardProjectSummary) -> Unit,
 ) {
     val dateFormat = remember { DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT) }
-    SectionTitle(stringResource(R.string.textcard_recent_projects))
-    LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-        items(projects, key = { it.id }) { project ->
-            var menuExpanded by remember(project.id) { mutableStateOf(false) }
-            GlassCard(
-                onClick = { onOpen(project.id) },
-                modifier = Modifier.width(176.dp)
-            ) {
-                Column {
-                    Picture(
-                        model = project.thumbnailPath,
-                        contentDescription = project.name,
-                        contentScale = ContentScale.Fit,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(112.dp)
-                            .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
-                    )
-                    Text(
-                        text = project.name,
-                        style = MaterialTheme.typography.titleSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
-                    )
-                    Text(
-                        text = stringResource(
-                            R.string.textcard_project_meta,
-                            project.pageCount,
-                            dateFormat.format(Date(project.updatedAt))
-                        ),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 1,
-                        modifier = Modifier.padding(horizontal = 12.dp)
-                    )
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        TextButton(onClick = { onOpen(project.id) }) {
-                            Text(stringResource(R.string.textcard_continue_editing))
-                        }
-                        Spacer(Modifier.weight(1f))
-                        Box {
-                            IconButton(onClick = { menuExpanded = true }) {
+    Column {
+        SectionTitle(stringResource(R.string.textcard_recent_projects))
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.padding(top = 12.dp)
+        ) {
+            items(projects, key = { it.id }) { project ->
+                var menuExpanded by remember(project.id) { mutableStateOf(false) }
+                GlassCard(
+                    onClick = { onOpen(project.id) },
+                    modifier = Modifier.width(184.dp)
+                ) {
+                    Column {
+                        Picture(
+                            model = project.thumbnailPath,
+                            contentDescription = project.name,
+                            contentScale = ContentScale.Fit,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(120.dp)
+                                .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+                        )
+                        Text(
+                            text = project.name,
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.SemiBold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.padding(
+                                start = 12.dp,
+                                end = 12.dp,
+                                top = 12.dp,
+                                bottom = 4.dp
+                            )
+                        )
+                        Text(
+                            text = stringResource(
+                                R.string.textcard_project_meta,
+                                project.pageCount,
+                                dateFormat.format(Date(project.updatedAt))
+                            ),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.padding(horizontal = 12.dp)
+                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 12.dp, end = 4.dp, top = 8.dp, bottom = 8.dp)
+                        ) {
+                            GlassTonalButton(
+                                onClick = { onOpen(project.id) },
+                                color = MaterialTheme.colorScheme.primaryContainer,
+                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
+                            ) {
                                 Icon(
-                                    imageVector = Icons.Outlined.MoreVert,
-                                    contentDescription = stringResource(R.string.textcard_more_actions),
-                                    modifier = Modifier.size(18.dp)
+                                    imageVector = Icons.Outlined.Edit,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(16.dp)
+                                )
+                                Spacer(Modifier.width(6.dp))
+                                Text(
+                                    text = stringResource(R.string.textcard_continue_editing),
+                                    style = MaterialTheme.typography.labelLarge
                                 )
                             }
-                            DropdownMenu(
-                                expanded = menuExpanded,
-                                onDismissRequest = { menuExpanded = false }
-                            ) {
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.textcard_export_again)) },
-                                    onClick = {
-                                        menuExpanded = false
-                                        onExport(project.id)
-                                    }
-                                )
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.textcard_duplicate_project)) },
-                                    onClick = {
-                                        menuExpanded = false
-                                        onDuplicate(project.id)
-                                    }
-                                )
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.textcard_rename_project)) },
-                                    onClick = {
-                                        menuExpanded = false
-                                        onRename(project)
-                                    }
-                                )
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.textcard_delete_project)) },
-                                    onClick = {
-                                        menuExpanded = false
-                                        onDelete(project)
-                                    }
-                                )
+                            Spacer(Modifier.weight(1f))
+                            Box {
+                                IconButton(onClick = { menuExpanded = true }) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.MoreVert,
+                                        contentDescription = stringResource(R.string.textcard_more_actions),
+                                        modifier = Modifier.size(18.dp)
+                                    )
+                                }
+                                DropdownMenu(
+                                    expanded = menuExpanded,
+                                    onDismissRequest = { menuExpanded = false }
+                                ) {
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(R.string.textcard_export_again)) },
+                                        onClick = {
+                                            menuExpanded = false
+                                            onExport(project.id)
+                                        }
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(R.string.textcard_duplicate_project)) },
+                                        onClick = {
+                                            menuExpanded = false
+                                            onDuplicate(project.id)
+                                        }
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(R.string.textcard_rename_project)) },
+                                        onClick = {
+                                            menuExpanded = false
+                                            onRename(project)
+                                        }
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(R.string.textcard_delete_project)) },
+                                        onClick = {
+                                            menuExpanded = false
+                                            onDelete(project)
+                                        }
+                                    )
+                                }
                             }
                         }
                     }
@@ -453,7 +532,11 @@ internal fun templatePreviewState(
 
 @Composable
 private fun SectionTitle(text: String) {
-    Text(text = text, style = MaterialTheme.typography.titleSmall)
+    Text(
+        text = text,
+        style = MaterialTheme.typography.titleMedium,
+        fontWeight = FontWeight.SemiBold
+    )
 }
 
 @Composable

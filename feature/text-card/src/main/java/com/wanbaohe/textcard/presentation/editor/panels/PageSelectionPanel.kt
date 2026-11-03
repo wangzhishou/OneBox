@@ -1,19 +1,13 @@
 package com.wanbaohe.textcard.presentation.editor.panels
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -23,24 +17,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import com.shifenmiao.common.components.text.applySelectionStyle
 import com.shifenmiao.common.components.text.clearSelectionStyles
-import com.t8rin.imagetoolbox.core.resources.Icons
-import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.settings.presentation.model.asUi
 import com.wanbaohe.core.ui.widget.color_picker.ColorSelectionRow
-import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.effectiveColorAt
 import com.wanbaohe.textcard.domain.model.effectiveSizeScaleAt
 import com.wanbaohe.textcard.domain.model.isRangeEffectivelyBold
 import com.wanbaohe.textcard.domain.model.isRangeEffectivelyItalic
 import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
-import com.t8rin.imagetoolbox.core.resources.R as CoreR
 
 @Composable
 fun PageSelectionPanel(
     component: TextCardComponent,
     state: TextFieldState,
-    onClose: () -> Unit,
     onStylesChanged: () -> Unit,
 ) {
     val session = component.canvasTextEditSession ?: return
@@ -52,26 +41,6 @@ fun PageSelectionPanel(
         state.applySelectionStyle(style = style, onChanged = onStylesChanged)
     }
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text(
-            text = stringResource(R.string.textcard_editing_selection),
-            style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
-            modifier = Modifier.weight(1f)
-        )
-        Icon(
-            imageVector = Icons.Rounded.Close,
-            contentDescription = stringResource(CoreR.string.close),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier
-                .clip(ShapeDefaults.default)
-                .clickable(onClick = onClose)
-                .padding(8.dp)
-        )
-    }
     PanelSliderRow(
         label = stringResource(R.string.textcard_text_size),
         value = block.effectiveSizeScaleAt(range.min, range.max),

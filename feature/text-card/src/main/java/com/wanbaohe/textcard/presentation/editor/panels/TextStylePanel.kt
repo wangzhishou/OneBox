@@ -136,7 +136,6 @@ fun TextStylePanel(
     val blocks = listOf(component.document.body)
     val block = component.selectedTextBlock() ?: component.document.body
 
-    PanelTitle(R.string.textcard_text_settings)
     if (block == null) {
         Text(
             text = stringResource(R.string.textcard_select_text_first),

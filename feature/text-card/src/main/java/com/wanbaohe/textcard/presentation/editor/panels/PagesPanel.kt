@@ -38,7 +38,6 @@ fun PagesPanel(component: TextCardComponent) {
     var showCustomSizeDialog by remember { mutableStateOf(false) }
     val layout = component.layout
 
-    PanelTitle(R.string.textcard_select_canvas_title)
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier.padding(vertical = 8.dp)
