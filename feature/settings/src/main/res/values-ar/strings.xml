@@ -103,7 +103,6 @@
     <string name="ai_engine_add_engine">إضافة خدمة</string>
     <string name="ai_engine_add_jev_engine">إضافة محرّك Jev</string>
     <string name="ai_engine_add_dialog_title">إضافة خدمة نموذج</string>
-    <string name="ai_engine_add_dialog_desc">خدمات النماذج المضافة محلياً لن تستبدلها التحديثات عن بُعد.</string>
     <string name="ai_engine_dialog_required_hint">يرجى إكمال جميع الحقول المطلوبة قبل الحفظ.</string>
     <string name="ai_engine_dialog_validation_failed">يرجى إكمال الحقول المطلوبة وتصحيح الحقول غير الصالحة.</string>
     <string name="ai_engine_name_label">مفتاح الخدمة</string>
@@ -436,7 +435,6 @@
     <string name="ai_engine_discard_message_engine">لم يتم حفظ تكوين خدمة النموذج الحالي بعد. هل أنت متأكد من التخلي عن هذه التغييرات؟ ملاحظة: حالة التحقق من نجاح اختبار الاتصال لن تصبح سارية إلا بعد الحفظ، والتخلي عن التغييرات لن يحتفظ بها.</string>
     <string name="ai_engine_remote_models_found">تم العثور على %1$d نموذج متاح</string>
     <string name="ai_engine_view_models">عرض</string>
-    <string name="ai_engine_import_empty_clipboard">الحافظة فارغة، انسخ تكوين المحرك أولاً</string>
     <string name="ai_engine_export_menu_json">نسخ التكوين (JSON)</string>
     <string name="ai_engine_export_menu_link">نسخ رابط الاستيراد</string>
     <string name="ai_engine_parameter_input_range_hint">نطاق القيم: %1$s ~ %2$s</string>
@@ -452,7 +450,6 @@
     <string name="ai_engine_export_action">تصدير التكوين</string>
     <string name="ai_engine_export_success">تم نسخ التكوين إلى الحافظة (يتضمن رمز المصادقة، يرجى الحفاظ على السرية)</string>
     <string name="ai_engine_export_failed">فشل التصدير، يرجى المحاولة لاحقاً</string>
-    <string name="ai_engine_import_action">استيراد من الحافظة</string>
     <string name="ai_engine_import_invalid">محتوى الحافظة ليس تكوين محرك صالح</string>
     <string name="ai_engine_import_success">تم استيراد «%1$s»، يرجى المراجعة ثم الحفظ</string>
     <string name="ai_engine_import_success_renamed">معرّف الخدمة مستخدم بالفعل، تم تغييره تلقائياً إلى «%1$s»، يرجى المراجعة ثم الحفظ</string>

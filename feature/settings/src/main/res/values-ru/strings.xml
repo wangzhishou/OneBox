@@ -92,7 +92,6 @@
     <string name="ai_feature_settings_max_iterations_increment">Увеличить максимальное количество итераций</string>
     <string name="ai_engine_add_engine">Добавить сервис</string>
     <string name="ai_engine_add_dialog_title">Добавить сервис моделей</string>
-    <string name="ai_engine_add_dialog_desc">Локально добавленные сервисы моделей не будут перезаписаны удаленными обновлениями.</string>
     <string name="ai_engine_dialog_required_hint">Пожалуйста, заполните все обязательные поля перед сохранением.</string>
     <string name="ai_engine_dialog_validation_failed">Пожалуйста, заполните обязательные поля и исправьте недопустимые.</string>
     <string name="ai_engine_name_label">Ключ сервиса</string>
@@ -438,7 +437,6 @@
     <string name="ai_engine_discard_message_engine">Текущая конфигурация сервиса модели не сохранена. Вы уверены, что хотите отменить изменения? Внимание: статус проверки подключения действует только после сохранения; при отмене изменения не сохранятся.</string>
     <string name="ai_engine_remote_models_found">Найдено доступных моделей: %1$d</string>
     <string name="ai_engine_view_models">Просмотр</string>
-    <string name="ai_engine_import_empty_clipboard">Буфер обмена пуст. Сначала скопируйте конфигурацию движка</string>
     <string name="ai_engine_export_menu_json">Копировать конфигурацию (JSON)</string>
     <string name="ai_engine_export_menu_link">Копировать ссылку для импорта</string>
     <string name="ai_engine_parameter_input_range_hint">Диапазон значений: %1$s ~ %2$s</string>
@@ -454,7 +452,6 @@
     <string name="ai_engine_export_action">Экспорт конфигурации</string>
     <string name="ai_engine_export_success">Конфигурация скопирована в буфер обмена (включая токен авторизации, храните в тайне)</string>
     <string name="ai_engine_export_failed">Ошибка экспорта. Повторите попытку позже</string>
-    <string name="ai_engine_import_action">Импорт из буфера обмена</string>
     <string name="ai_engine_import_invalid">Содержимое буфера обмена не является корректной конфигурацией движка</string>
     <string name="ai_engine_import_success">Импортировано «%1$s». Проверьте и сохраните</string>
     <string name="ai_engine_import_success_renamed">Идентификатор сервиса уже занят, автоматически изменён на «%1$s». Проверьте и сохраните</string>

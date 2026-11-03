@@ -92,7 +92,6 @@
     <string name="ai_feature_settings_max_iterations_increment">Tambah iterasi maksimum</string>
     <string name="ai_engine_add_engine">Tambah Layanan</string>
     <string name="ai_engine_add_dialog_title">Tambah Layanan Model</string>
-    <string name="ai_engine_add_dialog_desc">Layanan model yang ditambahkan secara lokal tidak akan ditimpa oleh pembaruan jarak jauh.</string>
     <string name="ai_engine_dialog_required_hint">Harap lengkapi semua kolom wajib sebelum menyimpan.</string>
     <string name="ai_engine_dialog_validation_failed">Harap lengkapi kolom wajib dan perbaiki yang tidak valid.</string>
     <string name="ai_engine_name_label">Kunci Layanan</string>
@@ -438,7 +437,6 @@
     <string name="ai_engine_discard_message_engine">Konfigurasi layanan model saat ini belum disimpan. Yakin ingin membuang perubahan ini? Catatan: status validasi dari tes koneksi yang berhasil hanya berlaku setelah disimpan; membuang perubahan tidak akan menyimpannya.</string>
     <string name="ai_engine_remote_models_found">Ditemukan %1$d model tersedia</string>
     <string name="ai_engine_view_models">Lihat</string>
-    <string name="ai_engine_import_empty_clipboard">Papan klip kosong, salin konfigurasi mesin terlebih dahulu</string>
     <string name="ai_engine_export_menu_json">Salin konfigurasi (JSON)</string>
     <string name="ai_engine_export_menu_link">Salin tautan impor</string>
     <string name="ai_engine_parameter_input_range_hint">Rentang nilai: %1$s ~ %2$s</string>
@@ -454,7 +452,6 @@
     <string name="ai_engine_export_action">Ekspor konfigurasi</string>
     <string name="ai_engine_export_success">Konfigurasi disalin ke papan klip (termasuk Token autentikasi, harap dijaga kerahasiaannya)</string>
     <string name="ai_engine_export_failed">Ekspor gagal, coba lagi nanti</string>
-    <string name="ai_engine_import_action">Impor dari papan klip</string>
     <string name="ai_engine_import_invalid">Isi papan klip bukan konfigurasi mesin yang valid</string>
     <string name="ai_engine_import_success">\"%1$s\" telah diimpor, periksa lalu simpan</string>
     <string name="ai_engine_import_success_renamed">ID layanan sudah digunakan, otomatis diubah menjadi \"%1$s\", periksa lalu simpan</string>

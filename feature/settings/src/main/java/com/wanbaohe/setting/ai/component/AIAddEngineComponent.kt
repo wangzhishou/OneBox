@@ -1,7 +1,5 @@
 package com.wanbaohe.setting.ai.component
 
-import android.content.ClipboardManager
-import android.content.Context
 import com.arkivanov.decompose.ComponentContext
 import com.shifenmiao.common.manager.AIEngineCatalogManager
 import com.shifenmiao.common.manager.AIEngineManager
@@ -16,7 +14,6 @@ import com.wanbaohe.core.ui.utils.BaseComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,7 +24,6 @@ class AIAddEngineComponent @AssistedInject internal constructor(
     @Assisted("initialProtocol") initialProtocol: String,
     @Assisted("importConfig") importConfig: String,
     @Assisted val onGoBack: () -> Unit,
-    @ApplicationContext private val context: Context,
     private val aiEngineCatalogManager: AIEngineCatalogManager,
     private val aiEngineManager: AIEngineManager,
     private val modelsFetcher: AiEngineModelsFetcher,
@@ -173,21 +169,6 @@ class AIAddEngineComponent @AssistedInject internal constructor(
         return pendingImportConfig.also { pendingImportConfig = "" }
     }
 
-    /** 从系统剪贴板读取配置文本并预填表单 */
-    fun importConfigFromClipboard(onComplete: (EngineImportResult) -> Unit) {
-        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
-        val text = clipboard?.primaryClip
-            ?.takeIf { it.itemCount > 0 }
-            ?.getItemAt(0)
-            ?.coerceToText(context)
-            ?.toString()
-        if (text.isNullOrBlank()) {
-            onComplete(EngineImportResult.EmptyClipboard)
-            return
-        }
-        applyImportedConfig(text, onComplete)
-    }
-
     /**
      * 解析配置文本并预填表单(剪贴板与深链共用)。
      * 名称撞已有引擎时自动加 "-2"/"-3"… 后缀。
@@ -265,7 +246,6 @@ class AIAddEngineComponent @AssistedInject internal constructor(
 
 /** 配置导入结果: 空剪贴板与解析失败分开提示; Invalid 由页面提示"不是有效的引擎配置" */
 sealed interface EngineImportResult {
-    data object EmptyClipboard : EngineImportResult
     data object Invalid : EngineImportResult
     data class Success(val displayName: String, val renamed: Boolean) : EngineImportResult
 }

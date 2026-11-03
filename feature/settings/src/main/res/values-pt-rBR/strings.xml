@@ -92,7 +92,6 @@
     <string name="ai_feature_settings_max_iterations_increment">Aumentar máximo de iterações</string>
     <string name="ai_engine_add_engine">Adicionar Serviço</string>
     <string name="ai_engine_add_dialog_title">Adicionar Serviço de Modelo</string>
-    <string name="ai_engine_add_dialog_desc">Serviços de modelo adicionados localmente não serão sobrescritos por atualizações remotas.</string>
     <string name="ai_engine_dialog_required_hint">Por favor, preencha todos os campos obrigatórios antes de salvar.</string>
     <string name="ai_engine_dialog_validation_failed">Por favor, preencha os campos obrigatórios e corrija os inválidos.</string>
     <string name="ai_engine_name_label">Chave do Serviço</string>
@@ -438,7 +437,6 @@
     <string name="ai_engine_discard_message_engine">A configuração atual do serviço de modelo ainda não foi salva. Deseja descartar essas alterações? Atenção: o status de validação do teste de conexão aprovado só entra em vigor após salvar; descartar as alterações não o manterá.</string>
     <string name="ai_engine_remote_models_found">%1$d modelos disponíveis encontrados</string>
     <string name="ai_engine_view_models">Ver</string>
-    <string name="ai_engine_import_empty_clipboard">A área de transferência está vazia. Copie uma configuração de mecanismo primeiro.</string>
     <string name="ai_engine_export_menu_json">Copiar configuração (JSON)</string>
     <string name="ai_engine_export_menu_link">Copiar link de importação</string>
     <string name="ai_engine_parameter_input_range_hint">Intervalo de valores: %1$s ~ %2$s</string>
@@ -454,7 +452,6 @@
     <string name="ai_engine_export_action">Exportar configuração</string>
     <string name="ai_engine_export_success">Configuração copiada para a área de transferência (inclui Token de autenticação; mantenha em sigilo)</string>
     <string name="ai_engine_export_failed">Falha na exportação. Tente novamente mais tarde.</string>
-    <string name="ai_engine_import_action">Importar da área de transferência</string>
     <string name="ai_engine_import_invalid">O conteúdo da área de transferência não é uma configuração de mecanismo válida</string>
     <string name="ai_engine_import_success">\"%1$s\" importado. Verifique e salve.</string>
     <string name="ai_engine_import_success_renamed">O identificador de serviço já está em uso e foi alterado automaticamente para \"%1$s\". Verifique e salve.</string>

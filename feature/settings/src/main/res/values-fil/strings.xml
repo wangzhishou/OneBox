@@ -92,7 +92,6 @@
     <string name="ai_feature_settings_max_iterations_increment">Dagdagan ang max iterations</string>
     <string name="ai_engine_add_engine">Magdagdag ng Service</string>
     <string name="ai_engine_add_dialog_title">Magdagdag ng Model Service</string>
-    <string name="ai_engine_add_dialog_desc">Ang mga lokal na idinagdag na model services ay hindi ma-o-overwrite ng mga remote updates.</string>
     <string name="ai_engine_dialog_required_hint">Pakisagutan ang lahat ng kinakailangang field bago i-save.</string>
     <string name="ai_engine_dialog_validation_failed">Pakisagutan ang mga kinakailangang field at ayusin ang mga hindi wasto.</string>
     <string name="ai_engine_name_label">Service Key</string>
@@ -438,7 +437,6 @@
     <string name="ai_engine_discard_message_engine">Hindi pa na-save ang kasalukuyang configuration ng model service. Sigurado ka bang gusto mong itapon ang mga pagbabagong ito? Tandaan: Ang validation status ng matagumpay na connection test ay magiging epektibo lamang pagkatapos i-save; hindi ito mapananatili kung itatapon ang mga pagbabago.</string>
     <string name="ai_engine_remote_models_found">May natuklasang %1$d na available na modelo</string>
     <string name="ai_engine_view_models">Tingnan</string>
-    <string name="ai_engine_import_empty_clipboard">Walang laman ang clipboard, kopyahin muna ang isang engine configuration</string>
     <string name="ai_engine_export_menu_json">Kopyahin ang configuration (JSON)</string>
     <string name="ai_engine_export_menu_link">Kopyahin ang import link</string>
     <string name="ai_engine_parameter_input_range_hint">Saklaw ng value: %1$s ~ %2$s</string>
@@ -454,7 +452,6 @@
     <string name="ai_engine_export_action">I-export ang configuration</string>
     <string name="ai_engine_export_success">Nakopya na ang configuration sa clipboard (may kasamang auth Token, panatilihing kumpidensyal)</string>
     <string name="ai_engine_export_failed">Nabigo ang pag-export, subukan muli mamaya</string>
-    <string name="ai_engine_import_action">Mag-import mula sa clipboard</string>
     <string name="ai_engine_import_invalid">Hindi valid na engine configuration ang nilalaman ng clipboard</string>
     <string name="ai_engine_import_success">Na-import na ang 「%1$s」, paki-check bago i-save</string>
     <string name="ai_engine_import_success_renamed">Ginagamit na ang service identifier, awtomatikong pinalitan ng 「%1$s」, paki-check bago i-save</string>

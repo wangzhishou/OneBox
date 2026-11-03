@@ -92,7 +92,6 @@
     <string name="ai_feature_settings_max_iterations_increment">最大反復回数を増やす</string>
     <string name="ai_engine_add_engine">サービスを追加</string>
     <string name="ai_engine_add_dialog_title">モデルサービスを追加</string>
-    <string name="ai_engine_add_dialog_desc">ローカルで追加されたモデルサービスは、リモート更新によって上書きされません。</string>
     <string name="ai_engine_dialog_required_hint">保存する前にすべての必須フィールドを入力してください。</string>
     <string name="ai_engine_dialog_validation_failed">必須フィールドを入力し、無効なフィールドを修正してください。</string>
     <string name="ai_engine_name_label">サービスキー</string>
@@ -438,7 +437,6 @@
     <string name="ai_engine_discard_message_engine">現在のモデルサービス設定はまだ保存されていません。これらの変更を破棄してもよろしいですか？注意：接続テストに合格した検証状態は保存後にのみ有効になり、変更を破棄すると保持されません。</string>
     <string name="ai_engine_remote_models_found">%1$d 個の利用可能なモデルが見つかりました</string>
     <string name="ai_engine_view_models">表示</string>
-    <string name="ai_engine_import_empty_clipboard">クリップボードが空です。先にエンジン設定をコピーしてください</string>
     <string name="ai_engine_export_menu_json">設定をコピー(JSON)</string>
     <string name="ai_engine_export_menu_link">インポートリンクをコピー</string>
     <string name="ai_engine_parameter_input_range_hint">値の範囲：%1$s ~ %2$s</string>
@@ -454,7 +452,6 @@
     <string name="ai_engine_export_action">設定をエクスポート</string>
     <string name="ai_engine_export_success">設定をクリップボードにコピーしました（認証トークンを含むため、取り扱いにご注意ください）</string>
     <string name="ai_engine_export_failed">エクスポートに失敗しました。しばらくしてから再試行してください</string>
-    <string name="ai_engine_import_action">クリップボードからインポート</string>
     <string name="ai_engine_import_invalid">クリップボードの内容は有効なエンジン設定ではありません</string>
     <string name="ai_engine_import_success">「%1$s」をインポートしました。確認して保存してください</string>
     <string name="ai_engine_import_success_renamed">サービス識別子が既に使用されているため、「%1$s」に自動変更しました。確認して保存してください</string>

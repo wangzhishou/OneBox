@@ -92,7 +92,6 @@
     <string name="ai_feature_settings_max_iterations_increment">Aumentar máximo de iteraciones</string>
     <string name="ai_engine_add_engine">Agregar servicio</string>
     <string name="ai_engine_add_dialog_title">Agregar servicio de modelo</string>
-    <string name="ai_engine_add_dialog_desc">Los servicios de modelo agregados localmente no serán sobrescritos por actualizaciones remotas.</string>
     <string name="ai_engine_dialog_required_hint">Complete todos los campos obligatorios antes de guardar.</string>
     <string name="ai_engine_dialog_validation_failed">Complete los campos obligatorios y corrija los que no sean válidos.</string>
     <string name="ai_engine_name_label">Clave de servicio</string>
@@ -438,7 +437,6 @@
     <string name="ai_engine_discard_message_engine">La configuración actual del servicio de modelos no se ha guardado. ¿Seguro que quieres descartar estos cambios? Nota: el estado de validación de la prueba de conexión solo se aplica tras guardar; si descartas los cambios, no se conservará.</string>
     <string name="ai_engine_remote_models_found">Se encontraron %1$d modelos disponibles</string>
     <string name="ai_engine_view_models">Ver</string>
-    <string name="ai_engine_import_empty_clipboard">El portapapeles está vacío; primero copia una configuración de motor</string>
     <string name="ai_engine_export_menu_json">Copiar configuración (JSON)</string>
     <string name="ai_engine_export_menu_link">Copiar enlace de importación</string>
     <string name="ai_engine_parameter_input_range_hint">Rango de valores: %1$s ~ %2$s</string>
@@ -454,7 +452,6 @@
     <string name="ai_engine_export_action">Exportar configuración</string>
     <string name="ai_engine_export_success">Configuración copiada al portapapeles (incluye el token de autenticación; mantén la confidencialidad)</string>
     <string name="ai_engine_export_failed">Error al exportar; inténtalo de nuevo más tarde</string>
-    <string name="ai_engine_import_action">Importar desde el portapapeles</string>
     <string name="ai_engine_import_invalid">El contenido del portapapeles no es una configuración de motor válida</string>
     <string name="ai_engine_import_success">Se importó «%1$s»; revísalo y guarda</string>
     <string name="ai_engine_import_success_renamed">El identificador del servicio ya está en uso; se cambió automáticamente a «%1$s»; revísalo y guarda</string>

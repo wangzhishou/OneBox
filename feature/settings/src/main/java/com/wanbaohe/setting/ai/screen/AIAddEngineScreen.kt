@@ -45,9 +45,7 @@ import com.wanbaohe.core.ui.widget.glass.GlassSwitch
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.system.OneBoxListItem
 import com.wanbaohe.core.ui.widget.system.OneBoxOutlinedTextField
-import com.wanbaohe.core.ui.widget.system.OneBoxSectionCard
 import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
-import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCloudDownload
 import com.t8rin.imagetoolbox.core.utils.getString
 import com.wanbaohe.setting.ai.component.AIAddEngineComponent
@@ -116,9 +114,6 @@ fun AIAddEngineScreen(
 
     fun onImportResult(result: EngineImportResult) {
         when (result) {
-            EngineImportResult.EmptyClipboard -> coroutineScope.launch {
-                AppToastHost.showFailureToast(getString(R.string.ai_engine_import_empty_clipboard))
-            }
             EngineImportResult.Invalid -> coroutineScope.launch {
                 AppToastHost.showFailureToast(getString(R.string.ai_engine_import_invalid))
             }
@@ -171,23 +166,6 @@ fun AIAddEngineScreen(
             verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing),
         ) {
             Spacer(modifier = Modifier.height(OneBoxDesignSystem.microSpacing))
-
-            OneBoxSectionCard {
-                Text(
-                    text = stringResource(R.string.ai_engine_add_dialog_desc),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-
-            // 导入是独立动作, 不塞在说明卡里(F22)
-            OneSecondaryButton(
-                text = stringResource(R.string.ai_engine_import_action),
-                onClick = {
-                    component.importConfigFromClipboard(::onImportResult)
-                },
-                modifier = Modifier.fillMaxWidth(),
-            )
 
             SettingCard {
                 OneBoxOutlinedTextField(

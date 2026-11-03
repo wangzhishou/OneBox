@@ -92,7 +92,6 @@
     <string name="ai_feature_settings_max_iterations_increment">Maximale Iterationen erhöhen</string>
     <string name="ai_engine_add_engine">Dienst hinzufügen</string>
     <string name="ai_engine_add_dialog_title">Modelldienst hinzufügen</string>
-    <string name="ai_engine_add_dialog_desc">Lokal hinzugefügte Modelldienste werden nicht durch Remote-Updates überschrieben.</string>
     <string name="ai_engine_dialog_required_hint">Bitte füllen Sie alle Pflichtfelder aus, bevor Sie speichern.</string>
     <string name="ai_engine_dialog_validation_failed">Bitte füllen Sie die Pflichtfelder aus und korrigieren Sie ungültige Einträge.</string>
     <string name="ai_engine_name_label">Dienstschlüssel</string>
@@ -438,7 +437,6 @@
     <string name="ai_engine_discard_message_engine">Die aktuelle Modellservice-Konfiguration wurde noch nicht gespeichert. Möchtest du diese Änderungen wirklich verwerfen? Hinweis: Der Verifizierungsstatus eines erfolgreichen Verbindungstests wird erst nach dem Speichern wirksam und geht beim Verwerfen verloren.</string>
     <string name="ai_engine_remote_models_found">%1$d verfügbare Modelle gefunden</string>
     <string name="ai_engine_view_models">Anzeigen</string>
-    <string name="ai_engine_import_empty_clipboard">Die Zwischenablage ist leer. Bitte kopiere zuerst eine Engine-Konfiguration.</string>
     <string name="ai_engine_export_menu_json">Konfiguration kopieren (JSON)</string>
     <string name="ai_engine_export_menu_link">Import-Link kopieren</string>
     <string name="ai_engine_parameter_input_range_hint">Wertebereich: %1$s ~ %2$s</string>
@@ -454,7 +452,6 @@
     <string name="ai_engine_export_action">Konfiguration exportieren</string>
     <string name="ai_engine_export_success">Konfiguration in die Zwischenablage kopiert (enthält Authentifizierungs-Token, bitte vertraulich behandeln)</string>
     <string name="ai_engine_export_failed">Export fehlgeschlagen, bitte später erneut versuchen</string>
-    <string name="ai_engine_import_action">Aus Zwischenablage importieren</string>
     <string name="ai_engine_import_invalid">Der Inhalt der Zwischenablage ist keine gültige Engine-Konfiguration</string>
     <string name="ai_engine_import_success">„%1$s“ importiert, bitte prüfen und speichern</string>
     <string name="ai_engine_import_success_renamed">Die Service-Kennung ist bereits belegt und wurde automatisch in „%1$s“ geändert. Bitte prüfen und speichern.</string>

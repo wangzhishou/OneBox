@@ -102,7 +102,6 @@
     <string name="ai_feature_settings_max_iterations_increment">增加最大連續執行輪次</string>
     <string name="ai_engine_add_engine">新增服務</string>
     <string name="ai_engine_add_dialog_title">新增模型服務</string>
-    <string name="ai_engine_add_dialog_desc">本地新增的模型服務不會被遠端更新覆蓋。</string>
     <string name="ai_engine_dialog_required_hint">請先完善必填欄位後再儲存。</string>
     <string name="ai_engine_dialog_validation_failed">請先完善必填項目並修正錯誤欄位。</string>
     <string name="ai_engine_name_label">服務識別碼</string>
@@ -438,7 +437,6 @@
     <string name="ai_engine_discard_message_engine">目前模型服務設定尚未儲存，確定要放棄這些修改嗎？注意：連線測試通過的驗證狀態只在儲存後生效，放棄修改將不會保留。</string>
     <string name="ai_engine_remote_models_found">發現 %1$d 個可用模型</string>
     <string name="ai_engine_view_models">檢視</string>
-    <string name="ai_engine_import_empty_clipboard">剪貼簿是空的，請先複製一份引擎設定</string>
     <string name="ai_engine_export_menu_json">複製設定(JSON)</string>
     <string name="ai_engine_export_menu_link">複製匯入連結</string>
     <string name="ai_engine_parameter_input_range_hint">取值範圍：%1$s ~ %2$s</string>
@@ -454,7 +452,6 @@
     <string name="ai_engine_export_action">匯出設定</string>
     <string name="ai_engine_export_success">設定已複製到剪貼簿（含驗證 Token，請注意保密）</string>
     <string name="ai_engine_export_failed">匯出失敗，請稍後重試</string>
-    <string name="ai_engine_import_action">從剪貼簿匯入</string>
     <string name="ai_engine_import_invalid">剪貼簿內容不是有效的引擎設定</string>
     <string name="ai_engine_import_success">已匯入「%1$s」，請檢查後儲存</string>
     <string name="ai_engine_import_success_renamed">服務識別碼已被占用，已自動改為「%1$s」，請檢查後儲存</string>

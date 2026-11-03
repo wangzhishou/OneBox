@@ -92,7 +92,6 @@
     <string name="ai_feature_settings_max_iterations_increment">अधिकतम पुनरावृत्तियाँ बढ़ाएँ</string>
     <string name="ai_engine_add_engine">सेवा जोड़ें</string>
     <string name="ai_engine_add_dialog_title">मॉडल सेवा जोड़ें</string>
-    <string name="ai_engine_add_dialog_desc">स्थानीय रूप से जोड़ी गई मॉडल सेवाएँ दूरस्थ अपडेट द्वारा अधिलेखित नहीं होंगी।</string>
     <string name="ai_engine_dialog_required_hint">सहेजने से पहले कृपया सभी आवश्यक फ़ील्ड पूर्ण करें।</string>
     <string name="ai_engine_dialog_validation_failed">कृपया आवश्यक फ़ील्ड पूर्ण करें और किसी भी अमान्य को ठीक करें।</string>
     <string name="ai_engine_name_label">सेवा कुंजी</string>
@@ -438,7 +437,6 @@
     <string name="ai_engine_discard_message_engine">वर्तमान मॉडल सेवा कॉन्फ़िगरेशन अभी सहेजा नहीं गया है, क्या आप वाकई इन परिवर्तनों को छोड़ना चाहते हैं? ध्यान दें: कनेक्शन परीक्षण पास होने की सत्यापन स्थिति केवल सहेजने के बाद ही प्रभावी होती है, परिवर्तन छोड़ने पर यह सुरक्षित नहीं रहेगी।</string>
     <string name="ai_engine_remote_models_found">%1$d उपलब्ध मॉडल मिले</string>
     <string name="ai_engine_view_models">देखें</string>
-    <string name="ai_engine_import_empty_clipboard">क्लिपबोर्ड खाली है, पहले एक इंजन कॉन्फ़िगरेशन कॉपी करें</string>
     <string name="ai_engine_export_menu_json">कॉन्फ़िगरेशन कॉपी करें (JSON)</string>
     <string name="ai_engine_export_menu_link">आयात लिंक कॉपी करें</string>
     <string name="ai_engine_parameter_input_range_hint">मान सीमा: %1$s ~ %2$s</string>
@@ -454,7 +452,6 @@
     <string name="ai_engine_export_action">कॉन्फ़िगरेशन निर्यात करें</string>
     <string name="ai_engine_export_success">कॉन्फ़िगरेशन क्लिपबोर्ड पर कॉपी किया गया (प्रमाणीकरण Token सहित, कृपया गोपनीयता बनाए रखें)</string>
     <string name="ai_engine_export_failed">निर्यात विफल, कृपया बाद में पुनः प्रयास करें</string>
-    <string name="ai_engine_import_action">क्लिपबोर्ड से आयात करें</string>
     <string name="ai_engine_import_invalid">क्लिपबोर्ड सामग्री मान्य इंजन कॉन्फ़िगरेशन नहीं है</string>
     <string name="ai_engine_import_success">「%1$s」 आयात किया गया, कृपया जाँच कर सहेजें</string>
     <string name="ai_engine_import_success_renamed">सेवा पहचानकर्ता पहले से उपयोग में है, इसे स्वचालित रूप से 「%1$s」 में बदल दिया गया है, कृपया जाँच कर सहेजें</string>

@@ -131,7 +131,6 @@
     <string name="ai_engine_add_engine">Add Service</string>
     <string name="ai_engine_add_jev_engine">Add Jev Engine</string>
     <string name="ai_engine_add_dialog_title">Add Model Service</string>
-    <string name="ai_engine_add_dialog_desc">Locally added model services will not be overwritten by remote updates.</string>
     <string name="ai_engine_dialog_required_hint">Please complete all required fields before saving.</string>
     <string name="ai_engine_dialog_validation_failed">Please complete the required fields and fix any invalid ones.</string>
     <string name="ai_engine_name_label">Service Key</string>
@@ -265,7 +264,6 @@
     <string name="ai_engine_remote_models_empty">No models retrieved</string>
     <string name="ai_engine_remote_models_found">Found %1$d available models from this provider</string>
     <string name="ai_engine_view_models">View</string>
-    <string name="ai_engine_import_empty_clipboard">Clipboard is empty — copy an engine config first</string>
     <string name="ai_engine_export_menu_json">Copy config (JSON)</string>
     <string name="ai_engine_export_menu_link">Copy import link</string>
     <string name="ai_engine_load_from_provider">Fetch Models</string>
@@ -293,7 +291,6 @@
     <string name="ai_engine_export_action">Export Config</string>
     <string name="ai_engine_export_success">Configuration copied to clipboard. It contains the auth token — share with care.</string>
     <string name="ai_engine_export_failed">Export failed. Please try again.</string>
-    <string name="ai_engine_import_action">Import from Clipboard</string>
     <string name="ai_engine_import_invalid">Clipboard content is not a valid engine configuration</string>
     <string name="ai_engine_import_success">Imported \"%1$s\". Review and save.</string>
     <string name="ai_engine_import_success_renamed">Imported as \"%1$s\" (the original service key was taken)</string>

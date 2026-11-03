@@ -103,7 +103,6 @@
     <string name="ai_engine_add_engine">Thêm dịch vụ</string>
     <string name="ai_engine_add_jev_engine">Thêm công cụ Jev</string>
     <string name="ai_engine_add_dialog_title">Thêm dịch vụ mô hình</string>
-    <string name="ai_engine_add_dialog_desc">Dịch vụ mô hình được thêm cục bộ sẽ không bị ghi đè bởi cập nhật từ xa.</string>
     <string name="ai_engine_dialog_required_hint">Vui lòng hoàn thiện các trường bắt buộc trước khi lưu.</string>
     <string name="ai_engine_dialog_validation_failed">Vui lòng hoàn thiện các mục bắt buộc và sửa các trường bị lỗi.</string>
     <string name="ai_engine_name_label">Mã định danh dịch vụ</string>
@@ -436,7 +435,6 @@
     <string name="ai_engine_discard_message_engine">Cấu hình dịch vụ mô hình hiện tại chưa được lưu, bạn có chắc chắn muốn hủy bỏ các thay đổi này không? Lưu ý: trạng thái xác minh đã vượt qua kiểm tra kết nối chỉ có hiệu lực sau khi lưu, hủy bỏ thay đổi sẽ không được giữ lại.</string>
     <string name="ai_engine_remote_models_found">Phát hiện %1$d mô hình khả dụng</string>
     <string name="ai_engine_view_models">Xem</string>
-    <string name="ai_engine_import_empty_clipboard">Clipboard trống, hãy sao chép một bản cấu hình engine trước</string>
     <string name="ai_engine_export_menu_json">Sao chép cấu hình (JSON)</string>
     <string name="ai_engine_export_menu_link">Sao chép liên kết nhập</string>
     <string name="ai_engine_parameter_input_range_hint">Phạm vi giá trị: %1$s ~ %2$s</string>
@@ -452,7 +450,6 @@
     <string name="ai_engine_export_action">Xuất cấu hình</string>
     <string name="ai_engine_export_success">Đã sao chép cấu hình vào clipboard (bao gồm Token xác thực, vui lòng giữ bí mật)</string>
     <string name="ai_engine_export_failed">Xuất thất bại, vui lòng thử lại sau</string>
-    <string name="ai_engine_import_action">Nhập từ clipboard</string>
     <string name="ai_engine_import_invalid">Nội dung clipboard không phải là cấu hình engine hợp lệ</string>
     <string name="ai_engine_import_success">Đã nhập \"%1$s\", vui lòng kiểm tra rồi lưu</string>
     <string name="ai_engine_import_success_renamed">Mã định danh dịch vụ đã được sử dụng, đã tự động đổi thành \"%1$s\", vui lòng kiểm tra rồi lưu</string>

@@ -92,7 +92,6 @@
     <string name="ai_feature_settings_max_iterations_increment">Maksimum yinelemeyi artır</string>
     <string name="ai_engine_add_engine">Hizmet Ekle</string>
     <string name="ai_engine_add_dialog_title">Model Hizmeti Ekle</string>
-    <string name="ai_engine_add_dialog_desc">Yerel olarak eklenen model hizmetleri, uzak güncellemeler tarafından üzerine yazılmaz.</string>
     <string name="ai_engine_dialog_required_hint">Kaydetmeden önce lütfen tüm zorunlu alanları doldurun.</string>
     <string name="ai_engine_dialog_validation_failed">Lütfen zorunlu alanları doldurun ve geçersiz olanları düzeltin.</string>
     <string name="ai_engine_name_label">Hizmet Anahtarı</string>
@@ -438,7 +437,6 @@
     <string name="ai_engine_discard_message_engine">Mevcut model hizmeti yapılandırması henüz kaydedilmedi. Bu değişikliklerden vazgeçmek istediğinizden emin misiniz? Not: Bağlantı testinin doğrulama durumu yalnızca kaydettikten sonra geçerli olur; değişikliklerden vazgeçilirse korunmaz.</string>
     <string name="ai_engine_remote_models_found">%1$d kullanılabilir model bulundu</string>
     <string name="ai_engine_view_models">Görüntüle</string>
-    <string name="ai_engine_import_empty_clipboard">Pano boş, önce bir motor yapılandırması kopyalayın</string>
     <string name="ai_engine_export_menu_json">Yapılandırmayı kopyala (JSON)</string>
     <string name="ai_engine_export_menu_link">İçe aktarma bağlantısını kopyala</string>
     <string name="ai_engine_parameter_input_range_hint">Değer aralığı: %1$s ~ %2$s</string>
@@ -454,7 +452,6 @@
     <string name="ai_engine_export_action">Yapılandırmayı dışa aktar</string>
     <string name="ai_engine_export_success">Yapılandırma panoya kopyalandı (kimlik doğrulama Token\'ı içerir, lütfen gizli tutun)</string>
     <string name="ai_engine_export_failed">Dışa aktarma başarısız, lütfen daha sonra tekrar deneyin</string>
-    <string name="ai_engine_import_action">Panodan içe aktar</string>
     <string name="ai_engine_import_invalid">Pano içeriği geçerli bir motor yapılandırması değil</string>
     <string name="ai_engine_import_success">\"%1$s\" içe aktarıldı, lütfen kontrol edip kaydedin</string>
     <string name="ai_engine_import_success_renamed">Hizmet kimliği zaten kullanımda, otomatik olarak \"%1$s\" olarak değiştirildi, lütfen kontrol edip kaydedin</string>
