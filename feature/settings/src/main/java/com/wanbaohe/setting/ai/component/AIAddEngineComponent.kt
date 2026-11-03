@@ -10,6 +10,7 @@ import com.shifenmiao.core.constants.UrlConstants
 import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.model.ai.AiRequestProtocol
 import com.shifenmiao.model.ai.AuthType
+import com.shifenmiao.model.ai.openai.OpenAIModelItem
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.wanbaohe.core.ui.utils.BaseComponent
 import dagger.assisted.Assisted
@@ -29,6 +30,7 @@ class AIAddEngineComponent @AssistedInject internal constructor(
     @ApplicationContext private val context: Context,
     private val aiEngineCatalogManager: AIEngineCatalogManager,
     private val aiEngineManager: AIEngineManager,
+    private val modelsFetcher: AiEngineModelsFetcher,
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
@@ -58,6 +60,15 @@ class AIAddEngineComponent @AssistedInject internal constructor(
     private val _isSaving = MutableStateFlow(false)
     val isSaving: StateFlow<Boolean> = _isSaving.asStateFlow()
 
+    private val _providerModels = MutableStateFlow<List<OpenAIModelItem>>(emptyList())
+    val providerModels: StateFlow<List<OpenAIModelItem>> = _providerModels.asStateFlow()
+
+    private val _isLoadingProviderModels = MutableStateFlow(false)
+    val isLoadingProviderModels: StateFlow<Boolean> = _isLoadingProviderModels.asStateFlow()
+
+    private val _providerModelsError = MutableStateFlow<String?>(null)
+    val providerModelsError: StateFlow<String?> = _providerModelsError.asStateFlow()
+
     /** 深链 onebox://action/import_engine 带进来的配置, 由页面消费一次后清空 */
     private var pendingImportConfig: String = importConfig
 
@@ -76,6 +87,46 @@ class AIAddEngineComponent @AssistedInject internal constructor(
     }
 
     fun hasDraftChanged(): Boolean = _draft.value != initialDraft
+
+    /**
+     * 拉取服务商模型列表，供新增页直接挑选：手输模型 ID 容易打错，
+     * 拉一次列表点一下就能选对。失败原因原样交给弹窗展示（如 HTTP 401）。
+     */
+    fun loadProviderModels() {
+        val engine = _draft.value
+        if (engine.requestUrl.isBlank()) {
+            _providerModelsError.value = ""
+            return
+        }
+        componentScope.launch {
+            _isLoadingProviderModels.value = true
+            _providerModelsError.value = null
+            modelsFetcher.fetch(engine)
+                .onSuccess { models -> _providerModels.value = models }
+                .onFailure { error -> _providerModelsError.value = error.message.orEmpty() }
+            _isLoadingProviderModels.value = false
+        }
+    }
+
+    /** 选中服务商返回的模型：只改草稿，保存引擎时会一起落成一条本地模型 */
+    fun applyProviderModel(model: OpenAIModelItem) {
+        if (model.id.isBlank()) return
+        updateDraft { engine ->
+            engine.copy(
+                model = engine.model.copy(
+                    name = model.id,
+                    title = AIEngineSettingsDetailComponent.prettifyModelTitle(model.id),
+                    engineName = engine.name,
+                    canEdit = true,
+                )
+            )
+        }
+    }
+
+    fun clearProviderModels() {
+        _providerModels.value = emptyList()
+        _providerModelsError.value = null
+    }
 
     /**
      * 切换请求协议, 预填规则与详情页共用 [switchedRequestProtocol](F4 收敛):

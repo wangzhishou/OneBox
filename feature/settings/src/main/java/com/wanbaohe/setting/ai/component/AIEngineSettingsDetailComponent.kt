@@ -16,8 +16,6 @@ import com.shifenmiao.model.ai.ModelDraft
 import com.shifenmiao.model.ai.SubmitModelsRequest
 import com.shifenmiao.model.ai.openai.OpenAIModelItem
 import com.shifenmiao.network.api.ApiService
-import com.shifenmiao.network.api.OpenAICompatibleService
-import com.shifenmiao.network.api.OpenAIWithApiKeyService
 import com.wanbaohe.cloud.storage.data.CloudStorageRepository
 import com.wanbaohe.cloud.storage.model.CloudStorageConnection
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
@@ -42,8 +40,7 @@ class AIEngineSettingsDetailComponent @AssistedInject internal constructor(
     @ApplicationContext private val context: Context,
     private val aiEngineCatalogManager: AIEngineCatalogManager,
     private val aiEngineManager: AIEngineManager,
-    private val openAICompatibleService: OpenAICompatibleService,
-    private val openAIWithApiKeyService: OpenAIWithApiKeyService,
+    private val modelsFetcher: AiEngineModelsFetcher,
     private val apiService: ApiService,
     private val cloudStorageRepository: CloudStorageRepository,
     dispatchersHolder: DispatchersHolder,
@@ -441,54 +438,22 @@ class AIEngineSettingsDetailComponent @AssistedInject internal constructor(
         }
     }
 
-    /**
-     * 模型列表地址从 requestPath 推导目录前缀:
-     * `v1/chat/completions` / `v1/messages` -> `{base}/v1/models`; path 为空退回 `{base}/models`。
-     * 直接拼 `{base}/models` 会丢掉 path 里的版本段(如 v1), 多数兼容站因此 404。
-     */
-    private fun buildModelsListUrl(engine: AiEngine): String {
-        val baseUrl = engine.requestUrl.trim().trimEnd('/')
-        val pathPrefix = engine.requestPath.trim().trim('/').substringBeforeLast('/', "")
-        return if (pathPrefix.isBlank()) "$baseUrl/models" else "$baseUrl/$pathPrefix/models"
-    }
-
     fun loadRemoteModels(onComplete: (Boolean) -> Unit = {}) {
         val engine = _draftEngine.value ?: return onComplete(false)
-        val url = buildModelsListUrl(engine)
 
         componentScope.launch {
             _isLoadingRemoteModels.value = true
             _remoteModelsError.value = null
-            try {
-                val response = when (engine.authType) {
-                    AuthType.API_KEY -> {
-                        openAIWithApiKeyService.listModels(
-                            url = url,
-                            apiKey = engine.authorizationCode
-                        )
-                    }
-                    else -> {
-                        openAICompatibleService.listModels(
-                            url = url,
-                            authorization = engine.authorizationCode
-                                .takeIf { it.isNotBlank() }
-                                ?.let { "Bearer $it" }
-                        )
-                    }
-                }
-                if (response.isSuccessful) {
-                    _remoteModels.value = response.body()?.data ?: emptyList()
+            modelsFetcher.fetch(engine)
+                .onSuccess { models ->
+                    _remoteModels.value = models
                     onComplete(true)
-                } else {
-                    _remoteModelsError.value = "加载失败: ${response.code()}"
+                }
+                .onFailure { error ->
+                    _remoteModelsError.value = error.message
                     onComplete(false)
                 }
-            } catch (e: Exception) {
-                _remoteModelsError.value = e.message
-                onComplete(false)
-            } finally {
-                _isLoadingRemoteModels.value = false
-            }
+            _isLoadingRemoteModels.value = false
         }
     }
 

@@ -81,8 +81,12 @@ fun AIAddEngineScreen(
 ) {
     val draft by component.draft.collectAsState()
     val isSaving by component.isSaving.collectAsState()
+    val providerModels by component.providerModels.collectAsState()
+    val isLoadingProviderModels by component.isLoadingProviderModels.collectAsState()
+    val providerModelsError by component.providerModelsError.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     var showExitConfirmDialog by rememberSaveable { mutableStateOf(false) }
+    var showProviderModels by rememberSaveable { mutableStateOf(false) }
     var showValidationErrors by rememberSaveable { mutableStateOf(false) }
     // 服务标识/描述等可选字段收进"更多选项", 默认收起
     var moreExpanded by rememberSaveable { mutableStateOf(false) }
@@ -302,6 +306,23 @@ fun AIAddEngineScreen(
                     // 留空则只能靠 AiProvider.Default 的兜底模型(名字和真实服务对不上)。
                     if (!isJevProtocol && !isPikafishProtocol) {
                         ModelIdField(component = component, draft = draft)
+                        // 手输模型 ID 容易打错: URL/授权码填好后直接从服务商拉列表挑
+                        OneSecondaryButton(
+                            text = stringResource(R.string.ai_engine_load_from_provider),
+                            onClick = {
+                                if (trimmedRequestUrl.isBlank()) {
+                                    coroutineScope.launch {
+                                        AppToastHost.showFailureToast(
+                                            getString(R.string.ai_engine_invalid_server)
+                                        )
+                                    }
+                                } else {
+                                    showProviderModels = true
+                                    component.loadProviderModels()
+                                }
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                        )
                     }
                 }
             }
@@ -407,6 +428,25 @@ fun AIAddEngineScreen(
                     }
                 }
             }
+        )
+    }
+
+    if (showProviderModels) {
+        ProviderModelsPickerDialog(
+            models = providerModels,
+            isLoading = isLoadingProviderModels,
+            error = providerModelsError,
+            selectedModelId = draft.model.name,
+            onDismiss = {
+                showProviderModels = false
+                component.clearProviderModels()
+            },
+            onRefresh = component::loadProviderModels,
+            onSelect = { model ->
+                component.applyProviderModel(model)
+                showProviderModels = false
+                component.clearProviderModels()
+            },
         )
     }
 

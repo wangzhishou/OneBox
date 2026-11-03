@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExposedDropdownMenu
@@ -21,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,13 +35,20 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.model.ai.AiRequestProtocol
 import com.shifenmiao.model.ai.AuthType
+import com.shifenmiao.model.ai.openai.OpenAIModelItem
 import com.t8rin.imagetoolbox.core.resources.icons.Check
+import com.t8rin.imagetoolbox.core.resources.icons.Search
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineKeyboardArrowDown
+import com.wanbaohe.base.ui.ClearTextFieldTrailingIcon
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.system.OneBoxListItem
+import com.wanbaohe.core.ui.widget.system.OneBoxOutlinedTextField
 import com.wanbaohe.core.ui.widget.system.OneBoxSectionCard
+import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
 import com.wanbaohe.settings.R
+import com.shifenmiao.core.R as CoreR
 
 // 分组卡片容器(无标题分组), 模型服务新增/编辑页共用
 @Composable
@@ -286,6 +297,162 @@ internal fun protocolLabel(protocol: AiRequestProtocol): String {
         AiRequestProtocol.JEV -> stringResource(R.string.ai_engine_protocol_jev)
         AiRequestProtocol.PIKAFISH -> stringResource(R.string.ai_engine_protocol_pikafish)
     }
+}
+
+/**
+ * 服务商模型选择弹窗（新增服务页用）：搜索 + 单选。
+ *
+ * 手输模型 ID 容易打错；拉一次列表后点一下即选中并关闭。加载/失败/空态都在弹窗内
+ * 呈现，失败时可直接重试，不用退回页面再点一次按钮。
+ */
+@Composable
+internal fun ProviderModelsPickerDialog(
+    models: List<OpenAIModelItem>,
+    isLoading: Boolean,
+    error: String?,
+    selectedModelId: String,
+    onDismiss: () -> Unit,
+    onRefresh: () -> Unit,
+    onSelect: (OpenAIModelItem) -> Unit,
+) {
+    var query by rememberSaveable { mutableStateOf("") }
+    val filteredModels = remember(models, query) {
+        val keyword = query.trim()
+        if (keyword.isBlank()) models else models.filter { it.id.contains(keyword, ignoreCase = true) }
+    }
+
+    EnhancedAlertDialog(
+        visible = true,
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.ai_engine_remote_models_picker_title)) },
+        text = {
+            Column(
+                modifier = Modifier.heightIn(max = 420.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                if (!isLoading && error == null && models.isNotEmpty()) {
+                    OneBoxOutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = query,
+                        onValueChange = { query = it },
+                        label = { Text(stringResource(CoreR.string.search)) },
+                        singleLine = true,
+                        leadingIcon = {
+                            Icon(
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Search,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        },
+                        trailingIcon = {
+                            ClearTextFieldTrailingIcon(
+                                value = query,
+                                onClear = { query = "" },
+                            )
+                        },
+                    )
+                }
+                when {
+                    isLoading -> Text(
+                        text = stringResource(R.string.ai_engine_remote_models_loading),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(vertical = 24.dp),
+                    )
+
+                    error != null -> Column(
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.padding(vertical = 8.dp),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.ai_engine_remote_models_load_failed),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onErrorContainer,
+                        )
+                        if (error.isNotBlank()) {
+                            Text(
+                                text = error,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                        OneSecondaryButton(
+                            text = stringResource(R.string.ai_engine_remote_models_retry),
+                            onClick = onRefresh,
+                        )
+                    }
+
+                    filteredModels.isEmpty() -> Text(
+                        text = stringResource(R.string.ai_engine_remote_models_empty),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(vertical = 24.dp),
+                    )
+
+                    else -> LazyColumn(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(max = 360.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                    ) {
+                        items(filteredModels, key = { it.id }) { model ->
+                            val metadata = listOf(model.ownedBy, model.obj)
+                                .filter { it.isNotBlank() }
+                                .joinToString(" · ")
+                            OneBoxListItem(
+                                contained = true,
+                                onClick = { onSelect(model) },
+                                headlineContent = {
+                                    Text(
+                                        text = model.id,
+                                        style = MaterialTheme.typography.bodyMedium.copy(
+                                            fontWeight = if (model.id == selectedModelId) {
+                                                FontWeight.SemiBold
+                                            } else {
+                                                FontWeight.Normal
+                                            }
+                                        ),
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                    )
+                                },
+                                subtitle = if (metadata.isBlank()) {
+                                    null
+                                } else {
+                                    {
+                                        Text(
+                                            text = metadata,
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                            maxLines = 1,
+                                        )
+                                    }
+                                },
+                                trailingContent = if (model.id == selectedModelId) {
+                                    {
+                                        Icon(
+                                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check,
+                                            contentDescription = null,
+                                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                                            modifier = Modifier.size(18.dp),
+                                        )
+                                    }
+                                } else {
+                                    null
+                                },
+                            )
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            OneSecondaryButton(
+                text = stringResource(CoreR.string.button_cancel),
+                onClick = onDismiss,
+            )
+        },
+    )
 }
 
 @Composable
