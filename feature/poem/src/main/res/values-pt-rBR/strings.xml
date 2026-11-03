@@ -108,4 +108,5 @@
     <string name="poem_log_favorited">Favorito: “%1$s”</string>
     <string name="poem_log_unfavorited">Removido dos favoritos: “%1$s”</string>
     <string name="poem_log_deleted">Excluído: “%1$s”</string>
+    <string name="poem_make_card">Gerar cartão de texto</string>
 </resources>

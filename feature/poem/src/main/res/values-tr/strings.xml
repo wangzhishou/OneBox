@@ -108,4 +108,5 @@
     <string name="poem_log_favorited">Favori: “%1$s”</string>
     <string name="poem_log_unfavorited">Favoriden çıkarıldı: “%1$s”</string>
     <string name="poem_log_deleted">Silindi: “%1$s”</string>
+    <string name="poem_make_card">Metin kartı oluştur</string>
 </resources>

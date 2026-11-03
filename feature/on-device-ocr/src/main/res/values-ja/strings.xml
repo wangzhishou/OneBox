@@ -47,4 +47,5 @@
     <string name="ocr_history_save_failed">テキストは認識されましたが、履歴を保存できませんでした</string>
     <string name="ocr_show_result_panel">認識結果を表示</string>
     <string name="ocr_hide_result_panel">認識結果を閉じる</string>
+    <string name="ocr_make_card">カードを作成</string>
 </resources>

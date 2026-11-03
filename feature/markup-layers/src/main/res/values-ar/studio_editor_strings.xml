@@ -124,4 +124,7 @@
     <string name="studio_mask_unavailable">تحتاج الأقنعة إلى طبقة صورة أو صورة الخلفية. حدد هدفًا نقطيًا، أو حوّل طبقة النص أو الشكل هذه إلى صورة باستخدام تأثير أولاً.</string>
     <string name="studio_mask_load_failed">تعذّر تحميل الصورة الهدف. حاول مرة أخرى.</string>
     <string name="studio_retry">إعادة المحاولة</string>
+    <string name="studio_cover_option_text_card">بطاقة نصية</string>
+    <string name="studio_cover_option_image_cover">غلاف صورة</string>
+    <string name="markup_use_as_card_background">تطبيق</string>
 </resources>

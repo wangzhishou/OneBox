@@ -2103,4 +2103,8 @@
     <string name="ai_test_failure_rate_limited">تم تقييد الطلبات أو الحصة غير كافية، يرجى المحاولة لاحقًا</string>
     <string name="ai_test_failure_server_error">عطل في خادم مزود الخدمة، يرجى المحاولة لاحقًا</string>
     <string name="ai_test_failure_unknown">لم ينجح الاختبار، راجع تفاصيل الخطأ أدناه</string>
+    <string name="on_device_ocr">التقاط النص</string>
+    <string name="on_device_ocr_description">اقرأ النص من صورة على هذا الهاتف دون اتصال.</string>
+    <string name="mahjong_title">ماهجونغ</string>
+    <string name="mahjong_description">مباراة ماهجونغ محلية لأربعة لاعبين ضد ثلاثة خصوم محليين.</string>
 </resources>

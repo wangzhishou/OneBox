@@ -120,4 +120,7 @@
     <string name="studio_mask_unavailable">Kailangan ng mga mask ng image layer o background image. Pumili ng bitmap target, o i-convert muna ang text o shape layer na ito sa larawan gamit ang epekto.</string>
     <string name="studio_mask_load_failed">Hindi ma-load ang target na larawan. Subukan muli.</string>
     <string name="studio_retry">Subukan muli</string>
+    <string name="studio_cover_option_text_card">Text Card</string>
+    <string name="studio_cover_option_image_cover">Image Cover</string>
+    <string name="markup_use_as_card_background">Ilapat</string>
 </resources>

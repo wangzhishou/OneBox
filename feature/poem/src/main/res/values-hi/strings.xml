@@ -108,4 +108,5 @@
     <string name="poem_log_favorited">पसंदीदा: “%1$s”</string>
     <string name="poem_log_unfavorited">पसंदीदा हटाया: “%1$s”</string>
     <string name="poem_log_deleted">हटाया गया: “%1$s”</string>
+    <string name="poem_make_card">टेक्स्ट कार्ड बनाएं</string>
 </resources>

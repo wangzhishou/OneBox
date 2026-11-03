@@ -119,4 +119,7 @@
     <string name="studio_mask_unavailable">マスクには画像レイヤーまたは背景画像が必要です。ビットマップターゲットを選択するか、先にエフェクトを使ってこのテキストまたはシェイプレイヤーを画像に変換してください。</string>
     <string name="studio_mask_load_failed">ターゲット画像を読み込めませんでした。もう一度お試しください。</string>
     <string name="studio_retry">再試行</string>
+    <string name="studio_cover_option_text_card">テキストカード</string>
+    <string name="studio_cover_option_image_cover">画像カバー</string>
+    <string name="markup_use_as_card_background">適用</string>
 </resources>

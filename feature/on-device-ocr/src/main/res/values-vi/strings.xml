@@ -47,4 +47,5 @@
     <string name="ocr_history_save_failed">Đã nhận dạng văn bản nhưng không thể lưu lịch sử</string>
     <string name="ocr_show_result_panel">Hiện văn bản đã nhận dạng</string>
     <string name="ocr_hide_result_panel">Ẩn văn bản đã nhận dạng</string>
+    <string name="ocr_make_card">Tạo thẻ</string>
 </resources>

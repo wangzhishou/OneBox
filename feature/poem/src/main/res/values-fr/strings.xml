@@ -107,4 +107,5 @@
     <string name="poem_log_favorited">Ajouter « %1$s » aux favoris</string>
     <string name="poem_log_unfavorited">Retirer « %1$s » des favoris</string>
     <string name="poem_log_deleted">Supprimer « %1$s »</string>
+    <string name="poem_make_card">Créer une carte texte</string>
 </resources>

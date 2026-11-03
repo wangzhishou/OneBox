@@ -2069,4 +2069,8 @@
     <string name="ai_test_failure_rate_limited">İstek hız sınırına takıldı veya kota yetersiz, lütfen daha sonra tekrar deneyin</string>
     <string name="ai_test_failure_server_error">Sağlayıcı sunucu arızası, lütfen daha sonra tekrar deneyin</string>
     <string name="ai_test_failure_unknown">Test başarısız oldu, ayrıntılar için aşağıdaki hata ayrıntılarına bakın</string>
+    <string name="on_device_ocr">Fotoğraftan metin</string>
+    <string name="on_device_ocr_description">Telefonunuzda çevrimdışı olarak fotoğraftaki metni okuyun.</string>
+    <string name="mahjong_title">Mahjong</string>
+    <string name="mahjong_description">Üç yerel yapay zekâ rakibe karşı çevrimdışı dört kişilik mahjong; chi, pong, kong ve hu.</string>
 </resources>

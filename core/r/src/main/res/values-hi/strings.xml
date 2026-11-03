@@ -2069,4 +2069,8 @@
     <string name="ai_test_failure_rate_limited">अनुरोध दर-सीमित है या कोटा अपर्याप्त है, कृपया बाद में पुनः प्रयास करें</string>
     <string name="ai_test_failure_server_error">सेवा प्रदाता के सर्वर में खराबी, कृपया बाद में पुनः प्रयास करें</string>
     <string name="ai_test_failure_unknown">परीक्षण विफल, विवरण नीचे त्रुटि विवरण में देखें</string>
+    <string name="on_device_ocr">फ़ोटो से टेक्स्ट</string>
+    <string name="on_device_ocr_description">इस फ़ोन पर ऑफ़लाइन फ़ोटो से टेक्स्ट पढ़ें।</string>
+    <string name="mahjong_title">माहजोंग</string>
+    <string name="mahjong_description">तीन स्थानीय AI प्रतिद्वंद्वियों के साथ ऑफ़लाइन चार-खिलाड़ी माहजोंग।</string>
 </resources>

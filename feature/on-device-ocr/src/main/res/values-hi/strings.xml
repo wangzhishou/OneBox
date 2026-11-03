@@ -47,4 +47,5 @@
     <string name="ocr_history_save_failed">टेक्स्ट पहचाना गया, लेकिन इतिहास सहेजा नहीं जा सका</string>
     <string name="ocr_show_result_panel">पहचाना गया टेक्स्ट दिखाएँ</string>
     <string name="ocr_hide_result_panel">पहचाना गया टेक्स्ट छिपाएँ</string>
+    <string name="ocr_make_card">कार्ड बनाएँ</string>
 </resources>

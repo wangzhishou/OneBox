@@ -108,4 +108,5 @@
     <string name="poem_log_favorited">Favorit: “%1$s”</string>
     <string name="poem_log_unfavorited">Batal favorit: “%1$s”</string>
     <string name="poem_log_deleted">Dihapus: “%1$s”</string>
+    <string name="poem_make_card">Buat kartu teks</string>
 </resources>

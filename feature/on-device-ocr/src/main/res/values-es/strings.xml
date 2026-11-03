@@ -47,4 +47,5 @@
     <string name="ocr_history_save_failed">Texto reconocido, pero no se pudo guardar el historial</string>
     <string name="ocr_show_result_panel">Mostrar texto reconocido</string>
     <string name="ocr_hide_result_panel">Ocultar texto reconocido</string>
+    <string name="ocr_make_card">Generar tarjeta</string>
 </resources>

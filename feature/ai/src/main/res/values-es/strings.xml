@@ -997,4 +997,5 @@
     <string name="ai_chat_attachment_uploading">Subiendo...</string>
     <string name="ai_chat_attachment_error">Error: %1$s</string>
     <string name="ai_chat_go_to_top">Volver arriba</string>
+    <string name="agent_tool_manage_todo_param_has_due_time">Indica si due_date_millis incluye la hora exacta; false significa solo fecha, opcional en create_task</string>
 </resources>

@@ -4,4 +4,7 @@
         <item quantity="one">%1$d calque</item>
         <item quantity="other">%1$d calques</item>
     </plurals>
+    <string name="studio_cover_option_text_card">Carte texte</string>
+    <string name="studio_cover_option_image_cover">Couverture image</string>
+    <string name="markup_use_as_card_background">Appliquer</string>
 </resources>

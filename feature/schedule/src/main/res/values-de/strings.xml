@@ -120,4 +120,15 @@
         <item>删掉明天下午 3 点的会议</item>
         <item>取消周五的健身安排</item>
     </string-array>
+    <string name="schedule_all_day">Ganztägig</string>
+    <string name="schedule_day_empty">Für diesen Tag ist nichts geplant</string>
+    <string name="schedule_day_today">Heute · %1$s</string>
+    <string name="schedule_day_tomorrow">Morgen · %1$s</string>
+    <string name="schedule_day_yesterday">Gestern · %1$s</string>
+    <string name="schedule_current_task">Aktuelle Aufgabe</string>
+    <string name="schedule_open_task">Aufgabe öffnen</string>
+    <string name="schedule_notification_channel_name">Zeitplan</string>
+    <string name="schedule_notification_channel_desc">Erinnerungen für Aufgaben im Zeitplan</string>
+    <string name="schedule_notification_timed">Es ist Zeit</string>
+    <string name="schedule_notification_all_day">Heute fällig</string>
 </resources>

@@ -2069,4 +2069,8 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
     <string name="ai_test_failure_rate_limited">Requisição limitada ou cota insuficiente. Tente novamente mais tarde</string>
     <string name="ai_test_failure_server_error">Falha no servidor do provedor. Tente novamente mais tarde</string>
     <string name="ai_test_failure_unknown">Teste não aprovado. Veja os detalhes do erro abaixo</string>
+    <string name="on_device_ocr">Extrair texto da foto</string>
+    <string name="on_device_ocr_description">Reconheça textos de fotos offline no celular.</string>
+    <string name="mahjong_title">Mahjong offline</string>
+    <string name="mahjong_description">Partida offline para quatro, jogue chi, pong, kong e hu com três oponentes de IA locais.</string>
 </resources>

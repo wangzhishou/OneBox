@@ -2069,4 +2069,8 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
     <string name="ai_test_failure_rate_limited">Anfrage limitiert oder Kontingent erschöpft, bitte später erneut versuchen</string>
     <string name="ai_test_failure_server_error">Serverfehler beim Anbieter, bitte später erneut versuchen</string>
     <string name="ai_test_failure_unknown">Test fehlgeschlagen, Details siehe Fehlerbeschreibung unten</string>
+    <string name="on_device_ocr">Text aus Foto</string>
+    <string name="on_device_ocr_description">Text in einem Foto direkt auf dem Handy offline erkennen.</string>
+    <string name="mahjong_title">Mahjong</string>
+    <string name="mahjong_description">Offline-Partie zu viert gegen drei lokale KI-Gegner mit Chi, Pong, Kong und Hu.</string>
 </resources>

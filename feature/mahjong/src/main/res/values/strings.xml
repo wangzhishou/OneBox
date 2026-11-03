@@ -12,7 +12,7 @@
     <string name="mahjong_stats_draws">Draws</string>
     <string name="mahjong_best_score">Best score: %1$d</string>
     <string name="mahjong_rules">How to play</string>
-    <string name="mahjong_rules_text">136 tiles, no flowers. Build four sets and a pair, or seven pairs. Chi from the player on your left, pong or kong from anyone, and win by self-draw or discard. Added kongs can be robbed. A round ends after a win or when the wall is empty. Scoring covers basic patterns only and is not the full 81-fan national standard.</string>
+    <string name="mahjong_rules_text">136 tiles, no flowers. Build four sets and a pair, or seven pairs. Chi from the player on your left, pong or kong from anyone, and win by self-draw or discard. Multiple players can win on the same discard, and added kongs can be robbed. A round ends after a win or when the wall is empty. Scoring covers basic patterns only and is not the full 81-fan national standard.</string>
     <string name="mahjong_close">Close</string>
     <string name="mahjong_wall">Wall %1$d</string>
     <string name="mahjong_dealer">Dealer</string>

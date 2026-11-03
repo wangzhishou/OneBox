@@ -108,4 +108,5 @@
     <string name="poem_log_favorited">즐겨찾기: “%1$s”</string>
     <string name="poem_log_unfavorited">즐겨찾기 해제: “%1$s”</string>
     <string name="poem_log_deleted">삭제: “%1$s”</string>
+    <string name="poem_make_card">텍스트 카드 만들기</string>
 </resources>

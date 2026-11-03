@@ -120,4 +120,15 @@
         <item>刪掉明天下午 3 點的會議</item>
         <item>取消週五的健身安排</item>
     </string-array>
+    <string name="schedule_all_day">全天</string>
+    <string name="schedule_day_empty">這一天還沒有安排</string>
+    <string name="schedule_day_today">今天 · %1$s</string>
+    <string name="schedule_day_tomorrow">明天 · %1$s</string>
+    <string name="schedule_day_yesterday">昨天 · %1$s</string>
+    <string name="schedule_current_task">目前待辦</string>
+    <string name="schedule_open_task">開啟待辦</string>
+    <string name="schedule_notification_channel_name">行程</string>
+    <string name="schedule_notification_channel_desc">待辦加入行程後的到點提醒</string>
+    <string name="schedule_notification_timed">到點了</string>
+    <string name="schedule_notification_all_day">今天到期</string>
 </resources>

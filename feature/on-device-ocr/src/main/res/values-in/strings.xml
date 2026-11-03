@@ -47,4 +47,5 @@
     <string name="ocr_history_save_failed">Teks dikenali, tetapi riwayat tidak dapat disimpan</string>
     <string name="ocr_show_result_panel">Tampilkan teks yang dikenali</string>
     <string name="ocr_hide_result_panel">Sembunyikan teks yang dikenali</string>
+    <string name="ocr_make_card">Buat kartu</string>
 </resources>

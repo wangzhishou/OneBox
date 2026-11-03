@@ -108,4 +108,5 @@
     <string name="poem_log_favorited">مفضل: “%1$s”</string>
     <string name="poem_log_unfavorited">إزالة من المفضلة: “%1$s”</string>
     <string name="poem_log_deleted">محذوف: “%1$s”</string>
+    <string name="poem_make_card">إنشاء بطاقة نصية</string>
 </resources>

@@ -120,4 +120,15 @@
         <item>删掉明天下午 3 点的会议</item>
         <item>取消周五的健身安排</item>
     </string-array>
+    <string name="schedule_all_day">Весь день</string>
+    <string name="schedule_day_empty">На этот день ничего не запланировано</string>
+    <string name="schedule_day_today">Сегодня · %1$s</string>
+    <string name="schedule_day_tomorrow">Завтра · %1$s</string>
+    <string name="schedule_day_yesterday">Вчера · %1$s</string>
+    <string name="schedule_current_task">Текущая задача</string>
+    <string name="schedule_open_task">Открыть задачу</string>
+    <string name="schedule_notification_channel_name">Расписание</string>
+    <string name="schedule_notification_channel_desc">Напоминания о задачах в расписании</string>
+    <string name="schedule_notification_timed">Пора</string>
+    <string name="schedule_notification_all_day">Срок сегодня</string>
 </resources>

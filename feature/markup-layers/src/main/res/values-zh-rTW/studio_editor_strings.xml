@@ -119,4 +119,7 @@
     <string name="studio_mask_unavailable">遮色片需要圖片圖層或背景圖片。請選擇點陣圖目標，或先透過新增效果將文字、形狀圖層轉為圖片。</string>
     <string name="studio_mask_load_failed">無法載入目標圖片，請重試。</string>
     <string name="studio_retry">重試</string>
+    <string name="studio_cover_option_text_card">文字卡片</string>
+    <string name="studio_cover_option_image_cover">圖片封面</string>
+    <string name="markup_use_as_card_background">套用</string>
 </resources>

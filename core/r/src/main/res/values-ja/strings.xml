@@ -2058,4 +2058,8 @@
     <string name="ai_test_failure_rate_limited">リクエストがレート制限されているか、クォータが不足しています。しばらくしてから再試行してください</string>
     <string name="ai_test_failure_server_error">プロバイダーのサーバー障害です。しばらくしてから再試行してください</string>
     <string name="ai_test_failure_unknown">テストに失敗しました。詳細は下記のエラー詳細をご覧ください</string>
+    <string name="on_device_ocr">写真から文字を読み取る</string>
+    <string name="on_device_ocr_description">スマートフォン上でオフラインで写真の文字を認識します。</string>
+    <string name="mahjong_title">麻雀</string>
+    <string name="mahjong_description">4人オフライン対局。3人のローカルAI対手とチー・ポン・カン・胡を行います。</string>
 </resources>

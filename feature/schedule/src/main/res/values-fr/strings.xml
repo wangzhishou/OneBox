@@ -120,4 +120,15 @@
         <item>supprime la réunion de demain à 15 h</item>
         <item>annule la séance de sport de vendredi</item>
     </string-array>
+    <string name="schedule_all_day">Toute la journée</string>
+    <string name="schedule_day_empty">Rien de prévu ce jour</string>
+    <string name="schedule_day_today">Aujourd’hui · %1$s</string>
+    <string name="schedule_day_tomorrow">Demain · %1$s</string>
+    <string name="schedule_day_yesterday">Hier · %1$s</string>
+    <string name="schedule_current_task">Tâche en cours</string>
+    <string name="schedule_open_task">Ouvrir la tâche</string>
+    <string name="schedule_notification_channel_name">Agenda</string>
+    <string name="schedule_notification_channel_desc">Rappels à l’heure pour les tâches ajoutées à l’agenda</string>
+    <string name="schedule_notification_timed">C’est l’heure</string>
+    <string name="schedule_notification_all_day">Échéance aujourd’hui</string>
 </resources>

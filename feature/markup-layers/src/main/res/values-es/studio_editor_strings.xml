@@ -120,4 +120,7 @@
     <string name="studio_mask_unavailable">Las máscaras necesitan una capa de imagen o la imagen de fondo. Selecciona un destino de mapa de bits o convierte primero esta capa de texto o forma en una imagen usando un efecto.</string>
     <string name="studio_mask_load_failed">No se pudo cargar la imagen de destino. Inténtalo de nuevo.</string>
     <string name="studio_retry">Reintentar</string>
+    <string name="studio_cover_option_text_card">Tarjeta de texto</string>
+    <string name="studio_cover_option_image_cover">Portada de imagen</string>
+    <string name="markup_use_as_card_background">Aplicar</string>
 </resources>

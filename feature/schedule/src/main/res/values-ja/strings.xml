@@ -120,4 +120,15 @@
         <item>删掉明天下午 3 点的会议</item>
         <item>取消周五的健身安排</item>
     </string-array>
+    <string name="schedule_all_day">終日</string>
+    <string name="schedule_day_empty">この日の予定はありません</string>
+    <string name="schedule_day_today">今日 · %1$s</string>
+    <string name="schedule_day_tomorrow">明日 · %1$s</string>
+    <string name="schedule_day_yesterday">昨日 · %1$s</string>
+    <string name="schedule_current_task">現在のタスク</string>
+    <string name="schedule_open_task">タスクを開く</string>
+    <string name="schedule_notification_channel_name">スケジュール</string>
+    <string name="schedule_notification_channel_desc">スケジュールに追加したタスクの時刻通知</string>
+    <string name="schedule_notification_timed">時間です</string>
+    <string name="schedule_notification_all_day">今日が期限</string>
 </resources>

@@ -994,4 +994,5 @@
     <string name="ai_chat_attachment_uploading">Đang tải lên...</string>
     <string name="ai_chat_attachment_error">Thất bại: %1$s</string>
     <string name="ai_chat_go_to_top">Lên đầu trang</string>
+    <string name="agent_tool_manage_todo_param_has_due_time">due_date_millis có bao gồm thời gian chính xác hay không; false nghĩa là chỉ có ngày, tùy chọn khi create_task</string>
 </resources>

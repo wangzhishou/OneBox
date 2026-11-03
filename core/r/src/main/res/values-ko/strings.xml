@@ -2058,4 +2058,8 @@
     <string name="ai_test_failure_rate_limited">요청이 제한되었거나 할당량이 부족합니다. 잠시 후 다시 시도하세요</string>
     <string name="ai_test_failure_server_error">서비스 제공업체 서버 오류입니다. 잠시 후 다시 시도하세요</string>
     <string name="ai_test_failure_unknown">테스트에 실패했습니다. 아래 오류 상세를 참고하세요</string>
+    <string name="on_device_ocr">사진으로 글자 인식</string>
+    <string name="on_device_ocr_description">휴대폰에서 오프라인으로 사진 속 글자를 인식합니다.</string>
+    <string name="mahjong_title">마작</string>
+    <string name="mahjong_description">3명의 로컬 AI 상대와 오프라인 4인 마작을 즐기며 치·퐁·깡·화를 합니다.</string>
 </resources>

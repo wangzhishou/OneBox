@@ -997,4 +997,5 @@
     <string name="ai_chat_attachment_uploading">अपलोड हो रहा है...</string>
     <string name="ai_chat_attachment_error">विफल: %1$s</string>
     <string name="ai_chat_go_to_top">ऊपर जाएँ</string>
+    <string name="agent_tool_manage_todo_param_has_due_time">क्या due_date_millis में सटीक समय शामिल है; false का अर्थ केवल तारीख है, create_task के लिए वैकल्पिक</string>
 </resources>

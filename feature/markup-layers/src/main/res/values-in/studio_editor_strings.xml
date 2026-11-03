@@ -119,4 +119,7 @@
     <string name="studio_mask_unavailable">Masker memerlukan lapisan gambar atau gambar latar belakang. Pilih target bitmap, atau konversi lapisan teks atau bentuk ini menjadi gambar menggunakan efek terlebih dahulu.</string>
     <string name="studio_mask_load_failed">Gambar target tidak dapat dimuat. Coba lagi.</string>
     <string name="studio_retry">Coba lagi</string>
+    <string name="studio_cover_option_text_card">Kartu teks</string>
+    <string name="studio_cover_option_image_cover">Sampul gambar</string>
+    <string name="markup_use_as_card_background">Terapkan</string>
 </resources>

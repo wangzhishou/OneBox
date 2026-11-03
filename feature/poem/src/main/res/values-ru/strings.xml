@@ -108,4 +108,5 @@
     <string name="poem_log_favorited">В избранном: «%1$s»</string>
     <string name="poem_log_unfavorited">Убрано из избранного: «%1$s»</string>
     <string name="poem_log_deleted">Удалено: «%1$s»</string>
+    <string name="poem_make_card">Создать текстовую карточку</string>
 </resources>

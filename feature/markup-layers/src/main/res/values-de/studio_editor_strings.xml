@@ -120,4 +120,7 @@
     <string name="studio_mask_unavailable">Masken benötigen eine Bild- oder Hintergrundebene. Wähle ein Bitmap-Ziel oder wandle diese Text- oder Formebene zuerst mit einem Effekt in ein Bild um.</string>
     <string name="studio_mask_load_failed">Das Zielbild konnte nicht geladen werden. Versuche es erneut.</string>
     <string name="studio_retry">Wiederholen</string>
+    <string name="studio_cover_option_text_card">Textkarte</string>
+    <string name="studio_cover_option_image_cover">Bildcover</string>
+    <string name="markup_use_as_card_background">Anwenden</string>
 </resources>

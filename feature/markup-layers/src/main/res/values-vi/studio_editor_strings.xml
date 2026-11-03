@@ -3,4 +3,7 @@
     <plurals name="studio_project_layers">
         <item quantity="other">%1$d lớp</item>
     </plurals>
+    <string name="studio_cover_option_text_card">Thẻ văn bản</string>
+    <string name="studio_cover_option_image_cover">Ảnh bìa</string>
+    <string name="markup_use_as_card_background">Áp dụng</string>
 </resources>

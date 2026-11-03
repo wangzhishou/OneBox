@@ -120,4 +120,15 @@
         <item>删掉明天下午 3 点的会议</item>
         <item>取消周五的健身安排</item>
     </string-array>
+    <string name="schedule_all_day">Sepanjang hari</string>
+    <string name="schedule_day_empty">Belum ada jadwal untuk hari ini</string>
+    <string name="schedule_day_today">Hari ini · %1$s</string>
+    <string name="schedule_day_tomorrow">Besok · %1$s</string>
+    <string name="schedule_day_yesterday">Kemarin · %1$s</string>
+    <string name="schedule_current_task">Tugas saat ini</string>
+    <string name="schedule_open_task">Buka tugas</string>
+    <string name="schedule_notification_channel_name">Jadwal</string>
+    <string name="schedule_notification_channel_desc">Pengingat saat tugas ditambahkan ke jadwal</string>
+    <string name="schedule_notification_timed">Waktunya tiba</string>
+    <string name="schedule_notification_all_day">Jatuh tempo hari ini</string>
 </resources>

@@ -107,4 +107,5 @@
     <string name="poem_log_favorited">Yêu thích《%1$s》</string>
     <string name="poem_log_unfavorited">Bỏ yêu thích《%1$s》</string>
     <string name="poem_log_deleted">Xóa《%1$s》</string>
+    <string name="poem_make_card">Tạo thẻ văn bản</string>
 </resources>

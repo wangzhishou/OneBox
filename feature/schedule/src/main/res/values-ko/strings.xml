@@ -120,4 +120,15 @@
         <item>删掉明天下午 3 点的会议</item>
         <item>取消周五的健身安排</item>
     </string-array>
+    <string name="schedule_all_day">종일</string>
+    <string name="schedule_day_empty">이 날은 예정된 일정이 없습니다</string>
+    <string name="schedule_day_today">오늘 · %1$s</string>
+    <string name="schedule_day_tomorrow">내일 · %1$s</string>
+    <string name="schedule_day_yesterday">어제 · %1$s</string>
+    <string name="schedule_current_task">현재 할 일</string>
+    <string name="schedule_open_task">할 일 열기</string>
+    <string name="schedule_notification_channel_name">일정</string>
+    <string name="schedule_notification_channel_desc">할 일을 일정에 추가한 후 도착 시간 알림</string>
+    <string name="schedule_notification_timed">시간이 되었습니다</string>
+    <string name="schedule_notification_all_day">오늘 마감</string>
 </resources>

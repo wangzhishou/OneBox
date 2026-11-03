@@ -107,4 +107,5 @@
     <string name="poem_log_favorited">收藏《%1$s》</string>
     <string name="poem_log_unfavorited">取消收藏《%1$s》</string>
     <string name="poem_log_deleted">刪除《%1$s》</string>
+    <string name="poem_make_card">生成文字卡片</string>
 </resources>

@@ -120,4 +120,15 @@
         <item>删掉明天下午 3 点的会议</item>
         <item>取消周五的健身安排</item>
     </string-array>
+    <string name="schedule_all_day">पूरा दिन</string>
+    <string name="schedule_day_empty">इस दिन कोई कार्यक्रम नहीं</string>
+    <string name="schedule_day_today">आज · %1$s</string>
+    <string name="schedule_day_tomorrow">कल · %1$s</string>
+    <string name="schedule_day_yesterday">कल (बीता) · %1$s</string>
+    <string name="schedule_current_task">वर्तमान कार्य</string>
+    <string name="schedule_open_task">कार्य खोलें</string>
+    <string name="schedule_notification_channel_name">शेड्यूल</string>
+    <string name="schedule_notification_channel_desc">शेड्यूल में जोड़े गए कार्यों के लिए रिमाइंडर</string>
+    <string name="schedule_notification_timed">समय हो गया</string>
+    <string name="schedule_notification_all_day">आज देय</string>
 </resources>

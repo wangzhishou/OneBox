@@ -2103,4 +2103,8 @@
     <string name="ai_test_failure_rate_limited">Превышен лимит запросов или недостаточно квоты, повторите попытку позже</string>
     <string name="ai_test_failure_server_error">Сбой сервера провайдера, повторите попытку позже</string>
     <string name="ai_test_failure_unknown">Проверка не пройдена, подробности ошибки ниже</string>
+    <string name="on_device_ocr">Распознавание текста</string>
+    <string name="on_device_ocr_description">Распознавайте текст с фото на телефоне без интернета.</string>
+    <string name="mahjong_title">Маджонг</string>
+    <string name="mahjong_description">Офлайн-партия на четверых против трёх локальных ИИ-соперников.</string>
 </resources>

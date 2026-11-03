@@ -997,4 +997,5 @@
     <string name="ai_chat_attachment_uploading">Загрузка...</string>
     <string name="ai_chat_attachment_error">Ошибка: %1$s</string>
     <string name="ai_chat_go_to_top">Наверх</string>
+    <string name="agent_tool_manage_todo_param_has_due_time">Включает ли due_date_millis точное время; false — только дата, необязательно для create_task</string>
 </resources>

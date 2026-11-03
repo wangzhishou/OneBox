@@ -120,4 +120,15 @@
         <item>删掉明天下午 3 点的会议</item>
         <item>取消周五的健身安排</item>
     </string-array>
+    <string name="schedule_all_day">Tüm gün</string>
+    <string name="schedule_day_empty">Bu güne ait plan yok</string>
+    <string name="schedule_day_today">Bugün · %1$s</string>
+    <string name="schedule_day_tomorrow">Yarın · %1$s</string>
+    <string name="schedule_day_yesterday">Dün · %1$s</string>
+    <string name="schedule_current_task">Mevcut görev</string>
+    <string name="schedule_open_task">Görevi aç</string>
+    <string name="schedule_notification_channel_name">Takvim</string>
+    <string name="schedule_notification_channel_desc">Takvime eklenen görevler için hatırlatıcılar</string>
+    <string name="schedule_notification_timed">Zamanı geldi</string>
+    <string name="schedule_notification_all_day">Bugün sona eriyor</string>
 </resources>

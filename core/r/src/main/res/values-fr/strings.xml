@@ -2057,4 +2057,8 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="ai_test_failure_rate_limited">Requête limitée ou quota insuffisant, veuillez réessayer plus tard</string>
     <string name="ai_test_failure_server_error">Panne du serveur du fournisseur, veuillez réessayer plus tard</string>
     <string name="ai_test_failure_unknown">Test échoué, voir les détails de l\'erreur ci-dessous</string>
+    <string name="on_device_ocr">Texte par photo</string>
+    <string name="on_device_ocr_description">Reconnaissez hors ligne le texte d\'une photo sur ce téléphone.</string>
+    <string name="mahjong_title">Mahjong</string>
+    <string name="mahjong_description">Partie hors ligne à quatre joueurs contre trois adversaires IA locaux.</string>
 </resources>

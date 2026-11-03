@@ -2069,4 +2069,8 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <string name="ai_test_failure_rate_limited">Na-rate limit o kulang ang quota, pakisubukang muli mamaya</string>
     <string name="ai_test_failure_server_error">May problema sa server ng provider, pakisubukang muli mamaya</string>
     <string name="ai_test_failure_unknown">Bigo ang pagsubok, tingnan ang detalye ng error sa ibaba</string>
+    <string name="on_device_ocr">Kunin ang Teksto</string>
+    <string name="on_device_ocr_description">Basahin ang teksto mula sa larawan sa teleponong ito, offline.</string>
+    <string name="mahjong_title">Mahjong</string>
+    <string name="mahjong_description">Offline na apat na manlalarong Mahjong laban sa tatlong lokal na AI.</string>
 </resources>

@@ -120,4 +120,7 @@
     <string name="studio_mask_unavailable">Maskeler bir görüntü katmanına veya arka plan görüntüsüne ihtiyaç duyar. Bir bitmap hedefi seçin veya önce bir efekt kullanarak bu metin ya da şekil katmanını görüntüye dönüştürün.</string>
     <string name="studio_mask_load_failed">Hedef görüntü yüklenemedi. Tekrar deneyin.</string>
     <string name="studio_retry">Yeniden dene</string>
+    <string name="studio_cover_option_text_card">Metin Kartı</string>
+    <string name="studio_cover_option_image_cover">Görsel Kapak</string>
+    <string name="markup_use_as_card_background">Uygula</string>
 </resources>

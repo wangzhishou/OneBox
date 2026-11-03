@@ -2056,4 +2056,8 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <string name="ai_test_failure_rate_limited">Yêu cầu bị giới hạn tần suất hoặc không đủ hạn mức, vui lòng thử lại sau</string>
     <string name="ai_test_failure_server_error">Máy chủ nhà cung cấp dịch vụ gặp sự cố, vui lòng thử lại sau</string>
     <string name="ai_test_failure_unknown">Kiểm tra không đạt, xem chi tiết lỗi bên dưới</string>
+    <string name="on_device_ocr">Chụp ảnh lấy chữ</string>
+    <string name="on_device_ocr_description">Nhận dạng chữ trong ảnh ngay trên điện thoại, ngoại tuyến.</string>
+    <string name="mahjong_title">Mạt chược</string>
+    <string name="mahjong_description">Ván bốn người ngoại tuyến với ba đối thủ AI cục bộ, có ăn, phỗng, khung và ù.</string>
 </resources>

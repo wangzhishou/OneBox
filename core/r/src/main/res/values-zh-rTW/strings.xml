@@ -2059,4 +2059,8 @@
     <string name="ai_test_failure_rate_limited">請求被限流或額度不足，請稍後重試</string>
     <string name="ai_test_failure_server_error">服務商伺服器故障，請稍後重試</string>
     <string name="ai_test_failure_unknown">測試未通過，詳見下方錯誤詳情</string>
+    <string name="on_device_ocr">拍照取字</string>
+    <string name="on_device_ocr_description">在手機上離線辨識照片裡的文字。</string>
+    <string name="mahjong_title">單機麻將</string>
+    <string name="mahjong_description">四人離線對局，與三位本機 AI 對手吃碰槓胡。</string>
 </resources>

@@ -2069,4 +2069,8 @@ Consejo: si eliges «Ocultar para siempre», podrás devolverme más tarde en Aj
     <string name="ai_test_failure_rate_limited">Solicitud limitada o cuota insuficiente, inténtalo de nuevo más tarde</string>
     <string name="ai_test_failure_server_error">Fallo del servidor del proveedor, inténtalo de nuevo más tarde</string>
     <string name="ai_test_failure_unknown">La prueba no se superó, consulta los detalles del error abajo</string>
+    <string name="on_device_ocr">Extraer texto de fotos</string>
+    <string name="on_device_ocr_description">Reconoce texto de fotos sin conexión en tu teléfono.</string>
+    <string name="mahjong_title">Mahjong sin conexión</string>
+    <string name="mahjong_description">Partida offline para cuatro, juega chi, pong, kong y hu contra tres rivales de IA locales.</string>
 </resources>

@@ -47,4 +47,5 @@
     <string name="ocr_history_save_failed">Текст распознан, но не удалось сохранить историю</string>
     <string name="ocr_show_result_panel">Показать распознанный текст</string>
     <string name="ocr_hide_result_panel">Скрыть распознанный текст</string>
+    <string name="ocr_make_card">Создать карточку</string>
 </resources>

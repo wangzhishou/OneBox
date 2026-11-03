@@ -47,4 +47,5 @@
     <string name="ocr_history_save_failed">텍스트는 인식했지만 기록을 저장하지 못했습니다</string>
     <string name="ocr_show_result_panel">인식 결과 보기</string>
     <string name="ocr_hide_result_panel">인식 결과 숨기기</string>
+    <string name="ocr_make_card">카드 생성</string>
 </resources>

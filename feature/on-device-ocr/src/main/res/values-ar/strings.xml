@@ -47,4 +47,5 @@
     <string name="ocr_history_save_failed">تم التعرف على النص، لكن تعذر حفظ السجل</string>
     <string name="ocr_show_result_panel">إظهار نص التعرف</string>
     <string name="ocr_hide_result_panel">إخفاء نص التعرف</string>
+    <string name="ocr_make_card">إنشاء بطاقة</string>
 </resources>

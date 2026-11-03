@@ -997,4 +997,5 @@
     <string name="ai_chat_attachment_uploading">Mengunggah...</string>
     <string name="ai_chat_attachment_error">Gagal: %1$s</string>
     <string name="ai_chat_go_to_top">Kembali ke atas</string>
+    <string name="agent_tool_manage_todo_param_has_due_time">Apakah due_date_millis menyertakan waktu persis; false berarti hanya tanggal, opsional saat create_task</string>
 </resources>

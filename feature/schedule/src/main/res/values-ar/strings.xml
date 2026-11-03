@@ -120,4 +120,15 @@
         <item>احذف اجتماع الساعة 3 مساءً غدًا</item>
         <item>ألغِ موعد التمرين يوم الجمعة</item>
     </string-array>
+    <string name="schedule_all_day">طوال اليوم</string>
+    <string name="schedule_day_empty">لا توجد ترتيبات لهذا اليوم</string>
+    <string name="schedule_day_today">اليوم · %1$s</string>
+    <string name="schedule_day_tomorrow">غدًا · %1$s</string>
+    <string name="schedule_day_yesterday">أمس · %1$s</string>
+    <string name="schedule_current_task">المهمة الحالية</string>
+    <string name="schedule_open_task">فتح المهمة</string>
+    <string name="schedule_notification_channel_name">الجدول</string>
+    <string name="schedule_notification_channel_desc">تذكيرات عند حلول موعد المهام المضافة إلى جدولك</string>
+    <string name="schedule_notification_timed">حان الوقت</string>
+    <string name="schedule_notification_all_day">مستحقة اليوم</string>
 </resources>

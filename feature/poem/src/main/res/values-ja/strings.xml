@@ -108,4 +108,5 @@
     <string name="poem_log_favorited">お気に入り: 「%1$s」</string>
     <string name="poem_log_unfavorited">お気に入り解除: 「%1$s」</string>
     <string name="poem_log_deleted">削除: 「%1$s」</string>
+    <string name="poem_make_card">テキストカードを作成</string>
 </resources>

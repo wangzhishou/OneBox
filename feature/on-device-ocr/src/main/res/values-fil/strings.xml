@@ -47,4 +47,5 @@
     <string name="ocr_history_save_failed">Nakilala ang teksto pero hindi na-save ang kasaysayan</string>
     <string name="ocr_show_result_panel">Ipakita ang nakilalang teksto</string>
     <string name="ocr_hide_result_panel">Itago ang nakilalang teksto</string>
+    <string name="ocr_make_card">Gumawa ng card</string>
 </resources>

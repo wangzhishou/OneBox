@@ -2058,4 +2058,8 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
     <string name="ai_test_failure_rate_limited">Permintaan dibatasi atau kuota tidak cukup, coba lagi nanti</string>
     <string name="ai_test_failure_server_error">Server penyedia layanan bermasalah, coba lagi nanti</string>
     <string name="ai_test_failure_unknown">Tes gagal, lihat detail kesalahan di bawah</string>
+    <string name="on_device_ocr">Ambil teks dari foto</string>
+    <string name="on_device_ocr_description">Kenali teks pada foto secara offline di ponsel.</string>
+    <string name="mahjong_title">Mahjong offline</string>
+    <string name="mahjong_description">Pertandingan offline empat pemain melawan tiga lawan AI lokal dengan chi, pong, kong, dan hu.</string>
 </resources>

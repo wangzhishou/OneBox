@@ -120,4 +120,15 @@
         <item>删掉明天下午 3 点的会议</item>
         <item>取消周五的健身安排</item>
     </string-array>
+    <string name="schedule_all_day">Buong araw</string>
+    <string name="schedule_day_empty">Walang naka-iskedyul ngayong araw</string>
+    <string name="schedule_day_today">Ngayon · %1$s</string>
+    <string name="schedule_day_tomorrow">Bukas · %1$s</string>
+    <string name="schedule_day_yesterday">Kahapon · %1$s</string>
+    <string name="schedule_current_task">Kasalukuyang gawain</string>
+    <string name="schedule_open_task">Buksan ang gawain</string>
+    <string name="schedule_notification_channel_name">Iskedyul</string>
+    <string name="schedule_notification_channel_desc">Mga paalala para sa mga gawaing nasa iskedyul</string>
+    <string name="schedule_notification_timed">Oras na</string>
+    <string name="schedule_notification_all_day">Due ngayon</string>
 </resources>

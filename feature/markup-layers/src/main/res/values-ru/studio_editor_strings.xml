@@ -122,4 +122,7 @@
     <string name="studio_mask_unavailable">Для масок нужен слой изображения или фоновое изображение. Выберите растровый объект или сначала преобразуйте этот текстовый или фигурный слой в изображение с помощью эффекта.</string>
     <string name="studio_mask_load_failed">Не удалось загрузить целевое изображение. Попробуйте ещё раз.</string>
     <string name="studio_retry">Повторить</string>
+    <string name="studio_cover_option_text_card">Текстовая карточка</string>
+    <string name="studio_cover_option_image_cover">Обложка-изображение</string>
+    <string name="markup_use_as_card_background">Применить</string>
 </resources>

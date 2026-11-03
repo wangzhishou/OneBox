@@ -120,4 +120,7 @@
     <string name="studio_mask_unavailable">मास्क के लिए छवि लेयर या पृष्ठभूमि छवि आवश्यक है। बिटमैप लक्ष्य चुनें, या पहले प्रभाव का उपयोग करके इस टेक्स्ट या आकृति लेयर को छवि में बदलें।</string>
     <string name="studio_mask_load_failed">लक्ष्य छवि लोड नहीं हो सकी। पुनः प्रयास करें।</string>
     <string name="studio_retry">पुनः प्रयास करें</string>
+    <string name="studio_cover_option_text_card">टेक्स्ट कार्ड</string>
+    <string name="studio_cover_option_image_cover">इमेज कवर</string>
+    <string name="markup_use_as_card_background">लागू करें</string>
 </resources>

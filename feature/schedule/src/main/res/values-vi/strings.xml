@@ -120,4 +120,15 @@
         <item>xóa cuộc họp 3 giờ chiều mai</item>
         <item>hủy lịch tập thể dục thứ Sáu</item>
     </string-array>
+    <string name="schedule_all_day">Cả ngày</string>
+    <string name="schedule_day_empty">Chưa có lịch cho ngày này</string>
+    <string name="schedule_day_today">Hôm nay · %1$s</string>
+    <string name="schedule_day_tomorrow">Ngày mai · %1$s</string>
+    <string name="schedule_day_yesterday">Hôm qua · %1$s</string>
+    <string name="schedule_current_task">Việc cần làm hiện tại</string>
+    <string name="schedule_open_task">Mở việc cần làm</string>
+    <string name="schedule_notification_channel_name">Lịch</string>
+    <string name="schedule_notification_channel_desc">Nhắc nhở khi đến giờ cho việc cần làm đã thêm vào lịch</string>
+    <string name="schedule_notification_timed">Đã đến giờ</string>
+    <string name="schedule_notification_all_day">Đến hạn hôm nay</string>
 </resources>

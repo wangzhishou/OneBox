@@ -47,4 +47,5 @@
     <string name="ocr_history_save_failed">Metin tanındı ancak geçmiş kaydedilemedi</string>
     <string name="ocr_show_result_panel">Tanınan metni göster</string>
     <string name="ocr_hide_result_panel">Tanınan metni gizle</string>
+    <string name="ocr_make_card">Kart oluştur</string>
 </resources>

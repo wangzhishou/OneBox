@@ -994,4 +994,5 @@
     <string name="ai_chat_attachment_uploading">Téléversement...</string>
     <string name="ai_chat_attachment_error">Échec : %1$s</string>
     <string name="ai_chat_go_to_top">Retour en haut</string>
+    <string name="agent_tool_manage_todo_param_has_due_time">Indique si due_date_millis inclut une heure précise ; false signifie une tâche sans heure, facultatif pour create_task</string>
 </resources>
