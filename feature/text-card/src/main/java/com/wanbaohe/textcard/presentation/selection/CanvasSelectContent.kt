@@ -5,7 +5,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -56,13 +56,13 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.wanbaohe.base.ui.button.CancelButton
 import com.wanbaohe.base.ui.button.ConfirmButton
 import com.wanbaohe.base.ui.button.PrimaryButton
+import com.wanbaohe.base.ui.button.SecondaryButton
 import com.wanbaohe.core.ui.widget.dialogs.LoadingDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
-import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors
 import com.wanbaohe.core.ui.widget.image.Picture
 import com.wanbaohe.textcard.R
@@ -137,8 +137,9 @@ fun CanvasSelectContent(component: TextCardComponent) {
                             maxLines = 8,
                             modifier = Modifier.fillMaxWidth()
                         )
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        FlowRow(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(top = 12.dp)
@@ -146,30 +147,25 @@ fun CanvasSelectContent(component: TextCardComponent) {
                             HomeActionButton(
                                 text = stringResource(R.string.textcard_try_sample),
                                 icon = Icons.Outlined.AutoAwesome,
-                                onClick = component::fillHomeWithSample,
-                                modifier = Modifier.weight(1f)
+                                onClick = component::fillHomeWithSample
                             )
                             HomeActionButton(
                                 text = stringResource(R.string.textcard_paste_clipboard),
                                 icon = Icons.Outlined.ContentPaste,
                                 onClick = {
                                     clipboard.getText()?.text?.let(component::updateHomeInputText)
-                                },
-                                modifier = Modifier.weight(1f)
+                                }
+                            )
+                            HomeActionButton(
+                                text = stringResource(R.string.textcard_import_text),
+                                icon = Icons.Outlined.UploadFile,
+                                onClick = {
+                                    importLauncher.launch(
+                                        arrayOf("text/plain", "text/markdown", "text/x-markdown")
+                                    )
+                                }
                             )
                         }
-                        HomeActionButton(
-                            text = stringResource(R.string.textcard_import_text),
-                            icon = Icons.Outlined.UploadFile,
-                            onClick = {
-                                importLauncher.launch(
-                                    arrayOf("text/plain", "text/markdown", "text/x-markdown")
-                                )
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 10.dp)
-                        )
                     }
                 }
             }
@@ -254,26 +250,18 @@ private fun HomeActionButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    GlassTonalButton(
+    SecondaryButton(
+        text = text,
         onClick = onClick,
-        color = MaterialTheme.colorScheme.primaryContainer,
-        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 10.dp),
-        modifier = modifier
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            modifier = Modifier.size(18.dp)
-        )
-        Spacer(Modifier.width(8.dp))
-        Text(
-            text = text,
-            style = MaterialTheme.typography.labelLarge,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-    }
+        modifier = modifier,
+        icon = {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                modifier = Modifier.size(18.dp)
+            )
+        }
+    )
 }
 
 @Composable
@@ -339,21 +327,13 @@ private fun RecentProjects(
                                 .fillMaxWidth()
                                 .padding(start = 12.dp, end = 4.dp, top = 8.dp, bottom = 8.dp)
                         ) {
-                            GlassTonalButton(
-                                onClick = { onOpen(project.id) },
-                                color = MaterialTheme.colorScheme.primaryContainer,
-                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
-                            ) {
+                            IconButton(onClick = { onOpen(project.id) }) {
                                 Icon(
                                     imageVector = Icons.Outlined.Edit,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(16.dp)
-                                )
-                                Spacer(Modifier.width(6.dp))
-                                Text(
-                                    text = stringResource(R.string.textcard_continue_editing),
-                                    style = MaterialTheme.typography.labelLarge
+                                    contentDescription = stringResource(
+                                        com.t8rin.imagetoolbox.core.resources.R.string.edit
+                                    ),
+                                    modifier = Modifier.size(20.dp)
                                 )
                             }
                             Spacer(Modifier.weight(1f))

@@ -157,9 +157,9 @@
     <string name="textcard_export_pages_success">%1$d pages saved to the OneBox folder</string>
     <string name="textcard_export_partial_failure">%1$d page(s) failed to export</string>
     <string name="textcard_layout_error">This canvas cannot fit the current text style. Adjust the canvas or text size.</string>
-    <string name="textcard_try_sample">Try a sample</string>
+    <string name="textcard_try_sample">Sample</string>
     <string name="textcard_paste_clipboard">Paste</string>
-    <string name="textcard_import_text">Import TXT/MD</string>
+    <string name="textcard_import_text">Import</string>
     <string name="textcard_hide_options">Hide</string>
     <string name="textcard_create_summary">%1$s · %2$s · %3$s</string>
     <string name="textcard_insert_page_break">Insert page break</string>
