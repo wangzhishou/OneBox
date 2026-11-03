@@ -35,6 +35,10 @@ class BlessingRepository @Inject constructor(
         return recordDao.observeInDateRange(startDate, endDate)
     }
 
+    fun observeAllWishes(): Flow<List<BlessingWishEntity>> {
+        return wishDao.observeAll()
+    }
+
     fun observeWishesByDate(date: String): Flow<List<BlessingWishEntity>> {
         return wishDao.observeByDate(date)
     }

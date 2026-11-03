@@ -57,7 +57,7 @@ class BlessingWallComponent @AssistedInject internal constructor(
         val wishesFlow = if (isHistoryMode) {
             blessingService.observeWishes(targetDate)
         } else {
-            blessingService.observeWishes()
+            blessingService.observeEffectiveWishes()
         }
         val customizationsFlow = if (isHistoryMode) {
             blessingService.observeEffectiveTabCustomizations(targetDate)
@@ -131,9 +131,8 @@ class BlessingWallComponent @AssistedInject internal constructor(
     }
 
     fun saveWish(type: BlessingType, content: String) {
-        if (isHistoryMode) return
         componentScope.launch(ioDispatcher) {
-            blessingService.saveWish(type = type, content = content)
+            blessingService.saveWish(type = type, content = content, date = targetDate)
         }
     }
 

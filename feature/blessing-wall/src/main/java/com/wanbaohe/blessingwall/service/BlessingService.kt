@@ -1,5 +1,6 @@
 package com.wanbaohe.blessingwall.service
 
+import com.shifenmiao.database.blessing.entity.BlessingWishEntity
 import com.shifenmiao.database.blessing.repo.BlessingRepository
 import com.wanbaohe.blessingwall.model.BlessingTabCustomization
 import com.wanbaohe.blessingwall.model.BlessingTabCustomizationSnapshot
@@ -70,6 +71,17 @@ class BlessingService @Inject constructor(
         }
     }
 
+    /**
+     * 今天墙上的心愿：当天写过就用当天的（包括清空），否则沿用最近一次没写空的。
+     * 记录页仍按当天原句展示，不把沿用的心愿记成新的一天。
+     */
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun observeEffectiveWishes(): Flow<Map<BlessingType, String>> {
+        return observeCurrentDate().flatMapLatest { today ->
+            repository.observeAllWishes().map { wishes -> effectiveWishes(wishes, today) }
+        }
+    }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     fun observeWishes(): Flow<Map<BlessingType, String>> {
         return observeCurrentDate().flatMapLatest(::observeWishes)
@@ -83,12 +95,27 @@ class BlessingService @Inject constructor(
         }
     }
 
-    suspend fun saveWish(type: BlessingType, content: String) {
+    suspend fun saveWish(type: BlessingType, content: String, date: String = todayString()) {
         repository.saveWish(
-            date = todayString(),
+            date = date,
             type = type.key,
             content = content.trim(),
         )
+    }
+
+    private fun effectiveWishes(
+        wishes: List<BlessingWishEntity>,
+        today: String,
+    ): Map<BlessingType, String> {
+        return BlessingType.entries.associateWith { type ->
+            val rows = wishes.filter { it.type == type.key && it.date <= today }
+            val todayRow = rows.find { it.date == today }
+            if (todayRow != null) {
+                todayRow.content
+            } else {
+                rows.filter { it.content.isNotBlank() }.maxByOrNull { it.date }?.content.orEmpty()
+            }
+        }
     }
 
     fun observeTabCustomizationSnapshots(): Flow<List<BlessingTabCustomizationSnapshot>> {

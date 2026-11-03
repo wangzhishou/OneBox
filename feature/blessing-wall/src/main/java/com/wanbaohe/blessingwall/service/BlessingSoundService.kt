@@ -8,10 +8,13 @@ import com.t8rin.logger.makeLog
 import com.wanbaohe.blessingwall.R
 import com.wanbaohe.blessingwall.model.BlessingType
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.io.File
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -34,6 +37,8 @@ class BlessingSoundService @Inject constructor(
     val soundEnabled: StateFlow<Boolean> = _soundEnabled.asStateFlow()
 
     private val soundPool = SoundPool.Builder().setMaxStreams(4).build()
+    private val blessingSpeechActive = AtomicBoolean(false)
+    private val blessingSpeechGeneration = AtomicInteger(0)
 
     @Volatile
     private var woodenFishSoundId: Int = 0
@@ -63,20 +68,36 @@ class BlessingSoundService @Inject constructor(
     suspend fun playBlessingAudio(type: BlessingType, text: String) {
         if (!_soundEnabled.value || text.isBlank()) return
         if (type == BlessingType.WOODEN_FISH) return
-        val tag = "blessing-${type.key}"
+        // 一句还没说完就再点时，次数照加，语音不叠。
+        if (!blessingSpeechActive.compareAndSet(false, true)) return
+        val generation = blessingSpeechGeneration.incrementAndGet()
         runCatching {
+            val tag = "blessing-${type.key}"
             val cached = ttsService.getAudioByTextAndTag(text, tag)
-            if (cached != null) {
-                networkAudioPlayer.playLocalFile(File(cached.filePath))
-            } else {
-                ttsService.synthesize(text = text, tag = tag)
-                    .onSuccess { file -> networkAudioPlayer.playLocalFile(file) }
+            val file = cached?.let { File(it.filePath) }
+                ?: ttsService.synthesize(text = text, tag = tag).getOrNull()
+            if (file == null || !file.exists() || file.length() <= 0L) {
+                finishBlessingSpeech(generation)
+                return@runCatching
             }
-        }.onFailure { it.makeLog("BlessingSoundService") }
+            networkAudioPlayer.playLocalFile(file) { finishBlessingSpeech(generation) }
+        }.onFailure {
+            finishBlessingSpeech(generation)
+            it.makeLog("BlessingSoundService")
+        }
+        delay(BLESSING_SPEECH_GUARD_MS)
+        finishBlessingSpeech(generation)
+    }
+
+    private fun finishBlessingSpeech(generation: Int) {
+        if (blessingSpeechGeneration.get() == generation) {
+            blessingSpeechActive.set(false)
+        }
     }
 
     private companion object {
         const val PREFS_NAME = "blessing_wall_settings"
         const val KEY_SOUND_ENABLED = "sound_enabled"
+        const val BLESSING_SPEECH_GUARD_MS = 15_000L
     }
 }

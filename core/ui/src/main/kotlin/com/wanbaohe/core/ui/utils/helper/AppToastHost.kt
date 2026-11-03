@@ -197,8 +197,8 @@ data object AppToastHost {
         confettiState.showConfetti(intensity)
     }
 
-    fun showBlessingEffect(type: BlessingEffectType): Boolean {
-        return blessingEffectState.show(type)
+    fun showBlessingEffect(type: BlessingEffectType, message: String? = null): Boolean {
+        return blessingEffectState.show(type, message)
     }
 
     fun handleFileSystemFailure(throwable: Throwable) {
