@@ -7,6 +7,7 @@ import com.shifenmiao.core.constants.UrlConstants
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.model.DataItem
 import com.shifenmiao.model.HomeTabKey
+import com.shifenmiao.model.channel.OnDeviceAiCapabilities
 import com.shifenmiao.model.webview.WebViewParams
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.utils.navigation.ScreenCallback
@@ -1195,10 +1196,16 @@ object AppNavigationRegistry {
             .distinctBy { it.canonicalName }
     }
 
+    // 搜索与 Agent 发现不暴露不支持入口；resolve 保留旧深链，由目标页统一降级。
+    private fun AppNavigationTarget.isDiscoverable(): Boolean =
+        routeKey != Screen.LocalModelManagement.routeKey ||
+            OnDeviceAiCapabilities.fromFlavor().isLocalModelManagementSupported
+
     fun search(query: String, limit: Int = 8): List<AppNavigationTarget> {
         val normalized = query.trim()
         return allTargets
             .asSequence()
+            .filter { it.isDiscoverable() }
             .map { target -> target to target.matches(normalized) }
             .filter { (_, score) -> normalized.isBlank() || score > 0 }
             .sortedWith(
@@ -1225,7 +1232,7 @@ object AppNavigationRegistry {
         val normalized = title.trim()
         if (normalized.isBlank()) return null
         return allTargets.firstOrNull { target ->
-            target.title.equals(normalized, ignoreCase = true)
+            target.isDiscoverable() && target.title.equals(normalized, ignoreCase = true)
         }
     }
 

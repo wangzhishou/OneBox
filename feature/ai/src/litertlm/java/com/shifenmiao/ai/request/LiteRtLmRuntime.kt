@@ -25,7 +25,7 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 
 /**
- * LiteRT-LM 真实端侧运行时,替换 [StubLocalLlmRuntime]。
+ * LiteRT-LM 真实端侧运行时。
  *
  * 行为:
  * - prepare 校验模型文件存在后初始化 Engine,优先 GPU 后端,失败回退 CPU;

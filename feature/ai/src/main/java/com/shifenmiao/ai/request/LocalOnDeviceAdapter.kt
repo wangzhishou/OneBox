@@ -1,175 +1,76 @@
 package com.shifenmiao.ai.request
 
-import com.shifenmiao.model.ai.AiProvider
+import com.shifenmiao.model.ai.AiRequestProtocol
 import com.shifenmiao.model.ai.Conversation
+import com.shifenmiao.model.ai.unified.LlmStreamEvent
+import com.shifenmiao.model.ai.unified.LlmTurnRequest
+import com.shifenmiao.model.channel.OnDeviceAiCapabilities
 import java.util.UUID
 import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 
-/**
- * Stub 实现：用于 Phase 1 主链路打通，不依赖 native 库。
- *
- * 行为：
- * - prepare 始终成功（只要 spec 不为空）；
- * - generate 逐 token 输出 "stub: ..." 文本，便于 UI/事件层联调；
- * - 真实 llama.cpp / MediaPipe / ONNX 实现后续替换 [LocalLlmRuntime] 绑定即可，
- *   Gateway 与 LocalOnDeviceAdapter 不需要任何改动。
- *
- * 替换方式：在 Hilt 中把 [LocalLlmRuntime] 绑定到真实实现（如 LlamaCppLocalLlmRuntime），
- * 当前 Stub 自然不再被使用。
- */
-@Singleton
-class StubLocalLlmRuntime @Inject constructor() : LocalLlmRuntime {
-
-    // 实现规范：native runtime 必须在内部串行化。
-    // Stub 用 Mutex 演示这一约束；真实 llama.cpp / MediaPipe 实现同样需要。
-    private val mutex = Mutex()
-    private var currentSessionId: String? = null
-
-    override suspend fun prepare(model: LocalLlmModelSpec): LocalLlmPrepareResult = mutex.withLock {
-        if (model.modelPath.isBlank()) {
-            return@withLock LocalLlmPrepareResult.Failure(LocalLlmError.ModelFileMissing)
-        }
-        LocalLlmPrepareResult.Success(loadedModelId = model.id)
-    }
-
-    override fun generate(request: LocalLlmGenerateRequest): Flow<LocalLlmGenerateEvent> = flow {
-        // currentSessionId 的读写必须在 mutex 内，避免两次并发的 generate 互相覆盖取消标记。
-        mutex.withLock { currentSessionId = request.sessionId }
-        // 用 ChatTemplate 把 messages 渲染成 prompt 字符串（与真实 runtime 一致），
-        // 便于联调时确认模板正确性。
-        val prompt = request.model.chatTemplate.render(request.messages)
-        val reply = buildString {
-            append("[local-stub model=")
-            append(request.model.displayName)
-            append("] received: ")
-            append(prompt.take(120).replace("\n", " "))
-            append(if (prompt.length > 120) "..." else "")
-        }
-        for (ch in reply.chunked(4)) {
-            delay(20)
-            val cancelled = mutex.withLock { currentSessionId != request.sessionId }
-            if (cancelled) {
-                emit(LocalLlmGenerateEvent.Failed("cancelled"))
-                return@flow
-            }
-            emit(LocalLlmGenerateEvent.Token(ch))
-        }
-        emit(LocalLlmGenerateEvent.Completed(finishReason = "stop"))
-    }
-
-    override suspend fun cancel(sessionId: String) {
-        currentSessionId = null
-    }
-
-    override suspend fun releaseAll() = mutex.withLock {
-        // Stub 不持有 native 资源，no-op
-    }
-}
-
-/**
- * 端侧 Adapter。
- *
- * 当前职责：
- * 1. 从 Conversation 解析 LocalLlmModelSpec（Phase 1 由 [LocalLlmModelRegistry] 提供桩实现，
- *    Phase 2 改为 LocalLlmModelEntity 查询）；
- * 2. 调用 runtime.prepare()，失败转 Error；
- * 3. 调 runtime.generate()，把 LocalLlmGenerateEvent 翻译成 LlmStreamEvent。
- *
- * 不负责：文件导入、下载、hash 校验、UI、Agent orchestration。
- */
 class LocalOnDeviceAdapter @Inject constructor(
-    private val runtime: LocalLlmRuntime,
-    private val sessionManager: LocalLlmSessionManager,
-    private val modelRegistry: LocalLlmModelRegistry,
+    private val onDeviceLlmService: OnDeviceLlmService,
 ) : LlmProviderAdapter {
 
-    override val protocol: com.shifenmiao.model.ai.AiRequestProtocol =
-        com.shifenmiao.model.ai.AiRequestProtocol.LOCAL_ON_DEVICE
+    override val protocol: AiRequestProtocol = AiRequestProtocol.LOCAL_ON_DEVICE
 
     override fun streamTurn(
         conversation: Conversation,
-        request: com.shifenmiao.model.ai.unified.LlmTurnRequest
-    ): Flow<com.shifenmiao.model.ai.unified.LlmStreamEvent> = flow {
-        val modelName = request.model
-        val spec = modelRegistry.resolve(modelName)
-        if (spec == null) {
-            emit(
-                com.shifenmiao.model.ai.unified.LlmStreamEvent.Error(
-                    errorMessage = "Local model not registered: $modelName"
-                )
-            )
+        request: LlmTurnRequest,
+    ): Flow<LlmStreamEvent> = flow {
+        if (!OnDeviceAiCapabilities.fromFlavor().isLocalChatSupported) {
+            emit(LlmStreamEvent.Error(errorMessage = ON_DEVICE_LLM_UNSUPPORTED_ERROR))
             return@flow
         }
 
-        // prepare 统一走 SessionManager:维护"模型加载中"UI 状态与 loadedModelId 缓存,
-        // 并取消离开聊天页时排定的延迟释放
-        val prepared = sessionManager.prepare(spec)
-        if (prepared is LocalLlmPrepareResult.Failure) {
-            emit(
-                com.shifenmiao.model.ai.unified.LlmStreamEvent.Error(
-                    errorMessage = prepared.error.toMessage()
-                )
-            )
-            return@flow
+        val modelName = request.model
+        when (val prepared = onDeviceLlmService.prepare(modelName)) {
+            is LocalLlmPrepareResult.Failure -> {
+                emit(LlmStreamEvent.Error(errorMessage = prepared.error.toMessage()))
+                return@flow
+            }
+
+            is LocalLlmPrepareResult.Success -> Unit
         }
 
         emit(
-            com.shifenmiao.model.ai.unified.LlmStreamEvent.ResponseStarted(
+            LlmStreamEvent.ResponseStarted(
                 responseId = "local-${UUID.randomUUID()}",
                 model = modelName,
             )
         )
 
-        // sessionId 用会话稳定标识:同一 Conversation 的各轮共享,便于 cancel 精确定位,
-        // 也让 runtime 的"新轮次接管旧轮次"能识别出跨会话的旧推理
         val sessionId = "local-session-${conversation.id}"
         val model = conversation.engine.model
-        // maxTokens 取模型配置与 spec 上限的较小值，避免 spec 配置错误时一次输出撑爆上下文。
-        val maxTokens = minOf(spec.maxOutputTokens, model.maxTokens)
-            .takeIf { it > 0 }
-            ?: spec.maxOutputTokens
-        val generateRequest = LocalLlmGenerateRequest(
+        val generateRequest = OnDeviceLlmRequest(
             sessionId = sessionId,
-            model = spec,
+            modelId = modelName,
             messages = request.messages,
             temperature = model.temperature,
             topP = model.topP,
-            maxTokens = maxTokens,
-            stop = spec.chatTemplate.stopTokens,
+            maxTokens = model.maxTokens,
         )
 
         try {
-            runtime.generate(generateRequest).collect { event ->
+            onDeviceLlmService.generate(generateRequest).collect { event ->
                 when (event) {
-                    is LocalLlmGenerateEvent.Token ->
-                        emit(com.shifenmiao.model.ai.unified.LlmStreamEvent.TextDelta(event.text))
-                    is LocalLlmGenerateEvent.Completed ->
-                        emit(
-                            com.shifenmiao.model.ai.unified.LlmStreamEvent.Completed(
-                                finishReason = event.finishReason
-                            )
-                        )
-                    is LocalLlmGenerateEvent.Failed ->
-                        emit(
-                            com.shifenmiao.model.ai.unified.LlmStreamEvent.Error(
-                                errorMessage = event.message
-                            )
-                        )
+                    is LocalLlmGenerateEvent.Token -> emit(LlmStreamEvent.TextDelta(event.text))
+                    is LocalLlmGenerateEvent.Completed -> emit(
+                        LlmStreamEvent.Completed(finishReason = event.finishReason)
+                    )
+
+                    is LocalLlmGenerateEvent.Failed -> emit(
+                        LlmStreamEvent.Error(errorMessage = event.message)
+                    )
                 }
             }
         } catch (e: CancellationException) {
-            // 用户点停止:收集协程取消是唯一到达这里的信号,native 推理循环未必响应
-            // 协程取消,必须显式 cancel 打断 runtime,再上抛完成结构化取消
-            withContext(NonCancellable) { runtime.cancel(sessionId) }
+            withContext(NonCancellable) { onDeviceLlmService.cancel(sessionId) }
             throw e
         }
     }

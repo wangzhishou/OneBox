@@ -34,6 +34,7 @@ import com.shifenmiao.common.ui.ai.EngineFilterChip
 import com.shifenmiao.imagegeneration.service.ImageGenerationManager
 import com.shifenmiao.model.ai.AiRequestProtocol
 import com.shifenmiao.model.channel.FlavorType
+import com.shifenmiao.model.channel.OnDeviceAiCapabilities
 import com.shifenmiao.model.tts.TTSConfig
 import com.shifenmiao.tts.service.TTSService
 import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
@@ -62,7 +63,7 @@ private data class HubTab(
 fun AIServiceHubScreen(
     initialTab: AIServiceHubTab,
     engineComponent: AIEngineSettingsComponent,
-    localModelComponent: LocalModelManagementComponent,
+    localModelComponent: LocalModelManagementComponent?,
     ttsService: TTSService,
     networkAudioPlayer: NetworkAudioPlayer,
     imageGenerationManager: ImageGenerationManager,
@@ -90,7 +91,7 @@ fun AIServiceHubScreen(
                     )
                 )
             }
-            if (FlavorType.fromName().isOverseas) {
+            if (OnDeviceAiCapabilities.fromFlavor().isLocalModelManagementSupported) {
                 add(
                     HubTab(
                         key = AIServiceHubTab.Local,
@@ -168,10 +169,12 @@ fun AIServiceHubScreen(
                             emptyMessageRes = R.string.ai_engine_jev_list_empty,
                         )
 
-                        AIServiceHubTab.Local -> LocalModelManagementContent(
-                            component = localModelComponent,
-                            modifier = Modifier.fillMaxSize(),
-                        )
+                        AIServiceHubTab.Local -> localModelComponent?.let { component ->
+                            LocalModelManagementContent(
+                                component = component,
+                                modifier = Modifier.fillMaxSize(),
+                            )
+                        }
 
                         AIServiceHubTab.Multimodal -> MultimodalSettingsContent(
                             ttsService = ttsService,

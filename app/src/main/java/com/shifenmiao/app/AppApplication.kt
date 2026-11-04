@@ -103,8 +103,7 @@ class AppApplication : BaseApplication() {
      * 主动释放比等进程被 LMK 杀掉代价小得多。
      * 触发级别: TRIM_MEMORY_MODERATE(60, 应用退到后台且系统内存紧张) 及以上
      * (含 TRIM_MEMORY_COMPLETE(80)); 前台级别(RUNNING_*)不触发, 避免打断正在进行的推理。
-     * 经 LocalLlmSessionManager 释放(其 loadedModelId 缓存随之失效);
-     * 国内渠道底层绑定的是 UnsupportedLocalLlmRuntime, releaseAll 为 no-op, 同一入口无需区分渠道。
+     * 经 OnDeviceLlmService 释放并同步加载状态; 国内渠道为 no-op。
      */
     override fun onTrimMemory(level: Int) {
         super.onTrimMemory(level)
@@ -114,13 +113,13 @@ class AppApplication : BaseApplication() {
     }
 
     private fun releaseLocalLlmEngine() {
-        val sessionManager = EntryPointAccessors.fromApplication(
+        val onDeviceLlmService = EntryPointAccessors.fromApplication(
             this,
             LocalLlmEntryPoint::class.java,
-        ).localLlmSessionManager()
+        ).onDeviceLlmService()
         CoroutineScope(Dispatchers.Default).launch {
-            runCatching { sessionManager.releaseAll() }
-                .onFailure { android.util.Log.w("AppApplication", "LocalLlmSessionManager.releaseAll failed", it) }
+            runCatching { onDeviceLlmService.releaseAll() }
+                .onFailure { android.util.Log.w("AppApplication", "OnDeviceLlmService.releaseAll failed", it) }
         }
     }
 

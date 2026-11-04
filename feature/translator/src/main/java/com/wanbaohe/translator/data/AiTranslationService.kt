@@ -1,15 +1,15 @@
 package com.wanbaohe.translator.data
 
 import com.shifenmiao.ai.request.LocalLlmGenerateEvent
-import com.shifenmiao.ai.request.LocalLlmGenerateRequest
-import com.shifenmiao.ai.request.LocalLlmModelRegistry
 import com.shifenmiao.ai.request.LocalLlmPrepareResult
-import com.shifenmiao.ai.request.LocalLlmRuntime
+import com.shifenmiao.ai.request.OnDeviceLlmRequest
+import com.shifenmiao.ai.request.OnDeviceLlmService
 import com.shifenmiao.common.ai.AIPromptExecutor
 import com.shifenmiao.database.activity.ActivityLogRecorder
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.model.ai.RoleType
 import com.shifenmiao.model.ai.unified.LlmMessage
+import com.shifenmiao.model.channel.OnDeviceAiCapabilities
 import com.shifenmiao.model.remote.LocalTranslationModel
 import com.shifenmiao.storage.TokenStorage
 import com.wanbaohe.translator.R
@@ -23,17 +23,28 @@ import com.wanbaohe.translator.domain.TranslationService
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.withContext
 
 @Singleton
 internal class AiTranslationService @Inject constructor(
     private val aiExecutor: AIPromptExecutor,
-    private val localRuntime: LocalLlmRuntime,
-    private val localModelRegistry: LocalLlmModelRegistry,
+    private val onDeviceLlmService: OnDeviceLlmService,
     private val historyRepository: TranslationHistoryRepository,
     private val activityLogRecorder: ActivityLogRecorder,
 ) : TranslationService {
-    override fun isLocalModelAvailable(): Boolean =
-        localModelRegistry.resolve(LocalTranslationModel.MODEL_NAME) != null
+    private val capabilities = OnDeviceAiCapabilities.fromFlavor()
+
+    override val supportedModes: List<TranslationModelMode> = buildList {
+        add(TranslationModelMode.FAST)
+        add(TranslationModelMode.DEFAULT)
+        if (capabilities.isLocalTranslationSupported) add(TranslationModelMode.LOCAL)
+    }
+
+    override fun isLocalModelInstalled(): Boolean =
+        capabilities.isLocalTranslationSupported &&
+            onDeviceLlmService.isModelInstalled(LocalTranslationModel.MODEL_NAME)
 
     override suspend fun translate(
         text: String,
@@ -43,10 +54,20 @@ internal class AiTranslationService @Inject constructor(
         onDelta: (String) -> Unit,
     ): TranslationOutcome {
         val generated = when (modelMode) {
-            TranslationModelMode.LOCAL -> translateLocally(text, sourceLanguage, targetLanguage, onDelta)
+            TranslationModelMode.LOCAL -> {
+                if (capabilities.isLocalTranslationSupported) {
+                    translateLocally(text, sourceLanguage, targetLanguage, onDelta)
+                } else {
+                    GeneratedTranslation.Failure(
+                        TranslationOutcome.Failed(TranslationFailure.LocalModelUnsupported)
+                    )
+                }
+            }
+
             TranslationModelMode.FAST -> translateInCloud(
                 text, sourceLanguage, targetLanguage, AIPromptExecutor.EngineMode.FAST, onDelta,
             )
+
             TranslationModelMode.DEFAULT -> translateInCloud(
                 text, sourceLanguage, targetLanguage, AIPromptExecutor.EngineMode.DEFAULT, onDelta,
             )
@@ -118,22 +139,24 @@ internal class AiTranslationService @Inject constructor(
         targetLanguage: TranslationLanguage,
         onDelta: (String) -> Unit,
     ): GeneratedTranslation {
-        val spec = localModelRegistry.resolve(LocalTranslationModel.MODEL_NAME)
-            ?: return GeneratedTranslation.Failure(
+        if (!onDeviceLlmService.isModelInstalled(LocalTranslationModel.MODEL_NAME)) {
+            return GeneratedTranslation.Failure(
                 TranslationOutcome.Failed(TranslationFailure.LocalModelMissing)
             )
-        when (val prepared = localRuntime.prepare(spec)) {
+        }
+        when (val prepared = onDeviceLlmService.prepare(LocalTranslationModel.MODEL_NAME)) {
             is LocalLlmPrepareResult.Failure -> return GeneratedTranslation.Failure(
                 TranslationOutcome.Failed(TranslationFailure.Message(prepared.error.toString()))
             )
+
             is LocalLlmPrepareResult.Success -> Unit
         }
         val sessionId = "translation-${UUID.randomUUID()}"
         val content = StringBuilder()
         var failure: String? = null
-        val request = LocalLlmGenerateRequest(
+        val request = OnDeviceLlmRequest(
             sessionId = sessionId,
-            model = spec,
+            modelId = LocalTranslationModel.MODEL_NAME,
             messages = listOf(
                 LlmMessage.createTextMessage(
                     role = RoleType.USER.value,
@@ -142,28 +165,41 @@ internal class AiTranslationService @Inject constructor(
             ),
             temperature = 0.0,
             topP = 1.0,
-            maxTokens = spec.maxOutputTokens,
+            maxTokens = 1024,
+            stop = emptyList(),
         )
-        localRuntime.generate(request).collect { event ->
-            when (event) {
-                is LocalLlmGenerateEvent.Token -> {
-                    content.append(event.text)
-                    onDelta(content.toString())
+        try {
+            onDeviceLlmService.generate(request).collect { event ->
+                when (event) {
+                    is LocalLlmGenerateEvent.Token -> {
+                        content.append(event.text)
+                        onDelta(content.toString())
+                    }
+
+                    is LocalLlmGenerateEvent.Failed -> failure = event.message
+                    is LocalLlmGenerateEvent.Completed -> Unit
                 }
-                is LocalLlmGenerateEvent.Failed -> failure = event.message
-                is LocalLlmGenerateEvent.Completed -> Unit
             }
+        } catch (cancelled: CancellationException) {
+            withContext(NonCancellable) {
+                onDeviceLlmService.cancel(sessionId)
+                onDeviceLlmService.scheduleRelease()
+            }
+            throw cancelled
         }
+        onDeviceLlmService.scheduleRelease()
         val translated = content.toString().trim()
         return when {
             failure != null -> GeneratedTranslation.Failure(
                 TranslationOutcome.Failed(TranslationFailure.Message(failure.orEmpty()))
             )
+
             translated.isBlank() -> GeneratedTranslation.Failure(
                 TranslationOutcome.Failed(
                     TranslationFailure.Message(AppContext.getString(com.shifenmiao.core.R.string.ai_empty_response_error))
                 )
             )
+
             else -> GeneratedTranslation.Success(translated, LocalTranslationModel.DISPLAY_NAME)
         }
     }

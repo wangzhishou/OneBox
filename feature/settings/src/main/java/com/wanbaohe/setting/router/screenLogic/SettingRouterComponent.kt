@@ -5,6 +5,7 @@ import com.arkivanov.decompose.childContext
 import com.shifenmiao.base.audio.NetworkAudioPlayer
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.imagegeneration.service.ImageGenerationManager
+import com.shifenmiao.model.channel.OnDeviceAiCapabilities
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.core.ui.utils.navigation.Screen
@@ -66,22 +67,34 @@ class SettingRouterComponent @AssistedInject internal constructor(
             )
         )
 
-        is SettingsRoute.AIServiceHub -> SettingChild.AIServiceHub(
-            initialTab = route.initialTab,
-            engineComponent = aiEngineSettingsComponentFactory(
-                componentContext = componentContext.childContext("ai_engine_list"),
+        is SettingsRoute.AIServiceHub -> {
+            val supportsLocalModels =
+                OnDeviceAiCapabilities.fromFlavor().isLocalModelManagementSupported
+            SettingChild.AIServiceHub(
+                initialTab = if (route.initialTab == AIServiceHubTab.Local && !supportsLocalModels) {
+                    AIServiceHubTab.Text
+                } else {
+                    route.initialTab
+                },
+                engineComponent = aiEngineSettingsComponentFactory(
+                    componentContext = componentContext.childContext("ai_engine_list"),
+                    onGoBack = onGoBack,
+                    onNavigate = onNavigate,
+                ),
+                localModelComponent = if (supportsLocalModels) {
+                    localModelManagementComponentFactory(
+                        componentContext = componentContext.childContext("local_model_management"),
+                        onGoBack = onGoBack,
+                    )
+                } else {
+                    null
+                },
+                ttsService = ttsService,
+                networkAudioPlayer = networkAudioPlayer,
+                imageGenerationManager = imageGenerationManager,
                 onGoBack = onGoBack,
-                onNavigate = onNavigate,
-            ),
-            localModelComponent = localModelManagementComponentFactory(
-                componentContext = componentContext.childContext("local_model_management"),
-                onGoBack = onGoBack,
-            ),
-            ttsService = ttsService,
-            networkAudioPlayer = networkAudioPlayer,
-            imageGenerationManager = imageGenerationManager,
-            onGoBack = onGoBack,
-        )
+            )
+        }
 
         is SettingsRoute.AIEngineDetail -> SettingChild.AIEngineDetail(
             aiEngineSettingsDetailComponentFactory(
@@ -209,7 +222,7 @@ class SettingRouterComponent @AssistedInject internal constructor(
         class AIServiceHub(
             val initialTab: AIServiceHubTab,
             val engineComponent: AIEngineSettingsComponent,
-            val localModelComponent: LocalModelManagementComponent,
+            val localModelComponent: LocalModelManagementComponent?,
             val ttsService: TTSService,
             val networkAudioPlayer: NetworkAudioPlayer,
             val imageGenerationManager: ImageGenerationManager,

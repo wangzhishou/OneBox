@@ -2,9 +2,11 @@ package com.wanbaohe.setting.local.component
 
 import android.content.Context
 import android.net.Uri
-import android.provider.OpenableColumns
 import androidx.annotation.StringRes
 import com.arkivanov.decompose.ComponentContext
+import com.shifenmiao.common.localmodel.LocalModelDownloadState
+import com.shifenmiao.common.localmodel.LocalModelImportResult
+import com.shifenmiao.common.localmodel.LocalModelRepository
 import com.shifenmiao.common.manager.AIEngineCatalogManager
 import com.shifenmiao.common.manager.AIEngineManager
 import com.shifenmiao.model.ai.AiEngine
@@ -15,10 +17,6 @@ import com.shifenmiao.model.ai.AiWorkingModelSlot
 import com.shifenmiao.model.ai.AuthType
 import com.shifenmiao.model.remote.AiEngineConfig
 import com.shifenmiao.model.remote.LocalTranslationModel
-import com.shifenmiao.network.downloader.BackgroundDownloadRequest
-import com.shifenmiao.network.downloader.BackgroundDownloadService
-import com.shifenmiao.network.downloader.BackgroundDownloadState
-import com.shifenmiao.storage.RemoteConfigStorage
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.settings.R
@@ -26,33 +24,27 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlin.coroutines.resume
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
-import java.io.File
-import kotlin.coroutines.resume
 
-/** 已下载到本地模型目录的模型文件 */
 data class LocalModelFile(
     val fileName: String,
     val sizeBytes: Long,
 ) {
-    /** 模型名 = 文件名去扩展名,与 LocalModelDirectoryRegistry 的解析约定一致 */
     val modelName: String get() = fileName.substringBeforeLast('.')
 }
 
-/** 推荐模型的下载状态(按文件名索引) */
 data class ModelDownloadUiState(
     val isDownloading: Boolean = false,
-    /** 0f..1f;服务端未返回总大小时为 null,界面显示不定进度 */
     val progress: Float? = null,
     val isFailed: Boolean = false,
 )
 
-/** 推荐下载清单条目 */
 data class RecommendedLocalModel(
     @StringRes val displayNameRes: Int,
     @StringRes val descriptionRes: Int,
@@ -61,24 +53,17 @@ data class RecommendedLocalModel(
     val sizeLabel: String,
 )
 
-/**
- * 本地模型管理页组件:只管 `files/local_models` 目录下的模型文件与引擎/模型目录记录。
- * 页面无需感知端侧运行时——文件落盘后由 LocalModelDirectoryRegistry 扫描解析。
- */
 class LocalModelManagementComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted val onGoBack: () -> Unit,
     @ApplicationContext private val context: Context,
     private val aiEngineCatalogManager: AIEngineCatalogManager,
     private val aiEngineManager: AIEngineManager,
-    private val backgroundDownloadService: BackgroundDownloadService,
+    private val localModelRepository: LocalModelRepository,
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
-    // 聊天模型默认托管在 Cloudflare R2;混元翻译模型使用 LiteRT 社区发布地址,
-    // 所有推荐模型均允许 RemoteConfig 覆盖下载地址,便于切换 CDN 镜像。
-    // 推荐顺序:Gemma 在前——它是 LiteRT-LM GPU 后端的官方优化模型;
-    // Qwen3-0.6B 在 Adreno(WebGPU)上会撞 128MB storage buffer 上限回退 CPU,推理明显更慢
+    // Gemma 优先使用 GPU；Qwen3-0.6B 在部分 Adreno 设备会回退 CPU。
     val recommendedModels: List<RecommendedLocalModel> = listOf(
         RecommendedLocalModel(
             displayNameRes = R.string.local_model_gemma3_name,
@@ -103,8 +88,6 @@ class LocalModelManagementComponent @AssistedInject internal constructor(
         ),
     )
 
-    private val modelsDir: File get() = File(context.filesDir, MODELS_DIR_NAME)
-
     private val _downloadedModels = MutableStateFlow<List<LocalModelFile>>(emptyList())
     val downloadedModels: StateFlow<List<LocalModelFile>> = _downloadedModels.asStateFlow()
 
@@ -114,7 +97,6 @@ class LocalModelManagementComponent @AssistedInject internal constructor(
     private val _isImporting = MutableStateFlow(false)
     val isImporting: StateFlow<Boolean> = _isImporting.asStateFlow()
 
-    /** 当前聊天引擎(用于高亮"当前聊天模型"及删除后的回退判断) */
     val currentAIEngine = aiEngineManager.currentAIEngine
 
     sealed interface ImportResult {
@@ -126,90 +108,66 @@ class LocalModelManagementComponent @AssistedInject internal constructor(
     init {
         refreshDownloadedModels()
         componentScope.launch {
-            backgroundDownloadService.downloads.collect { states ->
+            localModelRepository.downloads.collect { states ->
                 val hasCompletedModel = recommendedModels.any { model ->
                     _downloadStates.value[model.fileName]?.isDownloading == true &&
-                        states[modelDownloadId(model.fileName)] is BackgroundDownloadState.Success
+                        states[model.fileName] is LocalModelDownloadState.Success
                 }
                 _downloadStates.value = recommendedModels.mapNotNull { model ->
-                    val state = when (
-                        val download = states[modelDownloadId(model.fileName)]
-                    ) {
-                        is BackgroundDownloadState.Running -> ModelDownloadUiState(
+                    val state = when (val download = states[model.fileName]) {
+                        is LocalModelDownloadState.Running -> ModelDownloadUiState(
                             isDownloading = true,
                             progress = download.progress,
                         )
-                        is BackgroundDownloadState.Failed -> ModelDownloadUiState(isFailed = true)
+
+                        is LocalModelDownloadState.Failed -> ModelDownloadUiState(isFailed = true)
                         else -> null
                     }
                     state?.let { model.fileName to it }
                 }.toMap()
-                if (hasCompletedModel) refreshDownloadedModels()
+                if (hasCompletedModel) updateDownloadedModels()
             }
         }
     }
 
     fun refreshDownloadedModels() {
-        _downloadedModels.value = modelsDir.listFiles()
-            ?.filter { it.isFile && it.extension == MODEL_EXTENSION }
-            ?.sortedBy { it.name.lowercase() }
-            ?.map { LocalModelFile(fileName = it.name, sizeBytes = it.length()) }
-            .orEmpty()
+        componentScope.launch(ioDispatcher) { updateDownloadedModels() }
+    }
+
+    private suspend fun updateDownloadedModels() {
+        _downloadedModels.value = localModelRepository.listInstalledModels().map {
+            LocalModelFile(fileName = it.fileName, sizeBytes = it.sizeBytes)
+        }
     }
 
     fun startDownload(model: RecommendedLocalModel) {
-        backgroundDownloadService.start(
-            BackgroundDownloadRequest(
-                id = modelDownloadId(model.fileName),
-                url = resolveDownloadUrl(model),
-                destination = File(modelsDir, model.fileName),
-                title = context.getString(model.displayNameRes),
-            )
+        localModelRepository.startDownload(
+            fileName = model.fileName,
+            defaultUrl = model.url,
+            title = context.getString(model.displayNameRes),
         )
     }
 
-    private fun resolveDownloadUrl(model: RecommendedLocalModel): String {
-        val config = RemoteConfigStorage.getRemoteConfig()
-        val configuredUrl = when (model.fileName) {
-            "gemma3-1b-it-int4.litertlm" -> config.localChatGemma3ModelUrl
-            "Qwen3-0.6B.litertlm" -> config.localChatQwen3ModelUrl
-            LocalTranslationModel.FILE_NAME -> config.localTranslationModelUrl
-            else -> null
-        }
-        return configuredUrl?.takeIf { it.isNotBlank() } ?: model.url
-    }
-
     fun cancelDownload(fileName: String) {
-        backgroundDownloadService.cancel(modelDownloadId(fileName))
+        localModelRepository.cancelDownload(fileName)
     }
 
-    private fun modelDownloadId(fileName: String) = "local-model:$fileName"
-
-    /** 从系统文件选择器导入:拷贝流到 local_models/<原文件名>。已存在且未确认覆盖时先回 AlreadyExists。 */
     fun importModel(uri: Uri, overwrite: Boolean, onComplete: (ImportResult) -> Unit) {
         if (_isImporting.value) return
         componentScope.launch(ioDispatcher) {
             _isImporting.value = true
             val result = try {
-                val fileName = resolveDisplayName(uri)
-                when {
-                    fileName == null -> ImportResult.Failed
-                    File(modelsDir, fileName).exists() && !overwrite -> ImportResult.AlreadyExists(fileName)
-                    else -> {
-                        modelsDir.mkdirs()
-                        val input = context.contentResolver.openInputStream(uri)
-                            ?: throw java.io.IOException("Cannot open selected file")
-                        input.use { source ->
-                            File(modelsDir, fileName).outputStream().use { target ->
-                                source.copyTo(target)
-                            }
-                        }
-                        refreshDownloadedModels()
+                when (val imported = localModelRepository.importModel(uri, overwrite)) {
+                    LocalModelImportResult.Success -> {
+                        updateDownloadedModels()
                         ImportResult.Success
                     }
+
+                    is LocalModelImportResult.AlreadyExists ->
+                        ImportResult.AlreadyExists(imported.fileName)
+
+                    LocalModelImportResult.Failed -> ImportResult.Failed
                 }
-            } catch (_: Exception) {
-                ImportResult.Failed
             } finally {
                 _isImporting.value = false
             }
@@ -217,18 +175,13 @@ class LocalModelManagementComponent @AssistedInject internal constructor(
         }
     }
 
-    /**
-     * 删除模型文件;同时移除引擎目录中的模型记录,避免模型选择器出现悬空条目。
-     * 若删除的是当前聊天模型,回退到 DEFAULT 槽位解析出的云端引擎。
-     * onComplete(success, revertedChatModel)。
-     */
+    /** onComplete(success, revertedChatModel)。 */
     fun deleteModel(model: LocalModelFile, onComplete: (Boolean, Boolean) -> Unit) {
         componentScope.launch(ioDispatcher) {
-            if (!File(modelsDir, model.fileName).delete()) {
+            if (!localModelRepository.deleteModel(model.fileName)) {
                 withContext(uiDispatcher) { onComplete(false, false) }
                 return@launch
             }
-            clearInferenceCaches(model.fileName)
             removeLocalModelRecord(model)
             val current = aiEngineManager.getCurrentAiEngine()
             val reverted = current.requestProtocol == AiRequestProtocol.LOCAL_ON_DEVICE &&
@@ -238,17 +191,11 @@ class LocalModelManagementComponent @AssistedInject internal constructor(
                 val fallback = aiEngineCatalogManager.getEngineByName(fallbackName) ?: AiEngine.defaultEngine()
                 aiEngineManager.switchEngine(fallback)
             }
-            refreshDownloadedModels()
+            updateDownloadedModels()
             withContext(uiDispatcher) { onComplete(true, reverted) }
         }
     }
 
-    /**
-     * 设为当前聊天模型:
-     * 1. 确保存在 LOCAL_ON_DEVICE 引擎(ai_engines 有 name+request_protocol 唯一索引,先查再建);
-     * 2. upsert 该文件的模型记录;
-     * 3. 调工作模型 setter 切换 DEFAULT 槽位。
-     */
     fun setAsChatModel(model: LocalModelFile, onComplete: (Boolean) -> Unit) {
         componentScope.launch {
             val engine = ensureLocalEngine()
@@ -317,35 +264,6 @@ class LocalModelManagementComponent @AssistedInject internal constructor(
         }
     }
 
-    /**
-     * 清理模型对应的 LiteRT 推理缓存(GPU mldrift + XNNPack,单模型可达 ~1.2GB)。
-     * 缓存文件名以 `<模型文件名>_` 为前缀;新位置在 files/litertlm_cache,
-     * 旧位置(cacheDir 根,早期版本遗留,会被系统当缓存清掉)一并扫掉。
-     */
-    private fun clearInferenceCaches(fileName: String) {
-        val dirs = listOf(File(context.filesDir, INFERENCE_CACHE_DIR_NAME), context.cacheDir)
-        dirs.forEach { dir ->
-            dir.listFiles { file -> file.name.startsWith("${fileName}_") }
-                ?.forEach { file -> runCatching { file.delete() } }
-        }
-    }
-
-    private fun resolveDisplayName(uri: Uri): String? {
-        val fromProvider = runCatching {
-            context.contentResolver.query(
-                uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null,
-            )?.use { cursor ->
-                if (!cursor.moveToFirst()) return@use null
-                val index = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                if (index >= 0) cursor.getString(index) else null
-            }
-        }.getOrNull()
-        return (fromProvider ?: uri.lastPathSegment)
-            ?.substringAfterLast('/')
-            ?.substringAfterLast('\\')
-            ?.takeIf { it.isNotBlank() }
-    }
-
     @AssistedFactory
     fun interface Factory {
         operator fun invoke(
@@ -356,10 +274,5 @@ class LocalModelManagementComponent @AssistedInject internal constructor(
 
     private companion object {
         const val LOCAL_ENGINE_NAME = "on-device"
-        // 目录约定与 feature/ai 的 LocalModelDirectoryRegistry 保持一致
-        const val MODELS_DIR_NAME = "local_models"
-        const val MODEL_EXTENSION = "litertlm"
-        // 与 feature/ai LiteRtLmRuntime 的推理缓存目录约定一致
-        const val INFERENCE_CACHE_DIR_NAME = "litertlm_cache"
     }
 }

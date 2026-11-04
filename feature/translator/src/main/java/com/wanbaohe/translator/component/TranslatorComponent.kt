@@ -48,7 +48,8 @@ class TranslatorComponent @AssistedInject constructor(
     private val _uiState = MutableStateFlow(
         TranslatorUiState(
             inputText = initialText.take(MAX_INPUT_LENGTH),
-            isLocalModelAvailable = translationService.isLocalModelAvailable(),
+            supportedModelModes = translationService.supportedModes,
+            isLocalModelInstalled = translationService.isLocalModelInstalled(),
         )
     )
     val uiState: StateFlow<TranslatorUiState> = _uiState.asStateFlow()
@@ -128,7 +129,7 @@ class TranslatorComponent @AssistedInject constructor(
         _uiState.update {
             it.copy(
                 modelMode = mode,
-                isLocalModelAvailable = translationService.isLocalModelAvailable(),
+                isLocalModelInstalled = translationService.isLocalModelInstalled(),
                 errorRes = null,
             )
         }
@@ -142,9 +143,18 @@ class TranslatorComponent @AssistedInject constructor(
             AppToastHost.showToast(R.string.translation_input_required)
             return
         }
-        if (snapshot.modelMode == TranslationModelMode.LOCAL && !translationService.isLocalModelAvailable()) {
-            _uiState.update { it.copy(errorRes = R.string.translation_local_model_missing) }
-            return
+        if (snapshot.modelMode == TranslationModelMode.LOCAL) {
+            val errorRes = when {
+                TranslationModelMode.LOCAL !in snapshot.supportedModelModes ->
+                    R.string.translation_local_model_unsupported
+
+                !translationService.isLocalModelInstalled() -> R.string.translation_local_model_missing
+                else -> null
+            }
+            if (errorRes != null) {
+                _uiState.update { it.copy(errorRes = errorRes) }
+                return
+            }
         }
         componentScope.launch {
             _uiState.update {
@@ -188,6 +198,7 @@ class TranslatorComponent @AssistedInject constructor(
                 isTranslating = false,
                 errorRes = when (failure) {
                     TranslationFailure.LocalModelMissing -> R.string.translation_local_model_missing
+                    TranslationFailure.LocalModelUnsupported -> R.string.translation_local_model_unsupported
                     is TranslationFailure.Message -> R.string.translation_failed
                     TranslationFailure.LoginRequired,
                     TranslationFailure.NoPoints -> null
@@ -198,7 +209,8 @@ class TranslatorComponent @AssistedInject constructor(
             TranslationFailure.LoginRequired -> ActionUtils.showLogin(source = LOGIN_SOURCE) { translate() }
             TranslationFailure.NoPoints -> AppToastHost.showToast(com.shifenmiao.core.R.string.no_points)
             is TranslationFailure.Message -> Unit
-            TranslationFailure.LocalModelMissing -> Unit
+            TranslationFailure.LocalModelMissing,
+            TranslationFailure.LocalModelUnsupported -> Unit
         }
     }
 
@@ -341,13 +353,17 @@ data class TranslatorUiState(
     val sourceLanguage: TranslationLanguage = TranslationLanguage.CHINESE,
     val targetLanguage: TranslationLanguage = TranslationLanguage.ENGLISH,
     val modelMode: TranslationModelMode = TranslationModelMode.DEFAULT,
+    val supportedModelModes: List<TranslationModelMode> = listOf(
+        TranslationModelMode.FAST,
+        TranslationModelMode.DEFAULT,
+    ),
     val currentTab: TranslatorTab = TranslatorTab.TRANSLATE,
     val currentRecordId: String? = null,
     val isTranslating: Boolean = false,
     val isSpeaking: Boolean = false,
     val isRecognizingImage: Boolean = false,
     val ocrDownloadProgress: Float? = null,
-    val isLocalModelAvailable: Boolean = false,
+    val isLocalModelInstalled: Boolean = false,
     @StringRes val errorRes: Int? = null,
     val history: List<TranslationRecord> = emptyList(),
     val historyQuery: String = "",

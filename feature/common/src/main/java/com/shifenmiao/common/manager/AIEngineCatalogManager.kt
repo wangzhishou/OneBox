@@ -9,6 +9,7 @@ import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.model.ai.AiModel
 import com.shifenmiao.model.ai.AiProvider
 import com.shifenmiao.model.ai.AiRequestProtocol
+import com.shifenmiao.model.channel.OnDeviceAiCapabilities
 import com.shifenmiao.model.remote.AiEngineConfig
 import com.shifenmiao.storage.RemoteConfigStorage
 import com.shifenmiao.storage.TokenStorage
@@ -80,14 +81,16 @@ class AIEngineCatalogManager @Inject constructor(
                 val defaultEngineNameSet = defaultEngines.map(String::lowercase).toSet()
 
                 engines.filter { engine ->
-                    // 本地协议与本地自有(用户自建)引擎必须始终直通,不被远程 defaultEngines 白名单过滤,
-                    // 否则用户添加的自定义引擎保存成功后永远进不了引擎列表。
-                    engine.requestProtocol == AiRequestProtocol.LOCAL_ON_DEVICE ||
+                    if (engine.requestProtocol == AiRequestProtocol.LOCAL_ON_DEVICE) {
+                        OnDeviceAiCapabilities.fromFlavor().isLocalChatSupported
+                    } else {
+                        // 本地自有(用户自建)引擎始终直通,不被远程 defaultEngines 白名单过滤。
                         // Jev/Pikafish 为客户端内置专用引擎, 服务端种子可能尚未下发, 同样豁免白名单过滤。
                         engine.requestProtocol.isNonChat ||
-                        engine.identityKey() in localOwnedKeys ||
-                        defaultEngineNameSet.isEmpty() ||
-                        defaultEngineNameSet.contains(engine.name.lowercase())
+                            engine.identityKey() in localOwnedKeys ||
+                            defaultEngineNameSet.isEmpty() ||
+                            defaultEngineNameSet.contains(engine.name.lowercase())
+                    }
                 }.ifEmpty {
                     defaultEngines.mapNotNull { engineName ->
                         AiProvider.fromValue(engineName)

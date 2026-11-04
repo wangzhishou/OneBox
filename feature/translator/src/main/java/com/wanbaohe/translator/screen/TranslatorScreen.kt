@@ -63,7 +63,11 @@ fun TranslatorScreen(component: TranslatorComponent) {
         showNavigationBarsPadding = false,
         supportGlassEffect = true,
         actions = {
-            ModelSelector(selected = state.modelMode, onSelect = component::selectModel)
+            ModelSelector(
+                selected = state.modelMode,
+                modes = state.supportedModelModes,
+                onSelect = component::selectModel,
+            )
             if (state.currentTab == TranslatorTab.HISTORY && state.history.isNotEmpty()) {
                 IconButton(onClick = { showClearHistory = true }) {
                     Icon(
@@ -157,6 +161,7 @@ fun TranslatorScreen(component: TranslatorComponent) {
 @Composable
 private fun ModelSelector(
     selected: TranslationModelMode,
+    modes: List<TranslationModelMode>,
     onSelect: (TranslationModelMode) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -169,7 +174,7 @@ private fun ModelSelector(
             )
         }
         EnhancedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-            TranslationModelMode.entries.forEach { mode ->
+            modes.forEach { mode ->
                 DropdownMenuItem(
                     text = {
                         Text(

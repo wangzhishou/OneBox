@@ -20,6 +20,7 @@
     <string name="translation_failed">翻译失败，请重试</string>
     <string name="translation_input_required">请先输入要翻译的内容</string>
     <string name="translation_local_model_missing">使用本地翻译前，请先下载 Hy-MT2 1.8B 模型。</string>
+    <string name="translation_local_model_unsupported">当前版本不支持本地翻译。</string>
     <string name="translation_download_local_model">管理本地模型</string>
     <string name="translation_ocr_download_failed">OCR 模型下载失败，请重试</string>
     <string name="translation_ocr_failed">没有从图片中识别到文字</string>

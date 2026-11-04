@@ -218,8 +218,8 @@ internal fun TranslationPane(
             )
         }
 
-        val showLocalModelAction = state.errorRes != null &&
-            state.modelMode == TranslationModelMode.LOCAL && !state.isLocalModelAvailable
+        val showLocalModelAction = state.errorRes == R.string.translation_local_model_missing &&
+            state.modelMode == TranslationModelMode.LOCAL && !state.isLocalModelInstalled
         Row(
             modifier = Modifier
                 .fillMaxWidth()

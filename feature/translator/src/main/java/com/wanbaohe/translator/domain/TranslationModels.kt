@@ -51,6 +51,7 @@ data class TranslationResult(
 sealed interface TranslationFailure {
     data class Message(val reason: String) : TranslationFailure
     data object LocalModelMissing : TranslationFailure
+    data object LocalModelUnsupported : TranslationFailure
     data object LoginRequired : TranslationFailure
     data object NoPoints : TranslationFailure
 }

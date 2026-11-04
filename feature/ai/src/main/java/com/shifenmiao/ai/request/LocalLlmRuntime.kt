@@ -6,9 +6,8 @@ import kotlinx.coroutines.flow.Flow
 /**
  * 端侧本地 LLM 推理抽象。
  *
- * 业务侧只依赖该接口，不直接接触 llama.cpp / MediaPipe / ONNX Runtime 等具体实现。
- * 第一阶段：实现可以是 Stub（直接产出 Error 或固定回放），用于打通主链路；
- * 第二阶段：替换为 LlamaCppLocalLlmRuntime 等真实 native 实现。
+ * 仅 OnDeviceLlmService 及其会话管理实现依赖该接口，业务侧不接触具体 native 运行时。
+ * 海外渠道绑定 LiteRtLmRuntime，国内渠道绑定无 native 依赖的降级实现。
  *
  * 实现约束（必读）：
  * - prepare / generate / cancel / releaseAll 必须在内部串行化（推荐用单线程 dispatcher

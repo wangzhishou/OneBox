@@ -16,7 +16,7 @@ import com.shifenmiao.ai.memory.ConversationMemoryPolicyRepository
 import com.shifenmiao.ai.memory.MemoryRepository
 import com.shifenmiao.ai.prompt.PromptManager
 import com.shifenmiao.ai.prompt.SystemPromptRepository
-import com.shifenmiao.ai.request.LocalLlmSessionManager
+import com.shifenmiao.ai.request.OnDeviceLlmService
 import com.wanbaohe.a2ui.catalog.A2uiRenderProvider
 import com.shifenmiao.ai.repository.ConversationRepository
 import com.shifenmiao.ai.repository.MessageRepository
@@ -83,7 +83,7 @@ open class AgentDetailComponent @AssistedInject internal constructor(
     systemPromptRepository: SystemPromptRepository,
     conversationTitleSummaryService: ConversationTitleSummaryService,
     contextCompactor: ContextCompactor,
-    localLlmSessionManager: LocalLlmSessionManager,
+    onDeviceLlmService: OnDeviceLlmService,
     @ApplicationContext applicationContext: Context,
     messageListUseCase: MessageListUseCase,
     markdownAstNodeParserFactory: MarkdownAstNodeParser.Factory,
@@ -127,7 +127,7 @@ open class AgentDetailComponent @AssistedInject internal constructor(
     systemPromptRepository = systemPromptRepository,
     conversationTitleSummaryService = conversationTitleSummaryService,
     contextCompactor = contextCompactor,
-    localLlmSessionManager = localLlmSessionManager,
+    onDeviceLlmService = onDeviceLlmService,
     imageDao = imageDao,
     a2uiRenderProvider = a2uiRenderProvider
 ) {

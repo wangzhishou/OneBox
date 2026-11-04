@@ -1,7 +1,9 @@
 package com.wanbaohe.translator.domain
 
 interface TranslationService {
-    fun isLocalModelAvailable(): Boolean
+    val supportedModes: List<TranslationModelMode>
+
+    fun isLocalModelInstalled(): Boolean
 
     suspend fun translate(
         text: String,
