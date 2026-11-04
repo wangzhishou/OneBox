@@ -472,6 +472,14 @@ private fun QuickCreateFloatingPanel(
             onDismiss()
             rootComponent.navigateToNew(Screen.DocumentScanner)
         },
+        onNavigateToOnDeviceOcr = {
+            onDismiss()
+            rootComponent.navigateToNew(Screen.OnDeviceOcr())
+        },
+        onNavigateToTranslator = {
+            onDismiss()
+            rootComponent.navigateToNew(Screen.Translator())
+        },
         onNavigateToPdfTools = {
             onDismiss()
             rootComponent.navigateToNew(Screen.PdfTools())

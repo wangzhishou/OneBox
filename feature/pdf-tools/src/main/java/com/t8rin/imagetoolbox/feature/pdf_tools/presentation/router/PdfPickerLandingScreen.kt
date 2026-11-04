@@ -24,12 +24,10 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -54,7 +52,6 @@ import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import com.t8rin.imagetoolbox.core.resources.icons.Search
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDescription
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineImage
@@ -77,8 +74,6 @@ internal fun PdfPickerLandingScreen(
     recentDocs: List<ActivityLogEntry> = emptyList(),
     recentPdfs: List<RecentAccessEntity> = emptyList(),
     onRecordAccess: (Uri) -> Unit = {},
-    searchQuery: String = "",
-    onSearchQueryChange: (String) -> Unit = {},
 ) {
     val pdfPreviewPicker = rememberFilePicker(
         mimeType = MimeType.Pdf,
@@ -270,17 +265,10 @@ internal fun PdfPickerLandingScreen(
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(16.dp),
+            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            item(span = { GridItemSpan(2) }) {
-                SearchBar(
-                    query = searchQuery,
-                    onQueryChange = onSearchQueryChange,
-                )
-            }
-
             item(span = { GridItemSpan(2) }) {
                 ImportDocumentCard(
                     onClick = pdfPreviewPicker::pickFile,
@@ -292,36 +280,25 @@ internal fun PdfPickerLandingScreen(
                 )
             }
 
-            items(tools) { entry ->
+            if (recentDocs.isNotEmpty()) {
+                item(span = { GridItemSpan(2) }) {
+                    RecentDocumentsSection(
+                        recentDocs = recentDocs,
+                        onDocumentClick = { uri ->
+                            onRecordAccess(uri)
+                            onPick(Screen.PdfTools.Type.Preview(uri))
+                        },
+                    )
+                }
+            }
+
+            items(tools, key = { it.titleRes }) { entry ->
                 ToolCard(
                     title = stringResource(entry.titleRes),
                     subtitle = stringResource(entry.subtitleRes),
                     icon = entry.icon,
                     onClick = entry.launcher,
                 )
-            }
-
-            if (recentDocs.isNotEmpty()) {
-                item(span = { GridItemSpan(2) }) {
-                    Text(
-                        text = stringResource(R.string.recent_documents),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                }
-
-                items(recentDocs) { doc ->
-                    RecentDocCard(
-                        entry = doc,
-                        onClick = {
-                            val payload = runCatching { JSONObject(doc.payload) }.getOrNull()
-                            val fileUri = payload?.optString("fileUri")
-                            if (!fileUri.isNullOrEmpty()) {
-                                onPick(Screen.PdfTools.Type.Preview(fileUri.toUri()))
-                            }
-                        }
-                    )
-                }
             }
         }
     }
@@ -335,28 +312,40 @@ private data class PdfToolEntry(
 )
 
 @Composable
-private fun SearchBar(
-    query: String,
-    onQueryChange: (String) -> Unit,
+private fun RecentDocumentsSection(
+    recentDocs: List<ActivityLogEntry>,
+    onDocumentClick: (Uri) -> Unit,
 ) {
-    GlassOutlinedTextField(
-        value = query,
-        onValueChange = onQueryChange,
-        modifier = Modifier.fillMaxWidth(),
-        placeholder = {
-            Text(
-                text = stringResource(R.string.search_your_library),
-                style = MaterialTheme.typography.bodyMedium,
-            )
-        },
-        leadingIcon = {
-            Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Search,
-                contentDescription = null,
-            )
-        },
-        singleLine = true,
-    )
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = stringResource(R.string.recent_documents),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.padding(horizontal = 4.dp),
+        )
+        Spacer(Modifier.height(12.dp))
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(horizontal = 4.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            LazyRowItems(
+                items = recentDocs,
+                key = { it.id },
+            ) { doc ->
+                RecentDocCard(
+                    entry = doc,
+                    onClick = {
+                        val payload = runCatching { JSONObject(doc.payload) }.getOrNull()
+                        val fileUri = payload?.optString("fileUri")
+                        if (!fileUri.isNullOrEmpty()) {
+                            onDocumentClick(fileUri.toUri())
+                        }
+                    },
+                )
+            }
+        }
+    }
 }
 
 @Composable
@@ -369,11 +358,12 @@ private fun ImportDocumentCard(
         modifier = Modifier
             .fillMaxWidth()
             .flatGlassContainer(
-                shape = RoundedCornerShape(12.dp),
-                color = MaterialTheme.colorScheme.surfaceContainerLow,
+                shape = RoundedCornerShape(20.dp),
+                color = MaterialTheme.colorScheme.surfaceContainer,
                 resultPadding = 0.dp,
+                style = GlassStyle.Medium,
             )
-            .padding(16.dp),
+            .padding(20.dp),
     ) {
         Row(
             modifier = Modifier
@@ -384,23 +374,23 @@ private fun ImportDocumentCard(
         ) {
             Box(
                 modifier = Modifier
-                    .size(56.dp)
-                    .clip(RoundedCornerShape(12.dp))
+                    .size(64.dp)
+                    .clip(RoundedCornerShape(18.dp))
                     .background(MaterialTheme.colorScheme.primaryContainer),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDescription,
                     contentDescription = null,
-                    modifier = Modifier.size(28.dp),
+                    modifier = Modifier.size(30.dp),
                     tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
             }
-            Column {
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
                     text = stringResource(R.string.preview_pdf),
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Medium,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
                 )
                 Text(
                     text = stringResource(R.string.preview_pdf_sub),
@@ -411,16 +401,17 @@ private fun ImportDocumentCard(
         }
 
         if (recentPdfs.isNotEmpty()) {
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(20.dp))
             Text(
                 text = stringResource(R.string.recent_pdfs),
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(10.dp))
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 LazyRowItems(
                     items = recentPdfs,
@@ -443,26 +434,28 @@ private fun RecentPdfChip(
 ) {
     Row(
         modifier = Modifier
-            .width(140.dp)
+            .width(156.dp)
+            .height(48.dp)
             .flatGlassContainer(
-                shape = RoundedCornerShape(8.dp),
+                shape = RoundedCornerShape(12.dp),
                 color = MaterialTheme.colorScheme.surfaceContainer,
                 resultPadding = 0.dp,
+                style = GlassStyle.Thick,
             )
             .clickable(onClick = onClick)
-            .padding(horizontal = 12.dp, vertical = 8.dp),
+            .padding(horizontal = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         Icon(
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePdf,
             contentDescription = null,
-            modifier = Modifier.size(18.dp),
+            modifier = Modifier.size(20.dp),
             tint = MaterialTheme.colorScheme.onPrimaryContainer,
         )
         Text(
             text = name,
-            style = MaterialTheme.typography.labelMedium,
+            style = MaterialTheme.typography.labelLarge,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1f, fill = false),
@@ -480,13 +473,14 @@ private fun ToolCard(
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .height(156.dp)
             .flatGlassContainer(
-                shape = RoundedCornerShape(16.dp),
-                color = MaterialTheme.colorScheme.surfaceContainerLow,
+                shape = RoundedCornerShape(18.dp),
+                color = MaterialTheme.colorScheme.surfaceContainer,
+                style = GlassStyle.Regular,
             )
             .clickable(onClick = onClick)
-            .padding(20.dp)
-            .height(120.dp),
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
@@ -500,7 +494,7 @@ private fun ToolCard(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                modifier = Modifier.size(28.dp),
+                modifier = Modifier.size(26.dp),
                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
             )
         }
@@ -512,6 +506,7 @@ private fun ToolCard(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
+        Spacer(Modifier.height(4.dp))
         Text(
             text = subtitle,
             style = MaterialTheme.typography.bodySmall,
@@ -538,40 +533,35 @@ private fun RecentDocCard(
 
     Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .width(176.dp)
+            .height(124.dp)
             .flatGlassContainer(
-                shape = RoundedCornerShape(12.dp),
-                color = MaterialTheme.colorScheme.surfaceContainerLow,
+                shape = RoundedCornerShape(16.dp),
+                color = MaterialTheme.colorScheme.surfaceContainer,
+                style = GlassStyle.Regular,
             )
             .clickable(onClick = onClick)
-            .padding(12.dp)
-            .height(100.dp),
+            .padding(14.dp),
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.Top,
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .clip(RoundedCornerShape(12.dp))
+                .background(MaterialTheme.colorScheme.primaryContainer),
+            contentAlignment = Alignment.Center,
         ) {
-            Box(
-                modifier = Modifier
-                    .size(32.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(MaterialTheme.colorScheme.surfaceContainer),
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePdf,
-                    contentDescription = null,
-                    modifier = Modifier.size(18.dp),
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                )
-            }
+            Icon(
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePdf,
+                contentDescription = null,
+                modifier = Modifier.size(20.dp),
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+            )
         }
-        Column {
+        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(
                 text = fileName,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Medium,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,

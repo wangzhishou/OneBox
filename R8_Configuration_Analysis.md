@@ -16,18 +16,17 @@
 ## 本次结论
 
 - `:app:assembleGoogleArm64Release` 已成功，R8、资源缩减、打包均通过。
-- APK 包含 `libonnxruntime.so`、`libonnxruntime4j_jni.so` 和 `libopencv_java5.so`；ONNX Runtime AAR 自带所需补充规则。
+- APK 包含 `libonnxruntime.so`、`libonnxruntime4j_jni.so` 和 `libopencv_java5.so`。ONNX Runtime AAR 自带规则只覆盖遥测类，不能覆盖 JNI 按名回查的模型对象。
 - mapping 中 `OcrHistoryEntry`、`RecognizedLine`、`PixelPoint` 及其序列化构造器均保留；`CameraCaptureActivity` 名称与入口也保留。
-- 1.5.1 后新增的 ONNX、CameraX、麻将和 PDF 代码不需要新增 keep 规则。PDF 中两处私有字段反射早于本次基线，不属于后续回归。
+- 152 首轮 release 走查发现，OCR 在 `OrtSession.run` 的输出转换阶段因 `TensorInfo` 等 JNI 类型被裁剪/混淆而原生崩溃；`app/proguard-rules.pro` 已补充 `ai.onnxruntime.**` 边界保留。修复后相册图片识别、扫描到 OCR、历史结果及最终包致命日志检查均通过。
+- CameraX、麻将和 PDF 的本次静态审查未发现需要新增 keep 规则的入口。PDF 中两处私有字段反射早于本次基线，不属于后续回归。
 - R8 的 249 条相同警告均来自既有微信 SDK 的非线性字节码栈映射，没有缺类或应用模型警告；Google 包虽不应使用微信能力，该警告不是此次新增问题。
-- 开发模拟器已安装最终 release：麻将可打开并开始新局；Snap Text 可打开，26 MB 模型包下载成功，ONNX native 库正常加载。
-- ONNX 启动时的 telemetry `UnsatisfiedLinkError` 是 AAR 自带 native 库未包含对应可选符号，库内已捕获并降级；与 R8 无关。
+- ONNX 启动时的 telemetry `UnsatisfiedLinkError` 是 AAR 自带 native 库未包含对应可选符号，库内已捕获并降级；与本次 JNI 输出转换崩溃无关。
 - APK 资源表抽查了麻将、Snap Text、待办和日程条目，16 种打包语言的值均存在。
-- 完整 OCR 图片识别未跑到结果页，不能记为识别链路回归通过；本次未修改 OCR 业务代码。
 
 ## 现有 keep 规则审查
 
-以下按保留范围从大到小排列，仅记录处置建议；本次不修改规则文件。
+以下按保留范围从大到小排列，仅记录后续处置建议；本次只新增 ONNX JNI 边界规则，其它规则未调整。
 
 ### 应缩小或删除的包级规则
 

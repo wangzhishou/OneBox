@@ -64,9 +64,6 @@ class PdfRouterComponent @AssistedInject internal constructor(
     private val _recentPdfs: MutableState<List<RecentAccessEntity>> = mutableStateOf(emptyList())
     val recentPdfs: List<RecentAccessEntity> by _recentPdfs
 
-    private val _searchQuery: MutableState<String> = mutableStateOf("")
-    val searchQuery: String by _searchQuery
-
     init {
         loadRecentDocs()
         observeRecentPdfs()
@@ -95,22 +92,6 @@ class PdfRouterComponent @AssistedInject internal constructor(
                 accessType = RecentAccessRepository.TYPE_FILE,
                 pathHint = uri.path(),
             )
-        }
-    }
-
-    fun onSearchQueryChange(query: String) {
-        _searchQuery.update { query }
-        if (query.isBlank()) {
-            loadRecentDocs()
-        } else {
-            componentScope.launch {
-                val results = activityLogRepository.searchByScreenRoute(
-                    routePrefix = SCREEN_ROUTE_PREFIX,
-                    query = query,
-                    limit = 20
-                )
-                _recentDocs.update { results }
-            }
         }
     }
 

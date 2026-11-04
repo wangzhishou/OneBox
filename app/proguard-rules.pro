@@ -275,6 +275,10 @@
 
 -dontwarn org.opencv.geometry.Geometry
 
+# ONNX Runtime 的 JNI 层按类名、构造器和字段名回查 Java 对象;AAR 自带规则只覆盖
+# 遥测类,R8 裁剪/混淆 TensorInfo 等类型会在 OrtSession.run 输出转换时直接 abort。
+-keep class ai.onnxruntime.** { *; }
+
 # coil-resvg (SVG 解码): UniFFI 生成的 JNA direct mapping,native 方法名必须与
 # libresvg_core.so 导出符号一致;同时 libjnidispatch.so 会按名反射一批 JNA 内部
 # 类/方法/字段(Pointer.peer、Native.dispose、Native$ffi_callback.invoke、

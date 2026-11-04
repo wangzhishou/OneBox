@@ -27,8 +27,6 @@ fun PdfRouterScreen(component: PdfRouterComponent) {
             recentDocs = component.recentDocs,
             recentPdfs = component.recentPdfs,
             onRecordAccess = component::recordPdfAccess,
-            searchQuery = component.searchQuery,
-            onSearchQueryChange = component::onSearchQueryChange,
         )
 
         is PdfRouterComponent.PdfChild.Preview -> PdfPreviewScreen(child.component)

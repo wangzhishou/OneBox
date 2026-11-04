@@ -23,7 +23,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -357,7 +358,11 @@ fun EditorScaffold(
         }
     }
 
+    val keyboardBottomPadding = with(LocalDensity.current) {
+        WindowInsets.ime.getBottom(this).toDp()
+    }
     BaseScreen(
+        modifier = Modifier.fillMaxSize().padding(bottom = keyboardBottomPadding),
         title = {
             Column {
                 Text(
@@ -450,8 +455,6 @@ fun EditorScaffold(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
-                    // 就地编辑文字时键盘弹出,画布区整体上移,输入位置不被遮挡(同图文卡片)
-                    .imePadding()
             )
             AnimatedVisibility(visible = immersiveModeState.isUiVisible) {
                 when {

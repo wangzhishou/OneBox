@@ -42,6 +42,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.wanbaohe.base.ui.shapes.BubbleShape
 import com.t8rin.imagetoolbox.core.resources.icons.ChatPlus
+import com.t8rin.imagetoolbox.core.resources.icons.ImageToText
+import com.t8rin.imagetoolbox.core.resources.icons.Language
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAgent
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAiChat
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBlessingWall
@@ -123,6 +125,8 @@ private fun addMenuItemContentColor(theme: AddMenuItemTheme): Color = when (them
  * @param onNavigateToAiApp     导航到智能体
  * @param onNavigateToHabitTracker  导航到习惯打卡
  * @param onNavigateToDocumentScanner 导航到文档扫描
+ * @param onNavigateToOnDeviceOcr 导航到 OCR 扫描
+ * @param onNavigateToTranslator 导航到翻译
  * @param onNavigateToPdfTools 导航到 PDF 工具
  * @param onNavigateToBlessingWall  导航到祈福墙
  * @param onNavigateToImageCreation 导航到图片创作
@@ -146,6 +150,8 @@ fun AddMenuFloatingPanel(
     onNavigateToCreateAIPrompt: () -> Unit,
     onNavigateToHabitTracker: () -> Unit,
     onNavigateToDocumentScanner: () -> Unit,
+    onNavigateToOnDeviceOcr: () -> Unit,
+    onNavigateToTranslator: () -> Unit,
     onNavigateToPdfTools: () -> Unit,
     onNavigateToBlessingWall: () -> Unit,
     onNavigateToImageCreation: () -> Unit,
@@ -232,6 +238,22 @@ fun AddMenuFloatingPanel(
                     onClick = {
                         onDismiss()
                         onNavigateToDocumentScanner()
+                    }
+                ),
+                AddMenuItem(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ImageToText,
+                    label = CoreR.string.on_device_ocr,
+                    onClick = {
+                        onDismiss()
+                        onNavigateToOnDeviceOcr()
+                    }
+                ),
+                AddMenuItem(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Language,
+                    label = CoreR.string.translator,
+                    onClick = {
+                        onDismiss()
+                        onNavigateToTranslator()
                     }
                 ),
                 AddMenuItem(

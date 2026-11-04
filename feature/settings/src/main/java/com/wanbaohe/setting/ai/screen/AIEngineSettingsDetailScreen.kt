@@ -836,6 +836,8 @@ private fun ServerConnectivityCard(
     onTestClick: () -> Unit,
 ) {
     SettingCard {
+        var urlHasBeenFocused by remember { mutableStateOf(false) }
+        var pathHasBeenFocused by remember { mutableStateOf(false) }
         val isJev = engine.requestProtocol.isNonChat
 
         if (!isJev) {
@@ -885,7 +887,9 @@ private fun ServerConnectivityCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .onFocusChanged { focusState ->
-                    if (!focusState.isFocused && canEditApiSettings) {
+                    if (focusState.isFocused) {
+                        urlHasBeenFocused = true
+                    } else if (urlHasBeenFocused && canEditApiSettings) {
                         val normalized = StringUtils.normalizeApiBaseUrl(engine.requestUrl)
                         if (normalized != engine.requestUrl) {
                             onUrlChange(normalized)
@@ -921,7 +925,9 @@ private fun ServerConnectivityCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .onFocusChanged { focusState ->
-                    if (!focusState.isFocused && canEditApiSettings) {
+                    if (focusState.isFocused) {
+                        pathHasBeenFocused = true
+                    } else if (pathHasBeenFocused && canEditApiSettings) {
                         val normalized = StringUtils.normalizeApiPath(engine.requestPath)
                         if (normalized != engine.requestPath) {
                             onPathChange(normalized)
