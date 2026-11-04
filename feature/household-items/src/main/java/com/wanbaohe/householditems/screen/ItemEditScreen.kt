@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -107,14 +109,18 @@ fun ItemEditScreen(
         content = {
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-                    // 底部保存按钮避开系统导航栏(手势条/三键),同记账 AddRecordScreen 惯例
+                    .fillMaxSize()
                     .navigationBarsPadding()
-                    .padding(horizontal = 24.dp)
-                    .padding(bottom = 24.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
+                    .imePadding(),
             ) {
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .verticalScroll(rememberScrollState())
+                        .padding(horizontal = 24.dp)
+                        .padding(bottom = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                ) {
                 // ── 名称(必填) ──
                 GlassOutlinedTextField(
                     value = uiState.editorName,
@@ -168,14 +174,14 @@ fun ItemEditScreen(
                     minLines = 2,
                     shape = RoundedCornerShape(16.dp),
                 )
-
-                // ── 保存 ──
+                }
                 EnhancedButton(
                     onClick = component::submitItem,
                     enabled = uiState.editorName.isNotBlank(),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 8.dp),
+                        .padding(horizontal = 24.dp)
+                        .padding(bottom = 16.dp),
                 ) {
                     Text(stringResource(R.string.household_save))
                 }

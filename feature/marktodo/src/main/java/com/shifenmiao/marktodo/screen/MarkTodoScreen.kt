@@ -81,8 +81,8 @@ import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyGridState
 
-/** 当前视图待办少于此数时不显示搜索框。 */
-private const val SearchFieldMinTaskCount = 8
+/** 当前视图待办少于此数时不显示搜索框和筛选条。 */
+private const val QueryToolsMinTaskCount = 8
 
 @Composable
 fun MarkTodoScreen(
@@ -126,8 +126,17 @@ fun MarkTodoScreen(
             retainedCompletedTaskIds = uiState.pendingCompletionIds,
         ).size
     }
+    val baseTaskCount = remember(scopedTasks, uiState.pendingCompletionIds) {
+        TodoTaskQuery.filterAndSort(
+            tasks = scopedTasks,
+            retainedCompletedTaskIds = uiState.pendingCompletionIds,
+        ).size
+    }
     val showSearchField = uiState.searchQuery.isNotBlank() ||
-        listTaskCount >= SearchFieldMinTaskCount
+        listTaskCount >= QueryToolsMinTaskCount
+    val showFilterBar = uiState.filter != TaskFilter() ||
+        uiState.sort != TaskSortConfig() ||
+        baseTaskCount >= QueryToolsMinTaskCount
     val effectiveFilter = remember(uiState.searchQuery, uiState.filter) {
         if (uiState.searchQuery.isNotBlank() && uiState.filter == TaskFilter()) {
             uiState.filter.copy(completion = TaskCompletionFilter.ALL)
@@ -206,26 +215,28 @@ fun MarkTodoScreen(
                 Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
             }
 
-            QueryShortcutBar(
-                filter = uiState.filter,
-                sort = uiState.sort,
-                isGridView = uiState.isGridView,
-                showViewMode = uiState.homeView == HomeView.THEMES &&
-                    uiState.searchQuery.isBlank() &&
-                    !uiState.filter.hasSmartDateFilter,
-                onFilterChange = {
-                    markTodoComponent.handleEvent(MarkTodoUiEvent.SetFilter(it))
-                },
-                onSortChange = {
-                    markTodoComponent.handleEvent(MarkTodoUiEvent.SetSort(it))
-                },
-                onViewModeChange = {
-                    markTodoComponent.handleEvent(MarkTodoUiEvent.SetGridView(it))
-                },
-                onShowFilterSort = {
-                    markTodoComponent.handleEvent(MarkTodoUiEvent.ShowFilterSortSheet)
-                },
-            )
+            if (showFilterBar) {
+                QueryShortcutBar(
+                    filter = uiState.filter,
+                    sort = uiState.sort,
+                    isGridView = uiState.isGridView,
+                    showViewMode = uiState.homeView == HomeView.THEMES &&
+                        uiState.searchQuery.isBlank() &&
+                        !uiState.filter.hasSmartDateFilter,
+                    onFilterChange = {
+                        markTodoComponent.handleEvent(MarkTodoUiEvent.SetFilter(it))
+                    },
+                    onSortChange = {
+                        markTodoComponent.handleEvent(MarkTodoUiEvent.SetSort(it))
+                    },
+                    onViewModeChange = {
+                        markTodoComponent.handleEvent(MarkTodoUiEvent.SetGridView(it))
+                    },
+                    onShowFilterSort = {
+                        markTodoComponent.handleEvent(MarkTodoUiEvent.ShowFilterSortSheet)
+                    },
+                )
+            }
 
             val contentModifier = Modifier.weight(1f)
             when {
