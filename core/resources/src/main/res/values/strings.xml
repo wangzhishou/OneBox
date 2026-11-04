@@ -636,6 +636,9 @@
     <string name="download">Download</string>
     <string name="download_started">Download started</string>
     <string name="downloaded_languages">Downloaded languages</string>
+    <string name="background_downloading">Downloading</string>
+    <string name="background_download_count">%1$d files</string>
+    <string name="background_download_progress">%1$s · %2$d%%</string>
     <string name="segmentation_mode">Segmentation mode</string>
     <string name="restore_background_sub">The brush will restore the background instead of erasing it</string>
     <string name="recognize_text_sub">Recognize text from the given image, supporting 120+ languages</string>

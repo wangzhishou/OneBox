@@ -15,10 +15,12 @@ import com.shifenmiao.model.ai.AiWorkingModelSlot
 import com.shifenmiao.model.ai.AuthType
 import com.shifenmiao.model.remote.AiEngineConfig
 import com.shifenmiao.model.remote.LocalTranslationModel
+import com.shifenmiao.network.downloader.BackgroundDownloadRequest
+import com.shifenmiao.network.downloader.BackgroundDownloadService
+import com.shifenmiao.network.downloader.BackgroundDownloadState
 import com.shifenmiao.storage.RemoteConfigStorage
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.wanbaohe.core.ui.utils.BaseComponent
-import com.wanbaohe.setting.local.download.LocalModelDownloader
 import com.wanbaohe.settings.R
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -27,7 +29,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
@@ -70,6 +71,7 @@ class LocalModelManagementComponent @AssistedInject internal constructor(
     @ApplicationContext private val context: Context,
     private val aiEngineCatalogManager: AIEngineCatalogManager,
     private val aiEngineManager: AIEngineManager,
+    private val backgroundDownloadService: BackgroundDownloadService,
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
@@ -103,8 +105,6 @@ class LocalModelManagementComponent @AssistedInject internal constructor(
 
     private val modelsDir: File get() = File(context.filesDir, MODELS_DIR_NAME)
 
-    private val downloader = LocalModelDownloader()
-
     private val _downloadedModels = MutableStateFlow<List<LocalModelFile>>(emptyList())
     val downloadedModels: StateFlow<List<LocalModelFile>> = _downloadedModels.asStateFlow()
 
@@ -125,6 +125,28 @@ class LocalModelManagementComponent @AssistedInject internal constructor(
 
     init {
         refreshDownloadedModels()
+        componentScope.launch {
+            backgroundDownloadService.downloads.collect { states ->
+                val hasCompletedModel = recommendedModels.any { model ->
+                    _downloadStates.value[model.fileName]?.isDownloading == true &&
+                        states[modelDownloadId(model.fileName)] is BackgroundDownloadState.Success
+                }
+                _downloadStates.value = recommendedModels.mapNotNull { model ->
+                    val state = when (
+                        val download = states[modelDownloadId(model.fileName)]
+                    ) {
+                        is BackgroundDownloadState.Running -> ModelDownloadUiState(
+                            isDownloading = true,
+                            progress = download.progress,
+                        )
+                        is BackgroundDownloadState.Failed -> ModelDownloadUiState(isFailed = true)
+                        else -> null
+                    }
+                    state?.let { model.fileName to it }
+                }.toMap()
+                if (hasCompletedModel) refreshDownloadedModels()
+            }
+        }
     }
 
     fun refreshDownloadedModels() {
@@ -136,39 +158,14 @@ class LocalModelManagementComponent @AssistedInject internal constructor(
     }
 
     fun startDownload(model: RecommendedLocalModel) {
-        if (_downloadStates.value[model.fileName]?.isDownloading == true) return
-        _downloadStates.update { it + (model.fileName to ModelDownloadUiState(isDownloading = true)) }
-        componentScope.launch(ioDispatcher) {
-            when (
-                val result = downloader.download(
-                    url = resolveDownloadUrl(model),
-                    destination = File(modelsDir, model.fileName),
-                    onProgress = { downloadedBytes, totalBytes ->
-                        _downloadStates.update {
-                            it + (model.fileName to ModelDownloadUiState(
-                                isDownloading = true,
-                                progress = if (totalBytes > 0) {
-                                    (downloadedBytes.toFloat() / totalBytes).coerceIn(0f, 1f)
-                                } else null,
-                            ))
-                        }
-                    },
-                )
-            ) {
-                is LocalModelDownloader.Result.Success -> {
-                    _downloadStates.update { it - model.fileName }
-                    refreshDownloadedModels()
-                }
-
-                LocalModelDownloader.Result.Cancelled -> {
-                    _downloadStates.update { it - model.fileName }
-                }
-
-                is LocalModelDownloader.Result.Failed -> {
-                    _downloadStates.update { it + (model.fileName to ModelDownloadUiState(isFailed = true)) }
-                }
-            }
-        }
+        backgroundDownloadService.start(
+            BackgroundDownloadRequest(
+                id = modelDownloadId(model.fileName),
+                url = resolveDownloadUrl(model),
+                destination = File(modelsDir, model.fileName),
+                title = context.getString(model.displayNameRes),
+            )
+        )
     }
 
     private fun resolveDownloadUrl(model: RecommendedLocalModel): String {
@@ -183,9 +180,10 @@ class LocalModelManagementComponent @AssistedInject internal constructor(
     }
 
     fun cancelDownload(fileName: String) {
-        downloader.cancel(fileName)
-        _downloadStates.update { it - fileName }
+        backgroundDownloadService.cancel(modelDownloadId(fileName))
     }
+
+    private fun modelDownloadId(fileName: String) = "local-model:$fileName"
 
     /** 从系统文件选择器导入:拷贝流到 local_models/<原文件名>。已存在且未确认覆盖时先回 AlreadyExists。 */
     fun importModel(uri: Uri, overwrite: Boolean, onComplete: (ImportResult) -> Unit) {

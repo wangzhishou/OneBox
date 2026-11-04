@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.job
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import okhttp3.OkHttpClient
@@ -33,70 +34,72 @@ class ResumableFileDownloader(
         destinationFile.parentFile?.mkdirs()
 
         val existingBytes = if (partFile.exists()) partFile.length() else 0L
-
         val requestBuilder = Request.Builder().url(url)
         if (existingBytes > 0L) {
             requestBuilder.addHeader("Range", "bytes=$existingBytes-")
         }
-        val request = requestBuilder.build()
 
-        val call = client.newCall(request)
-        val response = call.execute()
-        if (!response.isSuccessful) {
-            response.close()
-            throw IllegalStateException("HTTP ${response.code}")
+        val call = client.newCall(requestBuilder.build())
+        val job = currentCoroutineContext().job
+        val cancellationHandle = job.invokeOnCompletion {
+            if (!job.isActive) call.cancel()
         }
-
-        val body = response.body
-
-        val append = response.code == 206 && existingBytes > 0L
-        if (!append && partFile.exists()) partFile.delete()
-
-        val contentLength = body.contentLength().takeIf { it >= 0 }
-        val totalBytes = if (append) {
-            contentLength?.let { existingBytes + it }
-        } else {
-            contentLength
-        }
-
-        var downloaded = if (append) existingBytes else 0L
-        emit(DownloadState.Progress(downloadedBytes = downloaded, totalBytes = totalBytes))
 
         try {
-            body.byteStream().use { input ->
-                FileOutputStream(partFile, append).use { output ->
-                    val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
-                    var lastEmitAt = 0L
-                    while (true) {
-                        currentCoroutineContext().ensureActive()
-                        val read = input.read(buffer)
-                        if (read <= 0) break
-                        output.write(buffer, 0, read)
-                        downloaded += read
-                        val now = System.currentTimeMillis()
-                        if (now - lastEmitAt >= 200L) {
-                            lastEmitAt = now
-                            emit(DownloadState.Progress(downloadedBytes = downloaded, totalBytes = totalBytes))
-                        }
-                    }
-                    output.flush()
+            call.execute().use { response ->
+                if (!response.isSuccessful) throw IllegalStateException("HTTP ${response.code}")
+                val body = response.body
+                val append = response.code == 206 && existingBytes > 0L
+                if (!append && partFile.exists()) partFile.delete()
+
+                val contentLength = body.contentLength().takeIf { it >= 0 }
+                val totalBytes = if (append) {
+                    contentLength?.let { existingBytes + it }
+                } else {
+                    contentLength
                 }
-            }
 
-            if (destinationFile.exists()) destinationFile.delete()
-            val moved = partFile.renameTo(destinationFile)
-            if (!moved) {
-                destinationFile.writeBytes(partFile.readBytes())
-                partFile.delete()
-            }
+                var downloaded = if (append) existingBytes else 0L
+                emit(DownloadState.Progress(downloadedBytes = downloaded, totalBytes = totalBytes))
 
-            emit(DownloadState.Success(destinationFile))
+                body.byteStream().use { input ->
+                    FileOutputStream(partFile, append).use { output ->
+                        val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+                        var lastEmitAt = 0L
+                        while (true) {
+                            currentCoroutineContext().ensureActive()
+                            val read = input.read(buffer)
+                            if (read <= 0) break
+                            output.write(buffer, 0, read)
+                            downloaded += read
+                            val now = System.currentTimeMillis()
+                            if (now - lastEmitAt >= 200L) {
+                                lastEmitAt = now
+                                emit(DownloadState.Progress(downloadedBytes = downloaded, totalBytes = totalBytes))
+                            }
+                        }
+                        output.flush()
+                    }
+                }
+
+                if (totalBytes != null && downloaded != totalBytes) {
+                    throw java.io.IOException("Incomplete download: $downloaded / $totalBytes bytes")
+                }
+                if (destinationFile.exists()) destinationFile.delete()
+                if (!partFile.renameTo(destinationFile)) {
+                    partFile.copyTo(destinationFile, overwrite = true)
+                    partFile.delete()
+                }
+
+                emit(DownloadState.Success(destinationFile))
+            }
         } catch (e: CancellationException) {
             throw e
         } catch (t: Throwable) {
+            currentCoroutineContext().ensureActive()
             emit(DownloadState.Failed(t))
         } finally {
-            response.close()
+            cancellationHandle.dispose()
         }
     }.flowOn(Dispatchers.IO)
 }
