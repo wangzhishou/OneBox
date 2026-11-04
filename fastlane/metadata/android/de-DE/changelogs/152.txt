@@ -1,0 +1,3 @@
+• Für 7- und 10-Zoll-Tablets optimiert
+• On-Device-OCR, Mahjong und weitere PDF-Tools hinzugefügt
+• Aufgaben, KI-Diensteinrichtung und Übersetzungen verbessert

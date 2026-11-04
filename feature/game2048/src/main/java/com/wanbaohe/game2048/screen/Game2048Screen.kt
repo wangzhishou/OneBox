@@ -2,6 +2,7 @@ package com.wanbaohe.game2048.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,6 +24,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -48,74 +50,83 @@ fun Game2048Screen(
     component: Game2048Component,
 ) {
     val state by component.uiState.collectAsState()
+    val windowSize = LocalWindowInfo.current.containerDpSize
 
     BaseScreen(
         title = stringResource(R.string.game_2048_title),
         onGoBack = component.onGoBack,
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .navigationBarsPadding()
-                .padding(horizontal = 16.dp, vertical = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            // ── 1. 分数区 ──────────────────────────────────────────────
-            ScoreSection(
-                currentScore = state.score,
-                bestScore = state.bestScore,
-                modifier = Modifier.fillMaxWidth(),
-            )
-
-            // ── 2. 棋盘区 + 结束覆盖层 ────────────────────────────────
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                GameBoard(
-                    grid = state.grid,
-                    onSwipe = component::move,
-                    modifier = Modifier.fillMaxWidth(),
+        BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+            val contentModifier = if (windowSize.width > windowSize.height) {
+                Modifier.width(
+                    minOf(maxWidth, (windowSize.height - 320.dp).coerceAtLeast(280.dp))
                 )
-
-                // 游戏结束 / 胜利覆盖层
-                GameOverOverlay(
-                    isGameOver = state.isGameOver,
-                    isWon = state.isWon,
-                    hasShownWin = state.hasShownWinDialog,
-                    onNewGame = component::newGame,
-                    onContinue = component::dismissWinDialog,
-                    modifier = Modifier.matchParentSize(),
-                )
+            } else {
+                Modifier.fillMaxWidth()
             }
 
-            Spacer(Modifier.height(8.dp))
-
-            // ── 3. 新游戏按钮 ──────────────────────────────────────────
-            GlassButton(
-                onClick = component::newGame,
-                color = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                borderWidth = 0.dp,
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(52.dp),
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .navigationBarsPadding()
+                    .padding(horizontal = 16.dp, vertical = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp),
+                // ── 1. 分数区 ──────────────────────────────────────────────
+                ScoreSection(
+                    currentScore = state.score,
+                    bestScore = state.bestScore,
+                    modifier = contentModifier,
                 )
-                Spacer(Modifier.width(8.dp))
-                Text(
-                    text = stringResource(R.string.game_2048_new_game),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                )
-            }
 
-            Spacer(Modifier.height(8.dp))
+                // ── 2. 棋盘区 + 结束覆盖层 ────────────────────────────────
+                Box(
+                    modifier = contentModifier,
+                ) {
+                    GameBoard(
+                        grid = state.grid,
+                        onSwipe = component::move,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+
+                    // 游戏结束 / 胜利覆盖层
+                    GameOverOverlay(
+                        isGameOver = state.isGameOver,
+                        isWon = state.isWon,
+                        hasShownWin = state.hasShownWinDialog,
+                        onNewGame = component::newGame,
+                        onContinue = component::dismissWinDialog,
+                        modifier = Modifier.matchParentSize(),
+                    )
+                }
+
+                Spacer(Modifier.height(8.dp))
+
+                // ── 3. 新游戏按钮 ──────────────────────────────────────────
+                GlassButton(
+                    onClick = component::newGame,
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    borderWidth = 0.dp,
+                    modifier = contentModifier.height(52.dp),
+                ) {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp),
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    Text(
+                        text = stringResource(R.string.game_2048_new_game),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
+
+                Spacer(Modifier.height(8.dp))
+            }
         }
     }
 }

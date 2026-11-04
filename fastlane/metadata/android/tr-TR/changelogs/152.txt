@@ -1,0 +1,3 @@
+• 7 ve 10 inç tabletler için optimize edildi
+• Cihaz üzerinde OCR, mahjong ve daha fazla PDF aracı eklendi
+• Yapılacaklar, AI hizmeti kurulumu ve çeviriler iyileştirildi

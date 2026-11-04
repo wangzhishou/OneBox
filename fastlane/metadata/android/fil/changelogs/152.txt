@@ -1,0 +1,3 @@
+• Na-optimize para sa 7-inch at 10-inch na tablet
+• Nagdagdag ng on-device OCR, mahjong, at mas maraming PDF tool
+• Pinahusay ang mga gawain, setup ng AI service, at mga pagsasalin

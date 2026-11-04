@@ -1,0 +1,3 @@
+• Otimizado para tablets de 7 e 10 polegadas
+• OCR no dispositivo, mahjong e mais ferramentas de PDF adicionados
+• Melhorias nas tarefas, na configuração de serviços de IA e nas traduções

@@ -1,0 +1,3 @@
+• Dioptimalkan untuk tablet 7 dan 10 inci
+• Menambahkan OCR di perangkat, mahjong, dan lebih banyak alat PDF
+• Peningkatan pada tugas, penyiapan layanan AI, dan terjemahan
