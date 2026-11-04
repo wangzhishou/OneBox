@@ -56,7 +56,6 @@ fun SearchScreen(
         { newQuery ->
             queryValue.value = newQuery
             searchComponent.onSearchQueryChange(newQuery)
-            searchComponent.onMessageSearchQueryChange(newQuery)
         }
     }
 
@@ -64,7 +63,6 @@ fun SearchScreen(
         { suggestion ->
             queryValue.value = suggestion.tag
             searchComponent.onSearchQueryChange(suggestion.tag)
-            searchComponent.onMessageSearchQueryChange(suggestion.tag)
         }
     }
 

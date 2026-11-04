@@ -929,6 +929,7 @@
     <string name="profile_item_wechat_service">微信客服</string>
     <string name="message_card_tag">对话历史</string>
     <string name="search_result">搜索结果</string>
+    <string name="search_results_truncated">部分来源已达到搜索上限，仅显示部分结果</string>
     <string name="ai_chat_empty_message">请输入你的问题</string>
     <string name="ai_chat_engine_unavailable_banner_title">当前没有可用的 AI 引擎</string>
     <string name="ai_chat_engine_unavailable_banner_desc">当前工作引擎既没有已测试通过的直连，也没有可用代理。点击去设置。</string>

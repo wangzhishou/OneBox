@@ -5,16 +5,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -57,13 +60,17 @@ fun SearchResults(
 ) {
     val searchItemList = searchComponent.searchItemList.collectAsState()
     val searchMessageEntity = searchComponent.searchMessageEntity.collectAsState()
-    val hasResults = searchItemList.value.isNotEmpty()
+    val globalSearchResults = searchComponent.globalSearchResults.collectAsState()
+    val isGlobalSearching = searchComponent.isGlobalSearching.collectAsState()
+    val isGlobalSearchTruncated = searchComponent.isGlobalSearchTruncated.collectAsState()
+    val hasResults = searchItemList.value.isNotEmpty() ||
+        searchMessageEntity.value.isNotEmpty() || globalSearchResults.value.isNotEmpty()
 
     // 与列表页一致: 删除确认弹窗 + 评论浮动层(由 ItemListComponent 的 childSlot 驱动)
     val deleteState = rememberDeleteState()
     val commentsSlot by itemListComponent.commentsSlot.subscribeAsState()
 
-    if (hasResults) {
+    if (hasResults || isGlobalSearching.value) {
         val lazyStaggeredGridState: LazyStaggeredGridState = rememberLazyStaggeredGridState()
         val onNavigate = LocalOnNavigate.current
         val context = LocalContext.current
@@ -76,6 +83,13 @@ fun SearchResults(
                 horizontal = AppTheme.dimens.paddingNormal
             )
         )
+        if (isGlobalSearching.value) {
+            LinearProgressIndicator(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = AppTheme.dimens.paddingNormal)
+            )
+        }
         LazyVerticalStaggeredGrid(
             state = lazyStaggeredGridState,
             modifier = Modifier.fillMaxHeight(),
@@ -159,8 +173,38 @@ fun SearchResults(
                     }
                 }
             }
-
-
+            globalSearchResults.value.forEachIndexed { index, result ->
+                item(key = "${result.sourceId}:${result.id}") {
+                    Animation.StaggeredAnimatedItem(index) {
+                        SearchMessageCard(
+                            id = result.id.hashCode(),
+                            title = result.title,
+                            description = result.description,
+                            queryValue = queryValue.value,
+                            tag = stringResource(result.labelRes),
+                            iconName = result.iconName,
+                        ) {
+                            SearchHistoryStore.addHistoryItem(
+                                SuggestionModel(queryValue.value)
+                            )
+                            searchComponent.openGlobalSearchResult(
+                                result = result,
+                                context = context,
+                                onNavigate = onNavigate,
+                            )
+                        }
+                    }
+                }
+            }
+            if (isGlobalSearchTruncated.value) {
+                item(span = StaggeredGridItemSpan.FullLine) {
+                    Text(
+                        text = stringResource(R.string.search_results_truncated),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
         }
     } else {
         Column(

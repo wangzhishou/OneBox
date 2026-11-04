@@ -64,7 +64,7 @@ fun SearchMessageCard(
     }
 
     val highlightedTitle = remember(title, queryValue) {
-        StringUtils.getHighlightedDescription(
+        StringUtils.getHighlightedText(
             title,
             queryValue,
             highlightColor,

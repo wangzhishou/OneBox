@@ -20,6 +20,8 @@ interface MarkTodoServiceInterface {
 
     suspend fun getInboxTasksDto(): List<TodoTaskDto>
 
+    suspend fun searchTasks(query: String, limit: Int): List<TodoTaskDto>
+
     suspend fun findCategoryByTitle(title: String): CategoryLookup?
 
     // ── 分类操作 ────────────────────────────────────

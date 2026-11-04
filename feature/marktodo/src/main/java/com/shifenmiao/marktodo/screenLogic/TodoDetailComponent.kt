@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 class TodoDetailComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted("taskId") val taskId: String,
-    @Assisted("categoryId") val categoryId: String,
+    @Assisted("categoryId") val categoryId: String?,
     @Assisted val onGoBack: () -> Unit,
     @Assisted val onNavigate: (Screen) -> Unit,
     @ApplicationContext private val context: Context,
@@ -210,7 +210,7 @@ class TodoDetailComponent @AssistedInject internal constructor(
         try {
             val task = service.getTask(taskId)
             if (task != null) {
-                val category = service.getCategoryWithTasks(categoryId)
+                val category = categoryId?.let { service.getCategoryWithTasks(it) }
                 _uiState.value = _uiState.value.copy(
                     task = task,
                     categoryTitle = category?.title ?: "",
@@ -428,7 +428,7 @@ class TodoDetailComponent @AssistedInject internal constructor(
         operator fun invoke(
             componentContext: ComponentContext,
             @Assisted("taskId") taskId: String,
-            @Assisted("categoryId") categoryId: String,
+            @Assisted("categoryId") categoryId: String?,
             onGoBack: () -> Unit,
             onNavigate: (Screen) -> Unit,
         ): TodoDetailComponent

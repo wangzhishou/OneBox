@@ -23,6 +23,17 @@ interface MarkTodoTaskDao {
     @Query("SELECT * FROM marktodo_task WHERE deleted_at IS NULL ORDER BY updated_at DESC")
     suspend fun getAll(): List<MarkTodoTaskEntity>
 
+    @Query(
+        """
+        SELECT * FROM marktodo_task
+        WHERE deleted_at IS NULL
+          AND (title LIKE '%' || :query || '%' OR note LIKE '%' || :query || '%' OR tags LIKE '%' || :query || '%')
+        ORDER BY updated_at DESC
+        LIMIT :limit
+        """
+    )
+    suspend fun search(query: String, limit: Int): List<MarkTodoTaskEntity>
+
     @Query("SELECT * FROM marktodo_task WHERE deleted_at IS NULL ORDER BY updated_at DESC")
     fun observeAll(): Flow<List<MarkTodoTaskEntity>>
 

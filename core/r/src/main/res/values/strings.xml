@@ -893,6 +893,7 @@
     <string name="profile_item_wechat_service">WeChat Customer Service</string>
     <string name="message_card_tag">Chat History</string>
     <string name="search_result">Search Results</string>
+    <string name="search_results_truncated">Some sources reached their search limit. Showing partial results.</string>
     <string name="ai_chat_empty_message">Please enter your question.</string>
     <string name="blog_title">View Article</string>
     <string name="blog_escription">Read more</string>

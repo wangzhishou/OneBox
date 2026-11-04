@@ -1,23 +1,30 @@
 package com.shifenmiao.search.logic
 
+import android.content.Context
+import androidx.core.net.toUri
 import com.arkivanov.decompose.ComponentContext
+import com.shifenmiao.common.search.GlobalSearchDestination
+import com.shifenmiao.common.search.GlobalSearchResult
 import com.shifenmiao.database.AppDatabase
 import com.shifenmiao.database.ai.entity.MessageEntity
 import com.shifenmiao.database.item.entity.ItemWithCategoriesAndStats
+import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
+import com.t8rin.imagetoolbox.core.domain.remote.AnalyticsManager
+import com.t8rin.imagetoolbox.core.domain.utils.smartJob
+import com.t8rin.imagetoolbox.core.settings.domain.SettingsProvider
+import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.content.ContentRouter
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.domain.remote.AnalyticsManager
-import com.t8rin.imagetoolbox.core.settings.domain.SettingsProvider
-import com.wanbaohe.core.ui.utils.BaseComponent
+import kotlinx.coroutines.supervisorScope
 
 class SearchComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
@@ -25,7 +32,9 @@ class SearchComponent @AssistedInject internal constructor(
     settingsProvider: SettingsProvider,
     val appDatabase: AppDatabase,
     private val analyticsManager: AnalyticsManager,
-    dispatchersHolder: DispatchersHolder
+    private val globalSearchCoordinator: GlobalSearchCoordinator,
+    private val contentRouter: ContentRouter,
+    dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
     private val _searchItemList = MutableStateFlow<List<ItemWithCategoriesAndStats>>(emptyList())
@@ -34,11 +43,27 @@ class SearchComponent @AssistedInject internal constructor(
     private val _searchMessageEntity = MutableStateFlow<List<MessageEntity>>(emptyList())
     val searchMessageEntity: StateFlow<List<MessageEntity>> = _searchMessageEntity
 
+    private val _globalSearchResults = MutableStateFlow<List<GlobalSearchResult>>(emptyList())
+    val globalSearchResults: StateFlow<List<GlobalSearchResult>> = _globalSearchResults
+
+    private val _isGlobalSearching = MutableStateFlow(false)
+    val isGlobalSearching: StateFlow<Boolean> = _isGlobalSearching
+
+    private val _isGlobalSearchTruncated = MutableStateFlow(false)
+    val isGlobalSearchTruncated: StateFlow<Boolean> = _isGlobalSearchTruncated
+
     private val _recommendedFlow = MutableStateFlow<List<ItemWithCategoriesAndStats>>(emptyList())
     val recommendedFlow: StateFlow<List<ItemWithCategoriesAndStats>> get() = _recommendedFlow
 
     private val _recentClickedFlow = MutableStateFlow<List<ItemWithCategoriesAndStats>>(emptyList())
     val recentClickedFlow: StateFlow<List<ItemWithCategoriesAndStats>> get() = _recentClickedFlow
+
+    private var searchJob by smartJob()
+    private var searchReportJob by smartJob()
+    private val reportedSearchTerms = mutableSetOf<String>()
+
+    @Volatile
+    private var searchGeneration = 0L
 
     init {
         loadRecommended()
@@ -46,7 +71,7 @@ class SearchComponent @AssistedInject internal constructor(
     }
 
     private fun loadRecommended() {
-        CoroutineScope(ioDispatcher).launch {
+        componentScope.launch(ioDispatcher) {
             appDatabase.itemEntityDao().getRecommendedItems().collect {
                 _recommendedFlow.value = it.take(10)
             }
@@ -54,63 +79,132 @@ class SearchComponent @AssistedInject internal constructor(
     }
 
     private fun loadRecentClicked() {
-        CoroutineScope(ioDispatcher).launch {
+        componentScope.launch(ioDispatcher) {
             appDatabase.itemEntityDao().getRecentClickedItems().collect {
                 _recentClickedFlow.value = it.take(10)
             }
         }
     }
 
-
     fun onSearchQueryChange(text: String) {
         scheduleSearchTermReport(text)
-        if (text.isEmpty()) {
-            _searchItemList.value = emptyList()
+        val query = text.trim()
+        val generation = ++searchGeneration
+        searchJob = null
+        clearSearchResults()
+        if (query.isEmpty()) {
+            _isGlobalSearching.value = false
             return
         }
-        CoroutineScope(ioDispatcher).launch {
-            val formattedSearchString = "%$text%"
-            // 英文标识符(iconName)不含空格,去掉查询里的空格以便 "file browser" 命中 FileBrowser
-            val iconSearchString = "%${text.replace(" ", "")}%"
-            val queryLower = text.lowercase()
-            appDatabase.itemEntityDao()
-                .searchByTitleOrDescriptionWithStats(formattedSearchString, iconSearchString)
-                .distinctUntilChanged().collect { items ->
-                    _searchItemList.value = items.sortedWith(
-                        compareByDescending<ItemWithCategoriesAndStats> { scoreSearchItem(it, queryLower) }
-                            .thenByDescending { it.clickCount }
-                            .thenBy { it.item.title }
+
+        _isGlobalSearching.value = true
+        searchJob = componentScope.launch(ioDispatcher) {
+            delay(SEARCH_DEBOUNCE_MS)
+            supervisorScope {
+                launch { collectItemResults(query, generation) }
+                launch { collectMessageResults(query, generation) }
+                launch { collectGlobalResults(query, generation) }
+            }
+        }
+    }
+
+    private fun clearSearchResults() {
+        _searchItemList.value = emptyList()
+        _searchMessageEntity.value = emptyList()
+        _globalSearchResults.value = emptyList()
+        _isGlobalSearchTruncated.value = false
+    }
+
+    private suspend fun collectItemResults(query: String, generation: Long) {
+        val formattedSearchString = "%$query%"
+        val iconSearchString = "%${query.replace(" ", "")}%"
+        val queryLower = query.lowercase()
+        appDatabase.itemEntityDao()
+            .searchByTitleOrDescriptionWithStats(formattedSearchString, iconSearchString)
+            .distinctUntilChanged()
+            .collect { items ->
+                if (generation != searchGeneration) return@collect
+                _searchItemList.value = items.sortedWith(
+                    compareByDescending<ItemWithCategoriesAndStats> { scoreSearchItem(it, queryLower) }
+                        .thenByDescending { it.clickCount }
+                        .thenBy { it.item.title }
+                )
+            }
+    }
+
+    private suspend fun collectMessageResults(query: String, generation: Long) {
+        val formattedSearchString = "%$query%"
+        val queryLower = query.lowercase()
+        appDatabase.messageDao().searchQuestionOrAnswer(formattedSearchString)
+            .distinctUntilChanged()
+            .collect { messages ->
+                if (generation != searchGeneration) return@collect
+                _searchMessageEntity.value = messages.sortedWith(
+                    compareByDescending<MessageEntity> { scoreMessageEntity(it, queryLower) }
+                        .thenByDescending { it.createdAt }
+                )
+            }
+    }
+
+    private suspend fun collectGlobalResults(query: String, generation: Long) {
+        val pagesBySource = mutableMapOf<String, com.shifenmiao.common.search.GlobalSearchResultPage>()
+        try {
+            globalSearchCoordinator.search(query, GLOBAL_SEARCH_LIMIT).collect { update ->
+                if (generation != searchGeneration) return@collect
+                pagesBySource[update.sourceId] = update.page
+                _globalSearchResults.value = pagesBySource.values
+                    .flatMap { it.results }
+                    .sortedWith(
+                        compareByDescending<GlobalSearchResult> { it.relevance }
+                            .thenBy { it.title.lowercase() }
                     )
-                }
+                _isGlobalSearchTruncated.value = pagesBySource.values.any { it.isTruncated }
+            }
+        } catch (cancelled: CancellationException) {
+            throw cancelled
+        } catch (_: Exception) {
+            if (generation == searchGeneration) {
+                _globalSearchResults.value = emptyList()
+                _isGlobalSearchTruncated.value = false
+            }
+        }
+        if (generation == searchGeneration) _isGlobalSearching.value = false
+    }
+
+    fun openGlobalSearchResult(
+        result: GlobalSearchResult,
+        context: Context,
+        onNavigate: (Screen) -> Unit,
+    ) {
+        when (val destination = result.destination) {
+            is GlobalSearchDestination.Navigate -> onNavigate(destination.screen)
+            is GlobalSearchDestination.OpenContent -> contentRouter.route(
+                uri = destination.uri.toUri(),
+                context = context,
+                onNavigate = onNavigate,
+                fallbackToExternal = false,
+            )
         }
     }
 
     fun recordClick(itemId: Int) {
-        CoroutineScope(ioDispatcher).launch {
+        componentScope.launch(ioDispatcher) {
             appDatabase.itemEntityDao().recordClick(itemId, System.currentTimeMillis())
         }
     }
 
-    private var searchReportJob: Job? = null
-
-    // 本次搜索页会话内已上报过的词,避免重复上报
-    private val reportedSearchTerms = mutableSetOf<String>()
-
-    /**
-     * 防抖上报搜索词(仅 google 渠道经 Firebase Analytics 生效,其余渠道 no-op):
-     * 停止输入 1.5s 后才上报,短于 2 个字符不上报,同一会话同一词只报一次
-     */
     private fun scheduleSearchTermReport(text: String) {
-        searchReportJob?.cancel()
+        searchReportJob = null
         val term = text.trim().lowercase()
         if (term.length < 2 || !reportedSearchTerms.add(term)) return
-        searchReportJob = CoroutineScope(ioDispatcher).launch {
+        searchReportJob = componentScope.launch(ioDispatcher) {
             delay(SEARCH_REPORT_DELAY_MS)
             analyticsManager.logEvent(
                 "search",
                 mapOf(
                     "search_term" to term.take(100),
-                    "result_count" to _searchItemList.value.size
+                    "result_count" to _searchItemList.value.size +
+                        _searchMessageEntity.value.size + _globalSearchResults.value.size
                 )
             )
         }
@@ -119,7 +213,6 @@ class SearchComponent @AssistedInject internal constructor(
     private fun scoreSearchItem(item: ItemWithCategoriesAndStats, queryLower: String): Int {
         val titleLower = item.item.title.lowercase()
         val descLower = item.item.description.lowercase()
-        // 英文标识符(FileBrowser / Crop / PdfTools…):去掉空格后比较,命中权重低于本地化标题
         val iconLower = item.item.iconName.orEmpty().lowercase()
         val keywordsLower = item.item.keywords.lowercase()
         val queryCompact = queryLower.replace(" ", "")
@@ -130,31 +223,12 @@ class SearchComponent @AssistedInject internal constructor(
             iconLower == queryCompact -> score += 250
             titleLower.contains(queryLower) -> score += 200
             queryCompact.isNotEmpty() && iconLower.contains(queryCompact) -> score += 150
-            // CMS 关键词(英文名/同义词/拉丁转写)命中:排在同义词层级
             keywordsLower.contains(queryLower) -> score += 130
             descLower.contains(queryLower) -> score += 100
         }
         if (item.item.recommend) score += 50
         score += (kotlin.math.ln(item.clickCount.coerceAtLeast(0).toDouble() + 1) * 5).toInt()
         return score
-    }
-
-    fun onMessageSearchQueryChange(text: String) {
-        if (text.isEmpty()) {
-            _searchMessageEntity.value = emptyList()
-            return
-        }
-        CoroutineScope(ioDispatcher).launch {
-            val formattedSearchString = "%$text%"
-            val queryLower = text.lowercase()
-            appDatabase.messageDao().searchQuestionOrAnswer(formattedSearchString)
-                .distinctUntilChanged().collect { messages ->
-                    _searchMessageEntity.value = messages.sortedWith(
-                        compareByDescending<MessageEntity> { scoreMessageEntity(it, queryLower) }
-                            .thenByDescending { it.createdAt }
-                    )
-                }
-        }
     }
 
     private fun scoreMessageEntity(message: MessageEntity, queryLower: String): Int {
@@ -182,6 +256,7 @@ class SearchComponent @AssistedInject internal constructor(
 
     private companion object {
         const val SEARCH_REPORT_DELAY_MS = 1500L
+        const val SEARCH_DEBOUNCE_MS = 300L
+        const val GLOBAL_SEARCH_LIMIT = 20
     }
-
 }

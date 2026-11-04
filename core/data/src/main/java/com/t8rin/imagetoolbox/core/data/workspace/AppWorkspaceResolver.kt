@@ -1,6 +1,8 @@
 package com.t8rin.imagetoolbox.core.data.workspace
 
+import android.net.Uri
 import android.os.Environment
+import android.provider.DocumentsContract
 import androidx.core.net.toUri
 import com.t8rin.imagetoolbox.core.data.utils.SafUriUtils
 import com.t8rin.imagetoolbox.core.settings.domain.SettingsProvider
@@ -34,6 +36,78 @@ class AppWorkspaceResolver @Inject constructor(
         }
     }
 
+    fun resolveSearchTarget(): AppWorkspaceSearchTarget {
+        val configuredUri = settingsProvider.settingsState.value.saveFolderUri
+            ?.takeIf { it.isNotBlank() }
+        if (configuredUri == null) {
+            return defaultWorkspaceRootFile().toLocalSearchTarget()
+        }
+
+        return runCatching {
+            val parsed = configuredUri.toInputUri()
+            when (parsed.scheme) {
+                null, "", "file" -> parsed.path
+                    ?.let(::File)
+                    ?.canonicalFile
+                    ?.toLocalSearchTarget()
+                    ?: AppWorkspaceSearchTarget.Unavailable
+
+                "content" -> resolveConfiguredContentSearchTarget(parsed)
+                else -> AppWorkspaceSearchTarget.Unavailable
+            }
+        }.getOrDefault(AppWorkspaceSearchTarget.Unavailable)
+    }
+
+    private fun resolveConfiguredContentSearchTarget(uri: Uri): AppWorkspaceSearchTarget {
+        if (DocumentsContract.isTreeUri(uri)) {
+            val documentId = DocumentsContract.getTreeDocumentId(uri)
+            if (documentId.isBlank() || isForbiddenExternalStorageDocument(uri, documentId)) {
+                return AppWorkspaceSearchTarget.Unavailable
+            }
+            return AppWorkspaceSearchTarget.Saf(treeUri = uri)
+        }
+
+        return SafUriUtils.documentUriToFileUri(uri)
+            ?.path
+            ?.let(::File)
+            ?.canonicalFile
+            ?.toLocalSearchTarget()
+            ?: AppWorkspaceSearchTarget.Unavailable
+    }
+
+    private fun File.toLocalSearchTarget(): AppWorkspaceSearchTarget {
+        return if (isForbiddenLocalSearchRoot()) {
+            AppWorkspaceSearchTarget.Unavailable
+        } else {
+            AppWorkspaceSearchTarget.Local(root = this)
+        }
+    }
+
+    @Suppress("DEPRECATION")
+    private fun File.isForbiddenLocalSearchRoot(): Boolean {
+        val rootPath = canonicalPath
+        if (rootPath == File.separator) return true
+
+        val externalStorageRoot = Environment.getExternalStorageDirectory().canonicalFile
+        if (rootPath == externalStorageRoot.path || externalStorageRoot.path.startsWith(rootPath + File.separator)) {
+            return true
+        }
+
+        val downloadRoot = Environment.getExternalStoragePublicDirectory(
+            Environment.DIRECTORY_DOWNLOADS,
+        ).canonicalFile
+        if (rootPath == downloadRoot.path) return true
+
+        val parentPath = parentFile?.canonicalPath
+        return parentPath == "/storage" || parentPath == "/mnt/media_rw"
+    }
+
+    private fun isForbiddenExternalStorageDocument(uri: Uri, documentId: String): Boolean {
+        if (uri.authority != EXTERNAL_STORAGE_AUTHORITY) return false
+        val relativePath = documentId.substringAfter(':', missingDelimiterValue = "")
+        return relativePath.isBlank() || relativePath.trim('/').equals("Download", ignoreCase = true)
+    }
+
     private fun resolveConfiguredWorkspaceRootFile(): File? {
         val rawUri = settingsProvider.settingsState.value.saveFolderUri ?: return null
         return runCatching {
@@ -57,12 +131,13 @@ class AppWorkspaceResolver @Inject constructor(
     }
 
     private fun String.toInputUri() = toUri().let { uri ->
-        if (uri.scheme.isNullOrBlank()) android.net.Uri.fromFile(File(this)) else uri
+        if (uri.scheme.isNullOrBlank()) Uri.fromFile(File(this)) else uri
     }
 
     companion object {
         private const val APP_WORKSPACE_NAME = "app_workspace"
         private const val DEFAULT_WORKSPACE_FOLDER_NAME = "OneBox"
+        private const val EXTERNAL_STORAGE_AUTHORITY = "com.android.externalstorage.documents"
     }
 }
 
@@ -71,3 +146,11 @@ data class AppWorkspaceRoot(
     val file: File,
     val description: String,
 )
+
+sealed interface AppWorkspaceSearchTarget {
+    data class Local(val root: File) : AppWorkspaceSearchTarget
+
+    data class Saf(val treeUri: Uri) : AppWorkspaceSearchTarget
+
+    data object Unavailable : AppWorkspaceSearchTarget
+}
