@@ -1421,7 +1421,7 @@ sealed class Screen(
             @SerialName("TodoDetail")
             data class TodoDetail(
                 val taskId: String,
-                val categoryId: String
+                val categoryId: String?
             ) : MarkTodoType
         }
     }

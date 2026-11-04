@@ -71,21 +71,25 @@ class BlessingEffectHostState {
     private val _trigger = mutableIntStateOf(0)
     private val _type = mutableStateOf<BlessingEffectType?>(null)
     private val _isActive = mutableStateOf(false)
-    private val _woodenFishEvents = mutableStateListOf<Int>()
+    private val _woodenFishEvents = mutableStateListOf<WoodenFishBurst>()
     private var endsAtUptime = 0L
 
     val trigger: Int get() = _trigger.intValue
     val type: BlessingEffectType? get() = _type.value
     val isActive: Boolean get() = _isActive.value
-    val woodenFishEvents: List<Int> get() = _woodenFishEvents
+    internal val woodenFishEvents: List<WoodenFishBurst> get() = _woodenFishEvents
 
     @Synchronized
-    fun show(type: BlessingEffectType): Boolean {
+    fun show(type: BlessingEffectType, message: String? = null): Boolean {
         if (type == BlessingEffectType.WoodenFish) {
-            return showWoodenFish()
+            return showWoodenFish(message)
         }
-        if (_isActive.value && SystemClock.uptimeMillis() < endsAtUptime) return false
+        // 同一段动画还在播时，这一下照样算数，但不把动画重头再放一遍。
+        if (_isActive.value && _type.value == type && SystemClock.uptimeMillis() < endsAtUptime) {
+            return true
+        }
 
+        _woodenFishEvents.clear()
         completionJob?.cancel()
         endsAtUptime = SystemClock.uptimeMillis() + type.durationMs
         _type.value = type
@@ -100,17 +104,21 @@ class BlessingEffectHostState {
         return true
     }
 
-    private fun showWoodenFish(): Boolean {
-        if (_isActive.value && _type.value != BlessingEffectType.WoodenFish) return false
+    private fun showWoodenFish(message: String?): Boolean {
+        if (_type.value != BlessingEffectType.WoodenFish) {
+            completionJob?.cancel()
+            completionJob = null
+            endsAtUptime = 0L
+        }
 
         _type.value = BlessingEffectType.WoodenFish
         _isActive.value = true
         _trigger.intValue += 1
         val eventId = _trigger.intValue
-        _woodenFishEvents.add(eventId)
+        _woodenFishEvents.add(WoodenFishBurst(id = eventId, message = message))
         scope.launch {
             delay(BlessingEffectType.WoodenFish.durationMs)
-            _woodenFishEvents.remove(eventId)
+            _woodenFishEvents.removeAll { it.id == eventId }
             if (_woodenFishEvents.isEmpty() && _type.value == BlessingEffectType.WoodenFish) {
                 _isActive.value = false
                 _type.value = null
@@ -129,6 +137,11 @@ class BlessingEffectHostState {
     }
 }
 
+internal data class WoodenFishBurst(
+    val id: Int,
+    val message: String?,
+)
+
 @Composable
 fun BlessingEffectHost(
     hostState: BlessingEffectHostState,
@@ -143,12 +156,15 @@ fun BlessingEffectHost(
             placeAboveAll = true,
             isTouchable = false,
         ) {
-            WoodenFishEffect(eventIds = hostState.woodenFishEvents)
+            WoodenFishEffect(events = hostState.woodenFishEvents)
         }
         return
     }
 
-    FullscreenPopup(placeAboveAll = true) {
+    FullscreenPopup(
+        placeAboveAll = true,
+        isTouchable = false,
+    ) {
         key(trigger) {
             when (type) {
                 BlessingEffectType.WealthGod,
@@ -182,20 +198,20 @@ fun BlessingEffectHost(
 
 @Composable
 private fun WoodenFishEffect(
-    eventIds: List<Int>,
+    events: List<WoodenFishBurst>,
 ) {
-    val message = stringResource(R.string.blessing_effect_merit_plus_one)
+    val defaultMessage = stringResource(R.string.blessing_effect_merit_plus_one)
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val density = LocalDensity.current
         val widthPx = with(density) { maxWidth.toPx() }
         val heightPx = with(density) { maxHeight.toPx() }
-        eventIds.forEach { eventId ->
-            key(eventId) {
+        events.forEach { event ->
+            key(event.id) {
                 FloatingMeritBubble(
-                    message = message,
+                    message = event.message ?: defaultMessage,
                     horizontalOffsetPx = widthPx *
-                            (((eventId * 37) % 70) / 100f - 0.35f),
-                    travelDistancePx = heightPx * (0.35f + (eventId % 4) * 0.05f),
+                            (((event.id * 37) % 70) / 100f - 0.35f),
+                    travelDistancePx = heightPx * (0.35f + (event.id % 4) * 0.05f),
                 )
             }
         }

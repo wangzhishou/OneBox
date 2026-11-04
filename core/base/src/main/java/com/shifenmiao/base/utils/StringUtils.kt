@@ -227,14 +227,25 @@ object StringUtils {
         query: String,
         highlightColor: Color = Color.Red,
         highlightBackgroundColor: Color = Color.Red.copy(0.1f),
+    ): AnnotatedString = getHighlightedText(
+        text = firstReadableSnippet(text),
+        query = query,
+        highlightColor = highlightColor,
+        highlightBackgroundColor = highlightBackgroundColor,
+    )
+
+    fun getHighlightedText(
+        text: String,
+        query: String,
+        highlightColor: Color = Color.Red,
+        highlightBackgroundColor: Color = Color.Red.copy(0.1f),
     ): AnnotatedString {
         if (text.isEmpty()) return AnnotatedString(text)
-        val snippet = firstReadableSnippet(text)
-        if (query.isEmpty()) return AnnotatedString(snippet)
+        if (query.isEmpty()) return AnnotatedString(text)
 
         return buildAnnotatedString {
-            append(snippet)
-            Regex.escape(query).toRegex(RegexOption.IGNORE_CASE).findAll(snippet).forEach { result ->
+            append(text)
+            Regex.escape(query).toRegex(RegexOption.IGNORE_CASE).findAll(text).forEach { result ->
                 addStyle(
                     style = SpanStyle(
                         color = highlightColor,

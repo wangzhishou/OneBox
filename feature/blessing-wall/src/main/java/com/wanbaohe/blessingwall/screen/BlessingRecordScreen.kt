@@ -1,5 +1,6 @@
 package com.wanbaohe.blessingwall.screen
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,6 +34,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -335,7 +338,12 @@ private fun DailyRecordItem(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Text(text = blessingTypeEmoji(type), fontSize = 14.sp)
+                        Image(
+                            painter = painterResource(blessingTypeIcon(type)),
+                            contentDescription = null,
+                            contentScale = ContentScale.Fit,
+                            modifier = Modifier.size(20.dp),
+                        )
                         Spacer(modifier = Modifier.width(8.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
@@ -372,7 +380,7 @@ private fun DailyRecordItem(
                             text = stringResource(R.string.blessing_record_note_prefix, wish),
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             style = MaterialTheme.typography.bodySmall,
-                            modifier = Modifier.padding(start = 26.dp, top = 2.dp),
+                            modifier = Modifier.padding(start = 28.dp, top = 2.dp),
                         )
                     }
                 }
@@ -417,17 +425,17 @@ private fun tabSubtitleFallback(type: BlessingType): String = stringResource(
     }
 )
 
-private fun blessingTypeEmoji(type: BlessingType): String = when (type) {
-    BlessingType.WOODEN_FISH -> "🪘"
-    BlessingType.WEALTH_GOD -> "💰"
-    BlessingType.GUANYIN -> "🌸"
-    BlessingType.INCENSE -> "🕯"
-    BlessingType.HAMSA -> "🧿"
-    BlessingType.CUPID -> "💘"
-    BlessingType.CLOVER -> "🍀"
-    BlessingType.ANGEL -> "😇"
-    BlessingType.LUCKY_CAT -> "🐱"
-    BlessingType.DREAMCATCHER -> "🌙"
-    BlessingType.WISHBONE -> "🦴"
-    BlessingType.HORSESHOE -> "🌟"
+private fun blessingTypeIcon(type: BlessingType): Int = when (type) {
+    BlessingType.WOODEN_FISH -> R.drawable.blessing_tab_wooden_fish
+    BlessingType.WEALTH_GOD -> R.drawable.blessing_tab_wealth_god
+    BlessingType.GUANYIN -> R.drawable.blessing_tab_guanyin
+    BlessingType.INCENSE -> R.drawable.blessing_tab_incense
+    BlessingType.HAMSA -> R.drawable.blessing_tab_hamsa
+    BlessingType.CUPID -> R.drawable.blessing_tab_cupid
+    BlessingType.CLOVER -> R.drawable.blessing_tab_clover
+    BlessingType.ANGEL -> R.drawable.blessing_tab_angel
+    BlessingType.LUCKY_CAT -> R.drawable.blessing_tab_lucky_cat
+    BlessingType.DREAMCATCHER -> R.drawable.blessing_tab_dreamcatcher
+    BlessingType.WISHBONE -> R.drawable.blessing_tab_wishbone
+    BlessingType.HORSESHOE -> R.drawable.blessing_tab_horseshoe
 }

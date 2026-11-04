@@ -66,6 +66,9 @@ class MarkTodoRepository @Inject constructor(
 
     suspend fun getTaskById(taskId: String): MarkTodoTaskEntity? = taskDao.getById(taskId)
 
+    suspend fun searchTasks(query: String, limit: Int): List<MarkTodoTaskEntity> =
+        taskDao.search(query = query, limit = limit)
+
     suspend fun getTaskByIdIncludingDeleted(taskId: String): MarkTodoTaskEntity? =
         taskDao.getByIdIncludingDeleted(taskId)
 

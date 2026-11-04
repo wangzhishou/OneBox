@@ -8,6 +8,8 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +23,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.TextAutoSize
@@ -31,18 +34,17 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.automirrored.outlined.VolumeOff
-import androidx.compose.material.icons.automirrored.outlined.VolumeUp
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -54,11 +56,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -69,6 +71,7 @@ import androidx.compose.ui.unit.sp
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.core.ui.widget.enhanced.longPress
 import com.wanbaohe.core.ui.widget.glass.GlassButton
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
@@ -83,6 +86,10 @@ import com.wanbaohe.blessingwall.model.BlessingType
 import com.wanbaohe.blessingwall.model.BlessingWallOrder
 import com.wanbaohe.blessingwall.model.resolveTabText
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.Locale
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.VolumeOff
@@ -244,7 +251,6 @@ fun BlessingWallScreen(component: BlessingWallComponent) {
         val orderedTypes = BlessingWallOrder.types()
         allPageConfigs.sortedBy { orderedTypes.indexOf(it.type) }
     }
-    val isBlessingEffectActive = AppToastHost.blessingEffectState.isActive
     val colorScheme = MaterialTheme.colorScheme
     val basePalettes = listOf(
         BlessingPalette(
@@ -271,24 +277,65 @@ fun BlessingWallScreen(component: BlessingWallComponent) {
     val palettes = pageConfigs.mapIndexed { index, _ -> basePalettes[index % basePalettes.size] }
     val selectedPalette = palettes[pagerState.currentPage]
 
+    val shareActions = remember { mutableStateMapOf<Int, () -> Unit>() }
+    val meritCycle = stringResource(R.string.blessing_merit_cycle)
+    val historyTitle = remember(isHistoryMode, component.targetDate) {
+        if (!isHistoryMode) {
+            ""
+        } else {
+            runCatching {
+                LocalDate.parse(component.targetDate).format(
+                    DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
+                        .withLocale(Locale.getDefault()),
+                )
+            }.getOrDefault(component.targetDate)
+        }
+    }
+
     LaunchedEffect(pagerState.currentPage) {
         component.onPageChanged(pagerState.currentPage)
     }
 
     BaseScreen(
-        title = if (isHistoryMode) component.targetDate else "",
+        title = historyTitle,
         onGoBack = component.onGoBack,
         actions = {
             if (!isHistoryMode) {
                 IconButton(
+                    onClick = component::toggleSoundEnabled,
+                    colors = AppTheme.colors.iconButtonColors(),
+                ) {
+                    Icon(
+                        imageVector = if (soundEnabled) {
+                            com.t8rin.imagetoolbox.core.resources.Icons.Outlined.VolumeUp
+                        } else {
+                            com.t8rin.imagetoolbox.core.resources.Icons.Outlined.VolumeOff
+                        },
+                        contentDescription = stringResource(
+                            if (soundEnabled) R.string.blessing_sound_on
+                            else R.string.blessing_sound_off
+                        ),
+                    )
+                }
+                IconButton(
                     onClick = component::navigateToRecord,
-                    colors = AppTheme.colors.iconButtonColors()
+                    colors = AppTheme.colors.iconButtonColors(),
                 ) {
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory,
-                        contentDescription = stringResource(R.string.blessing_record_title)
+                        contentDescription = stringResource(R.string.blessing_record_title),
                     )
                 }
+            }
+            IconButton(
+                onClick = { shareActions[pagerState.currentPage]?.invoke() },
+                enabled = shareActions[pagerState.currentPage] != null,
+                colors = AppTheme.colors.iconButtonColors(),
+            ) {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineShare,
+                    contentDescription = stringResource(R.string.blessing_share),
+                )
             }
         }
     ) {
@@ -337,20 +384,32 @@ fun BlessingWallScreen(component: BlessingWallComponent) {
                     wish = uiState.wishes[type].orEmpty(),
                     customization = customization,
                     isWoodenFish = effectType == BlessingEffectType.WoodenFish,
-                    isBlessEnabled = effectType == BlessingEffectType.WoodenFish ||
-                        !isBlessingEffectActive,
                     onBless = {
-                        AppToastHost.showBlessingEffect(effectType).also { accepted ->
-                            if (accepted) component.onBless(type, pageTitle)
+                        val message = if (
+                            effectType == BlessingEffectType.WoodenFish &&
+                            (count + 1) % WOODEN_FISH_CYCLE == 0
+                        ) {
+                            meritCycle
+                        } else {
+                            null
                         }
+                        AppToastHost.showBlessingEffect(effectType, message)
+                        component.onBless(type, pageTitle)
+                        true
                     },
                     onSaveWish = { component.saveWish(type, it) },
                     onSaveTabText = { title, subtitle ->
                         component.saveTabCustomization(type, title, subtitle)
                     },
-                    soundEnabled = soundEnabled,
-                    onToggleSound = component::toggleSoundEnabled,
                     onShare = { bitmap -> component.shareBitmap(bitmap) },
+                    isShareSource = page == pagerState.currentPage,
+                    onShareActionChanged = { action ->
+                        if (action == null) {
+                            shareActions.remove(page)
+                        } else {
+                            shareActions[page] = action
+                        }
+                    },
                     readOnly = isHistoryMode,
                 )
             }
@@ -368,6 +427,9 @@ fun BlessingWallScreen(component: BlessingWallComponent) {
                         stringResource(config.title),
                     )
                 },
+                tabCount = { index ->
+                    uiState.todayCounts[pageConfigs[index].type] ?: 0
+                },
                 onTabSelected = { index ->
                     pagerScope.launch {
                         pagerState.animateScrollToPage(index)
@@ -384,6 +446,7 @@ private fun BlessingBottomTabBar(
     selectedIndex: Int,
     palette: BlessingPalette,
     tabTitle: @Composable (Int) -> String,
+    tabCount: (Int) -> Int,
     onTabSelected: (Int) -> Unit,
 ) {
     val listState = rememberLazyListState()
@@ -412,16 +475,34 @@ private fun BlessingBottomTabBar(
                     .clickable { onTabSelected(index) }
                     .padding(horizontal = 2.dp, vertical = 4.dp),
             ) {
-                Image(
-                    painter = painterResource(pageConfigs[index].tabIconRes),
-                    contentDescription = null,
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier
-                        .size(30.dp)
-                        .graphicsLayer {
-                            alpha = if (isSelected) 1f else 0.55f
-                        },
-                )
+                Box {
+                    Image(
+                        painter = painterResource(pageConfigs[index].tabIconRes),
+                        contentDescription = null,
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .size(30.dp)
+                            .graphicsLayer {
+                                alpha = if (isSelected) 1f else 0.55f
+                            },
+                    )
+                    if (tabCount(index) > 0) {
+                        Box(
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .offset(x = 2.dp, y = (-1).dp)
+                                .size(6.dp)
+                                .background(
+                                    color = if (isSelected) {
+                                        palette.accent
+                                    } else {
+                                        MaterialTheme.colorScheme.onPrimaryContainer
+                                    },
+                                    shape = CircleShape,
+                                ),
+                        )
+                    }
+                }
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = title,
@@ -434,7 +515,7 @@ private fun BlessingBottomTabBar(
                     maxLines = 1,
                     softWrap = false,
                     textAlign = TextAlign.Center,
-                    overflow = TextOverflow.Clip,
+                    overflow = TextOverflow.Ellipsis,
                     autoSize = TextAutoSize.StepBased(
                         minFontSize = 8.sp,
                         maxFontSize = 12.sp,
@@ -460,6 +541,7 @@ private fun BlessingBottomTabBar(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun BlessingPage(
     imageRes: Int,
@@ -473,18 +555,16 @@ private fun BlessingPage(
     wish: String,
     customization: BlessingTabCustomization,
     isWoodenFish: Boolean,
-    isBlessEnabled: Boolean,
     onBless: () -> Boolean,
     onSaveWish: (String) -> Unit,
     onSaveTabText: (String, String) -> Unit,
-    soundEnabled: Boolean,
-    onToggleSound: () -> Unit,
     onShare: (Bitmap) -> Unit,
+    isShareSource: Boolean,
+    onShareActionChanged: ((() -> Unit)?) -> Unit,
     readOnly: Boolean,
 ) {
     var clickScale by remember { mutableFloatStateOf(1f) }
     var hammerStrikeTrigger by remember { mutableIntStateOf(0) }
-    var isWishVisible by remember { mutableStateOf(false) }
     var isWishEditorVisible by remember { mutableStateOf(false) }
     var wishDraft by remember(wish) { mutableStateOf(wish) }
     var isTabTextEditorVisible by remember { mutableStateOf(false) }
@@ -496,15 +576,13 @@ private fun BlessingPage(
         finishedListener = { clickScale = 1f },
         label = "bless_scale"
     )
-    val cardRotation by animateFloatAsState(
-        targetValue = if (isWishVisible) 180f else 0f,
-        animationSpec = tween(durationMillis = 420),
-        label = "wish_card_rotation",
-    )
-    val density = LocalDensity.current.density
     val hammerProgress = remember { Animatable(0f) }
     val captureController = rememberCaptureController()
     val shareScope = rememberCoroutineScope()
+    val haptics = LocalHapticFeedback.current
+    val onShareUpdated = rememberUpdatedState(onShare)
+    val onShareActionChangedUpdated = rememberUpdatedState(onShareActionChanged)
+    val titleInteraction = remember { MutableInteractionSource() }
 
     LaunchedEffect(hammerStrikeTrigger) {
         if (hammerStrikeTrigger <= 0) return@LaunchedEffect
@@ -513,7 +591,34 @@ private fun BlessingPage(
         hammerProgress.animateTo(0f, tween(durationMillis = 140))
     }
 
+    DisposableEffect(isShareSource) {
+        if (isShareSource) {
+            onShareActionChangedUpdated.value {
+                shareScope.launch {
+                    runCatching { captureController.bitmap() }
+                        .onSuccess { onShareUpdated.value(it) }
+                }
+            }
+        }
+        onDispose {
+            if (isShareSource) onShareActionChangedUpdated.value(null)
+        }
+    }
+
+    fun openTabTextEditor() {
+        titleDraft = customization.title
+        subtitleDraft = customization.subtitle
+        isTabTextEditorVisible = true
+    }
+
+    fun openWishEditor() {
+        wishDraft = wish
+        isWishEditorVisible = true
+    }
+
     fun triggerBlessing() {
+        if (readOnly) return
+        haptics.longPress()
         if (onBless()) {
             clickScale = 0.92f
             if (isWoodenFish) hammerStrikeTrigger += 1
@@ -643,74 +748,31 @@ private fun BlessingPage(
             color = palette.accent,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(horizontal = 24.dp)
+                .then(
+                    if (readOnly) {
+                        Modifier
+                    } else {
+                        Modifier.combinedClickable(
+                            interactionSource = titleInteraction,
+                            indication = null,
+                            onClick = {},
+                            onLongClick = ::openTabTextEditor,
+                            onLongClickLabel = stringResource(R.string.blessing_tab_text_edit),
+                        )
+                    }
+                ),
         )
         Spacer(modifier = Modifier.height(6.dp))
         Text(
             text = subtitle,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(horizontal = 24.dp),
         )
-        if (!readOnly) {
-            Spacer(modifier = Modifier.height(4.dp))
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                IconButton(
-                    onClick = {
-                        titleDraft = customization.title
-                        subtitleDraft = customization.subtitle
-                        isTabTextEditorVisible = true
-                    },
-                    modifier = Modifier.size(28.dp),
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
-                        contentDescription = stringResource(R.string.blessing_tab_text_edit),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.32f),
-                        modifier = Modifier.size(16.dp),
-                    )
-                }
-                Spacer(modifier = Modifier.width(12.dp))
-                IconButton(
-                    onClick = onToggleSound,
-                    modifier = Modifier.size(28.dp),
-                ) {
-                    Icon(
-                        imageVector = if (soundEnabled) {
-                            com.t8rin.imagetoolbox.core.resources.Icons.Outlined.VolumeUp
-                        } else {
-                            com.t8rin.imagetoolbox.core.resources.Icons.Outlined.VolumeOff
-                        },
-                        contentDescription = stringResource(
-                            if (soundEnabled) R.string.blessing_sound_on
-                            else R.string.blessing_sound_off
-                        ),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                            alpha = if (soundEnabled) 0.32f else 0.18f
-                        ),
-                        modifier = Modifier.size(16.dp),
-                    )
-                }
-                Spacer(modifier = Modifier.width(12.dp))
-                IconButton(
-                    onClick = {
-                        shareScope.launch {
-                            runCatching { captureController.bitmap() }
-                                .onSuccess(onShare)
-                        }
-                    },
-                    modifier = Modifier.size(28.dp),
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineShare,
-                        contentDescription = stringResource(R.string.blessing_share),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.32f),
-                        modifier = Modifier.size(16.dp),
-                    )
-                }
-            }
-        }
         Spacer(modifier = Modifier.height(8.dp))
 
         Box(
@@ -721,7 +783,7 @@ private fun BlessingPage(
                     scaleX = animatedScale,
                     scaleY = animatedScale,
                 )
-                .clickable(enabled = isBlessEnabled && !readOnly, onClick = ::triggerBlessing),
+                .clickable(enabled = !readOnly, onClick = ::triggerBlessing),
         ) {
             Image(
                 painter = painterResource(imageRes),
@@ -764,7 +826,6 @@ private fun BlessingPage(
         } else {
             GlassButton(
                 onClick = ::triggerBlessing,
-                enabled = isBlessEnabled,
                 shape = RoundedCornerShape(50),
                 modifier = Modifier
                     .width(ACTION_CARD_WIDTH)
@@ -790,94 +851,84 @@ private fun BlessingPage(
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         GlassCard(
-            onClick = { isWishVisible = !isWishVisible },
+            onClick = ::openWishEditor,
             shape = RoundedCornerShape(16.dp),
-            modifier = Modifier
-                .width(ACTION_CARD_WIDTH)
-                .height(STAT_CARD_HEIGHT)
-                .graphicsLayer {
-                    rotationY = cardRotation
-                    cameraDistance = 12f * density
-                },
+            modifier = Modifier.width(ACTION_CARD_WIDTH),
             colors = CardDefaults.cardColors(
                 containerColor = palette.buttonContainer,
                 contentColor = palette.buttonContent,
             ),
             borderWidth = 0.35.dp,
         ) {
-            if (cardRotation <= 90f) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(vertical = 14.dp, horizontal = 24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = wish.ifBlank { stringResource(R.string.blessing_wish_placeholder) },
+                    modifier = Modifier.weight(1f),
+                    color = palette.buttonContent.copy(alpha = if (wish.isBlank()) 0.45f else 0.82f),
+                    style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
+                    contentDescription = stringResource(R.string.blessing_wish_edit),
+                    tint = palette.buttonContent.copy(alpha = 0.55f),
+                    modifier = Modifier.size(18.dp),
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        GlassCard(
+            shape = RoundedCornerShape(16.dp),
+            modifier = Modifier
+                .width(ACTION_CARD_WIDTH)
+                .height(STAT_CARD_HEIGHT),
+            colors = CardDefaults.cardColors(
+                containerColor = palette.buttonContainer,
+                contentColor = palette.buttonContent,
+            ),
+            borderWidth = 0.35.dp,
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(vertical = 14.dp, horizontal = 24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Text(
+                    text = statTitle,
+                    modifier = Modifier.fillMaxWidth(),
+                    color = palette.buttonContent.copy(alpha = 0.45f),
+                    fontSize = 14.sp,
+                    textAlign = TextAlign.Center,
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Row(verticalAlignment = Alignment.Bottom) {
                     Text(
-                        text = statTitle,
-                        modifier = Modifier.fillMaxWidth(),
+                        text = count.toString(),
+                        color = palette.accent.copy(alpha = 0.6f),
+                        fontSize = 40.sp,
+                        fontWeight = FontWeight.Bold,
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = stringResource(R.string.blessing_count_unit),
                         color = palette.buttonContent.copy(alpha = 0.45f),
-                        fontSize = 14.sp,
-                        textAlign = TextAlign.Center,
+                        fontSize = 16.sp,
+                        modifier = Modifier.padding(bottom = 6.dp)
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Row(verticalAlignment = Alignment.Bottom) {
-                        Text(
-                            text = count.toString(),
-                            color = palette.accent.copy(alpha = 0.6f),
-                            fontSize = 40.sp,
-                            fontWeight = FontWeight.Bold,
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = stringResource(R.string.blessing_count_unit),
-                            color = palette.buttonContent.copy(alpha = 0.45f),
-                            fontSize = 16.sp,
-                            modifier = Modifier.padding(bottom = 6.dp)
-                        )
-                    }
-                }
-            } else {
-                Column(
-                    modifier = Modifier
-                        .graphicsLayer { rotationY = 180f }
-                        .fillMaxSize()
-                        .padding(vertical = 14.dp, horizontal = 20.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                ) {
-                    Text(
-                        text = wish.ifBlank {
-                            stringResource(R.string.blessing_wish_placeholder)
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                        color = palette.buttonContent.copy(
-                            alpha = if (wish.isBlank()) 0.35f else 0.55f
-                        ),
-                        style = MaterialTheme.typography.bodyMedium,
-                        textAlign = TextAlign.Center,
-                        maxLines = 3,
-                    )
-                    Spacer(modifier = Modifier.height(6.dp))
-                    if (!readOnly) {
-                        IconButton(
-                            onClick = {
-                                wishDraft = wish
-                                isWishEditorVisible = true
-                            },
-                            modifier = Modifier.size(32.dp),
-                        ) {
-                            Icon(
-                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
-                                contentDescription = stringResource(R.string.blessing_wish_edit),
-                                tint = palette.buttonContent.copy(alpha = 0.45f),
-                                modifier = Modifier.size(18.dp),
-                            )
-                        }
-                    }
                 }
             }
         }
@@ -904,6 +955,7 @@ private data class BlessingPageConfig(
 
 private val ACTION_CARD_WIDTH = 280.dp
 private val STAT_CARD_HEIGHT = 116.dp
+private const val WOODEN_FISH_CYCLE = 108
 private const val MAX_WISH_LENGTH = 80
 private const val MAX_TITLE_LENGTH = 12
 private const val MAX_SUBTITLE_LENGTH = 30

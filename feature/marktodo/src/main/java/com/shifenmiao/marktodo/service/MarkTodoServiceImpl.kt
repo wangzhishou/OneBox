@@ -537,6 +537,10 @@ class MarkTodoServiceImpl @Inject constructor(
         repository.getInboxTasks().map { it.toDto() }
     }
 
+    override suspend fun searchTasks(query: String, limit: Int): List<TodoTaskDto> = withContext(Dispatchers.IO) {
+        repository.searchTasks(query, limit).map { it.toDto() }
+    }
+
     override suspend fun findCategoryByTitle(title: String): CategoryLookup? = withContext(Dispatchers.IO) {
         repository.getDashboard()
             .find { it.category.title.equals(title, ignoreCase = true) }

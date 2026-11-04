@@ -13,6 +13,9 @@ interface BlessingWishDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun save(entity: BlessingWishEntity)
 
+    @Query("SELECT * FROM blessing_wish")
+    fun observeAll(): Flow<List<BlessingWishEntity>>
+
     @Query("SELECT * FROM blessing_wish WHERE date = :date ORDER BY updated_at DESC")
     fun observeByDate(date: String): Flow<List<BlessingWishEntity>>
 
