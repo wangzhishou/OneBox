@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -79,6 +81,9 @@ import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyGridState
 
+/** 当前视图待办少于此数时不显示搜索框。 */
+private const val SearchFieldMinTaskCount = 8
+
 @Composable
 fun MarkTodoScreen(
     markTodoComponent: MarkTodoComponent,
@@ -108,6 +113,21 @@ fun MarkTodoScreen(
             flattened
         }
     }
+    val listTaskCount = remember(
+        scopedTasks,
+        uiState.filter,
+        uiState.sort,
+        uiState.pendingCompletionIds,
+    ) {
+        TodoTaskQuery.filterAndSort(
+            tasks = scopedTasks,
+            filter = uiState.filter,
+            sort = uiState.sort,
+            retainedCompletedTaskIds = uiState.pendingCompletionIds,
+        ).size
+    }
+    val showSearchField = uiState.searchQuery.isNotBlank() ||
+        listTaskCount >= SearchFieldMinTaskCount
     val effectiveFilter = remember(uiState.searchQuery, uiState.filter) {
         if (uiState.searchQuery.isNotBlank() && uiState.filter == TaskFilter()) {
             uiState.filter.copy(completion = TaskCompletionFilter.ALL)
@@ -168,19 +188,23 @@ fun MarkTodoScreen(
         isShowDefaultActions = false,
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            GlassSearchTextField(
-                value = uiState.searchQuery,
-                onValueChange = {
-                    markTodoComponent.handleEvent(MarkTodoUiEvent.SearchQueryChanged(it))
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = OneBoxDesignSystem.screenPadding,
-                        vertical = OneBoxDesignSystem.compactSpacing,
-                    ),
-                placeholder = stringResource(R.string.p1_search_tasks),
-            )
+            if (showSearchField) {
+                GlassSearchTextField(
+                    value = uiState.searchQuery,
+                    onValueChange = {
+                        markTodoComponent.handleEvent(MarkTodoUiEvent.SearchQueryChanged(it))
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = OneBoxDesignSystem.screenPadding,
+                            vertical = OneBoxDesignSystem.compactSpacing,
+                        ),
+                    placeholder = stringResource(R.string.p1_search_tasks),
+                )
+            } else {
+                Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
+            }
 
             QueryShortcutBar(
                 filter = uiState.filter,

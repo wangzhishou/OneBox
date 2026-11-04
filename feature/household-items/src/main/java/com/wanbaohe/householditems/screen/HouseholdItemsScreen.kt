@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -83,6 +84,9 @@ import com.wanbaohe.householditems.model.subtreeLocationIds
 import java.io.File
 import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.filled.MoreVert
+
+/** 物品少于此数时不显示搜索框。 */
+private const val SearchFieldMinItemCount = 8
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 家庭物品主页:底部三 tab(物品 / 位置 / 统计),列表 tab = 搜索 + 位置面包屑浏览
@@ -207,15 +211,21 @@ private fun ListTab(
     component: HouseholdItemsComponent,
     modifier: Modifier = Modifier,
 ) {
+    val showSearchField = uiState.searchQuery.isNotBlank() ||
+        uiState.stats.totalItems >= SearchFieldMinItemCount
     Column(modifier = modifier) {
-        GlassSearchTextField(
-            value = uiState.searchQuery,
-            onValueChange = component::onSearchQueryChange,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            placeholder = stringResource(R.string.household_search_hint),
-        )
+        if (showSearchField) {
+            GlassSearchTextField(
+                value = uiState.searchQuery,
+                onValueChange = component::onSearchQueryChange,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                placeholder = stringResource(R.string.household_search_hint),
+            )
+        } else {
+            Spacer(modifier = Modifier.height(8.dp))
+        }
         when {
             uiState.searchQuery.isNotBlank() -> SearchResults(
                 items = uiState.items,
