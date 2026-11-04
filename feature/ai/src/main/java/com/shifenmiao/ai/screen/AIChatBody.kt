@@ -29,9 +29,6 @@ fun AIChatBody(
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
     showNavigationBarsPadding: Boolean = false,
-    isTextSelectionMode: Boolean = false,
-    onEnterTextSelectionMode: () -> Unit = {},
-    onExitTextSelectionMode: () -> Unit = {},
 ) {
     val chatUIState by aiChatComponent.chatUIState.collectAsState()
     val messageUiModels by aiChatComponent.messageUiModels.collectAsState()
@@ -71,9 +68,6 @@ fun AIChatBody(
                     lazyListState = lazyListState,
                     appComponent = appComponent,
                     aiChatComponent = aiChatComponent,
-                    isTextSelectionMode = isTextSelectionMode,
-                    onEnterTextSelectionMode = onEnterTextSelectionMode,
-                    onExitTextSelectionMode = onExitTextSelectionMode,
                 )
             }
 

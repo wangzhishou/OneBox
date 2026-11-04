@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,7 +19,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.text.selection.rememberSelectionState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,7 +38,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.halilibo.richtext.ui.a2ui.LocalA2uiRenderer
@@ -74,7 +72,6 @@ import com.shifenmiao.model.state.LocalChatUIState
 import com.shifenmiao.model.state.PageState
 import com.shifenmiao.theme.AppTheme
 import com.shifenmiao.webview.mermaid.ProvideMermaidRenderer
-import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAddAiChat
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
@@ -100,7 +97,6 @@ fun AIChatScreen(
     val lazyListState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
     val onNavigate = LocalOnNavigate.current
-    var isTextSelectionMode by remember { mutableStateOf(false) }
     val isAtBottom by remember {
         derivedStateOf {
             lazyListState.firstVisibleItemIndex == 0 && lazyListState.firstVisibleItemScrollOffset == 0
@@ -126,24 +122,11 @@ fun AIChatScreen(
     LaunchedEffect(isAtBottom) {
         if (isAtBottom) hasUnseenNewMessage = false
     }
-    LaunchedEffect(conversation.id) {
-        isTextSelectionMode = false
-    }
-    LaunchedEffect(chatUIState.chatActive) {
-        if (chatUIState.chatActive) {
-            isTextSelectionMode = false
-        }
-    }
-
     CompositionLocalProvider(
         LocalChatUIState provides chatUIState,
     ) {
         BaseScreen(
-            title = if (isTextSelectionMode) {
-                stringResource(R.string.select_text)
-            } else {
-                conversation.miniAppTitle()
-            },
+            title = conversation.miniAppTitle(),
             actions = {
                 DisableContainer(
                     enabled = chatUIState.pageState != PageState.INITIALIZING
@@ -175,19 +158,11 @@ fun AIChatScreen(
                         }
 
                         IconButton(onClick = {
-                            if (isTextSelectionMode) {
-                                isTextSelectionMode = false
-                            } else {
-                                aiChatComponent.changeConversationId(Date().time.toString())
-                            }
+                            aiChatComponent.changeConversationId(Date().time.toString())
                         }) {
                             Icon(
-                                imageVector = if (isTextSelectionMode) com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAddAiChat,
-                                contentDescription = if (isTextSelectionMode) {
-                                    stringResource(R.string.close)
-                                } else {
-                                    stringResource(R.string.nav_add)
-                                },
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAddAiChat,
+                                contentDescription = stringResource(R.string.nav_add),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
@@ -196,10 +171,6 @@ fun AIChatScreen(
             },
             onGoBack = {
                 when {
-                    isTextSelectionMode -> {
-                        isTextSelectionMode = false
-                    }
-
                     chatUIState.showHistory -> {
                         aiChatComponent.hideHistory()
                     }
@@ -252,18 +223,6 @@ fun AIChatScreen(
                 appComponent = appComponent,
                 aiChatComponent = aiChatComponent,
                 onNavigate = onNavigate,
-                isTextSelectionMode = isTextSelectionMode,
-                onEnterTextSelectionMode = {
-                    enterChatTextSelectionMode(
-                        isTextSelectionMode = isTextSelectionMode,
-                        onEnter = {
-                            isTextSelectionMode = true
-                        }
-                    )
-                },
-                onExitTextSelectionMode = {
-                    isTextSelectionMode = false
-                }
             )
         }
 
@@ -284,9 +243,6 @@ fun ChatContent(
     appComponent: AppComponent,
     aiChatComponent: AIChatComponent,
     onNavigate: (Screen) -> Unit = {},
-    isTextSelectionMode: Boolean = false,
-    onEnterTextSelectionMode: () -> Unit = {},
-    onExitTextSelectionMode: () -> Unit = {}
 ) {
     val conversation = aiChatComponent.conversation.collectAsState()
     val chatInputComponent = aiChatComponent.chatInputComponent
@@ -338,9 +294,7 @@ fun ChatContent(
                 appComponent = appComponent,
                 aiChatComponent = aiChatComponent,
                 conversation = conversation.value,
-                isTextSelectionMode = isTextSelectionMode,
-                onEnterTextSelectionMode = onEnterTextSelectionMode,
-                onExitTextSelectionMode = onExitTextSelectionMode,
+                onNavigate = onNavigate,
                 onSuggestionClick = { suggestion ->
                     chatInputComponent.onInputTextChange(suggestion)
                 }
@@ -355,7 +309,6 @@ fun ChatContent(
                 onShowToolCenter = {
                     showToolCenter = true
                 },
-                onSendMessage = onExitTextSelectionMode,
                 onImagePreview = { uri ->
                     onNavigate(
                         Screen.ImageViewer(
@@ -451,16 +404,21 @@ fun ChatMessagesList(
     aiChatComponent: AIChatComponent,
     chatUIState: ChatUIState,
     conversation: Conversation,
-    isTextSelectionMode: Boolean = false,
-    onEnterTextSelectionMode: () -> Unit = {},
-    onExitTextSelectionMode: () -> Unit = {},
+    onNavigate: (Screen) -> Unit = {},
     onSuggestionClick: (String) -> Unit,
     chatInputComponent: ChatInputComponent
 ) {
+    val selectionState = rememberSelectionState()
+    LaunchedEffect(conversation.id) {
+        selectionState.clear()
+    }
+    LaunchedEffect(chatUIState.chatActive) {
+        if (chatUIState.chatActive) selectionState.clear()
+    }
     val codeBlockClickListener = rememberCodeBlockClickListener(
         appComponent = appComponent,
         onA2uiSubmit = { formData ->
-            onExitTextSelectionMode()
+            selectionState.clear()
             aiChatComponent.startChatWithStreaming(formData)
         }
     )
@@ -475,21 +433,14 @@ fun ChatMessagesList(
         LocalA2uiRenderer provides a2uiRenderer
     ) {
         ProvideMermaidRenderer {
-            val listModifier = modifier
-                .fillMaxSize()
-                .let { baseModifier ->
-                    if (isTextSelectionMode) {
-                        baseModifier
-                    } else {
-                        baseModifier.pointerInput(onEnterTextSelectionMode) {
-                            detectTapGestures(onLongPress = { onEnterTextSelectionMode() })
-                        }
-                    }
-                }
-
-            val chatListContent: @Composable () -> Unit = {
+            ChatTextSelectionContainer(
+                appComponent = appComponent,
+                onNavigate = onNavigate,
+                selectionState = selectionState,
+                modifier = modifier,
+            ) {
                 LazyColumn(
-                    modifier = listModifier,
+                    modifier = Modifier.fillMaxSize(),
                     state = lazyListState,
                     reverseLayout = true,
                     contentPadding = PaddingValues(
@@ -578,14 +529,6 @@ fun ChatMessagesList(
                         }
                     }
                 }
-            }
-
-            if (isTextSelectionMode) {
-                SelectionContainer {
-                    chatListContent()
-                }
-            } else {
-                chatListContent()
             }
         }
     } // CompositionLocalProvider
@@ -739,19 +682,6 @@ private fun MessageLimitNoticeCard() {
             )
         }
     }
-}
-
-internal fun enterChatTextSelectionMode(
-    isTextSelectionMode: Boolean,
-    onEnter: () -> Unit
-) {
-    if (isTextSelectionMode) return
-
-    onEnter()
-    AppToastHost.showToast(
-        message = R.string.ai_chat_text_selection_mode_hint,
-        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineInfo
-    )
 }
 
 /**

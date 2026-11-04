@@ -3,8 +3,6 @@ package com.shifenmiao.ai.screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -15,9 +13,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -36,7 +32,6 @@ import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
-import com.t8rin.imagetoolbox.core.resources.icons.Close
 
 @Composable
 fun AgentDetailScreen(
@@ -51,7 +46,6 @@ fun AgentDetailScreen(
     val coroutineScope = rememberCoroutineScope()
 
     val onNavigate = LocalOnNavigate.current
-    var isTextSelectionMode by remember { mutableStateOf(false) }
     val showButton by remember {
         derivedStateOf {
             lazyListState.firstVisibleItemIndex > 0 && lazyListState.firstVisibleItemScrollOffset > 0
@@ -66,24 +60,12 @@ fun AgentDetailScreen(
             lazyListState.scrollToItem(0)
         }
     }
-    LaunchedEffect(conversation.id) {
-        isTextSelectionMode = false
-    }
-    LaunchedEffect(chatUIState.chatActive) {
-        if (chatUIState.chatActive) {
-            isTextSelectionMode = false
-        }
-    }
     CompositionLocalProvider(
         LocalChatUIState provides chatUIState,
     ) {
         BaseScreen(
-            title = if (isTextSelectionMode) {
-                stringResource(R.string.select_text)
-            } else {
-                conversation.appTitle.ifBlank {
-                    stringResource(id = R.string.ai_chat_title)
-                }
+            title = conversation.appTitle.ifBlank {
+                stringResource(id = R.string.ai_chat_title)
             },
             actions = {
                 DisableContainer(
@@ -93,15 +75,7 @@ fun AgentDetailScreen(
                         horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingTooSmall),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        if (isTextSelectionMode) {
-                            IconButton(onClick = { isTextSelectionMode = false }) {
-                                Icon(
-                                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
-                                    contentDescription = stringResource(R.string.close),
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                        } else if (!chatUIState.showHistory) {
+                        if (!chatUIState.showHistory) {
                             IconButton(onClick = {
                                 onNavigate(
                                     Screen.AIHistoryCenter(
@@ -121,9 +95,6 @@ fun AgentDetailScreen(
             },
             onGoBack = {
                 when {
-                    isTextSelectionMode -> {
-                        isTextSelectionMode = false
-                    }
                     showCancelConfirm -> {
                         agentDetailComponent.dismissCancelConfirm()
                     }
@@ -163,14 +134,7 @@ fun AgentDetailScreen(
                 aiChatComponent = agentDetailComponent,
                 chatUIState = chatUIState,
                 conversation = conversation,
-                isTextSelectionMode = isTextSelectionMode,
-                onEnterTextSelectionMode = {
-                    enterChatTextSelectionMode(
-                        isTextSelectionMode = isTextSelectionMode,
-                        onEnter = { isTextSelectionMode = true }
-                    )
-                },
-                onExitTextSelectionMode = { isTextSelectionMode = false },
+                onNavigate = onNavigate,
                 onSuggestionClick = {},
                 chatInputComponent = agentDetailComponent.chatInputComponent
             )
