@@ -2073,4 +2073,6 @@
     <string name="on_device_ocr_description">Telefonunuzda çevrimdışı olarak fotoğraftaki metni okuyun.</string>
     <string name="mahjong_title">Mahjong</string>
     <string name="mahjong_description">Üç yerel yapay zekâ rakibe karşı çevrimdışı dört kişilik mahjong; chi, pong, kong ve hu.</string>
+    <string name="translator">Çevir</string>
+    <string name="translator_description">Bulut veya cihaz üzerindeki AI, sesli giriş ve kamera OCR ile metin çevirin</string>
 </resources>

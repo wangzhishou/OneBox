@@ -150,6 +150,7 @@ import com.t8rin.imagetoolbox.library_details.presentation.screenLogic.LibraryDe
 import com.t8rin.imagetoolbox.noise_generation.presentation.screenLogic.NoiseGenerationComponent
 import com.wanbaohe.altitude.component.AltitudeComponent
 import com.wanbaohe.ocr.component.OnDeviceOcrComponent
+import com.wanbaohe.translator.component.TranslatorComponent
 import com.wanbaohe.app.component.ActivityLogComponent
 import com.wanbaohe.app.component.FavoriteComponent
 import com.wanbaohe.blog.logic.BlogComponent
@@ -1230,6 +1231,15 @@ class ChildProvider @Inject constructor(
                 onGoBack = ::navigateBack,
                 onOpenCloudOcr = { navigateTo(Screen.OcrDocument()) },
                 onOpenTextCard = { text -> navigateTo(Screen.TextCard(initialText = text)) },
+            )
+        )
+
+        is Screen.Translator -> NavigationChild.Translator(
+            component = lifeFactories.get().translatorComponentFactory(
+                componentContext = componentContext,
+                initialText = config.initialText,
+                onGoBack = ::navigateBack,
+                onOpenLocalModels = { navigateTo(Screen.LocalModelManagement) },
             )
         )
 

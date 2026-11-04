@@ -453,4 +453,6 @@
     <string name="ai_engine_import_invalid">محتوى الحافظة ليس تكوين محرك صالح</string>
     <string name="ai_engine_import_success">تم استيراد «%1$s»، يرجى المراجعة ثم الحفظ</string>
     <string name="ai_engine_import_success_renamed">معرّف الخدمة مستخدم بالفعل، تم تغييره تلقائياً إلى «%1$s»، يرجى المراجعة ثم الحفظ</string>
+    <string name="local_model_hy_mt2_name">Tencent Hy-MT2 1.8B</string>
+    <string name="local_model_hy_mt2_desc">نموذج ترجمة مفتوح المصدر من Tencent يدعم 33 لغة، ويعمل دون اتصال في أداة الترجمة بعد تنزيله.</string>
 </resources>

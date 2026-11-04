@@ -338,7 +338,10 @@ data class RemoteConfig(
     /**
      * Chat 端侧 Qwen3 0.6B 模型下载地址，动态下发；未下发或为空时回退到内置地址。
      */
-    val localChatQwen3ModelUrl: String? = null
+    val localChatQwen3ModelUrl: String? = null,
+
+    /** 翻译页腾讯 Hy-MT2 端侧模型下载地址，未下发时使用 LiteRT 社区发布地址。 */
+    val localTranslationModelUrl: String? = null
 ) : Parcelable {
 
     /**
@@ -408,6 +411,7 @@ data class RemoteConfig(
         ocrModelPackUrl = mergeField(net.ocrModelPackUrl, ocrModelPackUrl) { !it.isNullOrBlank() },
         localChatGemma3ModelUrl = mergeField(net.localChatGemma3ModelUrl, localChatGemma3ModelUrl) { !it.isNullOrBlank() },
         localChatQwen3ModelUrl = mergeField(net.localChatQwen3ModelUrl, localChatQwen3ModelUrl) { !it.isNullOrBlank() },
+        localTranslationModelUrl = mergeField(net.localTranslationModelUrl, localTranslationModelUrl) { !it.isNullOrBlank() },
         canSetAiToken = mergeField(net.canSetAiToken, canSetAiToken),
         aigcSubjectUscc = mergeField(net.aigcSubjectUscc, aigcSubjectUscc) { !it.isNullOrBlank() },
         survive30sWinPoints = mergeField(net.survive30sWinPoints, survive30sWinPoints),
@@ -474,6 +478,7 @@ data class RemoteConfig(
                 ocrModelPackUrl == other.ocrModelPackUrl &&
                 localChatGemma3ModelUrl == other.localChatGemma3ModelUrl &&
                 localChatQwen3ModelUrl == other.localChatQwen3ModelUrl &&
+                localTranslationModelUrl == other.localTranslationModelUrl &&
                 canSetAiToken == other.canSetAiToken &&
                 aigcSubjectUscc == other.aigcSubjectUscc &&
                 survive30sWinPoints == other.survive30sWinPoints &&
@@ -526,6 +531,7 @@ data class RemoteConfig(
             ocrModelPackUrl,
             localChatGemma3ModelUrl,
             localChatQwen3ModelUrl,
+            localTranslationModelUrl,
             canSetAiToken,
             aigcSubjectUscc,
             survive30sWinPoints,

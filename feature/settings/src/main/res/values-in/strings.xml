@@ -455,4 +455,6 @@
     <string name="ai_engine_import_invalid">Isi papan klip bukan konfigurasi mesin yang valid</string>
     <string name="ai_engine_import_success">\"%1$s\" telah diimpor, periksa lalu simpan</string>
     <string name="ai_engine_import_success_renamed">ID layanan sudah digunakan, otomatis diubah menjadi \"%1$s\", periksa lalu simpan</string>
+    <string name="local_model_hy_mt2_name">Tencent Hy-MT2 1.8B</string>
+    <string name="local_model_hy_mt2_desc">Model terjemahan terbuka Tencent untuk 33 bahasa. Bekerja offline di penerjemah setelah diunduh.</string>
 </resources>

@@ -2073,4 +2073,6 @@ Consejo: si eliges «Ocultar para siempre», podrás devolverme más tarde en Aj
     <string name="on_device_ocr_description">Reconoce texto de fotos sin conexión en tu teléfono.</string>
     <string name="mahjong_title">Mahjong sin conexión</string>
     <string name="mahjong_description">Partida offline para cuatro, juega chi, pong, kong y hu contra tres rivales de IA locales.</string>
+    <string name="translator">Traducir</string>
+    <string name="translator_description">Traduce texto con IA en la nube o en el dispositivo, entrada de voz y OCR con cámara</string>
 </resources>

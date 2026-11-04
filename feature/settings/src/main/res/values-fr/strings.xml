@@ -453,4 +453,6 @@
     <string name="ai_engine_import_invalid">Le contenu du presse-papiers n\'est pas une configuration de moteur valide</string>
     <string name="ai_engine_import_success">« %1$s » importé, veuillez vérifier puis enregistrer</string>
     <string name="ai_engine_import_success_renamed">L\'identifiant de service est déjà utilisé, il a été automatiquement remplacé par « %1$s », veuillez vérifier puis enregistrer</string>
+    <string name="local_model_hy_mt2_name">Tencent Hy-MT2 1.8B</string>
+    <string name="local_model_hy_mt2_desc">Modèle de traduction ouvert de Tencent pour 33 langues. Fonctionne hors ligne dans le traducteur après téléchargement.</string>
 </resources>

@@ -2073,4 +2073,6 @@
     <string name="on_device_ocr_description">इस फ़ोन पर ऑफ़लाइन फ़ोटो से टेक्स्ट पढ़ें।</string>
     <string name="mahjong_title">माहजोंग</string>
     <string name="mahjong_description">तीन स्थानीय AI प्रतिद्वंद्वियों के साथ ऑफ़लाइन चार-खिलाड़ी माहजोंग।</string>
+    <string name="translator">अनुवाद</string>
+    <string name="translator_description">क्लाउड या ऑन-डिवाइस AI, वॉइस इनपुट और कैमरा OCR से टेक्स्ट का अनुवाद करें</string>
 </resources>

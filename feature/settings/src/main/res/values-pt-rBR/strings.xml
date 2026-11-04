@@ -455,4 +455,6 @@
     <string name="ai_engine_import_invalid">O conteúdo da área de transferência não é uma configuração de mecanismo válida</string>
     <string name="ai_engine_import_success">\"%1$s\" importado. Verifique e salve.</string>
     <string name="ai_engine_import_success_renamed">O identificador de serviço já está em uso e foi alterado automaticamente para \"%1$s\". Verifique e salve.</string>
+    <string name="local_model_hy_mt2_name">Tencent Hy-MT2 1.8B</string>
+    <string name="local_model_hy_mt2_desc">Modelo de tradução aberto da Tencent para 33 idiomas. Funciona offline no tradutor após o download.</string>
 </resources>

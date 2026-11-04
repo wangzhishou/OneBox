@@ -2063,4 +2063,6 @@
     <string name="on_device_ocr_description">在手機上離線辨識照片裡的文字。</string>
     <string name="mahjong_title">單機麻將</string>
     <string name="mahjong_description">四人離線對局，與三位本機 AI 對手吃碰槓胡。</string>
+    <string name="translator">翻譯</string>
+    <string name="translator_description">支援雲端與本機模型、語音輸入和拍照取詞的文本翻譯</string>
 </resources>

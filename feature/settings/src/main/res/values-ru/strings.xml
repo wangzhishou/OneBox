@@ -455,4 +455,6 @@
     <string name="ai_engine_import_invalid">Содержимое буфера обмена не является корректной конфигурацией движка</string>
     <string name="ai_engine_import_success">Импортировано «%1$s». Проверьте и сохраните</string>
     <string name="ai_engine_import_success_renamed">Идентификатор сервиса уже занят, автоматически изменён на «%1$s». Проверьте и сохраните</string>
+    <string name="local_model_hy_mt2_name">Tencent Hy-MT2 1.8B</string>
+    <string name="local_model_hy_mt2_desc">Открытая модель перевода Tencent для 33 языков. После скачивания работает офлайн в переводчике.</string>
 </resources>

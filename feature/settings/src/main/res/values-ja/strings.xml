@@ -455,4 +455,6 @@
     <string name="ai_engine_import_invalid">クリップボードの内容は有効なエンジン設定ではありません</string>
     <string name="ai_engine_import_success">「%1$s」をインポートしました。確認して保存してください</string>
     <string name="ai_engine_import_success_renamed">サービス識別子が既に使用されているため、「%1$s」に自動変更しました。確認して保存してください</string>
+    <string name="local_model_hy_mt2_name">Tencent Hy-MT2 1.8B</string>
+    <string name="local_model_hy_mt2_desc">Tencent の 33 言語対応オープン翻訳モデル。ダウンロード後、翻訳機能でオフライン利用できます。</string>
 </resources>

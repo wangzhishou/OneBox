@@ -455,4 +455,6 @@
     <string name="ai_engine_import_invalid">Der Inhalt der Zwischenablage ist keine gültige Engine-Konfiguration</string>
     <string name="ai_engine_import_success">„%1$s“ importiert, bitte prüfen und speichern</string>
     <string name="ai_engine_import_success_renamed">Die Service-Kennung ist bereits belegt und wurde automatisch in „%1$s“ geändert. Bitte prüfen und speichern.</string>
+    <string name="local_model_hy_mt2_name">Tencent Hy-MT2 1.8B</string>
+    <string name="local_model_hy_mt2_desc">Tencents offenes Übersetzungsmodell für 33 Sprachen. Nach dem Download offline im Übersetzer nutzbar.</string>
 </resources>

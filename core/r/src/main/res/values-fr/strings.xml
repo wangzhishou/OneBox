@@ -2061,4 +2061,6 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="on_device_ocr_description">Reconnaissez hors ligne le texte d\'une photo sur ce téléphone.</string>
     <string name="mahjong_title">Mahjong</string>
     <string name="mahjong_description">Partie hors ligne à quatre joueurs contre trois adversaires IA locaux.</string>
+    <string name="translator">Traduire</string>
+    <string name="translator_description">Traduisez du texte avec l\'IA cloud ou sur l\'appareil, la saisie vocale et l\'OCR par caméra</string>
 </resources>

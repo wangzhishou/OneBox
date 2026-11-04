@@ -1595,6 +1595,17 @@ sealed class Screen(
     )
 
     @Serializable
+    @SerialName("Translator")
+    data class Translator(
+        val initialText: String = "",
+    ) : Screen(
+        id = 1125,
+        title = com.shifenmiao.core.R.string.translator,
+        subtitle = com.shifenmiao.core.R.string.translator_description,
+        description = ""
+    )
+
+    @Serializable
     @SerialName("DocConvertDocument")
     class DocConvertDocument : Screen(
         id = 1045,

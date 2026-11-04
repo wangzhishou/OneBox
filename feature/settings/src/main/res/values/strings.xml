@@ -470,6 +470,8 @@
     <string name="local_model_qwen3_desc">Alibaba\'s compact multilingual chat model. Fast even on mid-range phones.</string>
     <string name="local_model_gemma3_name">Gemma 3 1B</string>
     <string name="local_model_gemma3_desc">Google\'s lightweight open model, good at English chat and summaries.</string>
+    <string name="local_model_hy_mt2_name">Tencent Hy-MT2 1.8B</string>
+    <string name="local_model_hy_mt2_desc">Tencent\'s open translation model for 33 languages. Works offline in the translator.</string>
     <string name="local_models_download">Download</string>
     <string name="local_models_retry">Retry</string>
     <string name="local_models_cancel">Cancel</string>

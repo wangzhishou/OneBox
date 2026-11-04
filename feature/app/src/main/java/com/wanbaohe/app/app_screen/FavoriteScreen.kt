@@ -113,6 +113,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineResizeConvert
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTeleprompter
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineViewList
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineXiangqi
+import com.t8rin.imagetoolbox.core.resources.icons.Language
 import com.t8rin.imagetoolbox.core.resources.icons.OpenInNew
 import com.t8rin.imagetoolbox.core.resources.icons.DeleteSweep
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
@@ -935,6 +936,7 @@ private fun recordCategoryIcon(category: ActivityCategory): ImageVector = when (
     ActivityCategory.AI_CHAT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiChat
     ActivityCategory.AI_DUEL -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiDuelChat
     ActivityCategory.AI_AGENT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAgent
+    ActivityCategory.TRANSLATION -> com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Language
     ActivityCategory.IMAGE_EDIT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImage
     ActivityCategory.FILE_CONVERT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineResizeConvert
     ActivityCategory.ARCHIVE -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineArchive

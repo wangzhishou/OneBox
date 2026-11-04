@@ -147,6 +147,38 @@ class ActivityLogRecorder @Inject constructor(
         )
     }
 
+    // ── 文本翻译 ─────────────────────────────────────
+
+    suspend fun recordTranslation(
+        recordId: String,
+        sourceText: String,
+        translatedText: String,
+        sourceLanguage: String,
+        targetLanguage: String,
+        modelName: String,
+        appTitle: String,
+        timestamp: Date = Date(),
+    ) {
+        val payload = JSONObject().apply {
+            put("recordId", recordId)
+            put("sourceLanguage", sourceLanguage)
+            put("targetLanguage", targetLanguage)
+            put("modelName", modelName)
+        }.toString()
+        repository.record(
+            ActivityLogEntry(
+                category = ActivityCategory.TRANSLATION,
+                appTitle = appTitle,
+                title = sourceText.take(120),
+                description = translatedText.take(240),
+                screenRoute = "1125",
+                payload = payload,
+                dedupKey = "translation_$recordId",
+                createdAt = timestamp,
+            )
+        )
+    }
+
     // ── 图片编辑 / 保存 ─────────────────────────────
     /**
      * 图片操作每次保存都是独立记录（dedupKey = 时间戳），不做去重。

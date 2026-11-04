@@ -195,6 +195,8 @@ import com.wanbaohe.altitude.component.AltitudeComponent
 import com.wanbaohe.altitude.screen.AltitudeScreen
 import com.wanbaohe.ocr.component.OnDeviceOcrComponent
 import com.wanbaohe.ocr.screen.OnDeviceOcrScreen
+import com.wanbaohe.translator.component.TranslatorComponent
+import com.wanbaohe.translator.screen.TranslatorScreen
 import com.wanbaohe.app.app_screen.FavoriteScreen
 import com.wanbaohe.app.app_screen.NewAppScreen
 import com.wanbaohe.app.component.ActivityLogComponent
@@ -1275,6 +1277,15 @@ sealed interface NavigationChild {
         @Composable
         override fun Content() {
             OnDeviceOcrScreen(component = component)
+        }
+    }
+
+    class Translator(
+        val component: TranslatorComponent
+    ) : NavigationChild {
+        @Composable
+        override fun Content() {
+            TranslatorScreen(component = component)
         }
     }
 

@@ -2073,4 +2073,6 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <string name="on_device_ocr_description">Basahin ang teksto mula sa larawan sa teleponong ito, offline.</string>
     <string name="mahjong_title">Mahjong</string>
     <string name="mahjong_description">Offline na apat na manlalarong Mahjong laban sa tatlong lokal na AI.</string>
+    <string name="translator">Pagsasalin</string>
+    <string name="translator_description">Magsalin ng teksto gamit ang cloud o on-device AI, voice input, at camera OCR</string>
 </resources>

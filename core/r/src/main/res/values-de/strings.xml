@@ -2073,4 +2073,6 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
     <string name="on_device_ocr_description">Text in einem Foto direkt auf dem Handy offline erkennen.</string>
     <string name="mahjong_title">Mahjong</string>
     <string name="mahjong_description">Offline-Partie zu viert gegen drei lokale KI-Gegner mit Chi, Pong, Kong und Hu.</string>
+    <string name="translator">Übersetzen</string>
+    <string name="translator_description">Texte mit Cloud- oder On-Device-KI, Spracheingabe und Kamera-OCR übersetzen</string>
 </resources>

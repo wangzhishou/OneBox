@@ -2062,4 +2062,6 @@
     <string name="on_device_ocr_description">スマートフォン上でオフラインで写真の文字を認識します。</string>
     <string name="mahjong_title">麻雀</string>
     <string name="mahjong_description">4人オフライン対局。3人のローカルAI対手とチー・ポン・カン・胡を行います。</string>
+    <string name="translator">翻訳</string>
+    <string name="translator_description">クラウドまたはオンデバイス AI、音声入力、カメラ OCR でテキストを翻訳</string>
 </resources>

@@ -14,6 +14,7 @@ import com.shifenmiao.model.ai.AiRequestProtocol
 import com.shifenmiao.model.ai.AiWorkingModelSlot
 import com.shifenmiao.model.ai.AuthType
 import com.shifenmiao.model.remote.AiEngineConfig
+import com.shifenmiao.model.remote.LocalTranslationModel
 import com.shifenmiao.storage.RemoteConfigStorage
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.wanbaohe.core.ui.utils.BaseComponent
@@ -72,8 +73,8 @@ class LocalModelManagementComponent @AssistedInject internal constructor(
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
-    // 默认模型文件托管在 Cloudflare R2(onebox-images bucket)的 models/ 路径,
-    // 上新模型需先上传 R2 再在此登记;下载时优先使用 RemoteConfig 下发的地址。
+    // 聊天模型默认托管在 Cloudflare R2;混元翻译模型使用 LiteRT 社区发布地址,
+    // 所有推荐模型均允许 RemoteConfig 覆盖下载地址,便于切换 CDN 镜像。
     // 推荐顺序:Gemma 在前——它是 LiteRT-LM GPU 后端的官方优化模型;
     // Qwen3-0.6B 在 Adreno(WebGPU)上会撞 128MB storage buffer 上限回退 CPU,推理明显更慢
     val recommendedModels: List<RecommendedLocalModel> = listOf(
@@ -90,6 +91,13 @@ class LocalModelManagementComponent @AssistedInject internal constructor(
             fileName = "Qwen3-0.6B.litertlm",
             url = "https://images.oneboxable.com/models/Qwen3-0.6B.litertlm",
             sizeLabel = "~615MB",
+        ),
+        RecommendedLocalModel(
+            displayNameRes = R.string.local_model_hy_mt2_name,
+            descriptionRes = R.string.local_model_hy_mt2_desc,
+            fileName = LocalTranslationModel.FILE_NAME,
+            url = LocalTranslationModel.DEFAULT_DOWNLOAD_URL,
+            sizeLabel = "~1.83GB",
         ),
     )
 
@@ -168,6 +176,7 @@ class LocalModelManagementComponent @AssistedInject internal constructor(
         val configuredUrl = when (model.fileName) {
             "gemma3-1b-it-int4.litertlm" -> config.localChatGemma3ModelUrl
             "Qwen3-0.6B.litertlm" -> config.localChatQwen3ModelUrl
+            LocalTranslationModel.FILE_NAME -> config.localTranslationModelUrl
             else -> null
         }
         return configuredUrl?.takeIf { it.isNotBlank() } ?: model.url

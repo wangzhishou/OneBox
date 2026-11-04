@@ -453,4 +453,6 @@
     <string name="ai_engine_import_invalid">Nội dung clipboard không phải là cấu hình engine hợp lệ</string>
     <string name="ai_engine_import_success">Đã nhập \"%1$s\", vui lòng kiểm tra rồi lưu</string>
     <string name="ai_engine_import_success_renamed">Mã định danh dịch vụ đã được sử dụng, đã tự động đổi thành \"%1$s\", vui lòng kiểm tra rồi lưu</string>
+    <string name="local_model_hy_mt2_name">Tencent Hy-MT2 1.8B</string>
+    <string name="local_model_hy_mt2_desc">Mô hình dịch mở của Tencent cho 33 ngôn ngữ. Sau khi tải, có thể dùng ngoại tuyến trong trình dịch.</string>
 </resources>

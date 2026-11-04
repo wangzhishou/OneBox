@@ -677,6 +677,20 @@ object AppNavigationRegistry {
             ),
             AppNavigationTarget(
                 targetType = AppNavigationTargetType.SCREEN,
+                routeKey = "translator",
+                canonicalName = "Translator",
+                title = resolveText(com.shifenmiao.core.R.string.translator, "Translator"),
+                description = resolveText(com.shifenmiao.core.R.string.translator_description, ""),
+                aliases = listOf("translate", "translation", "翻译", "文本翻译"),
+                deeplink = "onebox://screen/translator",
+                screenBuilder = { params ->
+                    Screen.Translator(
+                        initialText = (params["text"] ?: params["q"]).orEmpty()
+                    )
+                },
+            ),
+            AppNavigationTarget(
+                targetType = AppNavigationTargetType.SCREEN,
                 routeKey = "library_details",
                 canonicalName = "screen.library_details",
                 title = "开源库详情",

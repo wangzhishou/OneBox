@@ -23,7 +23,8 @@ object RemoteConfigStorage {
     // v6: 新增 appUpdate 字段（更新提醒弹窗开关）
     // v7: 新增 chatQuickStartItems 字段（快捷指令文案+模块标识）
     // v8: 新增 OCR 与 Chat 本地模型下载地址字段
-    private const val KEY_REMOTE_CONFIG = "one_remote_config_v8"
+    // v9: 新增翻译端侧模型下载地址
+    private const val KEY_REMOTE_CONFIG = "one_remote_config_v9"
 
     /**
      * 远程配置写入事件。replay=1 让新订阅者立刻收到"最近一次"事件以兜底

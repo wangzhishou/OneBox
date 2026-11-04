@@ -1,6 +1,8 @@
 package com.wanbaohe.ocr.di
 
+import com.shifenmiao.interfaces.ocr.TextRecognitionService
 import com.wanbaohe.ocr.data.MmkvOcrHistoryRepository
+import com.wanbaohe.ocr.data.OnDeviceTextRecognitionService
 import com.wanbaohe.ocr.domain.OcrHistoryRepository
 import dagger.Binds
 import dagger.Module
@@ -16,4 +18,10 @@ internal interface OcrModule {
     fun ocrHistoryRepository(
         impl: MmkvOcrHistoryRepository,
     ): OcrHistoryRepository
+
+    @Binds
+    @Singleton
+    fun textRecognitionService(
+        impl: OnDeviceTextRecognitionService,
+    ): TextRecognitionService
 }

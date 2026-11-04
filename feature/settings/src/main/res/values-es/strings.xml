@@ -455,4 +455,6 @@
     <string name="ai_engine_import_invalid">El contenido del portapapeles no es una configuración de motor válida</string>
     <string name="ai_engine_import_success">Se importó «%1$s»; revísalo y guarda</string>
     <string name="ai_engine_import_success_renamed">El identificador del servicio ya está en uso; se cambió automáticamente a «%1$s»; revísalo y guarda</string>
+    <string name="local_model_hy_mt2_name">Tencent Hy-MT2 1.8B</string>
+    <string name="local_model_hy_mt2_desc">Modelo de traducción abierto de Tencent para 33 idiomas. Funciona sin conexión en el traductor tras descargarlo.</string>
 </resources>

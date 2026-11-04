@@ -455,4 +455,6 @@
     <string name="ai_engine_import_invalid">क्लिपबोर्ड सामग्री मान्य इंजन कॉन्फ़िगरेशन नहीं है</string>
     <string name="ai_engine_import_success">「%1$s」 आयात किया गया, कृपया जाँच कर सहेजें</string>
     <string name="ai_engine_import_success_renamed">सेवा पहचानकर्ता पहले से उपयोग में है, इसे स्वचालित रूप से 「%1$s」 में बदल दिया गया है, कृपया जाँच कर सहेजें</string>
+    <string name="local_model_hy_mt2_name">Tencent Hy-MT2 1.8B</string>
+    <string name="local_model_hy_mt2_desc">33 भाषाओं के लिए Tencent का ओपन अनुवाद मॉडल। डाउनलोड के बाद अनुवादक में ऑफ़लाइन काम करता है।</string>
 </resources>

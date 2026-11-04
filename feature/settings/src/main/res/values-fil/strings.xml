@@ -455,4 +455,6 @@
     <string name="ai_engine_import_invalid">Hindi valid na engine configuration ang nilalaman ng clipboard</string>
     <string name="ai_engine_import_success">Na-import na ang 「%1$s」, paki-check bago i-save</string>
     <string name="ai_engine_import_success_renamed">Ginagamit na ang service identifier, awtomatikong pinalitan ng 「%1$s」, paki-check bago i-save</string>
+    <string name="local_model_hy_mt2_name">Tencent Hy-MT2 1.8B</string>
+    <string name="local_model_hy_mt2_desc">Open translation model ng Tencent para sa 33 wika. Gumagana offline sa translator pagkatapos i-download.</string>
 </resources>

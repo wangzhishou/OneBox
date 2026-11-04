@@ -470,6 +470,8 @@
     <string name="local_model_qwen3_desc">阿里出品的小参数多语言聊天模型，中端机型也能流畅运行。</string>
     <string name="local_model_gemma3_name">Gemma 3 1B</string>
     <string name="local_model_gemma3_desc">谷歌轻量开源模型，擅长英文对话与总结。</string>
+    <string name="local_model_hy_mt2_name">腾讯混元 Hy-MT2 1.8B</string>
+    <string name="local_model_hy_mt2_desc">腾讯开源的 33 语种翻译模型，下载后可在翻译功能中完全离线使用。</string>
     <string name="local_models_download">下载</string>
     <string name="local_models_retry">重试</string>
     <string name="local_models_cancel">取消</string>

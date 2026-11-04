@@ -344,6 +344,7 @@ internal fun Screen.simpleName(): String = when (this) {
     is Screen.EditPromptItem -> "EditPromptItem"
     is Screen.OcrDocument -> "OcrDocument"
     is Screen.OnDeviceOcr -> "OnDeviceOcr"
+    is Screen.Translator -> "Translator"
     is Screen.DocConvertDocument -> "DocConvertDocument"
     is Screen.Altitude -> "Altitude"
     is Screen.SpeedTest -> "SpeedTest"
@@ -492,6 +493,7 @@ internal fun Screen.icon(): ImageVector? = when (this) {
     is Screen.EditPromptItem -> com.t8rin.imagetoolbox.core.resources.Icons.Rounded.EditAlt
     is Screen.OcrDocument -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineOcrDocument
     is Screen.OnDeviceOcr -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ImageToText
+    is Screen.Translator -> com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Language
     is Screen.DocConvertDocument -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFormatConversion
     is Screen.Bookkeeping -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBookkeeping
     is Screen.HouseholdItems -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDrawerCabinet
@@ -802,6 +804,7 @@ internal object ScreenConstantsImpl : ScreenConstants {
                     Screen.MarkdownEditor(),
                     Screen.OcrDocument(),
                     Screen.OnDeviceOcr(),
+                    Screen.Translator(),
                     Screen.DocConvertDocument(),
                     Screen.AIDuelChatScreen(),
                     Screen.Teleprompter(),
@@ -850,5 +853,5 @@ internal object ScreenConstantsImpl : ScreenConstants {
         typedEntries.flatMap { it.entries }.sortedBy { it.id }
     }
 
-    override val FEATURES_COUNT = 83
+    override val FEATURES_COUNT = 84
 }

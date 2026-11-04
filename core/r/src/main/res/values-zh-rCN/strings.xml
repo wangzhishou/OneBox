@@ -2234,4 +2234,7 @@
     <!-- AI 聊天室:思考/回答的语言跟界面语言走 -->
     <string name="ai_duel_language_instruction">除对话里另有要求外，请用%1$s思考和回答，思考过程也写成%1$s。</string>
 
+    <string name="translator">翻译</string>
+    <string name="translator_description">支持云端与本地模型、语音输入和拍照取词的文本翻译</string>
+
 </resources>

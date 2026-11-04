@@ -16,6 +16,9 @@ enum class ActivityCategory {
     /** AI 智能体 */
     AI_AGENT,
 
+    /** 文本翻译 */
+    TRANSLATION,
+
     /** 图片编辑 / 保存 */
     IMAGE_EDIT,
 

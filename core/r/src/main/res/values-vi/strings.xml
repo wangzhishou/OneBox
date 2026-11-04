@@ -2060,4 +2060,6 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <string name="on_device_ocr_description">Nhận dạng chữ trong ảnh ngay trên điện thoại, ngoại tuyến.</string>
     <string name="mahjong_title">Mạt chược</string>
     <string name="mahjong_description">Ván bốn người ngoại tuyến với ba đối thủ AI cục bộ, có ăn, phỗng, khung và ù.</string>
+    <string name="translator">Dịch</string>
+    <string name="translator_description">Dịch văn bản bằng AI đám mây hoặc trên thiết bị, nhập giọng nói và OCR bằng camera</string>
 </resources>

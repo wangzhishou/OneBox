@@ -455,4 +455,6 @@
     <string name="ai_engine_import_invalid">Pano içeriği geçerli bir motor yapılandırması değil</string>
     <string name="ai_engine_import_success">\"%1$s\" içe aktarıldı, lütfen kontrol edip kaydedin</string>
     <string name="ai_engine_import_success_renamed">Hizmet kimliği zaten kullanımda, otomatik olarak \"%1$s\" olarak değiştirildi, lütfen kontrol edip kaydedin</string>
+    <string name="local_model_hy_mt2_name">Tencent Hy-MT2 1.8B</string>
+    <string name="local_model_hy_mt2_desc">Tencent\'in 33 dilli açık çeviri modeli. İndirildikten sonra çevirmende çevrimdışı çalışır.</string>
 </resources>

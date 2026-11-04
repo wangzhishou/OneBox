@@ -2269,4 +2269,7 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <!-- AI 聊天室:思考/回答的语言跟界面语言走 -->
     <string name="ai_duel_language_instruction">Unless the conversation asks for another language, think and answer in %1$s — write your reasoning in %1$s as well.</string>
 
+    <string name="translator">Translate</string>
+    <string name="translator_description">Translate text with cloud or on-device AI, voice input and camera OCR</string>
+
 </resources>

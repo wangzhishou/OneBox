@@ -2107,4 +2107,6 @@
     <string name="on_device_ocr_description">Распознавайте текст с фото на телефоне без интернета.</string>
     <string name="mahjong_title">Маджонг</string>
     <string name="mahjong_description">Офлайн-партия на четверых против трёх локальных ИИ-соперников.</string>
+    <string name="translator">Перевод</string>
+    <string name="translator_description">Перевод текста с помощью облачного или локального ИИ, голосового ввода и OCR с камеры</string>
 </resources>

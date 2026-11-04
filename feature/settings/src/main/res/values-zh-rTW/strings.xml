@@ -455,4 +455,6 @@
     <string name="ai_engine_import_invalid">剪貼簿內容不是有效的引擎設定</string>
     <string name="ai_engine_import_success">已匯入「%1$s」，請檢查後儲存</string>
     <string name="ai_engine_import_success_renamed">服務識別碼已被占用，已自動改為「%1$s」，請檢查後儲存</string>
+    <string name="local_model_hy_mt2_name">騰訊混元 Hy-MT2 1.8B</string>
+    <string name="local_model_hy_mt2_desc">騰訊開源的 33 語種翻譯模型，下載後可在翻譯功能中完全離線使用。</string>
 </resources>

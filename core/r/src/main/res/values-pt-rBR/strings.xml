@@ -2073,4 +2073,6 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
     <string name="on_device_ocr_description">Reconheça textos de fotos offline no celular.</string>
     <string name="mahjong_title">Mahjong offline</string>
     <string name="mahjong_description">Partida offline para quatro, jogue chi, pong, kong e hu com três oponentes de IA locais.</string>
+    <string name="translator">Traduzir</string>
+    <string name="translator_description">Traduza texto com IA na nuvem ou no dispositivo, entrada de voz e OCR pela câmera</string>
 </resources>

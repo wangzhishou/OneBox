@@ -24,6 +24,9 @@ enum class ReviewPromptTrigger {
     /** AI 一轮问答成功落库(MessagePersistenceWorker.onChatCompletionEnd) */
     AI_ANSWER_SUCCESS,
 
+    /** 翻译成功并写入历史(TranslatorComponent.translate) */
+    TRANSLATION_SUCCESS,
+
     /** 小游戏通关:2048 拼出 2048、扫雷清盘、数独完成、30 秒生存通关 */
     GAME_WIN,
 }

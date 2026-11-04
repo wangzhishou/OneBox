@@ -54,6 +54,7 @@ import com.wanbaohe.survive30s.component.Survive30sComponent
 import com.wanbaohe.teleprompter.component.TeleprompterComponent
 import com.wanbaohe.aidetect.component.AiDetectComponent
 import com.wanbaohe.unitconverter.component.UnitConverterComponent
+import com.wanbaohe.translator.component.TranslatorComponent
 
 /**
  * 启动期按需解析的工厂集合——Life 组。
@@ -121,4 +122,5 @@ class LifeNavigationFactories @Inject constructor(
     val blessingRecordComponentFactory: BlessingRecordComponent.Factory,
     val poemComponentFactory: PoemComponent.Factory,
     val poemSearchComponentFactory: PoemSearchComponent.Factory,
+    val translatorComponentFactory: TranslatorComponent.Factory,
 )

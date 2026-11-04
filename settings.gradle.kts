@@ -183,6 +183,7 @@ include(":feature:password-vault")
 include(":feature:poem")
 include(":feature:record-center")
 include(":feature:mahjong")
+include(":feature:translator")
 
 include(":core:a2ui")
 include(":core:camera-api")

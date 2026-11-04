@@ -2062,4 +2062,6 @@
     <string name="on_device_ocr_description">휴대폰에서 오프라인으로 사진 속 글자를 인식합니다.</string>
     <string name="mahjong_title">마작</string>
     <string name="mahjong_description">3명의 로컬 AI 상대와 오프라인 4인 마작을 즐기며 치·퐁·깡·화를 합니다.</string>
+    <string name="translator">번역</string>
+    <string name="translator_description">클라우드 또는 온디바이스 AI, 음성 입력, 사진 OCR로 텍스트 번역</string>
 </resources>
