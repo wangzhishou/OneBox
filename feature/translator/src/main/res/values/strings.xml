@@ -45,4 +45,16 @@
     <string name="translation_language_de">German</string>
     <string name="translation_language_es">Spanish</string>
     <string name="translation_language_ru">Russian</string>
+    <string name="translation_language_zh_hant">Traditional Chinese</string>
+    <string name="translation_language_pt">Portuguese</string>
+    <string name="translation_language_it">Italian</string>
+    <string name="translation_language_nl">Dutch</string>
+    <string name="translation_language_uk">Ukrainian</string>
+    <string name="translation_language_ar">Arabic</string>
+    <string name="translation_language_hi">Hindi</string>
+    <string name="translation_language_in">Indonesian</string>
+    <string name="translation_language_vi">Vietnamese</string>
+    <string name="translation_language_th">Thai</string>
+    <string name="translation_language_tr">Turkish</string>
+    <string name="translation_language_fil">Filipino</string>
 </resources>

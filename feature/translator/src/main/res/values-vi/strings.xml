@@ -45,4 +45,16 @@
     <string name="translation_language_de">Tiếng Đức</string>
     <string name="translation_language_es">Tiếng Tây Ban Nha</string>
     <string name="translation_language_ru">Tiếng Nga</string>
+    <string name="translation_language_zh_hant">Tiếng Trung phồn thể</string>
+    <string name="translation_language_pt">Tiếng Bồ Đào Nha</string>
+    <string name="translation_language_it">Tiếng Ý</string>
+    <string name="translation_language_nl">Tiếng Hà Lan</string>
+    <string name="translation_language_uk">Tiếng Ukraina</string>
+    <string name="translation_language_ar">Tiếng Ả Rập</string>
+    <string name="translation_language_hi">Tiếng Hindi</string>
+    <string name="translation_language_in">Tiếng Indonesia</string>
+    <string name="translation_language_vi">Tiếng Việt</string>
+    <string name="translation_language_th">Tiếng Thái</string>
+    <string name="translation_language_tr">Tiếng Thổ Nhĩ Kỳ</string>
+    <string name="translation_language_fil">Tiếng Filipino</string>
 </resources>

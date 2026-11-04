@@ -45,4 +45,16 @@
     <string name="translation_language_de">Almanca</string>
     <string name="translation_language_es">İspanyolca</string>
     <string name="translation_language_ru">Rusça</string>
+    <string name="translation_language_zh_hant">Geleneksel Çince</string>
+    <string name="translation_language_pt">Portekizce</string>
+    <string name="translation_language_it">İtalyanca</string>
+    <string name="translation_language_nl">Felemenkçe</string>
+    <string name="translation_language_uk">Ukraynaca</string>
+    <string name="translation_language_ar">Arapça</string>
+    <string name="translation_language_hi">Hintçe</string>
+    <string name="translation_language_in">Endonezce</string>
+    <string name="translation_language_vi">Vietnamca</string>
+    <string name="translation_language_th">Tayca</string>
+    <string name="translation_language_tr">Türkçe</string>
+    <string name="translation_language_fil">Filipince</string>
 </resources>

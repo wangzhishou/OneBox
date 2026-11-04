@@ -45,4 +45,16 @@
     <string name="translation_language_de">الألمانية</string>
     <string name="translation_language_es">الإسبانية</string>
     <string name="translation_language_ru">الروسية</string>
+    <string name="translation_language_zh_hant">الصينية التقليدية</string>
+    <string name="translation_language_pt">البرتغالية</string>
+    <string name="translation_language_it">الإيطالية</string>
+    <string name="translation_language_nl">الهولندية</string>
+    <string name="translation_language_uk">الأوكرانية</string>
+    <string name="translation_language_ar">العربية</string>
+    <string name="translation_language_hi">الهندية</string>
+    <string name="translation_language_in">الإندونيسية</string>
+    <string name="translation_language_vi">الفيتنامية</string>
+    <string name="translation_language_th">التايلاندية</string>
+    <string name="translation_language_tr">التركية</string>
+    <string name="translation_language_fil">الفلبينية</string>
 </resources>

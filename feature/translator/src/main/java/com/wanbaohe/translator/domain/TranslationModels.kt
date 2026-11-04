@@ -5,13 +5,25 @@ import kotlinx.serialization.Serializable
 enum class TranslationLanguage(val code: String, val promptName: String) {
     AUTO("auto", "the detected source language"),
     CHINESE("zh", "Simplified Chinese"),
+    CHINESE_TRADITIONAL("zh-Hant", "Traditional Chinese"),
     ENGLISH("en", "English"),
     JAPANESE("ja", "Japanese"),
     KOREAN("ko", "Korean"),
     FRENCH("fr", "French"),
     GERMAN("de", "German"),
     SPANISH("es", "Spanish"),
+    PORTUGUESE("pt", "Portuguese"),
+    ITALIAN("it", "Italian"),
+    DUTCH("nl", "Dutch"),
     RUSSIAN("ru", "Russian"),
+    UKRAINIAN("uk", "Ukrainian"),
+    ARABIC("ar", "Arabic"),
+    HINDI("hi", "Hindi"),
+    INDONESIAN("id", "Indonesian"),
+    VIETNAMESE("vi", "Vietnamese"),
+    THAI("th", "Thai"),
+    TURKISH("tr", "Turkish"),
+    FILIPINO("fil", "Filipino"),
 }
 
 enum class TranslationModelMode {

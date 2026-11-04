@@ -45,4 +45,16 @@
     <string name="translation_language_de">जर्मन</string>
     <string name="translation_language_es">स्पेनिश</string>
     <string name="translation_language_ru">रूसी</string>
+    <string name="translation_language_zh_hant">पारंपरिक चीनी</string>
+    <string name="translation_language_pt">पुर्तगाली</string>
+    <string name="translation_language_it">इतालवी</string>
+    <string name="translation_language_nl">डच</string>
+    <string name="translation_language_uk">यूक्रेनी</string>
+    <string name="translation_language_ar">अरबी</string>
+    <string name="translation_language_hi">हिंदी</string>
+    <string name="translation_language_in">इंडोनेशियाई</string>
+    <string name="translation_language_vi">वियतनामी</string>
+    <string name="translation_language_th">थाई</string>
+    <string name="translation_language_tr">तुर्की</string>
+    <string name="translation_language_fil">फिलिपिनो</string>
 </resources>

@@ -47,6 +47,7 @@ import com.wanbaohe.core.ui.theme.onMixedContainer
 import com.wanbaohe.core.ui.theme.outlineVariant
 import com.wanbaohe.core.ui.utils.helper.ProvidesValue
 import com.wanbaohe.core.ui.widget.modifier.shapeByInteraction
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -63,6 +64,7 @@ fun EnhancedButton(
     shape: Shape = ButtonDefaults.outlinedShape,
     pressedShape: Shape = ButtonDefaults.pressedShape,
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    glassStyle: GlassStyle = GlassStyle.Regular,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable RowScope.() -> Unit
 ) {
@@ -127,6 +129,7 @@ fun EnhancedButton(
                 },
                 modifier = modifier
                     .glassBackground(
+                        style = glassStyle,
                         shape = animatedShape,
                         color = animatedContainerColor,
                         borderWidth = settingsState.borderWidth

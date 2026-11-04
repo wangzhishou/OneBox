@@ -2,9 +2,10 @@ package com.wanbaohe.translator.screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.DropdownMenu
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -19,15 +20,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.shifenmiao.ai.ui.VoiceInputSheet
 import com.shifenmiao.ai.ui.rememberVoiceInputLauncher
 import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.resources.Icons
+import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.History
 import com.t8rin.imagetoolbox.core.resources.icons.Language
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineClear
 import com.wanbaohe.core.ui.utils.content_pickers.ImagePickerMode
 import com.wanbaohe.core.ui.utils.content_pickers.rememberImagePicker
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
 import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.translator.R
@@ -164,10 +168,30 @@ private fun ModelSelector(
                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
             )
         }
-        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+        EnhancedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             TranslationModelMode.entries.forEach { mode ->
                 DropdownMenuItem(
-                    text = { Text(stringResource(mode.labelRes())) },
+                    text = {
+                        Text(
+                            text = stringResource(mode.labelRes()),
+                            color = if (mode == selected) {
+                                MaterialTheme.colorScheme.onPrimaryContainer
+                            } else {
+                                MaterialTheme.colorScheme.onSurface
+                            },
+                        )
+                    },
+                    trailingIcon = {
+                        if (mode == selected) {
+                            Icon(
+                                imageVector = Icons.Outlined.Check,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                            )
+                        } else {
+                            Spacer(Modifier.size(24.dp))
+                        }
+                    },
                     onClick = {
                         onSelect(mode)
                         expanded = false
@@ -189,13 +213,25 @@ internal fun TranslationModelMode.labelRes(): Int = when (this) {
 internal fun TranslationLanguage.labelRes(): Int = when (this) {
     TranslationLanguage.AUTO -> R.string.translation_language_auto
     TranslationLanguage.CHINESE -> R.string.translation_language_zh
+    TranslationLanguage.CHINESE_TRADITIONAL -> R.string.translation_language_zh_hant
     TranslationLanguage.ENGLISH -> R.string.translation_language_en
     TranslationLanguage.JAPANESE -> R.string.translation_language_ja
     TranslationLanguage.KOREAN -> R.string.translation_language_ko
     TranslationLanguage.FRENCH -> R.string.translation_language_fr
     TranslationLanguage.GERMAN -> R.string.translation_language_de
     TranslationLanguage.SPANISH -> R.string.translation_language_es
+    TranslationLanguage.PORTUGUESE -> R.string.translation_language_pt
+    TranslationLanguage.ITALIAN -> R.string.translation_language_it
+    TranslationLanguage.DUTCH -> R.string.translation_language_nl
     TranslationLanguage.RUSSIAN -> R.string.translation_language_ru
+    TranslationLanguage.UKRAINIAN -> R.string.translation_language_uk
+    TranslationLanguage.ARABIC -> R.string.translation_language_ar
+    TranslationLanguage.HINDI -> R.string.translation_language_hi
+    TranslationLanguage.INDONESIAN -> R.string.translation_language_in
+    TranslationLanguage.VIETNAMESE -> R.string.translation_language_vi
+    TranslationLanguage.THAI -> R.string.translation_language_th
+    TranslationLanguage.TURKISH -> R.string.translation_language_tr
+    TranslationLanguage.FILIPINO -> R.string.translation_language_fil
 }
 
 internal fun HistoryFilter.labelRes(): Int = when (this) {

@@ -45,4 +45,16 @@
     <string name="translation_language_de">독일어</string>
     <string name="translation_language_es">스페인어</string>
     <string name="translation_language_ru">러시아어</string>
+    <string name="translation_language_zh_hant">중국어 번체</string>
+    <string name="translation_language_pt">포르투갈어</string>
+    <string name="translation_language_it">이탈리아어</string>
+    <string name="translation_language_nl">네덜란드어</string>
+    <string name="translation_language_uk">우크라이나어</string>
+    <string name="translation_language_ar">아랍어</string>
+    <string name="translation_language_hi">힌디어</string>
+    <string name="translation_language_in">인도네시아어</string>
+    <string name="translation_language_vi">베트남어</string>
+    <string name="translation_language_th">태국어</string>
+    <string name="translation_language_tr">터키어</string>
+    <string name="translation_language_fil">필리핀어</string>
 </resources>
