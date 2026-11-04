@@ -13,10 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExposedDropdownMenu
-import androidx.compose.material3.ExposedDropdownMenuAnchorType
-import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -170,115 +166,6 @@ internal fun SelectGridCard(
                     tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier.size(18.dp),
                 )
-            }
-        }
-    }
-}
-
-/**
- * 行内单选选择器：标签 + 当前取值 + 行尾箭头，点开菜单换一个。
- *
- * 协议这类「选项少但文案长」的控件不再横排卡片：LazyRow 里第二张卡片会被卡片边缘
- * 裁掉、又看不出还能横滑，用户既看不清选项也看不清当前选的是什么。选择器把当前值
- * 摆在明面上，完整选项收进菜单，长文案不会被裁。
- */
-@Composable
-internal fun <T> SelectorField(
-    label: String,
-    selected: T,
-    options: List<T>,
-    optionLabel: @Composable (T) -> String,
-    onSelect: (T) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    var expanded by remember { mutableStateOf(false) }
-    // 只有一个选项时(如 Jev/Pikafish 锁定入口)不做成可展开: 展示当前值即可
-    val canSwitch = options.size > 1
-    ExposedDropdownMenuBox(
-        expanded = expanded,
-        onExpandedChange = { expanded = it },
-        modifier = modifier.fillMaxWidth(),
-    ) {
-        OneBoxListItem(
-            // 菜单宽度跟着这一行走, 和卡片左右边界对齐。
-            // enabled = false: menuAnchor 默认自己在每次抬手时切一次展开态, 会和行的
-            // onClick 叠成"开了又关"; 这里只借它的锚点测量/焦点能力, 开合交给行本身。
-            modifier = Modifier
-                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable, enabled = false)
-                .fillMaxWidth(),
-            contained = true,
-            onClick = if (canSwitch) {
-                { expanded = !expanded }
-            } else {
-                null
-            },
-            headlineContent = {
-                Text(
-                    text = label,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            },
-            subtitle = {
-                Text(
-                    text = optionLabel(selected),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            },
-            trailingContent = if (canSwitch) {
-                {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineKeyboardArrowDown,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                        modifier = Modifier.size(20.dp),
-                    )
-                }
-            } else {
-                null
-            },
-        )
-        if (canSwitch) {
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-                shape = MaterialTheme.shapes.large,
-            ) {
-                options.forEach { option ->
-                    val isSelected = option == selected
-                    DropdownMenuItem(
-                        text = {
-                            Text(
-                                text = optionLabel(option),
-                                // 协议全名较长, 用 bodyMedium 才放得进一行; 与行内当前值同字号
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = if (isSelected) {
-                                    MaterialTheme.colorScheme.onPrimaryContainer
-                                } else {
-                                    MaterialTheme.colorScheme.onSurface
-                                },
-                            )
-                        },
-                        trailingIcon = if (isSelected) {
-                            {
-                                Icon(
-                                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                                )
-                            }
-                        } else {
-                            null
-                        },
-                        onClick = {
-                            expanded = false
-                            if (!isSelected) onSelect(option)
-                        },
-                    )
-                }
             }
         }
     }

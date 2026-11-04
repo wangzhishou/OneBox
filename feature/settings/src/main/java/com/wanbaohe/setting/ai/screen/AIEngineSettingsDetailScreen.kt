@@ -86,6 +86,7 @@ import com.wanbaohe.core.ui.widget.system.OneBoxOutlinedTextField
 import com.wanbaohe.core.ui.widget.system.OneBoxSectionCard
 import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
 import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
+import com.wanbaohe.core.ui.widget.system.SelectorField
 import com.t8rin.imagetoolbox.core.utils.getString
 import com.wanbaohe.setting.ai.component.AIEngineSettingsDetailComponent
 import com.wanbaohe.settings.R

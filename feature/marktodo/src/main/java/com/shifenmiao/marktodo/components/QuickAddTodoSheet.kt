@@ -156,7 +156,6 @@ fun QuickAddTodoSheet(
                     onToggle = { component.handleEvent(QuickAddTodoUiEvent.ToggleTag(it)) },
                 )
 
-                QuickAddSectionLabel(stringResource(R.string.task_category))
                 CategorySelector(
                     categories = uiState.categories,
                     selectedCategory = uiState.selectedCategory,

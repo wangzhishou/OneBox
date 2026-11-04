@@ -46,6 +46,7 @@ import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.system.OneBoxListItem
 import com.wanbaohe.core.ui.widget.system.OneBoxOutlinedTextField
 import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
+import com.wanbaohe.core.ui.widget.system.SelectorField
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCloudDownload
 import com.t8rin.imagetoolbox.core.utils.getString
 import com.wanbaohe.setting.ai.component.AIAddEngineComponent

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -21,18 +22,17 @@ import com.shifenmiao.marktodo.R
 import com.shifenmiao.marktodo.model.TodoCategory
 import com.shifenmiao.marktodo.model.TodoTag
 import com.shifenmiao.marktodo.model.TodoTask
-import com.shifenmiao.marktodo.theme.categoryAccentColor
 import com.shifenmiao.marktodo.theme.priorityColor
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAccessTime
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineClear
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFlag
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineFolder
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedChip
 import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.system.OneBoxOutlinedTextField
+import com.wanbaohe.core.ui.widget.system.SelectorField
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -148,7 +148,6 @@ fun TagSelector(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CategorySelector(
     categories: List<TodoCategory>,
@@ -157,74 +156,38 @@ fun CategorySelector(
     onAddCategory: (() -> Unit)? = null,
     onSelectInbox: (() -> Unit)? = null,
 ) {
-    FlowRow(
-        horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
-        verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
-    ) {
-        if (onSelectInbox != null) {
-            val selected = selectedCategory == null
-            EnhancedChip(
-                selected = selected,
-                onClick = onSelectInbox,
-                selectedColor = MaterialTheme.colorScheme.primaryContainer,
-                selectedContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                unselectedColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                label = {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = Icons.Outlined.LineFolder,
-                            contentDescription = null,
-                            modifier = Modifier.size(14.dp),
-                        )
-                        Text(
-                            text = stringResource(R.string.quick_add_inbox),
-                            modifier = Modifier.padding(start = 4.dp),
-                        )
-                    }
-                },
-            )
-        }
-        categories.forEachIndexed { index, category ->
-            val selected = category.id == selectedCategory?.id
-            val accent = categoryAccentColor(category, index)
-            EnhancedChip(
-                selected = selected,
-                onClick = { onSelect(category) },
-                selectedColor = MaterialTheme.colorScheme.primaryContainer,
-                selectedContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                unselectedColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                label = {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = category.icon,
-                            contentDescription = null,
-                            tint = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else accent,
-                            modifier = Modifier.size(14.dp),
-                        )
-                        Text(
-                            text = category.title,
-                            modifier = Modifier.padding(start = 4.dp),
-                        )
-                    }
-                },
-            )
-        }
-        if (onAddCategory != null) {
-            EnhancedChip(
-                selected = false,
-                onClick = onAddCategory,
-                selectedColor = Color.Unspecified,
-                unselectedColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                label = {
-                    Icon(
-                        imageVector = Icons.Outlined.Add,
-                        contentDescription = stringResource(R.string.action_add_category),
-                        modifier = Modifier.size(16.dp),
-                    )
-                },
-            )
-        }
+    val options = buildList {
+        if (onSelectInbox != null) add(null)
+        addAll(categories)
     }
+    SelectorField(
+        label = stringResource(R.string.task_category),
+        selected = selectedCategory,
+        options = options,
+        optionLabel = { it?.title ?: stringResource(R.string.quick_add_inbox) },
+        onSelect = { category ->
+            if (category == null) onSelectInbox?.invoke() else onSelect(category)
+        },
+        menuFooter = if (onAddCategory != null) {
+            { dismiss ->
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.action_add_category)) },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Add,
+                            contentDescription = null,
+                        )
+                    },
+                    onClick = {
+                        dismiss()
+                        onAddCategory()
+                    },
+                )
+            }
+        } else {
+            null
+        },
+    )
 }
 
 @Composable

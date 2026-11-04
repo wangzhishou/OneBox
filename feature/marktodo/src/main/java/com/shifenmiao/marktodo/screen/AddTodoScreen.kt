@@ -49,7 +49,6 @@ import com.shifenmiao.marktodo.theme.categoryPaletteWithThemeColors
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAccessTime
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFlag
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineFolder
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLabel
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSingleEdit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineStickyNote
@@ -68,7 +67,7 @@ import java.util.Calendar
 
 /**
  * 新增/编辑待办页 —— 原型设计稿：
- * 分组玻璃表单（标题 / 备注 / 截止时间 / 优先级 / 标签 / 所属主题）+ 底部保存（编辑模式含删除）。
+ * 分组玻璃表单（标题 / 备注 / 截止时间 / 优先级 / 标签 / 所属分组）+ 底部保存（编辑模式含删除）。
  */
 @Composable
 fun AddTodoScreen(
@@ -250,11 +249,8 @@ fun AddTodoScreen(
                 )
             }
 
-            // 所属主题（单选 + 新建主题入口）
-            TodoFormSection(
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFolder,
-                label = stringResource(R.string.task_category)
-            ) {
+            // 所属分组（下拉单选 + 新建分组入口）
+            OneBoxSectionCard(containerColor = MaterialTheme.colorScheme.surfaceContainerLow) {
                 CategorySelector(
                     categories = uiState.categories,
                     selectedCategory = uiState.selectedCategory,
