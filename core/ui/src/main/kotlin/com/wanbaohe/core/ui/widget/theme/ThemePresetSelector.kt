@@ -48,6 +48,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
 import com.shifenmiao.core.R
+import com.shifenmiao.core.constants.Constants
+import com.shifenmiao.storage.AppSharedStorage
 import com.t8rin.imagetoolbox.core.resources.icons.Theme
 import com.t8rin.imagetoolbox.core.settings.domain.model.AppThemePreset
 import com.t8rin.imagetoolbox.core.settings.domain.model.NightMode
@@ -271,6 +273,9 @@ fun ThemePresetCard(
             .padding(vertical = 8.dp, horizontal = 4.dp)
     ) {
         val backgroundUri = preset.customBackgroundImageUri
+        // 首启隐私协议未同意前不发起任何网络请求(F-Droid 合规红线):
+        // 远程主题背景图退化为配色预览圆点, 同意后随下次组合自动恢复
+        val remoteBgAllowed = AppSharedStorage.loadPrivacyPolicyVersion() >= Constants.PRIVACY_POLICY_VERSION
         if (preset.isDynamicColors) {
             Box(
                 modifier = Modifier
@@ -287,7 +292,7 @@ fun ThemePresetCard(
                     modifier = Modifier.size(20.dp)
                 )
             }
-        } else if (backgroundUri != null) {
+        } else if (backgroundUri != null && remoteBgAllowed) {
             Image(
                 painter = rememberAsyncImagePainter(model = backgroundUri),
                 contentDescription = null,

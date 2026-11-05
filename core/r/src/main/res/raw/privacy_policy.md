@@ -1,24 +1,21 @@
-欢迎你使用万宝盒，我们非常重视对个人信息保护，请先阅读权限说明，我们可能需要主动**询问申请**以下权限：
+Welcome to OneBox. We take the protection of your personal information seriously. Please read the permissions note below first — we may proactively **ask for** the following permissions:
 
-**读取/修改手机存储权限**
-授权访问存储权限，用于保存生成或者下载文件。
+**Read/modify phone storage**
+Access to storage is used to save generated or downloaded files.
 
-**读取/修改相册权限**
-请授权访问图片媒体文件，用于选取相册中的图片/视频进行编辑，并在编辑完成后保存到相册。
+**Read/modify photo library**
+Please grant access to photos and media files so you can pick images/videos from your library for editing and save the results back when editing is done.
 
-**相机权限**
-授权使用照相相机访问权限，用于拍照上传图片以及文档扫描功能，帮助您快速拍摄照片并完成后续处理与保存。
+**Camera**
+Camera access is used for taking photos to upload and for document scanning, helping you capture content quickly and complete processing and saving.
 
-**允许应用访问保存在媒体文件中的地理位置元数据**
-编辑图片时可以修改图片地理位置信息，仅在编辑图片时使用。
+**Access location metadata stored in media files**
+Image location information can be edited while editing images, and is only used then.
 
-**允许应用录制音频**
-授权访问录音权限，在使用语音输入的时候，识别录音。
+**Record audio**
+Microphone access is used to recognize your recordings when you use voice input.
 
-**允许安装包安装权限**
-检查更新后可以安装应用。
+**Sensors**
+Shake-to-open customizable shortcuts, reducing interaction steps.
 
-**传感器权限**
-摇一摇自定义快捷打开功能，减少交互步骤。
-
-以上权限可随时在系统设置中取消或关闭。
+You can revoke or turn off any of these permissions at any time in system settings.
