@@ -104,7 +104,6 @@ fun HomeEmptyState(
 
 @Composable
 fun CreateChoiceCard(
-    listType: ListItemType,
     onManualCreate: () -> Unit,
     onAiCreate: () -> Unit,
     modifier: Modifier = Modifier,
@@ -112,7 +111,6 @@ fun CreateChoiceCard(
     siblingHeight: Dp? = null,
     showAiCreate: Boolean = true,
 ) {
-    val typeName = listTypeDisplayName(listType)
     val shape = MaterialTheme.shapes.extraLarge
     val fixedHeight = siblingHeight?.let { maxOf(it, 180.dp) }
     Column(
@@ -128,40 +126,25 @@ fun CreateChoiceCard(
             )
             .clip(shape)
             .padding(16.dp),
+        horizontalAlignment = Alignment.End,
+        verticalArrangement = Arrangement.Bottom,
     ) {
-        Text(
-            text = stringResource(R.string.home_create_new_title, typeName),
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
+        CreationActionButton(
+            icon = Icons.Outlined.Edit,
+            title = stringResource(R.string.home_create_manual),
+            onClick = onManualCreate,
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
         )
-        Spacer(Modifier.height(16.dp))
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.Bottom,
-        ) {
+        if (showAiCreate) {
+            Spacer(Modifier.height(12.dp))
             CreationActionButton(
-                icon = Icons.Outlined.Edit,
-                title = stringResource(R.string.home_create_manual),
-                onClick = onManualCreate,
-                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiChat,
+                title = stringResource(R.string.home_create_with_ai),
+                onClick = onAiCreate,
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
             )
-            if (showAiCreate) {
-                Spacer(Modifier.height(12.dp))
-                CreationActionButton(
-                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiChat,
-                    title = stringResource(R.string.home_create_with_ai),
-                    onClick = onAiCreate,
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                )
-            }
         }
     }
 }

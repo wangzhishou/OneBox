@@ -635,7 +635,6 @@
     <string name="home_filter_empty_title">इस श्रेणी में कोई %1$s नहीं है</string>
     <string name="home_filter_empty_description">दूसरी श्रेणी चुनें या मौजूदा फ़िल्टर हटाएँ।</string>
     <string name="home_clear_filter">फ़िल्टर हटाएँ</string>
-    <string name="home_create_new_title">नया %1$s बनाएँ</string>
     <string name="home_create_manual">मैन्युअल रूप से बनाएँ</string>
     <string name="home_create_with_ai">AI से बनाएँ</string>
     <string name="my_content_local_created">स्थानीय रूप से बनाया गया</string>

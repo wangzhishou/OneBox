@@ -729,7 +729,6 @@
     <string name="home_filter_empty_title">Aucun %1$s dans cette catégorie</string>
     <string name="home_filter_empty_description">Essayez une autre catégorie ou effacez le filtre actuel pour tout afficher</string>
     <string name="home_clear_filter">Effacer le filtre</string>
-    <string name="home_create_new_title">Créer un nouveau %1$s</string>
     <string name="home_create_manual">Création manuelle</string>
     <string name="home_create_with_ai">Création par IA</string>
     <string name="my_content_empty">Vous n\'avez encore rien créé localement</string>

@@ -635,7 +635,6 @@
     <string name="home_filter_empty_title">このカテゴリに%1$sはありません</string>
     <string name="home_filter_empty_description">別のカテゴリを選ぶか、現在のフィルターを解除してください。</string>
     <string name="home_clear_filter">フィルターを解除</string>
-    <string name="home_create_new_title">新しい%1$sを作成</string>
     <string name="home_create_manual">手動で作成</string>
     <string name="home_create_with_ai">AIで作成</string>
     <string name="my_content_local_created">ローカルで作成</string>

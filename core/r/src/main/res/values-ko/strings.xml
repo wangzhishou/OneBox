@@ -635,7 +635,6 @@
     <string name="home_filter_empty_title">이 카테고리에는 %1$s 없음</string>
     <string name="home_filter_empty_description">다른 카테고리를 선택하거나 현재 필터를 해제해 보세요.</string>
     <string name="home_clear_filter">필터 해제</string>
-    <string name="home_create_new_title">새 %1$s 만들기</string>
     <string name="home_create_manual">직접 만들기</string>
     <string name="home_create_with_ai">AI로 만들기</string>
     <string name="my_content_local_created">로컬에서 생성됨</string>

@@ -635,7 +635,6 @@
     <string name="home_filter_empty_title">Bu kategoride %1$s yok</string>
     <string name="home_filter_empty_description">Başka bir kategori deneyin veya mevcut filtreyi temizleyin.</string>
     <string name="home_clear_filter">Filtreyi temizle</string>
-    <string name="home_create_new_title">Yeni %1$s oluştur</string>
     <string name="home_create_manual">Elle oluştur</string>
     <string name="home_create_with_ai">AI ile oluştur</string>
     <string name="my_content_local_created">Yerel olarak oluşturuldu</string>

@@ -809,7 +809,6 @@
     <string name="home_filter_empty_title">此分类下暂无%1$s</string>
     <string name="home_filter_empty_description">试试其他分类，或清除当前筛选查看全部内容</string>
     <string name="home_clear_filter">清除筛选</string>
-    <string name="home_create_new_title">创建新%1$s</string>
     <string name="home_create_manual">新建</string>
     <string name="home_create_with_ai">AI 创建</string>
     <string name="my_content_empty">你还没有本地创建的内容</string>

@@ -691,7 +691,6 @@
     <string name="home_filter_empty_title">لا يوجد %1$s في هذه الفئة</string>
     <string name="home_filter_empty_description">جرّب فئة أخرى أو امسح المرشّح الحالي.</string>
     <string name="home_clear_filter">مسح المرشّح</string>
-    <string name="home_create_new_title">إنشاء %1$s جديد</string>
     <string name="home_create_manual">الإنشاء يدويًا</string>
     <string name="home_create_with_ai">الإنشاء بالذكاء الاصطناعي</string>
     <string name="my_content_empty">لم تنشئ أي محتوى محلي بعد</string>

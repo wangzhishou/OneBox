@@ -635,7 +635,6 @@
     <string name="home_filter_empty_title">В этой категории нет: %1$s</string>
     <string name="home_filter_empty_description">Выберите другую категорию или сбросьте текущий фильтр.</string>
     <string name="home_clear_filter">Сбросить фильтр</string>
-    <string name="home_create_new_title">Создать: %1$s</string>
     <string name="home_create_manual">Создать вручную</string>
     <string name="home_create_with_ai">Создать с ИИ</string>
     <string name="my_content_local_created">Создано локально</string>

@@ -635,7 +635,6 @@
     <string name="home_filter_empty_title">Tidak ada %1$s dalam kategori ini</string>
     <string name="home_filter_empty_description">Coba kategori lain atau hapus filter saat ini.</string>
     <string name="home_clear_filter">Hapus filter</string>
-    <string name="home_create_new_title">Buat %1$s baru</string>
     <string name="home_create_manual">Buat manual</string>
     <string name="home_create_with_ai">Buat dengan AI</string>
     <string name="my_content_local_created">Dibuat secara lokal</string>

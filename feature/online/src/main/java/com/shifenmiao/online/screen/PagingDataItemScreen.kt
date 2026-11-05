@@ -536,7 +536,6 @@ private fun ItemGrid(
         if (listType != ListItemType.NORMAL) {
             item(key = "append_create_choice_card") {
                 CreateChoiceCard(
-                    listType = listType,
                     onManualCreate = onManualCreate,
                     onAiCreate = onAiCreate,
                     siblingHeight = siblingCardHeight,

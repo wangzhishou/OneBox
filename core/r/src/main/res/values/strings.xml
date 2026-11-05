@@ -770,7 +770,6 @@
     <string name="home_filter_empty_title">No %1$s in this category</string>
     <string name="home_filter_empty_description">Try another category or clear the current filter.</string>
     <string name="home_clear_filter">Clear filter</string>
-    <string name="home_create_new_title">Create new %1$s</string>
     <string name="home_create_manual">New</string>
     <string name="home_create_with_ai">Create with AI</string>
     <string name="my_content_empty">You haven’t created any local content yet</string>

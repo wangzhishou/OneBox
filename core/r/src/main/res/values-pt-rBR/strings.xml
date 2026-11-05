@@ -635,7 +635,6 @@
     <string name="home_filter_empty_title">Não há %1$s nesta categoria</string>
     <string name="home_filter_empty_description">Tente outra categoria ou limpe o filtro atual.</string>
     <string name="home_clear_filter">Limpar filtro</string>
-    <string name="home_create_new_title">Criar novo %1$s</string>
     <string name="home_create_manual">Criar manualmente</string>
     <string name="home_create_with_ai">Criar com IA</string>
     <string name="my_content_local_created">Criado localmente</string>

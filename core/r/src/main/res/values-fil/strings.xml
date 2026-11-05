@@ -635,7 +635,6 @@
     <string name="home_filter_empty_title">Walang %1$s sa kategoryang ito</string>
     <string name="home_filter_empty_description">Subukan ang ibang kategorya o alisin ang kasalukuyang filter.</string>
     <string name="home_clear_filter">Alisin ang filter</string>
-    <string name="home_create_new_title">Gumawa ng bagong %1$s</string>
     <string name="home_create_manual">Manu-manong gumawa</string>
     <string name="home_create_with_ai">Gumawa gamit ang AI</string>
     <string name="my_content_local_created">Ginawa nang lokal</string>

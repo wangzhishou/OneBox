@@ -729,7 +729,6 @@
     <string name="home_filter_empty_title">Danh mục này hiện chưa có %1$s</string>
     <string name="home_filter_empty_description">Thử danh mục khác hoặc xóa bộ lọc hiện tại để xem toàn bộ nội dung</string>
     <string name="home_clear_filter">Xóa bộ lọc</string>
-    <string name="home_create_new_title">Tạo %1$s mới</string>
     <string name="home_create_manual">Tạo thủ công</string>
     <string name="home_create_with_ai">Tạo bằng AI</string>
     <string name="my_content_empty">Bạn chưa có nội dung nào được tạo cục bộ</string>

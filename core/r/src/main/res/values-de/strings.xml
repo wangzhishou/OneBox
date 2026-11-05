@@ -635,7 +635,6 @@
     <string name="home_filter_empty_title">Keine %1$s in dieser Kategorie</string>
     <string name="home_filter_empty_description">Probiere eine andere Kategorie aus oder lösche den aktuellen Filter.</string>
     <string name="home_clear_filter">Filter löschen</string>
-    <string name="home_create_new_title">Neue %1$s erstellen</string>
     <string name="home_create_manual">Manuell erstellen</string>
     <string name="home_create_with_ai">Mit KI erstellen</string>
     <string name="my_content_local_created">Lokal erstellt</string>
