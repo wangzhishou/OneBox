@@ -1,7 +1,12 @@
 package com.wanbaohe.core.ui.widget.system
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExposedDropdownMenu
@@ -15,12 +20,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineKeyboardArrowDown
+import com.wanbaohe.core.ui.widget.glass.GlassSurface
 
 @Composable
 fun <T> SelectorField(
@@ -34,88 +41,97 @@ fun <T> SelectorField(
 ) {
     var expanded by remember { mutableStateOf(false) }
     val canExpand = options.size > 1 || menuFooter != null
-    ExposedDropdownMenuBox(
-        expanded = expanded,
-        onExpandedChange = { expanded = it },
+    Column(
         modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.microSpacing),
     ) {
-        OneBoxListItem(
-            modifier = Modifier
-                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable, enabled = false)
-                .fillMaxWidth(),
-            contained = true,
-            onClick = if (canExpand) {
-                { expanded = !expanded }
-            } else {
-                null
-            },
-            headlineContent = {
-                Text(
-                    text = label,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            },
-            subtitle = {
-                Text(
-                    text = optionLabel(selected),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            },
-            trailingContent = if (canExpand) {
-                {
-                    Icon(
-                        imageVector = Icons.Outlined.LineKeyboardArrowDown,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                        modifier = Modifier.size(20.dp),
-                    )
-                }
-            } else {
-                null
-            },
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        if (canExpand) {
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-                shape = MaterialTheme.shapes.large,
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = it },
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            GlassSurface(
+                onClick = { expanded = !expanded },
+                enabled = canExpand,
+                modifier = Modifier
+                    .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable, enabled = false)
+                    .fillMaxWidth(),
+                style = OneBoxDesignSystem.rowGlassStyle,
+                shape = OneBoxDesignSystem.listRowShape,
+                color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                borderWidth = 0.dp,
             ) {
-                options.forEach { option ->
-                    val isSelected = option == selected
-                    DropdownMenuItem(
-                        text = {
-                            Text(
-                                text = optionLabel(option),
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = if (isSelected) {
-                                    MaterialTheme.colorScheme.onPrimaryContainer
-                                } else {
-                                    MaterialTheme.colorScheme.onSurface
-                                },
-                            )
-                        },
-                        trailingIcon = if (isSelected) {
-                            {
-                                Icon(
-                                    imageVector = Icons.Outlined.Check,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                                )
-                            }
-                        } else {
-                            null
-                        },
-                        onClick = {
-                            expanded = false
-                            if (!isSelected) onSelect(option)
-                        },
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .defaultMinSize(minHeight = 52.dp)
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = optionLabel(selected),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f),
                     )
+                    if (canExpand) {
+                        Icon(
+                            imageVector = Icons.Outlined.LineKeyboardArrowDown,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                            modifier = Modifier.size(20.dp),
+                        )
+                    }
                 }
-                menuFooter?.invoke(this) { expanded = false }
+            }
+            if (canExpand) {
+                ExposedDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false },
+                    shape = MaterialTheme.shapes.large,
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+                ) {
+                    options.forEach { option ->
+                        val isSelected = option == selected
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = optionLabel(option),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = if (isSelected) {
+                                        MaterialTheme.colorScheme.onPrimaryContainer
+                                    } else {
+                                        MaterialTheme.colorScheme.onSurface
+                                    },
+                                )
+                            },
+                            trailingIcon = if (isSelected) {
+                                {
+                                    Icon(
+                                        imageVector = Icons.Outlined.Check,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    )
+                                }
+                            } else {
+                                null
+                            },
+                            onClick = {
+                                expanded = false
+                                if (!isSelected) onSelect(option)
+                            },
+                        )
+                    }
+                    menuFooter?.invoke(this) { expanded = false }
+                }
             }
         }
     }

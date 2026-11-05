@@ -48,6 +48,7 @@ import java.util.Calendar
 @Composable
 fun QuickAddTodoSheet(
     component: QuickAddTodoComponent,
+    onAddCategory: () -> Unit,
 ) {
     val uiState by component.uiState.collectAsState()
     val titleFocusRequester = remember { FocusRequester() }
@@ -161,6 +162,7 @@ fun QuickAddTodoSheet(
                     selectedCategory = uiState.selectedCategory,
                     onSelect = { component.handleEvent(QuickAddTodoUiEvent.SelectCategory(it)) },
                     onSelectInbox = { component.handleEvent(QuickAddTodoUiEvent.SelectCategory(null)) },
+                    onAddCategory = onAddCategory,
                 )
 
                 QuickAddSectionLabel(stringResource(R.string.task_note))

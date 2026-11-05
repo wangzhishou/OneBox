@@ -108,6 +108,9 @@ class CategoryDetailComponent @AssistedInject internal constructor(
                 _uiState.value = _uiState.value.copy(sort = event.sort, isSortSheetVisible = false)
             }
             CategoryDetailUiEvent.NavigateBack -> onGoBack()
+            CategoryDetailUiEvent.AddCategoryClicked -> onNavigate(
+                Screen.MarkTodoRouter(Screen.MarkTodoRouter.MarkTodoType.AddCategory())
+            )
             CategoryDetailUiEvent.EditCategoryClicked -> onNavigate(
                 Screen.MarkTodoRouter(
                     Screen.MarkTodoRouter.MarkTodoType.AddCategory(editingCategoryId = categoryId)

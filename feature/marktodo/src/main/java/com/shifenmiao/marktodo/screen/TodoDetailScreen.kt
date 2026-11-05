@@ -38,6 +38,7 @@ import com.wanbaohe.base.ui.picker.ChineseDatePickerDialog
 import com.wanbaohe.base.ui.picker.ChineseTimePickerDialog
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.marktodo.R
+import com.shifenmiao.marktodo.components.TaskCompletionButton
 import com.shifenmiao.marktodo.components.TaskDateField
 import com.shifenmiao.marktodo.components.TaskTimeField
 import com.shifenmiao.marktodo.model.TodoDetailNotice
@@ -48,7 +49,6 @@ import com.shifenmiao.marktodo.screenLogic.TodoDetailComponent
 import com.wanbaohe.schedule.model.LinkedScheduleSnapshot
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
-import com.wanbaohe.core.ui.widget.glass.GlassCheckbox
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.core.ui.widget.system.OneBoxDangerButton
@@ -272,11 +272,10 @@ private fun TodoDetailContent(
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing)
         ) {
-            GlassCheckbox(
-                checked = task.isCompleted,
-                onCheckedChange = { onToggleComplete() }
+            TaskCompletionButton(
+                task = task,
+                onToggle = { onToggleComplete() },
             )
             Text(
                 text = task.title,

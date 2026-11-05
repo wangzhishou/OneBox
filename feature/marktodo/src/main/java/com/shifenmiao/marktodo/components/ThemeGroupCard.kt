@@ -88,25 +88,30 @@ fun ThemeGroupCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .combinedClickable(
-                    onClick = { if (!isReorderMode) onCategoryClick(category) },
-                    // 排序模式下长按留给拖拽排序
-                    onLongClick = { if (!isReorderMode) menuExpanded = true }
-                )
                 .padding(OneBoxDesignSystem.itemSpacing)
         ) {
             // 头部：图标徽章 + 标题 + 进度文本 + 菜单锚点
-            ThemeGroupHeader(
-                category = category,
-                accentColor = accentColor,
-                accentContainerColor = accentContainerColor,
-                showMenu = showMenu,
-                menuExpanded = menuExpanded,
-                onMenuExpandedChange = { menuExpanded = it },
-                onEditCategory = { onEditCategory(category) },
-                onDeleteCategory = { onDeleteCategory(category) },
-                onEnterReorder = onEnterReorder
-            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .combinedClickable(
+                        onClick = { if (!isReorderMode) onCategoryClick(category) },
+                        // 排序模式下长按留给拖拽排序
+                        onLongClick = { if (!isReorderMode) menuExpanded = true }
+                    )
+            ) {
+                ThemeGroupHeader(
+                    category = category,
+                    accentColor = accentColor,
+                    accentContainerColor = accentContainerColor,
+                    showMenu = showMenu,
+                    menuExpanded = menuExpanded,
+                    onMenuExpandedChange = { menuExpanded = it },
+                    onEditCategory = { onEditCategory(category) },
+                    onDeleteCategory = { onDeleteCategory(category) },
+                    onEnterReorder = onEnterReorder
+                )
+            }
 
             // 圆头玻璃进度条（无断口）
             GlassLinearProgressIndicator(
@@ -143,8 +148,7 @@ fun ThemeGroupCard(
 }
 
 /**
- * 主题分组卡片（网格视图）—— 原型设计稿 Grid 视图：
- * 图标徽章 + 标题 + 进度 + 前 2 条任务（两行布局：标题 / 标签·备注·时间）。
+ * 主题分组卡片（网格视图）：长按分组打开分组菜单，长按事项打开事项菜单。
  */
 @Composable
 fun ThemeGroupGridCard(
@@ -181,13 +185,15 @@ fun ThemeGroupGridCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .combinedClickable(
-                    onClick = { if (!isReorderMode) onCategoryClick(category) },
-                    onLongClick = { if (!isReorderMode) menuExpanded = true }
-                )
                 .padding(OneBoxDesignSystem.itemSpacing)
         ) {
             Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .combinedClickable(
+                        onClick = { if (!isReorderMode) onCategoryClick(category) },
+                        onLongClick = { if (!isReorderMode) menuExpanded = true }
+                    ),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing)
             ) {
@@ -207,7 +213,7 @@ fun ThemeGroupGridCard(
                 )
                 // 菜单锚点（长按弹出，锚定在卡片右上角）
                 ThemeMenuAnchor(
-                    showMenuButton = !isReorderMode,
+                    showMenuButton = false,
                     expanded = menuExpanded,
                     onExpandedChange = { menuExpanded = it },
                     onEdit = { onEditCategory(category) },

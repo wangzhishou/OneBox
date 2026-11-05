@@ -55,7 +55,7 @@ fun PrioritySelector(
                 onClick = { onSelect(value) },
                 selectedColor = MaterialTheme.colorScheme.primaryContainer,
                 selectedContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                unselectedColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                unselectedColor = MaterialTheme.colorScheme.surfaceContainerHighest,
                 modifier = Modifier.weight(1f),
                 label = {
                     Row(
@@ -103,6 +103,13 @@ fun TagSelector(
             val selected = tag.name in selectedTagNames
             val tagColor = com.shifenmiao.marktodo.theme.tagAccentColor(tag.colorArgb, index)
             GlassFilterChip(
+                style = com.wanbaohe.core.ui.widget.glass.GlassStyle.None,
+                glassContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                glassBorderWidth = 0.dp,
+                colors = androidx.compose.material3.FilterChipDefaults.filterChipColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                    selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                ),
                 selected = selected,
                 onClick = { onToggle(tag.name) },
                 label = {
@@ -119,6 +126,13 @@ fun TagSelector(
         }
         extraNames.forEach { name ->
             GlassFilterChip(
+                style = com.wanbaohe.core.ui.widget.glass.GlassStyle.None,
+                glassContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                glassBorderWidth = 0.dp,
+                colors = androidx.compose.material3.FilterChipDefaults.filterChipColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                    selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                ),
                 selected = true,
                 onClick = { onToggle(name) },
                 label = { Text(text = name) },
@@ -129,7 +143,7 @@ fun TagSelector(
                 selected = false,
                 onClick = onAddTag,
                 selectedColor = Color.Unspecified,
-                unselectedColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                unselectedColor = MaterialTheme.colorScheme.surfaceContainerHighest,
                 label = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(

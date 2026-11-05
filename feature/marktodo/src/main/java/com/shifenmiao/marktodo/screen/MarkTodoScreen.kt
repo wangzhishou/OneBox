@@ -66,7 +66,6 @@ import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFeatures
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFilterAlt
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineFolder
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineInbox
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineQuickTiles
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineViewList
@@ -81,8 +80,8 @@ import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyGridState
 
-/** 当前视图待办少于此数时不显示搜索框和筛选条。 */
 private const val QueryToolsMinTaskCount = 8
+private const val SearchFieldMinTaskCount = 100
 
 @Composable
 fun MarkTodoScreen(
@@ -113,19 +112,6 @@ fun MarkTodoScreen(
             flattened
         }
     }
-    val listTaskCount = remember(
-        scopedTasks,
-        uiState.filter,
-        uiState.sort,
-        uiState.pendingCompletionIds,
-    ) {
-        TodoTaskQuery.filterAndSort(
-            tasks = scopedTasks,
-            filter = uiState.filter,
-            sort = uiState.sort,
-            retainedCompletedTaskIds = uiState.pendingCompletionIds,
-        ).size
-    }
     val baseTaskCount = remember(scopedTasks, uiState.pendingCompletionIds) {
         TodoTaskQuery.filterAndSort(
             tasks = scopedTasks,
@@ -133,7 +119,7 @@ fun MarkTodoScreen(
         ).size
     }
     val showSearchField = uiState.searchQuery.isNotBlank() ||
-        listTaskCount >= QueryToolsMinTaskCount
+        baseTaskCount > SearchFieldMinTaskCount
     val showFilterBar = uiState.filter != TaskFilter() ||
         uiState.sort != TaskSortConfig() ||
         baseTaskCount >= QueryToolsMinTaskCount
@@ -180,11 +166,6 @@ fun MarkTodoScreen(
         actions = {
             MarkTodoScreenActions(
                 isReorderMode = uiState.isReorderMode,
-                showAddCategory = uiState.homeView == HomeView.THEMES &&
-                    uiState.searchQuery.isBlank(),
-                onAddCategory = {
-                    markTodoComponent.handleEvent(MarkTodoUiEvent.AddCategoryClicked)
-                },
                 onExitReorder = {
                     markTodoComponent.handleEvent(MarkTodoUiEvent.SetReorderMode(false))
                 },
@@ -310,7 +291,12 @@ fun MarkTodoScreen(
         }
     }
 
-    QuickAddTodoSheet(markTodoComponent.quickAddTodoComponent)
+    QuickAddTodoSheet(
+        component = markTodoComponent.quickAddTodoComponent,
+        onAddCategory = {
+            markTodoComponent.handleEvent(MarkTodoUiEvent.AddCategoryClicked)
+        },
+    )
 
     if (uiState.isFilterSortSheetVisible) {
         TaskFilterSortSheet(
@@ -384,8 +370,6 @@ fun MarkTodoScreen(
 @Composable
 private fun MarkTodoScreenActions(
     isReorderMode: Boolean,
-    showAddCategory: Boolean,
-    onAddCategory: () -> Unit,
     onExitReorder: () -> Unit,
     onAddTask: () -> Unit,
 ) {
@@ -402,15 +386,6 @@ private fun MarkTodoScreenActions(
                 )
             }
             return@Row
-        }
-        if (showAddCategory) {
-            IconButton(onClick = onAddCategory) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFolder,
-                    contentDescription = stringResource(R.string.action_add_category),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
         }
         IconButton(onClick = onAddTask) {
             Icon(
@@ -568,8 +543,8 @@ private fun QueryShortcutBar(
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFilterAlt,
                 contentDescription = stringResource(R.string.p1_filter_sort),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(18.dp),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.65f),
+                modifier = Modifier.size(16.dp),
             )
         }
         if (showViewMode) {
@@ -586,8 +561,8 @@ private fun QueryShortcutBar(
                     contentDescription = stringResource(
                         if (isGridView) R.string.cd_switch_to_list_view else R.string.cd_switch_to_grid_view
                     ),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(18.dp),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.65f),
+                    modifier = Modifier.size(16.dp),
                 )
             }
         }
@@ -686,7 +661,10 @@ private fun QuickDateFilterChip(
             )
         },
         style = GlassStyle.Dense,
-        glassContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+        glassContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+        colors = androidx.compose.material3.FilterChipDefaults.filterChipColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+        ),
         label = {
             Text(
                 text = label,

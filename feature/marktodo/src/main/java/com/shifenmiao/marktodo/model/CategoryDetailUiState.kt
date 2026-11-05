@@ -35,6 +35,7 @@ sealed interface CategoryDetailUiEvent {
     data object DismissSortSheet : CategoryDetailUiEvent
     data class ChangeSort(val sort: TaskSortConfig) : CategoryDetailUiEvent
 
+    data object AddCategoryClicked : CategoryDetailUiEvent
     data object EditCategoryClicked : CategoryDetailUiEvent
     data object DeleteCategoryClicked : CategoryDetailUiEvent
     data object DismissDeleteCategory : CategoryDetailUiEvent

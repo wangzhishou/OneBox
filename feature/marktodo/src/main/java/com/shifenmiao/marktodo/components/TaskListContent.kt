@@ -47,7 +47,6 @@ import com.shifenmiao.marktodo.theme.priorityColor
 import com.t8rin.imagetoolbox.core.resources.icons.CheckCircle
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
-import com.t8rin.imagetoolbox.core.resources.icons.Star
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAccessTime
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCheckBoxBlank
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFlag
@@ -133,6 +132,7 @@ fun TaskListItem(
     compact: Boolean = false,
 ) {
     val task = item.task
+    var menuExpanded by remember(task.id) { mutableStateOf(false) }
     GlassCard(
         modifier = modifier.fillMaxWidth(),
         onClick = { onClick(task) },
@@ -154,33 +154,24 @@ fun TaskListItem(
                     textDecoration = if (task.isCompleted) TextDecoration.LineThrough else null,
                     modifier = Modifier.weight(1f),
                 )
-                if (!compact) {
-                    TaskStarButton(task = task, onToggle = onToggleStar)
-                }
                 TaskOverflowMenu(
                     task = task,
                     onEdit = onClick,
                     onToggleStar = onToggleStar,
                     onDelete = onDelete,
+                    expanded = menuExpanded,
+                    onExpandedChange = { menuExpanded = it },
                 )
             }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.Bottom,
-            ) {
-                TaskMetadata(
-                    item = item,
-                    tagsByName = tagsByName,
-                    onTagClick = onTagClick,
-                    showCategory = showCategory,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(start = 48.dp, bottom = OneBoxDesignSystem.compactSpacing),
-                )
-                if (compact) {
-                    TaskStarButton(task = task, onToggle = onToggleStar)
-                }
-            }
+            TaskMetadata(
+                item = item,
+                tagsByName = tagsByName,
+                onTagClick = onTagClick,
+                showCategory = showCategory,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 24.dp, bottom = OneBoxDesignSystem.compactSpacing),
+            )
         }
     }
 }
@@ -283,54 +274,25 @@ fun TaskCompletionButton(
     onToggle: (TodoTask) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    IconButton(
-        onClick = { onToggle(task) },
-        modifier = modifier.size(48.dp),
-    ) {
-        Icon(
-            imageVector = if (task.isCompleted) {
-                com.t8rin.imagetoolbox.core.resources.Icons.Outlined.CheckCircle
-            } else {
-                com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCheckBoxBlank
+    Icon(
+        imageVector = if (task.isCompleted) {
+            com.t8rin.imagetoolbox.core.resources.Icons.Outlined.CheckCircle
+        } else {
+            com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCheckBoxBlank
+        },
+        contentDescription = if (task.isCompleted) {
+            stringResource(R.string.cd_task_completed)
+        } else {
+            stringResource(R.string.cd_task_pending)
+        },
+        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+        modifier = modifier
+            .padding(end = 4.dp)
+            .size(20.dp)
+            .clickable(role = androidx.compose.ui.semantics.Role.Checkbox) {
+                onToggle(task)
             },
-            contentDescription = if (task.isCompleted) {
-                stringResource(R.string.cd_task_completed)
-            } else {
-                stringResource(R.string.cd_task_pending)
-            },
-            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-            modifier = Modifier.size(20.dp),
-        )
-    }
-}
-
-@Composable
-fun TaskStarButton(
-    task: TodoTask,
-    onToggle: (TodoTask) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    IconButton(
-        onClick = { onToggle(task) },
-        modifier = modifier.size(48.dp),
-    ) {
-        Icon(
-            imageVector = if (task.isStarred) {
-                com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Star
-            } else {
-                com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStar
-            },
-            contentDescription = stringResource(
-                if (task.isStarred) R.string.p1_remove_focus else R.string.p1_add_focus
-            ),
-            tint = if (task.isStarred) {
-                MaterialTheme.colorScheme.onPrimaryContainer
-            } else {
-                MaterialTheme.colorScheme.onSurfaceVariant
-            },
-            modifier = Modifier.size(19.dp),
-        )
-    }
+    )
 }
 
 @Composable
@@ -339,24 +301,28 @@ fun TaskOverflowMenu(
     onEdit: (TodoTask) -> Unit,
     onToggleStar: (TodoTask) -> Unit,
     onDelete: (TodoTask) -> Unit,
+    expanded: Boolean,
+    onExpandedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    showButton: Boolean = true,
 ) {
-    var expanded by remember(task.id) { mutableStateOf(false) }
     Box(modifier = modifier) {
-        IconButton(
-            onClick = { expanded = true },
-            modifier = Modifier.size(48.dp),
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.MoreVert,
-                contentDescription = stringResource(R.string.action_menu),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(19.dp),
-            )
+        if (showButton) {
+            IconButton(
+                onClick = { onExpandedChange(true) },
+                modifier = Modifier.size(48.dp),
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.MoreVert,
+                    contentDescription = stringResource(R.string.action_menu),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(19.dp),
+                )
+            }
         }
         EnhancedDropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false },
+            onDismissRequest = { onExpandedChange(false) },
         ) {
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.action_edit)) },
@@ -367,7 +333,7 @@ fun TaskOverflowMenu(
                     )
                 },
                 onClick = {
-                    expanded = false
+                    onExpandedChange(false)
                     onEdit(task)
                 },
             )
@@ -386,7 +352,7 @@ fun TaskOverflowMenu(
                     )
                 },
                 onClick = {
-                    expanded = false
+                    onExpandedChange(false)
                     onToggleStar(task)
                 },
             )
@@ -405,7 +371,7 @@ fun TaskOverflowMenu(
                     )
                 },
                 onClick = {
-                    expanded = false
+                    onExpandedChange(false)
                     onDelete(task)
                 },
             )

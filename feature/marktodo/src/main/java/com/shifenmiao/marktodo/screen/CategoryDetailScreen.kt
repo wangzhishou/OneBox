@@ -195,7 +195,12 @@ fun CategoryDetailScreen(
         }
     }
 
-    QuickAddTodoSheet(component.quickAddTodoComponent)
+    QuickAddTodoSheet(
+        component = component.quickAddTodoComponent,
+        onAddCategory = {
+            component.handleEvent(CategoryDetailUiEvent.AddCategoryClicked)
+        },
+    )
 
     if (uiState.isSortSheetVisible) {
         TaskFilterSortSheet(
