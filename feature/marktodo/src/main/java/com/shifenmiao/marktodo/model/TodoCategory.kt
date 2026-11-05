@@ -47,4 +47,17 @@ data class TodoCategory(
      */
     val isAllCompleted: Boolean
         get() = totalCount > 0 && completedCount == totalCount
+
+    /** 是否是「收集箱」合成分组（未归组任务，库里没有对应行） */
+    val isInbox: Boolean get() = id == INBOX_ID
+
+    companion object {
+        /**
+         * 收集箱的合成 id。
+         *
+         * 未归组任务（category_id = NULL）在库里没有分组行，首页与详情页用这个
+         * 哨兵 id 把它们拼成一个虚拟分组显示；真实分组 id 是 UUID，不会撞车。
+         */
+        const val INBOX_ID = "__inbox__"
+    }
 }

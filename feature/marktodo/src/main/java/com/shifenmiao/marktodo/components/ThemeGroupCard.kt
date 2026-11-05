@@ -96,8 +96,8 @@ fun ThemeGroupCard(
                     .fillMaxWidth()
                     .combinedClickable(
                         onClick = { if (!isReorderMode) onCategoryClick(category) },
-                        // 排序模式下长按留给拖拽排序
-                        onLongClick = { if (!isReorderMode) menuExpanded = true }
+                        // 排序模式下长按留给拖拽排序；收集箱等虚拟分组没有分组菜单
+                        onLongClick = { if (!isReorderMode && showMenu) menuExpanded = true }
                     )
             ) {
                 ThemeGroupHeader(
@@ -163,6 +163,7 @@ fun ThemeGroupGridCard(
     onDeleteCategory: (TodoCategory) -> Unit,
     modifier: Modifier = Modifier,
     isReorderMode: Boolean = false,
+    showMenu: Boolean = true,
     onEnterReorder: () -> Unit = {},
     maxPreviewTasks: Int = 2,
     onTagClick: ((String) -> Unit)? = null,
@@ -192,7 +193,7 @@ fun ThemeGroupGridCard(
                     .fillMaxWidth()
                     .combinedClickable(
                         onClick = { if (!isReorderMode) onCategoryClick(category) },
-                        onLongClick = { if (!isReorderMode) menuExpanded = true }
+                        onLongClick = { if (!isReorderMode && showMenu) menuExpanded = true }
                     ),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing)

@@ -110,23 +110,6 @@ fun TaskFilterSortSheet(
         ) {
             if (showFilters) {
                 FilterSection(
-                    title = stringResource(R.string.p1_filter_status),
-                    icon = Icons.Outlined.LineCheckCircleOutline,
-                    subtitle = stringResource(R.string.p1_filter_status_subtitle),
-                ) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing)) {
-                        TaskCompletionFilter.entries.forEach { completion ->
-                            GlassFilterChip(
-                                selected = draftFilter.completion == completion,
-                                onClick = { draftFilter = draftFilter.copy(completion = completion) },
-                                label = { Text(taskCompletionLabel(completion)) },
-                                modifier = Modifier.weight(1f),
-                            )
-                        }
-                    }
-                }
-
-                FilterSection(
                     title = stringResource(R.string.p1_filter_category),
                     icon = Icons.Outlined.LineFolder,
                 ) {
@@ -485,15 +468,6 @@ private fun DueRangeDatePickerDialog(
         placeAboveAll = true,
     )
 }
-
-@Composable
-fun taskCompletionLabel(completion: TaskCompletionFilter): String = stringResource(
-    when (completion) {
-        TaskCompletionFilter.ALL -> R.string.filter_all
-        TaskCompletionFilter.ACTIVE -> R.string.filter_active
-        TaskCompletionFilter.COMPLETED -> R.string.filter_completed
-    }
-)
 
 @Composable
 fun taskSortModeLabel(mode: TaskSortMode): String = stringResource(

@@ -7,9 +7,9 @@ import com.shifenmiao.marktodo.R
 import com.shifenmiao.marktodo.data.iconFromKey
 import com.shifenmiao.marktodo.data.toModel
 import com.shifenmiao.marktodo.model.DialogState
-import com.shifenmiao.marktodo.model.HomeView
 import com.shifenmiao.marktodo.model.MarkTodoUiEvent
 import com.shifenmiao.marktodo.model.MarkTodoUiState
+import com.shifenmiao.marktodo.model.TaskCompletionFilter
 import com.shifenmiao.marktodo.model.TaskSortConfig
 import com.shifenmiao.marktodo.model.TaskSortMode
 import com.shifenmiao.marktodo.model.TodoCategory
@@ -49,9 +49,9 @@ class MarkTodoComponent @AssistedInject internal constructor(
 
     private val _uiState = MutableStateFlow(
         MarkTodoUiState(
-            homeView = prefs.decodeString(KEY_HOME_VIEW, null)
-                ?.let { runCatching { HomeView.valueOf(it) }.getOrNull() }
-                ?: HomeView.THEMES,
+            statusTab = prefs.decodeString(KEY_STATUS_TAB, null)
+                ?.let { runCatching { TaskCompletionFilter.valueOf(it) }.getOrNull() }
+                ?: TaskCompletionFilter.ALL,
             sort = TaskSortConfig(
                 mode = prefs.decodeString(KEY_SORT_MODE, null)
                     ?.let { runCatching { TaskSortMode.valueOf(it) }.getOrNull() }
@@ -126,16 +126,9 @@ class MarkTodoComponent @AssistedInject internal constructor(
             is MarkTodoUiEvent.ToggleTaskComplete -> toggleTaskComplete(event.task)
             is MarkTodoUiEvent.ToggleTaskStar -> toggleTaskStar(event.task)
             is MarkTodoUiEvent.DeleteTask -> deleteTask(event.task)
-            is MarkTodoUiEvent.SelectHomeView -> {
-                _uiState.value = _uiState.value.copy(
-                    homeView = event.view,
-                    isReorderMode = if (event.view == HomeView.THEMES) {
-                        _uiState.value.isReorderMode
-                    } else {
-                        false
-                    },
-                )
-                prefs.encode(KEY_HOME_VIEW, event.view.name)
+            is MarkTodoUiEvent.SelectStatusTab -> {
+                _uiState.value = _uiState.value.copy(statusTab = event.tab)
+                prefs.encode(KEY_STATUS_TAB, event.tab.name)
             }
             is MarkTodoUiEvent.SearchQueryChanged -> {
                 _uiState.value = _uiState.value.copy(searchQuery = event.query)
@@ -186,7 +179,11 @@ class MarkTodoComponent @AssistedInject internal constructor(
     }
 
     private fun openCategory(category: TodoCategory) {
-        val safeTitle = category.title.ifBlank { context.getString(R.string.category_unnamed) }
+        val safeTitle = if (category.isInbox) {
+            context.getString(R.string.p1_inbox)
+        } else {
+            category.title.ifBlank { context.getString(R.string.category_unnamed) }
+        }
         onNavigate(
             Screen.MarkTodoRouter(
                 Screen.MarkTodoRouter.MarkTodoType.CategoryDetail(
@@ -386,7 +383,7 @@ class MarkTodoComponent @AssistedInject internal constructor(
     }
 
     private companion object {
-        const val KEY_HOME_VIEW = "home_view"
+        const val KEY_STATUS_TAB = "status_tab"
         const val KEY_GRID_VIEW = "grid_view"
         const val KEY_SORT_MODE = "sort_mode"
         const val KEY_SORT_ASCENDING = "sort_ascending"

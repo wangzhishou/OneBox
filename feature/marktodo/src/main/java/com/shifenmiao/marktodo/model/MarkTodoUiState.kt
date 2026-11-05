@@ -6,7 +6,7 @@ import androidx.compose.runtime.Immutable
 data class MarkTodoUiState(
     val isLoading: Boolean = false,
     val error: String? = null,
-    val homeView: HomeView = HomeView.THEMES,
+    val statusTab: TaskCompletionFilter = TaskCompletionFilter.ALL,
     val searchQuery: String = "",
     val filter: TaskFilter = TaskFilter(),
     val sort: TaskSortConfig = TaskSortConfig(),
@@ -38,7 +38,7 @@ sealed interface MarkTodoUiEvent {
     data class ToggleTaskStar(val task: TodoTask) : MarkTodoUiEvent
     data class DeleteTask(val task: TodoTask) : MarkTodoUiEvent
 
-    data class SelectHomeView(val view: HomeView) : MarkTodoUiEvent
+    data class SelectStatusTab(val tab: TaskCompletionFilter) : MarkTodoUiEvent
     data class SearchQueryChanged(val query: String) : MarkTodoUiEvent
     data class TagOnTaskClicked(val tagName: String) : MarkTodoUiEvent
     data class SetFilter(val filter: TaskFilter) : MarkTodoUiEvent

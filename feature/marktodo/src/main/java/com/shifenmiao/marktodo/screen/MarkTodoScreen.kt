@@ -47,7 +47,6 @@ import com.shifenmiao.marktodo.components.taskSortDirectionLabel
 import com.shifenmiao.marktodo.components.taskSortModeLabel
 import com.shifenmiao.marktodo.domain.TodoTaskQuery
 import com.shifenmiao.marktodo.model.DialogState
-import com.shifenmiao.marktodo.model.HomeView
 import com.shifenmiao.marktodo.model.MarkTodoUiEvent
 import com.shifenmiao.marktodo.model.TaskCompletionFilter
 import com.shifenmiao.marktodo.model.TaskDateScope
@@ -64,11 +63,14 @@ import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.Close
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineAccessTime
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineCheckCircleOutline
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFeatures
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFilterAlt
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineInbox
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineQuickTiles
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineViewList
+import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
 import com.wanbaohe.core.ui.widget.glass.GlassSearchTextField
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
@@ -105,16 +107,9 @@ fun MarkTodoScreen(
     val flattened = remember(tasks, fullCategories) {
         TodoTaskQuery.flatten(tasks = tasks, categories = fullCategories)
     }
-    val scopedTasks = remember(flattened, uiState.homeView) {
-        if (uiState.homeView == HomeView.INBOX) {
-            flattened.filter { it.task.categoryId == null }
-        } else {
-            flattened
-        }
-    }
-    val baseTaskCount = remember(scopedTasks, uiState.pendingCompletionIds) {
+    val baseTaskCount = remember(flattened, uiState.pendingCompletionIds) {
         TodoTaskQuery.filterAndSort(
-            tasks = scopedTasks,
+            tasks = flattened,
             retainedCompletedTaskIds = uiState.pendingCompletionIds,
         ).size
     }
@@ -123,22 +118,19 @@ fun MarkTodoScreen(
     val showFilterBar = uiState.filter != TaskFilter() ||
         uiState.sort != TaskSortConfig() ||
         baseTaskCount >= QueryToolsMinTaskCount
-    val effectiveFilter = remember(uiState.searchQuery, uiState.filter) {
-        if (uiState.searchQuery.isNotBlank() && uiState.filter == TaskFilter()) {
-            uiState.filter.copy(completion = TaskCompletionFilter.ALL)
-        } else {
-            uiState.filter
-        }
+    // 底部状态页签是完成状态的唯一开关：筛选面板里不再单独管完成状态
+    val effectiveFilter = remember(uiState.filter, uiState.statusTab) {
+        uiState.filter.copy(completion = uiState.statusTab)
     }
     val visibleTasks = remember(
-        scopedTasks,
+        flattened,
         uiState.searchQuery,
         effectiveFilter,
         uiState.sort,
         uiState.pendingCompletionIds,
     ) {
         TodoTaskQuery.filterAndSort(
-            tasks = scopedTasks,
+            tasks = flattened,
             searchQuery = uiState.searchQuery,
             filter = effectiveFilter,
             sort = uiState.sort,
@@ -148,6 +140,19 @@ fun MarkTodoScreen(
     val todayGroups = remember(visibleTasks) { TodoTaskQuery.groupForToday(visibleTasks) }
     val tasksByCategory = remember(visibleTasks) {
         visibleTasks.filter { it.task.categoryId != null }.groupBy { it.task.categoryId!! }
+    }
+    // 收集箱 = 未归组任务（库里没有分组行），页面上拼成一张虚拟分组卡片
+    val inboxTitle = stringResource(R.string.p1_inbox)
+    val inboxCategory = remember(tasks, inboxTitle) {
+        TodoCategory(
+            id = TodoCategory.INBOX_ID,
+            title = inboxTitle,
+            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineInbox,
+            tasks = tasks.filter { it.categoryId == null }.sortedBy { it.sortOrder },
+        )
+    }
+    val inboxVisibleTasks = remember(visibleTasks) {
+        visibleTasks.filter { it.task.categoryId == null }.map { it.task }
     }
     val hasNarrowingQuery = uiState.searchQuery.isNotBlank() ||
         uiState.filter.hasCategoryFilter ||
@@ -201,8 +206,7 @@ fun MarkTodoScreen(
                     filter = uiState.filter,
                     sort = uiState.sort,
                     isGridView = uiState.isGridView,
-                    showViewMode = uiState.homeView == HomeView.THEMES &&
-                        uiState.searchQuery.isBlank() &&
+                    showViewMode = uiState.searchQuery.isBlank() &&
                         !uiState.filter.hasSmartDateFilter,
                     onFilterChange = {
                         markTodoComponent.handleEvent(MarkTodoUiEvent.SetFilter(it))
@@ -246,33 +250,28 @@ fun MarkTodoScreen(
                     component = markTodoComponent,
                     modifier = contentModifier,
                 )
-                uiState.homeView == HomeView.INBOX -> {
-                    if (visibleTasks.isEmpty()) {
-                        TaskListEmptyState(
-                            message = stringResource(R.string.p1_empty_inbox),
-                            actionLabel = stringResource(R.string.action_add_task),
-                            onAction = {
-                                markTodoComponent.handleEvent(MarkTodoUiEvent.AddTaskClicked())
-                            },
-                            modifier = contentModifier,
-                        )
-                    } else {
-                        SearchTaskList(
-                            tasks = visibleTasks,
-                            tagsByName = tagsByName,
-                            component = markTodoComponent,
-                            modifier = contentModifier,
-                        )
-                    }
-                }
+                visibleTasks.isEmpty() && hasNarrowingQuery -> TaskListEmptyState(
+                    message = stringResource(R.string.empty_filtered_tasks),
+                    actionLabel = stringResource(R.string.p1_clear_filters),
+                    onAction = {
+                        markTodoComponent.handleEvent(MarkTodoUiEvent.ClearFilters)
+                    },
+                    modifier = contentModifier,
+                )
                 else -> CategoriesContent(
                     categories = visibleCategories,
+                    // 按分组筛选时，没勾「收集箱」就不摆这张卡
+                    inboxCategory = inboxCategory.takeIf {
+                        !uiState.filter.hasCategoryFilter || uiState.filter.includeInbox
+                    },
+                    inboxVisibleTasks = inboxVisibleTasks,
                     themeIndexById = fullCategories.mapIndexed { index, category ->
-                        category.id to index
+                        category.id to index + 1
                     }.toMap(),
-                    hasAnyCategory = fullCategories.isNotEmpty(),
                     tasksByCategory = tasksByCategory,
                     tagsByName = tagsByName,
+                    // 一个分组都没有时，补一张「新建分组」卡，别把建组入口藏进快速添加
+                    showAddGroupCard = fullCategories.isEmpty() && !uiState.isReorderMode,
                     isGridView = uiState.isGridView,
                     isReorderMode = uiState.isReorderMode,
                     component = markTodoComponent,
@@ -281,10 +280,10 @@ fun MarkTodoScreen(
             }
 
             AnimatedVisibility(visible = !uiState.isReorderMode) {
-                HomeBottomBar(
-                    selectedView = uiState.homeView,
-                    onSelectView = {
-                        markTodoComponent.handleEvent(MarkTodoUiEvent.SelectHomeView(it))
+                StatusBottomBar(
+                    selectedTab = uiState.statusTab,
+                    onSelectTab = {
+                        markTodoComponent.handleEvent(MarkTodoUiEvent.SelectStatusTab(it))
                     },
                 )
             }
@@ -574,20 +573,6 @@ private fun ActiveConditionChips(
     filter: TaskFilter,
     onFilterChange: (TaskFilter) -> Unit,
 ) {
-    if (filter.completion != TaskCompletionFilter.ACTIVE) {
-        ActiveConditionChip(
-            label = stringResource(
-                if (filter.completion == TaskCompletionFilter.ALL) {
-                    R.string.filter_all
-                } else {
-                    R.string.filter_completed
-                }
-            ),
-            onClear = {
-                onFilterChange(filter.copy(completion = TaskCompletionFilter.ACTIVE))
-            },
-        )
-    }
     if (filter.hasCategoryFilter) {
         val count = filter.categoryIds.size + if (filter.includeInbox) 1 else 0
         ActiveConditionChip(
@@ -716,54 +701,40 @@ private fun ActiveConditionChip(
 @Composable
 private fun CategoriesContent(
     categories: List<TodoCategory>,
+    inboxCategory: TodoCategory?,
+    inboxVisibleTasks: List<TodoTask>,
     themeIndexById: Map<String, Int>,
-    hasAnyCategory: Boolean,
     tasksByCategory: Map<String, List<TaskWithCategory>>,
     tagsByName: Map<String, TodoTag>,
+    showAddGroupCard: Boolean,
     isGridView: Boolean,
     isReorderMode: Boolean,
     component: MarkTodoComponent,
     modifier: Modifier = Modifier,
 ) {
-    if (categories.isEmpty()) {
-        TaskListEmptyState(
-            message = stringResource(
-                if (hasAnyCategory) R.string.empty_filtered_tasks else R.string.p1_empty_themes
-            ),
-            actionLabel = stringResource(
-                if (hasAnyCategory) R.string.p1_clear_filters else R.string.action_add_category
-            ),
-            onAction = {
-                component.handleEvent(
-                    if (hasAnyCategory) {
-                        MarkTodoUiEvent.ClearFilters
-                    } else {
-                        MarkTodoUiEvent.AddCategoryClicked
-                    }
-                )
-            },
-            modifier = modifier,
-        )
-        return
-    }
-
     val lazyGridState = rememberLazyGridState()
+    // 收集箱卡片出现在网格首位但不参与拖拽，把它占掉的 index 偏置补回来
+    val inboxOffset = if (inboxCategory != null) 1 else 0
     val reorderableState = rememberReorderableLazyGridState(
         lazyGridState = lazyGridState,
         onMove = { from, to ->
             if (isReorderMode) {
-                component.handleEvent(
-                    MarkTodoUiEvent.ReorderCategories(
-                        fromIndex = from.index,
-                        toIndex = to.index,
-                        visibleCategoryIds = categories.map { it.id },
+                val fromIndex = from.index - inboxOffset
+                val toIndex = to.index - inboxOffset
+                if (fromIndex >= 0 && toIndex >= 0) {
+                    component.handleEvent(
+                        MarkTodoUiEvent.ReorderCategories(
+                            fromIndex = fromIndex,
+                            toIndex = toIndex,
+                            visibleCategoryIds = categories.map { it.id },
+                        )
                     )
-                )
+                }
             }
         },
     )
     LazyVerticalGrid(
-        columns = if (isGridView && categories.size > 1) {
+        columns = if (isGridView && categories.size + inboxOffset > 1) {
             GridCells.Adaptive(minSize = 180.dp)
         } else {
             GridCells.Fixed(1)
@@ -777,6 +748,48 @@ private fun CategoriesContent(
         verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing),
         horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing),
     ) {
+        // 收集箱固定排第一张：未归组任务是随手记的默认落点，不参与拖拽排序
+        if (inboxCategory != null) item(key = TodoCategory.INBOX_ID, contentType = "theme_group_card") {
+            if (isGridView) {
+                ThemeGroupGridCard(
+                    category = inboxCategory,
+                    themeIndex = 0,
+                    visibleTasks = inboxVisibleTasks,
+                    tagsByName = tagsByName,
+                    isReorderMode = false,
+                    showMenu = false,
+                    onCategoryClick = {
+                        component.handleEvent(MarkTodoUiEvent.CategoryClicked(it))
+                    },
+                    onTaskClick = { component.handleEvent(MarkTodoUiEvent.TaskClicked(it)) },
+                    onToggleComplete = {
+                        component.handleEvent(MarkTodoUiEvent.ToggleTaskComplete(it))
+                    },
+                    onEditCategory = {},
+                    onDeleteCategory = {},
+                    onTagClick = { component.handleEvent(MarkTodoUiEvent.TagOnTaskClicked(it)) },
+                )
+            } else {
+                ThemeGroupCard(
+                    category = inboxCategory,
+                    themeIndex = 0,
+                    visibleTasks = inboxVisibleTasks,
+                    tagsByName = tagsByName,
+                    showMenu = false,
+                    isReorderMode = false,
+                    onCategoryClick = {
+                        component.handleEvent(MarkTodoUiEvent.CategoryClicked(it))
+                    },
+                    onTaskClick = { component.handleEvent(MarkTodoUiEvent.TaskClicked(it)) },
+                    onToggleComplete = {
+                        component.handleEvent(MarkTodoUiEvent.ToggleTaskComplete(it))
+                    },
+                    onEditCategory = {},
+                    onDeleteCategory = {},
+                    onTagClick = { component.handleEvent(MarkTodoUiEvent.TagOnTaskClicked(it)) },
+                )
+            }
+        }
         items(items = categories, key = { it.id }, contentType = { "theme_group_card" }) { category ->
             ReorderableItem(
                 state = reorderableState,
@@ -849,30 +862,73 @@ private fun CategoriesContent(
                 }
             }
         }
+        if (showAddGroupCard) {
+            item(key = "add_group_card", contentType = "add_group_card") {
+                GlassCard(
+                    onClick = { component.handleEvent(MarkTodoUiEvent.AddCategoryClicked) },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors(
+                        MaterialTheme.colorScheme.surfaceContainerLow
+                    ),
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(OneBoxDesignSystem.itemSpacing),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(
+                            OneBoxDesignSystem.compactSpacing
+                        ),
+                    ) {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                            modifier = Modifier.size(20.dp),
+                        )
+                        Text(
+                            text = stringResource(R.string.action_add_category),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 
+/**
+ * 底部状态页签：全部 / 进行中 / 已完成。
+ *
+ * 页签只过滤每张分组卡片里的任务，不改变分组本身；进行中 = 未完成的任务。
+ */
 @Composable
-private fun HomeBottomBar(
-    selectedView: HomeView,
-    onSelectView: (HomeView) -> Unit,
+private fun StatusBottomBar(
+    selectedTab: TaskCompletionFilter,
+    onSelectTab: (TaskCompletionFilter) -> Unit,
 ) {
     val items = listOf(
         BottomNavItem(
-            id = HomeView.THEMES.name,
-            label = stringResource(R.string.p1_themes),
+            id = TaskCompletionFilter.ALL.name,
+            label = stringResource(R.string.filter_all),
             icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFeatures,
         ),
         BottomNavItem(
-            id = HomeView.INBOX.name,
-            label = stringResource(R.string.p1_inbox),
-            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineInbox,
+            id = TaskCompletionFilter.ACTIVE.name,
+            label = stringResource(R.string.label_active),
+            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAccessTime,
+        ),
+        BottomNavItem(
+            id = TaskCompletionFilter.COMPLETED.name,
+            label = stringResource(R.string.filter_completed),
+            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCheckCircleOutline,
         ),
     )
     BottomNavigationBar(
         items = items,
-        selectedItemId = selectedView.name,
-        onItemClick = { item -> onSelectView(HomeView.valueOf(item.id)) },
+        selectedItemId = selectedTab.name,
+        onItemClick = { item -> onSelectTab(TaskCompletionFilter.valueOf(item.id)) },
         modifier = Modifier.fillMaxWidth(),
     )
 }

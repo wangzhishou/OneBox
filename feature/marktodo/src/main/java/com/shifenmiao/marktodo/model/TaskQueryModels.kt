@@ -2,11 +2,12 @@ package com.shifenmiao.marktodo.model
 
 import androidx.compose.runtime.Immutable
 
-@Immutable
-enum class HomeView {
-    THEMES, INBOX
-}
-
+/**
+ * 首页底部状态页签：全部 / 进行中 / 已完成。
+ *
+ * 页面本身按分组卡片展示，页签只决定每张卡片里显示哪些任务
+ * （进行中 = 未完成的，已完成 = 已完成的）。
+ */
 @Immutable
 enum class TaskCompletionFilter {
     ALL, ACTIVE, COMPLETED
@@ -33,9 +34,9 @@ data class TaskFilter(
     val hasDueRange: Boolean get() = dueStartMillis != null || dueEndMillis != null
     val hasDateFilter: Boolean get() = hasSmartDateFilter || hasDueRange
     val hasSmartDateFilter: Boolean get() = dateScope != TaskDateScope.ALL && dateScope != TaskDateScope.RANGE
+    /** 是否有「完成状态」以外的筛选条件（完成状态由首页底部页签单独控制） */
     val hasAdvancedFilters: Boolean
-        get() = completion != TaskCompletionFilter.ACTIVE ||
-            hasCategoryFilter ||
+        get() = hasCategoryFilter ||
             tagNames.isNotEmpty() ||
             priorities.isNotEmpty() ||
             hasDueRange ||

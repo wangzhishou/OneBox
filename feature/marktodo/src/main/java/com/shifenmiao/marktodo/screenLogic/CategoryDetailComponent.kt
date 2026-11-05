@@ -8,6 +8,7 @@ import com.shifenmiao.marktodo.data.iconFromKey
 import com.shifenmiao.marktodo.data.toModel
 import com.shifenmiao.marktodo.model.CategoryDetailUiEvent
 import com.shifenmiao.marktodo.model.CategoryDetailUiState
+import com.shifenmiao.marktodo.model.TodoCategory
 import com.shifenmiao.marktodo.model.TodoTask
 import com.shifenmiao.marktodo.service.MarkTodoServiceImpl
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
@@ -39,6 +40,9 @@ class CategoryDetailComponent @AssistedInject internal constructor(
 
     val quickAddTodoComponent = quickAddTodoFactory(componentScope)
 
+    /** 收集箱是合成的虚拟分组：没有分组行，也不能改名/删除 */
+    private val isInbox: Boolean = categoryId == TodoCategory.INBOX_ID
+
     private val _uiState = MutableStateFlow(CategoryDetailUiState(isLoading = true))
     val uiState: StateFlow<CategoryDetailUiState> = _uiState.asStateFlow()
 
@@ -48,36 +52,66 @@ class CategoryDetailComponent @AssistedInject internal constructor(
     private val completionRemovalJobs = mutableMapOf<String, Job>()
 
     init {
-        componentScope.launch {
-            repository.observeDashboard()
-                .catch { error ->
-                    _uiState.value = _uiState.value.copy(
-                        isLoading = false,
-                        error = error.message ?: context.getString(R.string.error_load_failed),
-                    )
-                }
-                .collect { dashboard ->
-                    val relation = dashboard.firstOrNull { it.category.id == categoryId }
-                    _uiState.value = if (relation == null) {
-                        _uiState.value.copy(
-                            category = null,
+        if (isInbox) {
+            // 收集箱没有分组行，直接从全量任务里筛出未归组的那些
+            componentScope.launch {
+                repository.observeAll()
+                    .catch { error ->
+                        _uiState.value = _uiState.value.copy(
                             isLoading = false,
-                            error = context.getString(R.string.error_category_not_found),
-                        )
-                    } else {
-                        val safeIconKey = relation.category.iconKey.ifBlank { "inbox" }
-                        _uiState.value.copy(
-                            category = relation.category.toModel(
-                                icon = iconFromKey(safeIconKey),
-                                tasks = relation.tasks.map { it.toModel() }.sortedBy { it.sortOrder },
-                            ),
-                            themeIndex = dashboard.indexOfFirst { it.category.id == categoryId }
-                                .coerceAtLeast(0),
-                            isLoading = false,
-                            error = null,
+                            error = error.message ?: context.getString(R.string.error_load_failed),
                         )
                     }
-                }
+                    .collect { tasks ->
+                        _uiState.value = _uiState.value.copy(
+                            category = TodoCategory(
+                                id = TodoCategory.INBOX_ID,
+                                title = context.getString(R.string.p1_inbox),
+                                icon = iconFromKey("inbox"),
+                                tasks = tasks.filter { it.categoryId == null }
+                                    .map { it.toModel() }
+                                    .sortedBy { it.sortOrder },
+                            ),
+                            themeIndex = 0,
+                            isLoading = false,
+                            error = null,
+                            isInbox = true,
+                        )
+                    }
+            }
+        } else {
+            componentScope.launch {
+                repository.observeDashboard()
+                    .catch { error ->
+                        _uiState.value = _uiState.value.copy(
+                            isLoading = false,
+                            error = error.message ?: context.getString(R.string.error_load_failed),
+                        )
+                    }
+                    .collect { dashboard ->
+                        val relation = dashboard.firstOrNull { it.category.id == categoryId }
+                        _uiState.value = if (relation == null) {
+                            _uiState.value.copy(
+                                category = null,
+                                isLoading = false,
+                                error = context.getString(R.string.error_category_not_found),
+                            )
+                        } else {
+                            val safeIconKey = relation.category.iconKey.ifBlank { "inbox" }
+                            _uiState.value.copy(
+                                category = relation.category.toModel(
+                                    icon = iconFromKey(safeIconKey),
+                                    tasks = relation.tasks.map { it.toModel() }
+                                        .sortedBy { it.sortOrder },
+                                ),
+                                themeIndex = dashboard.indexOfFirst { it.category.id == categoryId }
+                                    .coerceAtLeast(0),
+                                isLoading = false,
+                                error = null,
+                            )
+                        }
+                    }
+            }
         }
         componentScope.launch {
             repository.observeTags().collect { tags ->
@@ -90,7 +124,9 @@ class CategoryDetailComponent @AssistedInject internal constructor(
         when (event) {
             is CategoryDetailUiEvent.TaskClicked -> navigateToEditTodo(event.task)
             CategoryDetailUiEvent.AddTaskClicked -> {
-                quickAddTodoComponent.open(initialCategoryId = categoryId)
+                quickAddTodoComponent.open(
+                    initialCategoryId = categoryId.takeUnless { isInbox }
+                )
             }
             is CategoryDetailUiEvent.ToggleTaskComplete -> toggleTaskComplete(event.task)
             is CategoryDetailUiEvent.ToggleTaskStar -> toggleTaskStar(event.task)

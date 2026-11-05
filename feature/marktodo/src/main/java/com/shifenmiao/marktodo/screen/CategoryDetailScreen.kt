@@ -146,6 +146,7 @@ fun CategoryDetailScreen(
                         onDeleteCategory = {
                             component.handleEvent(CategoryDetailUiEvent.DeleteCategoryClicked)
                         },
+                        showCategoryActions = !uiState.isInbox,
                         modifier = Modifier.padding(horizontal = OneBoxDesignSystem.screenPadding),
                     )
                     StatFilterRow(
@@ -265,6 +266,8 @@ private fun CategoryHeaderCard(
     onEditCategory: () -> Unit,
     onDeleteCategory: () -> Unit,
     modifier: Modifier = Modifier,
+    // 收集箱是合成分组，没有「编辑/删除分组」这一层
+    showCategoryActions: Boolean = true,
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
     GlassCard(
@@ -342,41 +345,43 @@ private fun CategoryHeaderCard(
                                 )
                             },
                         )
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.action_edit)) },
-                            onClick = {
-                                menuExpanded = false
-                                onEditCategory()
-                            },
-                            leadingIcon = {
-                                Icon(
-                                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.size(18.dp),
-                                )
-                            },
-                        )
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    text = stringResource(R.string.action_delete),
-                                    color = MaterialTheme.colorScheme.onErrorContainer,
-                                )
-                            },
-                            onClick = {
-                                menuExpanded = false
-                                onDeleteCategory()
-                            },
-                            leadingIcon = {
-                                Icon(
-                                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onErrorContainer,
-                                    modifier = Modifier.size(18.dp),
-                                )
-                            },
-                        )
+                        if (showCategoryActions) {
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.action_edit)) },
+                                onClick = {
+                                    menuExpanded = false
+                                    onEditCategory()
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        modifier = Modifier.size(18.dp),
+                                    )
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        text = stringResource(R.string.action_delete),
+                                        color = MaterialTheme.colorScheme.onErrorContainer,
+                                    )
+                                },
+                                onClick = {
+                                    menuExpanded = false
+                                    onDeleteCategory()
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onErrorContainer,
+                                        modifier = Modifier.size(18.dp),
+                                    )
+                                },
+                            )
+                        }
                     }
                 }
             }

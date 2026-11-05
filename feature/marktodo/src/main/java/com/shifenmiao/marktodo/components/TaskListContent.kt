@@ -140,7 +140,12 @@ fun TaskListItem(
             MaterialTheme.colorScheme.surfaceContainerLow
         ),
     ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                // 左侧留内边距，复选框不要贴着卡片边缘；右侧由 48dp 的更多按钮自带留白
+                .padding(start = OneBoxDesignSystem.listItemHorizontalPadding),
+        ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,

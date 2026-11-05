@@ -14,6 +14,8 @@ data class CategoryDetailUiState(
     val isDeletingCategory: Boolean = false,
     val isLoading: Boolean = false,
     val error: String? = null,
+    /** 收集箱是合成分组：不能改名/删除，任务落库时 category_id 为 NULL */
+    val isInbox: Boolean = false,
 ) {
     val totalCount: Int get() = category?.totalCount ?: 0
     val completedCount: Int get() = category?.completedCount ?: 0
