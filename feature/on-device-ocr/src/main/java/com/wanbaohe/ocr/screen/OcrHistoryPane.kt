@@ -31,7 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.t8rin.imagetoolbox.core.resources.Icons
-import com.t8rin.imagetoolbox.core.resources.icons.DeleteForever
+import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.History
 import com.wanbaohe.base.ui.button.PrimaryButton
 import com.wanbaohe.core.ui.widget.glass.GlassCard
@@ -158,7 +158,7 @@ private fun OcrHistoryCard(
             }
             IconButton(onClick = onDelete) {
                 Icon(
-                    imageVector = Icons.Outlined.DeleteForever,
+                    imageVector = Icons.Outlined.Delete,
                     contentDescription = stringResource(R.string.ocr_delete_history),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

@@ -44,7 +44,7 @@ import com.t8rin.imagetoolbox.core.domain.model.MimeType
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.ImageToText
 import com.t8rin.imagetoolbox.core.resources.icons.CameraAlt
-import com.t8rin.imagetoolbox.core.resources.icons.DeleteForever
+import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.History
 import com.t8rin.imagetoolbox.core.resources.icons.ImagePreview
 import com.wanbaohe.base.ui.button.CancelButton
@@ -121,7 +121,7 @@ fun OnDeviceOcrScreen(component: OnDeviceOcrComponent) {
                 if (state.history.isNotEmpty()) {
                     IconButton(onClick = { showClearHistory = true }) {
                         Icon(
-                            Icons.Outlined.DeleteForever,
+                            Icons.Outlined.Delete,
                             contentDescription = stringResource(R.string.ocr_clear_history),
                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
                         )
