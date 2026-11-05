@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
@@ -97,7 +98,7 @@ fun ChatTextSelectionContainer(
             val selectionBounds = session.dataProvider.contentBounds(coordinates)
             TextSelectionToolbar(
                 anchorBounds = selectionBounds.translate(
-                    coordinates.localToWindow(selectionBounds.topLeft)
+                    coordinates.localToWindow(Offset.Zero)
                 ),
                 actions = listOf(
                     TextSelectionAction(
