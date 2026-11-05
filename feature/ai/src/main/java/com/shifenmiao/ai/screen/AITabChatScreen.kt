@@ -107,6 +107,7 @@ fun AITabChatScreen(
         AIChatBody(
             appComponent = appComponent,
             aiChatComponent = aiChatComponent,
+            onNavigate = onNavigate,
         )
 
         // 取消确认弹窗：AI 正在回复时用户点击取消或返回

@@ -99,6 +99,7 @@ fun AIChatModalBottomSheet(
         AIChatBody(
             appComponent = appComponent,
             aiChatComponent = aiChatComponent,
+            onNavigate = { screen -> appComponent.onNavigate(screen) },
             showNavigationBarsPadding = true,
         )
     }

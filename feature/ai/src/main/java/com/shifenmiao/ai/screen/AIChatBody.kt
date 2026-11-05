@@ -20,12 +20,14 @@ import com.shifenmiao.ai.ui.AIChatBottom
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.model.state.LocalChatUIState
 import com.shifenmiao.model.state.PageState
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import kotlinx.coroutines.launch
 
 @Composable
 fun AIChatBody(
     appComponent: AppComponent,
     aiChatComponent: AIChatComponent,
+    onNavigate: (Screen) -> Unit,
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
     showNavigationBarsPadding: Boolean = false,
@@ -68,6 +70,7 @@ fun AIChatBody(
                     lazyListState = lazyListState,
                     appComponent = appComponent,
                     aiChatComponent = aiChatComponent,
+                    onNavigate = onNavigate,
                 )
             }
 

@@ -242,7 +242,7 @@ fun ChatContent(
     lazyListState: LazyListState,
     appComponent: AppComponent,
     aiChatComponent: AIChatComponent,
-    onNavigate: (Screen) -> Unit = {},
+    onNavigate: (Screen) -> Unit,
 ) {
     val conversation = aiChatComponent.conversation.collectAsState()
     val chatInputComponent = aiChatComponent.chatInputComponent
@@ -404,7 +404,7 @@ fun ChatMessagesList(
     aiChatComponent: AIChatComponent,
     chatUIState: ChatUIState,
     conversation: Conversation,
-    onNavigate: (Screen) -> Unit = {},
+    onNavigate: (Screen) -> Unit,
     onSuggestionClick: (String) -> Unit,
     chatInputComponent: ChatInputComponent
 ) {

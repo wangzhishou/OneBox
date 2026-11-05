@@ -670,6 +670,7 @@ private fun AIAssistantPaneContent(
         AIChatBody(
             appComponent = appComponent,
             aiChatComponent = aiChatComponent,
+            onNavigate = { screen -> appComponent.onNavigate(screen) },
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
