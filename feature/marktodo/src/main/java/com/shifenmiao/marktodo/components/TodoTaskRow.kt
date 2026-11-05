@@ -65,7 +65,7 @@ fun TodoTaskRow(
                     null
                 },
             )
-            .padding(vertical = if (compact) 2.dp else 4.dp),
+            .padding(vertical = if (compact) 4.dp else 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         TaskCompletionButton(task = task, onToggle = onToggleComplete)
@@ -73,13 +73,40 @@ fun TodoTaskRow(
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(3.dp),
         ) {
-            Text(
-                text = task.title,
-                style = if (compact) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = contentAlpha),
-                textDecoration = if (task.isCompleted) TextDecoration.LineThrough else null,
-            )
-            val timeMillis = if (task.isCompleted) task.completedAt ?: task.dueDate else task.dueDate
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                Text(
+                    text = task.title,
+                    style = if (compact) {
+                        MaterialTheme.typography.bodyMedium
+                    } else {
+                        MaterialTheme.typography.bodyLarge
+                    },
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = contentAlpha),
+                    textDecoration = if (task.isCompleted) TextDecoration.LineThrough else null,
+                    // 网格预览卡片窄，标题最多一行，别折成两三行
+                    maxLines = if (compact) 1 else Int.MAX_VALUE,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f),
+                )
+                // 完成时间贴在标题行右侧：不额外占一行，勾选/取消时行高不变，列表不会跳
+                val completionMillis = task.completedAt.takeIf {
+                    task.isCompleted && task.dueDate == null && !compact
+                }
+                if (completionMillis != null) {
+                    Text(
+                        text = formatTodoDate(completionMillis),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                    )
+                }
+            }
+            // 第二行的日期只用截止时间：换成完成时间会让行高忽大忽小
+            val timeMillis = task.dueDate
             val showPriority = task.priority != TodoTask.PRIORITY_MEDIUM
             if (showPriority || task.tags.isNotEmpty() || !task.note.isNullOrBlank() || timeMillis != null) {
                 Row(

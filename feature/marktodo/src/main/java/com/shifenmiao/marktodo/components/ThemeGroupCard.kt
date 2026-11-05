@@ -1,6 +1,7 @@
 package com.shifenmiao.marktodo.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -45,6 +46,9 @@ import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassLinearProgressIndicator
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
+
+/** 列表卡片最多平铺多少条任务，超出部分提示「还有 N 个任务」 */
+private const val MAX_CARD_TASKS = 10
 
 /**
  * 主题分组卡片（列表视图）—— 原型设计稿「进行中/已完成」页：
@@ -128,8 +132,10 @@ fun ThemeGroupCard(
 
             // 任务行
             if (visibleTasks.isNotEmpty()) {
+                val rowTasks = visibleTasks.take(MAX_CARD_TASKS)
+                val hiddenCount = visibleTasks.size - rowTasks.size
                 Column(modifier = Modifier.padding(top = OneBoxDesignSystem.microSpacing)) {
-                    visibleTasks.forEach { task ->
+                    rowTasks.forEach { task ->
                         TodoTaskRow(
                             task = task,
                             accentColor = accentColor,
@@ -139,6 +145,22 @@ fun ThemeGroupCard(
                             onTagClick = onTagClick,
                             onToggleStar = onToggleStar,
                             onDelete = onDeleteTask
+                        )
+                    }
+                    if (hiddenCount > 0) {
+                        // 卡片里最多 10 条，剩下的点进分组看
+                        Text(
+                            text = stringResource(R.string.more_tasks_indicator, hiddenCount),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = accentColor.copy(alpha = 0.85f),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { onCategoryClick(category) }
+                                .padding(
+                                    start = OneBoxDesignSystem.listItemHorizontalPadding,
+                                    top = OneBoxDesignSystem.microSpacing,
+                                    bottom = OneBoxDesignSystem.microSpacing,
+                                ),
                         )
                     }
                 }
@@ -256,6 +278,21 @@ fun ThemeGroupGridCard(
                             onToggleStar = onToggleStar,
                             onDelete = onDeleteTask,
                             compact = true
+                        )
+                    }
+                    val hiddenCount = visibleTasks.size - previewTasks.size
+                    if (hiddenCount > 0) {
+                        Text(
+                            text = stringResource(R.string.more_tasks_indicator, hiddenCount),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = accentColor.copy(alpha = 0.85f),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { onCategoryClick(category) }
+                                .padding(
+                                    start = OneBoxDesignSystem.listItemHorizontalPadding,
+                                    top = OneBoxDesignSystem.microSpacing,
+                                ),
                         )
                     }
                 }
