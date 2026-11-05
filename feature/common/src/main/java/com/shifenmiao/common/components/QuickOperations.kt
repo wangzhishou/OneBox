@@ -10,9 +10,11 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.ui.res.stringResource
 import com.shifenmiao.base.utils.RateLimiter
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.robot.RobotController
+import com.shifenmiao.core.R
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.resources.icons.Search
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDrawer
@@ -41,7 +43,7 @@ fun QuickOperations(
     ) {
         Icon(
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Search,
-            contentDescription = null,
+            contentDescription = stringResource(R.string.search),
             tint = MaterialTheme.colorScheme.onSurface
         )
     }
@@ -52,7 +54,7 @@ fun QuickOperations(
     }) {
         Icon(
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDrawer,
-            contentDescription = null,
+            contentDescription = stringResource(R.string.open_menu),
             tint = MaterialTheme.colorScheme.onSurface
         )
     }

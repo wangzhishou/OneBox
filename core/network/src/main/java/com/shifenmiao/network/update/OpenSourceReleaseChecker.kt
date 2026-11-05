@@ -29,7 +29,8 @@ data class OpenSourceRelease(
  * 检查开源项目是否有新版本,参考上游 ImageToolbox 的 tryGetUpdate 实现。
  *
  * 按渠道分两个源(见 [fetchLatestOrNull]):
- * - 海外(google / foss):GitHub,优先 releases.atom(无 API 限流),失败回退 api.github.com;
+ * - 海外(google):GitHub,优先 releases.atom(无 API 限流),失败回退 api.github.com;
+ *   foss (F-Droid) 渠道在 [checkLatest] 入口直接跳过, 不会产生任何更新检查流量;
  * - 国内(xiaomi / yyb / oppo / vivo / huawei / onebox):GitCode OpenAPI,
  *   国内直连 GitHub 不稳定,而 GitCode 免 token 且国内可达。
  *
@@ -57,6 +58,9 @@ class OpenSourceReleaseChecker @Inject constructor() {
 
     /** 后台检查,永不抛异常;非 [force] 时距上次检查不足间隔直接跳过。 */
     suspend fun checkLatest(currentVersion: String, force: Boolean = false) {
+        // foss (F-Droid) 渠道不做更新检查: F-Droid 用户经 F-Droid 客户端获得更新,
+        // 且首启合规要求不主动连接 GitHub; latestRelease 恒为 null, 角标/弹窗自动消失
+        if (FlavorType.fromName() == FlavorType.FOSS) return
         if (!force && System.currentTimeMillis() - lastCheckAt < CHECK_INTERVAL_MS) return
         mutex.withLock {
             if (!force && System.currentTimeMillis() - lastCheckAt < CHECK_INTERVAL_MS) return

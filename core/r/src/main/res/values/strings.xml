@@ -45,6 +45,7 @@
     <!--search-->
     <string name="search">Search</string>
     <string name="back_button">Back</string>
+    <string name="open_menu">Open menu</string>
     <string name="search_place_holder">Search</string>
     <string name="no_item_found">No item found</string>
     <string name="no_search_history">No search history</string>
@@ -477,7 +478,7 @@
     <string name="privacy_item_4_description">Access the microphone for voice input.</string>
     <string name="privacy_button_agree">Agree &amp; Continue</string>
     <string name="privacy_button_disagree">Disagree</string>
-    <string name="privacy_dialog_agreements_hint"><![CDATA[Please read and agree to the <a href=\"https://www.shifenmiao.com/privacy/agreement.html\">User Agreement</a> and <a href=\"https://www.shifenmiao.com/privacy/example.html\">Privacy Policy</a> so we can keep improving your experience.]]></string>
+    <string name="privacy_dialog_agreements_hint"><![CDATA[Please read and agree to the <a href=\"https://www.oneboxable.com/agreement/global.html\">User Agreement</a> and <a href=\"https://www.oneboxable.com/privacy/global.html\">Privacy Policy</a> so we can keep improving your experience.]]></string>
     <string name="contact_us">Contact Us</string>
     <string name="my_wechat">WeChat</string>
     <string name="my_wechat_account">shifenmiao666</string>
@@ -551,7 +552,7 @@
     <string name="ai_model_not_free">Points Required</string>
     <string name="login_button_custom">Custom</string>
     <string name="force_update_tips">Your current version is too old and does not support some network protocols. Please update to the latest version from the official website or app store.</string>
-    <string name="user_privacy"><![CDATA[I have read and agree to the <a href="https://www.shifenmiao.com/privacy/agreement.html">User Agreement</a> and <a href="https://www.shifenmiao.com/privacy/example.html">Privacy Policy</a>.]]></string>
+    <string name="user_privacy"><![CDATA[I have read and agree to the <a href="https://www.oneboxable.com/agreement/global.html">User Agreement</a> and <a href="https://www.oneboxable.com/privacy/global.html">Privacy Policy</a>.]]></string>
     <string name="please_agree_to_the_user_agreement">Please agree to the User Agreement and Privacy Policy first.</string>
     <string name="profile_user_info_Logout">Delete Account</string>
     <string name="profile_Logout_desc">Destructive action (long-press to trigger)</string>
