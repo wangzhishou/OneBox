@@ -55,6 +55,7 @@ import com.wanbaohe.core.ui.utils.content_pickers.rememberFileCreator
 import com.wanbaohe.core.ui.utils.content_pickers.rememberImagePicker
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.helper.SaveSuccessNotifier
+import com.wanbaohe.core.ui.widget.dialogs.LoadingDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassLinearProgressIndicator
@@ -191,6 +192,17 @@ fun OnDeviceOcrScreen(component: OnDeviceOcrComponent) {
             )
         }
     }
+
+    LoadingDialog(
+        visible = state.isRecognizing,
+        canCancel = false,
+        content = {
+            Text(
+                text = stringResource(R.string.ocr_recognizing),
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        },
+    )
 
     OcrResultSheet(
         visible = showResultSheet && state.preview != null && state.currentTab == OcrTab.RECOGNIZE,
