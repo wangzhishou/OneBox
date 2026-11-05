@@ -91,7 +91,7 @@ fun AIEngineAddEngineAction(
     onNavigate: (Screen) -> Unit,
     initialProtocol: String = "",
 ) {
-    val capabilities = remember { AiEngineConfig.getCapabilities() }
+    val capabilities = AiEngineConfig.getCapabilities()
     if (capabilities.canAddEngine || LoginUtils.isAdmin()) {
         IconButton(onClick = {
             onNavigate(

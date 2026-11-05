@@ -384,7 +384,7 @@ fun AIEngineSettingsDetailScreen(
                 )
 
                 // 渠道能力(如 Google 全量放开)或远程开关开放时, 展示服务器/Token 设置
-                val capabilities = remember { AiEngineConfig.getCapabilities() }
+                val capabilities = AiEngineConfig.getCapabilities()
                 if (capabilities.canEditToken || RemoteConfigStorage.getRemoteConfig().canSetAiToken == true) {
                     val canEditApiSettings = capabilities.canEditUrl || engine.apiCanSet || LoginUtils.isAdmin()
                     ServerConnectivityCard(
@@ -1001,7 +1001,7 @@ private fun ModelSelectionCard(
     // 客户端直接请求服务商只会 401, 这条链路的模型由服务端下发, 不露出入口
     val canLoadRemote = !engine.requestProtocol.isNonChat &&
             !engine.usesProxyRoute() &&
-            (remember { AiEngineConfig.getCapabilities() }.canLoadRemoteModels ||
+            (AiEngineConfig.getCapabilities().canLoadRemoteModels ||
             loginState.vipLevel == 10) &&
             engine.requestUrl.isNotBlank()
     SettingCard {
