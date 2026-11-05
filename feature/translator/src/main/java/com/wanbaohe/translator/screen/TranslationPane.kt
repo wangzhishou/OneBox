@@ -28,7 +28,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,7 +39,6 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.content.getSystemService
@@ -53,6 +51,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.Language
 import com.t8rin.imagetoolbox.core.resources.icons.Mic
 import com.t8rin.imagetoolbox.core.resources.icons.Star
 import com.t8rin.imagetoolbox.core.resources.icons.VolumeUp
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineKeyboardArrowDown
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineRobot
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSwapHoriz
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedButton
@@ -73,6 +73,7 @@ internal fun TranslationPane(
     onTargetLanguage: (TranslationLanguage) -> Unit,
     onSwap: () -> Unit,
     onTranslate: () -> Unit,
+    onModelSelect: (TranslationModelMode) -> Unit,
     onVoiceInput: () -> Unit,
     onCameraInput: () -> Unit,
     onClear: () -> Unit,
@@ -189,63 +190,51 @@ internal fun TranslationPane(
             }
         }
 
-        EnhancedButton(
-            onClick = onTranslate,
-            enabled = !state.isTranslating && !state.isRecognizingImage,
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            glassStyle = GlassStyle.None,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            if (state.isTranslating) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(18.dp),
-                    strokeWidth = 2.dp,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                )
-            } else {
-                Icon(
-                    imageVector = Icons.Rounded.Language,
-                    contentDescription = null,
-                    modifier = Modifier.size(18.dp),
-                )
-            }
-            Spacer(Modifier.size(8.dp))
-            Text(
-                stringResource(
-                    if (state.isTranslating) R.string.translation_in_progress else R.string.translation_action
-                )
-            )
-        }
-
         val showLocalModelAction = state.errorRes == R.string.translation_local_model_missing &&
             state.modelMode == TranslationModelMode.LOCAL && !state.isLocalModelInstalled
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = 32.dp),
-            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                text = stringResource(state.errorRes ?: state.modelMode.labelRes()),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.65f),
-                textAlign = TextAlign.Center,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                modifier = if (showLocalModelAction) Modifier.weight(1f) else Modifier,
+            ModelSelector(
+                selected = state.modelMode,
+                modes = state.supportedModelModes,
+                modelNames = state.modelNames,
+                errorRes = state.errorRes,
+                showLocalModelAction = showLocalModelAction,
+                onSelect = onModelSelect,
+                onOpenLocalModels = onOpenLocalModels,
+                modifier = Modifier.weight(1f),
             )
-            if (showLocalModelAction) {
-                TextButton(
-                    onClick = onOpenLocalModels,
-                    contentPadding = PaddingValues(horizontal = 8.dp),
-                ) {
-                    Text(
-                        text = stringResource(R.string.translation_download_local_model),
-                        style = MaterialTheme.typography.labelMedium,
+            EnhancedButton(
+                onClick = onTranslate,
+                enabled = !state.isTranslating && !state.isRecognizingImage,
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                glassStyle = GlassStyle.None,
+                modifier = Modifier.heightIn(min = 48.dp),
+            ) {
+                if (state.isTranslating) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(18.dp),
+                        strokeWidth = 2.dp,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Rounded.Language,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
                     )
                 }
+                Spacer(Modifier.size(8.dp))
+                Text(
+                    text = stringResource(
+                        if (state.isTranslating) R.string.translation_in_progress else R.string.translation_action
+                    ),
+                    maxLines = 1,
+                )
             }
         }
 
@@ -312,6 +301,140 @@ internal fun TranslationPane(
             }
         }
 
+    }
+}
+
+private fun String.modelDisplayName(): String = replaceFirstChar { it.titlecase() }
+
+@Composable
+private fun ModelSelector(
+    selected: TranslationModelMode,
+    modes: List<TranslationModelMode>,
+    modelNames: Map<TranslationModelMode, String>,
+    errorRes: Int?,
+    showLocalModelAction: Boolean,
+    onSelect: (TranslationModelMode) -> Unit,
+    onOpenLocalModels: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var expanded by remember { mutableStateOf(false) }
+    val selectedModelName = modelNames[selected].orEmpty().modelDisplayName()
+    Box(modifier = modifier) {
+        GlassCard(
+            onClick = { expanded = true },
+            style = GlassStyle.Thin,
+            shape = RoundedCornerShape(20.dp),
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 48.dp)
+                    .padding(horizontal = 12.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                if (errorRes == null) {
+                    Icon(
+                        imageVector = Icons.Outlined.LineRobot,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.size(20.dp),
+                    )
+                }
+                Text(
+                    text = when {
+                        errorRes != null -> stringResource(errorRes)
+                        selectedModelName.isNotBlank() -> selectedModelName
+                        else -> stringResource(selected.labelRes())
+                    },
+                    style = if (errorRes == null) {
+                        MaterialTheme.typography.labelLarge
+                    } else {
+                        MaterialTheme.typography.labelMedium
+                    },
+                    color = if (errorRes == null) {
+                        MaterialTheme.colorScheme.onPrimaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.error
+                    },
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f),
+                )
+                Icon(
+                    imageVector = Icons.Outlined.LineKeyboardArrowDown,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                    modifier = Modifier.size(18.dp),
+                )
+            }
+        }
+        EnhancedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.matchParentSize(),
+            maxWidth = 280.dp,
+            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
+        ) {
+            modes.forEach { mode ->
+                DropdownMenuItem(
+                    text = {
+                        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                            Text(
+                                text = stringResource(mode.labelRes()),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = if (mode == selected) {
+                                    MaterialTheme.colorScheme.onPrimaryContainer
+                                } else {
+                                    MaterialTheme.colorScheme.onSurface
+                                },
+                            )
+                            modelNames[mode]?.takeIf { it.isNotBlank() }?.let { modelName ->
+                                Text(
+                                    text = modelName.modelDisplayName(),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            }
+                        }
+                    },
+                    trailingIcon = {
+                        if (mode == selected) {
+                            Icon(
+                                imageVector = Icons.Outlined.Check,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                            )
+                        } else {
+                            Spacer(Modifier.size(24.dp))
+                        }
+                    },
+                    onClick = {
+                        onSelect(mode)
+                        expanded = false
+                    },
+                )
+            }
+            if (showLocalModelAction) {
+                HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = stringResource(R.string.translation_download_local_model),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        )
+                    },
+                    onClick = {
+                        expanded = false
+                        onOpenLocalModels()
+                    },
+                )
+            }
+        }
     }
 }
 

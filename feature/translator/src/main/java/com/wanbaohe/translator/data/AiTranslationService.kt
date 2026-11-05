@@ -46,6 +46,12 @@ internal class AiTranslationService @Inject constructor(
         capabilities.isLocalTranslationSupported &&
             onDeviceLlmService.isModelInstalled(LocalTranslationModel.MODEL_NAME)
 
+    override fun modelName(mode: TranslationModelMode): String = when (mode) {
+        TranslationModelMode.FAST -> aiExecutor.modelName(AIPromptExecutor.EngineMode.FAST)
+        TranslationModelMode.DEFAULT -> aiExecutor.modelName(AIPromptExecutor.EngineMode.DEFAULT)
+        TranslationModelMode.LOCAL -> LocalTranslationModel.DISPLAY_NAME
+    }
+
     override suspend fun translate(
         text: String,
         sourceLanguage: TranslationLanguage,

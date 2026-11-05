@@ -1,12 +1,8 @@
 package com.wanbaohe.translator.screen
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -20,20 +16,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.shifenmiao.ai.ui.VoiceInputSheet
 import com.shifenmiao.ai.ui.rememberVoiceInputLauncher
 import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.resources.Icons
-import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.History
 import com.t8rin.imagetoolbox.core.resources.icons.Language
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineClear
 import com.wanbaohe.core.ui.utils.content_pickers.ImagePickerMode
 import com.wanbaohe.core.ui.utils.content_pickers.rememberImagePicker
-import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
 import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBar
+import com.wanbaohe.core.ui.widget.other.TopAppBarEmoji
 import com.wanbaohe.translator.R
 import com.wanbaohe.translator.component.HistoryFilter
 import com.wanbaohe.translator.component.TranslatorComponent
@@ -63,11 +57,7 @@ fun TranslatorScreen(component: TranslatorComponent) {
         showNavigationBarsPadding = false,
         supportGlassEffect = true,
         actions = {
-            ModelSelector(
-                selected = state.modelMode,
-                modes = state.supportedModelModes,
-                onSelect = component::selectModel,
-            )
+            TopAppBarEmoji()
             if (state.currentTab == TranslatorTab.HISTORY && state.history.isNotEmpty()) {
                 IconButton(onClick = { showClearHistory = true }) {
                     Icon(
@@ -88,6 +78,7 @@ fun TranslatorScreen(component: TranslatorComponent) {
                     onTargetLanguage = component::selectTargetLanguage,
                     onSwap = component::swapLanguages,
                     onTranslate = component::translate,
+                    onModelSelect = component::selectModel,
                     onVoiceInput = voiceInput,
                     onCameraInput = camera::pickImage,
                     onClear = component::clearInput,
@@ -155,55 +146,6 @@ fun TranslatorScreen(component: TranslatorComponent) {
                 }
             },
         )
-    }
-}
-
-@Composable
-private fun ModelSelector(
-    selected: TranslationModelMode,
-    modes: List<TranslationModelMode>,
-    onSelect: (TranslationModelMode) -> Unit,
-) {
-    var expanded by remember { mutableStateOf(false) }
-    Box {
-        IconButton(onClick = { expanded = true }) {
-            Icon(
-                Icons.Rounded.Language,
-                contentDescription = stringResource(selected.labelRes()),
-                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-            )
-        }
-        EnhancedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-            modes.forEach { mode ->
-                DropdownMenuItem(
-                    text = {
-                        Text(
-                            text = stringResource(mode.labelRes()),
-                            color = if (mode == selected) {
-                                MaterialTheme.colorScheme.onPrimaryContainer
-                            } else {
-                                MaterialTheme.colorScheme.onSurface
-                            },
-                        )
-                    },
-                    trailingIcon = {
-                        if (mode == selected) {
-                            Icon(
-                                imageVector = Icons.Outlined.Check,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                            )
-                        } else {
-                            Spacer(Modifier.size(24.dp))
-                        }
-                    },
-                    onClick = {
-                        onSelect(mode)
-                        expanded = false
-                    },
-                )
-            }
-        }
     }
 }
 

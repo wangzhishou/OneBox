@@ -381,6 +381,9 @@ class AIPromptExecutor @Inject constructor(
      * 依次回退 FAST → DEFAULT → DUEL_A → DUEL_B 中第一个可用的云端引擎;
      * 所有槽位都是端侧引擎时返回 null,由调用方给出用户可理解的错误文案。
      */
+    fun modelName(engineMode: EngineMode): String =
+        resolveEngine(engineMode)?.model?.name.orEmpty()
+
     private fun resolveEngine(engineMode: EngineMode): AiEngine? {
         val requested = when (engineMode) {
             EngineMode.DEFAULT -> aiEngineManager.getCurrentAiEngine()

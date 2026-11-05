@@ -49,6 +49,7 @@ class TranslatorComponent @AssistedInject constructor(
         TranslatorUiState(
             inputText = initialText.take(MAX_INPUT_LENGTH),
             supportedModelModes = translationService.supportedModes,
+            modelNames = translationService.supportedModes.associateWith(translationService::modelName),
             isLocalModelInstalled = translationService.isLocalModelInstalled(),
         )
     )
@@ -182,6 +183,9 @@ class TranslatorComponent @AssistedInject constructor(
                             isTranslating = false,
                             outputText = outcome.result.record.translatedText,
                             currentRecordId = outcome.result.record.id,
+                            modelNames = it.modelNames + (
+                                snapshot.modelMode to outcome.result.record.modelName
+                            ),
                         )
                     }
                     AppToastHost.showToast(R.string.translation_success)
@@ -353,6 +357,7 @@ data class TranslatorUiState(
     val sourceLanguage: TranslationLanguage = TranslationLanguage.CHINESE,
     val targetLanguage: TranslationLanguage = TranslationLanguage.ENGLISH,
     val modelMode: TranslationModelMode = TranslationModelMode.DEFAULT,
+    val modelNames: Map<TranslationModelMode, String> = emptyMap(),
     val supportedModelModes: List<TranslationModelMode> = listOf(
         TranslationModelMode.FAST,
         TranslationModelMode.DEFAULT,

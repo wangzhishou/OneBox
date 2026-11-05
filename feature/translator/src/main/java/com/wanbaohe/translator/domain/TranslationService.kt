@@ -5,6 +5,8 @@ interface TranslationService {
 
     fun isLocalModelInstalled(): Boolean
 
+    fun modelName(mode: TranslationModelMode): String
+
     suspend fun translate(
         text: String,
         sourceLanguage: TranslationLanguage,
