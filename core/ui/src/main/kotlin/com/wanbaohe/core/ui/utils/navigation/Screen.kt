@@ -1598,6 +1598,7 @@ sealed class Screen(
     @SerialName("Translator")
     data class Translator(
         val initialText: String = "",
+        val initialRecordId: String = "",
     ) : Screen(
         id = 1125,
         title = com.shifenmiao.core.R.string.translator,

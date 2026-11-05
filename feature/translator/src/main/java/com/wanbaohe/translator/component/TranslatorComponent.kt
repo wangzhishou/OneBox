@@ -34,7 +34,8 @@ import java.util.Calendar
 
 class TranslatorComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted initialText: String,
+    @Assisted("initialText") initialText: String,
+    @Assisted("initialRecordId") initialRecordId: String,
     @Assisted("onGoBack") val onGoBack: () -> Unit,
     @Assisted("onOpenLocalModels") val onOpenLocalModels: () -> Unit,
     private val translationService: TranslationService,
@@ -45,9 +46,14 @@ class TranslatorComponent @AssistedInject constructor(
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
+    private val initialRecord = historyRepository.records.value.firstOrNull { it.id == initialRecordId }
     private val _uiState = MutableStateFlow(
         TranslatorUiState(
-            inputText = initialText.take(MAX_INPUT_LENGTH),
+            inputText = initialRecord?.sourceText ?: initialText.take(MAX_INPUT_LENGTH),
+            outputText = initialRecord?.translatedText.orEmpty(),
+            sourceLanguage = initialRecord?.sourceLanguage ?: TranslationLanguage.CHINESE,
+            targetLanguage = initialRecord?.targetLanguage ?: TranslationLanguage.ENGLISH,
+            currentRecordId = initialRecord?.id,
             supportedModelModes = translationService.supportedModes,
             modelNames = translationService.supportedModes.associateWith(translationService::modelName),
             isLocalModelInstalled = translationService.isLocalModelInstalled(),
@@ -333,7 +339,8 @@ class TranslatorComponent @AssistedInject constructor(
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            initialText: String,
+            @Assisted("initialText") initialText: String,
+            @Assisted("initialRecordId") initialRecordId: String,
             @Assisted("onGoBack") onGoBack: () -> Unit,
             @Assisted("onOpenLocalModels") onOpenLocalModels: () -> Unit,
         ): TranslatorComponent

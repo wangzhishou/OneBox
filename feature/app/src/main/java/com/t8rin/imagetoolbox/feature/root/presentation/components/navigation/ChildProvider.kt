@@ -1238,6 +1238,7 @@ class ChildProvider @Inject constructor(
             component = lifeFactories.get().translatorComponentFactory(
                 componentContext = componentContext,
                 initialText = config.initialText,
+                initialRecordId = config.initialRecordId,
                 onGoBack = ::navigateBack,
                 onOpenLocalModels = { navigateTo(Screen.LocalModelManagement) },
             )

@@ -25,10 +25,6 @@ internal class DefaultTranslationSpeechService @Inject constructor(
         }
         if (!TokenStorage.isLogin()) return SpeechOutcome.LoginRequired
         if (!BaseUtils.canConsumePoints(text)) return SpeechOutcome.NoPoints
-        val config = ttsService.getConfig()
-        if (!config.isValid()) {
-            return SpeechOutcome.Failed(AppContext.getString(R.string.translation_tts_not_configured))
-        }
         return ttsService.synthesize(text = text, tag = AUDIO_TAG).fold(
             onSuccess = { file ->
                 audioPlayer.playLocalFile(file)

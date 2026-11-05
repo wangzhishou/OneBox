@@ -46,6 +46,9 @@ object ActivityLogNavigator {
             ActivityCategory.HOUSEHOLD -> Screen.HouseholdItems()
             ActivityCategory.PERIOD -> Screen.Period()
             ActivityCategory.POEM -> resolvePoem(payload)
+            ActivityCategory.TRANSLATION -> Screen.Translator(
+                initialRecordId = payload?.optString("recordId").orEmpty()
+            )
             ActivityCategory.ARCHIVE -> resolveArchive(payload)
             else -> resolveByScreenRoute(entry)
         }
