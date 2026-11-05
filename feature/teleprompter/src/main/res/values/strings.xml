@@ -9,8 +9,6 @@
     <string name="teleprompter_empty">No script, click on bottom right + new</string>
     <string name="teleprompter_empty_title">No scripts yet</string>
     <string name="teleprompter_empty_description">Create one manually, or tell AI what you need and let it draft for you</string>
-    <string name="teleprompter_empty_manual_desc">Start from a blank script</string>
-    <string name="teleprompter_empty_ai_desc">Describe the scene and length, let AI write it</string>
     <string name="teleprompter_empty_go_ai">Write with AI</string>
     <string name="teleprompter_ai_assist_title">Teleprompter Script Assistant</string>
     <string name="teleprompter_ai_assist_prompt">You are the user\'s teleprompter script assistant. When the user describes a scene, duration or topic, create or update a script with the manage_teleprompter tool. Write short spoken sentences suited for reading aloud, and match the requested duration. Briefly confirm the title and character count after generating.</string>

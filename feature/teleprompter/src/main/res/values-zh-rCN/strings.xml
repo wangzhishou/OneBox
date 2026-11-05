@@ -9,8 +9,6 @@
     <string name="teleprompter_empty">暂无文稿，点击右上角 + 新建</string>
     <string name="teleprompter_empty_title">还没有文稿</string>
     <string name="teleprompter_empty_description">你可以手动新建一篇，也可以告诉 AI 你的需求，让它帮你快速生成</string>
-    <string name="teleprompter_empty_manual_desc">空白开始，自己写提词内容</string>
-    <string name="teleprompter_empty_ai_desc">告诉 AI 场景和时长，智能生成文稿</string>
     <string name="teleprompter_empty_go_ai">AI 帮我写稿</string>
     <string name="teleprompter_ai_assist_title">提词稿助手</string>
     <string name="teleprompter_ai_assist_prompt">你是用户的提词稿助手。用户描述场景、时长或主题时，用 manage_teleprompter 工具创建或更新文稿。写稿时口语化、短句、适合朗读，按用户要求的时长控制字数（中文约每秒 4 字）。生成后简短确认标题和字数。</string>

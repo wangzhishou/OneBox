@@ -85,7 +85,6 @@
     <string name="cloud_storage_no_connection_action">立刻新增雲端儲存</string>
     <string name="cloud_storage_empty_folder_title">這裡沒有任何檔案</string>
     <string name="cloud_storage_empty_folder_desc">在這個目錄中暫時沒有偵測到任何檔案或資料夾，輕按下方按鈕來上傳檔案。</string>
-    <string name="cloud_storage_add_manually_desc">自行填寫 Endpoint、金鑰等資訊</string>
     <string name="cloud_storage_ai_assist_title">雲端儲存設定助手</string>
     <string name="cloud_storage_ai_assist_prompt">你是使用者的遠端儲存設定助手。使用者描述儲存服務時，用 manage_cloud_connections 工具幫他新增連線。需要 Endpoint、AccessKey、SecretKey 和 Bucket。使用者未提供的資訊請簡短追問，不要編造金鑰。設定完成後可用 browse_cloud_files 瀏覽檔案。</string>
     <string name="cloud_storage_ai_assist_fill_in">幫我新增一個阿里雲 OSS 連線，用來備份照片</string>

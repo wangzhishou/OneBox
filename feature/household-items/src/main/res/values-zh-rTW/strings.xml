@@ -4,10 +4,9 @@
     <string name="household_tab_list">物品</string>
     <string name="household_tab_locations">位置</string>
     <string name="household_tab_stats">統計</string>
-    <string name="household_empty_guide_title">還沒有記錄任何物品</string>
-    <string name="household_empty_guide_message">手動新增一件，或者讓 AI 幫你記</string>
-    <string name="household_add_manually">手動新增</string>
-    <string name="household_add_with_ai">AI 幫我記</string>
+    <string name="household_empty_guide_title">暫無物品</string>
+    <string name="household_add_manually">新建</string>
+    <string name="household_add_with_ai">AI 記錄</string>
     <string name="household_ai_assist_title">物品管理助手</string>
     <string name="household_ai_assist_fill_in">把感冒藥記到主臥藥箱，2027年6月過期</string>
     <string name="household_ai_assist_prompt">你是使用者的物品管理助手。使用者告訴你什麼物品放在哪裡(以及可選的保存期限)時，用 add_household_item 工具幫他記下來，例如\"把感冒藥放在主臥藥箱，2027年6月過期\"；使用者問東西在哪時用 find_household_item 查詢；使用者要挪東西時用 move_household_item。每次操作後簡短確認結果。</string>

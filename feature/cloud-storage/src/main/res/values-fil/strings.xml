@@ -110,7 +110,6 @@
     <string name="cloud_storage_smb_error_share_deleted">Ang tinukoy na share ay hindi umiiral sa server</string>
     <string name="cloud_storage_smb_error_sharing_violation">Ang file ay ginagamit ng ibang proseso at hindi maaaring i-access</string>
     <string name="cloud_storage_smb_error_generic">SMB error: %1$s (%2$s)</string>
-    <string name="cloud_storage_add_manually_desc">Ilagay ang endpoint at credentials nang mano-mano</string>
 
     <string name="cloud_storage_ai_assist_title">Cloud Storage Setup Assistant</string>
     <string name="cloud_storage_ai_assist_prompt">Ikaw ang cloud storage setup assistant. Magdagdag ng connection gamit ang manage_cloud_connections. Huwag gumawa-gawa ng credentials.</string>

@@ -58,8 +58,6 @@
     <string name="teleprompter_empty_title">Aún no hay guiones</string>
 
     <string name="teleprompter_empty_description">Crea uno manualmente o pide a la IA que lo redacte</string>
-    <string name="teleprompter_empty_manual_desc">Empezar con un guion en blanco</string>
-    <string name="teleprompter_empty_ai_desc">Describe la escena y la duración</string>
     <string name="teleprompter_empty_go_ai">Escribir con IA</string>
     <string name="teleprompter_ai_assist_title">Asistente de guiones de teleprompter</string>
     <string name="teleprompter_ai_assist_prompt">Eres el asistente de guiones. Cuando el usuario describa una escena, duración o tema, crea o actualiza un guion con manage_teleprompter.</string>

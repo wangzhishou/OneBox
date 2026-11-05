@@ -60,8 +60,6 @@
     <string name="teleprompter_empty_title">Сценариев пока нет</string>
 
     <string name="teleprompter_empty_description">Создайте вручную или попросите ИИ написать</string>
-    <string name="teleprompter_empty_manual_desc">Начать с пустого сценария</string>
-    <string name="teleprompter_empty_ai_desc">Опишите сцену и длительность</string>
     <string name="teleprompter_empty_go_ai">Написать с ИИ</string>
     <string name="teleprompter_ai_assist_title">Помощник по сценариям</string>
     <string name="teleprompter_ai_assist_prompt">Ты помощник по сценариям телесуфлёра. При описании сцены, длительности или темы создай/обнови сценарий через manage_teleprompter.</string>

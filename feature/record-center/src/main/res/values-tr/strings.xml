@@ -108,7 +108,6 @@
     <string name="record_center_profile_age_years">%1$d yaş</string>
     <string name="record_center_profile_invalid">Lütfen geçerli sayılar girin</string>
     <string name="record_center_empty_go_ai">YZ Asistanı ile kaydet</string>
-    <string name="record_center_empty_go_ai_description">YZ\'ye durumunuzu anlatın, kaydı sizin için doldursun</string>
 
     <!-- 布局切换 -->
     <string name="record_center_cd_switch_to_grid">Izgara görünümüne geç</string>
@@ -207,7 +206,6 @@
     <string name="record_center_empty_range_title">Bu dönemde kayıt yok</string>
     <string name="record_center_empty_range_description">Yukarıdan dönemi değiştirin veya elle ekleyin</string>
     <string name="record_center_add_manually">Elle ekle</string>
-    <string name="record_center_add_manually_description">Değer ve saati özelleştirin</string>
     <string name="record_center_ai_assist_title">Sağlık Kaydı Asistanı</string>
     <string name="record_center_ai_assist_prompt">Kullanıcının sağlık kaydı asistanısın. Sağlık verisi anlatıldığında add_health_record ile kaydet.</string>
     <string name="record_center_ai_assist_fill_in">Tansiyonum bugün 120/80, sağlık kayıtlarıma kaydet</string>

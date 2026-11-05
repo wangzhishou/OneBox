@@ -110,7 +110,6 @@
     <string name="cloud_storage_smb_error_share_deleted">지정된 공유가 서버에 존재하지 않습니다</string>
     <string name="cloud_storage_smb_error_sharing_violation">파일이 다른 프로세스에서 사용 중이므로 액세스할 수 없습니다</string>
     <string name="cloud_storage_smb_error_generic">SMB 오류: %1$s (%2$s)</string>
-    <string name="cloud_storage_add_manually_desc">Endpoint와 자격 증명을 직접 입력</string>
 
     <string name="cloud_storage_ai_assist_title">클라우드 스토리지 설정 도우미</string>
     <string name="cloud_storage_ai_assist_prompt">당신은 클라우드 스토리지 설정 도우미입니다. manage_cloud_connections로 연결을 추가하세요. 자격 증명을 지어내지 마세요.</string>

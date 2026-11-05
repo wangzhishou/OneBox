@@ -104,13 +104,11 @@
     <string name="record_center_profile_age_years">%1$d tuổi</string>
     <string name="record_center_profile_invalid">Vui lòng nhập giá trị hợp lệ</string>
     <string name="record_center_empty_go_ai">Đến trợ lý AI để ghi</string>
-    <string name="record_center_empty_go_ai_description">Cho AI biết tình trạng của bạn, để nó giúp bạn điền bản ghi</string>
     <string name="record_center_empty_title">Chưa có bản ghi sức khỏe</string>
     <string name="record_center_empty_description">Bạn có thể tự thêm một bản ghi, hoặc cho AI biết tình trạng của bạn để nó ghi nhanh giúp bạn</string>
     <string name="record_center_empty_range_title">Không có bản ghi trong khoảng thời gian này</string>
     <string name="record_center_empty_range_description">Có thể chuyển khoảng thời gian phía trên, hoặc tự thêm một bản ghi</string>
     <string name="record_center_add_manually">Thêm thủ công</string>
-    <string name="record_center_add_manually_description">Tùy chỉnh giá trị và thời gian, ghi chép chi tiết</string>
     <string name="record_center_ai_assist_title">Trợ lý ghi chép sức khỏe</string>
     <string name="record_center_ai_assist_prompt">Bạn là trợ lý ghi chép sức khỏe của người dùng. Khi người dùng mô tả dữ liệu sức khỏe bằng ngôn ngữ tự nhiên (ví dụ \"hôm nay huyết áp 120/80\", \"đường huyết lúc đói 5.2\"), hãy dùng công cụ add_health_record để ghi giúp họ. Sau khi ghi xong, xác nhận ngắn gọn loại, giá trị và thời gian. Khi người dùng không nói rõ thời gian, hãy ghi theo thời điểm hiện tại.</string>
     <string name="record_center_ai_assist_fill_in">Hôm nay huyết áp 120/80, giúp tôi ghi vào bản ghi sức khỏe</string>

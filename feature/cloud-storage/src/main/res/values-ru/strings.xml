@@ -110,7 +110,6 @@
     <string name="cloud_storage_smb_error_share_deleted">Указанный ресурс не существует на сервере</string>
     <string name="cloud_storage_smb_error_sharing_violation">Файл используется другим процессом и не может быть доступен</string>
     <string name="cloud_storage_smb_error_generic">Ошибка SMB: %1$s (%2$s)</string>
-    <string name="cloud_storage_add_manually_desc">Введите endpoint и учётные данные самостоятельно</string>
 
     <string name="cloud_storage_ai_assist_title">Помощник настройки облачного хранилища</string>
     <string name="cloud_storage_ai_assist_prompt">Ты помощник настройки облачного хранилища. Добавляй подключения через manage_cloud_connections. Не выдумывай учётные данные.</string>

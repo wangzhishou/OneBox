@@ -51,6 +51,7 @@ import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineAutoFix
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCalendarAlert
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCatBulky
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
@@ -59,14 +60,14 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LinePieChart
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineQuickTiles
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineViewList
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
+import com.wanbaohe.base.ui.empty.EmptyStateGuide
+import com.wanbaohe.base.ui.empty.EmptyStateGuideAction
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
-import com.wanbaohe.core.ui.widget.glass.GlassOutlinedButton
 import com.wanbaohe.core.ui.widget.glass.GlassSearchTextField
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
-import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
 import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.householditems.R
@@ -223,8 +224,6 @@ private fun ListTab(
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 placeholder = stringResource(R.string.household_search_hint),
             )
-        } else {
-            Spacer(modifier = Modifier.height(8.dp))
         }
         when {
             uiState.searchQuery.isNotBlank() -> SearchResults(
@@ -266,49 +265,23 @@ private fun EmptyGuide(
     onAddManually: () -> Unit,
     onAddWithAi: () -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Icon(
-            imageVector = Icons.Outlined.LineCatBulky,
-            contentDescription = null,
-            modifier = Modifier
-                .size(64.dp)
-                .padding(bottom = 16.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        Text(
-            text = stringResource(R.string.household_empty_guide_title),
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-        )
-        Text(
-            text = stringResource(R.string.household_empty_guide_message),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(top = 8.dp, bottom = 24.dp),
-        )
-        GlassTonalButton(
-            onClick = onAddManually,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text(stringResource(R.string.household_add_manually))
-        }
-        GlassOutlinedButton(
-            onClick = onAddWithAi,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 12.dp),
-        ) {
-            Text(stringResource(R.string.household_add_with_ai))
-        }
-    }
+    EmptyStateGuide(
+        icon = Icons.Outlined.LineCatBulky,
+        title = stringResource(R.string.household_empty_guide_title),
+        description = null,
+        actions = listOf(
+            EmptyStateGuideAction(
+                icon = Icons.Outlined.Add,
+                title = stringResource(R.string.household_add_manually),
+                onClick = onAddManually,
+            ),
+            EmptyStateGuideAction(
+                icon = Icons.Outlined.LineAutoFix,
+                title = stringResource(R.string.household_add_with_ai),
+                onClick = onAddWithAi,
+            ),
+        ),
+    )
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

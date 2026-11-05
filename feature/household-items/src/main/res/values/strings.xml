@@ -6,9 +6,8 @@
     <string name="household_tab_locations">Locations</string>
     <string name="household_tab_stats">Stats</string>
     <string name="household_empty_guide_title">No items yet</string>
-    <string name="household_empty_guide_message">Add one manually, or let AI record it for you</string>
-    <string name="household_add_manually">Add manually</string>
-    <string name="household_add_with_ai">Ask AI to record</string>
+    <string name="household_add_manually">New</string>
+    <string name="household_add_with_ai">AI record</string>
     <string name="household_ai_assist_title">Item Manager Assistant</string>
     <string name="household_ai_assist_fill_in">Log the cold medicine in the bedroom medicine box, expiring June 2027</string>
     <string name="household_ai_assist_prompt">You are the user\'s household item assistant. When the user tells you an item and where it is stored (and optionally its expiry date), record it with the add_household_item tool, e.g. "put the cold medicine in the bedroom medicine box, expires June 2027". When the user asks where something is, look it up with find_household_item. When the user wants to move something, use move_household_item. Confirm each action briefly after recording.</string>

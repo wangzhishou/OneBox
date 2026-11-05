@@ -85,7 +85,6 @@
     <string name="cloud_storage_no_connection_action">Ajouter un stockage cloud</string>
     <string name="cloud_storage_empty_folder_title">Aucun fichier ici</string>
     <string name="cloud_storage_empty_folder_desc">Aucun fichier ou dossier n\'a été détecté dans ce répertoire pour le moment. Appuyez sur le bouton ci-dessous pour téléverser des fichiers.</string>
-    <string name="cloud_storage_add_manually_desc">Saisir manuellement l\'Endpoint, les clés, etc.</string>
     <string name="cloud_storage_ai_assist_title">Assistant de configuration du stockage cloud</string>
     <string name="cloud_storage_ai_assist_prompt">Vous êtes l\'assistant de configuration du stockage distant de l\'utilisateur. Lorsque l\'utilisateur décrit un service de stockage, utilisez l\'outil manage_cloud_connections pour l\'aider à ajouter une connexion. Vous avez besoin de l\'Endpoint, de l\'AccessKey, de la SecretKey et du Bucket. Si des informations manquent, demandez-les brièvement sans inventer de clés. Une fois la configuration terminée, utilisez browse_cloud_files pour parcourir les fichiers.</string>
     <string name="cloud_storage_ai_assist_fill_in">Aide-moi à ajouter une connexion Alibaba Cloud OSS pour sauvegarder mes photos</string>

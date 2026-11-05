@@ -108,7 +108,6 @@
     <string name="record_center_profile_age_years">%1$d वर्ष</string>
     <string name="record_center_profile_invalid">कृपया मान्य संख्याएं दर्ज करें</string>
     <string name="record_center_empty_go_ai">AI सहायक से रिकॉर्ड करें</string>
-    <string name="record_center_empty_go_ai_description">AI को बताएं कि आप कैसा महसूस कर रहे हैं, वह रिकॉर्ड भर देगा</string>
 
     <!-- 布局切换 -->
     <string name="record_center_cd_switch_to_grid">ग्रिड व्यू पर जाएं</string>
@@ -207,7 +206,6 @@
     <string name="record_center_empty_range_title">इस अवधि में कोई रिकॉर्ड नहीं</string>
     <string name="record_center_empty_range_description">ऊपर से अवधि बदलें, या मैन्युअल रूप से जोड़ें</string>
     <string name="record_center_add_manually">मैन्युअल रूप से जोड़ें</string>
-    <string name="record_center_add_manually_description">मान और समय अनुकूलित करें</string>
     <string name="record_center_ai_assist_title">स्वास्थ्य रिकॉर्ड सहायक</string>
     <string name="record_center_ai_assist_prompt">आप स्वास्थ्य रिकॉर्ड सहायक हैं। जब उपयोगकर्ता स्वास्थ्य डेटा बताए, तो add_health_record से दर्ज करें।</string>
     <string name="record_center_ai_assist_fill_in">मेरा ब्लड प्रेशर आज 120/80 है, इसे मेरे स्वास्थ्य रिकॉर्ड में सहेजें</string>

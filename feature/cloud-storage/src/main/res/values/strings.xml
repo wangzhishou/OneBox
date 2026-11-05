@@ -92,7 +92,6 @@
     <string name="cloud_storage_no_connection_action">Add cloud storage</string>
     <string name="cloud_storage_empty_folder_title">Nothing here yet</string>
     <string name="cloud_storage_empty_folder_desc">No files or folders found in this directory. Tap the button below to upload a file.</string>
-    <string name="cloud_storage_add_manually_desc">Enter endpoint and credentials yourself</string>
     <string name="cloud_storage_ai_assist_title">Cloud Storage Setup Assistant</string>
     <string name="cloud_storage_ai_assist_prompt">You are the user\'s remote storage setup assistant. When the user describes a storage service, add a connection with the manage_cloud_connections tool. You need Endpoint, AccessKey, SecretKey and Bucket. Ask briefly for anything missing and never invent credentials. After setup, you can browse files with browse_cloud_files.</string>
     <string name="cloud_storage_ai_assist_fill_in">Help me add an Aliyun OSS connection to back up photos</string>

@@ -108,7 +108,6 @@
     <string name="record_center_profile_age_years">%1$d años</string>
     <string name="record_center_profile_invalid">Introduce números válidos</string>
     <string name="record_center_empty_go_ai">Registrar con el asistente de IA</string>
-    <string name="record_center_empty_go_ai_description">Cuéntale a la IA cómo te sientes y completará el registro</string>
 
     <!-- 布局切换 -->
     <string name="record_center_cd_switch_to_grid">Cambiar a vista de cuadrícula</string>
@@ -207,7 +206,6 @@
     <string name="record_center_empty_range_title">No hay registros en este período</string>
     <string name="record_center_empty_range_description">Cambia el período arriba o añade uno manualmente</string>
     <string name="record_center_add_manually">Añadir manualmente</string>
-    <string name="record_center_add_manually_description">Personaliza valor y hora</string>
     <string name="record_center_ai_assist_title">Asistente de registros de salud</string>
     <string name="record_center_ai_assist_prompt">Eres el asistente de registros de salud. Cuando el usuario describa datos de salud, regístralos con add_health_record.</string>
     <string name="record_center_ai_assist_fill_in">Mi presión arterial hoy es 120/80, guárdala en mis registros de salud</string>

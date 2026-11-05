@@ -165,9 +165,7 @@
 
     <string name="bookkeeping_empty_description">手動で記録するか、AIに伝えて手早く始められます。</string>
     <string name="bookkeeping_add_manually">記録を追加</string>
-    <string name="bookkeeping_add_manually_description">カテゴリと金額を自由に設定</string>
     <string name="bookkeeping_add_with_ai">AIに記録してもらう</string>
-    <string name="bookkeeping_add_with_ai_description">収支を伝えるとAIが記録を作成</string>
     <string name="bookkeeping_created_content_hint">新しい記録はここに表示されます</string>
     <string name="bookkeeping_ai_assist_title">家計簿アシスタント</string>
     <string name="bookkeeping_ai_assist_prompt">あなたはユーザーの家計簿アシスタントです。自然言語で収入や支出を伝えられたら、add_bookkeeping_record で記録してください。</string>

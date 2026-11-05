@@ -108,7 +108,6 @@
     <string name="record_center_profile_age_years">%1$d Jahre</string>
     <string name="record_center_profile_invalid">Bitte gültige Zahlen eingeben</string>
     <string name="record_center_empty_go_ai">Mit KI-Assistent erfassen</string>
-    <string name="record_center_empty_go_ai_description">Erzähle der KI, wie es dir geht, und sie füllt den Eintrag aus</string>
 
     <!-- 布局切换 -->
     <string name="record_center_cd_switch_to_grid">Zur Rasteransicht wechseln</string>
@@ -207,7 +206,6 @@
     <string name="record_center_empty_range_title">Keine Einträge in diesem Zeitraum</string>
     <string name="record_center_empty_range_description">Wechsle oben den Zeitraum oder füge manuell einen Eintrag hinzu</string>
     <string name="record_center_add_manually">Manuell hinzufügen</string>
-    <string name="record_center_add_manually_description">Wert und Zeit anpassen</string>
     <string name="record_center_ai_assist_title">Gesundheitsdaten-Assistent</string>
     <string name="record_center_ai_assist_prompt">Du bist der Gesundheitsdaten-Assistent. Beschreibt der Nutzer Gesundheitsdaten, erfasse sie mit add_health_record.</string>
     <string name="record_center_ai_assist_fill_in">Mein Blutdruck ist heute 120/80, speichere es in meinen Gesundheitsdaten</string>

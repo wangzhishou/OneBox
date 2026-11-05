@@ -110,7 +110,6 @@
     <string name="cloud_storage_smb_error_share_deleted">Berbagi yang ditentukan tidak ada di server</string>
     <string name="cloud_storage_smb_error_sharing_violation">File sedang digunakan oleh proses lain dan tidak dapat diakses</string>
     <string name="cloud_storage_smb_error_generic">Kesalahan SMB: %1$s (%2$s)</string>
-    <string name="cloud_storage_add_manually_desc">Masukkan endpoint dan kredensial sendiri</string>
 
     <string name="cloud_storage_ai_assist_title">Asisten Penyiapan Cloud Storage</string>
     <string name="cloud_storage_ai_assist_prompt">Anda asisten penyiapan cloud storage. Tambahkan koneksi dengan manage_cloud_connections. Jangan mengarang kredensial.</string>

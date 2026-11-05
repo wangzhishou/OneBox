@@ -5,7 +5,6 @@
     <string name="household_tab_locations">स्थान</string>
     <string name="household_tab_stats">आँकड़े</string>
     <string name="household_empty_guide_title">अभी कोई आइटम नहीं</string>
-    <string name="household_empty_guide_message">मैन्युअल रूप से जोड़ें, या AI से रिकॉर्ड करवाएँ</string>
     <string name="household_add_manually">मैन्युअल रूप से जोड़ें</string>
     <string name="household_add_with_ai">AI से रिकॉर्ड करने को कहें</string>
     <string name="household_ai_assist_title">आइटम मैनेजर सहायक</string>

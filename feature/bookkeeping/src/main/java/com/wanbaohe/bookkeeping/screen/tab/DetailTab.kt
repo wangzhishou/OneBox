@@ -163,15 +163,12 @@ internal fun DetailTab(
                             EmptyStateGuideAction(
                                 icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
                                 title = stringResource(R.string.bookkeeping_add_manually),
-                                description = stringResource(R.string.bookkeeping_add_manually_description),
                                 onClick = component::navigateToAddRecord,
                             ),
                             EmptyStateGuideAction(
                                 icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAutoFix,
                                 title = stringResource(R.string.bookkeeping_add_with_ai),
-                                description = stringResource(R.string.bookkeeping_add_with_ai_description),
                                 onClick = component::navigateToAiAssist,
-                                emphasized = true,
                             ),
                         ),
                         footerHint = stringResource(R.string.bookkeeping_created_content_hint),

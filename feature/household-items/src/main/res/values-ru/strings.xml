@@ -5,7 +5,6 @@
     <string name="household_tab_locations">Места</string>
     <string name="household_tab_stats">Статистика</string>
     <string name="household_empty_guide_title">Пока нет вещей</string>
-    <string name="household_empty_guide_message">Добавьте вручную или позвольте ИИ записать за вас</string>
     <string name="household_add_manually">Добавить вручную</string>
     <string name="household_add_with_ai">Попросить ИИ записать</string>
     <string name="household_ai_assist_title">Помощник менеджера вещей</string>

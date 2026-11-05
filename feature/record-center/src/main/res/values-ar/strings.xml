@@ -95,13 +95,11 @@
     <string name="record_center_profile_age_years">%1$d سنة</string>
     <string name="record_center_profile_invalid">يرجى إدخال أرقام صحيحة</string>
     <string name="record_center_empty_go_ai">سجّل مع مساعد الذكاء الاصطناعي</string>
-    <string name="record_center_empty_go_ai_description">أخبر الذكاء الاصطناعي بما تشعر به وسيملأ السجل نيابةً عنك</string>
     <string name="record_center_empty_title">لا توجد سجلات صحية بعد</string>
     <string name="record_center_empty_description">أضف سجلًا يدويًا، أو أخبر الذكاء الاصطناعي بما تشعر به ودعه يسجّل عنك</string>
     <string name="record_center_empty_range_title">لا توجد سجلات في هذه الفترة</string>
     <string name="record_center_empty_range_description">غيّر الفترة أعلاه، أو أضف سجلًا يدويًا</string>
     <string name="record_center_add_manually">إضافة يدوية</string>
-    <string name="record_center_add_manually_description">خصّص القيمة والوقت</string>
     <string name="record_center_ai_assist_title">مساعد السجلات الصحية</string>
     <string name="record_center_ai_assist_prompt">أنت مساعد السجلات الصحية للمستخدم. عندما يصف المستخدم بيانات صحية بلغة طبيعية (مثل \"ضغط الدم 120/80 اليوم\" أو \"سكر صائم 5.2\")، فسجّلها بالأداة add_health_record. بعد التسجيل، أكّد بإيجاز النوع والقيمة والوقت. استخدم الوقت الحالي عندما لا يحدد المستخدم وقتًا.</string>
     <string name="record_center_ai_assist_fill_in">ضغط دمي اليوم 120/80، احفظه في سجلاتي الصحية</string>

@@ -104,13 +104,11 @@
     <string name="record_center_profile_age_years">%1$d ans</string>
     <string name="record_center_profile_invalid">Veuillez saisir une valeur valide</string>
     <string name="record_center_empty_go_ai">Aller à l\'assistant IA pour enregistrer</string>
-    <string name="record_center_empty_go_ai_description">Dites à l\'IA votre situation, elle remplira l\'enregistrement pour vous</string>
     <string name="record_center_empty_title">Aucun enregistrement de santé</string>
     <string name="record_center_empty_description">Vous pouvez en ajouter un manuellement, ou dire à l\'IA votre situation pour qu\'elle enregistre rapidement</string>
     <string name="record_center_empty_range_title">Aucun enregistrement dans cette période</string>
     <string name="record_center_empty_range_description">Vous pouvez changer la période ci-dessus, ou en ajouter un manuellement</string>
     <string name="record_center_add_manually">Ajouter manuellement</string>
-    <string name="record_center_add_manually_description">Valeurs et horaires personnalisés, enregistrement précis</string>
     <string name="record_center_ai_assist_title">Assistant d\'enregistrement de santé</string>
     <string name="record_center_ai_assist_prompt">Tu es l\'assistant d\'enregistrement de santé de l\'utilisateur. Lorsque l\'utilisateur décrit des données de santé en langage naturel (par exemple « tension aujourd\'hui 120/80 », « glycémie à jeun 5.2 »), utilise l\'outil add_health_record pour l\'enregistrer. Après l\'enregistrement, confirme brièvement le type, la valeur et l\'heure. Si l\'utilisateur ne précise pas l\'heure, enregistre à l\'instant présent.</string>
     <string name="record_center_ai_assist_fill_in">Tension aujourd\'hui 120/80, enregistre-la dans mes enregistrements de santé</string>

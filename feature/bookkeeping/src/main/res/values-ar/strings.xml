@@ -17,9 +17,7 @@
     <string name="bookkeeping_empty_title">لا توجد سجلات بعد</string>
     <string name="bookkeeping_empty_description">أنشئ سجلاً يدوياً، أو أخبر الذكاء الاصطناعي بما تحتاجه ودعه يساعدك على البدء.</string>
     <string name="bookkeeping_add_manually">إضافة سجل</string>
-    <string name="bookkeeping_add_manually_description">خصّص الفئة والمبلغ</string>
     <string name="bookkeeping_add_with_ai">دع الذكاء الاصطناعي يسجّله</string>
-    <string name="bookkeeping_add_with_ai_description">صِف دخلك أو مصروفك ودع الذكاء الاصطناعي ينشئ السجل</string>
     <string name="bookkeeping_created_content_hint">ستظهر سجلاتك الجديدة هنا</string>
     <string name="bookkeeping_ai_assist_title">مساعد مسك الدفاتر</string>
     <string name="bookkeeping_ai_assist_prompt">أنت مساعد المستخدم في مسك الدفاتر. عندما يصف المستخدم دخلاً أو مصروفاً بلغة طبيعية (مثل \"غداء بتكلفة 28\" أو \"استلمت راتباً 12000\")، سجّله باستخدام أداة add_bookkeeping_record. بعد التسجيل، أكّد بإيجاز المبلغ والفئة والنوع (مصروف/دخل). استخدم تاريخ اليوم عندما لا يحدد المستخدم تاريخاً.</string>

@@ -10,8 +10,6 @@
     <string name="teleprompter_empty">Aucun script, appuyez sur + en haut à droite pour en créer un</string>
     <string name="teleprompter_empty_title">Aucun script pour le moment</string>
     <string name="teleprompter_empty_description">Vous pouvez en créer un manuellement ou décrire votre besoin à l\'IA pour qu\'elle le génère rapidement</string>
-    <string name="teleprompter_empty_manual_desc">Commencer de zéro et écrire votre propre texte</string>
-    <string name="teleprompter_empty_ai_desc">Décrivez la scène et la durée à l\'IA pour générer un script</string>
     <string name="teleprompter_empty_go_ai">L\'IA écrit pour moi</string>
     <string name="teleprompter_ai_assist_title">Assistant de script</string>
     <string name="teleprompter_ai_assist_prompt">Vous êtes l\'assistant de script de l\'utilisateur. Lorsque l\'utilisateur décrit une scène, une durée ou un thème, utilisez l\'outil manage_teleprompter pour créer ou mettre à jour le script. Rédigez de manière orale, avec des phrases courtes, adaptées à la lecture à voix haute, et ajustez le nombre de caractères selon la durée demandée (environ 4 caractères chinois par seconde). Après la génération, confirmez brièvement le titre et le nombre de caractères.</string>

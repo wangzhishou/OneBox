@@ -110,7 +110,6 @@
     <string name="cloud_storage_smb_error_share_deleted">निर्दिष्ट शेयर सर्वर पर मौजूद नहीं है</string>
     <string name="cloud_storage_smb_error_sharing_violation">फ़ाइल किसी अन्य प्रक्रिया द्वारा उपयोग में है और एक्सेस नहीं की जा सकती</string>
     <string name="cloud_storage_smb_error_generic">SMB त्रुटि: %1$s (%2$s)</string>
-    <string name="cloud_storage_add_manually_desc">Endpoint और क्रेडेंशियल स्वयं दर्ज करें</string>
 
     <string name="cloud_storage_ai_assist_title">क्लाउड स्टोरेज सेटअप सहायक</string>
     <string name="cloud_storage_ai_assist_prompt">आप क्लाउड स्टोरेज सेटअप सहायक हैं। manage_cloud_connections से कनेक्शन जोड़ें। क्रेडेंशियल कभी न बनाएं।</string>

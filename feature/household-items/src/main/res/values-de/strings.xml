@@ -5,7 +5,6 @@
     <string name="household_tab_locations">Orte</string>
     <string name="household_tab_stats">Statistiken</string>
     <string name="household_empty_guide_title">Noch keine Artikel</string>
-    <string name="household_empty_guide_message">Füge einen manuell hinzu oder lass KI ihn für dich erfassen</string>
     <string name="household_add_manually">Manuell hinzufügen</string>
     <string name="household_add_with_ai">KI bitten zu erfassen</string>
     <string name="household_ai_assist_title">Artikelverwaltungs-Assistent</string>

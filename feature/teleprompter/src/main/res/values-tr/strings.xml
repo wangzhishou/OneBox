@@ -58,8 +58,6 @@
     <string name="teleprompter_empty_title">Henüz metin yok</string>
 
     <string name="teleprompter_empty_description">Elle oluşturun veya yapay zekâya yazdırın</string>
-    <string name="teleprompter_empty_manual_desc">Boş metinden başlayın</string>
-    <string name="teleprompter_empty_ai_desc">Sahneyi ve süreyi anlatın</string>
     <string name="teleprompter_empty_go_ai">YZ ile yaz</string>
     <string name="teleprompter_ai_assist_title">Teleprompter Metin Asistanı</string>
     <string name="teleprompter_ai_assist_prompt">Teleprompter metin asistanısın. Sahne, süre veya konu anlatıldığında manage_teleprompter ile metin oluştur/güncelle.</string>

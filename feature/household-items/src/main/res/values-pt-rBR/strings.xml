@@ -5,7 +5,6 @@
     <string name="household_tab_locations">Locais</string>
     <string name="household_tab_stats">Estatísticas</string>
     <string name="household_empty_guide_title">Nenhum item ainda</string>
-    <string name="household_empty_guide_message">Adicione um manualmente ou deixe a IA registrar para você</string>
     <string name="household_add_manually">Adicionar manualmente</string>
     <string name="household_add_with_ai">Pedir para a IA registrar</string>
     <string name="household_ai_assist_title">Assistente do Gerenciador de Itens</string>

@@ -165,9 +165,7 @@
 
     <string name="bookkeeping_empty_description">직접 기록하거나 AI에게 이야기해 빠르게 시작하세요.</string>
     <string name="bookkeeping_add_manually">기록 추가</string>
-    <string name="bookkeeping_add_manually_description">분류와 금액을 자유롭게 설정</string>
     <string name="bookkeeping_add_with_ai">AI가 기록하게 하기</string>
-    <string name="bookkeeping_add_with_ai_description">수입/지출을 말하면 AI가 항목을 생성</string>
     <string name="bookkeeping_created_content_hint">새 기록이 여기에 표시됩니다</string>
     <string name="bookkeeping_ai_assist_title">가계부 도우미</string>
     <string name="bookkeeping_ai_assist_prompt">당신은 사용자의 가계부 도우미입니다. 사용자가 자연어로 수입/지출을 말하면 add_bookkeeping_record로 기록하세요.</string>

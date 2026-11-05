@@ -5,7 +5,6 @@
     <string name="household_tab_locations">Konumlar</string>
     <string name="household_tab_stats">İstatistikler</string>
     <string name="household_empty_guide_title">Henüz öğe yok</string>
-    <string name="household_empty_guide_message">Manuel olarak ekleyin veya AI\'nın sizin için kaydetmesine izin verin</string>
     <string name="household_add_manually">Manuel ekle</string>
     <string name="household_add_with_ai">AI\'dan kaydetmesini iste</string>
     <string name="household_ai_assist_title">Öğe Yöneticisi Asistanı</string>

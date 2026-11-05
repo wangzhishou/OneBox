@@ -5,7 +5,6 @@
     <string name="household_tab_locations">الأماكن</string>
     <string name="household_tab_stats">الإحصاءات</string>
     <string name="household_empty_guide_title">لا توجد مستلزمات بعد</string>
-    <string name="household_empty_guide_message">أضف مستلزمًا يدويًا، أو دع الذكاء الاصطناعي يسجّله لك</string>
     <string name="household_add_manually">إضافة يدوية</string>
     <string name="household_add_with_ai">اطلب من الذكاء الاصطناعي التسجيل</string>
     <string name="household_ai_assist_title">مساعد مدير المستلزمات</string>

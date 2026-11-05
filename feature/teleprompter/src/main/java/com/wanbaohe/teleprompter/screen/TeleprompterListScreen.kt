@@ -85,15 +85,12 @@ fun TeleprompterListScreen(
                     EmptyStateGuideAction(
                         icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
                         title = stringResource(R.string.teleprompter_new_script),
-                        description = stringResource(R.string.teleprompter_empty_manual_desc),
                         onClick = { component.onNewScript() },
                     ),
                     EmptyStateGuideAction(
                         icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAutoFix,
                         title = stringResource(R.string.teleprompter_empty_go_ai),
-                        description = stringResource(R.string.teleprompter_empty_ai_desc),
                         onClick = component::navigateToAiAssist,
-                        emphasized = true,
                     ),
                 ),
                 footerHint = stringResource(R.string.teleprompter_empty),

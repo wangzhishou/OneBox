@@ -95,13 +95,11 @@
     <string name="record_center_profile_age_years">%1$d 歲</string>
     <string name="record_center_profile_invalid">請輸入有效數值</string>
     <string name="record_center_empty_go_ai">去 AI 助手記錄</string>
-    <string name="record_center_empty_go_ai_description">告訴 AI 你的情況，讓它幫你把記錄填好</string>
     <string name="record_center_empty_title">還沒有健康記錄</string>
     <string name="record_center_empty_description">你可以手動新增一筆，也可以告訴 AI 你的情況，讓它幫你快速記錄</string>
     <string name="record_center_empty_range_title">這個時間範圍內沒有記錄</string>
     <string name="record_center_empty_range_description">可以切換上方的時間範圍，或手動新增一筆</string>
     <string name="record_center_add_manually">手動新增</string>
-    <string name="record_center_add_manually_description">自訂數值和時間，精細化記錄</string>
     <string name="record_center_ai_assist_title">健康記錄助手</string>
     <string name="record_center_ai_assist_prompt">你是使用者的健康記錄助手。使用者用自然語言描述健康資料時（例如「今天血壓 120/80」「空腹血糖 5.2」），用 add_health_record 工具幫他記錄。記完後簡短確認類型、數值和時間。使用者未說明時間時按現在記。</string>
     <string name="record_center_ai_assist_fill_in">今天血壓 120/80，幫我記到健康記錄裡</string>

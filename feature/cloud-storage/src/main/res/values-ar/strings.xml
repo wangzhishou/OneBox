@@ -85,7 +85,6 @@
     <string name="cloud_storage_no_connection_action">إضافة تخزين سحابي</string>
     <string name="cloud_storage_empty_folder_title">لا يوجد شيء هنا بعد</string>
     <string name="cloud_storage_empty_folder_desc">لا توجد ملفات أو مجلدات في هذا الدليل. انقر الزر أدناه لرفع ملف.</string>
-    <string name="cloud_storage_add_manually_desc">أدخل نقطة النهاية وبيانات الاعتماد بنفسك</string>
     <string name="cloud_storage_ai_assist_title">مساعد إعداد التخزين السحابي</string>
     <string name="cloud_storage_ai_assist_prompt">أنت مساعد إعداد التخزين البعيد للمستخدم\'. عندما يصف المستخدم خدمة تخزين، أضف اتصالًا باستخدام أداة manage_cloud_connections. تحتاج إلى Endpoint وAccessKey وSecretKey وBucket. اسأل بإيجاز عن أي عنصر ناقص ولا تخترع بيانات الاعتماد أبدًا. بعد الإعداد، يمكنك تصفّح الملفات باستخدام browse_cloud_files.</string>
     <string name="cloud_storage_ai_assist_fill_in">ساعدني في إضافة اتصال أليون OSS لنسخ الصور احتياطيًا</string>

@@ -108,7 +108,6 @@
     <string name="record_center_profile_age_years">%1$d세</string>
     <string name="record_center_profile_invalid">유효한 숫자를 입력하세요</string>
     <string name="record_center_empty_go_ai">AI 어시스턴트로 기록</string>
-    <string name="record_center_empty_go_ai_description">AI에게 컨디션을 말하면 기록을 채워 줍니다</string>
 
     <!-- 布局切换 -->
     <string name="record_center_cd_switch_to_grid">그리드 보기로 전환</string>
@@ -207,7 +206,6 @@
     <string name="record_center_empty_range_title">이 기간에는 기록이 없습니다</string>
     <string name="record_center_empty_range_description">위에서 기간을 바꾸거나 직접 추가해 보세요</string>
     <string name="record_center_add_manually">직접 추가</string>
-    <string name="record_center_add_manually_description">수치와 시간을 자유롭게 설정</string>
     <string name="record_center_ai_assist_title">건강 기록 도우미</string>
     <string name="record_center_ai_assist_prompt">당신은 건강 기록 도우미입니다. 사용자가 건강 데이터를 말하면 add_health_record로 기록하세요.</string>
     <string name="record_center_ai_assist_fill_in">오늘 혈압 120/80이야, 건강 기록에 저장해 줘</string>

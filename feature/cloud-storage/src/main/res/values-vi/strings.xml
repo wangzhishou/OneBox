@@ -85,7 +85,6 @@
     <string name="cloud_storage_no_connection_action">Thêm lưu trữ đám mây ngay</string>
     <string name="cloud_storage_empty_folder_title">Không có tệp nào ở đây</string>
     <string name="cloud_storage_empty_folder_desc">Hiện chưa phát hiện tệp hoặc thư mục nào trong thư mục này, nhấn nút bên dưới để tải tệp lên.</string>
-    <string name="cloud_storage_add_manually_desc">Tự điền Endpoint, khóa và các thông tin khác</string>
     <string name="cloud_storage_ai_assist_title">Trợ lý cấu hình lưu trữ đám mây</string>
     <string name="cloud_storage_ai_assist_prompt">Bạn là trợ lý cấu hình lưu trữ từ xa cho người dùng. Khi người dùng mô tả dịch vụ lưu trữ, hãy dùng công cụ manage_cloud_connections để giúp họ thêm kết nối. Cần Endpoint, AccessKey, SecretKey và Bucket. Hãy hỏi ngắn gọn những thông tin người dùng chưa cung cấp, không tự bịa khóa. Sau khi cấu hình xong có thể dùng browse_cloud_files để duyệt tệp.</string>
     <string name="cloud_storage_ai_assist_fill_in">Giúp tôi thêm kết nối Alibaba Cloud OSS để sao lưu ảnh</string>

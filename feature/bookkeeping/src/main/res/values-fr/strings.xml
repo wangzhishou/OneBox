@@ -17,9 +17,7 @@
     <string name="bookkeeping_empty_title">Aucune transaction pour le moment</string>
     <string name="bookkeeping_empty_description">Vous pouvez enregistrer manuellement ou demander à l\'IA de vous aider à démarrer rapidement</string>
     <string name="bookkeeping_add_manually">Enregistrer manuellement</string>
-    <string name="bookkeeping_add_manually_description">Catégories et montants personnalisés pour une comptabilité précise</string>
     <string name="bookkeeping_add_with_ai">L\'IA m\'aide</string>
-    <string name="bookkeeping_add_with_ai_description">Décrivez vos revenus et dépenses à l\'IA pour générer une transaction</string>
     <string name="bookkeeping_created_content_hint">S\'affichera ici après l\'enregistrement</string>
     <string name="bookkeeping_ai_assist_title">Assistant comptable</string>
     <string name="bookkeeping_ai_assist_prompt">Vous êtes l\'assistant comptable de l\'utilisateur. Lorsque l\'utilisateur décrit ses revenus et dépenses en langage naturel (par exemple « le déjeuner a coûté 28 yuans », « salaire reçu 12000 »), utilisez l\'outil add_bookkeeping_record pour l\'aider à enregistrer. Après l\'enregistrement, confirmez brièvement le montant, la catégorie et le type (dépense/entrée). Si l\'utilisateur ne précise pas la date, enregistrez pour aujourd\'hui.</string>

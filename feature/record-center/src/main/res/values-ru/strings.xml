@@ -108,7 +108,6 @@
     <string name="record_center_profile_age_years">%1$d лет</string>
     <string name="record_center_profile_invalid">Введите корректные числа</string>
     <string name="record_center_empty_go_ai">Записать с помощью ИИ-ассистента</string>
-    <string name="record_center_empty_go_ai_description">Расскажите ИИ о самочувствии, и он заполнит запись</string>
 
     <!-- 布局切换 -->
     <string name="record_center_cd_switch_to_grid">Переключиться на сетку</string>
@@ -207,7 +206,6 @@
     <string name="record_center_empty_range_title">Записей за этот период нет</string>
     <string name="record_center_empty_range_description">Переключите период выше или добавьте запись вручную</string>
     <string name="record_center_add_manually">Добавить вручную</string>
-    <string name="record_center_add_manually_description">Настройте значение и время</string>
     <string name="record_center_ai_assist_title">Помощник по записям здоровья</string>
     <string name="record_center_ai_assist_prompt">Ты помощник по записям здоровья. Когда пользователь описывает данные, запиши через add_health_record.</string>
     <string name="record_center_ai_assist_fill_in">Моё давление сегодня 120/80, сохрани в моих записях о здоровье</string>

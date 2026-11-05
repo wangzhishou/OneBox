@@ -5,7 +5,6 @@
     <string name="household_tab_locations">위치</string>
     <string name="household_tab_stats">통계</string>
     <string name="household_empty_guide_title">아이템이 아직 없습니다</string>
-    <string name="household_empty_guide_message">직접 추가하거나 AI가 기록하도록 하세요</string>
     <string name="household_add_manually">직접 추가</string>
     <string name="household_add_with_ai">AI에게 기록 요청</string>
     <string name="household_ai_assist_title">아이템 관리 도우미</string>

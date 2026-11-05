@@ -17,9 +17,7 @@
     <string name="bookkeeping_empty_title">还没有账单</string>
     <string name="bookkeeping_empty_description">你可以手动记一笔，也可以告诉 AI 你的需求，让它帮你快速开始</string>
     <string name="bookkeeping_add_manually">手动记一笔</string>
-    <string name="bookkeeping_add_manually_description">自定义分类和金额，精细化记账</string>
     <string name="bookkeeping_add_with_ai">AI 帮我记</string>
-    <string name="bookkeeping_add_with_ai_description">告诉 AI 你的收支，智能生成账单</string>
     <string name="bookkeeping_created_content_hint">记账后会显示在这里</string>
     <string name="bookkeeping_ai_assist_title">记账助手</string>
     <string name="bookkeeping_ai_assist_prompt">你是用户的记账助手。用户用自然语言描述收支时（例如「午饭花了 28 块」「收到工资 12000」），用 add_bookkeeping_record 工具帮他记账。记完后简短确认金额、分类和类型（支出/入账）。用户未说明日期时按今天记。</string>

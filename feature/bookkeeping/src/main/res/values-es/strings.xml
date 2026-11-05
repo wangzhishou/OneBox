@@ -165,9 +165,7 @@
 
     <string name="bookkeeping_empty_description">Crea una entrada manualmente, o dile a la IA lo que necesitas.</string>
     <string name="bookkeeping_add_manually">Añadir registro</string>
-    <string name="bookkeeping_add_manually_description">Personaliza categoría e importe</string>
     <string name="bookkeeping_add_with_ai">Dejar que la IA lo registre</string>
-    <string name="bookkeeping_add_with_ai_description">Describe tus ingresos o gastos y deja que la IA cree la entrada</string>
     <string name="bookkeeping_created_content_hint">Tus nuevos registros aparecerán aquí</string>
     <string name="bookkeeping_ai_assist_title">Asistente de contabilidad</string>
     <string name="bookkeeping_ai_assist_prompt">Eres el asistente de contabilidad del usuario. Cuando describa ingresos o gastos en lenguaje natural, regístralos con add_bookkeeping_record. Después confirma brevemente importe, categoría y tipo.</string>

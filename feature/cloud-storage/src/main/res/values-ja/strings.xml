@@ -110,7 +110,6 @@
     <string name="cloud_storage_smb_error_share_deleted">指定された共有はサーバー上に存在しません</string>
     <string name="cloud_storage_smb_error_sharing_violation">ファイルは別のプロセスで使用中のためアクセスできません</string>
     <string name="cloud_storage_smb_error_generic">SMBエラー：%1$s（%2$s）</string>
-    <string name="cloud_storage_add_manually_desc">Endpoint と認証情報を自分で入力</string>
 
     <string name="cloud_storage_ai_assist_title">クラウドストレージ設定アシスタント</string>
     <string name="cloud_storage_ai_assist_prompt">あなたはクラウドストレージ設定アシスタントです。manage_cloud_connections で接続を追加してください。認証情報を捏造しないでください。</string>

@@ -9,8 +9,6 @@
     <string name="teleprompter_empty">Chưa có văn bản, nhấn + ở góc trên bên phải để tạo mới</string>
     <string name="teleprompter_empty_title">Chưa có văn bản nào</string>
     <string name="teleprompter_empty_description">Bạn có thể tự tạo một văn bản mới, hoặc cho AI biết nhu cầu của bạn để nó giúp bạn tạo nhanh</string>
-    <string name="teleprompter_empty_manual_desc">Bắt đầu từ trang trắng, tự viết nội dung nhắc</string>
-    <string name="teleprompter_empty_ai_desc">Cho AI biết bối cảnh và thời lượng, tạo văn bản thông minh</string>
     <string name="teleprompter_empty_go_ai">AI viết giúp tôi</string>
     <string name="teleprompter_ai_assist_title">Trợ lý kịch bản nhắc</string>
     <string name="teleprompter_ai_assist_prompt">Bạn là trợ lý kịch bản nhắc của người dùng. Khi người dùng mô tả bối cảnh, thời lượng hoặc chủ đề, hãy dùng công cụ manage_teleprompter để tạo hoặc cập nhật văn bản. Khi viết, hãy dùng ngôn ngữ khẩu ngữ, câu ngắn, phù hợp để đọc, kiểm soát số ký tự theo thời lượng người dùng yêu cầu (tiếng Trung khoảng 4 ký tự mỗi giây). Sau khi tạo xong, xác nhận ngắn gọn tiêu đề và số ký tự.</string>

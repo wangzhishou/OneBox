@@ -165,9 +165,7 @@
 
     <string name="bookkeeping_empty_description">Magdagdag nang manu-mano, o sabihin sa AI ang kailangan mo.</string>
     <string name="bookkeeping_add_manually">Magdagdag ng tala</string>
-    <string name="bookkeeping_add_manually_description">I-customize ang kategorya at halaga</string>
     <string name="bookkeeping_add_with_ai">Hayaang i-record ng AI</string>
-    <string name="bookkeeping_add_with_ai_description">Ilarawan ang kita o gastos at hayaang gumawa ang AI</string>
     <string name="bookkeeping_created_content_hint">Dito lalabas ang mga bagong tala</string>
     <string name="bookkeeping_ai_assist_title">Bookkeeping Assistant</string>
     <string name="bookkeeping_ai_assist_prompt">Ikaw ang bookkeeping assistant ng user. Kapag inilarawan ang kita o gastos sa natural na wika, i-record gamit ang add_bookkeeping_record.</string>

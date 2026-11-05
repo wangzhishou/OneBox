@@ -17,9 +17,7 @@
     <string name="bookkeeping_empty_title">No records yet</string>
     <string name="bookkeeping_empty_description">Create an entry manually, or tell AI what you need and let it help you get started.</string>
     <string name="bookkeeping_add_manually">Add record</string>
-    <string name="bookkeeping_add_manually_description">Customize category and amount</string>
     <string name="bookkeeping_add_with_ai">Let AI record it</string>
-    <string name="bookkeeping_add_with_ai_description">Describe your income or expense and let AI create the entry</string>
     <string name="bookkeeping_created_content_hint">Your new records will appear here</string>
     <string name="bookkeeping_ai_assist_title">Bookkeeping Assistant</string>
     <string name="bookkeeping_ai_assist_prompt">You are the user\'s bookkeeping assistant. When the user describes income or expenses in natural language (for example \"lunch cost 28\" or \"received salary 12000\"), record it with the add_bookkeeping_record tool. After recording, briefly confirm the amount, category, and type (expense/income). Use today\'s date when the user does not specify one.</string>

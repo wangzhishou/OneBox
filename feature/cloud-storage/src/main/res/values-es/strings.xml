@@ -110,7 +110,6 @@
     <string name="cloud_storage_smb_error_share_deleted">El recurso compartido especificado no existe en el servidor</string>
     <string name="cloud_storage_smb_error_sharing_violation">El archivo está en uso por otro proceso y no se puede acceder</string>
     <string name="cloud_storage_smb_error_generic">Error SMB: %1$s (%2$s)</string>
-    <string name="cloud_storage_add_manually_desc">Introduce endpoint y credenciales tú mismo</string>
 
     <string name="cloud_storage_ai_assist_title">Asistente de configuración de almacenamiento</string>
     <string name="cloud_storage_ai_assist_prompt">Eres el asistente de configuración de almacenamiento remoto. Añade conexiones con manage_cloud_connections. No inventes credenciales.</string>

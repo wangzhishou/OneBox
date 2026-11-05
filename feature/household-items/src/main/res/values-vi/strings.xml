@@ -5,7 +5,6 @@
     <string name="household_tab_locations">Vị trí</string>
     <string name="household_tab_stats">Thống kê</string>
     <string name="household_empty_guide_title">Chưa ghi lại đồ vật nào</string>
-    <string name="household_empty_guide_message">Thêm thủ công một món, hoặc để AI ghi giúp bạn</string>
     <string name="household_add_manually">Thêm thủ công</string>
     <string name="household_add_with_ai">AI ghi giúp</string>
     <string name="household_ai_assist_title">Trợ lý quản lý đồ vật</string>

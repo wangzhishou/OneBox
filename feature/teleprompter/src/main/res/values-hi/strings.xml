@@ -58,8 +58,6 @@
     <string name="teleprompter_empty_title">अभी कोई स्क्रिप्ट नहीं</string>
 
     <string name="teleprompter_empty_description">मैन्युअल रूप से बनाएं, या AI से लिखवाएं</string>
-    <string name="teleprompter_empty_manual_desc">खाली स्क्रिप्ट से शुरू करें</string>
-    <string name="teleprompter_empty_ai_desc">दृश्य और लंबाई बताएं</string>
     <string name="teleprompter_empty_go_ai">AI से लिखें</string>
     <string name="teleprompter_ai_assist_title">टेलीप्रॉम्प्टर स्क्रिप्ट सहायक</string>
     <string name="teleprompter_ai_assist_prompt">आप टेलीप्रॉम्प्टर स्क्रिप्ट सहायक हैं। दृश्य, अवधि या विषय बताने पर manage_teleprompter से स्क्रिप्ट बनाएं या अपडेट करें।</string>

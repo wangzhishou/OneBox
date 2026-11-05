@@ -645,13 +645,11 @@ private fun CloudNoConnectionGuide(
             EmptyStateGuideAction(
                 icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
                 title = stringResource(R.string.cloud_storage_no_connection_action),
-                description = stringResource(R.string.cloud_storage_add_manually_desc),
                 onClick = onAddManually,
             ),
             EmptyStateGuideAction(
                 icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAutoFix,
                 title = stringResource(R.string.cloud_storage_ai_assist_title),
-                description = stringResource(R.string.cloud_storage_ai_assist_fill_in),
                 onClick = {
                     onNavigate(
                         com.wanbaohe.core.ui.utils.navigation.Screen.AITabChatScreen(
@@ -663,10 +661,8 @@ private fun CloudNoConnectionGuide(
                         )
                     )
                 },
-                emphasized = true,
             ),
         ),
-        footerHint = stringResource(R.string.cloud_storage_no_connection_desc),
         modifier = modifier,
     )
 }

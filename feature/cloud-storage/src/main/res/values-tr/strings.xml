@@ -110,7 +110,6 @@
     <string name="cloud_storage_smb_error_share_deleted">Belirtilen paylaşım sunucuda mevcut değil</string>
     <string name="cloud_storage_smb_error_sharing_violation">Dosya başka bir işlem tarafından kullanılıyor ve erişilemiyor</string>
     <string name="cloud_storage_smb_error_generic">SMB hatası: %1$s (%2$s)</string>
-    <string name="cloud_storage_add_manually_desc">Endpoint ve kimlik bilgilerini kendiniz girin</string>
 
     <string name="cloud_storage_ai_assist_title">Bulut Depolama Kurulum Asistanı</string>
     <string name="cloud_storage_ai_assist_prompt">Bulut depolama kurulum asistanısın. manage_cloud_connections ile bağlantı ekle. Kimlik bilgilerini uydurma.</string>

@@ -5,7 +5,6 @@
     <string name="household_tab_locations">Lokasi</string>
     <string name="household_tab_stats">Statistik</string>
     <string name="household_empty_guide_title">Belum ada barang</string>
-    <string name="household_empty_guide_message">Tambahkan manual, atau biarkan AI mencatatnya untuk Anda</string>
     <string name="household_add_manually">Tambah manual</string>
     <string name="household_add_with_ai">Minta AI mencatat</string>
     <string name="household_ai_assist_title">Asisten Pengelola Barang</string>

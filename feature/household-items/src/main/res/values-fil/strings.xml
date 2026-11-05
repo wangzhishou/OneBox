@@ -5,7 +5,6 @@
     <string name="household_tab_locations">Mga Lokasyon</string>
     <string name="household_tab_stats">Mga Estadistika</string>
     <string name="household_empty_guide_title">Wala pang item</string>
-    <string name="household_empty_guide_message">Magdagdag nang manu-mano, o hayaang i-record ito ng AI para sa iyo</string>
     <string name="household_add_manually">Magdagdag nang manu-mano</string>
     <string name="household_add_with_ai">Hilingin sa AI na i-record</string>
     <string name="household_ai_assist_title">Katulong ng Tagapamahala ng Item</string>

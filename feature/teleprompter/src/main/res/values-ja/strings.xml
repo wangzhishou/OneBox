@@ -57,8 +57,6 @@
     <string name="teleprompter_empty_title">まだ原稿がありません</string>
 
     <string name="teleprompter_empty_description">手動で作るか、AIに書いてもらえます</string>
-    <string name="teleprompter_empty_manual_desc">空の原稿から始める</string>
-    <string name="teleprompter_empty_ai_desc">シーンと長さを伝えて生成</string>
     <string name="teleprompter_empty_go_ai">AIに書いてもらう</string>
     <string name="teleprompter_ai_assist_title">台本アシスタント</string>
     <string name="teleprompter_ai_assist_prompt">あなたはテレプロンプター用台本アシスタントです。シーン・尺・テーマが伝えられたら manage_teleprompter で原稿を作成/更新してください。</string>

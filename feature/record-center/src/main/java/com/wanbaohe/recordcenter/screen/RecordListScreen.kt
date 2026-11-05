@@ -239,15 +239,12 @@ private fun RecordListContent(
                         EmptyStateGuideAction(
                             icon = Icons.Outlined.Add,
                             title = stringResource(R.string.record_center_add_manually),
-                            description = stringResource(R.string.record_center_add_manually_description),
                             onClick = onAddRecord,
                         ),
                         EmptyStateGuideAction(
                             icon = Icons.Outlined.LineAutoFix,
                             title = stringResource(R.string.record_center_empty_go_ai),
-                            description = stringResource(R.string.record_center_empty_go_ai_description),
                             onClick = onGoAiChat,
-                            emphasized = true,
                         ),
                     ),
                     modifier = Modifier.fillParentMaxSize(),
@@ -273,7 +270,6 @@ private fun RecordListContent(
                                 EmptyStateGuideAction(
                                     icon = Icons.Outlined.Add,
                                     title = stringResource(R.string.record_center_add_manually),
-                                    description = stringResource(R.string.record_center_add_manually_description),
                                     onClick = onAddRecord,
                                 ),
                             ),

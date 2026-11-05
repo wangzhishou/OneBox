@@ -1,11 +1,8 @@
 package com.shifenmiao.online.ui
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,9 +10,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -24,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -37,6 +33,7 @@ import com.shifenmiao.model.ListItemType
 import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.storage.RemoteConfigStorage
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineAiChat
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAgent
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAutoAwesomeMosaic
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAutoFix
@@ -44,6 +41,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineCodeEditor
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineNote
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePrompt
 import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.core.ui.widget.glass.glassThin
 
 @Composable
@@ -67,16 +65,16 @@ fun HomeEmptyState(
             if (isFiltered) R.string.home_filter_empty_title else R.string.home_empty_title,
             typeName,
         ),
-        description = stringResource(
-            if (isFiltered) R.string.home_filter_empty_description
-            else R.string.home_empty_description,
-        ),
+        description = if (isFiltered) {
+            stringResource(R.string.home_filter_empty_description)
+        } else {
+            null
+        },
         actions = if (isFiltered) {
             listOf(
                 EmptyStateGuideAction(
                     icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAutoFix,
                     title = stringResource(R.string.home_clear_filter),
-                    description = stringResource(R.string.home_clear_filter_description),
                     onClick = onClearFilter,
                 ),
             )
@@ -86,28 +84,19 @@ fun HomeEmptyState(
                     EmptyStateGuideAction(
                         icon = Icons.Outlined.Edit,
                         title = stringResource(R.string.home_create_manual),
-                        description = stringResource(R.string.home_create_manual_description, typeName),
                         onClick = onManualCreate,
-                        emphasized = !showAiCreate,
                     )
                 )
                 if (showAiCreate) {
                     add(
                         EmptyStateGuideAction(
-                            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAutoFix,
+                            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiChat,
                             title = stringResource(R.string.home_create_with_ai),
-                            description = stringResource(R.string.home_create_with_ai_description, typeName),
                             onClick = onAiCreate,
-                            emphasized = true,
                         )
                     )
                 }
             }
-        },
-        footerHint = if (isFiltered) {
-            null
-        } else {
-            stringResource(R.string.home_created_content_hint)
         },
         modifier = modifier,
     )
@@ -126,160 +115,84 @@ fun CreateChoiceCard(
     val typeName = listTypeDisplayName(listType)
     val shape = MaterialTheme.shapes.extraLarge
     val fixedHeight = siblingHeight?.let { maxOf(it, 180.dp) }
-    BoxWithConstraints(
+    Column(
         modifier = modifier
             .fillMaxWidth()
             .then(
                 if (fixedHeight != null) Modifier.height(fixedHeight)
-                else Modifier.heightIn(min = 220.dp)
+                else Modifier.heightIn(min = 180.dp)
             )
             .glassThin(
                 shape = shape,
-                color = MaterialTheme.colorScheme.surfaceContainerLow,
+                color = MaterialTheme.colorScheme.surfaceContainer,
             )
             .clip(shape)
-            .padding(12.dp),
+            .padding(16.dp),
     ) {
-        val showActionIcons = maxWidth >= 140.dp
-        Column(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)) {
-                Text(
-                    text = stringResource(R.string.home_create_new_title, typeName),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Spacer(Modifier.height(2.dp))
-                Text(
-                    text = stringResource(R.string.home_create_new_description),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
-            Spacer(Modifier.height(10.dp))
-            CreationActionCard(
+        Text(
+            text = stringResource(R.string.home_create_new_title, typeName),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onSurface,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
+        Spacer(Modifier.height(16.dp))
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            horizontalAlignment = Alignment.End,
+            verticalArrangement = Arrangement.Bottom,
+        ) {
+            CreationActionButton(
                 icon = Icons.Outlined.Edit,
                 title = stringResource(R.string.home_create_manual),
-                description = stringResource(R.string.home_create_manual_description, typeName),
                 onClick = onManualCreate,
-                emphasized = !showAiCreate,
-                compact = true,
-                showIcon = showActionIcons,
-                modifier = if (fixedHeight != null) Modifier.weight(1f) else Modifier,
-                enforceMinHeight = fixedHeight == null,
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
             )
             if (showAiCreate) {
-                Spacer(Modifier.height(8.dp))
-                CreationActionCard(
-                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAutoFix,
+                Spacer(Modifier.height(12.dp))
+                CreationActionButton(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiChat,
                     title = stringResource(R.string.home_create_with_ai),
-                    description = stringResource(R.string.home_create_with_ai_description, typeName),
                     onClick = onAiCreate,
-                    emphasized = true,
-                    compact = true,
-                    showIcon = showActionIcons,
-                    modifier = if (fixedHeight != null) Modifier.weight(1f) else Modifier,
-                    enforceMinHeight = fixedHeight == null,
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                 )
             }
         }
     }
 }
 
-
 @Composable
-private fun CreationActionCard(
+private fun CreationActionButton(
     icon: ImageVector,
     title: String,
-    description: String,
     onClick: () -> Unit,
-    emphasized: Boolean = false,
-    compact: Boolean = false,
-    showIcon: Boolean = true,
-    modifier: Modifier = Modifier,
-    enforceMinHeight: Boolean = true,
+    containerColor: Color,
+    contentColor: Color,
 ) {
-    val shape = MaterialTheme.shapes.large
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = if (enforceMinHeight) (if (compact) 60.dp else 76.dp) else 0.dp)
-            .clip(shape)
-            .clickable(onClick = onClick)
-            .glassThin(
-                shape = shape,
-                color = if (emphasized) MaterialTheme.colorScheme.primaryContainer
-                else MaterialTheme.colorScheme.surfaceContainerLowest,
-            )
-            .padding(
-                horizontal = if (compact) 10.dp else 14.dp,
-                vertical = if (compact) 8.dp else 10.dp,
-            ),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        if (showIcon) {
-            CreationIcon(
-                icon = icon,
-                emphasized = emphasized,
-                modifier = Modifier.size(if (compact) 42.dp else 52.dp),
-            )
-            Spacer(Modifier.width(if (compact) 10.dp else 14.dp))
-        }
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = title,
-                style = if (compact) MaterialTheme.typography.titleSmall
-                else MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = if (emphasized) MaterialTheme.colorScheme.onPrimaryContainer
-                else MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-            )
-            if (!compact) {
-                Spacer(Modifier.height(2.dp))
-                Text(
-                    text = description,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = if (emphasized) MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.72f)
-                    else MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
-        }
-        Icon(
-            imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
-            contentDescription = null,
-            modifier = Modifier.size(16.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-        )
-    }
-}
-
-@Composable
-private fun CreationIcon(
-    icon: ImageVector,
-    emphasized: Boolean,
-    modifier: Modifier = Modifier.size(52.dp),
-) {
-    Box(
-        modifier = modifier.glassThin(
-            shape = CircleShape,
-            color = if (emphasized) MaterialTheme.colorScheme.onPrimaryContainer
-            else MaterialTheme.colorScheme.surfaceContainer,
-        ),
-        contentAlignment = Alignment.Center,
+    GlassTonalButton(
+        onClick = onClick,
+        shape = MaterialTheme.shapes.large,
+        color = containerColor,
+        contentColor = contentColor,
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            modifier = Modifier.size(26.dp),
-            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+            modifier = Modifier.size(20.dp),
+        )
+        Spacer(Modifier.width(8.dp))
+        Text(
+            text = title,
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.SemiBold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
     }
 }

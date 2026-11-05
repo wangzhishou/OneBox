@@ -110,7 +110,6 @@
     <string name="cloud_storage_smb_error_share_deleted">Die angegebene Freigabe existiert nicht auf dem Server</string>
     <string name="cloud_storage_smb_error_sharing_violation">Die Datei wird von einem anderen Prozess verwendet und kann nicht zugegriffen werden</string>
     <string name="cloud_storage_smb_error_generic">SMB-Fehler: %1$s (%2$s)</string>
-    <string name="cloud_storage_add_manually_desc">Endpoint und Zugangsdaten selbst eingeben</string>
 
     <string name="cloud_storage_ai_assist_title">Cloud-Speicher-Setup-Assistent</string>
     <string name="cloud_storage_ai_assist_prompt">Du bist der Cloud-Speicher-Setup-Assistent. Füge Verbindungen mit manage_cloud_connections hinzu. Erfinde keine Zugangsdaten.</string>

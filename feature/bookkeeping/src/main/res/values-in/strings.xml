@@ -165,9 +165,7 @@
 
     <string name="bookkeeping_empty_description">Tambahkan entri secara manual, atau beri tahu AI apa yang Anda butuhkan.</string>
     <string name="bookkeeping_add_manually">Tambah catatan</string>
-    <string name="bookkeeping_add_manually_description">Sesuaikan kategori dan jumlah</string>
     <string name="bookkeeping_add_with_ai">Biarkan AI mencatat</string>
-    <string name="bookkeeping_add_with_ai_description">Jelaskan pemasukan atau pengeluaran dan biarkan AI membuat entri</string>
     <string name="bookkeeping_created_content_hint">Catatan baru akan muncul di sini</string>
     <string name="bookkeeping_ai_assist_title">Asisten Pembukuan</string>
     <string name="bookkeeping_ai_assist_prompt">Anda adalah asisten pembukuan pengguna. Saat pengguna mendeskripsikan pemasukan atau pengeluaran dalam bahasa alami, catat dengan add_bookkeeping_record.</string>

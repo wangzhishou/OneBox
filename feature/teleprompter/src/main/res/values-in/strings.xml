@@ -57,8 +57,6 @@
     <string name="teleprompter_empty_title">Belum ada naskah</string>
 
     <string name="teleprompter_empty_description">Buat manual, atau minta AI menuliskannya</string>
-    <string name="teleprompter_empty_manual_desc">Mulai dari naskah kosong</string>
-    <string name="teleprompter_empty_ai_desc">Jelaskan adegan dan durasinya</string>
     <string name="teleprompter_empty_go_ai">Tulis dengan AI</string>
     <string name="teleprompter_ai_assist_title">Asisten Naskah Teleprompter</string>
     <string name="teleprompter_ai_assist_prompt">Anda asisten naskah teleprompter. Saat pengguna mendeskripsikan adegan, durasi atau topik, buat/perbarui naskah dengan manage_teleprompter.</string>

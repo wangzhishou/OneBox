@@ -92,7 +92,6 @@
     <string name="cloud_storage_no_connection_action">立刻添加云存储</string>
     <string name="cloud_storage_empty_folder_title">这里没有任何文件</string>
     <string name="cloud_storage_empty_folder_desc">在这个目录中暂时没有检测到任何文件或文件目录，轻按下方按钮来上传文件。</string>
-    <string name="cloud_storage_add_manually_desc">自己填写 Endpoint、密钥等信息</string>
     <string name="cloud_storage_ai_assist_title">云存储配置助手</string>
     <string name="cloud_storage_ai_assist_prompt">你是用户的远程存储配置助手。用户描述存储服务时，用 manage_cloud_connections 工具帮他添加连接。需要 Endpoint、AccessKey、SecretKey 和 Bucket。用户未提供的信息请简短追问，不要编造密钥。配置完成后可用 browse_cloud_files 浏览文件。</string>
     <string name="cloud_storage_ai_assist_fill_in">帮我添加一个阿里云 OSS 连接，用来备份照片</string>

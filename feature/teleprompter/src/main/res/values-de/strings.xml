@@ -58,8 +58,6 @@
     <string name="teleprompter_empty_title">Noch keine Skripte</string>
 
     <string name="teleprompter_empty_description">Erstelle eins manuell oder lass die KI schreiben</string>
-    <string name="teleprompter_empty_manual_desc">Mit leerem Skript starten</string>
-    <string name="teleprompter_empty_ai_desc">Szene und Länge beschreiben, KI schreibt</string>
     <string name="teleprompter_empty_go_ai">Mit KI schreiben</string>
     <string name="teleprompter_ai_assist_title">Teleprompter-Skript-Assistent</string>
     <string name="teleprompter_ai_assist_prompt">Du bist der Teleprompter-Skript-Assistent. Erstelle oder aktualisiere Skripte mit manage_teleprompter.</string>

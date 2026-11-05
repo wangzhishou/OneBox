@@ -165,9 +165,7 @@
 
     <string name="bookkeeping_empty_description">Добавьте запись вручную или расскажите ИИ, что нужно.</string>
     <string name="bookkeeping_add_manually">Добавить запись</string>
-    <string name="bookkeeping_add_manually_description">Настройте категорию и сумму</string>
     <string name="bookkeeping_add_with_ai">Пусть ИИ запишет</string>
-    <string name="bookkeeping_add_with_ai_description">Опишите доход или расход, ИИ создаст запись</string>
     <string name="bookkeeping_created_content_hint">Новые записи появятся здесь</string>
     <string name="bookkeeping_ai_assist_title">Помощник по учёту</string>
     <string name="bookkeeping_ai_assist_prompt">Ты помощник по учёту пользователя. Когда пользователь описывает доходы или расходы, запиши через add_bookkeeping_record.</string>

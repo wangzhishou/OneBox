@@ -17,9 +17,7 @@
     <string name="bookkeeping_empty_title">Chưa có hóa đơn</string>
     <string name="bookkeeping_empty_description">Bạn có thể tự ghi một khoản, hoặc cho AI biết nhu cầu của bạn để nó giúp bạn bắt đầu nhanh chóng</string>
     <string name="bookkeeping_add_manually">Tự ghi một khoản</string>
-    <string name="bookkeeping_add_manually_description">Tùy chỉnh danh mục và số tiền, ghi chép chi tiết</string>
     <string name="bookkeeping_add_with_ai">AI ghi giúp tôi</string>
-    <string name="bookkeeping_add_with_ai_description">Cho AI biết thu chi của bạn, tạo hóa đơn thông minh</string>
     <string name="bookkeeping_created_content_hint">Sau khi ghi chép sẽ hiển thị ở đây</string>
     <string name="bookkeeping_ai_assist_title">Trợ lý ghi chép</string>
     <string name="bookkeeping_ai_assist_prompt">Bạn là trợ lý ghi chép của người dùng. Khi người dùng mô tả thu chi bằng ngôn ngữ tự nhiên (ví dụ 「bữa trưa hết 28 tệ」「nhận lương 12000」), hãy dùng công cụ add_bookkeeping_record để giúp họ ghi chép. Sau khi ghi xong, xác nhận ngắn gọn số tiền, danh mục và loại (chi tiêu/thu nhập). Khi người dùng không nói rõ ngày, ghi theo hôm nay.</string>

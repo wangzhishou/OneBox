@@ -14,8 +14,6 @@
     <string name="teleprompter_empty">لا يوجد نص، انقر على + في أسفل اليمين</string>
     <string name="teleprompter_empty_title">لا توجد نصوص بعد</string>
     <string name="teleprompter_empty_description">أنشئ نصًّا يدويًّا، أو أخبر الذكاء الاصطناعي بما تحتاجه ودعه يصوغه لك</string>
-    <string name="teleprompter_empty_manual_desc">ابدأ من نص فارغ</string>
-    <string name="teleprompter_empty_ai_desc">صِف المشهد والطول ودع الذكاء الاصطناعي يكتبه</string>
     <string name="teleprompter_empty_go_ai">الكتابة بالذكاء الاصطناعي</string>
     <string name="teleprompter_ai_assist_title">مساعد نصوص الملقّن</string>
     <string name="teleprompter_ai_assist_prompt">أنت مساعد نصوص الملقّن الخاص بالمستخدم\'. عندما يصف المستخدم مشهدًا أو مدة أو موضوعًا، أنشئ نصًّا أو حدّثه باستخدام أداة manage_teleprompter. اكتب جملًا منطوقة قصيرة مناسبة للقراءة بصوت مرتفع، وطابق المدة المطلوبة. أكّد بإيجاز العنوان وعدد الأحرف بعد الإنشاء.</string>

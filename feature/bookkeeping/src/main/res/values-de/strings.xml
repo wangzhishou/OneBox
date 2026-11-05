@@ -165,9 +165,7 @@
 
     <string name="bookkeeping_empty_description">Erstelle einen Eintrag manuell oder sag der KI, was du brauchst.</string>
     <string name="bookkeeping_add_manually">Eintrag hinzufügen</string>
-    <string name="bookkeeping_add_manually_description">Kategorie und Betrag anpassen</string>
     <string name="bookkeeping_add_with_ai">KI buchen lassen</string>
-    <string name="bookkeeping_add_with_ai_description">Beschreibe Einnahmen oder Ausgaben, die KI erstellt den Eintrag</string>
     <string name="bookkeeping_created_content_hint">Neue Einträge erscheinen hier</string>
     <string name="bookkeeping_ai_assist_title">Buchhaltungs-Assistent</string>
     <string name="bookkeeping_ai_assist_prompt">Du bist der Buchhaltungs-Assistent des Nutzers. Wenn der Nutzer Einnahmen oder Ausgaben in natürlicher Sprache beschreibt, buche sie mit add_bookkeeping_record. Bestätige danach kurz Betrag, Kategorie und Typ.</string>

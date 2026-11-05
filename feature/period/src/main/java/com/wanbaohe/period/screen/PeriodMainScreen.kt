@@ -182,17 +182,14 @@ private fun PeriodEmptyState(
         description = stringResource(R.string.period_empty_subtitle),
         actions = listOf(
             EmptyStateGuideAction(
-                icon = Icons.Outlined.LineAutoFix,
-                title = stringResource(R.string.period_ai_quick_record),
-                description = stringResource(R.string.period_empty_example),
-                onClick = onAiAssist,
-                emphasized = true,
-            ),
-            EmptyStateGuideAction(
                 icon = Icons.Outlined.Add,
                 title = stringResource(R.string.period_manual_record),
-                description = stringResource(R.string.period_manual_record),
                 onClick = onManual,
+            ),
+            EmptyStateGuideAction(
+                icon = Icons.Outlined.LineAutoFix,
+                title = stringResource(R.string.period_ai_quick_record),
+                onClick = onAiAssist,
             ),
         ),
         footerHint = stringResource(R.string.period_empty_example),

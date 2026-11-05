@@ -57,8 +57,6 @@
     <string name="teleprompter_empty_title">아직 대본이 없습니다</string>
 
     <string name="teleprompter_empty_description">직접 만들거나 AI에게 맡기세요</string>
-    <string name="teleprompter_empty_manual_desc">빈 대본으로 시작</string>
-    <string name="teleprompter_empty_ai_desc">장면과 길이를 알려주면 작성</string>
     <string name="teleprompter_empty_go_ai">AI로 작성</string>
     <string name="teleprompter_ai_assist_title">대본 도우미</string>
     <string name="teleprompter_ai_assist_prompt">당신은 텔레프롬프터 대본 도우미입니다. 장면, 길이, 주제를 받으면 manage_teleprompter로 대본을 만들거나 수정하세요.</string>

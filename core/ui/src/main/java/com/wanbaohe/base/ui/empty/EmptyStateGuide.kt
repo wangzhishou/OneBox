@@ -1,53 +1,43 @@
 package com.wanbaohe.base.ui.empty
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.core.ui.widget.glass.glassThin
 
-/**
- * 空态引导动作卡片。
- *
- * @param emphasized 强调态（primaryContainer 底色），用于推荐入口
- */
 data class EmptyStateGuideAction(
     val icon: ImageVector,
     val title: String,
-    val description: String,
     val onClick: () -> Unit,
-    val emphasized: Boolean = false,
 )
 
 /**
- * 通用空态引导：圆形图标 + 标题 + 描述 + 动作卡片列表 + 可选底部提示。
+ * 通用空态引导：圆形图标 + 标题 + 可选描述 + 双色动作按钮 + 可选底部提示。
  *
  * 视觉与首页「还没有笔记」空态保持一致，供各 feature 复用。
  */
@@ -55,7 +45,7 @@ data class EmptyStateGuideAction(
 fun EmptyStateGuide(
     icon: ImageVector,
     title: String,
-    description: String,
+    description: String?,
     actions: List<EmptyStateGuideAction>,
     modifier: Modifier = Modifier,
     footerHint: String? = null,
@@ -65,13 +55,13 @@ fun EmptyStateGuide(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 24.dp, vertical = 32.dp),
+            .padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
         Box(
             modifier = Modifier
-                .size(112.dp)
+                .size(80.dp)
                 .glassThin(
                     shape = iconShape,
                     color = MaterialTheme.colorScheme.primaryContainer,
@@ -81,30 +71,59 @@ fun EmptyStateGuide(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                modifier = Modifier.size(52.dp),
-                tint = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.78f),
+                modifier = Modifier.size(36.dp),
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
             )
         }
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(16.dp))
         Text(
             text = title,
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Normal,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
         )
-        Spacer(Modifier.height(8.dp))
-        Text(
-            text = description,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-        )
-        Spacer(Modifier.height(28.dp))
+        if (description != null) {
+            Spacer(Modifier.height(8.dp))
+            Text(
+                text = description,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+            )
+        }
 
-        actions.forEachIndexed { index, action ->
-            if (index > 0) Spacer(Modifier.height(12.dp))
-            EmptyStateActionCard(action = action)
+        if (actions.isNotEmpty()) {
+            Spacer(Modifier.height(28.dp))
+            actions.chunked(2).forEachIndexed { rowIndex, rowActions ->
+                if (rowIndex > 0) Spacer(Modifier.height(12.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(
+                        space = 12.dp,
+                        alignment = Alignment.CenterHorizontally,
+                    ),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    rowActions.forEachIndexed { index, action ->
+                        val actionIndex = rowIndex * 2 + index
+                        val useTertiary = actionIndex % 2 == 0
+                        EmptyStateActionButton(
+                            action = action,
+                            containerColor = if (useTertiary) {
+                                MaterialTheme.colorScheme.tertiaryContainer
+                            } else {
+                                MaterialTheme.colorScheme.secondaryContainer
+                            },
+                            contentColor = if (useTertiary) {
+                                MaterialTheme.colorScheme.onTertiaryContainer
+                            } else {
+                                MaterialTheme.colorScheme.onSecondaryContainer
+                            },
+                        )
+                    }
+                }
+            }
         }
 
         if (footerHint != null) {
@@ -112,7 +131,7 @@ fun EmptyStateGuide(
             Text(
                 text = footerHint,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.72f),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
             )
         }
@@ -120,80 +139,29 @@ fun EmptyStateGuide(
 }
 
 @Composable
-private fun EmptyStateActionCard(
+private fun EmptyStateActionButton(
     action: EmptyStateGuideAction,
-    modifier: Modifier = Modifier,
+    containerColor: Color,
+    contentColor: Color,
 ) {
-    val shape = MaterialTheme.shapes.large
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = 76.dp)
-            .clip(shape)
-            .clickable(onClick = action.onClick)
-            .glassThin(
-                shape = shape,
-                color = if (action.emphasized) {
-                    MaterialTheme.colorScheme.primaryContainer
-                } else {
-                    MaterialTheme.colorScheme.surfaceContainerLow
-                },
-            )
-            .padding(horizontal = 14.dp, vertical = 10.dp),
-        verticalAlignment = Alignment.CenterVertically,
+    GlassTonalButton(
+        onClick = action.onClick,
+        shape = MaterialTheme.shapes.large,
+        color = containerColor,
+        contentColor = contentColor,
+        contentPadding = PaddingValues(horizontal = 20.dp, vertical = 12.dp),
     ) {
-        Box(
-            modifier = Modifier
-                .size(52.dp)
-                .glassThin(
-                    shape = CircleShape,
-                    color = if (action.emphasized) {
-                        MaterialTheme.colorScheme.primaryContainer
-                    } else {
-                        MaterialTheme.colorScheme.surfaceContainer
-                    },
-                ),
-            contentAlignment = Alignment.Center,
-        ) {
-            Icon(
-                imageVector = action.icon,
-                contentDescription = null,
-                modifier = Modifier.size(26.dp),
-                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-            )
-        }
-        Spacer(Modifier.width(14.dp))
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = action.title,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = if (action.emphasized) {
-                    MaterialTheme.colorScheme.onPrimaryContainer
-                } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                },
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-            )
-            Spacer(Modifier.height(2.dp))
-            Text(
-                text = action.description,
-                style = MaterialTheme.typography.bodySmall,
-                color = if (action.emphasized) {
-                    MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.72f)
-                } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                },
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
         Icon(
-            imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
+            imageVector = action.icon,
             contentDescription = null,
-            modifier = Modifier.size(16.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+            modifier = Modifier.size(20.dp),
+        )
+        Spacer(Modifier.width(8.dp))
+        Text(
+            text = action.title,
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.SemiBold,
+            maxLines = 1,
         )
     }
 }

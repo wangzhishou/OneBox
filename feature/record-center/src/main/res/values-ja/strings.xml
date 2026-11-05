@@ -108,7 +108,6 @@
     <string name="record_center_profile_age_years">%1$d 歳</string>
     <string name="record_center_profile_invalid">有効な数値を入力してください</string>
     <string name="record_center_empty_go_ai">AI アシスタントで記録</string>
-    <string name="record_center_empty_go_ai_description">AI に体調を伝えると、記録を埋めてくれます</string>
 
     <!-- 布局切换 -->
     <string name="record_center_cd_switch_to_grid">グリッド表示に切り替え</string>
@@ -207,7 +206,6 @@
     <string name="record_center_empty_range_title">この期間の記録がありません</string>
     <string name="record_center_empty_range_description">上の期間を切り替えるか、手動で追加してください</string>
     <string name="record_center_add_manually">手動で追加</string>
-    <string name="record_center_add_manually_description">数値と時間を自由に設定</string>
     <string name="record_center_ai_assist_title">健康記録アシスタント</string>
     <string name="record_center_ai_assist_prompt">あなたは健康記録アシスタントです。ユーザーが健康データを伝えたら、add_health_record で記録してください。</string>
     <string name="record_center_ai_assist_fill_in">今日の血圧は120/80、健康記録に保存して</string>

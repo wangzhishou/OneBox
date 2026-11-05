@@ -5,7 +5,6 @@
     <string name="household_tab_locations">保管場所</string>
     <string name="household_tab_stats">統計</string>
     <string name="household_empty_guide_title">アイテムはまだありません</string>
-    <string name="household_empty_guide_message">手動で追加するか、AIに記録してもらいましょう</string>
     <string name="household_add_manually">手動で追加</string>
     <string name="household_add_with_ai">AIに記録を依頼</string>
     <string name="household_ai_assist_title">アイテム管理アシスタント</string>
