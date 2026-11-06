@@ -171,6 +171,12 @@ fun MarkTodoScreen(
         actions = {
             MarkTodoScreenActions(
                 isReorderMode = uiState.isReorderMode,
+                isGridView = uiState.isGridView,
+                showViewMode = uiState.searchQuery.isBlank() &&
+                    !uiState.filter.hasSmartDateFilter,
+                onToggleViewMode = {
+                    markTodoComponent.handleEvent(MarkTodoUiEvent.SetGridView(!uiState.isGridView))
+                },
                 onExitReorder = {
                     markTodoComponent.handleEvent(MarkTodoUiEvent.SetReorderMode(false))
                 },
@@ -205,17 +211,11 @@ fun MarkTodoScreen(
                 QueryShortcutBar(
                     filter = uiState.filter,
                     sort = uiState.sort,
-                    isGridView = uiState.isGridView,
-                    showViewMode = uiState.searchQuery.isBlank() &&
-                        !uiState.filter.hasSmartDateFilter,
                     onFilterChange = {
                         markTodoComponent.handleEvent(MarkTodoUiEvent.SetFilter(it))
                     },
                     onSortChange = {
                         markTodoComponent.handleEvent(MarkTodoUiEvent.SetSort(it))
-                    },
-                    onViewModeChange = {
-                        markTodoComponent.handleEvent(MarkTodoUiEvent.SetGridView(it))
                     },
                     onShowFilterSort = {
                         markTodoComponent.handleEvent(MarkTodoUiEvent.ShowFilterSortSheet)
@@ -369,6 +369,9 @@ fun MarkTodoScreen(
 @Composable
 private fun MarkTodoScreenActions(
     isReorderMode: Boolean,
+    isGridView: Boolean,
+    showViewMode: Boolean,
+    onToggleViewMode: () -> Unit,
     onExitReorder: () -> Unit,
     onAddTask: () -> Unit,
 ) {
@@ -385,6 +388,26 @@ private fun MarkTodoScreenActions(
                 )
             }
             return@Row
+        }
+        // 网格 / 列表切换常驻顶栏：以前它藏在筛选条里，列表短（<8 条）时整条筛选条不显示，按钮就找不到了
+        if (showViewMode) {
+            IconButton(onClick = onToggleViewMode) {
+                Icon(
+                    imageVector = if (isGridView) {
+                        com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineViewList
+                    } else {
+                        com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineQuickTiles
+                    },
+                    contentDescription = stringResource(
+                        if (isGridView) {
+                            R.string.cd_switch_to_list_view
+                        } else {
+                            R.string.cd_switch_to_grid_view
+                        }
+                    ),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
         }
         IconButton(onClick = onAddTask) {
             Icon(
@@ -482,11 +505,8 @@ private fun TodayTaskList(
 private fun QueryShortcutBar(
     filter: TaskFilter,
     sort: TaskSortConfig,
-    isGridView: Boolean,
-    showViewMode: Boolean,
     onFilterChange: (TaskFilter) -> Unit,
     onSortChange: (TaskSortConfig) -> Unit,
-    onViewModeChange: (Boolean) -> Unit,
     onShowFilterSort: () -> Unit,
 ) {
     Row(
@@ -545,25 +565,6 @@ private fun QueryShortcutBar(
                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.65f),
                 modifier = Modifier.size(16.dp),
             )
-        }
-        if (showViewMode) {
-            IconButton(
-                onClick = { onViewModeChange(!isGridView) },
-                modifier = Modifier.size(36.dp),
-            ) {
-                Icon(
-                    imageVector = if (isGridView) {
-                        com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineViewList
-                    } else {
-                        com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineQuickTiles
-                    },
-                    contentDescription = stringResource(
-                        if (isGridView) R.string.cd_switch_to_list_view else R.string.cd_switch_to_grid_view
-                    ),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.65f),
-                    modifier = Modifier.size(16.dp),
-                )
-            }
         }
     }
 }
@@ -768,6 +769,10 @@ private fun CategoriesContent(
                     onEditCategory = {},
                     onDeleteCategory = {},
                     onTagClick = { component.handleEvent(MarkTodoUiEvent.TagOnTaskClicked(it)) },
+                    onToggleStar = {
+                        component.handleEvent(MarkTodoUiEvent.ToggleTaskStar(it))
+                    },
+                    onDeleteTask = { component.handleEvent(MarkTodoUiEvent.DeleteTask(it)) },
                 )
             } else {
                 ThemeGroupCard(
@@ -787,6 +792,10 @@ private fun CategoriesContent(
                     onEditCategory = {},
                     onDeleteCategory = {},
                     onTagClick = { component.handleEvent(MarkTodoUiEvent.TagOnTaskClicked(it)) },
+                    onToggleStar = {
+                        component.handleEvent(MarkTodoUiEvent.ToggleTaskStar(it))
+                    },
+                    onDeleteTask = { component.handleEvent(MarkTodoUiEvent.DeleteTask(it)) },
                 )
             }
         }
