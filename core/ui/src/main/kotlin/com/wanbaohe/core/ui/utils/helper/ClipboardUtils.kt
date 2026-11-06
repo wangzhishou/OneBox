@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.ClipEntry
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.getSystemService
+import com.shifenmiao.model.channel.FlavorType
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.wanbaohe.core.ui.utils.helper.ContextUtils.isFromAppFileProvider
 import com.wanbaohe.core.ui.utils.helper.ContextUtils.moveToCache
@@ -45,10 +46,13 @@ fun rememberClipboardData(): State<List<Uri>> {
     }
 
     // 只在进入页面时读一次,之后靠剪贴板变化监听更新;
-    // 重组(滚动/动画等)不得重复读系统剪贴板,否则会被判定超频次收集
-    val clip = remember(allowPaste) {
+    // 重组(滚动/动画等)不得重复读系统剪贴板,否则会被判定超频次收集。
+    // 国内渠道连"进页面读一次"也不做: 应用商店/隐私合规按"未见告知即采集剪贴板"判定,
+    // 只保留用户复制内容后的监听更新。海外渠道保留自动识别剪贴板图片的既有体验。
+    val readOnEnter = allowPaste && FlavorType.fromName().isOverseas
+    val clip = remember(readOnEnter) {
         mutableStateOf(
-            if (allowPaste) {
+            if (readOnEnter) {
                 clipboardManager.clipList()
             } else emptyList()
         )
@@ -82,10 +86,11 @@ fun rememberClipboardText(): State<String> {
         context.getSystemService<ClipboardManager>()
     }
 
-    // 同 rememberClipboardData:进入页面读一次 + 监听更新,重组不复读
-    val clip = remember(allowPaste) {
+    // 同 rememberClipboardData:国内渠道不自动读,海外进入页面读一次 + 监听更新
+    val readOnEnter = allowPaste && FlavorType.fromName().isOverseas
+    val clip = remember(readOnEnter) {
         mutableStateOf(
-            if (allowPaste) {
+            if (readOnEnter) {
                 clipboardManager.clipText()
             } else ""
         )
