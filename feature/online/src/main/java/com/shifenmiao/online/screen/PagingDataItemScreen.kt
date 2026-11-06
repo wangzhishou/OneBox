@@ -129,6 +129,9 @@ fun PagingDataItemScreen(
     }
 
     var userRefreshTriggered by remember(listType.id) { mutableStateOf(false) }
+    // 用户主动下拉刷新才需要失败提示; 与上面控制 spinner 的标记分开,
+    // 因为 spinner 标记会被分页加载状态提前清掉, 不等同步结果。
+    var manualRefreshFeedbackPending by remember(listType.id) { mutableStateOf(false) }
     val isLoading = pagingItems.loadState.refresh is LoadState.Loading
     LaunchedEffect(isLoading) {
         if (!isLoading) {
@@ -145,15 +148,23 @@ fun PagingDataItemScreen(
     val networkErrorText = stringResource(R.string.comment_network_error)
     val refreshCooldownText = stringResource(R.string.refresh_cooldown_hint)
     LaunchedEffect(refreshState) {
-        (refreshState as? SyncState.Error)?.let { state ->
-            // 断网挂起触发的超时明确提示网络异常, 其余错误优先展示服务端/网络层文案
-            val message = when (state.cause) {
-                is SyncTimeoutException -> networkErrorText
-                else -> state.cause.message
-                    ?.takeIf { it.isNotBlank() }
-                    ?: refreshFailedText
+        val state = refreshState
+        // 进页/启动时的后台同步失败一律静默: 列表读本地缓存、断网也能用,
+        // 每次冷启动或进页都弹"网络异常"只会打扰用户(也容易被隐私合规检测判定为异常提示)。
+        if (manualRefreshFeedbackPending) {
+            if (state is SyncState.Error) {
+                // 断网挂起触发的超时明确提示网络异常, 其余错误优先展示服务端/网络层文案
+                val message = when (state.cause) {
+                    is SyncTimeoutException -> networkErrorText
+                    else -> state.cause.message
+                        ?.takeIf { it.isNotBlank() }
+                        ?: refreshFailedText
+                }
+                AppToastHost.showToast(message)
             }
-            AppToastHost.showToast(message)
+            if (state is SyncState.Error || state is SyncState.Success) {
+                manualRefreshFeedbackPending = false
+            }
         }
     }
 
@@ -215,6 +226,7 @@ fun PagingDataItemScreen(
             onRefresh = {
                 if (ManualRefreshPolicy.canRefresh()) {
                     userRefreshTriggered = true
+                    manualRefreshFeedbackPending = true
                     itemListComponent.refreshData(listType, selectedChipDocumentId)
                     ManualRefreshPolicy.markRefreshed()
                 } else {
