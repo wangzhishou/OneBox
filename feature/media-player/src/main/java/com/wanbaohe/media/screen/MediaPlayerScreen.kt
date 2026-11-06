@@ -46,9 +46,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.shifenmiao.common.ui.BaseScreen
+import com.shifenmiao.model.event.PermissionRequest
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Close
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.requestPermissions
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
@@ -105,37 +107,56 @@ fun MediaPlayerScreen(component: MediaPlayerComponent) {
         )
     }
 
-    // 授权入口：组件置标记，页面负责拉起系统权限框，结果回给组件
+    // 授权入口：组件置标记，页面负责拉起系统权限框，结果回给组件。
+    // 走全局 requestPermissions：先弹用途说明(同屏告知目的)再申请，隐私合规检测要求。
     var showPermissionSettings by remember { mutableStateOf(false) }
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestMultiplePermissions()
-    ) { result ->
-        val granted = result.values.any { it }
-        component.onMediaPermissionResult(granted)
-        if (!granted) {
-            // 永久拒绝（系统不再弹框）时给出"去设置"的出口，否则按钮点了永远没反应
-            val permissions = component.requiredPermissions()
-            val canAskAgain = activity != null && permissions.any { permission ->
-                ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)
-            }
-            if (!canAskAgain) showPermissionSettings = true
+
+    fun requestMediaPermission() {
+        val permissions = component.requiredPermissions()
+        val target = activity
+        if (target == null) {
+            component.onMediaPermissionResult(false)
+            return
         }
+        target.requestPermissions(
+            permissions = permissions.toTypedArray(),
+            permissionRequest = PermissionRequest.ALL,
+            onSuccess = {
+                showPermissionSettings = false
+                component.onMediaPermissionResult(true)
+            },
+            onFailed = {
+                component.onMediaPermissionResult(false)
+                // 永久拒绝（系统不再弹框）时给出"去设置"的出口，否则按钮点了永远没反应
+                val canAskAgain = permissions.any { permission ->
+                    ActivityCompat.shouldShowRequestPermissionRationale(target, permission)
+                }
+                if (!canAskAgain) showPermissionSettings = true
+            }
+        )
     }
+
     LaunchedEffect(state.isPermissionRequestPending) {
         if (state.isPermissionRequestPending) {
-            permissionLauncher.launch(component.requiredPermissions().toTypedArray())
+            requestMediaPermission()
         }
     }
 
     // Android 13+ 没有通知权限时后台播放没有控制入口，开始播放时补一次申请
-    val notificationPermissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { granted -> component.onNotificationPermissionResult(granted) }
     LaunchedEffect(state.isNotificationPermissionPending) {
         if (state.isNotificationPermissionPending) {
             val permission = component.notificationPermission()
-            if (permission != null) notificationPermissionLauncher.launch(permission)
-            else component.onNotificationPermissionResult(true)
+            val target = activity
+            if (permission == null || target == null) {
+                component.onNotificationPermissionResult(true)
+            } else {
+                target.requestPermissions(
+                    permissions = arrayOf(permission),
+                    permissionRequest = PermissionRequest.ALL,
+                    onSuccess = { component.onNotificationPermissionResult(true) },
+                    onFailed = { component.onNotificationPermissionResult(false) }
+                )
+            }
         }
     }
 

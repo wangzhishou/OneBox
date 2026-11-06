@@ -13,6 +13,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.core.app.ActivityCompat
 import com.arkivanov.decompose.retainedComponent
 import com.shifenmiao.base.pip.VideoPipSpec
 import com.shifenmiao.base.pip.VideoPipState
@@ -335,10 +336,16 @@ class AppActivity : ComposeActivity() {
             if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
                 component.appComponent.requestPermissionSuccess()
             } else if (grantResults.any { it == PackageManager.PERMISSION_DENIED }) {
+                // 系统还愿意再弹框时引导"去设置手动授权"是误导, 那是永久拒绝(勾了不再询问)才该说的话
+                val permanentlyDenied = permissions.isNotEmpty() && permissions.none { permission ->
+                    ActivityCompat.shouldShowRequestPermissionRationale(this, permission)
+                }
                 component.appComponent.requestPermissionFail()
-                ActionUtils.showToast(
-                    this.getString(R.string.grant_permission_manual)
-                )
+                if (permanentlyDenied) {
+                    ActionUtils.showToast(
+                        this.getString(R.string.grant_permission_manual)
+                    )
+                }
             } else {
                 component.appComponent.requestPermissionFail()
             }

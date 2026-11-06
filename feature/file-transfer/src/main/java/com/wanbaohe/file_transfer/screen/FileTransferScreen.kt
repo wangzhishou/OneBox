@@ -8,8 +8,6 @@ import android.graphics.Bitmap
 import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -70,9 +68,12 @@ import androidx.compose.ui.unit.dp
 import com.wanbaohe.base.ui.card.AllFilesAccessPermissionCard
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
+import com.shifenmiao.model.event.PermissionRequest
 import com.shifenmiao.model.transfer.ServerState
 import com.shifenmiao.theme.AppTheme
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.requestPermissions
 import com.wanbaohe.core.ui.utils.helper.isPortraitOrientationAsState
+import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors
@@ -101,8 +102,8 @@ fun FileTransferScreen(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    // 权限请求
-    var showPermissionRationale by remember { mutableStateOf(false) }
+    // 权限请求: 说明弹窗由全局申请流程负责(见 PermissionRationale)
+    val activity = LocalComponentActivity.current
 
     // needed data from component
     val chatMessages by transferComponent.chatMessages.collectAsState()
@@ -157,36 +158,14 @@ fun FileTransferScreen(
         }
     }
 
-    val permissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { result ->
-        if (result.values.all { it }) {
-            transferComponent.startServer()
-        }
-    }
-
-    if (showPermissionRationale) {
-        androidx.compose.material3.AlertDialog(
-            onDismissRequest = { showPermissionRationale = false },
-            title = { Text(stringResource(R.string.permission_required_title)) },
-            text = { Text(stringResource(R.string.permission_required_message)) },
-            confirmButton = {
-                androidx.compose.material3.TextButton(
-                    onClick = {
-                        showPermissionRationale = false
-                        permissionLauncher.launch(permissions)
-                    }
-                ) {
-                    Text(stringResource(R.string.grant_permission))
-                }
-            },
-            dismissButton = {
-                androidx.compose.material3.TextButton(
-                    onClick = { showPermissionRationale = false }
-                ) {
-                    Text(stringResource(R.string.cancel))
-                }
-            }
+    // 权限申请统一走全局流程: 先弹用途说明(同屏告知目的)再拉起系统权限框,
+    // 应用商店隐私检测按"申请前有没有说明"判定, 直接 launch 会被判违规。
+    fun requestTransferPermissions() {
+        activity.requestPermissions(
+            permissions = permissions,
+            permissionRequest = PermissionRequest.ALL,
+            onSuccess = { transferComponent.startServer() },
+            onFailed = { /* 拒绝后停在页面, 用户可再点一次 */ }
         )
     }
     val isPortrait by isPortraitOrientationAsState()
@@ -224,7 +203,7 @@ fun FileTransferScreen(
                             if (checkPermissions()) {
                                 transferComponent.startServer()
                             } else {
-                                showPermissionRationale = true
+                                requestTransferPermissions()
                             }
                         }
                     }

@@ -51,7 +51,9 @@ import androidx.core.content.ContextCompat
 import com.t8rin.imagetoolbox.core.resources.R
 import com.wanbaohe.core.ui.theme.mixedContainer
 import com.wanbaohe.core.ui.theme.onMixedContainer
+import com.shifenmiao.model.event.PermissionRequest
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.requestPermissions
 import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedButton
 import com.t8rin.imagetoolbox.core.utils.appContext
@@ -68,7 +70,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineAvatarDefault
 private data class ContactPickerImpl(
     val context: Context,
     val pickContact: ManagedActivityResultLauncher<Void?, Uri?>,
-    val requestPermissionLauncher: ManagedActivityResultLauncher<String, Boolean>,
+    val requestPermission: () -> Unit,
     val onFailure: (Throwable) -> Unit
 ) : ContactPicker {
 
@@ -82,7 +84,7 @@ private data class ContactPickerImpl(
             ) {
                 pickContact.launch()
             } else {
-                requestPermissionLauncher.launch(Manifest.permission.READ_CONTACTS)
+                requestPermission()
             }
         }.onFailure {
             it.makeLog("Pick Contact Failure")
@@ -123,17 +125,20 @@ fun rememberContactPicker(
         }
     )
 
-    val requestPermissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            pickContact.launch()
-        } else {
-            AppToastHost.showToast(
-                message = getString(R.string.grant_contact_permission),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAvatarDefault
-            )
-        }
+    // 通讯录权限走全局申请流程: 先弹用途说明(同屏告知目的)再拉起系统权限框,
+    // 应用商店隐私检测按"申请前有没有说明"判定。
+    val requestPermission: () -> Unit = {
+        context.requestPermissions(
+            permissions = arrayOf(Manifest.permission.READ_CONTACTS),
+            permissionRequest = PermissionRequest.ALL,
+            onSuccess = { pickContact.launch() },
+            onFailed = {
+                AppToastHost.showToast(
+                    message = getString(R.string.grant_contact_permission),
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAvatarDefault
+                )
+            }
+        )
     }
 
     return remember(pickContact) {
@@ -141,7 +146,7 @@ fun rememberContactPicker(
             ContactPickerImpl(
                 context = context,
                 pickContact = pickContact,
-                requestPermissionLauncher = requestPermissionLauncher,
+                requestPermission = requestPermission,
                 onFailure = {
                     onFailure()
                     AppToastHost.showFailureToast(it)

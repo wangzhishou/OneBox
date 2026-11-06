@@ -51,9 +51,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.app.ActivityCompat
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.BrokenImageAlt
+import com.shifenmiao.model.event.PermissionRequest
 import com.wanbaohe.core.ui.utils.helper.ContextUtils.requestPermissions
 import com.wanbaohe.core.ui.utils.permission.PermissionStatus
 import com.wanbaohe.core.ui.utils.permission.PermissionUtils.checkPermissions
@@ -84,6 +84,25 @@ fun MediaPickerRootContentEmbeddable(
         mutableStateOf(true)
     }
 
+    // 申请权限统一走全局流程: 先弹用途说明(同屏告知目的)再拉起系统权限框。
+    // 不能直接 ActivityCompat.requestPermissions: 那样既没有说明, requestCode 也不是
+    // 全局在用的那个, 结果没人接。
+    fun requestMediaPermission(permission: String) {
+        context.requestPermissions(
+            permissions = arrayOf(permission),
+            permissionRequest = PermissionRequest.ALL,
+            onSuccess = {
+                isPermissionAllowed = true
+                component.init(allowedMedia)
+            },
+            onFailed = {
+                isPermissionAllowed = false
+            }
+        )
+    }
+
+    // 只在进入页面时自动问一次, 避免每次回到前台都弹
+    var autoPrompted by remember { mutableStateOf(false) }
     val lifecycleEvent = rememberCurrentLifecycleEvent()
     LaunchedEffect(lifecycleEvent) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -95,12 +114,11 @@ fun MediaPickerRootContentEmbeddable(
                 }
 
                 PermissionStatus.NOT_GIVEN -> {
-                    context.markPermissionRequested(permission)
-                    ActivityCompat.requestPermissions(
-                        context,
-                        arrayOf(permission),
-                        0
-                    )
+                    if (!autoPrompted) {
+                        autoPrompted = true
+                        context.markPermissionRequested(permission)
+                        requestMediaPermission(permission)
+                    }
                 }
 
                 PermissionStatus.DENIED_PERMANENTLY -> Unit
@@ -159,7 +177,7 @@ fun MediaPickerRootContentEmbeddable(
                                 } else {
                                     Manifest.permission.READ_EXTERNAL_STORAGE
                                 }
-                            context.requestPermissions(listOf(permission))
+                            requestMediaPermission(permission)
                         }
                     ) {
                         Text(stringResource(id = R.string.request))

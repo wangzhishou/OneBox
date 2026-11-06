@@ -500,9 +500,27 @@
     <string name="privacy_title">隐私政策</string>
     <string name="privacy_item_1">读取/修改手机存储权限</string>
     <string name="privacy_item_1_description">授权访问存储权限，用于保存生成或者下载文件。</string>
+    <string name="privacy_item_storage_description">授权访问存储权限，用于保存生成或者下载的文件，以及选取相册中的图片/视频。</string>
     <string name="privacy_item_2_description">请授权访问图片媒体文件，用于选取相册中的图片/视频进行编辑，并在编辑完成后保存到相册。</string>
     <string name="privacy_item_4">允许应用录制音频</string>
     <string name="privacy_item_4_description">授权访问录音权限，在使用语音输入的时候，识别录音</string>
+    <!-- 运行时权限的"申请前用途说明"：必须按真实申请的权限拼文案，不能出现"请求所有权限"这种表述 -->
+    <string name="permission_rationale_title">权限使用说明</string>
+    <string name="permission_rationale_description">为了你正在使用的这项功能，需要以下权限。拒绝后仅该功能不可用。</string>
+    <string name="permission_rationale_media_title">照片和视频权限</string>
+    <string name="permission_rationale_media_description">用于选择相册中的图片/视频进行编辑，并把处理结果保存回相册。</string>
+    <string name="permission_rationale_location_title">位置权限</string>
+    <string name="permission_rationale_location_description">用于显示当前海拔、经纬度和指南针方位。</string>
+    <string name="permission_rationale_contacts_title">通讯录权限</string>
+    <string name="permission_rationale_contacts_description">用于从通讯录选择联系人填入表单，不会上传通讯录。</string>
+    <string name="permission_rationale_calendar_title">日历权限</string>
+    <string name="permission_rationale_calendar_description">用于把待办同步成系统日程。</string>
+    <string name="permission_rationale_notification_title">通知权限</string>
+    <string name="permission_rationale_notification_description">用于文件传输进度、后台播放控制等通知。</string>
+    <string name="permission_rationale_install_title">安装应用权限</string>
+    <string name="permission_rationale_install_description">用于下载完成后安装新版本。</string>
+    <string name="permission_rationale_all_files_title">访问所有文件</string>
+    <string name="permission_rationale_all_files_description">用于设置壁纸和浏览非媒体文件。</string>
     <string name="privacy_button_agree">同意协议并继续</string>
     <string name="privacy_button_disagree">不同意</string>
     <string name="privacy_dialog_agreements_hint"><![CDATA[请你仔细阅读并同意<a href=\"https://www.shifenmiao.com/privacy/agreement.html\">《用户协议》</a>与<a href=\"https://www.shifenmiao.com/privacy/example.html\">《隐私政策》</a>，以便我们为你提供更好的服务。]]></string>

@@ -473,9 +473,26 @@
     <string name="privacy_title">Privacy Policy</string>
     <string name="privacy_item_1">Storage Permission</string>
     <string name="privacy_item_1_description">Access storage to save generated or downloaded files.</string>
+    <string name="privacy_item_storage_description">Access storage to save generated or downloaded files and to pick images/videos from your gallery.</string>
     <string name="privacy_item_2_description">Access media files to pick images/videos for editing, then save them to your gallery.</string>
     <string name="privacy_item_4">Microphone Permission</string>
     <string name="privacy_item_4_description">Access the microphone for voice input.</string>
+    <string name="permission_rationale_title">Permission Required</string>
+    <string name="permission_rationale_description">The following permissions are needed for this feature. If you decline, only this feature becomes unavailable.</string>
+    <string name="permission_rationale_media_title">Photos and Videos Permission</string>
+    <string name="permission_rationale_media_description">Used to pick images or videos from your gallery for editing, and to save the result back to your gallery.</string>
+    <string name="permission_rationale_location_title">Location Permission</string>
+    <string name="permission_rationale_location_description">Used to show altitude, coordinates and compass bearing.</string>
+    <string name="permission_rationale_contacts_title">Contacts Permission</string>
+    <string name="permission_rationale_contacts_description">Used to pick a contact into a form. Contacts are never uploaded.</string>
+    <string name="permission_rationale_calendar_title">Calendar Permission</string>
+    <string name="permission_rationale_calendar_description">Used to save to-dos as system calendar events.</string>
+    <string name="permission_rationale_notification_title">Notification Permission</string>
+    <string name="permission_rationale_notification_description">Used for file transfer progress and background playback controls.</string>
+    <string name="permission_rationale_install_title">Install Permission</string>
+    <string name="permission_rationale_install_description">Used to install a new version after download.</string>
+    <string name="permission_rationale_all_files_title">All Files Access</string>
+    <string name="permission_rationale_all_files_description">Used to set wallpapers and browse non-media files.</string>
     <string name="privacy_button_agree">Agree &amp; Continue</string>
     <string name="privacy_button_disagree">Disagree</string>
     <string name="privacy_dialog_agreements_hint"><![CDATA[Please read and agree to the <a href=\"https://www.oneboxable.com/agreement/global.html\">User Agreement</a> and <a href=\"https://www.oneboxable.com/privacy/global.html\">Privacy Policy</a> so we can keep improving your experience.]]></string>

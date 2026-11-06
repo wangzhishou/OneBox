@@ -33,6 +33,7 @@ import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.login.BindPhoneSheet
 import com.shifenmiao.login.ModalBottomSheetLogin
 import com.shifenmiao.model.event.AppEventBus
+import com.shifenmiao.model.event.PermissionRationale
 import com.shifenmiao.model.login.LoginChannelConfig
 import com.shifenmiao.model.login.LoginState
 import com.shifenmiao.model.state.UIState
@@ -343,27 +344,35 @@ private fun AppOverlayHost(
 
     if (showPermissionDialog) {
         val showPermissionDialogState = remember { mutableStateOf(true) }
+        val dialogContext = LocalContext.current
         appComponent.requestPermissionEvent?.let { requestPermissionEvent ->
-            if (requestPermissionEvent.permissionRequest.description.isNotEmpty()) {
-                ConfirmDialog(
-                    showDialog = showPermissionDialogState,
-                    title = requestPermissionEvent.permissionRequest.title,
-                    message = requestPermissionEvent.permissionRequest.description,
-                    confirmButtonText = stringResource(id = R.string.button_request_permission),
-                    dismissButtonText = stringResource(id = R.string.button_cancel),
-                    onConfirm = {
-                        requestPermissionEvent.onRequest()
-                    },
-                    onDismiss = {
-                        appComponent.hidePromptPermissionDialog()
-                        requestPermissionEvent.onFailed()
-                    },
-                    properties = DialogProperties(
-                        dismissOnBackPress = false,
-                        dismissOnClickOutside = false
-                    )
+            // 用界面 Context 解析文案, 才会跟随 App 内切换的语言
+            ConfirmDialog(
+                showDialog = showPermissionDialogState,
+                title = PermissionRationale.title(
+                    dialogContext,
+                    requestPermissionEvent.permissionRequest,
+                    requestPermissionEvent.permissions
+                ),
+                message = PermissionRationale.description(
+                    dialogContext,
+                    requestPermissionEvent.permissionRequest,
+                    requestPermissionEvent.permissions
+                ),
+                confirmButtonText = stringResource(id = R.string.button_request_permission),
+                dismissButtonText = stringResource(id = R.string.button_cancel),
+                onConfirm = {
+                    requestPermissionEvent.onRequest()
+                },
+                onDismiss = {
+                    // 取消也把事件清掉, 否则下次申请会复用到上一次的回调
+                    appComponent.requestPermissionFail()
+                },
+                properties = DialogProperties(
+                    dismissOnBackPress = false,
+                    dismissOnClickOutside = false
                 )
-            }
+            )
         }
     }
 

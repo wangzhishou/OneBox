@@ -2,8 +2,6 @@ package com.shifenmiao.marktodo.components
 
 import android.Manifest
 import android.os.Build
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,6 +23,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.shifenmiao.marktodo.R
+import com.shifenmiao.model.event.PermissionRequest
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.requestPermissions
+import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
 import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
@@ -193,13 +194,19 @@ private fun rememberNotificationsEnabled(): Boolean {
 @Composable
 private fun rememberNotificationPermissionRequest(): () -> Unit {
     val context = LocalContext.current
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { }
+    val activity = LocalComponentActivity.current
+    // 走全局申请流程: 先弹用途说明(同屏告知目的)再拉起系统权限框
     return {
         if (
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
             !NotificationManagerCompat.from(context).areNotificationsEnabled()
         ) {
-            launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            activity.requestPermissions(
+                permissions = arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                permissionRequest = PermissionRequest.ALL,
+                onSuccess = {},
+                onFailed = {}
+            )
         }
     }
 }

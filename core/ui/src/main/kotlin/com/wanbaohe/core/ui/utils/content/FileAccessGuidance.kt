@@ -35,7 +35,10 @@ import androidx.core.content.ContextCompat
 import androidx.documentfile.provider.DocumentFile
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineError
+import com.shifenmiao.model.event.PermissionRequest
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.requestPermissions
+import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
 import com.wanbaohe.core.ui.widget.glass.GlassTextButton
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import kotlinx.coroutines.Dispatchers
@@ -257,16 +260,24 @@ fun rememberFileAccessController(
         }
     }
 
-    val mediaPermissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { granted ->
-        if (granted) {
-            // 权限生效后 file:// 路径直接可读,retrySignal 驱动调用方重载
-            mediaPermissionGranted = true
-            recoveredUri = uriString
-            retrySignal++
-        } else {
-            AppToastHost.showFailureToast(R.string.grant_permission_manual)
+    // 媒体权限走全局申请流程: 先弹用途说明(同屏告知目的)再拉起系统权限框
+    val activity = LocalComponentActivity.current
+    val requestMediaAccess: () -> Unit = {
+        val permission = mediaPermission
+        if (permission != null) {
+            activity.requestPermissions(
+                permissions = arrayOf(permission),
+                permissionRequest = PermissionRequest.ALL,
+                onSuccess = {
+                    // 权限生效后 file:// 路径直接可读,retrySignal 驱动调用方重载
+                    mediaPermissionGranted = true
+                    recoveredUri = uriString
+                    retrySignal++
+                },
+                onFailed = {
+                    AppToastHost.showFailureToast(R.string.grant_permission_manual)
+                }
+            )
         }
     }
 
@@ -278,7 +289,7 @@ fun rememberFileAccessController(
         recoveredUriString = recoveredUri,
         retrySignal = retrySignal,
         hasMediaAccessPath = mediaPermission != null,
-        requestMediaAccess = { mediaPermission?.let(mediaPermissionLauncher::launch) },
+        requestMediaAccess = requestMediaAccess,
         requestFolderAccess = {
             treeLauncher.launch(resolver.initialFolderTreeUri(uriString))
         },

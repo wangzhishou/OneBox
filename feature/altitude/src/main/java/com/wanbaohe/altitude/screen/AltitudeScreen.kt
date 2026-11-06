@@ -5,8 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -46,7 +44,9 @@ import com.t8rin.imagetoolbox.core.resources.icons.DeleteSweep
 import com.wanbaohe.core.ui.utils.capturable.CaptureController
 import com.wanbaohe.core.ui.utils.capturable.capturable
 import com.wanbaohe.core.ui.utils.capturable.rememberCaptureController
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.requestPermissions
 import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
+import com.shifenmiao.model.event.PermissionRequest
 import com.wanbaohe.altitude.component.AltitudeComponent
 import com.wanbaohe.altitude.component.AltitudeUiState
 import com.wanbaohe.altitude.domain.AltitudeRecord
@@ -89,19 +89,25 @@ fun AltitudeScreen(component: AltitudeComponent) {
     var permissionGranted by remember { mutableStateOf(isPermissionGranted()) }
     var isPermanentlyDenied by remember { mutableStateOf(false) }
 
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestMultiplePermissions()
-    ) { results ->
-        val granted = results[Manifest.permission.ACCESS_FINE_LOCATION] == true
-        permissionGranted = granted
-        if (granted) {
-            component.onLocationPermissionGranted()
-        } else {
-            isPermanentlyDenied = !ActivityCompat.shouldShowRequestPermissionRationale(
-                activity,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-        }
+    // 统一走全局权限申请: 先弹用途说明(同屏告知目的), 同意后再拉起系统权限框。
+    // 应用商店的隐私检测按"申请前有没有说明"判定, 直接 requestPermissions 会被判违规。
+    fun requestLocationPermission() {
+        activity.requestPermissions(
+            permissions = locationPermissions,
+            permissionRequest = PermissionRequest.LOCATION,
+            onSuccess = {
+                permissionGranted = true
+                isPermanentlyDenied = false
+                component.onLocationPermissionGranted()
+            },
+            onFailed = {
+                permissionGranted = false
+                isPermanentlyDenied = !ActivityCompat.shouldShowRequestPermissionRationale(
+                    activity,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            }
+        )
     }
 
     LifecycleResumeEffect(Unit) {
@@ -126,7 +132,7 @@ fun AltitudeScreen(component: AltitudeComponent) {
                 captureController = captureController,
                 showLocationGrant = !permissionGranted,
                 isPermissionPermanentlyDenied = isPermanentlyDenied,
-                onRequestPermission = { permissionLauncher.launch(locationPermissions) },
+                onRequestPermission = { requestLocationPermission() },
                 onOpenSettings = {
                     activity.startActivity(
                         Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {

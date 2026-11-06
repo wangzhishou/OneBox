@@ -353,8 +353,8 @@ class AppComponent @AssistedInject internal constructor(
     }
 
     fun onRequestStoragePermissionEvent(event: RequestPermissionEvent) {
-        val shouldShowRationaleDialog = CanShowPermission.getConfigByFlavor().canShow &&
-            event.permissionRequest.description.isNotEmpty()
+        // 说明文案由界面按当前语言解析(见 AppContent), 这里只决定要不要弹
+        val shouldShowRationaleDialog = CanShowPermission.getConfigByFlavor().canShow
         if (shouldShowRationaleDialog) {
             requestPermissionEvent = RequestPermissionEvent(
                 permissions = event.permissions,
@@ -408,16 +408,19 @@ class AppComponent @AssistedInject internal constructor(
     }
 
     fun requestPermissionSuccess() {
-        requestPermissionEvent?.let {
-            requestPermissionEvent!!.onSuccess.invoke()
-            requestPermissionEvent = null
-        }
+        val event = requestPermissionEvent ?: return
+        // 必须先复位状态: 否则第二次申请权限时 showPermissionDialog 已经是 true,
+        // 状态没变化不会触发重组, 用途说明弹窗就再也弹不出来了。
+        requestPermissionEvent = null
+        _uiState.value = uiState.value.copy(showPermissionDialog = false)
+        event.onSuccess.invoke()
     }
 
     fun requestPermissionFail() {
-        requestPermissionEvent?.let {
-            requestPermissionEvent!!.onFailed.invoke()
-        }
+        val event = requestPermissionEvent ?: return
+        requestPermissionEvent = null
+        _uiState.value = uiState.value.copy(showPermissionDialog = false)
+        event.onFailed.invoke()
     }
 
     fun getRequestPermissionCode(): Int {

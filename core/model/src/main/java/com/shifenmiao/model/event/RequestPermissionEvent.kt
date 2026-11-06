@@ -1,8 +1,9 @@
 package com.shifenmiao.model.event
 
+import android.Manifest
 import android.annotation.SuppressLint
+import androidx.annotation.StringRes
 import com.shifenmiao.core.R
-import com.shifenmiao.interfaces.singleton.AppContext
 
 data class RequestPermissionEvent(
     val permissions: List<String> = emptyList<String>(),
@@ -13,72 +14,71 @@ data class RequestPermissionEvent(
 )
 
 
+/**
+ * 运行时权限申请类型。
+ *
+ * [titleRes]/[descriptionRes] 是申请前用途说明的资源 id, 0 表示"按实际申请的权限推导"
+ * (见 [PermissionRationale])。这里只存 id 不存字符串: 文案必须按用户当前语言解析,
+ * 在枚举初始化阶段用 AppContext 取字符串会锁死成进程启动时的语言。
+ */
 enum class PermissionRequest(
     val code: Int,
-    val title: String,
-    val description: String,
+    @StringRes val titleRes: Int,
+    @StringRes val descriptionRes: Int,
     val permissions: Array<String>,
     val requestCode: Int
 ) {
-    ALL(0, "", "Request access to all permissions", arrayOf(), 1000),
+    // 说明文案留空: 由 PermissionRationale 按实际申请的权限推导,
+    // 避免出现"Request access to all permissions"这种违规表述。
+    ALL(9, 0, 0, arrayOf(), 1000),
     CAMERA(
         1,
-        AppContext.getString(
-            R.string.privacy_item_camera_title
-        ),
-        AppContext.getString(R.string.privacy_item_camera_description),
-        arrayOf(android.Manifest.permission.CAMERA),
+        R.string.privacy_item_camera_title,
+        R.string.privacy_item_camera_description,
+        arrayOf(Manifest.permission.CAMERA),
         1001
     ),
     LOCATION(
         2,
-        "",
-        "Request access to the location",
-        arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+        0,
+        0,
+        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
         1002
     ),
     STORAGE(
         3,
-        AppContext.getString(
-            R.string.privacy_item_1
-        ),
-        AppContext.getString(R.string.privacy_item_2_description) + "\n" + AppContext.getString(
-            R.string.privacy_item_1_description
-        ),
-        arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
+        R.string.privacy_item_1,
+        R.string.privacy_item_storage_description,
+        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
         1003
     ),
     CONTACTS(
         4,
-        "",
-        "Request access to the contacts",
-        arrayOf(android.Manifest.permission.READ_CONTACTS),
+        0,
+        0,
+        arrayOf(Manifest.permission.READ_CONTACTS),
         1004
     ),
     MICROPHONE(
         5,
-        AppContext.getString(
-            R.string.privacy_item_4
-        ),
-        AppContext.getString(
-            R.string.privacy_item_4_description
-        ),
-        arrayOf(android.Manifest.permission.RECORD_AUDIO),
+        R.string.privacy_item_4,
+        R.string.privacy_item_4_description,
+        arrayOf(Manifest.permission.RECORD_AUDIO),
         1005
     ),
 
     @SuppressLint("InlinedApi")
     APK_INSTALL(
         6,
-        "",
-        "Request access to install APK",
-        arrayOf(android.Manifest.permission.REQUEST_INSTALL_PACKAGES),
+        0,
+        0,
+        arrayOf(Manifest.permission.REQUEST_INSTALL_PACKAGES),
         1006
     ),
     NEW_PERMISSION(
         7,
-        "",
-        "Request access to the new permission",
+        0,
+        0,
         arrayOf("your.new.permission.HERE"),
         1007
     ) // New permission added
