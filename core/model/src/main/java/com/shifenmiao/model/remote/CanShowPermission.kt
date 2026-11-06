@@ -8,17 +8,8 @@ enum class CanShowPermission(val canShow: Boolean) {
 
     companion object {
         fun getConfigByFlavor(flavorType: FlavorType = FlavorType.fromName()): CanShowPermission {
-            return when (flavorType) {
-                FlavorType.ONEBOX -> DISABLED
-                FlavorType.XIAOMI -> DISABLED
-                FlavorType.YYB -> DISABLED
-                FlavorType.OPPO -> DISABLED
-                FlavorType.VIVO -> ENABLED
-                FlavorType.HUAWEI -> ENABLED
-                else -> {
-                    DISABLED
-                }
-            }
+            // 国内渠道全部先弹用途说明再申请系统权限(应用商店隐私合规要求,同屏告知目的)
+            return if (flavorType.isOverseas) DISABLED else ENABLED
         }
     }
 }
