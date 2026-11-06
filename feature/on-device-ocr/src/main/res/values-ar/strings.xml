@@ -5,7 +5,7 @@
     <string name="ocr_download">تنزيل النموذج</string>
     <string name="ocr_downloading">جارٍ التنزيل…</string>
     <string name="ocr_download_percent">جارٍ التنزيل %1$d%%</string>
-    <string name="ocr_download_failed">تعذر تنزيل النموذج. تحقق من الشبكة وحاول مجددًا.</string>
+    <string name="on_device_ocr_model_download_failed">تعذر تنزيل النموذج. تحقق من الشبكة وحاول مجددًا.</string>
     <string name="ocr_need_model">نزّل النموذج قبل قراءة صورة.</string>
     <string name="ocr_pick_camera">التقاط صورة</string>
     <string name="ocr_pick_gallery">اختيار صورة</string>

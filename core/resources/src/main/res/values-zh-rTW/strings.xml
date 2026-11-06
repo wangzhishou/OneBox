@@ -2037,4 +2037,7 @@
     <string name="clear_color_history">清空取色歷史</string>
     <string name="clear_color_history_confirm">確定刪除全部取色記錄？此操作不可恢復。</string>
     <string name="pick_color_pan_mode">拖動與縮放</string>
+    <string name="background_downloading">正在下載</string>
+    <string name="background_download_count">%1$d 個檔案</string>
+    <string name="background_download_progress">%1$s · %2$d%%</string>
 </resources>

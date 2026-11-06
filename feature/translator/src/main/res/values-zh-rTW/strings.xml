@@ -57,4 +57,5 @@
     <string name="translation_language_th">ไทย</string>
     <string name="translation_language_tr">Türkçe</string>
     <string name="translation_language_fil">Filipino</string>
+    <string name="translation_local_model_unsupported">此版本不支援本機翻譯。</string>
 </resources>

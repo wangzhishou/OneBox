@@ -97,7 +97,7 @@ class OnDeviceOcrComponent @AssistedInject constructor(
                     it.copy(
                         isDownloading = false,
                         modelReady = false,
-                        errorRes = R.string.ocr_download_failed,
+                        errorRes = R.string.on_device_ocr_model_download_failed,
                     )
                 }
             }

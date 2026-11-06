@@ -2055,4 +2055,6 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <string name="mahjong_description">Ván bốn người ngoại tuyến với ba đối thủ AI cục bộ, có ăn, phỗng, khung và ù.</string>
     <string name="translator">Dịch</string>
     <string name="translator_description">Dịch văn bản bằng AI đám mây hoặc trên thiết bị, nhập giọng nói và OCR bằng camera</string>
+    <string name="open_menu">Mở trình đơn</string>
+    <string name="search_results_truncated">Một số nguồn đã đạt giới hạn tìm kiếm. Chỉ hiển thị một phần kết quả.</string>
 </resources>

@@ -345,7 +345,7 @@ class OcrTaskListComponent @AssistedInject constructor(
                                 ?: ctx.getString(R.string.ocr_download_failed_unknown)
                             _uiEvents.tryEmit(
                                 OcrTaskListUiEvent.Toast(
-                                    ctx.getString(R.string.ocr_download_failed, msg)
+                                    ctx.getString(R.string.ocr_task_download_failed, msg)
                                 )
                             )
                         }
@@ -373,7 +373,7 @@ class OcrTaskListComponent @AssistedInject constructor(
             _uiEvents.tryEmit(
                 OcrTaskListUiEvent.Toast(
                     context.getString(
-                        R.string.ocr_download_failed,
+                        R.string.ocr_task_download_failed,
                         msg
                     )
                 )

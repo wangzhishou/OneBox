@@ -2057,4 +2057,6 @@
     <string name="mahjong_description">3명의 로컬 AI 상대와 오프라인 4인 마작을 즐기며 치·퐁·깡·화를 합니다.</string>
     <string name="translator">번역</string>
     <string name="translator_description">클라우드 또는 온디바이스 AI, 음성 입력, 사진 OCR로 텍스트 번역</string>
+    <string name="open_menu">메뉴 열기</string>
+    <string name="search_results_truncated">일부 출처가 검색 한도에 도달하여 일부 결과만 표시합니다.</string>
 </resources>

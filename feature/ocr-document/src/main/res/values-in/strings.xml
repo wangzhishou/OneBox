@@ -41,7 +41,7 @@
     <string name="ocr_markdown_downloaded">Markdown diunduh ke cache</string>
     <string name="doc_convert_file_downloaded">File diunduh ke cache</string>
     <string name="ocr_download_failed_unknown">Kesalahan tidak diketahui</string>
-    <string name="ocr_download_failed">Tidak dapat menutup folder sementara: %s</string>
+    <string name="ocr_task_download_failed">Tidak dapat menutup folder sementara: %s</string>
     <string name="ocr_share_failed_unknown">Kesalahan tidak diketahui</string>
     <string name="ocr_cancelled">Dibatalkan</string>
     <string name="ocr_download_to_local">Unduh ke Lokal</string>

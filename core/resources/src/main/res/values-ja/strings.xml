@@ -2036,4 +2036,7 @@
     <string name="clear_color_history">色の履歴を消去</string>
     <string name="clear_color_history_confirm">色の取得記録をすべて削除しますか？この操作は取り消せません。</string>
     <string name="pick_color_pan_mode">移動とズーム</string>
+    <string name="background_downloading">ダウンロード中</string>
+    <string name="background_download_count">%1$d 個のファイル</string>
+    <string name="background_download_progress">%1$s · %2$d%%</string>
 </resources>

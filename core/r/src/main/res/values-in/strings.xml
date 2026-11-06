@@ -2057,4 +2057,6 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
     <string name="mahjong_description">Pertandingan offline empat pemain melawan tiga lawan AI lokal dengan chi, pong, kong, dan hu.</string>
     <string name="translator">Terjemahkan</string>
     <string name="translator_description">Terjemahkan teks dengan AI cloud atau di perangkat, input suara, dan OCR kamera</string>
+    <string name="open_menu">Buka menu</string>
+    <string name="search_results_truncated">Beberapa sumber telah mencapai batas pencarian. Hanya sebagian hasil yang ditampilkan.</string>
 </resources>

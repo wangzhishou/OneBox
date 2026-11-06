@@ -2068,4 +2068,6 @@ Consejo: si eliges «Ocultar para siempre», podrás devolverme más tarde en Aj
     <string name="mahjong_description">Partida offline para cuatro, juega chi, pong, kong y hu contra tres rivales de IA locales.</string>
     <string name="translator">Traducir</string>
     <string name="translator_description">Traduce texto con IA en la nube o en el dispositivo, entrada de voz y OCR con cámara</string>
+    <string name="open_menu">Abrir menú</string>
+    <string name="search_results_truncated">Algunas fuentes han alcanzado su límite de búsqueda. Solo se muestran resultados parciales.</string>
 </resources>

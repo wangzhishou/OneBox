@@ -41,7 +41,7 @@
     <string name="ocr_markdown_downloaded">Markdown önbelleğe indirildi</string>
     <string name="doc_convert_file_downloaded">Dosya önbelleğe indirildi</string>
     <string name="ocr_download_failed_unknown">Bilinmeyen hata</string>
-    <string name="ocr_download_failed">Geçici klasör kapatılamadı: %s</string>
+    <string name="ocr_task_download_failed">Geçici klasör kapatılamadı: %s</string>
     <string name="ocr_share_failed_unknown">Bilinmeyen hata</string>
     <string name="ocr_cancelled">İptal edildi</string>
     <string name="ocr_download_to_local">Yerel İndir</string>

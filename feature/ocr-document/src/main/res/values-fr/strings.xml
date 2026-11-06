@@ -41,7 +41,7 @@
     <string name="ocr_markdown_downloaded">Markdown téléchargé dans le cache</string>
     <string name="doc_convert_file_downloaded">Fichier téléchargé dans le cache</string>
     <string name="ocr_download_failed_unknown">Erreur inconnue</string>
-    <string name="ocr_download_failed">Échec du téléchargement : %1$s</string>
+    <string name="ocr_task_download_failed">Échec du téléchargement : %1$s</string>
     <string name="ocr_share_failed_unknown">Erreur inconnue</string>
     <string name="ocr_cancelled">Annulé</string>
     <string name="ocr_download_to_local">Télécharger en local</string>

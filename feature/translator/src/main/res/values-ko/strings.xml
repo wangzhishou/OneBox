@@ -57,4 +57,5 @@
     <string name="translation_language_th">태국어</string>
     <string name="translation_language_tr">터키어</string>
     <string name="translation_language_fil">필리핀어</string>
+    <string name="translation_local_model_unsupported">이 버전에서는 로컬 번역을 지원하지 않습니다.</string>
 </resources>

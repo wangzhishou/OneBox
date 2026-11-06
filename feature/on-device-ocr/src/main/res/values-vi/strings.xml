@@ -5,7 +5,7 @@
     <string name="ocr_download">Tải xuống mô hình</string>
     <string name="ocr_downloading">Đang tải xuống…</string>
     <string name="ocr_download_percent">Đang tải xuống %1$d%%</string>
-    <string name="ocr_download_failed">Không thể tải xuống mô hình. Kiểm tra mạng rồi thử lại.</string>
+    <string name="on_device_ocr_model_download_failed">Không thể tải xuống mô hình. Kiểm tra mạng rồi thử lại.</string>
     <string name="ocr_need_model">Hãy tải xuống mô hình trước khi đọc ảnh.</string>
     <string name="ocr_pick_camera">Chụp ảnh</string>
     <string name="ocr_pick_gallery">Chọn ảnh</string>

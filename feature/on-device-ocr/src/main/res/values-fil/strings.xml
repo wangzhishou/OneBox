@@ -5,7 +5,7 @@
     <string name="ocr_download">I-download ang model</string>
     <string name="ocr_downloading">Nagda-download…</string>
     <string name="ocr_download_percent">Nagda-download %1$d%%</string>
-    <string name="ocr_download_failed">Hindi na-download ang model. Suriin ang network at subukan muli.</string>
+    <string name="on_device_ocr_model_download_failed">Hindi na-download ang model. Suriin ang network at subukan muli.</string>
     <string name="ocr_need_model">I-download muna ang model bago magbasa ng larawan.</string>
     <string name="ocr_pick_camera">Kumuha ng larawan</string>
     <string name="ocr_pick_gallery">Pumili ng larawan</string>

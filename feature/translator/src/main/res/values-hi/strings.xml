@@ -57,4 +57,5 @@
     <string name="translation_language_th">थाई</string>
     <string name="translation_language_tr">तुर्की</string>
     <string name="translation_language_fil">फिलिपिनो</string>
+    <string name="translation_local_model_unsupported">यह संस्करण स्थानीय अनुवाद का समर्थन नहीं करता है।</string>
 </resources>

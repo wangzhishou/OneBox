@@ -2036,4 +2036,7 @@
     <string name="clear_color_history">Renk geçmişini temizle</string>
     <string name="clear_color_history_confirm">Tüm renk seçim kayıtları silinsin mi? Bu işlem geri alınamaz.</string>
     <string name="pick_color_pan_mode">Kaydır ve yakınlaştır</string>
+    <string name="background_downloading">İndiriliyor</string>
+    <string name="background_download_count">%1$d dosya</string>
+    <string name="background_download_progress">%1$s · %2$d%%</string>
 </resources>

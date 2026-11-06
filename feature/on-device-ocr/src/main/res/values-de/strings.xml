@@ -5,7 +5,7 @@
     <string name="ocr_download">Modell herunterladen</string>
     <string name="ocr_downloading">Wird heruntergeladen…</string>
     <string name="ocr_download_percent">Wird heruntergeladen: %1$d%%</string>
-    <string name="ocr_download_failed">Modell konnte nicht heruntergeladen werden. Prüfe die Netzwerkverbindung und versuche es erneut.</string>
+    <string name="on_device_ocr_model_download_failed">Modell konnte nicht heruntergeladen werden. Prüfe die Netzwerkverbindung und versuche es erneut.</string>
     <string name="ocr_need_model">Lade das Modell herunter, bevor du ein Foto erkennen lässt.</string>
     <string name="ocr_pick_camera">Foto aufnehmen</string>
     <string name="ocr_pick_gallery">Foto auswählen</string>

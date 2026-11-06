@@ -2037,4 +2037,7 @@
     <string name="clear_color_history">مسح سجل الألوان</string>
     <string name="clear_color_history_confirm">حذف كل سجلات انتقاء الألوان؟ لا يمكن التراجع عن هذا الإجراء.</string>
     <string name="pick_color_pan_mode">التحريك والتكبير</string>
+    <string name="background_downloading">جارٍ التنزيل</string>
+    <string name="background_download_count">%1$d ملفات</string>
+    <string name="background_download_progress">%1$s · %2$d%%</string>
 </resources>

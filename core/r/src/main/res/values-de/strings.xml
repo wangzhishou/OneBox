@@ -2068,4 +2068,6 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
     <string name="mahjong_description">Offline-Partie zu viert gegen drei lokale KI-Gegner mit Chi, Pong, Kong und Hu.</string>
     <string name="translator">Übersetzen</string>
     <string name="translator_description">Texte mit Cloud- oder On-Device-KI, Spracheingabe und Kamera-OCR übersetzen</string>
+    <string name="open_menu">Menü öffnen</string>
+    <string name="search_results_truncated">Einige Quellen haben ihr Suchlimit erreicht. Es werden nur Teilergebnisse angezeigt.</string>
 </resources>

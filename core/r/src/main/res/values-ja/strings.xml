@@ -2057,4 +2057,6 @@
     <string name="mahjong_description">4人オフライン対局。3人のローカルAI対手とチー・ポン・カン・胡を行います。</string>
     <string name="translator">翻訳</string>
     <string name="translator_description">クラウドまたはオンデバイス AI、音声入力、カメラ OCR でテキストを翻訳</string>
+    <string name="open_menu">メニューを開く</string>
+    <string name="search_results_truncated">検索上限に達したソースがあるため、結果の一部のみを表示しています。</string>
 </resources>

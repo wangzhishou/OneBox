@@ -61,6 +61,7 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import java.util.Locale
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineArrowDropDown
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
@@ -283,14 +284,11 @@ private fun DailyRecordItem(
             null
         }
     }
-    val dateDisplay = localDate?.let {
-        String.format(
-            Locale.getDefault(),
-            stringResource(R.string.blessing_date_display),
-            it.monthValue,
-            it.dayOfMonth
-        )
-    } ?: record.date
+    val displayDateFormatter = remember(Locale.getDefault()) {
+        DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)
+            .withLocale(Locale.getDefault())
+    }
+    val dateDisplay = localDate?.format(displayDateFormatter) ?: record.date
     val activeTypes = BlessingType.entries.filter { (record.counts[it] ?: 0) > 0 }
 
     GlassSurface(
@@ -309,7 +307,9 @@ private fun DailyRecordItem(
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Medium,
-                    modifier = Modifier.width(72.dp)
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.width(96.dp)
                 )
 
                 Spacer(modifier = Modifier.weight(1f))

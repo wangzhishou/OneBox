@@ -2102,4 +2102,6 @@
     <string name="mahjong_description">مباراة ماهجونغ محلية لأربعة لاعبين ضد ثلاثة خصوم محليين.</string>
     <string name="translator">الترجمة</string>
     <string name="translator_description">ترجمة النصوص بالذكاء الاصطناعي السحابي أو على الجهاز، مع الإدخال الصوتي والتعرف الضوئي بالكاميرا</string>
+    <string name="open_menu">فتح القائمة</string>
+    <string name="search_results_truncated">بلغت بعض المصادر حد البحث، لذا تُعرض نتائج جزئية فقط.</string>
 </resources>

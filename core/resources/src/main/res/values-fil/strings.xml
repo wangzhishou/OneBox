@@ -2037,4 +2037,7 @@
     <string name="clear_color_history">I-clear ang kasaysayan ng kulay</string>
     <string name="clear_color_history_confirm">Tanggalin ang lahat ng talaan ng pagpili ng kulay? Hindi na ito maibabalik.</string>
     <string name="pick_color_pan_mode">Pag-drag at pag-zoom</string>
+    <string name="background_downloading">Nagda-download</string>
+    <string name="background_download_count">%1$d na file</string>
+    <string name="background_download_progress">%1$s · %2$d%%</string>
 </resources>

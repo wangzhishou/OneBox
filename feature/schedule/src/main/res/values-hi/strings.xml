@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">Schedule</string>
+    <string name="schedule_screen_title">अनुसूची</string>
     <string name="schedule_sync_card_title">सिंक फाउंडेशन तैयार है</string>
     <string name="schedule_sync_card_description">इस मॉड्यूल के पास पहले से ही अपना इवेंट मॉडल, सिंक कर्सर स्थिति और टूडो ब्रिज फ़ील्ड हैं, इसलिए Google कैलेंडर को बाद में जोड़ा जा सकता है बिना अल्मनैक या टूडो मॉड्यूल को प्रदूषित किए।</string>
     <string name="schedule_sync_ready">सिंक कर्सर सहेजा गया</string>

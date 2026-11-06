@@ -2035,4 +2035,7 @@
     <string name="clear_color_history">색상 기록 지우기</string>
     <string name="clear_color_history_confirm">모든 색상 추출 기록을 삭제할까요? 이 작업은 되돌릴 수 없습니다.</string>
     <string name="pick_color_pan_mode">이동 및 확대/축소</string>
+    <string name="background_downloading">다운로드 중</string>
+    <string name="background_download_count">파일 %1$d개</string>
+    <string name="background_download_progress">%1$s · %2$d%%</string>
 </resources>

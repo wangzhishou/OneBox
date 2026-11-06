@@ -40,6 +40,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.database.recent_access.entity.RecentAccessEntity
+import com.wanbaohe.com.string.TimeFormatter
 import com.shifenmiao.model.activity.ActivityLogEntry
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
 import com.t8rin.imagetoolbox.core.resources.R
@@ -49,9 +50,6 @@ import com.wanbaohe.core.ui.utils.content_pickers.rememberImagePicker
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.modifier.flatGlassContainer
 import org.json.JSONObject
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDescription
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineImage
@@ -527,9 +525,7 @@ private fun RecentDocCard(
             JSONObject(entry.payload).optString("fileName").takeIf { it.isNotEmpty() }
         }.getOrNull() ?: entry.title
     }
-    val timeAgo = remember(entry) {
-        formatRelativeTime(entry.createdAt)
-    }
+    val timeAgo = TimeFormatter.formatRelativeTime(entry.createdAt)
 
     Column(
         modifier = Modifier
@@ -572,23 +568,5 @@ private fun RecentDocCard(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
-    }
-}
-
-private fun formatRelativeTime(date: Date): String {
-    val now = System.currentTimeMillis()
-    val diff = now - date.time
-    val seconds = diff / 1000
-    val minutes = seconds / 60
-    val hours = minutes / 60
-    val days = hours / 24
-
-    return when {
-        seconds < 60 -> "刚刚"
-        minutes < 60 -> "${minutes}分钟前"
-        hours < 24 -> "${hours}小时前"
-        days < 7 -> "${days}天前"
-        days < 30 -> "${days / 7}周前"
-        else -> SimpleDateFormat("MM/dd", Locale.getDefault()).format(date)
     }
 }

@@ -2037,4 +2037,7 @@
     <string name="clear_color_history">Limpar histórico de cores</string>
     <string name="clear_color_history_confirm">Excluir todos os registros de extração de cores? Esta ação não pode ser desfeita.</string>
     <string name="pick_color_pan_mode">Mover e ampliar</string>
+    <string name="background_downloading">Baixando</string>
+    <string name="background_download_count">%1$d arquivos</string>
+    <string name="background_download_progress">%1$s · %2$d%%</string>
 </resources>

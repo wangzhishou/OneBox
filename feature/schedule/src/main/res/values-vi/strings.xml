@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">Schedule</string>
+    <string name="schedule_screen_title">Lịch trình</string>
     <string name="schedule_sync_card_title">Kiến trúc đồng bộ đã sẵn sàng</string>
     <string name="schedule_sync_card_description">Mô-đun này đã tách miền sự kiện độc lập, con trỏ đồng bộ và trường cầu nối việc cần làm, sau này khi tích hợp Google Lịch sẽ không cần gây ảnh hưởng đến mô-đun lịch vạn niên và việc cần làm.</string>
     <string name="schedule_sync_ready">Đã ghi con trỏ đồng bộ</string>

@@ -932,4 +932,7 @@
     <string name="download_started">Спампоўка пачалася</string>
     <string name="color_info_tab">Інфа пра колер</string>
     <string name="color_shading_tab">Зацяненне</string>
+    <string name="background_downloading">Спампоўванне</string>
+    <string name="background_download_count">%1$d файлаў</string>
+    <string name="background_download_progress">%1$s · %2$d%%</string>
 </resources>

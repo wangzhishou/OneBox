@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">Schedule</string>
+    <string name="schedule_screen_title">일정</string>
     <string name="schedule_sync_card_title">동기화 기반 준비 완료</string>
     <string name="schedule_sync_card_description">이 모듈은 이미 자체 이벤트 모델, 동기화 커서 상태 및 할 일 브리지 필드를 보유하고 있어, 나중에 Google 캘린더를 추가해도 연감이나 할 일 모듈을 오염시키지 않습니다.</string>
     <string name="schedule_sync_ready">동기화 커서 저장됨</string>

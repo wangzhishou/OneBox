@@ -41,7 +41,7 @@
     <string name="ocr_markdown_downloaded">Na-download sa cache ang Markdown</string>
     <string name="doc_convert_file_downloaded">Na-download sa cache ang file</string>
     <string name="ocr_download_failed_unknown">Hindi kilalang error</string>
-    <string name="ocr_download_failed">Hindi maisara ang pansamantalang folder: %s</string>
+    <string name="ocr_task_download_failed">Hindi maisara ang pansamantalang folder: %s</string>
     <string name="ocr_share_failed_unknown">Hindi kilalang error</string>
     <string name="ocr_cancelled">Kinansela</string>
     <string name="ocr_download_to_local">I-download sa Lokal</string>

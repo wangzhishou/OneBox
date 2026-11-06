@@ -57,12 +57,13 @@ internal class PdfDecoder(
             val originalWidth = box.width
             val originalHeight = box.height
 
-            val targetSize = IntegerSize(
+            val originalSize = IntegerSize(
                 width = originalWidth.roundToInt(),
                 height = originalHeight.roundToInt()
-            ).flexibleResize(
-                w = options.size.width.pxOrElse { 0 },
-                h = options.size.height.pxOrElse { 0 }
+            )
+            val targetSize = originalSize.flexibleResize(
+                w = options.size.width.pxOrElse { originalSize.width },
+                h = options.size.height.pxOrElse { originalSize.height }
             )
 
             val scaleX = targetSize.width / originalWidth
@@ -112,16 +113,19 @@ fun PdfImageRequest(
     pdfPage: Int = 0,
     password: String? = null,
     size: Size? = null
-): ImageRequest = ImageRequest.Builder(appContext)
-    .data(data)
-    .pdfPage(pdfPage)
-    .password(password)
-    .memoryCacheKey(data.toString() + pdfPage)
-    .diskCacheKey(data.toString() + pdfPage)
-    .apply {
-        size?.let(::size)
-    }
-    .build()
+): ImageRequest {
+    val cacheKey = "${data}:${pdfPage}:${size?.width}:${size?.height}"
+    return ImageRequest.Builder(appContext)
+        .data(data)
+        .pdfPage(pdfPage)
+        .password(password)
+        .memoryCacheKey(cacheKey)
+        .diskCacheKey(cacheKey)
+        .apply {
+            size?.let(::size)
+        }
+        .build()
+}
 
 fun ImageRequest.Builder.password(password: String?) = apply {
     extras[passwordKey] = password

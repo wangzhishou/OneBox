@@ -41,7 +41,7 @@
     <string name="ocr_markdown_downloaded">Markdown 已下載至快取</string>
     <string name="doc_convert_file_downloaded">檔案已下載至快取</string>
     <string name="ocr_download_failed_unknown">未知錯誤</string>
-    <string name="ocr_download_failed">下載失敗：%1$s</string>
+    <string name="ocr_task_download_failed">下載失敗：%1$s</string>
     <string name="ocr_share_failed_unknown">未知錯誤</string>
     <string name="ocr_cancelled">已取消</string>
     <string name="ocr_download_to_local">下載至本機</string>

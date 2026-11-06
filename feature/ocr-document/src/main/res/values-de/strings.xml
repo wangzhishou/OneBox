@@ -41,7 +41,7 @@
     <string name="ocr_markdown_downloaded">Markdown in den Cache heruntergeladen</string>
     <string name="doc_convert_file_downloaded">Datei in den Cache heruntergeladen</string>
     <string name="ocr_download_failed_unknown">Unbekannter Fehler</string>
-    <string name="ocr_download_failed">Temporärer Ordner konnte nicht geschlossen werden: %s</string>
+    <string name="ocr_task_download_failed">Temporärer Ordner konnte nicht geschlossen werden: %s</string>
     <string name="ocr_share_failed_unknown">Unbekannter Fehler</string>
     <string name="ocr_cancelled">Abgebrochen</string>
     <string name="ocr_download_to_local">Lokal herunterladen</string>

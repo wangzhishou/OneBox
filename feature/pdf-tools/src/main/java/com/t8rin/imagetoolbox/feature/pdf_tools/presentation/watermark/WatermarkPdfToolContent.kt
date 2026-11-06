@@ -82,7 +82,6 @@ fun WatermarkPdfToolContent(
             }
         },
         placeImagePreview = true,
-        showImagePreviewAsStickyHeader = true,
         controls = {
             RoundedTextField(
                 modifier = Modifier.fillMaxWidth(),

@@ -80,7 +80,7 @@ internal fun PageSwitcher(
     ) {
         val targetPage = if (indices.isEmpty()) 0 else indices[page]
 
-        Box(modifier = Modifier.weight(1f, false)) {
+        Box {
             content(targetPage)
         }
 

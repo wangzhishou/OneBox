@@ -5,7 +5,7 @@
     <string name="ocr_download">下載模型</string>
     <string name="ocr_downloading">正在下載…</string>
     <string name="ocr_download_percent">正在下載 %1$d%%</string>
-    <string name="ocr_download_failed">模型下載失敗，檢查網路後再試</string>
+    <string name="on_device_ocr_model_download_failed">模型下載失敗，檢查網路後再試</string>
     <string name="ocr_need_model">先下載模型，再辨識照片。</string>
     <string name="ocr_pick_camera">拍照</string>
     <string name="ocr_pick_gallery">從相簿選擇</string>

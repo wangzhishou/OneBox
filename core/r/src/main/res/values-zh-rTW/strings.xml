@@ -2058,4 +2058,6 @@
     <string name="mahjong_description">四人離線對局，與三位本機 AI 對手吃碰槓胡。</string>
     <string name="translator">翻譯</string>
     <string name="translator_description">支援雲端與本機模型、語音輸入和拍照取詞的文本翻譯</string>
+    <string name="open_menu">開啟選單</string>
+    <string name="search_results_truncated">部分來源已達搜尋上限，僅顯示部分結果</string>
 </resources>

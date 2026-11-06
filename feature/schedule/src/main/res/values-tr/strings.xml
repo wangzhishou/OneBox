@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">Schedule</string>
+    <string name="schedule_screen_title">Program</string>
     <string name="schedule_sync_card_title">Senkronizasyon altyapısı hazır</string>
     <string name="schedule_sync_card_description">Bu modül zaten kendi etkinlik modeline, senkron imleç durumuna ve görev köprüsü alanlarına sahiptir, böylece Google Takvim daha sonra almanak veya görev modüllerini kirletmeden eklenebilir.</string>
     <string name="schedule_sync_ready">Senkron imleci kaydedildi</string>

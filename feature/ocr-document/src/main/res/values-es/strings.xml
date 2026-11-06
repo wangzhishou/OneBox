@@ -41,7 +41,7 @@
     <string name="ocr_markdown_downloaded">Markdown descargado en caché</string>
     <string name="doc_convert_file_downloaded">Archivo descargado en caché</string>
     <string name="ocr_download_failed_unknown">Error desconocido</string>
-    <string name="ocr_download_failed">No se pudo cerrar la carpeta temporal: %s</string>
+    <string name="ocr_task_download_failed">No se pudo cerrar la carpeta temporal: %s</string>
     <string name="ocr_share_failed_unknown">Error desconocido</string>
     <string name="ocr_cancelled">Cancelado</string>
     <string name="ocr_download_to_local">Descargar a local</string>

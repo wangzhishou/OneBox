@@ -148,7 +148,7 @@ object AppSharedStorage {
     }
 
     private fun loadIsExpandedReasoningChat(): Boolean {
-        return load(IS_EXPANDED_REASONING_CHAT, true) ?: true
+        return load(IS_EXPANDED_REASONING_CHAT, false) ?: false
     }
 
     fun saveIsExpandedToolCall(isExpandedToolCall: Boolean) {

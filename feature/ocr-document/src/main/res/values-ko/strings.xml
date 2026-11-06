@@ -41,7 +41,7 @@
     <string name="ocr_markdown_downloaded">Markdown이 캐시에 다운로드됨</string>
     <string name="doc_convert_file_downloaded">파일이 캐시에 다운로드됨</string>
     <string name="ocr_download_failed_unknown">알 수 없는 오류</string>
-    <string name="ocr_download_failed">임시 폴더를 닫을 수 없음: %s</string>
+    <string name="ocr_task_download_failed">임시 폴더를 닫을 수 없음: %s</string>
     <string name="ocr_share_failed_unknown">알 수 없는 오류</string>
     <string name="ocr_cancelled">취소됨</string>
     <string name="ocr_download_to_local">로컬에 다운로드</string>

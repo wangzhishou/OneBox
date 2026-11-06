@@ -281,7 +281,7 @@ class DocConvertTaskListComponent @AssistedInject constructor(
                 ?: context.getString(com.shifenmiao.feature.ocr.document.R.string.ocr_share_failed_unknown)
             _uiEvents.tryEmit(
                 DocConvertTaskListUiEvent.Toast(
-                    context.getString(com.shifenmiao.feature.ocr.document.R.string.ocr_download_failed, msg)
+                    context.getString(com.shifenmiao.feature.ocr.document.R.string.ocr_task_download_failed, msg)
                 )
             )
         }
@@ -359,7 +359,7 @@ class DocConvertTaskListComponent @AssistedInject constructor(
                                 ?: ctx.getString(com.shifenmiao.feature.ocr.document.R.string.ocr_download_failed_unknown)
                             _uiEvents.tryEmit(
                                 DocConvertTaskListUiEvent.Toast(
-                                    ctx.getString(com.shifenmiao.feature.ocr.document.R.string.ocr_download_failed, msg)
+                                    ctx.getString(com.shifenmiao.feature.ocr.document.R.string.ocr_task_download_failed, msg)
                                 )
                             )
                         }

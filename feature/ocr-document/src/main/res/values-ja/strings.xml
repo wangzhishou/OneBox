@@ -41,7 +41,7 @@
     <string name="ocr_markdown_downloaded">Markdownがキャッシュにダウンロードされました</string>
     <string name="doc_convert_file_downloaded">ファイルがキャッシュにダウンロードされました</string>
     <string name="ocr_download_failed_unknown">不明なエラー</string>
-    <string name="ocr_download_failed">一時フォルダを閉じられませんでした: %s</string>
+    <string name="ocr_task_download_failed">一時フォルダを閉じられませんでした: %s</string>
     <string name="ocr_share_failed_unknown">不明なエラー</string>
     <string name="ocr_cancelled">キャンセルしました</string>
     <string name="ocr_download_to_local">ローカルにダウンロード</string>

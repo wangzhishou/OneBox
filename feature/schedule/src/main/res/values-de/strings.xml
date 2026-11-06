@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">Schedule</string>
+    <string name="schedule_screen_title">Zeitplan</string>
     <string name="schedule_sync_card_title">Sync-Grundlage ist bereit</string>
     <string name="schedule_sync_card_description">Dieses Modul besitzt bereits sein eigenes Ereignismodell, den Sync-Cursor-Zustand und die Todo-Brückenfelder, sodass Google Kalender später hinzugefügt werden kann, ohne die Almanach- oder Todo-Module zu beeinträchtigen.</string>
     <string name="schedule_sync_ready">Sync-Cursor gespeichert</string>

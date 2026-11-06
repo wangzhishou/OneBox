@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">Schedule</string>
+    <string name="schedule_screen_title">Agenda</string>
     <string name="schedule_sync_card_title">Base de sincronização pronta</string>
     <string name="schedule_sync_card_description">Este módulo já possui seu próprio modelo de eventos, estado do cursor de sincronização e campos de ponte de tarefas, então o Google Agenda pode ser adicionado posteriormente sem poluir os módulos de almanaque ou tarefas.</string>
     <string name="schedule_sync_ready">Cursor de sincronização salvo</string>

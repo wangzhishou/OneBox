@@ -2068,4 +2068,6 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <string name="mahjong_description">Offline na apat na manlalarong Mahjong laban sa tatlong lokal na AI.</string>
     <string name="translator">Pagsasalin</string>
     <string name="translator_description">Magsalin ng teksto gamit ang cloud o on-device AI, voice input, at camera OCR</string>
+    <string name="open_menu">Buksan ang menu</string>
+    <string name="search_results_truncated">Naabot na ng ilang pinagmulan ang limitasyon sa paghahanap. Mga bahagyang resulta lamang ang ipinapakita.</string>
 </resources>

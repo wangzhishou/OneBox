@@ -41,7 +41,7 @@
     <string name="ocr_markdown_downloaded">Markdown загружен в кэш</string>
     <string name="doc_convert_file_downloaded">Файл загружен в кэш</string>
     <string name="ocr_download_failed_unknown">Неизвестная ошибка</string>
-    <string name="ocr_download_failed">Не удалось закрыть временную папку: %s</string>
+    <string name="ocr_task_download_failed">Не удалось закрыть временную папку: %s</string>
     <string name="ocr_share_failed_unknown">Неизвестная ошибка</string>
     <string name="ocr_cancelled">Отменено</string>
     <string name="ocr_download_to_local">Скачать локально</string>

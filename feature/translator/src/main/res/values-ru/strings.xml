@@ -57,4 +57,5 @@
     <string name="translation_language_th">Тайский</string>
     <string name="translation_language_tr">Турецкий</string>
     <string name="translation_language_fil">Филиппинский</string>
+    <string name="translation_local_model_unsupported">Эта версия не поддерживает локальный перевод.</string>
 </resources>

@@ -1163,4 +1163,7 @@
     <string name="download_started">دانلود آغاز شد</string>
     <string name="color_info_tab">اطلاعات رنگ</string>
     <string name="color_shading_tab">سایه رنگ</string>
+    <string name="background_downloading">در حال دانلود</string>
+    <string name="background_download_count">%1$d فایل</string>
+    <string name="background_download_progress">%1$s · %2$d%%</string>
 </resources>

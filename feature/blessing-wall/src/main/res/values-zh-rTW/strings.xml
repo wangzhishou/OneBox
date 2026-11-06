@@ -22,7 +22,6 @@
     <string name="blessing_count_unit">次</string>
     <string name="blessing_total_count">%1$d次</string>
     <string name="blessing_calendar_year_month">%1$d年%2$d月</string>
-    <string name="blessing_date_display">%1$d月%2$d日</string>
     <string name="blessing_daily_stats_title">每日祈福統計</string>
     <string name="blessing_empty_state">暫無祈福記錄</string>
     <string name="blessing_wish_edit">編輯心願</string>

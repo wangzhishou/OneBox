@@ -57,4 +57,5 @@
     <string name="translation_language_th">Tiếng Thái</string>
     <string name="translation_language_tr">Tiếng Thổ Nhĩ Kỳ</string>
     <string name="translation_language_fil">Tiếng Filipino</string>
+    <string name="translation_local_model_unsupported">Phiên bản này không hỗ trợ dịch cục bộ.</string>
 </resources>

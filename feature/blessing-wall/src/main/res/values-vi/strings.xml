@@ -22,7 +22,6 @@
     <string name="blessing_count_unit">lần</string>
     <string name="blessing_total_count">%1$d lần</string>
     <string name="blessing_calendar_year_month">Tháng %1$d năm %2$d</string>
-    <string name="blessing_date_display">Ngày %2$d tháng %1$d</string>
     <string name="blessing_daily_stats_title">Thống kê cầu phúc hàng ngày</string>
     <string name="blessing_empty_state">Chưa có lịch sử cầu phúc</string>
     <string name="blessing_wish_edit">Sửa điều ước</string>

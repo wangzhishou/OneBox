@@ -2068,4 +2068,6 @@
     <string name="mahjong_description">तीन स्थानीय AI प्रतिद्वंद्वियों के साथ ऑफ़लाइन चार-खिलाड़ी माहजोंग।</string>
     <string name="translator">अनुवाद</string>
     <string name="translator_description">क्लाउड या ऑन-डिवाइस AI, वॉइस इनपुट और कैमरा OCR से टेक्स्ट का अनुवाद करें</string>
+    <string name="open_menu">मेनू खोलें</string>
+    <string name="search_results_truncated">कुछ स्रोत अपनी खोज सीमा तक पहुँच गए हैं। केवल आंशिक परिणाम दिखाए जा रहे हैं।</string>
 </resources>

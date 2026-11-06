@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">Schedule</string>
+    <string name="schedule_screen_title">Jadwal</string>
     <string name="schedule_sync_card_title">Fondasi sinkronisasi siap</string>
     <string name="schedule_sync_card_description">Modul ini sudah memiliki model acara, status kursor sinkronisasi, dan bidang jembatan tugas, sehingga Google Calendar dapat ditambahkan nanti tanpa mengotori modul almanak atau tugas.</string>
     <string name="schedule_sync_ready">Kursor sinkronisasi disimpan</string>

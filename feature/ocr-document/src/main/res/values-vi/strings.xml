@@ -41,7 +41,7 @@
     <string name="ocr_markdown_downloaded">Markdown đã tải xuống bộ nhớ đệm</string>
     <string name="doc_convert_file_downloaded">Tệp đã tải xuống bộ nhớ đệm</string>
     <string name="ocr_download_failed_unknown">Lỗi không xác định</string>
-    <string name="ocr_download_failed">Tải xuống thất bại: %1$s</string>
+    <string name="ocr_task_download_failed">Tải xuống thất bại: %1$s</string>
     <string name="ocr_share_failed_unknown">Lỗi không xác định</string>
     <string name="ocr_cancelled">Đã hủy</string>
     <string name="ocr_download_to_local">Tải xuống cục bộ</string>

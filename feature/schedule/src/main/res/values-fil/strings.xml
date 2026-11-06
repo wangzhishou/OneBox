@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">Schedule</string>
+    <string name="schedule_screen_title">Iskedyul</string>
     <string name="schedule_sync_card_title">Handa na ang sync foundation</string>
     <string name="schedule_sync_card_description">Ang modyul na ito ay may sariling event model, sync cursor state, at todo bridge fields, kaya maaaring idagdag ang Google Calendar mamaya nang hindi nadudumihan ang almanac o todo modules.</string>
     <string name="schedule_sync_ready">Nai-save ang sync cursor</string>

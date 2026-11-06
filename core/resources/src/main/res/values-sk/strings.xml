@@ -927,4 +927,7 @@
     <string name="download_started">Sťahovanie sa začalo</string>
     <string name="color_info_tab">Info o farbe</string>
     <string name="color_shading_tab">Tieňovanie</string>
+    <string name="background_downloading">Sťahovanie</string>
+    <string name="background_download_count">%1$d súborov</string>
+    <string name="background_download_progress">%1$s · %2$d%%</string>
 </resources>

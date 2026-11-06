@@ -5,7 +5,7 @@
     <string name="ocr_download">Загрузить модель</string>
     <string name="ocr_downloading">Загрузка…</string>
     <string name="ocr_download_percent">Загрузка: %1$d%%</string>
-    <string name="ocr_download_failed">Не удалось загрузить модель. Проверьте сеть и повторите попытку.</string>
+    <string name="on_device_ocr_model_download_failed">Не удалось загрузить модель. Проверьте сеть и повторите попытку.</string>
     <string name="ocr_need_model">Загрузите модель перед распознаванием фото.</string>
     <string name="ocr_pick_camera">Сделать фото</string>
     <string name="ocr_pick_gallery">Выбрать фото</string>

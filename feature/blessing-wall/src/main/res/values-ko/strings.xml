@@ -22,7 +22,6 @@
     <string name="blessing_count_unit">회</string>
     <string name="blessing_total_count">%1$d회</string>
     <string name="blessing_calendar_year_month">%1$d-%2$02d</string>
-    <string name="blessing_date_display">%1$d/%2$d</string>
     <string name="blessing_daily_stats_title">일일 기원 통계</string>
     <string name="blessing_empty_state">아직 기원 기록이 없습니다</string>
     <string name="blessing_wish_edit">소원 편집</string>

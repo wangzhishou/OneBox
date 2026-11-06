@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">Schedule</string>
+    <string name="schedule_screen_title">スケジュール</string>
     <string name="schedule_sync_card_title">同期基盤の準備ができました</string>
     <string name="schedule_sync_card_description">このモジュールは既に独自のイベントモデル、同期カーソル状態、Todoブリッジフィールドを所有しているため、Googleカレンダーは後で追加しても、アルマナックやTodoモジュールを汚染しません。</string>
     <string name="schedule_sync_ready">同期カーソルが保存されました</string>

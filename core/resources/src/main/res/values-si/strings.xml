@@ -82,4 +82,7 @@
     <string name="download_started">බාගැනීම ආරම්භ විය</string>
     <string name="color_info_tab">වර්ණ තොරතුරු</string>
     <string name="color_shading_tab">වර්ණ සෙවණ</string>
+    <string name="background_downloading">බාගත කරමින්</string>
+    <string name="background_download_count">%1$d ගොනු</string>
+    <string name="background_download_progress">%1$s · %2$d%%</string>
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">Schedule</string>
+    <string name="schedule_screen_title">Расписание</string>
     <string name="schedule_sync_card_title">База синхронизации готова</string>
     <string name="schedule_sync_card_description">Этот модуль уже владеет своей моделью событий, состоянием курсора синхронизации и полями моста задач, поэтому Google Calendar можно добавить позже, не загрязняя модули альманаха или задач.</string>
     <string name="schedule_sync_ready">Курсор синхронизации сохранён</string>

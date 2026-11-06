@@ -293,4 +293,7 @@
     <string name="download_started">Nedladdningen har startat</string>
     <string name="color_info_tab">Färginfo</string>
     <string name="color_shading_tab">Skuggning</string>
+    <string name="background_downloading">Laddar ner</string>
+    <string name="background_download_count">%1$d filer</string>
+    <string name="background_download_progress">%1$s · %2$d%%</string>
 </resources>

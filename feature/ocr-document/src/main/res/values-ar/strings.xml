@@ -41,7 +41,7 @@
     <string name="ocr_markdown_downloaded">تم تنزيل Markdown إلى ذاكرة التخزين المؤقت</string>
     <string name="doc_convert_file_downloaded">تم تنزيل الملف إلى ذاكرة التخزين المؤقت</string>
     <string name="ocr_download_failed_unknown">خطأ غير معروف</string>
-    <string name="ocr_download_failed">تعذّر إغلاق المجلد المؤقت: %s</string>
+    <string name="ocr_task_download_failed">تعذّر إغلاق المجلد المؤقت: %s</string>
     <string name="ocr_share_failed_unknown">خطأ غير معروف</string>
     <string name="ocr_cancelled">أُلغيت</string>
     <string name="ocr_download_to_local">تنزيل إلى الجهاز</string>

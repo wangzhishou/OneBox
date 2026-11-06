@@ -5,7 +5,7 @@
     <string name="ocr_download">Modeli indir</string>
     <string name="ocr_downloading">İndiriliyor…</string>
     <string name="ocr_download_percent">İndiriliyor: %1$d%%</string>
-    <string name="ocr_download_failed">Model indirilemedi. Ağı kontrol edip tekrar deneyin.</string>
+    <string name="on_device_ocr_model_download_failed">Model indirilemedi. Ağı kontrol edip tekrar deneyin.</string>
     <string name="ocr_need_model">Bir fotoğrafı okumadan önce modeli indirin.</string>
     <string name="ocr_pick_camera">Fotoğraf çek</string>
     <string name="ocr_pick_gallery">Fotoğraf seç</string>

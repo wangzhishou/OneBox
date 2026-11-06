@@ -41,7 +41,7 @@
     <string name="ocr_markdown_downloaded">Markdown baixado para o cache</string>
     <string name="doc_convert_file_downloaded">Arquivo baixado para o cache</string>
     <string name="ocr_download_failed_unknown">Erro desconhecido</string>
-    <string name="ocr_download_failed">Não foi possível fechar a pasta temporária: %s</string>
+    <string name="ocr_task_download_failed">Não foi possível fechar a pasta temporária: %s</string>
     <string name="ocr_share_failed_unknown">Erro desconhecido</string>
     <string name="ocr_cancelled">Cancelado</string>
     <string name="ocr_download_to_local">Baixar para o Local</string>

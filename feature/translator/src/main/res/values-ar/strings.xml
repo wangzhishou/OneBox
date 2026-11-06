@@ -57,4 +57,5 @@
     <string name="translation_language_th">التايلاندية</string>
     <string name="translation_language_tr">التركية</string>
     <string name="translation_language_fil">الفلبينية</string>
+    <string name="translation_local_model_unsupported">لا يدعم هذا الإصدار الترجمة المحلية.</string>
 </resources>

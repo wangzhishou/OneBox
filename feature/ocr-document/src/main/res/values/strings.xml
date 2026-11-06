@@ -40,7 +40,7 @@
     <string name="ocr_markdown_downloaded">Markdown downloaded to cache</string>
     <string name="doc_convert_file_downloaded">File downloaded to cache</string>
     <string name="ocr_download_failed_unknown">Unknown error</string>
-    <string name="ocr_download_failed">Could not close temporary folder: %s</string>
+    <string name="ocr_task_download_failed">Could not close temporary folder: %s</string>
     <string name="ocr_share_failed_unknown">Unknown error</string>
     <string name="ocr_cancelled">Canceled</string>
     <string name="ocr_download_to_local">Download to Local</string>

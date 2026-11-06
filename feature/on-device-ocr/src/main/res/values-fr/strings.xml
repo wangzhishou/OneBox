@@ -5,7 +5,7 @@
     <string name="ocr_download">Télécharger le modèle</string>
     <string name="ocr_downloading">Téléchargement…</string>
     <string name="ocr_download_percent">Téléchargement : %1$d%%</string>
-    <string name="ocr_download_failed">Impossible de télécharger le modèle. Vérifiez le réseau et réessayez.</string>
+    <string name="on_device_ocr_model_download_failed">Impossible de télécharger le modèle. Vérifiez le réseau et réessayez.</string>
     <string name="ocr_need_model">Téléchargez le modèle avant de lire une photo.</string>
     <string name="ocr_pick_camera">Prendre une photo</string>
     <string name="ocr_pick_gallery">Choisir une photo</string>

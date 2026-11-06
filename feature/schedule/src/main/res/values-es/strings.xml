@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="schedule_screen_title">Schedule</string>
+    <string name="schedule_screen_title">Horario</string>
     <string name="schedule_sync_card_title">La base de sincronización está lista</string>
     <string name="schedule_sync_card_description">Este módulo ya posee su propio modelo de eventos, estado del cursor de sincronización y campos de puente de tareas, por lo que Google Calendar se puede agregar más adelante sin contaminar los módulos de almanaque o tareas.</string>
     <string name="schedule_sync_ready">Cursor de sincronización guardado</string>

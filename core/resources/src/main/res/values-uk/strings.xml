@@ -1836,4 +1836,7 @@
     <string name="download_started">Завантаження розпочато</string>
     <string name="color_info_tab">Інфо про колір</string>
     <string name="color_shading_tab">Затінення</string>
+    <string name="background_downloading">Завантаження</string>
+    <string name="background_download_count">%1$d файлів</string>
+    <string name="background_download_progress">%1$s · %2$d%%</string>
 </resources>

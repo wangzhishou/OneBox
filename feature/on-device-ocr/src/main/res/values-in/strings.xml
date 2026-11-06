@@ -5,7 +5,7 @@
     <string name="ocr_download">Unduh model</string>
     <string name="ocr_downloading">Mengunduh…</string>
     <string name="ocr_download_percent">Mengunduh %1$d%%</string>
-    <string name="ocr_download_failed">Model tidak dapat diunduh. Periksa jaringan lalu coba lagi.</string>
+    <string name="on_device_ocr_model_download_failed">Model tidak dapat diunduh. Periksa jaringan lalu coba lagi.</string>
     <string name="ocr_need_model">Unduh model sebelum membaca foto.</string>
     <string name="ocr_pick_camera">Ambil foto</string>
     <string name="ocr_pick_gallery">Pilih foto</string>

@@ -5,7 +5,7 @@
     <string name="ocr_download">モデルをダウンロード</string>
     <string name="ocr_downloading">ダウンロード中…</string>
     <string name="ocr_download_percent">ダウンロード中 %1$d%%</string>
-    <string name="ocr_download_failed">モデルをダウンロードできませんでした。ネットワークを確認して再試行してください。</string>
+    <string name="on_device_ocr_model_download_failed">モデルをダウンロードできませんでした。ネットワークを確認して再試行してください。</string>
     <string name="ocr_need_model">写真を読み取る前にモデルをダウンロードしてください。</string>
     <string name="ocr_pick_camera">写真を撮影</string>
     <string name="ocr_pick_gallery">写真を選択</string>

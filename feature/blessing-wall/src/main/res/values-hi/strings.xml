@@ -22,7 +22,6 @@
     <string name="blessing_count_unit">बार</string>
     <string name="blessing_total_count">%1$d बार</string>
     <string name="blessing_calendar_year_month">%1$d-%2$02d</string>
-    <string name="blessing_date_display">%1$d/%2$d</string>
     <string name="blessing_daily_stats_title">दैनिक आशीर्वाद आँकड़े</string>
     <string name="blessing_empty_state">अभी तक कोई आशीर्वाद रिकॉर्ड नहीं</string>
     <string name="blessing_wish_edit">मनोकामना संपादित करें</string>

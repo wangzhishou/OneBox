@@ -57,4 +57,5 @@
     <string name="translation_language_th">Tayca</string>
     <string name="translation_language_tr">Türkçe</string>
     <string name="translation_language_fil">Filipince</string>
+    <string name="translation_local_model_unsupported">Bu sürüm yerel çeviriyi desteklemiyor.</string>
 </resources>

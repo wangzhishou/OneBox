@@ -131,7 +131,6 @@ fun SignaturePdfToolContent(
             }
         },
         placeImagePreview = true,
-        showImagePreviewAsStickyHeader = true,
         controls = {
             PreferenceItem(
                 title = stringResource(R.string.draw_signature),
