@@ -160,6 +160,7 @@ object AigcServiceProviderCode {
             name.equals(AiProvider.MinMax.value, ignoreCase = true) -> 'X'
             name == AiProvider.ZhiPu.value -> 'Z'
             name == AiProvider.OpenRouter.value -> 'R'
+            name == AiProvider.Requesty.value -> 'Y'
             provider == AiProvider.OpenAi -> 'O'
             provider == AiProvider.Kimi -> 'K'
             provider == AiProvider.QWen -> 'Q'
@@ -172,6 +173,7 @@ object AigcServiceProviderCode {
             provider == AiProvider.MinMax -> 'X'
             provider == AiProvider.ZhiPu -> 'Z'
             provider == AiProvider.OpenRouter -> 'R'
+            provider == AiProvider.Requesty -> 'Y'
             else -> 'U'
         }
     }
