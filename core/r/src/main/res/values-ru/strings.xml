@@ -2104,4 +2104,21 @@
     <string name="translator_description">Перевод текста с помощью облачного или локального ИИ, голосового ввода и OCR с камеры</string>
     <string name="open_menu">Открыть меню</string>
     <string name="search_results_truncated">Некоторые источники достигли лимита поиска. Отображаются только частичные результаты.</string>
+    <string name="permission_rationale_title">Требуется разрешение</string>
+    <string name="permission_rationale_description">Для этой функции нужны следующие разрешения. Если откажете, станет недоступна только эта функция.</string>
+    <string name="permission_rationale_media_title">Доступ к фото и видео</string>
+    <string name="permission_rationale_media_description">Используется, чтобы выбрать изображения или видео из галереи для редактирования и сохранить результат обратно в галерею.</string>
+    <string name="permission_rationale_location_title">Доступ к геопозиции</string>
+    <string name="permission_rationale_location_description">Используется для показа высоты, координат и направления компаса.</string>
+    <string name="permission_rationale_contacts_title">Доступ к контактам</string>
+    <string name="permission_rationale_contacts_description">Используется, чтобы выбрать контакт в форму. Контакты никогда не загружаются.</string>
+    <string name="permission_rationale_calendar_title">Доступ к календарю</string>
+    <string name="permission_rationale_calendar_description">Используется, чтобы сохранять задачи как события календаря.</string>
+    <string name="permission_rationale_notification_title">Доступ к уведомлениям</string>
+    <string name="permission_rationale_notification_description">Используется для прогресса передачи файлов и управления воспроизведением в фоне.</string>
+    <string name="permission_rationale_install_title">Разрешение на установку</string>
+    <string name="permission_rationale_install_description">Используется для установки новой версии после загрузки.</string>
+    <string name="permission_rationale_all_files_title">Доступ ко всем файлам</string>
+    <string name="permission_rationale_all_files_description">Используется для установки обоев и просмотра файлов, не являющихся медиа.</string>
+    <string name="privacy_item_storage_description">Доступ к хранилищу, чтобы сохранять созданные или загруженные файлы и выбирать изображения или видео из галереи.</string>
 </resources>

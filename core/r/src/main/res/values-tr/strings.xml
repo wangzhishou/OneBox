@@ -2070,4 +2070,21 @@
     <string name="translator_description">Bulut veya cihaz üzerindeki AI, sesli giriş ve kamera OCR ile metin çevirin</string>
     <string name="open_menu">Menüyü aç</string>
     <string name="search_results_truncated">Bazı kaynaklar arama sınırına ulaştı. Yalnızca kısmi sonuçlar gösteriliyor.</string>
+    <string name="permission_rationale_title">İzin gerekli</string>
+    <string name="permission_rationale_description">Bu özellik için aşağıdaki izinler gerekiyor. Reddederseniz yalnızca bu özellik kullanılamaz.</string>
+    <string name="permission_rationale_media_title">Fotoğraf ve video izni</string>
+    <string name="permission_rationale_media_description">Galeriden düzenlemek üzere görsel veya video seçmek ve sonucu galeriye geri kaydetmek için kullanılır.</string>
+    <string name="permission_rationale_location_title">Konum izni</string>
+    <string name="permission_rationale_location_description">Rakım, koordinat ve pusula yönünü göstermek için kullanılır.</string>
+    <string name="permission_rationale_contacts_title">Kişiler izni</string>
+    <string name="permission_rationale_contacts_description">Bir forma kişi seçmek için kullanılır. Kişiler asla yüklenmez.</string>
+    <string name="permission_rationale_calendar_title">Takvim izni</string>
+    <string name="permission_rationale_calendar_description">Yapılacakları sistem takvim etkinliği olarak kaydetmek için kullanılır.</string>
+    <string name="permission_rationale_notification_title">Bildirim izni</string>
+    <string name="permission_rationale_notification_description">Dosya aktarım ilerlemesi ve arka planda oynatma denetimleri için kullanılır.</string>
+    <string name="permission_rationale_install_title">Kurulum izni</string>
+    <string name="permission_rationale_install_description">İndirdikten sonra yeni sürümü kurmak için kullanılır.</string>
+    <string name="permission_rationale_all_files_title">Tüm dosyalara erişim</string>
+    <string name="permission_rationale_all_files_description">Duvar kağıdı ayarlamak ve medya dışı dosyalara göz atmak için kullanılır.</string>
+    <string name="privacy_item_storage_description">Oluşturulan veya indirilen dosyaları kaydetmek ve galeriden görsel ya da video seçmek için depolama erişimi.</string>
 </resources>

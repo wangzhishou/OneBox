@@ -2058,4 +2058,21 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="translator_description">Traduisez du texte avec l\'IA cloud ou sur l\'appareil, la saisie vocale et l\'OCR par caméra</string>
     <string name="open_menu">Ouvrir le menu</string>
     <string name="search_results_truncated">Certaines sources ont atteint leur limite de recherche. Seuls des résultats partiels sont affichés.</string>
+    <string name="permission_rationale_title">Autorisation requise</string>
+    <string name="permission_rationale_description">Cette fonction nécessite les autorisations suivantes. En cas de refus, seule cette fonction sera indisponible.</string>
+    <string name="permission_rationale_media_title">Autorisation photos et vidéos</string>
+    <string name="permission_rationale_media_description">Sert à choisir des images ou des vidéos dans la galerie pour les modifier, puis à enregistrer le résultat dans la galerie.</string>
+    <string name="permission_rationale_location_title">Autorisation de localisation</string>
+    <string name="permission_rationale_location_description">Sert à afficher l\'altitude, les coordonnées et le cap de la boussole.</string>
+    <string name="permission_rationale_contacts_title">Autorisation contacts</string>
+    <string name="permission_rationale_contacts_description">Sert à choisir un contact dans un formulaire. Les contacts ne sont jamais envoyés.</string>
+    <string name="permission_rationale_calendar_title">Autorisation calendrier</string>
+    <string name="permission_rationale_calendar_description">Sert à enregistrer les tâches comme événements du calendrier.</string>
+    <string name="permission_rationale_notification_title">Autorisation de notifications</string>
+    <string name="permission_rationale_notification_description">Sert à la progression du transfert de fichiers et aux commandes de lecture en arrière-plan.</string>
+    <string name="permission_rationale_install_title">Autorisation d\'installation</string>
+    <string name="permission_rationale_install_description">Sert à installer une nouvelle version après le téléchargement.</string>
+    <string name="permission_rationale_all_files_title">Accès à tous les fichiers</string>
+    <string name="permission_rationale_all_files_description">Sert à définir des fonds d\'écran et à parcourir des fichiers autres que multimédias.</string>
+    <string name="privacy_item_storage_description">Accès au stockage pour enregistrer les fichiers générés ou téléchargés et choisir des images ou vidéos dans la galerie.</string>
 </resources>

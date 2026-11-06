@@ -2070,4 +2070,21 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
     <string name="translator_description">Traduza texto com IA na nuvem ou no dispositivo, entrada de voz e OCR pela câmera</string>
     <string name="open_menu">Abrir menu</string>
     <string name="search_results_truncated">Algumas fontes atingiram o limite de pesquisa. Somente resultados parciais são exibidos.</string>
+    <string name="permission_rationale_title">Permissão necessária</string>
+    <string name="permission_rationale_description">Este recurso precisa das seguintes permissões. Se recusar, apenas este recurso ficará indisponível.</string>
+    <string name="permission_rationale_media_title">Permissão de fotos e vídeos</string>
+    <string name="permission_rationale_media_description">Usada para escolher imagens ou vídeos da galeria para editar e salvar o resultado de volta na galeria.</string>
+    <string name="permission_rationale_location_title">Permissão de localização</string>
+    <string name="permission_rationale_location_description">Usada para mostrar altitude, coordenadas e direção da bússola.</string>
+    <string name="permission_rationale_contacts_title">Permissão de contatos</string>
+    <string name="permission_rationale_contacts_description">Usada para escolher um contato em um formulário. Os contatos nunca são enviados.</string>
+    <string name="permission_rationale_calendar_title">Permissão de calendário</string>
+    <string name="permission_rationale_calendar_description">Usada para salvar tarefas como eventos do calendário.</string>
+    <string name="permission_rationale_notification_title">Permissão de notificações</string>
+    <string name="permission_rationale_notification_description">Usada para o progresso da transferência de arquivos e os controles de reprodução em segundo plano.</string>
+    <string name="permission_rationale_install_title">Permissão de instalação</string>
+    <string name="permission_rationale_install_description">Usada para instalar uma nova versão após o download.</string>
+    <string name="permission_rationale_all_files_title">Acesso a todos os arquivos</string>
+    <string name="permission_rationale_all_files_description">Usado para definir papéis de parede e navegar em arquivos que não são mídia.</string>
+    <string name="privacy_item_storage_description">Acesso ao armazenamento para salvar arquivos gerados ou baixados e escolher imagens ou vídeos da galeria.</string>
 </resources>

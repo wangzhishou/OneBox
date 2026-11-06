@@ -2060,4 +2060,21 @@
     <string name="translator_description">支援雲端與本機模型、語音輸入和拍照取詞的文本翻譯</string>
     <string name="open_menu">開啟選單</string>
     <string name="search_results_truncated">部分來源已達搜尋上限，僅顯示部分結果</string>
+    <string name="permission_rationale_title">權限使用說明</string>
+    <string name="permission_rationale_description">為了你正在使用的這項功能，需要以下權限。拒絕後僅該功能無法使用。</string>
+    <string name="permission_rationale_media_title">照片和影片權限</string>
+    <string name="permission_rationale_media_description">用於選擇相簿中的圖片/影片進行編輯，並把處理結果儲存回相簿。</string>
+    <string name="permission_rationale_location_title">位置權限</string>
+    <string name="permission_rationale_location_description">用於顯示目前海拔、經緯度和指南針方位。</string>
+    <string name="permission_rationale_contacts_title">通訊錄權限</string>
+    <string name="permission_rationale_contacts_description">用於從通訊錄選擇聯絡人填入表單，不會上傳通訊錄。</string>
+    <string name="permission_rationale_calendar_title">行事曆權限</string>
+    <string name="permission_rationale_calendar_description">用於把待辦事項同步成系統行事曆。</string>
+    <string name="permission_rationale_notification_title">通知權限</string>
+    <string name="permission_rationale_notification_description">用於檔案傳輸進度、背景播放控制等通知。</string>
+    <string name="permission_rationale_install_title">安裝應用程式權限</string>
+    <string name="permission_rationale_install_description">用於下載完成後安裝新版本。</string>
+    <string name="permission_rationale_all_files_title">存取所有檔案</string>
+    <string name="permission_rationale_all_files_description">用於設定桌布和瀏覽非媒體檔案。</string>
+    <string name="privacy_item_storage_description">授權存取儲存空間，用於儲存產生或下載的檔案，以及選取相簿中的圖片/影片。</string>
 </resources>

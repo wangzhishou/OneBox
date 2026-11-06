@@ -2059,4 +2059,21 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
     <string name="translator_description">Terjemahkan teks dengan AI cloud atau di perangkat, input suara, dan OCR kamera</string>
     <string name="open_menu">Buka menu</string>
     <string name="search_results_truncated">Beberapa sumber telah mencapai batas pencarian. Hanya sebagian hasil yang ditampilkan.</string>
+    <string name="permission_rationale_title">Izin Diperlukan</string>
+    <string name="permission_rationale_description">Fitur ini memerlukan izin berikut. Jika ditolak, hanya fitur ini yang tidak tersedia.</string>
+    <string name="permission_rationale_media_title">Izin Foto dan Video</string>
+    <string name="permission_rationale_media_description">Digunakan untuk memilih gambar atau video dari galeri untuk diedit, lalu menyimpan hasilnya kembali ke galeri.</string>
+    <string name="permission_rationale_location_title">Izin Lokasi</string>
+    <string name="permission_rationale_location_description">Digunakan untuk menampilkan ketinggian, koordinat, dan arah kompas.</string>
+    <string name="permission_rationale_contacts_title">Izin Kontak</string>
+    <string name="permission_rationale_contacts_description">Digunakan untuk memilih kontak ke dalam formulir. Kontak tidak pernah diunggah.</string>
+    <string name="permission_rationale_calendar_title">Izin Kalender</string>
+    <string name="permission_rationale_calendar_description">Digunakan untuk menyimpan tugas sebagai acara kalender.</string>
+    <string name="permission_rationale_notification_title">Izin Notifikasi</string>
+    <string name="permission_rationale_notification_description">Digunakan untuk progres transfer file dan kontrol pemutaran di latar belakang.</string>
+    <string name="permission_rationale_install_title">Izin Instalasi</string>
+    <string name="permission_rationale_install_description">Digunakan untuk memasang versi baru setelah unduhan selesai.</string>
+    <string name="permission_rationale_all_files_title">Akses Semua File</string>
+    <string name="permission_rationale_all_files_description">Digunakan untuk mengatur wallpaper dan menjelajahi file non-media.</string>
+    <string name="privacy_item_storage_description">Akses penyimpanan untuk menyimpan file hasil pembuatan atau unduhan dan memilih gambar atau video dari galeri.</string>
 </resources>

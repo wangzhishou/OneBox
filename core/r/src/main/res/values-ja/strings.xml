@@ -2059,4 +2059,21 @@
     <string name="translator_description">クラウドまたはオンデバイス AI、音声入力、カメラ OCR でテキストを翻訳</string>
     <string name="open_menu">メニューを開く</string>
     <string name="search_results_truncated">検索上限に達したソースがあるため、結果の一部のみを表示しています。</string>
+    <string name="permission_rationale_title">権限の確認</string>
+    <string name="permission_rationale_description">この機能に次の権限が必要です。拒否した場合、この機能だけが使えなくなります。</string>
+    <string name="permission_rationale_media_title">写真と動画の権限</string>
+    <string name="permission_rationale_media_description">ギャラリーから画像や動画を選んで編集し、結果をギャラリーに保存するために使用します。</string>
+    <string name="permission_rationale_location_title">位置情報の権限</string>
+    <string name="permission_rationale_location_description">高度・緯度経度・コンパスの方位を表示するために使用します。</string>
+    <string name="permission_rationale_contacts_title">連絡先の権限</string>
+    <string name="permission_rationale_contacts_description">フォームに連絡先を入力するために使用します。連絡先はアップロードしません。</string>
+    <string name="permission_rationale_calendar_title">カレンダーの権限</string>
+    <string name="permission_rationale_calendar_description">ToDo をシステムのカレンダー予定として保存するために使用します。</string>
+    <string name="permission_rationale_notification_title">通知の権限</string>
+    <string name="permission_rationale_notification_description">ファイル転送の進捗やバックグラウンド再生の操作に使用します。</string>
+    <string name="permission_rationale_install_title">インストールの権限</string>
+    <string name="permission_rationale_install_description">ダウンロード後に新しいバージョンをインストールするために使用します。</string>
+    <string name="permission_rationale_all_files_title">すべてのファイルへのアクセス</string>
+    <string name="permission_rationale_all_files_description">壁紙の設定やメディア以外のファイルの閲覧に使用します。</string>
+    <string name="privacy_item_storage_description">生成・ダウンロードしたファイルの保存と、ギャラリーから画像や動画を選ぶためにストレージへアクセスします。</string>
 </resources>

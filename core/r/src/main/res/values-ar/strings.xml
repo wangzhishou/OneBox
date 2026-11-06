@@ -2104,4 +2104,21 @@
     <string name="translator_description">ترجمة النصوص بالذكاء الاصطناعي السحابي أو على الجهاز، مع الإدخال الصوتي والتعرف الضوئي بالكاميرا</string>
     <string name="open_menu">فتح القائمة</string>
     <string name="search_results_truncated">بلغت بعض المصادر حد البحث، لذا تُعرض نتائج جزئية فقط.</string>
+    <string name="permission_rationale_title">مطلوب إذن</string>
+    <string name="permission_rationale_description">تحتاج هذه الميزة إلى الأذونات التالية. إذا رفضت، فلن تتوفر هذه الميزة فقط.</string>
+    <string name="permission_rationale_media_title">إذن الصور والفيديو</string>
+    <string name="permission_rationale_media_description">يُستخدم لاختيار صور أو فيديوهات من المعرض لتحريرها ثم حفظ النتيجة في المعرض.</string>
+    <string name="permission_rationale_location_title">إذن الموقع</string>
+    <string name="permission_rationale_location_description">يُستخدم لعرض الارتفاع والإحداثيات واتجاه البوصلة.</string>
+    <string name="permission_rationale_contacts_title">إذن جهات الاتصال</string>
+    <string name="permission_rationale_contacts_description">يُستخدم لاختيار جهة اتصال في نموذج. لا يتم رفع جهات الاتصال أبداً.</string>
+    <string name="permission_rationale_calendar_title">إذن التقويم</string>
+    <string name="permission_rationale_calendar_description">يُستخدم لحفظ المهام كأحداث في تقويم النظام.</string>
+    <string name="permission_rationale_notification_title">إذن الإشعارات</string>
+    <string name="permission_rationale_notification_description">يُستخدم لتقدم نقل الملفات وأدوات التحكم في التشغيل بالخلفية.</string>
+    <string name="permission_rationale_install_title">إذن التثبيت</string>
+    <string name="permission_rationale_install_description">يُستخدم لتثبيت إصدار جديد بعد التنزيل.</string>
+    <string name="permission_rationale_all_files_title">الوصول إلى كل الملفات</string>
+    <string name="permission_rationale_all_files_description">يُستخدم لتعيين الخلفيات وتصفح الملفات غير الوسائطية.</string>
+    <string name="privacy_item_storage_description">الوصول إلى التخزين لحفظ الملفات التي تم إنشاؤها أو تنزيلها واختيار الصور أو الفيديوهات من المعرض.</string>
 </resources>

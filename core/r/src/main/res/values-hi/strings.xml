@@ -2070,4 +2070,21 @@
     <string name="translator_description">क्लाउड या ऑन-डिवाइस AI, वॉइस इनपुट और कैमरा OCR से टेक्स्ट का अनुवाद करें</string>
     <string name="open_menu">मेनू खोलें</string>
     <string name="search_results_truncated">कुछ स्रोत अपनी खोज सीमा तक पहुँच गए हैं। केवल आंशिक परिणाम दिखाए जा रहे हैं।</string>
+    <string name="permission_rationale_title">अनुमति आवश्यक है</string>
+    <string name="permission_rationale_description">इस सुविधा के लिए निम्नलिखित अनुमतियाँ चाहिए। मना करने पर केवल यही सुविधा उपलब्ध नहीं रहेगी।</string>
+    <string name="permission_rationale_media_title">फ़ोटो और वीडियो अनुमति</string>
+    <string name="permission_rationale_media_description">गैलरी से तस्वीरें या वीडियो चुनकर संपादित करने और परिणाम वापस गैलरी में सहेजने के लिए।</string>
+    <string name="permission_rationale_location_title">स्थान अनुमति</string>
+    <string name="permission_rationale_location_description">ऊँचाई, निर्देशांक और कम्पास दिशा दिखाने के लिए।</string>
+    <string name="permission_rationale_contacts_title">संपर्क अनुमति</string>
+    <string name="permission_rationale_contacts_description">फ़ॉर्म में संपर्क चुनने के लिए। संपर्क कभी अपलोड नहीं किए जाते।</string>
+    <string name="permission_rationale_calendar_title">कैलेंडर अनुमति</string>
+    <string name="permission_rationale_calendar_description">टू-डू को सिस्टम कैलेंडर इवेंट के रूप में सहेजने के लिए।</string>
+    <string name="permission_rationale_notification_title">सूचना अनुमति</string>
+    <string name="permission_rationale_notification_description">फ़ाइल स्थानांतरण की प्रगति और बैकग्राउंड प्लेबैक नियंत्रण के लिए।</string>
+    <string name="permission_rationale_install_title">इंस्टॉल अनुमति</string>
+    <string name="permission_rationale_install_description">डाउनलोड के बाद नया संस्करण इंस्टॉल करने के लिए।</string>
+    <string name="permission_rationale_all_files_title">सभी फ़ाइलों तक पहुँच</string>
+    <string name="permission_rationale_all_files_description">वॉलपेपर सेट करने और गैर-मीडिया फ़ाइलें ब्राउज़ करने के लिए।</string>
+    <string name="privacy_item_storage_description">स्टोरेज तक पहुँच, जिससे बनाई या डाउनलोड की गई फ़ाइलें सहेजी जा सकें और गैलरी से तस्वीरें या वीडियो चुने जा सकें।</string>
 </resources>

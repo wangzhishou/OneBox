@@ -2059,4 +2059,21 @@
     <string name="translator_description">클라우드 또는 온디바이스 AI, 음성 입력, 사진 OCR로 텍스트 번역</string>
     <string name="open_menu">메뉴 열기</string>
     <string name="search_results_truncated">일부 출처가 검색 한도에 도달하여 일부 결과만 표시합니다.</string>
+    <string name="permission_rationale_title">권한 안내</string>
+    <string name="permission_rationale_description">이 기능을 사용하려면 다음 권한이 필요합니다. 거부하면 이 기능만 사용할 수 없습니다.</string>
+    <string name="permission_rationale_media_title">사진 및 동영상 권한</string>
+    <string name="permission_rationale_media_description">갤러리에서 사진이나 동영상을 선택해 편집하고 결과를 다시 갤러리에 저장하는 데 사용합니다.</string>
+    <string name="permission_rationale_location_title">위치 권한</string>
+    <string name="permission_rationale_location_description">고도, 좌표, 나침반 방향을 표시하는 데 사용합니다.</string>
+    <string name="permission_rationale_contacts_title">연락처 권한</string>
+    <string name="permission_rationale_contacts_description">양식에 연락처를 불러오는 데 사용합니다. 연락처는 업로드하지 않습니다.</string>
+    <string name="permission_rationale_calendar_title">캘린더 권한</string>
+    <string name="permission_rationale_calendar_description">할 일을 시스템 캘린더 일정으로 저장하는 데 사용합니다.</string>
+    <string name="permission_rationale_notification_title">알림 권한</string>
+    <string name="permission_rationale_notification_description">파일 전송 진행률과 백그라운드 재생 제어에 사용합니다.</string>
+    <string name="permission_rationale_install_title">설치 권한</string>
+    <string name="permission_rationale_install_description">다운로드 후 새 버전을 설치하는 데 사용합니다.</string>
+    <string name="permission_rationale_all_files_title">모든 파일 접근</string>
+    <string name="permission_rationale_all_files_description">배경화면 설정과 미디어가 아닌 파일 탐색에 사용합니다.</string>
+    <string name="privacy_item_storage_description">생성하거나 다운로드한 파일을 저장하고 갤러리에서 사진이나 동영상을 고르기 위해 저장소에 접근합니다.</string>
 </resources>

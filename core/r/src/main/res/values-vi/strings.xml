@@ -2057,4 +2057,21 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <string name="translator_description">Dịch văn bản bằng AI đám mây hoặc trên thiết bị, nhập giọng nói và OCR bằng camera</string>
     <string name="open_menu">Mở trình đơn</string>
     <string name="search_results_truncated">Một số nguồn đã đạt giới hạn tìm kiếm. Chỉ hiển thị một phần kết quả.</string>
+    <string name="permission_rationale_title">Cần quyền truy cập</string>
+    <string name="permission_rationale_description">Tính năng này cần các quyền sau. Nếu từ chối, chỉ tính năng này không dùng được.</string>
+    <string name="permission_rationale_media_title">Quyền ảnh và video</string>
+    <string name="permission_rationale_media_description">Dùng để chọn ảnh hoặc video trong thư viện để chỉnh sửa và lưu kết quả trở lại thư viện.</string>
+    <string name="permission_rationale_location_title">Quyền vị trí</string>
+    <string name="permission_rationale_location_description">Dùng để hiển thị độ cao, tọa độ và hướng la bàn.</string>
+    <string name="permission_rationale_contacts_title">Quyền danh bạ</string>
+    <string name="permission_rationale_contacts_description">Dùng để chọn liên hệ vào biểu mẫu. Danh bạ không bao giờ được tải lên.</string>
+    <string name="permission_rationale_calendar_title">Quyền lịch</string>
+    <string name="permission_rationale_calendar_description">Dùng để lưu việc cần làm thành sự kiện trên lịch hệ thống.</string>
+    <string name="permission_rationale_notification_title">Quyền thông báo</string>
+    <string name="permission_rationale_notification_description">Dùng cho tiến trình truyền tệp và điều khiển phát ở chế độ nền.</string>
+    <string name="permission_rationale_install_title">Quyền cài đặt</string>
+    <string name="permission_rationale_install_description">Dùng để cài phiên bản mới sau khi tải xuống.</string>
+    <string name="permission_rationale_all_files_title">Truy cập tất cả tệp</string>
+    <string name="permission_rationale_all_files_description">Dùng để đặt hình nền và duyệt các tệp không phải media.</string>
+    <string name="privacy_item_storage_description">Truy cập bộ nhớ để lưu tệp được tạo hoặc tải xuống và chọn ảnh hoặc video từ thư viện.</string>
 </resources>

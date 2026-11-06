@@ -2070,4 +2070,21 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <string name="translator_description">Magsalin ng teksto gamit ang cloud o on-device AI, voice input, at camera OCR</string>
     <string name="open_menu">Buksan ang menu</string>
     <string name="search_results_truncated">Naabot na ng ilang pinagmulan ang limitasyon sa paghahanap. Mga bahagyang resulta lamang ang ipinapakita.</string>
+    <string name="permission_rationale_title">Kailangan ng Permiso</string>
+    <string name="permission_rationale_description">Kailangan ng feature na ito ang mga sumusunod na permiso. Kung tatanggihan mo, hindi lang available ang feature na ito.</string>
+    <string name="permission_rationale_media_title">Permiso sa Mga Larawan at Video</string>
+    <string name="permission_rationale_media_description">Ginagamit para pumili ng larawan o video mula sa gallery para i-edit, at i-save ang resulta pabalik sa gallery.</string>
+    <string name="permission_rationale_location_title">Permiso sa Lokasyon</string>
+    <string name="permission_rationale_location_description">Ginagamit para ipakita ang altitude, coordinate at direksyon ng compass.</string>
+    <string name="permission_rationale_contacts_title">Permiso sa Contacts</string>
+    <string name="permission_rationale_contacts_description">Ginagamit para pumili ng contact sa isang form. Hindi kailanman ina-upload ang contacts.</string>
+    <string name="permission_rationale_calendar_title">Permiso sa Calendar</string>
+    <string name="permission_rationale_calendar_description">Ginagamit para i-save ang mga to-do bilang event sa calendar.</string>
+    <string name="permission_rationale_notification_title">Permiso sa Notification</string>
+    <string name="permission_rationale_notification_description">Ginagamit para sa progreso ng paglilipat ng file at kontrol sa background na pag-play.</string>
+    <string name="permission_rationale_install_title">Permiso sa Pag-install</string>
+    <string name="permission_rationale_install_description">Ginagamit para i-install ang bagong bersyon pagkatapos i-download.</string>
+    <string name="permission_rationale_all_files_title">Access sa Lahat ng File</string>
+    <string name="permission_rationale_all_files_description">Ginagamit para mag-set ng wallpaper at mag-browse ng mga file na hindi media.</string>
+    <string name="privacy_item_storage_description">Access sa storage para i-save ang mga na-generate o na-download na file at pumili ng mga larawan o video mula sa gallery.</string>
 </resources>

@@ -2070,4 +2070,21 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
     <string name="translator_description">Texte mit Cloud- oder On-Device-KI, Spracheingabe und Kamera-OCR übersetzen</string>
     <string name="open_menu">Menü öffnen</string>
     <string name="search_results_truncated">Einige Quellen haben ihr Suchlimit erreicht. Es werden nur Teilergebnisse angezeigt.</string>
+    <string name="permission_rationale_title">Berechtigung erforderlich</string>
+    <string name="permission_rationale_description">Für diese Funktion werden die folgenden Berechtigungen benötigt. Wenn du ablehnst, ist nur diese Funktion nicht verfügbar.</string>
+    <string name="permission_rationale_media_title">Berechtigung für Fotos und Videos</string>
+    <string name="permission_rationale_media_description">Wird verwendet, um Bilder oder Videos aus deiner Galerie zum Bearbeiten auszuwählen und das Ergebnis wieder in der Galerie zu speichern.</string>
+    <string name="permission_rationale_location_title">Standortberechtigung</string>
+    <string name="permission_rationale_location_description">Wird verwendet, um Höhe, Koordinaten und Kompassrichtung anzuzeigen.</string>
+    <string name="permission_rationale_contacts_title">Kontaktberechtigung</string>
+    <string name="permission_rationale_contacts_description">Wird verwendet, um einen Kontakt in ein Formular zu übernehmen. Kontakte werden nie hochgeladen.</string>
+    <string name="permission_rationale_calendar_title">Kalenderberechtigung</string>
+    <string name="permission_rationale_calendar_description">Wird verwendet, um Aufgaben als Kalendereinträge zu speichern.</string>
+    <string name="permission_rationale_notification_title">Benachrichtigungsberechtigung</string>
+    <string name="permission_rationale_notification_description">Wird für den Fortschritt bei der Dateiübertragung und die Steuerung der Wiedergabe im Hintergrund verwendet.</string>
+    <string name="permission_rationale_install_title">Berechtigung zum Installieren</string>
+    <string name="permission_rationale_install_description">Wird verwendet, um nach dem Download eine neue Version zu installieren.</string>
+    <string name="permission_rationale_all_files_title">Zugriff auf alle Dateien</string>
+    <string name="permission_rationale_all_files_description">Wird verwendet, um Hintergrundbilder festzulegen und Dateien außerhalb der Mediathek zu durchsuchen.</string>
+    <string name="privacy_item_storage_description">Zugriff auf den Speicher, um erzeugte oder heruntergeladene Dateien zu speichern und Bilder oder Videos aus der Galerie auszuwählen.</string>
 </resources>
