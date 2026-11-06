@@ -1,0 +1,4 @@
+• Yapılacaklar listesi sekmeleri ve etkileşimleri iyileştirildi
+• PDF önizleme ve yerelleştirme sorunları düzeltildi
+• AI hizmet tokenları yapıştırılırken oluşan çökme düzeltildi
+• Çeviri ve geçmiş geri yükleme iyileştirildi

@@ -1,0 +1,4 @@
+• Pinabuti ang mga tab at interaction ng to-do list
+• Naayos ang PDF preview at mga isyu sa lokalisasyon
+• Naayos ang crash kapag nagpe-paste ng AI service token
+• Pinabuti ang pagsasalin at pag-restore ng history

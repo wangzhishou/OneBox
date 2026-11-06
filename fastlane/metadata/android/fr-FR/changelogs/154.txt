@@ -1,0 +1,4 @@
+• Onglets et interactions de la liste de tâches améliorés
+• Correction de l'aperçu PDF et de la localisation
+• Correction d'un plantage lors du collage de tokens de services IA
+• Traduction et restauration de l'historique améliorées

@@ -1,0 +1,4 @@
+• Improved to-do list tabs and interactions
+• Fixed PDF preview and localization issues
+• Fixed a crash when pasting AI service tokens
+• Improved translation and history restore

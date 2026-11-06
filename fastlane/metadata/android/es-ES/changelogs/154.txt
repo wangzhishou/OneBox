@@ -1,0 +1,4 @@
+• Pestañas e interacción de la lista de tareas mejoradas
+• Corrección de la vista previa de PDF y de la localización
+• Corrección de un fallo al pegar tokens de servicios de IA
+• Restauración de traducción e historial mejorada

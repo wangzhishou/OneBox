@@ -1,0 +1,4 @@
+• Cải thiện tab và tương tác danh sách việc cần làm
+• Sửa lỗi xem trước PDF và bản địa hóa
+• Sửa lỗi crash khi dán token dịch vụ AI
+• Cải thiện dịch thuật và khôi phục lịch sử

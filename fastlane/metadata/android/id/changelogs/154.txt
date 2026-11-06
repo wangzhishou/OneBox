@@ -1,0 +1,4 @@
+• Tab dan interaksi daftar tugas ditingkatkan
+• Perbaikan pratinjau PDF dan pelokalan
+• Perbaikan crash saat menempel token layanan AI
+• Penerjemahan dan pemulihan riwayat ditingkatkan

@@ -1,0 +1,4 @@
+• Verbesserte Tabs und Interaktionen der Aufgabenliste
+• PDF-Vorschau und Lokalisierungsprobleme behoben
+• Absturz beim Einfügen von KI-Dienst-Tokens behoben
+• Übersetzung und Verlaufswiederherstellung verbessert
