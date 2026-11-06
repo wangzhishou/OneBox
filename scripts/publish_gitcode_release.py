@@ -125,9 +125,20 @@ def list_attachments(tag: str, token: str):
 
 
 def delete_attachment(tag: str, name: str, token: str) -> None:
+    status, resp = request("GET", with_token(f"{API_BASE}/repos/{REPO}/releases/tags/{tag}", token), token)
+    attach_id = None
+    if status == 200 and isinstance(resp, dict):
+        for a in resp.get("assets") or []:
+            if a.get("name") == name:
+                attach_id = a.get("id")
+                break
+    if attach_id is None:
+        print(f"[warn] 未找到附件 {name},跳过删除")
+        return
+    # GitCode 删除附件要 attach_file_id(不是文件名),tag 可代替 release_id
     status, _ = request(
         "DELETE",
-        with_token(f"{API_BASE}/repos/{REPO}/releases/{tag}/attach_files/{urllib.parse.quote(name)}", token),
+        with_token(f"{API_BASE}/repos/{REPO}/releases/{tag}/attach_files/{attach_id}", token),
         token,
     )
     print(f"[{'ok' if status in (200, 204) else 'warn'}] 删除同名附件 {name} -> {status}")

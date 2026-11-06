@@ -423,7 +423,7 @@ jobs:
   create_release:
     if: needs.build_and_release.outputs.should_publish_release == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 90
     permissions:
       contents: write
     needs:
