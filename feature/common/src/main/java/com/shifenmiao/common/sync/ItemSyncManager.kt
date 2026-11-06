@@ -113,6 +113,8 @@ class ItemSyncManager @Inject constructor(
      * 因此版本变化时先清空全部同步水位。
      */
     fun syncAllOnAppLaunch() {
+        // 隐私政策弹窗还在时不许联网;同意后会由 AppComponent 补调本方法,故这里不能消耗去重标记
+        if (CoreUtils.isShowPrivacyPolicyDialog()) return
         if (!appLaunchSyncCalled.compareAndSet(false, true)) return
         // 与同步间隔无关:老安装不重新同步时,也要立刻能用英文/别名搜到条目
         scope.launch(ioDispatcher) { backfillKeywordDefaultsIfNeeded() }
@@ -169,6 +171,8 @@ class ItemSyncManager @Inject constructor(
      * 控制（默认 1 天），内容更新频率低时可在服务端调大。
      */
     fun syncOnPageEnter(listType: ListItemType) {
+        // 同意隐私政策前首页已在后台组合,此处也必须先挡掉
+        if (CoreUtils.isShowPrivacyPolicyDialog()) return
         val now = System.currentTimeMillis()
         if (now - AppSharedStorage.loadPageEnterSyncAt(listType.id) < getPageEnterCooldownMs()) return
         AppSharedStorage.savePageEnterSyncAt(listType.id, now)

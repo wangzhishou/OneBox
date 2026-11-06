@@ -44,16 +44,14 @@ fun rememberClipboardData(): State<List<Uri>> {
         context.getSystemService<ClipboardManager>()
     }
 
-    val clip = remember {
+    // 只在进入页面时读一次,之后靠剪贴板变化监听更新;
+    // 重组(滚动/动画等)不得重复读系统剪贴板,否则会被判定超频次收集
+    val clip = remember(allowPaste) {
         mutableStateOf(
             if (allowPaste) {
                 clipboardManager.clipList()
             } else emptyList()
         )
-    }.apply {
-        value = if (allowPaste) {
-            clipboardManager.clipList()
-        } else emptyList()
     }
 
     val callback = remember {
@@ -84,16 +82,13 @@ fun rememberClipboardText(): State<String> {
         context.getSystemService<ClipboardManager>()
     }
 
-    val clip = remember {
+    // 同 rememberClipboardData:进入页面读一次 + 监听更新,重组不复读
+    val clip = remember(allowPaste) {
         mutableStateOf(
             if (allowPaste) {
                 clipboardManager.clipText()
             } else ""
         )
-    }.apply {
-        value = if (allowPaste) {
-            clipboardManager.clipText()
-        } else ""
     }
 
     val callback = remember {

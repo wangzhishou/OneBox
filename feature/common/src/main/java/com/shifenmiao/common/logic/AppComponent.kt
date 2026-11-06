@@ -87,6 +87,7 @@ class AppComponent @AssistedInject internal constructor(
     private val aiEngineManagerLazy: Lazy<AIEngineManager>,
     private val aiEngineCatalogManagerLazy: Lazy<AIEngineCatalogManager>,
     private val aiEngineSyncManagerLazy: Lazy<AIEngineSyncManager>,
+    private val itemSyncManagerLazy: Lazy<com.shifenmiao.common.sync.ItemSyncManager>,
     val ttsService: com.shifenmiao.tts.service.TTSService,
     private val channelConfig: ChannelConfig,
 ) : CommonComponent(
@@ -218,6 +219,8 @@ class AppComponent @AssistedInject internal constructor(
             initSensor()
             initRemoteConfig()
             initUrl()
+            // 同意前被拦下的启动同步(ItemSyncManager 内有弹窗挡板),在这里补触发
+            itemSyncManagerLazy.get().syncAllOnAppLaunch()
         }
     }
 
