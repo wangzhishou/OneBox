@@ -45,8 +45,23 @@ AI 理解、执行、反馈,一气呵成。
 - **画中画机器人,不必干等**:Agent 任务要跑一阵?直接退出 App 去做别的——AI 会话进行中离开时自动进入系统画中画,小窗里的机器人实时反馈任务进度,点一下即可回到结果。原生 PiP 能力,无需任何权限。
 - **一个入口,多家模型**:一个对话入口接入多家主流大模型,支持自定义 AI 引擎与提示词管理。
 - **自带 Key,零成本用 AI**:填入任意 OpenAI 兼容服务的 API Key 即可解锁全部 AI 能力——接上 Gemini、OpenRouter 等的免费额度,AI 助手和 Agent 零成本跑起来。(自定义引擎在海外版与自行构建的版本中完全开放;中国商店版为 VIP 能力)
-- **模型跑在手机上,全程离线**:在 App 内直接下载本地模型(Gemma 3 1B 或 Qwen3 0.6B),也可以从存储导入自己的 `.litertlm` 文件,断网也能聊——不登录、不消耗积分,推理全部在端侧由 LiteRT-LM 完成(仅 Google Play 版与 FOSS 构建;国内渠道不编入端侧推理库)。
+- **模型跑在手机上,全程离线**:在 App 内直接下载本地模型(Gemma 3 1B 或 Qwen3 0.6B),也可以从存储导入自己的 `.litertlm` 文件,断网也能聊——不登录、不消耗积分,推理全部在端侧由 LiteRT-LM 完成(仅 Google Play 版与 FOSS 构建;国内渠道不编入端侧推理库)。端侧翻译、端侧图片识字同样在手机上跑,见下一节。
 - **代码透明,隐私可见**:所有代码公开可查——数据如何在本地处理、哪些信息绝不上传,一目了然。你不再需要“相信”我们,而是可以亲自验证。
+
+## 端侧 AI:聊天、翻译、认字都不联网
+
+三个功能把模型放在手机上。模型就位之后,不联网、不登录、不扣积分。
+
+| 用途 | 运行时 | 模型 | 下载体积 |
+| --- | --- | --- | --- |
+| 聊天 | LiteRT-LM | Gemma 3 1B(int4)、Qwen3 0.6B,或自己的 `.litertlm` | 约 585 MB / 615 MB |
+| 翻译 | LiteRT-LM | 腾讯 Hy-MT2 1.8B | 约 1.8 GB |
+| 图片认字 | ONNX Runtime + OpenCV | PP-OCRv6 small | 约 26 MB |
+
+- **聊天**:下载推荐模型,或从存储导入任意 `.litertlm`(复制进 App,原文件可以删),设为聊天模型即可。优先 GPU,失败回退 CPU;上下文 4K token;内存吃紧时释放引擎,不拖垮 App。
+- **翻译**:快速、默认、本地三种模式。本地模式在端侧跑 Hy-MT2,20 种语言加自动检测;拍图先经端侧 OCR,照片不上传。翻译本身不登录、不扣积分;朗读是另一条云端 TTS,要登录也要积分。
+- **图片认字**:PP-OCRv6 模型包 26 MB,下载一次并校验 SHA-256;支持中英日和常见拉丁文字;按行复制、导出 Markdown、存笔记、保留历史。
+- **边界**:长文档、表格和图像理解仍走云端,端侧 OCR 只出文字。LiteRT-LM 只编进 Google Play 版和 FOSS 构建(`feature/ai/src/litertlm/`),国内包是空实现,端侧聊天和翻译在国内不可用;端侧 OCR 所有构建都有。
 
 ## 文件打开:一个 App 打开 100+ 种文件
 
@@ -141,6 +156,8 @@ AI 理解、执行、反馈,一气呵成。
 | --- | --- | --- |
 | `feature/pdf-tools` | PDF 工具箱 | 预览、图片转 PDF、PDF 转图片、合并、拆分、压缩、旋转、页面管理 |
 | `feature/ocr-document` | OCR 识别 | OCR 文档识别与格式转换,任务状态追踪、结果预览与导出 |
+| `feature/on-device-ocr` | 端侧识字 | PP-OCRv6 离线识字:按行复制、导出 Markdown、存笔记、识别历史 |
+| `feature/translator` | 翻译 | 20 种语言加自动检测,拍图 OCR、语音输入、朗读;本地 Hy-MT2 1.8B 可离线翻译 |
 | `feature/document-scanner` | 文档扫描 | 扫描纸质文档生成图片 / PDF |
 | `feature/markdown-edit` | Markdown 编辑器 | 所见即所得编辑,支持导出 PDF |
 | `feature/code-editor` | 代码编辑器 | 语法高亮、文件读写与历史记录 |
@@ -261,6 +278,7 @@ AI 理解、执行、反馈,一气呵成。
 - **构建约定**：`build-logic/convention` 中的自定义 Gradle convention plugins
 - **数据持久化**：SQLite / Room（`AppDatabase`）、MMKV（按模块使用）
 - **网络与图片**：Retrofit / OkHttp、Coil
+- **端侧推理**：LiteRT-LM 负责聊天与翻译(`.litertlm` 模型),ONNX Runtime + OpenCV 负责 OCR
 
 ## 仓库结构概览
 
@@ -412,9 +430,11 @@ GitHub Release 只挂海外包（google/foss 各 arm64），国内 6 渠道包�
 
 - `feature/ai/`：AI 对话、Agent Loop、工具调用执行、交互式工具桥接
 - `feature/ai/src/litertlm/`：端侧推理实现(LiteRT-LM，`LiteRtLmRuntime` / `LocalModelDirectoryRegistry`)——仅 Google Play / FOSS 渠道编入，国内渠道编译降级 stub
+- `feature/on-device-ocr/`：PP-OCRv6 走 ONNX Runtime + OpenCV(`PpOcrV6Engine`)；模型包下载到 `filesDir/ocr_models/` 并校验 SHA-256
+- `feature/translator/`：`TranslationService` 有本地 / 快速 / 默认三种模式；本地模式用 LiteRT-LM 跑 Hy-MT2 1.8B，拍图复用端侧 OCR
 - `feature/common/`：AI 引擎目录、引擎同步、共享管理器
 - `feature/settings/`：AI 引擎与工作模型配置入口
-- `feature/settings/.../local/`：本地模型管理页——下载推荐模型、从存储导入 `.litertlm`、设为当前聊天模型
+- `feature/settings/.../local/`：本地模型管理页——下载推荐模型、从存储导入 `.litertlm`、设为当前聊天模型;装好 Hy-MT2 后翻译页的“本地”模式自动可用
 
 本地模型文件放在 `filesDir/local_models/`；设为聊天模型后首次使用时加载，GPU 后端初始化失败会自动回退 CPU 后端。
 

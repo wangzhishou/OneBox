@@ -47,8 +47,23 @@ It understands, acts, and reports back — in one flow.
 - **Picture-in-picture robot, no more waiting around**: long agent task? Just leave the app — with an active AI session it drops into system picture-in-picture, where the mini-window robot keeps you posted on progress and one tap brings you back to the result. Native PiP, zero permissions required.
 - **One chat, many models**: talk to multiple mainstream LLMs from a single entry, with custom AI engines and prompt management.
 - **Bring your own key — use it for free**: drop in any OpenAI-compatible API key (including free tiers like Gemini or OpenRouter's free models) and the full assistant + agent is yours at zero cost. Custom engines, endpoints and tokens are fully open in the Google Play build and in builds from this repo.
-- **Models that run on the phone — fully offline**: download a local model (Gemma 3 1B or Qwen3 0.6B) inside the app, or import your own `.litertlm` file, and chat without network, account or token cost — inference runs entirely on-device via LiteRT-LM (Google Play and FOSS builds only).
+- **Models that run on the phone — fully offline**: download a local model (Gemma 3 1B or Qwen3 0.6B) inside the app, or import your own `.litertlm` file, and chat without network, account or token cost — inference runs entirely on-device via LiteRT-LM (Google Play and FOSS builds only). Translation and reading text from photos have on-device paths too — see [On-Device AI](#on-device-ai-chat-translate-and-read-photos-without-a-network).
 - **Transparent by source**: every line is public — how data is processed locally and what never leaves the device is something you can verify, not a promise you have to trust.
+
+## On-Device AI: Chat, Translate and Read Photos Without a Network
+
+Three things in OneBox run on the phone itself. Once the model is on the device, they work without a network, an account or points.
+
+| Task | Runtime | Model | Download |
+| --- | --- | --- | --- |
+| Chat | LiteRT-LM | Gemma 3 1B (int4), Qwen3 0.6B, or your own `.litertlm` | ~585 MB / ~615 MB |
+| Translate | LiteRT-LM | Tencent Hy-MT2 1.8B | ~1.8 GB |
+| Read text in photos | ONNX Runtime + OpenCV | PP-OCRv6 small | ~26 MB |
+
+- **Chat**: download a recommended model or import any `.litertlm` from storage (it is copied in, so the original can go), then set it as the chat model. GPU first, CPU fallback, 4K context; memory pressure releases the engine instead of killing the app.
+- **Translate**: Fast, Default and Local modes. Local runs Hy-MT2 on-device in 20 languages plus auto-detect; camera input goes through the on-device OCR, so the photo is not uploaded. No login or points for the translation itself — read-aloud is a separate cloud TTS call that needs both.
+- **Read text in photos**: the 26 MB PP-OCRv6 pack is downloaded once and SHA-256 checked. Chinese, English, Japanese and common Latin scripts; copy by line, export Markdown, save as a note, history.
+- **Limits**: long documents, tables and image understanding still go to cloud models — on-device OCR returns text only. LiteRT-LM ships in the Google Play and FOSS builds (`feature/ai/src/litertlm/`); domestic builds compile a stub, so local chat and translation are missing there, while OCR is in every build.
 
 ## File Opening: 100+ Formats in One App
 
@@ -143,6 +158,8 @@ OneBox ships **107 feature modules**. Local tools run entirely on-device; only t
 | --- | --- | --- |
 | `feature/pdf-tools` | PDF Toolbox | Preview, image → PDF, PDF → image, merge, split, compress, rotate, page management |
 | `feature/ocr-document` | OCR | OCR recognition and format conversion with task tracking, preview and export |
+| `feature/on-device-ocr` | On-Device OCR | Offline photo text recognition (PP-OCRv6): copy by line, Markdown export, notes, history |
+| `feature/translator` | Translate | 20 languages with auto-detect, camera OCR, voice input, read-aloud; offline with Hy-MT2 1.8B |
 | `feature/document-scanner` | Document Scanner | Scan paper documents into images / PDF |
 | `feature/markdown-edit` | Markdown Editor | WYSIWYG Markdown editing, export to PDF |
 | `feature/code-editor` | Code Editor | Syntax highlighting, file I/O and history |
@@ -263,6 +280,7 @@ OneBox ships **107 feature modules**. Local tools run entirely on-device; only t
 - **Build conventions**: custom Gradle convention plugins in `build-logic/convention`
 - **Persistence**: SQLite / Room (`AppDatabase`), MMKV (per-module)
 - **Network & images**: Retrofit / OkHttp, Coil
+- **On-device inference**: LiteRT-LM for chat and translation (`.litertlm` models), ONNX Runtime + OpenCV for OCR
 
 ## Repository Structure
 
@@ -397,9 +415,11 @@ AI features are composed from several modules:
 
 - `feature/ai/`: AI chat, agent loop, tool-call execution, interactive tool bridging
 - `feature/ai/src/litertlm/`: on-device inference through LiteRT-LM (`LiteRtLmRuntime`, `LocalModelDirectoryRegistry`) — Google Play / FOSS builds, other channels compile a stub runtime
+- `feature/on-device-ocr/`: PP-OCRv6 on ONNX Runtime + OpenCV (`PpOcrV6Engine`); model pack in `filesDir/ocr_models/`, SHA-256 verified
+- `feature/translator/`: `TranslationService` with Local / Fast / Default modes; Local runs Hy-MT2 1.8B on LiteRT-LM and reuses the on-device OCR for camera input
 - `feature/common/`: AI engine catalog, engine sync, shared managers
 - `feature/settings/`: AI engine, model and working-mode configuration UI
-- `feature/settings/.../local/`: local model management — download recommended models, import a `.litertlm` file, set as the chat model
+- `feature/settings/.../local/`: local model management — download recommended models, import a `.litertlm` file, set one as the chat model; an installed Hy-MT2 shows up in the translator's Local mode
 
 Local model files live in `filesDir/local_models/`; the one set as the chat model is loaded on first use, and inference falls back to the CPU backend when the GPU backend fails to initialize.
 
