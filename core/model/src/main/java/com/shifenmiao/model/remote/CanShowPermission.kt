@@ -13,7 +13,7 @@ enum class CanShowPermission(val canShow: Boolean) {
                 FlavorType.XIAOMI -> DISABLED
                 FlavorType.YYB -> DISABLED
                 FlavorType.OPPO -> DISABLED
-                FlavorType.VIVO -> DISABLED
+                FlavorType.VIVO -> ENABLED
                 FlavorType.HUAWEI -> ENABLED
                 else -> {
                     DISABLED
