@@ -498,6 +498,8 @@ tasks.matching { it.name.startsWith("assembleGoogle") && it.name.endsWith("Relea
     .configureEach { dependsOn(writeCrashlyticsMappingFileIds) }
 
 aboutLibraries {
+    // 许可证定义随仓库携带(app/config/licenses),构建时不联网抓取,保证 F-Droid 可复现构建
+    collect.configPath.set(file("config"))
     export.excludeFields.addAll("generated")
 }
 
