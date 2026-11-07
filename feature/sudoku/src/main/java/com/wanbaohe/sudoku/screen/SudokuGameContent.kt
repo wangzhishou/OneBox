@@ -1,6 +1,5 @@
 package com.wanbaohe.sudoku.screen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -31,11 +31,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -49,21 +48,25 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LinePause
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTimer
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
-import com.wanbaohe.core.ui.widget.glass.glassThick
-import com.wanbaohe.core.ui.widget.glass.glassThin
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.widget.glass.tintedGlassContentColor
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.sudoku.R
 import com.wanbaohe.sudoku.component.SudokuComponent
 import com.wanbaohe.sudoku.component.SudokuUiState
 import com.wanbaohe.sudoku.data.SudokuTimerMode
 import com.wanbaohe.sudoku.logic.SudokuEngine
-import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.filled.MoreVert
 
 /**
  * 核心层: 对局页。顶栏右侧 = 提示/撤销/溢出菜单;
  * 9×9 棋盘 + 信息行三卡(难度/已填/用时) + 两行数字键盘。
+ *
+ * 棋盘格子的层级全部交给 GlassStyle 阶梯, 容器色只带色调; 信息卡与键盘走精选卡
+ * 那套彩色玻璃 + 自动可读文字色, 不再用 surface 平涂。
  */
 @Composable
 fun SudokuGameContent(
@@ -174,7 +177,11 @@ private fun SudokuBoard(
 ) {
     BoxWithConstraints(
         modifier = modifier
-            .glassThick(shape = RoundedCornerShape(OneBoxDesignSystem.largeRadius))
+            .glassBackground(
+                style = GlassStyle.Thick,
+                color = MaterialTheme.colorScheme.surfaceContainer,
+                shape = RoundedCornerShape(OneBoxDesignSystem.largeRadius)
+            )
             .padding(BOARD_PADDING)
     ) {
         // maxWidth 已是扣掉 BOARD_PADDING 之后的内容宽度, 不用再减一遍
@@ -237,23 +244,31 @@ private fun SudokuCell(
     val isError = state.settings.autoCheck && !given && entry != 0 &&
         state.solution.getOrNull(index)?.let { it != entry } == true
 
-    val containerColor = when {
-        selected -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.32f)
-        isError -> MaterialTheme.colorScheme.errorContainer
-        sameNumber -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.18f)
-        related -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.08f)
-        else -> MaterialTheme.colorScheme.surfaceContainer
+    val colorScheme = MaterialTheme.colorScheme
+    val (cellTint, cellStyle) = when {
+        selected -> colorScheme.primaryContainer to GlassStyle.Thick
+        isError -> colorScheme.errorContainer to GlassStyle.Thick
+        sameNumber -> colorScheme.secondaryContainer to GlassStyle.Regular
+        related -> colorScheme.primaryContainer to GlassStyle.Thin
+        else -> colorScheme.surfaceContainer to GlassStyle.Thin
     }
-    val digitColor = when {
-        isError -> MaterialTheme.colorScheme.onErrorContainer
-        given -> MaterialTheme.colorScheme.onSurface
-        else -> MaterialTheme.colorScheme.onPrimaryContainer
+    // 格子底色深浅由 GlassStyle 决定, 文字色按混合后的有效底色取, 任意主题都读得清
+    val digitColor = if (isError) {
+        colorScheme.onErrorContainer
+    } else {
+        val ink = tintedGlassContentColor(cellTint)
+        if (given) ink.copy(alpha = 0.78f) else ink
     }
 
     Box(
         modifier = modifier
             .aspectRatio(1f)
-            .glassThin(shape = RoundedCornerShape(6.dp), color = containerColor)
+            .glassBackground(
+                style = cellStyle,
+                color = cellTint,
+                shape = RoundedCornerShape(6.dp),
+                borderWidth = if (selected) 1.2.dp else 0.6.dp
+            )
             .clickable { onClick(index) },
         contentAlignment = Alignment.Center
     ) {
@@ -261,7 +276,7 @@ private fun SudokuCell(
             Text(
                 text = entry.toString(),
                 fontSize = fontSize.sp,
-                fontWeight = if (given) FontWeight.Bold else FontWeight.Medium,
+                fontWeight = if (given) FontWeight.SemiBold else FontWeight.Bold,
                 color = digitColor
             )
         }
@@ -293,12 +308,14 @@ private fun InfoRow(
     ) {
         InfoCard(
             modifier = Modifier.weight(1f),
+            palette = sudokuPalette(SudokuTint.PRIMARY),
             icon = Icons.Outlined.LineBarChart,
             label = stringResource(R.string.sudoku_stat_difficulty),
             value = difficultyLabel(state.difficulty)
         )
         InfoCard(
             modifier = Modifier.weight(1f),
+            palette = sudokuPalette(SudokuTint.SECONDARY),
             icon = Icons.Outlined.LineGrid4x4,
             label = stringResource(R.string.sudoku_stat_filled),
             value = stringResource(R.string.sudoku_stat_filled_value, filledCount)
@@ -306,8 +323,10 @@ private fun InfoRow(
         // 计时模式 = 关闭时藏掉用时卡; 手动模式点卡片开始/暂停
         if (state.settings.timerMode != SudokuTimerMode.OFF) {
             val manual = state.settings.timerMode == SudokuTimerMode.MANUAL
+            val timePalette = sudokuPalette(SudokuTint.TERTIARY)
             InfoCard(
                 modifier = Modifier.weight(1f),
+                palette = timePalette,
                 icon = Icons.Outlined.LineTimer,
                 label = stringResource(R.string.sudoku_stat_time),
                 value = formatSudokuTime(state.elapsedSeconds),
@@ -327,8 +346,8 @@ private fun InfoRow(
                                     R.string.sudoku_timer_start
                                 }
                             ),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(16.dp)
+                            tint = timePalette.ink,
+                            modifier = Modifier.size(14.dp)
                         )
                     }
                 } else null
@@ -342,6 +361,7 @@ private fun InfoCard(
     icon: ImageVector,
     label: String,
     value: String,
+    palette: SudokuPalette,
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
     trailing: (@Composable () -> Unit)? = null
@@ -349,30 +369,44 @@ private fun InfoCard(
     val shape = RoundedCornerShape(OneBoxDesignSystem.mediumRadius)
     Row(
         modifier = modifier
-            .clip(shape)
-            .background(MaterialTheme.colorScheme.surface)
+            .glassBackground(style = GlassStyle.Thick, color = palette.tint, shape = shape)
             .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
-            .padding(horizontal = 12.dp, vertical = 10.dp),
+            .padding(horizontal = 8.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(6.dp)
     ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-            modifier = Modifier.size(20.dp)
-        )
+        Box(
+            modifier = Modifier
+                .size(22.dp)
+                .glassBackground(
+                    style = GlassStyle.Thick,
+                    color = palette.icon,
+                    shape = CircleShape
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = palette.tint,
+                modifier = Modifier.size(13.dp)
+            )
+        }
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = palette.ink.copy(alpha = 0.72f),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
             Text(
                 text = value,
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface
+                color = palette.ink,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
         trailing?.invoke()
@@ -414,14 +448,17 @@ private fun NumberPad(
                     onClick = { component.onDigitInput(digit) }
                 )
             }
+            val erasePalette = sudokuPalette(SudokuTint.TERTIARY)
             KeyButton(
                 modifier = Modifier.weight(1f),
                 enabled = eraseEnabled,
+                palette = erasePalette,
                 onClick = component::onErase
             ) {
                 Icon(
                     imageVector = Icons.Outlined.LineBackspace,
                     contentDescription = stringResource(R.string.sudoku_erase),
+                    tint = erasePalette.ink,
                     modifier = Modifier.size(22.dp)
                 )
             }
@@ -436,15 +473,21 @@ private fun NumberKey(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // 上排 / 下排各一个主题色, 擦除键单独用第三色, 键盘有层次但不抢棋盘
+    val palette = sudokuPalette(
+        if (digit <= 5) SudokuTint.PRIMARY else SudokuTint.SECONDARY
+    )
     KeyButton(
         modifier = modifier,
         enabled = enabled,
+        palette = palette,
         onClick = onClick
     ) {
         Text(
             text = digit.toString(),
             style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.SemiBold,
+            color = palette.ink
         )
     }
 }
@@ -452,16 +495,20 @@ private fun NumberKey(
 @Composable
 private fun KeyButton(
     enabled: Boolean,
+    palette: SudokuPalette,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
     Box(
         modifier = modifier
-            .height(52.dp)
+            .height(54.dp)
             .alpha(if (enabled) 1f else 0.35f)
-            .clip(RoundedCornerShape(OneBoxDesignSystem.mediumRadius))
-            .background(MaterialTheme.colorScheme.surface)
+            .glassBackground(
+                style = GlassStyle.Thin,
+                color = palette.tint,
+                shape = RoundedCornerShape(OneBoxDesignSystem.mediumRadius)
+            )
             .then(if (enabled) Modifier.clickable(onClick = onClick) else Modifier),
         contentAlignment = Alignment.Center
     ) {

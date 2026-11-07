@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -37,15 +38,20 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineEmojiEvents
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMedal
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTimer
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedButton
+import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
-import com.wanbaohe.core.ui.widget.system.OneBoxSectionCard
 import com.wanbaohe.sudoku.R
 import com.wanbaohe.sudoku.component.SudokuComponent
 
 /**
  * 反馈层: 完成结算页。81 格全部与解一致时替换对局页显示。
  * 不做分享, 主按钮"再来一局"直接按刚完成的难度开新局。
+ *
+ * 整卡用强调色玻璃 + 自动可读文字, 两张数据卡轮换第二/第三主题色,
+ * 按钮反色从卡片里跳出来 —— 不再出现写死绿色这种不跟主题走的色块。
  */
 @Composable
 fun SudokuCompleteContent(
@@ -53,6 +59,7 @@ fun SudokuCompleteContent(
     bottomInset: Dp = 0.dp
 ) {
     val state by component.uiState.collectAsState()
+    val palette = sudokuPalette(SudokuTint.PRIMARY)
 
     BaseScreen(
         modifier = Modifier.padding(bottom = bottomInset),
@@ -68,12 +75,18 @@ fun SudokuCompleteContent(
         ) {
             Spacer(modifier = Modifier.height(OneBoxDesignSystem.sectionSpacing))
 
-            OneBoxSectionCard {
+            GlassCard(
+                shape = OneBoxDesignSystem.sectionCardShape,
+                style = GlassStyle.Thick,
+                colors = tintedGlassCardColors(palette.tint)
+            ) {
                 Column(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(OneBoxDesignSystem.cardPadding),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    TrophyWithConfetti()
+                    TrophyWithConfetti(palette = palette)
 
                     Spacer(modifier = Modifier.height(OneBoxDesignSystem.blockSpacing))
 
@@ -81,14 +94,34 @@ fun SudokuCompleteContent(
                         text = stringResource(R.string.sudoku_complete_title),
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = palette.ink
                     )
+                    Spacer(modifier = Modifier.height(OneBoxDesignSystem.microSpacing))
                     Text(
                         text = stringResource(R.string.sudoku_complete_subtitle),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = palette.ink.copy(alpha = 0.72f),
                         textAlign = TextAlign.Center
                     )
+
+                    Spacer(modifier = Modifier.height(OneBoxDesignSystem.itemSpacing))
+
+                    Box(
+                        modifier = Modifier
+                            .glassBackground(
+                                style = GlassStyle.Thick,
+                                color = palette.icon,
+                                shape = RoundedCornerShape(OneBoxDesignSystem.pillRadius)
+                            )
+                            .padding(horizontal = 12.dp, vertical = 6.dp)
+                    ) {
+                        Text(
+                            text = difficultyLabel(state.difficulty),
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = palette.tint
+                        )
+                    }
 
                     Spacer(modifier = Modifier.height(OneBoxDesignSystem.sectionSpacing))
 
@@ -98,15 +131,15 @@ fun SudokuCompleteContent(
                     ) {
                         CompleteStatCard(
                             modifier = Modifier.weight(1f),
+                            palette = sudokuPalette(SudokuTint.SECONDARY),
                             icon = Icons.Outlined.LineTimer,
-                            accent = MaterialTheme.colorScheme.onPrimaryContainer,
                             label = stringResource(R.string.sudoku_complete_time),
                             value = formatSudokuTime(state.elapsedSeconds)
                         )
                         CompleteStatCard(
                             modifier = Modifier.weight(1f),
+                            palette = sudokuPalette(SudokuTint.TERTIARY),
                             icon = Icons.Outlined.LineMedal,
-                            accent = Color(0xFF43A047),
                             label = stringResource(R.string.sudoku_complete_best),
                             value = state.completedBestSeconds?.let(::formatSudokuTime)
                                 ?: stringResource(R.string.sudoku_time_none)
@@ -118,8 +151,8 @@ fun SudokuCompleteContent(
                     EnhancedButton(
                         onClick = component::onPlayAgain,
                         modifier = Modifier.fillMaxWidth(),
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                        containerColor = palette.ink,
+                        contentColor = palette.tint
                     ) {
                         Text(
                             text = stringResource(R.string.sudoku_play_again),
@@ -137,12 +170,13 @@ fun SudokuCompleteContent(
 
 /** 奖杯 + 周围一圈彩带色点, 点缀色有意不走主题(庆祝彩带就该是五彩的)。 */
 @Composable
-private fun TrophyWithConfetti() {
+private fun TrophyWithConfetti(palette: SudokuPalette) {
     Box(
         modifier = Modifier.size(120.dp),
         contentAlignment = Alignment.Center
     ) {
-        CONFETTI.forEach { (offsetX, offsetY, color) ->            Box(
+        CONFETTI.forEach { (offsetX, offsetY, color) ->
+            Box(
                 modifier = Modifier
                     .align(Alignment.Center)
                     .offset(x = offsetX, y = offsetY)
@@ -151,12 +185,23 @@ private fun TrophyWithConfetti() {
                     .background(color)
             )
         }
-        Icon(
-            imageVector = Icons.Outlined.LineEmojiEvents,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-            modifier = Modifier.size(72.dp)
-        )
+        Box(
+            modifier = Modifier
+                .size(76.dp)
+                .glassBackground(
+                    style = GlassStyle.Thick,
+                    color = palette.icon,
+                    shape = CircleShape
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.LineEmojiEvents,
+                contentDescription = null,
+                tint = palette.tint,
+                modifier = Modifier.size(44.dp)
+            )
+        }
     }
 }
 
@@ -171,8 +216,8 @@ private val CONFETTI = listOf(
 
 @Composable
 private fun CompleteStatCard(
+    palette: SudokuPalette,
     icon: ImageVector,
-    accent: Color,
     label: String,
     value: String,
     modifier: Modifier = Modifier
@@ -180,29 +225,41 @@ private fun CompleteStatCard(
     Column(
         modifier = modifier
             .glassBackground(
-                color = accent,
-                shape = androidx.compose.foundation.shape.RoundedCornerShape(OneBoxDesignSystem.mediumRadius),
+                style = GlassStyle.Dense,
+                color = palette.tint,
+                shape = RoundedCornerShape(OneBoxDesignSystem.mediumRadius)
             )
             .padding(vertical = OneBoxDesignSystem.blockSpacing),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.microSpacing)
     ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = accent,
-            modifier = Modifier.size(24.dp)
-        )
+        Box(
+            modifier = Modifier
+                .size(30.dp)
+                .glassBackground(
+                    style = GlassStyle.Thick,
+                    color = palette.icon,
+                    shape = CircleShape
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = palette.tint,
+                modifier = Modifier.size(17.dp)
+            )
+        }
         Text(
             text = label,
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = palette.ink.copy(alpha = 0.72f)
         )
         Text(
             text = value,
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurface
+            color = palette.ink
         )
     }
 }

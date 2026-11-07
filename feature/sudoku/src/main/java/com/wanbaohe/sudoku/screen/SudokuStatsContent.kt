@@ -2,7 +2,6 @@ package com.wanbaohe.sudoku.screen
 
 import android.graphics.Paint
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,7 +32,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -53,6 +51,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineCheckCircleOutline
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineGrid4x4
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMedal
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTimer
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.system.OneBoxSectionCard
 import com.wanbaohe.core.ui.widget.system.OneBoxSectionHeader
@@ -66,6 +66,9 @@ import kotlin.math.roundToInt
 /**
  * 沉淀层: 统计页。4 数据卡 + 胜率环形图 + 最佳时间 + 难度分布柱状图 + 完成趋势折线图。
  * 图表全部 Canvas 自绘; 无数据时整页空态, 不进图表分支。
+ *
+ * 所有图标徽章与图表色都取自精选卡那套四色轮换, 难度柱按难度着色,
+ * 不再混用写死的绿色 / onErrorContainer。
  */
 @Composable
 fun SudokuStatsContent(
@@ -81,18 +84,41 @@ fun SudokuStatsContent(
         onGoBack = component::onTabBack
     ) {
         if (records.isEmpty()) {
+            val palette = sudokuPalette(SudokuTint.PRIMARY)
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(OneBoxDesignSystem.screenPadding),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = stringResource(R.string.sudoku_stats_empty),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center
-                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(72.dp)
+                            .glassBackground(
+                                style = GlassStyle.Thick,
+                                color = palette.icon,
+                                shape = CircleShape
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.LineBarChart,
+                            contentDescription = null,
+                            tint = palette.tint,
+                            modifier = Modifier.size(36.dp)
+                        )
+                    }
+                    Text(
+                        text = stringResource(R.string.sudoku_stats_empty),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
             return@BaseScreen
         }
@@ -136,29 +162,29 @@ private fun OverviewCard(records: List<SudokuRecord>) {
         Row(modifier = Modifier.fillMaxWidth()) {
             OverviewItem(
                 modifier = Modifier.weight(1f),
+                theme = SudokuTint.PRIMARY,
                 icon = Icons.Outlined.LineGrid4x4,
-                iconAccent = MaterialTheme.colorScheme.onPrimaryContainer,
                 value = SudokuStats.totalGames(records).toString(),
                 label = stringResource(R.string.sudoku_stats_total)
             )
             OverviewItem(
                 modifier = Modifier.weight(1f),
+                theme = SudokuTint.SECONDARY,
                 icon = Icons.Outlined.LineCheckCircleOutline,
-                iconAccent = Color(0xFF43A047),
                 value = SudokuStats.completedGames(records).toString(),
                 label = stringResource(R.string.sudoku_stats_completed)
             )
             OverviewItem(
                 modifier = Modifier.weight(1f),
+                theme = SudokuTint.TERTIARY,
                 icon = Icons.Outlined.LineTimer,
-                iconAccent = MaterialTheme.colorScheme.onTertiaryContainer,
                 value = SudokuStats.unfinishedGames(records).toString(),
                 label = stringResource(R.string.sudoku_stats_unfinished)
             )
             OverviewItem(
                 modifier = Modifier.weight(1f),
+                theme = SudokuTint.NEUTRAL,
                 icon = Icons.Outlined.LineBarChart,
-                iconAccent = MaterialTheme.colorScheme.onErrorContainer,
                 value = SudokuStats.averageTimeSeconds(records)?.let(::formatSudokuTime)
                     ?: stringResource(R.string.sudoku_time_none),
                 label = stringResource(R.string.sudoku_stats_avg_time)
@@ -170,11 +196,12 @@ private fun OverviewCard(records: List<SudokuRecord>) {
 @Composable
 private fun OverviewItem(
     icon: ImageVector,
-    iconAccent: Color,
+    theme: SudokuTint,
     value: String,
     label: String,
     modifier: Modifier = Modifier
 ) {
+    val palette = sudokuPalette(theme)
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -183,14 +210,17 @@ private fun OverviewItem(
         Box(
             modifier = Modifier
                 .size(36.dp)
-                .clip(CircleShape)
-                .background(iconAccent.copy(alpha = 0.12f)),
+                .glassBackground(
+                    style = GlassStyle.Thick,
+                    color = palette.icon,
+                    shape = CircleShape
+                ),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = iconAccent,
+                tint = palette.tint,
                 modifier = Modifier.size(20.dp)
             )
         }
@@ -218,7 +248,10 @@ private fun WinRateCard(
     modifier: Modifier = Modifier
 ) {
     val rate = SudokuStats.winRate(records)
-    val ringColor = MaterialTheme.colorScheme.onPrimaryContainer
+    val ringColors = listOf(
+        sudokuPalette(SudokuTint.PRIMARY).icon,
+        sudokuPalette(SudokuTint.TERTIARY).icon
+    )
     val trackColor = MaterialTheme.colorScheme.surfaceContainer
 
     OneBoxSectionCard(modifier = modifier) {
@@ -248,7 +281,7 @@ private fun WinRateCard(
                         style = Stroke(width = strokeWidth)
                     )
                     drawArc(
-                        color = ringColor,
+                        brush = Brush.sweepGradient(ringColors),
                         startAngle = -90f,
                         sweepAngle = 360f * rate,
                         useCenter = false,
@@ -286,19 +319,23 @@ private fun BestTimeCard(
     records: List<SudokuRecord>,
     modifier: Modifier = Modifier
 ) {
+    val palette = sudokuPalette(SudokuTint.SECONDARY)
     OneBoxSectionCard(modifier = modifier) {
         Column(verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.microSpacing)) {
             Box(
                 modifier = Modifier
                     .size(36.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.12f)),
+                    .glassBackground(
+                        style = GlassStyle.Thick,
+                        color = palette.icon,
+                        shape = CircleShape
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Outlined.LineMedal,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                    tint = palette.tint,
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -330,8 +367,10 @@ private fun BestTimeCard(
 private fun DistributionCard(records: List<SudokuRecord>) {
     val distribution = SudokuStats.completedByDifficulty(records)
     val difficulties = SudokuDifficulty.entries
-    val barColor = MaterialTheme.colorScheme.onPrimaryContainer
-    val labelColor = MaterialTheme.colorScheme.onSurfaceVariant
+    // Palette 是 Composable, Canvas 的 DrawScope 不是 —— 颜色在进 Canvas 前算好
+    val barColors = difficulties.map { sudokuPalette(difficultyTint(it)).icon }
+    val labelColors = difficulties.map { sudokuPalette(difficultyTint(it)).icon }
+    val countColor = MaterialTheme.colorScheme.onSurfaceVariant
 
     OneBoxSectionCard {
         OneBoxSectionHeader(
@@ -346,7 +385,7 @@ private fun DistributionCard(records: List<SudokuRecord>) {
         ) {
             val maxCount = maxOf(difficulties.maxOf { distribution[it] ?: 0 }, 1)
             val labelPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-                color = labelColor.toArgb()
+                color = countColor.toArgb()
                 textSize = 11.sp.toPx()
                 textAlign = Paint.Align.CENTER
             }
@@ -362,7 +401,7 @@ private fun DistributionCard(records: List<SudokuRecord>) {
                 val left = slotWidth * index + (slotWidth - barWidth) / 2
                 val top = size.height - barHeight.coerceAtLeast(4.dp.toPx())
                 drawRoundRect(
-                    color = barColor.copy(alpha = if (count == 0) 0.25f else 0.85f),
+                    color = barColors[index].copy(alpha = if (count == 0) 0.25f else 0.9f),
                     topLeft = Offset(left, top),
                     size = Size(barWidth, size.height - top),
                     cornerRadius = androidx.compose.ui.geometry.CornerRadius(6.dp.toPx(), 6.dp.toPx())
@@ -376,12 +415,12 @@ private fun DistributionCard(records: List<SudokuRecord>) {
             }
         }
         Row(modifier = Modifier.fillMaxWidth()) {
-            difficulties.forEach { difficulty ->
+            difficulties.forEachIndexed { index, difficulty ->
                 Text(
                     text = difficultyLabel(difficulty),
                     modifier = Modifier.weight(1f),
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = labelColors[index],
                     textAlign = TextAlign.Center
                 )
             }
@@ -399,7 +438,8 @@ private fun TrendCard(records: List<SudokuRecord>) {
     val daily = remember(records, selectedDays) {
         SudokuStats.dailyCompletions(records, selectedDays, System.currentTimeMillis())
     }
-    val lineColor = MaterialTheme.colorScheme.onPrimaryContainer
+    val lineColor = sudokuPalette(SudokuTint.PRIMARY).icon
+    val areaColor = sudokuPalette(SudokuTint.TERTIARY).icon
 
     OneBoxSectionCard {
         Row(
@@ -453,7 +493,7 @@ private fun TrendCard(records: List<SudokuRecord>) {
                 brush = Brush.verticalGradient(
                     colors = listOf(
                         lineColor.copy(alpha = 0.25f),
-                        lineColor.copy(alpha = 0.02f)
+                        areaColor.copy(alpha = 0.02f)
                     )
                 )
             )
@@ -482,10 +522,15 @@ private fun TrendSegmented(
     selected: Int,
     onSelect: (Int) -> Unit
 ) {
+    val shape = RoundedCornerShape(OneBoxDesignSystem.pillRadius)
+    val selectedPalette = sudokuPalette(SudokuTint.PRIMARY)
     Row(
         modifier = Modifier
-            .clip(RoundedCornerShape(OneBoxDesignSystem.pillRadius))
-            .background(MaterialTheme.colorScheme.surfaceContainer)
+            .glassBackground(
+                style = GlassStyle.Thin,
+                color = MaterialTheme.colorScheme.surfaceContainer,
+                shape = shape
+            )
             .padding(3.dp),
         horizontalArrangement = Arrangement.spacedBy(2.dp)
     ) {
@@ -493,10 +538,18 @@ private fun TrendSegmented(
             val isSelected = days == selected
             Box(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(OneBoxDesignSystem.pillRadius))
-                    .background(
-                        if (isSelected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent
+                    .then(
+                        if (isSelected) {
+                            Modifier.glassBackground(
+                                style = GlassStyle.Thick,
+                                color = selectedPalette.tint,
+                                shape = shape
+                            )
+                        } else {
+                            Modifier
+                        }
                     )
+                    .clip(shape)
                     .clickable { onSelect(days) }
                     .padding(horizontal = 12.dp, vertical = 6.dp)
             ) {
@@ -504,7 +557,7 @@ private fun TrendSegmented(
                     text = stringResource(R.string.sudoku_stats_days, days),
                     style = MaterialTheme.typography.labelMedium,
                     color = if (isSelected) {
-                        MaterialTheme.colorScheme.onPrimaryContainer
+                        selectedPalette.ink
                     } else {
                         MaterialTheme.colorScheme.onSurfaceVariant
                     }

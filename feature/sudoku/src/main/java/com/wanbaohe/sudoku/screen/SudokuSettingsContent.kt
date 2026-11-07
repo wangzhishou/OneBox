@@ -1,7 +1,9 @@
 package com.wanbaohe.sudoku.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,7 +11,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -24,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
@@ -33,7 +39,9 @@ import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSwitch
+import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.system.OneBoxSectionCard
 import com.wanbaohe.core.ui.widget.system.OneBoxSectionHeader
@@ -70,7 +78,10 @@ fun SudokuSettingsContent(
         ) {
             Spacer(modifier = Modifier.height(OneBoxDesignSystem.screenTopSpacing))
 
-            OneBoxSectionHeader(title = stringResource(R.string.sudoku_settings_section_game))
+            SudokuSectionHeader(
+                title = stringResource(R.string.sudoku_settings_section_game),
+                theme = SudokuTint.PRIMARY
+            )
             OneBoxSectionCard(
                 verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.settingRowSpacing)
             ) {
@@ -114,7 +125,10 @@ fun SudokuSettingsContent(
                 )
             }
 
-            OneBoxSectionHeader(title = stringResource(R.string.sudoku_settings_section_sound))
+            SudokuSectionHeader(
+                title = stringResource(R.string.sudoku_settings_section_sound),
+                theme = SudokuTint.TERTIARY
+            )
             OneBoxSectionCard(
                 verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.settingRowSpacing)
             ) {
@@ -150,6 +164,27 @@ fun SudokuSettingsContent(
 
 // ─── 行组件 ────────────────────────────────────────────────────────────────
 
+/** 分区标题前的主题色竖条, 让两个分组各自带一个识别色。 */
+@Composable
+private fun SudokuSectionHeader(
+    title: String,
+    theme: SudokuTint
+) {
+    val palette = sudokuPalette(theme)
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing)
+    ) {
+        Box(
+            modifier = Modifier
+                .size(width = 4.dp, height = 18.dp)
+                .clip(RoundedCornerShape(OneBoxDesignSystem.pillRadius))
+                .background(palette.icon)
+        )
+        OneBoxSectionHeader(title = title)
+    }
+}
+
 @Composable
 private fun ValueSetting(
     title: String,
@@ -174,11 +209,24 @@ private fun ValueSetting(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
-        Icon(
-            imageVector = Icons.Outlined.LineChevronRight,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+        val palette = sudokuPalette(SudokuTint.PRIMARY)
+        Box(
+            modifier = Modifier
+                .size(28.dp)
+                .glassBackground(
+                    style = GlassStyle.Thin,
+                    color = palette.tint,
+                    shape = CircleShape
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.LineChevronRight,
+                contentDescription = null,
+                tint = palette.icon,
+                modifier = Modifier.size(16.dp)
+            )
+        }
     }
 }
 
@@ -219,11 +267,10 @@ private fun TimerModeSetting(
     selected: SudokuTimerMode,
     onSelect: (SudokuTimerMode) -> Unit
 ) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column(modifier = Modifier.weight(1f)) {
+    val shape = RoundedCornerShape(OneBoxDesignSystem.pillRadius)
+    val selectedPalette = sudokuPalette(SudokuTint.SECONDARY)
+    Column(verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing)) {
+        Column {
             Text(
                 text = stringResource(R.string.sudoku_settings_timer_mode),
                 style = MaterialTheme.typography.titleSmall,
@@ -235,20 +282,50 @@ private fun TimerModeSetting(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
-        SudokuTimerMode.entries.forEach { mode ->
-            Row(
-                modifier = Modifier.clickable { onSelect(mode) },
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                RadioButton(
-                    selected = mode == selected,
-                    onClick = { onSelect(mode) }
+        // 三段玻璃分段控件: 比三个 RadioButton 挤在一行更整齐, 选中态走主题色
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .glassBackground(
+                    style = GlassStyle.Thin,
+                    color = MaterialTheme.colorScheme.surfaceContainer,
+                    shape = shape
                 )
-                Text(
-                    text = timerModeLabel(mode),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
+                .padding(3.dp),
+            horizontalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+            SudokuTimerMode.entries.forEach { mode ->
+                val isSelected = mode == selected
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .then(
+                            if (isSelected) {
+                                Modifier.glassBackground(
+                                    style = GlassStyle.Thick,
+                                    color = selectedPalette.tint,
+                                    shape = shape
+                                )
+                            } else {
+                                Modifier
+                            }
+                        )
+                        .clip(shape)
+                        .clickable { onSelect(mode) }
+                        .padding(vertical = 8.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = timerModeLabel(mode),
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                        color = if (isSelected) {
+                            selectedPalette.ink
+                        } else {
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                        }
+                    )
+                }
             }
         }
     }

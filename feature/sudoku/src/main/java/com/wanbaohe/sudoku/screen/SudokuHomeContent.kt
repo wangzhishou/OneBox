@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -26,13 +27,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
+import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
-import com.wanbaohe.core.ui.widget.system.OneBoxSectionCard
 import com.wanbaohe.sudoku.R
 import com.wanbaohe.sudoku.component.SudokuComponent
 import com.wanbaohe.sudoku.logic.SudokuDifficulty
@@ -40,6 +45,9 @@ import com.wanbaohe.sudoku.logic.SudokuDifficulty
 /**
  * 入口层: 难度选择页。
  * 「继续游戏」卡片(有未完成快照时) + 简单/中等/困难三张难度卡。
+ *
+ * 配色跟随首页精选大卡: 四色轮换的彩色玻璃容器 + 按混合后底色自动取深浅的文字,
+ * 徽章用容器反色, 难度用三段色条表达递进。
  */
 @Composable
 fun SudokuHomeContent(
@@ -64,20 +72,22 @@ fun SudokuHomeContent(
 
             if (state.hasSavedGame) {
                 HomeActionCard(
-                    accent = MaterialTheme.colorScheme.onPrimaryContainer,
+                    palette = sudokuPalette(SudokuTint.PRIMARY),
                     title = stringResource(R.string.sudoku_continue_title),
                     subtitle = stringResource(R.string.sudoku_continue_subtitle, state.savedFilledCount),
                     filledCells = CONTINUE_GRID_PATTERN,
+                    level = 0,
                     onClick = component::continueSavedGame
                 )
             }
 
             SudokuDifficulty.entries.forEachIndexed { index, difficulty ->
                 HomeActionCard(
-                    accent = difficultyAccent(difficulty),
+                    palette = sudokuPalette(difficultyTint(difficulty)),
                     title = difficultyLabel(difficulty),
                     subtitle = stringResource(R.string.sudoku_difficulty_desc, difficulty.givens),
                     filledCells = DIFFICULTY_GRID_PATTERNS[index],
+                    level = difficulty.ordinal + 1,
                     onClick = { component.startNewGame(difficulty) }
                 )
             }
@@ -85,14 +95,6 @@ fun SudokuHomeContent(
             Spacer(modifier = Modifier.height(OneBoxDesignSystem.blockSpacing))
         }
     }
-}
-
-/** 难度卡配色: 主题三色, 难度越高越贴近强调色(onPrimaryContainer), 界面整体跟随主题变化。 */
-@Composable
-private fun difficultyAccent(difficulty: SudokuDifficulty): Color = when (difficulty) {
-    SudokuDifficulty.EASY -> MaterialTheme.colorScheme.onTertiaryContainer
-    SudokuDifficulty.MEDIUM -> MaterialTheme.colorScheme.onSecondaryContainer
-    SudokuDifficulty.HARD -> MaterialTheme.colorScheme.onPrimaryContainer
 }
 
 @Composable
@@ -104,53 +106,107 @@ internal fun difficultyLabel(difficulty: SudokuDifficulty): String = when (diffi
 
 @Composable
 private fun HomeActionCard(
-    accent: Color,
+    palette: SudokuPalette,
     title: String,
     subtitle: String,
     filledCells: List<Boolean>,
+    level: Int,
     onClick: () -> Unit
 ) {
-    OneBoxSectionCard(
+    GlassCard(
         onClick = onClick,
-        containerColor = accent
+        shape = OneBoxDesignSystem.sectionCardShape,
+        style = GlassStyle.Thick,
+        colors = tintedGlassCardColors(palette.tint)
     ) {
         Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(OneBoxDesignSystem.cardPadding),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing)
+            horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing)
         ) {
-            MiniGrid(accent = accent, filledCells = filledCells)
+            // 徽章用容器反色: 深色主题下自动翻成浅色块, 始终是卡片里最跳的一块
+            Box(
+                modifier = Modifier
+                    .size(56.dp)
+                    .glassBackground(
+                        style = GlassStyle.Thick,
+                        color = palette.icon,
+                        shape = RoundedCornerShape(OneBoxDesignSystem.mediumRadius)
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                MiniGrid(accent = palette.tint, filledCells = filledCells)
+            }
+
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = palette.ink,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
+                if (level > 0) {
+                    Spacer(modifier = Modifier.height(6.dp))
+                    DifficultyMeter(level = level, palette = palette)
+                    Spacer(modifier = Modifier.height(6.dp))
+                } else {
+                    Spacer(modifier = Modifier.height(4.dp))
+                }
                 Text(
                     text = subtitle,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    style = MaterialTheme.typography.bodySmall,
+                    color = palette.ink.copy(alpha = 0.72f),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
+
             Box(
                 modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
-                    .background(accent.copy(alpha = 0.18f)),
+                    .size(36.dp)
+                    .glassBackground(
+                        style = GlassStyle.Thick,
+                        color = palette.icon,
+                        shape = CircleShape
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Outlined.LineChevronRight,
                     contentDescription = null,
-                    tint = accent,
-                    modifier = Modifier.size(22.dp)
+                    tint = palette.tint,
+                    modifier = Modifier.size(20.dp)
                 )
             }
         }
     }
 }
 
-/** 卡片左侧的 3×3 小宫格点缀, 深色格 = 主题点缀色, 浅色格 = 同色低透明度。 */
+/** 三段色条: 实心段数 = 难度等级, 比文字标签更直观也不占翻译资源。 */
+@Composable
+private fun DifficultyMeter(
+    level: Int,
+    palette: SudokuPalette
+) {
+    Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+        repeat(3) { index ->
+            Box(
+                modifier = Modifier
+                    .size(width = 14.dp, height = 4.dp)
+                    .clip(RoundedCornerShape(OneBoxDesignSystem.pillRadius))
+                    .background(
+                        if (index < level) palette.icon else palette.ink.copy(alpha = 0.22f)
+                    )
+            )
+        }
+    }
+}
+
+/** 徽章里的 3×3 小宫格, 实心格 = 反色, 空格 = 同色低透明度(纯装饰绘制)。 */
 @Composable
 private fun MiniGrid(
     accent: Color,
@@ -164,7 +220,7 @@ private fun MiniGrid(
                         modifier = Modifier
                             .size(10.dp)
                             .clip(RoundedCornerShape(2.dp))
-                            .background(if (filled) accent else accent.copy(alpha = 0.25f))
+                            .background(if (filled) accent else accent.copy(alpha = 0.3f))
                     )
                 }
             }
