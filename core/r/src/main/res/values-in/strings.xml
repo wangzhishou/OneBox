@@ -193,6 +193,7 @@
     <string name="wechat_login_not_installed">WeChat tidak terpasang. Silakan masuk dengan cara lain.</string>
     <string name="wechat_login_failed">Gagal masuk dengan WeChat. Silakan coba lagi.</string>
     <string name="google_login">Masuk dengan Google</string>
+    <string name="login_or">atau</string>
     <string name="empty_string" />
     <string name="navigate_back">Kembali</string>
     <string name="default_user_name">Masuk / Daftar</string>

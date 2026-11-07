@@ -193,6 +193,7 @@
     <string name="wechat_login_not_installed">WeChatがインストールされていません。別の方法でログインしてください。</string>
     <string name="wechat_login_failed">WeChatログインに失敗しました。もう一度お試しください。</string>
     <string name="google_login">Googleログイン</string>
+    <string name="login_or">または</string>
     <string name="empty_string" />
     <string name="navigate_back">戻る</string>
     <string name="default_user_name">ログイン / 登録</string>

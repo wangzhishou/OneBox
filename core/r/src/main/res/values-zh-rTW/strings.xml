@@ -221,6 +221,7 @@
     <string name="wechat_login_not_installed">未安裝微信，請改用其他登入方式</string>
     <string name="wechat_login_failed">微信登入失敗，請重試</string>
     <string name="google_login">Google 登入</string>
+    <string name="login_or">或</string>
     <string name="empty_string"></string>
     <string name="navigate_back">返回上一頁</string>
     <string name="default_user_name">登入/註冊</string>

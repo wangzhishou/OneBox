@@ -3,6 +3,7 @@ package com.shifenmiao.login.ui
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -65,7 +66,10 @@ fun RegistrationInputs(
 
         // Registration Submit Button
         PrimaryButton(
-            modifier = Modifier.padding(top = AppTheme.dimens.paddingExtraLarge),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = AppTheme.dimens.paddingExtraLarge)
+                .requiredHeight(AppTheme.dimens.normalButtonHeight),
             text = stringResource(id = R.string.registration_button_text),
             onClick = onSubmit
         )

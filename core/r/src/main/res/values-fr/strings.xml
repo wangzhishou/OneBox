@@ -222,6 +222,7 @@
     <string name="wechat_login_not_installed">WeChat n\'est pas installé. Connectez-vous autrement.</string>
     <string name="wechat_login_failed">Échec de la connexion avec WeChat. Réessayez.</string>
     <string name="google_login">Connexion Google</string>
+    <string name="login_or">ou</string>
     <string name="empty_string"></string>
     <string name="navigate_back">Retour à la page précédente</string>
     <string name="default_user_name">Connexion/Inscription</string>

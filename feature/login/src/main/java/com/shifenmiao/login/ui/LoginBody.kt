@@ -2,13 +2,13 @@ package com.shifenmiao.login.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
@@ -20,7 +20,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -159,26 +158,23 @@ fun PhoneLoginBox(
             sendType = 1
         )
         Spacer(modifier = Modifier.height(AppTheme.dimens.paddingNormal))
-        Row(
-            modifier = Modifier.padding(0.dp, AppTheme.dimens.paddingNormal),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Login Submit Button
-            PrimaryButton(
-                enable = !loginState.isLoggingIn,
-                text = stringResource(id = R.string.login_button_text),
-                onClick = {
-                    loginWithAgreementCheck(
-                        isUserAgreementChecked = isUserAgreementChecked.value,
-                        showAgreementDialog = showAgreementDialog,
-                        setConfirmAction = setConfirmAction,
-                    ) {
-                        loginFun.invoke()
-                    }
+        // Login Submit Button
+        PrimaryButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .requiredHeight(AppTheme.dimens.normalButtonHeight),
+            enable = !loginState.isLoggingIn,
+            text = stringResource(id = R.string.login_button_text),
+            onClick = {
+                loginWithAgreementCheck(
+                    isUserAgreementChecked = isUserAgreementChecked.value,
+                    showAgreementDialog = showAgreementDialog,
+                    setConfirmAction = setConfirmAction,
+                ) {
+                    loginFun.invoke()
                 }
-            )
-        }
+            }
+        )
     }
 }
 
@@ -224,26 +220,24 @@ fun CodeLoginBox(
             errorText = stringResource(id = loginState.errorState.verificationCodeErrorState.errorMessageStringResource)
         )
 
-        Row(
-            modifier = Modifier.padding(0.dp, AppTheme.dimens.paddingNormal),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Login Submit Button
-            PrimaryButton(
-                enable = !loginState.isLoggingIn,
-                text = stringResource(id = R.string.login_button_text),
-                onClick = {
-                    loginWithAgreementCheck(
-                        isUserAgreementChecked = isUserAgreementChecked.value,
-                        showAgreementDialog = showAgreementDialog,
-                        setConfirmAction = setConfirmAction,
-                    ) {
-                        confirmFunction.invoke()
-                    }
+        Spacer(modifier = Modifier.height(AppTheme.dimens.paddingNormal))
+        // Login Submit Button
+        PrimaryButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .requiredHeight(AppTheme.dimens.normalButtonHeight),
+            enable = !loginState.isLoggingIn,
+            text = stringResource(id = R.string.login_button_text),
+            onClick = {
+                loginWithAgreementCheck(
+                    isUserAgreementChecked = isUserAgreementChecked.value,
+                    showAgreementDialog = showAgreementDialog,
+                    setConfirmAction = setConfirmAction,
+                ) {
+                    confirmFunction.invoke()
                 }
-            )
-        }
+            }
+        )
     }
 }
 

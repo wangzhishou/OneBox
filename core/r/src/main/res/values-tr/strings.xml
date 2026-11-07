@@ -193,6 +193,7 @@
     <string name="wechat_login_not_installed">WeChat yüklü değil. Lütfen başka bir yolla giriş yapın.</string>
     <string name="wechat_login_failed">WeChat ile giriş başarısız oldu. Lütfen tekrar deneyin.</string>
     <string name="google_login">Google ile Giriş</string>
+    <string name="login_or">veya</string>
     <string name="empty_string" />
     <string name="navigate_back">Geri dön</string>
     <string name="default_user_name">Giriş Yap / Kayıt Ol</string>

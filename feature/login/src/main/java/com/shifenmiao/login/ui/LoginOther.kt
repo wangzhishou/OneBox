@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -45,6 +46,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineKey
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.system.OneBoxLeadingIconBadge
 import com.wanbaohe.core.ui.widget.system.OneBoxListItem
 import dagger.hilt.android.EntryPointAccessors
@@ -68,6 +70,7 @@ fun LoginOther(
         ).getChannelConfig()
     }
     val enableWechat = channelConfig.enableWechat
+    val enableGoogle = channelConfig.enableGms || CoreUtils.isOneBoxDebug()
 
     // 从微信返回时兜底复位 loading：微信侧取消/拒绝可能不回任何回调，
     // 不处理的话登录页会一直停在「转圈 + 全灰」，看着像卡死。
@@ -93,12 +96,21 @@ fun LoginOther(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = AppTheme.dimens.paddingLarge),
+                .padding(top = AppTheme.dimens.paddingNormal),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
             UserAgreement(
                 isUserAgreementChecked = isUserAgreementChecked,
+            )
+        }
+
+        if (enableWechat || enableGoogle) {
+            LoginOrDivider(
+                modifier = Modifier.padding(
+                    top = AppTheme.dimens.paddingLarge,
+                    bottom = AppTheme.dimens.paddingNormal,
+                )
             )
         }
 
@@ -113,6 +125,8 @@ fun LoginOther(
                 containerColor = Color(0xFF07C160),
                 contentColor = Color.White,
                 textStyle = MaterialTheme.typography.titleMedium,
+                // 品牌绿要实底：关掉玻璃时走平涂会被洗淡，白字对比度不够
+                glassStyle = GlassStyle.None,
                 icon = {
                     if (loginState.loggingInMethod == LoginMethod.WECHAT) {
                         CircularProgressIndicator(
@@ -139,8 +153,10 @@ fun LoginOther(
             )
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
-        if (channelConfig.enableGms || CoreUtils.isOneBoxDebug()) {
+        if (enableWechat && enableGoogle) {
+            Spacer(modifier = Modifier.height(AppTheme.dimens.paddingNormal))
+        }
+        if (enableGoogle) {
             PrimaryButton(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -215,6 +231,32 @@ fun LoginOther(
                 onClick = onNavigateToAddEngine,
             )
         }
+    }
+}
+
+/**
+ * 「—— 或 ——」：把表单登录和第三方登录在视觉上分成两组
+ */
+@Composable
+private fun LoginOrDivider(modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        HorizontalDivider(
+            modifier = Modifier.weight(1f),
+            color = MaterialTheme.colorScheme.outlineVariant,
+        )
+        Text(
+            modifier = Modifier.padding(horizontal = AppTheme.dimens.paddingNormal),
+            text = stringResource(id = R.string.login_or),
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        HorizontalDivider(
+            modifier = Modifier.weight(1f),
+            color = MaterialTheme.colorScheme.outlineVariant,
+        )
     }
 }
 

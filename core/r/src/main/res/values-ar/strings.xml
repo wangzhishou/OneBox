@@ -200,6 +200,7 @@
     <string name="wechat_login_not_installed">WeChat غير مثبّت. يُرجى تسجيل الدخول بطريقة أخرى.</string>
     <string name="wechat_login_failed">فشل تسجيل الدخول عبر WeChat. يُرجى المحاولة مرة أخرى.</string>
     <string name="google_login">تسجيل الدخول عبر Google</string>
+    <string name="login_or">أو</string>
     <string name="empty_string"></string>
     <string name="navigate_back">رجوع</string>
     <string name="default_user_name">تسجيل الدخول / إنشاء حساب</string>

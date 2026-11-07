@@ -2,11 +2,15 @@ package com.shifenmiao.login.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.dp
 import com.shifenmiao.core.R
 import com.shifenmiao.model.webview.WebViewParams
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
@@ -27,6 +31,7 @@ fun UserAgreement(
         UserAgreementCheckbox(
             isUserAgreementChecked = isUserAgreementChecked,
         )
+        Spacer(modifier = Modifier.width(8.dp))
         HtmlText(
             html = getString(R.string.user_privacy).trimIndent(),
             style = MaterialTheme.typography.labelSmall.copy(

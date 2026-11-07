@@ -193,6 +193,7 @@
     <string name="wechat_login_not_installed">Hindi naka-install ang WeChat. Mag-sign in sa ibang paraan.</string>
     <string name="wechat_login_failed">Nabigo ang pag-sign in sa WeChat. Subukan muli.</string>
     <string name="google_login">Google Login</string>
+    <string name="login_or">o</string>
     <string name="empty_string" />
     <string name="navigate_back">Bumalik</string>
     <string name="default_user_name">Mag-login / Magrehistro</string>

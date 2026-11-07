@@ -42,6 +42,7 @@ import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.core.ui.widget.glass.glassMedium
 
 @Immutable
@@ -341,6 +342,8 @@ fun OneBoxOutlinedTextField(
  * 出现同一个 App 里两套按钮样式的割裂感。
  *
  * @param leadingIcon 可选前置图标（16dp 由调用方自行约束，见 [OneBoxButtonIcon]）
+ * @param glassStyle 玻璃层级（默认 [GlassStyle.Medium]，与历史样式一致）；
+ *   品牌色按钮传 [GlassStyle.None] 保持实底，否则关掉玻璃时品牌色会被平涂降级洗淡（白字对比度不够）
  */
 @Composable
 fun OneBoxPillButton(
@@ -354,6 +357,7 @@ fun OneBoxPillButton(
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
     textAutoSize: TextAutoSize? = null,
     contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+    glassStyle: GlassStyle = GlassStyle.Medium,
 ) {
     val shape = OneBoxDesignSystem.pillShape
     Row(
@@ -361,9 +365,12 @@ fun OneBoxPillButton(
             .alpha(if (enabled) 1f else 0.5f)
             .clip(shape)
             .clickable(enabled = enabled, onClick = onClick)
-            .glassMedium(
+            .glassBackground(
+                style = glassStyle,
                 color = containerColor,
                 shape = shape,
+                borderWidth = 0.95.dp,
+                blurRadius = 28.dp,
             )
             .padding(contentPadding),
         verticalAlignment = Alignment.CenterVertically,

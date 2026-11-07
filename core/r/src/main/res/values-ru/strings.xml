@@ -193,6 +193,7 @@
     <string name="wechat_login_not_installed">WeChat не установлен. Войдите другим способом.</string>
     <string name="wechat_login_failed">Не удалось войти через WeChat. Попробуйте снова.</string>
     <string name="google_login">Вход через Google</string>
+    <string name="login_or">или</string>
     <string name="empty_string" />
     <string name="navigate_back">Назад</string>
     <string name="default_user_name">Вход / Регистрация</string>

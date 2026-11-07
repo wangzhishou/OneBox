@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -119,7 +120,10 @@ fun ForgotPasswordInputs(
         )
 
         PrimaryButton(
-            modifier = Modifier.padding(top = AppTheme.dimens.paddingExtraLarge),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = AppTheme.dimens.paddingExtraLarge)
+                .requiredHeight(AppTheme.dimens.normalButtonHeight),
             text = stringResource(id = R.string.forgot_password_submit),
             onClick = onSubmit
         )

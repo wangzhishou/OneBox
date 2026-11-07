@@ -193,6 +193,7 @@
     <string name="wechat_login_not_installed">O WeChat não está instalado. Entre de outra forma.</string>
     <string name="wechat_login_failed">Falha ao entrar com o WeChat. Tente novamente.</string>
     <string name="google_login">Login com Google</string>
+    <string name="login_or">ou</string>
     <string name="empty_string" />
     <string name="navigate_back">Voltar</string>
     <string name="default_user_name">Entrar / Registrar</string>

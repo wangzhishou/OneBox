@@ -222,6 +222,7 @@
     <string name="wechat_login_not_installed">Chưa cài đặt WeChat. Vui lòng đăng nhập bằng cách khác.</string>
     <string name="wechat_login_failed">Đăng nhập bằng WeChat thất bại. Vui lòng thử lại.</string>
     <string name="google_login">Đăng nhập bằng Google</string>
+    <string name="login_or">hoặc</string>
     <string name="empty_string"></string>
     <string name="navigate_back">Quay lại trang trước</string>
     <string name="default_user_name">Đăng nhập/Đăng ký</string>

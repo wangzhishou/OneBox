@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -83,22 +84,31 @@ fun LoginInputs(
             style = MaterialTheme.typography.bodyMedium
         )
 
+        // Login Submit Button
+        PrimaryButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = AppTheme.dimens.paddingNormal)
+                .requiredHeight(AppTheme.dimens.normalButtonHeight),
+            enable = !loginState.isLoggingIn,
+            text = stringResource(id = R.string.login_button_text),
+            onClick = onSubmit
+        )
+
         // Register Section
         Row(
-            modifier = Modifier.padding(0.dp, AppTheme.dimens.paddingNormal),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = AppTheme.dimens.paddingNormal),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Login Submit Button
-            PrimaryButton(
-                enable = !loginState.isLoggingIn,
-                text = stringResource(id = R.string.login_button_text),
-                onClick = onSubmit
-            )
-            Spacer(modifier = Modifier.width(AppTheme.dimens.paddingNormal))
-
             // Don't have an account?
-            Text(text = stringResource(id = R.string.do_not_have_account))
+            Text(
+                text = stringResource(id = R.string.do_not_have_account),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
 
             //Register
             Text(
@@ -108,6 +118,7 @@ fun LoginInputs(
                         onNavigateToRegistration.invoke()
                     },
                 text = stringResource(id = R.string.register),
+                style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
         }

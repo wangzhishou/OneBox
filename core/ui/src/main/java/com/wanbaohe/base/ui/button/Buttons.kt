@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.core.R
 import com.shifenmiao.theme.AppTheme
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.system.OneBoxPillButton
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.Close
@@ -112,6 +113,7 @@ fun PrimaryButton(
     containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
     contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
+    glassStyle: GlassStyle = GlassStyle.Medium,
     onClick: () -> Unit,
 ) {
     OneBoxPillButton(
@@ -123,6 +125,7 @@ fun PrimaryButton(
         containerColor = containerColor,
         contentColor = contentColor,
         textStyle = textStyle,
+        glassStyle = glassStyle,
     )
 }
 
