@@ -27,9 +27,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -67,7 +64,6 @@ fun MeasurementScreen(component: MeasurementComponent) {
     val state by component.uiState.collectAsState()
     val angleState = rememberAngleMeasureState()
     val rulerMeasureState = rememberRulerMeasureState()
-    var isCameraEnabled by rememberSaveable { mutableStateOf(false) }
 
     BaseScreen(
         title = stringResource(CoreR.string.measurement_tools),
@@ -75,15 +71,15 @@ fun MeasurementScreen(component: MeasurementComponent) {
         actions = {
             if (state.selectedTab != MeasurementTab.LEVEL) {
                 CameraToggleAction(
-                    isEnabled = isCameraEnabled,
+                    isEnabled = state.isCameraEnabled,
                     onToggle = {
-                        if (isCameraEnabled) {
-                            isCameraEnabled = false
+                        if (state.isCameraEnabled) {
+                            component.setCameraEnabled(false)
                         } else {
                             ContextUtils.requestPermissionAndExecute(
                                 permissions = arrayOf(Manifest.permission.CAMERA),
                                 permissionRequest = PermissionRequest.CAMERA,
-                                onGranted = { isCameraEnabled = true }
+                                onGranted = { component.setCameraEnabled(true) }
                             )
                         }
                     }
@@ -93,7 +89,7 @@ fun MeasurementScreen(component: MeasurementComponent) {
         background = when (state.selectedTab) {
             MeasurementTab.RULER -> {
                 {
-                    MeasurementToolBackground(isCameraEnabled = isCameraEnabled) {
+                    MeasurementToolBackground(isCameraEnabled = state.isCameraEnabled) {
                         FullScreenRulerBackground(
                             ppi = state.ppi,
                             unit = state.rulerUnit,
@@ -105,7 +101,7 @@ fun MeasurementScreen(component: MeasurementComponent) {
 
             MeasurementTab.ANGLE -> {
                 {
-                    MeasurementToolBackground(isCameraEnabled = isCameraEnabled) {
+                    MeasurementToolBackground(isCameraEnabled = state.isCameraEnabled) {
                         AngleMeasureBackground(state = angleState)
                     }
                 }

@@ -29,6 +29,7 @@ data class MeasurementUiState(
     val isLocked: Boolean = false,
     val rulerUnit: RulerUnit = RulerUnit.CM,
     val ppi: Float = 0f,
+    val isCameraEnabled: Boolean = false,
 )
 
 enum class MeasurementTab {
@@ -78,6 +79,10 @@ class MeasurementComponent @AssistedInject internal constructor(
 
     fun selectTab(tab: MeasurementTab) {
         _uiState.value = _uiState.value.copy(selectedTab = tab)
+    }
+
+    fun setCameraEnabled(enabled: Boolean) {
+        _uiState.value = _uiState.value.copy(isCameraEnabled = enabled)
     }
 
     fun toggleLock() {
