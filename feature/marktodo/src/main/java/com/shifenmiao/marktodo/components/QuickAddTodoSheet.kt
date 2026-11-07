@@ -33,7 +33,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.di.VoiceRecognizerEntryPoint
 import com.shifenmiao.common.voice.ui.VoiceInputSheet
@@ -44,14 +43,11 @@ import com.shifenmiao.marktodo.model.QuickAddTodoUiEvent
 import com.shifenmiao.marktodo.screenLogic.QuickAddTodoComponent
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Mic
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineAutoFix
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineClear
 import com.wanbaohe.base.ui.picker.ChineseDatePickerDialog
 import com.wanbaohe.base.ui.picker.ChineseTimePickerDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedChip
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
-import com.wanbaohe.core.ui.widget.glass.GlassCard
-import com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.system.OneBoxOutlinedTextField
 import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
@@ -104,8 +100,8 @@ fun QuickAddTodoSheet(
         confirmBarModifier = Modifier.imePadding(),
         confirmButton = {
             OneSecondaryButton(
-                text = stringResource(R.string.quick_add_save_continue),
-                onClick = { component.handleEvent(QuickAddTodoUiEvent.SubmitAndContinue) },
+                text = stringResource(R.string.quick_add_ai_action),
+                onClick = { component.handleEvent(QuickAddTodoUiEvent.ShowAiCreate) },
                 enabled = !uiState.isSaving,
             )
             Spacer(modifier = Modifier.width(OneBoxDesignSystem.compactSpacing))
@@ -161,10 +157,6 @@ fun QuickAddTodoSheet(
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(titleFocusRequester),
-            )
-
-            QuickAddAiGuide(
-                onClick = { component.handleEvent(QuickAddTodoUiEvent.ShowAiCreate) },
             )
 
             RecognizedTokenChips(
@@ -331,43 +323,4 @@ private fun QuickAddSectionLabel(text: String) {
         fontWeight = FontWeight.SemiBold,
         color = MaterialTheme.colorScheme.onSurface,
     )
-}
-
-@Composable
-private fun QuickAddAiGuide(onClick: () -> Unit) {
-    GlassCard(
-        onClick = onClick,
-        modifier = Modifier.fillMaxWidth(),
-        colors = tintedGlassCardColors(MaterialTheme.colorScheme.primaryContainer),
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.LineAutoFix,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier.size(20.dp),
-            )
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = stringResource(R.string.quick_add_ai_action),
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                )
-                Text(
-                    text = stringResource(R.string.quick_add_ai_guide),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.75f),
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
-        }
-    }
 }

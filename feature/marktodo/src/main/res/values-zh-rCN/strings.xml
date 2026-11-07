@@ -247,7 +247,6 @@
 
     <!-- AI 快捷创建 -->
     <string name="quick_add_ai_action">AI 创建</string>
-    <string name="quick_add_ai_guide">试试：2027 年年度计划，适合大部分人</string>
     <string name="quick_add_ai_dialog_title">AI 创建待办</string>
-    <string name="quick_add_ai_default_prompt">2027 年年度计划，适合大部分人</string>
+    <string name="quick_add_ai_prompt_prefix">帮我创建待办事项</string>
 </resources>

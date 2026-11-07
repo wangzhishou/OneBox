@@ -202,7 +202,18 @@ class QuickAddTodoComponent @AssistedInject internal constructor(
     }
 
     private fun openAiAssistant(): Boolean {
-        onOpenAiAssistant(context.getString(R.string.quick_add_ai_default_prompt))
+        val title = _uiState.value.title.trim()
+        val prompt = buildString {
+            append(context.getString(R.string.quick_add_ai_prompt_prefix))
+            if (title.isNotEmpty()) {
+                append('：')
+                append('\n')
+                append(title)
+            }
+            // 末尾保留换行，跳过去后可以继续补充多行需求。
+            append('\n')
+        }
+        onOpenAiAssistant(prompt)
         _uiState.value = _uiState.value.copy(isVisible = false)
         return true
     }

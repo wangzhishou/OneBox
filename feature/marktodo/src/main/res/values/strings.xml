@@ -245,7 +245,6 @@
 
     <!-- AI quick create -->
     <string name="quick_add_ai_action">AI Create</string>
-    <string name="quick_add_ai_guide">Try: a practical 2027 annual plan for most people</string>
     <string name="quick_add_ai_dialog_title">Create to-dos with AI</string>
-    <string name="quick_add_ai_default_prompt">A practical 2027 annual plan for most people</string>
+    <string name="quick_add_ai_prompt_prefix">Help me create to-dos</string>
 </resources>
