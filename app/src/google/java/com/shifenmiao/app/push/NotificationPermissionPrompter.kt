@@ -12,9 +12,10 @@ import com.tencent.mmkv.MMKV
 /**
  * 通知权限申请(仅 google 渠道, TIRAMISU+)。
  *
- * 登录成功后由 main 源集反射调用一次: MMKV 标记只主动弹一次,
+ * 评论发送成功后由 main 源集反射调用: 推送只用于「有人回复了你的评论」,
+ * 登录时弹用户不知道为什么要这个权限。MMKV 标记只主动弹一次,
  * 拒绝则静默不打扰(此后用户只能在系统设置里开启)。
- * 拿不到前台 Activity 时直接跳过, 等下次登录机会。
+ * 拿不到前台 Activity 时直接跳过, 等下次发评论的机会。
  */
 object NotificationPermissionPrompter {
 

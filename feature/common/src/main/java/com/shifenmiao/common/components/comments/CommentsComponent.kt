@@ -376,6 +376,8 @@ class CommentsComponent @AssistedInject internal constructor(
                     _inputText.value = ""
                     _replyTarget.value = null
                     _pendingImages.value = emptyList()
+                    // 评论发出去才有「被人回复」这件事, 这时再问通知权限.
+                    requestReplyNotificationPermission()
                     // 重拉首页拿到最新数据.
                     loadFirstPage()
                     // 通知父组件本地评论数 +1, 列表角标立即刷新.
@@ -473,6 +475,18 @@ class CommentsComponent @AssistedInject internal constructor(
 
     private fun networkError(): String =
         AppContext.getString(com.shifenmiao.core.R.string.comment_network_error)
+
+    /**
+     * google 渠道: 评论发送成功后申请一次通知权限, 用来接收「有人回复了你的评论」。
+     * 类只在 app 模块 src/google 源集, 国内/foss 反射找不到即 no-op。只主动问一次。
+     */
+    private fun requestReplyNotificationPermission() {
+        runCatching {
+            val cls = Class.forName("com.shifenmiao.app.push.NotificationPermissionPrompter")
+            val instance = cls.getDeclaredField("INSTANCE").get(null)
+            cls.getMethod("maybeRequest").invoke(instance)
+        }
+    }
 
     @AssistedFactory
     interface Factory {
