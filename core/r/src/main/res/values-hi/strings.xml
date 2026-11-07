@@ -190,6 +190,8 @@
     <string name="open_url_toast">सिस्टम ब्राउज़र में खोला जा रहा है</string>
     <string name="open_qq_group">QQ समूह खोला जा रहा है। कृपया सुनिश्चित करें कि QQ स्थापित है।</string>
     <string name="wechat_login">WeChat लॉगिन</string>
+    <string name="wechat_login_not_installed">WeChat इंस्टॉल नहीं है। कृपया किसी अन्य तरीके से साइन इन करें।</string>
+    <string name="wechat_login_failed">WeChat साइन-इन विफल रहा। कृपया पुनः प्रयास करें।</string>
     <string name="google_login">Google लॉगिन</string>
     <string name="empty_string" />
     <string name="navigate_back">वापस जाएं</string>

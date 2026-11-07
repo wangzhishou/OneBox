@@ -190,6 +190,8 @@
     <string name="open_url_toast">Sistem tarayıcısında açılıyor</string>
     <string name="open_qq_group">QQ grubu açılıyor. Lütfen QQ\'nun kurulu olduğundan emin olun.</string>
     <string name="wechat_login">WeChat ile Giriş</string>
+    <string name="wechat_login_not_installed">WeChat yüklü değil. Lütfen başka bir yolla giriş yapın.</string>
+    <string name="wechat_login_failed">WeChat ile giriş başarısız oldu. Lütfen tekrar deneyin.</string>
     <string name="google_login">Google ile Giriş</string>
     <string name="empty_string" />
     <string name="navigate_back">Geri dön</string>

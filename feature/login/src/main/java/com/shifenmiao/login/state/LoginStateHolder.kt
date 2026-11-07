@@ -1,5 +1,6 @@
 package com.shifenmiao.login.state
 
+import com.shifenmiao.model.login.LoginMethod
 import com.shifenmiao.model.login.LoginState
 import com.shifenmiao.model.user.Login
 import com.shifenmiao.storage.TokenStorage
@@ -27,6 +28,10 @@ class LoginStateHolder @Inject constructor(
 
     private val _loginState = MutableStateFlow(LoginState())
     val loginState: StateFlow<LoginState> = _loginState.asStateFlow()
+
+    /** 已经处理过的微信授权 code（code 一次性，replay 时用于去重） */
+    private val handledWechatCodes: MutableSet<String> =
+        java.util.Collections.synchronizedSet(mutableSetOf())
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
@@ -109,11 +114,25 @@ class LoginStateHolder @Inject constructor(
     }
 
     fun showLoginModal() {
-        _loginState.update { it.copy(showLogin = true) }
+        // 重新打开登录框时顺手复位 loading：任何流程（微信/Google/网络）中断都可能
+        // 把 isLoggingIn 留在 true，导致下次进来整屏表单都是灰的、像卡死。
+        _loginState.update {
+            it.copy(
+                showLogin = true,
+                loggingInMethod = null,
+                isAwaitingWechatAuth = false,
+            )
+        }
     }
 
     fun hideLoginModal() {
-        _loginState.update { it.copy(showLogin = false) }
+        _loginState.update {
+            it.copy(
+                showLogin = false,
+                loggingInMethod = null,
+                isAwaitingWechatAuth = false,
+            )
+        }
     }
 
     fun showBindPhone() {
@@ -124,9 +143,37 @@ class LoginStateHolder @Inject constructor(
         _loginState.update { it.copy(showBind = false) }
     }
 
-    fun setLoggingIn(logging: Boolean) {
-        _loginState.update { it.copy(isLoggingIn = logging) }
+    /** 开始一次登录请求；同时只允许一种登录方式在跑，避免并发登录互相覆盖用户态 */
+    fun startLogin(method: LoginMethod) {
+        _loginState.update {
+            it.copy(
+                loggingInMethod = method,
+                isAwaitingWechatAuth = method == LoginMethod.WECHAT,
+            )
+        }
     }
+
+    /** 结束登录请求（成功/失败/取消/超时都要走到这里） */
+    fun finishLogin() {
+        _loginState.update {
+            it.copy(
+                loggingInMethod = null,
+                isAwaitingWechatAuth = false,
+            )
+        }
+    }
+
+    /** 已经收到微信回传的授权结果，不再等微信客户端；后续若还要请求后端，loading 继续保留 */
+    fun finishWechatAuthWait() {
+        _loginState.update { it.copy(isAwaitingWechatAuth = false) }
+    }
+
+    /**
+     * 微信授权 code 一次性：同一 code 只处理一次。
+     * SharedFlow 带 replay，Activity/Component 重建后旧事件会被重放，
+     * 如果不拦住就会拿过期 code 再请求一次，用户看到莫名其妙的「登录失败」。
+     */
+    fun markWechatCodeHandled(code: String): Boolean = handledWechatCodes.add(code)
 
     fun updateLoginStyle(style: com.shifenmiao.model.login.LoginStyle) {
         _loginState.update { it.copy(loginStyle = style) }

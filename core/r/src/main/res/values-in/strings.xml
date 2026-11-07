@@ -190,6 +190,8 @@
     <string name="open_url_toast">Membuka di browser sistem</string>
     <string name="open_qq_group">Membuka grup QQ. Pastikan QQ sudah terinstal.</string>
     <string name="wechat_login">Masuk dengan WeChat</string>
+    <string name="wechat_login_not_installed">WeChat tidak terpasang. Silakan masuk dengan cara lain.</string>
+    <string name="wechat_login_failed">Gagal masuk dengan WeChat. Silakan coba lagi.</string>
     <string name="google_login">Masuk dengan Google</string>
     <string name="empty_string" />
     <string name="navigate_back">Kembali</string>

@@ -37,7 +37,7 @@ object Wechat {
         sign: String
     ) = Unit
 
-    fun auth(state: String?) = Unit
+    fun auth(state: String?): Boolean = false
 
     fun launchMiniProgram(
         userName: String,

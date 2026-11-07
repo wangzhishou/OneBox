@@ -219,6 +219,8 @@
     <string name="open_url_toast">Ouverture dans le navigateur système en cours</string>
     <string name="open_qq_group">Ouverture du groupe QQ officiel, veuillez vous assurer que QQ est installé</string>
     <string name="wechat_login">Connexion WeChat</string>
+    <string name="wechat_login_not_installed">WeChat n\'est pas installé. Connectez-vous autrement.</string>
+    <string name="wechat_login_failed">Échec de la connexion avec WeChat. Réessayez.</string>
     <string name="google_login">Connexion Google</string>
     <string name="empty_string"></string>
     <string name="navigate_back">Retour à la page précédente</string>

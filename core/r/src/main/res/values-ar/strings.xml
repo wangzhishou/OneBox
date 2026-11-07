@@ -197,6 +197,8 @@
     <string name="open_url_toast">جارٍ الفتح في متصفح النظام</string>
     <string name="open_qq_group">جارٍ فتح مجموعة QQ. يرجى التأكد من تثبيت QQ.</string>
     <string name="wechat_login">تسجيل الدخول عبر WeChat</string>
+    <string name="wechat_login_not_installed">WeChat غير مثبّت. يُرجى تسجيل الدخول بطريقة أخرى.</string>
+    <string name="wechat_login_failed">فشل تسجيل الدخول عبر WeChat. يُرجى المحاولة مرة أخرى.</string>
     <string name="google_login">تسجيل الدخول عبر Google</string>
     <string name="empty_string"></string>
     <string name="navigate_back">رجوع</string>

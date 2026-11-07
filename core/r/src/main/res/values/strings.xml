@@ -255,6 +255,8 @@
 
     <!--New Add-->
     <string name="wechat_login">WeChat Login</string>
+    <string name="wechat_login_not_installed">WeChat isn\'t installed. Please sign in another way.</string>
+    <string name="wechat_login_failed">WeChat sign-in failed. Please try again.</string>
     <string name="google_login">Google Login</string>
     <string name="empty_string" />
     <string name="navigate_back">Go back</string>

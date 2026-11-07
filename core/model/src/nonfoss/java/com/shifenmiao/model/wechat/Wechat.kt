@@ -192,12 +192,15 @@ object Wechat {
      * @param state 用于保持请求和回调的状态，授权请求后原样带回给第三方。该参数可用于防止 csrf 攻击（跨站请求伪造攻击），建议第三方带上该参数，可设置为简单的随机数加 session 进行校验。在state传递的过程中会将该参数作为url的一部分进行处理，因此建议对该参数进行url encode操作，防止其中含有影响url解析的特殊字符（如'#'、'&'等）导致该参数无法正确回传。
      *
      */
-    fun auth(state: String?) {
-        if (!isEnabled) return
+    fun auth(state: String?): Boolean {
+        if (!isEnabled) return false
+        if (!::api.isInitialized) return false
         val req = SendAuth.Req()
         req.scope = "snsapi_userinfo"
         req.state = state
-        api.sendReq(req)
+        // sendReq 返回 false 表示微信客户端没接住这次请求（没装微信 / 被系统拦截），
+        // 此时微信永远不会回调，调用方必须据此立刻复位 loading。
+        return runCatching { api.sendReq(req) }.getOrDefault(false)
     }
 
     /**
@@ -263,7 +266,8 @@ object Wechat {
      */
     fun launch(): Boolean {
         if (!isEnabled) return false
-        return api.openWXApp()
+        if (!::api.isInitialized) return false
+        return runCatching { api.openWXApp() }.getOrDefault(false)
     }
 
     /**
@@ -272,6 +276,7 @@ object Wechat {
      */
     fun isInstalled(): Boolean {
         if (!isEnabled) return false
-        return api.isWXAppInstalled
+        if (!::api.isInitialized) return false
+        return runCatching { api.isWXAppInstalled }.getOrDefault(false)
     }
 }

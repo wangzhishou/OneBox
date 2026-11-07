@@ -13,6 +13,7 @@ import com.shifenmiao.login.state.LoginStateHolder
 import com.shifenmiao.model.login.LoginChannelConfig
 import com.shifenmiao.model.login.ErrorState
 import com.shifenmiao.model.login.LoginErrorState
+import com.shifenmiao.model.login.LoginMethod
 import com.shifenmiao.model.login.LoginState
 import com.shifenmiao.model.login.LoginStyle
 import com.shifenmiao.model.login.LoginType
@@ -71,6 +72,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
 import retrofit2.Response
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
@@ -81,6 +83,12 @@ import java.nio.charset.StandardCharsets
 
 private const val MAX_USERNAME_RETRY = 3
 private const val DEFAULT_USERNAME_PREFIX = "user"
+
+/** 拉起微信后等授权回调的上限：超时基本可以认定微信不会回话了，直接复位 loading */
+private const val WECHAT_AUTH_CALLBACK_TIMEOUT_MS = 90_000L
+
+/** 从微信回到前台后，留给授权回调到达的宽限时间（正常情况回调先于 resume 到达） */
+private const val WECHAT_RESUME_CALLBACK_GRACE_MS = 1_500L
 
 /**
  * 用于在 Activity 重建时保持登录回调的 Holder
@@ -155,6 +163,12 @@ class LoginComponent @AssistedInject internal constructor(
 
     private var forgotPasswordTimerJob: kotlinx.coroutines.Job? = null
 
+    /** 微信授权回调看门狗 */
+    private var wechatAuthWatchdog: kotlinx.coroutines.Job? = null
+
+    /** 从微信返回前台后的回调宽限计时 */
+    private var wechatResumeRecoveryJob: kotlinx.coroutines.Job? = null
+
     // 使用 InstanceKeeper 保持回调，确保跳转第三方登录返回后回调不丢失
     private val callbackHolder: LoginCallbackHolder =
         instanceKeeper.getOrCreate("LoginCallbackHolder") { LoginCallbackHolder() }
@@ -190,6 +204,9 @@ class LoginComponent @AssistedInject internal constructor(
     }
 
     fun onDestroy() {
+        wechatAuthWatchdog?.cancel()
+        wechatResumeRecoveryJob?.cancel()
+        forgotPasswordTimerJob?.cancel()
         clearLoginHandle()
         clearBindPhoneEvent()
     }
@@ -201,21 +218,48 @@ class LoginComponent @AssistedInject internal constructor(
      * lang	微信客户端当前语言
      * country	微信用户当前国家信息
      *
+     * 原则：不管微信回的是同意、取消、拒绝还是未知错误，都必须把 loading 收掉，
+     * 否则用户从微信回到 App 会看到一个一直转圈、所有控件都点不动的登录页。
      */
     fun onWechatLoginEvent(event: WechatEvent) {
         CoroutineScope(defaultDispatcher).launch {
             val resp = event.message
-            if (resp.type == WechatProtocol.COMMAND_SENDAUTH) {
-                if (resp.errCode == WechatProtocol.ERR_OK) {
-                    wechatLogin(resp.code)
-                } else if (resp.errCode == WechatProtocol.ERR_AUTH_DENIED || resp.errCode == WechatProtocol.ERR_USER_CANCEL) {
-                    endLogin()
+            if (resp.type != WechatProtocol.COMMAND_SENDAUTH) {
+                makeLog { "Wechat login ignored, resp type: ${resp.type}" }
+                return@launch
+            }
+            wechatAuthWatchdog?.cancel()
+            loginStateHolder.finishWechatAuthWait()
+            when (resp.errCode) {
+                WechatProtocol.ERR_OK -> {
+                    val code = resp.code
+                    when {
+                        code.isBlank() -> {
+                            finishWechatLogin()
+                            ActionUtils.showError(R.string.wechat_login_failed)
+                        }
+                        // code 一次性：同一条历史结果被 replay 时不再重复换登录态
+                        loginStateHolder.markWechatCodeHandled(code) -> {
+                            wechatLogin(
+                                code,
+                                onFail = { ActionUtils.showError(it) }
+                            )
+                        }
+                        else -> {
+                            makeLog { "Wechat login ignored, duplicated auth result" }
+                            finishWechatLogin()
+                        }
+                    }
                 }
-            } else {
-                makeLog {
-                    "Wechat login ignored, resp type: ${resp.type}"
+
+                // 用户主动取消：静默回到登录页，不再弹错误打断
+                WechatProtocol.ERR_USER_CANCEL -> finishWechatLogin()
+
+                // 拒绝授权 / 其他错误：复位 loading 并给一句可理解的提示
+                else -> {
+                    finishWechatLogin()
+                    ActionUtils.showError(R.string.wechat_login_failed)
                 }
-                endLogin()
             }
         }
     }
@@ -379,15 +423,59 @@ class LoginComponent @AssistedInject internal constructor(
         }
     }
 
-    private fun startLogin() {
-        CoroutineScope(defaultDispatcher).launch {
-            loginStateHolder.setLoggingIn(true)
-        }
+    private fun startLogin(method: LoginMethod) {
+        wechatAuthWatchdog?.cancel()
+        loginStateHolder.startLogin(method)
     }
 
     private fun endLogin() {
-        CoroutineScope(defaultDispatcher).launch {
-            loginStateHolder.setLoggingIn(false)
+        wechatAuthWatchdog?.cancel()
+        loginStateHolder.finishLogin()
+    }
+
+    /**
+     * 微信流程专用的收尾：只复位微信自己拉起的 loading，
+     * 避免历史事件 replay 时把别的登录方式（邮箱/手机号）正在跑的请求也一起清掉。
+     */
+    private fun finishWechatLogin() {
+        wechatAuthWatchdog?.cancel()
+        wechatAuthWatchdog = null
+        if (loginState.value.loggingInMethod == LoginMethod.WECHAT) {
+            loginStateHolder.finishLogin()
+        } else {
+            loginStateHolder.finishWechatAuthWait()
+        }
+    }
+
+    /**
+     * 兜底看门狗：只要微信客户端/SDK 一直不回话，就自己把 loading 收掉，
+     * 不让登录页永远停在「转圈 + 全灰」的状态。
+     */
+    private fun startWechatAuthWatchdog(timeoutMillis: Long) {
+        wechatAuthWatchdog?.cancel()
+        wechatAuthWatchdog = componentScope.launch {
+            delay(timeoutMillis)
+            makeLog { "Wechat auth got no result in ${timeoutMillis}ms, reset login state" }
+            finishWechatLogin()
+        }
+    }
+
+    /**
+     * 登录页重新回到前台时调用（典型场景：用户从微信返回）。
+     *
+     * 微信有个已知的坑：用户取消授权、或微信侧直接拒绝处理时可能不会再回调
+     * WXEntryActivity，此时 loading 会一直挂着——表现就是「登录页卡死」。
+     * 这里留一小段时间等回调到达，仍然没有结果就主动复位。
+     */
+    fun onLoginScreenResumed() {
+        if (!loginState.value.isAwaitingWechatAuth) return
+        wechatResumeRecoveryJob?.cancel()
+        wechatResumeRecoveryJob = componentScope.launch {
+            delay(WECHAT_RESUME_CALLBACK_GRACE_MS)
+            if (loginStateHolder.loginState.value.isAwaitingWechatAuth) {
+                makeLog { "Wechat auth got no callback after resume, reset login state" }
+                finishWechatLogin()
+            }
         }
     }
 
@@ -400,7 +488,7 @@ class LoginComponent @AssistedInject internal constructor(
             val response = NetworkUtils.safeApiCall(
                 onError = { errorMsg ->
                     onFail(errorMsg)
-                    endLogin()
+                    finishWechatLogin()
                 }
             ) {
                 apiService.wechatLogin(
@@ -411,7 +499,7 @@ class LoginComponent @AssistedInject internal constructor(
                 )
             }
             if (response == null) {
-                endLogin()
+                finishWechatLogin()
                 return@launch
             }
             responseHandle(response, onSuccess, onFail)
@@ -425,7 +513,7 @@ class LoginComponent @AssistedInject internal constructor(
         onFail: (str: String) -> Unit = { _ -> }
     ) {
         CoroutineScope(defaultDispatcher).launch {
-            startLogin()
+            startLogin(LoginMethod.ACCOUNT)
             val response = NetworkUtils.safeApiCall(
                 onError = { errorMsg ->
                     onFail(errorMsg)
@@ -455,7 +543,7 @@ class LoginComponent @AssistedInject internal constructor(
         onFail: (str: String) -> Unit = { _ -> }
     ) {
         CoroutineScope(defaultDispatcher).launch {
-            startLogin()
+            startLogin(LoginMethod.CODE)
             val response = NetworkUtils.safeApiCall {
                 apiService.wechatPublicAccountLogin(code.toInt())
             }
@@ -476,7 +564,7 @@ class LoginComponent @AssistedInject internal constructor(
         onFail: (str: String) -> Unit = { _ -> }
     ) {
         CoroutineScope(defaultDispatcher).launch {
-            startLogin()
+            startLogin(LoginMethod.REGISTER)
             val response = NetworkUtils.safeApiCall(
                 onError = { errorMsg ->
                     onFail(errorMsg)
@@ -1224,16 +1312,36 @@ class LoginComponent @AssistedInject internal constructor(
         }
     }
 
+    /**
+     * 拉起微信授权。
+     *
+     * 老实现是无条件把 loading 打开再 sendReq，完全不管微信客户端在不在、
+     * SDK 有没有把请求真正发出去——没装微信时微信永远不会回调，
+     * 登录页就永久停在 loading 上（用户感知就是「卡死」）。
+     * 现在：没装微信 / 请求没发出去都立刻收掉 loading 并给出替代提示。
+     */
     fun loginByWechat() {
-        CoroutineScope(defaultDispatcher).launch {
-            loginStateHolder.setLoggingIn(true)
+        if (loginState.value.isLoggingIn) return
+        if (!Wechat.isInstalled()) {
+            ActionUtils.showError(R.string.wechat_login_not_installed)
+            return
+        }
+        startLogin(LoginMethod.WECHAT)
+        val dispatched = runCatching {
             Wechat.auth(
                 URLEncoder.encode(
                     "login_screen",
                     StandardCharsets.UTF_8.toString()
                 )
             )
+        }.getOrDefault(false)
+        if (!dispatched) {
+            makeLog { "Wechat auth request was not dispatched" }
+            finishWechatLogin()
+            ActionUtils.showError(R.string.wechat_login_failed)
+            return
         }
+        startWechatAuthWatchdog(WECHAT_AUTH_CALLBACK_TIMEOUT_MS)
     }
 
     fun loginByGoogle(
@@ -1242,7 +1350,7 @@ class LoginComponent @AssistedInject internal constructor(
         onFail: (String) -> Unit = { _ -> }
     ) {
         CoroutineScope(defaultDispatcher).launch {
-            startLogin()
+            startLogin(LoginMethod.GOOGLE)
             val response = NetworkUtils.safeApiCall(
                 onError = { errorMsg ->
                     onFail(errorMsg)
@@ -1613,7 +1721,7 @@ class LoginComponent @AssistedInject internal constructor(
         onFail: (str: String) -> Unit = { _ -> }
     ) {
         CoroutineScope(defaultDispatcher).launch {
-            startLogin()
+            startLogin(LoginMethod.PHONE)
             val response = NetworkUtils.safeApiCall {
                 apiService.loginByPhone(
                     verifyCodeRequest = VerifyCodeRequest(

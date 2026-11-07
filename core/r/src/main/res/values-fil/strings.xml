@@ -190,6 +190,8 @@
     <string name="open_url_toast">Binubuksan sa system browser</string>
     <string name="open_qq_group">Binubuksan ang QQ group. Pakisiguraduhing naka-install ang QQ.</string>
     <string name="wechat_login">WeChat Login</string>
+    <string name="wechat_login_not_installed">Hindi naka-install ang WeChat. Mag-sign in sa ibang paraan.</string>
+    <string name="wechat_login_failed">Nabigo ang pag-sign in sa WeChat. Subukan muli.</string>
     <string name="google_login">Google Login</string>
     <string name="empty_string" />
     <string name="navigate_back">Bumalik</string>

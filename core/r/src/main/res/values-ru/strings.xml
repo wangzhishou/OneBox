@@ -190,6 +190,8 @@
     <string name="open_url_toast">Открытие в системном браузере</string>
     <string name="open_qq_group">Открытие группы QQ. Убедитесь, что QQ установлен.</string>
     <string name="wechat_login">Вход через WeChat</string>
+    <string name="wechat_login_not_installed">WeChat не установлен. Войдите другим способом.</string>
+    <string name="wechat_login_failed">Не удалось войти через WeChat. Попробуйте снова.</string>
     <string name="google_login">Вход через Google</string>
     <string name="empty_string" />
     <string name="navigate_back">Назад</string>

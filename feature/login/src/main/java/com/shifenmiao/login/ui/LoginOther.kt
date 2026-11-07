@@ -31,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.shifenmiao.base.channel.ChannelConfig
 import com.shifenmiao.base.entrypoint.ChannelConfigEntryPoint
 import com.wanbaohe.base.ui.button.PrimaryButton
@@ -38,6 +39,7 @@ import com.wanbaohe.base.ui.button.SecondaryButton
 import com.shifenmiao.base.utils.CoreUtils
 import com.shifenmiao.base.utils.LoginUtils
 import com.shifenmiao.core.R
+import com.shifenmiao.model.login.LoginMethod
 import com.shifenmiao.model.login.LoginState
 import com.shifenmiao.model.remote.AiEngineConfig
 import com.shifenmiao.login.viewModel.LoginComponent
@@ -71,6 +73,13 @@ fun LoginOther(
         ).getChannelConfig()
     }
     val enableWechat = channelConfig.enableWechat
+
+    // 从微信返回时兜底复位 loading：微信侧取消/拒绝可能不回任何回调，
+    // 不处理的话登录页会一直停在「转圈 + 全灰」，看着像卡死。
+    LifecycleResumeEffect(Unit) {
+        loginComponent.onLoginScreenResumed()
+        onPauseOrDispose { }
+    }
 
     val wechatConfirmFunction = {
         loginComponent.loginByWechat()
@@ -120,7 +129,7 @@ fun LoginOther(
                     disabledContentColor = Color(0xFFF5F5F5)
                 )
             ) {
-                if (loginState.isLoggingIn) {
+                if (loginState.loggingInMethod == LoginMethod.WECHAT) {
                     CircularProgressIndicator(
                         color = Color.White,
                         modifier = Modifier
@@ -163,7 +172,7 @@ fun LoginOther(
                 },
                 colors = AppTheme.colors.getSecondaryContainerButtonColors(),
             ) {
-                if (loginState.isLoggingIn) {
+                if (loginState.loggingInMethod == LoginMethod.GOOGLE) {
                     CircularProgressIndicator(
                         color = MaterialTheme.colorScheme.onSecondaryContainer,
                         modifier = Modifier

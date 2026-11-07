@@ -190,6 +190,8 @@
     <string name="open_url_toast">시스템 브라우저에서 여는 중</string>
     <string name="open_qq_group">QQ 그룹을 여는 중입니다. QQ가 설치되어 있는지 확인하세요.</string>
     <string name="wechat_login">WeChat 로그인</string>
+    <string name="wechat_login_not_installed">WeChat이 설치되어 있지 않습니다. 다른 방법으로 로그인해 주세요.</string>
+    <string name="wechat_login_failed">WeChat 로그인에 실패했습니다. 다시 시도해 주세요.</string>
     <string name="google_login">Google 로그인</string>
     <string name="empty_string" />
     <string name="navigate_back">뒤로 가기</string>

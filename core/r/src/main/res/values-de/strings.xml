@@ -190,6 +190,8 @@
     <string name="open_url_toast">Wird im Systembrowser geöffnet</string>
     <string name="open_qq_group">QQ-Gruppe wird geöffnet. Bitte stellen Sie sicher, dass QQ installiert ist.</string>
     <string name="wechat_login">WeChat-Anmeldung</string>
+    <string name="wechat_login_not_installed">WeChat ist nicht installiert. Bitte melde dich anders an.</string>
+    <string name="wechat_login_failed">WeChat-Anmeldung fehlgeschlagen. Bitte versuche es erneut.</string>
     <string name="google_login">Google-Anmeldung</string>
     <string name="empty_string" />
     <string name="navigate_back">Zurück</string>
