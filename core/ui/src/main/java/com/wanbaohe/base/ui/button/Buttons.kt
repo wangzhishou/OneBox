@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -107,6 +108,10 @@ fun PrimaryButton(
     text: String,
     enable: Boolean = true,
     icon: @Composable (() -> Unit)? = null,
+    /** 非默认主色场景（如第三方登录的品牌色）用，形状/玻璃质感保持一致 */
+    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
     onClick: () -> Unit,
 ) {
     OneBoxPillButton(
@@ -115,9 +120,9 @@ fun PrimaryButton(
         modifier = modifier,
         enabled = enable,
         leadingIcon = icon,
-        containerColor = MaterialTheme.colorScheme.primaryContainer,
-        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        textStyle = MaterialTheme.typography.bodyLarge,
+        containerColor = containerColor,
+        contentColor = contentColor,
+        textStyle = textStyle,
     )
 }
 

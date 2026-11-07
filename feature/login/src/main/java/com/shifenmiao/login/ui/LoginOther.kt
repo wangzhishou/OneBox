@@ -11,14 +11,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -48,7 +45,6 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineKey
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
-import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.core.ui.widget.system.OneBoxLeadingIconBadge
 import com.wanbaohe.core.ui.widget.system.OneBoxListItem
 import dagger.hilt.android.EntryPointAccessors
@@ -108,11 +104,30 @@ fun LoginOther(
         }
 
         if (enableWechat) {
-            TextButton(
-                enabled = !loginState.isLoggingIn,
+            // 与「登录」按钮共用 PrimaryButton：同样的胶囊圆角 + 玻璃质感，只换品牌色
+            PrimaryButton(
                 modifier = Modifier
                     .fillMaxWidth()
                     .requiredHeight(AppTheme.dimens.normalButtonHeight),
+                text = stringResource(id = R.string.wechat_login),
+                enable = !loginState.isLoggingIn,
+                containerColor = Color(0xFF07C160),
+                contentColor = Color.White,
+                textStyle = MaterialTheme.typography.titleMedium,
+                icon = {
+                    if (loginState.loggingInMethod == LoginMethod.WECHAT) {
+                        CircularProgressIndicator(
+                            color = Color.White,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    } else {
+                        Icon(
+                            painter = painterResource(id = R.drawable.wechat),
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                },
                 onClick = {
                     loginWithAgreementCheck(
                         isUserAgreementChecked = isUserAgreementChecked.value,
@@ -121,46 +136,35 @@ fun LoginOther(
                     ) {
                         wechatConfirmFunction.invoke()
                     }
-                },
-                colors = ButtonColors(
-                    containerColor = Color(0xFF07c160),
-                    contentColor = Color(0xFFFFFFFF),
-                    disabledContainerColor = Color(0xFF07c160),
-                    disabledContentColor = Color(0xFFF5F5F5)
-                )
-            ) {
-                if (loginState.loggingInMethod == LoginMethod.WECHAT) {
-                    CircularProgressIndicator(
-                        color = Color.White,
-                        modifier = Modifier
-                            .padding(end = 8.dp)
-                            .height(24.dp)
-                            .width(24.dp)
-                    )
-                } else {
-                    Icon(
-                        painter = painterResource(id = R.drawable.wechat),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .padding(end = 8.dp)
-                            .height(24.dp)
-                            .width(24.dp)
-                    )
                 }
-                Text(
-                    text = stringResource(id = R.string.wechat_login),
-                    style = MaterialTheme.typography.titleMedium
-                )
-            }
+            )
         }
 
         Spacer(modifier = Modifier.height(8.dp))
         if (channelConfig.enableGms || CoreUtils.isOneBoxDebug()) {
-            GlassTonalButton(
-                enabled = !loginState.isLoggingIn,
+            PrimaryButton(
                 modifier = Modifier
                     .fillMaxWidth()
                     .requiredHeight(AppTheme.dimens.normalButtonHeight),
+                text = stringResource(id = R.string.google_login),
+                enable = !loginState.isLoggingIn,
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                textStyle = MaterialTheme.typography.titleMedium,
+                icon = {
+                    if (loginState.loggingInMethod == LoginMethod.GOOGLE) {
+                        CircularProgressIndicator(
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    } else {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineProfile,
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                },
                 onClick = {
                     loginWithAgreementCheck(
                         isUserAgreementChecked = isUserAgreementChecked.value,
@@ -169,32 +173,8 @@ fun LoginOther(
                     ) {
                         googleConfirmFunction.invoke()
                     }
-                },
-                colors = AppTheme.colors.getSecondaryContainerButtonColors(),
-            ) {
-                if (loginState.loggingInMethod == LoginMethod.GOOGLE) {
-                    CircularProgressIndicator(
-                        color = MaterialTheme.colorScheme.onSecondaryContainer,
-                        modifier = Modifier
-                            .padding(end = 8.dp)
-                            .height(24.dp)
-                            .width(24.dp)
-                    )
-                } else {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineProfile,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .padding(end = 8.dp)
-                            .height(24.dp)
-                            .width(24.dp)
-                    )
                 }
-                Text(
-                    text = stringResource(id = R.string.google_login),
-                    style = MaterialTheme.typography.titleMedium
-                )
-            }
+            )
         }
 
         // 「自带 API Key」逃生口: BYOK 直连不扣积分、免登录, 仅渠道能力放开或管理员可见
