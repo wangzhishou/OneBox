@@ -11,6 +11,7 @@
     <string name="survive_30s_win">Du gewinnst!</string>
     <string name="survive_30s_win_desc">Du hast 30 Sekunden überlebt!</string>
     <string name="survive_30s_retry">Erneut versuchen</string>
+    <string name="survive_30s_watch_ads_for_points">Werbung ansehen, Punkte holen</string>
     <string name="survive_30s_best_time">Beste: %.1fs</string>
     <string name="survive_30s_phase">Phase</string>
     <string name="survive_30s_phase_warmup">Aufwärmen</string>

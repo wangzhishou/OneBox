@@ -11,6 +11,7 @@
     <string name="survive_30s_win">恭喜通關！</string>
     <string name="survive_30s_win_desc">你成功撐過了30秒！</string>
     <string name="survive_30s_retry">再來一次</string>
+    <string name="survive_30s_watch_ads_for_points">看廣告賺積分</string>
     <string name="survive_30s_best_time">最佳：%.1fs</string>
     <string name="survive_30s_phase">階段</string>
     <string name="survive_30s_phase_warmup">熱身</string>

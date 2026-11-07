@@ -11,6 +11,7 @@
     <string name="survive_30s_win">لقد فزت!</string>
     <string name="survive_30s_win_desc">لقد صمدت 30 ثانية!</string>
     <string name="survive_30s_retry">إعادة المحاولة</string>
+    <string name="survive_30s_watch_ads_for_points">شاهد الإعلانات واكسب نقاطًا</string>
     <string name="survive_30s_best_time">الأفضل: %.1f ث</string>
     <string name="survive_30s_phase">المرحلة</string>
     <string name="survive_30s_phase_warmup">الإحماء</string>

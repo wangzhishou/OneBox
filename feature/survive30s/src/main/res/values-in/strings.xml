@@ -11,6 +11,7 @@
     <string name="survive_30s_win">Kamu Menang!</string>
     <string name="survive_30s_win_desc">Kamu bertahan 30 detik!</string>
     <string name="survive_30s_retry">Ulangi</string>
+    <string name="survive_30s_watch_ads_for_points">Tonton iklan, dapat poin</string>
     <string name="survive_30s_best_time">Terbaik: %.1f dtk</string>
     <string name="survive_30s_phase">Fase</string>
     <string name="survive_30s_phase_warmup">Pemanasan</string>

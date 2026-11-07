@@ -11,6 +11,7 @@
     <string name="survive_30s_win">Ты победил!</string>
     <string name="survive_30s_win_desc">Ты продержался 30 секунд!</string>
     <string name="survive_30s_retry">Заново</string>
+    <string name="survive_30s_watch_ads_for_points">Смотреть рекламу за баллы</string>
     <string name="survive_30s_best_time">Рекорд: %.1fс</string>
     <string name="survive_30s_phase">Фаза</string>
     <string name="survive_30s_phase_warmup">Разминка</string>

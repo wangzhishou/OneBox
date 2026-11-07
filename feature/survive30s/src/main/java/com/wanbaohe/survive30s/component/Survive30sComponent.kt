@@ -37,7 +37,14 @@ import kotlin.math.exp
  */
 class Survive30sComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted val onGoBack: () -> Unit,
+    @Assisted("onGoBack") val onGoBack: () -> Unit,
+    /**
+     * 失败结算页「看广告赚积分」入口：跳到广告看看看页。
+     *
+     * FOSS 渠道没有任何广告 SDK（广告页只有空实现），由 ChildProvider 传 null，
+     * 结算页据此整颗按钮不渲染。
+     */
+    @Assisted("onNavigateToAdWatch") val onNavigateToAdWatch: (() -> Unit)?,
     dispatchersHolder: DispatchersHolder,
     private val audioPlayer: NetworkAudioPlayer,
 ) : BaseComponent(dispatchersHolder, componentContext) {
@@ -452,7 +459,8 @@ class Survive30sComponent @AssistedInject internal constructor(
     interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            onGoBack: () -> Unit
+            @Assisted("onGoBack") onGoBack: () -> Unit,
+            @Assisted("onNavigateToAdWatch") onNavigateToAdWatch: (() -> Unit)?,
         ): Survive30sComponent
     }
 }

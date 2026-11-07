@@ -18,7 +18,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -69,9 +71,10 @@ import com.wanbaohe.survive30s.component.Survive30sComponent
 import com.wanbaohe.survive30s.component.SurvivalPhase
 import com.wanbaohe.survive30s.component.Survive30sUiState
 import com.wanbaohe.survive30s.engine.Survive30sEngine
-// 下面两个图标导入不能删：Icons.Rounded.ArrowBack / Icons.Outlined.Refresh
-// 是这两个文件提供的扩展属性，删掉后全限定名调用会解析失败
+// 下面这几个图标导入不能删：Icons.Rounded.ArrowBack / Icons.Outlined.Refresh /
+// Icons.Outlined.PlayCircle 是这些文件提供的扩展属性，删掉后全限定名调用会解析失败
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
+import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
 
 /**
@@ -211,6 +214,7 @@ fun Survive30sScreen(
                     nearMissCount = state.nearMissCount,
                     onRestart = component::startGame,
                     onBack = component.onGoBack,
+                    onWatchAds = component.onNavigateToAdWatch,
                 )
 
                 GameState.WIN -> WinOverlay(
@@ -961,12 +965,18 @@ private fun GameOverOverlay(
     nearMissCount: Int,
     onRestart: () -> Unit,
     onBack: () -> Unit,
+    /** 「看广告赚积分」入口；FOSS 渠道没有广告，传 null 时这颗按钮不渲染 */
+    onWatchAds: (() -> Unit)?,
 ) {
     Box(
         modifier = Modifier.overlayScrim(),
         contentAlignment = Alignment.Center,
     ) {
         Column(
+            // 多了一颗引导按钮后，横屏 / 大字号下可能撑满，允许上下滚动
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(vertical = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
@@ -1001,6 +1011,32 @@ private fun GameOverOverlay(
                 restartContainerColor = MaterialTheme.colorScheme.errorContainer,
                 restartContentColor = MaterialTheme.colorScheme.onErrorContainer,
             )
+            // 失败了也别白跑一趟：给一条「去广告页领积分」的出口
+            onWatchAds?.let { watchAds ->
+                GlassButton(
+                    onClick = watchAds,
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    borderWidth = 0.dp,
+                    modifier = Modifier
+                        .fillMaxWidth(0.86f)
+                        .height(52.dp),
+                ) {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp),
+                    )
+                    Spacer(Modifier.width(6.dp))
+                    Text(
+                        text = stringResource(R.string.survive_30s_watch_ads_for_points),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+            }
         }
     }
 }

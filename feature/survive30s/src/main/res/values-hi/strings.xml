@@ -11,6 +11,7 @@
     <string name="survive_30s_win">आप जीत गए!</string>
     <string name="survive_30s_win_desc">आप 30 सेकंड तक बचे रहे!</string>
     <string name="survive_30s_retry">फिर से कोशिश करें</string>
+    <string name="survive_30s_watch_ads_for_points">विज्ञापन देखें, पॉइंट्स कमाएँ</string>
     <string name="survive_30s_best_time">सर्वश्रेष्ठ: %.1f सेकंड</string>
     <string name="survive_30s_phase">चरण</string>
     <string name="survive_30s_phase_warmup">वार्मअप</string>

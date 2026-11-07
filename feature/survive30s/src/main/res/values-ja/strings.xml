@@ -11,6 +11,7 @@
     <string name="survive_30s_win">勝利！</string>
     <string name="survive_30s_win_desc">30秒生き残りました！</string>
     <string name="survive_30s_retry">リトライ</string>
+    <string name="survive_30s_watch_ads_for_points">広告を見てポイント獲得</string>
     <string name="survive_30s_best_time">ベスト: %.1f秒</string>
     <string name="survive_30s_phase">フェーズ</string>
     <string name="survive_30s_phase_warmup">ウォームアップ</string>

@@ -47,6 +47,7 @@ import com.shifenmiao.marquee.screenLogic.MarqueeComponent
 import com.shifenmiao.model.HomeTabKey
 import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.ai.Conversation
+import com.shifenmiao.model.channel.HiddenItemFilter
 import com.shifenmiao.online.component.CreateHtmlComponent
 import com.shifenmiao.online.component.CreateNoteComponent
 import com.shifenmiao.online.component.EditPromptComponent
@@ -1599,7 +1600,16 @@ class ChildProvider @Inject constructor(
         is Screen.Survive30s -> NavigationChild.Survive30s(
             lifeFactories.get().survive30sComponentFactory(
                 componentContext = componentContext,
-                onGoBack = ::navigateBack
+                onGoBack = ::navigateBack,
+                // 失败结算页的「看广告赚积分」出口；FOSS 渠道没有广告 SDK，
+                // 广告页本来就被 HiddenItemFilter 隐藏，这里同样给 null 不渲染按钮
+                onNavigateToAdWatch = if (
+                    HiddenItemFilter.isHidden(Screen.AdWatch.id.toString())
+                ) {
+                    null
+                } else {
+                    { navigateTo(Screen.AdWatch) }
+                },
             )
         )
 
