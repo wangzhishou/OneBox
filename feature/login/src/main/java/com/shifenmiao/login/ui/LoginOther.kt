@@ -49,7 +49,6 @@ import com.wanbaohe.core.ui.widget.system.OneBoxLeadingIconBadge
 import com.wanbaohe.core.ui.widget.system.OneBoxListItem
 import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.launch
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineProfile
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSecurity
 
 @Composable
@@ -158,9 +157,11 @@ fun LoginOther(
                             modifier = Modifier.size(24.dp)
                         )
                     } else {
+                        // 用 Google 官方四色 G,别让 Icon 的默认 tint 把品牌色刷掉
                         Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineProfile,
+                            painter = painterResource(id = R.drawable.google),
                             contentDescription = null,
+                            tint = Color.Unspecified,
                             modifier = Modifier.size(24.dp)
                         )
                     }
