@@ -99,4 +99,16 @@
     <string name="permission_required_message">The file transfer service needs storage permission to read and write files. Please grant access.</string>
     <string name="grant_permission">Grant Permission</string>
     <string name="cancel">Cancel</string>
+
+    <!-- Recently received (P1) -->
+    <string name="recent_received_title">Recently received</string>
+    <string name="recent_received_clear">Clear</string>
+    <string name="recent_received_root">Internal storage root</string>
+    <string name="recent_received_open_failed">Can\'t open this file</string>
+    <string name="recent_received_saved_to">Saved to %1$s</string>
+    <string name="receive_notification_channel_name">Received files</string>
+    <string name="receive_notification_channel_description">Notifies you when files arrive from a browser</string>
+    <string name="receive_notification_title">File received</string>
+    <string name="receive_notification_content">%1$s · saved to %2$s</string>
 </resources>
+

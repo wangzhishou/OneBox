@@ -74,4 +74,16 @@
     <string name="cancel">रद्द करें</string>
     <string name="server_ip_address_error">IP पता प्राप्त नहीं हो सका। नेटवर्क कनेक्शन जांचें</string>
     <string name="server_start_failed">सेवा शुरू करने में विफल</string>
+
+    <!-- Recently received (P1) -->
+    <string name="recent_received_title">हाल में प्राप्त</string>
+    <string name="recent_received_clear">साफ़ करें</string>
+    <string name="recent_received_root">आंतरिक संग्रहण का रूट</string>
+    <string name="recent_received_open_failed">यह फ़ाइल नहीं खोली जा सकती</string>
+    <string name="recent_received_saved_to">%1$s में सहेजा गया</string>
+    <string name="receive_notification_channel_name">प्राप्त फ़ाइलें</string>
+    <string name="receive_notification_channel_description">ब्राउज़र से फ़ाइल आने पर सूचित करता है</string>
+    <string name="receive_notification_title">फ़ाइल प्राप्त हुई</string>
+    <string name="receive_notification_content">%1$s · %2$s में सहेजा गया</string>
 </resources>
+

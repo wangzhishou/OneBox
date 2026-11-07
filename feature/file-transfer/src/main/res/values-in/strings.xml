@@ -74,4 +74,16 @@
     <string name="cancel">Batal</string>
     <string name="server_ip_address_error">Tidak dapat memperoleh alamat IP. Periksa koneksi jaringan Anda</string>
     <string name="server_start_failed">Gagal memulai layanan</string>
+
+    <!-- Recently received (P1) -->
+    <string name="recent_received_title">Baru diterima</string>
+    <string name="recent_received_clear">Hapus</string>
+    <string name="recent_received_root">Akar penyimpanan internal</string>
+    <string name="recent_received_open_failed">Tidak dapat membuka file ini</string>
+    <string name="recent_received_saved_to">Tersimpan di %1$s</string>
+    <string name="receive_notification_channel_name">File diterima</string>
+    <string name="receive_notification_channel_description">Memberi tahu saat ada file masuk dari browser</string>
+    <string name="receive_notification_title">File diterima</string>
+    <string name="receive_notification_content">%1$s · tersimpan di %2$s</string>
 </resources>
+

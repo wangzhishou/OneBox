@@ -52,4 +52,13 @@ export function handleFilesResponse(data) {
   updateNavigation();
   updateMultiSelectBar();
   updateFileStats();
+
+  // 通知上传模块同步"上传到 xxx"提示（不直接 import，避免循环依赖）
+  try {
+    document.dispatchEvent(
+      new CustomEvent('ft:path-changed', { detail: { path: state.currentPath } })
+    );
+  } catch (_) {
+    // ignore
+  }
 }

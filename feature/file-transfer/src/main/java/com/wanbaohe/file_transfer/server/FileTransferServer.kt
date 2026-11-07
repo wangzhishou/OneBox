@@ -21,6 +21,7 @@ import com.shifenmiao.model.transfer.UploadResponse
 import com.shifenmiao.theme.TailwindHelper
 import com.t8rin.logger.Logger
 import com.t8rin.logger.makeLog
+import com.wanbaohe.file_transfer.model.ReceivedFile
 import com.wanbaohe.file_transfer.util.FileUtils
 import fi.iki.elonen.NanoHTTPD
 import fi.iki.elonen.NanoWSD
@@ -33,6 +34,7 @@ import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
+import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.text.get
@@ -66,6 +68,12 @@ class FileTransferServer(
 
     // 聊天消息回调（推到手机端 UI）
     var onChatMessageReceived: ((ChatMessage) -> Unit)? = null
+
+    /**
+     * 浏览器上传成功回调（P1）：用于发系统通知、写"最近接收"、广播 WS 事件。
+     * 回调在 NanoHTTPD 工作线程执行，内部实现需要自己保证不阻塞太久。
+     */
+    var onFileReceived: ((ReceivedFile) -> Unit)? = null
 
     /**
      * 全局 WebSocket 消息监听器（用于把浏览器发来的消息推到手机端 UI）。
@@ -657,12 +665,21 @@ class FileTransferServer(
                 )
             }
 
-            // 获取原始文件名
+            // 获取原始文件名（只保留文件名，避免 ../ 路径穿越）
             val fileParams = session.parameters["file"]
-            val originalFileName = fileParams?.firstOrNull() ?: "uploaded_file"
+            val rawFileName = fileParams?.firstOrNull()?.takeIf { it.isNotBlank() } ?: "uploaded_file"
+            val originalFileName = rawFileName
+                .substringAfterLast('/')
+                .substringAfterLast('\\')
+                .ifBlank { "uploaded_file" }
 
-            // 生成唯一文件名
-            val uniqueFileName = FileUtils.generateUniqueFileName(targetDir, originalFileName)
+            // 同名冲突：overwrite=1 时覆盖原文件，否则自动改名（前端会拿到真实文件名）
+            val overwrite = params["overwrite"]?.firstOrNull() == "1"
+            val uniqueFileName = if (overwrite) {
+                originalFileName
+            } else {
+                FileUtils.generateUniqueFileName(targetDir, originalFileName)
+            }
             val targetFile = File(targetDir, uniqueFileName)
 
             // 移动临时文件到目标位置
@@ -670,11 +687,37 @@ class FileTransferServer(
             tempFile.copyTo(targetFile, overwrite = true)
             tempFile.delete()
 
+            val relativePath = FileUtils.getRelativePath(config.rootPath, targetFile.absolutePath)
+            val relativeDir = FileUtils.getRelativePath(config.rootPath, targetDir.absolutePath)
+
+            // P1：通知手机端（系统通知 + 最近接收），并广播给其它浏览器标签页
+            val received = ReceivedFile(
+                id = UUID.randomUUID().toString(),
+                fileName = uniqueFileName,
+                relativePath = relativePath,
+                dir = relativeDir,
+                size = targetFile.length(),
+                timestamp = System.currentTimeMillis()
+            )
+
+            runCatching { onFileReceived?.invoke(received) }
+
+            runCatching {
+                ChatWebSocket.broadcastSystemEvent(
+                    event = "upload",
+                    payload = mapOf(
+                        "fileName" to uniqueFileName,
+                        "filePath" to relativePath,
+                        "dir" to relativeDir
+                    )
+                )
+            }
+
             return jsonResponse(
                 UploadResponse(
                     success = true,
                     fileName = uniqueFileName,
-                    filePath = FileUtils.getRelativePath(config.rootPath, targetFile.absolutePath)
+                    filePath = relativePath
                 )
             )
         } catch (e: Exception) {

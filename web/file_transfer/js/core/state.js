@@ -32,6 +32,16 @@ export const state = {
   // 传输任务
   transfers: [],
 
+  // 上传队列（P1：并发控制 + 可取消/重试）
+  uploadQueue: [],
+  uploadRuntime: {}, // id -> { file, xhr }
+  uploadActive: 0,
+  uploadConcurrency: 3,
+  uploadBatchId: null,
+
+  // 上传成功后要定位/高亮的文件（相对路径）
+  pendingReveal: null,
+
   // 聊天
   chatMessages: [],
   chatWebSocket: null,

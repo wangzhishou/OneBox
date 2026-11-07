@@ -36,6 +36,20 @@
             border-color: #3b82f6 !important;
         }
 
+        /* 上传完成后的定位高亮（2.4s 后由 JS 移除） */
+        .file-item { position: relative; }
+        .file-item.upload-flash {
+            background-color: rgba(59, 130, 246, 0.10) !important;
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+        }
+
+        /* 拖拽悬停在某个文件夹上：表示"传到这个文件夹" */
+        .file-item.drop-target-row {
+            background-color: rgba(59, 130, 246, 0.10) !important;
+            border-color: #3b82f6 !important;
+        }
+
         /* 触摸友好按钮最小尺寸 */
         .touch-target { min-height: 44px; min-width: 44px; }
 
@@ -226,6 +240,14 @@
                             </svg>
                         </button>
 
+                        <!-- 上传落点提示：解决“传完不知道传到哪” -->
+                        <span id="upload-destination-hint" class="hidden lg:inline-flex items-center gap-1 max-w-[12rem] px-2 py-1 rounded-lg bg-surface-container text-xs text-on-surface-variant">
+                            <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+                            </svg>
+                            <span id="upload-destination-hint-text" class="truncate"></span>
+                        </span>
+
                         <!-- 上传按钮 -->
                         <button id="upload-btn" class="flex items-center gap-2 px-4 py-2 bg-primary hover:opacity-90 text-on-primary rounded-lg transition-colors touch-target">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -324,8 +346,9 @@
                 <!-- 新增：移动端 传输面板（占满主区域） -->
                 <div id="mobile-transfer-panel" class="hidden md:hidden flex-1 overflow-y-auto p-4">
                     <div class="bg-surface rounded-xl border border-outline-variant overflow-hidden">
-                        <div class="px-4 py-3 border-b border-outline-variant">
+                        <div class="px-4 py-3 border-b border-outline-variant flex items-center justify-between gap-3">
                             <h2 class="font-semibold text-on-surface" data-i18n="transfer.title">传输任务</h2>
+                            <button id="mobile-transfer-clear" class="hidden text-xs text-primary hover:opacity-80 transition-opacity" data-i18n="transfer.clear">全部清除</button>
                         </div>
                         <div class="p-4">
                             <div id="mobile-transfer-empty" class="flex flex-col items-center justify-center py-10 text-on-surface-variant">
@@ -414,8 +437,9 @@
 
                 <!-- 传输面板（嵌入右侧栏） -->
                 <div id="transfer-panel" class="hidden flex-1 min-h-0 flex-col">
-                    <div class="px-6 py-4 border-b border-outline-variant flex-none">
+                    <div class="px-6 py-4 border-b border-outline-variant flex-none flex items-center justify-between gap-3">
                         <h2 class="font-semibold text-on-surface" data-i18n="transfer.title">传输任务</h2>
+                        <button id="transfer-clear" class="hidden text-xs text-primary hover:opacity-80 transition-opacity" data-i18n="transfer.clear">全部清除</button>
                     </div>
                     <!-- UX：列表区域可滚动，其它不滚 -->
                     <div class="flex-1 min-h-0 overflow-y-auto p-4 space-y-3">
@@ -425,6 +449,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
                                 </svg>
                                 <p class="text-sm" data-i18n="transfer.empty">暂无传输任务</p>
+                                <p class="text-xs mt-1 px-6 text-center" data-i18n="transfer.emptyHint">上传的文件会在这里显示保存位置</p>
                             </div>
                         </div>
                     </div>
@@ -444,8 +469,28 @@
                     </button>
                 </div>
                 <div class="flex-1 overflow-y-auto p-6">
-                    <div id="upload-drop-zone" class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 text-center cursor-pointer hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
-                        <svg class="w-12 h-12 mx-auto text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <!-- 保存位置：上传前就把"传到哪"说清楚 -->
+                    <div class="flex items-center gap-3 rounded-xl bg-primary-container px-4 py-3">
+                        <svg class="w-6 h-6 shrink-0 text-on-primary-container" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
+                        </svg>
+                        <div class="min-w-0 flex-1">
+                            <div class="text-xs text-on-primary-container/80" data-i18n="uploadModal.destination">保存到</div>
+                            <div id="upload-destination-path" class="text-sm font-medium text-on-primary-container truncate">首页</div>
+                        </div>
+                    </div>
+
+                    <!-- 根目录强提示 -->
+                    <div id="upload-root-tip" class="hidden mt-3 items-start gap-2 rounded-xl border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/30 px-3 py-2 text-xs text-amber-800 dark:text-amber-200">
+                        <svg class="w-4 h-4 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                        </svg>
+                        <span class="flex-1" data-i18n="uploadModal.rootHint">当前是手机存储根目录，文件会和系统文件夹混在一起，之后不好找。</span>
+                        <button id="upload-go-download" class="shrink-0 underline font-medium whitespace-nowrap" data-i18n="uploadModal.goDownload">去 Download</button>
+                    </div>
+
+                    <div id="upload-drop-zone" class="mt-4 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center cursor-pointer hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
+                        <svg class="w-10 h-10 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
                         </svg>
                         <p class="text-gray-600 dark:text-gray-300 font-medium" data-i18n="uploadModal.hint">点击或拖拽文件到此处</p>
@@ -455,6 +500,24 @@
                     <div id="upload-file-list" class="mt-4 space-y-2 max-h-64 overflow-y-auto">
                         <!-- 上传文件列表 -->
                     </div>
+                </div>
+                <div id="upload-modal-footer" class="hidden px-6 py-3 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between gap-3">
+                    <div id="upload-summary" class="text-xs text-gray-500 dark:text-gray-400 min-w-0 truncate"></div>
+                    <button id="upload-done" class="shrink-0 px-4 py-2 bg-primary text-on-primary rounded-lg hover:opacity-90 transition-colors" data-i18n="uploadModal.done">完成</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 同名文件冲突 -->
+        <div id="conflict-modal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-md p-6">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white" data-i18n="conflict.title">目标文件夹已有同名文件</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1" data-i18n="conflict.desc">选择如何处理这些文件，本次上传将统一应用。</p>
+                <div id="conflict-list" class="mt-3 max-h-32 overflow-y-auto rounded-lg bg-gray-50 dark:bg-gray-700/50 px-3 py-2 text-sm text-gray-700 dark:text-gray-200 space-y-1"></div>
+                <div class="mt-5 grid grid-cols-3 gap-2">
+                    <button id="conflict-cancel" class="px-3 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" data-i18n="common.cancel">取消</button>
+                    <button id="conflict-keep" class="px-3 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" data-i18n="conflict.keepBoth">保留两份</button>
+                    <button id="conflict-overwrite" class="px-3 py-2 bg-primary text-on-primary rounded-lg hover:opacity-90 transition-colors" data-i18n="conflict.overwrite">覆盖</button>
                 </div>
             </div>
         </div>

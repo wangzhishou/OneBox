@@ -47,6 +47,55 @@ export function renderFiles() {
 
   gridContainer.innerHTML = sortedFiles.map((file) => renderGridItem(file)).join('');
   listContainer.innerHTML = sortedFiles.map((file) => renderListItem(file)).join('');
+
+  revealPending();
+}
+
+/**
+ * 上传成功后：滚动到新文件并高亮，解决"传完文件消失在列表里"的问题。
+ * 由 upload.js / transfers.js 通过 state.pendingReveal 触发。
+ */
+function revealPending() {
+  const target = state.pendingReveal;
+  if (!target) return;
+
+  // 安全阀：目标长时间没出现（例如被搜索过滤）就放弃，避免一直卡住
+  if (!state.pendingRevealSince) state.pendingRevealSince = Date.now();
+  if (Date.now() - state.pendingRevealSince > 8000) {
+    state.pendingReveal = null;
+    state.pendingRevealSince = 0;
+    return;
+  }
+
+  const container = state.viewMode === 'grid' ? elements.fileGrid : elements.fileList;
+  if (!container) return;
+
+  const targetStr = String(target);
+  // 服务端列表里的 path 可能是绝对路径（/storage/emulated/0/Download/x.apk），
+  // 而上传接口返回的是相对路径（Download/x.apk），这里用后缀匹配兼容两种。
+  const matches = (nodePath) =>
+    nodePath === targetStr || nodePath.endsWith('/' + targetStr.replace(/^\/+/, ''));
+
+  const el = Array.from(container.querySelectorAll('.file-item')).find(
+    (node) => node.dataset.path && matches(node.dataset.path)
+  );
+  if (!el) return;
+
+  state.pendingReveal = null;
+  state.pendingRevealSince = 0;
+
+  el.classList.add('upload-flash');
+  try {
+    el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  } catch (_) {
+    try {
+      el.scrollIntoView();
+    } catch (_) {
+      // ignore
+    }
+  }
+
+  setTimeout(() => el.classList.remove('upload-flash'), 2400);
 }
 
 function renderGridItem(file) {

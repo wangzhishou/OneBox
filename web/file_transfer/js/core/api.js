@@ -84,14 +84,21 @@ export async function downloadProbe(filePath) {
   return resp;
 }
 
-export function uploadFileViaXhr({ path = '', file, onProgress }) {
-  return new Promise((resolve, reject) => {
-    const formData = new FormData();
-    formData.append('file', file);
+/**
+ * 上传文件（XHR，支持进度/取消）
+ *
+ * @returns {{ promise: Promise<any>, xhr: XMLHttpRequest }}
+ */
+export function uploadFileViaXhr({ path = '', file, overwrite = false, onProgress }) {
+  const formData = new FormData();
+  formData.append('file', file);
 
-    const url = `/api/upload?path=${encodeURIComponent(path || '')}`;
+  const overwriteQuery = overwrite ? '&overwrite=1' : '';
+  const url = `/api/upload?path=${encodeURIComponent(path || '')}${overwriteQuery}`;
 
-    const xhr = new XMLHttpRequest();
+  const xhr = new XMLHttpRequest();
+
+  const promise = new Promise((resolve, reject) => {
     xhr.open('POST', url);
     xhr.withCredentials = true;
 
@@ -123,10 +130,9 @@ export function uploadFileViaXhr({ path = '', file, onProgress }) {
     xhr.onabort = () => reject(new Error('aborted'));
 
     xhr.send(formData);
-
-    // 额外返回 xhr（如果调用方需要 cancel）
-    resolve.xhr = xhr;
   });
+
+  return { promise, xhr };
 }
 
 export async function chatHistory(channelId) {

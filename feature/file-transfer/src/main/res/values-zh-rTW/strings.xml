@@ -74,4 +74,16 @@
     <string name="cancel">取消</string>
     <string name="server_ip_address_error">無法取得 IP 位址，請檢查網路連線</string>
     <string name="server_start_failed">服務啟動失敗</string>
+
+    <!-- Recently received (P1) -->
+    <string name="recent_received_title">最近接收</string>
+    <string name="recent_received_clear">清空</string>
+    <string name="recent_received_root">手機儲存根目錄</string>
+    <string name="recent_received_open_failed">無法開啟這個檔案</string>
+    <string name="recent_received_saved_to">已儲存到 %1$s</string>
+    <string name="receive_notification_channel_name">接收檔案</string>
+    <string name="receive_notification_channel_description">瀏覽器上傳檔案時提醒</string>
+    <string name="receive_notification_title">收到檔案</string>
+    <string name="receive_notification_content">%1$s · 已儲存到 %2$s</string>
 </resources>
+

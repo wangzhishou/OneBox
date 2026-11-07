@@ -18,7 +18,9 @@ import com.shifenmiao.model.transfer.MessageType
 import com.shifenmiao.model.transfer.ServerState
 import com.shifenmiao.model.transfer.TransferConfig
 import com.wanbaohe.file_transfer.R
+import com.wanbaohe.file_transfer.model.ReceivedFile
 import com.wanbaohe.file_transfer.server.FileTransferService
+import com.wanbaohe.file_transfer.store.RecentReceivedStore
 import com.wanbaohe.file_transfer.util.NetworkUtils
 import com.wanbaohe.file_transfer.util.QRCodeGenerator
 import dagger.assisted.Assisted
@@ -94,6 +96,9 @@ class FileTransferComponent @AssistedInject internal constructor(
     // 当前选中的会话/频道
     private val _selectedChannelId = MutableStateFlow<String?>(null)
     val selectedChannelId: StateFlow<String?> = _selectedChannelId.asStateFlow()
+
+    // 最近接收（浏览器上传成功后落在这里）
+    val recentReceived: StateFlow<List<ReceivedFile>> = RecentReceivedStore.items
 
     // 服务绑定
     private var service: FileTransferService? = null
@@ -265,8 +270,18 @@ class FileTransferComponent @AssistedInject internal constructor(
         // 初始化时获取IP地址
         refreshIpAddress()
 
+        // 恢复"最近接收"记录
+        RecentReceivedStore.init(context)
+
         // 绑定服务
         bindService()
+    }
+
+    /**
+     * 清空"最近接收"
+     */
+    fun clearRecentReceived() {
+        RecentReceivedStore.clear(context)
     }
 
     /**

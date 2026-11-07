@@ -25,8 +25,8 @@ import { showFileInfoModal, hideFileInfoModal } from './features/files/infoModal
 
 import { setActiveNav, updateRightPanelForNav } from './features/navigation/nav.js';
 
-import { initUploadBindings, handleFiles as handleUploadFiles } from './features/upload/upload.js';
-import { renderTransfers } from './features/transfer/transfers.js';
+import { initUploadBindings, handleFiles as handleUploadFiles, cancelUpload, retryUpload } from './features/upload/upload.js';
+import { renderTransfers, initTransferBindings } from './features/transfer/transfers.js';
 
 import { connectChat } from './features/chat/ws.js';
 import { sendChatMessage } from './features/chat/messages.js';
@@ -65,6 +65,10 @@ function exposeGlobalsForInlineHandlers() {
   // 聊天文件消息里的按钮
   window.cancelChatUpload = cancelChatUpload;
   window.retryChatUpload = retryChatUpload;
+
+  // 传输面板里的上传取消/重试
+  window.cancelUpload = cancelUpload;
+  window.retryUpload = retryUpload;
 
   // 文件信息弹窗
   window.showFileInfoModal = showFileInfoModal;
@@ -394,6 +398,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   initAuthBindings();
   initUploadBindings();
+  initTransferBindings();
 
   initNavBindings();
   initFileToolbar();
@@ -429,6 +434,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 体验优化：页面首次打开就预连接聊天（但不打扰用户）
   state.isChatOpen = false;
   connectChat();
+
+  // 手机端收到上传后广播事件：其它标签页同步刷新当前目录
+  document.addEventListener('ft:server-upload', (e) => {
+    const dir = e.detail?.dir ?? '';
+    if ((state.currentPath || '') === dir) loadFiles(dir);
+  });
 
   // 让 interactions.js 的图片判断/预览也可以被 context menu 等地方复用
   window.openPreviewModal = window.openPreviewModal || openPreviewModal;

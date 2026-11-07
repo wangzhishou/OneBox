@@ -74,4 +74,16 @@
     <string name="cancel">Kanselahin</string>
     <string name="server_ip_address_error">Hindi makuha ang IP address. Suriin ang koneksiyon sa network</string>
     <string name="server_start_failed">Nabigong simulan ang serbisyo</string>
+
+    <!-- Recently received (P1) -->
+    <string name="recent_received_title">Kamakailang natanggap</string>
+    <string name="recent_received_clear">I-clear</string>
+    <string name="recent_received_root">Root ng internal storage</string>
+    <string name="recent_received_open_failed">Hindi mabuksan ang file na ito</string>
+    <string name="recent_received_saved_to">Na-save sa %1$s</string>
+    <string name="receive_notification_channel_name">Mga natanggap na file</string>
+    <string name="receive_notification_channel_description">Nagpapaalala kapag may file na dumarating mula sa browser</string>
+    <string name="receive_notification_title">May natanggap na file</string>
+    <string name="receive_notification_content">%1$s · na-save sa %2$s</string>
 </resources>
+

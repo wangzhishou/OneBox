@@ -99,4 +99,16 @@
     <string name="permission_required_message">文件传输服务需要访问存储权限以读取和写入文件，请授权。</string>
     <string name="grant_permission">授权</string>
     <string name="cancel">取消</string>
+
+    <!-- 最近接收（P1） -->
+    <string name="recent_received_title">最近接收</string>
+    <string name="recent_received_clear">清空</string>
+    <string name="recent_received_root">手机存储根目录</string>
+    <string name="recent_received_open_failed">无法打开这个文件</string>
+    <string name="recent_received_saved_to">已保存到 %1$s</string>
+    <string name="receive_notification_channel_name">接收文件</string>
+    <string name="receive_notification_channel_description">浏览器上传文件时提醒</string>
+    <string name="receive_notification_title">收到文件</string>
+    <string name="receive_notification_content">%1$s · 已保存到 %2$s</string>
 </resources>
+

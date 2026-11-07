@@ -84,6 +84,31 @@ class ChatWebSocket(handshake: NanoHTTPD.IHTTPSession) : NanoWSD.WebSocket(hands
         }
 
         /**
+         * 广播一条系统事件给所有已连接的浏览器（不走聊天记录）。
+         *
+         * 用途：浏览器上传成功后通知其它标签页刷新目录；手机端不依赖这条消息。
+         */
+        fun broadcastSystemEvent(event: String, payload: Map<String, Any?> = emptyMap()) {
+            val json = jsonStringOf(
+                mapOf("type" to "system", "event" to event) +
+                    payload +
+                    mapOf("timestamp" to System.currentTimeMillis())
+            )
+
+            sendExecutor.execute {
+                channelConnections.values.forEach { sockets ->
+                    sockets.forEach { socket ->
+                        try {
+                            socket.send(json)
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Failed to send system event=$event", e)
+                        }
+                    }
+                }
+            }
+        }
+
+        /**
          * 获取当前连接数（全部频道总和）
          */
         fun getConnectionCount(): Int = channelConnections.values.sumOf { it.size }

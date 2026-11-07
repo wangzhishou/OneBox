@@ -4,12 +4,14 @@ import android.Manifest
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,6 +46,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassSwitch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -64,7 +67,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.core.content.FileProvider
 import com.wanbaohe.base.ui.card.AllFilesAccessPermissionCard
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
@@ -80,9 +85,16 @@ import com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors
 import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
 import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.file_transfer.R
+import com.wanbaohe.file_transfer.model.ReceivedFile
 import com.wanbaohe.file_transfer.screen.components.ChatTabContent
 import com.wanbaohe.file_transfer.screenLogic.FileTransferComponent
+import com.wanbaohe.file_transfer.util.FileUtils
 import kotlinx.coroutines.launch
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLock
@@ -286,6 +298,7 @@ fun FileTransferContent(
     val ipAddress by component.ipAddress.collectAsState()
     val accessUrl by component.accessUrl.collectAsState()
     val qrCodeBitmap by component.qrCodeBitmap.collectAsState()
+    val recentReceived by component.recentReceived.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -314,6 +327,12 @@ fun FileTransferContent(
             QRCodeCard(qrCodeBitmap = qrCodeBitmap)
         }
 
+        RecentReceivedCard(
+            items = recentReceived,
+            onOpen = { item -> openReceivedFile(context, config.rootPath, item) },
+            onClear = { component.clearRecentReceived() }
+        )
+
         SettingsCard(
             port = config.port,
             password = config.password,
@@ -324,6 +343,150 @@ fun FileTransferContent(
             onPasswordChange = { component.updatePassword(it) },
             onAllowUploadChange = { component.updateAllowUpload(it) }
         )
+    }
+}
+
+/**
+ * 最近接收：电脑上传到这里后，手机上能看到"传了什么、存在哪"。
+ */
+@Composable
+fun RecentReceivedCard(
+    items: List<ReceivedFile>,
+    onOpen: (ReceivedFile) -> Unit,
+    onClear: () -> Unit
+) {
+    if (items.isEmpty()) return
+
+    GlassCard(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(AppTheme.dimens.paddingNormal)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.recent_received_title),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                TextButton(onClick = onClear) {
+                    Text(
+                        text = stringResource(R.string.recent_received_clear),
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceSmall))
+
+            items.take(5).forEach { item ->
+                val dirLabel = if (item.dir.isBlank()) {
+                    stringResource(R.string.recent_received_root)
+                } else {
+                    "/${item.dir}"
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(12.dp))
+                        .clickable { onOpen(item) }
+                        .padding(
+                            horizontal = AppTheme.dimens.spaceSmall,
+                            vertical = AppTheme.dimens.spaceSmall
+                        ),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = item.fileName,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Text(
+                            text = "${formatReceivedSize(item.size)} · ${formatReceivedTime(item.timestamp)} · $dirLabel",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+private fun formatReceivedSize(bytes: Long): String = when {
+    bytes >= 1024L * 1024 * 1024 -> String.format(
+        Locale.getDefault(),
+        "%.1f GB",
+        bytes / (1024.0 * 1024 * 1024)
+    )
+
+    bytes >= 1024L * 1024 -> String.format(
+        Locale.getDefault(),
+        "%.1f MB",
+        bytes / (1024.0 * 1024)
+    )
+
+    bytes >= 1024L -> String.format(Locale.getDefault(), "%.1f KB", bytes / 1024.0)
+    else -> "$bytes B"
+}
+
+private fun formatReceivedTime(timestamp: Long): String {
+    val now = Calendar.getInstance()
+    val then = Calendar.getInstance().apply { timeInMillis = timestamp }
+
+    val sameDay = now.get(Calendar.YEAR) == then.get(Calendar.YEAR) &&
+        now.get(Calendar.DAY_OF_YEAR) == then.get(Calendar.DAY_OF_YEAR)
+
+    val pattern = if (sameDay) "HH:mm" else "MM-dd HH:mm"
+    return SimpleDateFormat(pattern, Locale.getDefault()).format(Date(timestamp))
+}
+
+/**
+ * 打开"最近接收"里的文件；失败时给 toast，不静默。
+ */
+private fun openReceivedFile(context: Context, rootPath: String, item: ReceivedFile) {
+    val opened = runCatching {
+        val absolute = FileUtils.validatePath(rootPath, item.relativePath) ?: return@runCatching false
+        val file = File(absolute)
+        if (!file.exists() || !file.isFile || !file.canRead()) return@runCatching false
+
+        val mime = FileUtils.getMimeType(file) ?: "*/*"
+        val uri = FileProvider.getUriForFile(
+            context,
+            "${context.packageName}.fileprovider",
+            file
+        )
+
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            setDataAndType(uri, mime)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+
+        context.startActivity(intent)
+        true
+    }.getOrDefault(false)
+
+    if (!opened) {
+        Toast.makeText(
+            context,
+            context.getString(R.string.recent_received_open_failed),
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }
 

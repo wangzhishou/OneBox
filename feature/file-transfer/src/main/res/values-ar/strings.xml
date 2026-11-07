@@ -74,4 +74,16 @@
     <string name="cancel">إلغاء</string>
     <string name="server_ip_address_error">تعذر الحصول على عنوان IP. تحقق من اتصال الشبكة</string>
     <string name="server_start_failed">فشل بدء الخدمة</string>
+
+    <!-- Recently received (P1) -->
+    <string name="recent_received_title">المستلمة مؤخرًا</string>
+    <string name="recent_received_clear">مسح</string>
+    <string name="recent_received_root">جذر التخزين الداخلي</string>
+    <string name="recent_received_open_failed">تعذّر فتح هذا الملف</string>
+    <string name="recent_received_saved_to">تم الحفظ في %1$s</string>
+    <string name="receive_notification_channel_name">الملفات المستلمة</string>
+    <string name="receive_notification_channel_description">تنبيه عند وصول ملفات من المتصفح</string>
+    <string name="receive_notification_title">تم استلام ملف</string>
+    <string name="receive_notification_content">%1$s · تم الحفظ في %2$s</string>
 </resources>
+

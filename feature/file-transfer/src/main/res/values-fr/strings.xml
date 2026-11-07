@@ -74,4 +74,16 @@
     <string name="cancel">Annuler</string>
     <string name="server_ip_address_error">Impossible d’obtenir l’adresse IP. Vérifiez la connexion réseau</string>
     <string name="server_start_failed">Échec du démarrage du service</string>
+
+    <!-- Recently received (P1) -->
+    <string name="recent_received_title">Reçus récemment</string>
+    <string name="recent_received_clear">Effacer</string>
+    <string name="recent_received_root">Racine du stockage interne</string>
+    <string name="recent_received_open_failed">Impossible d’ouvrir ce fichier</string>
+    <string name="recent_received_saved_to">Enregistré dans %1$s</string>
+    <string name="receive_notification_channel_name">Fichiers reçus</string>
+    <string name="receive_notification_channel_description">Prévient lorsque des fichiers arrivent depuis un navigateur</string>
+    <string name="receive_notification_title">Fichier reçu</string>
+    <string name="receive_notification_content">%1$s · enregistré dans %2$s</string>
 </resources>
+

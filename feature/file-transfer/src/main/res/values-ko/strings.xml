@@ -74,4 +74,16 @@
     <string name="cancel">취소</string>
     <string name="server_ip_address_error">IP 주소를 가져올 수 없습니다. 네트워크 연결을 확인하세요</string>
     <string name="server_start_failed">서비스를 시작하지 못했습니다</string>
+
+    <!-- Recently received (P1) -->
+    <string name="recent_received_title">최근 수신</string>
+    <string name="recent_received_clear">지우기</string>
+    <string name="recent_received_root">내부 저장소 루트</string>
+    <string name="recent_received_open_failed">이 파일을 열 수 없습니다</string>
+    <string name="recent_received_saved_to">%1$s에 저장됨</string>
+    <string name="receive_notification_channel_name">수신 파일</string>
+    <string name="receive_notification_channel_description">브라우저에서 파일이 도착하면 알려줍니다</string>
+    <string name="receive_notification_title">파일을 받았습니다</string>
+    <string name="receive_notification_content">%1$s · %2$s에 저장됨</string>
 </resources>
+

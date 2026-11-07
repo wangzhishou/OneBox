@@ -73,6 +73,21 @@ export function getElements() {
     closeUpload: document.getElementById('close-upload'),
     dropOverlay: document.getElementById('drop-overlay'),
     dropZoneSidebar: document.getElementById('drop-zone-sidebar'),
+    uploadDestinationPath: document.getElementById('upload-destination-path'),
+    uploadRootTip: document.getElementById('upload-root-tip'),
+    uploadGoDownload: document.getElementById('upload-go-download'),
+    uploadSummary: document.getElementById('upload-summary'),
+    uploadDone: document.getElementById('upload-done'),
+    uploadModalFooter: document.getElementById('upload-modal-footer'),
+    uploadDestinationHint: document.getElementById('upload-destination-hint'),
+    uploadDestinationHintText: document.getElementById('upload-destination-hint-text'),
+
+    // 同名文件冲突
+    conflictModal: document.getElementById('conflict-modal'),
+    conflictList: document.getElementById('conflict-list'),
+    conflictCancel: document.getElementById('conflict-cancel'),
+    conflictKeep: document.getElementById('conflict-keep'),
+    conflictOverwrite: document.getElementById('conflict-overwrite'),
 
     // 右侧栏（桌面端）
     rightPanel: document.getElementById('right-panel'),
@@ -83,6 +98,8 @@ export function getElements() {
     transferPanel: document.getElementById('transfer-panel'),
     transferList: document.getElementById('transfer-list'),
     transferEmpty: document.getElementById('transfer-empty'),
+    transferClear: document.getElementById('transfer-clear'),
+    mobileTransferClear: document.getElementById('mobile-transfer-clear'),
     mobileTransferList: document.getElementById('mobile-transfer-list'),
     mobileTransferEmpty: document.getElementById('mobile-transfer-empty'),
 

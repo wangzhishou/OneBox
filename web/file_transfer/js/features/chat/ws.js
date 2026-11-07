@@ -12,6 +12,26 @@ import { ensureChatChannelId, storeChatChannelId, getBrowserDeviceName } from '.
 import { loadChatHistory } from './history.js';
 import { handleChatMessage } from './messages.js';
 
+let lastUploadRefreshAt = 0;
+
+/**
+ * 手机端收到上传后广播的系统事件：其它标签页/窗口同步刷新目录
+ */
+function handleUploadEvent(data) {
+  const dir = String(data.dir || '');
+  if ((state.currentPath || '') !== dir) return;
+
+  const now = Date.now();
+  if (now - lastUploadRefreshAt < 800) return;
+  lastUploadRefreshAt = now;
+
+  try {
+    document.dispatchEvent(new CustomEvent('ft:server-upload', { detail: { dir } }));
+  } catch (_) {
+    // ignore
+  }
+}
+
 export function connectChat() {
   const storedChannelId = ensureChatChannelId();
 
@@ -43,6 +63,11 @@ export function connectChat() {
         if (data.type === 'system') {
           if (data.event === 'connected' && data.channelId) {
             storeChatChannelId(data.channelId);
+            return;
+          }
+          if (data.event === 'upload') {
+            handleUploadEvent(data);
+            return;
           }
           return;
         }

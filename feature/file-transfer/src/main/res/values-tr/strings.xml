@@ -74,4 +74,16 @@
     <string name="cancel">İptal</string>
     <string name="server_ip_address_error">IP adresi alınamıyor. Ağ bağlantınızı kontrol edin</string>
     <string name="server_start_failed">Hizmet başlatılamadı</string>
+
+    <!-- Recently received (P1) -->
+    <string name="recent_received_title">Son alınanlar</string>
+    <string name="recent_received_clear">Temizle</string>
+    <string name="recent_received_root">Dahili depolama kökü</string>
+    <string name="recent_received_open_failed">Bu dosya açılamıyor</string>
+    <string name="recent_received_saved_to">%1$s konumuna kaydedildi</string>
+    <string name="receive_notification_channel_name">Alınan dosyalar</string>
+    <string name="receive_notification_channel_description">Tarayıcıdan dosya geldiğinde bildirir</string>
+    <string name="receive_notification_title">Dosya alındı</string>
+    <string name="receive_notification_content">%1$s · %2$s konumuna kaydedildi</string>
 </resources>
+

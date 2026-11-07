@@ -74,4 +74,16 @@
     <string name="cancel">Abbrechen</string>
     <string name="server_ip_address_error">IP-Adresse kann nicht abgerufen werden. Prüfe deine Netzwerkverbindung</string>
     <string name="server_start_failed">Dienst konnte nicht gestartet werden</string>
+
+    <!-- Recently received (P1) -->
+    <string name="recent_received_title">Zuletzt empfangen</string>
+    <string name="recent_received_clear">Leeren</string>
+    <string name="recent_received_root">Stammverzeichnis des internen Speichers</string>
+    <string name="recent_received_open_failed">Datei kann nicht geöffnet werden</string>
+    <string name="recent_received_saved_to">Gespeichert in %1$s</string>
+    <string name="receive_notification_channel_name">Empfangene Dateien</string>
+    <string name="receive_notification_channel_description">Benachrichtigt, wenn Dateien aus einem Browser eintreffen</string>
+    <string name="receive_notification_title">Datei empfangen</string>
+    <string name="receive_notification_content">%1$s · gespeichert in %2$s</string>
 </resources>
+

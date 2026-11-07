@@ -74,4 +74,16 @@
     <string name="cancel">キャンセル</string>
     <string name="server_ip_address_error">IPアドレスを取得できません。ネットワーク接続を確認してください</string>
     <string name="server_start_failed">サービスを開始できませんでした</string>
+
+    <!-- Recently received (P1) -->
+    <string name="recent_received_title">最近受信</string>
+    <string name="recent_received_clear">クリア</string>
+    <string name="recent_received_root">内部ストレージのルート</string>
+    <string name="recent_received_open_failed">このファイルを開けません</string>
+    <string name="recent_received_saved_to">%1$s に保存しました</string>
+    <string name="receive_notification_channel_name">受信ファイル</string>
+    <string name="receive_notification_channel_description">ブラウザーからファイルが届いたときに通知します</string>
+    <string name="receive_notification_title">ファイルを受信しました</string>
+    <string name="receive_notification_content">%1$s · %2$s に保存</string>
 </resources>
+

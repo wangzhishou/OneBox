@@ -7,11 +7,17 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import com.wanbaohe.file_transfer.R
+import com.wanbaohe.file_transfer.model.ReceivedFile
+import com.wanbaohe.file_transfer.store.RecentReceivedStore
 import com.shifenmiao.model.transfer.ServerState
 import com.shifenmiao.model.transfer.TransferConfig
 import com.wanbaohe.file_transfer.util.NetworkUtils
@@ -26,6 +32,10 @@ class FileTransferService : Service() {
 
     private var server: FileTransferServer? = null
     private val binder = LocalBinder()
+
+    // 同一批上传会在很短时间内连发，避免十几次通知提醒
+    @Volatile
+    private var lastReceiveNotifyAt: Long = 0L
 
     private val _serverState = MutableStateFlow<ServerState>(ServerState.Stopped)
     val serverState: StateFlow<ServerState> = _serverState
@@ -42,6 +52,8 @@ class FileTransferService : Service() {
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
+        createReceiveNotificationChannel()
+        RecentReceivedStore.init(applicationContext)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -94,6 +106,8 @@ class FileTransferService : Service() {
             }
 
             server = FileTransferServer(this, currentConfig).apply {
+                // P1：浏览器上传成功后，手机端要"有感觉"——系统通知 + 最近接收
+                onFileReceived = { received -> handleReceivedFile(received) }
                 // 关键：禁用 socket 读超时。注意：NanoHTTPD.SOCKET_READ_TIMEOUT 在不同版本里通常是 5000ms（默认值），
                 // 不是“禁用超时”。为了确保 WebSocket 不会因为空闲而被读超时误杀，这里显式传 0。
                 start(0, false)
@@ -165,6 +179,78 @@ class FileTransferService : Service() {
     }
 
     /**
+     * 创建"接收文件"通知渠道
+     */
+    private fun createReceiveNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                RECEIVE_CHANNEL_ID,
+                getString(R.string.receive_notification_channel_name),
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                description = getString(R.string.receive_notification_channel_description)
+                setShowBadge(true)
+            }
+
+            val notificationManager = getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    /**
+     * 收到浏览器上传的文件：写"最近接收" + 发系统通知
+     */
+    private fun handleReceivedFile(received: ReceivedFile) {
+        RecentReceivedStore.add(applicationContext, received)
+        notifyFileReceived(received)
+    }
+
+    private fun notifyFileReceived(received: ReceivedFile) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) !=
+            PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+
+        val dirLabel = if (received.dir.isBlank()) {
+            getString(R.string.recent_received_root)
+        } else {
+            "/${received.dir}"
+        }
+        val content = getString(R.string.receive_notification_content, received.fileName, dirLabel)
+
+        val contentIntent = Intent(Intent.ACTION_VIEW, Uri.parse("onebox://FileTransfer")).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+        val contentPendingIntent = PendingIntent.getActivity(
+            this,
+            1,
+            contentIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val now = System.currentTimeMillis()
+        val quietUpdate = now - lastReceiveNotifyAt < 1500L
+        lastReceiveNotifyAt = now
+
+        val notification = NotificationCompat.Builder(this, RECEIVE_CHANNEL_ID)
+            .setContentTitle(getString(R.string.receive_notification_title))
+            .setContentText(content)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(content))
+            .setSmallIcon(android.R.drawable.stat_sys_download_done)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
+            .setOnlyAlertOnce(quietUpdate)
+            .setContentIntent(contentPendingIntent)
+            .build()
+
+        runCatching {
+            NotificationManagerCompat.from(this).notify(RECEIVE_NOTIFICATION_ID, notification)
+        }
+    }
+
+    /**
      * 创建前台服务通知
      */
     private fun createNotification(accessUrl: String): Notification {
@@ -208,6 +294,9 @@ class FileTransferService : Service() {
     companion object {
         private const val CHANNEL_ID = "file_transfer_channel"
         private const val NOTIFICATION_ID = 1001
+
+        private const val RECEIVE_CHANNEL_ID = "file_transfer_receive"
+        private const val RECEIVE_NOTIFICATION_ID = 1002
 
         const val ACTION_START = "com.wanbaohe.file_transfer.START"
         const val ACTION_STOP = "com.wanbaohe.file_transfer.STOP"

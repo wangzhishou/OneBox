@@ -74,4 +74,16 @@
     <string name="cancel">Отмена</string>
     <string name="server_ip_address_error">Не удалось получить IP-адрес. Проверьте подключение к сети</string>
     <string name="server_start_failed">Не удалось запустить службу</string>
+
+    <!-- Recently received (P1) -->
+    <string name="recent_received_title">Недавно полученные</string>
+    <string name="recent_received_clear">Очистить</string>
+    <string name="recent_received_root">Корень внутреннего накопителя</string>
+    <string name="recent_received_open_failed">Не удалось открыть файл</string>
+    <string name="recent_received_saved_to">Сохранено в %1$s</string>
+    <string name="receive_notification_channel_name">Полученные файлы</string>
+    <string name="receive_notification_channel_description">Уведомляет, когда файлы приходят из браузера</string>
+    <string name="receive_notification_title">Файл получен</string>
+    <string name="receive_notification_content">%1$s · сохранён в %2$s</string>
 </resources>
+
