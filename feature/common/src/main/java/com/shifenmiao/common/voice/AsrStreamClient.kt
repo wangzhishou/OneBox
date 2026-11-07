@@ -1,4 +1,4 @@
-package com.shifenmiao.ai.voice
+package com.shifenmiao.common.voice
 
 /** RemoteConfig.voiceInput.provider 的历史取值(仅 ≤139 老版本读它, 新版本用 `engine` 切换) */
 const val VOICE_PROVIDER_IFLYTEK = "iflytek"

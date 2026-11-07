@@ -1,6 +1,6 @@
-package com.shifenmiao.ai.di
+package com.shifenmiao.common.di
 
-import com.shifenmiao.ai.voice.VoiceRecognizer
+import com.shifenmiao.common.voice.VoiceRecognizer
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent

@@ -1,4 +1,4 @@
-package com.shifenmiao.ai.voice
+package com.shifenmiao.common.voice
 
 import com.shifenmiao.model.channel.FlavorType
 import com.shifenmiao.model.remote.VoiceInputConfig

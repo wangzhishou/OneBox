@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.annotation.StringRes
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnDestroy
-import com.shifenmiao.ai.voice.VoiceRecognizer
+import com.shifenmiao.common.voice.VoiceRecognizer
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.interfaces.ocr.TextRecognitionService
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder

@@ -46,6 +46,7 @@ import com.shifenmiao.marktodo.model.TodoTag
 import com.shifenmiao.marktodo.model.TodoTask
 import com.shifenmiao.marktodo.theme.priorityColor
 import com.t8rin.imagetoolbox.core.resources.icons.CheckCircle
+import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAccessTime
@@ -71,6 +72,7 @@ fun TaskListContent(
     onTaskClick: (TodoTask) -> Unit,
     onToggleComplete: (TodoTask) -> Unit,
     onToggleStar: (TodoTask) -> Unit,
+    onDuplicate: (TodoTask) -> Unit,
     onDelete: (TodoTask) -> Unit,
     modifier: Modifier = Modifier,
     onTagClick: ((String) -> Unit)? = null,
@@ -97,6 +99,7 @@ fun TaskListContent(
                     onTaskClick = onTaskClick,
                     onToggleComplete = onToggleComplete,
                     onToggleStar = onToggleStar,
+                    onDuplicate = onDuplicate,
                     onDelete = onDelete,
                     onTagClick = onTagClick,
                     showCategory = showCategory,
@@ -109,6 +112,7 @@ fun TaskListContent(
                     onClick = onTaskClick,
                     onToggleComplete = onToggleComplete,
                     onToggleStar = onToggleStar,
+                    onDuplicate = onDuplicate,
                     onDelete = onDelete,
                     onTagClick = onTagClick,
                     showCategory = showCategory,
@@ -126,6 +130,7 @@ fun TaskListItem(
     onClick: (TodoTask) -> Unit,
     onToggleComplete: (TodoTask) -> Unit,
     onToggleStar: (TodoTask) -> Unit,
+    onDuplicate: (TodoTask) -> Unit,
     onDelete: (TodoTask) -> Unit,
     modifier: Modifier = Modifier,
     onTagClick: ((String) -> Unit)? = null,
@@ -164,6 +169,7 @@ fun TaskListItem(
                     task = task,
                     onEdit = onClick,
                     onToggleStar = onToggleStar,
+                    onDuplicate = onDuplicate,
                     onDelete = onDelete,
                     expanded = menuExpanded,
                     onExpandedChange = { menuExpanded = it },
@@ -307,6 +313,7 @@ fun TaskOverflowMenu(
     task: TodoTask,
     onEdit: (TodoTask) -> Unit,
     onToggleStar: (TodoTask) -> Unit,
+    onDuplicate: (TodoTask) -> Unit,
     onDelete: (TodoTask) -> Unit,
     expanded: Boolean,
     onExpandedChange: (Boolean) -> Unit,
@@ -343,6 +350,19 @@ fun TaskOverflowMenu(
                 onClick = {
                     onExpandedChange(false)
                     onEdit(task)
+                },
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.action_duplicate)) },
+                leadingIcon = {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                        contentDescription = null,
+                    )
+                },
+                onClick = {
+                    onExpandedChange(false)
+                    onDuplicate(task)
                 },
             )
             DropdownMenuItem(
@@ -421,6 +441,7 @@ private fun SwipeableTaskListItem(
     onTaskClick: (TodoTask) -> Unit,
     onToggleComplete: (TodoTask) -> Unit,
     onToggleStar: (TodoTask) -> Unit,
+    onDuplicate: (TodoTask) -> Unit,
     onDelete: (TodoTask) -> Unit,
     onTagClick: ((String) -> Unit)?,
     showCategory: Boolean,
@@ -462,6 +483,7 @@ private fun SwipeableTaskListItem(
                 onClick = onTaskClick,
                 onToggleComplete = onToggleComplete,
                 onToggleStar = onToggleStar,
+                onDuplicate = onDuplicate,
                 onDelete = onDelete,
                 onTagClick = onTagClick,
                 showCategory = showCategory,

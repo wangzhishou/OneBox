@@ -1,4 +1,4 @@
-package com.shifenmiao.ai.voice
+package com.shifenmiao.common.voice
 
 import com.shifenmiao.model.jsonStringOf
 import com.shifenmiao.model.ModelProvider.AppJson

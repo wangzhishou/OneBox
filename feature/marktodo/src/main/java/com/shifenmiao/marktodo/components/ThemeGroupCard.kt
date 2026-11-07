@@ -74,6 +74,7 @@ fun ThemeGroupCard(
     onEnterReorder: () -> Unit = {},
     onTagClick: ((String) -> Unit)? = null,
     onToggleStar: ((TodoTask) -> Unit)? = null,
+    onDuplicateTask: ((TodoTask) -> Unit)? = null,
     onDeleteTask: ((TodoTask) -> Unit)? = null,
 ) {
     val accentColor = categoryAccentColor(category, themeIndex)
@@ -142,6 +143,7 @@ fun ThemeGroupCard(
                             onClick = onTaskClick,
                             onTagClick = onTagClick,
                             onToggleStar = onToggleStar,
+                            onDuplicate = onDuplicateTask,
                             onDelete = onDeleteTask
                         )
                     }
@@ -188,6 +190,7 @@ fun ThemeGroupGridCard(
     maxPreviewTasks: Int = 5,
     onTagClick: ((String) -> Unit)? = null,
     onToggleStar: ((TodoTask) -> Unit)? = null,
+    onDuplicateTask: ((TodoTask) -> Unit)? = null,
     onDeleteTask: ((TodoTask) -> Unit)? = null,
 ) {
     val accentColor = categoryAccentColor(category, themeIndex)
@@ -273,6 +276,7 @@ fun ThemeGroupGridCard(
                             onClick = onTaskClick,
                             onTagClick = onTagClick,
                             onToggleStar = onToggleStar,
+                            onDuplicate = onDuplicateTask,
                             onDelete = onDeleteTask,
                             compact = true
                         )

@@ -1,4 +1,4 @@
-package com.shifenmiao.ai.ui
+package com.shifenmiao.common.voice.ui
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
@@ -45,8 +45,8 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.airbnb.lottie.compose.rememberLottieDynamicProperties
 import com.airbnb.lottie.compose.rememberLottieDynamicProperty
-import com.shifenmiao.ai.voice.AsrState
-import com.shifenmiao.ai.voice.VoiceRecognizer
+import com.shifenmiao.common.voice.AsrState
+import com.shifenmiao.common.voice.VoiceRecognizer
 import com.shifenmiao.core.R
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 
@@ -143,7 +143,7 @@ fun VoiceInputSheet(
             val targetScale = 1f + rms.coerceIn(0f, 1f) * 0.25f
             val pulseScale by animateFloatAsState(targetValue = targetScale, label = "rmsPulse")
             val composition by rememberLottieComposition(
-                LottieCompositionSpec.RawRes(com.shifenmiao.ai.R.raw.voice_recording)
+                LottieCompositionSpec.RawRes(com.shifenmiao.common.R.raw.voice_recording)
             )
             val lottieProgress by animateLottieCompositionAsState(
                 composition = composition,

@@ -1,4 +1,4 @@
-package com.shifenmiao.ai.ui
+package com.shifenmiao.common.voice.ui
 
 import android.Manifest
 import android.app.Activity
@@ -11,16 +11,38 @@ import android.speech.SpeechRecognizer
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import com.shifenmiao.ai.voice.VoiceInputEngine
-import com.shifenmiao.ai.voice.resolveVoiceInputEngine
+import com.shifenmiao.common.voice.VoiceInputEngine
+import com.shifenmiao.common.voice.resolveVoiceInputEngine
 import com.shifenmiao.core.R
+import com.shifenmiao.model.channel.FlavorType
 import com.shifenmiao.model.event.PermissionRequest
 import com.shifenmiao.storage.RemoteConfigStorage
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.helper.ContextUtils
 import java.util.Locale
+
+/** 各输入场景共用同一语音入口规则，并跟随远程配置实时更新。 */
+@Composable
+fun rememberVoiceInputEnabled(): Boolean {
+    val context = LocalContext.current
+    var remoteConfig by remember { mutableStateOf(RemoteConfigStorage.getRemoteConfig()) }
+    LaunchedEffect(Unit) {
+        RemoteConfigStorage.rulesChanged.collect {
+            remoteConfig = RemoteConfigStorage.getRemoteConfig()
+        }
+    }
+    val systemVoiceAvailable = remember { isSystemSpeechRecognitionAvailable(context) }
+    return when (resolveVoiceInputEngine(remoteConfig.voiceInput)) {
+        VoiceInputEngine.SELF, VoiceInputEngine.IFLYTEK -> true
+        VoiceInputEngine.SYSTEM -> FlavorType.fromName().isOverseas && systemVoiceAvailable
+    }
+}
 
 /**
  * 语音输入:输入框为空时发送按钮切换为麦克风,点击后按远程配置分流:

@@ -49,6 +49,7 @@
     <!-- Actions -->
     <string name="action_menu">Menu</string>
     <string name="action_edit">Edit</string>
+    <string name="action_duplicate">Duplicate</string>
     <string name="action_delete">Delete</string>
     <string name="action_complete">Complete</string>
     <string name="action_star">Star</string>
@@ -70,6 +71,7 @@
     <string name="validation_task_title_duplicate">A task with the same name already exists in this group</string>
     <string name="snackbar_category_added">Group added</string>
     <string name="snackbar_task_added">To-do added</string>
+    <string name="snackbar_task_duplicated">To-do duplicated</string>
     <string name="snackbar_task_updated">To-do updated</string>
     <string name="snackbar_task_deleted">To-do deleted</string>
 
@@ -207,6 +209,7 @@
     <string name="marktodo_log_category_deleted">Delete group: %1$s</string>
     <string name="marktodo_log_categories_reordered">Reorder categories</string>
     <string name="marktodo_log_task_created">New task: %1$s</string>
+    <string name="marktodo_log_task_duplicated">Duplicated task: %1$s</string>
     <string name="marktodo_log_task_updated">Edit task: %1$s</string>
     <string name="marktodo_log_task_deleted">Delete task: %1$s</string>
     <string name="marktodo_log_task_completed">Completed: %1$s</string>
@@ -239,4 +242,10 @@
     <string name="select_exact_time_hint">Add exact time (optional)</string>
     <string name="action_select_time">Select time</string>
     <string name="action_clear_time">Clear time</string>
+
+    <!-- AI quick create -->
+    <string name="quick_add_ai_action">AI Create</string>
+    <string name="quick_add_ai_guide">Try: a practical 2027 annual plan for most people</string>
+    <string name="quick_add_ai_dialog_title">Create to-dos with AI</string>
+    <string name="quick_add_ai_default_prompt">A practical 2027 annual plan for most people</string>
 </resources>

@@ -258,6 +258,39 @@ class MarkTodoServiceImpl @Inject constructor(
         }
     }
 
+    override suspend fun duplicateTask(
+        taskId: String,
+        source: String,
+    ): Result<String> = withContext(Dispatchers.IO) {
+        runCatching {
+            val existing = repository.getTaskById(taskId) ?: error("Task not found: $taskId")
+            val newTaskId = UUID.randomUUID().toString()
+            val now = System.currentTimeMillis()
+            repository.addTask(
+                existing.copy(
+                    id = newTaskId,
+                    startDate = now,
+                    isCompleted = false,
+                    completedAt = null,
+                    sortOrder = 0,
+                    createdAt = now,
+                    updatedAt = now,
+                    deletedAt = null,
+                )
+            )
+
+            recordMarkTodoSafely(
+                entityId = newTaskId,
+                entityType = "TASK",
+                actionType = "DUPLICATE",
+                source = source,
+                title = AppContext.getString(R.string.marktodo_log_task_duplicated, existing.title),
+                description = AppContext.getString(R.string.marktodo_log_task_duplicated, existing.title),
+            )
+            newTaskId
+        }
+    }
+
     override suspend fun deleteTask(
         taskId: String,
         taskTitle: String,

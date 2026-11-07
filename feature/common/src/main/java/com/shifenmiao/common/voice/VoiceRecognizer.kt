@@ -1,4 +1,4 @@
-package com.shifenmiao.ai.voice
+package com.shifenmiao.common.voice
 
 import com.shifenmiao.network.NetworkBuilder
 import com.shifenmiao.network.api.ApiService

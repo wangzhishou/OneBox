@@ -183,6 +183,9 @@ fun CategoryDetailScreen(
                             onToggleStar = {
                                 component.handleEvent(CategoryDetailUiEvent.ToggleTaskStar(it))
                             },
+                            onDuplicate = {
+                                component.handleEvent(CategoryDetailUiEvent.DuplicateTask(it))
+                            },
                             onDelete = {
                                 component.handleEvent(CategoryDetailUiEvent.DeleteTask(it))
                             },

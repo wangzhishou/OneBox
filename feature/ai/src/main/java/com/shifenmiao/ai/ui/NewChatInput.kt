@@ -59,10 +59,11 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.shifenmiao.ai.chat.NewTextInputField
 import com.shifenmiao.ai.component.AIChatComponent
-import com.shifenmiao.ai.di.VoiceRecognizerEntryPoint
 import com.shifenmiao.ai.logic.ChatInputComponent
-import com.shifenmiao.ai.voice.VoiceInputEngine
-import com.shifenmiao.ai.voice.resolveVoiceInputEngine
+import com.shifenmiao.common.di.VoiceRecognizerEntryPoint
+import com.shifenmiao.common.voice.ui.VoiceInputSheet
+import com.shifenmiao.common.voice.ui.rememberVoiceInputEnabled
+import com.shifenmiao.common.voice.ui.rememberVoiceInputLauncher
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.core.R
@@ -75,7 +76,6 @@ import com.shifenmiao.model.channel.FlavorType
 import com.shifenmiao.model.state.ChatUIState
 import com.shifenmiao.model.state.PageState
 import com.shifenmiao.storage.AIChatStorage
-import com.shifenmiao.storage.RemoteConfigStorage
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
@@ -282,23 +282,8 @@ private fun StandardInputSection(
         derivedStateOf { chatInputComponent.areAttachmentsReady() }
     }
     val sendDisabled = (textEmpty && !hasAttachments) || (hasAttachments && !attachmentsReady)
-    // 语音按钮开关:海外渠道(google/foss)走系统语音识别,仅在设备识别服务可用时启用
-    // (无 GMS / 去服务化设备直接隐藏麦克风,避免点击后才弹不可用提示);
-    // 国内渠道由远程配置控制,未下发 voiceInput(provider=iflytek)时不显示麦克风,保持置灰发送按钮。
-    // 订阅 rulesChanged,远程配置拉到后即时生效,无需重进页面。
-    var remoteConfig by remember { mutableStateOf(RemoteConfigStorage.getRemoteConfig()) }
-    LaunchedEffect(Unit) {
-        RemoteConfigStorage.rulesChanged.collect {
-            remoteConfig = RemoteConfigStorage.getRemoteConfig()
-        }
-    }
+    val voiceInputEnabled = rememberVoiceInputEnabled()
     val context = LocalContext.current
-    val systemVoiceAvailable = remember { isSystemSpeechRecognitionAvailable(context) }
-    val voiceInputEnabled = when (resolveVoiceInputEngine(remoteConfig.voiceInput)) {
-        VoiceInputEngine.SELF, VoiceInputEngine.IFLYTEK -> true
-        // 未开启托管识别时, 海外渠道回退系统语音识别, 国内渠道不显示麦克风
-        VoiceInputEngine.SYSTEM -> FlavorType.fromName().isOverseas && systemVoiceAvailable
-    }
     val showVoice = textEmpty && !hasAttachments && voiceInputEnabled
     // 文本为空且无附件时,发送按钮切换为语音输入;识别结果回填输入框并补换行,
     // 首段也带结尾换行(短文本不折行时靠它顶出第二行进入多行态),

@@ -30,6 +30,7 @@ sealed interface CategoryDetailUiEvent {
     data object AddTaskClicked : CategoryDetailUiEvent
     data class ToggleTaskComplete(val task: TodoTask) : CategoryDetailUiEvent
     data class ToggleTaskStar(val task: TodoTask) : CategoryDetailUiEvent
+    data class DuplicateTask(val task: TodoTask) : CategoryDetailUiEvent
     data class DeleteTask(val task: TodoTask) : CategoryDetailUiEvent
 
     data class ChangeFilter(val filterMode: TaskFilterMode) : CategoryDetailUiEvent

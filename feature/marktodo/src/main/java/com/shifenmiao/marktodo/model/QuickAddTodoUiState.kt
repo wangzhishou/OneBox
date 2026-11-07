@@ -82,6 +82,7 @@ sealed interface QuickAddTodoUiEvent {
     data object ToggleDetails : QuickAddTodoUiEvent
     data class ToggleDatePicker(val show: Boolean) : QuickAddTodoUiEvent
     data class ToggleTimePicker(val show: Boolean) : QuickAddTodoUiEvent
+    data object ShowAiCreate : QuickAddTodoUiEvent
     data object Submit : QuickAddTodoUiEvent
     data object SubmitAndContinue : QuickAddTodoUiEvent
 }

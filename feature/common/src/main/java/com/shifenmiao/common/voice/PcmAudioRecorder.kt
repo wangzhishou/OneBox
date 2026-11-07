@@ -1,4 +1,4 @@
-package com.shifenmiao.ai.voice
+package com.shifenmiao.common.voice
 
 import android.annotation.SuppressLint
 import android.media.AudioFormat

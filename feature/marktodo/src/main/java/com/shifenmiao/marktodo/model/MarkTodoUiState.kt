@@ -36,6 +36,7 @@ sealed interface MarkTodoUiEvent {
     data class AddTaskClicked(val category: TodoCategory? = null) : MarkTodoUiEvent
     data class ToggleTaskComplete(val task: TodoTask) : MarkTodoUiEvent
     data class ToggleTaskStar(val task: TodoTask) : MarkTodoUiEvent
+    data class DuplicateTask(val task: TodoTask) : MarkTodoUiEvent
     data class DeleteTask(val task: TodoTask) : MarkTodoUiEvent
 
     data class SelectStatusTab(val tab: TaskCompletionFilter) : MarkTodoUiEvent

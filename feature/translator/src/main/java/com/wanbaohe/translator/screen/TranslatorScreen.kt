@@ -16,8 +16,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.shifenmiao.ai.ui.VoiceInputSheet
-import com.shifenmiao.ai.ui.rememberVoiceInputLauncher
+import com.shifenmiao.common.voice.ui.VoiceInputSheet
+import com.shifenmiao.common.voice.ui.rememberVoiceInputLauncher
 import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.History

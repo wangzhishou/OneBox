@@ -17,6 +17,8 @@ import com.shifenmiao.marktodo.model.TodoTag
 import com.shifenmiao.marktodo.model.TodoTask
 import com.shifenmiao.marktodo.model.withQuickDateExclusivity
 import com.shifenmiao.marktodo.service.MarkTodoServiceImpl
+import com.shifenmiao.model.ai.AIConversationEntryType
+import com.shifenmiao.model.ai.Conversation
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.tencent.mmkv.MMKV
 import com.wanbaohe.core.ui.utils.BaseComponent
@@ -42,7 +44,17 @@ class MarkTodoComponent @AssistedInject internal constructor(
     quickAddTodoFactory: QuickAddTodoComponent.Factory,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
-    val quickAddTodoComponent = quickAddTodoFactory(componentScope)
+    val quickAddTodoComponent = quickAddTodoFactory(componentScope) { prompt ->
+        onNavigate(
+            Screen.AITabChatScreen(
+                Conversation(
+                    entryType = AIConversationEntryType.ASSISTANT,
+                    title = context.getString(R.string.quick_add_ai_dialog_title),
+                    template = prompt,
+                )
+            )
+        )
+    }
 
     private val prefs by lazy { MMKV.mmkvWithID("marktodo_home") }
     private val completionRemovalJobs = mutableMapOf<String, Job>()
@@ -125,6 +137,7 @@ class MarkTodoComponent @AssistedInject internal constructor(
             }
             is MarkTodoUiEvent.ToggleTaskComplete -> toggleTaskComplete(event.task)
             is MarkTodoUiEvent.ToggleTaskStar -> toggleTaskStar(event.task)
+            is MarkTodoUiEvent.DuplicateTask -> duplicateTask(event.task)
             is MarkTodoUiEvent.DeleteTask -> deleteTask(event.task)
             is MarkTodoUiEvent.SelectStatusTab -> {
                 _uiState.value = _uiState.value.copy(statusTab = event.tab)
@@ -332,6 +345,19 @@ class MarkTodoComponent @AssistedInject internal constructor(
                     if (current.isStarred == newValue) current.copy(isStarred = task.isStarred) else current
                 }
                 AppToastHost.showFailureToast(R.string.p1_error_update_failed)
+            }
+        }
+    }
+
+    private fun duplicateTask(task: TodoTask) {
+        componentScope.launch {
+            service.duplicateTask(
+                taskId = task.id,
+                source = "UI:MarkTodoScreen",
+            ).onSuccess {
+                AppToastHost.showToast(context.getString(R.string.snackbar_task_duplicated))
+            }.onFailure {
+                AppToastHost.showFailureToast(R.string.error_save_failed)
             }
         }
     }

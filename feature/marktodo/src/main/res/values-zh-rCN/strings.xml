@@ -51,6 +51,7 @@
     <!-- Actions -->
     <string name="action_menu">菜单</string>
     <string name="action_edit">编辑</string>
+    <string name="action_duplicate">复制</string>
     <string name="action_delete">删除</string>
     <string name="action_complete">完成</string>
     <string name="action_star">收藏</string>
@@ -72,6 +73,7 @@
     <string name="validation_task_title_duplicate">该分组下已有同名待办</string>
     <string name="snackbar_category_added">已添加分组</string>
     <string name="snackbar_task_added">已添加待办</string>
+    <string name="snackbar_task_duplicated">已复制待办</string>
     <string name="snackbar_task_updated">已更新待办</string>
     <string name="snackbar_task_deleted">已删除待办</string>
 
@@ -209,6 +211,7 @@
     <string name="marktodo_log_category_deleted">删除分组: %1$s</string>
     <string name="marktodo_log_categories_reordered">重排分组</string>
     <string name="marktodo_log_task_created">新增待办: %1$s</string>
+    <string name="marktodo_log_task_duplicated">复制待办: %1$s</string>
     <string name="marktodo_log_task_updated">编辑待办: %1$s</string>
     <string name="marktodo_log_task_deleted">删除待办: %1$s</string>
     <string name="marktodo_log_task_completed">完成待办: %1$s</string>
@@ -241,4 +244,10 @@
     <string name="select_exact_time_hint">添加具体时间（可选）</string>
     <string name="action_select_time">选择时间</string>
     <string name="action_clear_time">清除时间</string>
+
+    <!-- AI 快捷创建 -->
+    <string name="quick_add_ai_action">AI 创建</string>
+    <string name="quick_add_ai_guide">试试：2027 年年度计划，适合大部分人</string>
+    <string name="quick_add_ai_dialog_title">AI 创建待办</string>
+    <string name="quick_add_ai_default_prompt">2027 年年度计划，适合大部分人</string>
 </resources>

@@ -30,6 +30,7 @@ import java.util.Calendar
 
 class QuickAddTodoComponent @AssistedInject internal constructor(
     @Assisted private val componentScope: CoroutineScope,
+    @Assisted("onOpenAiAssistant") private val onOpenAiAssistant: (String) -> Unit,
     @ApplicationContext private val context: Context,
     private val repository: MarkTodoRepository,
     private val service: MarkTodoServiceImpl,
@@ -195,8 +196,15 @@ class QuickAddTodoComponent @AssistedInject internal constructor(
             true
         }
 
+        QuickAddTodoUiEvent.ShowAiCreate -> openAiAssistant()
         QuickAddTodoUiEvent.Submit -> submit(closeAfterSave = true)
         QuickAddTodoUiEvent.SubmitAndContinue -> submit(closeAfterSave = false)
+    }
+
+    private fun openAiAssistant(): Boolean {
+        onOpenAiAssistant(context.getString(R.string.quick_add_ai_default_prompt))
+        _uiState.value = _uiState.value.copy(isVisible = false)
+        return true
     }
 
     private fun submit(closeAfterSave: Boolean): Boolean {
@@ -356,7 +364,10 @@ class QuickAddTodoComponent @AssistedInject internal constructor(
 
     @AssistedFactory
     fun interface Factory {
-        operator fun invoke(componentScope: CoroutineScope): QuickAddTodoComponent
+        operator fun invoke(
+            componentScope: CoroutineScope,
+            @Assisted("onOpenAiAssistant") onOpenAiAssistant: (String) -> Unit,
+        ): QuickAddTodoComponent
     }
 }
 

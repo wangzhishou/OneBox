@@ -48,6 +48,7 @@ fun TodoTaskRow(
     onTagClick: ((String) -> Unit)? = null,
     compact: Boolean = false,
     onToggleStar: ((TodoTask) -> Unit)? = null,
+    onDuplicate: ((TodoTask) -> Unit)? = null,
     onDelete: ((TodoTask) -> Unit)? = null,
 ) {
     val contentAlpha = if (task.isCompleted) 0.45f else 1f
@@ -165,11 +166,12 @@ fun TodoTaskRow(
                 }
             }
         }
-        if (onDelete != null && onToggleStar != null) {
+        if (onDelete != null && onToggleStar != null && onDuplicate != null) {
             TaskOverflowMenu(
                 task = task,
                 onEdit = onClick,
                 onToggleStar = onToggleStar,
+                onDuplicate = onDuplicate,
                 onDelete = onDelete,
                 expanded = menuExpanded,
                 onExpandedChange = { menuExpanded = it },

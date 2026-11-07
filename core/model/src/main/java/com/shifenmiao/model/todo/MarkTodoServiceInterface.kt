@@ -61,6 +61,12 @@ interface MarkTodoServiceInterface {
         source: String,
     ): Result<Unit>
 
+    /** 复制任务内容，生成一条默认未完成的新任务；关联日程提醒不复制。 */
+    suspend fun duplicateTask(
+        taskId: String,
+        source: String,
+    ): Result<String>
+
     suspend fun deleteTask(
         taskId: String,
         taskTitle: String,

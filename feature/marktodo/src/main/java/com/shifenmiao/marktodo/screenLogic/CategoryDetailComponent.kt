@@ -11,6 +11,8 @@ import com.shifenmiao.marktodo.model.CategoryDetailUiState
 import com.shifenmiao.marktodo.model.TodoCategory
 import com.shifenmiao.marktodo.model.TodoTask
 import com.shifenmiao.marktodo.service.MarkTodoServiceImpl
+import com.shifenmiao.model.ai.AIConversationEntryType
+import com.shifenmiao.model.ai.Conversation
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
@@ -38,7 +40,17 @@ class CategoryDetailComponent @AssistedInject internal constructor(
     quickAddTodoFactory: QuickAddTodoComponent.Factory,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
-    val quickAddTodoComponent = quickAddTodoFactory(componentScope)
+    val quickAddTodoComponent = quickAddTodoFactory(componentScope) { prompt ->
+        onNavigate(
+            Screen.AITabChatScreen(
+                Conversation(
+                    entryType = AIConversationEntryType.ASSISTANT,
+                    title = context.getString(R.string.quick_add_ai_dialog_title),
+                    template = prompt,
+                )
+            )
+        )
+    }
 
     /** 收集箱是合成的虚拟分组：没有分组行，也不能改名/删除 */
     private val isInbox: Boolean = categoryId == TodoCategory.INBOX_ID
@@ -130,6 +142,7 @@ class CategoryDetailComponent @AssistedInject internal constructor(
             }
             is CategoryDetailUiEvent.ToggleTaskComplete -> toggleTaskComplete(event.task)
             is CategoryDetailUiEvent.ToggleTaskStar -> toggleTaskStar(event.task)
+            is CategoryDetailUiEvent.DuplicateTask -> duplicateTask(event.task)
             is CategoryDetailUiEvent.DeleteTask -> deleteTask(event.task)
             is CategoryDetailUiEvent.ChangeFilter -> {
                 _uiState.value = _uiState.value.copy(filterMode = event.filterMode)
@@ -249,6 +262,19 @@ class CategoryDetailComponent @AssistedInject internal constructor(
                     if (current.isStarred == newValue) current.copy(isStarred = task.isStarred) else current
                 }
                 AppToastHost.showFailureToast(R.string.p1_error_update_failed)
+            }
+        }
+    }
+
+    private fun duplicateTask(task: TodoTask) {
+        componentScope.launch {
+            service.duplicateTask(
+                taskId = task.id,
+                source = "UI:CategoryDetailScreen",
+            ).onSuccess {
+                AppToastHost.showToast(context.getString(R.string.snackbar_task_duplicated))
+            }.onFailure {
+                AppToastHost.showFailureToast(R.string.error_save_failed)
             }
         }
     }

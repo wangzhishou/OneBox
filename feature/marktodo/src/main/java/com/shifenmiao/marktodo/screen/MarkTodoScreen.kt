@@ -432,6 +432,7 @@ private fun SearchTaskList(
         onTaskClick = { component.handleEvent(MarkTodoUiEvent.TaskClicked(it)) },
         onToggleComplete = { component.handleEvent(MarkTodoUiEvent.ToggleTaskComplete(it)) },
         onToggleStar = { component.handleEvent(MarkTodoUiEvent.ToggleTaskStar(it)) },
+        onDuplicate = { component.handleEvent(MarkTodoUiEvent.DuplicateTask(it)) },
         onDelete = { component.handleEvent(MarkTodoUiEvent.DeleteTask(it)) },
         onTagClick = { component.handleEvent(MarkTodoUiEvent.TagOnTaskClicked(it)) },
         modifier = modifier,
@@ -493,6 +494,7 @@ private fun TodayTaskList(
                         component.handleEvent(MarkTodoUiEvent.ToggleTaskComplete(it))
                     },
                     onToggleStar = { component.handleEvent(MarkTodoUiEvent.ToggleTaskStar(it)) },
+                    onDuplicate = { component.handleEvent(MarkTodoUiEvent.DuplicateTask(it)) },
                     onDelete = { component.handleEvent(MarkTodoUiEvent.DeleteTask(it)) },
                     onTagClick = { component.handleEvent(MarkTodoUiEvent.TagOnTaskClicked(it)) },
                 )
@@ -774,6 +776,7 @@ private fun CategoriesContent(
                     onToggleStar = {
                         component.handleEvent(MarkTodoUiEvent.ToggleTaskStar(it))
                     },
+                    onDuplicateTask = { component.handleEvent(MarkTodoUiEvent.DuplicateTask(it)) },
                     onDeleteTask = { component.handleEvent(MarkTodoUiEvent.DeleteTask(it)) },
                 )
             } else {
@@ -797,6 +800,7 @@ private fun CategoriesContent(
                     onToggleStar = {
                         component.handleEvent(MarkTodoUiEvent.ToggleTaskStar(it))
                     },
+                    onDuplicateTask = { component.handleEvent(MarkTodoUiEvent.DuplicateTask(it)) },
                     onDeleteTask = { component.handleEvent(MarkTodoUiEvent.DeleteTask(it)) },
                 )
             }
@@ -831,7 +835,8 @@ private fun CategoriesContent(
                             component.handleEvent(MarkTodoUiEvent.ToggleTaskComplete(it))
                         },
                         onToggleStar = { component.handleEvent(MarkTodoUiEvent.ToggleTaskStar(it)) },
-                        onDeleteTask = { component.handleEvent(MarkTodoUiEvent.DeleteTask(it)) },
+                        onDuplicateTask = { component.handleEvent(MarkTodoUiEvent.DuplicateTask(it)) },
+                    onDeleteTask = { component.handleEvent(MarkTodoUiEvent.DeleteTask(it)) },
                         onEditCategory = {
                             component.handleEvent(MarkTodoUiEvent.EditCategoryClicked(it))
                         },
@@ -860,7 +865,8 @@ private fun CategoriesContent(
                             component.handleEvent(MarkTodoUiEvent.ToggleTaskComplete(it))
                         },
                         onToggleStar = { component.handleEvent(MarkTodoUiEvent.ToggleTaskStar(it)) },
-                        onDeleteTask = { component.handleEvent(MarkTodoUiEvent.DeleteTask(it)) },
+                        onDuplicateTask = { component.handleEvent(MarkTodoUiEvent.DuplicateTask(it)) },
+                    onDeleteTask = { component.handleEvent(MarkTodoUiEvent.DeleteTask(it)) },
                         onEditCategory = {
                             component.handleEvent(MarkTodoUiEvent.EditCategoryClicked(it))
                         },

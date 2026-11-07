@@ -15,34 +15,48 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.common.di.VoiceRecognizerEntryPoint
+import com.shifenmiao.common.voice.ui.VoiceInputSheet
+import com.shifenmiao.common.voice.ui.rememberVoiceInputEnabled
+import com.shifenmiao.common.voice.ui.rememberVoiceInputLauncher
 import com.shifenmiao.marktodo.R
 import com.shifenmiao.marktodo.model.QuickAddTodoUiEvent
 import com.shifenmiao.marktodo.screenLogic.QuickAddTodoComponent
 import com.t8rin.imagetoolbox.core.resources.Icons
+import com.t8rin.imagetoolbox.core.resources.icons.Mic
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineAutoFix
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineClear
 import com.wanbaohe.base.ui.picker.ChineseDatePickerDialog
 import com.wanbaohe.base.ui.picker.ChineseTimePickerDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedChip
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.system.OneBoxOutlinedTextField
 import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
 import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
+import dagger.hilt.android.EntryPointAccessors
 import java.util.Calendar
 
 @Composable
@@ -55,6 +69,29 @@ fun QuickAddTodoSheet(
 
     LaunchedEffect(uiState.isVisible, uiState.titleFocusRequestId) {
         if (uiState.isVisible) titleFocusRequester.requestFocus()
+    }
+
+    val context = LocalContext.current
+    val voiceInputEnabled = rememberVoiceInputEnabled()
+    var showVoiceSheet by remember { mutableStateOf(false) }
+    val backfillRecognizedText: (String) -> Unit = remember(component) {
+        { recognized ->
+            val current = component.uiState.value.title
+            val separator = if (current.isBlank() || current.endsWith(' ')) "" else " "
+            component.handleEvent(
+                QuickAddTodoUiEvent.UpdateTitle("$current$separator$recognized")
+            )
+        }
+    }
+    val startVoiceInput = rememberVoiceInputLauncher(
+        onResult = backfillRecognizedText,
+        onShowIflytekSheet = { showVoiceSheet = true },
+    )
+    val voiceRecognizer = remember {
+        EntryPointAccessors.fromApplication(
+            context,
+            VoiceRecognizerEntryPoint::class.java,
+        ).voiceRecognizer()
     }
 
     EnhancedModalBottomSheet(
@@ -101,9 +138,33 @@ fun QuickAddTodoSheet(
                     null
                 },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                trailingIcon = if (voiceInputEnabled) {
+                    {
+                        IconButton(
+                            onClick = startVoiceInput,
+                            enabled = !uiState.isSaving,
+                            modifier = Modifier.size(40.dp),
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Mic,
+                                contentDescription = stringResource(
+                                    com.shifenmiao.core.R.string.ai_input_voice
+                                ),
+                                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                                modifier = Modifier.size(22.dp),
+                            )
+                        }
+                    }
+                } else {
+                    null
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(titleFocusRequester),
+            )
+
+            QuickAddAiGuide(
+                onClick = { component.handleEvent(QuickAddTodoUiEvent.ShowAiCreate) },
             )
 
             RecognizedTokenChips(
@@ -201,6 +262,14 @@ fun QuickAddTodoSheet(
             placeAboveAll = true,
         )
     }
+
+    VoiceInputSheet(
+        visible = showVoiceSheet,
+        recognizer = voiceRecognizer,
+        onResult = backfillRecognizedText,
+        onDismiss = { showVoiceSheet = false },
+    )
+
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -262,4 +331,43 @@ private fun QuickAddSectionLabel(text: String) {
         fontWeight = FontWeight.SemiBold,
         color = MaterialTheme.colorScheme.onSurface,
     )
+}
+
+@Composable
+private fun QuickAddAiGuide(onClick: () -> Unit) {
+    GlassCard(
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
+        colors = tintedGlassCardColors(MaterialTheme.colorScheme.primaryContainer),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.LineAutoFix,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier.size(20.dp),
+            )
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = stringResource(R.string.quick_add_ai_action),
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
+                Text(
+                    text = stringResource(R.string.quick_add_ai_guide),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.75f),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
+    }
 }
