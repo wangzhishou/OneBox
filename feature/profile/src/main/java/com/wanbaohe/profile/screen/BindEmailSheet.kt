@@ -38,6 +38,7 @@ import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import kotlinx.coroutines.delay
 
 /**
@@ -200,7 +201,8 @@ private fun SendBindEmailCodeButton(
             }
         },
         enabled = countdown.intValue == 0,
-        colors = AppTheme.colors.getSecondaryContainerButtonColors()
+        colors = AppTheme.colors.getSecondaryContainerButtonColors(),
+        shape = OneBoxDesignSystem.pillShape,
     ) {
         Text(
             text = if (countdown.intValue > 0) {

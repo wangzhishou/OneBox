@@ -41,6 +41,7 @@ import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -223,7 +224,8 @@ fun SendCodeButton(
             }
         },
         enabled = countdown.intValue == 0,
-        colors = AppTheme.colors.getSecondaryContainerButtonColors()
+        colors = AppTheme.colors.getSecondaryContainerButtonColors(),
+        shape = OneBoxDesignSystem.pillShape,
     ) {
         Text(
             text = if (countdown.intValue > 0) {

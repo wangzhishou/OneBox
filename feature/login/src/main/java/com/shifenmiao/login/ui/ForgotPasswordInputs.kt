@@ -26,6 +26,7 @@ import com.shifenmiao.login.state.ForgotPasswordState
 import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 
 @Composable
 fun ForgotPasswordInputs(
@@ -81,7 +82,8 @@ fun ForgotPasswordInputs(
             GlassTonalButton(
                 onClick = onSendCode,
                 enabled = forgotPasswordState.countdown == 0,
-                colors = AppTheme.colors.getSecondaryContainerButtonColors()
+                colors = AppTheme.colors.getSecondaryContainerButtonColors(),
+                shape = OneBoxDesignSystem.pillShape,
             ) {
                 Text(
                     text = if (forgotPasswordState.countdown > 0) {

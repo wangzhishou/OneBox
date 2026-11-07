@@ -42,6 +42,7 @@ import com.wanbaohe.core.ui.utils.provider.LocalLoginState
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import kotlinx.coroutines.delay
 
 /**
@@ -227,7 +228,8 @@ private fun SendChangePasswordCodeButton(
             }
         },
         enabled = countdown.intValue == 0 && !isSending,
-        colors = AppTheme.colors.getSecondaryContainerButtonColors()
+        colors = AppTheme.colors.getSecondaryContainerButtonColors(),
+        shape = OneBoxDesignSystem.pillShape,
     ) {
         if (isSending) {
             CircularProgressIndicator(
