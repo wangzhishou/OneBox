@@ -1,6 +1,5 @@
 package com.shifenmiao.marktodo.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.DropdownMenuItem
@@ -26,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.stringResource
@@ -81,12 +78,13 @@ fun ThemeGroupCard(
 ) {
     val accentColor = categoryAccentColor(category, themeIndex)
     val accentContainerColor = categoryAccentContainerColor(category, themeIndex)
+    val contentColor = com.wanbaohe.core.ui.widget.glass.tintedGlassContentColor(accentContainerColor)
     var menuExpanded by remember { mutableStateOf(false) }
 
     GlassCard(
         modifier = modifier.fillMaxWidth(),
         colors = com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors(
-            MaterialTheme.colorScheme.surfaceContainerLow
+            accentContainerColor
         )
     ) {
         Column(
@@ -107,7 +105,7 @@ fun ThemeGroupCard(
                 ThemeGroupHeader(
                     category = category,
                     accentColor = accentColor,
-                    accentContainerColor = accentContainerColor,
+                    contentColor = contentColor,
                     showMenu = showMenu,
                     menuExpanded = menuExpanded,
                     onMenuExpandedChange = { menuExpanded = it },
@@ -138,7 +136,7 @@ fun ThemeGroupCard(
                     rowTasks.forEach { task ->
                         TodoTaskRow(
                             task = task,
-                            accentColor = accentColor,
+                            contentColor = contentColor,
                             tagsByName = tagsByName,
                             onToggleComplete = onToggleComplete,
                             onClick = onTaskClick,
@@ -152,7 +150,7 @@ fun ThemeGroupCard(
                         Text(
                             text = stringResource(R.string.more_tasks_indicator, hiddenCount),
                             style = MaterialTheme.typography.labelSmall,
-                            color = accentColor.copy(alpha = 0.85f),
+                            color = contentColor.copy(alpha = 0.72f),
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable { onCategoryClick(category) }
@@ -187,13 +185,14 @@ fun ThemeGroupGridCard(
     isReorderMode: Boolean = false,
     showMenu: Boolean = true,
     onEnterReorder: () -> Unit = {},
-    maxPreviewTasks: Int = 2,
+    maxPreviewTasks: Int = 5,
     onTagClick: ((String) -> Unit)? = null,
     onToggleStar: ((TodoTask) -> Unit)? = null,
     onDeleteTask: ((TodoTask) -> Unit)? = null,
 ) {
     val accentColor = categoryAccentColor(category, themeIndex)
     val accentContainerColor = categoryAccentContainerColor(category, themeIndex)
+    val contentColor = com.wanbaohe.core.ui.widget.glass.tintedGlassContentColor(accentContainerColor)
     var menuExpanded by remember { mutableStateOf(false) }
     val previewTasks = remember(visibleTasks, maxPreviewTasks) {
         visibleTasks.take(maxPreviewTasks)
@@ -201,9 +200,7 @@ fun ThemeGroupGridCard(
 
     GlassCard(
         modifier = modifier.fillMaxWidth(),
-        colors = com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors(
-            MaterialTheme.colorScheme.surfaceContainerLow
-        )
+        colors = com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors(accentContainerColor)
     ) {
         Column(
             modifier = Modifier
@@ -223,13 +220,12 @@ fun ThemeGroupGridCard(
                 ThemeIconBadge(
                     category = category,
                     accentColor = accentColor,
-                    accentContainerColor = accentContainerColor
                 )
                 Text(
                     text = category.title,
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = contentColor,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f)
@@ -241,7 +237,8 @@ fun ThemeGroupGridCard(
                     onExpandedChange = { menuExpanded = it },
                     onEdit = { onEditCategory(category) },
                     onDelete = { onDeleteCategory(category) },
-                    onEnterReorder = onEnterReorder
+                    onEnterReorder = onEnterReorder,
+                    contentColor = contentColor,
                 )
             }
 
@@ -249,7 +246,7 @@ fun ThemeGroupGridCard(
             Text(
                 text = categoryProgressText(category),
                 style = MaterialTheme.typography.labelSmall,
-                color = accentColor.copy(alpha = 0.85f),
+                color = contentColor.copy(alpha = 0.72f),
                 modifier = Modifier.padding(top = OneBoxDesignSystem.compactSpacing)
             )
             GlassLinearProgressIndicator(
@@ -264,13 +261,13 @@ fun ThemeGroupGridCard(
                     .height(6.dp)
             )
 
-            // 任务预览
+            // 最多展示 5 条完整标题，剩余任务进入分组查看。
             if (previewTasks.isNotEmpty()) {
                 Column(modifier = Modifier.padding(top = OneBoxDesignSystem.compactSpacing)) {
                     previewTasks.forEach { task ->
                         TodoTaskRow(
                             task = task,
-                            accentColor = accentColor,
+                            contentColor = contentColor,
                             tagsByName = tagsByName,
                             onToggleComplete = onToggleComplete,
                             onClick = onTaskClick,
@@ -285,7 +282,7 @@ fun ThemeGroupGridCard(
                         Text(
                             text = stringResource(R.string.more_tasks_indicator, hiddenCount),
                             style = MaterialTheme.typography.labelSmall,
-                            color = accentColor.copy(alpha = 0.85f),
+                            color = contentColor.copy(alpha = 0.72f),
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable { onCategoryClick(category) }
@@ -308,7 +305,7 @@ fun ThemeGroupGridCard(
 private fun ThemeGroupHeader(
     category: TodoCategory,
     accentColor: Color,
-    accentContainerColor: Color,
+    contentColor: Color,
     showMenu: Boolean,
     menuExpanded: Boolean,
     onMenuExpandedChange: (Boolean) -> Unit,
@@ -324,7 +321,6 @@ private fun ThemeGroupHeader(
         ThemeIconBadge(
             category = category,
             accentColor = accentColor,
-            accentContainerColor = accentContainerColor
         )
 
         Column(modifier = Modifier.weight(1f)) {
@@ -332,14 +328,14 @@ private fun ThemeGroupHeader(
                 text = category.title,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = contentColor,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
             Text(
                 text = categoryProgressText(category),
                 style = MaterialTheme.typography.labelSmall,
-                color = accentColor.copy(alpha = 0.85f)
+                color = contentColor.copy(alpha = 0.72f)
             )
         }
 
@@ -349,34 +345,24 @@ private fun ThemeGroupHeader(
             onExpandedChange = onMenuExpandedChange,
             onEdit = onEditCategory,
             onDelete = onDeleteCategory,
-            onEnterReorder = onEnterReorder
+            onEnterReorder = onEnterReorder,
+            contentColor = contentColor,
         )
     }
 }
 
-/**
- * 主题图标徽章：圆角方块 + 主题色图标
- */
+/** 分组图标直接使用主题色，不再叠加独立底色。 */
 @Composable
 private fun ThemeIconBadge(
     category: TodoCategory,
     accentColor: Color,
-    accentContainerColor: Color
 ) {
-    Box(
-        modifier = Modifier
-            .size(40.dp)
-            .clip(RoundedCornerShape(OneBoxDesignSystem.smallRadius))
-            .background(accentContainerColor),
-        contentAlignment = Alignment.Center
-    ) {
-        Icon(
-            imageVector = category.icon,
-            contentDescription = null,
-            tint = accentColor,
-            modifier = Modifier.size(22.dp)
-        )
-    }
+    Icon(
+        imageVector = category.icon,
+        contentDescription = null,
+        tint = accentColor,
+        modifier = Modifier.size(24.dp)
+    )
 }
 
 /**
@@ -390,7 +376,8 @@ private fun ThemeMenuAnchor(
     onExpandedChange: (Boolean) -> Unit,
     onEdit: () -> Unit,
     onDelete: () -> Unit,
-    onEnterReorder: () -> Unit
+    onEnterReorder: () -> Unit,
+    contentColor: Color,
 ) {
     Box {
         if (showMenuButton) {
@@ -398,7 +385,7 @@ private fun ThemeMenuAnchor(
                 Icon(
                     imageVector = Icons.Outlined.MoreVert,
                     contentDescription = stringResource(R.string.action_menu),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = contentColor,
                     modifier = Modifier.size(18.dp)
                 )
             }

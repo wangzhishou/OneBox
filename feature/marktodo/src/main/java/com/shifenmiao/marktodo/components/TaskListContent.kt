@@ -34,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -278,6 +279,7 @@ fun TaskCompletionButton(
     task: TodoTask,
     onToggle: (TodoTask) -> Unit,
     modifier: Modifier = Modifier,
+    tint: Color = MaterialTheme.colorScheme.onPrimaryContainer,
 ) {
     Icon(
         imageVector = if (task.isCompleted) {
@@ -290,7 +292,7 @@ fun TaskCompletionButton(
         } else {
             stringResource(R.string.cd_task_pending)
         },
-        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+        tint = tint,
         modifier = modifier
             .padding(end = 4.dp)
             .size(20.dp)
@@ -310,6 +312,7 @@ fun TaskOverflowMenu(
     onExpandedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     showButton: Boolean = true,
+    contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
 ) {
     Box(modifier = modifier) {
         if (showButton) {
@@ -320,7 +323,7 @@ fun TaskOverflowMenu(
                 Icon(
                     imageVector = Icons.Outlined.MoreVert,
                     contentDescription = stringResource(R.string.action_menu),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = contentColor,
                     modifier = Modifier.size(19.dp),
                 )
             }

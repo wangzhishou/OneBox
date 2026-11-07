@@ -651,6 +651,7 @@ private fun QuickDateFilterChip(
         colors = androidx.compose.material3.FilterChipDefaults.filterChipColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
         ),
+        modifier = Modifier.height(28.dp),
         label = {
             Text(
                 text = label,
@@ -681,6 +682,7 @@ private fun ActiveConditionChip(
     GlassFilterChip(
         selected = true,
         onClick = onClear,
+        modifier = Modifier.height(28.dp),
         label = {
             Text(
                 text = label,

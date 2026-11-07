@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -41,7 +40,7 @@ import java.util.Locale
 @Composable
 fun TodoTaskRow(
     task: TodoTask,
-    accentColor: Color,
+    contentColor: Color,
     tagsByName: Map<String, TodoTag>,
     onToggleComplete: (TodoTask) -> Unit,
     onClick: (TodoTask) -> Unit,
@@ -66,16 +65,21 @@ fun TodoTaskRow(
                 },
             )
             .padding(vertical = if (compact) 4.dp else 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.Top,
     ) {
-        TaskCompletionButton(task = task, onToggle = onToggleComplete)
+        TaskCompletionButton(
+            task = task,
+            onToggle = onToggleComplete,
+            tint = contentColor,
+            modifier = Modifier.padding(top = if (compact) 0.dp else 2.dp),
+        )
         Column(
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(3.dp),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = Alignment.Top,
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
             ) {
                 Text(
@@ -85,11 +89,8 @@ fun TodoTaskRow(
                     } else {
                         MaterialTheme.typography.bodyLarge
                     },
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = contentAlpha),
+                    color = contentColor.copy(alpha = contentAlpha),
                     textDecoration = if (task.isCompleted) TextDecoration.LineThrough else null,
-                    // 网格预览卡片窄，标题最多一行，别折成两三行
-                    maxLines = if (compact) 1 else Int.MAX_VALUE,
-                    overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f),
                 )
                 // 完成时间贴在标题行右侧：不额外占一行，勾选/取消时行高不变，列表不会跳
@@ -100,7 +101,7 @@ fun TodoTaskRow(
                     Text(
                         text = formatTodoDate(completionMillis),
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = contentColor.copy(alpha = 0.65f),
                         maxLines = 1,
                     )
                 }
@@ -134,7 +135,7 @@ fun TodoTaskRow(
                         Text(
                             text = task.note,
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f * contentAlpha),
+                            color = contentColor.copy(alpha = 0.55f * contentAlpha),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.weight(1f),
@@ -146,7 +147,7 @@ fun TodoTaskRow(
                         val dateColor = if (task.isOverdue) {
                             MaterialTheme.colorScheme.onErrorContainer
                         } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant
+                            contentColor.copy(alpha = 0.7f)
                         }
                         Icon(
                             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAccessTime,
@@ -173,6 +174,7 @@ fun TodoTaskRow(
                 expanded = menuExpanded,
                 onExpandedChange = { menuExpanded = it },
                 showButton = !compact,
+                contentColor = contentColor,
             )
         }
     }
@@ -195,14 +197,12 @@ fun TodoTagChip(
             )
             .then(
                 if (onClick != null) {
-                    Modifier
-                        .heightIn(min = 32.dp)
-                        .clickable(onClick = onClick)
+                    Modifier.clickable(onClick = onClick)
                 } else {
                     Modifier
                 }
             )
-            .padding(horizontal = 6.dp, vertical = 2.dp),
+            .padding(horizontal = 6.dp, vertical = 1.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
