@@ -14,4 +14,5 @@
     <string name="ad_watch_load_failed">Reklam yüklenemedi</string>
     <string name="ad_watch_retry">Tekrar Dene</string>
     <string name="ad_watch_ad_not_ready">Reklam henüz hazır değil, lütfen sonra tekrar dene</string>
+    <string name="ad_watch_login_to_claim">Giriş yapın veya kaydolun, puanları alın</string>
 </resources>

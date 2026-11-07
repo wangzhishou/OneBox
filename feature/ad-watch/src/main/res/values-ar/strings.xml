@@ -14,4 +14,5 @@
     <string name="ad_watch_load_failed">فشل تحميل الإعلان</string>
     <string name="ad_watch_retry">إعادة المحاولة</string>
     <string name="ad_watch_ad_not_ready">الإعلان غير جاهز بعد، حاول مرة أخرى لاحقاً</string>
+    <string name="ad_watch_login_to_claim">سجّل الدخول أو أنشئ حسابًا لتحصل على النقاط</string>
 </resources>

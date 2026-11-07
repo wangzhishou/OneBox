@@ -14,4 +14,5 @@
     <string name="ad_watch_load_failed">Échec du chargement de la pub</string>
     <string name="ad_watch_retry">Réessayer</string>
     <string name="ad_watch_ad_not_ready">Pub pas encore prête, réessayez plus tard</string>
+    <string name="ad_watch_login_to_claim">Connectez-vous ou inscrivez-vous pour les points</string>
 </resources>

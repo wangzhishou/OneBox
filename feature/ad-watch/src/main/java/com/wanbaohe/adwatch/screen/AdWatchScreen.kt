@@ -115,6 +115,7 @@ fun AdWatchScreen(
             WatchCta(
                 rewardPoints = state.rewardPoints,
                 remainingToday = state.remainingToday,
+                unclaimedPoints = state.unclaimedPoints,
                 adStatus = adStatus,
                 isShowing = state.isShowing,
                 onWatch = { activity?.let(component::onWatchClick) },
@@ -398,6 +399,7 @@ private fun RemainingCard(
 private fun WatchCta(
     rewardPoints: Int,
     remainingToday: Int,
+    unclaimedPoints: Int,
     adStatus: RewardedAdStatus,
     isShowing: Boolean,
     onWatch: () -> Unit,
@@ -410,6 +412,25 @@ private fun WatchCta(
         disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
     )
     when {
+        remainingToday <= 0 && unclaimedPoints > 0 -> {
+            Button(
+                onClick = onWatch,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                colors = ctaColors,
+                shape = RoundedCornerShape(28.dp),
+            ) {
+                Text(
+                    text = stringResource(R.string.ad_watch_login_to_claim),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    maxLines = 2,
+                )
+            }
+        }
+
         remainingToday <= 0 -> {
             EnhancedButton(
                 onClick = {},

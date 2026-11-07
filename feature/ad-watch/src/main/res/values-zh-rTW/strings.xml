@@ -14,4 +14,5 @@
     <string name="ad_watch_load_failed">廣告載入失敗</string>
     <string name="ad_watch_retry">重試</string>
     <string name="ad_watch_ad_not_ready">廣告暫未就緒，請稍後再試</string>
+    <string name="ad_watch_login_to_claim">登入或註冊後領取積分</string>
 </resources>

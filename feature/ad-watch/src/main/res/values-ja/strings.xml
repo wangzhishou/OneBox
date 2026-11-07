@@ -14,4 +14,5 @@
     <string name="ad_watch_load_failed">広告の読み込みに失敗しました</string>
     <string name="ad_watch_retry">再試行</string>
     <string name="ad_watch_ad_not_ready">広告の準備ができていません。しばらくしてからお試しください</string>
+    <string name="ad_watch_login_to_claim">ログインまたは登録して受け取る</string>
 </resources>

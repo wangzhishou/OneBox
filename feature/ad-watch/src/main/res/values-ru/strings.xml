@@ -14,4 +14,5 @@
     <string name="ad_watch_load_failed">Не удалось загрузить рекламу</string>
     <string name="ad_watch_retry">Повторить</string>
     <string name="ad_watch_ad_not_ready">Реклама ещё не готова, попробуйте позже</string>
+    <string name="ad_watch_login_to_claim">Войдите или зарегистрируйтесь, чтобы получить баллы</string>
 </resources>

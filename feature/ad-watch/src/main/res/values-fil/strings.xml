@@ -14,4 +14,5 @@
     <string name="ad_watch_load_failed">Nabigo ang pag-load ng ad</string>
     <string name="ad_watch_retry">Subukan Muli</string>
     <string name="ad_watch_ad_not_ready">Hindi pa handa ang ad, subukan muli mamaya</string>
+    <string name="ad_watch_login_to_claim">Mag-log in o magrehistro para makuha ang puntos</string>
 </resources>

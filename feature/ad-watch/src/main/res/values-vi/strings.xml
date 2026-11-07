@@ -14,4 +14,5 @@
     <string name="ad_watch_load_failed">Tải quảng cáo thất bại</string>
     <string name="ad_watch_retry">Thử lại</string>
     <string name="ad_watch_ad_not_ready">Quảng cáo chưa sẵn sàng, vui lòng thử lại sau</string>
+    <string name="ad_watch_login_to_claim">Đăng nhập hoặc đăng ký để nhận điểm</string>
 </resources>

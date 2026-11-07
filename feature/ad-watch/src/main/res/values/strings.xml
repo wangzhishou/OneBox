@@ -14,4 +14,5 @@
     <string name="ad_watch_load_failed">Failed to load ad</string>
     <string name="ad_watch_retry">Retry</string>
     <string name="ad_watch_ad_not_ready">Ad is not ready yet, please try again later</string>
+    <string name="ad_watch_login_to_claim">Log in or sign up to claim your points</string>
 </resources>

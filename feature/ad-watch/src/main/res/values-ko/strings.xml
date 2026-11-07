@@ -14,4 +14,5 @@
     <string name="ad_watch_load_failed">광고 로드 실패</string>
     <string name="ad_watch_retry">재시도</string>
     <string name="ad_watch_ad_not_ready">광고가 아직 준비되지 않았습니다. 잠시 후 다시 시도해 주세요</string>
+    <string name="ad_watch_login_to_claim">로그인 또는 가입 후 받기</string>
 </resources>
