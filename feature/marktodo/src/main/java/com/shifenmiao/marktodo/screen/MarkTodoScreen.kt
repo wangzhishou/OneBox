@@ -211,6 +211,7 @@ fun MarkTodoScreen(
                 QueryShortcutBar(
                     filter = uiState.filter,
                     sort = uiState.sort,
+                    categories = fullCategories,
                     onFilterChange = {
                         markTodoComponent.handleEvent(MarkTodoUiEvent.SetFilter(it))
                     },
@@ -507,6 +508,7 @@ private fun TodayTaskList(
 private fun QueryShortcutBar(
     filter: TaskFilter,
     sort: TaskSortConfig,
+    categories: List<TodoCategory>,
     onFilterChange: (TaskFilter) -> Unit,
     onSortChange: (TaskSortConfig) -> Unit,
     onShowFilterSort: () -> Unit,
@@ -528,7 +530,11 @@ private fun QueryShortcutBar(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             if (filter.hasAdvancedFilters) {
-                ActiveConditionChips(filter = filter, onFilterChange = onFilterChange)
+                ActiveConditionChips(
+                    filter = filter,
+                    categories = categories,
+                    onFilterChange = onFilterChange,
+                )
             } else {
                 QuickDateFilterChip(
                     label = stringResource(R.string.p1_group_overdue),
@@ -574,15 +580,24 @@ private fun QueryShortcutBar(
 @Composable
 private fun ActiveConditionChips(
     filter: TaskFilter,
+    categories: List<TodoCategory>,
     onFilterChange: (TaskFilter) -> Unit,
 ) {
     if (filter.hasCategoryFilter) {
         val count = filter.categoryIds.size + if (filter.includeInbox) 1 else 0
+        // 分组筛选是单选，命中一个分组时直接亮出分组名，比「1 个分组」有用
+        val singleCategoryTitle = if (filter.includeInbox) {
+            null
+        } else {
+            filter.categoryIds
+                .singleOrNull()
+                ?.let { id -> categories.firstOrNull { it.id == id }?.title }
+        }
         ActiveConditionChip(
-            label = if (count == 1 && filter.includeInbox) {
-                stringResource(R.string.p1_inbox)
-            } else {
-                stringResource(R.string.p1_categories_selected, count)
+            label = when {
+                singleCategoryTitle != null -> singleCategoryTitle
+                count == 1 && filter.includeInbox -> stringResource(R.string.p1_inbox)
+                else -> stringResource(R.string.p1_categories_selected, count)
             },
             onClear = {
                 onFilterChange(filter.copy(categoryIds = emptySet(), includeInbox = false))

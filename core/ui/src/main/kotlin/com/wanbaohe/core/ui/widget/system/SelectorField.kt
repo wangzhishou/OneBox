@@ -29,9 +29,14 @@ import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineKeyboardArrowDown
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 
+/**
+ * 单选下拉选择器：当前值直接显示，全部选项收进菜单。
+ *
+ * @param label 字段上方的说明文字；外层已经有分区标题时传 null 省掉这行
+ */
 @Composable
 fun <T> SelectorField(
-    label: String,
+    label: String? = null,
     selected: T,
     options: List<T>,
     optionLabel: @Composable (T) -> String,
@@ -45,11 +50,13 @@ fun <T> SelectorField(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.microSpacing),
     ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
+        if (!label.isNullOrBlank()) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
         ExposedDropdownMenuBox(
             expanded = expanded,
             onExpandedChange = { expanded = it },
