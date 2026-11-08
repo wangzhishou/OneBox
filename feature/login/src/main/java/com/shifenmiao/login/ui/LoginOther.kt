@@ -70,7 +70,10 @@ fun LoginOther(
         ).getChannelConfig()
     }
     val enableWechat = channelConfig.enableWechat
-    val enableGoogle = channelConfig.enableGms || CoreUtils.isOneBoxDebug()
+    // 没装 / 不可用的 Play 服务上 Google 登录点了必失败, 按钮不画。
+    // 检测放在 flavor 源集里, main 不引用 GMS 类。
+    // 「或」只出现在 Google 按钮上面。国内渠道没有这条分隔线, 微信登录照常留着。
+    val enableGoogle = channelConfig.enableGms && rememberGoogleSignInAvailable()
 
     // 从微信返回时兜底复位 loading：微信侧取消/拒绝可能不回任何回调，
     // 不处理的话登录页会一直停在「转圈 + 全灰」，看着像卡死。
@@ -105,13 +108,15 @@ fun LoginOther(
             )
         }
 
-        if (enableWechat || enableGoogle) {
+        if (enableGoogle) {
             LoginOrDivider(
                 modifier = Modifier.padding(
                     top = AppTheme.dimens.paddingLarge,
                     bottom = AppTheme.dimens.paddingNormal,
                 )
             )
+        } else if (enableWechat) {
+            Spacer(modifier = Modifier.height(AppTheme.dimens.paddingLarge))
         }
 
         if (enableWechat) {
