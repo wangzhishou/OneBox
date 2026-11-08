@@ -47,6 +47,8 @@ import com.t8rin.imagetoolbox.core.domain.startup.StartupPhase
 import com.t8rin.imagetoolbox.core.domain.startup.StartupPhaseController
 import com.wanbaohe.core.ui.utils.helper.ContextUtils.findActivity
 import com.wanbaohe.core.ui.utils.helper.isShellPortraitOrientationAsState
+import com.wanbaohe.core.ui.utils.navigation.LandscapeShellMode
+import com.wanbaohe.core.ui.utils.navigation.landscapeShellMode
 import com.t8rin.imagetoolbox.feature.root.presentation.components.BlogModalBottomSheet
 import com.t8rin.imagetoolbox.feature.root.presentation.components.utils.uiSettingsState
 import com.t8rin.imagetoolbox.feature.root.presentation.screenLogic.RootComponent
@@ -81,7 +83,8 @@ fun AppContent(
         val showAIChatOverlay = appComponent.collectUiStateField(initial = false) { it.initAIChatAndShow }
         val isInPipMode = appComponent.collectUiStateField(initial = false) { it.isInPipMode }
         val childStack by rootComponent.childStack.subscribeAsState()
-        val hasPersistentAIPane = !isPortrait
+        val hasPersistentAIPane = !isPortrait &&
+            childStack.active.configuration.landscapeShellMode != LandscapeShellMode.ContentOnly
 
         // 启动阶段状态机：由 StartupPhaseController 统一调度。
         // 各阶段定义见 StartupPhase 文档。

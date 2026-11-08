@@ -63,7 +63,9 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.wanbaohe.core.ui.utils.animation.toolboxPredictiveBackAnimation
 import com.wanbaohe.core.ui.utils.helper.ProvidesValue
 import com.wanbaohe.core.ui.utils.helper.isShellPortraitOrientationAsState
+import com.wanbaohe.core.ui.utils.navigation.LandscapeShellMode
 import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.utils.navigation.landscapeShellMode
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.feature.root.presentation.components.navigation.NavigationChild
@@ -262,35 +264,47 @@ private fun NavigationRailLayout(
     appComponent: AppComponent,
 ) {
     var addMenuExpanded by rememberSaveable { mutableStateOf(false) }
+    val isContentOnly = currentScreen.landscapeShellMode == LandscapeShellMode.ContentOnly
     val overlayBottomPadding =
         WindowInsets.systemBars.asPaddingValues().calculateBottomPadding() + 24.dp
     val assistantPaneWidth = (LocalWindowInfo.current.containerDpSize.width * AssistantPaneWidthRatio)
         .coerceIn(AssistantPaneMinWidth, AssistantPaneMaxWidth)
 
+    LaunchedEffect(isContentOnly) {
+        if (isContentOnly) addMenuExpanded = false
+    }
+
     Row(
         modifier = Modifier.fillMaxSize()
     ) {
-        NavigationRailBar(
-            rootComponent = rootComponent,
-            screenList = tabEntries,
-            currentTabPageIndex = navigationState.currentTabIndex,
-            modifier = Modifier,
-            footer = {
-                LandscapeRailUtilityActions(
-                    onOpenCreateMenu = {
-                        addMenuExpanded = !addMenuExpanded
-                    },
-                    onOpenDrawer = {
-                        appComponent.showDrawer()
-                    }
-                )
-            }
-        )
+        if (!isContentOnly) {
+            NavigationRailBar(
+                rootComponent = rootComponent,
+                screenList = tabEntries,
+                currentTabPageIndex = navigationState.currentTabIndex,
+                modifier = Modifier,
+                footer = {
+                    LandscapeRailUtilityActions(
+                        onOpenCreateMenu = {
+                            addMenuExpanded = !addMenuExpanded
+                        },
+                        onOpenDrawer = {
+                            appComponent.showDrawer()
+                        }
+                    )
+                }
+            )
+        }
         Box(
             modifier = Modifier
                 .weight(1f)
-                // 横屏时页面会紧贴 rail 与助手栏, 两侧各留一点呼吸位, 大屏上不至于顶边
-                .padding(horizontal = OneBoxDesignSystem.compactSpacing)
+                .padding(
+                    horizontal = if (isContentOnly) {
+                        0.dp
+                    } else {
+                        OneBoxDesignSystem.compactSpacing
+                    }
+                )
         ) {
             NavigationContent(
                 childStack = childStack,
@@ -308,16 +322,18 @@ private fun NavigationRailLayout(
                 appComponent = appComponent,
             )
         }
-        WideScreenAssistantPane(
-            rootComponent = rootComponent,
-            appComponent = appComponent,
-            modifier = Modifier.navigationBarsPadding().statusBarsPadding()
-                .fillMaxHeight()
-                .width(assistantPaneWidth)
-                .padding(
-                    end = OneBoxDesignSystem.screenPadding,
-                )
-        )
+        if (!isContentOnly) {
+            WideScreenAssistantPane(
+                rootComponent = rootComponent,
+                appComponent = appComponent,
+                modifier = Modifier.navigationBarsPadding().statusBarsPadding()
+                    .fillMaxHeight()
+                    .width(assistantPaneWidth)
+                    .padding(
+                        end = OneBoxDesignSystem.screenPadding,
+                    )
+            )
+        }
     }
 
     QuickCreateFloatingPanel(
