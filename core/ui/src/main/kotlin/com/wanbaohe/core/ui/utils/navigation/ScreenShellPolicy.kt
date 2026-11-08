@@ -8,6 +8,8 @@ enum class LandscapeShellMode {
 val Screen.landscapeShellMode: LandscapeShellMode
     get() = when (this) {
         is Screen.ImagePreview,
+        is Screen.ImageViewer,
+        Screen.Compass,
         Screen.MeasurementTools -> LandscapeShellMode.ContentOnly
 
         else -> LandscapeShellMode.Standard
