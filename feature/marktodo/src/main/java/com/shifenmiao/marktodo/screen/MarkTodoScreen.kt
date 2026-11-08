@@ -15,11 +15,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
+import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -80,7 +81,7 @@ import com.wanbaohe.core.ui.widget.system.OneBoxDangerButton
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
 import sh.calvin.reorderable.ReorderableItem
-import sh.calvin.reorderable.rememberReorderableLazyGridState
+import sh.calvin.reorderable.rememberReorderableLazyStaggeredGridState
 
 private const val QueryToolsMinTaskCount = 8
 private const val SearchFieldMinTaskCount = 100
@@ -732,11 +733,11 @@ private fun CategoriesContent(
     component: MarkTodoComponent,
     modifier: Modifier = Modifier,
 ) {
-    val lazyGridState = rememberLazyGridState()
+    val staggeredGridState = rememberLazyStaggeredGridState()
     // 收集箱卡片出现在网格首位但不参与拖拽，把它占掉的 index 偏置补回来
     val inboxOffset = if (inboxCategory != null) 1 else 0
-    val reorderableState = rememberReorderableLazyGridState(
-        lazyGridState = lazyGridState,
+    val reorderableState = rememberReorderableLazyStaggeredGridState(
+        lazyStaggeredGridState = staggeredGridState,
         onMove = { from, to ->
             if (isReorderMode) {
                 val fromIndex = from.index - inboxOffset
@@ -753,19 +754,20 @@ private fun CategoriesContent(
             }
         },
     )
-    LazyVerticalGrid(
+    // 瀑布流：卡片高度由任务条数决定，两列交错排下来，短卡片下面不会再留半屏空档
+    LazyVerticalStaggeredGrid(
         columns = if (isGridView && categories.size + inboxOffset > 1) {
-            GridCells.Adaptive(minSize = 180.dp)
+            StaggeredGridCells.Adaptive(minSize = 180.dp)
         } else {
-            GridCells.Fixed(1)
+            StaggeredGridCells.Fixed(1)
         },
-        state = lazyGridState,
+        state = staggeredGridState,
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(
             horizontal = OneBoxDesignSystem.screenPadding,
             vertical = OneBoxDesignSystem.compactSpacing,
         ),
-        verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing),
+        verticalItemSpacing = OneBoxDesignSystem.blockSpacing,
         horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing),
     ) {
         // 收集箱固定排第一张：未归组任务是随手记的默认落点，不参与拖拽排序
@@ -895,7 +897,12 @@ private fun CategoriesContent(
             }
         }
         if (showAddGroupCard) {
-            item(key = "add_group_card", contentType = "add_group_card") {
+            // 新建分组占整行，别在瀑布流里只占半列空着一半
+            item(
+                key = "add_group_card",
+                contentType = "add_group_card",
+                span = StaggeredGridItemSpan.FullLine,
+            ) {
                 GlassCard(
                     onClick = { component.handleEvent(MarkTodoUiEvent.AddCategoryClicked) },
                     modifier = Modifier.fillMaxWidth(),
