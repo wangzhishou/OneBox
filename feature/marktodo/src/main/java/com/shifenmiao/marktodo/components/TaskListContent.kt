@@ -39,6 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.marktodo.R
 import com.shifenmiao.marktodo.model.TaskWithCategory
@@ -156,7 +157,13 @@ fun TaskListItem(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                TaskCompletionButton(task = task, onToggle = onToggleComplete)
+                TaskCompletionButton(
+                    task = task,
+                    onToggle = onToggleComplete,
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer.copy(
+                        alpha = taskCheckAlpha(task.isCompleted),
+                    ),
+                )
                 Text(
                     text = task.title,
                     style = MaterialTheme.typography.bodyMedium,
@@ -173,6 +180,9 @@ fun TaskListItem(
                     onDelete = onDelete,
                     expanded = menuExpanded,
                     onExpandedChange = { menuExpanded = it },
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                        alpha = taskMoreAlpha(task.isCompleted),
+                    ),
                 )
             }
             TaskMetadata(
@@ -234,7 +244,7 @@ private fun TaskMetadata(
                             append(formatTaskTime(dueDate))
                         }
                     },
-                    style = MaterialTheme.typography.labelSmall,
+                    style = metaLabelStyle(),
                     color = dateColor,
                 )
             }
@@ -280,6 +290,21 @@ private fun TaskMetadata(
     }
 }
 
+/** 任务行勾选框的尺寸；[TodoTaskRow] 拿它把勾选框中线对到标题第一行 */
+internal val CompletionCheckSize: Dp = 20.dp
+
+/** 任务行「更多」按钮的触控尺寸；[TodoTaskRow] 拿它算图标和第一行对齐的偏移 */
+internal val TaskOverflowButtonSize: Dp = 48.dp
+
+/**
+ * 勾选框 / 「更多」图标的淡化系数。
+ *
+ * 两个都是辅助控件，压淡一档免得跟标题抢视线；「更多」比勾选框更次要，
+ * 已完成的行整体再淡一层（和标题的 0.45 淡化保持一致）。
+ */
+internal fun taskCheckAlpha(isCompleted: Boolean): Float = if (isCompleted) 0.45f else 0.68f
+internal fun taskMoreAlpha(isCompleted: Boolean): Float = if (isCompleted) 0.4f else 0.55f
+
 @Composable
 fun TaskCompletionButton(
     task: TodoTask,
@@ -301,7 +326,7 @@ fun TaskCompletionButton(
         tint = tint,
         modifier = modifier
             .padding(end = 4.dp)
-            .size(20.dp)
+            .size(CompletionCheckSize)
             .clickable(role = androidx.compose.ui.semantics.Role.Checkbox) {
                 onToggle(task)
             },
@@ -325,7 +350,7 @@ fun TaskOverflowMenu(
         if (showButton) {
             IconButton(
                 onClick = { onExpandedChange(true) },
-                modifier = Modifier.size(48.dp),
+                modifier = Modifier.size(TaskOverflowButtonSize),
             ) {
                 Icon(
                     imageVector = Icons.Outlined.MoreVert,

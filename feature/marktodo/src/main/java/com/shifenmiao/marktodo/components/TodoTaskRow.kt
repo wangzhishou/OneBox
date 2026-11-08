@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,7 +23,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -54,6 +57,28 @@ fun TodoTaskRow(
     val contentAlpha = if (task.isCompleted) 0.45f else 1f
     var menuExpanded by remember(task.id) { mutableStateOf(false) }
     val hasOverflowActions = onDelete != null && onToggleStar != null
+
+    // 勾选框和右侧「更多」都要跟标题第一行的**字形**居中对齐：
+    // 标题行高是字号的两倍，字形在行盒里居中，而 CJK 墨迹又比字体盒中心高约 0.25em，
+    // 所以按 0.75 倍行高（= 0.5 行高 - 0.25 字号）算出来的中心，才和肉眼看到的第一行一致。
+    // 直接写死 2dp 在默认字号下刚好，一旦系统字号放大（1.4 倍时差 4~5dp）就明显偏上。
+    val titleStyle = if (compact) {
+        MaterialTheme.typography.bodyMedium
+    } else {
+        MaterialTheme.typography.bodyLarge
+    }
+    val density = LocalDensity.current
+    val firstLineCenter = with(density) {
+        titleStyle.lineHeight.toDp() / 2 - titleStyle.fontSize.toDp() * 0.25f
+    }
+    val metaStyle = metaLabelStyle()
+    val metaInkCenter = with(density) {
+        metaStyle.lineHeight.toDp() / 2 - metaStyle.fontSize.toDp() * 0.25f
+    }
+    // 勾选框和「更多」是辅助控件，比正文淡一档（系数见 taskCheckAlpha / taskMoreAlpha）
+    val checkTint = contentColor.copy(alpha = taskCheckAlpha(task.isCompleted))
+    val moreTint = contentColor.copy(alpha = taskMoreAlpha(task.isCompleted))
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -71,8 +96,10 @@ fun TodoTaskRow(
         TaskCompletionButton(
             task = task,
             onToggle = onToggleComplete,
-            tint = contentColor,
-            modifier = Modifier.padding(top = if (compact) 0.dp else 2.dp),
+            tint = checkTint,
+            modifier = Modifier.padding(
+                top = (firstLineCenter - CompletionCheckSize / 2).coerceAtLeast(0.dp),
+            ),
         )
         Column(
             modifier = Modifier.weight(1f),
@@ -85,11 +112,7 @@ fun TodoTaskRow(
             ) {
                 Text(
                     text = task.title,
-                    style = if (compact) {
-                        MaterialTheme.typography.bodyMedium
-                    } else {
-                        MaterialTheme.typography.bodyLarge
-                    },
+                    style = titleStyle,
                     color = contentColor.copy(alpha = contentAlpha),
                     textDecoration = if (task.isCompleted) TextDecoration.LineThrough else null,
                     modifier = Modifier.weight(1f),
@@ -101,9 +124,13 @@ fun TodoTaskRow(
                 if (completionMillis != null) {
                     Text(
                         text = formatTodoDate(completionMillis),
-                        style = MaterialTheme.typography.labelSmall,
+                        style = metaStyle,
                         color = contentColor.copy(alpha = 0.65f),
                         maxLines = 1,
+                        // 小字和标题墨迹对齐，别贴着标题行的顶边飘在上面
+                        modifier = Modifier.padding(
+                            top = (firstLineCenter - metaInkCenter).coerceAtLeast(0.dp),
+                        ),
                     )
                 }
             }
@@ -158,7 +185,7 @@ fun TodoTaskRow(
                         )
                         Text(
                             text = formatTodoDate(timeMillis),
-                            style = MaterialTheme.typography.labelSmall,
+                            style = metaLabelStyle(),
                             color = dateColor,
                             maxLines = 1,
                         )
@@ -176,7 +203,15 @@ fun TodoTaskRow(
                 expanded = menuExpanded,
                 onExpandedChange = { menuExpanded = it },
                 showButton = !compact,
-                contentColor = contentColor,
+                contentColor = moreTint,
+                // 48dp 按钮整体上移，让 19dp 的图标中心落到标题第一行上；
+                // 触控范围不变，偏移量正好被行内 8dp 的上下留白吃掉，不会压到相邻行。
+                // 紧凑卡片不显示按钮（长按出菜单），别动它的菜单锚点
+                modifier = if (compact) {
+                    Modifier
+                } else {
+                    Modifier.offset(y = firstLineCenter - TaskOverflowButtonSize / 2)
+                },
             )
         }
     }
@@ -209,14 +244,22 @@ fun TodoTagChip(
     ) {
         Text(
             text = "#$tagName",
-            style = MaterialTheme.typography.labelSmall.copy(
-                fontSize = MaterialTheme.typography.labelSmall.fontSize * 0.85f
-            ),
+            style = metaLabelStyle(),
             color = tagColor,
             maxLines = 1,
         )
     }
 }
+
+/**
+ * 任务行元信息（标签、日期、完成时间）共用的小号字：比 labelSmall 再小一档，
+ * 免得日期和标题抢视线；标签与时间必须走同一份，不然两种字号并排会一高一矮。
+ */
+@Composable
+internal fun metaLabelStyle(): TextStyle =
+    MaterialTheme.typography.labelSmall.copy(
+        fontSize = MaterialTheme.typography.labelSmall.fontSize * 0.85f,
+    )
 
 @Composable
 fun formatTodoDate(timestamp: Long): String {
