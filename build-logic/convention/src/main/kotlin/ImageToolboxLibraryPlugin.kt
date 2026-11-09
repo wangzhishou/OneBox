@@ -35,21 +35,25 @@ private fun String?.toBuildConfigStringLiteral(): String = "\"${this.orEmpty()}\
 // git 短哈希缓存:本插件被全部 ~127 个模块应用,git 只需跑一次
 private var gitHashCache: Pair<File, String?>? = null
 
-private fun gitHeadShortHash(dir: File): String? =
-    gitHashCache?.takeIf { it.first == dir }?.second
-        ?: runCatching {
-            val process = ProcessBuilder("git", "rev-parse", "--short", "HEAD")
-                .directory(dir)
-                .redirectErrorStream(true)
-                .start()
-            val hash = process.inputStream.bufferedReader().readText().trim()
-            hash.takeIf { process.waitFor() == 0 && it.isNotBlank() }
-        }.getOrNull().also { gitHashCache = dir to it }
+private fun gitHeadShortHash(project: Project): String? {
+    val dir = project.rootDir
+    gitHashCache?.takeIf { it.first == dir }?.let { return it.second }
+    // providers.exec 是配置缓存兼容的外部进程方式(裸 ProcessBuilder 会让构建失败)
+    val hash = runCatching {
+        project.providers.exec {
+            commandLine("git", "rev-parse", "--short", "HEAD")
+            workingDir(dir)
+            isIgnoreExitValue = true
+        }.standardOutput.asText.get().trim().takeIf { it.isNotBlank() && !it.contains(' ') }
+    }.getOrNull()
+    gitHashCache = dir to hash
+    return hash
+}
 
 // GitVersion 优先级:CI 注入的 GIT_VERSION > 构建时 git rev-parse(F-Droid 评审要求动态获取)> 版本目录兜底
-private fun resolveGitVersion(fallback: String, repoDir: File): String =
+private fun resolveGitVersion(fallback: String, project: Project): String =
     System.getenv("GIT_VERSION")?.takeIf(String::isNotBlank)
-        ?: gitHeadShortHash(repoDir)
+        ?: gitHeadShortHash(project)
         ?: fallback
 
 @Suppress("UNUSED")
@@ -73,7 +77,7 @@ class ImageToolboxLibraryPlugin : Plugin<Project> {
                 defaultConfig.minSdk = libs.versions.androidMinSdk.get().toIntOrNull()
                 defaultConfig.buildConfigField("String", "VersionName", "\"${System.getenv("VERSION_NAME") ?: libs.versions.versionName.get()}\"")
                 defaultConfig.buildConfigField("String", "VersionCode", "\"${libs.versions.versionCode.get()}\"")
-                defaultConfig.buildConfigField("String", "GitVersion", "\"${resolveGitVersion(libs.versions.gitVersion.get(), target.rootDir)}\"")
+                defaultConfig.buildConfigField("String", "GitVersion", "\"${resolveGitVersion(libs.versions.gitVersion.get(), target)}\"")
 
                 // 添加 abi 维度，与 app 模块保持一致
                 flavorDimensions += "abi"
