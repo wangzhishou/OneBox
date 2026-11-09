@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.halilibo.richtext.commonmark.CommonMarkdownParseOptions
 import com.halilibo.richtext.markdown.BasicMarkdown
 import com.halilibo.richtext.markdown.MarkdownImageConfig
+import com.halilibo.richtext.markdown.collectMarkdownImageUrls
 import com.halilibo.richtext.markwon.MarkdownAstNodeParser
 import com.halilibo.richtext.ui.BasicRichText
 import com.halilibo.richtext.ui.LocalInternalContentColor
@@ -74,12 +75,18 @@ fun RichMarkdown(
         }
     }
 
-    var previewImageUrl by remember { mutableStateOf<String?>(null) }
+    var imagePreview by remember { mutableStateOf<MarkdownImagePreview?>(null) }
+    val imageUrls = remember(astNode) { collectMarkdownImageUrls(astNode) }
 
-    val imageConfig = remember {
+    val imageConfig = remember(imageUrls) {
         MarkdownImageConfig(
             onImageClick = { url, _ ->
-                previewImageUrl = url
+                val index = imageUrls.indexOf(url)
+                imagePreview = if (index >= 0) {
+                    MarkdownImagePreview(imageUrls, index)
+                } else {
+                    MarkdownImagePreview(listOf(url), 0)
+                }
             }
         )
     }
@@ -100,10 +107,11 @@ fun RichMarkdown(
         }
     }
 
-    previewImageUrl?.let { url ->
+    imagePreview?.let { preview ->
         ImageGalleryViewer(
-            images = listOf(url),
-            onDismiss = { previewImageUrl = null }
+            images = preview.images,
+            initialIndex = preview.index,
+            onDismiss = { imagePreview = null }
         )
     }
 }
@@ -211,3 +219,8 @@ fun RichText(
         }
     }
 }
+
+private data class MarkdownImagePreview(
+    val images: List<String>,
+    val index: Int,
+)

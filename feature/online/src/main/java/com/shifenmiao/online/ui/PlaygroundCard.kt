@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -60,10 +61,16 @@ fun PlaygroundCard(
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             if (coverImage != null) {
+                // 小红书封面：比例夹在 3:4 和 4:3 之间，超出居中裁掉。
+                var coverRatio by remember(coverImage.url) {
+                    mutableFloatStateOf(
+                        xiaohongshuCoverRatio(coverImage.width, coverImage.height)
+                    )
+                }
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(128.dp),
+                        .aspectRatio(coverRatio),
                     contentAlignment = Alignment.Center
                 ) {
                     var isLoading by remember(coverImage.url) { mutableStateOf(true) }
@@ -73,9 +80,16 @@ fun PlaygroundCard(
                         model = coverImage.url,
                         contentDescription = blog.title,
                         contentScale = ContentScale.Crop,
+                        alignment = Alignment.Center,
                         modifier = Modifier.matchParentSize(),
                         onState = { state ->
                             isLoading = state is AsyncImagePainter.State.Loading
+                            if (state is AsyncImagePainter.State.Success) {
+                                val image = state.result.image
+                                if (image.width > 0 && image.height > 0) {
+                                    coverRatio = xiaohongshuCoverRatio(image.width, image.height)
+                                }
+                            }
                         }
                     )
 
@@ -216,4 +230,15 @@ private fun PlaygroundAuthorRow(
             )
         }
     }
+}
+
+/** 小红书封面宽高比：最高 3:4，最宽 4:3，中间保持原比例。返回宽/高。 */
+private const val CoverTallestRatio = 3f / 4f
+private const val CoverWidestRatio = 4f / 3f
+
+private fun xiaohongshuCoverRatio(width: Int?, height: Int?): Float {
+    if (width == null || height == null || width <= 0 || height <= 0) {
+        return CoverTallestRatio
+    }
+    return (width.toFloat() / height.toFloat()).coerceIn(CoverTallestRatio, CoverWidestRatio)
 }

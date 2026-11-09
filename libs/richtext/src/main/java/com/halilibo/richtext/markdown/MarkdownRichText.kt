@@ -9,7 +9,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.OpenInNew
@@ -191,8 +190,6 @@ private fun computeRichTextString(
               MarkdownImage(
                 url = currentNodeType.destination,
                 title = currentNodeType.title,
-                modifier = Modifier.fillMaxWidth(),
-                contentScale = imageConfig.contentScale,
                 onClick = imageConfig.onImageClick?.let { cb ->
                   { cb(currentNodeType.destination, currentNodeType.title) }
                 },

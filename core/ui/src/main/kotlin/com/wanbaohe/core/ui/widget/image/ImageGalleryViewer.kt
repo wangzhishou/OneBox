@@ -5,6 +5,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,6 +35,7 @@ import coil3.compose.AsyncImagePainter
 import kotlinx.coroutines.delay
 import com.wanbaohe.base.ui.page.PageIndicator
 import com.wanbaohe.core.ui.widget.utils.FullscreenPopup
+import net.engawapg.lib.zoomable.ScrollGesturePropagation
 import net.engawapg.lib.zoomable.rememberZoomState
 import net.engawapg.lib.zoomable.toggleScale
 import net.engawapg.lib.zoomable.zoomable
@@ -42,9 +45,9 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineError
  * 通用图片画廊查看器
  *
  * ## 功能概述
- * - 全屏弹窗展示图片列表
- * - 左右滑动切换图片
- * - 双指缩放、双击放大/复位
+ * - 全屏弹窗展示图片列表，打开和关闭带淡入淡出
+ * - 左右滑动切换图片（未放大时手势交给翻页）
+ * - 双指缩放、双击放大/复位，单击关闭
  * - 加载与错误状态提示
  * - 多图时显示页码指示器
  * - 返回/点击关闭
@@ -100,8 +103,10 @@ fun ImageGalleryViewer(
 
         AnimatedVisibility(
             visible = isVisible,
-            enter = fadeIn(tween(ImageGalleryAnimationDurationMs)),
-            exit = fadeOut(tween(ImageGalleryAnimationDurationMs))
+            enter = fadeIn(tween(ImageGalleryAnimationDurationMs)) +
+                slideInVertically(tween(ImageGalleryAnimationDurationMs)) { it / 8 },
+            exit = fadeOut(tween(ImageGalleryAnimationDurationMs)) +
+                slideOutVertically(tween(ImageGalleryAnimationDurationMs)) { it / 8 }
         ) {
             Box(
                 modifier = Modifier
@@ -113,7 +118,7 @@ fun ImageGalleryViewer(
                 HorizontalPager(
                     state = pagerState,
                     modifier = Modifier.fillMaxSize(),
-                    key = { images[it] },
+                    key = { index -> "${index}_${images[index]}" },
                     beyondViewportPageCount = 1
                 ) { index ->
                     GalleryImagePage(
@@ -161,6 +166,8 @@ private fun GalleryImagePage(
                 .fillMaxSize()
                 .zoomable(
                     zoomState = zoomState,
+                    // 未放大时把滑动交给 HorizontalPager，放大后留给拖动看图
+                    scrollGesturePropagation = ScrollGesturePropagation.NotZoomed,
                     onTap = { onDismiss() },
                     onDoubleTap = { position ->
                         zoomState.toggleScale(targetScale = 2.5f, position = position)

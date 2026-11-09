@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.halilibo.richtext.commonmark.CommonMarkdownParseOptions
 import com.halilibo.richtext.markdown.BasicMarkdown
 import com.halilibo.richtext.markdown.MarkdownImageConfig
+import com.halilibo.richtext.markdown.collectMarkdownImageUrls
 import com.halilibo.richtext.markwon.MarkdownAstNodeParser
 import com.halilibo.richtext.ui.material3.RichText
 import com.wanbaohe.core.ui.widget.image.ImageGalleryViewer
@@ -119,12 +120,18 @@ fun MarkdownLazyContent(
             val context = LocalContext.current
             var blocks by remember { mutableStateOf<List<AstNode>>(emptyList()) }
             var isParsing by remember { mutableStateOf(true) }
-            var previewImageUrl by remember { mutableStateOf<String?>(null) }
+            var imagePreview by remember { mutableStateOf<MarkdownImagePreview?>(null) }
+            val imageUrls = remember(blocks) { collectMarkdownImageUrls(blocks) }
 
-            val imageConfig = remember {
+            val imageConfig = remember(imageUrls) {
                 MarkdownImageConfig(
                     onImageClick = { url, _ ->
-                        previewImageUrl = url
+                        val index = imageUrls.indexOf(url)
+                        imagePreview = if (index >= 0) {
+                            MarkdownImagePreview(imageUrls, index)
+                        } else {
+                            MarkdownImagePreview(listOf(url), 0)
+                        }
                     }
                 )
             }
@@ -222,14 +229,20 @@ fun MarkdownLazyContent(
                     lazyColumn()
                 }
 
-                previewImageUrl?.let { url ->
+                imagePreview?.let { preview ->
                     ImageGalleryViewer(
-                        images = listOf(url),
-                        onDismiss = { previewImageUrl = null }
+                        images = preview.images,
+                        initialIndex = preview.index,
+                        onDismiss = { imagePreview = null }
                     )
                 }
             }
         }
     }
 }
+
+private data class MarkdownImagePreview(
+    val images: List<String>,
+    val index: Int,
+)
 

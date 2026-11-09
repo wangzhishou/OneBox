@@ -1,6 +1,5 @@
 package com.halilibo.richtext.markdown
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -294,13 +293,10 @@ private val DefaultAstNodeComposer = object : AstBlockNodeComposer {
             }
 
             is AstImage -> {
-                // Handle block-level images (e.g. when image is the primary node in a paragraph).
-                // Image fills the full width of the parent container.
+                // 独立成块的图片。尺寸由 MarkdownImage 按栏宽和窗口高度等比适配。
                 MarkdownImage(
                     url = astNodeType.destination,
                     title = astNodeType.title,
-                    modifier = Modifier.fillMaxWidth(),
-                    contentScale = imageConfig.contentScale,
                     onClick = imageConfig.onImageClick?.let { cb ->
                         { cb(astNodeType.destination, astNodeType.title) }
                     },
