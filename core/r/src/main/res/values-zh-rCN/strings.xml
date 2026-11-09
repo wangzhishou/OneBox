@@ -960,6 +960,12 @@
     <string name="ai_chat_stream_interrupted">连接中断，回答未完成。请重试。</string>
     <!-- 生成期间的前台服务通知标题。只写状态，不带任何问题/回答内容（锁屏可见）。 -->
     <string name="ai_stream_foreground_title">AI 正在回复</string>
+    <!-- 一次性 AI 生成任务的前台通知标题（创建智能体/提示词/工具草案）。同样只写状态不带内容。 -->
+    <string name="ai_agent_creating_foreground_title">正在创建智能体</string>
+    <string name="ai_prompt_creating_foreground_title">正在创建提示词</string>
+    <string name="ai_tool_draft_foreground_title">正在生成工具草案</string>
+    <!-- 多个长任务并发时，聚合通知正文追加的其余任务数量。 -->
+    <string name="long_task_notification_more">等 %1$d 项任务进行中</string>
 
     <!-- AI 聊天错误卡片 -->
     <string name="ai_chat_error_title_offline">网络未连接</string>

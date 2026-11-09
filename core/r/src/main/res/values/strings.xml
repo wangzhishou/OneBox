@@ -1841,6 +1841,12 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="ai_chat_stream_interrupted">Connection interrupted before the response completed. Please try again.</string>
     <!-- 生成期间的前台服务通知标题。只写状态，不带任何问题/回答内容（锁屏可见）。 -->
     <string name="ai_stream_foreground_title">AI is replying</string>
+    <!-- 一次性 AI 生成任务的前台通知标题（创建智能体/提示词/工具草案）。同样只写状态不带内容。 -->
+    <string name="ai_agent_creating_foreground_title">Creating agent</string>
+    <string name="ai_prompt_creating_foreground_title">Creating prompt</string>
+    <string name="ai_tool_draft_foreground_title">Generating tool draft</string>
+    <!-- 多个长任务并发时，聚合通知正文追加的其余任务数量。 -->
+    <string name="long_task_notification_more">and %1$d more running</string>
 
     <!-- AI chat error card -->
     <string name="ai_chat_error_title_offline">No internet connection</string>

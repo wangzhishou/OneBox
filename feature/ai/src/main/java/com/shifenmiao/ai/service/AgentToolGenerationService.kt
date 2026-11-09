@@ -10,6 +10,8 @@ import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonObject
 import com.shifenmiao.core.R
 import com.shifenmiao.ai.agent.tool.AgentToolRegistry
+import com.shifenmiao.base.longtask.LongTaskCenter
+import com.shifenmiao.base.longtask.LongTaskKind
 import com.shifenmiao.common.ai.AIPromptExecutor
 import com.shifenmiao.common.ai.AiLanguagePrompt
 import com.shifenmiao.model.ai.tool.ToolCatalogItem
@@ -140,10 +142,20 @@ class AgentToolGenerationService @Inject constructor(
     @ApplicationContext private val context: Context,
     private val aiPromptExecutor: AIPromptExecutor,
     private val agentToolRegistry: AgentToolRegistry,
-    private val creationMetaService: CreationMetaService
+    private val creationMetaService: CreationMetaService,
+    private val longTaskCenter: LongTaskCenter,
 ) {
 
-    suspend fun generateDraft(request: AgentToolGenerationRequest): AgentToolGenerationResult {
+    suspend fun generateDraft(request: AgentToolGenerationRequest): AgentToolGenerationResult =
+        longTaskCenter.withTask(
+            id = TASK_ID_GENERATION,
+            kind = LongTaskKind.AI_GENERATION,
+            title = context.getString(R.string.ai_tool_draft_foreground_title),
+        ) {
+            generateDraftInternal(request)
+        }
+
+    private suspend fun generateDraftInternal(request: AgentToolGenerationRequest): AgentToolGenerationResult {
         val relatedTools = agentToolRegistry.getVisibleTools()
             .filter { tool ->
                 request.relatedToolNames.isEmpty() || tool.name in request.relatedToolNames
@@ -327,4 +339,8 @@ class AgentToolGenerationService @Inject constructor(
         val toolDraft: AgentToolDraft,
         val recommendedBindings: List<String>
     )
+
+    private companion object {
+        const val TASK_ID_GENERATION = "ai.generation.tool_draft"
+    }
 }

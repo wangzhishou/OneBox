@@ -8,6 +8,8 @@ import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.jsonObject
 import com.shifenmiao.ai.agent.tool.AgentToolRegistry
 import com.shifenmiao.ai.agent.tool.ToolBindingRepository
+import com.shifenmiao.base.longtask.LongTaskCenter
+import com.shifenmiao.base.longtask.LongTaskKind
 import com.shifenmiao.common.ai.AIPromptExecutor
 import com.shifenmiao.common.ai.AiLanguagePrompt
 import com.shifenmiao.core.R
@@ -60,6 +62,7 @@ class PromptCreationService @Inject constructor(
     private val toolBindingRepository: ToolBindingRepository,
     private val agentToolRegistry: AgentToolRegistry,
     private val aiPromptExecutor: AIPromptExecutor,
+    private val longTaskCenter: LongTaskCenter,
 ) {
 
     suspend fun buildSystemPrompt(): String {
@@ -332,7 +335,11 @@ class PromptCreationService @Inject constructor(
         userGoal: String,
         categoryHints: List<String> = emptyList(),
         toolHints: List<String> = emptyList()
-    ): PromptSavedResult {
+    ): PromptSavedResult = longTaskCenter.withTask(
+        id = TASK_ID_GENERATION,
+        kind = LongTaskKind.AI_GENERATION,
+        title = context.getString(R.string.ai_prompt_creating_foreground_title),
+    ) {
         val result = aiPromptExecutor.execute(
             input = buildRequirement(userGoal, categoryHints, toolHints),
             systemPrompt = buildSystemPrompt(),
@@ -350,7 +357,7 @@ class PromptCreationService @Inject constructor(
             aiSuggestedCategoryNames = parsed.payload.suggestedCategoryNames,
             aiSuggestedToolNames = parsed.payload.suggestedToolNames + toolHints
         )
-        return savePrompt(
+        savePrompt(
             parsedPrompt = prompt,
             fallbackInputText = userGoal,
             selectedCategoryIds = meta.categoryIds,
@@ -456,6 +463,8 @@ class PromptCreationService @Inject constructor(
     }
 
     companion object {
+        private const val TASK_ID_GENERATION = "ai.generation.prompt"
+
         private val PROMPT_OUTPUT_CONTRACT = """
 Use the following top-level structure and output JSON only:
 {

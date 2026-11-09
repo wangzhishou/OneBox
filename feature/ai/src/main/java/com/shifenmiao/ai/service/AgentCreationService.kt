@@ -16,6 +16,8 @@ import com.shifenmiao.common.ai.AIPromptExecutor
 import com.shifenmiao.common.ai.AiLanguagePrompt
 import com.shifenmiao.ai.agent.tool.AgentToolRegistry
 import com.shifenmiao.ai.agent.tool.ToolBindingRepository
+import com.shifenmiao.base.longtask.LongTaskCenter
+import com.shifenmiao.base.longtask.LongTaskKind
 import com.shifenmiao.core.R
 import com.shifenmiao.database.AppDatabase
 import com.shifenmiao.database.chat_prompt.entity.PromptEntity
@@ -73,6 +75,7 @@ class AgentCreationService @Inject constructor(
     private val toolBindingRepository: ToolBindingRepository,
     private val agentToolRegistry: AgentToolRegistry,
     private val aiPromptExecutor: AIPromptExecutor,
+    private val longTaskCenter: LongTaskCenter,
 ) {
 
     suspend fun buildSystemPrompt(): String {
@@ -396,7 +399,11 @@ class AgentCreationService @Inject constructor(
         userGoal: String,
         categoryHints: List<String> = emptyList(),
         toolHints: List<String> = emptyList()
-    ): AgentSavedResult {
+    ): AgentSavedResult = longTaskCenter.withTask(
+        id = TASK_ID_GENERATION,
+        kind = LongTaskKind.AI_GENERATION,
+        title = context.getString(R.string.ai_agent_creating_foreground_title),
+    ) {
         val requirement = buildRequirement(userGoal, categoryHints, toolHints)
         val result = aiPromptExecutor.execute(
             input = requirement,
@@ -415,7 +422,7 @@ class AgentCreationService @Inject constructor(
             aiSuggestedCategoryNames = parsed.payload.suggestedCategoryNames,
             aiSuggestedToolNames = parsed.payload.suggestedToolNames + toolHints
         )
-        return saveAgent(
+        saveAgent(
             parsedAgent = agent,
             fallbackInputText = userGoal,
             selectedCategoryIds = meta.categoryIds,
@@ -534,6 +541,10 @@ class AgentCreationService @Inject constructor(
             updatedAt = now,
             publishedAt = now,
         )
+    }
+
+    private companion object {
+        const val TASK_ID_GENERATION = "ai.generation.agent"
     }
 
 }

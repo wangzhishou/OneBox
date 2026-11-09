@@ -690,6 +690,9 @@ class AIDuelChatComponent @AssistedInject internal constructor(
             batchTotal = ((maxTurns + 1) / 2).coerceAtLeast(1),
         )
         duelJob = componentScope.launch(ioDispatcher) {
+            // 会话级保活：覆盖"回合间空窗"——单条流结束时服务会停，锁屏后下一句的
+            // 流可能因后台启动限制起不来；与逐流引用计数叠加，互不影响。
+            messageRemoteMediator.beginTurnKeepAlive()
             try {
                 runDuelLoop(
                     maxTurns = maxTurns,
@@ -706,6 +709,8 @@ class AIDuelChatComponent @AssistedInject internal constructor(
                         ?: applicationContext.getString(R.string.ai_error_unknown),
                     retryAvailable = true,
                 )
+            } finally {
+                messageRemoteMediator.endTurnKeepAlive()
             }
         }
     }
