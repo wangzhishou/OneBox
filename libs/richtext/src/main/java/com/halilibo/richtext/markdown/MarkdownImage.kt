@@ -22,7 +22,9 @@ import coil3.compose.SubcomposeAsyncImageScope
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineError
 
 internal val MarkdownImageCornerRadius = 16.dp
-internal val MarkdownImageMaxHeight = 320.dp
+
+/** 正文图片最大高度。原来是 320dp，整屏截图会被裁掉上下两截，放宽到 1000dp（约 2.5 屏）。 */
+internal val MarkdownImageMaxHeight = 1000.dp
 
 /**
  * Markdown 图片的统一包装组件。
