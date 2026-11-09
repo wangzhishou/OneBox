@@ -32,7 +32,6 @@ fun ToolCallHistoryCard(
         onPrimaryAction = onContinueIteration,
         onSecondaryAction = onCancelTool,
         initiallyExpanded = isExpandedToolCall,
-        forceExpanded = agentToolCallStatus != null,
         onExpandedChange = { AppSharedStorage.saveIsExpandedToolCall(it) },
         modifier = modifier
     )

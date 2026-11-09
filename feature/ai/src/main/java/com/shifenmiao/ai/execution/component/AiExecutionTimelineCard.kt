@@ -80,20 +80,15 @@ fun AiExecutionTimelineCard(
     onPrimaryAction: (() -> Unit)? = null,
     onSecondaryAction: (() -> Unit)? = null,
     initiallyExpanded: Boolean = false,
-    forceExpanded: Boolean = false,
     onExpandedChange: ((Boolean) -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     if (!uiModel.isVisible) return
 
-    var expanded by remember(uiModel.title, uiModel.steps, initiallyExpanded, forceExpanded) {
-        mutableStateOf(
-            forceExpanded ||
-                    initiallyExpanded ||
-                    uiModel.phase == AiExecutionPhase.WAITING_USER_ACTION
-        )
+    var expanded by remember(initiallyExpanded) {
+        mutableStateOf(initiallyExpanded)
     }
-    val isExpanded = forceExpanded || expanded
+    val isExpanded = expanded
     val expandedSteps = remember { mutableStateMapOf<String, Boolean>() }
 
     Column(
@@ -110,18 +105,17 @@ fun AiExecutionTimelineCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp))
-                .clickable(enabled = uiModel.steps.size > 1 && !forceExpanded) {
-                    if (uiModel.steps.size > 1) {
-                        expanded = !expanded
-                        onExpandedChange?.invoke(expanded)
-                    }
+                .clickable(enabled = uiModel.steps.size > 1) {
+                    expanded = !expanded
+                    onExpandedChange?.invoke(expanded)
                 }
                 .animateContentSize()
                 .flatGlassCardSegment(
                     segment = GlassCardSegment.Solo,
                     shape = RoundedCornerShape(16.dp),
                     color = MaterialTheme.colorScheme.surfaceContainer,
-                    borderWidth = 0.dp,
+                    style = GlassStyle.Thick,
+                    borderWidth = 0.8.dp,
                 ),
         ) {
             Column(modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp)) {
@@ -393,13 +387,14 @@ private fun DeepLinkActionCard(item: DeepLinkItemUiModel) {
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .glassBackground(
+                style = GlassStyle.Dense,
                 color = if (primary) {
                     MaterialTheme.colorScheme.primaryContainer
                 } else {
-                    MaterialTheme.colorScheme.surfaceContainerLowest
+                    MaterialTheme.colorScheme.surfaceContainer
                 },
                 shape = RoundedCornerShape(12.dp),
-                borderWidth = if (primary) 0.8.dp else 0.dp,
+                borderWidth = 0.8.dp,
             )
             .clickable {
                 urlNavigator.navigate(item.uri)
@@ -473,9 +468,10 @@ private fun ToolCallDetailPanel(
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .glassBackground(
-                color = MaterialTheme.colorScheme.surfaceContainerLowest,
+                style = GlassStyle.Dense,
+                color = MaterialTheme.colorScheme.surfaceContainer,
                 shape = RoundedCornerShape(12.dp),
-                borderWidth = 0.dp
+                borderWidth = 0.7.dp
             )
             .clickable(onClick = onToggle)
             .padding(horizontal = 10.dp, vertical = 8.dp)
@@ -550,9 +546,9 @@ private fun ToolCallDetailBlock(
             .clip(RoundedCornerShape(10.dp))
             .glassBackground(
                 style = GlassStyle.Dense,
-                color = color,
+                color = MaterialTheme.colorScheme.surfaceContainer,
                 shape = RoundedCornerShape(10.dp),
-                borderWidth = 0.dp
+                borderWidth = 0.6.dp
             )
             .padding(horizontal = 10.dp, vertical = 8.dp)
     ) {

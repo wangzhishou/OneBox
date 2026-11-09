@@ -157,7 +157,7 @@ object AppSharedStorage {
     }
 
     private fun loadIsExpandedToolCall(): Boolean {
-        return load(IS_EXPANDED_TOOL_CALL, true) ?: true
+        return load(IS_EXPANDED_TOOL_CALL, false) ?: false
     }
 
 
