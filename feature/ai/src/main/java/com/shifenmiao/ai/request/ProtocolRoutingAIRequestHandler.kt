@@ -972,7 +972,7 @@ class ProtocolRoutingAIRequestHandler @Inject constructor(
         contentStates: MutableMap<ResponseContentKey, StringBuilder>
     ): LlmStreamEvent? {
         val kind = contentType.toResponseContentKind() ?: return null
-        if (delta.isBlank()) return null
+        if (delta.isEmpty()) return null
         val state = contentStates.getOrPut(ResponseContentKey(outputIndex, contentIndex, kind)) { StringBuilder() }
         state.append(delta)
         return kind.toEvent(delta)
@@ -987,7 +987,7 @@ class ProtocolRoutingAIRequestHandler @Inject constructor(
         deduplicateAgainstState: Boolean
     ): LlmStreamEvent? {
         val kind = contentType.toResponseContentKind() ?: return null
-        if (text.isBlank()) return null
+        if (text.isEmpty()) return null
         val state = contentStates.getOrPut(ResponseContentKey(outputIndex, contentIndex, kind)) { StringBuilder() }
         val delta = if (!deduplicateAgainstState) {
             text
@@ -999,7 +999,7 @@ class ProtocolRoutingAIRequestHandler @Inject constructor(
                 else -> ""
             }
         }
-        if (delta.isBlank()) return null
+        if (delta.isEmpty()) return null
         state.append(delta)
         return kind.toEvent(delta)
     }

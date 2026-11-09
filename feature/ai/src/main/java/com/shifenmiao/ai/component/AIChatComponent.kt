@@ -1128,7 +1128,7 @@ open class AIChatComponent @AssistedInject internal constructor(
 
     private suspend fun processTextDelta(content: String) {
         streamContentProcessor.updateReasoningTimeAndUid()
-        if (content.isBlank()) return
+        if (content.isEmpty()) return
         streamContentProcessor.appendDeltaAndRender(
             content = content,
             update = { streamContentProcessor.updateAnswerContentOptimized(it) }
@@ -1140,7 +1140,7 @@ open class AIChatComponent @AssistedInject internal constructor(
             return
         }
         streamContentProcessor.updateReasoningTimeAndUid()
-        if (content.isBlank()) return
+        if (content.isEmpty()) return
         streamContentProcessor.reasoningTime =
             (System.currentTimeMillis() - streamContentProcessor.startQuestionTime) / 1000
         streamContentProcessor.appendDeltaAndRender(

@@ -129,48 +129,23 @@ fun RichText(
 ) {
     val defaultStyle = RichTextStyle(
         paragraphSpacing = 12.sp,
-        // 字号梯度向 HTML 默认渲染靠齐(body 16sp):
-        // h1=2em, h2=1.5em, h3=1.17em, h4=1em, h5=0.83em, h6=0.67em
-        headingStyle = { level, _ ->
-            when (level) {
-                0 -> TextStyle(
-                    fontSize = 32.sp,
-                    lineHeight = 40.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                1 -> TextStyle(
-                    fontSize = 24.sp,
-                    lineHeight = 30.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                2 -> TextStyle(
-                    fontSize = 18.7.sp,
-                    lineHeight = 24.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                3 -> TextStyle(
-                    fontSize = 16.sp,
-                    lineHeight = 21.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                4 -> TextStyle(
-                    fontSize = 13.3.sp,
-                    lineHeight = 17.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                5 -> TextStyle(
-                    fontSize = 10.7.sp,
-                    lineHeight = 14.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                else -> TextStyle(fontWeight = FontWeight.Bold)
+        // 内容标题不超过页面标题;H4-H6 保持正文字号,通过字重区分层级。
+        headingStyle = { level, textStyle ->
+            val fontSize = when (level) {
+                0 -> (textStyle.fontSize.value + 4).sp
+                1 -> (textStyle.fontSize.value + 2).sp
+                2 -> (textStyle.fontSize.value + 1).sp
+                else -> textStyle.fontSize
             }
+            TextStyle(
+                fontSize = fontSize,
+                lineHeight = fontSize * 1.4f,
+                fontWeight = when (level) {
+                    0, 1 -> FontWeight.Bold
+                    5 -> FontWeight.Medium
+                    else -> FontWeight.SemiBold
+                }
+            )
         },
         listStyle = ListStyle(
             itemSpacing = 8.sp,

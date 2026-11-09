@@ -218,10 +218,13 @@ object MarkdownEditorHtmlTemplate {
             display: none;
         }
         
-        /* 标题样式 */
-        .milkdown h1 { font-size: 2em; font-weight: 700; margin: 0.67em 0; color: var(--md-on-surface); }
-        .milkdown h2 { font-size: 1.5em; font-weight: 600; margin: 0.83em 0; color: var(--md-on-surface); }
-        .milkdown h3 { font-size: 1.17em; font-weight: 600; margin: 1em 0; color: var(--md-on-surface); }
+        /* 标题样式:与原生 Markdown 一致,较低级标题不小于正文 */
+        .milkdown h1 { font-size: calc(var(--md-font-size) + 4px); line-height: 1.4; font-weight: 700; margin: 0.67em 0; color: var(--md-on-surface); }
+        .milkdown h2 { font-size: calc(var(--md-font-size) + 2px); line-height: 1.4; font-weight: 700; margin: 0.83em 0; color: var(--md-on-surface); }
+        .milkdown h3 { font-size: calc(var(--md-font-size) + 1px); line-height: 1.4; font-weight: 600; margin: 1em 0; color: var(--md-on-surface); }
+        .milkdown h4 { font-size: var(--md-font-size); line-height: 1.4; font-weight: 600; margin: 1em 0; color: var(--md-on-surface); }
+        .milkdown h5 { font-size: var(--md-font-size); line-height: 1.4; font-weight: 600; margin: 1em 0; color: var(--md-on-surface); }
+        .milkdown h6 { font-size: var(--md-font-size); line-height: 1.4; font-weight: 500; margin: 1em 0; color: var(--md-on-surface); }
         
         /* 段落和文本样式 */
         .milkdown p { 

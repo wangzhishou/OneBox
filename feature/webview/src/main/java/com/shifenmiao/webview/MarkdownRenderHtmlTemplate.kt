@@ -68,9 +68,16 @@ object MarkdownRenderHtmlTemplate {
                 }
 
                 h1, h2, h3, h4, h5, h6 {
+                    font-size: var(--md-font-size);
+                    font-weight: 600;
                     margin: 1.2em 0 0.6em;
-                    line-height: 1.25;
+                    line-height: 1.4;
                 }
+
+                h1 { font-size: calc(var(--md-font-size) + 4px); font-weight: 700; }
+                h2 { font-size: calc(var(--md-font-size) + 2px); font-weight: 700; }
+                h3 { font-size: calc(var(--md-font-size) + 1px); }
+                h6 { font-weight: 500; }
 
                 p { margin: 0.9em 0; }
 
