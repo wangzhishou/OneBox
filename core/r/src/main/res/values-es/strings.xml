@@ -2090,4 +2090,9 @@ Consejo: si eliges «Ocultar para siempre», podrás devolverme más tarde en Aj
     <string name="permission_rationale_all_files_title">Acceso a todos los archivos</string>
     <string name="permission_rationale_all_files_description">Se usa para establecer fondos de pantalla y explorar archivos que no son multimedia.</string>
     <string name="privacy_item_storage_description">Acceso al almacenamiento para guardar archivos generados o descargados y elegir imágenes o vídeos de la galería.</string>
+    <string name="ai_stream_foreground_title">La IA está respondiendo</string>
+    <string name="ai_agent_creating_foreground_title">Creando agente</string>
+    <string name="ai_prompt_creating_foreground_title">Creando prompt</string>
+    <string name="ai_tool_draft_foreground_title">Generando borrador de herramienta</string>
+    <string name="long_task_notification_more">y %1$d más en ejecución</string>
 </resources>

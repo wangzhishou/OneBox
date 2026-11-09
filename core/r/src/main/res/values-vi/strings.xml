@@ -2077,4 +2077,9 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <string name="permission_rationale_all_files_title">Truy cập tất cả tệp</string>
     <string name="permission_rationale_all_files_description">Dùng để đặt hình nền và duyệt các tệp không phải media.</string>
     <string name="privacy_item_storage_description">Truy cập bộ nhớ để lưu tệp được tạo hoặc tải xuống và chọn ảnh hoặc video từ thư viện.</string>
+    <string name="ai_stream_foreground_title">AI đang trả lời</string>
+    <string name="ai_agent_creating_foreground_title">Đang tạo agent</string>
+    <string name="ai_prompt_creating_foreground_title">Đang tạo lời nhắc</string>
+    <string name="ai_tool_draft_foreground_title">Đang tạo bản nháp công cụ</string>
+    <string name="long_task_notification_more">và %1$d tác vụ khác đang chạy</string>
 </resources>

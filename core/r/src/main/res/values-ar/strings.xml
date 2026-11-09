@@ -2124,4 +2124,9 @@
     <string name="permission_rationale_all_files_title">الوصول إلى كل الملفات</string>
     <string name="permission_rationale_all_files_description">يُستخدم لتعيين الخلفيات وتصفح الملفات غير الوسائطية.</string>
     <string name="privacy_item_storage_description">الوصول إلى التخزين لحفظ الملفات التي تم إنشاؤها أو تنزيلها واختيار الصور أو الفيديوهات من المعرض.</string>
+    <string name="ai_stream_foreground_title">الذكاء الاصطناعي يرد</string>
+    <string name="ai_agent_creating_foreground_title">جارٍ إنشاء الوكيل</string>
+    <string name="ai_prompt_creating_foreground_title">جارٍ إنشاء المُوجِّه</string>
+    <string name="ai_tool_draft_foreground_title">جارٍ إنشاء مسودة الأداة</string>
+    <string name="long_task_notification_more">و%1$d مهام أخرى قيد التنفيذ</string>
 </resources>

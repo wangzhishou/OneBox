@@ -2124,4 +2124,9 @@
     <string name="permission_rationale_all_files_title">Доступ ко всем файлам</string>
     <string name="permission_rationale_all_files_description">Используется для установки обоев и просмотра файлов, не являющихся медиа.</string>
     <string name="privacy_item_storage_description">Доступ к хранилищу, чтобы сохранять созданные или загруженные файлы и выбирать изображения или видео из галереи.</string>
+    <string name="ai_stream_foreground_title">ИИ отвечает</string>
+    <string name="ai_agent_creating_foreground_title">Создание агента</string>
+    <string name="ai_prompt_creating_foreground_title">Создание промпта</string>
+    <string name="ai_tool_draft_foreground_title">Генерация черновика инструмента</string>
+    <string name="long_task_notification_more">и ещё %1$d в работе</string>
 </resources>

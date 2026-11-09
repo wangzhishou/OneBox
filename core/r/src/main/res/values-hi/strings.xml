@@ -2090,4 +2090,9 @@
     <string name="permission_rationale_all_files_title">सभी फ़ाइलों तक पहुँच</string>
     <string name="permission_rationale_all_files_description">वॉलपेपर सेट करने और गैर-मीडिया फ़ाइलें ब्राउज़ करने के लिए।</string>
     <string name="privacy_item_storage_description">स्टोरेज तक पहुँच, जिससे बनाई या डाउनलोड की गई फ़ाइलें सहेजी जा सकें और गैलरी से तस्वीरें या वीडियो चुने जा सकें।</string>
+    <string name="ai_stream_foreground_title">AI जवाब दे रहा है</string>
+    <string name="ai_agent_creating_foreground_title">एजेंट बनाया जा रहा है</string>
+    <string name="ai_prompt_creating_foreground_title">प्रॉम्प्ट बनाया जा रहा है</string>
+    <string name="ai_tool_draft_foreground_title">टूल ड्राफ़्ट जनरेट हो रहा है</string>
+    <string name="long_task_notification_more">और %1$d अन्य चल रहे हैं</string>
 </resources>

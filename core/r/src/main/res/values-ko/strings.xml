@@ -2079,4 +2079,9 @@
     <string name="permission_rationale_all_files_title">모든 파일 접근</string>
     <string name="permission_rationale_all_files_description">배경화면 설정과 미디어가 아닌 파일 탐색에 사용합니다.</string>
     <string name="privacy_item_storage_description">생성하거나 다운로드한 파일을 저장하고 갤러리에서 사진이나 동영상을 고르기 위해 저장소에 접근합니다.</string>
+    <string name="ai_stream_foreground_title">AI가 답변 중</string>
+    <string name="ai_agent_creating_foreground_title">에이전트 생성 중</string>
+    <string name="ai_prompt_creating_foreground_title">프롬프트 생성 중</string>
+    <string name="ai_tool_draft_foreground_title">도구 초안 생성 중</string>
+    <string name="long_task_notification_more">외 %1$d개 작업 진행 중</string>
 </resources>

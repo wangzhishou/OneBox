@@ -2090,4 +2090,9 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
     <string name="permission_rationale_all_files_title">Acesso a todos os arquivos</string>
     <string name="permission_rationale_all_files_description">Usado para definir papéis de parede e navegar em arquivos que não são mídia.</string>
     <string name="privacy_item_storage_description">Acesso ao armazenamento para salvar arquivos gerados ou baixados e escolher imagens ou vídeos da galeria.</string>
+    <string name="ai_stream_foreground_title">A IA está respondendo</string>
+    <string name="ai_agent_creating_foreground_title">Criando agente</string>
+    <string name="ai_prompt_creating_foreground_title">Criando prompt</string>
+    <string name="ai_tool_draft_foreground_title">Gerando rascunho de ferramenta</string>
+    <string name="long_task_notification_more">e mais %1$d em execução</string>
 </resources>

@@ -2090,4 +2090,9 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <string name="permission_rationale_all_files_title">Access sa Lahat ng File</string>
     <string name="permission_rationale_all_files_description">Ginagamit para mag-set ng wallpaper at mag-browse ng mga file na hindi media.</string>
     <string name="privacy_item_storage_description">Access sa storage para i-save ang mga na-generate o na-download na file at pumili ng mga larawan o video mula sa gallery.</string>
+    <string name="ai_stream_foreground_title">Tumutugon ang AI</string>
+    <string name="ai_agent_creating_foreground_title">Ginagawa ang ahente</string>
+    <string name="ai_prompt_creating_foreground_title">Ginagawa ang prompt</string>
+    <string name="ai_tool_draft_foreground_title">Ginagawa ang draft ng tool</string>
+    <string name="long_task_notification_more">at %1$d pang tumatakbo</string>
 </resources>

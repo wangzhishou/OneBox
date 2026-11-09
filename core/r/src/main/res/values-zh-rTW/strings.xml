@@ -2080,4 +2080,9 @@
     <string name="permission_rationale_all_files_title">存取所有檔案</string>
     <string name="permission_rationale_all_files_description">用於設定桌布和瀏覽非媒體檔案。</string>
     <string name="privacy_item_storage_description">授權存取儲存空間，用於儲存產生或下載的檔案，以及選取相簿中的圖片/影片。</string>
+    <string name="ai_stream_foreground_title">AI 正在回覆</string>
+    <string name="ai_agent_creating_foreground_title">正在建立智能體</string>
+    <string name="ai_prompt_creating_foreground_title">正在建立提示詞</string>
+    <string name="ai_tool_draft_foreground_title">正在產生工具草案</string>
+    <string name="long_task_notification_more">等 %1$d 項任務進行中</string>
 </resources>

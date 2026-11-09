@@ -2090,4 +2090,9 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
     <string name="permission_rationale_all_files_title">Zugriff auf alle Dateien</string>
     <string name="permission_rationale_all_files_description">Wird verwendet, um Hintergrundbilder festzulegen und Dateien außerhalb der Mediathek zu durchsuchen.</string>
     <string name="privacy_item_storage_description">Zugriff auf den Speicher, um erzeugte oder heruntergeladene Dateien zu speichern und Bilder oder Videos aus der Galerie auszuwählen.</string>
+    <string name="ai_stream_foreground_title">KI antwortet</string>
+    <string name="ai_agent_creating_foreground_title">Agent wird erstellt</string>
+    <string name="ai_prompt_creating_foreground_title">Prompt wird erstellt</string>
+    <string name="ai_tool_draft_foreground_title">Tool-Entwurf wird generiert</string>
+    <string name="long_task_notification_more">und %1$d weitere aktiv</string>
 </resources>

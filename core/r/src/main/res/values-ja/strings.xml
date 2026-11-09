@@ -2079,4 +2079,9 @@
     <string name="permission_rationale_all_files_title">すべてのファイルへのアクセス</string>
     <string name="permission_rationale_all_files_description">壁紙の設定やメディア以外のファイルの閲覧に使用します。</string>
     <string name="privacy_item_storage_description">生成・ダウンロードしたファイルの保存と、ギャラリーから画像や動画を選ぶためにストレージへアクセスします。</string>
+    <string name="ai_stream_foreground_title">AI が返信しています</string>
+    <string name="ai_agent_creating_foreground_title">エージェントを作成中</string>
+    <string name="ai_prompt_creating_foreground_title">プロンプトを作成中</string>
+    <string name="ai_tool_draft_foreground_title">ツールの草案を生成中</string>
+    <string name="long_task_notification_more">他 %1$d 件のタスクが実行中</string>
 </resources>

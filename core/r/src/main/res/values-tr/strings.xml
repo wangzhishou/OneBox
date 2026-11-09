@@ -2090,4 +2090,9 @@
     <string name="permission_rationale_all_files_title">Tüm dosyalara erişim</string>
     <string name="permission_rationale_all_files_description">Duvar kağıdı ayarlamak ve medya dışı dosyalara göz atmak için kullanılır.</string>
     <string name="privacy_item_storage_description">Oluşturulan veya indirilen dosyaları kaydetmek ve galeriden görsel ya da video seçmek için depolama erişimi.</string>
+    <string name="ai_stream_foreground_title">AI yanıtlıyor</string>
+    <string name="ai_agent_creating_foreground_title">Ajan oluşturuluyor</string>
+    <string name="ai_prompt_creating_foreground_title">Prompt oluşturuluyor</string>
+    <string name="ai_tool_draft_foreground_title">Araç taslağı oluşturuluyor</string>
+    <string name="long_task_notification_more">ve %1$d görev daha çalışıyor</string>
 </resources>

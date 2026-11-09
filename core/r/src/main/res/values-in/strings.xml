@@ -2079,4 +2079,9 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
     <string name="permission_rationale_all_files_title">Akses Semua File</string>
     <string name="permission_rationale_all_files_description">Digunakan untuk mengatur wallpaper dan menjelajahi file non-media.</string>
     <string name="privacy_item_storage_description">Akses penyimpanan untuk menyimpan file hasil pembuatan atau unduhan dan memilih gambar atau video dari galeri.</string>
+    <string name="ai_stream_foreground_title">AI sedang membalas</string>
+    <string name="ai_agent_creating_foreground_title">Membuat agen</string>
+    <string name="ai_prompt_creating_foreground_title">Membuat prompt</string>
+    <string name="ai_tool_draft_foreground_title">Membuat draf alat</string>
+    <string name="long_task_notification_more">dan %1$d lainnya sedang berjalan</string>
 </resources>

@@ -2078,4 +2078,9 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="permission_rationale_all_files_title">Accès à tous les fichiers</string>
     <string name="permission_rationale_all_files_description">Sert à définir des fonds d\'écran et à parcourir des fichiers autres que multimédias.</string>
     <string name="privacy_item_storage_description">Accès au stockage pour enregistrer les fichiers générés ou téléchargés et choisir des images ou vidéos dans la galerie.</string>
+    <string name="ai_stream_foreground_title">L\'IA répond</string>
+    <string name="ai_agent_creating_foreground_title">Création de l\'agent</string>
+    <string name="ai_prompt_creating_foreground_title">Création de l\'invite</string>
+    <string name="ai_tool_draft_foreground_title">Génération du brouillon d\'outil</string>
+    <string name="long_task_notification_more">et %1$d autres en cours</string>
 </resources>
