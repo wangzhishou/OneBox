@@ -42,6 +42,9 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineTextCard
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 
+/** SelectionManager.getContentRect 底部多出来的手柄留白,单位是 px(见调用处注释) */
+private const val SELECTION_CONTENT_RECT_BOTTOM_SLOP_PX = 25f * 4f
+
 @Composable
 fun ChatTextSelectionContainer(
     appComponent: AppComponent,
@@ -95,11 +98,18 @@ fun ChatTextSelectionContainer(
         val session = menuProvider.session
         val coordinates = containerCoordinates
         if (session != null && coordinates != null) {
-            val selectionBounds = session.dataProvider.contentBounds(coordinates)
+            // SelectionManager 的 content rect 底部多加了 HandleHeight.value * 4。
+            // HandleHeight 是 25.dp, .value 没乘 density,所以是固定 100px,不是 100.dp。
+            // 那截是给系统工具条让手柄的;这里锚回真实选区,菜单才贴得上高亮。
+            val rawBounds = session.dataProvider.contentBounds(coordinates)
+                .translate(coordinates.localToWindow(Offset.Zero))
+            val anchorBounds = rawBounds.copy(
+                bottom = (rawBounds.bottom - SELECTION_CONTENT_RECT_BOTTOM_SLOP_PX)
+                    .coerceAtLeast(rawBounds.top),
+            )
             TextSelectionToolbar(
-                anchorBounds = selectionBounds.translate(
-                    coordinates.localToWindow(Offset.Zero)
-                ),
+                anchorBounds = anchorBounds,
+                preferAbove = true,
                 actions = listOf(
                     TextSelectionAction(
                         key = "copy",
