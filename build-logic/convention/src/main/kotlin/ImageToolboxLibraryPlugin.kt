@@ -27,9 +27,30 @@ import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
+import java.io.File
 import java.util.Properties
 
 private fun String?.toBuildConfigStringLiteral(): String = "\"${this.orEmpty()}\""
+
+// git 短哈希缓存:本插件被全部 ~127 个模块应用,git 只需跑一次
+private var gitHashCache: Pair<File, String?>? = null
+
+private fun gitHeadShortHash(dir: File): String? =
+    gitHashCache?.takeIf { it.first == dir }?.second
+        ?: runCatching {
+            val process = ProcessBuilder("git", "rev-parse", "--short", "HEAD")
+                .directory(dir)
+                .redirectErrorStream(true)
+                .start()
+            val hash = process.inputStream.bufferedReader().readText().trim()
+            hash.takeIf { process.waitFor() == 0 && it.isNotBlank() }
+        }.getOrNull().also { gitHashCache = dir to it }
+
+// GitVersion 优先级:CI 注入的 GIT_VERSION > 构建时 git rev-parse(F-Droid 评审要求动态获取)> 版本目录兜底
+private fun resolveGitVersion(fallback: String, repoDir: File): String =
+    System.getenv("GIT_VERSION")?.takeIf(String::isNotBlank)
+        ?: gitHeadShortHash(repoDir)
+        ?: fallback
 
 @Suppress("UNUSED")
 class ImageToolboxLibraryPlugin : Plugin<Project> {
@@ -52,7 +73,7 @@ class ImageToolboxLibraryPlugin : Plugin<Project> {
                 defaultConfig.minSdk = libs.versions.androidMinSdk.get().toIntOrNull()
                 defaultConfig.buildConfigField("String", "VersionName", "\"${System.getenv("VERSION_NAME") ?: libs.versions.versionName.get()}\"")
                 defaultConfig.buildConfigField("String", "VersionCode", "\"${libs.versions.versionCode.get()}\"")
-                defaultConfig.buildConfigField("String", "GitVersion", "\"${System.getenv("GIT_VERSION") ?: libs.versions.gitVersion.get()}\"")
+                defaultConfig.buildConfigField("String", "GitVersion", "\"${resolveGitVersion(libs.versions.gitVersion.get(), target.rootDir)}\"")
 
                 // 添加 abi 维度，与 app 模块保持一致
                 flavorDimensions += "abi"
