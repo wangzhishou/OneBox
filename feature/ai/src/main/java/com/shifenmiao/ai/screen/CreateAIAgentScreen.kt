@@ -938,7 +938,8 @@ private fun AgentPreviewSection(
                     modifier = Modifier.weight(1f),
                     contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    // 深色填充按钮的墨色必须用 primaryContainer，否则和容器同色、文字看不见
+                    contentColor = MaterialTheme.colorScheme.primaryContainer,
                 ) {
                     if (isSaving) {
                         CircularProgressIndicator(
