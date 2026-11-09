@@ -39,12 +39,13 @@ private fun gitHeadShortHash(project: Project): String? {
     val dir = project.rootDir
     gitHashCache?.takeIf { it.first == dir }?.let { return it.second }
     // providers.exec 是配置缓存兼容的外部进程方式(裸 ProcessBuilder 会让构建失败)
+    // 截断到 7 位而不靠 --short:短哈希长度随克隆深度变化(浅克隆 7 位、全克隆歧义自动延长),RB 构建两边必须一致
     val hash = runCatching {
         project.providers.exec {
-            commandLine("git", "rev-parse", "--short", "HEAD")
+            commandLine("git", "rev-parse", "HEAD")
             workingDir(dir)
             isIgnoreExitValue = true
-        }.standardOutput.asText.get().trim().takeIf { it.isNotBlank() && !it.contains(' ') }
+        }.standardOutput.asText.get().trim().take(7).takeIf { it.length == 7 && it.all(Char::isLetterOrDigit) }
     }.getOrNull()
     gitHashCache = dir to hash
     return hash

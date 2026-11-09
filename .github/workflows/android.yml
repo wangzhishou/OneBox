@@ -190,7 +190,7 @@ jobs:
       - name: Get Git Version
         shell: bash
         run: |
-          echo "GIT_VERSION=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "GIT_VERSION=$(git rev-parse HEAD | cut -c1-7)" >> $GITHUB_ENV
 
       # 生成 keystore.properties / keystore-google.properties:
       # 1) Gradle 构建期签名需要真实 storeFile; 2) 后端域名/游客 token/和风凭据
