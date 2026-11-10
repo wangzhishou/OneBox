@@ -364,6 +364,7 @@ class AgentLoopRunner(
     ): IterationResult? {
         agentLoopExecutor.incrementIteration(session)
         val iteration = session.currentIteration
+        val contextWindowTokens = executionContext.effectiveConversation.engine.model.effectiveContextWindow()
 
         val completedToolCalls = agentLoopExecutor.buildCompletedToolCalls(session)
         if (completedToolCalls.isEmpty()) return null
@@ -453,6 +454,7 @@ class AgentLoopRunner(
             reasoningContentProvider = reasoningContentProvider,
             previousAnswer = previousAnswerSnapshot,
             previousReasoning = previousReasoningSnapshot,
+            contextWindowTokens = contextWindowTokens,
         )
         // Phase 3.1: 追踪累积 token
         budgetTracker.addToolResultTokens(appendedMessages)
@@ -465,12 +467,34 @@ class AgentLoopRunner(
                 LlmMessage.createToolResultMessage(
                     toolCallId = toolCall.id,
                     toolName = toolCall.function.name,
-                    content = result.content,
+                    content = ToolResultTruncator.truncate(
+                        result,
+                        maxChars = effectiveToolResultMaxChars(
+                            toolName = toolCall.function.name,
+                            contextWindowTokens = contextWindowTokens,
+                        )
+                    ).content,
                 )
             },
             stepDescriptors = visibleStepDescriptors,
             stepStatuses = stepStatuses,
         )
+    }
+
+    /**
+     * 工具结果字符上限：取「工具声明/远程配置」与「模型上下文窗口可承受值」的较小者。
+     * 这里只影响回灌给模型的文本，不改变工具执行本身。
+     */
+    private fun effectiveToolResultMaxChars(toolName: String, contextWindowTokens: Int): Int {
+        val declared = agentToolRegistry.getMaxResultLength(toolName)
+        val byContext = when {
+            contextWindowTokens <= 0 -> Int.MAX_VALUE
+            contextWindowTokens <= 8_192 -> 4_096
+            contextWindowTokens <= 32_768 -> 8_192
+            contextWindowTokens <= 131_072 -> 16_384
+            else -> 32_768
+        }
+        return minOf(declared, byContext)
     }
 
     private suspend fun requestLlmFollowUp(
@@ -586,6 +610,7 @@ class AgentLoopRunner(
         reasoningContentProvider: () -> String,
         previousAnswer: String,
         previousReasoning: String,
+        contextWindowTokens: Int,
     ): List<LlmMessage> {
         val appended = mutableListOf<LlmMessage>()
         // P0 #1+#13: 仅取本回合 LLM 新增的 answer / reasoning delta 作为 assistant 消息 content,
@@ -600,11 +625,14 @@ class AgentLoopRunner(
         contextMessages.add(assistantMsg)
         appended.add(assistantMsg)
         results.forEach { (toolCall, result) ->
-            // 按工具自身声明的 maxResultLength 截断（use_skill / memory_get 为 16KB），
-            // 与执行入口的截断策略统一，避免 16KB 结果在回灌时被默认 4096 再截掉
+            // 工具自身上限 + 当前模型上下文窗口双重收紧：云端长上下文可用到工具声明值，
+            // 端侧 4K 模型则回落到 4K 字符，避免一个工具结果吃穿整个窗口。
             val truncatedResult = ToolResultTruncator.truncate(
                 result,
-                maxChars = agentToolRegistry.getMaxResultLength(toolCall.function.name)
+                maxChars = effectiveToolResultMaxChars(
+                    toolName = toolCall.function.name,
+                    contextWindowTokens = contextWindowTokens,
+                )
             )
             val imageUrls = extractImageUrls(truncatedResult.multiModalAttachments)
             val toolResultMsg = LlmMessage.createToolResultMessage(

@@ -12,6 +12,7 @@ import com.shifenmiao.model.ai.ToolParameterProperty
 import com.shifenmiao.model.ai.ToolParameters
 import com.shifenmiao.model.ai.tool.ToolCategory
 import com.shifenmiao.model.ai.tool.ToolRiskLevel
+import com.shifenmiao.model.gomoku.GomokuGameSummaryDto
 import com.shifenmiao.model.gomoku.GomokuServiceInterface
 import javax.inject.Inject
 import kotlinx.serialization.Serializable
@@ -36,6 +37,9 @@ class ManageGomokuTool @Inject constructor(
     override val category: ToolCategory = ToolCategory.BUSINESS
 
     override val riskLevel: ToolRiskLevel = ToolRiskLevel.SAFE
+
+    /** list 默认 20 条/页，最多 100 条；避免游戏列表撞上工具结果上限被硬截断。 */
+    override val maxResultLength: Int = 16_384
 
     override val keywords: List<String> =
         textProvider.array(R.array.agent_tool_manage_gomoku_keywords)
@@ -81,6 +85,14 @@ class ManageGomokuTool @Inject constructor(
                 type = "string",
                 description = textProvider.string(R.string.agent_tool_manage_gomoku_param_json_data)
             ),
+            "limit" to ToolParameterProperty(
+                type = "integer",
+                description = textProvider.string(R.string.agent_tool_list_param_limit)
+            ),
+            "offset" to ToolParameterProperty(
+                type = "integer",
+                description = textProvider.string(R.string.agent_tool_list_param_offset)
+            ),
         ),
         required = listOf("action")
     )
@@ -89,7 +101,7 @@ class ManageGomokuTool @Inject constructor(
         return try {
             val params = AppJson.decodeFromString<ManageGomokuParams>(arguments)
             when (params.action) {
-                "list" -> handleList()
+                "list" -> handleList(params)
                 "detail" -> handleDetail(params)
                 "create" -> when {
                     !params.preset.isNullOrBlank() -> handleImportPreset(params)
@@ -122,9 +134,14 @@ class ManageGomokuTool @Inject constructor(
 
     // ── action handlers ──────────────────────────────
 
-    private suspend fun handleList(): AgentToolResult {
+    private suspend fun handleList(params: ManageGomokuParams): AgentToolResult {
+        // 最近的在前，保证分页结果稳定；游戏列表可能上千条，一次性返回会撞工具结果上限。
         val games = gomokuService.listGames()
-        val data = games.map { game ->
+            .sortedWith(compareByDescending<GomokuGameSummaryDto> { it.updatedAt }.thenBy { it.id })
+        val limit = (params.limit ?: 20).coerceIn(1, 100)
+        val offset = (params.offset ?: 0).coerceAtLeast(0)
+        val page = games.drop(offset).take(limit)
+        val data = page.map { game ->
             mapOf(
                 "id" to game.id,
                 "title" to game.title,
@@ -134,10 +151,16 @@ class ManageGomokuTool @Inject constructor(
                 "updated_at" to game.updatedAt,
             )
         }
+        val hasMore = offset + page.size < games.size
         val result = mapOf(
             "action" to "list",
             "success" to true,
             "count" to games.size,
+            "returned_count" to page.size,
+            "offset" to offset,
+            "limit" to limit,
+            "has_more" to hasMore,
+            "next_offset" to if (hasMore) offset + page.size else null,
             "games" to data,
             "deepLinks" to listOf(gomokuDeepLink())
         )
@@ -383,5 +406,7 @@ class ManageGomokuTool @Inject constructor(
         val fen: String? = null,
         val json_data: String? = null,
         val preset: String? = null,
+        val limit: Int? = null,
+        val offset: Int? = null,
     )
 }

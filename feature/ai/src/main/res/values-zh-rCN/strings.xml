@@ -632,6 +632,10 @@
     <string name="agent_tool_convert_images_to_pdf_save_failed">保存 PDF 失败：%1$s</string>
     <string name="agent_tool_convert_images_to_pdf_failed">图片转 PDF 失败：%1$s</string>
 
+    <!-- 通用列表工具分页参数 -->
+    <string name="agent_tool_list_param_limit">单页最多返回多少条，1-100，默认 20。</string>
+    <string name="agent_tool_list_param_offset">分页偏移；用上一次结果的 next_offset 继续。</string>
+
     <!-- manage_todo tool -->
     <string name="agent_tool_manage_todo_title">待办管理</string>
     <string name="agent_tool_manage_todo_summary">列出、创建、完成、收藏、删除待办事项</string>
@@ -640,7 +644,7 @@
     <string name="agent_tool_manage_todo_param_category_id">分类 ID，list/create_task 时使用，取自 list 返回的 id；\"__inbox__\" 表示收集箱。传了 id 时优先于 category_name。</string>
     <string name="agent_tool_manage_todo_param_query">可选关键词，搜索任务标题、备注和标签。</string>
     <string name="agent_tool_manage_todo_param_include_completed">list 是否包含已完成任务，默认 true；只看未完成传 false。</string>
-    <string name="agent_tool_manage_todo_param_limit">list 单页最多返回多少条任务，1-100，默认 50。</string>
+    <string name="agent_tool_manage_todo_param_limit">list 单页最多返回多少条任务，1-100，默认 20。</string>
     <string name="agent_tool_manage_todo_param_offset">list 分页偏移；用上一次结果的 next_offset 继续翻页。</string>
     <string name="agent_tool_manage_todo_param_title">标题，create_task/create_category/create_list(清单名)时必填</string>
     <string name="agent_tool_manage_todo_param_note">备注，create_task时可选</string>

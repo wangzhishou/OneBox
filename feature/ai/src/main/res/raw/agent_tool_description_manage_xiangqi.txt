@@ -5,7 +5,7 @@
 管理中国象棋对局，支持以下操作（每个操作成功后返回包含 deeplink 的结果，可跳转到象棋页面）：
 
 【列表与详情】
-- list: 列出所有历史对局，无需参数。
+- list: 分页列出历史对局，最近的在前。可选 limit(1-100，默认 20) 与 offset；返回 count/returned_count/has_more/next_offset，继续翻页时把 next_offset 作为 offset。
 - detail: 获取对局详情和走子记录，需传 game_id。
 
 【创建对局】

@@ -163,8 +163,8 @@ interface ToolResultActions {
  */
 interface ToolExecutionConfig {
     /**
-     * 工具结果最大字符数。0 或负值表示使用默认值 (4096)。
-     * 发现/枚举类工具可返回更大值（如 8192）。
+     * 工具结果最大字符数。0 或负值表示使用默认值（8192，可被远程配置覆盖）。
+     * 列表/枚举类工具可声明更大值（如 16384），并应自行分页。
      */
     val maxResultLength: Int
         get() = 0

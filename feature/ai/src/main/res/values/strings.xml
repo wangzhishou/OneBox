@@ -632,6 +632,10 @@
     <string name="agent_tool_convert_images_to_pdf_save_failed">Failed to save PDF: %1$s</string>
     <string name="agent_tool_convert_images_to_pdf_failed">Images to PDF failed: %1$s</string>
 
+    <!-- 通用列表工具分页参数 -->
+    <string name="agent_tool_list_param_limit">Maximum items returned per page, 1-100, default 20.</string>
+    <string name="agent_tool_list_param_offset">Pagination offset; use next_offset from the previous result to continue.</string>
+
     <!-- manage_todo tool -->
     <string name="agent_tool_manage_todo_title">Todo Manager</string>
     <string name="agent_tool_manage_todo_summary">List, create, complete, star and delete todo items</string>
@@ -640,7 +644,7 @@
     <string name="agent_tool_manage_todo_param_category_id">Category ID for list/create_task, taken from the id returned by list. \"__inbox__\" means the inbox. Takes precedence over category_name.</string>
     <string name="agent_tool_manage_todo_param_query">Optional keyword to search task titles, notes and tags.</string>
     <string name="agent_tool_manage_todo_param_include_completed">Whether list includes completed tasks; default true. Pass false to show only pending tasks.</string>
-    <string name="agent_tool_manage_todo_param_limit">Maximum tasks returned by list per page, 1-100, default 50.</string>
+    <string name="agent_tool_manage_todo_param_limit">Maximum tasks returned by list per page, 1-100, default 20.</string>
     <string name="agent_tool_manage_todo_param_offset">Pagination offset for list; use next_offset from the previous result to continue.</string>
     <string name="agent_tool_manage_todo_param_title">Title, required for create_task/create_category/create_list (the list name)</string>
     <string name="agent_tool_manage_todo_param_note">Note, optional for create_task</string>

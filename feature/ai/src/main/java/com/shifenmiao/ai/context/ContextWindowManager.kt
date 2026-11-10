@@ -28,8 +28,6 @@ object ContextWindowManager {
     /** 工具结果截断时的最小保留字符数 */
     private const val MIN_TOOL_RESULT_CHARS = 200
 
-    /** 工具结果截断时的默认最大字符数 */
-    private const val DEFAULT_TOOL_RESULT_MAX_CHARS = 4096
 
     /**
      * 裁剪结果。

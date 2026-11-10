@@ -12,6 +12,7 @@ import com.shifenmiao.model.ai.ToolFunctionDef
 import com.shifenmiao.model.event.PermissionRequest
 import com.shifenmiao.model.ai.tool.ToolCatalogItem
 import com.shifenmiao.model.ai.tool.ToolCategory
+import com.shifenmiao.storage.RemoteConfigStorage
 import com.shifenmiao.ai.agent.callback.ToolCallback
 import com.shifenmiao.ai.agent.tool.expression.AgentToolExpressionValidationResult
 import com.shifenmiao.ai.agent.tool.expression.AgentToolExpressionValidator
@@ -31,7 +32,8 @@ import javax.inject.Singleton
  * 1. 通过 Hilt @IntoMap 注入 Map<String, Provider<AgentTool>>，实现工具懒加载：
  *    未被调用的工具不会创建实例，节省内存。
  * 2. 提供 getToolDefinitions() 转换为 OpenAI API 的 tools 参数格式。
- * 3. executeTool() 负责统一注入执行上下文、执行前表达式校验与结果截断（4096 字符）。
+ * 3. executeTool() 负责统一注入执行上下文、执行前表达式校验与结果截断
+ *    （默认 8192 字符，可由工具自身的 maxResultLength 或远程配置覆盖）。
  * 4. isToolCallSupported() 判断当前 Provider 是否支持 Function Calling 协议。
  *
  * 使用示例：
@@ -48,8 +50,18 @@ class AgentToolRegistry @Inject constructor(
     private val textProvider: AgentToolTextProvider,
 ) {
     companion object {
-        /** 默认工具返回结果最大字符数，超出部分截断 */
-        private const val DEFAULT_MAX_RESULT_LENGTH = 4096
+        /**
+         * 默认工具返回结果最大字符数。
+         *
+         * 这是单次工具结果的字符上限，不是模型上下文窗口；模型上下文由
+         * ContextWindowManager 按 token 预算单独裁剪。没有声明 maxResultLength 的工具
+         * 使用本值（或远程配置 agentToolMaxResultChars 下发的值）。
+         */
+        private const val DEFAULT_MAX_RESULT_LENGTH = 8192
+
+        /** 远程配置允许的下限/上限，防止服务端误配把工具结果压到不可用或放到失控 */
+        private const val MIN_CONFIGURED_MAX_RESULT_LENGTH = 512
+        private const val MAX_CONFIGURED_MAX_RESULT_LENGTH = 65_536
     }
 
     /**
@@ -335,7 +347,7 @@ class AgentToolRegistry @Inject constructor(
      * - Provider.get() 实现按需实例化（懒加载）
      * - 统一执行 [AgentTool.preExecutionExpression] 客户端私有校验
      * - 统一构建 [AgentToolExecutionContext]
-     * - 结果超过 4096 字符自动截断
+     * - 结果超过工具上限（默认 8192 字符）自动截断
      *
      * @param toolName 工具名称
      * @param arguments LLM 传入的 JSON 参数字符串
@@ -526,13 +538,19 @@ class AgentToolRegistry @Inject constructor(
     }
 
     private fun resolveMaxLength(toolName: String): Int {
-        val provider = toolProviders[toolName] ?: return DEFAULT_MAX_RESULT_LENGTH
-        val toolMax = provider.get().maxResultLength
-        return if (toolMax > 0) toolMax else DEFAULT_MAX_RESULT_LENGTH
+        val provider = toolProviders[toolName]
+        val toolMax = provider?.get()?.maxResultLength ?: 0
+        val localMax = if (toolMax > 0) toolMax else DEFAULT_MAX_RESULT_LENGTH
+
+        val configured = RemoteConfigStorage.getRemoteConfig().agentToolMaxResultChars
+            ?.takeIf { it > 0 }
+            ?.coerceIn(MIN_CONFIGURED_MAX_RESULT_LENGTH, MAX_CONFIGURED_MAX_RESULT_LENGTH)
+        // 远程值是全局上限：工具声明更小值时以工具为准；未声明时直接使用远程值。
+        return configured?.let { minOf(localMax, it) } ?: localMax
     }
 
     /**
-     * 工具自身声明的结果截断上限（未声明时返回默认 4096）。
+     * 工具结果截断上限：工具声明与远程上限取较小者，未声明时使用远程值或本地默认 8192。
      * 供回灌上下文链路（AgentLoopRunner）与执行入口统一截断策略。
      */
     fun getMaxResultLength(toolName: String): Int = resolveMaxLength(toolName)

@@ -6,7 +6,7 @@
    - category_name / category_id: 只看某个分组（如"万宝盒1.5.6版本"）；都不传则返回全部分组。category_id 优先，收集箱的 id 是 "__inbox__"。
    - query: 关键词搜索任务标题/备注/标签。
    - include_completed: 是否包含已完成任务，默认 true；只看未完成传 false。
-   - limit / offset: 分页，默认 limit=50（最大 100）。返回的 summary.has_more=true 时，用 summary.next_offset 作为 offset 再调一次 list。
+   - limit / offset: 分页，默认 limit=20（最大 100）。返回的 summary.has_more=true 时，用 summary.next_offset 作为 offset 再调一次 list。
    返回的 tasks 是紧凑格式（id/title/category/done/starred/priority/due_date/due_has_time/tags/note 预览），summary 里有 task_count/completed_count/pending_count/returned_count。结果不会被硬截断；若 has_more=true，必须继续翻页或明确告诉用户还有多少条，不要凭记忆补条目。
 5) complete_task / reopen_task —— 幂等地设为已完成 / 未完成，需传 task_id（也接受全库唯一的任务标题）。
 6) toggle_complete —— 切换完成状态，需传 task_id。

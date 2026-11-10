@@ -78,6 +78,15 @@ data class RemoteConfig(
     val agentToolTimeoutSeconds: Int? = null,
 
     /**
+     * Agent 单个工具结果的默认字符上限。
+     *
+     * 作为所有工具的全局上限：工具自身声明的 maxResultLength 更小时以工具为准；
+     * 未声明时直接使用本值。默认 `null` 表示服务端未下发，由消费端回退到本地默认值
+     * （当前 8192）。端侧/小上下文模型在回灌上下文时还会按上下文窗口进一步收紧。
+     */
+    val agentToolMaxResultChars: Int? = null,
+
+    /**
      * 网络请求访问的token。
      * 按渠道隔离：国内渠道与 google 渠道使用不同的默认 token，
      * 见 core/r 中 src/domestic / src/google 的 UrlConstantsFlavor。
@@ -379,6 +388,7 @@ data class RemoteConfig(
         aiImageProcessPoints = mergeField(net.aiImageProcessPoints, aiImageProcessPoints),
         aiHealthInsightPoints = mergeField(net.aiHealthInsightPoints, aiHealthInsightPoints),
         agentToolTimeoutSeconds = mergeField(net.agentToolTimeoutSeconds, agentToolTimeoutSeconds),
+        agentToolMaxResultChars = mergeField(net.agentToolMaxResultChars, agentToolMaxResultChars),
         accessToken = mergeField(net.accessToken, accessToken) { !it.isNullOrBlank() },
         requestUrl = mergeField(net.requestUrl, requestUrl) { !it.isNullOrBlank() },
         aiAgentUpdateInterval = mergeField(net.aiAgentUpdateInterval, aiAgentUpdateInterval),
@@ -460,6 +470,7 @@ data class RemoteConfig(
                 aiImageProcessPoints == other.aiImageProcessPoints &&
                 aiHealthInsightPoints == other.aiHealthInsightPoints &&
                 agentToolTimeoutSeconds == other.agentToolTimeoutSeconds &&
+                agentToolMaxResultChars == other.agentToolMaxResultChars &&
                 helpBlogIds == other.helpBlogIds &&
                 webViewResourceRules == other.webViewResourceRules &&
                 defaultWorkingEngine == other.defaultWorkingEngine &&
@@ -513,6 +524,7 @@ data class RemoteConfig(
             aiImageProcessPoints,
             aiHealthInsightPoints,
             agentToolTimeoutSeconds,
+            agentToolMaxResultChars,
             helpBlogIds,
             webViewResourceRules,
             defaultWorkingEngine,

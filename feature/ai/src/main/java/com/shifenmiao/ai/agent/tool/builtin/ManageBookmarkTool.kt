@@ -1,8 +1,12 @@
 package com.shifenmiao.ai.agent.tool.builtin
 
+import com.shifenmiao.ai.R
 import com.shifenmiao.ai.agent.tool.AgentTool
 import com.shifenmiao.ai.agent.tool.AgentToolResult
+import com.shifenmiao.ai.agent.tool.AgentToolTextProvider
+import com.shifenmiao.interfaces.bookmark.UrlBookmark
 import com.shifenmiao.interfaces.bookmark.UrlBookmarkService
+import com.shifenmiao.model.jsonStringOf
 import com.shifenmiao.model.ai.ToolParameterProperty
 import com.shifenmiao.model.ai.ToolParameters
 import com.shifenmiao.model.ai.tool.ToolCategory
@@ -11,15 +15,20 @@ import org.json.JSONObject
 import javax.inject.Inject
 
 class ManageBookmarkTool @Inject constructor(
-    private val bookmarkService: UrlBookmarkService
+    private val bookmarkService: UrlBookmarkService,
+    private val textProvider: AgentToolTextProvider,
 ) : AgentTool {
 
     override val name = "manage_bookmark"
-    override val description = "管理网址收藏（浏览器书签与「网址收藏」是同一个收藏库，分类与笔记等全局分类共享）：添加/删除收藏网址、创建/删除收藏分类、列出收藏和分类"
+    override val description = "管理网址收藏（浏览器书签与「网址收藏」是同一个收藏库，分类与笔记等全局分类共享）：添加/删除收藏网址、创建/删除收藏分类、分页列出收藏和分类"
     override val title = "管理书签"
     override val summary = "添加收藏网址、创建收藏夹分类"
     override val category = ToolCategory.BUSINESS
     override val riskLevel = ToolRiskLevel.SAFE
+
+    /** 书签列表默认 20 条/页，最多 100 条；避免长列表撞上工具结果上限被硬截断。 */
+    override val maxResultLength: Int = 16_384
+
     override val keywords = listOf("书签", "收藏", "bookmark", "收藏夹", "添加书签", "删除书签", "整理收藏", "网址收藏")
     override val examples = listOf(
         "把 https://example.com 添加到书签",
@@ -55,6 +64,14 @@ class ManageBookmarkTool @Inject constructor(
                 type = "string",
                 description = "书签条目 ID（remove_bookmark 时必填，来自 list_bookmarks）"
             ),
+            "limit" to ToolParameterProperty(
+                type = "integer",
+                description = textProvider.string(R.string.agent_tool_list_param_limit)
+            ),
+            "offset" to ToolParameterProperty(
+                type = "integer",
+                description = textProvider.string(R.string.agent_tool_list_param_offset)
+            ),
         ),
         required = listOf("action")
     )
@@ -65,7 +82,7 @@ class ManageBookmarkTool @Inject constructor(
             when (json.optString("action")) {
                 "add_bookmark" -> addBookmark(json)
                 "remove_bookmark" -> removeBookmark(json)
-                "list_bookmarks" -> listBookmarks()
+                "list_bookmarks" -> listBookmarks(json)
                 "create_folder" -> createFolder(json)
                 "delete_folder" -> deleteFolder(json)
                 "list_folders" -> listFolders()
@@ -110,22 +127,35 @@ class ManageBookmarkTool @Inject constructor(
         return AgentToolResult("已删除书签: ${target.title} (${target.url})")
     }
 
-    private suspend fun listBookmarks(): AgentToolResult {
+    private suspend fun listBookmarks(json: JSONObject): AgentToolResult {
+        // 书签按创建时间倒序，最近收藏的在前；分页返回，避免上千条书签一次性灌进上下文。
         val bookmarks = bookmarkService.listBookmarks()
-        if (bookmarks.isEmpty()) return AgentToolResult("暂无书签")
-
+            .sortedWith(compareByDescending<UrlBookmark> { it.createdAt }.thenBy { it.itemId })
+        val limit = json.optInt("limit", 20).coerceIn(1, 100)
+        val offset = json.optInt("offset", 0).coerceAtLeast(0)
+        val page = bookmarks.drop(offset).take(limit)
         val categoryNames = bookmarkService.listCategories().associate { it.id to it.name }
-        val grouped = bookmarks.groupBy { item ->
-            item.categoryIds.firstOrNull()?.let { categoryNames[it] } ?: "未分类"
+        val data = page.map { item ->
+            mapOf(
+                "id" to item.itemId,
+                "title" to item.title,
+                "url" to item.url,
+                "category" to (item.categoryIds.firstOrNull()?.let { categoryNames[it] } ?: "未分类"),
+            )
         }
-        val sb = StringBuilder("书签列表:\n")
-        grouped.forEach { (folder, items) ->
-            sb.appendLine("[$folder]")
-            items.forEach { item ->
-                sb.appendLine("  · ${item.title} - ${item.url} (id: ${item.itemId})")
-            }
-        }
-        return AgentToolResult(sb.toString().trimEnd())
+        val hasMore = offset + page.size < bookmarks.size
+        val result = mapOf(
+            "action" to "list_bookmarks",
+            "success" to true,
+            "count" to bookmarks.size,
+            "returned_count" to page.size,
+            "offset" to offset,
+            "limit" to limit,
+            "has_more" to hasMore,
+            "next_offset" to if (hasMore) offset + page.size else null,
+            "bookmarks" to data,
+        )
+        return AgentToolResult(content = jsonStringOf(result))
     }
 
     private suspend fun createFolder(json: JSONObject): AgentToolResult {

@@ -894,7 +894,7 @@ class ManageTodoTool @Inject constructor(
         /** 与 feature/marktodo 的 TodoCategory.INBOX_ID 保持一致 */
         private const val INBOX_ID = "__inbox__"
 
-        private const val DEFAULT_LIST_LIMIT = 50
+        private const val DEFAULT_LIST_LIMIT = 20
         private const val MAX_LIST_LIMIT = 100
         private const val MAX_LIST_CATEGORIES = 50
 
