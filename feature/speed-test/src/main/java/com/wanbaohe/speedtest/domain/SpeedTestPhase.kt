@@ -12,6 +12,13 @@ sealed class SpeedTestPhase {
         val latencyMs: Int = -1
     ) : SpeedTestPhase()
 
+    /** 上传测速中，liveMbps = 实时速度，progress = 整体进度 0~1 */
+    data class Uploading(
+        val liveMbps: Float,
+        val progress: Float,
+        val latencyMs: Int = -1
+    ) : SpeedTestPhase()
+
     /** 测速完成 */
     data class Done(val record: SpeedTestRecord) : SpeedTestPhase()
 

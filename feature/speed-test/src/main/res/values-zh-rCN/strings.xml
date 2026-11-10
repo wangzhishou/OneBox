@@ -39,7 +39,21 @@
 
     <!-- ── 顶部指标行 ── -->
     <string name="speed_test_latency_label">网络延迟</string>
-    <string name="speed_test_download_label">下载速度</string>
+    <string name="speed_test_download_label">下载</string>
+    <string name="speed_test_upload_label">上传</string>
+    <string name="speed_test_measuring_upload">正在测量上传…</string>
+
+    <!-- ── 网络与测速节点 ── -->
+    <string name="speed_test_node_details_title">网络与节点</string>
+    <string name="speed_test_client_ip">本机 IP</string>
+    <string name="speed_test_client_location">本机归属</string>
+    <string name="speed_test_client_carrier">运营商</string>
+    <string name="speed_test_latency_node">延迟节点</string>
+    <string name="speed_test_download_node">下载节点</string>
+    <string name="speed_test_upload_node">上传节点</string>
+    <string name="speed_test_carrier_china_unicom">中国联通</string>
+    <string name="speed_test_carrier_china_mobile">中国移动</string>
+    <string name="speed_test_carrier_china_telecom">中国电信</string>
 
     <!-- ── 结果页 ── -->
     <string name="speed_test_result_download_title">下载速度</string>
@@ -55,7 +69,8 @@
     <!-- ── 历史记录 Sheet ── -->
     <string name="speed_test_history_title">测速记录</string>
     <string name="speed_test_history_network_col">网络名称</string>
-    <string name="speed_test_history_download_col">⬇ 下载速度</string>
+    <string name="speed_test_history_download_col">下载</string>
+    <string name="speed_test_history_upload_col">上传</string>
     <string name="speed_test_history_empty">暂无测速记录</string>
     <string name="speed_test_clear_records">清除记录</string>
 

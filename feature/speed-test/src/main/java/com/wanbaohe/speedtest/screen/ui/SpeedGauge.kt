@@ -74,7 +74,8 @@ fun SpeedGauge(
     modifier: Modifier = Modifier,
     gaugeSize: Dp = 280.dp,
     strokeWidth: Dp = 16.dp,
-    measuringLatency: Boolean = false
+    measuringLatency: Boolean = false,
+    isUploading: Boolean = false
 ) {
     // Completed results have no perpetual animations.
     val rotationAngle = if (status == SpeedTestStatus.MEASURING) {
@@ -286,7 +287,13 @@ fun SpeedGauge(
                             text = if (centerStatus == SpeedTestStatus.DONE) {
                                 stringResource(R.string.speed_test_result_mb_per_sec, liveMbps / 8f)
                             } else {
-                                stringResource(if (measuringLatency) R.string.speed_test_measuring_latency else R.string.speed_test_measuring)
+                                stringResource(
+                                    when {
+                                        measuringLatency -> R.string.speed_test_measuring_latency
+                                        isUploading -> R.string.speed_test_measuring_upload
+                                        else -> R.string.speed_test_measuring
+                                    }
+                                )
                             },
                             fontSize = 11.sp,
                             color = if (centerStatus == SpeedTestStatus.DONE) subtitleColor else primaryColor,

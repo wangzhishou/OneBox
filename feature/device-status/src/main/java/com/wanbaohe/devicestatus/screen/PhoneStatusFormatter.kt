@@ -2,6 +2,7 @@ package com.wanbaohe.devicestatus.screen
 
 import android.content.Context
 import android.text.format.Formatter
+import com.shifenmiao.network.service.CloudflareNetworkInfo
 import com.wanbaohe.devicestatus.R
 import com.wanbaohe.devicestatus.domain.BatteryFacts
 import com.wanbaohe.devicestatus.domain.BatteryHealth
@@ -44,9 +45,14 @@ data class FormattedPhoneStatus(
 )
 
 object PhoneStatusFormatter {
-    fun format(context: Context, status: PhoneStatus): FormattedPhoneStatus {
+    fun format(
+        context: Context,
+        status: PhoneStatus,
+        networkNode: CloudflareNetworkInfo?,
+    ): FormattedPhoneStatus {
         val sections = buildList {
             addAll(networkSections(context, status.networks))
+            networkNodeSection(context, networkNode)?.let(::add)
             carrierSection(context, status.carrier)?.let(::add)
             deviceSection(context, status.device)?.let(::add)
             add(systemSection(context, status))
@@ -68,6 +74,67 @@ object PhoneStatusFormatter {
             val rows = networkRows(context, slice)
             if (rows.isEmpty()) null else FormattedSection(networkTitle(context, slice), rows)
         }
+
+    private fun networkNodeSection(
+        context: Context,
+        info: CloudflareNetworkInfo?,
+    ): FormattedSection? {
+        if (info == null) return null
+        val rows = RowBuilder(context)
+        rows.add(R.string.label_public_ip, info.clientIp)
+        rows.add(
+            R.string.label_public_location,
+            networkLocation(context, info.countryCode, info.region, info.city),
+        )
+        rows.add(R.string.label_public_carrier, networkCarrier(context, info))
+        rows.add(R.string.label_edge_node, edgeNode(context, info))
+        rows.add(R.string.label_edge_host, info.hostname)
+        rows.add(R.string.label_http_protocol, info.httpProtocol)
+        return rows.build().ifEmpty { null }?.let {
+            FormattedSection(context.getString(R.string.section_network_node), it)
+        }
+    }
+
+    private fun networkLocation(
+        context: Context,
+        countryCode: String,
+        region: String,
+        city: String,
+    ): String {
+        val country = countryCode.takeIf { it.isNotBlank() }?.let {
+            Locale.Builder().setRegion(it).build().getDisplayCountry(context.resources.configuration.locales[0])
+        }.orEmpty()
+        return listOf(country, region, city)
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+            .distinct()
+            .joinToString(" · ")
+    }
+
+    private fun networkCarrier(context: Context, info: CloudflareNetworkInfo): String {
+        val normalized = info.organization.lowercase(Locale.ROOT)
+        val name = when {
+            "china unicom" in normalized -> context.getString(R.string.network_carrier_china_unicom)
+            "china mobile" in normalized -> context.getString(R.string.network_carrier_china_mobile)
+            "china telecom" in normalized || "chinanet" in normalized ->
+                context.getString(R.string.network_carrier_china_telecom)
+            else -> info.organization.trim()
+        }
+        return listOfNotNull(
+            name.takeIf { it.isNotEmpty() },
+            info.asn?.let { "AS$it" },
+        ).joinToString(" · ")
+    }
+
+    private fun edgeNode(context: Context, info: CloudflareNetworkInfo): String {
+        val location = networkLocation(context, info.nodeCountryCode, "", info.nodeCity)
+        val node = when {
+            location.isNotEmpty() && info.nodeCode.isNotEmpty() -> "$location (${info.nodeCode})"
+            location.isNotEmpty() -> location
+            else -> info.nodeCode
+        }
+        return listOf("Cloudflare", node).filter { it.isNotEmpty() }.joinToString(" · ")
+    }
 
     private fun networkTitle(context: Context, slice: NetworkSlice): String {
         val name = when {

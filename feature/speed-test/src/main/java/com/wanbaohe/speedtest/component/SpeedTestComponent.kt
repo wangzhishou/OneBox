@@ -63,7 +63,7 @@ class SpeedTestComponent @AssistedInject internal constructor(
 
     // ── 测速 ────────────────────────────────────────────────────────────────
 
-    /** 开始下载测速 */
+    /** 开始延迟、下载及可用节点的上传测速 */
     fun startTest() {
         if (_uiState.value.status == SpeedTestStatus.MEASURING) return
         testJob?.cancel()
@@ -71,9 +71,9 @@ class SpeedTestComponent @AssistedInject internal constructor(
         val config = _uiState.value.config
         _uiState.value = _uiState.value.copy(
             status = SpeedTestStatus.MEASURING,
-            liveMbps = 0f, progress = 0f, result = null,
-            latencyMs = -1, measuringLatency = true, testConfig = config,
-            networkType = networkType, errorMsg = null
+            liveMbps = 0f, downloadMbps = -1f, liveUploadMbps = -1f,
+            progress = 0f, result = null, latencyMs = -1, measuringLatency = true,
+            isUploading = false, testConfig = config, networkType = networkType, errorMsg = null
         )
         testJob = componentScope.launch {
             repository.startTest(config, networkType).collect { phase ->
@@ -82,8 +82,15 @@ class SpeedTestComponent @AssistedInject internal constructor(
                     is SpeedTestPhase.MeasuringLatency -> {}
                     is SpeedTestPhase.Downloading ->
                         _uiState.value = _uiState.value.copy(
-                            liveMbps = phase.liveMbps, progress = phase.progress,
-                            latencyMs = phase.latencyMs, measuringLatency = false
+                            liveMbps = phase.liveMbps, downloadMbps = phase.liveMbps,
+                            progress = phase.progress, latencyMs = phase.latencyMs,
+                            measuringLatency = false, isUploading = false
+                        )
+                    is SpeedTestPhase.Uploading ->
+                        _uiState.value = _uiState.value.copy(
+                            liveMbps = phase.liveMbps, liveUploadMbps = phase.liveMbps,
+                            progress = phase.progress, latencyMs = phase.latencyMs,
+                            measuringLatency = false, isUploading = true
                         )
                     is SpeedTestPhase.Done -> {
                         repository.saveRecord(phase.record)
@@ -92,7 +99,9 @@ class SpeedTestComponent @AssistedInject internal constructor(
                             status = SpeedTestStatus.DONE,
                             result = phase.record,
                             latencyMs = phase.record.latencyMs, measuringLatency = false,
-                            liveMbps = phase.record.downloadMbps, progress = 1f
+                            isUploading = false, liveMbps = phase.record.downloadMbps,
+                            downloadMbps = phase.record.downloadMbps,
+                            liveUploadMbps = phase.record.uploadMbps, progress = 1f
                         )
                         // 测速跑完并落库 = 用户刚拿到价值,报给应用内评分弹层做门控判断
                         // (真正弹不弹由 InAppReviewPrompt 的次数门槛/冷却/Play 配额决定)
@@ -101,8 +110,9 @@ class SpeedTestComponent @AssistedInject internal constructor(
                     is SpeedTestPhase.Error ->
                         _uiState.value = _uiState.value.copy(
                             status = SpeedTestStatus.IDLE, errorMsg = phase.message,
-                            liveMbps = 0f, progress = 0f, latencyMs = -1,
-                            measuringLatency = false, testConfig = null
+                            liveMbps = 0f, downloadMbps = -1f, liveUploadMbps = -1f,
+                            progress = 0f, latencyMs = -1, measuringLatency = false,
+                            isUploading = false, testConfig = null
                         )
                 }
             }
@@ -113,8 +123,9 @@ class SpeedTestComponent @AssistedInject internal constructor(
     fun cancelTest() {
         testJob?.cancel()
         _uiState.value = _uiState.value.copy(
-            status = SpeedTestStatus.IDLE, liveMbps = 0f, progress = 0f, errorMsg = null,
-            latencyMs = -1, measuringLatency = false, testConfig = null, result = null
+            status = SpeedTestStatus.IDLE, liveMbps = 0f, downloadMbps = -1f,
+            liveUploadMbps = -1f, progress = 0f, errorMsg = null, latencyMs = -1,
+            measuringLatency = false, isUploading = false, testConfig = null, result = null
         )
     }
 
@@ -147,8 +158,11 @@ class SpeedTestComponent @AssistedInject internal constructor(
             networkType = record.networkType,
             latencyMs = record.latencyMs,
             liveMbps = record.downloadMbps,
+            downloadMbps = record.downloadMbps,
+            liveUploadMbps = record.uploadMbps,
             progress = 1f,
             measuringLatency = false,
+            isUploading = false,
             testConfig = null,
             errorMsg = null
         )

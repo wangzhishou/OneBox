@@ -49,8 +49,11 @@ import com.shifenmiao.core.R as CoreR
 fun DeviceStatusScreen(component: DeviceStatusComponent) {
     val context = LocalContext.current
     val status by component.status.collectAsState()
+    val networkNode by component.networkNode.collectAsState()
     val formatted = status?.let { current ->
-        remember(current) { PhoneStatusFormatter.format(context, current) }
+        remember(current, networkNode) {
+            PhoneStatusFormatter.format(context, current, networkNode)
+        }
     }
     val isGrid = LocalSettingsState.current.groupOptionsByTypes
     val settingsManager = LocalSettingsManager.current

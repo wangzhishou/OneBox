@@ -5,7 +5,7 @@ import com.wanbaohe.speedtest.domain.SpeedTestRecord
 import kotlinx.coroutines.flow.Flow
 
 interface SpeedTestRepository {
-    /** 开始测速，返回进度 Flow（MeasuringLatency → Downloading → Done | Error） */
+    /** 开始测速，返回进度 Flow（MeasuringLatency → Downloading → Uploading（可选）→ Done | Error） */
     fun startTest(config: SpeedTestConfig, networkType: String): Flow<SpeedTestPhase>
 
     /** 持久化一条测速结果 */

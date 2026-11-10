@@ -7,8 +7,17 @@ data class SpeedTestRecord(
     val networkType: String,
     /** 下载速度 (Mbps) */
     val downloadMbps: Float,
+    /** 上传速度 (Mbps)，-1 表示未测量 */
+    val uploadMbps: Float = -1f,
     /** 网络延迟 (ms)，-1 表示测量失败 */
     val latencyMs: Int,
+    val clientIp: String = "",
+    val clientLocation: String = "",
+    val carrier: String = "",
+    val serverHost: String = "",
+    val latencyNode: String = "",
+    val downloadNode: String = "",
+    val uploadNode: String = "",
     /** 记录时间戳 (ms) */
     val recordedAt: Long = System.currentTimeMillis()
 ) {

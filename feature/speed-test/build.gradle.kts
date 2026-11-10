@@ -12,6 +12,7 @@ dependencies {
     api(projects.core.model)
     api(projects.core.theme)
     api(projects.core.database)
+    implementation(projects.core.network)
     api(projects.feature.common)
     implementation(libs.com.squareup.okhttp3.okhttp)
 }

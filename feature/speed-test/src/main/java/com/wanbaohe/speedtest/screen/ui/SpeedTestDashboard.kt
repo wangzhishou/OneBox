@@ -65,10 +65,12 @@ internal fun SpeedTestDashboard(
         "${stringResource(R.string.speed_test_history_title)} · $time"
     }
     val latency = uiState.latencyMs.takeIf { it >= 0 }?.toString() ?: "--"
-    val download = when {
-        uiState.status == SpeedTestStatus.IDLE || uiState.measuringLatency -> "--"
-        else -> "%.1f".format(uiState.liveMbps)
-    }
+    val download = uiState.downloadMbps.takeIf {
+        uiState.status != SpeedTestStatus.IDLE && it >= 0f
+    }?.let { "%.1f".format(it) } ?: "--"
+    val upload = uiState.liveUploadMbps.takeIf {
+        uiState.status != SpeedTestStatus.IDLE && it >= 0f
+    }?.let { "%.1f".format(it) } ?: "--"
     BoxWithConstraints(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
         val minimumHeight = maxHeight
         Column(
@@ -78,7 +80,11 @@ internal fun SpeedTestDashboard(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            SpeedMetricsRow(latencyDisplay = latency, downloadDisplay = download)
+            SpeedMetricsRow(
+                latencyDisplay = latency,
+                downloadDisplay = download,
+                uploadDisplay = upload
+            )
             Box(
                 Modifier.fillMaxWidth().padding(vertical = 8.dp).heightIn(min = 330.dp)
                     .clip(RoundedCornerShape(24.dp)),
@@ -103,8 +109,10 @@ internal fun SpeedTestDashboard(
                         status = uiState.status,
                         liveMbps = uiState.liveMbps,
                         progress = uiState.progress,
-                        estimatedMb = config?.estimatedDataMb ?: 0,
+                        estimatedMb = (config?.estimatedDataMb ?: 0) *
+                            if (config?.supportsUpload == true) 2 else 1,
                         measuringLatency = uiState.measuringLatency,
+                        isUploading = uiState.isUploading,
                         onClick = onStart
                     )
                     if (sourceLabel != null) {
@@ -197,6 +205,11 @@ internal fun SpeedTestDashboard(
                     }
                 }
             }
+            SpeedNetworkDetails(
+                record = uiState.result,
+                config = config,
+                modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 16.dp)
+            )
         }
     }
 }

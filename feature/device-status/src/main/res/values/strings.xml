@@ -3,6 +3,16 @@
     <string name="status_loading">Reading this phone…</string>
     <string name="status_refresh">Refresh</string>
     <string name="status_no_ip">No IP address</string>
+    <string name="section_network_node">Network node</string>
+    <string name="label_public_ip">Public IP</string>
+    <string name="label_public_location">Network location</string>
+    <string name="label_public_carrier">Network carrier</string>
+    <string name="label_edge_node">Edge node</string>
+    <string name="label_edge_host">Node hostname</string>
+    <string name="label_http_protocol">HTTP protocol</string>
+    <string name="network_carrier_china_unicom">China Unicom</string>
+    <string name="network_carrier_china_mobile">China Mobile</string>
+    <string name="network_carrier_china_telecom">China Telecom</string>
     <string name="status_footnote">The Wi-Fi name, router address, and a second SIM need location or phone permission. This page does not ask for them.</string>
 
     <string name="section_carrier">Mobile network</string>

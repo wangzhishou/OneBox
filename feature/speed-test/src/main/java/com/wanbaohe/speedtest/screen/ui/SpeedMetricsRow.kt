@@ -1,14 +1,16 @@
 package com.wanbaohe.speedtest.screen.ui
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -19,42 +21,49 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.resources.Icons
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineDownload
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineTimer
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineUpload
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.speedtest.R
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineDownload
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineTimer
 
-/**
- * 顶部双列玻璃指标卡片：网络延迟 | 下载速度
- * 空闲时显示 "--"，测速完成后显示实际值。
- */
 @Composable
 fun SpeedMetricsRow(
     latencyDisplay: String,
     downloadDisplay: String,
+    uploadDisplay: String,
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         MetricCard(
-            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTimer,
+            icon = Icons.Outlined.LineTimer,
             label = stringResource(R.string.speed_test_latency_label),
             value = latencyDisplay,
             unit = stringResource(R.string.speed_test_unit_ms),
             modifier = Modifier.weight(1f)
         )
         MetricCard(
-            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDownload,
+            icon = Icons.Outlined.LineDownload,
             label = stringResource(R.string.speed_test_download_label),
             value = downloadDisplay,
+            unit = stringResource(R.string.speed_test_unit_mbps),
+            modifier = Modifier.weight(1f)
+        )
+        MetricCard(
+            icon = Icons.Outlined.LineUpload,
+            label = stringResource(R.string.speed_test_upload_label),
+            value = uploadDisplay,
             unit = stringResource(R.string.speed_test_unit_mbps),
             modifier = Modifier.weight(1f)
         )
@@ -69,60 +78,62 @@ private fun MetricCard(
     unit: String,
     modifier: Modifier = Modifier
 ) {
-    val primaryColor = AppTheme.colors.getPrimaryColor()
-    val subtitleColor = AppTheme.colors.getOnInactiveContainerColor()
-
     GlassCard(
-        modifier = modifier,
-        shape = RoundedCornerShape(16.dp),
+        modifier = modifier.height(108.dp),
+        shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+            containerColor = MaterialTheme.colorScheme.surfaceContainer
         ),
-        style = GlassStyle.None,
-        borderWidth = 0.5.dp
+        style = GlassStyle.Thin,
+        borderWidth = 0.dp
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(horizontal = 6.dp, vertical = 12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // 图标
             Box(
-                Modifier.size(32.dp).background(primaryColor.copy(alpha = 0.12f), RoundedCornerShape(10.dp)),
+                modifier = Modifier
+                    .size(28.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.primaryContainer,
+                        shape = RoundedCornerShape(9.dp)
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
-                    tint = primaryColor,
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier.size(16.dp)
                 )
             }
-
-            Column(Modifier.weight(1f)) {
+            Spacer(Modifier.height(6.dp))
+            Text(
+                text = label,
+                fontSize = 11.sp,
+                color = AppTheme.colors.getOnInactiveContainerColor(),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(Modifier.height(2.dp))
+            Row(verticalAlignment = Alignment.Bottom) {
                 Text(
-                    text = label,
-                    fontSize = 11.sp,
-                    color = subtitleColor
+                    text = value,
+                    fontSize = 19.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = AppTheme.colors.getPrimaryTextColor(),
+                    maxLines = 1
                 )
-                Row(verticalAlignment = Alignment.Bottom) {
-                    Text(
-                        text = value,
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = AppTheme.colors.getPrimaryTextColor(),
-                        modifier = Modifier.weight(1f, fill = false)
-                    )
-                    Spacer(Modifier.size(3.dp))
-                    Text(
-                        text = unit,
-                        fontSize = 10.sp,
-                        color = subtitleColor,
-                        modifier = Modifier.padding(bottom = 1.dp)
-                    )
-                }
+                Spacer(Modifier.width(3.dp))
+                Text(
+                    text = unit,
+                    fontSize = 9.sp,
+                    color = AppTheme.colors.getOnInactiveContainerColor(),
+                    modifier = Modifier.padding(bottom = 2.dp),
+                    maxLines = 1
+                )
             }
         }
     }

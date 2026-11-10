@@ -39,7 +39,21 @@
 
     <!-- Top metric row -->
     <string name="speed_test_latency_label">Latency</string>
-    <string name="speed_test_download_label">Download speed</string>
+    <string name="speed_test_download_label">Download</string>
+    <string name="speed_test_upload_label">Upload</string>
+    <string name="speed_test_measuring_upload">Measuring upload…</string>
+
+    <!-- Network and test nodes -->
+    <string name="speed_test_node_details_title">Network &amp; nodes</string>
+    <string name="speed_test_client_ip">Client IP</string>
+    <string name="speed_test_client_location">Location</string>
+    <string name="speed_test_client_carrier">Carrier</string>
+    <string name="speed_test_latency_node">Latency node</string>
+    <string name="speed_test_download_node">Download node</string>
+    <string name="speed_test_upload_node">Upload node</string>
+    <string name="speed_test_carrier_china_unicom">China Unicom</string>
+    <string name="speed_test_carrier_china_mobile">China Mobile</string>
+    <string name="speed_test_carrier_china_telecom">China Telecom</string>
 
     <!-- Result page -->
     <string name="speed_test_result_download_title">Download speed</string>
@@ -55,7 +69,8 @@
     <!-- History sheet -->
     <string name="speed_test_history_title">History</string>
     <string name="speed_test_history_network_col">Network</string>
-    <string name="speed_test_history_download_col">⬇ Download</string>
+    <string name="speed_test_history_download_col">Download</string>
+    <string name="speed_test_history_upload_col">Upload</string>
     <string name="speed_test_history_empty">No history yet</string>
     <string name="speed_test_clear_records">Clear history</string>
 

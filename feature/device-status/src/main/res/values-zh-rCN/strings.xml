@@ -3,6 +3,16 @@
     <string name="status_loading">正在读取…</string>
     <string name="status_refresh">刷新</string>
     <string name="status_no_ip">没有可用的 IP 地址</string>
+    <string name="section_network_node">网络节点</string>
+    <string name="label_public_ip">公网 IP</string>
+    <string name="label_public_location">网络归属</string>
+    <string name="label_public_carrier">网络运营商</string>
+    <string name="label_edge_node">边缘节点</string>
+    <string name="label_edge_host">节点域名</string>
+    <string name="label_http_protocol">HTTP 协议</string>
+    <string name="network_carrier_china_unicom">中国联通</string>
+    <string name="network_carrier_china_mobile">中国移动</string>
+    <string name="network_carrier_china_telecom">中国电信</string>
     <string name="status_footnote">Wi-Fi 名称、路由器地址和另一张 SIM 卡需要定位或电话权限。这个页面不申请这些权限。</string>
 
     <string name="section_carrier">移动网络</string>

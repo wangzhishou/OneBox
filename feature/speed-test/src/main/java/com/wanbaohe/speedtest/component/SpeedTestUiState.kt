@@ -10,12 +10,17 @@ enum class SpeedTestStatus { IDLE, MEASURING, DONE }
 @Immutable
 data class SpeedTestUiState(
     val status: SpeedTestStatus = SpeedTestStatus.IDLE,
-    /** 实时下载速度 (Mbps)，仅 MEASURING 时有意义 */
+    /** 当前阶段的实时速度 (Mbps) */
     val liveMbps: Float = 0f,
-    /** 下载进度 0~1，仅 MEASURING 时有意义 */
+    /** 实时下载速度 (Mbps)，-1 表示尚未测量 */
+    val downloadMbps: Float = -1f,
+    /** 实时上传速度 (Mbps)，-1 表示尚未测量 */
+    val liveUploadMbps: Float = -1f,
+    /** 整体测速进度 0~1，仅 MEASURING 时有意义 */
     val progress: Float = 0f,
     val latencyMs: Int = -1,
     val measuringLatency: Boolean = false,
+    val isUploading: Boolean = false,
     /** 本轮测速使用的配置，不随设置变更而改变。 */
     val testConfig: SpeedTestConfig? = null,
     /** 最终测速结果，仅 DONE 时非空 */

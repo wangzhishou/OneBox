@@ -1,5 +1,7 @@
 package com.wanbaohe.speedtest.data
 
+import java.net.URI
+
 /** 测速配置（运行时 + 持久化） */
 data class SpeedTestConfig(
     val id: Long = 0,
@@ -16,7 +18,14 @@ data class SpeedTestConfig(
     /** 是否为当前激活配置（DB 写入的 isActive 字段镜像） */
     val isActive: Boolean = false
 ) {
+    val serverHost: String
+        get() = runCatching { URI(testUrl).host }.getOrNull().orEmpty()
+
+    val supportsUpload: Boolean
+        get() = serverHost == CLOUDFLARE_HOST
+
     companion object {
+        const val CLOUDFLARE_HOST = "speed.cloudflare.com"
         const val DEFAULT_TEST_URL = "https://speed.cloudflare.com/__down?bytes=52428800"
         const val DEFAULT_ESTIMATED_MB = 50
         const val DEFAULT_DURATION_SECONDS = 15

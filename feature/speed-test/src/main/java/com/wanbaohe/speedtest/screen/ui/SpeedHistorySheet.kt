@@ -105,11 +105,28 @@ fun SpeedHistorySheet(
                     color = AppTheme.colors.getOnInactiveContainerColor(),
                     modifier = Modifier.weight(1f)
                 )
-                Text(
-                    text = stringResource(R.string.speed_test_history_download_col),
-                    fontSize = 13.sp,
-                    color = AppTheme.colors.getOnInactiveContainerColor()
-                )
+                Column(
+                    modifier = Modifier.weight(0.35f),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = stringResource(R.string.speed_test_history_download_col),
+                        fontSize = 12.sp,
+                        color = AppTheme.colors.getOnInactiveContainerColor(),
+                        maxLines = 1
+                    )
+                }
+                Column(
+                    modifier = Modifier.weight(0.35f),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = stringResource(R.string.speed_test_history_upload_col),
+                        fontSize = 12.sp,
+                        color = AppTheme.colors.getOnInactiveContainerColor(),
+                        maxLines = 1
+                    )
+                }
             }
 
             Spacer(Modifier.height(4.dp))
@@ -198,17 +215,37 @@ private fun SpeedHistoryItem(record: SpeedTestRecord) {
             )
         }
 
-        // 右：下载速度
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            modifier = Modifier.weight(0.35f),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Text(
                 text = "%.1f".format(record.downloadMbps),
-                fontSize = 18.sp,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = AppTheme.colors.getPrimaryTextColor()
+                color = AppTheme.colors.getPrimaryTextColor(),
+                maxLines = 1
             )
             Text(
                 text = stringResource(R.string.speed_test_unit_mbps),
-                fontSize = 11.sp,
+                fontSize = 10.sp,
+                color = AppTheme.colors.getOnInactiveContainerColor()
+            )
+        }
+        Column(
+            modifier = Modifier.weight(0.35f),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = record.uploadMbps.takeIf { it >= 0f }?.let { "%.1f".format(it) } ?: "--",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = AppTheme.colors.getPrimaryTextColor(),
+                maxLines = 1
+            )
+            Text(
+                text = stringResource(R.string.speed_test_unit_mbps),
+                fontSize = 10.sp,
                 color = AppTheme.colors.getOnInactiveContainerColor()
             )
         }
