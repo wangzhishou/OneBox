@@ -50,6 +50,15 @@ internal class CloudStoragePrefs(
 
     fun loadSearchQuery(): String = mmkv.decodeString(KEY_LAST_SEARCH_QUERY, "") ?: ""
 
+    fun saveSort(mode: String, ascending: Boolean) {
+        mmkv.encode(KEY_SORT_MODE, mode)
+        mmkv.encode(KEY_SORT_ASCENDING, ascending)
+    }
+
+    fun loadSortMode(): String? = mmkv.decodeString(KEY_SORT_MODE, null)
+
+    fun loadSortAscending(): Boolean = mmkv.decodeBool(KEY_SORT_ASCENDING, true)
+
     fun saveGridMode(isGridMode: Boolean) {
         mmkv.encode(KEY_IS_GRID_MODE, isGridMode)
     }
@@ -63,5 +72,7 @@ internal class CloudStoragePrefs(
         private const val KEY_LAST_PREFIX = "last_prefix"
         private const val KEY_LAST_SEARCH_QUERY = "last_search_query"
         private const val KEY_IS_GRID_MODE = "is_grid_mode"
+        private const val KEY_SORT_MODE = "sort_mode"
+        private const val KEY_SORT_ASCENDING = "sort_ascending"
     }
 }

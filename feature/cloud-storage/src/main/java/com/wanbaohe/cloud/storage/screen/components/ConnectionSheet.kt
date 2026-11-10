@@ -21,7 +21,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -42,8 +41,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
+import com.wanbaohe.core.ui.widget.system.SelectorField
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
-import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
 import com.wanbaohe.core.ui.widget.system.OneBoxOutlinedTextField
 import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
 import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
@@ -145,27 +144,14 @@ fun ConnectionSheet(
                 }
             }
 
-            // 协议 Tab
-            Column(
-                verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
-            ) {
-                Text(
-                    text = stringResource(R.string.cloud_storage_protocol_label),
-                    style = MaterialTheme.typography.titleMedium,
-                )
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
-                    contentPadding = PaddingValues(vertical = 4.dp),
-                ) {
-                    items(RemoteProtocol.entries) { p ->
-                        ProtocolTab(
-                            label = stringResource(p.titleRes),
-                            selected = protocol == p,
-                            onClick = { protocol = p },
-                        )
-                    }
-                }
-            }
+            // 协议选择：用设置页同款 SelectorField，当前值常驻、选项收进下拉菜单
+            SelectorField(
+                label = stringResource(R.string.cloud_storage_protocol_label),
+                selected = protocol,
+                options = RemoteProtocol.entries,
+                optionLabel = { stringResource(it.titleRes) },
+                onSelect = { protocol = it },
+            )
 
             // 当前协议对应的动态表单
             when (protocol) {
@@ -301,31 +287,6 @@ private fun ClearableField(
     )
 }
 
-@Composable
-private fun ProtocolTab(label: String, selected: Boolean, onClick: () -> Unit) {
-    GlassFilterChip(
-        selected = selected,
-        onClick = onClick,
-        modifier = Modifier.height(38.dp),
-        shape = RoundedCornerShape(10.dp),
-        label = {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.labelLarge,
-                fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
-                modifier = Modifier.padding(horizontal = 8.dp),
-            )
-        },
-        colors = FilterChipDefaults.filterChipColors(
-            selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-            selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-            labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-        ),
-        border = null,
-    )
-}
-
 // ───────────────── S3 兼容族表单 ─────────────────
 
 @Composable
@@ -334,26 +295,17 @@ private fun S3CompatForm(draft: androidx.compose.runtime.MutableState<S3FormDraf
     Column(
         verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
     ) {
-        Text(
-            text = stringResource(R.string.cloud_storage_vendor_label),
-            style = MaterialTheme.typography.titleSmall,
+        SelectorField(
+            label = stringResource(R.string.cloud_storage_vendor_label),
+            selected = d.vendor,
+            options = S3Vendor.entries,
+            optionLabel = { stringResource(it.titleRes) },
+            onSelect = { v ->
+                if (d.vendor != v) {
+                    draft.value = d.copy(vendor = v, endpoint = v.defaultEndpointHint)
+                }
+            },
         )
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
-            contentPadding = PaddingValues(vertical = 4.dp),
-        ) {
-            items(S3Vendor.entries) { v ->
-                ProtocolTab(
-                    label = stringResource(v.titleRes),
-                    selected = d.vendor == v,
-                    onClick = {
-                        if (d.vendor != v) {
-                            draft.value = d.copy(vendor = v, endpoint = v.defaultEndpointHint)
-                        }
-                    },
-                )
-            }
-        }
         ClearableField(
             value = d.displayName,
             onValueChange = { draft.value = d.copy(displayName = it) },

@@ -4,6 +4,8 @@ import android.content.Context
 import com.wanbaohe.cloud.storage.data.protocol.ObjectStoragePathResolver
 import com.wanbaohe.cloud.storage.model.CloudBucket
 import com.wanbaohe.cloud.storage.model.CloudObjectItem
+import com.wanbaohe.cloud.storage.model.CloudSort
+import com.wanbaohe.cloud.storage.model.CloudSortMode
 import com.wanbaohe.cloud.storage.model.CloudStorageConnection
 import com.wanbaohe.cloud.storage.service.CloudFileService
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -37,6 +39,17 @@ class CloudStorageRepositoryImpl @Inject constructor(
     override fun getLastPrefix(): String = prefs.loadLastPrefix()
 
     override fun getLastSearchQuery(): String = prefs.loadSearchQuery()
+
+    override fun getSort(): CloudSort = CloudSort(
+        mode = prefs.loadSortMode()
+            ?.let { name -> runCatching { CloudSortMode.valueOf(name) }.getOrNull() }
+            ?: CloudSortMode.NAME,
+        ascending = prefs.loadSortAscending(),
+    )
+
+    override fun saveSort(sort: CloudSort) {
+        prefs.saveSort(sort.mode.name, sort.ascending)
+    }
 
     override fun isGridMode(): Boolean = prefs.loadGridMode()
 
@@ -135,6 +148,24 @@ class CloudStorageRepositoryImpl @Inject constructor(
         onProgress = onProgress,
     )
 
+    override suspend fun uploadStream(
+        connection: CloudStorageConnection,
+        bucket: String,
+        key: String,
+        contentType: String,
+        size: Long,
+        openStream: () -> java.io.InputStream?,
+        onProgress: ((Float) -> Unit)?,
+    ): Result<Unit> = cloudFileService.uploadStream(
+        connection = connection,
+        root = bucket,
+        path = key,
+        contentType = contentType,
+        size = size,
+        openStream = openStream,
+        onProgress = onProgress,
+    )
+
     override suspend fun createFolder(
         connection: CloudStorageConnection,
         bucket: String,
@@ -166,7 +197,7 @@ class CloudStorageRepositoryImpl @Inject constructor(
         targetKey: String,
     ): Result<Unit> = cloudFileService.rename(connection, bucket, sourceKey, targetKey)
 
-    override fun buildDownloadHeaders(
+    override fun buildAuthHeaders(
         connection: CloudStorageConnection,
     ): Map<String, String> = when (connection) {
         is CloudStorageConnection.WebDav -> if (connection.username.isNotBlank()) {

@@ -14,6 +14,8 @@ import com.wanbaohe.cloud.storage.data.protocol.ObjectStoragePathResolver
 import com.wanbaohe.cloud.storage.model.CloudBrowserState
 import com.wanbaohe.cloud.storage.model.CloudBucket
 import com.wanbaohe.cloud.storage.model.CloudObjectItem
+import com.wanbaohe.cloud.storage.model.CloudSort
+import com.wanbaohe.cloud.storage.model.CloudSortMode
 import com.wanbaohe.cloud.storage.model.CloudStorageConnection
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -76,6 +78,9 @@ class CloudStorageComponent @AssistedInject internal constructor(
     private val _message = MutableStateFlow<String?>(null)
     val message: StateFlow<String?> = _message.asStateFlow()
 
+    private val _sort = MutableStateFlow(CloudSort())
+    val sort: StateFlow<CloudSort> = _sort.asStateFlow()
+
     private val _isGridMode = MutableStateFlow(true)
     val isGridMode: StateFlow<Boolean> = _isGridMode.asStateFlow()
 
@@ -92,6 +97,16 @@ class CloudStorageComponent @AssistedInject internal constructor(
     fun updateSearchQuery(query: String) {
         _searchQuery.value = query
         persistUiState()
+    }
+
+    fun setSort(sort: CloudSort) {
+        _sort.value = sort
+        repository.saveSort(sort)
+        // 本地重排，避免每次点排序都重新拉一次目录
+        val current = _browserState.value
+        if (current is CloudBrowserState.Success) {
+            _browserState.value = current.copy(items = sortItems(current.items))
+        }
     }
 
     fun toggleViewMode() {
@@ -170,7 +185,7 @@ class CloudStorageComponent @AssistedInject internal constructor(
             val result = repository.searchObjects(connection, bucket, _searchQuery.value.trim())
             result.fold(
                 onSuccess = { _searchResults.value = it },
-                onFailure = { _message.value = it.message ?: context.getString(R.string.cloud_storage_error_generic) }
+                onFailure = { _message.value = it.toCloudErrorMessage(context) }
             )
             _isSearchLoading.value = false
             persistUiState()
@@ -200,33 +215,50 @@ class CloudStorageComponent @AssistedInject internal constructor(
         }
     }
 
-    fun uploadFromUri(uri: Uri) {
+    fun uploadFromUris(uris: List<Uri>) {
         val connection = _currentConnection.value ?: return
         val bucket = _currentBucket.value ?: return
+        val targets = uris.distinct()
+        if (targets.isEmpty()) return
         componentScope.launch(ioDispatcher) {
             _busy.value = true
             _uploadProgress.value = 0f
-            runCatching {
-                val bytes = context.contentResolver.openInputStream(uri)?.use { it.readBytes() }
-                    ?: throw IllegalStateException(context.getString(R.string.cloud_storage_error_read_file))
-                val fileName = resolveDisplayName(uri)
-                val key = "${_currentPrefix.value}$fileName"
-                val contentType = context.contentResolver.getType(uri) ?: "application/octet-stream"
-                repository.uploadObject(connection, bucket, key, bytes, contentType) { progress ->
-                    _uploadProgress.value = progress
+            var successCount = 0
+            try {
+                for ((index, uri) in targets.withIndex()) {
+                    val fileName = resolveDisplayName(uri)
+                    val key = "${_currentPrefix.value}$fileName"
+                    val contentType = context.contentResolver.getType(uri) ?: "application/octet-stream"
+                    val size = resolveSize(uri)
+                    val result = runCatching {
+                        repository.uploadStream(
+                            connection = connection,
+                            bucket = bucket,
+                            key = key,
+                            contentType = contentType,
+                            size = size,
+                            openStream = { context.contentResolver.openInputStream(uri) },
+                        ) { progress ->
+                            _uploadProgress.value =
+                                ((index + progress) / targets.size).coerceIn(0f, 1f)
+                        }.getOrThrow()
+                    }
+                    if (result.isFailure) {
+                        _message.value = result.exceptionOrNull()
+                            ?.toCloudErrorMessage(context)
+                            ?: context.getString(R.string.cloud_storage_error_generic)
+                        break
+                    }
+                    successCount++
                 }
-            }.fold(
-                onSuccess = {
-                    _uploadProgress.value = null
-                    hideObject()
-                    refreshObjects()
-                },
-                onFailure = {
-                    _uploadProgress.value = null
-                    _message.value = it.message ?: context.getString(R.string.cloud_storage_error_generic)
-                }
-            )
-            _busy.value = false
+            } finally {
+                _uploadProgress.value = null
+                _busy.value = false
+            }
+            if (successCount > 0) {
+                hideObject()
+                refreshObjects()
+            }
         }
     }
 
@@ -275,9 +307,51 @@ class CloudStorageComponent @AssistedInject internal constructor(
         }
     }
 
-    fun downloadHeaders(): Map<String, String> {
+    /**
+     * 没有可下载 URL 的协议（SMB）：应用内读取字节并写入系统下载目录。
+     */
+    fun saveObjectToDevice(item: CloudObjectItem) {
+        val connection = _currentConnection.value ?: return
+        val bucket = _currentBucket.value ?: return
+        componentScope.launch(ioDispatcher) {
+            _busy.value = true
+            try {
+                repository.readBytes(connection, bucket, item.key).fold(
+                    onSuccess = { bytes ->
+                        val saved = com.wanbaohe.cloud.storage.screen.components.saveBytesToDownloads(
+                            context = context,
+                            fileName = item.displayName,
+                            bytes = bytes,
+                            mimeType = item.contentType,
+                        )
+                        withContext(kotlinx.coroutines.Dispatchers.Main) {
+                            saved.fold(
+                                onSuccess = { uri ->
+                                    com.wanbaohe.core.ui.utils.helper.SaveSuccessNotifier.notifyFileSaved(
+                                        fileUri = uri.toString(),
+                                        fileName = item.displayName,
+                                        savingPath = android.os.Environment.DIRECTORY_DOWNLOADS,
+                                    )
+                                },
+                                onFailure = {
+                                    _message.value = it.toCloudErrorMessage(context)
+                                },
+                            )
+                        }
+                    },
+                    onFailure = {
+                        _message.value = it.toCloudErrorMessage(context)
+                    },
+                )
+            } finally {
+                _busy.value = false
+            }
+        }
+    }
+
+    fun authHeaders(): Map<String, String> {
         val connection = _currentConnection.value ?: return emptyMap()
-        return runCatching { repository.buildDownloadHeaders(connection) }.getOrDefault(emptyMap())
+        return runCatching { repository.buildAuthHeaders(connection) }.getOrDefault(emptyMap())
     }
 
     fun signedUrlFor(item: CloudObjectItem): String? {
@@ -290,6 +364,7 @@ class CloudStorageComponent @AssistedInject internal constructor(
         _connections.value = repository.getConnections()
         connectionHolder.update(_connections.value)
         _isGridMode.value = repository.isGridMode()
+        _sort.value = repository.getSort()
         val current = _connections.value.firstOrNull { it.id == repository.getLastConnectionId() }
             ?: _connections.value.firstOrNull { it.isDefault }
             ?: _connections.value.firstOrNull()
@@ -319,7 +394,7 @@ class CloudStorageComponent @AssistedInject internal constructor(
                     _buckets.value = listOf(CloudBucket(defaultRoot))
                     _currentBucket.value = defaultRoot
                 } else {
-                    _message.value = it.message ?: context.getString(R.string.cloud_storage_error_generic)
+                    _message.value = it.toCloudErrorMessage(context)
                     _buckets.value = emptyList()
                     _currentBucket.value = null
                 }
@@ -340,7 +415,7 @@ class CloudStorageComponent @AssistedInject internal constructor(
         _browserState.value = CloudBrowserState.Loading
         repository.listObjects(connection, bucket, _currentPrefix.value).fold(
             onSuccess = { items ->
-                val filtered = items.filterNot { it.key == _currentPrefix.value }
+                val filtered = sortItems(items.filterNot { it.key == _currentPrefix.value })
                 val breadcrumbs = ObjectStoragePathResolver.splitBreadcrumbs(_currentPrefix.value)
                 _browserState.value = if (filtered.isEmpty()) {
                     CloudBrowserState.Empty(_currentPrefix.value)
@@ -351,10 +426,23 @@ class CloudStorageComponent @AssistedInject internal constructor(
             },
             onFailure = {
                 _browserState.value = CloudBrowserState.Error(
-                    message = it.message ?: context.getString(R.string.cloud_storage_error_generic),
+                    message = it.toCloudErrorMessage(context),
                     throwable = it,
                 )
             }
+        )
+    }
+
+    private fun sortItems(items: List<CloudObjectItem>): List<CloudObjectItem> {
+        val sort = _sort.value
+        val comparator: Comparator<CloudObjectItem> = when (sort.mode) {
+            CloudSortMode.NAME -> compareBy { it.displayName.lowercase() }
+            CloudSortMode.DATE -> compareBy { it.lastModified.orEmpty() }
+            CloudSortMode.SIZE -> compareBy { it.size }
+        }
+        val ordered = if (sort.ascending) comparator else comparator.reversed()
+        return items.sortedWith(
+            compareByDescending<CloudObjectItem> { it.isDirectory }.then(ordered)
         )
     }
 
@@ -366,7 +454,7 @@ class CloudStorageComponent @AssistedInject internal constructor(
                 refreshObjects()
             },
             onFailure = {
-                _message.value = it.message ?: context.getString(R.string.cloud_storage_error_generic)
+                _message.value = it.toCloudErrorMessage(context)
             }
         )
         _busy.value = false
@@ -385,6 +473,14 @@ class CloudStorageComponent @AssistedInject internal constructor(
         val cursor = context.contentResolver.query(uri, null, null, null, null)
         cursor.useDisplayName() ?: "upload-${System.currentTimeMillis()}"
     }
+
+    private fun resolveSize(uri: Uri): Long = runCatching {
+        context.contentResolver.query(uri, arrayOf(OpenableColumns.SIZE), null, null, null)
+            ?.use { cursor ->
+                val index = cursor.getColumnIndex(OpenableColumns.SIZE)
+                if (index >= 0 && cursor.moveToFirst()) cursor.getLong(index) else -1L
+            } ?: -1L
+    }.getOrDefault(-1L)
 
     private fun Cursor?.useDisplayName(): String? = this?.use { cursor ->
         val index = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)

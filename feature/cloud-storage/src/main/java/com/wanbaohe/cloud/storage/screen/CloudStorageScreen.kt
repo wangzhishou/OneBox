@@ -28,6 +28,8 @@ import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.ViewList
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.ArrowUpward
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Folder
@@ -79,6 +81,7 @@ import com.wanbaohe.cloud.storage.screen.components.ConnectionSheet
 import com.wanbaohe.cloud.storage.screen.components.ConnectionSwitcherSheet
 import com.wanbaohe.cloud.storage.screen.components.ObjectDetailSheet
 import com.wanbaohe.cloud.storage.screen.components.SearchTabContent
+import com.wanbaohe.cloud.storage.screen.components.SortSheet
 import com.wanbaohe.cloud.storage.screen.components.downloadCloudFile
 import com.wanbaohe.cloud.storage.screen.components.SyncPlaceholderTab
 import com.wanbaohe.cloud.storage.screenLogic.CloudStorageComponent
@@ -92,6 +95,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineFolder
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWarning
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCloudUpload
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineSort
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAutoFix
 
 @Composable
@@ -111,6 +115,7 @@ fun CloudStorageScreen(
     val uploadProgress by component.uploadProgress.collectAsState()
     val message by component.message.collectAsState()
     val isGridMode by component.isGridMode.collectAsState()
+    val sort by component.sort.collectAsState()
 
     var showConnectionSheet by remember { mutableStateOf(false) }
     var showConnectionSwitcher by remember { mutableStateOf(false) }
@@ -122,11 +127,14 @@ fun CloudStorageScreen(
     var pendingDeleteItems by remember { mutableStateOf<List<CloudObjectItem>>(emptyList()) }
     var pendingDeleteConnection by remember { mutableStateOf<CloudStorageConnection?>(null) }
     var managingConnection by remember { mutableStateOf<CloudStorageConnection?>(null) }
+    var searchActive by remember { mutableStateOf(false) }
+    var filterQuery by remember { mutableStateOf("") }
+    var showSortSheet by remember { mutableStateOf(false) }
     val downloadScope = rememberCoroutineScope()
 
     val uploadLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-            uri?.let(component::uploadFromUri)
+        rememberLauncherForActivityResult(ActivityResultContracts.OpenMultipleDocuments()) { uris ->
+            if (uris.isNotEmpty()) component.uploadFromUris(uris)
         }
 
     BackHandler(enabled = selectedItems.isNotEmpty() || currentPrefix.isNotBlank()) {
@@ -139,6 +147,7 @@ fun CloudStorageScreen(
 
     LaunchedEffect(currentConnection?.id, currentBucket, currentPrefix) {
         selectedItems.clear()
+        filterQuery = ""
     }
 
     BaseScreen(
@@ -177,10 +186,33 @@ fun CloudStorageScreen(
         onGoBack = onGoBack,
         isBackHandler = false,
         actions = {
+            if (currentConnection != null) {
+                IconButton(
+                    onClick = {
+                        searchActive = !searchActive
+                        if (!searchActive) filterQuery = ""
+                    }
+                ) {
+                    Icon(
+                        imageVector = if (searchActive) {
+                            Icons.Outlined.Close
+                        } else {
+                            Icons.Outlined.Search
+                        },
+                        contentDescription = stringResource(
+                            if (searchActive) {
+                                R.string.cloud_storage_search_clear
+                            } else {
+                                R.string.cloud_storage_search_action
+                            }
+                        ),
+                    )
+                }
+            }
             IconButton(onClick = { showConnectionSheet = true }) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.cloud_storage_add_connection),
                 )
             }
         }
@@ -298,6 +330,18 @@ fun CloudStorageScreen(
                         Spacer(modifier = Modifier.width(6.dp))
 
                         IconButton(
+                            onClick = { showSortSheet = true },
+                            modifier = Modifier.size(36.dp)
+                        ) {
+                            Icon(
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSort,
+                                contentDescription = stringResource(R.string.cloud_storage_sort_title),
+                                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
+
+                        IconButton(
                             onClick = component::toggleViewMode,
                             modifier = Modifier.size(36.dp)
                         ) {
@@ -326,6 +370,16 @@ fun CloudStorageScreen(
                 }
             }
 
+            if (currentConnection != null && searchActive) {
+                com.wanbaohe.core.ui.widget.system.OneBoxOutlinedTextField(
+                    value = filterQuery,
+                    onValueChange = { filterQuery = it },
+                    placeholder = { Text(stringResource(R.string.cloud_storage_search_placeholder)) },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+
             if (currentConnection == null) {
                 CloudNoConnectionGuide(
                     onAddManually = { showConnectionSheet = true },
@@ -336,7 +390,11 @@ fun CloudStorageScreen(
                     browserState = browserState,
                     isGridMode = isGridMode,
                     previewUrlProvider = component::signedUrlFor,
-                    linkActionsEnabled = currentConnection?.protocol != RemoteProtocol.SMB,
+                    previewHeaders = component.authHeaders(),
+                    copyLinkEnabled = currentConnection?.protocol != RemoteProtocol.SMB,
+                    downloadEnabled = true,
+                    filterQuery = filterQuery,
+                    onClearFilter = { filterQuery = "" },
                     onCopyLink = { item ->
                         val url = component.signedUrlFor(item)
                         if (url != null) {
@@ -353,10 +411,11 @@ fun CloudStorageScreen(
                                 url = url,
                                 fileName = item.displayName,
                                 scope = downloadScope,
-                                headers = component.downloadHeaders(),
+                                headers = component.authHeaders(),
                             )
                         } else {
-                            notifyLinkUnavailable(context)
+                            // SMB 没有可交给 DownloadManager 的 URL，应用内读流落盘
+                            component.saveObjectToDevice(item)
                         }
                     },
                     onItemClick = { item ->
@@ -399,6 +458,14 @@ fun CloudStorageScreen(
         }
     }
 
+
+    if (showSortSheet) {
+        SortSheet(
+            sort = sort,
+            onSelect = { component.setSort(it) },
+            onDismiss = { showSortSheet = false },
+        )
+    }
 
     if (showConnectionSwitcher) {
         ConnectionSwitcherSheet(
@@ -448,6 +515,8 @@ fun CloudStorageScreen(
         ObjectDetailSheet(
             item = selectedObject!!,
             signedUrl = component.signedUrlFor(selectedObject!!),
+            previewHeaders = component.authHeaders(),
+            copyLinkEnabled = currentConnection?.protocol != RemoteProtocol.SMB,
             busy = busy,
             onDismiss = component::hideObject,
             onRename = component::renameSelected,
@@ -461,10 +530,10 @@ fun CloudStorageScreen(
                         url = url,
                         fileName = item.displayName,
                         scope = downloadScope,
-                        headers = component.downloadHeaders(),
+                        headers = component.authHeaders(),
                     )
                 } else {
-                    notifyLinkUnavailable(context)
+                    component.saveObjectToDevice(item)
                 }
             },
             onCopyLink = {
@@ -660,7 +729,11 @@ private fun FilesContent(
     browserState: CloudBrowserState,
     isGridMode: Boolean,
     previewUrlProvider: (CloudObjectItem) -> String?,
-    linkActionsEnabled: Boolean,
+    previewHeaders: Map<String, String>,
+    copyLinkEnabled: Boolean,
+    downloadEnabled: Boolean,
+    filterQuery: String,
+    onClearFilter: () -> Unit,
     onCopyLink: (CloudObjectItem) -> Unit,
     onDownload: (CloudObjectItem) -> Unit,
     onItemClick: (CloudObjectItem) -> Unit,
@@ -698,19 +771,41 @@ private fun FilesContent(
             modifier = modifier
         )
 
-        is CloudBrowserState.Success -> CloudFileGrid(
-            items = browserState.items,
+        is CloudBrowserState.Success -> {
+            val visibleItems = if (filterQuery.isBlank()) {
+                browserState.items
+            } else {
+                browserState.items.filter {
+                    it.displayName.contains(filterQuery.trim(), ignoreCase = true)
+                }
+            }
+            if (visibleItems.isEmpty()) {
+                CloudStatePlaceholder(
+                    icon = Icons.Outlined.Search,
+                    title = stringResource(R.string.cloud_storage_search_empty),
+                    desc = "",
+                    actionText = stringResource(R.string.cloud_storage_search_clear),
+                    onActionClick = onClearFilter,
+                    modifier = modifier,
+                )
+            } else {
+                CloudFileGrid(
+                    items = visibleItems,
             isGridMode = isGridMode,
             previewUrlProvider = previewUrlProvider,
+            previewHeaders = previewHeaders,
             onItemClick = onItemClick,
             selectedKeys = selectedKeys,
             selectionMode = selectionMode,
             onSelectionToggle = onSelectionToggle,
-            linkActionsEnabled = linkActionsEnabled,
-            onCopyLink = onCopyLink,
-            onDownload = onDownload,
-            modifier = modifier,
-        )
+            copyLinkEnabled = copyLinkEnabled,
+            downloadEnabled = downloadEnabled,
+                    onCopyLink = onCopyLink,
+                    onDownload = onDownload,
+                    modifier = modifier,
+                )
+            }
+        }
     }
 }
 

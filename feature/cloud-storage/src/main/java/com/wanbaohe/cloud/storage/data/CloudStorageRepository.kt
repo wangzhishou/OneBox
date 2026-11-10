@@ -2,6 +2,7 @@ package com.wanbaohe.cloud.storage.data
 
 import com.wanbaohe.cloud.storage.model.CloudBucket
 import com.wanbaohe.cloud.storage.model.CloudObjectItem
+import com.wanbaohe.cloud.storage.model.CloudSort
 import com.wanbaohe.cloud.storage.model.CloudStorageConnection
 
 interface CloudStorageRepository {
@@ -14,6 +15,10 @@ interface CloudStorageRepository {
     fun getLastPrefix(): String
 
     fun getLastSearchQuery(): String
+
+    fun getSort(): CloudSort
+
+    fun saveSort(sort: CloudSort)
 
     fun isGridMode(): Boolean
 
@@ -67,6 +72,19 @@ interface CloudStorageRepository {
         onProgress: ((Float) -> Unit)? = null,
     ): Result<Unit>
 
+    /**
+     * 流式上传（WebDAV / SMB 真正边读边发；S3 暂退回 [uploadObject] 的字节实现）。
+     */
+    suspend fun uploadStream(
+        connection: CloudStorageConnection,
+        bucket: String,
+        key: String,
+        contentType: String,
+        size: Long,
+        openStream: () -> java.io.InputStream?,
+        onProgress: ((Float) -> Unit)? = null,
+    ): Result<Unit>
+
     suspend fun createFolder(
         connection: CloudStorageConnection,
         bucket: String,
@@ -97,7 +115,7 @@ interface CloudStorageRepository {
     /**
      * 下载所需的额外请求头（WebDAV 需 Basic 认证；S3 走签名 URL、SMB 无 URL 时返回空）。
      */
-    fun buildDownloadHeaders(connection: CloudStorageConnection): Map<String, String>
+    fun buildAuthHeaders(connection: CloudStorageConnection): Map<String, String>
 
     fun buildSignedGetUrl(
         connection: CloudStorageConnection,

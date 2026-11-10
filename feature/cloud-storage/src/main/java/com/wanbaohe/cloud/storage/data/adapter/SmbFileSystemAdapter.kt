@@ -177,6 +177,52 @@ class SmbFileSystemAdapter @Inject constructor() : RemoteFileSystemAdapter {
         }
     }
 
+    override fun uploadStream(
+        connection: CloudStorageConnection,
+        root: String,
+        path: String,
+        contentType: String,
+        size: Long,
+        openStream: () -> java.io.InputStream?,
+        onProgress: ((Float) -> Unit)?,
+    ): Result<Unit> = runCatching {
+        val c = connection.asSmb()
+        withDiskShare(c, root) { share ->
+            val file: File = share.openFile(
+                path,
+                EnumSet.of(AccessMask.GENERIC_WRITE),
+                EnumSet.of(FileAttributes.FILE_ATTRIBUTE_NORMAL),
+                SMB2ShareAccess.ALL,
+                SMB2CreateDisposition.FILE_OVERWRITE_IF,
+                EnumSet.of(SMB2CreateOptions.FILE_NON_DIRECTORY_FILE),
+            )
+            try {
+                val listener = if (onProgress != null && size > 0) {
+                    com.hierynomus.smbj.ProgressListener { _, written ->
+                        onProgress((written.toFloat() / size).coerceIn(0f, 1f))
+                    }
+                } else {
+                    null
+                }
+                val output = if (listener != null) file.getOutputStream(listener) else file.getOutputStream()
+                output.use { out ->
+                    val input = openStream() ?: throw java.io.IOException("Cannot open source file")
+                    input.use { stream ->
+                        val buffer = ByteArray(64 * 1024)
+                        while (true) {
+                            val read = stream.read(buffer)
+                            if (read == -1) break
+                            out.write(buffer, 0, read)
+                        }
+                    }
+                }
+                onProgress?.invoke(1f)
+            } finally {
+                file.close()
+            }
+        }
+    }
+
     override fun createDirectory(
         connection: CloudStorageConnection,
         root: String,

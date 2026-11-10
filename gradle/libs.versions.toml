@@ -246,6 +246,7 @@ reimagined = { module = "dev.olshevski.navigation:reimagined", version.ref = "re
 reimagined-hilt = { module = "dev.olshevski.navigation:reimagined-hilt", version.ref = "reimagined" }
 ktor = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
 coil-network = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
+coil-network-core = { module = "io.coil-kt.coil3:coil-network-core", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coilGif = { module = "io.coil-kt.coil3:coil-gif", version.ref = "coil" }
 coilSvg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil" }

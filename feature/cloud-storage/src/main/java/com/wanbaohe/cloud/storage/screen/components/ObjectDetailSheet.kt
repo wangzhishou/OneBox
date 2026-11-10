@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -44,6 +45,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineImage
 fun ObjectDetailSheet(
     item: CloudObjectItem,
     signedUrl: String?,
+    previewHeaders: Map<String, String>,
+    copyLinkEnabled: Boolean,
     busy: Boolean,
     onDismiss: () -> Unit,
     onRename: (String) -> Unit,
@@ -55,6 +58,10 @@ fun ObjectDetailSheet(
     var renameText by remember(item.key) { mutableStateOf(item.displayName) }
     var movePrefix by remember(item.key) { mutableStateOf(item.prefix) }
     val renameChanged = renameText.trim().isNotEmpty() && renameText.trim() != item.displayName
+    val context = LocalContext.current
+    val previewModel = remember(signedUrl, previewHeaders) {
+        cloudPreviewModel(context, signedUrl, previewHeaders)
+    }
 
     EnhancedModalBottomSheet(
         visible = true,
@@ -74,8 +81,8 @@ fun ObjectDetailSheet(
                 overflow = TextOverflow.Ellipsis,
             )
             OneBoxSectionCard {
-                if (item.isImage && !signedUrl.isNullOrBlank()) {
-                    var isError by remember(signedUrl) { mutableStateOf(false) }
+                if (item.isImage && previewModel != null) {
+                    var isError by remember(previewModel) { mutableStateOf(false) }
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -93,7 +100,7 @@ fun ObjectDetailSheet(
                             )
                         } else {
                             AsyncImage(
-                                model = signedUrl,
+                                model = previewModel,
                                 contentDescription = item.displayName,
                                 contentScale = ContentScale.Fit,
                                 modifier = Modifier.fillMaxSize(),
@@ -152,7 +159,7 @@ fun ObjectDetailSheet(
                     text = stringResource(R.string.cloud_storage_copy_download_link),
                     onClick = onCopyLink,
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = !busy,
+                    enabled = !busy && copyLinkEnabled,
                 )
                 OneSecondaryButton(
                     text = stringResource(R.string.cloud_storage_download_local),

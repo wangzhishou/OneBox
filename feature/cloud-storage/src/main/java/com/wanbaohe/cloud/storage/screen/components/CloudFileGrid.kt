@@ -142,11 +142,13 @@ fun CloudFileGrid(
     items: List<CloudObjectItem>,
     isGridMode: Boolean,
     previewUrlProvider: (CloudObjectItem) -> String?,
+    previewHeaders: Map<String, String> = emptyMap(),
     onItemClick: (CloudObjectItem) -> Unit,
     selectedKeys: Set<String> = emptySet(),
     selectionMode: Boolean = false,
     onSelectionToggle: (CloudObjectItem) -> Unit = {},
-    linkActionsEnabled: Boolean = false,
+    copyLinkEnabled: Boolean = false,
+    downloadEnabled: Boolean = false,
     onCopyLink: (CloudObjectItem) -> Unit = {},
     onDownload: (CloudObjectItem) -> Unit = {},
     modifier: Modifier = Modifier,
@@ -163,6 +165,7 @@ fun CloudFileGrid(
                 CloudFileGridCard(
                     item = item,
                     previewUrl = previewUrlFor(item, previewUrlProvider),
+                    previewHeaders = previewHeaders,
                     selected = item.key in selectedKeys,
                     selectionMode = selectionMode,
                     onClick = { if (selectionMode) onSelectionToggle(item) else onItemClick(item) },
@@ -180,11 +183,13 @@ fun CloudFileGrid(
                 CloudFileListRow(
                     item = item,
                     previewUrl = previewUrlFor(item, previewUrlProvider),
+                    previewHeaders = previewHeaders,
                     selected = item.key in selectedKeys,
                     selectionMode = selectionMode,
                     onClick = { if (selectionMode) onSelectionToggle(item) else onItemClick(item) },
                     onLongClick = { onSelectionToggle(item) },
-                    linkActionsEnabled = linkActionsEnabled && !item.isDirectory,
+                    copyLinkEnabled = copyLinkEnabled && !item.isDirectory,
+                    downloadEnabled = downloadEnabled && !item.isDirectory,
                     onCopyLink = { onCopyLink(item) },
                     onDownload = { onDownload(item) },
                 )
@@ -204,11 +209,16 @@ private fun previewUrlFor(
 private fun CloudFileGridCard(
     item: CloudObjectItem,
     previewUrl: String?,
+    previewHeaders: Map<String, String>,
     selected: Boolean,
     selectionMode: Boolean,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
 ) {
+    val context = LocalContext.current
+    val previewModel = remember(previewUrl, previewHeaders) {
+        cloudPreviewModel(context, previewUrl, previewHeaders)
+    }
     OneBoxSectionCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -249,8 +259,8 @@ private fun CloudFileGridCard(
                         }
                     }
                 }
-                item.isImage && !previewUrl.isNullOrBlank() -> {
-                    var isError by remember(previewUrl) { mutableStateOf(false) }
+                item.isImage && previewModel != null -> {
+                    var isError by remember(previewModel) { mutableStateOf(false) }
                     if (isError) {
                         Surface(
                             modifier = Modifier.size(54.dp),
@@ -268,7 +278,7 @@ private fun CloudFileGridCard(
                         }
                     } else {
                         AsyncImage(
-                            model = previewUrl,
+                            model = previewModel,
                             contentDescription = item.displayName,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize(),
@@ -356,14 +366,20 @@ private fun CloudFileGridCard(
 private fun CloudFileListRow(
     item: CloudObjectItem,
     previewUrl: String?,
+    previewHeaders: Map<String, String>,
     selected: Boolean,
     selectionMode: Boolean,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
-    linkActionsEnabled: Boolean,
+    copyLinkEnabled: Boolean,
+    downloadEnabled: Boolean,
     onCopyLink: () -> Unit,
     onDownload: () -> Unit,
 ) {
+    val context = LocalContext.current
+    val previewModel = remember(previewUrl, previewHeaders) {
+        cloudPreviewModel(context, previewUrl, previewHeaders)
+    }
     OneBoxSectionCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -406,8 +422,8 @@ private fun CloudFileListRow(
                         }
                     }
 
-                    item.isImage && !previewUrl.isNullOrBlank() -> {
-                        var isError by remember(previewUrl) { mutableStateOf(false) }
+                    item.isImage && previewModel != null -> {
+                        var isError by remember(previewModel) { mutableStateOf(false) }
                         if (isError) {
                             FileTypeTile(
                                 icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImage,
@@ -417,7 +433,7 @@ private fun CloudFileListRow(
                             )
                         } else {
                             AsyncImage(
-                                model = previewUrl,
+                                model = previewModel,
                                 contentDescription = item.displayName,
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier.fillMaxSize(),
@@ -489,29 +505,33 @@ private fun CloudFileListRow(
             }
 
             // 触达区 40dp：原来 28dp/14dp 图标几乎点不中；复制/下载的链接在点击时才生成。
-            if (linkActionsEnabled) {
+            if (copyLinkEnabled || downloadEnabled) {
                 Spacer(modifier = Modifier.width(4.dp))
-                IconButton(
-                    onClick = onCopyLink,
-                    modifier = Modifier.size(40.dp)
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
-                        contentDescription = stringResource(R.string.cloud_storage_copy_link_action),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(20.dp)
-                    )
+                if (copyLinkEnabled) {
+                    IconButton(
+                        onClick = onCopyLink,
+                        modifier = Modifier.size(40.dp)
+                    ) {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                            contentDescription = stringResource(R.string.cloud_storage_copy_link_action),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
                 }
-                IconButton(
-                    onClick = onDownload,
-                    modifier = Modifier.size(40.dp)
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDownload,
-                        contentDescription = stringResource(R.string.cloud_storage_download_icon_action),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(20.dp)
-                    )
+                if (downloadEnabled) {
+                    IconButton(
+                        onClick = onDownload,
+                        modifier = Modifier.size(40.dp)
+                    ) {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDownload,
+                            contentDescription = stringResource(R.string.cloud_storage_download_icon_action),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
                 }
             }
         }

@@ -58,6 +58,29 @@ internal interface RemoteFileSystemAdapter {
         onProgress: ((Float) -> Unit)? = null,
     ): Result<Unit>
 
+    /**
+     * 流式上传：用 [openStream] 边读边发，避免把整个文件读进内存。
+     *
+     * 默认实现退回 [upload]（会把内容整体读成 ByteArray），协议实现应尽量覆写：
+     * WebDAV / SMB 已支持真正的流式写入；S3 的签名依赖 payload 摘要，暂未覆写。
+     *
+     * @param size 文件总字节数，未知时传 -1（WebDAV 会退化为 chunked）
+     * @param onProgress 0f..1f
+     */
+    fun uploadStream(
+        connection: CloudStorageConnection,
+        root: String,
+        path: String,
+        contentType: String,
+        size: Long,
+        openStream: () -> java.io.InputStream?,
+        onProgress: ((Float) -> Unit)? = null,
+    ): Result<Unit> = runCatching {
+        val bytes = openStream()?.use { it.readBytes() }
+            ?: throw IllegalStateException("Cannot open source file")
+        upload(connection, root, path, bytes, contentType, onProgress).getOrThrow()
+    }
+
     /** 创建目录（SMB 走 `mkdir`，S3 走 `PUT key/`，WebDAV 走 `MKCOL`）。 */
     fun createDirectory(
         connection: CloudStorageConnection,

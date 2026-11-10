@@ -21,6 +21,9 @@
     <string name="cloud_storage_search_label">Search objects</string>
     <string name="cloud_storage_search_hint">Search the current bucket by prefix or object name</string>
     <string name="cloud_storage_search_action">Search</string>
+    <string name="cloud_storage_search_placeholder">Search this folder</string>
+    <string name="cloud_storage_search_empty">No files match your search</string>
+    <string name="cloud_storage_search_clear">Clear search</string>
     <string name="cloud_storage_rename_label">New name</string>
     <string name="cloud_storage_rename_action">Rename</string>
     <string name="cloud_storage_move_label">Target folder</string>
@@ -51,6 +54,12 @@
     <string name="cloud_storage_no_bucket">No bucket selected</string>
     <string name="cloud_storage_bucket_hint">Tap to switch the current bucket</string>
     <string name="cloud_storage_error_generic">Remote storage operation failed. Please try again.</string>
+    <string name="cloud_storage_error_auth">Sign-in failed. Check the username/password or access key.</string>
+    <string name="cloud_storage_error_permission">This account does not have permission to access that item.</string>
+    <string name="cloud_storage_error_not_found">That file or folder does not exist any more.</string>
+    <string name="cloud_storage_error_network">Cannot reach the server. Check the address, port and network.</string>
+    <string name="cloud_storage_error_server">The server returned an error: %s</string>
+    <string name="cloud_storage_error_cleartext">This build blocks plain HTTP. Use an HTTPS address for this connection.</string>
     <string name="cloud_storage_error_read_file">Failed to read the local file</string>
     <string name="cloud_storage_prefix_item">Folder</string>
 
@@ -116,6 +125,12 @@
     <string name="cloud_storage_detail_location">Location</string>
     <string name="cloud_storage_detail_type">Type</string>
     <string name="cloud_storage_detail_modified">Modified</string>
+    <string name="cloud_storage_done">Done</string>\n    <string name="cloud_storage_sort_title">Sort</string>
+    <string name="cloud_storage_sort_name">Name</string>
+    <string name="cloud_storage_sort_date">Modified time</string>
+    <string name="cloud_storage_sort_size">Size</string>
+    <string name="cloud_storage_sort_ascending">Ascending</string>
+    <string name="cloud_storage_sort_descending">Descending</string>
 
     <string name="cloud_storage_smb_port_placeholder">445 (default)</string>
     <string name="cloud_storage_smb_share_placeholder">Optional: leave empty to list shares after saving</string>

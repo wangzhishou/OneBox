@@ -41,7 +41,16 @@ class CloudFileService @Inject constructor(
     suspend fun testConnection(connection: CloudStorageConnection): Result<Unit> =
         withContext(Dispatchers.IO) {
             val ad = adapterOf(connection)
-            ad.listRoots(connection).map { }
+            ad.listRoots(connection).map { roots ->
+                // WebDAV 的 listRoots 是本地合成的单根，不产生请求，光靠它测连接永远成功；
+                // 这里补一次真实的 PROPFIND。
+                if (connection is CloudStorageConnection.WebDav) {
+                    val root = roots.firstOrNull()?.name
+                        ?: defaultRootName(connection)
+                        ?: "/"
+                    ad.listDirectory(connection, root, "").getOrThrow()
+                }
+            }
         }
 
     suspend fun listRoots(connection: CloudStorageConnection): Result<List<CloudBucket>> =
@@ -80,6 +89,26 @@ class CloudFileService @Inject constructor(
         onProgress: ((Float) -> Unit)? = null,
     ): Result<Unit> = withContext(Dispatchers.IO) {
         adapterOf(connection).upload(connection, root, path, body, contentType, onProgress)
+    }
+
+    suspend fun uploadStream(
+        connection: CloudStorageConnection,
+        root: String,
+        path: String,
+        contentType: String,
+        size: Long,
+        openStream: () -> java.io.InputStream?,
+        onProgress: ((Float) -> Unit)? = null,
+    ): Result<Unit> = withContext(Dispatchers.IO) {
+        adapterOf(connection).uploadStream(
+            connection = connection,
+            root = root,
+            path = path,
+            contentType = contentType,
+            size = size,
+            openStream = openStream,
+            onProgress = onProgress,
+        )
     }
 
     suspend fun createDirectory(

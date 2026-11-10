@@ -121,6 +121,47 @@ class WebDavFileSystemAdapter @Inject constructor() : RemoteFileSystemAdapter {
         execute(req.put(finalBody).build()) { response -> }
     }
 
+    override fun uploadStream(
+        connection: CloudStorageConnection,
+        root: String,
+        path: String,
+        contentType: String,
+        size: Long,
+        openStream: () -> java.io.InputStream?,
+        onProgress: ((Float) -> Unit)?,
+    ): Result<Unit> = runCatching {
+        val c = connection.asWebDav()
+        val mediaType = contentType.toMediaTypeOrNull()
+        val body = object : RequestBody() {
+            override fun contentType() = mediaType
+
+            override fun contentLength(): Long = if (size > 0) size else -1L
+
+            override fun writeTo(sink: okio.BufferedSink) {
+                val input = openStream() ?: throw java.io.IOException("Cannot open source file")
+                input.use { stream ->
+                    val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+                    var written = 0L
+                    while (true) {
+                        val read = stream.read(buffer)
+                        if (read == -1) break
+                        sink.write(buffer, 0, read)
+                        written += read
+                        if (size > 0) {
+                            onProgress?.invoke((written.toFloat() / size).coerceIn(0f, 1f))
+                        }
+                    }
+                }
+                onProgress?.invoke(1f)
+            }
+        }
+        val req = newRequest(c, "PUT", buildItemUrl(c, path), body)
+            .newBuilder()
+            .header("Content-Type", contentType)
+            .build()
+        execute(req) { }
+    }
+
     override fun createDirectory(
         connection: CloudStorageConnection,
         root: String,
@@ -191,6 +232,7 @@ class WebDavFileSystemAdapter @Inject constructor() : RemoteFileSystemAdapter {
         c: CloudStorageConnection.WebDav,
         method: String,
         url: okhttp3.HttpUrl,
+        body: RequestBody? = null,
     ): Request {
         val builder = Request.Builder().url(url)
         if (c.username.isNotBlank()) {
@@ -200,7 +242,8 @@ class WebDavFileSystemAdapter @Inject constructor() : RemoteFileSystemAdapter {
             // Basic 认证时直接发 Authorization（用户已同意 Basic 的明文 base64 形式）。
             builder.header("Authorization", c.encodedBasicAuth().orEmpty())
         }
-        return builder.method(method, null).build()
+        // 注意：PUT/POST 传 null body 会被 OkHttp 拒绝（method PUT must have a request body）
+        return builder.method(method, body).build()
     }
 
     private fun buildItemUrl(

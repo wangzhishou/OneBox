@@ -18,6 +18,7 @@ dependencies {
     implementation(libs.androidx.security.crypto)
     implementation(libs.coil)
     implementation(libs.coil.compose)
+    implementation(libs.coil.network.core)
     implementation(libs.hierynomus.smbj)
 
     /**
