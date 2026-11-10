@@ -998,4 +998,8 @@
     <string name="ai_chat_attachment_error">Fehlgeschlagen: %1$s</string>
     <string name="ai_chat_go_to_top">Zum Anfang</string>
     <string name="agent_tool_manage_todo_param_has_due_time">Ob due_date_millis eine genaue Uhrzeit enthält; false bedeutet reines Datum, optional bei create_task</string>
+    <string name="ai_chat_mode_chat_title">Chat-Modus</string>
+    <string name="ai_chat_mode_chat_description">Direkter Chat · Schnelle Antworten</string>
+    <string name="ai_chat_mode_agent_title">Agent-Modus</string>
+    <string name="ai_chat_mode_agent_description">Planen und handeln · Aufgaben automatisch erledigen</string>
 </resources>

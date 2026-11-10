@@ -998,4 +998,8 @@
     <string name="ai_chat_attachment_error">失敗: %1$s</string>
     <string name="ai_chat_go_to_top">先頭に戻る</string>
     <string name="agent_tool_manage_todo_param_has_due_time">due_date_millis に正確な時刻を含むかどうか。false は日付のみを意味し、create_task では省略可能</string>
+    <string name="ai_chat_mode_chat_title">チャットモード</string>
+    <string name="ai_chat_mode_chat_description">即時チャット · すばやく回答</string>
+    <string name="ai_chat_mode_agent_title">エージェントモード</string>
+    <string name="ai_chat_mode_agent_description">計画して実行 · タスクを自動完了</string>
 </resources>

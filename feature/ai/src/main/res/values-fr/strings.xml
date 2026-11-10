@@ -995,4 +995,8 @@
     <string name="ai_chat_attachment_error">Échec : %1$s</string>
     <string name="ai_chat_go_to_top">Retour en haut</string>
     <string name="agent_tool_manage_todo_param_has_due_time">Indique si due_date_millis inclut une heure précise ; false signifie une tâche sans heure, facultatif pour create_task</string>
+    <string name="ai_chat_mode_chat_title">Mode Chat</string>
+    <string name="ai_chat_mode_chat_description">Discussion instantanée · Réponses rapides</string>
+    <string name="ai_chat_mode_agent_title">Mode Agent</string>
+    <string name="ai_chat_mode_agent_description">Planifier et agir · Tâches automatiques</string>
 </resources>

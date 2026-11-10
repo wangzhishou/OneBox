@@ -998,4 +998,8 @@
     <string name="ai_chat_attachment_error">실패: %1$s</string>
     <string name="ai_chat_go_to_top">맨 위로 이동</string>
     <string name="agent_tool_manage_todo_param_has_due_time">due_date_millis에 정확한 시간이 포함되는지 여부. false는 날짜만 표시하며 create_task에서 선택 사항</string>
+    <string name="ai_chat_mode_chat_title">채팅 모드</string>
+    <string name="ai_chat_mode_chat_description">즉시 대화 · 빠른 답변</string>
+    <string name="ai_chat_mode_agent_title">에이전트 모드</string>
+    <string name="ai_chat_mode_agent_description">계획 및 실행 · 작업 자동 완료</string>
 </resources>

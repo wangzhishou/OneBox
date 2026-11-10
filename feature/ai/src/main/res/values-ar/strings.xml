@@ -998,4 +998,8 @@
     <string name="ai_chat_attachment_error">فشل: %1$s</string>
     <string name="ai_chat_go_to_top">العودة إلى الأعلى</string>
     <string name="agent_tool_manage_todo_param_has_due_time">هل يتضمن due_date_millis وقتًا محددًا؛ false يعني مهمة بتاريخ فقط، اختياري في create_task</string>
+    <string name="ai_chat_mode_chat_title">وضع الدردشة</string>
+    <string name="ai_chat_mode_chat_description">محادثة فورية · إجابات سريعة</string>
+    <string name="ai_chat_mode_agent_title">وضع الوكيل</string>
+    <string name="ai_chat_mode_agent_description">التخطيط والتنفيذ · إتمام المهام تلقائيًا</string>
 </resources>

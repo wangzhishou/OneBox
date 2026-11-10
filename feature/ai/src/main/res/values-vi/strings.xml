@@ -995,4 +995,8 @@
     <string name="ai_chat_attachment_error">Thất bại: %1$s</string>
     <string name="ai_chat_go_to_top">Lên đầu trang</string>
     <string name="agent_tool_manage_todo_param_has_due_time">due_date_millis có bao gồm thời gian chính xác hay không; false nghĩa là chỉ có ngày, tùy chọn khi create_task</string>
+    <string name="ai_chat_mode_chat_title">Chế độ Chat</string>
+    <string name="ai_chat_mode_chat_description">Trò chuyện tức thì · Trả lời nhanh</string>
+    <string name="ai_chat_mode_agent_title">Chế độ Agent</string>
+    <string name="ai_chat_mode_agent_description">Lập kế hoạch và hành động · Tác vụ tự động</string>
 </resources>

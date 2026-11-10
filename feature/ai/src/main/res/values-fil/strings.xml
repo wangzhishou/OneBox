@@ -998,4 +998,8 @@
     <string name="ai_chat_attachment_error">Nabigo: %1$s</string>
     <string name="ai_chat_go_to_top">Bumalik sa itaas</string>
     <string name="agent_tool_manage_todo_param_has_due_time">Kung ang due_date_millis ay may eksaktong oras; false ay petsa lamang, opsyonal sa create_task</string>
+    <string name="ai_chat_mode_chat_title">Mode ng Chat</string>
+    <string name="ai_chat_mode_chat_description">Instant na chat · Mabilis na sagot</string>
+    <string name="ai_chat_mode_agent_title">Mode ng Agent</string>
+    <string name="ai_chat_mode_agent_description">Plano at aksyon · Awtomatikong mga gawain</string>
 </resources>
