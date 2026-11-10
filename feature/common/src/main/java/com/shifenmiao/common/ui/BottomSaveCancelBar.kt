@@ -1,6 +1,7 @@
 package com.shifenmiao.common.ui
 
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -19,6 +20,10 @@ fun BottomSaveCancelBar(
     dangerText: String? = null,
     onDangerClick: (() -> Unit)? = null,
     dangerEnabled: Boolean = true,
+    primaryIcon: ImageVector? = null,
+    secondaryIcon: ImageVector? = null,
+    /** BaseScreen 里使用时传 false，避免和内容区的导航栏内边距叠加 */
+    applyNavigationBarsPadding: Boolean = true,
 ) {
     val resolvedSaveText = saveText ?: stringResource(R.string.settings_confirm)
 
@@ -34,5 +39,8 @@ fun BottomSaveCancelBar(
         dangerText = dangerText,
         onDangerClick = onDangerClick,
         dangerEnabled = dangerEnabled,
+        primaryIcon = primaryIcon,
+        secondaryIcon = secondaryIcon,
+        applyNavigationBarsPadding = applyNavigationBarsPadding,
     )
 }

@@ -473,6 +473,8 @@ fun OneBoxBottomActionBar(
     primaryIcon: ImageVector? = null,
     secondaryIcon: ImageVector? = null,
     dangerIcon: ImageVector? = null,
+    /** false 表示外层（BaseScreen）已经加过导航栏内边距，避免叠两次 */
+    applyNavigationBarsPadding: Boolean = true,
 ) {
     GlassSurface(
         modifier = modifier
@@ -488,7 +490,7 @@ fun OneBoxBottomActionBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .navigationBarsPadding()
+                .then(if (applyNavigationBarsPadding) Modifier.navigationBarsPadding() else Modifier)
                 .padding(
                     horizontal = OneBoxDesignSystem.screenPadding,
                     vertical = OneBoxDesignSystem.compactSpacing,

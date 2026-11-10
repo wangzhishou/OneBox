@@ -46,7 +46,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -83,7 +82,6 @@ import com.shifenmiao.lifetime.util.localizedPresetEventName
 import com.shifenmiao.core.R as CoreR
 import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
-import com.wanbaohe.core.ui.utils.provider.LocalWindowSizeClass
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.system.OneBoxSectionCard
@@ -105,8 +103,7 @@ fun LifeTimeScreen(
     val uiState by component.uiState.collectAsState()
     var showEventPicker by rememberSaveable { mutableStateOf(false) }
 
-    // 响应式方案待定：先所有卡片固定 160dp、页面 600dp 居中
-    val pageMaxWidth = 600.dp
+    // 页面铺满窗口宽度，卡片固定 160dp（响应式方案待定）
     val cardWidth = 160.dp
 
     if (showEventPicker) {
@@ -177,9 +174,7 @@ fun LifeTimeScreen(
                 // 平板不再把内容拉满整个屏宽：限 600dp 居中，沙漏另有 420dp 上限
                 modifier = Modifier
                     .weight(1f)
-                    .widthIn(max = pageMaxWidth)
-                    .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally),
+                    .fillMaxWidth(),
                 contentPadding = PaddingValues(
                     horizontal = OneBoxDesignSystem.screenPadding,
                     vertical = OneBoxDesignSystem.compactSpacing

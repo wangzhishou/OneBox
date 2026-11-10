@@ -30,6 +30,8 @@ import com.wanbaohe.base.ui.icon.IconSelectorDisplayMode
 import com.wanbaohe.base.ui.picker.ChineseDatePickerDialog
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.BottomSaveCancelBar
+import com.t8rin.imagetoolbox.core.resources.icons.Check
+import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.shifenmiao.lifetime.R
 import com.shifenmiao.lifetime.component.LifeTimeAddMilestoneComponent
 import com.shifenmiao.lifetime.domain.model.PersonalMilestone
@@ -245,6 +247,10 @@ private fun MilestoneForm(
 
         BottomSaveCancelBar(
             modifier = Modifier.imePadding(),
+            // BaseScreen 已处理导航栏内边距，这里再叠一层会多出一条缝
+            applyNavigationBarsPadding = false,
+            primaryIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check,
+            secondaryIcon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
             onCancel = onCancel,
             onSave = {
                 hasSubmitted = true
