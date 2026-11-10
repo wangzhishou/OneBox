@@ -39,12 +39,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -71,6 +71,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.AccessibilityManager
 import androidx.compose.ui.platform.LocalAccessibilityManager
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastCoerceIn
 import androidx.compose.ui.util.lerp
@@ -89,6 +90,7 @@ import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.helper.ContextUtils.requestStoragePermission
 import com.wanbaohe.core.ui.utils.helper.EnPreview
 import com.wanbaohe.core.ui.utils.provider.LocalScreenSize
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopSheetDefaults
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.icon_shape.IconShapeContainer
@@ -259,7 +261,7 @@ fun Toast(
         ),
         modifier = modifier
             .heightIn(min = 48.dp)
-            .fillMaxWidth()
+            .widthIn(max = ToastDefaults.maxWidth)
             .autoElevatedBorder(
                 color = MaterialTheme.colorScheme
                     .outlineVariant(0.3f, contentColor)
@@ -323,7 +325,7 @@ fun ActionToast(
         ),
         modifier = modifier
             .heightIn(min = 48.dp)
-            .fillMaxWidth()
+            .widthIn(max = ToastDefaults.maxWidth)
             .autoElevatedBorder(
                 color = MaterialTheme.colorScheme
                     .outlineVariant(0.3f, contentColor)
@@ -362,7 +364,7 @@ fun ActionToast(
                 Spacer(modifier = Modifier.width(8.dp))
             }
             Text(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f, fill = false),
                 style = MaterialTheme.typography.bodySmall,
                 text = visuals.message
             )
@@ -546,6 +548,15 @@ object ToastDefaults {
         get() = MaterialTheme.colorScheme.inverseSurface.harmonizeWithPrimary()
 
     val shape: Shape @Composable get() = MaterialTheme.shapes.large
+
+    /**
+     * Toast 的最大宽度 —— [Toast] / [ActionToast] 共用的唯一宽度上限。
+     *
+     * 宽度不再铺满整屏:短文案按内容收成窄胶囊,长文案到这个上限才折行。
+     * 上限与大号浮层 EnhancedModalTopSheet 取同一个值(640dp),平板/横屏上
+     * Toast 与抽屉等宽;窄屏由 [ToastHost] 两侧的 12dp 边距自然收窄,不会贴边。
+     */
+    val maxWidth: Dp = EnhancedTopSheetDefaults.maxWidth
 }
 
 private fun ToastDuration.toMillis(

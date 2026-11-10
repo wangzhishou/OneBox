@@ -107,7 +107,7 @@ fun EnhancedModalTopSheet(
     contentColor: Color = contentColorFor(containerColor),
     scrimColor: Color = EnhancedTopSheetDefaults.scrimColor,
     enableBackHandler: Boolean = true,
-    maxWidth: Dp = 640.dp,
+    maxWidth: Dp = EnhancedTopSheetDefaults.maxWidth,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     // Animation state
@@ -349,6 +349,12 @@ private fun GraphicsLayerScope.calculatePredictiveBackScaleY(progress: Float): F
 }
 
 object EnhancedTopSheetDefaults {
+
+    /**
+     * 浮动面(顶部抽屉)的最大宽度。Toast 也按这个值封顶,
+     * 保证同一套浮动面在平板/横屏上宽度一致 —— 改这里两边一起变。
+     */
+    val maxWidth: Dp = 640.dp
 
     val barContainerColor: Color
         @Composable
