@@ -37,19 +37,14 @@ fun BucketSwitcherSheet(
     EnhancedModalBottomSheet(
         visible = true,
         onDismiss = { if (!it) onDismiss() },
-        dragHandle = { },
+        title = stringResource(R.string.cloud_storage_bucket_sheet_title),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(OneBoxDesignSystem.screenPadding)
-                .navigationBarsPadding(),
+                .padding(OneBoxDesignSystem.screenPadding),
             verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing),
         ) {
-            Text(
-                text = stringResource(R.string.cloud_storage_bucket_sheet_title),
-                style = MaterialTheme.typography.titleLarge,
-            )
 
             if (buckets.isEmpty()) {
                 GlassSurface(

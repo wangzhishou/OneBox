@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -66,20 +67,16 @@ fun ObjectDetailSheet(
     EnhancedModalBottomSheet(
         visible = true,
         onDismiss = { if (!it) onDismiss() },
+        title = item.displayName,
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .navigationBarsPadding()
                 .verticalScroll(rememberScrollState())
                 .padding(OneBoxDesignSystem.screenPadding),
             verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing),
         ) {
-            Text(
-                text = item.displayName,
-                style = MaterialTheme.typography.titleLarge,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-            )
             OneBoxSectionCard {
                 if (item.isImage && previewModel != null) {
                     var isError by remember(previewModel) { mutableStateOf(false) }

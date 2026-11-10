@@ -131,6 +131,9 @@
     <string name="cloud_storage_sort_size">大小</string>
     <string name="cloud_storage_sort_ascending">升序</string>
     <string name="cloud_storage_sort_descending">降序</string>
+    <string name="cloud_storage_switch_to_list">切换到列表视图</string>
+    <string name="cloud_storage_switch_to_grid">切换到网格视图</string>
+    <string name="cloud_storage_testing">测试中...</string>
 
     <string name="cloud_storage_smb_port_placeholder">445（默认）</string>
     <string name="cloud_storage_smb_share_placeholder">可选：留空保存后可列举 share</string>

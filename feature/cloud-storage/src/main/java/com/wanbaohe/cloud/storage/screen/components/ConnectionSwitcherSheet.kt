@@ -1,32 +1,41 @@
 package com.wanbaohe.cloud.storage.screen.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.cloud.storage.R
 import com.wanbaohe.cloud.storage.model.CloudStorageConnection
-import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCloudStorage
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 
@@ -37,41 +46,36 @@ fun ConnectionSwitcherSheet(
     onDismiss: () -> Unit,
     onSwitch: (String) -> Unit,
     onAdd: () -> Unit,
-    onManage: (CloudStorageConnection) -> Unit,
+    onEdit: (CloudStorageConnection) -> Unit,
+    onDelete: (CloudStorageConnection) -> Unit,
 ) {
     EnhancedModalBottomSheet(
         visible = true,
         onDismiss = { if (!it) onDismiss() },
-        dragHandle = { },
+        title = stringResource(R.string.cloud_storage_connection_label),
+        endContent = {
+            TextButton(onClick = onAdd) {
+                Icon(
+                    imageVector = Icons.Outlined.Add,
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp),
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = stringResource(com.shifenmiao.core.R.string.new_add),
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
+            }
+        },
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(OneBoxDesignSystem.screenPadding)
-                .navigationBarsPadding(),
+                .navigationBarsPadding()
+                .padding(OneBoxDesignSystem.screenPadding),
             verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing),
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = stringResource(R.string.cloud_storage_connection_label),
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.weight(1f),
-                )
-                IconButton(
-                    onClick = onAdd,
-                    modifier = Modifier.size(40.dp),
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Add,
-                        contentDescription = stringResource(R.string.cloud_storage_add_connection),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-                }
-            }
-
             if (connections.isEmpty()) {
                 GlassSurface(
                     shape = RoundedCornerShape(16.dp),
@@ -111,6 +115,8 @@ fun ConnectionSwitcherSheet(
                         } else {
                             MaterialTheme.colorScheme.onSurface
                         }
+                        var menuExpanded by remember(conn.id) { mutableStateOf(false) }
+
                         GlassSurface(
                             onClick = {
                                 onSwitch(conn.id)
@@ -143,7 +149,7 @@ fun ConnectionSwitcherSheet(
                                         )
                                         if (isCurrent) {
                                             Icon(
-                                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check,
+                                                imageVector = Icons.Outlined.Check,
                                                 contentDescription = null,
                                                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
                                                 modifier = Modifier
@@ -160,21 +166,47 @@ fun ConnectionSwitcherSheet(
                                     )
                                 }
 
-                                // 连接管理入口：编辑 / 删除（删除只清本机配置，不动云端文件）
-                                IconButton(
-                                    onClick = { onManage(conn) },
-                                    modifier = Modifier.size(40.dp),
-                                ) {
-                                    Icon(
-                                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
-                                        contentDescription = stringResource(R.string.cloud_storage_manage_connections),
-                                        tint = if (isCurrent) {
-                                            MaterialTheme.colorScheme.onPrimaryContainer
-                                        } else {
-                                            MaterialTheme.colorScheme.onSurfaceVariant
-                                        },
-                                        modifier = Modifier.size(20.dp),
-                                    )
+                                // 更多：编辑 / 删除，用全局气泡菜单
+                                Box {
+                                    IconButton(
+                                        onClick = { menuExpanded = true },
+                                        modifier = Modifier.size(40.dp),
+                                    ) {
+                                        Icon(
+                                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
+                                            contentDescription = stringResource(R.string.cloud_storage_manage_connections),
+                                            tint = if (isCurrent) {
+                                                MaterialTheme.colorScheme.onPrimaryContainer
+                                            } else {
+                                                MaterialTheme.colorScheme.onSurfaceVariant
+                                            },
+                                            modifier = Modifier.size(20.dp),
+                                        )
+                                    }
+                                    EnhancedDropdownMenu(
+                                        expanded = menuExpanded,
+                                        onDismissRequest = { menuExpanded = false },
+                                    ) {
+                                        DropdownMenuItem(
+                                            text = { Text(stringResource(R.string.cloud_storage_edit_connection)) },
+                                            onClick = {
+                                                menuExpanded = false
+                                                onEdit(conn)
+                                            },
+                                        )
+                                        DropdownMenuItem(
+                                            text = {
+                                                Text(
+                                                    text = stringResource(R.string.cloud_storage_delete_connection),
+                                                    color = MaterialTheme.colorScheme.error,
+                                                )
+                                            },
+                                            onClick = {
+                                                menuExpanded = false
+                                                onDelete(conn)
+                                            },
+                                        )
+                                    }
                                 }
                             }
                         }

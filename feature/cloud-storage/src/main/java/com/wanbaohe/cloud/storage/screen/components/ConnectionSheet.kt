@@ -112,38 +112,47 @@ fun ConnectionSheet(
     EnhancedModalBottomSheet(
         visible = true,
         onDismiss = { if (!it) onDismiss() },
-        dragHandle = { },
+        title = stringResource(R.string.cloud_storage_connection_sheet_title),
+        confirmButton = {
+            OneSecondaryButton(
+                text = if (isTesting) {
+                    stringResource(R.string.cloud_storage_testing)
+                } else {
+                    stringResource(R.string.cloud_storage_test_connection)
+                },
+                onClick = {
+                    isTesting = true
+                    onTestConnection(currentConnection) { res ->
+                        isTesting = false
+                        res.fold(
+                            onSuccess = {
+                                Toast.makeText(context, testConnectionSuccessStr, Toast.LENGTH_SHORT).show()
+                            },
+                            onFailure = {
+                                val err = it.message ?: ""
+                                Toast.makeText(context, "$testConnectionFailedStr: $err", Toast.LENGTH_LONG).show()
+                            }
+                        )
+                    }
+                },
+                enabled = isInputValid && !isTesting,
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            OnePrimaryButton(
+                text = stringResource(R.string.cloud_storage_save_connection),
+                onClick = { onSave(currentConnection) },
+                enabled = isInputValid && !isTesting,
+            )
+        },
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .imePadding()
-                .navigationBarsPadding()
                 .verticalScroll(rememberScrollState())
                 .padding(OneBoxDesignSystem.screenPadding),
             verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing),
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = stringResource(R.string.cloud_storage_connection_sheet_title),
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.weight(1f),
-                )
-                IconButton(
-                    onClick = onDismiss,
-                    modifier = Modifier.size(36.dp),
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
-                        contentDescription = stringResource(R.string.cloud_storage_cancel),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            }
-
             // 协议选择：用设置页同款 SelectorField，当前值常驻、选项收进下拉菜单
             SelectorField(
                 label = stringResource(R.string.cloud_storage_protocol_label),
@@ -158,38 +167,6 @@ fun ConnectionSheet(
                 RemoteProtocol.S3_COMPAT -> S3CompatForm(draft = s3Draft)
                 RemoteProtocol.WEB_DAV -> WebDavForm(draft = webDavDraft)
                 RemoteProtocol.SMB -> SmbForm(draft = smbDraft)
-            }
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                OneSecondaryButton(
-                    text = if (isTesting) "Testing..." else stringResource(R.string.cloud_storage_test_connection),
-                    onClick = {
-                        isTesting = true
-                        onTestConnection(currentConnection) { res ->
-                            isTesting = false
-                            res.fold(
-                                onSuccess = {
-                                    Toast.makeText(context, testConnectionSuccessStr, Toast.LENGTH_SHORT).show()
-                                },
-                                onFailure = {
-                                    val err = it.message ?: ""
-                                    Toast.makeText(context, "$testConnectionFailedStr: $err", Toast.LENGTH_LONG).show()
-                                }
-                            )
-                        }
-                    },
-                    enabled = isInputValid && !isTesting,
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                OnePrimaryButton(
-                    text = stringResource(R.string.cloud_storage_save_connection),
-                    onClick = { onSave(currentConnection) },
-                    enabled = isInputValid && !isTesting,
-                )
             }
         }
     }

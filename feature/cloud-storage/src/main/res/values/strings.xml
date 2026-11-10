@@ -131,6 +131,9 @@
     <string name="cloud_storage_sort_size">Size</string>
     <string name="cloud_storage_sort_ascending">Ascending</string>
     <string name="cloud_storage_sort_descending">Descending</string>
+    <string name="cloud_storage_switch_to_list">Switch to list view</string>
+    <string name="cloud_storage_switch_to_grid">Switch to grid view</string>
+    <string name="cloud_storage_testing">Testing...</string>
 
     <string name="cloud_storage_smb_port_placeholder">445 (default)</string>
     <string name="cloud_storage_smb_share_placeholder">Optional: leave empty to list shares after saving</string>

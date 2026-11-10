@@ -37,6 +37,7 @@ import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -65,6 +66,7 @@ import com.wanbaohe.base.ui.empty.EmptyStateGuideAction
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.wanbaohe.core.ui.widget.glass.GlassTonalIconButton
 import com.wanbaohe.core.ui.widget.system.OneBoxBottomActionBar
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
@@ -73,6 +75,7 @@ import com.wanbaohe.cloud.storage.R
 import com.wanbaohe.cloud.storage.data.protocol.ObjectStoragePathResolver
 import com.wanbaohe.cloud.storage.model.CloudBrowserState
 import com.wanbaohe.cloud.storage.model.CloudObjectItem
+import com.wanbaohe.cloud.storage.model.CloudSortMode
 import com.wanbaohe.cloud.storage.model.CloudStorageConnection
 import com.wanbaohe.cloud.storage.model.RemoteProtocol
 import com.wanbaohe.cloud.storage.screen.components.BucketSwitcherSheet
@@ -81,7 +84,6 @@ import com.wanbaohe.cloud.storage.screen.components.ConnectionSheet
 import com.wanbaohe.cloud.storage.screen.components.ConnectionSwitcherSheet
 import com.wanbaohe.cloud.storage.screen.components.ObjectDetailSheet
 import com.wanbaohe.cloud.storage.screen.components.SearchTabContent
-import com.wanbaohe.cloud.storage.screen.components.SortSheet
 import com.wanbaohe.cloud.storage.screen.components.downloadCloudFile
 import com.wanbaohe.cloud.storage.screen.components.SyncPlaceholderTab
 import com.wanbaohe.cloud.storage.screenLogic.CloudStorageComponent
@@ -95,7 +97,9 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineFolder
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWarning
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCloudUpload
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineSort
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineArrowDownward
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineCreateNewFolder
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineViewList
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAutoFix
 
 @Composable
@@ -126,10 +130,9 @@ fun CloudStorageScreen(
     val selectedItems = remember { mutableStateMapOf<String, CloudObjectItem>() }
     var pendingDeleteItems by remember { mutableStateOf<List<CloudObjectItem>>(emptyList()) }
     var pendingDeleteConnection by remember { mutableStateOf<CloudStorageConnection?>(null) }
-    var managingConnection by remember { mutableStateOf<CloudStorageConnection?>(null) }
     var searchActive by remember { mutableStateOf(false) }
     var filterQuery by remember { mutableStateOf("") }
-    var showSortSheet by remember { mutableStateOf(false) }
+    var sortMenuExpanded by remember { mutableStateOf(false) }
     val downloadScope = rememberCoroutineScope()
 
     val uploadLauncher =
@@ -241,13 +244,17 @@ fun CloudStorageScreen(
                                 if (currentPrefix.isNotBlank()) component.navigateUp()
                             },
                             enabled = currentPrefix.isNotBlank(),
-                            modifier = Modifier.size(36.dp)
+                            modifier = Modifier.size(32.dp)
                         ) {
                             Icon(
-                                imageVector = if (currentPrefix.isNotBlank()) com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ArrowUpward else Icons.Outlined.Folder,
-                                contentDescription = null,
-                                tint = if (currentPrefix.isNotBlank()) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.5f),
-                                modifier = Modifier.size(22.dp)
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ArrowUpward,
+                                contentDescription = stringResource(R.string.cloud_storage_up_action),
+                                tint = if (currentPrefix.isNotBlank()) {
+                                    MaterialTheme.colorScheme.onSurfaceVariant
+                                } else {
+                                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
+                                },
+                                modifier = Modifier.size(16.dp)
                             )
                         }
 
@@ -329,41 +336,111 @@ fun CloudStorageScreen(
 
                         Spacer(modifier = Modifier.width(6.dp))
 
-                        IconButton(
-                            onClick = { showSortSheet = true },
-                            modifier = Modifier.size(36.dp)
-                        ) {
-                            Icon(
-                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSort,
-                                contentDescription = stringResource(R.string.cloud_storage_sort_title),
-                                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                                modifier = Modifier.size(20.dp)
-                            )
+                        // 排序：与文件浏览器一致的「图标 + 名称」按钮 + 全局气泡菜单
+                        Box {
+                            TextButton(onClick = { sortMenuExpanded = true }) {
+                                Icon(
+                                    imageVector = if (sort.ascending) {
+                                        com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ArrowUpward
+                                    } else {
+                                        com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineArrowDownward
+                                    },
+                                    contentDescription = null,
+                                    modifier = Modifier.size(16.dp),
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                                Text(
+                                    text = when (sort.mode) {
+                                        CloudSortMode.NAME -> stringResource(R.string.cloud_storage_sort_name)
+                                        CloudSortMode.DATE -> stringResource(R.string.cloud_storage_sort_date)
+                                        CloudSortMode.SIZE -> stringResource(R.string.cloud_storage_sort_size)
+                                    },
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    maxLines = 1
+                                )
+                            }
+                            EnhancedDropdownMenu(
+                                expanded = sortMenuExpanded,
+                                onDismissRequest = { sortMenuExpanded = false }
+                            ) {
+                                CloudSortMode.entries.forEach { mode ->
+                                    val isSelected = sort.mode == mode
+                                    DropdownMenuItem(
+                                        text = {
+                                            Text(
+                                                text = when (mode) {
+                                                    CloudSortMode.NAME -> stringResource(R.string.cloud_storage_sort_name)
+                                                    CloudSortMode.DATE -> stringResource(R.string.cloud_storage_sort_date)
+                                                    CloudSortMode.SIZE -> stringResource(R.string.cloud_storage_sort_size)
+                                                },
+                                                color = if (isSelected) {
+                                                    MaterialTheme.colorScheme.onPrimaryContainer
+                                                } else {
+                                                    MaterialTheme.colorScheme.onSurface
+                                                }
+                                            )
+                                        },
+                                        onClick = {
+                                            component.setSort(
+                                                if (isSelected) {
+                                                    sort.copy(ascending = !sort.ascending)
+                                                } else {
+                                                    sort.copy(mode = mode, ascending = true)
+                                                }
+                                            )
+                                            sortMenuExpanded = false
+                                        },
+                                        trailingIcon = if (isSelected) {
+                                            {
+                                                Icon(
+                                                    imageVector = if (sort.ascending) {
+                                                        com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ArrowUpward
+                                                    } else {
+                                                        com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineArrowDownward
+                                                    },
+                                                    contentDescription = null,
+                                                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                                                    modifier = Modifier.size(16.dp)
+                                                )
+                                            }
+                                        } else null
+                                    )
+                                }
+                            }
                         }
 
                         IconButton(
                             onClick = component::toggleViewMode,
-                            modifier = Modifier.size(36.dp)
+                            modifier = Modifier.size(32.dp)
                         ) {
                             Icon(
-                                imageVector = if (isGridMode) Icons.AutoMirrored.Outlined.ViewList else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFeatures,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                                modifier = Modifier.size(20.dp)
+                                imageVector = if (isGridMode) {
+                                    com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineViewList
+                                } else {
+                                    com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFeatures
+                                },
+                                contentDescription = stringResource(
+                                    if (isGridMode) {
+                                        R.string.cloud_storage_switch_to_list
+                                    } else {
+                                        R.string.cloud_storage_switch_to_grid
+                                    }
+                                ),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(16.dp)
                             )
                         }
 
-                        Spacer(modifier = Modifier.width(4.dp))
-
                         IconButton(
                             onClick = component::refresh,
-                            modifier = Modifier.size(36.dp)
+                            modifier = Modifier.size(32.dp)
                         ) {
                             Icon(
                                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
                                 contentDescription = stringResource(R.string.cloud_storage_refresh_action),
-                                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                                modifier = Modifier.size(20.dp)
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(16.dp)
                             )
                         }
                     }
@@ -447,6 +524,7 @@ fun CloudStorageScreen(
                 onSecondaryClick = { selectedItems.clear() },
                 primaryEnabled = !busy,
                 secondaryEnabled = !busy,
+                primaryIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
             )
         } else if (hasConnection) {
             OneBoxBottomActionBar(
@@ -454,18 +532,12 @@ fun CloudStorageScreen(
                 onPrimaryClick = { uploadLauncher.launch(arrayOf("*/*")) },
                 secondaryText = stringResource(R.string.cloud_storage_create_folder),
                 onSecondaryClick = { showCreateFolderDialog = true },
+                primaryIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCloudUpload,
+                secondaryIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCreateNewFolder,
             )
         }
     }
 
-
-    if (showSortSheet) {
-        SortSheet(
-            sort = sort,
-            onSelect = { component.setSort(it) },
-            onDismiss = { showSortSheet = false },
-        )
-    }
 
     if (showConnectionSwitcher) {
         ConnectionSwitcherSheet(
@@ -478,9 +550,14 @@ fun CloudStorageScreen(
                 editingConnection = null
                 showConnectionSheet = true
             },
-            onManage = { conn ->
+            onEdit = { conn ->
                 showConnectionSwitcher = false
-                managingConnection = conn
+                editingConnection = conn
+                showConnectionSheet = true
+            },
+            onDelete = { conn ->
+                showConnectionSwitcher = false
+                pendingDeleteConnection = conn
             },
         )
     }
@@ -571,48 +648,6 @@ fun CloudStorageScreen(
             },
             dismissButton = {
                 TextButton(onClick = { pendingDeleteItems = emptyList() }) {
-                    Text(stringResource(R.string.cloud_storage_cancel))
-                }
-            },
-        )
-    }
-
-    if (managingConnection != null) {
-        val target = managingConnection!!
-        EnhancedAlertDialog(
-            visible = true,
-            onDismissRequest = { managingConnection = null },
-            title = {
-                Text(target.displayName.ifBlank { stringResource(target.protocol.titleRes) })
-            },
-            text = {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    TextButton(
-                        onClick = {
-                            managingConnection = null
-                            editingConnection = target
-                            showConnectionSheet = true
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        Text(stringResource(R.string.cloud_storage_edit_connection))
-                    }
-                    TextButton(
-                        onClick = {
-                            managingConnection = null
-                            pendingDeleteConnection = target
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        Text(
-                            text = stringResource(R.string.cloud_storage_delete_connection),
-                            color = MaterialTheme.colorScheme.error,
-                        )
-                    }
-                }
-            },
-            confirmButton = {
-                TextButton(onClick = { managingConnection = null }) {
                     Text(stringResource(R.string.cloud_storage_cancel))
                 }
             },

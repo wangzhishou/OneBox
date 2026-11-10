@@ -470,6 +470,9 @@ fun OneBoxBottomActionBar(
     dangerText: String? = null,
     onDangerClick: (() -> Unit)? = null,
     dangerEnabled: Boolean = true,
+    primaryIcon: ImageVector? = null,
+    secondaryIcon: ImageVector? = null,
+    dangerIcon: ImageVector? = null,
 ) {
     GlassSurface(
         modifier = modifier
@@ -509,6 +512,7 @@ fun OneBoxBottomActionBar(
                         text = dangerText,
                         onClick = onDangerClick,
                         enabled = dangerEnabled,
+                        leadingIcon = dangerIcon,
                     )
                 }
                 if (!secondaryText.isNullOrBlank() && onSecondaryClick != null) {
@@ -516,12 +520,14 @@ fun OneBoxBottomActionBar(
                         text = secondaryText,
                         onClick = onSecondaryClick,
                         enabled = secondaryEnabled,
+                        leadingIcon = secondaryIcon,
                     )
                 }
                 OnePrimaryButton(
                     text = primaryText,
                     onClick = onPrimaryClick,
                     enabled = primaryEnabled,
+                    leadingIcon = primaryIcon,
                 )
             }
         }
