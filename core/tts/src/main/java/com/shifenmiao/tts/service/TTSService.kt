@@ -2,6 +2,8 @@ package com.shifenmiao.tts.service
 
 import com.shifenmiao.model.tts.TTSAudioEntry
 import com.shifenmiao.model.tts.TTSConfig
+import com.shifenmiao.model.tts.TTSProviderDescriptor
+import com.shifenmiao.model.tts.TTSProviderType
 import kotlinx.coroutines.flow.Flow
 import java.io.File
 
@@ -55,6 +57,13 @@ interface TTSService {
         speed: Double? = null,
         tag: String = "",
     ): Result<File>
+
+    fun getProviderDescriptors(): List<TTSProviderDescriptor>
+
+    fun createDefaultConfig(providerType: TTSProviderType): TTSConfig
+
+    /** 自有 token 直连返回 false；只有经过应用代理时才需要登录与积分。 */
+    fun isProxyRoute(config: TTSConfig = getConfig()): Boolean
 
     /**
      * 根据 tag 获取已生成的音频（按创建时间降序）。

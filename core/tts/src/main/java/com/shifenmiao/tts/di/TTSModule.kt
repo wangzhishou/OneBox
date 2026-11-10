@@ -8,6 +8,7 @@ import com.shifenmiao.tts.cache.TTSCacheManagerImpl
 import com.shifenmiao.tts.service.MimoTTSProvider
 import com.shifenmiao.tts.service.OpenAITTSProvider
 import com.shifenmiao.tts.service.TTSCacheManager
+import com.shifenmiao.tts.service.TTSProvider
 import com.shifenmiao.tts.service.TTSService
 import com.shifenmiao.tts.service.TTSServiceImpl
 import dagger.Binds
@@ -15,6 +16,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dagger.multibindings.IntoSet
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -32,6 +34,14 @@ abstract class TTSModule {
     @Binds
     @Singleton
     abstract fun bindTTSCacheManager(impl: TTSCacheManagerImpl): TTSCacheManager
+
+    @Binds
+    @IntoSet
+    abstract fun bindMimoTTSProvider(provider: MimoTTSProvider): TTSProvider
+
+    @Binds
+    @IntoSet
+    abstract fun bindOpenAITTSProvider(provider: OpenAITTSProvider): TTSProvider
 
     companion object {
         // TTSSpeechApi 已迁移 kotlinx.serialization(阶段①):OpenAICompatibleRetrofit 仍属
@@ -77,17 +87,5 @@ abstract class TTSModule {
                 .build()
             return retrofit.create(MimoTTSApi::class.java)
         }
-
-        @Provides
-        @Singleton
-        fun provideOpenAITTSProvider(api: TTSSpeechApi): OpenAITTSProvider =
-            OpenAITTSProvider(api)
-
-        @Provides
-        @Singleton
-        fun provideMimoTTSProvider(
-            @Named("MimoDirectApi") directApi: MimoTTSApi,
-            @Named("MimoProxyApi") proxyApi: MimoTTSApi,
-        ): MimoTTSProvider = MimoTTSProvider(directApi, proxyApi)
     }
 }

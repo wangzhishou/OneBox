@@ -38,7 +38,6 @@ import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
-import com.shifenmiao.base.utils.ActionUtils
 import com.wanbaohe.gomoku.R
 import com.wanbaohe.gomoku.data.GomokuTTSTemplate
 import com.wanbaohe.gomoku.data.GomokuTTSTemplates
@@ -164,7 +163,7 @@ fun GomokuSettingsScreen(
                     icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
                     running = GomokuRouterComponent.SettingsAction.PreviewTTSConfig in runningActions,
                     onClick = {
-                        ActionUtils.showLogin(source = "gomoku_tts_preview") {
+                        component.showTTSLoginIfNeeded(source = "gomoku_tts_preview") {
                             component.previewTTSConfig()
                         }
                     },
@@ -183,17 +182,17 @@ fun GomokuSettingsScreen(
                         customText = settings.ttsTemplateTexts[template.tag] ?: "",
                         onTextChange = { component.updateTTSTemplateText(template.tag, it) },
                         onGenerate = {
-                            ActionUtils.showLogin(source = "gomoku_tts_generate") {
+                            component.showTTSLoginIfNeeded(source = "gomoku_tts_generate") {
                                 component.generateTTS(template, it)
                             }
                         },
                         onRegenerate = {
-                            ActionUtils.showLogin(source = "gomoku_tts_regenerate") {
+                            component.showTTSLoginIfNeeded(source = "gomoku_tts_regenerate") {
                                 component.regenerateTTS(template, it)
                             }
                         },
                         onPlay = { text ->
-                            ActionUtils.showLogin(source = "gomoku_tts_play") {
+                            component.showTTSLoginIfNeeded(source = "gomoku_tts_play") {
                                 component.playTTSAudio(template, text)
                             }
                         },

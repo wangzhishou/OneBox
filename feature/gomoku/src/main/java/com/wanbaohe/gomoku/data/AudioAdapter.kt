@@ -73,7 +73,11 @@ class TtsAdapter @Inject constructor(
         return CachedAudio(audio.filePath)
     }
 
-    override fun isLoggedIn(): Boolean = com.shifenmiao.storage.TokenStorage.getLoginInfo() != null
-
-    override fun canPrepareVoice(): Boolean = isLoggedIn() && ttsService.getConfig().isValid()
+    override fun canPrepareVoice(): Boolean {
+        val config = ttsService.getConfig()
+        return config.isValid() && (
+            !ttsService.isProxyRoute(config) ||
+                com.shifenmiao.storage.TokenStorage.isLogin()
+            )
+    }
 }

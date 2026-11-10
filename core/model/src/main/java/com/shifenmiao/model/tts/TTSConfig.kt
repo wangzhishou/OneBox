@@ -14,10 +14,7 @@ data class TTSConfig(
     val hasDirectConfig: Boolean
         get() = baseUrl.isNotBlank() && apiToken.isNotBlank()
 
-    fun isValid(): Boolean = when (providerType) {
-        TTSProviderType.MIMO -> hasDirectConfig || proxyUrl.isNotBlank()
-        TTSProviderType.OPENAI_COMPATIBLE -> hasDirectConfig || proxyUrl.isNotBlank()
-    }
+    fun isValid(): Boolean = hasDirectConfig || proxyUrl.isNotBlank()
 
     fun useProxy(): Boolean = !hasDirectConfig && proxyUrl.isNotBlank()
 

@@ -538,6 +538,14 @@ class ChessRouterComponent @AssistedInject constructor(
         pauseBeforeLeavingGame { onNavigate(Screen.TTSSettings) }
     }
 
+    fun showTTSLoginIfNeeded(source: String, onSuccess: () -> Unit) {
+        if (ttsService.isProxyRoute()) {
+            ActionUtils.showLogin(source = source, onSuccess = onSuccess)
+        } else {
+            onSuccess()
+        }
+    }
+
     fun generateTTS(template: ChessTTSTemplate, customText: String) {
         runSettingsAction(SettingsAction.GenerateTTS(template.tag)) {
             val text = customText.ifBlank { template.defaultText() }

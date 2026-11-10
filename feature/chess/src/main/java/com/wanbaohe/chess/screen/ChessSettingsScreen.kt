@@ -38,7 +38,6 @@ import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
-import com.shifenmiao.base.utils.ActionUtils
 import com.wanbaohe.chess.R
 import com.wanbaohe.chess.data.ChessTTSTemplate
 import com.wanbaohe.chess.data.ChessTTSTemplates
@@ -165,7 +164,7 @@ fun ChessSettingsScreen(
                     icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
                     running = ChessRouterComponent.SettingsAction.PreviewTTSConfig in runningActions,
                     onClick = {
-                        ActionUtils.showLogin(source = "chess_tts_preview") {
+                        component.showTTSLoginIfNeeded(source = "chess_tts_preview") {
                             component.previewTTSConfig()
                         }
                     },
@@ -184,17 +183,17 @@ fun ChessSettingsScreen(
                         customText = settings.ttsTemplateTexts[template.tag] ?: "",
                         onTextChange = { component.updateTTSTemplateText(template.tag, it) },
                         onGenerate = {
-                            ActionUtils.showLogin(source = "chess_tts_generate") {
+                            component.showTTSLoginIfNeeded(source = "chess_tts_generate") {
                                 component.generateTTS(template, it)
                             }
                         },
                         onRegenerate = {
-                            ActionUtils.showLogin(source = "chess_tts_regenerate") {
+                            component.showTTSLoginIfNeeded(source = "chess_tts_regenerate") {
                                 component.regenerateTTS(template, it)
                             }
                         },
                         onPlay = { text ->
-                            ActionUtils.showLogin(source = "chess_tts_play") {
+                            component.showTTSLoginIfNeeded(source = "chess_tts_play") {
                                 component.playTTSAudio(template, text)
                             }
                         },

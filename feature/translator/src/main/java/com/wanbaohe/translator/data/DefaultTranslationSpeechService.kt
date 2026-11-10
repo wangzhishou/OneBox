@@ -23,17 +23,20 @@ internal class DefaultTranslationSpeechService @Inject constructor(
             audioPlayer.playLocalFile(java.io.File(cached.filePath))
             return SpeechOutcome.Success
         }
-        if (!TokenStorage.isLogin()) return SpeechOutcome.LoginRequired
-        if (!BaseUtils.canConsumePoints(text)) return SpeechOutcome.NoPoints
+        val isProxyRoute = ttsService.isProxyRoute()
+        if (isProxyRoute && !TokenStorage.isLogin()) return SpeechOutcome.LoginRequired
+        if (isProxyRoute && !BaseUtils.canConsumePoints(text)) return SpeechOutcome.NoPoints
         return ttsService.synthesize(text = text, tag = AUDIO_TAG).fold(
             onSuccess = { file ->
                 audioPlayer.playLocalFile(file)
-                val points = BaseUtils.tokenToPoints(StringUtils.calculateTokens(text))
-                BaseUtils.consumePoints(
-                    degree = points,
-                    desc = AppContext.getString(R.string.translation_tts_activity),
-                    source = "translator",
-                )
+                if (isProxyRoute) {
+                    val points = BaseUtils.tokenToPoints(StringUtils.calculateTokens(text))
+                    BaseUtils.consumePoints(
+                        degree = points,
+                        desc = AppContext.getString(R.string.translation_tts_activity),
+                        source = "translator",
+                    )
+                }
                 SpeechOutcome.Success
             },
             onFailure = { SpeechOutcome.Failed(it.message.orEmpty()) },

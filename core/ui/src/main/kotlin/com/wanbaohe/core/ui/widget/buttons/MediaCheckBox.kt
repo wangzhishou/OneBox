@@ -31,7 +31,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -41,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.core.ui.theme.suggestContainerColorBy
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
@@ -105,11 +105,20 @@ fun MediaCheckBox(
                             .background(color),
                         contentAlignment = Alignment.Center
                     ) {
+                        // 底色是 checkedColor(通常是深色的 onXxxContainer), 数字必须走亮色。
+                        // 不能用可组合版 contentColorFor: 它在配色表里查不到 onXxx 这类"前景"
+                        // 角色时会回落到 LocalContentColor(深色 onSurface), 于是深底配深字,
+                        // 多选时的序号就几乎看不见。这里用 ColorScheme.contentColorFor(查不到
+                        // 返回 Unspecified)再按底色明度兜底黑/白, 任何主题下都有对比度。
+                        val counterColor = MaterialTheme.colorScheme
+                            .contentColorFor(color)
+                            .takeOrElse {
+                                if (color.luminance() > 0.5f) Color.Black else Color.White
+                            }
                         AutoSizeText(
                             text = (selectionIndex + 1).toString(),
-                            color = contentColorFor(color).takeOrElse {
-                                if (color.luminance() > 0.5f) Color.Black else Color.White
-                            },
+                            color = counterColor,
+                            fontWeight = FontWeight.Bold,
                             style = MaterialTheme.typography.bodySmall
                         )
                     }

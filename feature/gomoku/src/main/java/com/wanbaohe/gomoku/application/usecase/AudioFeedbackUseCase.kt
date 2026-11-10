@@ -53,7 +53,7 @@ class AudioFeedbackUseCase @Inject constructor(
         play(SoundProfile(status), settings)
     }
 
-    /** 登录且语音开关开着时，把还没有文件的默认句补上。失败则继续用音效。 */
+    /** 配置可用且语音开关开着时，把还没有文件的默认句补上。失败则继续用音效。 */
     suspend fun prepareCustomVoice(settings: AudioSettings) {
         if (!settings.ttsEnabled || !ttsEngine.canPrepareVoice()) return
         for (template in TtsTemplate.ALL) {
@@ -71,7 +71,7 @@ class AudioFeedbackUseCase @Inject constructor(
     }
 
     private suspend fun tryTts(cue: Cue, settings: AudioSettings): Boolean {
-        if (!settings.ttsEnabled || !ttsEngine.isLoggedIn()) return false
+        if (!settings.ttsEnabled) return false
         val template = templateFor(cue)
         val text = lineText(settings, template)
         if (!hasCachedVoice(text, template.tag)) return false

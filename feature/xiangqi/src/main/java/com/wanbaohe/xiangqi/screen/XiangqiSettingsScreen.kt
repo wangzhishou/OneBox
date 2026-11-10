@@ -33,7 +33,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.core.ui.widget.glass.GlassSwitch
-import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.core.R as CoreR
 import com.shifenmiao.model.tts.TTSConfig
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
@@ -164,7 +163,7 @@ fun XiangqiSettingsScreen(
                 CurrentTTSConfigCard(
                     ttsConfig = ttsConfig,
                     onPreview = {
-                        ActionUtils.showLogin(source = "xiangqi_tts_preview") {
+                        component.showTTSLoginIfNeeded(source = "xiangqi_tts_preview") {
                             component.previewTTSConfig()
                         }
                     },
@@ -178,17 +177,17 @@ fun XiangqiSettingsScreen(
                         customText = settings.ttsTemplateTexts[template.tag] ?: "",
                         onTextChange = { component.updateTTSTemplateText(template.tag, it) },
                         onGenerate = {
-                            ActionUtils.showLogin(source = "xiangqi_tts_generate") {
+                            component.showTTSLoginIfNeeded(source = "xiangqi_tts_generate") {
                                 component.generateTTS(template, it)
                             }
                         },
                         onRegenerate = {
-                            ActionUtils.showLogin(source = "xiangqi_tts_regenerate") {
+                            component.showTTSLoginIfNeeded(source = "xiangqi_tts_regenerate") {
                                 component.regenerateTTS(template, it)
                             }
                         },
                         onPlay = { text ->
-                            ActionUtils.showLogin(source = "xiangqi_tts_play") {
+                            component.showTTSLoginIfNeeded(source = "xiangqi_tts_play") {
                                 component.playTTSAudio(template, text)
                             }
                         },

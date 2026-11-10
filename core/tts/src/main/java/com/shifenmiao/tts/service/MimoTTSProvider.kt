@@ -3,19 +3,32 @@ package com.shifenmiao.tts.service
 import android.util.Base64
 import com.shifenmiao.core.constants.UrlConstants
 import com.shifenmiao.model.tts.TTSConfig
+import com.shifenmiao.model.tts.TTSProviderDescriptor
+import com.shifenmiao.model.tts.TTSProviderType
 import com.shifenmiao.model.tts.TTSSpeechRequest
 import com.shifenmiao.model.tts.mimo.MimoAudioConfig
 import com.shifenmiao.model.tts.mimo.MimoMessage
 import com.shifenmiao.model.tts.mimo.MimoTTSRequest
 import com.shifenmiao.network.api.MimoTTSApi
 import javax.inject.Inject
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
 class MimoTTSProvider @Inject constructor(
-    private val directApi: MimoTTSApi,
-    private val proxyApi: MimoTTSApi,
+    @Named("MimoDirectApi") private val directApi: MimoTTSApi,
+    @Named("MimoProxyApi") private val proxyApi: MimoTTSApi,
 ) : TTSProvider {
+
+    override val descriptor = TTSProviderDescriptor(
+        type = TTSProviderType.MIMO,
+        defaultModel = "mimo-v2.5-tts",
+        defaultVoice = "mimo_default",
+        supportedVoices = listOf(
+            "mimo_default", "冰糖", "茉莉", "苏打", "白桦",
+            "Mia", "Chloe", "Milo", "Dean",
+        ),
+    )
 
     override suspend fun synthesize(config: TTSConfig, request: TTSSpeechRequest): Result<ByteArray> {
         return runCatching {
@@ -28,12 +41,11 @@ class MimoTTSProvider @Inject constructor(
                 ),
             )
 
-            val response = if (config.hasDirectConfig) {
+            val response = if (isProxyRoute(config)) {
+                proxyApi.synthesizeViaProxy(proxyEndpointUrl, mimoRequest)
+            } else {
                 val url = config.baseUrl.trim().removeSuffix("/")
                 directApi.synthesize(url, config.apiToken, mimoRequest)
-            } else {
-                val url = proxyEndpointUrl
-                proxyApi.synthesizeViaProxy(url, mimoRequest)
             }
             if (!response.isSuccessful) {
                 throw IllegalStateException("MiMo API error: ${response.code()} ${response.errorBody()?.string()}")
@@ -50,11 +62,7 @@ class MimoTTSProvider @Inject constructor(
         }
     }
 
-    override fun supportedVoices(): List<String> = MIMO_VOICES
-
-    override fun defaultVoice(): String = "mimo_default"
-
-    override fun defaultModel(): String = "mimo-v2.5-tts"
+    override fun isProxyRoute(config: TTSConfig): Boolean = !config.hasDirectConfig
 
     private fun buildMessages(request: TTSSpeechRequest): List<MimoMessage> {
         val text = request.input
@@ -70,11 +78,6 @@ class MimoTTSProvider @Inject constructor(
     }
 
     companion object {
-        private val MIMO_VOICES = listOf(
-            "mimo_default", "冰糖", "茉莉", "苏打", "白桦",
-            "Mia", "Chloe", "Milo", "Dean",
-        )
-
         private val proxyEndpointUrl: String
             get() = UrlConstants.RELEASE_URL + UrlConstants.MIMO_TTS_PROXY_PATH
     }

@@ -3,6 +3,7 @@ package com.shifenmiao.tts.repository
 import android.content.Context
 import com.shifenmiao.model.tts.TTSConfig
 import com.shifenmiao.model.tts.TTSProviderType
+import com.shifenmiao.tts.service.TTSProviderRegistry
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,6 +14,7 @@ import javax.inject.Singleton
 @Singleton
 class TTSConfigRepository @Inject constructor(
     @ApplicationContext context: Context,
+    private val providerRegistry: TTSProviderRegistry,
 ) {
     private val preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
@@ -39,20 +41,14 @@ class TTSConfigRepository @Inject constructor(
     private fun loadConfig(): TTSConfig {
         val storedProviderType = runCatching {
             TTSProviderType.valueOf(
-                preferences.getString(KEY_PROVIDER_TYPE, TTSProviderType.MIMO.name)!!
+                preferences.getString(KEY_PROVIDER_TYPE, TTSProviderType.MIMO.name)
+                    ?: TTSProviderType.MIMO.name
             )
         }.getOrDefault(TTSProviderType.MIMO)
-        val providerType = storedProviderType.asSupportedProvider()
+        val providerType = storedProviderType.takeIf(providerRegistry::contains)
+            ?: providerRegistry.fallbackType()
+        val defaults = providerRegistry.createDefaultConfig(providerType)
         val shouldUseProviderDefaults = storedProviderType != providerType
-
-        val defaultModel = when (providerType) {
-            TTSProviderType.MIMO -> "mimo-v2.5-tts"
-            TTSProviderType.OPENAI_COMPATIBLE -> "tts-1"
-        }
-        val defaultVoice = when (providerType) {
-            TTSProviderType.MIMO -> "mimo_default"
-            TTSProviderType.OPENAI_COMPATIBLE -> "alloy"
-        }
 
         return TTSConfig(
             providerType = providerType,
@@ -62,22 +58,17 @@ class TTSConfigRepository @Inject constructor(
             proxyPath = preferences.getString(KEY_PROXY_PATH, "") ?: "",
             proxyToken = preferences.getString(KEY_PROXY_TOKEN, "") ?: "",
             model = if (shouldUseProviderDefaults) {
-                defaultModel
+                defaults.model
             } else {
-                preferences.getString(KEY_MODEL, defaultModel) ?: defaultModel
+                preferences.getString(KEY_MODEL, defaults.model) ?: defaults.model
             },
             defaultVoice = if (shouldUseProviderDefaults) {
-                defaultVoice
+                defaults.defaultVoice
             } else {
-                preferences.getString(KEY_VOICE, defaultVoice) ?: defaultVoice
+                preferences.getString(KEY_VOICE, defaults.defaultVoice) ?: defaults.defaultVoice
             },
             defaultSpeed = preferences.getFloat(KEY_SPEED, 1.0f).toDouble(),
         )
-    }
-
-    private fun TTSProviderType.asSupportedProvider(): TTSProviderType = when (this) {
-        TTSProviderType.MIMO -> TTSProviderType.MIMO
-        TTSProviderType.OPENAI_COMPATIBLE -> TTSProviderType.MIMO
     }
 
     companion object {

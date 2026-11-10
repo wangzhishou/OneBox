@@ -1,7 +1,8 @@
 package com.shifenmiao.tts.service
 
-import com.shifenmiao.model.tts.TTSConfig
 import com.shifenmiao.model.tts.TTSAudioEntry
+import com.shifenmiao.model.tts.TTSConfig
+import com.shifenmiao.model.tts.TTSProviderDescriptor
 import com.shifenmiao.model.tts.TTSProviderType
 import com.shifenmiao.model.tts.TTSSpeechRequest
 import com.shifenmiao.tts.repository.TTSAudioRepository
@@ -19,8 +20,7 @@ class TTSServiceImpl @Inject constructor(
     private val configRepository: TTSConfigRepository,
     private val audioRepository: TTSAudioRepository,
     private val cacheManager: TTSCacheManager,
-    private val openAIProvider: OpenAITTSProvider,
-    private val mimoProvider: MimoTTSProvider,
+    private val providerRegistry: TTSProviderRegistry,
 ) : TTSService {
 
     override suspend fun synthesize(
@@ -90,27 +90,24 @@ class TTSServiceImpl @Inject constructor(
                 audioRepository.deleteAudio(hash)
             }
 
-            // 1. 检查缓存
             if (!forceRefresh) {
                 cacheManager.getCacheFile(hash)?.let { cachedFile ->
                     audioRepository.getAudioByHash(hash)?.let { return@runCatching cachedFile }
                 }
             }
 
-            // 2. 调用 Provider 合成
             val request = TTSSpeechRequest(
                 model = config.model,
                 input = text,
                 voice = resolvedVoice,
                 speed = resolvedSpeed,
             )
-            val provider = resolveProvider(config.providerType)
-            val bytes = provider.synthesize(config, request).getOrThrow()
+            val bytes = providerRegistry.get(config.providerType)
+                .synthesize(config, request)
+                .getOrThrow()
 
-            // 3. 保存到缓存
             val file = cacheManager.saveToCache(hash, bytes)
 
-            // 4. 保存数据库记录
             val entry = TTSAudioEntry(
                 id = hash,
                 text = text,
@@ -126,6 +123,15 @@ class TTSServiceImpl @Inject constructor(
             file
         }
     }
+
+    override fun getProviderDescriptors(): List<TTSProviderDescriptor> =
+        providerRegistry.getDescriptors()
+
+    override fun createDefaultConfig(providerType: TTSProviderType): TTSConfig =
+        providerRegistry.createDefaultConfig(providerType)
+
+    override fun isProxyRoute(config: TTSConfig): Boolean =
+        providerRegistry.get(config.providerType).isProxyRoute(config)
 
     override fun getAudiosByTag(tag: String): Flow<List<TTSAudioEntry>> {
         return audioRepository.getAudiosByTag(tag)
@@ -160,13 +166,6 @@ class TTSServiceImpl @Inject constructor(
     }
 
     override suspend fun getCacheSize(): Long = cacheManager.getCacheSize()
-
-    private fun resolveProvider(type: TTSProviderType): TTSProvider {
-        return when (type) {
-            TTSProviderType.OPENAI_COMPATIBLE -> openAIProvider
-            TTSProviderType.MIMO -> mimoProvider
-        }
-    }
 
     private fun computeHash(
         text: String,

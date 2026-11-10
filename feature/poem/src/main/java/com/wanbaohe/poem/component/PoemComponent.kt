@@ -221,14 +221,21 @@ class PoemComponent @AssistedInject internal constructor(
         }
     }
 
-    /** 诗朗诵:播放中/合成中再点 = 停止;否则过登录+积分门槛后合成并播放(命中 TTS 缓存免费直播) */
+    /** 诗朗诵:直连免费;代理合成需登录与积分。 */
     fun toggleRecite() {
         if (uiState.value.isReciting || uiState.value.isSynthesizingSpeech) {
             stopRecite()
             return
         }
         val poem = uiState.value.poem ?: return
-        withAiGate(source = "poem_recite", poem = poem) { startRecite(poem) }
+        val isProxyRoute = ttsService.isProxyRoute()
+        if (isProxyRoute) {
+            withAiGate(source = "poem_recite", poem = poem) {
+                startRecite(poem, shouldConsumePoints = true)
+            }
+        } else {
+            startRecite(poem, shouldConsumePoints = false)
+        }
     }
 
     /** 停止朗诵(页面退出时必须调用,避免音频残留播放) */
@@ -241,7 +248,7 @@ class PoemComponent @AssistedInject internal constructor(
 
     private var reciteJob: Job? = null
 
-    private fun startRecite(poem: Poem) {
+    private fun startRecite(poem: Poem, shouldConsumePoints: Boolean) {
         reciteJob?.cancel()
         reciteJob = componentScope.launch {
             val text = buildReciteText(poem)
@@ -253,15 +260,16 @@ class PoemComponent @AssistedInject internal constructor(
             _uiState.update { it.copy(isSynthesizingSpeech = true) }
             ttsService.synthesize(text = text, tag = RECITE_TTS_TAG)
                 .onSuccess { file ->
-                    // TTS 接口无 usage 返回,按文本量估扣
-                    val tokens = StringUtils.calculateTokens(text)
-                    if (tokens > 0) {
-                        runCatching {
-                            BaseUtils.consumePoints(
-                                degree = BaseUtils.tokenToPoints(tokens),
-                                desc = "诗朗诵",
-                                source = "poem_recite",
-                            )
+                    if (shouldConsumePoints) {
+                        val tokens = StringUtils.calculateTokens(text)
+                        if (tokens > 0) {
+                            runCatching {
+                                BaseUtils.consumePoints(
+                                    degree = BaseUtils.tokenToPoints(tokens),
+                                    desc = "诗朗诵",
+                                    source = "poem_recite",
+                                )
+                            }
                         }
                     }
                     playReciteFile(file)

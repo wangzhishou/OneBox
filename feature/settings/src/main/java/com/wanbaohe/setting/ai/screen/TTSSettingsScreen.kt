@@ -12,10 +12,10 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Refresh
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -41,16 +41,19 @@ import com.shifenmiao.base.audio.NetworkAudioPlayer
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.model.tts.TTSConfig
+import com.shifenmiao.model.tts.TTSProviderDescriptor
 import com.shifenmiao.model.tts.TTSProviderType
 import com.shifenmiao.tts.service.TTSService
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.core.ui.widget.system.OneBoxDangerButton
 import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
+import com.wanbaohe.core.ui.widget.system.SelectorField
 import com.t8rin.imagetoolbox.core.utils.getString
 import com.wanbaohe.settings.R
 import kotlinx.coroutines.Dispatchers
@@ -93,8 +96,11 @@ internal fun TTSSettingsContent(
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
+    val providerDescriptors = remember(ttsService) {
+        ttsService.getProviderDescriptors().filter { it.isSelectable }
+    }
     var providerType by remember(config.providerType) {
-        mutableStateOf(config.providerType.asSupportedTtsProvider())
+        mutableStateOf(config.providerType)
     }
     var baseUrl by remember(config.baseUrl) { mutableStateOf(config.baseUrl) }
     var apiToken by remember(config.apiToken) { mutableStateOf(config.apiToken) }
@@ -110,14 +116,15 @@ internal fun TTSSettingsContent(
     var showResetConfirmDialog by remember { mutableStateOf(false) }
 
     val isActionRunning = isSaving || isResetting || isPreviewing || isClearingCache
-    val draftConfig = buildDraftConfig(
+    val draftConfig = config.copy(
         providerType = providerType,
-        baseUrl = baseUrl,
-        apiToken = apiToken,
-        model = model,
-        voice = voice,
-        speed = speed,
+        baseUrl = baseUrl.trim(),
+        apiToken = apiToken.trim(),
+        model = model.trim(),
+        defaultVoice = voice.trim(),
+        defaultSpeed = speed.toDoubleOrNull() ?: 1.0,
     )
+    val providerDescriptor = providerDescriptors.firstOrNull { it.type == providerType }
 
     suspend fun refreshCacheSize() {
         cacheSize = withContext(Dispatchers.IO) { ttsService.getCacheSize() }
@@ -143,28 +150,34 @@ internal fun TTSSettingsContent(
         }
     }
 
-    fun previewCurrentVoice() {
-        ActionUtils.showLogin(source = "tts_preview") {
-            coroutineScope.launch {
-                isPreviewing = true
-                runCatching {
-                    val file = withContext(Dispatchers.IO) {
-                        ttsService.synthesizeWithConfig(
-                            config = draftConfig,
-                            text = getString(R.string.tts_settings_preview_text),
-                            tag = "tts-test",
-                            forceRefresh = true,
-                        ).getOrThrow()
-                    }
-                    networkAudioPlayer.playLocalFile(file)
-                }.onSuccess {
-                    refreshCacheSize()
-                    AppToastHost.showToast(getString(R.string.tts_settings_preview_success))
-                }.onFailure {
-                    AppToastHost.showFailureToast(it)
+    fun runPreview() {
+        coroutineScope.launch {
+            isPreviewing = true
+            runCatching {
+                val file = withContext(Dispatchers.IO) {
+                    ttsService.synthesizeWithConfig(
+                        config = draftConfig,
+                        text = getString(R.string.tts_settings_preview_text),
+                        tag = "tts-test",
+                        forceRefresh = true,
+                    ).getOrThrow()
                 }
-                isPreviewing = false
+                networkAudioPlayer.playLocalFile(file)
+            }.onSuccess {
+                refreshCacheSize()
+                AppToastHost.showToast(getString(R.string.tts_settings_preview_success))
+            }.onFailure {
+                AppToastHost.showFailureToast(it)
             }
+            isPreviewing = false
+        }
+    }
+
+    fun previewCurrentVoice() {
+        if (ttsService.isProxyRoute(draftConfig)) {
+            ActionUtils.showLogin(source = "tts_preview", onSuccess = ::runPreview)
+        } else {
+            runPreview()
         }
     }
 
@@ -177,8 +190,14 @@ internal fun TTSSettingsContent(
     ) {
         SettingsSection(title = stringResource(R.string.tts_settings_engine_section)) {
             ProviderSelector(
+                descriptors = providerDescriptors,
                 selected = providerType,
-                onSelect = { providerType = it },
+                onSelect = { selectedType ->
+                    providerType = selectedType
+                    val defaults = ttsService.createDefaultConfig(selectedType)
+                    model = defaults.model
+                    voice = defaults.defaultVoice
+                },
             )
         }
 
@@ -231,7 +250,7 @@ internal fun TTSSettingsContent(
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
             )
-            if (providerType == TTSProviderType.MIMO && baseUrl.isBlank() && apiToken.isBlank()) {
+            if (ttsService.isProxyRoute(draftConfig)) {
                 Text(
                     text = stringResource(R.string.tts_settings_proxy_hint),
                     style = MaterialTheme.typography.bodySmall,
@@ -247,10 +266,7 @@ internal fun TTSSettingsContent(
                 label = { Text(stringResource(R.string.tts_settings_model_label)) },
                 placeholder = {
                     Text(
-                        text = when (providerType) {
-                            TTSProviderType.MIMO -> "mimo-v2.5-tts"
-                            TTSProviderType.OPENAI_COMPATIBLE -> "tts-1"
-                        },
+                        text = providerDescriptor?.defaultModel.orEmpty(),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
@@ -264,10 +280,7 @@ internal fun TTSSettingsContent(
                 label = { Text(stringResource(R.string.tts_settings_voice_label)) },
                 placeholder = {
                     Text(
-                        text = when (providerType) {
-                            TTSProviderType.MIMO -> "mimo_default"
-                            TTSProviderType.OPENAI_COMPATIBLE -> "alloy"
-                        },
+                        text = providerDescriptor?.defaultVoice.orEmpty(),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
@@ -275,8 +288,10 @@ internal fun TTSSettingsContent(
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
             )
-            if (providerType == TTSProviderType.MIMO) {
-                MimoVoicePicker(
+            val supportedVoices = providerDescriptor?.supportedVoices.orEmpty()
+            if (supportedVoices.isNotEmpty()) {
+                VoicePresetPicker(
+                    voices = supportedVoices,
                     selectedVoice = voice,
                     onSelect = { voice = it },
                     action = {
@@ -441,7 +456,9 @@ internal fun TTSSettingsContent(
                             isResetting = true
                             runCatching {
                                 withContext(Dispatchers.IO) {
-                                    ttsService.updateConfig(providerType.emptyConfig())
+                                    ttsService.updateConfig(
+                                        ttsService.createDefaultConfig(providerType)
+                                    )
                                 }
                             }.onSuccess {
                                 AppToastHost.showToast(getString(R.string.tts_settings_reset_success))
@@ -486,20 +503,21 @@ private fun PreviewActionButton(
     }
 }
 
-private val MIMO_VOICES = listOf(
-    Pair("mimo_default", "MiMo-默认"),
-    Pair("冰糖", "冰糖 · 中文女"),
-    Pair("茉莉", "茉莉 · 中文女"),
-    Pair("苏打", "苏打 · 中文男"),
-    Pair("白桦", "白桦 · 中文男"),
-    Pair("Mia", "Mia · 英文女"),
-    Pair("Chloe", "Chloe · 英文女"),
-    Pair("Milo", "Milo · 英文男"),
-    Pair("Dean", "Dean · 英文男"),
+private val VOICE_LABELS = mapOf(
+    "mimo_default" to "MiMo-默认",
+    "冰糖" to "冰糖 · 中文女",
+    "茉莉" to "茉莉 · 中文女",
+    "苏打" to "苏打 · 中文男",
+    "白桦" to "白桦 · 中文男",
+    "Mia" to "Mia · 英文女",
+    "Chloe" to "Chloe · 英文女",
+    "Milo" to "Milo · 英文男",
+    "Dean" to "Dean · 英文男",
 )
 
 @Composable
-private fun MimoVoicePicker(
+private fun VoicePresetPicker(
+    voices: List<String>,
     selectedVoice: String,
     onSelect: (String) -> Unit,
     action: (@Composable () -> Unit)? = null,
@@ -521,27 +539,25 @@ private fun MimoVoicePicker(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            MIMO_VOICES.forEach { (id, label) ->
+            voices.forEach { id ->
                 val isSelected = selectedVoice == id
-                val shape = RoundedCornerShape(12.dp)
-                GlassSurface(
-                    modifier = Modifier,
-                    style = if (isSelected) GlassStyle.Dense else GlassStyle.Thin,
-                    shape = shape,
+                GlassFilterChip(
+                    selected = isSelected,
                     onClick = { onSelect(id) },
-                ) {
-                    Text(
-                        text = label,
-                        modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
-                        style = MaterialTheme.typography.bodySmall,
-                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                        color = if (isSelected) {
-                            MaterialTheme.colorScheme.onPrimaryContainer
-                        } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant
-                        },
-                    )
-                }
+                    label = {
+                        Text(
+                            text = VOICE_LABELS[id] ?: id,
+                            style = MaterialTheme.typography.bodySmall,
+                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                        )
+                    },
+                    colors = FilterChipDefaults.filterChipColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                        labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                        selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    ),
+                )
             }
         }
     }
@@ -549,48 +565,17 @@ private fun MimoVoicePicker(
 
 @Composable
 private fun ProviderSelector(
+    descriptors: List<TTSProviderDescriptor>,
     selected: TTSProviderType,
     onSelect: (TTSProviderType) -> Unit,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        SUPPORTED_TTS_PROVIDERS.forEach { type ->
-            GlassSurface(
-                modifier = Modifier.fillMaxWidth(),
-                style = if (selected == type) GlassStyle.Dense else GlassStyle.Medium,
-                onClick = { onSelect(type) },
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    Text(
-                        text = when (type) {
-                            TTSProviderType.OPENAI_COMPATIBLE -> stringResource(R.string.tts_settings_provider_openai)
-                            TTSProviderType.MIMO -> stringResource(R.string.tts_settings_provider_mimo)
-                        },
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = if (selected == type) FontWeight.Bold else FontWeight.Normal,
-                    )
-                    if (selected == type) {
-                        Text(
-                            text = "✓",
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            fontWeight = FontWeight.Bold,
-                        )
-                    }
-                }
-            }
-        }
-    }
+    SelectorField(
+        selected = selected,
+        options = descriptors.map { it.type },
+        optionLabel = { stringResource(it.labelRes()) },
+        onSelect = onSelect,
+    )
 }
-
-private val SUPPORTED_TTS_PROVIDERS = listOf(
-    TTSProviderType.MIMO,
-    // TTSProviderType.OPENAI_COMPATIBLE,
-)
 
 @Composable
 private fun SettingsSection(
@@ -614,22 +599,6 @@ private fun SettingsSection(
     }
 }
 
-private fun buildDraftConfig(
-    providerType: TTSProviderType,
-    baseUrl: String,
-    apiToken: String,
-    model: String,
-    voice: String,
-    speed: String,
-): TTSConfig = TTSConfig(
-    providerType = providerType,
-    baseUrl = baseUrl.trim(),
-    apiToken = apiToken.trim(),
-    model = model.trim(),
-    defaultVoice = voice.trim(),
-    defaultSpeed = speed.toDoubleOrNull() ?: 1.0,
-)
-
 private fun TTSProviderType.endpointPlaceholderRes(): Int = when (this) {
     TTSProviderType.MIMO -> R.string.tts_settings_mimo_endpoint_placeholder
     TTSProviderType.OPENAI_COMPATIBLE -> R.string.tts_settings_openai_endpoint_placeholder
@@ -638,25 +607,5 @@ private fun TTSProviderType.endpointPlaceholderRes(): Int = when (this) {
 private fun TTSProviderType.labelRes(): Int = when (this) {
     TTSProviderType.MIMO -> R.string.tts_settings_provider_mimo
     TTSProviderType.OPENAI_COMPATIBLE -> R.string.tts_settings_provider_openai
-}
-
-private fun TTSProviderType.emptyConfig(): TTSConfig = TTSConfig(
-    providerType = this,
-    baseUrl = "",
-    apiToken = "",
-    model = when (this) {
-        TTSProviderType.MIMO -> "mimo-v2.5-tts"
-        TTSProviderType.OPENAI_COMPATIBLE -> "tts-1"
-    },
-    defaultVoice = when (this) {
-        TTSProviderType.MIMO -> "mimo_default"
-        TTSProviderType.OPENAI_COMPATIBLE -> "alloy"
-    },
-    defaultSpeed = 1.0,
-)
-
-private fun TTSProviderType.asSupportedTtsProvider(): TTSProviderType = when (this) {
-    TTSProviderType.MIMO -> TTSProviderType.MIMO
-    TTSProviderType.OPENAI_COMPATIBLE -> TTSProviderType.MIMO
 }
 

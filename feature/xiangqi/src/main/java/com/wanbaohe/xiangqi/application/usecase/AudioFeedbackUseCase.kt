@@ -55,7 +55,7 @@ class AudioFeedbackUseCase @Inject constructor(
     }
 
     /**
-     * 登录且语音开关开着时，把还没有文件的默认句补上。
+     * 配置可用且语音开关开着时，把还没有文件的默认句补上。
      * 合成失败保持安静，调用方继续用音效。
      */
     suspend fun prepareCustomVoice(settings: AudioSettings) {
@@ -75,7 +75,7 @@ class AudioFeedbackUseCase @Inject constructor(
     }
 
     private suspend fun tryTts(cue: Cue, settings: AudioSettings): Boolean {
-        if (!settings.ttsEnabled || !ttsEngine.isLoggedIn()) return false
+        if (!settings.ttsEnabled) return false
         val template = templateFor(cue)
         val text = lineText(settings, template)
         if (!hasCachedVoice(text, template.tag)) return false

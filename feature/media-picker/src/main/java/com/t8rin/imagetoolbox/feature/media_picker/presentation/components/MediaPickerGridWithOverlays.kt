@@ -37,6 +37,7 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -178,10 +179,22 @@ internal fun ColumnScope.MediaPickerGridWithOverlays(
                     BadgedBox(
                         badge = {
                             if (selectedMedia.isNotEmpty() && allowMultiple) {
+                                // 角标不能再用 primaryContainer: 它和"选取"FAB 同色,
+                                // 数字看着就像浮在按钮角上, 缩略图还会从缝隙里透进来。
+                                // 改用配色表里的一对反色(深底亮字), 和网格里的选择序号同款,
+                                // 深浅两个主题下都能拉开层次。
                                 Badge(
-                                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                                    containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    contentColor = MaterialTheme.colorScheme.primaryContainer,
+                                    // 只加宽不加高: 高度再涨就会顶到上面那颗"清除"按钮
+                                    modifier = Modifier.defaultMinSize(minWidth = 20.dp)
                                 ) {
-                                    Text(selectedMedia.size.toString())
+                                    Text(
+                                        text = selectedMedia.size.toString(),
+                                        style = MaterialTheme.typography.labelSmall,
+                                        fontWeight = FontWeight.Bold,
+                                        textAlign = TextAlign.Center
+                                    )
                                 }
                             }
                         }
