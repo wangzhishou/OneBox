@@ -28,6 +28,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineNote
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineStar
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSync
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineCloudUpload
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineToggle
 import kotlinx.parcelize.RawValue
 import com.t8rin.imagetoolbox.core.resources.icons.OpenInNew
@@ -62,8 +63,16 @@ sealed class ProfileSetting(
             AuthCode,
             DisplaySetting,
             LanguageSetting,
+            FolderSetting
+        )
+    )
+
+    data object DataGroup : ProfileSetting(
+        groupTitle = R.string.data_database,
+        settingsList = listOf(
+            BackupCenterEntry,
+            AutoBackupEntry,
             ClearCache,
-            FolderSetting,
             AnalyticsSetting
         )
     )
@@ -239,6 +248,17 @@ sealed class ProfileSetting(
         icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineLock
     )
 
+    // 标题/副标题由行组件自己渲染（动态文案），这里只占位以保证分组顺序
+    data object BackupCenterEntry : ProfileSetting(
+        id = 32,
+        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCloudUpload
+    )
+
+    data object AutoBackupEntry : ProfileSetting(
+        id = 33,
+        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineToggle
+    )
+
     data object AnalyticsSetting : ProfileSetting(
         id = 24,
         title = R.string.profile_item_analytics,
@@ -250,8 +270,9 @@ sealed class ProfileSetting(
         val entries: List<ProfileSetting> by lazy {
             listOf(
                 AIGroup,
-                SettingGroup,
                 OperateGroup,
+                DataGroup,
+                SettingGroup,
                 AboutUsGroup
             )
         }

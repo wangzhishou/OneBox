@@ -51,8 +51,6 @@ import com.wanbaohe.base.ui.ConfirmDialog
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.base.utils.StringUtils
 import com.shifenmiao.common.components.Avatar
-import com.shifenmiao.common.components.AutoBackupSettingRow
-import com.shifenmiao.common.components.BackupCenterSettingRow
 import com.shifenmiao.common.logic.AppComponent
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFolder
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMedal
@@ -204,32 +202,6 @@ fun ProfileContent(
         // 3. Setting groups with section headers
         var globalThemeIndex = 0
         initialSettingGroups.forEach { group ->
-            if (group == ProfileSetting.AboutUsGroup) {
-                item {
-                    Spacer(modifier = Modifier.height(OneBoxDesignSystem.sectionSpacing))
-                    Text(
-                        text = stringResource(R.string.data_database)
-                            .uppercase(java.util.Locale.getDefault()),
-                        style = MaterialTheme.typography.labelMedium.copy(
-                            fontWeight = FontWeight.SemiBold,
-                            letterSpacing = 1.sp
-                        ),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(
-                            start = OneBoxDesignSystem.microSpacing,
-                            bottom = OneBoxDesignSystem.compactSpacing
-                        )
-                    )
-                    ProfileGroup {
-                        Column(verticalArrangement = Arrangement.spacedBy(0.dp)) {
-                            BackupCenterSettingRow(
-                                onOpen = { onNavigate(Screen.BackupCenter) }
-                            )
-                            AutoBackupSettingRow()
-                        }
-                    }
-                }
-            }
             item {
                 Spacer(modifier = Modifier.height(OneBoxDesignSystem.sectionSpacing))
                 // Section header

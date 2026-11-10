@@ -23,6 +23,8 @@ import com.shifenmiao.base.manager.StorageManager
 import com.wanbaohe.base.ui.ConfirmDialog
 import com.wanbaohe.base.ui.getDefaultShareText
 import com.shifenmiao.base.utils.ActionUtils
+import com.shifenmiao.common.components.AutoBackupSettingRow
+import com.shifenmiao.common.components.BackupCenterSettingRow
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.WeChatConfirmDialog
 import com.shifenmiao.core.R
@@ -90,6 +92,18 @@ fun ProfileSettingItem(
     }
 
     when (setting) {
+
+        // 「数据」分组里的两行：行本身由 feature/common 提供（自带开关与配置面板）
+        ProfileSetting.BackupCenterEntry -> {
+            BackupCenterSettingRow(
+                onOpen = { onNavigate(Screen.BackupCenter) },
+                modifier = modifier,
+            )
+        }
+
+        ProfileSetting.AutoBackupEntry -> {
+            AutoBackupSettingRow(modifier = modifier)
+        }
 
         ProfileSetting.AIFeatureSettings -> {
             BaseSettingItem(
