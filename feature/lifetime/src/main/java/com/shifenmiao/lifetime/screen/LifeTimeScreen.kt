@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -246,7 +247,8 @@ fun LifeTimeScreen(
                         eventStats = uiState.frequencyEventStats,
                         onAddEvent = { component.navigateToAddEvent() },
                         onManage = { showEventPicker = true },
-                        onEditEvent = { component.navigateToEditEvent(it.id) }
+                        onEditEvent = { component.navigateToEditEvent(it.id) },
+                        cardWidth = cardWidth
                     )
                 }
 
@@ -605,12 +607,14 @@ private fun EmptyCountdownCard(onClick: () -> Unit) {
     }
 }
 
+@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
 @Composable
 private fun FrequencyEventsSection(
     eventStats: List<com.shifenmiao.lifetime.domain.model.FrequencyEventStats>,
     onAddEvent: () -> Unit,
     onManage: () -> Unit,
     onEditEvent: (com.shifenmiao.lifetime.domain.model.FrequencyEvent) -> Unit,
+    cardWidth: androidx.compose.ui.unit.Dp,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing)) {
         Row(
@@ -634,36 +638,30 @@ private fun FrequencyEventsSection(
         if (eventStats.isEmpty()) {
             EmptyEventsCard(onAddEvent)
         } else {
-            Column(verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing)) {
-                eventStats.chunked(2).forEach { rowStats ->
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing)
-                    ) {
-                        rowStats.forEach { stats ->
-                            val themeIndex = eventStats.indexOf(stats)
-                            val totalCount = stats.completedCount + stats.remainingCount
-                            val progress = if (totalCount > 0) {
-                                stats.completedCount.toFloat() / totalCount.toFloat()
-                            } else null
+            // 固定卡宽 + 自动换行：平板上不会把频率卡撑成倒数日卡的两倍大
+            FlowRow(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
+                verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
+            ) {
+                eventStats.forEachIndexed { themeIndex, stats ->
+                    val totalCount = stats.completedCount + stats.remainingCount
+                    val progress = if (totalCount > 0) {
+                        stats.completedCount.toFloat() / totalCount.toFloat()
+                    } else null
 
-                            FrequencyEventCard(
-                                iconKey = stats.event.iconKey,
-                                eventName = localizedPresetEventName(stats.event.name, stats.event.isPreset),
-                                completedCount = formatCount(stats.completedCount),
-                                remainingCount = formatCount(stats.remainingCount),
-                                unit = localizedEventUnit(stats.event.unit),
-                                frequencyLabel = buildFrequencyLabel(stats.event),
-                                progress = progress,
-                                themeIndex = themeIndex,
-                                modifier = Modifier.weight(1f),
-                                onLongClick = { onEditEvent(stats.event) }
-                            )
-                        }
-                        if (rowStats.size == 1) {
-                            Spacer(modifier = Modifier.weight(1f))
-                        }
-                    }
+                    FrequencyEventCard(
+                        iconKey = stats.event.iconKey,
+                        eventName = localizedPresetEventName(stats.event.name, stats.event.isPreset),
+                        completedCount = formatCount(stats.completedCount),
+                        remainingCount = formatCount(stats.remainingCount),
+                        unit = localizedEventUnit(stats.event.unit),
+                        frequencyLabel = buildFrequencyLabel(stats.event),
+                        progress = progress,
+                        themeIndex = themeIndex,
+                        modifier = Modifier.width(cardWidth),
+                        onLongClick = { onEditEvent(stats.event) }
+                    )
                 }
             }
         }
