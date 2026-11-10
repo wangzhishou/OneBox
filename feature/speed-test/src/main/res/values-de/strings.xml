@@ -56,4 +56,17 @@
     <string name="speed_test_stop">Test stoppen</string>
     <string name="speed_test_stop_hint">Zum Stoppen tippen; Teilergebnisse werden nicht gespeichert</string>
     <string name="speed_test_reference_scale">Referenz für Downloadgeschwindigkeit · kein Nutzerranking</string>
+    <string name="speed_test_upload_label">Upload</string>
+    <string name="speed_test_measuring_upload">Upload wird gemessen…</string>
+    <string name="speed_test_node_details_title">Netzwerk &amp; Knoten</string>
+    <string name="speed_test_client_ip">Client-IP</string>
+    <string name="speed_test_client_location">Standort</string>
+    <string name="speed_test_client_carrier">Anbieter</string>
+    <string name="speed_test_latency_node">Latenzserver</string>
+    <string name="speed_test_download_node">Download-Server</string>
+    <string name="speed_test_upload_node">Upload-Server</string>
+    <string name="speed_test_carrier_china_unicom">China Unicom</string>
+    <string name="speed_test_carrier_china_mobile">China Mobile</string>
+    <string name="speed_test_carrier_china_telecom">China Telecom</string>
+    <string name="speed_test_history_upload_col">Upload</string>
 </resources>

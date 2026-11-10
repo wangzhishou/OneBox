@@ -56,4 +56,17 @@
     <string name="speed_test_stop">Hentikan tes</string>
     <string name="speed_test_stop_hint">Ketuk untuk berhenti; hasil sementara tidak disimpan</string>
     <string name="speed_test_reference_scale">Referensi kecepatan unduh · bukan peringkat pengguna</string>
+    <string name="speed_test_upload_label">Unggah</string>
+    <string name="speed_test_measuring_upload">Mengukur unggahan…</string>
+    <string name="speed_test_node_details_title">Jaringan &amp; node</string>
+    <string name="speed_test_client_ip">IP klien</string>
+    <string name="speed_test_client_location">Lokasi</string>
+    <string name="speed_test_client_carrier">Operator</string>
+    <string name="speed_test_latency_node">Node latensi</string>
+    <string name="speed_test_download_node">Node unduhan</string>
+    <string name="speed_test_upload_node">Node unggahan</string>
+    <string name="speed_test_carrier_china_unicom">China Unicom</string>
+    <string name="speed_test_carrier_china_mobile">China Mobile</string>
+    <string name="speed_test_carrier_china_telecom">China Telecom</string>
+    <string name="speed_test_history_upload_col">Unggah</string>
 </resources>

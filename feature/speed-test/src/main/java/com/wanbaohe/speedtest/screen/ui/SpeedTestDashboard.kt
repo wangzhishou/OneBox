@@ -35,6 +35,7 @@ import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSpeedTest
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineSync
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWifi
 import com.wanbaohe.core.ui.widget.glass.glassThin
 import com.wanbaohe.speedtest.R
@@ -73,8 +74,9 @@ internal fun SpeedTestDashboard(
     }?.let { "%.1f".format(it) } ?: "--"
     BoxWithConstraints(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
         val minimumHeight = maxHeight
+        val contentMaxWidth = if (maxWidth >= 600.dp) 720.dp else 560.dp
         Column(
-            Modifier.widthIn(max = 560.dp).fillMaxWidth()
+            Modifier.widthIn(max = contentMaxWidth).fillMaxWidth()
                 .verticalScroll(rememberScrollState()).heightIn(min = minimumHeight)
                 .padding(top = 8.dp, bottom = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -176,31 +178,54 @@ internal fun SpeedTestDashboard(
                         SpeedTestStatus.DONE -> {
                             SpeedReferenceBar(uiState.result?.downloadMbps ?: uiState.liveMbps)
                             NetworkCard(uiState.result?.networkType ?: uiState.networkType, isResult = true)
-                            Button(
-                                onClick = onStart,
-                                modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp)
-                                    .background(
-                                        Brush.linearGradient(
-                                            listOf(
-                                                MaterialTheme.colorScheme.primaryContainer,
-                                                MaterialTheme.colorScheme.secondaryContainer
-                                            )
-                                        ),
-                                        CircleShape
-                                    ),
-                                shape = CircleShape,
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color.Transparent,
-                                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                                )
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(
-                                    stringResource(R.string.speed_test_restart),
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight.SemiBold
-                                )
+                                Button(
+                                    onClick = onStart,
+                                    modifier = Modifier.weight(1f).heightIn(min = 52.dp)
+                                        .background(
+                                            Brush.linearGradient(
+                                                listOf(
+                                                    MaterialTheme.colorScheme.primaryContainer,
+                                                    MaterialTheme.colorScheme.secondaryContainer
+                                                )
+                                            ),
+                                            CircleShape
+                                        ),
+                                    shape = CircleShape,
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = Color.Transparent,
+                                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                    )
+                                ) {
+                                    Icon(Icons.Outlined.LineSync, null, Modifier.size(17.dp))
+                                    Spacer(Modifier.width(6.dp))
+                                    Text(
+                                        stringResource(R.string.speed_test_restart),
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.SemiBold,
+                                        maxLines = 1
+                                    )
+                                }
+                                FilledTonalButton(
+                                    onClick = onShowHistory,
+                                    modifier = Modifier.weight(1f).heightIn(min = 52.dp),
+                                    shape = CircleShape
+                                ) {
+                                    Icon(Icons.Outlined.LineHistory, null, Modifier.size(17.dp))
+                                    Spacer(Modifier.width(6.dp))
+                                    Text(
+                                        stringResource(R.string.speed_test_history_link),
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.Medium,
+                                        maxLines = 1,
+                                        textAlign = TextAlign.Center
+                                    )
+                                }
                             }
-                            HistoryButton(onShowHistory)
                         }
                     }
                 }

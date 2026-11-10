@@ -16,7 +16,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import com.shifenmiao.theme.AppTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -174,20 +173,7 @@ fun SpeedHistorySheet(
 
             Spacer(Modifier.height(12.dp))
 
-            // ── 清除记录按钮 ─────────────────────────────────────────────
-            TextButton(
-                onClick = onClear,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 24.dp),
-                colors = AppTheme.colors.buttonColors()
-            ) {
-                Text(
-                    text = stringResource(R.string.speed_test_clear_records),
-                    fontSize = 15.sp,
-                    color = AppTheme.colors.getPrimaryColor()
-                )
-            }
+            SpeedHistoryClearButton(onClear)
         }
     }
 }

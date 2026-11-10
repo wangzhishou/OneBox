@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="section_network_node">網路與節點</string>
+    <string name="label_public_ip">公網 IP</string>
+    <string name="label_public_location">網路歸屬</string>
+    <string name="label_public_carrier">網路電信業者</string>
+    <string name="label_edge_node">邊緣節點</string>
+    <string name="label_edge_host">節點主機名稱</string>
+    <string name="label_http_protocol">HTTP 協定</string>
+    <string name="network_carrier_china_unicom">中國聯通</string>
+    <string name="network_carrier_china_mobile">中國移動</string>
+    <string name="network_carrier_china_telecom">中國電信</string>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="section_network_node">ネットワークとノード</string>
+    <string name="label_public_ip">パブリック IP</string>
+    <string name="label_public_location">ネットワークの所在地</string>
+    <string name="label_public_carrier">ネットワーク事業者</string>
+    <string name="label_edge_node">エッジノード</string>
+    <string name="label_edge_host">ノードのホスト名</string>
+    <string name="label_http_protocol">HTTP プロトコル</string>
+    <string name="network_carrier_china_unicom">中国聯通</string>
+    <string name="network_carrier_china_mobile">中国移動</string>
+    <string name="network_carrier_china_telecom">中国電信</string>
+</resources>

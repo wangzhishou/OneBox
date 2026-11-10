@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="section_network_node">الشبكة والعقد</string>
+    <string name="label_public_ip">IP العام</string>
+    <string name="label_public_location">موقع الشبكة</string>
+    <string name="label_public_carrier">مشغل الشبكة</string>
+    <string name="label_edge_node">العقدة الطرفية</string>
+    <string name="label_edge_host">اسم مضيف العقدة</string>
+    <string name="label_http_protocol">بروتوكول HTTP</string>
+    <string name="network_carrier_china_unicom">تشاينا يونيكوم</string>
+    <string name="network_carrier_china_mobile">تشاينا موبايل</string>
+    <string name="network_carrier_china_telecom">تشاينا تيليكوم</string>
+</resources>

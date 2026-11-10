@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="section_network_node">नेटवर्क और नोड</string>
+    <string name="label_public_ip">सार्वजनिक IP</string>
+    <string name="label_public_location">नेटवर्क स्थान</string>
+    <string name="label_public_carrier">नेटवर्क कैरियर</string>
+    <string name="label_edge_node">एज नोड</string>
+    <string name="label_edge_host">नोड होस्टनेम</string>
+    <string name="label_http_protocol">HTTP प्रोटोकॉल</string>
+    <string name="network_carrier_china_unicom">चाइना यूनिकॉम</string>
+    <string name="network_carrier_china_mobile">चाइना मोबाइल</string>
+    <string name="network_carrier_china_telecom">चाइना टेलीकॉम</string>
+</resources>

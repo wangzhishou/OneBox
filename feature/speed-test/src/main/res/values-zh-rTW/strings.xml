@@ -56,4 +56,17 @@
     <string name="speed_test_config_url_hint">測速 URL</string>
     <string name="speed_test_config_estimated_mb_hint">預估流量 (MB)</string>
     <string name="speed_test_config_duration_hint">時長 (秒)</string>
+    <string name="speed_test_upload_label">上傳</string>
+    <string name="speed_test_measuring_upload">正在測量上傳…</string>
+    <string name="speed_test_node_details_title">網路與節點</string>
+    <string name="speed_test_client_ip">本機 IP</string>
+    <string name="speed_test_client_location">本機歸屬</string>
+    <string name="speed_test_client_carrier">電信業者</string>
+    <string name="speed_test_latency_node">延遲節點</string>
+    <string name="speed_test_download_node">下載節點</string>
+    <string name="speed_test_upload_node">上傳節點</string>
+    <string name="speed_test_carrier_china_unicom">中國聯通</string>
+    <string name="speed_test_carrier_china_mobile">中國移動</string>
+    <string name="speed_test_carrier_china_telecom">中國電信</string>
+    <string name="speed_test_history_upload_col">上傳</string>
 </resources>

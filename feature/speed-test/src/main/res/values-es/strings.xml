@@ -56,4 +56,17 @@
     <string name="speed_test_stop">Detener prueba</string>
     <string name="speed_test_stop_hint">Toca para detener; los resultados parciales no se guardan</string>
     <string name="speed_test_reference_scale">Referencia de velocidad de descarga · no es una clasificación de usuarios</string>
+    <string name="speed_test_upload_label">Subida</string>
+    <string name="speed_test_measuring_upload">Midiendo la subida…</string>
+    <string name="speed_test_node_details_title">Red y nodos</string>
+    <string name="speed_test_client_ip">IP del cliente</string>
+    <string name="speed_test_client_location">Ubicación</string>
+    <string name="speed_test_client_carrier">Operadora</string>
+    <string name="speed_test_latency_node">Nodo de latencia</string>
+    <string name="speed_test_download_node">Nodo de descarga</string>
+    <string name="speed_test_upload_node">Nodo de subida</string>
+    <string name="speed_test_carrier_china_unicom">China Unicom</string>
+    <string name="speed_test_carrier_china_mobile">China Mobile</string>
+    <string name="speed_test_carrier_china_telecom">China Telecom</string>
+    <string name="speed_test_history_upload_col">Subida</string>
 </resources>

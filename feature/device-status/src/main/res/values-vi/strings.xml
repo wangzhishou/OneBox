@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="section_network_node">Mạng và nút</string>
+    <string name="label_public_ip">IP công cộng</string>
+    <string name="label_public_location">Vị trí mạng</string>
+    <string name="label_public_carrier">Nhà mạng</string>
+    <string name="label_edge_node">Nút biên</string>
+    <string name="label_edge_host">Tên máy chủ nút</string>
+    <string name="label_http_protocol">Giao thức HTTP</string>
+    <string name="network_carrier_china_unicom">China Unicom</string>
+    <string name="network_carrier_china_mobile">China Mobile</string>
+    <string name="network_carrier_china_telecom">China Telecom</string>
+</resources>

@@ -56,4 +56,17 @@
     <string name="speed_test_config_url_hint">URL đo tốc độ</string>
     <string name="speed_test_config_estimated_mb_hint">Lưu lượng ước tính (MB)</string>
     <string name="speed_test_config_duration_hint">Thời lượng (giây)</string>
+    <string name="speed_test_upload_label">Tải lên</string>
+    <string name="speed_test_measuring_upload">Đang đo tốc độ tải lên…</string>
+    <string name="speed_test_node_details_title">Mạng và nút</string>
+    <string name="speed_test_client_ip">IP máy khách</string>
+    <string name="speed_test_client_location">Vị trí</string>
+    <string name="speed_test_client_carrier">Nhà mạng</string>
+    <string name="speed_test_latency_node">Nút đo độ trễ</string>
+    <string name="speed_test_download_node">Nút tải xuống</string>
+    <string name="speed_test_upload_node">Nút tải lên</string>
+    <string name="speed_test_carrier_china_unicom">China Unicom</string>
+    <string name="speed_test_carrier_china_mobile">China Mobile</string>
+    <string name="speed_test_carrier_china_telecom">China Telecom</string>
+    <string name="speed_test_history_upload_col">Tải lên</string>
 </resources>

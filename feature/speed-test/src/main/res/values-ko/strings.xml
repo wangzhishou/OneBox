@@ -56,4 +56,17 @@
     <string name="speed_test_stop">테스트 중지</string>
     <string name="speed_test_stop_hint">탭하여 중지하세요. 일부 결과는 저장되지 않습니다</string>
     <string name="speed_test_reference_scale">다운로드 속도 참고 기준 · 사용자 순위가 아닙니다</string>
+    <string name="speed_test_upload_label">업로드</string>
+    <string name="speed_test_measuring_upload">업로드 속도 측정 중…</string>
+    <string name="speed_test_node_details_title">네트워크 및 노드</string>
+    <string name="speed_test_client_ip">클라이언트 IP</string>
+    <string name="speed_test_client_location">위치</string>
+    <string name="speed_test_client_carrier">통신사</string>
+    <string name="speed_test_latency_node">지연 시간 노드</string>
+    <string name="speed_test_download_node">다운로드 노드</string>
+    <string name="speed_test_upload_node">업로드 노드</string>
+    <string name="speed_test_carrier_china_unicom">차이나 유니콤</string>
+    <string name="speed_test_carrier_china_mobile">차이나 모바일</string>
+    <string name="speed_test_carrier_china_telecom">차이나 텔레콤</string>
+    <string name="speed_test_history_upload_col">업로드</string>
 </resources>

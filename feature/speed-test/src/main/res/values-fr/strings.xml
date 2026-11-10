@@ -56,4 +56,17 @@
     <string name="speed_test_config_url_hint">URL de test</string>
     <string name="speed_test_config_estimated_mb_hint">Trafic estimé (Mo)</string>
     <string name="speed_test_config_duration_hint">Durée (s)</string>
+    <string name="speed_test_upload_label">Envoi</string>
+    <string name="speed_test_measuring_upload">Mesure de l’envoi…</string>
+    <string name="speed_test_node_details_title">Réseau et nœuds</string>
+    <string name="speed_test_client_ip">IP du client</string>
+    <string name="speed_test_client_location">Emplacement</string>
+    <string name="speed_test_client_carrier">Opérateur</string>
+    <string name="speed_test_latency_node">Nœud de latence</string>
+    <string name="speed_test_download_node">Nœud de téléchargement</string>
+    <string name="speed_test_upload_node">Nœud d’envoi</string>
+    <string name="speed_test_carrier_china_unicom">China Unicom</string>
+    <string name="speed_test_carrier_china_mobile">China Mobile</string>
+    <string name="speed_test_carrier_china_telecom">China Telecom</string>
+    <string name="speed_test_history_upload_col">Envoi</string>
 </resources>

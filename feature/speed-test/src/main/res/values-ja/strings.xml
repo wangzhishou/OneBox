@@ -56,4 +56,17 @@
     <string name="speed_test_stop">テストを停止</string>
     <string name="speed_test_stop_hint">タップで停止。途中の結果は保存されません</string>
     <string name="speed_test_reference_scale">ダウンロード速度の目安 · ユーザーランキングではありません</string>
+    <string name="speed_test_upload_label">アップロード</string>
+    <string name="speed_test_measuring_upload">アップロードを測定中…</string>
+    <string name="speed_test_node_details_title">ネットワークとノード</string>
+    <string name="speed_test_client_ip">クライアント IP</string>
+    <string name="speed_test_client_location">現在地</string>
+    <string name="speed_test_client_carrier">通信事業者</string>
+    <string name="speed_test_latency_node">遅延測定ノード</string>
+    <string name="speed_test_download_node">ダウンロードノード</string>
+    <string name="speed_test_upload_node">アップロードノード</string>
+    <string name="speed_test_carrier_china_unicom">中国聯通</string>
+    <string name="speed_test_carrier_china_mobile">中国移動</string>
+    <string name="speed_test_carrier_china_telecom">中国電信</string>
+    <string name="speed_test_history_upload_col">アップロード</string>
 </resources>

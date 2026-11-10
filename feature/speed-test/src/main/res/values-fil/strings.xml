@@ -56,4 +56,17 @@
     <string name="speed_test_stop">Itigil ang pagsubok</string>
     <string name="speed_test_stop_hint">I-tap para itigil; hindi nase-save ang mga bahagyang resulta</string>
     <string name="speed_test_reference_scale">Sanggunian ng bilis ng pag-download · hindi ranking ng mga user</string>
+    <string name="speed_test_upload_label">Upload</string>
+    <string name="speed_test_measuring_upload">Sinusukat ang upload…</string>
+    <string name="speed_test_node_details_title">Network at mga node</string>
+    <string name="speed_test_client_ip">IP ng device</string>
+    <string name="speed_test_client_location">Lokasyon</string>
+    <string name="speed_test_client_carrier">Carrier</string>
+    <string name="speed_test_latency_node">Node ng latency</string>
+    <string name="speed_test_download_node">Node ng download</string>
+    <string name="speed_test_upload_node">Node ng upload</string>
+    <string name="speed_test_carrier_china_unicom">China Unicom</string>
+    <string name="speed_test_carrier_china_mobile">China Mobile</string>
+    <string name="speed_test_carrier_china_telecom">China Telecom</string>
+    <string name="speed_test_history_upload_col">Upload</string>
 </resources>

@@ -56,4 +56,17 @@
     <string name="speed_test_stop">Testi durdur</string>
     <string name="speed_test_stop_hint">Durdurmak için dokunun; kısmi sonuçlar kaydedilmez</string>
     <string name="speed_test_reference_scale">İndirme hızı referansı · kullanıcı sıralaması değildir</string>
+    <string name="speed_test_upload_label">Yükleme</string>
+    <string name="speed_test_measuring_upload">Yükleme ölçülüyor…</string>
+    <string name="speed_test_node_details_title">Ağ ve düğümler</string>
+    <string name="speed_test_client_ip">İstemci IP</string>
+    <string name="speed_test_client_location">Konum</string>
+    <string name="speed_test_client_carrier">Operatör</string>
+    <string name="speed_test_latency_node">Gecikme düğümü</string>
+    <string name="speed_test_download_node">İndirme düğümü</string>
+    <string name="speed_test_upload_node">Yükleme düğümü</string>
+    <string name="speed_test_carrier_china_unicom">China Unicom</string>
+    <string name="speed_test_carrier_china_mobile">China Mobile</string>
+    <string name="speed_test_carrier_china_telecom">China Telecom</string>
+    <string name="speed_test_history_upload_col">Yükleme</string>
 </resources>

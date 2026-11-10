@@ -56,4 +56,17 @@
     <string name="speed_test_stop">Остановить тест</string>
     <string name="speed_test_stop_hint">Нажмите, чтобы остановить; частичные результаты не сохраняются</string>
     <string name="speed_test_reference_scale">Справка по скорости загрузки · это не рейтинг пользователей</string>
+    <string name="speed_test_upload_label">Отдача</string>
+    <string name="speed_test_measuring_upload">Измерение скорости отдачи…</string>
+    <string name="speed_test_node_details_title">Сеть и узлы</string>
+    <string name="speed_test_client_ip">IP клиента</string>
+    <string name="speed_test_client_location">Местоположение</string>
+    <string name="speed_test_client_carrier">Оператор</string>
+    <string name="speed_test_latency_node">Узел задержки</string>
+    <string name="speed_test_download_node">Узел загрузки</string>
+    <string name="speed_test_upload_node">Узел отдачи</string>
+    <string name="speed_test_carrier_china_unicom">Чайна Юником</string>
+    <string name="speed_test_carrier_china_mobile">Чайна Мобайл</string>
+    <string name="speed_test_carrier_china_telecom">Чайна Телеком</string>
+    <string name="speed_test_history_upload_col">Отдача</string>
 </resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="section_network_node">Сеть и узлы</string>
+    <string name="label_public_ip">Публичный IP</string>
+    <string name="label_public_location">Местоположение сети</string>
+    <string name="label_public_carrier">Сетевой оператор</string>
+    <string name="label_edge_node">Пограничный узел</string>
+    <string name="label_edge_host">Имя хоста узла</string>
+    <string name="label_http_protocol">Протокол HTTP</string>
+    <string name="network_carrier_china_unicom">Чайна Юником</string>
+    <string name="network_carrier_china_mobile">Чайна Мобайл</string>
+    <string name="network_carrier_china_telecom">Чайна Телеком</string>
+</resources>

@@ -56,4 +56,17 @@
     <string name="speed_test_config_url_hint">عنوان URL للاختبار</string>
     <string name="speed_test_config_estimated_mb_hint">البيانات المقدّرة (ميغابايت)</string>
     <string name="speed_test_config_duration_hint">المدة (ثانية)</string>
+    <string name="speed_test_upload_label">رفع</string>
+    <string name="speed_test_measuring_upload">جارٍ قياس سرعة الرفع…</string>
+    <string name="speed_test_node_details_title">الشبكة والعقد</string>
+    <string name="speed_test_client_ip">IP الجهاز</string>
+    <string name="speed_test_client_location">موقع الجهاز</string>
+    <string name="speed_test_client_carrier">شركة الاتصالات</string>
+    <string name="speed_test_latency_node">عقدة قياس زمن الاستجابة</string>
+    <string name="speed_test_download_node">عقدة التنزيل</string>
+    <string name="speed_test_upload_node">عقدة الرفع</string>
+    <string name="speed_test_carrier_china_unicom">تشاينا يونيكوم</string>
+    <string name="speed_test_carrier_china_mobile">تشاينا موبايل</string>
+    <string name="speed_test_carrier_china_telecom">تشاينا تيليكوم</string>
+    <string name="speed_test_history_upload_col">رفع</string>
 </resources>

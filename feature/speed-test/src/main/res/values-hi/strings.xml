@@ -56,4 +56,17 @@
     <string name="speed_test_stop">परीक्षण रोकें</string>
     <string name="speed_test_stop_hint">रोकने के लिए टैप करें; अधूरे परिणाम सहेजे नहीं जाते</string>
     <string name="speed_test_reference_scale">डाउनलोड गति संदर्भ · उपयोगकर्ता रैंकिंग नहीं</string>
+    <string name="speed_test_upload_label">अपलोड</string>
+    <string name="speed_test_measuring_upload">अपलोड मापा जा रहा है…</string>
+    <string name="speed_test_node_details_title">नेटवर्क और नोड</string>
+    <string name="speed_test_client_ip">क्लाइंट IP</string>
+    <string name="speed_test_client_location">स्थान</string>
+    <string name="speed_test_client_carrier">कैरियर</string>
+    <string name="speed_test_latency_node">लेटेंसी नोड</string>
+    <string name="speed_test_download_node">डाउनलोड नोड</string>
+    <string name="speed_test_upload_node">अपलोड नोड</string>
+    <string name="speed_test_carrier_china_unicom">चाइना यूनिकॉम</string>
+    <string name="speed_test_carrier_china_mobile">चाइना मोबाइल</string>
+    <string name="speed_test_carrier_china_telecom">चाइना टेलीकॉम</string>
+    <string name="speed_test_history_upload_col">अपलोड</string>
 </resources>

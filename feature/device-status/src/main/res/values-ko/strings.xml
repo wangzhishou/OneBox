@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="section_network_node">네트워크 및 노드</string>
+    <string name="label_public_ip">공인 IP</string>
+    <string name="label_public_location">네트워크 위치</string>
+    <string name="label_public_carrier">네트워크 통신사</string>
+    <string name="label_edge_node">엣지 노드</string>
+    <string name="label_edge_host">노드 호스트 이름</string>
+    <string name="label_http_protocol">HTTP 프로토콜</string>
+    <string name="network_carrier_china_unicom">차이나 유니콤</string>
+    <string name="network_carrier_china_mobile">차이나 모바일</string>
+    <string name="network_carrier_china_telecom">차이나 텔레콤</string>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="section_network_node">Réseau et nœuds</string>
+    <string name="label_public_ip">IP publique</string>
+    <string name="label_public_location">Emplacement réseau</string>
+    <string name="label_public_carrier">Opérateur réseau</string>
+    <string name="label_edge_node">Nœud edge</string>
+    <string name="label_edge_host">Hôte du nœud</string>
+    <string name="label_http_protocol">Protocole HTTP</string>
+    <string name="network_carrier_china_unicom">China Unicom</string>
+    <string name="network_carrier_china_mobile">China Mobile</string>
+    <string name="network_carrier_china_telecom">China Telecom</string>
+</resources>

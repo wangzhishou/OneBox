@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="section_network_node">Jaringan &amp; node</string>
+    <string name="label_public_ip">IP publik</string>
+    <string name="label_public_location">Lokasi jaringan</string>
+    <string name="label_public_carrier">Operator jaringan</string>
+    <string name="label_edge_node">Node edge</string>
+    <string name="label_edge_host">Hostname node</string>
+    <string name="label_http_protocol">Protokol HTTP</string>
+    <string name="network_carrier_china_unicom">China Unicom</string>
+    <string name="network_carrier_china_mobile">China Mobile</string>
+    <string name="network_carrier_china_telecom">China Telecom</string>
+</resources>
