@@ -166,10 +166,23 @@ class CloudStorageRepositoryImpl @Inject constructor(
         targetKey: String,
     ): Result<Unit> = cloudFileService.rename(connection, bucket, sourceKey, targetKey)
 
+    override fun buildDownloadHeaders(
+        connection: CloudStorageConnection,
+    ): Map<String, String> = when (connection) {
+        is CloudStorageConnection.WebDav -> if (connection.username.isNotBlank()) {
+            mapOf("Authorization" to okhttp3.Credentials.basic(connection.username, connection.password))
+        } else {
+            emptyMap()
+        }
+        else -> emptyMap()
+    }
+
     override fun buildSignedGetUrl(
         connection: CloudStorageConnection,
         bucket: String,
         key: String,
         expiresInSeconds: Int,
-    ): String? = cloudFileService.buildDownloadUrl(connection, bucket, key, expiresInSeconds)
+    ): String? = runCatching {
+        cloudFileService.buildDownloadUrl(connection, bucket, key, expiresInSeconds)
+    }.getOrNull()
 }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -118,6 +119,7 @@ fun ConnectionSheet(
             modifier = Modifier
                 .fillMaxWidth()
                 .imePadding()
+                .navigationBarsPadding()
                 .verticalScroll(rememberScrollState())
                 .padding(OneBoxDesignSystem.screenPadding),
             verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing),
@@ -361,7 +363,7 @@ private fun S3CompatForm(draft: androidx.compose.runtime.MutableState<S3FormDraf
             value = d.endpoint,
             onValueChange = { draft.value = d.copy(endpoint = it) },
             label = stringResource(R.string.cloud_storage_endpoint),
-            placeholder = "d.vendor.defaultEndpointHint",
+            placeholder = d.vendor.defaultEndpointHint,
         )
         ClearableField(
             value = d.region,
@@ -477,7 +479,9 @@ private data class WebDavFormDraft(
     fun toConnection(id: String?, isDefault: Boolean): CloudStorageConnection.WebDav =
         CloudStorageConnection.WebDav(
             id = id ?: UUID.randomUUID().toString(),
-            displayName = displayName.ifBlank { baseUrl },
+            displayName = displayName.ifBlank {
+                baseUrl.removePrefix("https://").removePrefix("http://").trimEnd('/')
+            },
             baseUrl = baseUrl.trim(),
             username = username.trim(),
             password = password,

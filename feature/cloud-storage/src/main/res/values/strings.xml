@@ -23,10 +23,10 @@
     <string name="cloud_storage_search_action">Search</string>
     <string name="cloud_storage_rename_label">New name</string>
     <string name="cloud_storage_rename_action">Rename</string>
-    <string name="cloud_storage_move_label">Destination prefix</string>
-    <string name="cloud_storage_move_action">Move to prefix</string>
-    <string name="cloud_storage_copy_download_link">Copy signed URL</string>
-    <string name="cloud_storage_delete_action">Delete object</string>
+    <string name="cloud_storage_move_label">Target folder</string>
+    <string name="cloud_storage_move_action">Move here</string>
+    <string name="cloud_storage_copy_download_link">Copy link</string>
+    <string name="cloud_storage_delete_action">Delete</string>
     <string name="cloud_storage_delete_selected_action">Delete selected (%d)</string>
     <string name="cloud_storage_cancel_selection">Cancel selection</string>
     <string name="cloud_storage_delete_confirm_title">Confirm delete</string>
@@ -52,7 +52,7 @@
     <string name="cloud_storage_bucket_hint">Tap to switch the current bucket</string>
     <string name="cloud_storage_error_generic">Remote storage operation failed. Please try again.</string>
     <string name="cloud_storage_error_read_file">Failed to read the local file</string>
-    <string name="cloud_storage_prefix_item">Prefix folder</string>
+    <string name="cloud_storage_prefix_item">Folder</string>
 
     <string name="cloud_vendor_aliyun_oss">Aliyun OSS</string>
     <string name="cloud_vendor_tencent_cos">Tencent COS</string>
@@ -88,15 +88,15 @@
     <string name="cloud_storage_hide_secret">Hide password</string>
 
     <string name="cloud_storage_no_connection_title">No storage server connected</string>
-    <string name="cloud_storage_no_connection_desc">Connect an S3-compatible object storage service such as AWS S3, Alibaba Cloud OSS, Tencent Cloud COS, Huawei Cloud OBS, or Baidu BOS, and access your files from anywhere.</string>
+    <string name="cloud_storage_no_connection_desc">Connect S3-compatible object storage (Aliyun OSS, Tencent COS, Huawei OBS, Baidu BOS, AWS S3, MinIO…), WebDAV (Nextcloud, Jianguoyun) or a home NAS over SMB, then browse and manage files from anywhere.</string>
     <string name="cloud_storage_no_connection_action">Add cloud storage</string>
     <string name="cloud_storage_empty_folder_title">Nothing here yet</string>
     <string name="cloud_storage_empty_folder_desc">No files or folders found in this directory. Tap the button below to upload a file.</string>
     <string name="cloud_storage_ai_assist_title">Cloud Storage Setup Assistant</string>
     <string name="cloud_storage_ai_assist_prompt">You are the user\'s remote storage setup assistant. When the user describes a storage service, add a connection with the manage_cloud_connections tool. You need Endpoint, AccessKey, SecretKey and Bucket. Ask briefly for anything missing and never invent credentials. After setup, you can browse files with browse_cloud_files.</string>
     <string name="cloud_storage_ai_assist_fill_in">Help me add an Aliyun OSS connection to back up photos</string>
-    <string name="cloud_storage_state_error_title">Something went wrong</string>
-    <string name="cloud_storage_refresh_list_action">Refresh the list</string>
+    <string name="cloud_storage_state_error_title">Could not load this folder</string>
+    <string name="cloud_storage_refresh_list_action">Try again</string>
 
     <string name="cloud_storage_download_local">Download to device</string>
     <string name="cloud_storage_download_queued">Added to download queue</string>
@@ -106,6 +106,16 @@
     <string name="cloud_storage_copy_link_action">Copy link</string>
     <string name="cloud_storage_download_icon_action">Download</string>
     <string name="cloud_storage_manage_connections">Manage connections</string>
+    <string name="cloud_storage_add_connection">Add connection</string>
+    <string name="cloud_storage_edit_connection">Edit</string>
+    <string name="cloud_storage_delete_connection">Delete</string>
+    <string name="cloud_storage_connection_delete_title">Delete connection</string>
+    <string name="cloud_storage_connection_delete_message">Delete “%s”? Only the connection saved on this device is removed — files in the cloud stay untouched.</string>
+    <string name="cloud_storage_connection_delete_action">Delete</string>
+    <string name="cloud_storage_link_unavailable">This connection cannot generate a share link</string>
+    <string name="cloud_storage_detail_location">Location</string>
+    <string name="cloud_storage_detail_type">Type</string>
+    <string name="cloud_storage_detail_modified">Modified</string>
 
     <string name="cloud_storage_smb_port_placeholder">445 (default)</string>
     <string name="cloud_storage_smb_share_placeholder">Optional: leave empty to list shares after saving</string>

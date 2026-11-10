@@ -39,6 +39,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
@@ -61,7 +62,13 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineImage
 private const val DOWNLOAD_POLL_INTERVAL_MS = 500L
 private const val DOWNLOAD_WATCH_TIMEOUT_MS = 120_000L
 
-fun downloadCloudFile(context: Context, url: String, fileName: String, scope: CoroutineScope) {
+fun downloadCloudFile(
+    context: Context,
+    url: String,
+    fileName: String,
+    scope: CoroutineScope,
+    headers: Map<String, String> = emptyMap(),
+) {
     try {
         val request = DownloadManager.Request(Uri.parse(url))
             .setTitle(fileName)
@@ -70,6 +77,10 @@ fun downloadCloudFile(context: Context, url: String, fileName: String, scope: Co
             .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
             .setAllowedOverMetered(true)
             .setAllowedOverRoaming(true)
+            .apply {
+                // WebDAV 等需要认证的地址：DownloadManager 支持自定义请求头
+                headers.forEach { (name, value) -> addRequestHeader(name, value) }
+            }
 
         val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val downloadId = downloadManager.enqueue(request)
@@ -130,11 +141,14 @@ private fun watchCloudDownload(
 fun CloudFileGrid(
     items: List<CloudObjectItem>,
     isGridMode: Boolean,
-    signedUrlProvider: (CloudObjectItem) -> String?,
+    previewUrlProvider: (CloudObjectItem) -> String?,
     onItemClick: (CloudObjectItem) -> Unit,
     selectedKeys: Set<String> = emptySet(),
     selectionMode: Boolean = false,
     onSelectionToggle: (CloudObjectItem) -> Unit = {},
+    linkActionsEnabled: Boolean = false,
+    onCopyLink: (CloudObjectItem) -> Unit = {},
+    onDownload: (CloudObjectItem) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     if (isGridMode) {
@@ -148,7 +162,7 @@ fun CloudFileGrid(
             items(items, key = { it.key }) { item ->
                 CloudFileGridCard(
                     item = item,
-                    signedUrl = signedUrlProvider(item),
+                    previewUrl = previewUrlFor(item, previewUrlProvider),
                     selected = item.key in selectedKeys,
                     selectionMode = selectionMode,
                     onClick = { if (selectionMode) onSelectionToggle(item) else onItemClick(item) },
@@ -165,29 +179,36 @@ fun CloudFileGrid(
             items(items, key = { it.key }) { item ->
                 CloudFileListRow(
                     item = item,
-                    signedUrl = signedUrlProvider(item),
+                    previewUrl = previewUrlFor(item, previewUrlProvider),
                     selected = item.key in selectedKeys,
                     selectionMode = selectionMode,
                     onClick = { if (selectionMode) onSelectionToggle(item) else onItemClick(item) },
                     onLongClick = { onSelectionToggle(item) },
+                    linkActionsEnabled = linkActionsEnabled && !item.isDirectory,
+                    onCopyLink = { onCopyLink(item) },
+                    onDownload = { onDownload(item) },
                 )
             }
         }
     }
 }
 
+/** 只有图片预览需要链接；目录和普通文件不生成签名 URL。 */
+private fun previewUrlFor(
+    item: CloudObjectItem,
+    provider: (CloudObjectItem) -> String?,
+): String? = if (item.isImage && !item.isDirectory) provider(item) else null
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CloudFileGridCard(
     item: CloudObjectItem,
-    signedUrl: String?,
+    previewUrl: String?,
     selected: Boolean,
     selectionMode: Boolean,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
 ) {
-    val context = LocalContext.current
-    val scope = rememberCoroutineScope()
     OneBoxSectionCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -228,8 +249,8 @@ private fun CloudFileGridCard(
                         }
                     }
                 }
-                item.isImage && !signedUrl.isNullOrBlank() -> {
-                    var isError by remember(signedUrl) { mutableStateOf(false) }
+                item.isImage && !previewUrl.isNullOrBlank() -> {
+                    var isError by remember(previewUrl) { mutableStateOf(false) }
                     if (isError) {
                         Surface(
                             modifier = Modifier.size(54.dp),
@@ -247,7 +268,7 @@ private fun CloudFileGridCard(
                         }
                     } else {
                         AsyncImage(
-                            model = signedUrl,
+                            model = previewUrl,
                             contentDescription = item.displayName,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize(),
@@ -325,37 +346,6 @@ private fun CloudFileGridCard(
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f)
                 )
-                if (!item.isDirectory && !signedUrl.isNullOrBlank()) {
-                    Spacer(modifier = Modifier.width(4.dp))
-                    IconButton(
-                        onClick = {
-                            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                            clipboard.setPrimaryClip(ClipData.newPlainText("cloud-storage-url", signedUrl))
-                            Toast.makeText(context, context.getString(R.string.cloud_storage_link_copied), Toast.LENGTH_SHORT).show()
-                        },
-                        modifier = Modifier.size(24.dp)
-                    ) {
-                        Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
-                            contentDescription = stringResource(R.string.cloud_storage_copy_action),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
-                            modifier = Modifier.size(12.dp)
-                        )
-                    }
-                    IconButton(
-                        onClick = {
-                            downloadCloudFile(context, signedUrl, item.displayName, scope)
-                        },
-                        modifier = Modifier.size(24.dp)
-                    ) {
-                        Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDownload,
-                            contentDescription = stringResource(R.string.cloud_storage_download_icon_action),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
-                            modifier = Modifier.size(12.dp)
-                        )
-                    }
-                }
             }
         }
     }
@@ -365,14 +355,15 @@ private fun CloudFileGridCard(
 @Composable
 private fun CloudFileListRow(
     item: CloudObjectItem,
-    signedUrl: String?,
+    previewUrl: String?,
     selected: Boolean,
     selectionMode: Boolean,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
+    linkActionsEnabled: Boolean,
+    onCopyLink: () -> Unit,
+    onDownload: () -> Unit,
 ) {
-    val context = LocalContext.current
-    val scope = rememberCoroutineScope()
     OneBoxSectionCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -381,7 +372,7 @@ private fun CloudFileListRow(
                 onClick = onClick,
                 onLongClick = onLongClick,
             ),
-        contentPadding = PaddingValues(10.dp)
+        contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -393,7 +384,7 @@ private fun CloudFileListRow(
             }
             Box(
                 modifier = Modifier
-                    .size(48.dp)
+                    .size(44.dp)
                     .clip(RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center
             ) {
@@ -409,147 +400,143 @@ private fun CloudFileListRow(
                                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFolder,
                                     contentDescription = null,
                                     tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                                    modifier = Modifier.size(24.dp)
+                                    modifier = Modifier.size(22.dp)
                                 )
                             }
                         }
                     }
-                    item.isImage && !signedUrl.isNullOrBlank() -> {
-                        var isError by remember(signedUrl) { mutableStateOf(false) }
+
+                    item.isImage && !previewUrl.isNullOrBlank() -> {
+                        var isError by remember(previewUrl) { mutableStateOf(false) }
                         if (isError) {
-                            Surface(
-                                modifier = Modifier.fillMaxSize(),
-                                shape = RoundedCornerShape(8.dp),
-                                color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f)
-                            ) {
-                                Box(contentAlignment = Alignment.Center) {
-                                    Icon(
-                                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImage,
-                                        contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                                        modifier = Modifier.size(24.dp)
-                                    )
-                                }
-                            }
+                            FileTypeTile(
+                                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImage,
+                                container = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f),
+                                content = MaterialTheme.colorScheme.onSecondaryContainer,
+                                iconSize = 22.dp,
+                            )
                         } else {
                             AsyncImage(
-                            model = signedUrl,
-                            contentDescription = item.displayName,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxSize(),
-                            onState = { state ->
-                                isError = state is coil3.compose.AsyncImagePainter.State.Error
-                            }
+                                model = previewUrl,
+                                contentDescription = item.displayName,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.fillMaxSize(),
+                                onState = { state ->
+                                    isError = state is coil3.compose.AsyncImagePainter.State.Error
+                                }
+                            )
+                        }
+                    }
+
+                    item.isImage -> {
+                        FileTypeTile(
+                            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImage,
+                            container = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f),
+                            content = MaterialTheme.colorScheme.onSecondaryContainer,
+                            iconSize = 22.dp,
+                        )
+                    }
+
+                    else -> {
+                        FileTypeTile(
+                            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDescription,
+                            container = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.4f),
+                            content = MaterialTheme.colorScheme.onTertiaryContainer,
+                            iconSize = 22.dp,
                         )
                     }
                 }
-                item.isImage -> {
-                    Surface(
-                        modifier = Modifier.fillMaxSize(),
-                        shape = RoundedCornerShape(8.dp),
-                        color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f)
-                    ) {
-                        Box(contentAlignment = Alignment.Center) {
-                            Icon(
-                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImage,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                                modifier = Modifier.size(24.dp)
-                            )
-                        }
-                    }
-                }
-                else -> {
-                    Surface(
-                        modifier = Modifier.fillMaxSize(),
-                        shape = RoundedCornerShape(8.dp),
-                        color = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.4f)
-                    ) {
-                        Box(contentAlignment = Alignment.Center) {
-                            Icon(
-                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDescription,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onTertiaryContainer,
-                                modifier = Modifier.size(24.dp)
-                            )
-                        }
-                    }
-                }
             }
-        }
 
-        Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(12.dp))
 
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = item.displayName,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.SemiBold,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-            Spacer(modifier = Modifier.height(2.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = if (item.isDirectory) stringResource(R.string.cloud_storage_prefix_item) else formatSize(item.size),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    text = item.displayName,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.SemiBold,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f)
+                    overflow = TextOverflow.Ellipsis
                 )
-                if (item.lastModified != null) {
+                Spacer(modifier = Modifier.height(2.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(
-                        text = item.lastModified,
+                        text = if (item.isDirectory) stringResource(R.string.cloud_storage_prefix_item) else formatSize(item.size),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.outline,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f)
                     )
+                    val modified = formatRemoteTimestamp(item.lastModified)
+                    if (modified != null) {
+                        Text(
+                            text = modified,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.outline,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
                 }
             }
-        }
 
-        if (!item.isDirectory && !signedUrl.isNullOrBlank()) {
-            Spacer(modifier = Modifier.width(8.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            // 触达区 40dp：原来 28dp/14dp 图标几乎点不中；复制/下载的链接在点击时才生成。
+            if (linkActionsEnabled) {
+                Spacer(modifier = Modifier.width(4.dp))
                 IconButton(
-                    onClick = {
-                        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        clipboard.setPrimaryClip(ClipData.newPlainText("cloud-storage-url", signedUrl))
-                        Toast.makeText(context, context.getString(R.string.cloud_storage_link_copied), Toast.LENGTH_SHORT).show()
-                    },
-                    modifier = Modifier.size(28.dp)
+                    onClick = onCopyLink,
+                    modifier = Modifier.size(40.dp)
                 ) {
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
                         contentDescription = stringResource(R.string.cloud_storage_copy_link_action),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
-                        modifier = Modifier.size(14.dp)
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.size(20.dp)
                     )
                 }
                 IconButton(
-                    onClick = {
-                        downloadCloudFile(context, signedUrl, item.displayName, scope)
-                    },
-                    modifier = Modifier.size(28.dp)
+                    onClick = onDownload,
+                    modifier = Modifier.size(40.dp)
                 ) {
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDownload,
                         contentDescription = stringResource(R.string.cloud_storage_download_icon_action),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
-                        modifier = Modifier.size(14.dp)
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.size(20.dp)
                     )
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun FileTypeTile(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    container: androidx.compose.ui.graphics.Color,
+    content: androidx.compose.ui.graphics.Color,
+    iconSize: Dp,
+) {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        shape = RoundedCornerShape(8.dp),
+        color = container
+    ) {
+        Box(contentAlignment = Alignment.Center) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = content,
+                modifier = Modifier.size(iconSize)
+            )
         }
     }
 }

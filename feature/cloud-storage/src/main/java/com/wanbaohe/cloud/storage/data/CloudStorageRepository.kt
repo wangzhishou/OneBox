@@ -94,6 +94,11 @@ interface CloudStorageRepository {
         targetKey: String,
     ): Result<Unit>
 
+    /**
+     * 下载所需的额外请求头（WebDAV 需 Basic 认证；S3 走签名 URL、SMB 无 URL 时返回空）。
+     */
+    fun buildDownloadHeaders(connection: CloudStorageConnection): Map<String, String>
+
     fun buildSignedGetUrl(
         connection: CloudStorageConnection,
         bucket: String,

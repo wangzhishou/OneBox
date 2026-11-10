@@ -39,15 +39,15 @@ internal object WebDavXmlParser {
         var contentType: String? = null
         var etag: String? = null
         var currentTag: String? = null
-        var currentNs: String? = null
 
         var event = parser.eventType
         while (event != XmlPullParser.END_DOCUMENT) {
             when (event) {
                 XmlPullParser.START_TAG -> {
+                    // 不区分命名空间：标准服务器（Nextcloud / Apache mod_dav / 坚果云）返回
+                    // <D:multistatus xmlns:D="DAV:">，按 namespace 过滤会一个条目都解析不到。
                     val tag = parser.name
-                    val ns = parser.namespace
-                    if (tag == "response" && ns.isNullOrEmpty()) {
+                    if (tag == "response") {
                         inResponse = true
                         href = null
                         isCollection = false
@@ -59,11 +59,10 @@ internal object WebDavXmlParser {
                         inProp = true
                     } else if (inProp) {
                         currentTag = tag
-                        currentNs = ns
-                        if (tag == "collection" && ns.isNullOrEmpty()) {
+                        if (tag == "collection") {
                             isCollection = true
                         }
-                    } else if (inResponse && tag == "href" && ns.isNullOrEmpty()) {
+                    } else if (inResponse && tag == "href") {
                         href = parser.nextText().trim()
                     }
                 }
@@ -82,11 +81,10 @@ internal object WebDavXmlParser {
                 }
                 XmlPullParser.END_TAG -> {
                     val tag = parser.name
-                    val ns = parser.namespace
-                    if (tag == "prop" && ns.isNullOrEmpty()) {
+                    if (tag == "prop") {
                         inProp = false
                         currentTag = null
-                    } else if (tag == "response" && ns.isNullOrEmpty()) {
+                    } else if (tag == "response") {
                         inResponse = false
                         href?.let { entries += Entry(it, isCollection, contentLength, lastModified, contentType, etag) }
                     }
@@ -97,22 +95,39 @@ internal object WebDavXmlParser {
         return entries
     }
 
+    /**
+     * 把 PROPFIND 条目转成 [CloudObjectItem]。
+     *
+     * @param basePath 当前目录相对 WebDAV 根的路径（如 `照片/2026旅行`），用于过滤父集合与兄弟项。
+     * @param hrefPrefix WebDAV 根在服务器上的绝对路径前缀（如 Nextcloud 的
+     *   `remote.php/dav/files/user`）。多数服务器返回的 href 含这段前缀，必须先剥掉，
+     *   否则所有条目都会被当成"不在当前目录"而过滤光。
+     */
     fun entriesToItems(
         entries: List<Entry>,
         basePath: String,
+        hrefPrefix: String = "",
     ): List<CloudObjectItem> {
         val normalizedBase = basePath.trim('/').ifBlank { "" }
+        val normalizedPrefix = hrefPrefix.trim('/')
         return entries.mapNotNull { entry ->
             val rawHref = entry.href.split("?", limit = 2).first().trim()
-            val cleanPath = java.net.URLDecoder.decode(rawHref, "UTF-8")
-            // 假设：PROPFIND 返回的 href 是相对 host 的"绝对路径"（如 /webdav/docs/file.txt）。
-            // 这是主流服务器（Apache mod_dav / Nextcloud / nginx-dav）的实际行为。
-            // 但 RFC 4918 § 8.3 允许服务器返回相对路径（如 docs/file.txt）—— 当前实现
-            // 不会处理这种情况，会把 "docs/file.txt" 当成绝对路径（leading '/' 被 trim）。
-            // 若需严格兼容，需先解析 request-uri 头拿到 base，再 resolve。
-            val trimmed = cleanPath.trimStart('/')
-            if (trimmed.isBlank()) return@mapNotNull null
-            val segments = trimmed.split('/').filter { it.isNotBlank() }
+            // RFC 4918 允许 href 是绝对 URL（http://host/path），只取 path 部分。
+            val pathHref = if (rawHref.startsWith("http://") || rawHref.startsWith("https://")) {
+                runCatching { java.net.URI(rawHref).path }.getOrNull() ?: rawHref
+            } else {
+                rawHref
+            }
+            var cleanPath = java.net.URLDecoder.decode(pathHref, "UTF-8").trimStart('/')
+            if (normalizedPrefix.isNotBlank()) {
+                cleanPath = when {
+                    cleanPath == normalizedPrefix -> ""
+                    cleanPath.startsWith("$normalizedPrefix/") -> cleanPath.removePrefix("$normalizedPrefix/")
+                    else -> cleanPath
+                }
+            }
+            if (cleanPath.isBlank()) return@mapNotNull null
+            val segments = cleanPath.split('/').filter { it.isNotBlank() }
             // 排除父集合自身（如当前目录）
             if (segments.size == 1 && segments[0] == normalizedBase) return@mapNotNull null
             if (!normalizedBase.isBlank()) {
@@ -143,6 +158,17 @@ internal object WebDavXmlParser {
         }
     }
 
-    fun singleRoot(connection: CloudStorageConnection): List<CloudBucket> =
-        listOf(CloudBucket(name = connection.displayName.ifBlank { "WebDAV" }))
+    /**
+     * WebDAV 只有一个根，"桶名"用服务器主机名，避免和页面标题里的连接名重复。
+     */
+    fun singleRoot(connection: CloudStorageConnection): List<CloudBucket> {
+        val webDav = connection as? CloudStorageConnection.WebDav
+            ?: return listOf(CloudBucket(name = "WebDAV"))
+        val host = webDav.baseUrl
+            .removePrefix("https://")
+            .removePrefix("http://")
+            .substringBefore("/")
+            .ifBlank { "WebDAV" }
+        return listOf(CloudBucket(name = host))
+    }
 }

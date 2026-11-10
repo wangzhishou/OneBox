@@ -4,16 +4,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,16 +20,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.wanbaohe.core.ui.widget.system.OneBoxDangerButton
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.system.OneBoxOutlinedTextField
@@ -51,11 +50,11 @@ fun ObjectDetailSheet(
     onMove: (String) -> Unit,
     onDelete: () -> Unit,
     onCopyLink: () -> Unit,
+    onDownload: (CloudObjectItem) -> Unit,
 ) {
-    val context = LocalContext.current
-    val scope = rememberCoroutineScope()
     var renameText by remember(item.key) { mutableStateOf(item.displayName) }
     var movePrefix by remember(item.key) { mutableStateOf(item.prefix) }
+    val renameChanged = renameText.trim().isNotEmpty() && renameText.trim() != item.displayName
 
     EnhancedModalBottomSheet(
         visible = true,
@@ -71,6 +70,8 @@ fun ObjectDetailSheet(
             Text(
                 text = item.displayName,
                 style = MaterialTheme.typography.titleLarge,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
             )
             OneBoxSectionCard {
                 if (item.isImage && !signedUrl.isNullOrBlank()) {
@@ -103,12 +104,25 @@ fun ObjectDetailSheet(
                         }
                     }
                 }
-                Text(text = item.key, style = MaterialTheme.typography.bodySmall)
-                Text(text = item.contentType ?: "application/octet-stream", style = MaterialTheme.typography.bodySmall)
-                Text(text = item.lastModified.orEmpty(), style = MaterialTheme.typography.bodySmall)
+                DetailRow(
+                    label = stringResource(R.string.cloud_storage_detail_location),
+                    value = item.key,
+                )
+                item.contentType?.takeIf { it.isNotBlank() }?.let {
+                    DetailRow(
+                        label = stringResource(R.string.cloud_storage_detail_type),
+                        value = it,
+                    )
+                }
+                formatRemoteTimestamp(item.lastModified)?.let {
+                    DetailRow(
+                        label = stringResource(R.string.cloud_storage_detail_modified),
+                        value = it,
+                    )
+                }
             }
             OneBoxSectionCard {
-                 OneBoxOutlinedTextField(
+                OneBoxOutlinedTextField(
                     value = renameText,
                     onValueChange = { renameText = it },
                     label = { Text(stringResource(R.string.cloud_storage_rename_label)) },
@@ -119,7 +133,7 @@ fun ObjectDetailSheet(
                     text = stringResource(R.string.cloud_storage_rename_action),
                     onClick = { onRename(renameText) },
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = renameText.isNotBlank() && !busy,
+                    enabled = renameChanged && !busy,
                 )
                 OneBoxOutlinedTextField(
                     value = movePrefix,
@@ -132,7 +146,7 @@ fun ObjectDetailSheet(
                     text = stringResource(R.string.cloud_storage_move_action),
                     onClick = { onMove(movePrefix) },
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = !busy,
+                    enabled = !busy && movePrefix.trim() != item.prefix.trim(),
                 )
                 OneSecondaryButton(
                     text = stringResource(R.string.cloud_storage_copy_download_link),
@@ -142,15 +156,11 @@ fun ObjectDetailSheet(
                 )
                 OneSecondaryButton(
                     text = stringResource(R.string.cloud_storage_download_local),
-                    onClick = {
-                        signedUrl?.let { url ->
-                            downloadCloudFile(context, url, item.displayName, scope)
-                        }
-                    },
+                    onClick = { onDownload(item) },
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = !busy && !signedUrl.isNullOrBlank(),
+                    enabled = !busy,
                 )
-                OneSecondaryButton(
+                OneBoxDangerButton(
                     text = stringResource(R.string.cloud_storage_delete_action),
                     onClick = onDelete,
                     modifier = Modifier.fillMaxWidth(),
@@ -158,5 +168,26 @@ fun ObjectDetailSheet(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun DetailRow(label: String, value: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.Top,
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(end = 12.dp),
+        )
+        Text(
+            text = value,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.weight(1f),
+        )
     }
 }

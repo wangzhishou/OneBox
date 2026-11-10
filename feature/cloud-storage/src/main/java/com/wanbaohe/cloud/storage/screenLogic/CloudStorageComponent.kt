@@ -275,6 +275,11 @@ class CloudStorageComponent @AssistedInject internal constructor(
         }
     }
 
+    fun downloadHeaders(): Map<String, String> {
+        val connection = _currentConnection.value ?: return emptyMap()
+        return runCatching { repository.buildDownloadHeaders(connection) }.getOrDefault(emptyMap())
+    }
+
     fun signedUrlFor(item: CloudObjectItem): String? {
         val connection = _currentConnection.value ?: return null
         val bucket = _currentBucket.value ?: return null

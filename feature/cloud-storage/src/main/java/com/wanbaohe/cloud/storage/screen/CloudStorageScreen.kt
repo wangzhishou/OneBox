@@ -3,10 +3,12 @@ package com.wanbaohe.cloud.storage.screen
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +21,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
@@ -45,6 +48,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,15 +68,18 @@ import com.wanbaohe.core.ui.widget.system.OneBoxBottomActionBar
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.system.OneBoxSectionCard
 import com.wanbaohe.cloud.storage.R
+import com.wanbaohe.cloud.storage.data.protocol.ObjectStoragePathResolver
 import com.wanbaohe.cloud.storage.model.CloudBrowserState
 import com.wanbaohe.cloud.storage.model.CloudObjectItem
 import com.wanbaohe.cloud.storage.model.CloudStorageConnection
+import com.wanbaohe.cloud.storage.model.RemoteProtocol
 import com.wanbaohe.cloud.storage.screen.components.BucketSwitcherSheet
 import com.wanbaohe.cloud.storage.screen.components.CloudFileGrid
 import com.wanbaohe.cloud.storage.screen.components.ConnectionSheet
 import com.wanbaohe.cloud.storage.screen.components.ConnectionSwitcherSheet
 import com.wanbaohe.cloud.storage.screen.components.ObjectDetailSheet
 import com.wanbaohe.cloud.storage.screen.components.SearchTabContent
+import com.wanbaohe.cloud.storage.screen.components.downloadCloudFile
 import com.wanbaohe.cloud.storage.screen.components.SyncPlaceholderTab
 import com.wanbaohe.cloud.storage.screenLogic.CloudStorageComponent
 import com.t8rin.imagetoolbox.core.resources.icons.Add
@@ -113,6 +120,9 @@ fun CloudStorageScreen(
     var folderName by remember { mutableStateOf("") }
     val selectedItems = remember { mutableStateMapOf<String, CloudObjectItem>() }
     var pendingDeleteItems by remember { mutableStateOf<List<CloudObjectItem>>(emptyList()) }
+    var pendingDeleteConnection by remember { mutableStateOf<CloudStorageConnection?>(null) }
+    var managingConnection by remember { mutableStateOf<CloudStorageConnection?>(null) }
+    val downloadScope = rememberCoroutineScope()
 
     val uploadLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
@@ -211,11 +221,30 @@ fun CloudStorageScreen(
 
                         Spacer(modifier = Modifier.width(6.dp))
 
-                        if (currentPrefix.isBlank()) {
+                        val crumbs = ObjectStoragePathResolver
+                            .splitBreadcrumbs(currentPrefix)
+                            .drop(1)
+                        Row(
+                            modifier = Modifier
+                                .weight(1f)
+                                .horizontalScroll(rememberScrollState()),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            // 根节点：在根目录点它切 bucket，在子目录点它回到根。
+                            // 只有一个根（WebDAV）时，根目录上不再显示误导性的展开箭头。
+                            val canSwitchBucket = buckets.size > 1
                             Row(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(6.dp))
-                                    .clickable { showBucketSheet = true }
+                                    .clickable(
+                                        enabled = currentPrefix.isNotBlank() || canSwitchBucket,
+                                    ) {
+                                        if (currentPrefix.isBlank()) {
+                                            showBucketSheet = true
+                                        } else {
+                                            component.openPrefix("")
+                                        }
+                                    }
                                     .padding(horizontal = 4.dp, vertical = 2.dp),
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
@@ -223,28 +252,47 @@ fun CloudStorageScreen(
                                     text = bucket,
                                     style = MaterialTheme.typography.bodyMedium,
                                     fontWeight = FontWeight.Medium,
-                                    color = MaterialTheme.colorScheme.onSurface,
+                                    color = if (currentPrefix.isBlank()) {
+                                        MaterialTheme.colorScheme.onSurface
+                                    } else {
+                                        MaterialTheme.colorScheme.onSurfaceVariant
+                                    },
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
                                 )
-                                Icon(
-                                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineExpandMore,
-                                    contentDescription = stringResource(R.string.cloud_storage_bucket_sheet_title),
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.size(24.dp),
+                                if (currentPrefix.isBlank() && canSwitchBucket) {
+                                    Icon(
+                                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineExpandMore,
+                                        contentDescription = stringResource(R.string.cloud_storage_bucket_sheet_title),
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        modifier = Modifier.size(20.dp),
+                                    )
+                                }
+                            }
+                            crumbs.forEachIndexed { index, crumb ->
+                                Text(
+                                    text = "/",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.outline,
+                                    modifier = Modifier.padding(horizontal = 1.dp),
+                                )
+                                val isLast = index == crumbs.lastIndex
+                                Text(
+                                    text = crumb.removeSuffix("/").substringAfterLast('/'),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontWeight = if (isLast) FontWeight.Medium else FontWeight.Normal,
+                                    color = if (isLast) {
+                                        MaterialTheme.colorScheme.onSurface
+                                    } else {
+                                        MaterialTheme.colorScheme.onSurfaceVariant
+                                    },
+                                    maxLines = 1,
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(6.dp))
+                                        .clickable(enabled = !isLast) { component.openPrefix(crumb) }
+                                        .padding(horizontal = 4.dp, vertical = 2.dp),
                                 )
                             }
-                            Spacer(modifier = Modifier.weight(1f))
-                        } else {
-                            Text(
-                                text = currentPrefix,
-                                style = MaterialTheme.typography.bodyMedium,
-                                fontWeight = FontWeight.Medium,
-                                color = MaterialTheme.colorScheme.onSurface,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                modifier = Modifier.weight(1f),
-                            )
                         }
 
                         Spacer(modifier = Modifier.width(6.dp))
@@ -287,7 +335,30 @@ fun CloudStorageScreen(
                 FilesContent(
                     browserState = browserState,
                     isGridMode = isGridMode,
-                    signedUrlProvider = component::signedUrlFor,
+                    previewUrlProvider = component::signedUrlFor,
+                    linkActionsEnabled = currentConnection?.protocol != RemoteProtocol.SMB,
+                    onCopyLink = { item ->
+                        val url = component.signedUrlFor(item)
+                        if (url != null) {
+                            copyToClipboard(context, url)
+                        } else {
+                            notifyLinkUnavailable(context)
+                        }
+                    },
+                    onDownload = { item ->
+                        val url = component.signedUrlFor(item)
+                        if (url != null) {
+                            downloadCloudFile(
+                                context = context,
+                                url = url,
+                                fileName = item.displayName,
+                                scope = downloadScope,
+                                headers = component.downloadHeaders(),
+                            )
+                        } else {
+                            notifyLinkUnavailable(context)
+                        }
+                    },
                     onItemClick = { item ->
                         if (item.isDirectory) component.openPrefix(item.key) else component.showObject(item)
                     },
@@ -317,14 +388,6 @@ fun CloudStorageScreen(
                 onSecondaryClick = { selectedItems.clear() },
                 primaryEnabled = !busy,
                 secondaryEnabled = !busy,
-                extraActions = {
-                    GlassTonalIconButton(
-                        onClick = { pendingDeleteItems = selectedItems.values.toList() },
-                        enabled = !busy,
-                    ) {
-                        Icon(imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete, contentDescription = null)
-                    }
-                },
             )
         } else if (hasConnection) {
             OneBoxBottomActionBar(
@@ -332,14 +395,6 @@ fun CloudStorageScreen(
                 onPrimaryClick = { uploadLauncher.launch(arrayOf("*/*")) },
                 secondaryText = stringResource(R.string.cloud_storage_create_folder),
                 onSecondaryClick = { showCreateFolderDialog = true },
-                extraActions = {
-                    GlassTonalIconButton(onClick = { showConnectionSheet = true }) {
-                        Icon(imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add, contentDescription = null)
-                    }
-                    GlassTonalIconButton(onClick = { uploadLauncher.launch(arrayOf("*/*")) }) {
-                        Icon(imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCloudUpload, contentDescription = null)
-                    }
-                },
             )
         }
     }
@@ -351,10 +406,14 @@ fun CloudStorageScreen(
             currentConnectionId = currentConnection?.id,
             onDismiss = { showConnectionSwitcher = false },
             onSwitch = { component.switchConnection(it) },
-            onManage = {
+            onAdd = {
                 showConnectionSwitcher = false
-                editingConnection = currentConnection
+                editingConnection = null
                 showConnectionSheet = true
+            },
+            onManage = { conn ->
+                showConnectionSwitcher = false
+                managingConnection = conn
             },
         )
     }
@@ -394,6 +453,20 @@ fun CloudStorageScreen(
             onRename = component::renameSelected,
             onMove = component::moveSelected,
             onDelete = { pendingDeleteItems = listOf(selectedObject!!) },
+            onDownload = { item ->
+                val url = component.signedUrlFor(item)
+                if (url != null) {
+                    downloadCloudFile(
+                        context = context,
+                        url = url,
+                        fileName = item.displayName,
+                        scope = downloadScope,
+                        headers = component.downloadHeaders(),
+                    )
+                } else {
+                    notifyLinkUnavailable(context)
+                }
+            },
             onCopyLink = {
                 component.signedUrlFor(selectedObject!!)?.let { copyToClipboard(context, it) }
             },
@@ -435,6 +508,74 @@ fun CloudStorageScreen(
         )
     }
 
+    if (managingConnection != null) {
+        val target = managingConnection!!
+        EnhancedAlertDialog(
+            visible = true,
+            onDismissRequest = { managingConnection = null },
+            title = {
+                Text(target.displayName.ifBlank { stringResource(target.protocol.titleRes) })
+            },
+            text = {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    TextButton(
+                        onClick = {
+                            managingConnection = null
+                            editingConnection = target
+                            showConnectionSheet = true
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Text(stringResource(R.string.cloud_storage_edit_connection))
+                    }
+                    TextButton(
+                        onClick = {
+                            managingConnection = null
+                            pendingDeleteConnection = target
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.cloud_storage_delete_connection),
+                            color = MaterialTheme.colorScheme.error,
+                        )
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { managingConnection = null }) {
+                    Text(stringResource(R.string.cloud_storage_cancel))
+                }
+            },
+        )
+    }
+
+    if (pendingDeleteConnection != null) {
+        val target = pendingDeleteConnection!!
+        val targetName = target.displayName.ifBlank { stringResource(target.protocol.titleRes) }
+        EnhancedAlertDialog(
+            visible = true,
+            onDismissRequest = { pendingDeleteConnection = null },
+            title = { Text(stringResource(R.string.cloud_storage_connection_delete_title)) },
+            text = { Text(stringResource(R.string.cloud_storage_connection_delete_message, targetName)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        component.removeConnection(target.id)
+                        pendingDeleteConnection = null
+                    }
+                ) {
+                    Text(stringResource(R.string.cloud_storage_connection_delete_action))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { pendingDeleteConnection = null }) {
+                    Text(stringResource(R.string.cloud_storage_cancel))
+                }
+            },
+        )
+    }
+
     if (showCreateFolderDialog) {
         EnhancedAlertDialog(
             visible = showCreateFolderDialog,
@@ -450,13 +591,14 @@ fun CloudStorageScreen(
                 )
             },
             confirmButton = {
-                TextButton(onClick = {
-                    if (folderName.isNotBlank()) {
+                TextButton(
+                    onClick = {
                         component.createFolder(folderName)
                         folderName = ""
                         showCreateFolderDialog = false
-                    }
-                }) {
+                    },
+                    enabled = folderName.isNotBlank() && !busy,
+                ) {
                     Text(stringResource(R.string.cloud_storage_confirm))
                 }
             },
@@ -517,7 +659,10 @@ fun CloudStorageScreen(
 private fun FilesContent(
     browserState: CloudBrowserState,
     isGridMode: Boolean,
-    signedUrlProvider: (CloudObjectItem) -> String?,
+    previewUrlProvider: (CloudObjectItem) -> String?,
+    linkActionsEnabled: Boolean,
+    onCopyLink: (CloudObjectItem) -> Unit,
+    onDownload: (CloudObjectItem) -> Unit,
     onItemClick: (CloudObjectItem) -> Unit,
     selectedKeys: Set<String>,
     selectionMode: Boolean,
@@ -556,11 +701,14 @@ private fun FilesContent(
         is CloudBrowserState.Success -> CloudFileGrid(
             items = browserState.items,
             isGridMode = isGridMode,
-            signedUrlProvider = signedUrlProvider,
+            previewUrlProvider = previewUrlProvider,
             onItemClick = onItemClick,
             selectedKeys = selectedKeys,
             selectionMode = selectionMode,
             onSelectionToggle = onSelectionToggle,
+            linkActionsEnabled = linkActionsEnabled,
+            onCopyLink = onCopyLink,
+            onDownload = onDownload,
             modifier = modifier,
         )
     }
@@ -629,6 +777,14 @@ private fun CloudStatePlaceholder(
 private fun copyToClipboard(context: Context, text: String) {
     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     clipboard.setPrimaryClip(ClipData.newPlainText("cloud-storage-url", text))
+}
+
+private fun notifyLinkUnavailable(context: Context) {
+    Toast.makeText(
+        context,
+        context.getString(R.string.cloud_storage_link_unavailable),
+        Toast.LENGTH_SHORT,
+    ).show()
 }
 
 @Composable

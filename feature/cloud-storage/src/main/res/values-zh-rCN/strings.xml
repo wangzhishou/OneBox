@@ -3,9 +3,9 @@
     <string name="cloud_storage_screen_title">远程存储</string>
     <string name="cloud_storage_upload_action">上传文件</string>
     <string name="cloud_storage_create_folder">新建目录</string>
-    <string name="cloud_storage_tab_files">Files</string>
-    <string name="cloud_storage_tab_search">Search</string>
-    <string name="cloud_storage_tab_sync">Sync</string>
+    <string name="cloud_storage_tab_files">文件</string>
+    <string name="cloud_storage_tab_search">搜索</string>
+    <string name="cloud_storage_tab_sync">同步</string>
     <string name="cloud_storage_folder_name">目录名称</string>
     <string name="cloud_storage_confirm">确认</string>
     <string name="cloud_storage_cancel">取消</string>
@@ -23,10 +23,10 @@
     <string name="cloud_storage_search_action">开始搜索</string>
     <string name="cloud_storage_rename_label">新名称</string>
     <string name="cloud_storage_rename_action">重命名</string>
-    <string name="cloud_storage_move_label">目标前缀</string>
-    <string name="cloud_storage_move_action">移动到前缀</string>
-    <string name="cloud_storage_copy_download_link">复制签名链接</string>
-    <string name="cloud_storage_delete_action">删除对象</string>
+    <string name="cloud_storage_move_label">目标目录</string>
+    <string name="cloud_storage_move_action">移动到这里</string>
+    <string name="cloud_storage_copy_download_link">复制链接</string>
+    <string name="cloud_storage_delete_action">删除</string>
     <string name="cloud_storage_delete_selected_action">删除选中 (%d)</string>
     <string name="cloud_storage_cancel_selection">取消选择</string>
     <string name="cloud_storage_delete_confirm_title">确认删除</string>
@@ -52,7 +52,7 @@
     <string name="cloud_storage_bucket_hint">点击切换当前 Bucket</string>
     <string name="cloud_storage_error_generic">远程存储操作失败，请稍后重试</string>
     <string name="cloud_storage_error_read_file">读取本地文件失败</string>
-    <string name="cloud_storage_prefix_item">前缀目录</string>
+    <string name="cloud_storage_prefix_item">文件夹</string>
 
     <string name="cloud_vendor_aliyun_oss">阿里云 OSS</string>
     <string name="cloud_vendor_tencent_cos">腾讯云 COS</string>
@@ -88,15 +88,15 @@
     <string name="cloud_storage_hide_secret">隐藏密码</string>
 
     <string name="cloud_storage_no_connection_title">暂未连接存储服务器</string>
-    <string name="cloud_storage_no_connection_desc">连接您的阿里云 OSS、腾讯云 COS、华为云 OBS、百度云 BOS 或 AWS S3 兼容存储，随时随地极速云存取文件。</string>
+    <string name="cloud_storage_no_connection_desc">连接 S3 兼容对象存储（阿里云 OSS、腾讯云 COS、华为云 OBS、百度云 BOS、AWS S3、MinIO…）、WebDAV（Nextcloud、坚果云）或家里的 NAS（SMB），随时随地浏览和管理文件。</string>
     <string name="cloud_storage_no_connection_action">立刻添加云存储</string>
     <string name="cloud_storage_empty_folder_title">这里没有任何文件</string>
     <string name="cloud_storage_empty_folder_desc">在这个目录中暂时没有检测到任何文件或文件目录，轻按下方按钮来上传文件。</string>
     <string name="cloud_storage_ai_assist_title">云存储配置助手</string>
     <string name="cloud_storage_ai_assist_prompt">你是用户的远程存储配置助手。用户描述存储服务时，用 manage_cloud_connections 工具帮他添加连接。需要 Endpoint、AccessKey、SecretKey 和 Bucket。用户未提供的信息请简短追问，不要编造密钥。配置完成后可用 browse_cloud_files 浏览文件。</string>
     <string name="cloud_storage_ai_assist_fill_in">帮我添加一个阿里云 OSS 连接，用来备份照片</string>
-    <string name="cloud_storage_state_error_title">云同步发生异常</string>
-    <string name="cloud_storage_refresh_list_action">重新刷新列表</string>
+    <string name="cloud_storage_state_error_title">目录加载失败</string>
+    <string name="cloud_storage_refresh_list_action">重试</string>
 
     <string name="cloud_storage_download_local">下载到本地</string>
     <string name="cloud_storage_download_queued">已加入下载队列</string>
@@ -106,6 +106,16 @@
     <string name="cloud_storage_copy_link_action">复制链接</string>
     <string name="cloud_storage_download_icon_action">下载</string>
     <string name="cloud_storage_manage_connections">管理连接</string>
+    <string name="cloud_storage_add_connection">添加连接</string>
+    <string name="cloud_storage_edit_connection">编辑</string>
+    <string name="cloud_storage_delete_connection">删除</string>
+    <string name="cloud_storage_connection_delete_title">删除连接</string>
+    <string name="cloud_storage_connection_delete_message">删除“%s”？只会清除本机保存的连接配置，云端文件不受影响。</string>
+    <string name="cloud_storage_connection_delete_action">删除</string>
+    <string name="cloud_storage_link_unavailable">当前连接不支持生成分享链接</string>
+    <string name="cloud_storage_detail_location">位置</string>
+    <string name="cloud_storage_detail_type">类型</string>
+    <string name="cloud_storage_detail_modified">修改时间</string>
 
     <string name="cloud_storage_smb_port_placeholder">445（默认）</string>
     <string name="cloud_storage_smb_share_placeholder">可选：留空保存后可列举 share</string>

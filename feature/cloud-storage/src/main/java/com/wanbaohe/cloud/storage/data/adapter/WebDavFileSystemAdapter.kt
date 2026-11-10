@@ -60,6 +60,7 @@ class WebDavFileSystemAdapter @Inject constructor() : RemoteFileSystemAdapter {
             WebDavXmlParser.entriesToItems(
                 entries = WebDavXmlParser.parsePropfind(xml),
                 basePath = ObjectStoragePathResolver.normalizePrefix(path).trimEnd('/'),
+                hrefPrefix = webDavRootPrefix(c),
             )
         }
     }
@@ -79,19 +80,13 @@ class WebDavFileSystemAdapter @Inject constructor() : RemoteFileSystemAdapter {
         execute(req) { response ->
             val xml = response.body?.string().orEmpty()
             val entries = WebDavXmlParser.parsePropfind(xml)
-            val match = entries.firstOrNull()
-                ?: throw IllegalStateException("WebDAV stat: empty response")
-            val key = match.href.trimStart('/')
-            CloudObjectItem(
-                key = if (match.isCollection) "$key/" else key,
-                displayName = key.substringAfterLast('/'),
-                size = match.contentLength,
-                lastModified = match.lastModified,
-                eTag = match.etag,
-                contentType = match.contentType,
-                isDirectory = match.isCollection,
-                isImage = match.contentType?.startsWith("image/") == true,
+            val items = WebDavXmlParser.entriesToItems(
+                entries = entries,
+                basePath = ObjectStoragePathResolver.normalizePrefix(path).trimEnd('/'),
+                hrefPrefix = webDavRootPrefix(c),
             )
+            items.firstOrNull()
+                ?: throw IllegalStateException("WebDAV stat: empty response")
         }
     }
 
@@ -173,7 +168,9 @@ class WebDavFileSystemAdapter @Inject constructor() : RemoteFileSystemAdapter {
         root: String,
         path: String,
         expiresInSeconds: Int,
-    ): String? = buildItemUrl(connection.asWebDav(), path).toString()
+    ): String? = runCatching {
+        buildItemUrl(connection.asWebDav(), path).toString()
+    }.getOrNull()
 
     private fun <T> execute(
         request: Request,
@@ -210,35 +207,41 @@ class WebDavFileSystemAdapter @Inject constructor() : RemoteFileSystemAdapter {
         c: CloudStorageConnection.WebDav,
         path: String,
     ): okhttp3.HttpUrl {
-        val baseUrl = c.baseUrl.trimEnd('/')
-        val normalizedPath = if (path.isBlank()) "" else path.trimStart('/')
+        val baseUrl = c.baseUrl.trim().trimEnd('/')
         val rootPath = c.rootPath.trim('/')
 
-        // 用 java.net.URI 做路径拼接，避免 endsWith 的子串误匹配（例如 rootPath="oud"
-        // 会被 baseUrl="https://example.com/cloud" 误判为已包含）。
-        val rootUri = if (rootPath.isNotBlank()) {
-            val base = java.net.URI(baseUrl)
-            val alreadyHasRoot = base.path.trimEnd('/').endsWith("/$rootPath")
-            if (alreadyHasRoot) {
-                base
-            } else {
-                java.net.URI(baseUrl + "/" + rootPath)
-            }
+        // 用「以 / 结尾的 base + HttpUrl.resolve」拼接：
+        // 原实现走 java.net.URI.resolve，baseURL 去掉末尾斜杠后是 authority-only URI，
+        // 相对路径会直接粘在端口后面（http://host:8899照片/x.png → OkHttp 抛
+        // Invalid URL port 并让列表页崩溃），中文也不会被编码。
+        val base = baseUrl.toHttpUrl()
+        val alreadyHasRoot = rootPath.isNotBlank() &&
+            base.encodedPath.trimEnd('/').endsWith("/$rootPath")
+        val rootUrl = buildString {
+            append(baseUrl)
+            if (rootPath.isNotBlank() && !alreadyHasRoot) append('/').append(rootPath)
+        }.trimEnd('/') + "/"
+        val relative = path.trim('/')
+        val resolved = if (relative.isBlank()) {
+            rootUrl.toHttpUrl()
         } else {
-            java.net.URI(baseUrl)
+            rootUrl.toHttpUrl().resolve(relative) ?: rootUrl.toHttpUrl()
         }
-
-        val finalUri = if (normalizedPath.isNotBlank()) {
-            rootUri.resolve(normalizedPath)
+        return if (path.isNotBlank() && path.endsWith("/")) {
+            "$resolved/".toHttpUrl()
         } else {
-            rootUri
+            resolved
         }
-        return finalUri.toString().toHttpUrl()
     }
 
     private fun CloudStorageConnection.asWebDav(): CloudStorageConnection.WebDav =
         this as? CloudStorageConnection.WebDav
             ?: throw IllegalStateException("WebDavFileSystemAdapter requires WebDav connection")
+
+    /** WebDAV 根在服务器上的绝对路径（不含首尾斜杠），用于剥掉 href 里的服务端前缀。 */
+    private fun webDavRootPrefix(c: CloudStorageConnection.WebDav): String = runCatching {
+        java.net.URLDecoder.decode(buildItemUrl(c, "").encodedPath, "UTF-8").trim('/')
+    }.getOrDefault("")
 
     private fun CloudStorageConnection.WebDav.encodedBasicAuth(): String? =
         if (username.isNotBlank()) Credentials.basic(username, password) else null
