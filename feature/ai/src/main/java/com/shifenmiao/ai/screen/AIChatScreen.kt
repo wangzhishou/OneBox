@@ -58,6 +58,8 @@ import com.shifenmiao.ai.ui.RecentQuestionsBottomSheet
 import com.shifenmiao.ai.ui.ToolCenterBottomSheet
 import com.shifenmiao.ai.ui.rememberUniqueMessageLazyKeys
 import com.wanbaohe.base.ui.DisableContainer
+import com.shifenmiao.common.components.text.TextSelectionMenuContainer
+import com.shifenmiao.common.components.text.defaultTextSelectionMenuItems
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.ai.AIModelsPickerBottomSheet
@@ -433,9 +435,11 @@ fun ChatMessagesList(
         LocalA2uiRenderer provides a2uiRenderer
     ) {
         ProvideMermaidRenderer {
-            ChatTextSelectionContainer(
-                appComponent = appComponent,
-                onNavigate = onNavigate,
+            TextSelectionMenuContainer(
+                items = defaultTextSelectionMenuItems(
+                    appComponent = appComponent,
+                    onNavigate = onNavigate,
+                ),
                 selectionState = selectionState,
                 modifier = modifier,
             ) {

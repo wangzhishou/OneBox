@@ -58,6 +58,7 @@ fun BlogDetailScreen(
         ) {
             BlogContent(
                 blogComponent = blogComponent,
+                appComponent = appComponent,
                 onGoBack = { appComponent.onGoBack },
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
             )

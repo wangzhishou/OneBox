@@ -57,6 +57,7 @@ fun BlogModalBottomSheet(
         )
         BlogContent(
             blogComponent = feedbackComponent,
+            appComponent = appComponent,
             onGoBack = {
                 appComponent.hideBlogModalBottomSheet()
             },

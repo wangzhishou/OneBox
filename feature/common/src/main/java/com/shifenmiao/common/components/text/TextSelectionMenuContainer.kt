@@ -1,4 +1,4 @@
-package com.shifenmiao.ai.screen
+package com.shifenmiao.common.components.text
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.MutatorMutex
@@ -15,53 +15,56 @@ import androidx.compose.foundation.text.selection.rememberSelectionState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.res.stringResource
-import com.shifenmiao.base.provider.LocalDataDraftHelper
-import com.shifenmiao.common.components.text.TextSelectionAction
-import com.shifenmiao.common.components.text.TextSelectionToolbar
-import com.shifenmiao.common.logic.AppComponent
-import com.shifenmiao.core.R
-import com.shifenmiao.model.ListItemType
-import com.wanbaohe.core.ui.utils.helper.Clipboard
-import com.wanbaohe.core.ui.utils.navigation.Screen
-import com.t8rin.imagetoolbox.core.resources.Icons
-import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
-import com.t8rin.imagetoolbox.core.resources.icons.NoteAdd
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineTextCard
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.launch
 
 /** SelectionManager.getContentRect 底部多出来的手柄留白,单位是 px(见调用处注释) */
 private const val SELECTION_CONTENT_RECT_BOTTOM_SLOP_PX = 25f * 4f
 
+/**
+ * 选区浮动工具条上的一个动作。
+ *
+ * [onSelected] 收到的是当前选中的纯文本,容器统一负责取文本、关菜单、清选区,
+ * 调用方只需要描述"拿到这段文字之后做什么"。
+ */
+@Immutable
+data class TextSelectionMenuItem(
+    val key: String,
+    val label: String,
+    val icon: ImageVector,
+    val onSelected: (String) -> Unit,
+)
+
+/**
+ * 用自定义浮动工具条替换系统文本选择菜单的通用容器。
+ *
+ * 覆盖 Compose 的 [LocalTextContextMenuDropdownProvider] / [LocalTextContextMenuToolbarProvider],
+ * 只记录菜单会话而不弹系统菜单,再用会话里的 contentBounds 定位 [TextSelectionToolbar]。
+ * AI 聊天、博客详情、笔记详情共用这一套,避免三处各自实现选区菜单。
+ */
 @Composable
-fun ChatTextSelectionContainer(
-    appComponent: AppComponent,
-    onNavigate: (Screen) -> Unit,
-    selectionState: SelectionState = rememberSelectionState(),
+fun TextSelectionMenuContainer(
+    items: List<TextSelectionMenuItem>,
     modifier: Modifier = Modifier,
+    selectionState: SelectionState = rememberSelectionState(),
+    preferAbove: Boolean = true,
     content: @Composable () -> Unit,
 ) {
-    val menuProvider = remember { ChatTextContextMenuProvider() }
-    val dataDraftHelper = LocalDataDraftHelper.current
-    val scope = rememberCoroutineScope()
+    val menuProvider = remember { ToolbarTextContextMenuProvider() }
     var containerCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
 
-    fun selectedText() = selectionState.selectedTexts.joinToString("\n") { it.text }
-
     fun runSelectionAction(action: (String) -> Unit) {
-        val text = selectedText()
+        val text = selectionState.selectedTexts.joinToString("\n") { it.text }
         if (text.isBlank()) return
         menuProvider.close()
         selectionState.clear()
@@ -97,7 +100,7 @@ fun ChatTextSelectionContainer(
 
         val session = menuProvider.session
         val coordinates = containerCoordinates
-        if (session != null && coordinates != null) {
+        if (session != null && coordinates != null && items.isNotEmpty()) {
             // SelectionManager 的 content rect 底部多加了 HandleHeight.value * 4。
             // HandleHeight 是 25.dp, .value 没乘 density,所以是固定 100px,不是 100.dp。
             // 那截是给系统工具条让手柄的;这里锚回真实选区,菜单才贴得上高亮。
@@ -109,57 +112,22 @@ fun ChatTextSelectionContainer(
             )
             TextSelectionToolbar(
                 anchorBounds = anchorBounds,
-                preferAbove = true,
-                actions = listOf(
+                preferAbove = preferAbove,
+                actions = items.map { item ->
                     TextSelectionAction(
-                        key = "copy",
-                        label = stringResource(R.string.copy),
-                        icon = Icons.Rounded.ContentCopy,
-                        onClick = {
-                            runSelectionAction(Clipboard::copy)
-                        }
-                    ),
-                    TextSelectionAction(
-                        key = "share",
-                        label = stringResource(R.string.share_title),
-                        icon = Icons.Outlined.LineShare,
-                        onClick = {
-                            runSelectionAction(appComponent::shareText)
-                        }
-                    ),
-                    TextSelectionAction(
-                        key = "image",
-                        label = stringResource(R.string.button_export_image),
-                        icon = Icons.Outlined.LineTextCard,
-                        onClick = {
-                            runSelectionAction { text ->
-                                onNavigate(Screen.TextCard(initialText = text))
-                            }
-                        }
-                    ),
-                    TextSelectionAction(
-                        key = "note",
-                        label = stringResource(R.string.nav_notebook),
-                        icon = Icons.Outlined.NoteAdd,
-                        onClick = {
-                            runSelectionAction { text ->
-                                scope.launch {
-                                    val draftId = dataDraftHelper.createDraft(
-                                        draftType = ListItemType.NOTE.id,
-                                        data = text,
-                                    )
-                                    onNavigate(Screen.CreateNote(draftId = draftId))
-                                }
-                            }
-                        }
-                    ),
-                ),
+                        key = item.key,
+                        label = item.label,
+                        icon = item.icon,
+                        onClick = { runSelectionAction(item.onSelected) },
+                    )
+                },
             )
         }
     }
 }
 
-private class ChatTextContextMenuProvider : TextContextMenuProvider {
+/** 只持有菜单会话、不弹系统菜单的 provider;close 时恢复挂起的 showTextContextMenu 调用 */
+private class ToolbarTextContextMenuProvider : TextContextMenuProvider {
     private val mutatorMutex = MutatorMutex()
 
     var session by mutableStateOf<Session?>(null)

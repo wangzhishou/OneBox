@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Edit
@@ -42,6 +41,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.provider.LocalDataDraftHelper
 import com.wanbaohe.base.ui.MarkdownLazyContent
+import com.shifenmiao.common.components.text.TextSelectionMenuContainer
+import com.shifenmiao.common.components.text.defaultTextSelectionMenuItems
 import com.shifenmiao.common.handle.LocalUrlNavigator
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
@@ -71,6 +72,10 @@ fun NoteItemScreen(
     val navigator = LocalUrlNavigator.current
     val uriHandler = LocalUriHandler.current
     val dataDraftHelper = LocalDataDraftHelper.current
+    val selectionMenuItems = defaultTextSelectionMenuItems(
+        appComponent = appComponent,
+        onNavigate = { screen -> navigator.navigate(screen) },
+    )
     val scope = rememberCoroutineScope()
     var isTextSelectionMode by remember { mutableStateOf(false) }
     val lazyListState = rememberLazyListState()
@@ -200,7 +205,12 @@ fun NoteItemScreen(
             }
 
             if (isTextSelectionMode) {
-                SelectionContainer { markdownContent(contentModifier) }
+                TextSelectionMenuContainer(
+                    items = selectionMenuItems,
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    markdownContent(contentModifier)
+                }
             } else {
                 markdownContent(contentModifier)
             }
