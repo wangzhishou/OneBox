@@ -79,6 +79,7 @@ import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBarType
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.core.ui.widget.glass.glassMedium
 import com.wanbaohe.core.ui.widget.glass.glassRegular
 import com.wanbaohe.core.ui.widget.glass.tintedGlassContentColor
@@ -595,33 +596,43 @@ private fun MineListItemCard(
                 )
             }
             Column(modifier = Modifier.weight(1f)) {
+                // 标题给两行:本地草稿/对话标题普遍偏长,单行截断会把「这条是什么」直接切掉
                 Text(
                     text = entity.title.orEmpty(),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = 1,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(6.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
                         text = TimeFormatter.formatRelativeTime(itemWithCategories.clickTime),
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1
                     )
                     if (itemWithCategories.clickCount > 0) {
+                        // 使用次数收成胶囊,和上方「精选」卡片里的次数标签同一套观感
                         Text(
-                            text = "·",
+                            modifier = Modifier
+                                .glassBackground(
+                                    style = GlassStyle.Thick,
+                                    color = iconBgColor,
+                                    shape = RoundedCornerShape(50)
+                                )
+                                .padding(horizontal = 8.dp, vertical = 3.dp),
+                            text = pluralStringResource(
+                                R.plurals.favorite_usage_count,
+                                itemWithCategories.clickCount,
+                                itemWithCategories.clickCount
+                            ),
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.outlineVariant
-                        )
-                        Text(
-                            text = pluralStringResource(R.plurals.favorite_usage_count, itemWithCategories.clickCount, itemWithCategories.clickCount),
-                            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                            color = iconTint,
+                            maxLines = 1
                         )
                     }
                 }
@@ -890,11 +901,12 @@ private fun ActivityLogCardContent(
             }
             Column(modifier = Modifier.weight(1f)) {
                 if (rowTitle.isNotEmpty()) {
+                    // 和「我的」一致:记录标题给两行,长标题不再一刀切
                     Text(
                         text = rowTitle,
                         style = MaterialTheme.typography.bodyLarge,
                         color = contentColor,
-                        maxLines = 1,
+                        maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
                     Spacer(modifier = Modifier.height(2.dp))
