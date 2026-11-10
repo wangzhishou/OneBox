@@ -18,6 +18,7 @@
     <string name="lifetime_frequency_section">時光頻率</string>
     <string name="lifetime_add">新增</string>
     <string name="lifetime_add_event">新增時光頻率</string>
+    <string name="lifetime_edit_event">編輯時光頻率</string>
     <string name="lifetime_add_milestone">新增紀念日</string>
     <string name="lifetime_edit_milestone">編輯紀念日</string>
     <string name="lifetime_event_name_label">事件名稱</string>
@@ -104,6 +105,7 @@
     <string name="lifetime_insight_history_title">歷史靈感</string>
     <string name="lifetime_insight_history_empty">暫無歷史</string>
     <string name="lifetime_add_countdown">新增倒數日</string>
+    <string name="lifetime_edit_countdown">編輯倒數日</string>
     <string name="lifetime_countdown_detail_title">倒數日詳情</string>
     <string name="lifetime_countdown_name_label">倒數日名稱</string>
     <string name="lifetime_countdown_name_placeholder">發薪水、發年終獎金、紀念日…</string>
@@ -118,6 +120,14 @@
     <string name="lifetime_lunar_date">農曆 %1$s年 %2$s%3$s</string>
     <string name="lifetime_frequency_value_label">%1$s%2$d%3$s</string>
     <string name="lifetime_status_today">今天</string>
+    <string name="lifetime_unit_days_until">天後</string>
+    <string name="lifetime_unit_days_past">天前</string>
+    <string name="lifetime_unit_months_until">個月後</string>
+    <string name="lifetime_unit_months_past">個月前</string>
+    <string name="lifetime_unit_years_until">年後</string>
+    <string name="lifetime_unit_years_past">年前</string>
+    <string name="lifetime_status_tomorrow">明天</string>
+    <string name="lifetime_status_day_after_tomorrow">後天</string>
     <string name="lifetime_status_days_until">還有 %1$d 天</string>
     <string name="lifetime_status_days_past">已過 %1$d 天</string>
     <string name="lifetime_status_months_until">還有 %1$d 個月</string>

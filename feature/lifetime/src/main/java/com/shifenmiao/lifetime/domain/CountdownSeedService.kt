@@ -1,6 +1,7 @@
 package com.shifenmiao.lifetime.domain
 
 import com.shifenmiao.lifetime.data.CountdownEventRepository
+import com.shifenmiao.lifetime.data.LifeTimeRepository
 import com.shifenmiao.lifetime.data.holiday.HolidayProvider
 import com.shifenmiao.lifetime.data.holiday.PresetHoliday
 import java.time.LocalDate
@@ -9,23 +10,31 @@ import javax.inject.Singleton
 
 /**
  * 倒数日种子服务：
- * - 首次进入（DB 中没有 preset）时插入 [HolidayProvider] 给出的未来 [withinDays] 天节日
- * - 幂等：依赖 [CountdownEventRepository] 的 `getPresetCountdownsCount()` 判断
+ * - 首次进入时插入 [HolidayProvider] 给出的未来 [withinDays] 天节日
+ * - 幂等：以 DataStore 里的播种标记为准；老库里已有预置节日时只补标记，不重复插入
  */
 @Singleton
 class CountdownSeedService @Inject constructor(
     private val repository: CountdownEventRepository,
     private val holidayProvider: HolidayProvider,
+    private val lifeTimeRepository: LifeTimeRepository,
 ) {
 
     suspend fun seedIfNeeded(
         now: LocalDate = LocalDate.now(),
         withinDays: Long = DEFAULT_LOOKAHEAD_DAYS,
     ) {
-        if (repository.getPresetCountdownsCount() > 0) return
+        // 播过种就不再播：用户把节日全删掉也不该复活
+        if (lifeTimeRepository.isCountdownPresetsSeeded()) return
+        // 老用户升级上来时库里已经有预置节日，直接补标记，避免重复插入
+        if (repository.getPresetCountdownsCount() > 0) {
+            lifeTimeRepository.markCountdownPresetsSeeded()
+            return
+        }
         val presets = holidayProvider.upcomingHolidays(now, withinDays)
         if (presets.isEmpty()) return
         repository.insertPresets(presets.map { it.toEntity() })
+        lifeTimeRepository.markCountdownPresetsSeeded()
     }
 
     companion object {

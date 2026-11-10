@@ -1452,7 +1452,10 @@ sealed class Screen(
 
     @Serializable
     @SerialName("LifeTimeAddEvent")
-    data object LifeTimeAddEvent : Screen(
+    data class LifeTimeAddEvent(
+        /** 为空时是新建，带 id 时是编辑已有的时光频率 */
+        val eventId: Long? = null
+    ) : Screen(
         id = 1039,
         title = com.shifenmiao.core.R.string.lifetime,
         subtitle = com.shifenmiao.core.R.string.lifetime_description,
@@ -1468,7 +1471,10 @@ sealed class Screen(
 
     @Serializable
     @SerialName("LifeTimeAddMilestone")
-    data object LifeTimeAddMilestone : Screen(
+    data class LifeTimeAddMilestone(
+        /** 为空时是新建，带 id 时是二次编辑 */
+        val milestoneId: Long? = null
+    ) : Screen(
         id = 1041,
         title = com.shifenmiao.core.R.string.lifetime,
         subtitle = com.shifenmiao.core.R.string.lifetime_description,
@@ -1487,7 +1493,10 @@ sealed class Screen(
 
     @Serializable
     @SerialName("LifeTimeAddCountdown")
-    data object LifeTimeAddCountdown : Screen(
+    data class LifeTimeAddCountdown(
+        /** 为空时是新建，带 id 时是二次编辑 */
+        val countdownId: Long? = null
+    ) : Screen(
         id = 1062,
         title = com.shifenmiao.core.R.string.lifetime,
         subtitle = com.shifenmiao.core.R.string.lifetime_description,

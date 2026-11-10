@@ -18,6 +18,7 @@
     <string name="lifetime_frequency_section">Fréquence temporelle</string>
     <string name="lifetime_add">Ajouter</string>
     <string name="lifetime_add_event">Ajouter une fréquence temporelle</string>
+    <string name="lifetime_edit_event">Modifier la fréquence de vie</string>
     <string name="lifetime_add_milestone">Ajouter un anniversaire</string>
     <string name="lifetime_edit_milestone">Modifier l\'anniversaire</string>
     <string name="lifetime_event_name_label">Nom de l\'événement</string>
@@ -104,6 +105,7 @@
     <string name="lifetime_insight_history_title">Inspirations passées</string>
     <string name="lifetime_insight_history_empty">Aucun historique</string>
     <string name="lifetime_add_countdown">Ajouter un compte à rebours</string>
+    <string name="lifetime_edit_countdown">Modifier le compte à rebours</string>
     <string name="lifetime_countdown_detail_title">Détails du compte à rebours</string>
     <string name="lifetime_countdown_name_label">Nom du compte à rebours</string>
     <string name="lifetime_countdown_name_placeholder">Salaire, prime annuelle, anniversaire…</string>
@@ -118,6 +120,14 @@
     <string name="lifetime_lunar_date">Lunaire %1$s %2$s%3$s</string>
     <string name="lifetime_frequency_value_label">%1$s%2$d%3$s</string>
     <string name="lifetime_status_today">Aujourd\'hui</string>
+    <string name="lifetime_unit_days_until">jours restants</string>
+    <string name="lifetime_unit_days_past">jours passés</string>
+    <string name="lifetime_unit_months_until">mois restants</string>
+    <string name="lifetime_unit_months_past">mois passés</string>
+    <string name="lifetime_unit_years_until">ans restants</string>
+    <string name="lifetime_unit_years_past">ans passés</string>
+    <string name="lifetime_status_tomorrow">Demain</string>
+    <string name="lifetime_status_day_after_tomorrow">Après-demain</string>
     <string name="lifetime_status_days_until">Encore %1$d jours</string>
     <string name="lifetime_status_days_past">%1$d jours écoulés</string>
     <string name="lifetime_status_months_until">Encore %1$d mois</string>

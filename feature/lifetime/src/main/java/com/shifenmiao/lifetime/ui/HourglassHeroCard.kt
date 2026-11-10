@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -102,10 +103,13 @@ fun HourglassHeroCard(
     ) {
         BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
             val contentWidth = (maxWidth - OneBoxDesignSystem.cardPadding * 2).coerceAtLeast(1.dp)
-            val sizeRatio = contentWidth / HeroDesignWidth
-            // 窄屏不缩高度；宽屏跟字号同一比例拉高，沙漏轮廓和文字一起变高
-            val heightScale = sizeRatio.coerceAtLeast(1f)
-            val cardHeight = HeroCardHeight * heightScale
+            // 缩放只跟设计稿比，并封顶：平板上不再按屏宽线性放大（800dp 竖屏原本会到 2.23 倍）
+            val scale = (contentWidth / HeroDesignWidth).coerceIn(0.85f, 1.25f)
+            // 再按视口高度兜一道底，保证沙漏永远不超过半屏
+            val viewportHeight = LocalConfiguration.current.screenHeightDp.dp
+            val cardHeight = (HeroCardHeight * scale).coerceAtMost(viewportHeight * 0.55f)
+            // 字号跟最终卡高走，避免宽高不同步时文字撑破轮廓
+            val typeScale = cardHeight / HeroCardHeight
 
             Box(modifier = Modifier.fillMaxWidth().height(cardHeight)) {
                 HourglassBackdrop(
@@ -123,13 +127,13 @@ fun HourglassHeroCard(
                     val density = LocalDensity.current
                     val textMeasurer = rememberTextMeasurer()
 
-                    val labelSize = 15.sp * sizeRatio
-                    val yearsSize = 58.sp * sizeRatio
-                    val unitSize = 19.sp * sizeRatio
-                    val daysSize = 46.sp * sizeRatio
-                    val daysUnitSize = 18.sp * sizeRatio
-                    val clockSize = 36.sp * sizeRatio
-                    val clockUnitSize = 16.sp * sizeRatio
+                    val labelSize = 15.sp * typeScale
+                    val yearsSize = 58.sp * typeScale
+                    val unitSize = 19.sp * typeScale
+                    val daysSize = 46.sp * typeScale
+                    val daysUnitSize = 18.sp * typeScale
+                    val clockSize = 36.sp * typeScale
+                    val clockUnitSize = 16.sp * typeScale
 
                     val labelStyle = MaterialTheme.typography.labelSmall.copy(
                         fontSize = labelSize,
@@ -197,22 +201,12 @@ fun HourglassHeroCard(
                             val isPast = mode == TimeDisplayMode.PAST
                             val modeLabel = if (isPast) pastLabel else remainingLabel
                             val modeYears = if (isPast) pastTimeData.years else remainingLifeData.years
-                            val modeDays = if (isPast) pastTimeData.totalDays else remainingLifeData.days
-                            val modeHours = if (isPast) {
-                                pastTimeData.hours % 24
-                            } else {
-                                remainingLifeData.hours % 24
-                            }
-                            val modeMinutes = if (isPast) {
-                                pastTimeData.minutes % 60
-                            } else {
-                                remainingLifeData.minutes % 60
-                            }
-                            val modeSeconds = if (isPast) {
-                                pastTimeData.seconds % 60
-                            } else {
-                                remainingLifeData.seconds % 60
-                            }
+                            // 三个数都是余数：45 年 205 天 07:42:11
+                            // 之前取的是总量对 24/60 取模，结果就是"现在的钟点"和"距 0 点还有多久"
+                            val modeDays = if (isPast) pastTimeData.days else remainingLifeData.days
+                            val modeHours = if (isPast) pastTimeData.hours else remainingLifeData.hours
+                            val modeMinutes = if (isPast) pastTimeData.minutes else remainingLifeData.minutes
+                            val modeSeconds = if (isPast) pastTimeData.seconds else remainingLifeData.seconds
 
                             Box(modifier = Modifier.fillMaxSize()) {
                                 HeroTextBlock(
@@ -278,7 +272,7 @@ fun HourglassHeroCard(
                                         subColor = onSurfaceVariant,
                                         valueStyle = clockValueStyle,
                                         unitStyle = clockUnitStyle,
-                                        spacing = 24.dp * heightScale,
+                                        spacing = 24.dp * typeScale,
                                     )
                                 }
                             }

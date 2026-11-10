@@ -29,6 +29,7 @@
     <!-- Add Event -->
     <string name="lifetime_add">添加</string>
     <string name="lifetime_add_event">添加时光频率</string>
+    <string name="lifetime_edit_event">编辑时光频率</string>
     <string name="lifetime_add_milestone">添加纪念日</string>
     <string name="lifetime_edit_milestone">编辑纪念日</string>
     <string name="lifetime_event_name_label">事件名称</string>
@@ -141,6 +142,7 @@
 
     <!-- Countdown -->
     <string name="lifetime_add_countdown">添加倒数日</string>
+    <string name="lifetime_edit_countdown">编辑倒数日</string>
     <string name="lifetime_countdown_detail_title">倒数日详情</string>
     <string name="lifetime_countdown_name_label">倒数日名称</string>
     <string name="lifetime_countdown_name_placeholder">发工资、发年终奖、纪念日…</string>
@@ -163,6 +165,14 @@
 
     <!-- 状态标签（倒数日 / 纪念日） -->
     <string name="lifetime_status_today">今天</string>
+    <string name="lifetime_unit_days_until">天后</string>
+    <string name="lifetime_unit_days_past">天前</string>
+    <string name="lifetime_unit_months_until">个月后</string>
+    <string name="lifetime_unit_months_past">个月前</string>
+    <string name="lifetime_unit_years_until">年后</string>
+    <string name="lifetime_unit_years_past">年前</string>
+    <string name="lifetime_status_tomorrow">明天</string>
+    <string name="lifetime_status_day_after_tomorrow">后天</string>
     <string name="lifetime_status_days_until">还有 %1$d 天</string>
     <string name="lifetime_status_days_past">已过 %1$d 天</string>
     <string name="lifetime_status_months_until">还有 %1$d 个月</string>

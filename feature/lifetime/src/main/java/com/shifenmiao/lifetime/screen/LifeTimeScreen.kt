@@ -28,6 +28,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -44,7 +45,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -68,6 +71,7 @@ import com.shifenmiao.lifetime.domain.model.FrequencyType
 import com.shifenmiao.lifetime.domain.model.MilestoneStatus
 import com.shifenmiao.lifetime.domain.model.PersonalMilestone
 import com.shifenmiao.lifetime.ui.CountdownEventCard
+import com.shifenmiao.lifetime.ui.EventPickerSheet
 import com.shifenmiao.lifetime.ui.FrequencyEventCard
 import com.shifenmiao.lifetime.ui.HourglassHeroCard
 import com.shifenmiao.lifetime.ui.LifeProgressCard
@@ -75,8 +79,10 @@ import com.shifenmiao.lifetime.ui.PersonalMilestoneCard
 import com.shifenmiao.lifetime.ui.TimeDisplayMode
 import com.shifenmiao.lifetime.util.localizedEventUnit
 import com.shifenmiao.lifetime.util.localizedPresetEventName
+import com.shifenmiao.core.R as CoreR
 import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.utils.provider.LocalWindowSizeClass
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.system.OneBoxSectionCard
@@ -96,6 +102,38 @@ fun LifeTimeScreen(
     component: LifeTimeComponent
 ) {
     val uiState by component.uiState.collectAsState()
+    var showEventPicker by rememberSaveable { mutableStateOf(false) }
+
+    // 卡片和页面宽度跟着窗口走：手机上 160dp，平板 190/210dp，别再让平板留一大片空白
+    val widthClass = LocalWindowSizeClass.current.widthSizeClass
+    val pageMaxWidth = when (widthClass) {
+        WindowWidthSizeClass.Compact -> 600.dp
+        WindowWidthSizeClass.Medium -> 720.dp
+        else -> 840.dp
+    }
+    val cardWidth = when (widthClass) {
+        WindowWidthSizeClass.Compact -> 160.dp
+        WindowWidthSizeClass.Medium -> 190.dp
+        else -> 210.dp
+    }
+
+    if (showEventPicker) {
+        EventPickerSheet(
+            visible = true,
+            allEvents = uiState.allEvents,
+            onDismiss = { showEventPicker = false },
+            onToggleEvent = { component.toggleEventEnabled(it) },
+            onDeleteEvent = { component.deleteFrequencyEvent(it) },
+            onEditEvent = {
+                showEventPicker = false
+                component.navigateToEditEvent(it.id)
+            },
+            onAddNewEvent = {
+                showEventPicker = false
+                component.navigateToAddEvent()
+            }
+        )
+    }
 
     BaseScreen(
         title = stringResource(R.string.lifetime_title),
@@ -144,7 +182,12 @@ fun LifeTimeScreen(
             }
 
             LazyColumn(
-                modifier = Modifier.weight(1f),
+                // 平板不再把内容拉满整个屏宽：限 600dp 居中，沙漏另有 420dp 上限
+                modifier = Modifier
+                    .weight(1f)
+                    .widthIn(max = pageMaxWidth)
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally),
                 contentPadding = PaddingValues(
                     horizontal = OneBoxDesignSystem.screenPadding,
                     vertical = OneBoxDesignSystem.compactSpacing
@@ -152,13 +195,20 @@ fun LifeTimeScreen(
                 verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing)
             ) {
                 item {
-                    HourglassHeroCard(
-                        pastTimeData = uiState.pastTimeData,
-                        remainingLifeData = uiState.remainingLifeData,
-                        displayMode = uiState.timeDisplayMode,
-                        onToggleMode = { component.toggleTimeDisplayMode() },
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.TopCenter
+                    ) {
+                        HourglassHeroCard(
+                            pastTimeData = uiState.pastTimeData,
+                            remainingLifeData = uiState.remainingLifeData,
+                            displayMode = uiState.timeDisplayMode,
+                            onToggleMode = { component.toggleTimeDisplayMode() },
+                            modifier = Modifier
+                                .widthIn(max = 420.dp)
+                                .fillMaxWidth()
+                        )
+                    }
                 }
 
                 item {
@@ -174,6 +224,7 @@ fun LifeTimeScreen(
                 item {
                     MilestonesSection(
                         milestones = uiState.personalMilestones,
+                        cardWidth = cardWidth,
                         onAddMilestone = { component.navigateToAddMilestone() },
                         onMilestoneClick = { component.navigateToMilestoneDetail(it.milestone.id) },
                         onDeleteMilestone = { component.deletePersonalMilestone(it) }
@@ -183,6 +234,7 @@ fun LifeTimeScreen(
                 item {
                     CountdownSection(
                         countdowns = uiState.countdowns,
+                        cardWidth = cardWidth,
                         onAddCountdown = { component.navigateToAddCountdown() },
                         onCountdownClick = { component.navigateToCountdownDetail(it.event.id) },
                         onDeleteCountdown = { component.deleteCountdown(it) },
@@ -192,7 +244,9 @@ fun LifeTimeScreen(
                 item {
                     FrequencyEventsSection(
                         eventStats = uiState.frequencyEventStats,
-                        onAddEvent = { component.navigateToAddEvent() }
+                        onAddEvent = { component.navigateToAddEvent() },
+                        onManage = { showEventPicker = true },
+                        onEditEvent = { component.navigateToEditEvent(it.id) }
                     )
                 }
 
@@ -417,6 +471,7 @@ private fun PillAction(
 @Composable
 private fun MilestonesSection(
     milestones: List<MilestoneStatus>,
+    cardWidth: androidx.compose.ui.unit.Dp,
     onAddMilestone: () -> Unit,
     onMilestoneClick: (MilestoneStatus) -> Unit,
     onDeleteMilestone: (PersonalMilestone) -> Unit
@@ -439,7 +494,7 @@ private fun MilestonesSection(
                         status = status,
                         onClick = { onMilestoneClick(status) },
                         themeIndex = index,
-                        modifier = Modifier.width(140.dp)
+                        modifier = Modifier.width(cardWidth)
                     )
                 }
             }
@@ -450,6 +505,7 @@ private fun MilestonesSection(
 @Composable
 private fun CountdownSection(
     countdowns: List<com.shifenmiao.lifetime.domain.model.CountdownStatus>,
+    cardWidth: androidx.compose.ui.unit.Dp,
     onAddCountdown: () -> Unit,
     onCountdownClick: (com.shifenmiao.lifetime.domain.model.CountdownStatus) -> Unit,
     onDeleteCountdown: (CountdownEvent) -> Unit,
@@ -472,7 +528,7 @@ private fun CountdownSection(
                         status = status,
                         onClick = { onCountdownClick(status) },
                         themeIndex = index,
-                        modifier = Modifier.width(160.dp)
+                        modifier = Modifier.width(cardWidth)
                     )
                 }
             }
@@ -552,13 +608,28 @@ private fun EmptyCountdownCard(onClick: () -> Unit) {
 @Composable
 private fun FrequencyEventsSection(
     eventStats: List<com.shifenmiao.lifetime.domain.model.FrequencyEventStats>,
-    onAddEvent: () -> Unit
+    onAddEvent: () -> Unit,
+    onManage: () -> Unit,
+    onEditEvent: (com.shifenmiao.lifetime.domain.model.FrequencyEvent) -> Unit,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing)) {
-        OneBoxSectionHeader(
-            title = stringResource(R.string.lifetime_frequency_section),
-            modifier = Modifier.fillMaxWidth()
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(modifier = Modifier.weight(1f)) {
+                OneBoxSectionHeader(
+                    title = stringResource(R.string.lifetime_frequency_section),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            TextButton(onClick = onManage) {
+                Text(
+                    text = stringResource(CoreR.string.manage),
+                    style = MaterialTheme.typography.labelLarge
+                )
+            }
+        }
 
         if (eventStats.isEmpty()) {
             EmptyEventsCard(onAddEvent)
@@ -585,7 +656,8 @@ private fun FrequencyEventsSection(
                                 frequencyLabel = buildFrequencyLabel(stats.event),
                                 progress = progress,
                                 themeIndex = themeIndex,
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.weight(1f),
+                                onLongClick = { onEditEvent(stats.event) }
                             )
                         }
                         if (rowStats.size == 1) {
@@ -601,6 +673,7 @@ private fun FrequencyEventsSection(
 @Composable
 private fun EmptyEventsCard(onClick: () -> Unit) {
     OneBoxSectionCard(
+        onClick = onClick,
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(

@@ -17,6 +17,7 @@
     <string name="lifetime_countdown_section">Cuentas Regresivas</string>
     <string name="lifetime_frequency_section">Frecuencia de Vida</string>
     <string name="lifetime_add_event">Agregar Marca de Vida</string>
+    <string name="lifetime_edit_event">Editar frecuencia de vida</string>
     <string name="lifetime_add_milestone">Agregar Memorial</string>
     <string name="lifetime_edit_milestone">Editar Memorial</string>
     <string name="lifetime_event_name_label">Nombre del Evento</string>
@@ -103,6 +104,7 @@
     <string name="lifetime_insight_history_title">Historial de reflexiones</string>
     <string name="lifetime_insight_history_empty">Sin historial</string>
     <string name="lifetime_add_countdown">Añadir cuenta atrás</string>
+    <string name="lifetime_edit_countdown">Editar cuenta regresiva</string>
     <string name="lifetime_countdown_detail_title">Detalle de cuenta atrás</string>
     <string name="lifetime_countdown_name_label">Nombre de la cuenta atrás</string>
     <string name="lifetime_countdown_name_placeholder">Día de pago, aniversario, bono…</string>
@@ -118,6 +120,14 @@
     <string name="lifetime_lunar_date">Lunar %1$s %2$s%3$s</string>
     <string name="lifetime_frequency_value_label">%1$s %2$d %3$s</string>
     <string name="lifetime_status_today">Hoy</string>
+    <string name="lifetime_unit_days_until">días restantes</string>
+    <string name="lifetime_unit_days_past">días atrás</string>
+    <string name="lifetime_unit_months_until">meses restantes</string>
+    <string name="lifetime_unit_months_past">meses atrás</string>
+    <string name="lifetime_unit_years_until">años restantes</string>
+    <string name="lifetime_unit_years_past">años atrás</string>
+    <string name="lifetime_status_tomorrow">Mañana</string>
+    <string name="lifetime_status_day_after_tomorrow">Pasado mañana</string>
     <string name="lifetime_status_days_until">Quedan %1$d días</string>
     <string name="lifetime_status_days_past">Hace %1$d días</string>
     <string name="lifetime_status_months_until">Quedan %1$d meses</string>

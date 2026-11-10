@@ -17,6 +17,7 @@
     <string name="lifetime_countdown_section">Contagens Regressivas</string>
     <string name="lifetime_frequency_section">Frequência de Vida</string>
     <string name="lifetime_add_event">Adicionar Marca de Vida</string>
+    <string name="lifetime_edit_event">Editar frequência de vida</string>
     <string name="lifetime_add_milestone">Adicionar Memorial</string>
     <string name="lifetime_edit_milestone">Editar Memorial</string>
     <string name="lifetime_event_name_label">Nome do Evento</string>
@@ -103,6 +104,7 @@
     <string name="lifetime_insight_history_title">Histórico de Insights</string>
     <string name="lifetime_insight_history_empty">Sem histórico</string>
     <string name="lifetime_add_countdown">Adicionar Contagem Regressiva</string>
+    <string name="lifetime_edit_countdown">Editar contagem regressiva</string>
     <string name="lifetime_countdown_detail_title">Detalhe da Contagem Regressiva</string>
     <string name="lifetime_countdown_name_label">Nome da Contagem Regressiva</string>
     <string name="lifetime_countdown_name_placeholder">Dia de Pagamento, Aniversário, Bônus…</string>
@@ -118,6 +120,14 @@
     <string name="lifetime_lunar_date">Lunar %1$s %2$s%3$s</string>
     <string name="lifetime_frequency_value_label">%1$s %2$d %3$s</string>
     <string name="lifetime_status_today">Hoje</string>
+    <string name="lifetime_unit_days_until">dias restantes</string>
+    <string name="lifetime_unit_days_past">dias atrás</string>
+    <string name="lifetime_unit_months_until">meses restantes</string>
+    <string name="lifetime_unit_months_past">meses atrás</string>
+    <string name="lifetime_unit_years_until">anos restantes</string>
+    <string name="lifetime_unit_years_past">anos atrás</string>
+    <string name="lifetime_status_tomorrow">Amanhã</string>
+    <string name="lifetime_status_day_after_tomorrow">Depois de amanhã</string>
     <string name="lifetime_status_days_until">%1$d dias restantes</string>
     <string name="lifetime_status_days_past">%1$d dias atrás</string>
     <string name="lifetime_status_months_until">%1$d meses restantes</string>

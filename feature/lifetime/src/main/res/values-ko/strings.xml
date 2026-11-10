@@ -17,6 +17,7 @@
     <string name="lifetime_countdown_section">카운트다운</string>
     <string name="lifetime_frequency_section">생활 빈도</string>
     <string name="lifetime_add_event">생활 표시 추가</string>
+    <string name="lifetime_edit_event">라이프 빈도 편집</string>
     <string name="lifetime_add_milestone">추모 추가</string>
     <string name="lifetime_edit_milestone">추모 편집</string>
     <string name="lifetime_event_name_label">이벤트 이름</string>
@@ -103,6 +104,7 @@
     <string name="lifetime_insight_history_title">인사이트 기록</string>
     <string name="lifetime_insight_history_empty">기록 없음</string>
     <string name="lifetime_add_countdown">카운트다운 추가</string>
+    <string name="lifetime_edit_countdown">카운트다운 편집</string>
     <string name="lifetime_countdown_detail_title">카운트다운 상세</string>
     <string name="lifetime_countdown_name_label">카운트다운 이름</string>
     <string name="lifetime_countdown_name_placeholder">월급일, 기념일, 보너스…</string>
@@ -118,6 +120,14 @@
     <string name="lifetime_lunar_date">음력 %1$s %2$s%3$s</string>
     <string name="lifetime_frequency_value_label">%1$s %2$d %3$s</string>
     <string name="lifetime_status_today">오늘</string>
+    <string name="lifetime_unit_days_until">일 후</string>
+    <string name="lifetime_unit_days_past">일 전</string>
+    <string name="lifetime_unit_months_until">개월 후</string>
+    <string name="lifetime_unit_months_past">개월 전</string>
+    <string name="lifetime_unit_years_until">년 후</string>
+    <string name="lifetime_unit_years_past">년 전</string>
+    <string name="lifetime_status_tomorrow">내일</string>
+    <string name="lifetime_status_day_after_tomorrow">모레</string>
     <string name="lifetime_status_days_until">%1$d일 남음</string>
     <string name="lifetime_status_days_past">%1$d일 지남</string>
     <string name="lifetime_status_months_until">%1$d개월 남음</string>

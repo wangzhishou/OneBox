@@ -17,6 +17,7 @@
     <string name="lifetime_countdown_section">العدّ التنازلي</string>
     <string name="lifetime_frequency_section">تكرار الحياة</string>
     <string name="lifetime_add_event">إضافة علامة حياة</string>
+    <string name="lifetime_edit_event">تعديل تكرار الحياة</string>
     <string name="lifetime_add_milestone">إضافة ذكرى</string>
     <string name="lifetime_edit_milestone">تعديل الذكرى</string>
     <string name="lifetime_event_name_label">اسم الحدث</string>
@@ -103,6 +104,7 @@
     <string name="lifetime_insight_history_title">سجل الرؤى</string>
     <string name="lifetime_insight_history_empty">لا يوجد سجل</string>
     <string name="lifetime_add_countdown">إضافة عدّ تنازلي</string>
+    <string name="lifetime_edit_countdown">تعديل العد التنازلي</string>
     <string name="lifetime_countdown_detail_title">تفاصيل العدّ التنازلي</string>
     <string name="lifetime_countdown_name_label">اسم العدّ التنازلي</string>
     <string name="lifetime_countdown_name_placeholder">يوم الراتب، ذكرى الزواج، مكافأة…</string>
@@ -118,6 +120,14 @@
     <string name="lifetime_lunar_date">قمري %1$s %2$s%3$s</string>
     <string name="lifetime_frequency_value_label">%1$s %2$d %3$s</string>
     <string name="lifetime_status_today">اليوم</string>
+    <string name="lifetime_unit_days_until">أيام متبقية</string>
+    <string name="lifetime_unit_days_past">أيام مضت</string>
+    <string name="lifetime_unit_months_until">أشهر متبقية</string>
+    <string name="lifetime_unit_months_past">أشهر مضت</string>
+    <string name="lifetime_unit_years_until">سنوات متبقية</string>
+    <string name="lifetime_unit_years_past">سنوات مضت</string>
+    <string name="lifetime_status_tomorrow">غدًا</string>
+    <string name="lifetime_status_day_after_tomorrow">بعد غد</string>
     <string name="lifetime_status_days_until">بقي %1$d يومًا</string>
     <string name="lifetime_status_days_past">قبل %1$d يومًا</string>
     <string name="lifetime_status_months_until">بقي %1$d شهرًا</string>

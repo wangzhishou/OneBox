@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.wanbaohe.base.ui.icon.IconAvatar
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.lifetime.R
+import com.shifenmiao.core.R as CoreR
 import com.shifenmiao.lifetime.component.LifeTimeCountdownDetailComponent
 import com.shifenmiao.lifetime.domain.CountdownCalculator
 import com.shifenmiao.lifetime.domain.model.CountdownStatus
@@ -38,6 +39,7 @@ import com.wanbaohe.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
+import com.t8rin.imagetoolbox.core.resources.icons.Edit
 
 @Composable
 fun LifeTimeCountdownDetailScreen(
@@ -66,6 +68,13 @@ fun LifeTimeCountdownDetailScreen(
             ?: stringResource(R.string.lifetime_countdown_detail_title),
         onGoBack = { component.onGoBack() },
         actions = {
+            IconButton(onClick = { component.editCountdown() }) {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
+                    contentDescription = stringResource(CoreR.string.edit),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
             IconButton(onClick = { showDeleteConfirm = true }) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,

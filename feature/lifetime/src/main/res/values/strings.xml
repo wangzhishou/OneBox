@@ -17,6 +17,7 @@
     <string name="lifetime_countdown_section">Countdowns</string>
     <string name="lifetime_frequency_section">Life Frequency</string>
     <string name="lifetime_add_event">Add Life Mark</string>
+    <string name="lifetime_edit_event">Edit Life Frequency</string>
     <string name="lifetime_add_milestone">Add Memorial</string>
     <string name="lifetime_edit_milestone">Edit Memorial</string>
     <string name="lifetime_event_name_label">Event Name</string>
@@ -103,6 +104,7 @@
     <string name="lifetime_insight_history_title">Insight History</string>
     <string name="lifetime_insight_history_empty">No history</string>
     <string name="lifetime_add_countdown">Add Countdown</string>
+    <string name="lifetime_edit_countdown">Edit Countdown</string>
     <string name="lifetime_countdown_detail_title">Countdown Detail</string>
     <string name="lifetime_countdown_name_label">Countdown Name</string>
     <string name="lifetime_countdown_name_placeholder">Payday, Anniversary, Bonus…</string>
@@ -124,6 +126,14 @@
 
     <!-- Status labels (countdown / memorial) -->
     <string name="lifetime_status_today">Today</string>
+    <string name="lifetime_unit_days_until">days to go</string>
+    <string name="lifetime_unit_days_past">days ago</string>
+    <string name="lifetime_unit_months_until">months to go</string>
+    <string name="lifetime_unit_months_past">months ago</string>
+    <string name="lifetime_unit_years_until">years to go</string>
+    <string name="lifetime_unit_years_past">years ago</string>
+    <string name="lifetime_status_tomorrow">Tomorrow</string>
+    <string name="lifetime_status_day_after_tomorrow">In 2 days</string>
     <string name="lifetime_status_days_until">%1$d days to go</string>
     <string name="lifetime_status_days_past">%1$d days ago</string>
     <string name="lifetime_status_months_until">%1$d months to go</string>

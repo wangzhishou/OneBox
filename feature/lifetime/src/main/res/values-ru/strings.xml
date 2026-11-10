@@ -17,6 +17,7 @@
     <string name="lifetime_countdown_section">Обратный отсчет</string>
     <string name="lifetime_frequency_section">Частота жизни</string>
     <string name="lifetime_add_event">Добавить отметку жизни</string>
+    <string name="lifetime_edit_event">Изменить частоту жизни</string>
     <string name="lifetime_add_milestone">Добавить памятную дату</string>
     <string name="lifetime_edit_milestone">Изменить памятную дату</string>
     <string name="lifetime_event_name_label">Название события</string>
@@ -103,6 +104,7 @@
     <string name="lifetime_insight_history_title">История мыслей</string>
     <string name="lifetime_insight_history_empty">Нет истории</string>
     <string name="lifetime_add_countdown">Добавить обратный отсчёт</string>
+    <string name="lifetime_edit_countdown">Изменить обратный отсчёт</string>
     <string name="lifetime_countdown_detail_title">Детали обратного отсчёта</string>
     <string name="lifetime_countdown_name_label">Название обратного отсчёта</string>
     <string name="lifetime_countdown_name_placeholder">Зарплата, годовщина, бонус…</string>
@@ -118,6 +120,14 @@
     <string name="lifetime_lunar_date">Лунный %1$s %2$s%3$s</string>
     <string name="lifetime_frequency_value_label">%1$s %2$d %3$s</string>
     <string name="lifetime_status_today">Сегодня</string>
+    <string name="lifetime_unit_days_until">дней осталось</string>
+    <string name="lifetime_unit_days_past">дней назад</string>
+    <string name="lifetime_unit_months_until">месяцев осталось</string>
+    <string name="lifetime_unit_months_past">месяцев назад</string>
+    <string name="lifetime_unit_years_until">лет осталось</string>
+    <string name="lifetime_unit_years_past">лет назад</string>
+    <string name="lifetime_status_tomorrow">Завтра</string>
+    <string name="lifetime_status_day_after_tomorrow">Послезавтра</string>
     <string name="lifetime_status_days_until">Осталось %1$d дн.</string>
     <string name="lifetime_status_days_past">%1$d дн. назад</string>
     <string name="lifetime_status_months_until">Осталось %1$d мес.</string>

@@ -17,6 +17,7 @@
     <string name="lifetime_countdown_section">Countdowns</string>
     <string name="lifetime_frequency_section">Lebensfrequenz</string>
     <string name="lifetime_add_event">Lebensmarkierung hinzufügen</string>
+    <string name="lifetime_edit_event">Lebenshäufigkeit bearbeiten</string>
     <string name="lifetime_add_milestone">Gedenkstätte hinzufügen</string>
     <string name="lifetime_edit_milestone">Gedenkstätte bearbeiten</string>
     <string name="lifetime_event_name_label">Ereignisname</string>
@@ -103,6 +104,7 @@
     <string name="lifetime_insight_history_title">Erkenntnisverlauf</string>
     <string name="lifetime_insight_history_empty">Kein Verlauf</string>
     <string name="lifetime_add_countdown">Countdown hinzufügen</string>
+    <string name="lifetime_edit_countdown">Countdown bearbeiten</string>
     <string name="lifetime_countdown_detail_title">Countdown-Details</string>
     <string name="lifetime_countdown_name_label">Countdown-Name</string>
     <string name="lifetime_countdown_name_placeholder">Gehaltstag, Jahrestag, Bonus…</string>
@@ -118,6 +120,14 @@
     <string name="lifetime_lunar_date">Mondkalender %1$s %2$s%3$s</string>
     <string name="lifetime_frequency_value_label">%1$s %2$d %3$s</string>
     <string name="lifetime_status_today">Heute</string>
+    <string name="lifetime_unit_days_until">Tage übrig</string>
+    <string name="lifetime_unit_days_past">Tage her</string>
+    <string name="lifetime_unit_months_until">Monate übrig</string>
+    <string name="lifetime_unit_months_past">Monate her</string>
+    <string name="lifetime_unit_years_until">Jahre übrig</string>
+    <string name="lifetime_unit_years_past">Jahre her</string>
+    <string name="lifetime_status_tomorrow">Morgen</string>
+    <string name="lifetime_status_day_after_tomorrow">Übermorgen</string>
     <string name="lifetime_status_days_until">Noch %1$d Tage</string>
     <string name="lifetime_status_days_past">Vor %1$d Tagen</string>
     <string name="lifetime_status_months_until">Noch %1$d Monate</string>

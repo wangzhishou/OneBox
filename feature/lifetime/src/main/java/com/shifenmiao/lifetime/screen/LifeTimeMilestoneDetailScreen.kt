@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import com.wanbaohe.base.ui.icon.IconAvatar
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.lifetime.R
+import com.shifenmiao.core.R as CoreR
 import com.shifenmiao.lifetime.component.LifeTimeMilestoneDetailComponent
 import com.shifenmiao.lifetime.domain.PersonalMilestoneCalculator
 import com.shifenmiao.lifetime.ui.NoteSection
@@ -54,6 +55,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
+import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
 
@@ -83,6 +85,13 @@ fun LifeTimeMilestoneDetailScreen(
         title = milestone?.name ?: stringResource(R.string.lifetime_edit_milestone),
         onGoBack = { component.onGoBack() },
         actions = {
+            IconButton(onClick = { component.editMilestone() }) {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
+                    contentDescription = stringResource(CoreR.string.edit),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
             IconButton(onClick = { showDeleteConfirm = true }) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,

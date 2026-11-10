@@ -1,8 +1,10 @@
 package com.shifenmiao.lifetime.screen
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
@@ -12,10 +14,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -39,11 +43,47 @@ import java.time.LocalDate
 fun LifeTimeAddMilestoneScreen(
     component: LifeTimeAddMilestoneComponent
 ) {
-    var name by remember { mutableStateOf("") }
-    var selectedIconKey by remember { mutableStateOf("EmojiEvents") }
-    var targetDate by remember { mutableStateOf<LocalDate?>(null) }
+    val uiState by component.uiState.collectAsState()
+
+    if (uiState.isLoading) {
+        BaseScreen(
+            title = stringResource(R.string.lifetime_loading),
+            onGoBack = { component.onGoBack() }
+        ) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.lifetime_loading),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+        return
+    }
+
+    MilestoneForm(
+        initial = uiState.milestone,
+        onCancel = { component.onGoBack() },
+        onSave = component::save,
+    )
+}
+
+@Composable
+private fun MilestoneForm(
+    initial: PersonalMilestone?,
+    onCancel: () -> Unit,
+    onSave: (PersonalMilestone) -> Unit,
+) {
+    val isEditing = initial != null
+    // 编辑时用原记录做默认值；remember key 用 id，切换记录会重置表单
+    var name by remember(initial) { mutableStateOf(initial?.name.orEmpty()) }
+    var selectedIconKey by remember(initial) { mutableStateOf(initial?.iconKey ?: "EmojiEvents") }
+    var targetDate by remember(initial) { mutableStateOf(initial?.targetDate) }
     var showDatePicker by remember { mutableStateOf(false) }
-    var note by remember { mutableStateOf("") }
+    var note by remember(initial) { mutableStateOf(initial?.note.orEmpty()) }
     var hasSubmitted by remember { mutableStateOf(false) }
 
     val trimmedName = name.trim()
@@ -65,8 +105,10 @@ fun LifeTimeAddMilestoneScreen(
     }
 
     BaseScreen(
-        title = stringResource(R.string.lifetime_add_milestone),
-        onGoBack = { component.onGoBack() }
+        title = stringResource(
+            if (isEditing) R.string.lifetime_edit_milestone else R.string.lifetime_add_milestone
+        ),
+        onGoBack = onCancel
     ) {
         Column(
             modifier = Modifier
@@ -203,13 +245,15 @@ fun LifeTimeAddMilestoneScreen(
 
         BottomSaveCancelBar(
             modifier = Modifier.imePadding(),
-            onCancel = { component.onGoBack() },
+            onCancel = onCancel,
             onSave = {
                 hasSubmitted = true
                 if (!canSave) return@BottomSaveCancelBar
 
-                component.addMilestone(
-                    PersonalMilestone(
+                // 编辑时保留 id / 创建时间 / 排序等原字段，只改表单里的四项
+                val base = initial ?: PersonalMilestone(name = trimmedName)
+                onSave(
+                    base.copy(
                         name = trimmedName,
                         iconKey = selectedIconKey,
                         targetDate = targetDate,
@@ -218,7 +262,9 @@ fun LifeTimeAddMilestoneScreen(
                 )
             },
             saveEnabled = true,
-            saveText = stringResource(R.string.lifetime_add_milestone)
+            saveText = stringResource(
+                if (isEditing) R.string.lifetime_note_save else R.string.lifetime_add_milestone
+            )
         )
     }
 

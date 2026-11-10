@@ -17,6 +17,7 @@
     <string name="lifetime_countdown_section">Mga Countdown</string>
     <string name="lifetime_frequency_section">Dalas ng Buhay</string>
     <string name="lifetime_add_event">Magdagdag ng Marka sa Buhay</string>
+    <string name="lifetime_edit_event">I-edit ang dalas ng buhay</string>
     <string name="lifetime_add_milestone">Magdagdag ng Alaala</string>
     <string name="lifetime_edit_milestone">I-edit ang Alaala</string>
     <string name="lifetime_event_name_label">Pangalan ng Kaganapan</string>
@@ -103,6 +104,7 @@
     <string name="lifetime_insight_history_title">Kasaysayan ng Pananaw</string>
     <string name="lifetime_insight_history_empty">Walang kasaysayan</string>
     <string name="lifetime_add_countdown">Magdagdag ng Countdown</string>
+    <string name="lifetime_edit_countdown">I-edit ang countdown</string>
     <string name="lifetime_countdown_detail_title">Detalye ng Countdown</string>
     <string name="lifetime_countdown_name_label">Pangalan ng Countdown</string>
     <string name="lifetime_countdown_name_placeholder">Araw ng suweldo, Anibersaryo, Bonus…</string>
@@ -118,6 +120,14 @@
     <string name="lifetime_lunar_date">Lunar %1$s %2$s%3$s</string>
     <string name="lifetime_frequency_value_label">%1$s %2$d %3$s</string>
     <string name="lifetime_status_today">Ngayon</string>
+    <string name="lifetime_unit_days_until">araw pa</string>
+    <string name="lifetime_unit_days_past">araw ang nakalipas</string>
+    <string name="lifetime_unit_months_until">buwan pa</string>
+    <string name="lifetime_unit_months_past">buwan ang nakalipas</string>
+    <string name="lifetime_unit_years_until">taon pa</string>
+    <string name="lifetime_unit_years_past">taon ang nakalipas</string>
+    <string name="lifetime_status_tomorrow">Bukas</string>
+    <string name="lifetime_status_day_after_tomorrow">Samakalawa</string>
     <string name="lifetime_status_days_until">%1$d araw na lang</string>
     <string name="lifetime_status_days_past">%1$d araw ang nakalipas</string>
     <string name="lifetime_status_months_until">%1$d buwan na lang</string>

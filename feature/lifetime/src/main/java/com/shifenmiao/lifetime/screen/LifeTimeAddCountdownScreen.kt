@@ -1,9 +1,11 @@
 package com.shifenmiao.lifetime.screen
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
@@ -14,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import com.wanbaohe.core.ui.widget.glass.GlassSwitch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,12 +46,49 @@ import java.time.LocalDate
 fun LifeTimeAddCountdownScreen(
     component: LifeTimeAddCountdownComponent
 ) {
-    var name by remember { mutableStateOf("") }
-    var selectedIconKey by remember { mutableStateOf("Event") }
-    var targetDate by remember { mutableStateOf<LocalDate?>(null) }
-    var isLunarTarget by remember { mutableStateOf(false) }
+    val uiState by component.uiState.collectAsState()
+
+    if (uiState.isLoading) {
+        BaseScreen(
+            title = stringResource(R.string.lifetime_loading),
+            onGoBack = { component.onGoBack() }
+        ) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.lifetime_loading),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+        return
+    }
+
+    CountdownForm(
+        initial = uiState.countdown,
+        onCancel = { component.onGoBack() },
+        onSave = component::save,
+    )
+}
+
+@Composable
+private fun CountdownForm(
+    initial: CountdownEvent?,
+    onCancel: () -> Unit,
+    onSave: (CountdownEvent) -> Unit,
+) {
+    val isEditing = initial != null
+    // 农历节日在库里没有 targetDate，用下一次发生日兜底显示
+    val initialTargetDate = initial?.targetDate ?: initial?.nextOccurrence()
+    var name by remember(initial) { mutableStateOf(initial?.name.orEmpty()) }
+    var selectedIconKey by remember(initial) { mutableStateOf(initial?.iconKey ?: "Event") }
+    var targetDate by remember(initial) { mutableStateOf(initialTargetDate) }
+    var isLunarTarget by remember(initial) { mutableStateOf(initial?.isLunarTarget ?: false) }
     var showDatePicker by remember { mutableStateOf(false) }
-    var note by remember { mutableStateOf("") }
+    var note by remember(initial) { mutableStateOf(initial?.note.orEmpty()) }
     var hasSubmitted by remember { mutableStateOf(false) }
 
     val trimmedName = name.trim()
@@ -70,8 +110,10 @@ fun LifeTimeAddCountdownScreen(
     }
 
     BaseScreen(
-        title = stringResource(R.string.lifetime_add_countdown),
-        onGoBack = { component.onGoBack() }
+        title = stringResource(
+            if (isEditing) R.string.lifetime_edit_countdown else R.string.lifetime_add_countdown
+        ),
+        onGoBack = onCancel
     ) {
         Column(
             modifier = Modifier
@@ -255,20 +297,22 @@ fun LifeTimeAddCountdownScreen(
 
         BottomSaveCancelBar(
             modifier = Modifier.imePadding(),
-            onCancel = { component.onGoBack() },
+            onCancel = onCancel,
             onSave = {
                 hasSubmitted = true
                 if (!canSave) return@BottomSaveCancelBar
-                val target = targetDate
-                if (target == null) return@BottomSaveCancelBar
+                val target = targetDate ?: return@BottomSaveCancelBar
                 val (lunarMonth, lunarDay) = if (isLunarTarget) {
                     val lunar = LunarCalendarCalculator.solarToLunar(
                         target.year, target.monthValue, target.dayOfMonth
                     )
                     lunar.month to lunar.day
                 } else 0 to 0
-                component.addCountdown(
-                    CountdownEvent(
+
+                // 编辑时保留 id / 排序 / 预置标记等原字段
+                val base = initial ?: CountdownEvent(name = trimmedName)
+                onSave(
+                    base.copy(
                         name = trimmedName,
                         iconKey = selectedIconKey,
                         targetDate = target,
@@ -280,7 +324,9 @@ fun LifeTimeAddCountdownScreen(
                 )
             },
             saveEnabled = true,
-            saveText = stringResource(R.string.lifetime_add_countdown)
+            saveText = stringResource(
+                if (isEditing) R.string.lifetime_note_save else R.string.lifetime_add_countdown
+            )
         )
     }
 

@@ -10,11 +10,14 @@ import com.shifenmiao.lifetime.domain.model.PersonalMilestone
 import com.shifenmiao.database.lifetime.entity.MilestoneAiInsightEntity
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @Immutable
@@ -29,6 +32,7 @@ class LifeTimeMilestoneDetailComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted val milestoneId: Long,
     @Assisted val onGoBack: () -> Unit,
+    @Assisted val onNavigate: (Screen) -> Unit,
     dispatchersHolder: DispatchersHolder,
     private val repository: PersonalMilestoneRepository,
     private val insightRepository: MilestoneAiInsightRepository,
@@ -40,18 +44,27 @@ class LifeTimeMilestoneDetailComponent @AssistedInject internal constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        loadMilestone()
+        observeMilestone()
         observeInsights()
     }
 
-    private fun loadMilestone() {
-        componentScope.launch {
-            val milestone = repository.getMilestoneById(milestoneId)
-            _uiState.emit(_uiState.value.copy(milestone = milestone))
-            if (milestone != null) {
-                generateNewInsight()
+    /**
+     * 观察而不是一次性读取：编辑返回后标题/日期要刷新。
+     * 只在该详情第一次拿到记录时生成一次灵感，之后不再自动生成。
+     */
+    private fun observeMilestone() {
+        var insightRequested = false
+        repository.allMilestonesFlow
+            .onEach { items ->
+                val milestone = items.firstOrNull { it.id == milestoneId }
+                _uiState.emit(_uiState.value.copy(milestone = milestone))
+                if (milestone != null && !insightRequested) {
+                    insightRequested = true
+                    // 生成要联网，别卡住观察流
+                    componentScope.launch { generateNewInsight() }
+                }
             }
-        }
+            .launchIn(componentScope)
     }
 
     private fun observeInsights() {
@@ -98,6 +111,10 @@ class LifeTimeMilestoneDetailComponent @AssistedInject internal constructor(
         }
     }
 
+    fun editMilestone() {
+        onNavigate(Screen.LifeTimeAddMilestone(milestoneId = milestoneId))
+    }
+
     fun deleteMilestone() {
         componentScope.launch {
             insightRepository.deleteByMilestone(milestoneId)
@@ -111,7 +128,8 @@ class LifeTimeMilestoneDetailComponent @AssistedInject internal constructor(
         operator fun invoke(
             componentContext: ComponentContext,
             milestoneId: Long,
-            onGoBack: () -> Unit
+            onGoBack: () -> Unit,
+            onNavigate: (Screen) -> Unit
         ): LifeTimeMilestoneDetailComponent
     }
 }

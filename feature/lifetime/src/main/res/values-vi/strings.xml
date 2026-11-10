@@ -18,6 +18,7 @@
     <string name="lifetime_frequency_section">Tần suất thời gian</string>
     <string name="lifetime_add">Thêm</string>
     <string name="lifetime_add_event">Thêm tần suất thời gian</string>
+    <string name="lifetime_edit_event">Chỉnh sửa tần suất sống</string>
     <string name="lifetime_add_milestone">Thêm ngày kỷ niệm</string>
     <string name="lifetime_edit_milestone">Chỉnh sửa ngày kỷ niệm</string>
     <string name="lifetime_event_name_label">Tên sự kiện</string>
@@ -104,6 +105,7 @@
     <string name="lifetime_insight_history_title">Cảm hứng lịch sử</string>
     <string name="lifetime_insight_history_empty">Chưa có lịch sử</string>
     <string name="lifetime_add_countdown">Thêm ngày đếm ngược</string>
+    <string name="lifetime_edit_countdown">Chỉnh sửa đếm ngược</string>
     <string name="lifetime_countdown_detail_title">Chi tiết ngày đếm ngược</string>
     <string name="lifetime_countdown_name_label">Tên ngày đếm ngược</string>
     <string name="lifetime_countdown_name_placeholder">Ngày lương, thưởng cuối năm, kỷ niệm…</string>
@@ -118,6 +120,14 @@
     <string name="lifetime_lunar_date">Âm lịch %1$s năm %2$s%3$s</string>
     <string name="lifetime_frequency_value_label">%1$s%2$d%3$s</string>
     <string name="lifetime_status_today">Hôm nay</string>
+    <string name="lifetime_unit_days_until">ngày nữa</string>
+    <string name="lifetime_unit_days_past">ngày trước</string>
+    <string name="lifetime_unit_months_until">tháng nữa</string>
+    <string name="lifetime_unit_months_past">tháng trước</string>
+    <string name="lifetime_unit_years_until">năm nữa</string>
+    <string name="lifetime_unit_years_past">năm trước</string>
+    <string name="lifetime_status_tomorrow">Ngày mai</string>
+    <string name="lifetime_status_day_after_tomorrow">Ngày kia</string>
     <string name="lifetime_status_days_until">Còn %1$d ngày</string>
     <string name="lifetime_status_days_past">Đã qua %1$d ngày</string>
     <string name="lifetime_status_months_until">Còn %1$d tháng</string>

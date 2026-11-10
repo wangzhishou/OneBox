@@ -4,21 +4,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -36,15 +33,22 @@ import com.shifenmiao.lifetime.domain.model.FrequencyEvent
 import com.shifenmiao.lifetime.domain.model.FrequencyType
 import com.shifenmiao.lifetime.util.localizedEventUnit
 import com.shifenmiao.lifetime.util.localizedPresetEventName
-import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalTopSheet
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.system.OneBoxListItem
 import com.wanbaohe.core.ui.widget.system.OneBoxSectionHeader
 import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Check
+import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineStar
 
+/**
+ * 时光频率管理面板。
+ *
+ * 从底部弹出（[EnhancedModalBottomSheet]），标题 + 列表 + 底部"新增"，
+ * 列表里点击切换启用状态，自建事件可删除。
+ */
 @Composable
 fun EventPickerSheet(
     visible: Boolean,
@@ -52,18 +56,15 @@ fun EventPickerSheet(
     onDismiss: () -> Unit,
     onToggleEvent: (FrequencyEvent) -> Unit,
     onDeleteEvent: (FrequencyEvent) -> Unit = {},
+    onEditEvent: (FrequencyEvent) -> Unit = {},
     onAddNewEvent: () -> Unit
 ) {
-    EnhancedModalTopSheet(
+    EnhancedModalBottomSheet(
         visible = visible,
         onDismiss = { onDismiss() },
-        title = {
-             Text(
-                text = stringResource(R.string.lifetime_event_picker_title),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-        },
+        // 从「管理」进入，标题跟卡片分区保持一致，不再用"选择时光频率"
+        title = stringResource(R.string.lifetime_frequency_section),
+        nestedScrollEnabled = true,
         confirmButton = {
             OnePrimaryButton(
                 text = stringResource(R.string.lifetime_event_picker_add),
@@ -72,81 +73,85 @@ fun EventPickerSheet(
                 modifier = Modifier.fillMaxWidth()
             )
         },
-        maxContentHeight = 450.dp
-    ) {
-        val customEvents = allEvents.filter { !it.isPreset }
-        val recommendedEvents = allEvents.filter { it.isRecommended }
-        val otherPresetEvents = allEvents.filter { it.isPreset && !it.isRecommended }
+        sheetContent = {
+            val customEvents = allEvents.filter { !it.isPreset }
+            val recommendedEvents = allEvents.filter { it.isRecommended }
+            val otherPresetEvents = allEvents.filter { it.isPreset && !it.isRecommended }
 
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(OneBoxDesignSystem.screenPadding),
-            verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing)
-        ) {
-            if (customEvents.isNotEmpty()) {
-                item {
-                    OneBoxSectionHeader(
-                        title = stringResource(R.string.lifetime_event_picker_custom)
-                    )
-                }
-                items(customEvents) { event ->
-                    EventPickerItem(
-                        event = event,
-                        canDelete = true,
-                        onClick = { onToggleEvent(event) },
-                        onDelete = { onDeleteEvent(event) }
-                    )
-                }
-            }
-
-            if (recommendedEvents.isNotEmpty()) {
-                item {
-                    if (customEvents.isNotEmpty()) {
-                        Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
-                    }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStar,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                            modifier = Modifier.size(16.dp)
-                        )
-                        Spacer(modifier = Modifier.width(OneBoxDesignSystem.microSpacing))
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 460.dp),
+                contentPadding = PaddingValues(
+                    start = OneBoxDesignSystem.screenPadding,
+                    end = OneBoxDesignSystem.screenPadding,
+                    top = OneBoxDesignSystem.compactSpacing,
+                    bottom = OneBoxDesignSystem.blockSpacing
+                ),
+                verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing)
+            ) {
+                if (customEvents.isNotEmpty()) {
+                    item {
                         OneBoxSectionHeader(
-                            title = stringResource(R.string.lifetime_event_picker_recommended)
+                            title = stringResource(R.string.lifetime_event_picker_custom)
+                        )
+                    }
+                    items(customEvents, key = { it.id }) { event ->
+                        EventPickerItem(
+                            event = event,
+                            canDelete = true,
+                            onClick = { onToggleEvent(event) },
+                            onDelete = { onDeleteEvent(event) },
+                            onEdit = { onEditEvent(event) }
                         )
                     }
                 }
-                items(recommendedEvents) { event ->
-                    EventPickerItem(
-                        event = event,
-                        onClick = { onToggleEvent(event) }
-                    )
-                }
-            }
 
-            if (otherPresetEvents.isNotEmpty()) {
-                item {
-                    Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
-                    OneBoxSectionHeader(
-                        title = stringResource(R.string.lifetime_event_picker_preset)
-                    )
+                if (recommendedEvents.isNotEmpty()) {
+                    item(key = "header_recommended") {
+                        if (customEvents.isNotEmpty()) {
+                            Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
+                        }
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStar,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(OneBoxDesignSystem.microSpacing))
+                            OneBoxSectionHeader(
+                                title = stringResource(R.string.lifetime_event_picker_recommended)
+                            )
+                        }
+                    }
+                    items(recommendedEvents, key = { it.id }) { event ->
+                        EventPickerItem(
+                            event = event,
+                            onClick = { onToggleEvent(event) },
+                            onEdit = { onEditEvent(event) }
+                        )
+                    }
                 }
-                items(otherPresetEvents) { event ->
-                    EventPickerItem(
-                        event = event,
-                        onClick = { onToggleEvent(event) }
-                    )
-                }
-            }
 
-            item {
-                Spacer(modifier = Modifier.height(OneBoxDesignSystem.blockSpacing))
+                if (otherPresetEvents.isNotEmpty()) {
+                    item(key = "header_preset") {
+                        Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
+                        OneBoxSectionHeader(
+                            title = stringResource(R.string.lifetime_event_picker_preset)
+                        )
+                    }
+                    items(otherPresetEvents, key = { it.id }) { event ->
+                        EventPickerItem(
+                            event = event,
+                            onClick = { onToggleEvent(event) },
+                            onEdit = { onEditEvent(event) }
+                        )
+                    }
+                }
             }
         }
-    }
+    )
 }
 
 @Composable
@@ -154,7 +159,8 @@ private fun EventPickerItem(
     event: FrequencyEvent,
     canDelete: Boolean = false,
     onClick: () -> Unit,
-    onDelete: (() -> Unit)? = null
+    onDelete: (() -> Unit)? = null,
+    onEdit: (() -> Unit)? = null
 ) {
     val icon = remember(event.iconKey) { getIconFromKey(event.iconKey) }
 
@@ -184,6 +190,23 @@ private fun EventPickerItem(
             }
         },
         trailingContent = {
+            if (onEdit != null) {
+                Box(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .clip(CircleShape)
+                        .clickable(onClick = onEdit),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
+                        contentDescription = stringResource(R.string.lifetime_edit_event),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.width(OneBoxDesignSystem.microSpacing))
+            }
             if (canDelete && onDelete != null) {
                 Box(
                     modifier = Modifier

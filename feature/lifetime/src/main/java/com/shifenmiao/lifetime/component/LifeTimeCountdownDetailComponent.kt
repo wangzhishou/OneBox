@@ -6,11 +6,14 @@ import com.shifenmiao.lifetime.data.CountdownEventRepository
 import com.shifenmiao.lifetime.domain.model.CountdownEvent
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @Immutable
 data class CountdownDetailUiState(
@@ -21,6 +24,7 @@ class LifeTimeCountdownDetailComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted val countdownId: Long,
     @Assisted val onGoBack: () -> Unit,
+    @Assisted val onNavigate: (Screen) -> Unit,
     dispatchersHolder: DispatchersHolder,
     private val countdownRepository: CountdownEventRepository,
 ) : BaseComponent(dispatchersHolder, componentContext) {
@@ -29,14 +33,20 @@ class LifeTimeCountdownDetailComponent @AssistedInject internal constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        loadCountdown()
+        observeCountdown()
     }
 
-    private fun loadCountdown() {
-        componentScope.launch {
-            val item = countdownRepository.getCountdownById(countdownId)
-            _uiState.emit(_uiState.value.copy(countdown = item))
-        }
+    /**
+     * 用 Flow 观察而不是一次性读取：从"编辑"页返回时详情要跟着变，
+     * 记录被别处删掉时也要及时退回。
+     */
+    private fun observeCountdown() {
+        countdownRepository.allCountdownsFlow
+            .onEach { items ->
+                val item = items.firstOrNull { it.id == countdownId }
+                _uiState.emit(CountdownDetailUiState(countdown = item))
+            }
+            .launchIn(componentScope)
     }
 
     fun updateNote(note: String) {
@@ -46,6 +56,10 @@ class LifeTimeCountdownDetailComponent @AssistedInject internal constructor(
             countdownRepository.updateCountdown(updated)
             _uiState.emit(_uiState.value.copy(countdown = updated))
         }
+    }
+
+    fun editCountdown() {
+        onNavigate(Screen.LifeTimeAddCountdown(countdownId = countdownId))
     }
 
     fun deleteCountdown() {
@@ -61,6 +75,7 @@ class LifeTimeCountdownDetailComponent @AssistedInject internal constructor(
             componentContext: ComponentContext,
             countdownId: Long,
             onGoBack: () -> Unit,
+            onNavigate: (Screen) -> Unit,
         ): LifeTimeCountdownDetailComponent
     }
 }

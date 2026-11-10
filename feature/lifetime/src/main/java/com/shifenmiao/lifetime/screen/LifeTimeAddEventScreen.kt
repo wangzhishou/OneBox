@@ -6,22 +6,24 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -50,11 +52,46 @@ import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 fun LifeTimeAddEventScreen(
     component: LifeTimeAddEventComponent
 ) {
-    var name by remember { mutableStateOf("") }
-    var selectedIconKey by remember { mutableStateOf("Category") }
-    var frequencyType by remember { mutableStateOf(FrequencyType.DAILY) }
-    var timesPerPeriod by remember { mutableStateOf("1") }
-    var selectedUnit by remember { mutableStateOf("次") }
+    val uiState by component.uiState.collectAsState()
+
+    if (uiState.isLoading) {
+        BaseScreen(
+            title = stringResource(R.string.lifetime_loading),
+            onGoBack = { component.onGoBack() }
+        ) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.lifetime_loading),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+        return
+    }
+
+    EventForm(
+        initial = uiState.event,
+        onCancel = { component.onGoBack() },
+        onSave = component::save,
+    )
+}
+
+@Composable
+private fun EventForm(
+    initial: FrequencyEvent?,
+    onCancel: () -> Unit,
+    onSave: (FrequencyEvent) -> Unit,
+) {
+    val isEditing = initial != null
+    var name by remember(initial) { mutableStateOf(initial?.name.orEmpty()) }
+    var selectedIconKey by remember(initial) { mutableStateOf(initial?.iconKey ?: "Category") }
+    var frequencyType by remember(initial) { mutableStateOf(initial?.frequencyType ?: FrequencyType.DAILY) }
+    var timesPerPeriod by remember(initial) { mutableStateOf((initial?.timesPerPeriod ?: 1).toString()) }
+    var selectedUnit by remember(initial) { mutableStateOf(initial?.unit ?: "次") }
     var unitMenuExpanded by remember { mutableStateOf(false) }
     var hasSubmitted by remember { mutableStateOf(false) }
 
@@ -68,8 +105,10 @@ fun LifeTimeAddEventScreen(
     val placeholderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.72f)
 
     BaseScreen(
-        title = stringResource(R.string.lifetime_add_event),
-        onGoBack = { component.onGoBack() }
+        title = stringResource(
+            if (isEditing) R.string.lifetime_edit_event else R.string.lifetime_add_event
+        ),
+        onGoBack = onCancel
     ) {
         Column(
             modifier = Modifier
@@ -240,13 +279,21 @@ fun LifeTimeAddEventScreen(
 
         BottomSaveCancelBar(
             modifier = Modifier.imePadding(),
-            onCancel = { component.onGoBack() },
+            onCancel = onCancel,
             onSave = {
                 hasSubmitted = true
                 if (!canSave) return@BottomSaveCancelBar
 
-                component.addEvent(
-                    FrequencyEvent(
+                // 编辑时保留 id / 启用状态 / 预置标记等原字段
+                val base = initial ?: FrequencyEvent(
+                    name = trimmedName,
+                    iconKey = selectedIconKey,
+                    frequencyType = frequencyType,
+                    timesPerPeriod = parsedTimesPerPeriod ?: 1,
+                    unit = selectedUnit
+                )
+                onSave(
+                    base.copy(
                         name = trimmedName,
                         iconKey = selectedIconKey,
                         frequencyType = frequencyType,
@@ -256,7 +303,9 @@ fun LifeTimeAddEventScreen(
                 )
             },
             saveEnabled = true,
-            saveText = stringResource(R.string.lifetime_add_to_timeline)
+            saveText = stringResource(
+                if (isEditing) R.string.lifetime_note_save else R.string.lifetime_add_to_timeline
+            )
         )
     }
 }

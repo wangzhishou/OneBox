@@ -1150,6 +1150,7 @@ class ChildProvider @Inject constructor(
         is Screen.LifeTimeAddEvent -> NavigationChild.LifeTimeAddEvent(
             lifeTimeAddEventComponent = lifeFactories.get().lifeTimeAddEventComponentFactory(
                 componentContext = componentContext,
+                eventId = config.eventId,
                 onGoBack = { appComponent.onGoBack() }
             )
         )
@@ -1157,6 +1158,7 @@ class ChildProvider @Inject constructor(
         is Screen.LifeTimeAddMilestone -> NavigationChild.LifeTimeAddMilestone(
             lifeTimeAddMilestoneComponent = lifeFactories.get().lifeTimeAddMilestoneComponentFactory(
                 componentContext = componentContext,
+                milestoneId = config.milestoneId,
                 onGoBack = { appComponent.onGoBack() }
             )
         )
@@ -1165,13 +1167,15 @@ class ChildProvider @Inject constructor(
             lifeTimeMilestoneDetailComponent = lifeFactories.get().lifeTimeMilestoneDetailComponentFactory(
                 componentContext = componentContext,
                 milestoneId = config.milestoneId,
-                onGoBack = { appComponent.onGoBack() }
+                onGoBack = { appComponent.onGoBack() },
+                onNavigate = { screen -> appComponent.onNavigate(screen) }
             )
         )
 
         is Screen.LifeTimeAddCountdown -> NavigationChild.LifeTimeAddCountdown(
             lifeTimeAddCountdownComponent = lifeFactories.get().lifeTimeAddCountdownComponentFactory(
                 componentContext = componentContext,
+                countdownId = config.countdownId,
                 onGoBack = { appComponent.onGoBack() }
             )
         )
@@ -1180,7 +1184,8 @@ class ChildProvider @Inject constructor(
             lifeTimeCountdownDetailComponent = lifeFactories.get().lifeTimeCountdownDetailComponentFactory(
                 componentContext = componentContext,
                 countdownId = config.countdownId,
-                onGoBack = { appComponent.onGoBack() }
+                onGoBack = { appComponent.onGoBack() },
+                onNavigate = { screen -> appComponent.onNavigate(screen) }
             )
         )
 

@@ -84,7 +84,8 @@ class LifeTimeComponent @AssistedInject internal constructor(
         repository.birthDateFlow
             .onEach { startDate ->
                 val isRealDateSet = startDate != null
-                val dateToUse = startDate ?: LocalDate.now().minusYears(25)
+                // 演示数据别用整 25 年：余天会恒为 0，看着像 bug
+                val dateToUse = startDate ?: LocalDate.now().minusYears(25).minusDays(137)
                 _uiState.emit(
                     _uiState.value.copy(
                         startDate = dateToUse,
@@ -228,15 +229,19 @@ class LifeTimeComponent @AssistedInject internal constructor(
     }
 
     fun navigateToAddEvent() {
-        onNavigate(Screen.LifeTimeAddEvent)
+        onNavigate(Screen.LifeTimeAddEvent())
+    }
+
+    fun navigateToEditEvent(eventId: Long) {
+        onNavigate(Screen.LifeTimeAddEvent(eventId = eventId))
     }
 
     fun navigateToAddMilestone() {
-        onNavigate(Screen.LifeTimeAddMilestone)
+        onNavigate(Screen.LifeTimeAddMilestone())
     }
 
     fun navigateToAddCountdown() {
-        onNavigate(Screen.LifeTimeAddCountdown)
+        onNavigate(Screen.LifeTimeAddCountdown())
     }
 
     fun navigateToMilestoneDetail(milestoneId: Long) {

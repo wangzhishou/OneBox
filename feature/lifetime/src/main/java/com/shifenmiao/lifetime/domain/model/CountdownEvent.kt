@@ -6,7 +6,8 @@ import java.time.LocalDate
 /**
  * 倒数日领域模型。
  *
- * - [targetDate] 公历目标日期，存 epochDay；[isLunarTarget] = true 时为空
+ * - [targetDate] 公历目标日期，存 epochDay；[isLunarTarget] = true 时为空；
+ *   已过期的节日型事件由 [nextOccurrence] 滚到下一次，其余保留原日期并标记 isPast
  * - [lunarMonth] / [lunarDay] 农历月日（仅 [isLunarTarget] = true 时使用），跨年时由 [nextOccurrence] 滚动到下一年
  * - [isPreset] 标识是否由系统/节日兜底生成
  */
@@ -32,7 +33,20 @@ data class CountdownEvent(
      * 对农历：用当前日期之后最近的一次农历月日（同年或下一年）
      */
     fun nextOccurrence(now: LocalDate = LocalDate.now()): LocalDate? {
-        if (!isLunarTarget) return targetDate?.takeIf { !it.isBefore(now) }
+        if (!isLunarTarget) {
+            val base = targetDate ?: return null
+            if (!base.isBefore(now)) return base
+            // 节日按"每年生效"滚动到下一次；用户自建的一次性倒数日保留原日期，
+            // 交给 isPast 展示"已过 N 天"，不再变成"0 天 / —"的僵尸卡
+            if (!isFromHoliday) return base
+            var next = base
+            var guard = 0
+            while (next.isBefore(now) && guard < 5) {
+                next = next.plusYears(1)
+                guard++
+            }
+            return next
+        }
         val lm = lunarMonth ?: return null
         val ld = lunarDay ?: return null
         val candidates = listOf(

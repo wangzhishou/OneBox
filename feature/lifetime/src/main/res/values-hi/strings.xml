@@ -17,6 +17,7 @@
     <string name="lifetime_countdown_section">उलटी गिनती</string>
     <string name="lifetime_frequency_section">जीवन आवृत्ति</string>
     <string name="lifetime_add_event">जीवन चिह्न जोड़ें</string>
+    <string name="lifetime_edit_event">जीवन आवृत्ति संपादित करें</string>
     <string name="lifetime_add_milestone">स्मारक जोड़ें</string>
     <string name="lifetime_edit_milestone">स्मारक संपादित करें</string>
     <string name="lifetime_event_name_label">घटना का नाम</string>
@@ -103,6 +104,7 @@
     <string name="lifetime_insight_history_title">अंतर्दृष्टि इतिहास</string>
     <string name="lifetime_insight_history_empty">कोई इतिहास नहीं</string>
     <string name="lifetime_add_countdown">काउंटडाउन जोड़ें</string>
+    <string name="lifetime_edit_countdown">काउंटडाउन संपादित करें</string>
     <string name="lifetime_countdown_detail_title">काउंटडाउन विवरण</string>
     <string name="lifetime_countdown_name_label">काउंटडाउन नाम</string>
     <string name="lifetime_countdown_name_placeholder">वेतन दिवस, वर्षगांठ, बोनस…</string>
@@ -118,6 +120,14 @@
     <string name="lifetime_lunar_date">चंद्र %1$s %2$s%3$s</string>
     <string name="lifetime_frequency_value_label">%1$s %2$d %3$s</string>
     <string name="lifetime_status_today">आज</string>
+    <string name="lifetime_unit_days_until">दिन बाकी</string>
+    <string name="lifetime_unit_days_past">दिन पहले</string>
+    <string name="lifetime_unit_months_until">महीने बाकी</string>
+    <string name="lifetime_unit_months_past">महीने पहले</string>
+    <string name="lifetime_unit_years_until">साल बाकी</string>
+    <string name="lifetime_unit_years_past">साल पहले</string>
+    <string name="lifetime_status_tomorrow">कल</string>
+    <string name="lifetime_status_day_after_tomorrow">परसों</string>
     <string name="lifetime_status_days_until">%1$d दिन शेष</string>
     <string name="lifetime_status_days_past">%1$d दिन पहले</string>
     <string name="lifetime_status_months_until">%1$d महीने शेष</string>

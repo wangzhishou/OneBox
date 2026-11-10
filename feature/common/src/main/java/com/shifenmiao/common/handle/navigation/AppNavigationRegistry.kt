@@ -625,7 +625,7 @@ object AppNavigationRegistry {
                 aliases = listOf("life_time_settings", "lifetime_settings", "人生设置")
             ),
             staticScreen(
-                screen = Screen.LifeTimeAddEvent,
+                screen = Screen.LifeTimeAddEvent(),
                 aliases = listOf("life_time_add_event", "lifetime_add_event", "人生添加事件")
             ),
             staticScreen(
@@ -633,11 +633,11 @@ object AppNavigationRegistry {
                 aliases = listOf("life_time_welcome", "lifetime_welcome")
             ),
             staticScreen(
-                screen = Screen.LifeTimeAddMilestone,
+                screen = Screen.LifeTimeAddMilestone(),
                 aliases = listOf("life_time_add_milestone", "人生里程碑")
             ),
             staticScreen(
-                screen = Screen.LifeTimeAddCountdown,
+                screen = Screen.LifeTimeAddCountdown(),
                 aliases = listOf("life_time_add_countdown", "人生倒数日")
             ),
             staticScreen(

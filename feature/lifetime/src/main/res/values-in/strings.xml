@@ -17,6 +17,7 @@
     <string name="lifetime_countdown_section">Hitung Mundur</string>
     <string name="lifetime_frequency_section">Frekuensi Hidup</string>
     <string name="lifetime_add_event">Tambah Tanda Kehidupan</string>
+    <string name="lifetime_edit_event">Edit frekuensi hidup</string>
     <string name="lifetime_add_milestone">Tambah Peringatan</string>
     <string name="lifetime_edit_milestone">Edit Peringatan</string>
     <string name="lifetime_event_name_label">Nama Acara</string>
@@ -103,6 +104,7 @@
     <string name="lifetime_insight_history_title">Riwayat Wawasan</string>
     <string name="lifetime_insight_history_empty">Tidak ada riwayat</string>
     <string name="lifetime_add_countdown">Tambah Hitung Mundur</string>
+    <string name="lifetime_edit_countdown">Edit hitung mundur</string>
     <string name="lifetime_countdown_detail_title">Detail Hitung Mundur</string>
     <string name="lifetime_countdown_name_label">Nama Hitung Mundur</string>
     <string name="lifetime_countdown_name_placeholder">Hari Gajian, Hari Jadi, Bonus…</string>
@@ -118,6 +120,14 @@
     <string name="lifetime_lunar_date">Lunar %1$s %2$s%3$s</string>
     <string name="lifetime_frequency_value_label">%1$s %2$d %3$s</string>
     <string name="lifetime_status_today">Hari Ini</string>
+    <string name="lifetime_unit_days_until">hari lagi</string>
+    <string name="lifetime_unit_days_past">hari lalu</string>
+    <string name="lifetime_unit_months_until">bulan lagi</string>
+    <string name="lifetime_unit_months_past">bulan lalu</string>
+    <string name="lifetime_unit_years_until">tahun lagi</string>
+    <string name="lifetime_unit_years_past">tahun lalu</string>
+    <string name="lifetime_status_tomorrow">Besok</string>
+    <string name="lifetime_status_day_after_tomorrow">Lusa</string>
     <string name="lifetime_status_days_until">%1$d hari lagi</string>
     <string name="lifetime_status_days_past">%1$d hari yang lalu</string>
     <string name="lifetime_status_months_until">%1$d bulan lagi</string>

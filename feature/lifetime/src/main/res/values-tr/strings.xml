@@ -17,6 +17,7 @@
     <string name="lifetime_countdown_section">Geri Sayımlar</string>
     <string name="lifetime_frequency_section">Yaşam Frekansı</string>
     <string name="lifetime_add_event">Yaşam İşareti Ekle</string>
+    <string name="lifetime_edit_event">Yaşam sıklığını düzenle</string>
     <string name="lifetime_add_milestone">Anı Ekle</string>
     <string name="lifetime_edit_milestone">Anıyı Düzenle</string>
     <string name="lifetime_event_name_label">Etkinlik Adı</string>
@@ -103,6 +104,7 @@
     <string name="lifetime_insight_history_title">İçgörü Geçmişi</string>
     <string name="lifetime_insight_history_empty">Geçmiş yok</string>
     <string name="lifetime_add_countdown">Geri Sayım Ekle</string>
+    <string name="lifetime_edit_countdown">Geri sayımı düzenle</string>
     <string name="lifetime_countdown_detail_title">Geri Sayım Detayı</string>
     <string name="lifetime_countdown_name_label">Geri Sayım Adı</string>
     <string name="lifetime_countdown_name_placeholder">Maaş Günü, Yıl Dönümü, İkramiye…</string>
@@ -118,6 +120,14 @@
     <string name="lifetime_lunar_date">Ay %1$s %2$s%3$s</string>
     <string name="lifetime_frequency_value_label">%1$s %2$d %3$s</string>
     <string name="lifetime_status_today">Bugün</string>
+    <string name="lifetime_unit_days_until">gün kaldı</string>
+    <string name="lifetime_unit_days_past">gün önce</string>
+    <string name="lifetime_unit_months_until">ay kaldı</string>
+    <string name="lifetime_unit_months_past">ay önce</string>
+    <string name="lifetime_unit_years_until">yıl kaldı</string>
+    <string name="lifetime_unit_years_past">yıl önce</string>
+    <string name="lifetime_status_tomorrow">Yarın</string>
+    <string name="lifetime_status_day_after_tomorrow">Öbür gün</string>
     <string name="lifetime_status_days_until">%1$d gün kaldı</string>
     <string name="lifetime_status_days_past">%1$d gün önce</string>
     <string name="lifetime_status_months_until">%1$d ay kaldı</string>

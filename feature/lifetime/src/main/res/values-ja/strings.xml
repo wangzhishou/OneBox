@@ -17,6 +17,7 @@
     <string name="lifetime_countdown_section">カウントダウン</string>
     <string name="lifetime_frequency_section">生活頻度</string>
     <string name="lifetime_add_event">ライフマークを追加</string>
+    <string name="lifetime_edit_event">ライフ頻度を編集</string>
     <string name="lifetime_add_milestone">記念を追加</string>
     <string name="lifetime_edit_milestone">記念を編集</string>
     <string name="lifetime_event_name_label">イベント名</string>
@@ -103,6 +104,7 @@
     <string name="lifetime_insight_history_title">洞察履歴</string>
     <string name="lifetime_insight_history_empty">履歴なし</string>
     <string name="lifetime_add_countdown">カウントダウンを追加</string>
+    <string name="lifetime_edit_countdown">カウントダウンを編集</string>
     <string name="lifetime_countdown_detail_title">カウントダウンの詳細</string>
     <string name="lifetime_countdown_name_label">カウントダウン名</string>
     <string name="lifetime_countdown_name_placeholder">給料日、記念日、ボーナス…</string>
@@ -118,6 +120,14 @@
     <string name="lifetime_lunar_date">旧暦%1$s %2$s%3$s</string>
     <string name="lifetime_frequency_value_label">%1$s %2$d %3$s</string>
     <string name="lifetime_status_today">今日</string>
+    <string name="lifetime_unit_days_until">日後</string>
+    <string name="lifetime_unit_days_past">日前</string>
+    <string name="lifetime_unit_months_until">ヶ月後</string>
+    <string name="lifetime_unit_months_past">ヶ月前</string>
+    <string name="lifetime_unit_years_until">年後</string>
+    <string name="lifetime_unit_years_past">年前</string>
+    <string name="lifetime_status_tomorrow">明日</string>
+    <string name="lifetime_status_day_after_tomorrow">明後日</string>
     <string name="lifetime_status_days_until">あと%1$d日</string>
     <string name="lifetime_status_days_past">%1$d日前</string>
     <string name="lifetime_status_months_until">あと%1$dか月</string>

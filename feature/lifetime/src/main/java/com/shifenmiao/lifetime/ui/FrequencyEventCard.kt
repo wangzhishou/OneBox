@@ -4,7 +4,7 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -64,6 +64,7 @@ fun FrequencyEventCard(
     progress: Float? = null,
     modifier: Modifier = Modifier,
     themeIndex: Int = 0,
+    onLongClick: () -> Unit = {},
 ) {
     var isFlipped by remember { mutableStateOf(false) }
 
@@ -87,7 +88,11 @@ fun FrequencyEventCard(
                 rotationY = rotation
                 cameraDistance = 12f * density
             }
-            .clickable { isFlipped = !isFlipped }
+            .combinedClickable(
+                onClick = { isFlipped = !isFlipped },
+                // 长按直接进编辑，卡片本身没有"更多"入口
+                onLongClick = onLongClick,
+            )
     ) {
         if (rotation <= 90f) {
             FrequencyCardFace(
