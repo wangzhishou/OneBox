@@ -105,18 +105,9 @@ fun LifeTimeScreen(
     val uiState by component.uiState.collectAsState()
     var showEventPicker by rememberSaveable { mutableStateOf(false) }
 
-    // 卡片和页面宽度跟着窗口走：手机上 160dp，平板 190/210dp，别再让平板留一大片空白
-    val widthClass = LocalWindowSizeClass.current.widthSizeClass
-    val pageMaxWidth = when (widthClass) {
-        WindowWidthSizeClass.Compact -> 600.dp
-        WindowWidthSizeClass.Medium -> 720.dp
-        else -> 840.dp
-    }
-    val cardWidth = when (widthClass) {
-        WindowWidthSizeClass.Compact -> 160.dp
-        WindowWidthSizeClass.Medium -> 190.dp
-        else -> 210.dp
-    }
+    // 响应式方案待定：先所有卡片固定 160dp、页面 600dp 居中
+    val pageMaxWidth = 600.dp
+    val cardWidth = 160.dp
 
     if (showEventPicker) {
         EventPickerSheet(
@@ -641,7 +632,11 @@ private fun FrequencyEventsSection(
             // 固定卡宽 + 自动换行：平板上不会把频率卡撑成倒数日卡的两倍大
             FlowRow(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
+                // 每行居中，避免右侧空一大块
+                horizontalArrangement = Arrangement.spacedBy(
+                    OneBoxDesignSystem.itemSpacing,
+                    Alignment.CenterHorizontally
+                ),
                 verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
             ) {
                 eventStats.forEachIndexed { themeIndex, stats ->
