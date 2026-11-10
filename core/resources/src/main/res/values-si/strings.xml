@@ -85,4 +85,7 @@
     <string name="background_downloading">බාගත කරමින්</string>
     <string name="background_download_count">%1$d ගොනු</string>
     <string name="background_download_progress">%1$s · %2$d%%</string>
+
+    <string name="backup_center">උපස්ථ කිරීම සහ ප්‍රතිසාධනය</string>
+    <string name="backup_center_sub">ඔබේම අන්තර්ජාල තැටියට දත්ත උපස්ථ කරන්න</string>
 </resources>

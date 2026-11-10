@@ -840,4 +840,7 @@
     <string name="background_downloading">డౌన్‌లోడ్ అవుతోంది</string>
     <string name="background_download_count">%1$d ఫైళ్లు</string>
     <string name="background_download_progress">%1$s · %2$d%%</string>
+
+    <string name="backup_center">బ్యాకప్ మరియు పునరుద్ధరణ</string>
+    <string name="backup_center_sub">మీ స్వంత క్లౌడ్ స్టోరేజ్‌కు డేటాను బ్యాకప్ చేయండి</string>
 </resources>

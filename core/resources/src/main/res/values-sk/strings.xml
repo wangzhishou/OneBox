@@ -930,4 +930,7 @@
     <string name="background_downloading">Sťahovanie</string>
     <string name="background_download_count">%1$d súborov</string>
     <string name="background_download_progress">%1$s · %2$d%%</string>
+
+    <string name="backup_center">Zálohovanie a obnovenie</string>
+    <string name="backup_center_sub">Zálohujte svoje údaje do vlastného cloudového úložiska</string>
 </resources>

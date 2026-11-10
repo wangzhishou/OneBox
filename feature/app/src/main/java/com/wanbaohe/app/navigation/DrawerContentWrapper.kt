@@ -171,8 +171,10 @@ fun DrawerMenu(
         }
         item {
             DatabaseBackupRestoreSection(
-                commonComponent = appComponent,
-                onAction = { onCloseDrawer() }
+                onOpen = {
+                    onCloseDrawer()
+                    onNavigate(Screen.BackupCenter)
+                }
             )
         }
     }

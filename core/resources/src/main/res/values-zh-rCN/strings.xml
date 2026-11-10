@@ -2048,4 +2048,7 @@
     <string name="color_info_tab">颜色信息</string>
     <string name="color_shading_tab">色彩阴影</string>
     <string name="pick_color_pan_mode">拖动与缩放</string>
+
+    <string name="backup_center">备份与恢复</string>
+    <string name="backup_center_sub">把数据备份到你自己的网盘</string>
 </resources>

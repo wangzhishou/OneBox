@@ -2040,4 +2040,7 @@
     <string name="background_downloading">Загрузка</string>
     <string name="background_download_count">%1$d файлов</string>
     <string name="background_download_progress">%1$s · %2$d%%</string>
+
+    <string name="backup_center">Резервное копирование и восстановление</string>
+    <string name="backup_center_sub">Резервное копирование данных в ваше собственное облачное хранилище</string>
 </resources>

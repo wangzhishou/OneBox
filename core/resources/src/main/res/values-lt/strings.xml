@@ -94,4 +94,7 @@
     <string name="background_downloading">Atsiunčiama</string>
     <string name="background_download_count">%1$d failų</string>
     <string name="background_download_progress">%1$s · %2$d%%</string>
+
+    <string name="backup_center">Atsarginė kopija ir atkūrimas</string>
+    <string name="backup_center_sub">Atsarginė duomenų kopija jūsų debesijos saugykloje</string>
 </resources>

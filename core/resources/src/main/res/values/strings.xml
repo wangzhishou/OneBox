@@ -2048,4 +2048,7 @@
     <string name="color_info_tab">Color info</string>
     <string name="color_shading_tab">Color shading</string>
     <string name="pick_color_pan_mode">Pan and zoom</string>
+
+    <string name="backup_center">Backup &amp; Restore</string>
+    <string name="backup_center_sub">Back up your data to your own drive</string>
 </resources>

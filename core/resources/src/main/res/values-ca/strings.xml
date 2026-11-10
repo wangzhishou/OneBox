@@ -844,4 +844,7 @@
     <string name="background_downloading">Baixant</string>
     <string name="background_download_count">%1$d fitxers</string>
     <string name="background_download_progress">%1$s · %2$d%%</string>
+
+    <string name="backup_center">Còpia de seguretat i restauració</string>
+    <string name="backup_center_sub">Fes una còpia de seguretat de les dades al teu propi núvol</string>
 </resources>

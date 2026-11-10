@@ -2038,4 +2038,7 @@
     <string name="background_downloading">다운로드 중</string>
     <string name="background_download_count">파일 %1$d개</string>
     <string name="background_download_progress">%1$s · %2$d%%</string>
+
+    <string name="backup_center">백업 및 복원</string>
+    <string name="backup_center_sub">데이터를 자신의 클라우드 드라이브에 백업하세요</string>
 </resources>

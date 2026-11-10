@@ -98,4 +98,7 @@
     <string name="background_downloading">Allalaadimine</string>
     <string name="background_download_count">%1$d faili</string>
     <string name="background_download_progress">%1$s · %2$d%%</string>
+
+    <string name="backup_center">Varundamine ja taastamine</string>
+    <string name="backup_center_sub">Varunda andmed oma pilvevälisele kettale</string>
 </resources>

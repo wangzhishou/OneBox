@@ -2040,4 +2040,7 @@
     <string name="background_downloading">Téléchargement en cours</string>
     <string name="background_download_count">%1$d fichiers</string>
     <string name="background_download_progress">%1$s · %2$d%%</string>
+
+    <string name="backup_center">Sauvegarde et restauration</string>
+    <string name="backup_center_sub">Sauvegardez vos données sur votre propre cloud</string>
 </resources>

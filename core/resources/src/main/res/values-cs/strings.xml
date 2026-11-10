@@ -1029,4 +1029,7 @@
     <string name="background_downloading">Stahování</string>
     <string name="background_download_count">%1$d souborů</string>
     <string name="background_download_progress">%1$s · %2$d%%</string>
+
+    <string name="backup_center">Zálohování a obnovení</string>
+    <string name="backup_center_sub">Zálohujte data do svého cloudového úložiště</string>
 </resources>

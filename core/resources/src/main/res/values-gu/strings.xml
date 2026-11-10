@@ -58,4 +58,7 @@
     <string name="background_downloading">ડાઉનલોડ થઈ રહ્યું છે</string>
     <string name="background_download_count">%1$d ફાઇલો</string>
     <string name="background_download_progress">%1$s · %2$d%%</string>
+
+    <string name="backup_center">બેકઅપ અને પુનઃસ્થાપન</string>
+    <string name="backup_center_sub">તમારા પોતાના ક્લાઉડ સ્ટોરેજમાં ડેટાનું બેકઅપ લો</string>
 </resources>

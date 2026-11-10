@@ -2040,4 +2040,7 @@
     <string name="background_downloading">Baixando</string>
     <string name="background_download_count">%1$d arquivos</string>
     <string name="background_download_progress">%1$s · %2$d%%</string>
+
+    <string name="backup_center">Backup e restauração</string>
+    <string name="backup_center_sub">Faça backup dos seus dados no seu próprio armazenamento em nuvem</string>
 </resources>

@@ -21,6 +21,7 @@ import com.wanbaohe.media.R as MediaR
 import com.wanbaohe.media.domain.MediaPlaybackController
 import com.wanbaohe.media.playback.MediaPlaybackService
 import com.shifenmiao.base.utils.ActionUtils
+import com.shifenmiao.common.backup.AutoBackupRunner
 import com.shifenmiao.model.event.PermissionRequest
 import com.wanbaohe.app.AppContent
 import com.wanbaohe.core.ui.review.InAppReviewPrompt
@@ -62,6 +63,9 @@ class AppActivity : ComposeActivity() {
     // 关掉画中画小窗时要把从视频页留下的后台播放一起收掉
     @Inject
     lateinit var mediaPlayback: MediaPlaybackController
+
+    @Inject
+    lateinit var autoBackupRunner: AutoBackupRunner
 
     /** 当前这轮画中画是不是视频页拉起的（AI 聊天小窗关闭时不能误停音乐）。 */
     private var videoPipActive = false
@@ -130,6 +134,8 @@ class AppActivity : ComposeActivity() {
 
         initActivityResultLauncher()
         observePictureInPicture()
+        // 到期的自动备份在这里触发：只做判断，真正的打包在后台线程
+        autoBackupRunner.onAppOpened()
         StartupTrace.mark("AppActivity.onCreate.ready")
     }
 

@@ -557,6 +557,10 @@ object AppNavigationRegistry {
                 aliases = listOf("data_sync", "sync", "backup_sync", "数据同步", "备份同步")
             ),
             staticScreen(
+                screen = Screen.BackupCenter,
+                aliases = listOf("backup", "backup_center", "restore", "备份", "恢复", "备份与恢复")
+            ),
+            staticScreen(
                 screen = Screen.AboutUs(),
                 aliases = listOf("about", "about_us", "关于", "关于我们")
             ),

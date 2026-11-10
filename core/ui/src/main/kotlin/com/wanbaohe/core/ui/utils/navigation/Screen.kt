@@ -1001,6 +1001,14 @@ sealed class Screen(
     )
 
     @Serializable
+    @SerialName("BackupCenter")
+    data object BackupCenter : Screen(
+        id = -34,
+        title = R.string.backup_center,
+        subtitle = R.string.backup_center_sub
+    )
+
+    @Serializable
     @SerialName("App")
     data object App : Screen(
         id = 1000,

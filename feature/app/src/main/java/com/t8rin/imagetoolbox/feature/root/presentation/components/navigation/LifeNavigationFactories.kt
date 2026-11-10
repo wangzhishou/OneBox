@@ -114,6 +114,7 @@ class LifeNavigationFactories @Inject constructor(
     val survive30sComponentFactory: Survive30sComponent.Factory,
     val browserComponentFactory: BrowserComponent.Factory,
     val dataSyncComponentFactory: com.shifenmiao.common.export.DataSyncComponent.Factory,
+    val backupCenterComponentFactory: com.shifenmiao.common.backup.BackupCenterComponent.Factory,
     val codeEditorComponentFactory: AgentJsonEditorComponent.Factory,
     val settingRouterComponentFactory: SettingRouterComponent.Factory,
     val passwordVaultRouterComponentFactory: PasswordVaultRouterComponent.Factory,

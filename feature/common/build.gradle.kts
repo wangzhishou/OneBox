@@ -19,6 +19,7 @@ dependencies {
     implementation(projects.core.theme)
     implementation(projects.core.model)
     implementation(projects.core.database)
+    implementation(projects.core.storage)
     implementation(projects.core.interfaces)
     implementation(projects.core.base)
     implementation(projects.core.network)

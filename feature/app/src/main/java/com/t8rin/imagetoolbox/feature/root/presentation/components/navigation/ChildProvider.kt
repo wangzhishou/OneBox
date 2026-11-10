@@ -253,6 +253,14 @@ class ChildProvider @Inject constructor(
             )
         )
 
+        Screen.BackupCenter -> NavigationChild.BackupCenter(
+            lifeFactories.get().backupCenterComponentFactory(
+                componentContext = componentContext,
+                onGoBack = ::navigateBack,
+                onOpenCloudStorage = { navigateTo(Screen.CloudStorage()) }
+            )
+        )
+
         Screen.ColorTools -> ColorTools(
             imageFactories.get().colorToolsComponentFactory(
                 componentContext = componentContext,

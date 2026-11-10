@@ -1166,4 +1166,7 @@
     <string name="background_downloading">در حال دانلود</string>
     <string name="background_download_count">%1$d فایل</string>
     <string name="background_download_progress">%1$s · %2$d%%</string>
+
+    <string name="backup_center">پشتیبان‌گیری و بازیابی</string>
+    <string name="backup_center_sub">از داده‌های خود در فضای ابری شخصی‌تان پشتیبان بگیرید</string>
 </resources>

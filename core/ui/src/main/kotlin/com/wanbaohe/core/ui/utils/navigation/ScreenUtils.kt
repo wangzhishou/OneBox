@@ -51,6 +51,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Toolbox
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAiChat
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAiImage
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAgent
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineCloudUpload
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAltitude
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineApngTools
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineApp
@@ -397,6 +398,7 @@ internal fun Screen.simpleName(): String = when (this) {
     is Screen.XiangqiRouter -> "XiangqiRouter"
     is Screen.GomokuRouter -> "GomokuRouter"
     is Screen.ChessRouter -> "ChessRouter"
+    is Screen.BackupCenter -> "Backup_Center"
     Main -> ""
     else -> ""
 }
@@ -544,6 +546,7 @@ internal fun Screen.icon(): ImageVector? = when (this) {
     is Screen.BlessingWallRecord -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBlessingWall
     is Screen.Poem -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePoem
     is Screen.PoemSearch -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBook
+    is Screen.BackupCenter -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCloudUpload
     is Screen.VideoPlayer -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMovie
     is Screen.AudioPlayer -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMusicNote
     else -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineGpsNotFixed

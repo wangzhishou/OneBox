@@ -939,4 +939,7 @@
     <string name="background_downloading">Letöltés folyamatban</string>
     <string name="background_download_count">%1$d fájl</string>
     <string name="background_download_progress">%1$s · %2$d%%</string>
+
+    <string name="backup_center">Biztonsági mentés és visszaállítás</string>
+    <string name="backup_center_sub">Mentse adatait saját felhőtárhelyére</string>
 </resources>

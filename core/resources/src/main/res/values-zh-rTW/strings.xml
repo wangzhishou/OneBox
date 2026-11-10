@@ -314,11 +314,9 @@
     <string name="edit_screenshot">編輯截圖</string>
     <string name="aspect_ratio">長寬比</string>
     <string name="image_crop_mask_sub">使用這個遮罩類型從給定的圖片建立遮罩，注意它應該有 alpha 通道</string>
-    <string name="backup_and_restore">備份與還原</string>
     <string name="crop_mask">裁剪遮罩</string>
     <string name="backup">備份</string>
     <string name="restore">還原</string>
-    <string name="backup_sub">將應用程式設定備份到一個檔案中</string>
     <string name="restore_sub">從先前產生的檔案中還原應用程式設定</string>
     <string name="corrupted_file_or_not_a_backup">檔案已損毀或不是備份檔案</string>
     <string name="reset_settings_sub">這將把你的設定還原為預設值。注意，如果之前沒有備份檔案，則無法復原。</string>
@@ -1319,7 +1317,6 @@
     <string name="sand_painting">沙畫</string>
     <string name="image_splitting">圖片分割</string>
     <string name="image_splitting_sub">按列或欄分割單張圖片</string>
-    <string name="backup_ocr_models">備份 OCR 模型</string>
     <string name="export">匯出</string>
     <string name="position">位置</string>
     <string name="top_left">左上</string>
@@ -2040,4 +2037,8 @@
     <string name="background_downloading">正在下載</string>
     <string name="background_download_count">%1$d 個檔案</string>
     <string name="background_download_progress">%1$s · %2$d%%</string>
+
+
+    <string name="backup_center">備份與復原</string>
+    <string name="backup_center_sub">將資料備份到你自己的網盤</string>
 </resources>

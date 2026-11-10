@@ -2040,4 +2040,7 @@
     <string name="background_downloading">डाउनलोड हो रहा है</string>
     <string name="background_download_count">%1$d फ़ाइलें</string>
     <string name="background_download_progress">%1$s · %2$d%%</string>
+
+    <string name="backup_center">बैकअप और पुनर्स्थापना</string>
+    <string name="backup_center_sub">अपना डेटा अपने ही क्लाउड स्टोरेज में बैकअप करें</string>
 </resources>

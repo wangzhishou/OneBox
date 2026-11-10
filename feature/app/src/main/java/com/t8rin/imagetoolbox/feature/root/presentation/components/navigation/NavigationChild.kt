@@ -535,6 +535,11 @@ sealed interface NavigationChild {
         override fun Content() = com.shifenmiao.common.export.DataSyncScreen(component)
     }
 
+    class BackupCenter(private val component: com.shifenmiao.common.backup.BackupCenterComponent) : NavigationChild {
+        @Composable
+        override fun Content() = com.shifenmiao.common.backup.BackupCenterScreen(component)
+    }
+
     class AsciiArt(private val component: AsciiArtComponent) : NavigationChild {
         @Composable
         override fun Content() = AsciiArtContent(component)
