@@ -24,13 +24,15 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -99,10 +101,12 @@ fun MediaCheckBox(
                 if (isChecked) {
                     Box(
                         modifier = modifier
-                            .size(24.dp)
-                            .padding(2.dp)
+                            // 一位数是圆点, 两位数/三位数自动长成胶囊, 不会被切掉
+                            .height(24.dp)
+                            .widthIn(min = 24.dp)
                             .clip(CircleShape)
-                            .background(color),
+                            .background(color)
+                            .padding(horizontal = 6.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         // 底色是 checkedColor(通常是深色的 onXxxContainer), 数字必须走亮色。
