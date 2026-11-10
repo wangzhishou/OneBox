@@ -1,9 +1,15 @@
 管理待办事项（待办清单）。支持操作:
-1) create_list —— 【建一份清单时首选这个】一次建好一个分组并写入其中全部条目。需传 title(清单名)与 tasks(条目数组，每项是一个字符串标题)；可选 icon_key。用户说"帮我建一个 XX 清单/待办/计划/目标"时用本操作，不要先 create_category 再逐条 create_task。
-2) create_task —— 新建一条任务。需传 title；category_name 缺省时写入收集箱，提供时写入对应分组，分组不存在会自动创建。可选 note/due_date_millis/has_due_time/tags；has_due_time=false 表示纯日期，true 表示精确到时刻。
-3) create_category —— 只建一个空的分组。需传 title，可选 icon_key。
-4) list —— 列出所有分组和任务，另在 inbox_tasks 返回收集箱任务；可选 category_name 过滤分组，过滤时 inbox_tasks 为空。任务包含 has_due_time 和真实 created_at。
-5) toggle_complete —— 完成或重开任务，需传 task_id。
-6) toggle_star —— 收藏或取消收藏，需传 task_id。
-7) delete_task —— 删除任务，需传 task_id。
-每个操作成功后返回结果中都包含 deeplink，可用于跳转到待办页面。
+1) create_list —— 【建一份清单时首选这个】一次建好一个分组并写入其中全部条目。需传 title(清单名)与 tasks(条目数组，每项是一个字符串标题)；可选 icon_key。用户说"帮我建一个 XX 清单/待办/计划/目标"时用本操作，不要先 create_category 再逐条 create_task。同名清单已存在时会复用并把新条目追加进去，同名条目自动跳过。
+2) create_task —— 新建一条任务。需传 title；category_name / category_id 缺省时写入收集箱，提供时写入对应分组，category_name 对应的分组不存在会自动创建。可选 note/due_date_millis/has_due_time/tags；has_due_time=false 表示纯日期，true 表示精确到时刻。
+3) create_category —— 只建一个空的分组。需传 title，可选 icon_key；同名分组已存在时直接返回原分组，不重复创建。
+4) list —— 列出分组摘要 + 一页任务。默认排序：重点关注(starred)置顶，同组内新建的在前(createdAt 降序)。可选参数:
+   - category_name / category_id: 只看某个分组（如"万宝盒1.5.6版本"）；都不传则返回全部分组。category_id 优先，收集箱的 id 是 "__inbox__"。
+   - query: 关键词搜索任务标题/备注/标签。
+   - include_completed: 是否包含已完成任务，默认 true；只看未完成传 false。
+   - limit / offset: 分页，默认 limit=50（最大 100）。返回的 summary.has_more=true 时，用 summary.next_offset 作为 offset 再调一次 list。
+   返回的 tasks 是紧凑格式（id/title/category/done/starred/priority/due_date/due_has_time/tags/note 预览），summary 里有 task_count/completed_count/pending_count/returned_count。结果不会被硬截断；若 has_more=true，必须继续翻页或明确告诉用户还有多少条，不要凭记忆补条目。
+5) complete_task / reopen_task —— 幂等地设为已完成 / 未完成，需传 task_id（也接受全库唯一的任务标题）。
+6) toggle_complete —— 切换完成状态，需传 task_id。
+7) star_task / unstar_task —— 幂等地设为重点关注 / 取消关注；toggle_star —— 切换关注状态。均需 task_id。
+8) delete_task —— 删除任务，需传 task_id；执行前会要求用户确认。
+每个操作成功后返回 deepLinks 数组（可直接给用户点击），不要自己拼接链接，也不要把没返回的条目当成已读取。

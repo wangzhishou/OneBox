@@ -635,8 +635,13 @@
     <!-- manage_todo tool -->
     <string name="agent_tool_manage_todo_title">待办管理</string>
     <string name="agent_tool_manage_todo_summary">列出、创建、完成、收藏、删除待办事项</string>
-    <string name="agent_tool_manage_todo_param_action">操作类型: create_list(一次建好清单+全部条目，建清单首选), create_task(加一条任务), create_category(只建空分类), list(列出全部), toggle_complete(完成/重开), toggle_star(收藏/取消), delete_task(删除)</string>
+    <string name="agent_tool_manage_todo_param_action">操作类型: create_list(一次建好清单+全部条目，建清单首选), create_task(加一条任务), create_category(只建空分类), list(列出分组和一页任务，重点关注置顶、新的在前), complete_task/reopen_task(设为完成/未完成), toggle_complete(切换完成状态), star_task/unstar_task(设/取消重点关注), toggle_star(切换重点关注), delete_task(删除)</string>
     <string name="agent_tool_manage_todo_param_category_name">分类名称，create_task/list 时使用；create_task 缺省时写入收集箱</string>
+    <string name="agent_tool_manage_todo_param_category_id">分类 ID，list/create_task 时使用，取自 list 返回的 id；\"__inbox__\" 表示收集箱。传了 id 时优先于 category_name。</string>
+    <string name="agent_tool_manage_todo_param_query">可选关键词，搜索任务标题、备注和标签。</string>
+    <string name="agent_tool_manage_todo_param_include_completed">list 是否包含已完成任务，默认 true；只看未完成传 false。</string>
+    <string name="agent_tool_manage_todo_param_limit">list 单页最多返回多少条任务，1-100，默认 50。</string>
+    <string name="agent_tool_manage_todo_param_offset">list 分页偏移；用上一次结果的 next_offset 继续翻页。</string>
     <string name="agent_tool_manage_todo_param_title">标题，create_task/create_category/create_list(清单名)时必填</string>
     <string name="agent_tool_manage_todo_param_note">备注，create_task时可选</string>
     <string name="agent_tool_manage_todo_param_due_date_millis">截止日期时间戳(毫秒)，create_task时可选</string>
@@ -645,7 +650,7 @@
     <string name="agent_tool_manage_todo_param_tasks">条目标题数组，create_list时必填，例如 ["学会用 AI 剪视频", "读完 12 本书"]</string>
     <string name="agent_tool_manage_todo_param_icon_key">图标名称，create_category时可选，默认 inbox</string>
     <string name="agent_tool_manage_todo_param_color_argb">分类颜色 ARGB 值，create_category时可选，0为自动</string>
-    <string name="agent_tool_manage_todo_param_task_id">任务 ID，toggle_complete/toggle_star/delete_task时必填</string>
+    <string name="agent_tool_manage_todo_param_task_id">任务 ID（也接受全库唯一的任务标题），完成/重开/切换/收藏/删除时必填</string>
     <string name="agent_tool_manage_todo_failed">待办操作失败: %1$s</string>
     <string name="agent_tool_manage_todo_unknown_action">未知操作: %1$s</string>
     <string name="agent_tool_manage_todo_missing_category_name">create_task 操作需要 category_name 参数</string>
@@ -659,6 +664,10 @@
     <string name="agent_tool_manage_todo_category_created">已创建分类: %1$s</string>
     <string name="agent_tool_manage_todo_toggled">任务 %1$s 已 %2$s</string>
     <string name="agent_tool_manage_todo_task_deleted">已删除任务: %1$s</string>
+    <string name="agent_tool_manage_todo_inbox_title">收集箱</string>
+    <string name="agent_tool_manage_todo_list_summary">共 %1$d 条，已完成 %2$d 条，待处理 %3$d 条；本次返回 %4$d 条</string>
+    <string name="agent_tool_manage_todo_category_exists">分类已存在: %1$s</string>
+    <string name="agent_tool_manage_todo_list_reused">已向现有清单「%1$s」追加 %2$d 条，跳过重复 %3$d 条</string>
 
     <!-- manage_xiangqi -->
     <string name="agent_tool_manage_xiangqi_title">管理象棋对局</string>

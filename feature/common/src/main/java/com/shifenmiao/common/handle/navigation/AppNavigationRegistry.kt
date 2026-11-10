@@ -864,7 +864,26 @@ object AppNavigationRegistry {
                     AppNavigationTargetType.SCREEN,
                     "mark_todo_router"
                 ),
-                screenBuilder = { Screen.MarkTodoRouter() }
+                screenBuilder = { params ->
+                    val taskId = params["task_id"]?.takeIf { it.isNotBlank() }
+                    val categoryId = params["category_id"]?.takeIf { it.isNotBlank() }
+                    when {
+                        // 任务详情优先：create_task / toggle / star 的返回链接都带 task_id
+                        taskId != null -> Screen.MarkTodoRouter(
+                            Screen.MarkTodoRouter.MarkTodoType.TodoDetail(
+                                taskId = taskId,
+                                categoryId = categoryId,
+                            )
+                        )
+                        categoryId != null -> Screen.MarkTodoRouter(
+                            Screen.MarkTodoRouter.MarkTodoType.CategoryDetail(
+                                categoryId = categoryId,
+                                categoryTitle = params["category_title"].orEmpty(),
+                            )
+                        )
+                        else -> Screen.MarkTodoRouter()
+                    }
+                }
             ),
             AppNavigationTarget(
                 targetType = AppNavigationTargetType.SCREEN,

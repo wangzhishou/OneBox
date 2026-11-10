@@ -97,4 +97,14 @@ interface MarkTodoServiceInterface {
         orderedIds: List<String>,
         source: String,
     ): Result<Unit>
+
+    /**
+     * 按名称确保标签存在（同名忽略大小写复用），返回标签 id。
+     * Agent 写入任务标签时走这里，避免任务上的标签不在标签池里、筛选面板选不到。
+     */
+    suspend fun createTag(
+        name: String,
+        colorArgb: Int?,
+        source: String,
+    ): Result<String>
 }

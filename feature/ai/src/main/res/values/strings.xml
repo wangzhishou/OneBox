@@ -635,8 +635,13 @@
     <!-- manage_todo tool -->
     <string name="agent_tool_manage_todo_title">Todo Manager</string>
     <string name="agent_tool_manage_todo_summary">List, create, complete, star and delete todo items</string>
-    <string name="agent_tool_manage_todo_param_action">Action type: create_list (create a list together with all its items in one call — preferred when building a list), create_task (add one task), create_category (create an empty category only), list (list all), toggle_complete (complete/reopen), toggle_star (star/unstar), delete_task (delete)</string>
+    <string name="agent_tool_manage_todo_param_action">Action type: create_list (create a list together with all its items in one call — preferred when building a list), create_task (add one task), create_category (create an empty category only), list (list categories and a page of tasks, newest first with starred items on top), complete_task/reopen_task (set completed state), toggle_complete (toggle completed state), star_task/unstar_task (set starred state), toggle_star (toggle starred state), delete_task (delete)</string>
     <string name="agent_tool_manage_todo_param_category_name">Category name for create_task/list; omit for create_task to add to the inbox</string>
+    <string name="agent_tool_manage_todo_param_category_id">Category ID for list/create_task, taken from the id returned by list. \"__inbox__\" means the inbox. Takes precedence over category_name.</string>
+    <string name="agent_tool_manage_todo_param_query">Optional keyword to search task titles, notes and tags.</string>
+    <string name="agent_tool_manage_todo_param_include_completed">Whether list includes completed tasks; default true. Pass false to show only pending tasks.</string>
+    <string name="agent_tool_manage_todo_param_limit">Maximum tasks returned by list per page, 1-100, default 50.</string>
+    <string name="agent_tool_manage_todo_param_offset">Pagination offset for list; use next_offset from the previous result to continue.</string>
     <string name="agent_tool_manage_todo_param_title">Title, required for create_task/create_category/create_list (the list name)</string>
     <string name="agent_tool_manage_todo_param_note">Note, optional for create_task</string>
     <string name="agent_tool_manage_todo_param_due_date_millis">Due date timestamp (milliseconds), optional for create_task</string>
@@ -645,7 +650,7 @@
     <string name="agent_tool_manage_todo_param_tasks">Item title array, required for create_list, e.g. [\"Learn AI video editing\", \"Read 12 books\"]</string>
     <string name="agent_tool_manage_todo_param_icon_key">Icon name, optional for create_category, default inbox</string>
     <string name="agent_tool_manage_todo_param_color_argb">Category color ARGB value, optional for create_category, 0 for auto</string>
-    <string name="agent_tool_manage_todo_param_task_id">Task ID, required for toggle_complete/toggle_star/delete_task</string>
+    <string name="agent_tool_manage_todo_param_task_id">Task ID (or a task title that is unique in the whole app), required for complete/reopen/toggle/star/delete actions</string>
     <string name="agent_tool_manage_todo_failed">Todo operation failed: %1$s</string>
     <string name="agent_tool_manage_todo_unknown_action">Unknown action: %1$s</string>
     <string name="agent_tool_manage_todo_missing_category_name">create_task action requires category_name parameter</string>
@@ -659,6 +664,10 @@
     <string name="agent_tool_manage_todo_category_created">Category created: %1$s</string>
     <string name="agent_tool_manage_todo_toggled">Task %1$s has been %2$s</string>
     <string name="agent_tool_manage_todo_task_deleted">Task deleted: %1$s</string>
+    <string name="agent_tool_manage_todo_inbox_title">Inbox</string>
+    <string name="agent_tool_manage_todo_list_summary">%1$d items total: %2$d completed, %3$d pending; %4$d returned</string>
+    <string name="agent_tool_manage_todo_category_exists">Category already exists: %1$s</string>
+    <string name="agent_tool_manage_todo_list_reused">Appended %2$d items to existing list \"%1$s\", skipped %3$d duplicates</string>
 
     <!-- manage_xiangqi -->
     <string name="agent_tool_manage_xiangqi_title">Manage Xiangqi Games</string>

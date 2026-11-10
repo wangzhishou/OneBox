@@ -463,7 +463,7 @@ class MarkTodoServiceImpl @Inject constructor(
     }
 
     /** 新建自定义标签（追加到标签池末尾），返回新标签 id；同名（忽略大小写）标签已存在时直接返回其 id，不产生重复行 */
-    suspend fun createTag(
+    override suspend fun createTag(
         name: String,
         colorArgb: Int?,
         source: String,

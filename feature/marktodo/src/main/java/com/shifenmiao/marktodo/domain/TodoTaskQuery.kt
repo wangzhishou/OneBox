@@ -134,14 +134,22 @@ object TodoTaskQuery {
     }
 
     private fun taskComparator(sort: TaskSortConfig): Comparator<TaskWithCategory> {
+        // 「重点关注」（标星）永远置顶，其余条目再按当前排序方式比较。
+        // 分组卡片是按分类分组的，所以置顶落在每个分组内部，不影响分组顺序。
+        val focusFirst = Comparator<TaskWithCategory> { left, right ->
+            compareValues(right.task.isStarred, left.task.isStarred)
+        }
         val primary = Comparator<TaskWithCategory> { left, right ->
             when (sort.mode) {
                 TaskSortMode.MANUAL -> {
-                    compareValuesDirection(left.categoryOrder, right.categoryOrder, sort.ascending)
+                    // 默认排序：分组顺序 → 新建的在前（createdAt 降序）。
+                    // 旧版按 sortOrder 升序（最早创建的在最前），任务又没有拖拽入口，
+                    // 所以 sortOrder 只作为同一毫秒创建时的兜底，不再决定默认顺序。
+                    compareValuesDirection(left.categoryOrder, right.categoryOrder, true)
                         .takeIf { it != 0 }
-                        ?: compareValuesDirection(left.task.sortOrder, right.task.sortOrder, sort.ascending)
+                        ?: compareValuesDirection(left.task.createdAt, right.task.createdAt, false)
                             .takeIf { it != 0 }
-                            ?: compareValuesDirection(left.task.createdAt, right.task.createdAt, sort.ascending)
+                        ?: compareValuesDirection(left.task.sortOrder, right.task.sortOrder, false)
                 }
                 TaskSortMode.DUE_DATE -> compareNullableDueDates(left.task, right.task, sort.ascending)
                 TaskSortMode.PRIORITY -> compareValuesDirection(
@@ -156,7 +164,7 @@ object TodoTaskQuery {
                 )
             }
         }
-        return primary.thenBy { it.task.id }
+        return focusFirst.then(primary).thenBy { it.task.id }
     }
 
     private fun compareNullableDueDates(left: TodoTask, right: TodoTask, ascending: Boolean): Int {
