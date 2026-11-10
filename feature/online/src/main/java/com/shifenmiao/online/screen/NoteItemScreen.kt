@@ -1,7 +1,6 @@
 package com.shifenmiao.online.screen
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.text.selection.rememberSelectionState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Edit
@@ -24,15 +24,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.movableContentOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -52,15 +47,12 @@ import com.shifenmiao.model.ListItemType
 import com.shifenmiao.online.component.NoteItemComponent
 import com.shifenmiao.online.ui.ReadOnlyNoteCategorySelection
 import com.shifenmiao.theme.AppTheme
-import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedButton
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBarType
 import kotlinx.coroutines.launch
 import com.shifenmiao.webview.mermaid.ProvideMermaidRenderer
-import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineInfo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLock
 
 @Composable
@@ -77,7 +69,7 @@ fun NoteItemScreen(
         onNavigate = { screen -> navigator.navigate(screen) },
     )
     val scope = rememberCoroutineScope()
-    var isTextSelectionMode by remember { mutableStateOf(false) }
+    val selectionState = rememberSelectionState()
     val lazyListState = rememberLazyListState()
 
     // 页面显示时刷新数据，确保显示最新的编辑内容
@@ -90,11 +82,7 @@ fun NoteItemScreen(
     BaseScreen(
         title = {
             Text(
-                text = if (isTextSelectionMode) {
-                    stringResource(R.string.select_text)
-                } else {
-                    noteUIState.title
-                },
+                text = noteUIState.title,
                 style = MaterialTheme.typography.titleLarge.copy(
                     lineHeight = MaterialTheme.typography.titleLarge.fontSize * 1.2f
                 ),
@@ -103,29 +91,11 @@ fun NoteItemScreen(
                 overflow = TextOverflow.Ellipsis
             )
         },
-        onGoBack = {
-            if (isTextSelectionMode) {
-                isTextSelectionMode = false
-            } else {
-                appComponent.onGoBack()
-            }
-        },
+        onGoBack = { appComponent.onGoBack() },
         type = EnhancedTopAppBarType.Medium,
         scrollBehavior = scrollBehavior,
         actions = {
-            if (isTextSelectionMode) {
-                IconButton(
-                    onClick = { isTextSelectionMode = false }
-                ) {
-                    Icon(
-                        modifier = Modifier
-                            .padding(end = AppTheme.dimens.paddingNormal),
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
-                        contentDescription = stringResource(R.string.close),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            } else if (!noteUIState.isLocked) {
+            if (!noteUIState.isLocked) {
                 IconButton(
                     onClick = {
                         scope.launch {
@@ -157,75 +127,48 @@ fun NoteItemScreen(
             return@BaseScreen
         }
         ProvideMermaidRenderer {
-            val baseModifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
-            val contentModifier = if (isTextSelectionMode) {
-                baseModifier
-            } else {
-                baseModifier.pointerInput(Unit) {
-                    detectTapGestures(onLongPress = {
-                        enterNoteTextSelectionMode(
-                            isTextSelectionMode = isTextSelectionMode,
-                            onEnter = { isTextSelectionMode = true }
-                        )
-                    })
-                }
-            }
-
-            val markdownContent = remember {
-                movableContentOf<Modifier> { mod ->
-                    MarkdownLazyContent(
-                        modifier = mod,
-                        lazyListState = lazyListState,
-                        codeBlockClickListener = codeBlockClickListener,
-                        message = noteUIState.data,
-                        isLoading = noteUIState.isLoading,
-                        errorMessage = noteUIState.errorMessage,
-                        onRetry = { noteItemComponent.refreshData() },
-                        onGoBack = { appComponent.onGoBack() },
-                        onLinkClick = { url ->
-                            if (!navigator.navigate(url)) {
-                                uriHandler.openUri(url)
-                            }
-                        },
-                        paddingValues = PaddingValues(
-                            vertical = 0.dp,
-                            horizontal = AppTheme.dimens.paddingNormal
-                        ),
-                        headerContent = {
-                            if (noteUIState.selectedCategories.isNotEmpty()) {
-                                item {
-                                    Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
-                                    ReadOnlyNoteCategorySelection(uiState = noteUIState)
-                                    Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
-                                }
+            // 长按直接进选区并弹浮动工具条,与 AI 聊天 / 博客详情一致,不再先切「选择文本」模式
+            TextSelectionMenuContainer(
+                items = selectionMenuItems,
+                selectionState = selectionState,
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                MarkdownLazyContent(
+                    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+                    lazyListState = lazyListState,
+                    codeBlockClickListener = codeBlockClickListener,
+                    message = noteUIState.data,
+                    isLoading = noteUIState.isLoading,
+                    errorMessage = noteUIState.errorMessage,
+                    onRetry = { noteItemComponent.refreshData() },
+                    onGoBack = { appComponent.onGoBack() },
+                    onLinkClick = { url ->
+                        if (!navigator.navigate(url)) {
+                            uriHandler.openUri(url)
+                        }
+                    },
+                    paddingValues = PaddingValues(
+                        vertical = 0.dp,
+                        horizontal = AppTheme.dimens.paddingNormal
+                    ),
+                    headerContent = {
+                        if (noteUIState.selectedCategories.isNotEmpty()) {
+                            item {
+                                Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
+                                ReadOnlyNoteCategorySelection(uiState = noteUIState)
+                                Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
                             }
                         }
-                    )
-                }
+                    }
+                )
             }
-
-            if (isTextSelectionMode) {
-                TextSelectionMenuContainer(
-                    items = selectionMenuItems,
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    markdownContent(contentModifier)
-                }
-            } else {
-                markdownContent(contentModifier)
-            }
-        }
-
-    }
-
-    BackHandler {
-        if (isTextSelectionMode) {
-            isTextSelectionMode = false
-        } else {
-            appComponent.onGoBack()
         }
     }
 
+    // 有选区时交给容器内部的 BackHandler 清选区,这里只处理页面返回
+    BackHandler(enabled = selectionState.selectedTexts.isEmpty()) {
+        appComponent.onGoBack()
+    }
 }
 
 /**
@@ -270,17 +213,4 @@ private fun LockedNoteContent(
             }
         }
     }
-}
-
-private fun enterNoteTextSelectionMode(
-    isTextSelectionMode: Boolean,
-    onEnter: () -> Unit
-) {
-    if (isTextSelectionMode) return
-
-    onEnter()
-    AppToastHost.showToast(
-        message = R.string.ai_chat_text_selection_mode_hint,
-        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineInfo
-    )
 }
