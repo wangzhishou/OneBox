@@ -67,6 +67,7 @@ import com.shifenmiao.common.ui.rememberCodeBlockClickListener
 import com.shifenmiao.core.R
 import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.ai.Conversation
+import com.shifenmiao.model.ai.resolveChatMode
 import com.shifenmiao.model.channel.FlavorType
 import com.shifenmiao.model.image.ImageViewerInfo
 import com.shifenmiao.model.state.ChatUIState
@@ -263,14 +264,20 @@ fun ChatContent(
     val currentAIModel by appComponent.aiEngineManager.currentAIModel.collectAsState()
     val currentAIEngine by appComponent.aiEngineManager.currentAIEngine.collectAsState()
     val toolCenterUiState by aiChatComponent.toolCenterUiState.collectAsState()
+    val chatMode by aiChatComponent.chatMode.collectAsState()
+    val isChatMode = conversation.value.resolveChatMode(chatMode) == com.shifenmiao.model.ai.AIChatMode.CHAT
     var showToolCenter by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
-        aiChatComponent.refreshToolCenter()
+    LaunchedEffect(isChatMode) {
+        if (isChatMode) {
+            showToolCenter = false
+        } else {
+            aiChatComponent.refreshToolCenter()
+        }
     }
 
-    LaunchedEffect(showToolCenter) {
-        if (showToolCenter) {
+    LaunchedEffect(showToolCenter, isChatMode) {
+        if (showToolCenter && !isChatMode) {
             aiChatComponent.refreshToolCenter()
         }
     }
@@ -307,6 +314,8 @@ fun ChatContent(
                 aiChatComponent = aiChatComponent,
                 appComponent = appComponent,
                 chatInputComponent = chatInputComponent,
+                chatMode = chatMode,
+                onChatModeSelected = aiChatComponent::setChatMode,
                 enabledToolCount = toolCenterUiState.enabledToolNames.size,
                 onShowToolCenter = {
                     showToolCenter = true
@@ -378,7 +387,7 @@ fun ChatContent(
         )
 
         ToolCenterBottomSheet(
-            visible = showToolCenter,
+            visible = showToolCenter && !isChatMode,
             uiState = toolCenterUiState,
             onDismiss = { showToolCenter = false },
             onToggleTool = { toolName, enabled ->

@@ -64,7 +64,8 @@ class MessageRemoteMediator @Inject constructor(
         questionMessageEntityList: List<MessageEntity>,
         enableWebSearch: Boolean = false,
         enableReasoning: Boolean = false,
-        tools: List<ToolDefinition>? = null
+        tools: List<ToolDefinition>? = null,
+        includeToolCallHistory: Boolean = true,
     ): Flow<LlmStreamEvent> = try {
         val rawRequest = AiUtils.buildTurnRequest(
             conversation = conversation,
@@ -74,6 +75,7 @@ class MessageRemoteMediator @Inject constructor(
             tools = tools,
             enableWebSearch = enableWebSearch,
             enableReasoning = enableReasoning,
+            includeToolCallHistory = includeToolCallHistory,
         )
 
         val trimmedRequest = applyContextBudget(conversation, rawRequest)

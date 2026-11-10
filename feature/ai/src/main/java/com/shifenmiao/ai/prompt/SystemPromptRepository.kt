@@ -3,6 +3,7 @@ package com.shifenmiao.ai.prompt
 import com.shifenmiao.ai.agent.tool.AgentToolTextProvider
 import com.shifenmiao.database.AppDatabase
 import com.shifenmiao.database.chat_prompt.entity.PromptEntity
+import com.shifenmiao.model.ai.AIChatMode
 import com.shifenmiao.model.ai.AiModel
 import com.shifenmiao.model.ai.Conversation
 import javax.inject.Inject
@@ -84,6 +85,7 @@ class SystemPromptRepository @Inject constructor(
 
     suspend fun composeConversationPrompt(
         conversation: Conversation,
+        chatMode: AIChatMode = AIChatMode.AGENT,
         userOverride: String? = null,
         memoryFragment: String? = null,
         skillsFragment: String? = null,
@@ -93,18 +95,25 @@ class SystemPromptRepository @Inject constructor(
             title = PromptEntity.SYSTEM_PROMPT_KEY_DEFAULT_PROMPT,
             fallback = textProvider.rawAsync(com.shifenmiao.database.R.raw.prompt_system_default)
         )
-        // 聊天工作模式已收敛为单一 Agent 模式，执行协议固定取 agent 协议
-        val agentExecutionProtocol = getSystemPrompt(
-            title = PromptEntity.SYSTEM_PROMPT_KEY_WORKING_MODE_AGENT,
-            fallback = textProvider.rawAsync(com.shifenmiao.database.R.raw.chat_working_mode_agent)
-        )
+        val agentExecutionProtocol = if (chatMode == AIChatMode.AGENT) {
+            getSystemPrompt(
+                title = PromptEntity.SYSTEM_PROMPT_KEY_WORKING_MODE_AGENT,
+                fallback = textProvider.rawAsync(com.shifenmiao.database.R.raw.chat_working_mode_agent)
+            )
+        } else {
+            ""
+        }
         val composition = composeToolAwarePrompt(
             systemRules = systemRules,
             interactionProtocol = "",
             agentExecutionProtocol = agentExecutionProtocol,
             agentRole = conversation.prompt,
             userOverride = userOverride.orEmpty(),
-            environmentContext = environmentContextProvider.buildContextText(),
+            environmentContext = if (chatMode == AIChatMode.AGENT) {
+                environmentContextProvider.buildContextText()
+            } else {
+                ""
+            },
             memoryFragment = memoryFragment.orEmpty(),
             skillsFragment = skillsFragment.orEmpty(),
             tokenBudget = tokenBudget

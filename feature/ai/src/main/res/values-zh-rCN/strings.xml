@@ -1189,4 +1189,8 @@
     <string name="ai_chat_attachment_uploading">上传中...</string>
     <string name="ai_chat_attachment_error">失败: %1$s</string>
     <string name="ai_chat_go_to_top">回到顶部</string>
+    <string name="ai_chat_mode_chat_title">Chat 模式</string>
+    <string name="ai_chat_mode_chat_description">即时对话 · 快速问答</string>
+    <string name="ai_chat_mode_agent_title">Agent 模式</string>
+    <string name="ai_chat_mode_agent_description">规划执行 · 自动完成任务</string>
 </resources>

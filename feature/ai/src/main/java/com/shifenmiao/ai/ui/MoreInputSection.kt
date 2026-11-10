@@ -1,5 +1,10 @@
 package com.shifenmiao.ai.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,6 +44,7 @@ import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.ai.providerAccentColor
 import com.shifenmiao.common.ui.ai.providerBrandIcon
 import com.shifenmiao.core.R
+import com.shifenmiao.model.ai.AIChatMode
 import com.shifenmiao.storage.AIChatStorage
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
@@ -65,6 +71,11 @@ import com.t8rin.imagetoolbox.core.resources.icons.Refresh
 fun MoreInputSection(
     appComponent: AppComponent,
     chatInputComponent: ChatInputComponent,
+    chatMode: AIChatMode,
+    onChatModeSelected: (AIChatMode) -> Unit,
+    showChatModeSelector: Boolean,
+    modeSelectionEnabled: Boolean,
+    isChatMode: Boolean,
     enabledToolCount: Int = 0,
     onShowToolCenter: () -> Unit = {},
 ) {
@@ -110,6 +121,21 @@ fun MoreInputSection(
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 32.dp)
     ) {
+        AnimatedVisibility(
+            visible = showChatModeSelector,
+            enter = fadeIn() + expandVertically(),
+            exit = fadeOut() + shrinkVertically(),
+        ) {
+            Column {
+                ChatModeSelector(
+                    currentMode = chatMode,
+                    onModeSelected = onChatModeSelected,
+                    compact = true,
+                    enabled = modeSelectionEnabled,
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+        }
         // 端侧模型加载提示:prepare(预热或首次推理前)需要数秒,把不可见的等待变成可解释的等待
         loadingLocalModel?.let { modelName ->
             Row(
@@ -245,17 +271,19 @@ fun MoreInputSection(
                     onClick = { chatInputComponent.showRecentPicker() }
                 )
             )
-            add(
-                PanelAction(
-                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBuild,
-                    label = if (enabledToolCount > 0) {
-                        stringResource(R.string.ai_input_tools_with_count, enabledToolCount)
-                    } else {
-                        stringResource(R.string.ai_input_tools)
-                    },
-                    onClick = onShowToolCenter
+            if (!isChatMode) {
+                add(
+                    PanelAction(
+                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBuild,
+                        label = if (enabledToolCount > 0) {
+                            stringResource(R.string.ai_input_tools_with_count, enabledToolCount)
+                        } else {
+                            stringResource(R.string.ai_input_tools)
+                        },
+                        onClick = onShowToolCenter
+                    )
                 )
-            )
+            }
             add(
                 PanelAction(
                     icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSettings,

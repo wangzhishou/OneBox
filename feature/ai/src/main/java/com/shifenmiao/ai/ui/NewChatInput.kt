@@ -68,10 +68,13 @@ import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.core.R
 import com.shifenmiao.ai.R as AiR
+import com.shifenmiao.model.ai.AIChatMode
 import com.shifenmiao.model.ai.AttachmentProcessingState
 import com.shifenmiao.model.ai.ChatInputEventHandler
 import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.model.ai.ProcessingStep
+import com.shifenmiao.model.ai.resolveChatMode
+import com.shifenmiao.model.ai.supportsChatModeSelection
 import com.shifenmiao.model.channel.FlavorType
 import com.shifenmiao.model.state.ChatUIState
 import com.shifenmiao.model.state.PageState
@@ -100,6 +103,8 @@ fun NewChatInput(
     aiChatComponent: AIChatComponent,
     appComponent: AppComponent,
     chatInputComponent: ChatInputComponent,
+    chatMode: AIChatMode,
+    onChatModeSelected: (AIChatMode) -> Unit,
     enabledToolCount: Int = 0,
     onShowToolCenter: () -> Unit = {},
     onSendMessage: () -> Unit = {},
@@ -206,6 +211,11 @@ fun NewChatInput(
                     MoreInputSection(
                         appComponent = appComponent,
                         chatInputComponent = chatInputComponent,
+                        chatMode = chatMode,
+                        onChatModeSelected = onChatModeSelected,
+                        showChatModeSelector = conversation.value.supportsChatModeSelection(),
+                        modeSelectionEnabled = !chatUIState.chatActive,
+                        isChatMode = conversation.value.resolveChatMode(chatMode) == com.shifenmiao.model.ai.AIChatMode.CHAT,
                         enabledToolCount = enabledToolCount,
                         onShowToolCenter = onShowToolCenter
                     )

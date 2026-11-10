@@ -16,6 +16,7 @@ import com.shifenmiao.ai.memory.MemoryRepository
 import com.shifenmiao.ai.prompt.SystemPromptRepository
 import com.shifenmiao.ai.agent.tool.AgentToolRegistry
 import com.shifenmiao.ai.skill.SkillRepository
+import com.shifenmiao.model.ai.AIChatMode
 import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.model.ai.ToolDefinition
 import com.shifenmiao.model.ai.tool.ToolSelectionResult
@@ -123,14 +124,19 @@ class PromptAssemblyService(
     suspend fun buildEffectiveConversation(
         baseConversation: Conversation,
         preResolvedConfig: ToolConfigResolver.EffectiveToolConfig? = null,
+        chatMode: AIChatMode = AIChatMode.AGENT,
     ): Conversation {
-        val effectiveToolConfig = preResolvedConfig ?: toolConfigResolver.resolve()
+        val effectiveToolConfig = if (chatMode == AIChatMode.AGENT) {
+            preResolvedConfig ?: toolConfigResolver.resolve()
+        } else {
+            null
+        }
         val promptBudget = systemPromptRepository.calculatePromptBudget(baseConversation.engine.model)
 
         // 记忆/技能注入：门控判定后取 fragment，关闭即不注入。
         // 模型不支持工具调用时：SKILLS 层不注入（正文无法加载，清单无意义）；
         // MEMORY 层保留但省略提示不带 memory_get 指引。
-        val memoryFragment = if (effectiveToolConfig.memoryEnabled) {
+        val memoryFragment = if (effectiveToolConfig?.memoryEnabled == true) {
             memoryRepository.buildPromptFragment(
                 tokenBudget = promptBudget,
                 includeSearchHint = effectiveToolConfig.toolsSupported
@@ -138,7 +144,7 @@ class PromptAssemblyService(
         } else {
             null
         }
-        val skillsFragment = if (effectiveToolConfig.skillsEnabled && effectiveToolConfig.toolsSupported) {
+        val skillsFragment = if (effectiveToolConfig?.skillsEnabled == true && effectiveToolConfig.toolsSupported) {
             skillRepository.buildPromptFragment(promptBudget)
         } else {
             null
@@ -146,6 +152,7 @@ class PromptAssemblyService(
 
         val composition = systemPromptRepository.composeConversationPrompt(
             conversation = baseConversation,
+            chatMode = chatMode,
             memoryFragment = memoryFragment,
             skillsFragment = skillsFragment,
             tokenBudget = promptBudget

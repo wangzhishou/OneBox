@@ -18,6 +18,7 @@ import com.shifenmiao.ai.execution.presenter.ToolExecutionTextResolver
 import com.shifenmiao.ai.memory.ConversationMemoryPolicyRepository
 import com.shifenmiao.ai.service.PromptAssemblyService
 import com.shifenmiao.database.ai.entity.MessageEntity
+import com.shifenmiao.model.ai.AIChatMode
 import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.model.ai.ToolCall
 import com.shifenmiao.model.ai.ToolDefinition
@@ -133,11 +134,13 @@ class AgentLoopOrchestrator(
 
     suspend fun buildEffectiveConversation(
         baseConversation: Conversation,
-        preResolvedConfig: ToolConfigResolver.EffectiveToolConfig? = null
+        preResolvedConfig: ToolConfigResolver.EffectiveToolConfig? = null,
+        chatMode: AIChatMode = AIChatMode.AGENT,
     ): Conversation {
         return promptAssemblyService.buildEffectiveConversation(
             baseConversation = baseConversation,
-            preResolvedConfig = preResolvedConfig
+            preResolvedConfig = preResolvedConfig,
+            chatMode = chatMode,
         )
     }
 

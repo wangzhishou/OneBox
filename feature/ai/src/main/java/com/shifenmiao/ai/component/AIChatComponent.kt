@@ -50,9 +50,11 @@ import com.shifenmiao.network.api.ApiService
 import com.shifenmiao.network.utils.NetworkUtils
 import com.wanbaohe.a2ui.catalog.A2uiRenderProvider
 import com.shifenmiao.model.ai.AttachedMedia
+import com.shifenmiao.model.ai.AIChatMode
 import com.shifenmiao.model.ai.AiModel
 import com.shifenmiao.model.ai.ContentType
 import com.shifenmiao.model.ai.Conversation
+import com.shifenmiao.model.ai.resolveChatMode
 import com.shifenmiao.model.ai.MessageUIState
 import com.shifenmiao.model.ai.RoleType
 import com.shifenmiao.model.ai.ToolDefinition
@@ -325,6 +327,11 @@ open class AIChatComponent @AssistedInject internal constructor(
     val messageUiModels: StateFlow<List<MessageUiModel>> get() = streamContentProcessor.messageUiModels
     val agentToolCallStatus: StateFlow<AgentToolCallUIState> get() = agentToolCallState
     val toolCenterUiState: StateFlow<ToolCenterUiState> get() = agentLoopOrchestrator.toolCenterUiState
+    val chatMode: StateFlow<AIChatMode> get() = AIChatStorage.chatMode
+
+    fun setChatMode(mode: AIChatMode) {
+        AIChatStorage.saveChatMode(mode)
+    }
 
     private var questionMessageEntityList: MutableList<MessageEntity> = mutableListOf()
     val messageDao = appDatabase.messageDao()
@@ -580,6 +587,7 @@ open class AIChatComponent @AssistedInject internal constructor(
             return
         }
         streamContentProcessor.startQuestionTime = System.currentTimeMillis()
+        val requestChatMode = _conversation.value.resolveChatMode(AIChatStorage.chatMode.value)
         // P1 #6: 自增代际号, 让本次 launch 知道自己是不是"当前最新".
         val myGeneration = chatGeneration.incrementAndGet()
         val newJob = componentScope.launch(ioDispatcher) {
@@ -603,7 +611,8 @@ open class AIChatComponent @AssistedInject internal constructor(
                     attachments = attachments,
                     enableReasoning = effectiveReasoningEnabled,
                     systemPromptOverride = systemPromptOverride,
-                    generation = myGeneration
+                    generation = myGeneration,
+                    chatMode = requestChatMode,
                 )
             } finally {
                 // P1 #6: 只有当本协程仍是"最新一代"时, 才清 chatActive.
@@ -740,7 +749,8 @@ open class AIChatComponent @AssistedInject internal constructor(
         attachments: List<AttachedMedia> = emptyList(),
         enableReasoning: Boolean = false,
         systemPromptOverride: String? = null,
-        generation: Int = chatGeneration.get()
+        generation: Int = chatGeneration.get(),
+        chatMode: AIChatMode,
     ) {
         // P0 #11: 进入新一轮请求时清空 watchdog flag, 避免上轮超时的残留.
         streamTimeoutByWatchdog = false
@@ -769,8 +779,13 @@ open class AIChatComponent @AssistedInject internal constructor(
             streamContentProcessor.resetBuffers()
             agentLoopOrchestrator.showToolUiIdle()
 
+            val isAgentRequest = chatMode == AIChatMode.AGENT
             // 快照工具配置：整个请求生命周期内复用，避免重复 DB 查询和竞态条件
-            val requestToolConfig = agentLoopOrchestrator.snapshotToolConfig()
+            val requestToolConfig = if (isAgentRequest) {
+                agentLoopOrchestrator.snapshotToolConfig()
+            } else {
+                null
+            }
 
             try {
                 agentLoopExecutor.taskManager.deleteByConversation(_conversation.value.id)
@@ -822,11 +837,15 @@ open class AIChatComponent @AssistedInject internal constructor(
                 ?: _questionMessageEntity.value.question
             val enableWebSearch = AIChatStorage.isEnableWebSearch.value
             val shouldEnableReasoning = enableReasoning && _conversation.value.engine.model.canReasoning
-            agentLoopOrchestrator.prepareToolSelection()
-            val tools = buildRequestTools()
+            val tools = if (isAgentRequest) {
+                agentLoopOrchestrator.prepareToolSelection()
+                buildRequestTools()
+            } else {
+                null
+            }
             val isToolCallSupported = tools != null
             logAgentTrace(
-                "initial_request questionLen=${currentQuestion.length} tools=${tools?.size ?: 0} " +
+                "initial_request mode=$chatMode questionLen=${currentQuestion.length} tools=${tools?.size ?: 0} " +
                     "toolNames=${tools?.joinToString { it.function.name }.orEmpty()} " +
                     "webSearch=$enableWebSearch attachments=${uploadedAttachments.size}"
             )
@@ -838,7 +857,8 @@ open class AIChatComponent @AssistedInject internal constructor(
             }
             val effectiveConversation = agentLoopOrchestrator.buildEffectiveConversation(
                 baseConversation = baseConversation,
-                preResolvedConfig = requestToolConfig
+                preResolvedConfig = requestToolConfig,
+                chatMode = chatMode,
             )
 
             // 拦截链首轮钩子: follow-up 回合的 before/after/onLoopError 在 AgentLoopRunner 内
@@ -860,7 +880,8 @@ open class AIChatComponent @AssistedInject internal constructor(
                 questionMessageEntityList,
                 enableWebSearch,
                 shouldEnableReasoning,
-                tools
+                tools,
+                includeToolCallHistory = isAgentRequest,
             )
 
             streamContentProcessor.startStreamWatchdog(reason = "executeStreamingChat")
@@ -874,7 +895,12 @@ open class AIChatComponent @AssistedInject internal constructor(
                     }
                 }.collect { streamEvent: LlmStreamEvent ->
                     processingMutex.withLock {
-                        handleLlmEvent(streamEvent, questionMessageEntityList, draft)
+                        handleLlmEvent(
+                            streamEvent = streamEvent,
+                            questionMessageEntityList = questionMessageEntityList,
+                            draft = draft,
+                            allowToolCalls = isAgentRequest,
+                        )
                     }
                 }
             } catch (e: CancellationException) {
@@ -998,7 +1024,8 @@ open class AIChatComponent @AssistedInject internal constructor(
     private suspend fun handleLlmEvent(
         streamEvent: LlmStreamEvent,
         questionMessageEntityList: List<MessageEntity>,
-        draft: MessagePersistenceWorker.StreamDraft?
+        draft: MessagePersistenceWorker.StreamDraft?,
+        allowToolCalls: Boolean = true,
     ) {
         streamContentProcessor.recordChunkReceived()
 
@@ -1043,9 +1070,11 @@ open class AIChatComponent @AssistedInject internal constructor(
             }
 
             is LlmStreamEvent.ToolCallDeltaEvent -> {
-                agentLoopOrchestrator.accumulateToolCallDeltas(streamEvent.deltas)
-                agentLoopOrchestrator.showToolCallPlanning(streamEvent.deltas.size)
-                streamContentProcessor.updatePlaceHolderMessage(forceUpdate = true)
+                if (allowToolCalls) {
+                    agentLoopOrchestrator.accumulateToolCallDeltas(streamEvent.deltas)
+                    agentLoopOrchestrator.showToolCallPlanning(streamEvent.deltas.size)
+                    streamContentProcessor.updatePlaceHolderMessage(forceUpdate = true)
+                }
             }
 
             is LlmStreamEvent.TextDelta -> {

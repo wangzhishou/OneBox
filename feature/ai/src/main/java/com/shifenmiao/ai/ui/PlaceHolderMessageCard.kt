@@ -1,14 +1,18 @@
 package com.shifenmiao.ai.ui
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -74,8 +78,11 @@ import com.shifenmiao.core.R
 import com.shifenmiao.database.data_draft.DataDraftHelper
 import com.shifenmiao.model.ListItemType
 import com.shifenmiao.model.Source
+import com.shifenmiao.model.ai.AIChatMode
 import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.ai.Conversation
+import com.shifenmiao.model.ai.resolveChatMode
+import com.shifenmiao.model.ai.supportsChatModeSelection
 import com.shifenmiao.model.remote.ChatQuickStartItem
 import com.shifenmiao.model.remote.defaultChatQuickStartItems
 import com.shifenmiao.model.remote.defaultChatQuickStartPrompts
@@ -122,6 +129,8 @@ fun PlaceHolderMessageCard(
     chatInputComponent: ChatInputComponent
 ) {
     val currentAIModel = appComponent.aiEngineManager.currentAIModel.collectAsState().value
+    val chatMode by aiChatComponent.chatMode.collectAsState()
+    val chatUIState by aiChatComponent.chatUIState.collectAsState()
     val promptCardState = aiChatComponent.promptCardState.collectAsState().value
     val promptBadgeLabel = if (promptCardState.isSystemPrompt) {
         stringResource(R.string.ai_prompt_badge_system)
@@ -215,9 +224,25 @@ fun PlaceHolderMessageCard(
                     }
                 }
 
-                ChatQuickStartSection(
-                    onSuggestionClick = onSuggestionClick
-                )
+                if (conversation.supportsChatModeSelection()) {
+                    ChatModeSelector(
+                        currentMode = chatMode,
+                        onModeSelected = aiChatComponent::setChatMode,
+                        enabled = !chatUIState.chatActive,
+                    )
+                }
+
+                AnimatedVisibility(
+                    visible = conversation.resolveChatMode(chatMode) != AIChatMode.CHAT,
+                    enter = fadeIn(animationSpec = tween(220)) +
+                        expandVertically(animationSpec = tween(220)),
+                    exit = fadeOut(animationSpec = tween(180)) +
+                        shrinkVertically(animationSpec = tween(180)),
+                ) {
+                    ChatQuickStartSection(
+                        onSuggestionClick = onSuggestionClick
+                    )
+                }
             }
         }
     }

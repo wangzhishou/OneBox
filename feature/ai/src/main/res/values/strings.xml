@@ -1189,4 +1189,8 @@
     <string name="ai_chat_attachment_uploading">Uploading...</string>
     <string name="ai_chat_attachment_error">Failed: %1$s</string>
     <string name="ai_chat_go_to_top">Go to top</string>
+    <string name="ai_chat_mode_chat_title">Chat mode</string>
+    <string name="ai_chat_mode_chat_description">Instant answers · Quick chat</string>
+    <string name="ai_chat_mode_agent_title">Agent mode</string>
+    <string name="ai_chat_mode_agent_description">Plan and act · Complete tasks</string>
 </resources>

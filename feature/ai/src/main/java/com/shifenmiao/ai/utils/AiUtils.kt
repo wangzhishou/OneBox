@@ -151,12 +151,13 @@ object AiUtils {
         messageEntityList: List<MessageEntity>,
         contentReader: (suspend (String) -> String?)? = null,
         imageDao: ImageDao? = null,
+        includeToolCallHistory: Boolean = true,
     ): List<LlmMessage> {
         val listMessage = mutableListOf<LlmMessage>()
         for (messageEntity in messageEntityList) {
             // 如果 assistant 消息包含 toolCalls JSON，需要重建完整的工具调用链：
             // assistant(tool_calls) → tool(result) × N，否则 LLM 会因缺少 tool result 而报错。
-            if (messageEntity.role == RoleType.ASSISTANT.value && messageEntity.toolCalls.isNotBlank()) {
+            if (includeToolCallHistory && messageEntity.role == RoleType.ASSISTANT.value && messageEntity.toolCalls.isNotBlank()) {
                 // 将 assistant 的文本内容和 tool_calls 合并到同一条消息中（符合 OpenAI API 规范）
                 val cleanedAnswer = cleanContentForLLMContext(messageEntity.answer)
                 val cleanedReasoning = cleanContentForLLMContext(messageEntity.reasoningContent)
@@ -230,12 +231,14 @@ object AiUtils {
         enableReasoning: Boolean = false,
         previousResponseId: String? = null,
         overrideMessages: List<LlmMessage>? = null,
+        includeToolCallHistory: Boolean = true,
     ): LlmTurnRequest {
         val messages = overrideMessages ?: buildLlmMessages(
             conversation = conversation,
             messageEntityList = messageEntityList,
             contentReader = contentReader,
-            imageDao = imageDao
+            imageDao = imageDao,
+            includeToolCallHistory = includeToolCallHistory,
         )
         return LlmTurnRequest(
             model = conversation.engine.model.name,

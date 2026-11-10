@@ -1,5 +1,6 @@
 package com.shifenmiao.storage
 
+import com.shifenmiao.model.ai.AIChatMode
 import com.shifenmiao.model.ai.Conversation
 import com.tencent.mmkv.MMKV
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,6 +27,7 @@ object AIChatStorage {
     private const val IS_ENABLE_MEMORY = "is_enable_memory"
     private const val IS_ENABLE_SKILLS = "is_enable_skills"
     private const val IS_ENABLE_CONTEXT_COMPACTION = "is_enable_context_compaction"
+    private const val CHAT_MODE = "chat_mode"
 
     private val _isEnableWebSearch = MutableStateFlow(loadIsEnableWebSearch())
     val isEnableWebSearch: StateFlow<Boolean> get() = _isEnableWebSearch
@@ -41,6 +43,8 @@ object AIChatStorage {
     val isEnableSkills: StateFlow<Boolean> get() = _isEnableSkills
     private val _isEnableContextCompaction = MutableStateFlow(loadIsEnableContextCompaction())
     val isEnableContextCompaction: StateFlow<Boolean> get() = _isEnableContextCompaction
+    private val _chatMode = MutableStateFlow(loadChatMode())
+    val chatMode: StateFlow<AIChatMode> get() = _chatMode
 
     fun saveConfigs(conversation: Conversation) {
         val copy = conversation.copy()
@@ -130,6 +134,16 @@ object AIChatStorage {
 
     fun loadIsEnableContextCompaction(): Boolean {
         return mmkv.decodeBool(IS_ENABLE_CONTEXT_COMPACTION, true)
+    }
+
+    fun saveChatMode(mode: AIChatMode) {
+        mmkv.encode(CHAT_MODE, mode.name)
+        _chatMode.value = mode
+    }
+
+    fun loadChatMode(): AIChatMode {
+        val saved = mmkv.decodeString(CHAT_MODE) ?: return AIChatMode.AGENT
+        return runCatching { AIChatMode.valueOf(saved) }.getOrDefault(AIChatMode.AGENT)
     }
 
     private fun sanitizeMaxAgentIterations(value: Int): Int {
