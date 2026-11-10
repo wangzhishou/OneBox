@@ -24,8 +24,8 @@ object RemoteConfigStorage {
     // v7: 新增 chatQuickStartItems 字段（快捷指令文案+模块标识）
     // v8: 新增 OCR 与 Chat 本地模型下载地址字段
     // v9: 新增翻译端侧模型下载地址
-    // v10: 新增 agentToolMaxResultChars（Parcelable 缓存需换 key，避免旧缓存字段错位）
-    private const val KEY_REMOTE_CONFIG = "one_remote_config_v10"
+    // 约定：RemoteConfig 新增字段必须追加到类末尾；只有往中间插字段才需要换 key。
+    private const val KEY_REMOTE_CONFIG = "one_remote_config_v9"
 
     /**
      * 远程配置写入事件。replay=1 让新订阅者立刻收到"最近一次"事件以兜底
