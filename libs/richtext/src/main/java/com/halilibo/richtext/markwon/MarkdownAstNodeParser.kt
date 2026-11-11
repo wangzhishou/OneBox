@@ -44,8 +44,7 @@ class MarkdownAstNodeParser @AssistedInject constructor(
 
 
     fun parse(text: String): AstNode {
-        // 预处理 LaTeX 分隔符，将 \[ \] 转换为 $$ $$，\( \) 转换为 $ $
-        val processedText = preprocessLatex(text)
+        val processedText = MarkdownCompatibilityNormalizer.normalize(preprocessLatex(text))
 
         val commonmarkNode = markdown?.parse(processedText)
             ?: throw IllegalArgumentException(
