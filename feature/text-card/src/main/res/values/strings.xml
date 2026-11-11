@@ -168,8 +168,10 @@
     <string name="textcard_export_scope">Pages to export</string>
     <string name="textcard_export_all_pages">All pages</string>
     <string name="textcard_export_current_page">Current page</string>
-    <string name="textcard_save_images">Save images</string>
-    <string name="textcard_share_images">Share images</string>
+    <string name="textcard_save_images">Save</string>
+    <string name="textcard_share_images">Share</string>
+    <string name="textcard_export_preparing">Preparing…</string>
+    <string name="textcard_layout_failed_short">Layout failed</string>
     <string name="textcard_share_failed">Share failed</string>
     <string name="textcard_autosave_saving">Saving…</string>
     <string name="textcard_autosave_saved">Saved</string>

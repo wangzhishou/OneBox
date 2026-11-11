@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.core.net.toUri
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnStop
@@ -196,9 +197,9 @@ class TextCardComponent @AssistedInject internal constructor(
 
     private var projectId: String? = null
     private var projectName: String = ""
-    private var documentRevision = 0L
+    private var documentRevision by mutableStateOf(0L)
     private var currentAnchor = TextCardSourceAnchor()
-    private var completedLayoutRevision = -1L
+    private var completedLayoutRevision by mutableStateOf(-1L)
     private var layoutJob: Job? = null
     private var autosaveJob: Job? = null
     private var projectSaveJob: Job? = null

@@ -5,8 +5,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Save
+import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,10 +20,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.wanbaohe.base.ui.button.ConfirmButton
+import com.wanbaohe.base.ui.button.PrimaryButton
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedSliderItem
 import com.wanbaohe.core.ui.widget.glass.GlassSegmentedButtonRow
@@ -49,23 +57,67 @@ fun TextCardExportSheet(
             component.layout?.longImage != null
         }
     }
+    val layoutPending = component.isLayoutComputing || !component.isLayoutCurrent
     EnhancedModalBottomSheet(
         visible = visible,
         title = stringResource(R.string.textcard_export_title),
         onDismiss = { onDismiss() },
         confirmButton = {
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                ConfirmButton(
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.weight(1f),
+            ) {
+                when {
+                    component.layoutError != null -> Text(
+                        text = stringResource(R.string.textcard_layout_failed_short),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.error,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    layoutPending -> {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(16.dp),
+                            strokeWidth = 2.dp,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        )
+                        Text(
+                            text = stringResource(R.string.textcard_export_preparing),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
+                }
+            }
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                PrimaryButton(
                     text = stringResource(R.string.textcard_share_images),
-                    enabled = canExport,
+                    enable = canExport,
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Share,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                        )
+                    },
                     onClick = {
                         component.shareCard(currentPageOnly)
                         onDismiss()
                     }
                 )
-                ConfirmButton(
+                PrimaryButton(
                     text = stringResource(R.string.textcard_save_images),
-                    enabled = canExport,
+                    enable = canExport,
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Save,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                        )
+                    },
                     onClick = {
                         component.saveCard(currentPageOnly)
                         onDismiss()
@@ -103,13 +155,6 @@ fun TextCardExportSheet(
                 ) {
                     Text(
                         text = stringResource(R.string.textcard_annotated_long_image_hint),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-                if (!component.isLayoutCurrent) {
-                    Text(
-                        text = stringResource(R.string.textcard_layout_updating),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -181,6 +226,7 @@ fun TextCardExportSheet(
                         onValueChange = {
                             component.updateExportSettings(quality = it.roundToInt())
                         },
+                        internalStateTransformation = { it.roundToInt() },
                         valueSuffix = "%"
                     )
                 }

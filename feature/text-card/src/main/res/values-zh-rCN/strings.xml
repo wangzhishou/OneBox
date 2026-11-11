@@ -168,8 +168,10 @@
     <string name="textcard_export_scope">导出范围</string>
     <string name="textcard_export_all_pages">全部页面</string>
     <string name="textcard_export_current_page">当前页</string>
-    <string name="textcard_save_images">保存图片</string>
-    <string name="textcard_share_images">分享图片</string>
+    <string name="textcard_save_images">保存</string>
+    <string name="textcard_share_images">分享</string>
+    <string name="textcard_export_preparing">排版中…</string>
+    <string name="textcard_layout_failed_short">排版失败</string>
     <string name="textcard_share_failed">分享失败</string>
     <string name="textcard_autosave_saving">正在保存…</string>
     <string name="textcard_autosave_saved">已保存</string>
