@@ -23,12 +23,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.TextCardRole
+import com.wanbaohe.textcard.domain.model.manualPageBreaks
 
 @Composable
 fun ContentPanel(
@@ -67,6 +69,34 @@ fun ContentPanel(
                 )
                 .padding(horizontal = 12.dp, vertical = 10.dp)
         )
+        state.text.toString().manualPageBreaks().forEachIndexed { index, pageBreak ->
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(R.string.textcard_manual_page_break, index + 1),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                    Text(
+                        text = "${pageBreak.before}  ·  ${pageBreak.after}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+                TextButton(
+                    onClick = {
+                        state.edit { replace(pageBreak.offset, pageBreak.offset + 1, "") }
+                    }
+                ) {
+                    Text(stringResource(R.string.textcard_delete_page_break))
+                }
+            }
+        }
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = stringResource(R.string.textcard_character_count, state.text.length),

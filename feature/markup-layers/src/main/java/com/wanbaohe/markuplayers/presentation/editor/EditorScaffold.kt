@@ -1098,7 +1098,7 @@ private fun BoxScope.EditorLayerStack(
                     showHandles = component.selectedLayerId == layer.id && !isTextEditing,
                     onSelect = { component.selectLayer(layer.id) },
                     onEditRequest = onEditRequest,
-                    // 选中框上的红色 X 删除(组件内记 undo 快照);
+                    // 选中框底边外侧的红色 X 删除(组件内记 undo 快照);
                     // 绘制/框选/就地编辑模式下不显示
                     onDelete = if (!drawMode && !aiRectSelect && !isTextEditing) {
                         { component.removeLayer(layer.id) }

@@ -3,7 +3,6 @@
 package com.wanbaohe.textcard.presentation.editor
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,8 +29,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.CropSquare
-import androidx.compose.material.icons.outlined.Layers
+import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.TextFields
 import androidx.compose.material.icons.outlined.Tune
@@ -53,19 +53,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.components.text.clearSelectionStyles
 import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMarkupLayers
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
 import com.t8rin.imagetoolbox.core.settings.presentation.model.toUiFont
 import com.wanbaohe.base.ui.button.PrimaryButton
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.dialogs.LoadingDialog
 import com.wanbaohe.core.ui.widget.editor.EditorToolLabel
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedLoadingIndicator
@@ -74,17 +78,20 @@ import com.wanbaohe.core.ui.widget.glass.glassDense
 import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.TextBlock
+import com.wanbaohe.textcard.domain.model.TextCardAnnotationType
 import com.wanbaohe.textcard.domain.model.TextCardOutputMode
 import com.wanbaohe.textcard.domain.model.TextCardRole
 import com.wanbaohe.textcard.domain.model.TextCardSegment
 import com.wanbaohe.textcard.domain.model.toTextStyleSpan
-import com.wanbaohe.textcard.presentation.editor.panels.BackgroundPanel
 import com.wanbaohe.textcard.presentation.editor.panels.ContentPanel
+import com.wanbaohe.textcard.presentation.editor.panels.ContentPanel
+import com.wanbaohe.textcard.presentation.editor.panels.PagePanelSection
 import com.wanbaohe.textcard.presentation.editor.panels.PageSelectionPanel
 import com.wanbaohe.textcard.presentation.editor.panels.PagesPanel
 import com.wanbaohe.textcard.presentation.editor.panels.TextStylePanel
 import com.wanbaohe.textcard.presentation.screenLogic.EditorPanel
 import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
+import com.wanbaohe.textcard.presentation.screenLogic.TextCardProjectSaveStatus
 import kotlinx.coroutines.flow.drop
 
 @Composable
@@ -98,6 +105,7 @@ fun TextCardEditorScreen(component: TextCardComponent) {
     }
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
+    val clipboard = LocalClipboardManager.current
     val fieldStates = remember(component.contentResetVersion) {
         TextCardRole.entries.associateWith { role ->
             val block = component.document.block(role)
@@ -158,6 +166,44 @@ fun TextCardEditorScreen(component: TextCardComponent) {
             )
         }
     }
+    val annotationBlock = component.annotationEditor.textEditId?.let { id ->
+        component.document.annotations.firstOrNull { it.id == id }
+            ?.let { (it.type as? TextCardAnnotationType.Text)?.block }
+    }
+    val annotationFontFamilies = annotationBlock?.fontSpans?.map { it.font.toUiFont().fontFamily }
+    val annotationFieldState = remember(component.annotationEditor.textEditId) {
+        annotationBlock?.let { block ->
+            TextFieldState(block.content, TextRange(block.content.length)).also { state ->
+                block.styleSpans.forEach { span ->
+                    span.clamped(block.content.length)?.let { clamped ->
+                        state.edit { addStyle(clamped.toSpanStyle(), clamped.start, clamped.end) }
+                    }
+                }
+                block.fontSpans.forEachIndexed { index, span ->
+                    span.clamped(block.content.length)?.let { clamped ->
+                        state.edit {
+                            addStyle(
+                                SpanStyle(fontFamily = annotationFontFamilies?.get(index)),
+                                clamped.start,
+                                clamped.end
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+    val syncAnnotationState = {
+        val id = component.annotationEditor.textEditId
+        val state = annotationFieldState
+        if (id != null && state != null) {
+            component.annotationEditor.syncTextEdit(
+                id = id,
+                content = state.text.toString(),
+                spans = state.modelStyles()
+            )
+        }
+    }
     val refreshContentRole: (TextCardRole) -> Unit = { role ->
         val block = component.document.block(role)
         val state = fieldStates.getValue(role)
@@ -167,6 +213,8 @@ fun TextCardEditorScreen(component: TextCardComponent) {
     val finishCanvasEditing = {
         val role = component.canvasTextEditSession?.role
         syncCanvasState()
+        syncAnnotationState()
+        component.annotationEditor.endTextEdit()
         component.endCanvasTextEdit()
         if (role != null) refreshContentRole(role)
     }
@@ -186,6 +234,7 @@ fun TextCardEditorScreen(component: TextCardComponent) {
         finishCanvasEditing()
         component.endTextEdit()
         component.clearTextSelection()
+        component.annotationEditor.select(null)
         focusManager.clearFocus()
         keyboardController?.hide()
         Unit
@@ -203,8 +252,13 @@ fun TextCardEditorScreen(component: TextCardComponent) {
         Unit
     }
     val onClearSelectionStyles = {
+        val annotationState = annotationFieldState
         val state = canvasFieldState
-        if (state != null) {
+        if (annotationState != null) {
+            component.beginContinuousEdit()
+            annotationState.clearSelectionStyles(onChanged = syncAnnotationState)
+            component.endContinuousEdit()
+        } else if (state != null) {
             component.beginContinuousEdit()
             state.clearSelectionStyles(onChanged = syncCanvasState)
             component.clearPageSelectionStyles()
@@ -229,11 +283,22 @@ fun TextCardEditorScreen(component: TextCardComponent) {
             )
         }
     }
+    LaunchedEffect(annotationFieldState, component.annotationEditor.textEditId) {
+        val state = annotationFieldState ?: return@LaunchedEffect
+        snapshotFlow { state.text.toString() to state.modelStyles() }
+            .drop(1)
+            .collect { syncAnnotationState() }
+    }
     fieldStates.forEach { (role, state) ->
         LaunchedEffect(state) {
             snapshotFlow { state.text.toString() to state.modelStyles() }
                 .drop(1)
                 .collect { syncRole(role) }
+        }
+        LaunchedEffect(state) {
+            snapshotFlow { state.selection }.collect { selection ->
+                component.updateContentTextSelection(role, selection.start)
+            }
         }
     }
 
@@ -273,19 +338,23 @@ fun TextCardEditorScreen(component: TextCardComponent) {
         title = {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(stringResource(R.string.textcard_title))
-                AnimatedVisibility(
-                    visible = component.isProjectSaving || component.lastSavedAt != null
-                ) {
-                    Text(
-                        text = stringResource(
-                            if (component.isProjectSaving) {
-                                R.string.textcard_autosave_saving
-                            } else R.string.textcard_autosave_saved
-                        ),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
-                    )
-                }
+                val status = component.projectSaveStatus
+                Text(
+                    text = stringResource(
+                        when (status) {
+                            TextCardProjectSaveStatus.Dirty -> R.string.textcard_unsaved_changes
+                            TextCardProjectSaveStatus.Saving -> R.string.textcard_autosave_saving
+                            TextCardProjectSaveStatus.Saved -> R.string.textcard_autosave_saved
+                            TextCardProjectSaveStatus.Failed -> R.string.textcard_save_failed_retry
+                        }
+                    ),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = if (status == TextCardProjectSaveStatus.Failed) {
+                        MaterialTheme.colorScheme.error
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                    }
+                )
             }
         },
         onGoBack = {
@@ -299,16 +368,22 @@ fun TextCardEditorScreen(component: TextCardComponent) {
         showNavigationBarsPadding = false,
         isBackHandler = component.canvasTextEditSession == null &&
             component.editingTextBlockId == null &&
-            component.activePanel == null,
+            component.activePanel == null &&
+            !component.annotationEditor.isActive,
         actions = {
             IconButton(
                 onClick = {
-                    syncCanvasState()
-                    component.undo()
+                    val drawSession = component.annotationEditor.drawSession
+                    if (drawSession != null) {
+                        drawSession.undo()
+                    } else {
+                        syncCanvasState()
+                        component.undo()
+                    }
                     focusManager.clearFocus()
                     keyboardController?.hide()
                 },
-                enabled = component.canUndo
+                enabled = component.annotationEditor.drawSession?.canUndo ?: component.canUndo
             ) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUndo,
@@ -317,16 +392,52 @@ fun TextCardEditorScreen(component: TextCardComponent) {
             }
             IconButton(
                 onClick = {
-                    syncCanvasState()
-                    component.redo()
+                    val drawSession = component.annotationEditor.drawSession
+                    if (drawSession != null) {
+                        drawSession.redo()
+                    } else {
+                        syncCanvasState()
+                        component.redo()
+                    }
                     focusManager.clearFocus()
                     keyboardController?.hide()
                 },
-                enabled = component.canRedo
+                enabled = component.annotationEditor.drawSession?.canRedo ?: component.canRedo
             ) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRedo,
                     contentDescription = stringResource(R.string.textcard_redo)
+                )
+            }
+            if (component.projectSaveStatus == TextCardProjectSaveStatus.Failed &&
+                component.document.hasContent
+            ) {
+                IconButton(
+                    onClick = {
+                        val source = component.document.textBlocks
+                            .map { it.content }
+                            .filter { it.isNotBlank() }
+                            .joinToString("\n\n")
+                        clipboard.setText(AnnotatedString(source))
+                        AppToastHost.showToast(R.string.textcard_source_copied)
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.ContentCopy,
+                        contentDescription = stringResource(R.string.textcard_backup_source)
+                    )
+                }
+            }
+            IconButton(
+                onClick = {
+                    finishCanvasEditing()
+                    component.saveProject()
+                },
+                enabled = component.projectSaveStatus != TextCardProjectSaveStatus.Saving
+            ) {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSave,
+                    contentDescription = stringResource(R.string.textcard_save_now)
                 )
             }
         },
@@ -334,9 +445,14 @@ fun TextCardEditorScreen(component: TextCardComponent) {
             BackHandler(
                 enabled = component.canvasTextEditSession != null ||
                     component.editingTextBlockId != null ||
-                    component.activePanel != null
+                    component.activePanel != null ||
+                    component.annotationEditor.isActive
             ) {
                 when {
+                    component.annotationEditor.panel != null -> component.annotationEditor.dismissPanel()
+                    component.annotationEditor.textEditId != null -> onTextEditCommit()
+                    component.annotationEditor.drawSession != null -> component.annotationEditor.cancelDrawing()
+                    component.annotationEditor.isActive -> component.annotationEditor.finish()
                     component.activePanel != null -> closePanel()
                     component.canvasTextEditSession != null -> onTextEditCommit()
                     else -> {
@@ -355,6 +471,56 @@ fun TextCardEditorScreen(component: TextCardComponent) {
             ) {
                 val pages = component.layout?.pages.orEmpty()
                 when {
+                    component.document.outputMode == TextCardOutputMode.LongImage &&
+                        component.document.annotations.isNotEmpty() -> {
+                        if (pages.isEmpty()) {
+                            LayoutStatus(component)
+                        } else {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .verticalScroll(rememberScrollState())
+                            ) {
+                                pages.forEachIndexed { index, page ->
+                                    CardCanvasPreview(
+                                        state = page,
+                                        liveDocument = component.document,
+                                        selectedRole = component.selectedRole,
+                                        editingSession = canvasSession,
+                                        editingState = canvasFieldState,
+                                        annotationEditor = component.annotationEditor,
+                                        annotationEditingState = annotationFieldState,
+                                        annotationDrawSession = component.annotationEditor.drawSession.takeIf {
+                                            component.currentPage == index
+                                        },
+                                        onAnnotationEditingSync = syncAnnotationState,
+                                        pageIndex = index,
+                                        onSegmentTap = { segment, cursor ->
+                                            onSegmentTap(segment, index, cursor)
+                                        },
+                                        onSegmentEdit = { segment, cursor ->
+                                            onSegmentEdit(segment, index, cursor)
+                                        },
+                                        onSegmentTransform = { segment, transformed ->
+                                            component.updateTextBlockTransform(
+                                                component.document.block(segment.role).id,
+                                                transformed
+                                            )
+                                        },
+                                        onGestureStart = component::beginContinuousEdit,
+                                        onGestureEnd = component::endContinuousEdit,
+                                        onCanvasTap = onCanvasTap,
+                                        onBackgroundDrag = component::updateBackgroundImageOffset,
+                                        onEditingSync = syncCanvasState,
+                                        onOpenStylePanel = onOpenStylePanel,
+                                        onClearSelectionStyles = onClearSelectionStyles,
+                                        selectionToolbarVisible = component.activePanel != EditorPanel.Typography,
+                                        modifier = Modifier.fillMaxWidth()
+                                    )
+                                }
+                            }
+                        }
+                    }
                     component.document.outputMode == TextCardOutputMode.LongImage -> {
                         val state = component.previewState()
                         if (state == null) {
@@ -371,6 +537,10 @@ fun TextCardEditorScreen(component: TextCardComponent) {
                                     selectedRole = component.selectedRole,
                                     editingSession = canvasSession,
                                     editingState = canvasFieldState,
+                                    annotationEditor = component.annotationEditor,
+                                    annotationEditingState = annotationFieldState,
+                                    annotationDrawSession = component.annotationEditor.drawSession,
+                                    onAnnotationEditingSync = syncAnnotationState,
                                     pageIndex = component.currentPage,
                                     onSegmentTap = { segment, cursor ->
                                         onSegmentTap(segment, component.currentPage, cursor)
@@ -415,7 +585,8 @@ fun TextCardEditorScreen(component: TextCardComponent) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             HorizontalPager(
                                 state = pagerState,
-                                userScrollEnabled = canvasSession == null,
+                                userScrollEnabled = canvasSession == null &&
+                                    !component.annotationEditor.isActive,
                                 modifier = Modifier.fillMaxWidth()
                             ) { index ->
                                 Box(
@@ -428,6 +599,12 @@ fun TextCardEditorScreen(component: TextCardComponent) {
                                         selectedRole = component.selectedRole,
                                         editingSession = canvasSession,
                                         editingState = canvasFieldState,
+                                        annotationEditor = component.annotationEditor,
+                                        annotationEditingState = annotationFieldState,
+                                        annotationDrawSession = component.annotationEditor.drawSession.takeIf {
+                                            component.currentPage == index
+                                        },
+                                        onAnnotationEditingSync = syncAnnotationState,
                                         pageIndex = index,
                                         onSegmentTap = { segment, cursor ->
                                             onSegmentTap(segment, index, cursor)
@@ -465,33 +642,67 @@ fun TextCardEditorScreen(component: TextCardComponent) {
                                     modifier = Modifier.padding(top = 8.dp)
                                 )
                             }
+                            if (component.isLayoutComputing) {
+                                Text(
+                                    text = stringResource(R.string.textcard_layout_updating),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    modifier = Modifier.padding(top = 4.dp)
+                                )
+                            }
+                            component.pageCountChange?.let { (before, after) ->
+                                Text(
+                                    text = stringResource(
+                                        R.string.textcard_page_count_transition,
+                                        before,
+                                        after
+                                    ),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    modifier = Modifier.padding(top = 4.dp)
+                                )
+                            }
                         }
                     }
                 }
+                if (component.annotationEditor.isActive) {
+                    AnnotationToolRail(
+                        editor = component.annotationEditor,
+                        containerHeightPx = constraints.maxHeight.toFloat(),
+                    )
+                }
             }
 
-            EditorBottomBar(
-                component = component,
-                isCanvasEditing = canvasSession != null,
-                onDoneEditing = onTextEditCommit,
-                onPanelClick = openPanel,
-                onExportClick = {
-                    finishCanvasEditing()
-                    focusManager.clearFocus()
-                    keyboardController?.hide()
-                    showExportSheet = true
-                }
-            )
+            if (component.annotationEditor.isActive) {
+                AnnotationBottomBar(
+                    component = component,
+                    onDoneText = onTextEditCommit,
+                )
+            } else {
+                EditorBottomBar(
+                    component = component,
+                    isCanvasEditing = canvasSession != null,
+                    onDoneEditing = onTextEditCommit,
+                    onPanelClick = openPanel,
+                    onExportClick = {
+                        finishCanvasEditing()
+                        focusManager.clearFocus()
+                        keyboardController?.hide()
+                        showExportSheet = true
+                    }
+                )
+            }
         }
     )
 
+    var pagePanelSection by rememberSaveable { mutableStateOf(PagePanelSection.Canvas) }
     val panelTitleRes = when (component.activePanel) {
         EditorPanel.Content -> R.string.textcard_tab_content
         EditorPanel.Typography -> if (component.pageSelection != null) {
             R.string.textcard_editing_selection
         } else R.string.textcard_text_settings
-        EditorPanel.Background -> R.string.textcard_paper_background
-        EditorPanel.Pages -> R.string.textcard_select_canvas_title
+        EditorPanel.Layout -> R.string.textcard_layout_settings
+        EditorPanel.Annotation -> R.string.textcard_tab_annotations
         null -> R.string.textcard_title
     }
     val dismissPanel: () -> Unit = {
@@ -509,7 +720,9 @@ fun TextCardEditorScreen(component: TextCardComponent) {
         onClose = dismissPanel,
         nestedScrollEnabled = true,
         endContent = {
-            if (component.activePanel == EditorPanel.Background) {
+            if (component.activePanel == EditorPanel.Layout &&
+                pagePanelSection == PagePanelSection.Background
+            ) {
                 IconButton(
                     onClick = component::refreshRemotePapers,
                     enabled = !component.remotePapersRefreshing
@@ -535,6 +748,7 @@ fun TextCardEditorScreen(component: TextCardComponent) {
                 .fillMaxWidth()
                 .heightIn(max = 440.dp)
                 .imePadding()
+                .navigationBarsPadding()
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp, vertical = 12.dp)
         ) {
@@ -591,12 +805,18 @@ fun TextCardEditorScreen(component: TextCardComponent) {
                         )
                     }
                 }
-                EditorPanel.Background -> BackgroundPanel(component)
-                EditorPanel.Pages -> PagesPanel(component)
+                EditorPanel.Layout -> PagesPanel(
+                    component = component,
+                    section = pagePanelSection,
+                    onSectionChange = { pagePanelSection = it },
+                )
+                EditorPanel.Annotation -> Unit
                 null -> Unit
             }
         }
     }
+
+    AnnotationPanels(component)
 
     TextCardExportSheet(
         visible = showExportSheet,
@@ -671,20 +891,28 @@ private fun EditorBottomBar(
                     val tabs = listOf(
                         EditorPanel.Content,
                         EditorPanel.Typography,
-                        EditorPanel.Background,
-                        EditorPanel.Pages
+                        EditorPanel.Layout,
+                        EditorPanel.Annotation,
                     )
                     val itemWidth = maxOf(56.dp, maxWidth / tabs.size)
                     Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
                         tabs.forEach { panel ->
                             BottomTab(
                                 panel = panel,
-                                active = component.activePanel == panel,
+                                active = if (panel == EditorPanel.Annotation) {
+                                    component.annotationEditor.isActive
+                                } else {
+                                    component.activePanel == panel
+                                },
                                 onClick = {
-                                    if (panel == EditorPanel.Typography && component.selectedRole == null) {
-                                        component.selectRole(TextCardRole.Body)
+                                    if (panel == EditorPanel.Annotation) {
+                                        component.annotationEditor.toggle()
+                                    } else {
+                                        if (panel == EditorPanel.Typography && component.selectedRole == null) {
+                                            component.selectRole(TextCardRole.Body)
+                                        }
+                                        onPanelClick(panel)
                                     }
-                                    onPanelClick(panel)
                                 },
                                 modifier = Modifier.width(itemWidth)
                             )
@@ -759,13 +987,13 @@ private fun LayoutStatus(component: TextCardComponent) {
 private fun EditorPanel.icon(): ImageVector = when (this) {
     EditorPanel.Content -> Icons.Outlined.TextFields
     EditorPanel.Typography -> Icons.Outlined.Tune
-    EditorPanel.Background -> Icons.Outlined.CropSquare
-    EditorPanel.Pages -> Icons.Outlined.Layers
+    EditorPanel.Layout -> Icons.Outlined.CropSquare
+    EditorPanel.Annotation -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMarkupLayers
 }
 
 private fun EditorPanel.labelRes(): Int = when (this) {
     EditorPanel.Content -> R.string.textcard_tab_content
     EditorPanel.Typography -> R.string.textcard_text_settings
-    EditorPanel.Background -> R.string.textcard_tab_background
-    EditorPanel.Pages -> R.string.textcard_tab_pages
+    EditorPanel.Layout -> R.string.textcard_tab_layout
+    EditorPanel.Annotation -> R.string.textcard_tab_annotations
 }

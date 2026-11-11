@@ -1,6 +1,13 @@
 package com.wanbaohe.textcard.data.project
 
 import com.shifenmiao.common.components.text.RichTextStyleSpan
+import com.shifenmiao.model.editor.BrushType
+import com.shifenmiao.model.editor.DrawStroke
+import com.shifenmiao.model.editor.LayerBlendMode
+import com.shifenmiao.model.editor.LayerTransform
+import com.shifenmiao.model.editor.ShapeKind
+import com.shifenmiao.model.editor.ShapeSpec
+import com.shifenmiao.model.editor.StrokePoint
 import com.t8rin.imagetoolbox.core.settings.domain.model.FontType
 import com.wanbaohe.textcard.domain.StoredTextCardProject
 import com.wanbaohe.textcard.domain.TextCardProjectSummary
@@ -10,10 +17,15 @@ import com.wanbaohe.textcard.domain.model.CardTextAlignment
 import com.wanbaohe.textcard.domain.model.MeshPoint
 import com.wanbaohe.textcard.domain.model.PaperKind
 import com.wanbaohe.textcard.domain.model.TextBlock
+import com.wanbaohe.textcard.domain.model.TextCardAnchorAffinity
+import com.wanbaohe.textcard.domain.model.TextCardAnnotation
+import com.wanbaohe.textcard.domain.model.TextCardAnnotationType
 import com.wanbaohe.textcard.domain.model.TextCardDocument
 import com.wanbaohe.textcard.domain.model.TextCardExportFormat
 import com.wanbaohe.textcard.domain.model.TextCardFontSpan
 import com.wanbaohe.textcard.domain.model.TextCardOutputMode
+import com.wanbaohe.textcard.domain.model.TextCardRole
+import com.wanbaohe.textcard.domain.model.TextCardSourceAnchor
 import java.io.IOException
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
@@ -32,7 +44,7 @@ class TextCardProjectFormatException(message: String, cause: Throwable? = null) 
 
 internal object TextCardDocumentCodec {
 
-    const val SchemaVersion: Int = 1
+    const val SchemaVersion: Int = 2
 
     fun encode(document: TextCardDocument): String = obj(
         "schemaVersion" to json(SchemaVersion),
@@ -59,6 +71,7 @@ internal object TextCardDocumentCodec {
             "outputMode" to json(document.outputMode.name),
             "exportFormat" to json(document.exportFormat.name),
             "exportQuality" to json(document.exportQuality),
+            "annotations" to array(document.annotations, ::encodeAnnotation),
         )
         formatErrors { decodeDocument(result) }
         return result
@@ -71,7 +84,7 @@ internal object TextCardDocumentCodec {
                 "backgroundOpacity", "templateId", "showPageNumber", "outputMode",
                 "exportFormat", "exportQuality"
             ),
-            optional = setOf("shareAfterSave")
+            optional = setOf("shareAfterSave", "annotations")
         )
         return TextCardDocument(
             title = decodeTextBlock(value.getValue("title")),
@@ -88,6 +101,7 @@ internal object TextCardDocumentCodec {
             exportQuality = value.int("exportQuality").also {
                 if (it !in 0..100) invalid("Export quality must be between 0 and 100")
             },
+            annotations = value["annotations"]?.array(::decodeAnnotation).orEmpty(),
         )
     }
 
@@ -244,6 +258,168 @@ internal object TextCardDocumentCodec {
         }
     }
 
+    private fun encodeAnnotation(annotation: TextCardAnnotation): JsonObject = obj(
+        "id" to json(annotation.id),
+        "pageAnchor" to encodeAnchor(annotation.pageAnchor),
+        "pageEndAnchor" to encodeAnchor(annotation.pageEndAnchor),
+        "transform" to encodeTransform(annotation.transform),
+        "type" to when (val type = annotation.type) {
+            is TextCardAnnotationType.Text -> obj(
+                "kind" to json("text"),
+                "block" to encodeTextBlock(type.block),
+            )
+            is TextCardAnnotationType.Draw -> obj(
+                "kind" to json("draw"),
+                "strokes" to array(type.strokes, ::encodeStroke),
+            )
+            is TextCardAnnotationType.Shape -> obj(
+                "kind" to json("shape"),
+                "spec" to encodeShape(type.spec),
+            )
+        },
+    )
+
+    private fun decodeAnnotation(element: JsonElement): TextCardAnnotation {
+        val value = element.objectWith("id", "pageAnchor", "pageEndAnchor", "transform", "type")
+        val typeElement = value.getValue("type")
+        val type = when (typeElement.asObject().string("kind")) {
+            "text" -> TextCardAnnotationType.Text(
+                decodeTextBlock(typeElement.asObject().also {
+                    it.objectWith("kind", "block")
+                }.getValue("block"))
+            )
+            "draw" -> TextCardAnnotationType.Draw(
+                typeElement.asObject().also {
+                    it.objectWith("kind", "strokes")
+                }.list("strokes", ::decodeStroke).also {
+                    if (it.isEmpty()) invalid("Draw annotation must contain strokes")
+                }
+            )
+            "shape" -> TextCardAnnotationType.Shape(
+                decodeShape(typeElement.asObject().also {
+                    it.objectWith("kind", "spec")
+                }.getValue("spec"))
+            )
+            else -> invalid("Unknown annotation type")
+        }
+        return TextCardAnnotation(
+            id = value.string("id").also { if (it.isBlank()) invalid("Blank annotation ID") },
+            pageAnchor = decodeAnchor(value.getValue("pageAnchor")),
+            pageEndAnchor = decodeAnchor(value.getValue("pageEndAnchor")),
+            transform = decodeTransform(value.getValue("transform")),
+            type = type,
+        )
+    }
+
+    private fun encodeAnchor(anchor: TextCardSourceAnchor): JsonObject = obj(
+        "role" to json(anchor.role.name),
+        "offset" to json(anchor.offset),
+        "affinity" to json(anchor.affinity.name),
+    )
+
+    private fun decodeAnchor(element: JsonElement): TextCardSourceAnchor {
+        val value = element.objectWith("role", "offset", "affinity")
+        return TextCardSourceAnchor(
+            role = enumValue<TextCardRole>(value.string("role")),
+            offset = value.int("offset").also { if (it < 0) invalid("Negative anchor offset") },
+            affinity = enumValue<TextCardAnchorAffinity>(value.string("affinity")),
+        )
+    }
+
+    private fun encodeTransform(transform: LayerTransform): JsonObject = obj(
+        "centerX" to json(transform.centerX),
+        "centerY" to json(transform.centerY),
+        "scale" to json(transform.scale),
+        "rotation" to json(transform.rotation),
+        "alpha" to json(transform.alpha),
+        "visible" to json(transform.visible),
+        "locked" to json(transform.locked),
+        "blendMode" to json(transform.blendMode.name),
+        "flipHorizontal" to json(transform.flipHorizontal),
+        "flipVertical" to json(transform.flipVertical),
+    )
+
+    private fun decodeTransform(element: JsonElement): LayerTransform {
+        val value = element.objectWith(
+            "centerX", "centerY", "scale", "rotation", "alpha", "visible", "locked",
+            "blendMode", "flipHorizontal", "flipVertical"
+        )
+        return LayerTransform(
+            centerX = value.float("centerX"),
+            centerY = value.float("centerY"),
+            scale = value.float("scale").positive("Annotation scale"),
+            rotation = value.float("rotation"),
+            alpha = value.float("alpha").unitRange("Annotation opacity"),
+            visible = value.boolean("visible"),
+            locked = value.boolean("locked"),
+            blendMode = enumValue<LayerBlendMode>(value.string("blendMode")),
+            flipHorizontal = value.boolean("flipHorizontal"),
+            flipVertical = value.boolean("flipVertical"),
+        )
+    }
+
+    private fun encodeStroke(stroke: DrawStroke): JsonObject = obj(
+        "points" to array(stroke.points, ::encodePoint),
+        "color" to json(stroke.color.toLong()),
+        "widthRatio" to json(stroke.widthRatio),
+        "brush" to json(stroke.brush.name),
+        "alpha" to json(stroke.alpha),
+    )
+
+    private fun decodeStroke(element: JsonElement): DrawStroke {
+        val value = element.objectWith("points", "color", "widthRatio", "brush", "alpha")
+        return DrawStroke(
+            points = value.list("points", ::decodePoint).also {
+                if (it.isEmpty()) invalid("Stroke must contain points")
+            },
+            color = value.long("color").toCheckedColor(),
+            widthRatio = value.float("widthRatio").positive("Stroke width"),
+            brush = enumValue<BrushType>(value.string("brush")),
+            alpha = value.float("alpha").unitRange("Stroke opacity"),
+        )
+    }
+
+    private fun encodePoint(point: StrokePoint): JsonObject = obj(
+        "x" to json(point.x),
+        "y" to json(point.y),
+    )
+
+    private fun decodePoint(element: JsonElement): StrokePoint {
+        val value = element.objectWith("x", "y")
+        return StrokePoint(x = value.float("x"), y = value.float("y"))
+    }
+
+    private fun encodeShape(spec: ShapeSpec): JsonObject = obj(
+        "kind" to json(spec.kind.name),
+        "color" to json(spec.color.toLong()),
+        "filled" to json(spec.filled),
+        "widthRatio" to json(spec.widthRatio),
+        "heightRatio" to json(spec.heightRatio),
+        "cornerRadiusRatio" to json(spec.cornerRadiusRatio),
+        "strokeWidthRatio" to json(spec.strokeWidthRatio),
+    )
+
+    private fun decodeShape(element: JsonElement): ShapeSpec {
+        val value = element.objectWith(
+            "kind", "color", "filled", "widthRatio", "heightRatio",
+            "cornerRadiusRatio", "strokeWidthRatio"
+        )
+        return ShapeSpec(
+            kind = enumValue<ShapeKind>(value.string("kind")),
+            color = value.long("color").toCheckedColor(),
+            filled = value.boolean("filled"),
+            widthRatio = value.float("widthRatio").positive("Shape width"),
+            heightRatio = value.float("heightRatio").positive("Shape height"),
+            cornerRadiusRatio = value.float("cornerRadiusRatio").nonnegative("Corner radius"),
+            strokeWidthRatio = value.float("strokeWidthRatio").positive("Shape stroke width"),
+        )
+    }
+
+    private fun Long.toCheckedColor(): Int {
+        if (this !in Int.MIN_VALUE.toLong()..Int.MAX_VALUE.toLong()) invalid("Invalid color")
+        return toInt()
+    }
+
     private fun encodeCanvas(canvas: CanvasSpec): JsonObject = when (canvas) {
         CanvasSpec.Portrait -> obj("type" to json("portrait"))
         CanvasSpec.Square -> obj("type" to json("square"))
@@ -392,7 +568,7 @@ internal fun checkProjectId(id: String) {
 private val ProjectIdPattern = Regex("[A-Za-z0-9][A-Za-z0-9_-]{0,79}")
 
 private fun checkSchema(version: Int) {
-    if (version != TextCardDocumentCodec.SchemaVersion) {
+    if (version !in 1..TextCardDocumentCodec.SchemaVersion) {
         invalid("Unsupported project schema version: $version")
     }
 }

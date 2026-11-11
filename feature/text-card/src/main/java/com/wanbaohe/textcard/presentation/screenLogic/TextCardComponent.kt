@@ -44,13 +44,17 @@ import com.wanbaohe.textcard.domain.model.TextCardOutputMode
 import com.wanbaohe.textcard.domain.model.TextCardRenderState
 import com.wanbaohe.textcard.domain.model.TextCardRole
 import com.wanbaohe.textcard.domain.model.TextCardSegment
+import com.wanbaohe.textcard.domain.model.TextCardSourceAnchor
 import com.wanbaohe.textcard.domain.model.TextCardSourceSelection
 import com.wanbaohe.textcard.domain.model.TextCardTemplate
 import com.wanbaohe.textcard.domain.model.TextStyleSpan
 import com.wanbaohe.textcard.domain.model.clearSourceRangeStyles
+import com.wanbaohe.textcard.domain.model.normalizedAnchor
+import com.wanbaohe.textcard.domain.model.pageFor
 import com.wanbaohe.textcard.domain.model.replaceSourceFonts
 import com.wanbaohe.textcard.domain.model.replaceSourceStyles
 import com.wanbaohe.textcard.domain.model.replaceSourceText
+import com.wanbaohe.textcard.domain.model.withAnnotations
 import com.wanbaohe.textcard.domain.render.TextCardLayout
 import com.wanbaohe.textcard.domain.render.TextCardLayoutEngine
 import dagger.assisted.Assisted
@@ -59,12 +63,23 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import java.util.UUID
 
 enum class EditorPanel {
-    Content, Typography, Background, Pages
+    Content, Typography, Layout, Annotation
 }
+
+enum class TextCardProjectSaveStatus {
+    Dirty, Saving, Saved, Failed
+}
+
+private data class TextCardHistoryEntry(
+    val document: TextCardDocument,
+    val anchor: TextCardSourceAnchor,
+)
 
 class TextCardComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
@@ -115,6 +130,11 @@ class TextCardComponent @AssistedInject internal constructor(
 
     private val _isLayoutComputing = mutableStateOf(false)
     val isLayoutComputing: Boolean by _isLayoutComputing
+    val isLayoutCurrent: Boolean
+        get() = completedLayoutRevision == documentRevision && _canvasTextEditSession.value == null
+
+    private val _pageCountChange = mutableStateOf<Pair<Int, Int>?>(null)
+    val pageCountChange: Pair<Int, Int>? by _pageCountChange
 
     private val _currentPage = mutableStateOf(0)
     val currentPage: Int by _currentPage
@@ -150,6 +170,18 @@ class TextCardComponent @AssistedInject internal constructor(
     private val _lastSavedAt = mutableStateOf<Long?>(null)
     val lastSavedAt: Long? by _lastSavedAt
 
+    private val _savedRevision = mutableStateOf(-1L)
+    private val _savingRevision = mutableStateOf(-1L)
+    private val _projectSaveError = mutableStateOf<String?>(null)
+    val projectSaveStatus: TextCardProjectSaveStatus
+        get() = when {
+            _projectSaveError.value != null -> TextCardProjectSaveStatus.Failed
+            _savingRevision.value == documentRevision -> TextCardProjectSaveStatus.Saving
+            _savedRevision.value != documentRevision -> TextCardProjectSaveStatus.Dirty
+            _lastSavedAt.value != null -> TextCardProjectSaveStatus.Saved
+            else -> TextCardProjectSaveStatus.Dirty
+        }
+
     private val _exportRequested = mutableStateOf(false)
     val exportRequested: Boolean by _exportRequested
 
@@ -165,9 +197,12 @@ class TextCardComponent @AssistedInject internal constructor(
     private var projectId: String? = null
     private var projectName: String = ""
     private var documentRevision = 0L
+    private var currentAnchor = TextCardSourceAnchor()
+    private var completedLayoutRevision = -1L
     private var layoutJob: Job? = null
     private var autosaveJob: Job? = null
     private var projectSaveJob: Job? = null
+    private val projectWriteMutex = Mutex()
     private var handoffJob: Job? = null
     private var activeHandoffId: String? = null
     private var exportJob: Job? by smartJob {
@@ -180,13 +215,33 @@ class TextCardComponent @AssistedInject internal constructor(
     private var continuousEditActive = false
     private var continuousEditSnapshotTaken = false
 
-    private val history = DocumentHistory<TextCardDocument> { it }
+    private val history = DocumentHistory<TextCardHistoryEntry> { it }
+
+    internal val annotationEditor = TextCardAnnotationEditor(
+        document = { document },
+        layout = { layout },
+        currentPage = { currentPage },
+        defaultText = { appContext.getString(R.string.textcard_new_block_content) },
+        closeOtherEditing = {
+            endContinuousEdit()
+            endCanvasTextEdit()
+            endTextEdit()
+            _activePanel.value = null
+            clearTextSelection()
+        },
+        snapshot = { history.snapshot(TextCardHistoryEntry(document, currentAnchor)) },
+        mutate = { recordHistory, transform -> mutateDocument(recordHistory, transform) },
+        beginContinuous = { beginContinuousEdit() },
+        endContinuous = { endContinuousEdit() },
+    )
 
     val textBlocks: List<TextBlock> get() = document.textBlocks
     val background: BackgroundSpec get() = document.background
     val backgroundOpacity: Float get() = document.backgroundOpacity
-    val hasSelectedTextBlock: Boolean get() = selectedRole != null
-    val selectedTextBlockId: String? get() = selectedRole?.let(document::block)?.id
+    val hasSelectedTextBlock: Boolean
+        get() = selectedRole != null || annotationEditor.selectedTextBlock != null
+    val selectedTextBlockId: String?
+        get() = annotationEditor.selectedTextBlock?.id ?: selectedRole?.let(document::block)?.id
     val editingTextBlockId: String?
         get() = selectedTextBlockId.takeIf { contentEditSession }
     val longImageRequiredHeight: Int? get() = layout?.longImageRequiredHeight
@@ -248,7 +303,6 @@ class TextCardComponent @AssistedInject internal constructor(
         if (document.canvas == canvas) return
         endContinuousEdit()
         endCanvasTextEdit()
-        _currentPage.value = 0
         mutateDocument { it.copy(canvas = canvas) }
     }
 
@@ -263,6 +317,7 @@ class TextCardComponent @AssistedInject internal constructor(
 
     fun startEditing(initialText: String) {
         endContinuousEdit()
+        annotationEditor.reset()
         _canvasTextEditSession.value = null
         _layout.value = null
         _layoutError.value = null
@@ -277,6 +332,13 @@ class TextCardComponent @AssistedInject internal constructor(
         contentSnapshotTaken = false
         canvasTextSnapshotTaken = false
         _document.value = newDocument
+        currentAnchor = TextCardSourceAnchor()
+        documentRevision++
+        completedLayoutRevision = -1L
+        _pageCountChange.value = null
+        _savedRevision.value = -1L
+        _savingRevision.value = -1L
+        _projectSaveError.value = null
         _lastSavedAt.value = null
         _exportRequested.value = false
         _currentPage.value = 0
@@ -287,12 +349,14 @@ class TextCardComponent @AssistedInject internal constructor(
         _contentResetVersion.update { it + 1 }
         registerChangesCleared()
         recomputeLayout(immediate = true)
+        scheduleAutosave()
         loadRemotePapers()
     }
 
     fun openProject(id: String, openExport: Boolean = false) {
         if (_isLoadingProject.value) return
         endContinuousEdit()
+        annotationEditor.reset()
         _canvasTextEditSession.value = null
         _layout.value = null
         _layoutError.value = null
@@ -303,6 +367,13 @@ class TextCardComponent @AssistedInject internal constructor(
                     projectId = id
                     projectName = stored.summary.name
                     _document.value = stored.document
+                    currentAnchor = TextCardSourceAnchor()
+                    documentRevision++
+                    completedLayoutRevision = -1L
+                    _pageCountChange.value = null
+                    _savedRevision.value = documentRevision
+                    _savingRevision.value = -1L
+                    _projectSaveError.value = null
                     _lastSavedAt.value = stored.summary.updatedAt
                     _exportRequested.value = openExport
                     _currentPage.value = 0
@@ -360,28 +431,22 @@ class TextCardComponent @AssistedInject internal constructor(
 
     fun closeEditor() {
         endContinuousEdit()
+        annotationEditor.finish()
         endCanvasTextEdit(recompute = false)
         contentEditSession = false
         _activePanel.value = null
         _selectedRole.value = null
         _pageSelection.value = null
-        if (layoutError != null) {
+        saveProject {
             _isEditing.value = false
-            return
-        }
-        if (document.hasContent) {
-            saveProject {
-                _isEditing.value = false
-            }
-        } else {
-            deleteEmptyProject {
-                _isEditing.value = false
-            }
         }
     }
 
     fun selectRole(role: TextCardRole) {
         if (canvasTextEditSession?.role != role) endCanvasTextEdit()
+        layout?.pages?.getOrNull(currentPage)?.segments?.firstOrNull { it.role == role }?.let {
+            currentAnchor = TextCardSourceAnchor(role, it.sourceStart)
+        }
         _selectedRole.value = role
         _pageSelection.value = null
     }
@@ -396,7 +461,7 @@ class TextCardComponent @AssistedInject internal constructor(
         if (contentEditSession) beginTextEdit(id) else selectRole(role)
     }
 
-    fun selectedTextBlock(): TextBlock? = selectedRole?.let(document::block)
+    fun selectedTextBlock(): TextBlock? = annotationEditor.selectedTextBlock ?: selectedRole?.let(document::block)
     fun selectedFontTarget(): TextBlock? = selectedTextBlock()
 
     fun pageSelectionBlock(): TextBlock? = pageSelection?.let { selection ->
@@ -409,6 +474,11 @@ class TextCardComponent @AssistedInject internal constructor(
         layoutJob?.cancel()
         contentEditSession = false
         canvasTextSnapshotTaken = false
+        val safeCursor = cursor.coerceIn(0, segment.block.content.length)
+        currentAnchor = TextCardSourceAnchor(
+            role = segment.role,
+            offset = segment.sourceStart + safeCursor
+        )
         _selectedRole.value = segment.role
         _pageSelection.value = null
         _activePanel.value = null
@@ -418,7 +488,7 @@ class TextCardComponent @AssistedInject internal constructor(
             role = segment.role,
             pageIndex = pageIndex,
             sourceStart = segment.sourceStart,
-            initialCursor = cursor.coerceIn(0, segment.block.content.length),
+            initialCursor = safeCursor,
             block = segment.block,
             previousText = segment.block.content
         )
@@ -438,6 +508,10 @@ class TextCardComponent @AssistedInject internal constructor(
         val localEnd = end.coerceIn(0, session.block.content.length)
         val from = minOf(localStart, localEnd)
         val to = maxOf(localStart, localEnd)
+        currentAnchor = TextCardSourceAnchor(
+            role = session.role,
+            offset = session.sourceStart + localStart
+        )
         _selectedRole.value = session.role
         _pageSelection.value = if (from < to) {
             TextCardSourceSelection(
@@ -592,6 +666,14 @@ class TextCardComponent @AssistedInject internal constructor(
         }
     }
 
+    fun updateContentTextSelection(role: TextCardRole, start: Int) {
+        if (!contentEditSession || selectedRole != role) return
+        currentAnchor = TextCardSourceAnchor(
+            role = role,
+            offset = start.coerceIn(0, document.block(role).content.length)
+        )
+    }
+
     fun endTextEdit() {
         contentEditSession = false
     }
@@ -605,7 +687,7 @@ class TextCardComponent @AssistedInject internal constructor(
         val current = document.block(role)
         if (current.content == content && current.styleSpans == spans) return
         if (!contentSnapshotTaken) {
-            history.snapshot(document)
+            history.snapshot(TextCardHistoryEntry(document, currentAnchor))
             contentSnapshotTaken = true
             refreshHistoryFlags()
         }
@@ -615,6 +697,7 @@ class TextCardComponent @AssistedInject internal constructor(
     }
 
     fun updateTextBlock(id: String, transform: (TextBlock) -> TextBlock) {
+        if (annotationEditor.updateTextBlock(id, transform)) return
         val role = TextCardRole.entries.firstOrNull { document.block(it).id == id } ?: return
         mutateDocument { current -> current.updateBlock(role, transform) }
     }
@@ -772,14 +855,29 @@ class TextCardComponent @AssistedInject internal constructor(
     }
 
     fun setCurrentPage(index: Int, preservePageSelection: Boolean = false) {
-        val count = layout?.pages?.size ?: return
+        val currentLayout = layout ?: return
+        val count = currentLayout.pages.size
         val target = index.coerceIn(0, (count - 1).coerceAtLeast(0))
         if (target != _currentPage.value) {
             endContinuousEdit()
-            endCanvasTextEdit()
-            if (!preservePageSelection) clearPageSelection()
+            val hadCanvasSession = _canvasTextEditSession.value != null
+            endCanvasTextEdit(recompute = false)
+            if (!preservePageSelection) {
+                clearPageSelection()
+                currentLayout.pages.getOrNull(target)?.segments?.firstOrNull()?.let { segment ->
+                    currentAnchor = TextCardSourceAnchor(
+                        role = segment.role,
+                        offset = segment.sourceStart
+                    )
+                }
+            } else {
+                pageSelection?.let { selection ->
+                    currentAnchor = TextCardSourceAnchor(selection.role, selection.start)
+                }
+            }
+            _currentPage.value = target
+            if (hadCanvasSession) recomputeLayout(immediate = true)
         }
-        _currentPage.value = target
     }
 
     fun previewState(): TextCardRenderState? {
@@ -796,6 +894,9 @@ class TextCardComponent @AssistedInject internal constructor(
     }
 
     fun setActivePanel(panel: EditorPanel?) {
+        if (panel != null && panel != EditorPanel.Typography && annotationEditor.isActive) {
+            annotationEditor.finish()
+        }
         _activePanel.value = panel
     }
 
@@ -803,7 +904,8 @@ class TextCardComponent @AssistedInject internal constructor(
         endContinuousEdit()
         endCanvasTextEdit(recompute = false)
         endTextEdit()
-        val restored = history.undo(document) ?: return
+        annotationEditor.endTextEdit()
+        val restored = history.undo(TextCardHistoryEntry(document, currentAnchor)) ?: return
         applyHistory(restored)
     }
 
@@ -811,15 +913,17 @@ class TextCardComponent @AssistedInject internal constructor(
         endContinuousEdit()
         endCanvasTextEdit(recompute = false)
         endTextEdit()
-        val restored = history.redo(document) ?: return
+        annotationEditor.endTextEdit()
+        val restored = history.redo(TextCardHistoryEntry(document, currentAnchor)) ?: return
         applyHistory(restored)
     }
 
-    private fun applyHistory(restored: TextCardDocument) {
-        _document.value = restored.copy(
+    private fun applyHistory(restored: TextCardHistoryEntry) {
+        _document.value = restored.document.copy(
             exportFormat = document.exportFormat,
             exportQuality = document.exportQuality
         )
+        currentAnchor = document.normalizedAnchor(restored.anchor)
         _pageSelection.value = null
         _contentResetVersion.update { it + 1 }
         documentRevision++
@@ -841,7 +945,7 @@ class TextCardComponent @AssistedInject internal constructor(
             else -> true
         }
         if (shouldSnapshot) {
-            history.snapshot(document)
+            history.snapshot(TextCardHistoryEntry(document, currentAnchor))
             if (continuousEditActive) continuousEditSnapshotTaken = true
         }
         _document.value = updated
@@ -862,6 +966,7 @@ class TextCardComponent @AssistedInject internal constructor(
         if (_canvasTextEditSession.value != null) return
         val snapshot = document
         val revision = documentRevision
+        val previousPageCount = layout?.pages?.size
         layoutJob = componentScope.launch {
             if (!immediate) delay(120)
             _layoutError.value = null
@@ -871,12 +976,18 @@ class TextCardComponent @AssistedInject internal constructor(
             }
             if (revision == documentRevision && _canvasTextEditSession.value == null) {
                 result.onSuccess { newLayout ->
-                    _layout.value = newLayout
-                    val lastPage = (newLayout.pages.size - 1).coerceAtLeast(0)
-                    _currentPage.value = _currentPage.value.coerceIn(0, lastPage)
-                    syncPageSelectionAfterLayout(newLayout)
+                    val annotatedLayout = newLayout.withAnnotations(snapshot)
+                    _layout.value = annotatedLayout
+                    completedLayoutRevision = revision
+                    currentAnchor = document.normalizedAnchor(currentAnchor)
+                    _currentPage.value = annotatedLayout.pageFor(currentAnchor)
+                    _pageCountChange.value = previousPageCount
+                        ?.takeIf { it != annotatedLayout.pages.size }
+                        ?.let { it to annotatedLayout.pages.size }
+                    syncPageSelectionAfterLayout(annotatedLayout)
                 }.onFailure { error ->
                     _layout.value = null
+                    completedLayoutRevision = -1L
                     _layoutError.value = error.message
                     error.makeLog("TextCardLayout")
                     AppToastHost.showFailureToast(error)
@@ -905,12 +1016,11 @@ class TextCardComponent @AssistedInject internal constructor(
 
     private fun scheduleAutosave() {
         autosaveJob?.cancel()
-        projectSaveJob?.cancel()
         if (!_isEditing.value) return
         autosaveJob = componentScope.launch {
             delay(900)
             autosaveJob = null
-            if (document.hasContent) saveProject() else deleteEmptyProject()
+            saveProject()
         }
     }
 
@@ -919,72 +1029,55 @@ class TextCardComponent @AssistedInject internal constructor(
             onComplete()
             return
         }
-        if (!document.hasContent) {
-            deleteEmptyProject(onComplete)
-            return
-        }
         autosaveJob?.cancel()
-        projectSaveJob?.cancel()
         val id = projectId ?: return
         val snapshot = document
         val revision = documentRevision
         val name = projectName.ifBlank { snapshot.displayName() }
+        val cachedLayout = layout?.takeIf { completedLayoutRevision == revision }
         projectSaveJob = componentScope.launch {
-            _isProjectSaving.value = true
-            try {
-                runCatching {
-                    val layout = withContext(defaultDispatcher) { layoutEngine.layout(snapshot) }
-                    val thumbnail = withContext(defaultDispatcher) {
-                        exportRenderer.render(layout.pages.first())
+            projectWriteMutex.withLock {
+                _isProjectSaving.value = true
+                _savingRevision.value = revision
+                try {
+                    val thumbnail = cachedLayout?.pages?.firstOrNull()?.let { page ->
+                        try {
+                            withContext(defaultDispatcher) { exportRenderer.render(page) }
+                        } catch (cancelled: kotlinx.coroutines.CancellationException) {
+                            throw cancelled
+                        } catch (failure: Throwable) {
+                            failure.makeLog("TextCardProjectThumbnail")
+                            null
+                        }
                     }
-                    projectStore.save(
+                    val durable = projectStore.save(
                         id = id,
                         name = name,
                         document = snapshot,
-                        pageCount = layout.pages.size,
+                        pageCount = cachedLayout?.pages?.size,
                         thumbnail = thumbnail
                     )
-                }.onSuccess { durable ->
+                    _savedRevision.value = revision
+                    _projectSaveError.value = null
                     _lastSavedAt.value = System.currentTimeMillis()
                     if (revision == documentRevision) {
                         _document.value = durable
                         registerSave()
+                        onComplete()
+                    } else {
+                        scheduleAutosave()
                     }
-                    onComplete()
-                }.onFailure { error ->
-                    if (error is kotlinx.coroutines.CancellationException) throw error
+                } catch (cancelled: kotlinx.coroutines.CancellationException) {
+                    throw cancelled
+                } catch (error: Throwable) {
                     error.makeLog("TextCardProjectSave")
+                    _projectSaveError.value = error.message
+                        ?: appContext.getString(R.string.textcard_save_failed)
                     AppToastHost.showFailureToast(error)
+                } finally {
+                    _savingRevision.value = -1L
+                    _isProjectSaving.value = false
                 }
-            } finally {
-                _isProjectSaving.value = false
-            }
-        }
-    }
-
-    private fun deleteEmptyProject(onComplete: () -> Unit = {}) {
-        if (document.hasContent) {
-            saveProject(onComplete)
-            return
-        }
-        val id = projectId ?: run {
-            onComplete()
-            return
-        }
-        autosaveJob?.cancel()
-        projectSaveJob?.cancel()
-        projectSaveJob = componentScope.launch {
-            _isProjectSaving.value = true
-            try {
-                runCatching { projectStore.delete(id) }
-                    .onSuccess { onComplete() }
-                    .onFailure { error ->
-                        if (error is kotlinx.coroutines.CancellationException) throw error
-                        error.makeLog("TextCardProjectDelete")
-                        AppToastHost.showFailureToast(error)
-                    }
-            } finally {
-                _isProjectSaving.value = false
             }
         }
     }
@@ -997,7 +1090,7 @@ class TextCardComponent @AssistedInject internal constructor(
             _isSaving.value = true
             runCatching {
                 val currentLayout = withContext(defaultDispatcher) {
-                    layoutEngine.layout(snapshot)
+                    layoutEngine.layout(snapshot).withAnnotations(snapshot)
                 }
                 exportService.export(snapshot, currentLayout, pageIndices)
             }.onSuccess { result ->
@@ -1063,7 +1156,7 @@ class TextCardComponent @AssistedInject internal constructor(
             _isSaving.value = true
             runCatching {
                 val currentLayout = withContext(defaultDispatcher) {
-                    layoutEngine.layout(snapshot)
+                    layoutEngine.layout(snapshot).withAnnotations(snapshot)
                 }
                 exportService.share(snapshot, currentLayout, pageIndices)
             }.onFailure {

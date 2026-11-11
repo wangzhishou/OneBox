@@ -26,7 +26,7 @@ interface TextCardProjectStore {
         id: String,
         name: String,
         document: TextCardDocument,
-        pageCount: Int,
+        pageCount: Int? = null,
         thumbnail: Bitmap? = null,
     ): TextCardDocument
 

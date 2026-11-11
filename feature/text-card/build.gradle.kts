@@ -11,4 +11,5 @@ dependencies {
     implementation(projects.core.network)
     implementation(projects.feature.common)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.reorderable)
 }

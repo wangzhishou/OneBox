@@ -22,6 +22,7 @@ import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedSliderItem
 import com.wanbaohe.core.ui.widget.glass.GlassSegmentedButtonRow
 import com.wanbaohe.textcard.R
+import com.wanbaohe.textcard.domain.model.TextCardDocument
 import com.wanbaohe.textcard.domain.model.TextCardExportFormat
 import com.wanbaohe.textcard.domain.model.TextCardOutputMode
 import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
@@ -37,9 +38,16 @@ fun TextCardExportSheet(
         mutableStateOf(false)
     }
     val pages = component.layout?.pages.orEmpty()
-    val canExport = component.document.hasContent && when (component.document.outputMode) {
+    val stitchedHeight = component.layout?.longImageRequiredHeight ?: 0
+    val stitchedWithinBudget = component.document.canvas.width.toLong() * stitchedHeight <=
+        TextCardDocument.MAX_LONG_IMAGE_PIXELS && stitchedHeight <= TextCardDocument.MAX_LONG_IMAGE_SIDE
+    val canExport = component.document.hasContent && component.isLayoutCurrent && when (component.document.outputMode) {
         TextCardOutputMode.Pages -> pages.isNotEmpty()
-        TextCardOutputMode.LongImage -> component.layout?.longImage != null
+        TextCardOutputMode.LongImage -> if (component.document.annotations.isNotEmpty()) {
+            pages.isNotEmpty() && stitchedWithinBudget
+        } else {
+            component.layout?.longImage != null
+        }
     }
     EnhancedModalBottomSheet(
         visible = visible,
@@ -90,6 +98,22 @@ fun TextCardExportSheet(
                     ),
                     style = MaterialTheme.typography.bodyMedium
                 )
+                if (component.document.annotations.isNotEmpty() &&
+                    component.document.outputMode == TextCardOutputMode.LongImage
+                ) {
+                    Text(
+                        text = stringResource(R.string.textcard_annotated_long_image_hint),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                if (!component.isLayoutCurrent) {
+                    Text(
+                        text = stringResource(R.string.textcard_layout_updating),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
                 Text(
                     text = stringResource(R.string.textcard_output_mode),
                     style = MaterialTheme.typography.titleSmall

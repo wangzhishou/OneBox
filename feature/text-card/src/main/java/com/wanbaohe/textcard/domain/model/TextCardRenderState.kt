@@ -20,4 +20,5 @@ data class TextCardRenderState(
     val backgroundVisible: Boolean = true,
     val textBlocks: List<TextBlock> = emptyList(),
     val segments: List<TextCardSegment> = emptyList(),
+    val annotations: List<TextCardAnnotation> = emptyList(),
 )

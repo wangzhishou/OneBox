@@ -318,11 +318,18 @@ private fun RecentProjects(
                             )
                         )
                         Text(
-                            text = stringResource(
-                                R.string.textcard_project_meta,
-                                project.pageCount,
-                                dateFormat.format(Date(project.updatedAt))
-                            ),
+                            text = if (project.pageCount > 0) {
+                                stringResource(
+                                    R.string.textcard_project_meta,
+                                    project.pageCount,
+                                    dateFormat.format(Date(project.updatedAt))
+                                )
+                            } else {
+                                stringResource(
+                                    R.string.textcard_project_meta_pending,
+                                    dateFormat.format(Date(project.updatedAt))
+                                )
+                            },
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             maxLines = 1,

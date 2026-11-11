@@ -62,11 +62,11 @@ internal class AndroidTextCardProjectStore @Inject constructor(
         id: String,
         name: String,
         document: TextCardDocument,
-        pageCount: Int,
+        pageCount: Int?,
         thumbnail: Bitmap?,
     ): TextCardDocument = onDisk { directories, cancellation ->
         checkProjectId(id)
-        if (pageCount < 0) throw IOException("Page count must not be negative")
+        if (pageCount != null && pageCount < 0) throw IOException("Page count must not be negative")
         val file = projectFile(id, directories)
         val previous = if (file.exists() || File(file.path + ".bak").exists()) {
             readProject(id, directories, cancellation)
@@ -80,7 +80,7 @@ internal class AndroidTextCardProjectStore @Inject constructor(
                 name = name,
                 updatedAt = System.currentTimeMillis(),
                 thumbnailPath = thumbnailPath,
-                pageCount = pageCount,
+                pageCount = pageCount ?: previous?.summary?.pageCount ?: 0,
             ),
             document = durable,
         )

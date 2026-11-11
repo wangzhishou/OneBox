@@ -15,8 +15,10 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,10 +28,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassSegmentedButtonRow
 import com.wanbaohe.core.ui.widget.glass.GlassSwitch
 import com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors
@@ -38,13 +42,48 @@ import com.wanbaohe.textcard.domain.model.CanvasSpec
 import com.wanbaohe.textcard.domain.model.TextCardDocument
 import com.wanbaohe.textcard.domain.model.TextCardOutputMode
 import com.wanbaohe.textcard.domain.model.TextCardRenderState
+import com.wanbaohe.textcard.domain.model.startsAtManualPageBreak
 import com.wanbaohe.textcard.presentation.editor.CardCanvasPreview
 import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
 import com.wanbaohe.textcard.presentation.selection.CustomSizeDialog
 
+enum class PagePanelSection {
+    Canvas, Background
+}
+
 @Composable
-fun PagesPanel(component: TextCardComponent) {
+fun PagesPanel(
+    component: TextCardComponent,
+    section: PagePanelSection,
+    onSectionChange: (PagePanelSection) -> Unit,
+) {
+    GlassSegmentedButtonRow(
+        options = PagePanelSection.entries,
+        selectedOption = section,
+        onOptionSelected = onSectionChange,
+        label = { option ->
+            Text(
+                stringResource(
+                    if (option == PagePanelSection.Canvas) {
+                        R.string.textcard_tab_pages
+                    } else {
+                        R.string.textcard_tab_background
+                    }
+                )
+            )
+        },
+        modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
+    )
+    when (section) {
+        PagePanelSection.Canvas -> CanvasPagesPanel(component)
+        PagePanelSection.Background -> BackgroundPanel(component)
+    }
+}
+
+@Composable
+private fun CanvasPagesPanel(component: TextCardComponent) {
     var showCustomSizeDialog by remember { mutableStateOf(false) }
+    var pageJumpText by remember { mutableStateOf("") }
     val layout = component.layout
 
     LazyRow(
@@ -116,24 +155,69 @@ fun PagesPanel(component: TextCardComponent) {
             )
         }
     }
-    if (component.document.outputMode == TextCardOutputMode.LongImage &&
-        layout?.longImage == null
-    ) {
+    if (component.document.outputMode == TextCardOutputMode.LongImage) {
+        val requiredHeight = layout?.longImageRequiredHeight ?: 0
+        val overBudget = requiredHeight > TextCardDocument.MAX_LONG_IMAGE_SIDE ||
+            component.document.canvas.width.toLong() * requiredHeight >
+            TextCardDocument.MAX_LONG_IMAGE_PIXELS
+        if (layout?.longImage == null && (component.document.annotations.isEmpty() || overBudget)) {
+            Text(
+                text = stringResource(
+                    R.string.textcard_long_image_too_large,
+                    layout?.longImageRequiredHeight ?: 0
+                ),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.error
+            )
+        }
+        if (component.document.annotations.isNotEmpty()) {
+            Text(
+                text = stringResource(R.string.textcard_annotated_long_image_hint),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(vertical = 4.dp)
+            )
+        }
         Text(
-            text = stringResource(
-                R.string.textcard_long_image_too_large,
-                layout?.longImageRequiredHeight ?: 0
-            ),
+            text = stringResource(R.string.textcard_long_image_page_break_hint),
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.error
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(vertical = 4.dp)
         )
     }
     val pages = layout?.pages.orEmpty()
-    Text(
-        text = stringResource(R.string.textcard_page_count, pages.size),
-        style = MaterialTheme.typography.titleSmall,
-        modifier = Modifier.padding(bottom = 8.dp)
-    )
+    val targetPage = pageJumpText.toIntOrNull()?.minus(1)?.takeIf { it in pages.indices }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp)
+    ) {
+        Text(
+            text = stringResource(R.string.textcard_page_count, pages.size),
+            style = MaterialTheme.typography.titleSmall,
+            modifier = Modifier.weight(1f)
+        )
+        if (pages.size > 1) {
+            GlassOutlinedTextField(
+                value = pageJumpText,
+                onValueChange = { pageJumpText = it.filter(Char::isDigit).take(4) },
+                placeholder = { Text(stringResource(R.string.textcard_page_number_input)) },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                singleLine = true,
+                modifier = Modifier.width(88.dp)
+            )
+            TextButton(
+                onClick = {
+                    targetPage?.let(component::setCurrentPage)
+                    pageJumpText = ""
+                },
+                enabled = targetPage != null
+            ) {
+                Text(stringResource(R.string.textcard_go_to_page))
+            }
+        }
+    }
     LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
         itemsIndexed(pages, key = { index, _ -> index }) { index, page ->
             val selected = component.currentPage == index
@@ -151,11 +235,24 @@ fun PagesPanel(component: TextCardComponent) {
                         interactive = false,
                         modifier = Modifier.fillMaxWidth()
                     )
-                    Text(
-                        text = "${index + 1}",
-                        style = MaterialTheme.typography.labelMedium,
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(4.dp)
-                    )
+                    ) {
+                        Text(
+                            text = "${index + 1}",
+                            style = MaterialTheme.typography.labelMedium
+                        )
+                        if (page.startsAtManualPageBreak(component.document)) {
+                            Spacer(Modifier.width(4.dp))
+                            Text(
+                                text = stringResource(R.string.textcard_manual_page_break_short),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                maxLines = 1
+                            )
+                        }
+                    }
                 }
             }
         }

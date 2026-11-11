@@ -9,13 +9,18 @@ import android.text.TextPaint
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
+import com.shifenmiao.model.editor.LayerTransform
 import com.t8rin.imagetoolbox.core.domain.image.ImageGetter
+import com.wanbaohe.core.ui.widget.editor.drawEditorShape
+import com.wanbaohe.core.ui.widget.editor.renderEditorStrokesBitmap
 import com.wanbaohe.core.ui.widget.modifier.PointData
 import com.wanbaohe.core.ui.widget.modifier.drawMeshGradient
 import com.wanbaohe.textcard.domain.TextCardExportRenderer
 import com.wanbaohe.textcard.domain.model.BackgroundSpec
 import com.wanbaohe.textcard.domain.model.ElementTransform
 import com.wanbaohe.textcard.domain.model.TextBlock
+import com.wanbaohe.textcard.domain.model.TextCardAnnotation
+import com.wanbaohe.textcard.domain.model.TextCardAnnotationType
 import com.wanbaohe.textcard.domain.model.TextCardRenderState
 import com.wanbaohe.textcard.domain.render.CardLayout
 import com.wanbaohe.textcard.domain.render.MESH_RESOLUTION
@@ -38,6 +43,7 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
         canvas.drawColor(CardLayout.CARD_BASE_COLOR.toInt())
         if (state.backgroundVisible) drawBackground(canvas, state, width, height)
         state.textBlocks.forEach { block -> drawTextBlock(canvas, block, width, height) }
+        state.annotations.forEach { annotation -> drawAnnotation(canvas, annotation, width, height) }
         return bitmap
     }
 
@@ -170,6 +176,82 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
         }
         layout.draw(canvas)
         canvas.restore()
+    }
+
+    private fun drawAnnotation(
+        canvas: Canvas,
+        annotation: TextCardAnnotation,
+        width: Int,
+        height: Int,
+    ) {
+        if (!annotation.transform.visible) return
+        val checkpoint = canvas.saveLayerAlpha(
+            0f,
+            0f,
+            width.toFloat(),
+            height.toFloat(),
+            (annotation.transform.alpha.coerceIn(0f, 1f) * 255).toInt()
+        )
+        canvas.applyAnnotationTransform(annotation.transform, width, height)
+        when (val type = annotation.type) {
+            is TextCardAnnotationType.Text -> {
+                val block = type.block
+                val contentWidth = width * block.widthRatio
+                val layoutWidth = contentWidth.toInt().coerceAtLeast(1)
+                val layout = block.createTextLayout(width, layoutWidth)
+                canvas.translate(-contentWidth / 2f, -layout.height / 2f)
+                if (block.backgroundColor != 0L) {
+                    val backgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+                        color = block.backgroundColor.toInt()
+                    }
+                    for (line in 0 until layout.lineCount) {
+                        canvas.drawRect(
+                            layout.getLineLeft(line),
+                            layout.getLineTop(line).toFloat(),
+                            layout.getLineRight(line),
+                            layout.getLineBottom(line).toFloat(),
+                            backgroundPaint,
+                        )
+                    }
+                }
+                if (block.outlineWidthRatio > 0f) {
+                    val outlinePaint = TextPaint(layout.paint).apply {
+                        color = block.outlineColor.toInt()
+                        style = Paint.Style.STROKE
+                        strokeWidth = block.outlineWidthRatio * width
+                        strokeJoin = Paint.Join.ROUND
+                        strokeCap = Paint.Cap.ROUND
+                    }
+                    block.createTextLayout(width, layoutWidth, outlinePaint).draw(canvas)
+                }
+                layout.draw(canvas)
+            }
+            is TextCardAnnotationType.Draw -> {
+                val layerBitmap = renderEditorStrokesBitmap(type.strokes, width, height)
+                canvas.drawBitmap(
+                    layerBitmap,
+                    null,
+                    RectF(-width / 2f, -height / 2f, width / 2f, height / 2f),
+                    Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
+                )
+            }
+            is TextCardAnnotationType.Shape -> {
+                drawEditorShape(canvas, type.spec, width.toFloat(), height.toFloat())
+            }
+        }
+        canvas.restoreToCount(checkpoint)
+    }
+
+    private fun Canvas.applyAnnotationTransform(
+        transform: LayerTransform,
+        width: Int,
+        height: Int,
+    ) {
+        translate(transform.centerX * width, transform.centerY * height)
+        if (transform.rotation != 0f) rotate(transform.rotation)
+        if (transform.scale != 1f) scale(transform.scale, transform.scale)
+        if (transform.flipHorizontal) scale(-1f, 1f)
+        if (transform.flipVertical) scale(1f, -1f)
     }
 
     private fun Canvas.applyElementTransform(

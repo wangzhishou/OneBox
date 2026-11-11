@@ -52,12 +52,13 @@ data class TextCardDocument(
     val outputMode: TextCardOutputMode = TextCardOutputMode.Pages,
     val exportFormat: TextCardExportFormat = TextCardExportFormat.Png,
     val exportQuality: Int = 90,
+    val annotations: List<TextCardAnnotation> = emptyList(),
 ) {
     val textBlocks: List<TextBlock>
         get() = listOf(title, body, author, source)
 
     val hasContent: Boolean
-        get() = textBlocks.any { it.content.isNotBlank() }
+        get() = textBlocks.any { it.content.isNotBlank() } || annotations.isNotEmpty()
 
     fun block(role: TextCardRole): TextBlock = when (role) {
         TextCardRole.Title -> title
@@ -69,11 +70,18 @@ data class TextCardDocument(
     fun updateBlock(
         role: TextCardRole,
         transform: (TextBlock) -> TextBlock,
-    ): TextCardDocument = when (role) {
-        TextCardRole.Title -> copy(title = transform(title))
-        TextCardRole.Body -> copy(body = transform(body))
-        TextCardRole.Author -> copy(author = transform(author))
-        TextCardRole.Source -> copy(source = transform(source))
+    ): TextCardDocument {
+        val previous = block(role)
+        val updated = transform(previous)
+        val document = when (role) {
+            TextCardRole.Title -> copy(title = updated)
+            TextCardRole.Body -> copy(body = updated)
+            TextCardRole.Author -> copy(author = updated)
+            TextCardRole.Source -> copy(source = updated)
+        }
+        return document.copy(
+            annotations = document.adjustAnnotationAnchors(role, previous.content, updated.content)
+        )
     }
 
     fun displayName(): String = title.content.lineSequence().firstOrNull()

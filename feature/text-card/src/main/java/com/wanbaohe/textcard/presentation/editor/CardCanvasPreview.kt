@@ -26,6 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
@@ -100,7 +101,10 @@ import com.wanbaohe.textcard.domain.model.isRangeEffectivelyItalic
 import com.wanbaohe.textcard.domain.render.CardLayout
 import com.wanbaohe.textcard.domain.render.MESH_RESOLUTION
 import com.wanbaohe.textcard.domain.render.toPointPairs
+import com.wanbaohe.core.ui.widget.editor.EditorDrawOverlay
+import com.wanbaohe.core.ui.widget.editor.EditorDrawSessionState
 import com.wanbaohe.textcard.presentation.screenLogic.CanvasTextEditSession
+import com.wanbaohe.textcard.presentation.screenLogic.TextCardAnnotationEditor
 import kotlin.math.roundToInt
 
 @Composable
@@ -113,6 +117,10 @@ internal fun CardCanvasPreview(
     selectedRole: TextCardRole? = null,
     editingSession: CanvasTextEditSession? = null,
     editingState: TextFieldState? = null,
+    annotationEditor: TextCardAnnotationEditor? = null,
+    annotationEditingState: TextFieldState? = null,
+    annotationDrawSession: EditorDrawSessionState? = null,
+    onAnnotationEditingSync: () -> Unit = {},
     pageIndex: Int = 0,
     onSegmentTap: (TextCardSegment, Int) -> Unit = { _, _ -> },
     onSegmentEdit: (TextCardSegment, Int) -> Unit = { _, _ -> },
@@ -146,13 +154,22 @@ internal fun CardCanvasPreview(
         background = liveDocument?.background ?: state.background,
         backgroundOpacity = liveDocument?.backgroundOpacity ?: state.backgroundOpacity,
         textBlocks = state.textBlocks.map { segmentBlocks[it.id] ?: it },
-        segments = segments
+        segments = segments,
+        annotations = state.annotations.map { annotation ->
+            liveDocument?.annotations?.firstOrNull { it.id == annotation.id } ?: annotation
+        }
     )
+    val annotationMode = annotationEditor?.isActive == true
     BoxWithConstraints(
         modifier = modifier
             .aspectRatio(state.canvas.aspectRatio)
             .clip(RoundedCornerShape(cornerRadius))
             .clipToBounds()
+            .pointerInput(interactive, annotationMode) {
+                if (interactive && annotationMode) {
+                    detectTapGestures(onTap = { onCanvasTap() })
+                }
+            }
     ) {
         val canvasWidthPx = constraints.maxWidth.toFloat()
         val canvasHeightPx = constraints.maxHeight.toFloat()
@@ -176,12 +193,13 @@ internal fun CardCanvasPreview(
                 CardTextElement(
                     block = block,
                     segment = segment,
-                    isSelected = interactive && segment != null && segment.role == selectedRole,
+                    isSelected = !annotationMode && interactive &&
+                        segment != null && segment.role == selectedRole,
                     editingSession = editingSession.takeIf { isEditing },
                     editingState = editingState.takeIf { isEditing },
                     canvasWidthPx = canvasWidthPx,
                     canvasHeightPx = canvasHeightPx,
-                    interactive = interactive,
+                    interactive = interactive && !annotationMode,
                     onSegmentTap = onSegmentTap,
                     onSegmentEdit = onSegmentEdit,
                     onSegmentTransform = onSegmentTransform,
@@ -193,6 +211,31 @@ internal fun CardCanvasPreview(
                     selectionToolbarVisible = selectionToolbarVisible
                 )
             }
+        }
+        if (annotationEditor != null) {
+            renderState.annotations.forEach { annotation ->
+                CardAnnotationLayer(
+                    annotation = annotation,
+                    editor = annotationEditor,
+                    editingState = annotationEditingState.takeIf {
+                        annotationEditor.textEditId == annotation.id
+                    },
+                    canvasWidthPx = canvasWidthPx,
+                    canvasHeightPx = canvasHeightPx,
+                    interactive = interactive,
+                    onEditingSync = onAnnotationEditingSync,
+                    onOpenStylePanel = onOpenStylePanel,
+                    onClearSelectionStyles = onClearSelectionStyles,
+                    selectionToolbarVisible = selectionToolbarVisible,
+                )
+            }
+        }
+        annotationDrawSession?.let { session ->
+            EditorDrawOverlay(
+                session = session,
+                canvasWidthPx = canvasWidthPx,
+                canvasHeightPx = canvasHeightPx,
+            )
         }
     }
 }
@@ -419,7 +462,7 @@ private fun CardTextElement(
 }
 
 @Composable
-private fun InPlaceTextEditor(
+internal fun InPlaceTextEditor(
     block: TextBlock,
     baseSizePx: Float,
     state: TextFieldState,
@@ -572,7 +615,7 @@ private fun InPlaceTextEditor(
 }
 
 @Composable
-private fun CardText(
+internal fun CardText(
     block: TextBlock,
     baseSizePx: Float,
     canvasWidthPx: Float,

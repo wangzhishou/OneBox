@@ -16,6 +16,8 @@ import com.wanbaohe.textcard.domain.TextCardExportRenderer
 import com.wanbaohe.textcard.domain.model.TextCardDocument
 import com.wanbaohe.textcard.domain.model.TextCardExportFormat
 import com.wanbaohe.textcard.domain.model.TextCardOutputMode
+import com.wanbaohe.textcard.domain.model.TextCardRenderState
+import com.wanbaohe.textcard.domain.model.withAnnotations
 import com.wanbaohe.textcard.domain.render.TextCardLayout
 import com.wanbaohe.textcard.domain.render.TextCardLayoutException
 import kotlinx.coroutines.CancellationException
@@ -35,7 +37,7 @@ class AndroidTextCardExportService @Inject internal constructor(
         layout: TextCardLayout,
         pageIndices: Set<Int>?,
     ): TextCardExportResult {
-        val states = selectStates(document, layout, pageIndices)
+        val states = selectStates(document, layout.withAnnotations(document), pageIndices)
         val format = document.exportFormat.toImageFormat()
         val timestamp = System.currentTimeMillis()
         val saved = mutableListOf<SavedTextCardImage>()
@@ -45,7 +47,7 @@ class AndroidTextCardExportService @Inject internal constructor(
             val index = indexedState.index
             val page = index + 1
             try {
-                val rendered = exportRenderer.render(indexedState.value)
+                val rendered = render(document, layout, indexedState)
                 val imageInfo = ImageInfo(
                     width = rendered.width,
                     height = rendered.height,
@@ -88,12 +90,12 @@ class AndroidTextCardExportService @Inject internal constructor(
         layout: TextCardLayout,
         pageIndices: Set<Int>?,
     ) {
-        val states = selectStates(document, layout, pageIndices)
+        val states = selectStates(document, layout.withAnnotations(document), pageIndices)
         val format = document.exportFormat.toImageFormat()
         val timestamp = System.currentTimeMillis()
         val uris = states.map { indexedState ->
             coroutineContext.ensureActive()
-            val rendered = exportRenderer.render(indexedState.value)
+            val rendered = render(document, layout, indexedState)
             shareProvider.cacheImage(
                 image = rendered,
                 imageInfo = ImageInfo(
@@ -108,17 +110,55 @@ class AndroidTextCardExportService @Inject internal constructor(
         shareProvider.shareUris(uris)
     }
 
+    private suspend fun render(
+        document: TextCardDocument,
+        layout: TextCardLayout,
+        state: IndexedValue<TextCardRenderState>,
+    ): Bitmap = if (document.outputMode == TextCardOutputMode.LongImage &&
+        document.annotations.isNotEmpty()
+    ) {
+        renderStitchedPages(layout.pages)
+    } else {
+        exportRenderer.render(state.value)
+    }
+
+    private suspend fun renderStitchedPages(pages: List<TextCardRenderState>): Bitmap {
+        val width = pages.first().canvas.width
+        val height = pages.sumOf { it.canvas.height }
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = android.graphics.Canvas(bitmap)
+        var offsetY = 0
+        pages.forEach { page ->
+            coroutineContext.ensureActive()
+            val rendered = exportRenderer.render(page)
+            canvas.drawBitmap(rendered, 0f, offsetY.toFloat(), null)
+            offsetY += rendered.height
+        }
+        return bitmap
+    }
+
     private fun selectStates(
         document: TextCardDocument,
         layout: TextCardLayout,
         pageIndices: Set<Int>?,
     ) = when (document.outputMode) {
         TextCardOutputMode.Pages -> layout.pages
-        TextCardOutputMode.LongImage -> listOf(
-            layout.longImage ?: throw TextCardLayoutException.LongImageTooLarge(
-                layout.longImageRequiredHeight ?: 0
+        TextCardOutputMode.LongImage -> if (document.annotations.isNotEmpty()) {
+            val height = layout.pages.sumOf { it.canvas.height }
+            val width = layout.pages.firstOrNull()?.canvas?.width ?: 0
+            if (height > TextCardDocument.MAX_LONG_IMAGE_SIDE ||
+                width.toLong() * height > TextCardDocument.MAX_LONG_IMAGE_PIXELS
+            ) {
+                throw TextCardLayoutException.LongImageTooLarge(height)
+            }
+            layout.pages.take(1)
+        } else {
+            listOf(
+                layout.longImage ?: throw TextCardLayoutException.LongImageTooLarge(
+                    layout.longImageRequiredHeight ?: 0
+                )
             )
-        )
+        }
     }.withIndex().filter { indexed ->
         pageIndices == null || indexed.index in pageIndices
     }.also { selected ->
