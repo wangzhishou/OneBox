@@ -77,3 +77,37 @@ private fun String.normalizeSingleLine(): String = replace("\n", " ")
     .replace(Regex("\\s+"), " ")
     .trim()
 
+/**
+ * AI 互聊(DUEL)会话的标题与预览规则，集中在这里，避免聊天页、历史中心、Activity Log 各拼一套。
+ *
+ * 规则（三行各司其职，不再出现三行都是「A × B」）：
+ * - 大标题 = 内容：用户填的话题优先，其次第一句发言，最后才回落功能名；
+ * - 预览行 = 最后一句发言的真实内容；
+ * - 小标题 badge = appTitle（对战双方，如「A × B」），只描述参与方。
+ *
+ * 纯函数，不依赖 Android / DB，便于直接验证。
+ */
+object AIDuelConversationTitle {
+    const val MAX_LENGTH = 40
+
+    fun resolve(scene: String, firstMessage: String?, fallbackTitle: String): String {
+        val byScene = normalize(scene)
+        if (byScene.isNotEmpty()) return byScene.abbreviate()
+        val byFirstMessage = normalize(firstMessage.orEmpty())
+        if (byFirstMessage.isNotEmpty()) return byFirstMessage.abbreviate()
+        return fallbackTitle
+    }
+
+    /** 发言文本归一化：压平空白、剥掉旧版本写进正文的「【A】/ A：」前缀。 */
+    fun normalize(text: String): String {
+        val flat = text.replace(Regex("\\s+"), " ").trim()
+        return listOf("【A】", "【B】", "A：", "B：", "A:", "B:")
+            .firstOrNull { flat.startsWith(it) }
+            ?.let { flat.removePrefix(it).trimStart() }
+            ?: flat
+    }
+
+    private fun String.abbreviate(): String =
+        if (length > MAX_LENGTH) take(MAX_LENGTH).trimEnd() + "…" else this
+}
+

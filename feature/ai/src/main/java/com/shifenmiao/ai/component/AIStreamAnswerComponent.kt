@@ -24,6 +24,8 @@ import com.shifenmiao.model.ai.unified.LlmStreamEvent
 import com.shifenmiao.network.AiRequestUrlResolver
 import com.shifenmiao.storage.TokenStorage
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
+import com.wanbaohe.core.ui.review.ReviewPromptHost
+import com.wanbaohe.core.ui.review.ReviewPromptTrigger
 import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import dagger.assisted.Assisted
@@ -405,6 +407,9 @@ class AIStreamAnswerComponent @AssistedInject internal constructor(
             userMessage = questionMessage.question,
             assistantMessage = answer
         )
+        // 一轮问答完整落库 = 成功时刻。轻量问答（含 google 渠道 BYOK 直连）此前漏报，
+        // 这里与主聊天链路 MessagePersistenceWorker 走同一套评分门控（阈值/冷却/上限不变）
+        ReviewPromptHost.notifySuccess(ReviewPromptTrigger.AI_ANSWER_SUCCESS)
     }
 
     private fun applicationTitle(): String = screen.label.ifEmpty {

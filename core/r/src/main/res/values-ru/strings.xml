@@ -2130,4 +2130,6 @@
     <string name="ai_prompt_creating_foreground_title">Создание промпта</string>
     <string name="ai_tool_draft_foreground_title">Генерация черновика инструмента</string>
     <string name="long_task_notification_more">и ещё %1$d в работе</string>
+    <!-- TextSelectionMenuContainer: label under the "Note" icon -->
+    <string name="text_selection_action_note">Заметка</string>
 </resources>

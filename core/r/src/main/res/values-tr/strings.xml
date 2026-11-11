@@ -2096,4 +2096,6 @@
     <string name="ai_prompt_creating_foreground_title">Prompt oluşturuluyor</string>
     <string name="ai_tool_draft_foreground_title">Araç taslağı oluşturuluyor</string>
     <string name="long_task_notification_more">ve %1$d görev daha çalışıyor</string>
+    <!-- TextSelectionMenuContainer: label under the "Note" icon -->
+    <string name="text_selection_action_note">Not</string>
 </resources>

@@ -2083,4 +2083,6 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <string name="ai_prompt_creating_foreground_title">Đang tạo lời nhắc</string>
     <string name="ai_tool_draft_foreground_title">Đang tạo bản nháp công cụ</string>
     <string name="long_task_notification_more">và %1$d tác vụ khác đang chạy</string>
+    <!-- TextSelectionMenuContainer: label under the "Note" icon -->
+    <string name="text_selection_action_note">Ghi chú</string>
 </resources>

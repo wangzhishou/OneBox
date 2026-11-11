@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -36,11 +37,14 @@ import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
 import androidx.compose.ui.window.PopupProperties
@@ -205,6 +209,8 @@ data class TextSelectionAction(
     val swatch: Color? = null,
     val selected: Boolean = false,
     val tint: Color? = null,
+    /** 是否在图标下方显示 [label]。只读内容页(聊天/博客/笔记)开启，就地编辑器保持纯图标。 */
+    val showLabel: Boolean = false,
 )
 
 @Composable
@@ -223,33 +229,63 @@ fun TextSelectionActionButton(
         action.tint != null -> action.tint
         else -> contentColor
     }
-    Box(
-        contentAlignment = Alignment.Center,
+    val showLabel = action.showLabel && action.label.isNotBlank()
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
         modifier = modifier
-            .size(36.dp)
-            .clip(CircleShape)
-            .background(container)
+            .then(
+                if (showLabel) {
+                    Modifier.widthIn(min = 52.dp, max = 72.dp)
+                } else {
+                    Modifier.size(36.dp)
+                }
+            )
+            .clip(if (showLabel) RoundedCornerShape(12.dp) else CircleShape)
+            .background(if (showLabel) Color.Transparent else container)
             .clickable(onClick = action.onClick)
             .semantics { contentDescription = action.label }
+            .padding(if (showLabel) 3.dp else 0.dp)
     ) {
-        when {
-            action.swatch != null -> Box(
-                modifier = Modifier
-                    .size(16.dp)
-                    .clip(CircleShape)
-                    .background(action.swatch)
-            )
-            action.glyph != null -> Text(
-                text = action.glyph,
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.SemiBold,
-                color = content
-            )
-            action.icon != null -> Icon(
-                imageVector = action.icon,
-                contentDescription = null,
-                tint = content,
-                modifier = Modifier.size(20.dp)
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(if (showLabel) 30.dp else 36.dp)
+                .clip(CircleShape)
+                .background(container)
+        ) {
+            when {
+                action.swatch != null -> Box(
+                    modifier = Modifier
+                        .size(16.dp)
+                        .clip(CircleShape)
+                        .background(action.swatch)
+                )
+                action.glyph != null -> Text(
+                    text = action.glyph,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = content
+                )
+                action.icon != null -> Icon(
+                    imageVector = action.icon,
+                    contentDescription = null,
+                    tint = content,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
+        if (showLabel) {
+            Text(
+                text = action.label,
+                style = MaterialTheme.typography.labelSmall,
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Medium,
+                color = content,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(top = 2.dp)
             )
         }
     }

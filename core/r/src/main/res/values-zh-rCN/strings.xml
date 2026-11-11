@@ -1845,6 +1845,9 @@
     <string name="ai_chat_text_selection_mode_hint">已进入选择模式，请长按文字开始选择</string>
     <string name="share_as_image">分享为图片</string>
 
+    <!-- TextSelectionMenuContainer: 长按选区浮动工具条图标下方的文字标签；复制/分享/图片复用已有 key -->
+    <string name="text_selection_action_note">笔记</string>
+
     <!-- Token Usage -->
     <string name="token_usage_total_consumption">总消耗</string>
     <string name="token_usage_prompt_tokens">Prompt Tokens</string>

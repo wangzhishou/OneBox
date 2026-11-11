@@ -2085,4 +2085,6 @@
     <string name="ai_prompt_creating_foreground_title">프롬프트 생성 중</string>
     <string name="ai_tool_draft_foreground_title">도구 초안 생성 중</string>
     <string name="long_task_notification_more">외 %1$d개 작업 진행 중</string>
+    <!-- TextSelectionMenuContainer: label under the "Note" icon -->
+    <string name="text_selection_action_note">메모</string>
 </resources>

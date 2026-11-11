@@ -2096,4 +2096,6 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
     <string name="ai_prompt_creating_foreground_title">Prompt wird erstellt</string>
     <string name="ai_tool_draft_foreground_title">Tool-Entwurf wird generiert</string>
     <string name="long_task_notification_more">und %1$d weitere aktiv</string>
+    <!-- TextSelectionMenuContainer: label under the "Note" icon -->
+    <string name="text_selection_action_note">Notiz</string>
 </resources>

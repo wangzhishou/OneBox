@@ -17,8 +17,10 @@ import com.wanbaohe.core.ui.utils.navigation.Screen
 import kotlinx.coroutines.launch
 
 /**
- * 选中文字后的标准四项动作:复制、分享、做成文字卡片、存为笔记。
- * AI 聊天、博客详情、笔记详情共用,保证三处长按弹出的工具条完全一致。
+ * 选中文字后的标准四项动作:复制、分享、图片、笔记。
+ * AI 聊天、AI 互聊、博客详情、笔记详情共用同一套全局工具条。
+ * 标签尽量复用已有全语言译文(copy / share_url / button_export_image)，
+ * 只有「笔记」没有合适的短词，单独补了 key 并做全语言本地化。
  */
 @Composable
 fun defaultTextSelectionMenuItems(
@@ -37,7 +39,7 @@ fun defaultTextSelectionMenuItems(
         ),
         TextSelectionMenuItem(
             key = "share",
-            label = stringResource(R.string.share_title),
+            label = stringResource(R.string.share_url),
             icon = Icons.Outlined.LineShare,
             onSelected = { text -> appComponent.shareText(text) },
         ),
@@ -51,7 +53,7 @@ fun defaultTextSelectionMenuItems(
         ),
         TextSelectionMenuItem(
             key = "note",
-            label = stringResource(R.string.nav_notebook),
+            label = stringResource(R.string.text_selection_action_note),
             icon = Icons.Outlined.NoteAdd,
             onSelected = { text ->
                 scope.launch {

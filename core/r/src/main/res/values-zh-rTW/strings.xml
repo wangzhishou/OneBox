@@ -2086,4 +2086,6 @@
     <string name="ai_prompt_creating_foreground_title">正在建立提示詞</string>
     <string name="ai_tool_draft_foreground_title">正在產生工具草案</string>
     <string name="long_task_notification_more">等 %1$d 項任務進行中</string>
+    <!-- TextSelectionMenuContainer: 長按選區工具條「筆記」圖示下方標籤 -->
+    <string name="text_selection_action_note">筆記</string>
 </resources>

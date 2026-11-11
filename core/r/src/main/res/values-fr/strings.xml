@@ -2084,4 +2084,6 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="ai_prompt_creating_foreground_title">Création de l\'invite</string>
     <string name="ai_tool_draft_foreground_title">Génération du brouillon d\'outil</string>
     <string name="long_task_notification_more">et %1$d autres en cours</string>
+    <!-- TextSelectionMenuContainer: label under the "Note" icon -->
+    <string name="text_selection_action_note">Note</string>
 </resources>

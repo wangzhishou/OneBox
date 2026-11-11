@@ -2096,4 +2096,6 @@ Consejo: si eliges «Ocultar para siempre», podrás devolverme más tarde en Aj
     <string name="ai_prompt_creating_foreground_title">Creando prompt</string>
     <string name="ai_tool_draft_foreground_title">Generando borrador de herramienta</string>
     <string name="long_task_notification_more">y %1$d más en ejecución</string>
+    <!-- TextSelectionMenuContainer: label under the "Note" icon -->
+    <string name="text_selection_action_note">Nota</string>
 </resources>

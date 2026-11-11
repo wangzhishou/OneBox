@@ -372,9 +372,10 @@ private fun AIConversationEntryType.label(): String = when (this) {
 }
 
 @Composable
-private fun AIHistoryItem.primaryTitle(): String {
-    return title.ifBlank {
-        appTitle.ifBlank { entryType.label() }
-    }
+private fun AIHistoryItem.primaryTitle(): String = when {
+    title.isNotBlank() -> title
+    // 旧版互聊把「A × B」同时存进 appTitle，再用 appTitle 兜底会让大标题和 badge 重复
+    entryType == AIConversationEntryType.DUEL -> stringResource(R.string.ai_duel_chat_title)
+    else -> appTitle.ifBlank { entryType.label() }
 }
 

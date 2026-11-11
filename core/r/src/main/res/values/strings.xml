@@ -1725,6 +1725,9 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="ai_chat_text_selection_mode_hint">Selection mode enabled. Long-press text to start selecting.</string>
     <string name="share_as_image">Share as Image</string>
 
+    <!-- TextSelectionMenuContainer: only "Note" needs its own key; the other three labels reuse copy / share_url / button_export_image -->
+    <string name="text_selection_action_note">Note</string>
+
     <!-- Token Usage -->
     <string name="token_usage_total_consumption">Total</string>
     <string name="token_usage_prompt_tokens">Prompt Tokens</string>

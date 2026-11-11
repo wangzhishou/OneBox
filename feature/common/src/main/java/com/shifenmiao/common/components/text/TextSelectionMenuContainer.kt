@@ -119,6 +119,8 @@ fun TextSelectionMenuContainer(
                         label = item.label,
                         icon = item.icon,
                         onClick = { runSelectionAction(item.onSelected) },
+                        // 聊天/博客/笔记这类只读内容页统一显示图标下方的文字标签
+                        showLabel = true,
                     )
                 },
             )

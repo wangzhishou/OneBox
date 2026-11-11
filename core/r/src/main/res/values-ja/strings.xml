@@ -2085,4 +2085,6 @@
     <string name="ai_prompt_creating_foreground_title">プロンプトを作成中</string>
     <string name="ai_tool_draft_foreground_title">ツールの草案を生成中</string>
     <string name="long_task_notification_more">他 %1$d 件のタスクが実行中</string>
+    <!-- TextSelectionMenuContainer: label under the "Note" icon -->
+    <string name="text_selection_action_note">メモ</string>
 </resources>

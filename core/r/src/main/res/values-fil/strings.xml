@@ -2096,4 +2096,6 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <string name="ai_prompt_creating_foreground_title">Ginagawa ang prompt</string>
     <string name="ai_tool_draft_foreground_title">Ginagawa ang draft ng tool</string>
     <string name="long_task_notification_more">at %1$d pang tumatakbo</string>
+    <!-- TextSelectionMenuContainer: label under the "Note" icon -->
+    <string name="text_selection_action_note">Tala</string>
 </resources>

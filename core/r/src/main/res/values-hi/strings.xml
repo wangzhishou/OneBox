@@ -2096,4 +2096,6 @@
     <string name="ai_prompt_creating_foreground_title">प्रॉम्प्ट बनाया जा रहा है</string>
     <string name="ai_tool_draft_foreground_title">टूल ड्राफ़्ट जनरेट हो रहा है</string>
     <string name="long_task_notification_more">और %1$d अन्य चल रहे हैं</string>
+    <!-- TextSelectionMenuContainer: label under the "Note" icon -->
+    <string name="text_selection_action_note">नोट</string>
 </resources>

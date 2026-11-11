@@ -7,6 +7,7 @@ import com.shifenmiao.model.ModelProvider.AppJson
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonObject
+import com.shifenmiao.ai.history.AIDuelConversationTitle
 import com.shifenmiao.ai.history.withHistorySnapshot
 import com.halilibo.richtext.markwon.MarkdownAstNodeParser
 import com.shifenmiao.ai.export.DuelHtmlExporter
@@ -41,6 +42,7 @@ import com.shifenmiao.database.ai.entity.MessageEntity
 import com.shifenmiao.database.chat_prompt.entity.PromptEntity
 import com.shifenmiao.database.item.entity.Category
 import com.shifenmiao.model.ai.AIConversationEntryType
+import com.shifenmiao.model.ai.AIConversationTitleSource
 import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.model.ai.MessageUIState
 import com.shifenmiao.model.ai.RoleType
@@ -53,6 +55,9 @@ import com.shifenmiao.storage.AppSharedStorage
 import com.shifenmiao.storage.RemoteConfigStorage
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.resource.ResourceManager
+import com.t8rin.logger.makeLog
+import com.wanbaohe.core.ui.review.ReviewPromptHost
+import com.wanbaohe.core.ui.review.ReviewPromptTrigger
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -216,7 +221,7 @@ class AIDuelChatComponent @AssistedInject internal constructor(
                 _conversation.value = _conversation.value.copy(
                     entryType = AIConversationEntryType.DUEL,
                     appTitle = applicationContext.getString(R.string.ai_duel_chat_title),
-                    title = "",
+                    title = applicationContext.getString(R.string.ai_duel_chat_title),
                     historyVisible = false,
                 )
             }
@@ -402,7 +407,7 @@ class AIDuelChatComponent @AssistedInject internal constructor(
 
     fun updateDraftConfig(config: AIDuelConfig, persistDraft: Boolean = true) {
         if (_duelState.value.running) return
-        val appTitle = buildConversationTitle(config)
+        val pairLabel = buildDuelPairLabel(config)
         val hasMessages = synchronized(messages) { messages.isNotEmpty() }
         val preserveSession = hasMessages ||
             (_conversation.value.historyVisible && _conversation.value.messageCount > 0)
@@ -415,7 +420,11 @@ class AIDuelChatComponent @AssistedInject internal constructor(
             // 已经在聊天中/从历史打开：只更新配置，不能把已落库的会话重新标成“草稿”。
             _conversation.value = _conversation.value.copy(
                 entryType = AIConversationEntryType.DUEL,
-                appTitle = appTitle,
+                appTitle = pairLabel,
+                // 已有会话保留用户重命名过的标题，只改参与方标签与配置
+                title = _conversation.value.title.ifBlank {
+                    duelContentTitle(config, firstMessage = null)
+                },
                 prompt = AIDuelConfigCodec.encode(config),
             )
             synchronized(cachedMessageUiModels) { cachedMessageUiModels.clear() }
@@ -431,14 +440,16 @@ class AIDuelChatComponent @AssistedInject internal constructor(
 
         _conversation.value = _conversation.value.copy(
             entryType = AIConversationEntryType.DUEL,
-            appTitle = appTitle,
-            title = "",
+            appTitle = pairLabel,
+            // 标题必须反映「在聊什么」；「A × B」只作为 badge 描述参与方
+            title = duelContentTitle(config, firstMessage = null),
             prompt = AIDuelConfigCodec.encode(config),
             placeholder = applicationContext.getString(R.string.ai_duel_chat_description),
             historyVisible = false,
+            lastMessagePreview = "",
+            lastUserMessagePreview = "",
         ).withHistorySnapshot(
             defaultTitle = applicationContext.getString(R.string.ai_duel_chat_title),
-            assistantMessage = appTitle,
             timestamp = System.currentTimeMillis()
         )
         synchronized(cachedMessageUiModels) { cachedMessageUiModels.clear() }
@@ -516,8 +527,8 @@ class AIDuelChatComponent @AssistedInject internal constructor(
             _conversation.value = _conversation.value.copy(
                 id = Date().time.toString(),
                 entryType = AIConversationEntryType.DUEL,
-                appTitle = applicationContext.getString(R.string.ai_duel_chat_title),
-                title = "",
+                appTitle = buildDuelPairLabel(_duelConfig.value),
+                title = duelContentTitle(_duelConfig.value, firstMessage = null),
                 showLastMessage = false,
                 prompt = AIDuelConfigCodec.encode(_duelConfig.value),
                 historyVisible = false,
@@ -628,7 +639,7 @@ class AIDuelChatComponent @AssistedInject internal constructor(
             }
         }
 
-        val appTitle = buildConversationTitle(resolvedConfig)
+        val pairLabel = buildDuelPairLabel(resolvedConfig)
         // 非续聊一律开新会话 ID：复用一个已经有消息的 ID 会让 clearMessages() 后的
         // loadMessages() 又把旧记录读回来。
         val conversationId = if (resume) {
@@ -641,7 +652,11 @@ class AIDuelChatComponent @AssistedInject internal constructor(
         if (resume) {
             _conversation.value = _conversation.value.copy(
                 entryType = AIConversationEntryType.DUEL,
-                appTitle = appTitle,
+                appTitle = pairLabel,
+                // 兼容旧版本落下的空标题会话，恢复时补上能反映内容的标题
+                title = _conversation.value.title.ifBlank {
+                    duelContentTitle(resolvedConfig, firstMessage = null)
+                },
                 historyVisible = true,
                 prompt = AIDuelConfigCodec.encode(resolvedConfig),
                 placeholder = applicationContext.getString(R.string.ai_duel_chat_description)
@@ -650,10 +665,11 @@ class AIDuelChatComponent @AssistedInject internal constructor(
             _conversation.value = _conversation.value.copy(
                 id = conversationId,
                 entryType = AIConversationEntryType.DUEL,
-                appTitle = appTitle,
-                title = "",
+                appTitle = pairLabel,
+                title = duelContentTitle(resolvedConfig, firstMessage = null),
                 showLastMessage = false,
-                historyVisible = true,
+                // 第一句发言落库后才进历史中心，避免留下「0 条消息」的空记录
+                historyVisible = false,
                 lastMessagePreview = "",
                 lastUserMessagePreview = "",
                 messageCount = 0,
@@ -661,7 +677,6 @@ class AIDuelChatComponent @AssistedInject internal constructor(
                 placeholder = applicationContext.getString(R.string.ai_duel_chat_description)
             ).withHistorySnapshot(
                 defaultTitle = applicationContext.getString(R.string.ai_duel_chat_title),
-                assistantMessage = appTitle,
                 timestamp = System.currentTimeMillis()
             )
 
@@ -967,8 +982,26 @@ class AIDuelChatComponent @AssistedInject internal constructor(
         if (sessionToken == duelSessionToken &&
             _conversation.value.id == loopConversationId
         ) {
-            kotlin.runCatching { persistSessionState(persistedState) }
-            kotlin.runCatching { insertDuelOperationHistoryIfNeeded() }
+            // 原来这里是静默 runCatching，DAO / JSON 出错时「完成却没记录」完全无感；
+            // 现在把异常落到日志，仍然不打断会话收尾
+            try {
+                persistSessionState(persistedState)
+            } catch (e: Exception) {
+                "Failed to persist duel state: ${e.message}".makeLog("AIDuelChat")
+            }
+            // 完成事件再写一次终态日志；每句发言已写过，这里按 dedupKey 覆盖成最终摘要
+            try {
+                insertDuelOperationHistoryIfNeeded()
+            } catch (e: Exception) {
+                "Failed to record duel activity log: ${e.message}".makeLog("AIDuelChat")
+            }
+            // 正常跑完 / 收尾结束后才算成功时刻，与单聊求好评门控一致；
+            // 中途失败、用户点暂停不累计，避免刚看到报错就弹评分层
+            val finishedNormally = _duelState.value.phase == DuelPhase.ENDED ||
+                _duelState.value.batchLimitReached
+            if (completedTurns > 0 && finishedNormally) {
+                ReviewPromptHost.notifySuccess(ReviewPromptTrigger.AI_DUEL_SUCCESS)
+            }
         }
     }
 
@@ -1272,6 +1305,15 @@ class AIDuelChatComponent @AssistedInject internal constructor(
             totalTokens = finalUsage.totalTokens,
         )
         messageDao.insertReplace(finalMessage)
+        // 对齐单聊「消息落库后立刻写 ActivityLog」的时机：每句发言成功落库即刷新会话摘要并记账，
+        // 不再依赖整个循环正常收尾（用户中途退出 / 协程取消也不会丢记录）
+        try {
+            onDuelTurnPersisted(finalMessage)
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            "Failed to settle duel turn: ${e.message}".makeLog("AIDuelChat")
+        }
         kotlin.runCatching {
             consumePoints(
                 engine = requestConversation.engine,
@@ -1310,13 +1352,62 @@ class AIDuelChatComponent @AssistedInject internal constructor(
         }
     }
 
+    /**
+     * 一句发言成功落库后的收尾，对齐单聊 MessageListUseCase.insertQuestionAndAnswer 的时机：
+     * 先落消息，紧接着刷新会话摘要并写 Activity Log。放在这里而不是 duel loop 尾部，
+     * 是为了让用户中途退出 / 协程被取消时，已产生的记录依然完整。
+     */
+    private suspend fun onDuelTurnPersisted(message: MessageEntity) = withContext(ioDispatcher) {
+        val conversationId = _conversation.value.id
+        if (conversationId.isBlank()) return@withContext
+
+        val turns = messageDao.getMessagesByConversationId(conversationId)
+            .filter { it.entryType == AIConversationEntryType.DUEL && !it.expired }
+        val firstTurnText = turns.firstOrNull()?.let(::duelTurnText).orEmpty()
+        val lastTurnText = duelTurnText(message)
+            .ifBlank { turns.lastOrNull()?.let(::duelTurnText).orEmpty() }
+
+        val current = _conversation.value
+        val isManuallyNamed = current.titleSource == AIConversationTitleSource.MANUAL
+        val updated = current.copy(
+            title = if (isManuallyNamed) {
+                current.title
+            } else {
+                duelContentTitle(_duelConfig.value, firstTurnText)
+            },
+            lastMessagePreview = lastTurnText,
+            lastUserMessagePreview = firstTurnText,
+            // 有第一句发言之后才进历史中心，杜绝「0 条消息」的空会话
+            historyVisible = true,
+            lastActiveAt = System.currentTimeMillis(),
+            messageCount = turns.size,
+        )
+        _conversation.value = updated
+        appDatabase.conversationDao()
+            .insertReplace(ConversationEntity.fromConversation(updated))
+        if (!isManuallyNamed) {
+            appDatabase.messageDao()
+                .updateTitlesByConversationId(conversationId, updated.title)
+        }
+        insertDuelOperationHistoryIfNeeded()
+    }
+
+    private fun duelTurnText(message: MessageEntity): String =
+        AIDuelConversationTitle.normalize(
+            if (message.role == RoleType.USER.value) message.question else message.answer
+        )
+
+    /**
+     * 写互聊 Activity Log。与 recordAiChat 用同一套规则：成功落库之后才写、按 conversationId
+     * 去重覆盖、description 取开场发言、时间戳取最后一句发言的 createdAt。
+     */
     private suspend fun insertDuelOperationHistoryIfNeeded() {
         val conversationId = _conversation.value.id
         if (conversationId.isBlank()) return
 
         val messagesAsc = withContext(ioDispatcher) {
             messageDao.getMessagesByConversationId(conversationId)
-                .filter { it.entryType == AIConversationEntryType.DUEL }
+                .filter { it.entryType == AIConversationEntryType.DUEL && !it.expired }
         }
         if (messagesAsc.isEmpty()) return
 
@@ -1326,12 +1417,13 @@ class AIDuelChatComponent @AssistedInject internal constructor(
         val answer = messagesAsc.last()
         if (question.id <= 0 || answer.id <= 0) return
 
-        // 写入新的 activity_log 表
         activityLogRecorder.recordAiDuel(
             conversationId = conversationId,
-            title = question.title.ifBlank { _conversation.value.appTitle },
+            title = _conversation.value.title.ifBlank {
+                applicationContext.getString(R.string.ai_duel_chat_title)
+            },
             appTitle = _conversation.value.appTitle,
-            description = question.question,
+            description = duelTurnText(question),
             questionId = question.id.toString(),
             answerId = answer.id.toString(),
             completionId = answer.completionId,
@@ -1509,11 +1601,20 @@ class AIDuelChatComponent @AssistedInject internal constructor(
         }
     }
 
-    private fun buildConversationTitle(config: AIDuelConfig): String {
+    /** 「A × B」只描述本场两个参与方，用作历史 badge / 顶栏，不是会话内容标题。 */
+    private fun buildDuelPairLabel(config: AIDuelConfig): String {
         val nameA = resolveSpeakerDisplayName(config, DuelSpeaker.A)
         val nameB = resolveSpeakerDisplayName(config, DuelSpeaker.B)
         return applicationContext.getString(R.string.ai_duel_title_format, nameA, nameB)
     }
+
+    /** 会话内容标题：话题 > 第一句发言 > 功能名，规则集中在 [AIDuelConversationTitle]。 */
+    private fun duelContentTitle(config: AIDuelConfig, firstMessage: String?): String =
+        AIDuelConversationTitle.resolve(
+            scene = config.scene,
+            firstMessage = firstMessage,
+            fallbackTitle = applicationContext.getString(R.string.ai_duel_chat_title),
+        )
 
     private fun validateDuelConfigForStart(config: AIDuelConfig): Int? {
         return when {

@@ -2,13 +2,17 @@ package com.shifenmiao.ai.component
 
 import android.content.Context
 import com.arkivanov.decompose.ComponentContext
+import com.shifenmiao.ai.history.AIDuelConversationTitle
+import com.shifenmiao.ai.model.AIDuelConfigCodec
 import com.shifenmiao.ai.model.AIHistoryItem
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.common.handle.AIConversationNavigation
 import com.shifenmiao.core.R
 import com.shifenmiao.database.AppDatabase
+import com.shifenmiao.database.ai.entity.ConversationEntity
 import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.ai.AIConversationTitleSource
+import com.shifenmiao.model.ai.RoleType
 import com.shifenmiao.model.state.PageState
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.wanbaohe.core.ui.utils.BaseComponent
@@ -114,17 +118,27 @@ class AIHistoryCenterComponent @AssistedInject internal constructor(
                     }
                     .orEmpty()
                 _items.value = entities.asSequence()
-                    .map { entity ->
+                    .mapNotNull { entity ->
+                        val entryType = runCatching {
+                            AIConversationEntryType.valueOf(entity.entryType)
+                        }.getOrDefault(AIConversationEntryType.CHAT)
+                        val storedPreview = entity.lastMessagePreview.ifBlank {
+                            entity.lastUserMessagePreview.ifBlank { entity.placeholder }
+                        }
+                        // 旧版互聊把「A × B」同时写进标题、预览和 badge；按真实发言重建展示字段，
+                        // 一条发言都没有的残留草稿（0 条消息）不进历史中心
+                        val duelDisplay = if (entryType == AIConversationEntryType.DUEL) {
+                            resolveDuelHistoryDisplay(entity, storedPreview)
+                                ?: return@mapNotNull null
+                        } else {
+                            null
+                        }
                         AIHistoryItem(
                             conversationId = entity.conversationId,
-                            title = entity.title,
+                            title = duelDisplay?.first ?: entity.title,
                             appTitle = entity.appTitle,
-                            preview = entity.lastMessagePreview.ifBlank {
-                                entity.lastUserMessagePreview.ifBlank { entity.placeholder }
-                            },
-                            entryType = runCatching {
-                                AIConversationEntryType.valueOf(entity.entryType)
-                            }.getOrDefault(AIConversationEntryType.CHAT),
+                            preview = duelDisplay?.second ?: storedPreview,
+                            entryType = entryType,
                             entryRefId = entity.entryRefId,
                             lastActiveAt = entity.lastActiveAt,
                             messageCount = messageCountsByConversationId[entity.conversationId] ?: 0,
@@ -142,6 +156,44 @@ class AIHistoryCenterComponent @AssistedInject internal constructor(
                 _pageState.value = PageState.IDLE
             }
         }
+    }
+
+    /**
+     * 互聊历史的展示规则：大标题取话题/开场发言，预览取最后一句发言，
+     * badge 仍是 appTitle（对战双方）。返回 null 表示会话没有任何发言，应当隐藏。
+     * 兼容旧版本落下的空标题行，不需要数据迁移。
+     */
+    private fun resolveDuelHistoryDisplay(
+        entity: ConversationEntity,
+        storedPreview: String,
+    ): Pair<String, String>? {
+        val turns = appDatabase.messageDao()
+            .getMessagesByConversationId(entity.conversationId)
+            .filter { it.entryType == AIConversationEntryType.DUEL && !it.expired }
+            .mapNotNull { message ->
+                AIDuelConversationTitle.normalize(
+                    if (message.role == RoleType.USER.value) message.question else message.answer
+                ).takeIf { it.isNotBlank() }
+            }
+        if (turns.isEmpty()) return null
+
+        val scene = AIDuelConfigCodec.decodeOrNull(entity.prompt)?.scene.orEmpty()
+        val title = if (entity.title.isNotBlank()) {
+            entity.title
+        } else {
+            AIDuelConversationTitle.resolve(
+                scene = scene,
+                firstMessage = turns.first(),
+                fallbackTitle = applicationContext.getString(R.string.ai_duel_chat_title),
+            )
+        }
+        // 旧数据把「A × B」当预览写进了 last_message_preview，不能再用它当内容摘要
+        val preview = if (storedPreview.isBlank() || storedPreview == entity.appTitle) {
+            turns.last()
+        } else {
+            storedPreview
+        }
+        return title to preview
     }
 
     @AssistedFactory

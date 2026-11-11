@@ -21,8 +21,11 @@ enum class ReviewPromptTrigger {
     /** 决策转盘停稳、结果已出(DecisionWheelSpinComponent.onSpinSettled) */
     DECISION_WHEEL_SUCCESS,
 
-    /** AI 一轮问答成功落库(MessagePersistenceWorker.onChatCompletionEnd) */
+    /** AI 一轮问答成功落库(MessagePersistenceWorker.onChatCompletionEnd / AIStreamAnswerComponent.persistMessages) */
     AI_ANSWER_SUCCESS,
+
+    /** AI 互聊正常跑完或收尾结束(AIDuelChatComponent.runDuelLoop)，暂停/报错不累计 */
+    AI_DUEL_SUCCESS,
 
     /** 翻译成功并写入历史(TranslatorComponent.translate) */
     TRANSLATION_SUCCESS,

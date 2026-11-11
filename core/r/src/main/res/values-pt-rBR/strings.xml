@@ -2096,4 +2096,6 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
     <string name="ai_prompt_creating_foreground_title">Criando prompt</string>
     <string name="ai_tool_draft_foreground_title">Gerando rascunho de ferramenta</string>
     <string name="long_task_notification_more">e mais %1$d em execução</string>
+    <!-- TextSelectionMenuContainer: label under the "Note" icon -->
+    <string name="text_selection_action_note">Nota</string>
 </resources>

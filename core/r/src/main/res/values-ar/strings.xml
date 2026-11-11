@@ -2130,4 +2130,6 @@
     <string name="ai_prompt_creating_foreground_title">جارٍ إنشاء المُوجِّه</string>
     <string name="ai_tool_draft_foreground_title">جارٍ إنشاء مسودة الأداة</string>
     <string name="long_task_notification_more">و%1$d مهام أخرى قيد التنفيذ</string>
+    <!-- TextSelectionMenuContainer: label under the "Note" icon -->
+    <string name="text_selection_action_note">ملاحظة</string>
 </resources>

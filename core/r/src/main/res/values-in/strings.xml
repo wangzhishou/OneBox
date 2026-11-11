@@ -2085,4 +2085,6 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
     <string name="ai_prompt_creating_foreground_title">Membuat prompt</string>
     <string name="ai_tool_draft_foreground_title">Membuat draf alat</string>
     <string name="long_task_notification_more">dan %1$d lainnya sedang berjalan</string>
+    <!-- TextSelectionMenuContainer: label under the "Note" icon -->
+    <string name="text_selection_action_note">Catatan</string>
 </resources>

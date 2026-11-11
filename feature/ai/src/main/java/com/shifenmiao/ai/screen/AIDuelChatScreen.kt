@@ -29,7 +29,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.text.selection.rememberSelectionState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
@@ -80,6 +80,8 @@ import com.shifenmiao.ai.ui.AIPromptsPickerBottomSheet
 import com.wanbaohe.base.ui.CustomChatCard
 import com.wanbaohe.base.ui.DisableContainer
 import com.wanbaohe.base.ui.icon.LetterIcon
+import com.shifenmiao.common.components.text.TextSelectionMenuContainer
+import com.shifenmiao.common.components.text.defaultTextSelectionMenuItems
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.ai.AIModelsPickerBottomSheet
@@ -165,7 +167,9 @@ fun AIDuelChatScreen(
         }
 
         BaseScreen(
-            title = conversation.appTitle.ifBlank {
+            // 顶栏展示会话内容标题（话题 / 开场发言）；「A × B」只描述参与方，
+            // 由历史 badge 与消息头像承担，避免把角色名当成整场对话的标题
+            title = conversation.title.ifBlank {
                 stringResource(id = R.string.ai_duel_chat_title)
             },
             actions = {
@@ -287,6 +291,8 @@ private fun DuelChatContent(
 ) {
     val duelConfig by duelChatComponent.duelConfig.collectAsState()
     val duelState by duelChatComponent.duelState.collectAsState()
+    // 选区工具条的「做成文字卡片 / 存为笔记」需要页面级导航
+    val onNavigate = LocalOnNavigate.current
 
     val roleNameA = remember { mutableStateOf(duelConfig.roleNameA) }
     val roleNameB = remember { mutableStateOf(duelConfig.roleNameB) }
@@ -460,6 +466,8 @@ private fun DuelChatContent(
                 appComponent = appComponent,
                 conversation = conversation,
                 duelConfig = duelConfig,
+                onNavigate = onNavigate,
+                isDuelRunning = duelState.running,
             )
         }
         val showShare = messageUiModels.isNotEmpty() && !duelState.running
@@ -1802,12 +1810,28 @@ private fun DuelMessagesList(
     appComponent: AppComponent,
     conversation: Conversation,
     duelConfig: AIDuelConfig,
+    onNavigate: (Screen) -> Unit,
+    isDuelRunning: Boolean,
 ) {
     val codeBlockClickListener = rememberCodeBlockClickListener(appComponent = appComponent)
+    // 与 AI 聊天共用同一套选区状态清理规则：切会话 / 开始互聊时收起工具条
+    val selectionState = rememberSelectionState()
+    LaunchedEffect(conversation.id) {
+        selectionState.clear()
+    }
+    LaunchedEffect(isDuelRunning) {
+        if (isDuelRunning) selectionState.clear()
+    }
 
     ProvideMermaidRenderer {
-        SelectionContainer(
-            modifier = modifier.fillMaxSize()
+        // 全局复用组件：与 AI 聊天 / 博客详情 / 笔记详情完全一致的长按选区操作条
+        TextSelectionMenuContainer(
+            items = defaultTextSelectionMenuItems(
+                appComponent = appComponent,
+                onNavigate = onNavigate,
+            ),
+            selectionState = selectionState,
+            modifier = modifier,
         ) {
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
