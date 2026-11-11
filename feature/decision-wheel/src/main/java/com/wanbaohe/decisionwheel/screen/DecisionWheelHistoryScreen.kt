@@ -20,7 +20,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -47,12 +46,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.database.decision_wheel.entity.WheelHistoryEntity
-import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
-import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.base.ui.ClearHistoryConfirmDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
-import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.core.ui.widget.glass.glassMedium
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.decisionwheel.R
@@ -69,7 +66,7 @@ fun DecisionWheelHistoryScreen(
     val history by router.history.collectAsState()
     val wheels by router.wheels.collectAsState()
     var filterWheelId by remember { mutableStateOf<String?>(null) }
-    var showClearConfirm by remember { mutableStateOf(false) }
+    val showClearConfirm = remember { mutableStateOf(false) }
 
     val visible = remember(history, filterWheelId) {
         if (filterWheelId == null) history else history.filter { it.wheelId == filterWheelId }
@@ -83,7 +80,7 @@ fun DecisionWheelHistoryScreen(
         onGoBack = router::onTabBack,
         actions = {
             if (history.isNotEmpty()) {
-                IconButton(onClick = { showClearConfirm = true }) {
+                IconButton(onClick = { showClearConfirm.value = true }) {
                     Icon(
                         imageVector = Icons.Outlined.Delete,
                         contentDescription = stringResource(R.string.clear_history),
@@ -146,37 +143,12 @@ fun DecisionWheelHistoryScreen(
         }
     }
 
-    if (showClearConfirm) {
-        EnhancedAlertDialog(
-            visible = true,
-            containerColor = AppTheme.colors.getContainerSurfaceColor(),
-            onDismissRequest = { showClearConfirm = false },
-            title = { Text(stringResource(R.string.clear_history), fontWeight = FontWeight.Bold) },
-            text = { Text(stringResource(R.string.clear_history_confirm)) },
-            confirmButton = {
-                GlassTonalButton(
-                    onClick = {
-                        router.clearHistory()
-                        showClearConfirm = false
-                    },
-                    colors = AppTheme.colors.getSecondaryContainerButtonColors()
-                ) {
-                    Text(
-                        text = stringResource(R.string.delete),
-                        color = MaterialTheme.colorScheme.onErrorContainer
-                    )
-                }
-            },
-            dismissButton = {
-                FilledTonalButton(
-                    onClick = { showClearConfirm = false },
-                    colors = AppTheme.colors.getSurfaceContainerButtonColors()
-                ) {
-                    Text(stringResource(R.string.cancel))
-                }
-            }
-        )
-    }
+    ClearHistoryConfirmDialog(
+        showDialog = showClearConfirm,
+        onConfirm = router::clearHistory,
+        message = stringResource(R.string.clear_history_confirm),
+        confirmButtonText = stringResource(R.string.delete)
+    )
 }
 
 @Composable

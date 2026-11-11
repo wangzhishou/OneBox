@@ -20,6 +20,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import com.wanbaohe.base.ui.ClearHistoryConfirmDialog
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -58,6 +61,7 @@ fun ScanCodeContent(
     val scanner = rememberBarcodeScanner(component::onScanned)
     val latest = state.latest
     val canOpenLatest = latest != null && latest.type != ScanCodeContentType.TEXT
+    val showClearHistoryDialog = remember { mutableStateOf(false) }
 
     AdaptiveLayoutScreen(
         title = {
@@ -68,7 +72,7 @@ fun ScanCodeContent(
         actions = {},
         topAppBarPersistentActions = {
             if (latest != null || state.history.isNotEmpty()) {
-                IconButton(onClick = component::clearHistory) {
+                IconButton(onClick = { showClearHistoryDialog.value = true }) {
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.DeleteSweep,
                         contentDescription = stringResource(R.string.clear_scan_history)
@@ -150,6 +154,11 @@ fun ScanCodeContent(
         canShowScreenData = true,
         showImagePreviewAsStickyHeader = false,
         noDataControls = {},
+    )
+
+    ClearHistoryConfirmDialog(
+        showDialog = showClearHistoryDialog,
+        onConfirm = component::clearHistory,
     )
 }
 

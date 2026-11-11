@@ -19,13 +19,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,12 +33,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.wanbaohe.base.ui.ClearHistoryConfirmDialog
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.database.aidetect.entity.AiDetectRecordEntity
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDeleteForever
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDescription
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineImage
-import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.aidetect.R
 import com.wanbaohe.aidetect.component.AiDetectComponent
@@ -54,7 +52,7 @@ import java.util.Locale
 @Composable
 fun AiDetectHistoryScreen(component: AiDetectComponent) {
     val records by component.history.collectAsState()
-    var isClearDialogVisible by remember { mutableStateOf(false) }
+    val isClearDialogVisible = remember { mutableStateOf(false) }
 
     BaseScreen(
         title = stringResource(R.string.ai_detect_history),
@@ -63,7 +61,7 @@ fun AiDetectHistoryScreen(component: AiDetectComponent) {
         supportGlassEffect = true,
         actions = {
             if (records.isNotEmpty()) {
-                IconButton(onClick = { isClearDialogVisible = true }) {
+                IconButton(onClick = { isClearDialogVisible.value = true }) {
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDeleteForever,
                         contentDescription = stringResource(R.string.ai_detect_clear_all),
@@ -94,29 +92,14 @@ fun AiDetectHistoryScreen(component: AiDetectComponent) {
         }
     }
 
-    if (isClearDialogVisible) {
-        EnhancedAlertDialog(
-            visible = true,
-            onDismissRequest = { isClearDialogVisible = false },
-            title = { Text(stringResource(R.string.ai_detect_clear_all)) },
-            text = { Text(stringResource(R.string.ai_detect_clear_confirm)) },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        component.clearHistory()
-                        isClearDialogVisible = false
-                    }
-                ) {
-                    Text(stringResource(R.string.ai_detect_confirm))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { isClearDialogVisible = false }) {
-                    Text(stringResource(R.string.ai_detect_cancel))
-                }
-            },
-        )
-    }
+    ClearHistoryConfirmDialog(
+        showDialog = isClearDialogVisible,
+        onConfirm = component::clearHistory,
+        title = stringResource(R.string.ai_detect_clear_all),
+        message = stringResource(R.string.ai_detect_clear_confirm),
+        confirmButtonText = stringResource(R.string.ai_detect_confirm),
+        dismissButtonText = stringResource(R.string.ai_detect_cancel),
+    )
 }
 
 @Composable

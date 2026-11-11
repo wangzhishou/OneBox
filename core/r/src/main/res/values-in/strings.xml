@@ -980,6 +980,7 @@
     <string name="link_default_text">Tautan</string>
     <string name="recent_files">Terbaru</string>
     <string name="clear_history">Bersihkan Riwayat</string>
+    <string name="clear_history_confirm_message">Semua riwayat akan dihapus. Tindakan ini tidak dapat dibatalkan.</string>
     <string name="save_as">Simpan Sebagai</string>
     <string name="save_as_pdf">Simpan sebagai PDF</string>
     <string name="home_qr_code">Kode QR</string>

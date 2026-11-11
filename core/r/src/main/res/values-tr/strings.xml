@@ -980,6 +980,7 @@
     <string name="link_default_text">Bağlantı</string>
     <string name="recent_files">Son</string>
     <string name="clear_history">Geçmişi Temizle</string>
+    <string name="clear_history_confirm_message">Tüm kayıtlar silinecek. Bu işlem geri alınamaz.</string>
     <string name="save_as">Farklı Kaydet</string>
     <string name="save_as_pdf">PDF olarak kaydet</string>
     <string name="home_qr_code">QR Kod</string>

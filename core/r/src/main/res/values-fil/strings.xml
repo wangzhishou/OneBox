@@ -980,6 +980,7 @@
     <string name="link_default_text">Link</string>
     <string name="recent_files">Kamakailan</string>
     <string name="clear_history">I-clear ang Kasaysayan</string>
+    <string name="clear_history_confirm_message">Mabubura ang lahat ng tala. Hindi na ito mababawi.</string>
     <string name="save_as">I-save Bilang</string>
     <string name="save_as_pdf">I-save bilang PDF</string>
     <string name="home_qr_code">QR Code</string>

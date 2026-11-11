@@ -980,6 +980,7 @@
     <string name="link_default_text">Link</string>
     <string name="recent_files">Zuletzt</string>
     <string name="clear_history">Verlauf löschen</string>
+    <string name="clear_history_confirm_message">Alle Einträge werden gelöscht. Dies kann nicht rückgängig gemacht werden.</string>
     <string name="save_as">Speichern unter</string>
     <string name="save_as_pdf">Als PDF speichern</string>
     <string name="home_qr_code">QR-Code</string>

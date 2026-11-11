@@ -980,6 +980,7 @@
     <string name="link_default_text">Ссылка</string>
     <string name="recent_files">Недавние</string>
     <string name="clear_history">Очистить историю</string>
+    <string name="clear_history_confirm_message">Все записи будут удалены. Это действие нельзя отменить.</string>
     <string name="save_as">Сохранить как</string>
     <string name="save_as_pdf">Сохранить как PDF</string>
     <string name="home_qr_code">QR-код</string>

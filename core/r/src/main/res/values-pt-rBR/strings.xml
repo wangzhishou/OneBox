@@ -980,6 +980,7 @@
     <string name="link_default_text">Link</string>
     <string name="recent_files">Recentes</string>
     <string name="clear_history">Limpar Histórico</string>
+    <string name="clear_history_confirm_message">Todos os registros serão apagados. Isso não pode ser desfeito.</string>
     <string name="save_as">Salvar como</string>
     <string name="save_as_pdf">Salvar como PDF</string>
     <string name="home_qr_code">Código QR</string>

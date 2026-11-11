@@ -980,6 +980,7 @@
     <string name="link_default_text">링크</string>
     <string name="recent_files">최근</string>
     <string name="clear_history">기록 지우기</string>
+    <string name="clear_history_confirm_message">모든 기록이 삭제됩니다. 이 작업은 되돌릴 수 없습니다.</string>
     <string name="save_as">다른 이름으로 저장</string>
     <string name="save_as_pdf">PDF로 저장</string>
     <string name="home_qr_code">QR 코드</string>

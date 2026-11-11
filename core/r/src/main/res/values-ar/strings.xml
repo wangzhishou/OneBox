@@ -1057,6 +1057,7 @@
     <string name="link_default_text">رابط</string>
     <string name="recent_files">الأخيرة</string>
     <string name="clear_history">مسح السجل</string>
+    <string name="clear_history_confirm_message">سيتم مسح جميع السجلات. لا يمكن التراجع عن هذا الإجراء.</string>
     <string name="save_as">حفظ باسم</string>
     <string name="save_as_pdf">حفظ كملف PDF</string>
     <string name="home_qr_code">رمز QR</string>

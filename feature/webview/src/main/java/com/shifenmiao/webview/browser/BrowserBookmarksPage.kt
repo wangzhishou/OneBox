@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.wanbaohe.base.ui.ClearHistoryConfirmDialog
 import com.shifenmiao.common.components.category.CategoryManagementDialog
 import com.shifenmiao.common.components.category.ManageableItem
 import com.shifenmiao.model.Source
@@ -64,6 +65,7 @@ fun BrowserBookmarksPage(component: BrowserComponent) {
     val state by component.state.collectAsState()
     var selectedSegment by remember { mutableStateOf(0) }
     var showFolderManager by remember { mutableStateOf(false) }
+    val showClearHistoryDialog = remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -120,7 +122,7 @@ fun BrowserBookmarksPage(component: BrowserComponent) {
                     component.selectPage(BrowserState.BrowserPage.Home)
                 },
                 onDelete = { component.removeHistoryItem(it) },
-                onClearAll = { component.clearHistory() }
+                onClearAll = { showClearHistoryDialog.value = true }
             )
         }
     }
@@ -137,6 +139,11 @@ fun BrowserBookmarksPage(component: BrowserComponent) {
             onReorder = { }
         )
     }
+
+    ClearHistoryConfirmDialog(
+        showDialog = showClearHistoryDialog,
+        onConfirm = component::clearHistory,
+    )
 }
 
 @Composable

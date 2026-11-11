@@ -1097,6 +1097,7 @@
     <string name="link_default_text">連結</string>
     <string name="recent_files">最近開啟</string>
     <string name="clear_history">清除歷史</string>
+    <string name="clear_history_confirm_message">將清空全部操作記錄，刪除後無法復原。</string>
     <string name="save_as">另存為</string>
     <string name="save_as_pdf">儲存為PDF</string>
     <string name="home_qr_code">二維碼</string>

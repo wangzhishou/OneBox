@@ -1170,6 +1170,7 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="link_default_text">Link</string>
     <string name="recent_files">Recent</string>
     <string name="clear_history">Clear History</string>
+    <string name="clear_history_confirm_message">All records will be cleared. This cannot be undone.</string>
     <string name="save_as">Save As</string>
     <string name="save_as_pdf">Save as PDF</string>
     <string name="home_qr_code">QR Code</string>

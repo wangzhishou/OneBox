@@ -1278,6 +1278,7 @@
     <string name="link_default_text">链接</string>
     <string name="recent_files">最近打开</string>
     <string name="clear_history">清除历史</string>
+    <string name="clear_history_confirm_message">将清空全部操作记录，删除后无法恢复。</string>
     <string name="save_as">另存为</string>
     <string name="save_as_pdf">保存为PDF</string>
     <string name="home_qr_code">二维码</string>

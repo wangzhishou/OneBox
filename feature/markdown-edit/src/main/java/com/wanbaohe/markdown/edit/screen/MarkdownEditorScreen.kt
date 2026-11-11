@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
+import com.wanbaohe.base.ui.ClearHistoryConfirmDialog
 import com.wanbaohe.base.ui.button.CancelButton
 import com.wanbaohe.base.ui.button.ConfirmButton
 import com.shifenmiao.common.ui.BaseScreen
@@ -79,6 +80,7 @@ fun MarkdownEditorScreen(
     var showExitConfirmDialog by remember { mutableStateOf(false) }
     var pendingAction by remember { mutableStateOf<(() -> Unit)?>(null) }
     var showMenu by remember { mutableStateOf(false) }
+    val showClearHistoryDialog = remember { mutableStateOf(false) }
 
     // 文件保存器（用于新建文件或另存为）
     val fileSaver = rememberFileCreator(
@@ -347,7 +349,7 @@ fun MarkdownEditorScreen(
                             },
                             onClick = {
                                 showMenu = false
-                                component.clearHistory()
+                                showClearHistoryDialog.value = true
                             },
                             leadingIcon = {
                                 Icon(
@@ -403,6 +405,12 @@ fun MarkdownEditorScreen(
             }
         }
     }
+
+    // 清空历史确认
+    ClearHistoryConfirmDialog(
+        showDialog = showClearHistoryDialog,
+        onConfirm = component::clearHistory,
+    )
 
     // 退出确认弹窗
     EnhancedAlertDialog(

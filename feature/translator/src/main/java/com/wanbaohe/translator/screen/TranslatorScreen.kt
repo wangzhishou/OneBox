@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -27,6 +25,7 @@ import com.wanbaohe.core.ui.utils.content_pickers.ImagePickerMode
 import com.wanbaohe.core.ui.utils.content_pickers.rememberImagePicker
 import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
 import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBar
+import com.wanbaohe.base.ui.ClearHistoryConfirmDialog
 import com.wanbaohe.core.ui.widget.other.TopAppBarEmoji
 import com.wanbaohe.translator.R
 import com.wanbaohe.translator.component.HistoryFilter
@@ -39,7 +38,7 @@ import com.wanbaohe.translator.domain.TranslationModelMode
 fun TranslatorScreen(component: TranslatorComponent) {
     val state by component.uiState.collectAsState()
     var showVoiceInput by remember { mutableStateOf(false) }
-    var showClearHistory by remember { mutableStateOf(false) }
+    val showClearHistory = remember { mutableStateOf(false) }
     val voiceInput = rememberVoiceInputLauncher(
         onResult = component::updateInput,
         onShowIflytekSheet = { showVoiceInput = true },
@@ -59,7 +58,7 @@ fun TranslatorScreen(component: TranslatorComponent) {
         actions = {
             TopAppBarEmoji()
             if (state.currentTab == TranslatorTab.HISTORY && state.history.isNotEmpty()) {
-                IconButton(onClick = { showClearHistory = true }) {
+                IconButton(onClick = { showClearHistory.value = true }) {
                     Icon(
                         Icons.Outlined.LineClear,
                         contentDescription = stringResource(R.string.translation_clear_history),
@@ -127,26 +126,12 @@ fun TranslatorScreen(component: TranslatorComponent) {
         onDismiss = { showVoiceInput = false },
     )
 
-    if (showClearHistory) {
-        androidx.compose.material3.AlertDialog(
-            onDismissRequest = { showClearHistory = false },
-            title = { Text(stringResource(R.string.translation_clear_history)) },
-            text = { Text(stringResource(R.string.translation_clear_history_confirm)) },
-            confirmButton = {
-                TextButton(onClick = {
-                    component.clearHistory()
-                    showClearHistory = false
-                }) {
-                    Text(stringResource(com.shifenmiao.core.R.string.button_confirm))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showClearHistory = false }) {
-                    Text(stringResource(com.shifenmiao.core.R.string.button_cancel))
-                }
-            },
-        )
-    }
+    ClearHistoryConfirmDialog(
+        showDialog = showClearHistory,
+        onConfirm = component::clearHistory,
+        title = stringResource(R.string.translation_clear_history),
+        message = stringResource(R.string.translation_clear_history_confirm),
+    )
 }
 
 @Composable

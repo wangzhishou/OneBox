@@ -16,12 +16,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -32,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineClear
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFavorite
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
-import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.base.ui.ClearHistoryConfirmDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
@@ -55,7 +52,7 @@ fun PoemHistorySheet(
     onClear: () -> Unit,
     onDismiss: (Boolean) -> Unit,
 ) {
-    var showClearConfirm by remember { mutableStateOf(false) }
+    val showClearConfirm = remember { mutableStateOf(false) }
 
     EnhancedModalBottomSheet(
         visible = visible,
@@ -89,7 +86,7 @@ fun PoemHistorySheet(
                     horizontalArrangement = Arrangement.End,
                 ) {
                     if (history.isNotEmpty()) {
-                        IconButton(onClick = { showClearConfirm = true }) {
+                        IconButton(onClick = { showClearConfirm.value = true }) {
                             Icon(
                                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineClear,
                                 contentDescription = stringResource(R.string.poem_clear_history),
@@ -131,30 +128,13 @@ fun PoemHistorySheet(
         }
     }
 
-    if (showClearConfirm) {
-        EnhancedAlertDialog(
-            visible = true,
-            onDismissRequest = { showClearConfirm = false },
-            text = {
-                Text(text = stringResource(R.string.poem_clear_history_confirm))
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        showClearConfirm = false
-                        onClear()
-                    },
-                ) {
-                    Text(text = stringResource(R.string.poem_confirm))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showClearConfirm = false }) {
-                    Text(text = stringResource(R.string.poem_cancel))
-                }
-            },
-        )
-    }
+    ClearHistoryConfirmDialog(
+        showDialog = showClearConfirm,
+        onConfirm = onClear,
+        message = stringResource(R.string.poem_clear_history_confirm),
+        confirmButtonText = stringResource(R.string.poem_confirm),
+        dismissButtonText = stringResource(R.string.poem_cancel),
+    )
 }
 
 /** 历史行:诗词标题 + 作者·朝代 + 日期;当前展示项高亮底色,收藏标心 */

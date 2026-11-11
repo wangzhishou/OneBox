@@ -1116,6 +1116,7 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <string name="link_default_text">Liên kết</string>
     <string name="recent_files">Mở gần đây</string>
     <string name="clear_history">Xóa lịch sử</string>
+    <string name="clear_history_confirm_message">Tất cả bản ghi sẽ bị xóa. Không thể hoàn tác thao tác này.</string>
     <string name="save_as">Lưu thành</string>
     <string name="save_as_pdf">Lưu dưới dạng PDF</string>
     <string name="home_qr_code">Mã QR</string>

@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.wanbaohe.base.ui.ClearHistoryConfirmDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
@@ -51,7 +52,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineDevices
 fun BrowserSettingsPage(component: BrowserComponent) {
     val state by component.state.collectAsState()
     val settings = state.settings
-    var showClearCacheDialog by remember { mutableStateOf(false) }
+    val showClearCacheDialog = remember { mutableStateOf(false) }
     var showSearchEngineDialog by remember { mutableStateOf(false) }
     var showUserAgentDialog by remember { mutableStateOf(false) }
     var showCustomUaDialog by remember { mutableStateOf(false) }
@@ -127,7 +128,7 @@ fun BrowserSettingsPage(component: BrowserComponent) {
                     icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
                     title = stringResource(R.string.browser_clear_browsing_data),
                     subtitle = stringResource(R.string.browser_clear_browsing_data_subtitle),
-                    onClick = { showClearCacheDialog = true }
+                    onClick = { showClearCacheDialog.value = true }
                 )
             }
         }
@@ -154,37 +155,17 @@ fun BrowserSettingsPage(component: BrowserComponent) {
         Spacer(modifier = Modifier.height(32.dp))
     }
 
-    if (showClearCacheDialog) {
-        EnhancedAlertDialog(
-            visible = true,
-            onDismissRequest = { showClearCacheDialog = false },
-            title = { Text(stringResource(R.string.browser_clear_browsing_data)) },
-            text = { Text(stringResource(R.string.browser_clear_data_confirm)) },
-            confirmButton = {
-                Text(
-                    text = stringResource(R.string.browser_clear),
-                    color = MaterialTheme.colorScheme.onErrorContainer,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(8.dp))
-                        .clickable {
-                            component.clearCache()
-                            component.clearHistory()
-                            showClearCacheDialog = false
-                        }
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                )
-            },
-            dismissButton = {
-                Text(
-                    text = stringResource(R.string.browser_cancel),
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(8.dp))
-                        .clickable { showClearCacheDialog = false }
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                )
-            }
-        )
-    }
+    ClearHistoryConfirmDialog(
+        showDialog = showClearCacheDialog,
+        onConfirm = {
+            component.clearCache()
+            component.clearHistory()
+        },
+        title = stringResource(R.string.browser_clear_browsing_data),
+        message = stringResource(R.string.browser_clear_data_confirm),
+        confirmButtonText = stringResource(R.string.browser_clear),
+        dismissButtonText = stringResource(R.string.browser_cancel),
+    )
 
     if (showSearchEngineDialog) {
         EnhancedAlertDialog(

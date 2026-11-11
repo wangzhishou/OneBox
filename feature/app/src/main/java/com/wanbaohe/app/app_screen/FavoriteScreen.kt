@@ -57,6 +57,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.shifenmiao.base.manager.DeleteConfirmationManager
 import com.shifenmiao.base.provider.LocalDataDraftHelper
 import com.wanbaohe.base.ui.AdvancedDeleteConfirmDialog
+import com.wanbaohe.base.ui.ClearHistoryConfirmDialog
 import com.wanbaohe.base.ui.button.SmallFixedHeightButton
 import com.wanbaohe.base.ui.icon.BuildCustomIcon
 import com.shifenmiao.common.components.ClickInfoType
@@ -204,6 +205,7 @@ private fun ContentListSection(
     val selectedLogEntry = remember { mutableStateOf<ActivityLogEntry?>(null) }
     val showDeleteMineDialog = remember { mutableStateOf(false) }
     val selectedMineItem = remember { mutableStateOf<ItemWithCategoriesAndStats?>(null) }
+    val showClearHistoryDialog = remember { mutableStateOf(false) }
     val onNavigate = LocalOnNavigate.current
 
     LazyColumn(
@@ -309,7 +311,7 @@ private fun ContentListSection(
                         text = stringResource(id = R.string.clear_history),
                         icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.DeleteSweep,
                         onClick = {
-                            activityLogComponent.clearAll()
+                            showClearHistoryDialog.value = true
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.Transparent,
@@ -358,6 +360,12 @@ private fun ContentListSection(
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
+
+    // 清空全部操作记录：不可逆，必须确认
+    ClearHistoryConfirmDialog(
+        showDialog = showClearHistoryDialog,
+        onConfirm = activityLogComponent::clearAll
+    )
 
     // 删除确认对话框
     if (showDeleteDialog.value) {

@@ -980,6 +980,7 @@
     <string name="link_default_text">リンク</string>
     <string name="recent_files">最近</string>
     <string name="clear_history">履歴をクリア</string>
+    <string name="clear_history_confirm_message">すべての履歴が削除されます。この操作は取り消せません。</string>
     <string name="save_as">名前を付けて保存</string>
     <string name="save_as_pdf">PDFとして保存</string>
     <string name="home_qr_code">QRコード</string>

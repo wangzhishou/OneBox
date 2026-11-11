@@ -980,6 +980,7 @@
     <string name="link_default_text">लिंक</string>
     <string name="recent_files">हाल ही में</string>
     <string name="clear_history">इतिहास साफ़ करें</string>
+    <string name="clear_history_confirm_message">सभी रिकॉर्ड हटा दिए जाएँगे। इसे वापस नहीं लिया जा सकता।</string>
     <string name="save_as">इस रूप में सहेजें</string>
     <string name="save_as_pdf">PDF के रूप में सहेजें</string>
     <string name="home_qr_code">QR कोड</string>

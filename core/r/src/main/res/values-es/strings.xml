@@ -980,6 +980,7 @@
     <string name="link_default_text">Enlace</string>
     <string name="recent_files">Recientes</string>
     <string name="clear_history">Borrar historial</string>
+    <string name="clear_history_confirm_message">Se borrarán todos los registros. Esta acción no se puede deshacer.</string>
     <string name="save_as">Guardar como</string>
     <string name="save_as_pdf">Guardar como PDF</string>
     <string name="home_qr_code">Código QR</string>

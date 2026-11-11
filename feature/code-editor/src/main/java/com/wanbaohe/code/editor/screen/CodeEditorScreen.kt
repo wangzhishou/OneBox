@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import com.wanbaohe.base.ui.ClearHistoryConfirmDialog
 import com.wanbaohe.base.ui.button.CancelButton
 import com.wanbaohe.base.ui.button.ConfirmButton
 import com.shifenmiao.common.ui.BaseScreen
@@ -78,6 +79,7 @@ fun CodeEditorScreen(
     var showExitConfirmDialog by remember { mutableStateOf(false) }
     var pendingAction by remember { mutableStateOf<(() -> Unit)?>(null) }
     var showMenu by remember { mutableStateOf(false) }
+    val showClearHistoryDialog = remember { mutableStateOf(false) }
 
     // 同步外部加载的文件内容到编辑器
     // - loadFile 时:content 变化 → 同步
@@ -299,7 +301,7 @@ fun CodeEditorScreen(
                             },
                             onClick = {
                                 showMenu = false
-                                component.clearHistory()
+                                showClearHistoryDialog.value = true
                             },
                             leadingIcon = {
                                 Icon(
@@ -352,6 +354,12 @@ fun CodeEditorScreen(
             }
         }
     }
+
+    // 清空历史确认
+    ClearHistoryConfirmDialog(
+        showDialog = showClearHistoryDialog,
+        onConfirm = component::clearHistory,
+    )
 
     // 退出确认弹窗
     if (showExitConfirmDialog) {

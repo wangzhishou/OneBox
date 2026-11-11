@@ -1116,6 +1116,7 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="link_default_text">Lien</string>
     <string name="recent_files">Récemment ouverts</string>
     <string name="clear_history">Effacer l\'historique</string>
+    <string name="clear_history_confirm_message">Tous les enregistrements seront supprimés. Cette action est irréversible.</string>
     <string name="save_as">Enregistrer sous</string>
     <string name="save_as_pdf">Enregistrer en PDF</string>
     <string name="home_qr_code">Code QR</string>
