@@ -196,4 +196,8 @@
     <string name="empty_guide_avoid_hint">上の活動をタップして凶日を確認</string>
     <string name="empty_guide_yi_hint">上の活動をタップして吉日を確認</string>
     <string name="view_calendar">カレンダーを表示</string>
+
+    <!-- 大运走势 -->
+    <string name="dayun_year_range">%1$d–%2$d</string>
+    <string name="dayun_current">現在</string>
 </resources>

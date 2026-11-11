@@ -196,4 +196,8 @@
     <string name="empty_guide_avoid_hint">Touchez une activité ci-dessus pour voir les jours néfastes correspondants</string>
     <string name="empty_guide_yi_hint">Touchez une activité ci-dessus pour voir les jours fastes correspondants</string>
     <string name="view_calendar">Voir le calendrier</string>
+
+    <!-- 大运走势 -->
+    <string name="dayun_year_range">%1$d–%2$d</string>
+    <string name="dayun_current">En cours</string>
 </resources>

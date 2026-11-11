@@ -196,4 +196,8 @@
     <string name="empty_guide_avoid_hint">इसके अशुभ दिन देखने के लिए ऊपर किसी गतिविधि पर टैप करें</string>
     <string name="empty_guide_yi_hint">इसके शुभ दिन देखने के लिए ऊपर किसी गतिविधि पर टैप करें</string>
     <string name="view_calendar">कैलेंडर देखें</string>
+
+    <!-- 大运走势 -->
+    <string name="dayun_year_range">%1$d–%2$d</string>
+    <string name="dayun_current">वर्तमान</string>
 </resources>

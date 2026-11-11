@@ -196,4 +196,8 @@
     <string name="empty_guide_avoid_hint">Ketuk aktivitas di atas untuk melihat hari buruknya</string>
     <string name="empty_guide_yi_hint">Ketuk aktivitas di atas untuk melihat hari baiknya</string>
     <string name="view_calendar">Lihat Kalender</string>
+
+    <!-- 大运走势 -->
+    <string name="dayun_year_range">%1$d–%2$d</string>
+    <string name="dayun_current">Saat ini</string>
 </resources>

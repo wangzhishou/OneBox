@@ -196,4 +196,8 @@
     <string name="empty_guide_avoid_hint">Toque em uma atividade acima para ver seus dias inauspiciosos</string>
     <string name="empty_guide_yi_hint">Toque em uma atividade acima para ver seus dias auspiciosos</string>
     <string name="view_calendar">Ver calendário</string>
+
+    <!-- 大运走势 -->
+    <string name="dayun_year_range">%1$d–%2$d</string>
+    <string name="dayun_current">Atual</string>
 </resources>

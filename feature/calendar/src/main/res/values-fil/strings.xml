@@ -196,4 +196,8 @@
     <string name="empty_guide_avoid_hint">I-tap ang aktibidad sa itaas upang makita ang mga hindi mapalad na araw nito</string>
     <string name="empty_guide_yi_hint">I-tap ang aktibidad sa itaas upang makita ang mga mapalad na araw nito</string>
     <string name="view_calendar">Tingnan ang Kalendaryo</string>
+
+    <!-- 大运走势 -->
+    <string name="dayun_year_range">%1$d–%2$d</string>
+    <string name="dayun_current">Kasalukuyan</string>
 </resources>

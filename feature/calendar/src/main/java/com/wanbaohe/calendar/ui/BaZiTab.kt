@@ -1,9 +1,11 @@
 package com.wanbaohe.calendar.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -16,12 +18,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
 import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors
 import androidx.compose.material3.ButtonDefaults
@@ -32,6 +37,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -410,99 +416,219 @@ private fun PillarBox(text: String, isHighlight: Boolean) {
     }
 }
 
-/** 大运走势卡片 */
+/** 大运走势卡片：宽度足够时平铺全部大运，窄屏退化为可横向滑动的时间轴 */
 @Composable
 private fun DaYunCard(daYunList: List<DaYunItem>) {
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
     ) {
-        Column(modifier = Modifier.padding(20.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = stringResource(R.string.dayun_trend),
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-            }
+        BoxWithConstraints(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp)
+        ) {
+            val spacing = 10.dp
+            val minStepWidth = 88.dp
+            // 当前宽度能完整容纳几步；容不下才启用横向滚动
+            val columns = ((maxWidth.value + spacing.value) / (minStepWidth.value + spacing.value))
+                .toInt().coerceAtLeast(1)
+            val needsScroll = daYunList.size > columns
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // 干支方格行
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(daYunList) { item ->
-                    DaYunBox(item = item)
+            Column(modifier = Modifier.fillMaxWidth()) {
+                // 标题行：右侧露出的半截格子本身就是可滑动的信号，不再额外写提示文案
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = stringResource(R.string.dayun_trend),
+                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
                 }
-            }
 
-            Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(14.dp))
 
-            // 当前大运说明
-            daYunList.find { it.isCurrent }?.let { current ->
-                Text(
-                    text = stringResource(
-                        R.string.current_dayun,
-                        current.ganZhi,
-                        getRandomDaYunDesc(current.ganZhi)
-                    ),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                if (daYunList.isNotEmpty()) {
+                    if (needsScroll) {
+                        // 初始就把当前大运带进视野，并保留前一步作为上下文
+                        val currentIndex = daYunList.indexOfFirst { it.isCurrent }.coerceAtLeast(0)
+                        val listState = rememberLazyListState()
+                        LaunchedEffect(currentIndex) {
+                            if (currentIndex > 0) {
+                                listState.scrollToItem(currentIndex - 1)
+                            }
+                        }
+                        LazyRow(
+                            state = listState,
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(spacing),
+                            contentPadding = PaddingValues(end = 4.dp)
+                        ) {
+                            items(daYunList, key = { it.startYear }) { item ->
+                                DaYunStep(
+                                    item = item,
+                                    modifier = Modifier.width(minStepWidth)
+                                )
+                            }
+                        }
+                    } else {
+                        // 宽屏：所有大运等宽平铺，不留空白也不裁切任何一步
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(spacing)
+                        ) {
+                            daYunList.forEach { item ->
+                                DaYunStep(
+                                    item = item,
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
+                        }
+                    }
+                }
+
+                // 当前大运说明
+                daYunList.find { it.isCurrent }?.let { current ->
+                    Spacer(modifier = Modifier.height(14.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .glassBackground(
+                                style = GlassStyle.Medium,
+                                shape = RoundedCornerShape(12.dp),
+                                color = MaterialTheme.colorScheme.surfaceContainer
+                            )
+                            .padding(horizontal = 14.dp, vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(width = 3.dp, height = 28.dp)
+                                .clip(RoundedCornerShape(2.dp))
+                                .background(MaterialTheme.colorScheme.onPrimaryContainer)
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                            text = stringResource(
+                                R.string.current_dayun,
+                                current.ganZhi,
+                                getRandomDaYunDesc(current.ganZhi)
+                            ),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            lineHeight = 20.sp,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                }
             }
         }
     }
 }
 
+/** 单步大运：高度由内容撑开，年份不换行，彻底避免干支被裁切 */
 @Composable
-private fun DaYunBox(item: DaYunItem) {
-    val gan = if (item.ganZhi.length >= 2) item.ganZhi.substring(0, 1) else ""
-    val zhi = if (item.ganZhi.length >= 2) item.ganZhi.substring(1, 2) else ""
+private fun DaYunStep(
+    item: DaYunItem,
+    modifier: Modifier = Modifier
+) {
+    val gan = item.ganZhi.take(1)
+    val zhi = item.ganZhi.drop(1).take(1)
+    val shape = RoundedCornerShape(14.dp)
+    val containerColor = if (item.isCurrent) MaterialTheme.colorScheme.primaryContainer
+    else MaterialTheme.colorScheme.surfaceContainer
+    val inkColor = if (item.isCurrent) MaterialTheme.colorScheme.onPrimaryContainer
+    else MaterialTheme.colorScheme.onSurface
+    val subInkColor = if (item.isCurrent) MaterialTheme.colorScheme.onPrimaryContainer
+    else MaterialTheme.colorScheme.onSurfaceVariant
 
     Column(
-        modifier = Modifier
-            .width(80.dp)
-            .height(80.dp)
+        modifier = modifier
             .glassBackground(
-                shape = RoundedCornerShape(12.dp),
-                color = if (item.isCurrent) MaterialTheme.colorScheme.surfaceContainer
-                else MaterialTheme.colorScheme.surfaceContainer
+                style = GlassStyle.Medium,
+                shape = shape,
+                color = containerColor
             )
-            .padding(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            .padding(horizontal = 8.dp, vertical = 12.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "${item.startYear} - ${item.startYear + 9}",
-            style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
-            color = if (item.isCurrent) MaterialTheme.colorScheme.onSurface
-            else MaterialTheme.colorScheme.onSurfaceVariant
+            text = stringResource(R.string.dayun_year_range, item.startYear, item.startYear + 9),
+            style = MaterialTheme.typography.labelSmall.copy(
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Medium
+            ),
+            color = subInkColor,
+            textAlign = TextAlign.Center,
+            maxLines = 1,
+            softWrap = false
         )
-        Spacer(modifier = Modifier.height(8.dp))
+
+        Spacer(modifier = Modifier.height(10.dp))
+
         Row(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = gan,
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold, fontSize = 22.sp),
-                color = if (item.isCurrent) MaterialTheme.colorScheme.onSurface
-                else MaterialTheme.colorScheme.onSurface
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 22.sp
+                ),
+                color = inkColor
             )
+            Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = zhi,
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold, fontSize = 22.sp),
-                color = if (item.isCurrent) MaterialTheme.colorScheme.onSurface
-                else MaterialTheme.colorScheme.onSurface
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 22.sp
+                ),
+                color = inkColor
             )
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        // 底部状态位固定高度，保证每一步等高；当前步用圆点 + 徽标突出
+        Box(
+            modifier = Modifier.height(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            if (item.isCurrent) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(
+                        modifier = Modifier
+                            .size(5.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.onPrimaryContainer)
+                    )
+                    Spacer(modifier = Modifier.width(5.dp))
+                    Text(
+                        text = stringResource(R.string.dayun_current),
+                        style = MaterialTheme.typography.labelSmall.copy(
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Bold
+                        ),
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        maxLines = 1
+                    )
+                }
+            } else {
+                Box(
+                    modifier = Modifier
+                        .size(width = 16.dp, height = 2.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.outlineVariant)
+                )
+            }
         }
     }
 }

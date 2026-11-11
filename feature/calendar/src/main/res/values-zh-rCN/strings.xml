@@ -254,5 +254,9 @@
     <string name="empty_guide_avoid_hint">点击上方事项，即可查看对应的忌日</string>
     <string name="empty_guide_yi_hint">点击上方事项，即可查看对应的黄道吉日</string>
     <string name="view_calendar">查看日历</string>
+
+    <!-- 大运走势 -->
+    <string name="dayun_year_range">%1$d–%2$d</string>
+    <string name="dayun_current">当前</string>
 </resources>
 
