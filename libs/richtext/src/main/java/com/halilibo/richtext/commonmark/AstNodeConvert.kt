@@ -1,6 +1,5 @@
 package com.halilibo.richtext.commonmark
 
-import com.halilibo.richtext.markwon.MarkdownAstNodeParser
 import com.shifenmiao.model.node.AstBlockQuote
 import com.shifenmiao.model.node.AstCode
 import com.shifenmiao.model.node.AstDocument
@@ -70,190 +69,142 @@ import org.commonmark.node.StrongEmphasis
 import org.commonmark.node.Text
 import org.commonmark.node.ThematicBreak
 
+private class ConvertWorkItem(
+    val startNode: Node,
+    val parentNode: AstNode?,
+    val initialPreviousNode: AstNode?,
+    val onFirstCreated: (AstNode?) -> Unit
+)
+
 /**
- * Converts common-markdown tree to AstNode tree in a recursive fashion.
+ * Converts the CommonMark tree iteratively so long sibling chains and deep nesting cannot overflow
+ * the Android thread stack.
  */
 internal fun convert(
     node: Node?,
     parentNode: AstNode? = null,
     previousNode: AstNode? = null,
-    markdownAstNodeParser: MarkdownAstNodeParser,
 ): AstNode? {
     node ?: return null
 
-    val nodeLinks = AstNodeLinks(
-        parent = parentNode,
-        previous = previousNode,
-    )
+    var result: AstNode? = null
+    val pending = ArrayDeque<ConvertWorkItem>()
+    pending.addLast(ConvertWorkItem(node, parentNode, previousNode) { result = it })
 
-    val newNodeType: AstNodeType? = when (node) {
-        is BlockQuote -> AstBlockQuote
-        is BulletList -> AstUnorderedList(bulletMarker = node.bulletMarker)
-        is Code -> AstCode(literal = node.literal)
-        is Document -> AstDocument
-        is Emphasis -> AstEmphasis(delimiter = node.openingDelimiter)
-        is FencedCodeBlock -> AstFencedCodeBlock(
-            literal = node.literal,
-            fenceChar = node.fenceChar,
-            fenceIndent = node.fenceIndent,
-            fenceLength = node.fenceLength,
-            info = node.info
-        )
+    while (pending.isNotEmpty()) {
+        val work = pending.removeLast()
+        var currentNode: Node? = work.startNode
+        var previousAstNode = work.initialPreviousNode
+        var firstAstNode: AstNode? = null
 
-        is HardLineBreak -> AstHardLineBreak
-        is Heading -> AstHeading(
-            // commonmark 的 level 从 1 开始,Heading 样式表以 0 为最高级别
-            level = node.level - 1
-        )
-
-        is ThematicBreak -> AstThematicBreak
-        is HtmlInline -> AstHtmlInline(
-            literal = node.literal
-        )
-
-        is HtmlBlock -> AstHtmlBlock(
-            literal = node.literal
-        )
-
-        is Image -> {
-            if (node.destination == null) {
-                null
-            } else {
-                AstImage(
-                    title = node.title ?: "",
-                    destination = node.destination
-                )
+        while (currentNode != null) {
+            val sourceNode = currentNode
+            val converted = sourceNode.toAstNodes(work.parentNode, previousAstNode)
+            if (converted == null) {
+                currentNode = sourceNode.next
+                continue
             }
-        }
 
-        is IndentedCodeBlock -> AstIndentedCodeBlock(
-            literal = node.literal
-        )
+            val (head, tail) = converted
+            if (firstAstNode == null) firstAstNode = head
+            previousAstNode?.links?.next = head
+            head.links.previous = previousAstNode
 
-        is Link -> AstLink(
-            title = node.title ?: "",
-            destination = node.destination
-        )
-
-        is ListItem -> AstListItem
-        is OrderedList -> AstOrderedList(
-            startNumber = node.startNumber,
-            delimiter = node.delimiter
-        )
-
-        is Paragraph -> AstParagraph
-        is SoftLineBreak -> AstSoftLineBreak
-        is StrongEmphasis -> AstStrongEmphasis(
-            delimiter = node.openingDelimiter
-        )
-
-        is Text -> {
-            val splitNodes = splitInlineMathNodes(
-                text = node.literal,
-                parentNode = parentNode,
-                previousNode = previousNode
-            )
-            if (splitNodes != null) {
-                val (head, tail) = splitNodes
-                val nextNode = convert(
-                    node.next,
-                    parentNode = parentNode,
-                    previousNode = tail,
-                    markdownAstNodeParser = markdownAstNodeParser
-                )
-                tail.links.next = nextNode
-                nextNode?.links?.previous = tail
-                if (node.next == null) {
-                    parentNode?.links?.lastChild = tail
-                }
-                return head
+            sourceNode.firstChild?.let { child ->
+                pending.addLast(ConvertWorkItem(child, head, null) { head.links.firstChild = it })
             }
-            AstText(
-                literal = node.literal
-            )
+
+            previousAstNode = tail
+            currentNode = sourceNode.next
         }
 
-        is LinkReferenceDefinition -> AstLinkReferenceDefinition(
-            title = node.title ?: "",
-            destination = node.destination,
-            label = node.label
-        )
-
-        is TableBlock -> AstTableRoot
-        is TableHead -> AstTableHeader
-        is TableBody -> AstTableBody
-        is TableRow -> AstTableRow
-        is TableCell -> AstTableCell(
-            header = node.isHeader,
-            alignment = when (node.alignment) {
-                LEFT -> AstTableCellAlignment.LEFT
-                CENTER -> AstTableCellAlignment.CENTER
-                RIGHT -> AstTableCellAlignment.RIGHT
-                null -> AstTableCellAlignment.LEFT
-            }
-        )
-
-        is Strikethrough -> AstStrikethrough(
-            node.openingDelimiter
-        )
-
-        is JLatexMathNode -> {
-            AstJLatexNodeMath(
-                latex = node.latex(),
-                spanned = markdownAstNodeParser.markdown?.render(node)
-            )
-        }
-
-        is JLatexMathBlock -> AstJLatexBlockMath(
-            latex = node.latex(),
-            spanned = markdownAstNodeParser.markdown?.render(node)
-        )
-
-        is CustomNode -> null
-        is CustomBlock -> null
-        else -> null
+        work.parentNode?.links?.lastChild = previousAstNode
+        work.onFirstCreated(firstAstNode)
     }
 
-    val newNode = newNodeType?.let {
-        AstNode(newNodeType, nodeLinks)
-    }
-
-    // Unsupported nodes (CustomNode/CustomBlock/null-destination Image, etc.) must not
-    // drop the rest of the sibling chain — continue converting `node.next`.
-    if (newNode == null) {
-        val nextAst = convert(
-            node.next,
-            parentNode = parentNode,
-            previousNode = previousNode,
-            markdownAstNodeParser = markdownAstNodeParser
-        )
-        if (node.next == null) {
-            parentNode?.links?.lastChild = previousNode
-        }
-        return nextAst
-    }
-
-    newNode.links.firstChild = convert(
-        node.firstChild,
-        parentNode = newNode,
-        previousNode = null,
-        markdownAstNodeParser
-    )
-    newNode.links.next = convert(
-        node.next,
-        parentNode = parentNode,
-        previousNode = newNode,
-        markdownAstNodeParser
-    )
-
-    if (node.next == null) {
-        parentNode?.links?.lastChild = newNode
-    }
-
-    return newNode
+    return result
 }
 
-private val InlineDollarMathRegex = Regex("(?<!\\\\)\\$(.+?)(?<!\\\\)\\$")
+private fun Node.toAstNodes(
+    parentNode: AstNode?,
+    previousNode: AstNode?
+): Pair<AstNode, AstNode>? {
+    if (this is Text) {
+        splitInlineMathNodes(literal, parentNode, previousNode)?.let { return it }
+    }
+    val type = toAstNodeType() ?: return null
+    val newNode = AstNode(type, AstNodeLinks(parent = parentNode, previous = previousNode))
+    return newNode to newNode
+}
+
+private fun Node.toAstNodeType(): AstNodeType? = when (this) {
+    is BlockQuote -> AstBlockQuote
+    is BulletList -> AstUnorderedList(bulletMarker = marker?.firstOrNull() ?: '\u0000')
+    is Code -> AstCode(literal = literal)
+    is Document -> AstDocument
+    is Emphasis -> AstEmphasis(delimiter = openingDelimiter)
+    is FencedCodeBlock -> AstFencedCodeBlock(
+        literal = literal,
+        fenceChar = fenceCharacter?.firstOrNull() ?: '\u0000',
+        fenceIndent = fenceIndent,
+        fenceLength = openingFenceLength ?: 0,
+        info = info
+    )
+
+    is HardLineBreak -> AstHardLineBreak
+    is Heading -> AstHeading(
+        // commonmark 的 level 从 1 开始,Heading 样式表以 0 为最高级别
+        level = level - 1
+    )
+
+    is ThematicBreak -> AstThematicBreak
+    is HtmlInline -> AstHtmlInline(literal = literal)
+    is HtmlBlock -> AstHtmlBlock(literal = literal)
+    is Image -> destination?.let {
+        AstImage(title = title ?: "", destination = it)
+    }
+
+    is IndentedCodeBlock -> AstIndentedCodeBlock(literal = literal)
+    is Link -> AstLink(title = title ?: "", destination = destination)
+    is ListItem -> AstListItem
+    is OrderedList -> AstOrderedList(
+        startNumber = markerStartNumber ?: 0,
+        delimiter = markerDelimiter?.firstOrNull() ?: '\u0000'
+    )
+    is Paragraph -> AstParagraph
+    is SoftLineBreak -> AstSoftLineBreak
+    is StrongEmphasis -> AstStrongEmphasis(delimiter = openingDelimiter)
+    is Text -> AstText(literal = literal)
+    is LinkReferenceDefinition -> AstLinkReferenceDefinition(
+        title = title ?: "",
+        destination = destination,
+        label = label
+    )
+
+    is TableBlock -> AstTableRoot
+    is TableHead -> AstTableHeader
+    is TableBody -> AstTableBody
+    is TableRow -> AstTableRow
+    is TableCell -> AstTableCell(
+        header = isHeader,
+        alignment = when (alignment) {
+            LEFT -> AstTableCellAlignment.LEFT
+            CENTER -> AstTableCellAlignment.CENTER
+            RIGHT -> AstTableCellAlignment.RIGHT
+            null -> AstTableCellAlignment.LEFT
+        }
+    )
+
+    is Strikethrough -> AstStrikethrough(openingDelimiter)
+    is JLatexMathNode -> AstJLatexNodeMath(latex = latex(), spanned = null)
+    is JLatexMathBlock -> AstJLatexBlockMath(latex = latex(), spanned = null)
+    is CustomNode -> null
+    is CustomBlock -> null
+    else -> null
+}
+
+private val InlineDoubleDollarMathRegex = Regex("""(?<!\\)\$\$(.+?)(?<!\\)\$\$""")
+private val InlineDollarMathRegex = Regex("""(?<![\\$])\$(?!\$)(.+?)(?<![\\$])\$(?!\$)""")
 private val InlineParenMathRegex = Regex("""\\\((.+?)\\\)""")
 
 private fun splitInlineMathNodes(
@@ -262,7 +213,9 @@ private fun splitInlineMathNodes(
     previousNode: AstNode?,
 ): Pair<AstNode, AstNode>? {
     if (!text.contains('$') && !text.contains("\\(")) return null
-    val hasInline = InlineDollarMathRegex.containsMatchIn(text) || InlineParenMathRegex.containsMatchIn(text)
+    val hasInline = InlineDoubleDollarMathRegex.containsMatchIn(text) ||
+        InlineDollarMathRegex.containsMatchIn(text) ||
+        InlineParenMathRegex.containsMatchIn(text)
     if (!hasInline) return null
 
     var index = 0
@@ -279,9 +232,10 @@ private fun splitInlineMathNodes(
     }
 
     while (index < text.length) {
+        val doubleDollarMatch = InlineDoubleDollarMathRegex.find(text, index)
         val dollarMatch = InlineDollarMathRegex.find(text, index)
         val parenMatch = InlineParenMathRegex.find(text, index)
-        val nextMatch = listOfNotNull(dollarMatch, parenMatch)
+        val nextMatch = listOfNotNull(doubleDollarMatch, dollarMatch, parenMatch)
             .minByOrNull { it.range.first }
 
         if (nextMatch == null) {

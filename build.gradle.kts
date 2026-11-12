@@ -42,3 +42,14 @@ configurations.all {
     }
 }
 
+allprojects {
+    configurations.all {
+        resolutionStrategy.eachDependency {
+            if (requested.group == "com.atlassian.commonmark") {
+                useTarget("org.commonmark:${requested.name}:${libs.versions.commonmark.get()}")
+                because("Markwon 4.6.2 still uses the legacy CommonMark group")
+            }
+        }
+    }
+}
+

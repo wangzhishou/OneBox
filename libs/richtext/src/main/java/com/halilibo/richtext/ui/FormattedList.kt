@@ -266,7 +266,7 @@ fun <T> RichTextScope.FormattedList(
 
     // Measure the prefixes first.
     val prefixPlaceables = prefixMeasureables.map { marker ->
-      marker.measure(Constraints())
+      marker.measure(constraints)
     }
       .toList()
     val widestPrefix = prefixPlaceables.maxByOrNull { it.width }!!

@@ -5,7 +5,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.text.AnnotatedString
 
 /**
- * Refer to https://spec.commonmark.org/0.30/#precedence
+ * Refer to https://spec.commonmark.org/0.31.2/#precedence
  *
  * Common mark specification defines 3 different types of AST nodes;
  *

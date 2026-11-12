@@ -3,7 +3,6 @@ package com.halilibo.richtext.markwon
 internal object MarkdownCompatibilityNormalizer {
     private val inlineHeading = Regex("""([。！？!?；;：:.][”’」』】）)]?)(#{1,6})([ \t]+)""")
     private val strongEmphasis = Regex("""(?<!\*)\*\*(?!\*)(.+?)(?<!\*)\*\*(?!\*)""")
-    private val codeSpan = Regex("""(?<!`)(`+)(?!`)(.*?)(?<!`)\1(?!`)""")
 
     fun normalize(text: String): String {
         if (!text.contains('#') && !text.contains("**")) return text
@@ -36,18 +35,7 @@ internal object MarkdownCompatibilityNormalizer {
 
     private fun normalizeOutsideCodeSpans(line: String): String {
         if (!line.contains('#') && !line.contains("**")) return line
-        if (!line.contains('`')) return normalizePlainText(line)
-
-        val result = StringBuilder(line.length + 8)
-        var cursor = 0
-        codeSpan.findAll(line).forEach { match ->
-            if (isEscaped(line, match.range.first)) return@forEach
-            result.append(normalizePlainText(line.substring(cursor, match.range.first)))
-            result.append(match.value)
-            cursor = match.range.last + 1
-        }
-        result.append(normalizePlainText(line.substring(cursor)))
-        return result.toString()
+        return MarkdownCodeSpans.transformOutside(line, ::normalizePlainText)
     }
 
     private fun normalizePlainText(text: String): String {
@@ -118,16 +106,6 @@ internal object MarkdownCompatibilityNormalizer {
     private fun Fence.closes(opening: Fence, line: String): Boolean {
         if (marker != opening.marker || length < opening.length) return false
         return line.trimStart().drop(length).isBlank()
-    }
-
-    private fun isEscaped(text: String, index: Int): Boolean {
-        var backslashes = 0
-        var cursor = index - 1
-        while (cursor >= 0 && text[cursor] == '\\') {
-            backslashes++
-            cursor--
-        }
-        return backslashes % 2 != 0
     }
 
     private fun Char.isMarkdownPunctuation(): Boolean {
