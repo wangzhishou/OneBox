@@ -22,8 +22,12 @@ package com.wanbaohe.markdown.edit.webview
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.graphics.Color
 import android.webkit.JavascriptInterface
 import androidx.annotation.Keep
+import com.wanbaohe.diagram.HeadlessDiagramColors
+import com.wanbaohe.diagram.HeadlessDiagramRenderer
+import org.json.JSONObject
 
 /**
  * Markdown 编辑器 JavaScript Bridge
@@ -125,6 +129,56 @@ class MarkdownEditorBridge(
     fun onCustomToolbarAction(action: String) {
         onCustomToolbarAction?.invoke(action)
     }
+
+    /**
+     * 把 PlantUML / DOT（以及必要时 Mermaid）源码交给 native 图表渲染器，同步返回 SVG。
+     *
+     * WebView 编辑器内联预览用：mermaid 代码块仍由 mermaid.min.js 渲染，另外两种语法
+     * 复用 App 已接入的 diagram-render 会话，走 `Diagram.session → finish → toSvg`。
+     * 这里跑在 WebView 的 JavaBridge 线程，不占用主线程；解析失败返回 ok=false，
+     * JS 侧会保留并显示原始代码。
+     *
+     * @param colorsJson 编辑器当前主题色，键：background / node-fill / accent / label-background
+     * @return JSON：`{"ok":true,"svg":"..."}` 或 `{"ok":false,"error":"..."}`
+     */
+    @Keep
+    @JavascriptInterface
+    fun renderDiagramSvg(
+        language: String,
+        code: String,
+        isDark: Boolean,
+        colorsJson: String,
+    ): String {
+        return try {
+            val json = JSONObject(colorsJson)
+            val palette = HeadlessDiagramColors(
+                backgroundArgb = parseColor(json.optString("background"), 0xFFFEF7FF.toInt()),
+                nodeFillArgb = parseColor(json.optString("node-fill"), 0xFFEADDFF.toInt()),
+                accentArgb = parseColor(json.optString("accent"), 0xFF21005D.toInt()),
+                labelBackgroundArgb = parseColor(json.optString("label-background"), 0xFFE7E0EC.toInt()),
+            )
+            val svg = HeadlessDiagramRenderer.renderSvg(
+                source = code,
+                languageHint = language,
+                isDark = isDark,
+                colors = palette,
+            )
+            if (svg.isNullOrBlank()) {
+                JSONObject().put("ok", false).put("error", "diagram parse failed").toString()
+            } else {
+                JSONObject().put("ok", true).put("svg", svg).toString()
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("MarkdownEditorBridge", "renderDiagramSvg failed", e)
+            JSONObject()
+                .put("ok", false)
+                .put("error", e.message ?: "diagram render error")
+                .toString()
+        }
+    }
+
+    private fun parseColor(hex: String, fallback: Int): Int =
+        runCatching { Color.parseColor(hex) }.getOrDefault(fallback)
 
     /**
      * 把文本写入系统剪贴板

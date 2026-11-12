@@ -264,6 +264,57 @@
             padding: 0;
         }
 
+        /* 图表内联预览：结果作为 <pre> 的非编辑子节点，占住代码块自身的位置 */
+        .milkdown .ProseMirror pre.diagram-inline-pending,
+        .milkdown .ProseMirror pre.diagram-inline-ready,
+        .milkdown .ProseMirror pre.diagram-inline-failed,
+        .milkdown .ProseMirror pre.diagram-inline-editing {
+            position: relative;
+            background-color: var(--md-surface);
+            border: 1px solid var(--md-outline-variant);
+            border-radius: 12px;
+        }
+        .milkdown .ProseMirror pre.diagram-inline-ready > code { display: none; }
+        .milkdown .ProseMirror pre.diagram-inline-editing > code { display: block !important; }
+        .milkdown .ProseMirror pre.diagram-inline-editing > .diagram-inline { display: none !important; }
+        /* 预览容器由 nodeView 常驻创建，默认隐藏，有内容/出错时才显示 */
+        .diagram-inline {
+            display: none;
+            width: 100%;
+            min-height: 72px;
+            overflow-x: auto;
+            -webkit-user-select: none;
+            user-select: none;
+            cursor: pointer;
+        }
+        .milkdown .ProseMirror pre.diagram-inline-pending > .diagram-inline,
+        .milkdown .ProseMirror pre.diagram-inline-ready > .diagram-inline,
+        .milkdown .ProseMirror pre.diagram-inline-failed > .diagram-inline {
+            display: block;
+        }
+        .diagram-inline svg { display: block; max-width: 100%; height: auto !important; margin: 0 auto; }
+        .diagram-inline-loading,
+        .diagram-inline-error {
+            font-size: 12px;
+            line-height: 1.5;
+            color: var(--md-on-surface-variant);
+            white-space: pre-wrap;
+        }
+        .diagram-inline-error { color: var(--md-error); margin-bottom: 8px; }
+
+        /* Prism 基础语法高亮（运行时模板注入了完整的 M3 配色版本） */
+        .milkdown .token.comment { color: #008000; font-style: italic; }
+        .milkdown .token.string,
+        .milkdown .token.attr-name { color: #a31515; }
+        .milkdown .token.keyword,
+        .milkdown .token.atrule { color: #0000ff; }
+        .milkdown .token.number,
+        .milkdown .token.boolean { color: #098658; }
+        .milkdown .token.operator,
+        .milkdown .token.punctuation { color: var(--md-on-surface-variant); }
+        .milkdown .token.function,
+        .milkdown .token.class-name { color: #795e26; }
+
         /* 引用样式 */
         .milkdown blockquote {
             border-left: 4px solid var(--md-primary);

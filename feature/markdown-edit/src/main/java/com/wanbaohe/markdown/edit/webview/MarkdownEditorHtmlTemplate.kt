@@ -307,52 +307,54 @@ object MarkdownEditorHtmlTemplate {
         }
         .milkdown pre code { background: none; padding: 0; font-size: 0.85em; line-height: 1.5; }
 
-        /* Mermaid 预览样式 */
-        #mermaid-preview-container {
-            display: none;
-            position: absolute;
-            z-index: 20;
-            pointer-events: none;
-        }
-        .mermaid-preview {
-            padding: 12px;
-            border-radius: 12px;
+        /* 图表代码块内联预览：渲染结果作为 <pre> 的非编辑子节点，直接占住代码块的位置 */
+        .milkdown .ProseMirror pre.diagram-inline-pending,
+        .milkdown .ProseMirror pre.diagram-inline-ready,
+        .milkdown .ProseMirror pre.diagram-inline-failed,
+        .milkdown .ProseMirror pre.diagram-inline-editing {
+            position: relative;
+            background-color: var(--md-surface);
             border: 1px solid var(--md-outline-variant);
-            background-color: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(4px);
-            overflow-x: auto;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            border-radius: 12px;
         }
-        .dark .mermaid-preview { background-color: rgba(28, 27, 31, 0.92); }
-        .mermaid-preview svg {
+
+        /* 渲染成功时只隐藏源码文本，<code> 仍留在 ProseMirror 文档里可编辑 */
+        .milkdown .ProseMirror pre.diagram-inline-ready > code { display: none; }
+        .milkdown .ProseMirror pre.diagram-inline-editing > code { display: block !important; }
+        .milkdown .ProseMirror pre.diagram-inline-editing > .diagram-inline { display: none !important; }
+
+        /* 预览容器常驻 DOM（由 nodeView 创建），默认隐藏，有内容/出错时才显示 */
+        .diagram-inline {
+            display: none;
+            width: 100%;
+            min-height: 72px;
+            overflow-x: auto;
+            -webkit-user-select: none;
+            user-select: none;
+            cursor: pointer;
+        }
+        .milkdown .ProseMirror pre.diagram-inline-pending > .diagram-inline,
+        .milkdown .ProseMirror pre.diagram-inline-ready > .diagram-inline,
+        .milkdown .ProseMirror pre.diagram-inline-failed > .diagram-inline {
+            display: block;
+        }
+        .diagram-inline svg {
             display: block;
             max-width: 100%;
             height: auto !important;
             margin: 0 auto;
         }
-        .mermaid-preview-empty,
-        .mermaid-preview-error {
-            font-size: 13px;
+        .diagram-inline-loading,
+        .diagram-inline-error {
+            font-size: 12px;
             line-height: 1.5;
             color: var(--md-on-surface-variant);
             white-space: pre-wrap;
+            word-break: break-word;
         }
-        .mermaid-preview.error {
-            border-color: var(--md-error);
-            background-color: var(--md-surface-variant);
-        }
-        .mermaid-preview.error .mermaid-preview-error {
+        .diagram-inline-error {
             color: var(--md-error);
-        }
-        .milkdown .ProseMirror pre.mermaid-source-hidden {
-            opacity: 0;
-            pointer-events: none;
-            height: 0;
-            margin: 0;
-            padding-top: 0;
-            padding-bottom: 0;
-            border-width: 0;
-            overflow: hidden;
+            margin-bottom: 8px;
         }
         
         /* Prism 代码高亮样式 */
@@ -680,9 +682,6 @@ object MarkdownEditorHtmlTemplate {
             <div id="loading-text">正在加载编辑器...</div>
         </div>
         <div id="editor-container" style="display: none;">
-            <div id="mermaid-preview-container">
-                <div id="mermaid-preview-content" class="mermaid-preview"></div>
-            </div>
             <div id="editor"></div>
         </div>
         
@@ -723,13 +722,10 @@ object MarkdownEditorHtmlTemplate {
       所以 editor.bundle.js 必须等这 2.5 MB 下载并解析完才开始跑——而 mermaid 只是编辑器里的
       可选预览功能。改成：editor.bundle.js 照常先执行，编辑器就绪之后再把这个脚本注入进来。
 
-      两处依赖都从编辑器自己的源码里核实过，不需要重建 bundle：
-      1) 就绪信号：editor.src.js:714-716 在初始化完成时把 #editor-container 的 display 从
-         none 改成 block，所以在外面观察这个属性即可。
-      2) 重渲染钩子：mermaid 是异步到位的，到位时编辑器可能已经渲染过一轮（那时 window.mermaid
-         还不存在，预览面板会被隐藏、只留源码）。AndroidBridge.setTheme() 内部会重置
-         mermaidThemeMode 并调用 scheduleMermaidRender()（editor.src.js:502-510），是那 16 个
-         桥方法里唯一能触发预览重渲染的，传当前主题过去不会有副作用。
+      就绪信号：editor.src.js 在初始化完成时把 #editor-container 的 display 改成 block。
+      图表现在按代码块位置内联渲染（Mermaid 走 JS，PlantUML / DOT 走 native 桥），mermaid
+      异步到位时编辑器可能已经用 native 画过一轮：onload 里调 AndroidBridge.setTheme() 清空
+      图表缓存并重新渲染一次，传当前主题过去不会改变主题本身。
     -->
     <script>
         (function () {

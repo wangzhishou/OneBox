@@ -7,9 +7,12 @@
  * - 与 Android 原生代码双向通信
  * - 图片插入（从相册选择或输入URL）
  * - 底部工具栏（复制/粘贴/全选/格式等）
+ * - 代码块基础语法高亮（Milkdown prism + 图表语言语法）
+ * - 图表代码块原位内联渲染：Mermaid 走 mermaid.min.js，PlantUML / DOT 走 native 渲染桥
+ * - 代码块使用自定义 nodeView 承载预览，避免外部 DOM 改动被 ProseMirror 误判为文档编辑
  */
 
-import { Editor, rootCtx, defaultValueCtx, editorViewCtx } from '@milkdown/core';
+import { Editor, rootCtx, defaultValueCtx, editorViewCtx, nodeViewCtx } from '@milkdown/core';
 import { commonmark } from '@milkdown/preset-commonmark';
 import { gfm } from '@milkdown/preset-gfm';
 import { history, redoCommand, undoCommand } from '@milkdown/plugin-history';
@@ -17,7 +20,7 @@ import { listener, listenerCtx } from '@milkdown/plugin-listener';
 import { clipboard } from '@milkdown/plugin-clipboard';
 import { indent } from '@milkdown/plugin-indent';
 import { trailing } from '@milkdown/plugin-trailing';
-import { prism } from '@milkdown/plugin-prism';
+import { prism, prismConfig } from '@milkdown/plugin-prism';
 import { math } from '@milkdown/plugin-math';
 
 // KaTeX CSS 按需加载标记
@@ -72,9 +75,20 @@ let isSourceView = false; // 是否在源码视图
 let isInitializing = true; // 是否正在初始化，用于忽略初始化时的内容变化
 let lastNotifiedMarkdown = null; // 最近一次已通知 Android 的内容
 let notifyAndroidTimer = null;
-let mermaidRenderTimer = null;
-let mermaidRenderEpoch = 0;
+let diagramRenderTimer = null;
+let diagramRenderEpoch = 0;
+let diagramIdSeed = 0;
+let diagramEditingTimer = null;
 let mermaidThemeMode = null;
+
+// 图表渲染结果按「语法 + 主题 + 源码」缓存，编辑区每次内容变化不必重新解析布局。
+const DIAGRAM_CACHE_LIMIT = 40;
+const diagramCache = new Map();
+const DIAGRAM_KINDS = {
+    mermaid: 'mermaid', mmd: 'mermaid',
+    plantuml: 'plantuml', puml: 'plantuml', uml: 'plantuml',
+    dot: 'dot', gv: 'dot', graphviz: 'dot'
+};
 
 
 // 获取当前 Markdown 内容
@@ -139,7 +153,7 @@ function debounceSaveDraft(content) {
 function syncEditorBaseline(markdown = getCurrentMarkdown()) {
     lastNotifiedMarkdown = markdown;
     updatePlaceholderState(markdown);
-    scheduleMermaidRender(markdown);
+    scheduleDiagramRender(markdown);
 }
 
 function getProseMirrorElement() {
@@ -186,47 +200,71 @@ function setPlaceholderFocused(isFocused) {
     editorEl.classList.toggle('is-focused', Boolean(isFocused));
 }
 
-function parseFencedCodeBlocks(markdown) {
-    const lines = String(markdown || '').split(/\r?\n/);
-    const blocks = [];
-    let index = 0;
+// ══════════════════════════════════════════════════════════════════════════
+//  代码块内联图表渲染
+//
+//  渲染结果是 <pre> 内部的 contenteditable=false 子节点，直接占住代码块在文档流
+//  里的位置，不再使用浮在正文上方的绝对定位面板。源码始终留在 ProseMirror 的
+//  <code> 里：点击预览或把光标移进代码块就切回可编辑、带语法高亮的源码视图；
+//  渲染失败、语法未支持或 native 桥不可用时，保留原始代码并给出提示。
+//
+//  注意：ProseMirror 不允许外部代码随意改动它管理的 DOM。DOMObserver 会把
+//  <pre> 上的 class/dataset 变更和新增的子节点当成文档编辑，进而把整个
+//  code_block 标记成 NODE_DIRTY 并重建，预览会被抹掉。因此这里给 code_block
+//  注册一个自定义 nodeView：预览容器在节点创建时就一并生成，之后所有写入都
+//  通过 ignoreMutation 明确告知编辑器「这不是文档内容」。
+// ══════════════════════════════════════════════════════════════════════════
 
-    while (index < lines.length) {
-        const line = lines[index];
-        const openMatch = line.match(/^[ \t]{0,3}([`~]{3,})[ \t]*([^\s`~]+)?.*$/);
-        if (!openMatch) {
-            index += 1;
-            continue;
-        }
+/** code_block 的自定义 nodeView：与 preset-commonmark 的 toDOM 结构保持一致。 */
+class DiagramCodeBlockView {
+    constructor(node) {
+        this.node = node;
 
-        const fence = openMatch[1];
-        const fenceChar = fence[0];
-        const fenceSize = fence.length;
-        const language = (openMatch[2] || '').trim().toLowerCase();
-        const codeLines = [];
-        index += 1;
+        // commonmark 的 codeBlockAttr 默认是 { pre: {}, code: {} }，
+        // toDOM 等价于 <pre data-language="..."><code>...content...</code></pre>。
+        this.dom = document.createElement('pre');
+        this.dom.dataset.language = node.attrs.language || '';
+        this.contentDOM = document.createElement('code');
+        this.dom.appendChild(this.contentDOM);
 
-        while (index < lines.length) {
-            const currentLine = lines[index];
-            const closePattern = new RegExp(`^[ \\t]{0,3}${fenceChar}{${fenceSize},}[ \\t]*$`);
-            if (closePattern.test(currentLine)) {
-                break;
-            }
-            codeLines.push(currentLine);
-            index += 1;
-        }
-
-        blocks.push({
-            language,
-            code: codeLines.join('\n')
-        });
-
-        if (index < lines.length) {
-            index += 1;
-        }
+        this.holder = document.createElement('div');
+        this.holder.className = 'diagram-inline';
+        this.holder.setAttribute('contenteditable', 'false');
+        this.holder.setAttribute('data-diagram-preview', 'true');
+        this.dom.appendChild(this.holder);
     }
 
-    return blocks;
+    update(node) {
+        if (node.type !== this.node.type) return false;
+        this.node = node;
+        const language = node.attrs.language || '';
+        if (this.dom.dataset.language !== language) {
+            this.dom.dataset.language = language;
+        }
+        return true;
+    }
+
+    ignoreMutation(mutation) {
+        if (!mutation) return true;
+        // 选区变更必须继续交给 ProseMirror，否则光标会失灵。
+        if (mutation.type === 'selection') return false;
+
+        const target = mutation.target;
+        if (!target) return true;
+        // <pre> 包装层上的 class / data-* 全部由内联渲染逻辑维护。
+        if (target === this.dom) return true;
+        // 预览容器及其 SVG 子树不是文档内容。
+        if (target === this.holder || this.holder.contains(target)) return true;
+        // <code> 内的真实编辑照常交给 ProseMirror 解析、生成事务。
+        if (target === this.contentDOM || this.contentDOM.contains(target)) return false;
+        return true;
+    }
+
+    destroy() {}
+}
+
+function createDiagramCodeBlockView(node) {
+    return new DiagramCodeBlockView(node);
 }
 
 function getMermaidApi() {
@@ -237,7 +275,7 @@ function ensureMermaidInitialized() {
     const mermaid = getMermaidApi();
     if (!mermaid) return false;
 
-    const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'default';
+    const theme = isDiagramDarkTheme() ? 'dark' : 'default';
     if (mermaidThemeMode === theme) {
         return true;
     }
@@ -273,152 +311,388 @@ function ensureMermaidInitialized() {
     return true;
 }
 
-function getMermaidPreviewContainer() {
-    return document.getElementById('mermaid-preview-container');
+function isDiagramDarkTheme() {
+    return document.documentElement.classList.contains('dark');
 }
 
-function getMermaidPreviewContent() {
-    return document.getElementById('mermaid-preview-content');
+function getDiagramKind(language) {
+    return DIAGRAM_KINDS[String(language || '').trim().toLowerCase()] || null;
 }
 
-function hideMermaidPreviewPanel() {
-    const container = getMermaidPreviewContainer();
-    const content = getMermaidPreviewContent();
-    if (container) {
-        container.style.display = 'none';
-        container.style.top = '';
-        container.style.left = '';
-        container.style.width = '';
-    }
-    if (content) {
-        content.innerHTML = '';
-    }
-
-    document.querySelectorAll('.milkdown .ProseMirror pre.mermaid-source-hidden').forEach(pre => {
-        pre.classList.remove('mermaid-source-hidden');
+function getDiagramColorsJson() {
+    const style = getComputedStyle(document.documentElement);
+    const read = (name, fallback) => style.getPropertyValue(name).trim() || fallback;
+    return JSON.stringify({
+        'background': read('--md-surface', '#FEF7FF'),
+        'node-fill': read('--md-primary-container', '#EADDFF'),
+        'accent': read('--md-on-primary-container', '#21005D'),
+        'label-background': read('--md-surface-variant', '#E7E0EC')
     });
 }
 
-function ensureMermaidPreviewPanelVisible() {
-    const container = getMermaidPreviewContainer();
-    if (container) {
-        container.style.display = 'block';
+function buildDiagramKey(kind, code) {
+    return kind + '\u0000' + (isDiagramDarkTheme() ? 'dark' : 'light') + '\u0000' + code;
+}
+
+function rememberDiagramResult(key, result) {
+    diagramCache.delete(key);
+    diagramCache.set(key, result);
+    while (diagramCache.size > DIAGRAM_CACHE_LIMIT) {
+        diagramCache.delete(diagramCache.keys().next().value);
     }
 }
 
-function positionMermaidPreview(anchorElement) {
-    const container = getMermaidPreviewContainer();
-    const editorContainer = document.getElementById('editor-container');
-    if (!container || !editorContainer || !anchorElement) {
-        return;
-    }
-
-    const containerRect = editorContainer.getBoundingClientRect();
-    const anchorRect = anchorElement.getBoundingClientRect();
-    const top = anchorRect.top - containerRect.top + editorContainer.scrollTop;
-    const left = anchorRect.left - containerRect.left + editorContainer.scrollLeft;
-    const width = anchorRect.width;
-    const minHeight = Math.max(anchorRect.height, 120);
-
-    container.style.top = `${top}px`;
-    container.style.left = `${left}px`;
-    container.style.width = `${width}px`;
-    container.style.minHeight = `${minHeight}px`;
+function escapeDiagramText(text) {
+    return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
 }
 
-async function renderMermaidPreview(code, previewKey, anchorElement) {
+/** 从 ProseMirror 的代码块 DOM 直接取语言与源码，避免靠 Markdown 围栏下标对齐。 */
+function readDiagramBlock(pre) {
+    const kind = getDiagramKind(pre.dataset.language);
+    if (!kind) return null;
+
+    let codeElement = null;
+    for (let i = 0; i < pre.children.length; i += 1) {
+        if (pre.children[i].tagName === 'CODE') {
+            codeElement = pre.children[i];
+            break;
+        }
+    }
+    if (!codeElement) return null;
+
+    return {
+        kind,
+        code: codeElement.textContent || ''
+    };
+}
+
+/** 预览容器由 DiagramCodeBlockView 在节点创建时生成，这里只负责查找，绝不再往 <pre> 里插节点。 */
+function getDiagramHolder(pre) {
+    for (let i = 0; i < pre.children.length; i += 1) {
+        const child = pre.children[i];
+        if (child.classList && child.classList.contains('diagram-inline')) {
+            return child;
+        }
+    }
+    return null;
+}
+
+/** 只清空容器内容与状态，不动 DOM 结构，避免 nodeView 失去对 holder 的引用。 */
+function removeInlineDiagram(pre) {
+    const holder = getDiagramHolder(pre);
+    if (holder) holder.innerHTML = '';
+    pre.classList.remove(
+        'diagram-inline-pending', 'diagram-inline-ready',
+        'diagram-inline-failed', 'diagram-inline-editing'
+    );
+    delete pre.dataset.diagramKey;
+    delete pre.dataset.diagramKind;
+    delete pre.dataset.diagramStatus;
+}
+
+function clearInlineDiagramPreviews() {
+    document.querySelectorAll('.milkdown .ProseMirror pre').forEach(pre => removeInlineDiagram(pre));
+}
+
+function applyDiagramSvg(pre, key, epoch, svg) {
+    if (epoch !== diagramRenderEpoch || !pre.isConnected || pre.dataset.diagramKey !== key) return;
+
+    const holder = getDiagramHolder(pre);
+    if (!holder) return;
+    holder.innerHTML = svg;
+    pre.dataset.diagramStatus = 'ok';
+    pre.classList.remove('diagram-inline-pending', 'diagram-inline-failed');
+    pre.classList.add('diagram-inline-ready');
+    updateDiagramEditingState();
+}
+
+function applyDiagramError(pre, key, epoch, message) {
+    if (epoch !== diagramRenderEpoch || !pre.isConnected || pre.dataset.diagramKey !== key) return;
+
+    // 不隐藏源码：只保留一行错误说明，代码（含语法高亮）照常可见、可编辑。
+    const holder = getDiagramHolder(pre);
+    if (!holder) return;
+    holder.innerHTML = '<div class="diagram-inline-error">图表渲染失败，已显示原始代码' +
+        (message ? '（' + escapeDiagramText(message) + '）' : '') + '</div>';
+    pre.dataset.diagramStatus = 'error';
+    pre.classList.remove('diagram-inline-pending', 'diagram-inline-ready');
+    pre.classList.add('diagram-inline-failed');
+    updateDiagramEditingState();
+}
+
+async function renderMermaidSvg(code) {
     if (!ensureMermaidInitialized()) {
-        hideMermaidPreviewPanel();
-        return;
+        throw new Error('mermaid 引擎未就绪');
     }
-
-    const preview = getMermaidPreviewContent();
-    if (!preview) {
-        return;
-    }
-
-    ensureMermaidPreviewPanelVisible();
-    positionMermaidPreview(anchorElement);
-    preview.dataset.previewKey = previewKey;
-    preview.classList.remove('error');
-
-    if (!code.trim()) {
-        preview.innerHTML = '<div class="mermaid-preview-empty">Mermaid 代码块为空</div>';
-        return;
-    }
-
-    const renderToken = String(++mermaidRenderEpoch);
-    preview.dataset.renderToken = renderToken;
-
-    try {
-        const mermaid = getMermaidApi();
-        const renderResult = await mermaid.render(
-            `mermaid-preview-${Date.now()}-${previewKey.replace(/[^a-z0-9_-]/gi, '-')}`,
-            code
-        );
-
-        if (preview.dataset.renderToken !== renderToken) {
-            return;
-        }
-
-        const svg = typeof renderResult === 'string' ? renderResult : renderResult.svg;
-        preview.innerHTML = svg;
-
-        if (renderResult && typeof renderResult.bindFunctions === 'function') {
-            renderResult.bindFunctions(preview);
-        }
-    } catch (error) {
-        if (preview.dataset.renderToken !== renderToken) {
-            return;
-        }
-
-        preview.classList.add('error');
-        const escapedCode = code
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
-        preview.innerHTML = `<div class="mermaid-preview-error">Mermaid 渲染失败: ${error.message || error}\n\n${escapedCode}</div>`;
-    }
+    const mermaid = getMermaidApi();
+    return await mermaid.render('onebox-diagram-' + (++diagramIdSeed) + '-' + Date.now(), code);
 }
 
-function updateMermaidPreviews(markdown = getCurrentMarkdown()) {
-    if (isSourceView || !editor) {
-        hideMermaidPreviewPanel();
-        return;
+function renderNativeDiagramSvg(kind, code, colorsJson) {
+    const bridge = window.Android;
+    if (!bridge || typeof bridge.renderDiagramSvg !== 'function') {
+        throw new Error('native 图表渲染器不可用');
     }
+    const raw = bridge.renderDiagramSvg(kind, code, isDiagramDarkTheme(), colorsJson);
+    if (!raw) {
+        throw new Error('native 图表渲染器无响应');
+    }
+    const result = JSON.parse(raw);
+    if (!result.ok || !result.svg) {
+        throw new Error(result.error || '图表解析失败');
+    }
+    return result.svg;
+}
 
-    const fencedBlocks = parseFencedCodeBlocks(markdown);
-    const firstMermaidIndex = fencedBlocks.findIndex(block => block.language === 'mermaid');
-    if (firstMermaidIndex < 0) {
-        hideMermaidPreviewPanel();
+function updateDiagramPreviews() {
+    if (isSourceView || !editor) {
+        clearInlineDiagramPreviews();
         return;
     }
 
     const preElements = Array.from(document.querySelectorAll('.milkdown .ProseMirror pre'));
-    const anchorElement = preElements[firstMermaidIndex] || null;
-    const firstMermaidBlock = fencedBlocks[firstMermaidIndex];
-    preElements.forEach(pre => pre.classList.remove('mermaid-source-hidden'));
-    if (anchorElement) {
-        anchorElement.classList.add('mermaid-source-hidden');
-    }
-    renderMermaidPreview(firstMermaidBlock.code, 'first-mermaid-block', anchorElement);
+    const epoch = ++diagramRenderEpoch;
+    const colorsJson = getDiagramColorsJson();
+
+    preElements.forEach(pre => {
+        const block = readDiagramBlock(pre);
+        if (!block) {
+            removeInlineDiagram(pre);
+            return;
+        }
+
+        // 正在编辑这个代码块时只保留高亮源码，不触发解析，也不改动它内部的 DOM。
+        if (pre.classList.contains('diagram-inline-editing')) return;
+
+        const key = buildDiagramKey(block.kind, block.code);
+        const holder = getDiagramHolder(pre);
+        if (!holder) {
+            // 拿不到 nodeView 的预览容器时不写 ProseMirror 管理的 DOM，直接保留原始代码。
+            return;
+        }
+        if (pre.dataset.diagramKey !== key) {
+            holder.innerHTML = '<div class="diagram-inline-loading">图表渲染中…</div>';
+            pre.dataset.diagramKey = key;
+            pre.dataset.diagramKind = block.kind;
+            pre.dataset.diagramStatus = 'pending';
+            pre.classList.remove('diagram-inline-ready', 'diagram-inline-failed');
+            pre.classList.add('diagram-inline-pending');
+        }
+
+        if (pre.dataset.diagramStatus === 'ok' || pre.dataset.diagramStatus === 'error') {
+            return;
+        }
+
+        const cached = diagramCache.get(key);
+        if (cached) {
+            if (cached.ok) applyDiagramSvg(pre, key, epoch, cached.svg);
+            else applyDiagramError(pre, key, epoch, cached.error);
+            return;
+        }
+
+        if (block.kind === 'mermaid' && getMermaidApi()) {
+            renderMermaidSvg(block.code)
+                .then(result => {
+                    const svg = typeof result === 'string' ? result : result && result.svg;
+                    if (!svg) throw new Error('mermaid 未返回 SVG');
+                    rememberDiagramResult(key, { ok: true, svg });
+                    applyDiagramSvg(pre, key, epoch, svg);
+                    if (result && typeof result.bindFunctions === 'function') {
+                        const target = getDiagramHolder(pre);
+                        if (target) result.bindFunctions(target);
+                    }
+                })
+                .catch(error => {
+                    if (epoch !== diagramRenderEpoch) return;
+                    const message = String(error && error.message ? error.message : error);
+                    // JS 引擎解析失败或尚未注入时，再借 native 渲染器兜一次底。
+                    try {
+                        const svg = renderNativeDiagramSvg('mermaid', block.code, colorsJson);
+                        rememberDiagramResult(key, { ok: true, svg });
+                        applyDiagramSvg(pre, key, epoch, svg);
+                    } catch (nativeError) {
+                        rememberDiagramResult(key, { ok: false, error: message });
+                        applyDiagramError(pre, key, epoch, message);
+                    }
+                });
+        } else {
+            // PlantUML / DOT 走 native；mermaid.min.js 尚未注入时 mermaid 也先走 native。
+            try {
+                const svg = renderNativeDiagramSvg(block.kind, block.code, colorsJson);
+                rememberDiagramResult(key, { ok: true, svg });
+                applyDiagramSvg(pre, key, epoch, svg);
+            } catch (error) {
+                const message = String(error && error.message ? error.message : error);
+                rememberDiagramResult(key, { ok: false, error: message });
+                applyDiagramError(pre, key, epoch, message);
+            }
+        }
+    });
 }
 
-function scheduleMermaidRender(markdown = getCurrentMarkdown()) {
-    if (mermaidRenderTimer) {
-        clearTimeout(mermaidRenderTimer);
+function scheduleDiagramRender() {
+    if (diagramRenderTimer) {
+        clearTimeout(diagramRenderTimer);
+    }
+    diagramRenderTimer = setTimeout(() => {
+        updateDiagramPreviews();
+    }, 160);
+}
+
+/** 光标在图表代码块内时显示源码，移开后恢复内联图表。 */
+function updateDiagramEditingState() {
+    if (!editor || isSourceView) return;
+
+    let activePre = null;
+    try {
+        const view = editor.action(ctx => ctx.get(editorViewCtx));
+        const $from = view.state.selection.$from;
+        if ($from.parent.type.name === 'code_block') {
+            const dom = view.nodeDOM($from.before($from.depth));
+            if (dom && dom.nodeType === 1 && dom.dataset && dom.dataset.diagramKey) {
+                activePre = dom;
+            }
+        }
+    } catch (e) {
+        console.error('updateDiagramEditingState error:', e);
     }
 
-    mermaidRenderTimer = setTimeout(() => {
-        updateMermaidPreviews(markdown);
-    }, 120);
+    const hadEditing = document.querySelector('.milkdown .ProseMirror pre.diagram-inline-editing') !== null;
+    document.querySelectorAll('.milkdown .ProseMirror pre[data-diagram-key]').forEach(pre => {
+        pre.classList.toggle('diagram-inline-editing', pre === activePre);
+    });
+
+    if (hadEditing && !activePre) {
+        scheduleDiagramRender();
+    }
+}
+
+function enterDiagramEditing(pre) {
+    if (!editor || isSourceView) return;
+    try {
+        const view = editor.action(ctx => ctx.get(editorViewCtx));
+        const preElements = Array.from(document.querySelectorAll('.milkdown .ProseMirror pre'));
+        const index = preElements.indexOf(pre);
+        if (index < 0) return;
+
+        let count = 0;
+        let targetPos = -1;
+        view.state.doc.descendants((node, pos) => {
+            if (node.type.name === 'code_block') {
+                if (count === index) targetPos = pos;
+                count += 1;
+            }
+        });
+        if (targetPos < 0) return;
+
+        pre.classList.add('diagram-inline-editing');
+        const selection = view.state.selection;
+        const tr = view.state.tr.setSelection(
+            selection.constructor.near(view.state.doc.resolve(targetPos + 1))
+        );
+        view.dispatch(tr);
+        view.focus();
+    } catch (e) {
+        console.error('enterDiagramEditing error:', e);
+    }
+}
+
+function bindDiagramEvents() {
+    const editorRoot = document.getElementById('editor');
+    if (!editorRoot) return;
+
+    const inPreview = event => event.target && event.target.closest &&
+        event.target.closest('.diagram-inline');
+
+    editorRoot.addEventListener('mousedown', event => {
+        if (inPreview(event)) event.preventDefault();
+    }, true);
+
+    editorRoot.addEventListener('click', event => {
+        const holder = inPreview(event);
+        if (!holder) return;
+        event.preventDefault();
+        event.stopPropagation();
+        const pre = holder.parentElement;
+        if (pre && pre.tagName === 'PRE') {
+            enterDiagramEditing(pre);
+        }
+    }, true);
+
+    document.addEventListener('selectionchange', () => {
+        if (diagramEditingTimer) clearTimeout(diagramEditingTimer);
+        diagramEditingTimer = setTimeout(updateDiagramEditingState, 30);
+    });
+}
+
+// ── 代码块基础语法高亮 ──────────────────────────────────────────────────
+// 复用 @milkdown/plugin-prism 的 refractor：内置语言照常高亮，另外给三种图表
+// 语法注册轻量 grammar。高亮由 ProseMirror decoration 渲染，不改文档文本，
+// 因此与内联图表预览（同属 <pre> 的非编辑子节点）可以共存。
+function createDiagramGrammars() {
+    const common = {
+        'string': /"(?:[^"\\\r\n]|\\.)*"|'(?:[^'\\\r\n]|\\.)*'/,
+        'number': /\b\d+(?:\.\d+)?\b/,
+        'punctuation': /[{}()[\];,=]/
+    };
+
+    const mermaid = {
+        'comment': /%%[^\r\n]*/,
+        'string': common.string,
+        'keyword': /\b(?:flowchart|graph|graph TD|sequenceDiagram|classDiagram|stateDiagram|erDiagram|journey|gantt|pie|mindmap|timeline|gitGraph|subgraph|end|classDef|linkStyle|style|direction|click|TB|TD|BT|RL|LR)\b/,
+        'operator': /-->|-\.->|==>|==|---|--|-\.-|:::|->/,
+        'attr-name': /\b(?:shape|label|color|stroke|fill|style)\b/,
+        'number': common.number,
+        'punctuation': /[{}()[\];,|]/
+    };
+
+    const plantuml = {
+        'comment': /'[^\r\n]*/,
+        'keyword': /\b(?:@startuml|@enduml|start|stop|end|if|else|elseif|endif|then|while|endwhile|repeat|fork|again|actor|participant|class|interface|enum|package|note|title|skinparam|activate|deactivate|autonumber)\b/,
+        'string': common.string,
+        'function': /:[^\r\n;]+;/,
+        'operator': /-->|->|\.\.>|=>|\|\|/,
+        'number': common.number,
+        'punctuation': /[{}()[\];,|]/
+    };
+
+    const dot = {
+        'comment': /\/\/[^\r\n]*|\/\*[\s\S]*?\*\//,
+        'keyword': /\b(?:strict|digraph|graph|subgraph|node|edge|rankdir|rank|label|shape|color|style|arrowhead|fontname|fontsize)\b/,
+        'string': common.string,
+        'operator': /->|--|\|/,
+        'number': common.number,
+        'punctuation': /[{}()[\];,=]/
+    };
+
+    return {
+        mermaid, mmd: mermaid,
+        plantuml, puml: plantuml, uml: plantuml,
+        dot, gv: dot, graphviz: dot
+    };
+}
+
+function configureDiagramRefractor(refractor) {
+    const grammars = createDiagramGrammars();
+    if (refractor && refractor.languages) {
+        Object.keys(grammars).forEach(name => {
+            if (!refractor.languages[name]) {
+                refractor.languages[name] = grammars[name];
+            }
+        });
+    }
+    return refractor;
 }
 
 function notifyContentChange(force = false) {
     const markdown = getCurrentMarkdown();
 
     updatePlaceholderState(markdown);
-    scheduleMermaidRender(markdown);
+    scheduleDiagramRender();
 
     if (!force && markdown === lastNotifiedMarkdown) {
         return;
@@ -506,7 +780,8 @@ window.AndroidBridge = {
             document.documentElement.classList.remove('dark');
         }
         mermaidThemeMode = null;
-        scheduleMermaidRender();
+        diagramCache.clear();
+        scheduleDiagramRender();
     },
 
     // 设置 Material 3 主题颜色
@@ -517,6 +792,9 @@ window.AndroidBridge = {
             Object.keys(colors).forEach(key => {
                 root.style.setProperty(`--md-${key}`, colors[key]);
             });
+            // 主题色变了，native 图表要按新配色重新导出 SVG
+            diagramCache.clear();
+            scheduleDiagramRender();
         } catch (e) {
             console.error('setColors error:', e);
         }
@@ -669,16 +947,18 @@ async function initEditor() {
     const toolbarEl = document.getElementById('toolbar');
     const editorContainerEl = document.getElementById('editor-container');
 
-    const prismInstance = window.Prism;
-    if (prismInstance && prismInstance.languages && !prismInstance.languages.mermaid) {
-        prismInstance.languages.mermaid = prismInstance.languages.markup || prismInstance.languages.plain || {};
-    }
-
     try {
         editor = await Editor.make()
             .config(ctx => {
                 ctx.set(rootCtx, editorContainer);
                 ctx.set(defaultValueCtx, pendingContent ?? '');
+                // 给 refractor 注册 mermaid / plantuml / dot 语法，代码块走 decoration 高亮
+                ctx.set(prismConfig.key, { configureRefractor: configureDiagramRefractor });
+                // 用自定义 nodeView 承载内联预览：ignoreMutation 会把预览相关的 DOM
+                // 变更挡在 DOMObserver 之外，避免 code_block 被重建、光标被抢走。
+                ctx.update(nodeViewCtx, views => views.concat([
+                    ['code_block', createDiagramCodeBlockView]
+                ]));
 
 
                 // 监听内容变化
@@ -735,6 +1015,7 @@ async function initEditor() {
         setupImageWidthObserver();
         bindSourceTextareaEvents();
         bindPlaceholderEvents();
+        bindDiagramEvents();
         bindEditorScrollEvents();
         setupKeyboardScrollHandler();
 
@@ -1340,7 +1621,7 @@ function toggleSourceView() {
         // 切换到源码视图
         const markdown = editor.action(getMarkdown());
         sourceTextarea.value = markdown;
-        hideMermaidPreviewPanel();
+        clearInlineDiagramPreviews();
         editorContainer.style.display = 'none';
         sourceContainer.style.display = 'block';
         toggleBtn?.classList.add('active');
