@@ -6,8 +6,6 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
-import com.halilibo.richtext.markwon.JLatexMathStyle
-import com.halilibo.richtext.markwon.resolveDefaults
 import com.halilibo.richtext.ui.string.RichTextStringStyle
 
 internal val LocalRichTextStyle = compositionLocalOf { RichTextStyle.Default }
@@ -25,8 +23,7 @@ data class RichTextStyle(
   val codeBlockStyle: CodeBlockStyle? = null,
   val tableStyle: TableStyle? = null,
   val infoPanelStyle: InfoPanelStyle? = null,
-  val stringStyle: RichTextStringStyle? = null,
-  val jLatexMathStyle: JLatexMathStyle = JLatexMathStyle.Default
+  val stringStyle: RichTextStringStyle? = null
 ) {
   companion object {
     val Default: RichTextStyle = RichTextStyle()
@@ -41,8 +38,7 @@ fun RichTextStyle.merge(otherStyle: RichTextStyle?): RichTextStyle = RichTextSty
   codeBlockStyle = otherStyle?.codeBlockStyle ?: codeBlockStyle,
   tableStyle = otherStyle?.tableStyle ?: tableStyle,
   infoPanelStyle = otherStyle?.infoPanelStyle ?: infoPanelStyle,
-  stringStyle = stringStyle?.merge(otherStyle?.stringStyle) ?: otherStyle?.stringStyle,
-  jLatexMathStyle = otherStyle?.jLatexMathStyle ?: jLatexMathStyle
+  stringStyle = stringStyle?.merge(otherStyle?.stringStyle) ?: otherStyle?.stringStyle
 )
 
 fun RichTextStyle.resolveDefaults(): RichTextStyle = RichTextStyle(
@@ -53,8 +49,7 @@ fun RichTextStyle.resolveDefaults(): RichTextStyle = RichTextStyle(
   codeBlockStyle = (codeBlockStyle ?: CodeBlockStyle.Default).resolveDefaults(),
   tableStyle = (tableStyle ?: TableStyle.Default).resolveDefaults(),
   infoPanelStyle = (infoPanelStyle ?: InfoPanelStyle.Default).resolveDefaults(),
-  stringStyle = (stringStyle ?: RichTextStringStyle.Default).resolveDefaults(),
-  jLatexMathStyle = jLatexMathStyle.resolveDefaults()
+  stringStyle = (stringStyle ?: RichTextStringStyle.Default).resolveDefaults()
 )
 
 /**
