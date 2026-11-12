@@ -367,8 +367,8 @@ private fun ChipFilterRow(
 }
 
 /**
- * 与「待办事项」顶部快捷筛选同款 chip：28dp 高的 Dense 玻璃 chip、labelMedium 单行文字、
- * 选中态 primaryContainer 底色 + 尾部关闭图标。
+ * 二级分类 chip：28dp 高、labelMedium 单行文字、尾部关闭图标。
+ * 玻璃浓度与文字对比都压低一档，作为一级 tab 与内容之间的辅助层，不抢注意力。
  *
  * 关闭图标有自己的点击区，命中时不会冒泡到 chip 主体，因此「取消筛选并收起整条 chip 栏」
  * 与「点主体改选分类」互不干扰；末尾不再需要额外的关闭按钮。
@@ -388,12 +388,14 @@ private fun CategoryFilterChip(
     // 背景与文字/图标统一到 tertiaryContainer + onTertiaryContainer 同一色系，
     // 修掉 M3 默认 onSecondaryContainer 与玻璃底色不同色系的问题，也拉出层级。
     val selectedContainer = MaterialTheme.colorScheme.tertiaryContainer
-    val selectedContent = MaterialTheme.colorScheme.onTertiaryContainer
-    val unselectedContent = MaterialTheme.colorScheme.onSurfaceVariant
+    // 文字与图标压低对比：未选中项更淡，选中态仍保持可读，形成主次。
+    val selectedContent = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.85f)
+    val unselectedContent = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.72f)
     GlassFilterChip(
         selected = selected,
         onClick = onClick,
-        style = GlassStyle.Dense,
+        // 比 Dense 淡一档，玻璃底色更透；层级用 GlassStyle 阶梯表达，不给容器色烘 alpha。
+        style = GlassStyle.Thick,
         glassContainerColor = neutralContainer,
         glassSelectedContainerColor = selectedContainer,
         colors = FilterChipDefaults.filterChipColors(
