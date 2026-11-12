@@ -29,22 +29,25 @@ class Prism4jThemeMaterial3 : Prism4jThemeBase() {
     }
 
     override fun initColorHashMap(): ColorHashMap {
-        // 从 Material3 颜色系统获取颜色来设置语法高亮
+        // 从 Material3 颜色系统获取颜色来设置语法高亮。
+        // 只取前景/容器语义色（onSurface*、on*Container、primary/tertiary/error），
+        // 不要用 inversePrimary、surfaceVariant、outlineVariant 这类浅色角色：
+        // 代码块是浅色玻璃背景，它们会让函数名、正则、删除行几乎看不见。
         return ColorHashMap()
-            .add(AppTheme.colorScheme.outline.toArgb(), "comment", "prolog", "cdata")
+            .add(AppTheme.colorScheme.onSurfaceVariant.toArgb(), "comment", "prolog", "cdata")
             .add(AppTheme.colorScheme.onPrimaryContainer.toArgb(), "delimiter", "boolean", "keyword", "selector", "important", "atrule")
             .add(AppTheme.colorScheme.onSurface.toArgb(), "operator", "punctuation", "attr-name")
             .add(AppTheme.colorScheme.tertiary.toArgb(), "tag", "doctype", "builtin")
-            .add(AppTheme.colorScheme.onPrimaryContainer.copy(0.8f).toArgb(), "entity", "number", "symbol")
+            .add(AppTheme.colorScheme.onPrimaryContainer.toArgb(), "entity", "number", "symbol")
             .add(AppTheme.colorScheme.secondary.toArgb(), "property", "constant", "variable")
-            .add(AppTheme.colorScheme.tertiary.copy(0.8f).toArgb(), "string", "char")
+            .add(AppTheme.colorScheme.tertiary.toArgb(), "string", "char")
             .add(AppTheme.colorScheme.error.toArgb(), "annotation")
-            .add(AppTheme.colorScheme.secondary.copy(0.8f).toArgb(), "attr-value")
+            .add(AppTheme.colorScheme.secondary.toArgb(), "attr-value")
             .add(AppTheme.colorScheme.onPrimaryContainer.toArgb(), "url")
-            .add(AppTheme.colorScheme.inversePrimary.toArgb(), "function")
-            .add(AppTheme.colorScheme.surfaceVariant.toArgb(), "regex")
-            .add(AppTheme.colorScheme.inverseSurface.toArgb(), "inserted")
-            .add(AppTheme.colorScheme.outlineVariant.toArgb(), "deleted")
+            .add(AppTheme.colorScheme.primary.toArgb(), "function", "class-name")
+            .add(AppTheme.colorScheme.onErrorContainer.toArgb(), "regex")
+            .add(AppTheme.colorScheme.primary.toArgb(), "inserted")
+            .add(AppTheme.colorScheme.error.toArgb(), "deleted")
     }
 
     override fun applyColor(

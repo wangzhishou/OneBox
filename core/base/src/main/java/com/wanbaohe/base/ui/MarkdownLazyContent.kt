@@ -142,6 +142,17 @@ fun MarkdownLazyContent(
             var imagePreview by remember { mutableStateOf<MarkdownImagePreview?>(null) }
             val imageUrls = remember(blocks) { collectMarkdownImageUrls(blocks) }
 
+            // 笔记 / 提示词详情这类静态内容没有流式增量；
+            // BasicMarkdown 用 listener.isHighlighted 决定是否做语法高亮，这里包一层固定为 true，
+            // 否则 rememberCodeBlockClickListener 默认的 false 会让代码块全部退回纯文本。
+            val highlightAwareCodeBlockClickListener = remember(codeBlockClickListener) {
+                codeBlockClickListener?.let { delegate ->
+                    object : CodeBlockClickListener by delegate {
+                        override var isHighlighted: Boolean = true
+                    }
+                }
+            }
+
             val imageConfig = remember(imageUrls) {
                 MarkdownImageConfig(
                     onImageClick = { url, _ ->
@@ -222,7 +233,7 @@ fun MarkdownLazyContent(
                             ) {
                                 BasicMarkdown(
                                     astNode = blocks[index],
-                                    codeBlockClickListener = codeBlockClickListener,
+                                    codeBlockClickListener = highlightAwareCodeBlockClickListener,
                                     imageConfig = imageConfig
                                 )
                             }

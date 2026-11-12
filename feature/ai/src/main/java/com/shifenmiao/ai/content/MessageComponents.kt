@@ -390,7 +390,8 @@ fun UserMessageMarkdownBlock(
         MessageUiModel.MarkdownBlock.BlockType.HEADING -> 12.dp
         MessageUiModel.MarkdownBlock.BlockType.PARAGRAPH -> 4.dp
         MessageUiModel.MarkdownBlock.BlockType.CODE_BLOCK -> 8.dp
-        MessageUiModel.MarkdownBlock.BlockType.THEMATIC_BREAK -> 16.dp
+        // 分割线只画 1dp 线 + HorizontalRule 自带 4dp 呼吸位，这里不再叠 16dp block 内边距。
+        MessageUiModel.MarkdownBlock.BlockType.THEMATIC_BREAK -> 0.dp
         else -> 8.dp
     }
     RichText(
@@ -600,7 +601,8 @@ fun RobotMessageMarkdownBlock(
         MessageUiModel.MarkdownBlock.BlockType.HEADING -> 12.dp
         MessageUiModel.MarkdownBlock.BlockType.PARAGRAPH -> 4.dp
         MessageUiModel.MarkdownBlock.BlockType.CODE_BLOCK -> 8.dp
-        MessageUiModel.MarkdownBlock.BlockType.THEMATIC_BREAK -> 16.dp
+        // 分割线只画 1dp 线 + HorizontalRule 自带 4dp 呼吸位，这里不再叠 16dp block 内边距。
+        MessageUiModel.MarkdownBlock.BlockType.THEMATIC_BREAK -> 0.dp
         else -> 8.dp
     }
 
