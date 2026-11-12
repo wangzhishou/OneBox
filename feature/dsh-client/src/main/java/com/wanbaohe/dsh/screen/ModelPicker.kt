@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.dsh.R
 import com.wanbaohe.dsh.component.DshRootComponent
 import com.wanbaohe.dsh.wire.model.ModelProviderGroup
@@ -186,6 +187,7 @@ private fun ModelCatalogContent(
                     ) {
                         for (option in efforts) {
                             FilterChip(
+                                shape = OneBoxDesignSystem.chipShape,
                                 selected = effort == option.id,
                                 onClick = { onEffortChange(option.id) },
                                 label = { Text(option.name, fontSize = 12.sp) }

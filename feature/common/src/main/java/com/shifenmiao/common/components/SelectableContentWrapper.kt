@@ -48,6 +48,7 @@ import com.wanbaohe.core.ui.utils.capturable.rememberCaptureController
 import com.wanbaohe.core.ui.utils.helper.Clipboard
 import com.wanbaohe.core.ui.utils.provider.LocalImageShareProvider
 import com.wanbaohe.core.ui.widget.glass.GlassTonalIconButton
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
@@ -273,6 +274,7 @@ private fun SelectionModeDoneChip(
     modifier: Modifier = Modifier
 ) {
     AssistChip(
+        shape = OneBoxDesignSystem.chipShape,
         onClick = onDone,
         label = {
             Text(

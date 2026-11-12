@@ -57,8 +57,8 @@ fun EnhancedChip(
     selectedContentColor: Color = MaterialTheme.colorScheme.contentColorFor(selectedColor),
     unselectedColor: Color = MaterialTheme.colorScheme.surfaceContainer,
     unselectedContentColor: Color = MaterialTheme.colorScheme.onSurface,
-    shape: Shape = OneBoxDesignSystem.compactBadgeShape,
-    pressedShape: Shape = OneBoxDesignSystem.compactBadgeShape,
+    shape: Shape = OneBoxDesignSystem.chipShape,
+    pressedShape: Shape = OneBoxDesignSystem.chipShape,
     interactionSource: MutableInteractionSource? = null,
     defaultMinSize: Dp = 36.dp,
     label: @Composable () -> Unit

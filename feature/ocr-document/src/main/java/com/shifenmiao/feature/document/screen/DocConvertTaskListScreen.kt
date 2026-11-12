@@ -76,6 +76,7 @@ import com.wanbaohe.core.ui.widget.dialogs.LoadingDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.utils.appContext
 import com.t8rin.imagetoolbox.core.utils.fileProviderAuthority
 import kotlinx.coroutines.Dispatchers
@@ -641,6 +642,7 @@ private fun DocConvertTaskItem(
                                 val otherDownloaded = if (otherIsWord) wordDownloaded else excelDownloaded
                                 if (!otherDownloaded) {
                                     AssistChip(
+                                        shape = OneBoxDesignSystem.chipShape,
                                         onClick = if (otherIsWord) onDownloadWord else onDownloadExcel,
                                         enabled = !isDownloading,
                                         label = {
@@ -674,6 +676,7 @@ private fun DocConvertTaskItem(
                             )
                             if (hasWord && hasExcel) {
                                 AssistChip(
+                                    shape = OneBoxDesignSystem.chipShape,
                                     onClick = if (primaryIsWord) onDownloadExcel else onDownloadWord,
                                     enabled = !isDownloading,
                                     label = {

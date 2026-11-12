@@ -61,6 +61,7 @@ import com.wanbaohe.core.ui.widget.glass.GlassSegmentedButtonRow
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 
@@ -528,6 +529,7 @@ private fun CreationCategorySelectionSection(
             categories.forEach { category ->
                 val isSelected = category.id in selectedCategoryIds
                 FilterChip(
+                    shape = OneBoxDesignSystem.chipShape,
                     selected = isSelected,
                     onClick = { onToggleCategory(category.id, isSelected) },
                     leadingIcon = {
@@ -551,6 +553,7 @@ private fun CreationCategorySelectionSection(
             }
 
             AssistChip(
+                shape = OneBoxDesignSystem.chipShape,
                 onClick = onAddCategoryClick,
                 leadingIcon = {
                     Icon(

@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -230,7 +230,7 @@ fun TodoTagChip(
         modifier = modifier
             .background(
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
-                shape = RoundedCornerShape(4.dp),
+                shape = OneBoxDesignSystem.chipShape,
             )
             .then(
                 if (onClick != null) {

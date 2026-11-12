@@ -77,6 +77,7 @@ import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.core.ui.widget.other.TopAppBarEmoji
 import com.wanbaohe.core.ui.widget.system.OneBoxButtonIcon
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -293,6 +294,7 @@ fun CalendarShareScreen(component: CalendarShareComponent) {
                             CalendarSharePalette.from(style, colorScheme).accent
                         }
                         FilterChip(
+                            shape = OneBoxDesignSystem.chipShape,
                             selected = selected,
                             onClick = { component.setColorStyle(style) },
                             label = { Text(stringResource(style.labelRes)) },
@@ -315,18 +317,21 @@ fun CalendarShareScreen(component: CalendarShareComponent) {
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     FilterChip(
+                        shape = OneBoxDesignSystem.chipShape,
                         selected = state.showTodayFestival,
                         onClick = { component.setShowTodayFestival(!state.showTodayFestival) },
                         label = { Text(stringResource(R.string.calendar_share_toggle_today)) },
                         colors = chipColors()
                     )
                     FilterChip(
+                        shape = OneBoxDesignSystem.chipShape,
                         selected = state.showUpcomingFestivals,
                         onClick = { component.setShowUpcomingFestivals(!state.showUpcomingFestivals) },
                         label = { Text(stringResource(R.string.calendar_share_toggle_upcoming)) },
                         colors = chipColors()
                     )
                     FilterChip(
+                        shape = OneBoxDesignSystem.chipShape,
                         selected = state.showWeather,
                         onClick = { component.setShowWeather(!state.showWeather) },
                         enabled = state.isToday &&
@@ -343,6 +348,7 @@ fun CalendarShareScreen(component: CalendarShareComponent) {
                         colors = chipColors()
                     )
                     FilterChip(
+                        shape = OneBoxDesignSystem.chipShape,
                         selected = state.showNote,
                         onClick = { component.setShowNote(!state.showNote) },
                         label = { Text(stringResource(R.string.calendar_share_toggle_note)) },

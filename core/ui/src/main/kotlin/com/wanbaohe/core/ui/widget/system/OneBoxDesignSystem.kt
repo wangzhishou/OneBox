@@ -70,6 +70,12 @@ object OneBoxDesignSystem {
     val listRowShape: Shape = RoundedCornerShape(mediumRadius)
     val compactBadgeShape: Shape = RoundedCornerShape(smallRadius)
     val pillShape: Shape = RoundedCornerShape(pillRadius)
+    /**
+     * 全项目 chip 统一圆角：和卡片/列表行的 16.dp 对齐。
+     * chip 高度通常只有 28-32dp，16.dp 圆角在实际渲染时已接近胶囊，
+     * 比 M3 默认的 shapes.small(8.dp) 更贴合项目其它圆角组件。
+     */
+    val chipShape: Shape = RoundedCornerShape(mediumRadius)
 
     val toolbarGlassStyle: GlassStyle = GlassStyle.Medium
     val navigationGlassStyle: GlassStyle = GlassStyle.Regular

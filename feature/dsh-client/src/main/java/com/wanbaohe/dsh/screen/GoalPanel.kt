@@ -19,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -113,32 +114,38 @@ fun GoalPanel(
                 val ref = projection?.ref
                 if (ref == null) {
                     AssistChip(
+                        shape = OneBoxDesignSystem.chipShape,
                         onClick = { editorMode = GoalEditorMode.Create },
                         label = { Text(stringResource(R.string.dsh_goal_create), fontSize = 12.sp) }
                     )
                 } else {
                     AssistChip(
+                        shape = OneBoxDesignSystem.chipShape,
                         onClick = { editorMode = GoalEditorMode.Edit(ref) },
                         label = { Text(stringResource(R.string.dsh_goal_edit), fontSize = 12.sp) }
                     )
                     when (projection.phase) {
                         "active" -> AssistChip(
+                            shape = OneBoxDesignSystem.chipShape,
                             onClick = { component.goalPause(ref) },
                             label = { Text(stringResource(R.string.dsh_goal_pause), fontSize = 12.sp) }
                         )
 
                         "paused" -> AssistChip(
+                            shape = OneBoxDesignSystem.chipShape,
                             onClick = { component.goalResume(ref) },
                             label = { Text(stringResource(R.string.dsh_goal_resume), fontSize = 12.sp) }
                         )
                     }
                     if (projection.phase != "complete") {
                         AssistChip(
+                            shape = OneBoxDesignSystem.chipShape,
                             onClick = { component.goalComplete(ref) },
                             label = { Text(stringResource(R.string.dsh_goal_complete), fontSize = 12.sp) }
                         )
                     }
                     AssistChip(
+                        shape = OneBoxDesignSystem.chipShape,
                         onClick = { component.goalClear(ref) },
                         label = { Text(stringResource(R.string.dsh_goal_clear), fontSize = 12.sp) }
                     )

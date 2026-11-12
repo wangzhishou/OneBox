@@ -58,6 +58,7 @@ import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedButton
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.recordcenter.R
 import com.wanbaohe.recordcenter.component.RecordFieldStats
 import com.wanbaohe.recordcenter.component.RecordInsightState
@@ -330,6 +331,7 @@ private fun RangeFilterRow(
             RecordRangeFilter.ALL to stringResource(R.string.record_center_range_all),
         ).forEach { (filter, label) ->
             FilterChip(
+                shape = OneBoxDesignSystem.chipShape,
                 selected = selected == filter,
                 onClick = { onSelect(filter) },
                 label = { Text(text = label) },

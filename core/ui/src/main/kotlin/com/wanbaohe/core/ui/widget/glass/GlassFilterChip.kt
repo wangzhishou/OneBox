@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.wanbaohe.core.ui.utils.helper.ProvidesValue
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 
 /**
  * 毛玻璃风格 FilterChip。
@@ -39,7 +40,7 @@ fun GlassFilterChip(
     enabled: Boolean = true,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
-    shape: Shape = FilterChipDefaults.shape,
+    shape: Shape = OneBoxDesignSystem.chipShape,
     colors: SelectableChipColors = FilterChipDefaults.filterChipColors(),
     elevation: SelectableChipElevation? = FilterChipDefaults.filterChipElevation(),
     @Suppress("UNUSED_PARAMETER")

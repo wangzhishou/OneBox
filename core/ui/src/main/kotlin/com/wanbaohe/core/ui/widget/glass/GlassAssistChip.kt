@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.wanbaohe.core.ui.utils.helper.ProvidesValue
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 
 /**
  * 毛玻璃风格 [AssistChip] —— 参数与 Material3 [AssistChip] 对齐。
@@ -39,7 +40,7 @@ fun GlassAssistChip(
     enabled: Boolean = true,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
-    shape: Shape = AssistChipDefaults.shape,
+    shape: Shape = OneBoxDesignSystem.chipShape,
     colors: ChipColors = AssistChipDefaults.assistChipColors(),
     elevation: ChipElevation? = AssistChipDefaults.assistChipElevation(),
     @Suppress("UNUSED_PARAMETER")
@@ -121,7 +122,7 @@ fun GlassSuggestionChip(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     icon: @Composable (() -> Unit)? = null,
-    shape: Shape = SuggestionChipDefaults.shape,
+    shape: Shape = OneBoxDesignSystem.chipShape,
     colors: ChipColors = SuggestionChipDefaults.suggestionChipColors(),
     elevation: ChipElevation? = SuggestionChipDefaults.suggestionChipElevation(),
     @Suppress("UNUSED_PARAMETER")

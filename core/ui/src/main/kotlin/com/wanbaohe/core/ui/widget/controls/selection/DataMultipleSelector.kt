@@ -73,7 +73,7 @@ fun <T : Any> DataMultipleSelector(
     spanCount: Int = 2,
     modifier: Modifier = Modifier,
     badgeContent: (@Composable RowScope.() -> Unit)? = null,
-    shape: Shape = MaterialTheme.shapes.medium,
+    shape: Shape = OneBoxDesignSystem.chipShape,
     color: Color = MaterialTheme.colorScheme.surface,
     selectedItemColor: Color = MaterialTheme.colorScheme.tertiaryContainer,
     initialExpanded: Boolean = false,

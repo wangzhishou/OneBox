@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.theme.AppTheme
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 
 @Composable
 fun ClickChip(
@@ -30,7 +31,7 @@ fun ClickChip(
     colors: ButtonColors = ButtonDefaults.buttonColors(),
     onClick: () -> Unit,
 ) {
-    val shape = MaterialTheme.shapes.extraSmall
+    val shape = OneBoxDesignSystem.chipShape
     Row(
         modifier = Modifier
             .clip(shape)

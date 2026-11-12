@@ -387,7 +387,8 @@ private fun StatusChip(
         color = if (isActive) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = modifier
             .glassBackground(
-                style = if (isActive) GlassStyle.Dense else GlassStyle.Regular
+                style = if (isActive) GlassStyle.Dense else GlassStyle.Regular,
+                shape = OneBoxDesignSystem.chipShape
             )
             .padding(horizontal = 12.dp, vertical = 6.dp)
     )

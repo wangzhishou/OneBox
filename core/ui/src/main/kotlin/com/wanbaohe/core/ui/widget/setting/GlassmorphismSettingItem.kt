@@ -41,6 +41,7 @@ import coil3.request.ImageRequest
 import coil3.toBitmap
 import com.shifenmiao.core.R
 import com.shifenmiao.theme.AppTheme
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.dynamic.theme.ColorTuple
 import com.t8rin.dynamic.theme.LocalDynamicThemeState
 import com.t8rin.dynamic.theme.calculateSecondaryColor
@@ -295,6 +296,7 @@ fun GradientBackgroundStyleSettingItem(
         ) {
             options.forEachIndexed { index, (style, label) ->
                 FilterChip(
+                    shape = OneBoxDesignSystem.chipShape,
                     selected = index == selectedIndex,
                     onClick = {
                         if (index != selectedIndex) {

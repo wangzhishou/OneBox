@@ -27,6 +27,7 @@ import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -374,6 +375,7 @@ private fun QuestionBlock(
         ) {
             for (option in question.options.orEmpty()) {
                 FilterChip(
+                    shape = OneBoxDesignSystem.chipShape,
                     selected = option.label in selected,
                     onClick = { onSelect(option.label) },
                     label = {

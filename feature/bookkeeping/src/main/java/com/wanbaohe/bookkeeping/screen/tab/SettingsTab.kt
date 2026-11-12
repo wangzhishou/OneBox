@@ -2,6 +2,7 @@ package com.wanbaohe.bookkeeping.screen.tab
 
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.shifenmiao.model.money.AppCurrency
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.clickable
@@ -535,7 +536,7 @@ private fun CategorySectionCard(
                                 labelColor = onChipContainerColor,
                             ),
                             border = null,
-                            shape = RoundedCornerShape(10.dp),
+                            shape = OneBoxDesignSystem.chipShape,
                         )
                     }
                 }

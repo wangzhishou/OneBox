@@ -306,9 +306,15 @@ private fun ChipFilterRow(
         state = chipListState,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 2.dp, bottom = 8.dp),
-        // 两端各比一级 tab 少 6dp、chip 间距 6dp，整行更紧凑。
-        contentPadding = PaddingValues(horizontal = AppTheme.dimens.paddingNormal - 6.dp),
+            .padding(
+                start = AppTheme.dimens.paddingNormal,
+                end = AppTheme.dimens.paddingNormal,
+                top = 2.dp,
+                bottom = 8.dp,
+            ),
+        // 容器级左右留白，与一级 tab 行、下方卡片网格的 16dp 对齐。
+        // 用 contentPadding 只在内容首尾留白，横向滚动时 chip 仍会顶到屏幕边缘，
+        // 看起来就像整行没有边界、比上下多出一截。
         horizontalArrangement = Arrangement.spacedBy(6.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {

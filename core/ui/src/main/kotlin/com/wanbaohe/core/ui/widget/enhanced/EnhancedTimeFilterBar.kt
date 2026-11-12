@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -37,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineKeyboardArrowDown
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDateRange
 
@@ -108,8 +108,8 @@ data class TimeFilterPreset(
     val label: String,
 )
 
-/** 时间筛选条统一使用的圆角形状，16.dp 圆角矩形。 */
-val TimeFilterBarShape: androidx.compose.ui.graphics.Shape = RoundedCornerShape(16.dp)
+/** 时间筛选条沿用全项目统一 chip 圆角。 */
+val TimeFilterBarShape: androidx.compose.ui.graphics.Shape = OneBoxDesignSystem.chipShape
 
 @Composable
 private fun DateRangeChip(
