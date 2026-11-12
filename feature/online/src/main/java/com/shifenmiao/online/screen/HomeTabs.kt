@@ -12,6 +12,8 @@ import com.shifenmiao.common.components.GenericScrollableTabRow
 import com.shifenmiao.model.HomeTabKey
 import com.shifenmiao.model.ListItemType
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.resources.Icons
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineFilterAlt
 import kotlinx.coroutines.CoroutineScope
 import com.shifenmiao.core.R as CoreR
 
@@ -25,6 +27,8 @@ data class HomeTab(
     val key: HomeTabKey,
     @StringRes val titleRes: Int,
     val kind: HomeTabKind,
+    /** 该 tab 下方是否有二级分类 chip 行；玩法页没有分类数据，不显示漏斗入口。 */
+    val hasCategoryFilter: Boolean = true,
 )
 
 data class ChipFilter(
@@ -64,6 +68,7 @@ internal val homeTabs: List<HomeTab> = listOf(
         key = HomeTabKey.BLOG,
         titleRes = CoreR.string.playground,
         kind = HomeTabKind.Blog(blogType = 2),
+        hasCategoryFilter = false,
     ),
 )
 
@@ -72,6 +77,8 @@ fun HomeTabRow(
     pagerState: PagerState,
     tabs: List<HomeTab>,
     coroutineScope: CoroutineScope,
+    onToggleCategoryFilter: () -> Unit,
+    filterExpanded: Boolean = false,
     trailingContent: (@Composable () -> Unit)? = null,
 ) {
     GenericScrollableTabRow(
@@ -84,5 +91,11 @@ fun HomeTabRow(
         edgePadding = AppTheme.dimens.paddingNormal,
         indicatorShape = MaterialTheme.shapes.large,
         getTitle = { tab -> stringResource(id = tab.titleRes) },
+        onReselectCurrentTab = onToggleCategoryFilter,
+        getSelectedTrailingIcon = { tab ->
+            if (tab.hasCategoryFilter) Icons.Outlined.LineFilterAlt else null
+        },
+        selectedTrailingIconContentDescription = stringResource(CoreR.string.home_category_filter),
+        selectedTrailingIconTintAlpha = if (filterExpanded) 1f else 0.55f,
     )
 }

@@ -6,7 +6,10 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.shifenmiao.common.components.comments.CommentsHost
@@ -30,6 +33,19 @@ fun HomeContent(
     )
     val coroutineScope = rememberCoroutineScope()
 
+    // 二级分类 chip 行的展开状态原来在每页内部 rememberSaveable。
+    // 提升到 Pager 外层，是为了让一级 tab 也能开合它；各 tab 各自记忆的语义保持不变。
+    // 用 List<Int> 存页码，保证 rememberSaveable 能直接持久化。
+    var expandedFilterTabs by rememberSaveable { mutableStateOf(listOf<Int>()) }
+
+    fun setFilterExpanded(page: Int, expanded: Boolean) {
+        expandedFilterTabs = if (expanded) {
+            (expandedFilterTabs + page).distinct()
+        } else {
+            expandedFilterTabs - page
+        }
+    }
+
     LaunchedEffect(Unit) {
         StartupTrace.markOnce("home_content_composed", "HomeContent.composed")
     }
@@ -38,6 +54,11 @@ fun HomeContent(
         pagerState = pagerState,
         tabs = homeTabs,
         coroutineScope = coroutineScope,
+        onToggleCategoryFilter = {
+            val page = pagerState.currentPage
+            setFilterExpanded(page, page !in expandedFilterTabs)
+        },
+        filterExpanded = pagerState.currentPage in expandedFilterTabs,
     )
 
     HorizontalPager(
@@ -53,12 +74,16 @@ fun HomeContent(
                 itemListComponent = itemListComponent,
                 listType = ListItemType.NOTE,
                 onAiCreate = onAiCreate,
+                chipsExpanded = index in expandedFilterTabs,
+                onChipsExpandedChange = { expanded -> setFilterExpanded(index, expanded) },
             )
             is HomeTabKind.ListByType -> PagingDataItemScreen(
                 modifier = Modifier.fillMaxSize(),
                 itemListComponent = itemListComponent,
                 listType = kind.listType,
                 onAiCreate = onAiCreate,
+                chipsExpanded = index in expandedFilterTabs,
+                onChipsExpandedChange = { expanded -> setFilterExpanded(index, expanded) },
             )
             is HomeTabKind.Blog -> PlaygroundScreen(
                 playgroundComponent = playgroundComponent,

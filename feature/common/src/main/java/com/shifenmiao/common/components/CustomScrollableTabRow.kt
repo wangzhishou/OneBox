@@ -61,6 +61,13 @@ fun <T> GenericScrollableTabRow(
     iconSize: Dp = 12.dp,
     getTitle: @Composable (T) -> String?,
     getIcon: @Composable (T) -> ImageVector? = { null },
+    /** 再次点击已选中的 tab 时回调；为 null 时保持原来的 scrollToPage 行为。 */
+    onReselectCurrentTab: (() -> Unit)? = null,
+    /** 选中项文字后追加的图标；返回 null 表示该 tab 不展示。点击区域仍是整个 tab。 */
+    getSelectedTrailingIcon: (T) -> ImageVector? = { null },
+    selectedTrailingIconContentDescription: String? = null,
+    /** 尾部图标的强调度：收起时调低、展开时给满，用来表达二级筛选的开合状态。 */
+    selectedTrailingIconTintAlpha: Float = 1f,
 ) {
     val lastIndex = (items.size - 1).coerceAtLeast(0)
     val currentPage = pagerState.currentPage.coerceIn(0, lastIndex)
@@ -152,6 +159,15 @@ fun <T> GenericScrollableTabRow(
 
             val interactionSource = remember { MutableInteractionSource() }
             val icon = getIcon(item)
+            val trailingIcon = getSelectedTrailingIcon(item)
+            // 尾部图标槽位会让选中项右侧显得空：随选中程度收窄右内边距、把图标拉近文字，
+            // 让胶囊左右的视觉重量平衡，而不是给纯文字的等距 padding 再加一段图标宽。
+            val trailingEndInset = if (trailingIcon != null) {
+                lerp(0.dp, 4.dp, iconProgress)
+            } else {
+                0.dp
+            }
+            val trailingIconSpacerWidth = lerp(0.dp, 3.dp, iconProgress)
 
             Box(
                 modifier = Modifier
@@ -169,13 +185,23 @@ fun <T> GenericScrollableTabRow(
                         interactionSource = interactionSource,
                         indication = null,
                     ) {
-                        coroutineScope.launch {
-                            if (index < items.size) {
-                                pagerState.animateScrollToPage(index)
+                        if (isSelected && onReselectCurrentTab != null) {
+                            // 已选中项再点一次不切页，交给调用方做展开/收起二级筛选。
+                            onReselectCurrentTab()
+                        } else {
+                            coroutineScope.launch {
+                                if (index < items.size) {
+                                    pagerState.animateScrollToPage(index)
+                                }
                             }
                         }
                     }
-                    .padding(horizontal = horizontalPadding, vertical = verticalPadding),
+                    .padding(
+                        start = horizontalPadding,
+                        end = horizontalPadding - trailingEndInset,
+                        top = verticalPadding,
+                        bottom = verticalPadding,
+                    ),
                 contentAlignment = Alignment.Center,
             ) {
                 Row(
@@ -215,6 +241,24 @@ fun <T> GenericScrollableTabRow(
                             },
                             color = textColor,
                         )
+                    }
+                    if (trailingIcon != null && iconProgress > 0f) {
+                        Spacer(modifier = Modifier.width(trailingIconSpacerWidth))
+                        Box(
+                            modifier = Modifier
+                                .width(iconSlotWidth)
+                                .clipToBounds(),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Icon(
+                                imageVector = trailingIcon,
+                                contentDescription = selectedTrailingIconContentDescription,
+                                tint = textColor.copy(
+                                    alpha = iconProgress * selectedTrailingIconTintAlpha,
+                                ),
+                                modifier = Modifier.size(iconSize),
+                            )
+                        }
                     }
                 }
             }

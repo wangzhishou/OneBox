@@ -1816,6 +1816,7 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="home_tab_tags_manage">Manage tags</string>
     <string name="home_chip_all">All</string>
     <string name="home_chip_close">Hide filters</string>
+    <string name="home_category_filter">Category filter</string>
 
     <!-- Password protection global lock screen -->
     <string name="auth_code_title">Access Verification</string>

@@ -6,6 +6,8 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,13 +19,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -41,6 +45,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -83,9 +88,9 @@ import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.utils.provider.LocalWindowSizeClass
 import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.Close
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineFilterAlt
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLabel
 
 @Composable
@@ -94,10 +99,12 @@ fun PagingDataItemScreen(
     itemListComponent: ItemListComponent,
     listType: ListItemType,
     onAiCreate: () -> Unit,
+    // 开合由一级 tab 统一控制；默认值让非首页调用方保持原来「默认收起」的行为。
+    chipsExpanded: Boolean = false,
+    onChipsExpandedChange: (Boolean) -> Unit = {},
 ) {
     val chips by itemListComponent.observeChips(listType).collectAsState(initial = emptyList())
     var selectedChipId by rememberSaveable(listType.id) { mutableStateOf<Int?>(null) }
-    var chipsExpanded by rememberSaveable(listType.id) { mutableStateOf(false) }
 
     LaunchedEffect(chips, selectedChipId) {
         if (selectedChipId != null && chips.none { it.categoryId == selectedChipId }) {
@@ -177,19 +184,19 @@ fun PagingDataItemScreen(
     fun onCategoryBadgeTap(categoryId: Int?) {
         if (categoryId == null) return
         selectedChipId = categoryId
-        chipsExpanded = true
+        onChipsExpandedChange(true)
     }
 
+    // 与「待办事项」快捷 chip 一致：点未选中项应用筛选，再点已选中项取消该筛选。
+    // 只改筛选、不收起 chip 栏；收起统一交给 × 或一级 tab 的重复点击。
     fun onSelectChip(chipId: Int?) {
-        selectedChipId = chipId
-        if (chipId == null) {
-            chipsExpanded = false
-        }
+        selectedChipId = if (chipId != null && selectedChipId == chipId) null else chipId
     }
 
+    // × / 空态「清除筛选」：取消对应筛选并隐藏整条 chip 栏。
     fun onCloseChips() {
         selectedChipId = null
-        chipsExpanded = false
+        onChipsExpandedChange(false)
     }
 
     val localNavigator = LocalUrlNavigator.current
@@ -210,6 +217,7 @@ fun PagingDataItemScreen(
             ChipFilterRow(
                 chips = chips,
                 selectedCategoryId = selectedChipId,
+                chipsExpanded = chipsExpanded,
                 onSelect = ::onSelectChip,
                 onClose = ::onCloseChips,
                 onManageTags = {
@@ -266,6 +274,7 @@ fun PagingDataItemScreen(
 private fun ChipFilterRow(
     chips: List<ChipFilter>,
     selectedCategoryId: Int?,
+    chipsExpanded: Boolean,
     onSelect: (Int?) -> Unit,
     onClose: () -> Unit,
     onManageTags: () -> Unit,
@@ -273,81 +282,156 @@ private fun ChipFilterRow(
     val allLabel = stringResource(R.string.home_chip_all)
     val manageLabel = stringResource(R.string.home_tab_tags_manage)
     val closeLabel = stringResource(R.string.home_chip_close)
+    val chipListState = rememberLazyListState()
+
+    // 分类项横向很长，从卡片分类 badge 展开、或从别的 tab 切回来时，
+    // 选中项可能在屏幕外。只在展开且尚未可见时把选中 chip 滚进视野，
+    // 已经看得见就不动，避免每次展开都把整行拽回起点。
+    // item 顺序：0 = 全部，1..n = 分类，n+1 = 标签管理。
+    LaunchedEffect(chipsExpanded, selectedCategoryId, chips) {
+        if (!chipsExpanded) return@LaunchedEffect
+        val targetIndex = if (selectedCategoryId == null) {
+            0
+        } else {
+            val matched = chips.indexOfFirst { it.categoryId == selectedCategoryId }
+            if (matched < 0) 0 else matched + 1
+        }
+        val visibleItems = chipListState.layoutInfo.visibleItemsInfo
+        if (visibleItems.isEmpty() || visibleItems.none { it.index == targetIndex }) {
+            chipListState.animateScrollToItem(targetIndex)
+        }
+    }
+
     LazyRow(
+        state = chipListState,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 6.dp),
-        contentPadding = PaddingValues(horizontal = AppTheme.dimens.paddingNormal),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+            .padding(top = 2.dp, bottom = 8.dp),
+        // 两端各比一级 tab 少 6dp、chip 间距 6dp，整行更紧凑。
+        contentPadding = PaddingValues(horizontal = AppTheme.dimens.paddingNormal - 6.dp),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         item(key = "chip_all") {
-            GlassFilterChip(
+            CategoryFilterChip(
+                label = allLabel,
                 selected = selectedCategoryId == null,
                 onClick = { onSelect(null) },
-                label = { Text(allLabel) },
-                shape = chipShape,
-                border = null,
-                glassBorderWidth = 0.dp,
+                onClose = onClose,
+                closeLabel = closeLabel,
             )
         }
         items(items = chips, key = { it.categoryId ?: 0 }) { chip ->
-            val selected = selectedCategoryId == chip.categoryId
-            GlassFilterChip(
-                selected = selected,
+            CategoryFilterChip(
+                label = chip.name,
+                selected = selectedCategoryId == chip.categoryId,
                 onClick = { onSelect(chip.categoryId) },
-                label = { Text(chip.name) },
-                shape = chipShape,
-                border = null,
-                glassBorderWidth = 0.dp,
-                leadingIcon = {
-                    if (selected) {
-                        Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFilterAlt,
-                            contentDescription = null,
-                            modifier = Modifier.size(14.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                },
+                onClose = onClose,
+                closeLabel = closeLabel,
             )
         }
         item(key = "chip_manage_tags") {
-            GlassFilterChip(
+            CategoryFilterChip(
+                label = manageLabel,
                 selected = false,
                 onClick = onManageTags,
-                label = { Text(manageLabel) },
-                leadingIcon = {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineLabel,
-                        contentDescription = null,
-                        modifier = Modifier.size(14.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                },
-                shape = chipShape,
-                border = null,
-                glassBorderWidth = 0.dp,
-                glassContainerColor = MaterialTheme.colorScheme.surface,
+                leadingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineLabel,
             )
-        }
-        item(key = "chip_close") {
-            IconButton(
-                onClick = onClose,
-                modifier = Modifier.size(36.dp),
-            ) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
-                    contentDescription = closeLabel,
-                    modifier = Modifier.size(24.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
         }
     }
 }
 
-private val chipShape = RoundedCornerShape(16.dp)
+/**
+ * 与「待办事项」顶部快捷筛选同款 chip：28dp 高的 Dense 玻璃 chip、labelMedium 单行文字、
+ * 选中态 primaryContainer 底色 + 尾部关闭图标。
+ *
+ * 关闭图标有自己的点击区，命中时不会冒泡到 chip 主体，因此「取消筛选并收起整条 chip 栏」
+ * 与「点主体改选分类」互不干扰；末尾不再需要额外的关闭按钮。
+ */
+@Composable
+private fun CategoryFilterChip(
+    label: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+    onClose: () -> Unit = {},
+    closeLabel: String = "",
+    leadingIcon: ImageVector? = null,
+) {
+    val closeInteractionSource = remember { MutableInteractionSource() }
+    val neutralContainer = MaterialTheme.colorScheme.surfaceContainer
+    // 一级 tab 选中走 primary 系，二级 chip 选中改用 tertiary 系：
+    // 背景与文字/图标统一到 tertiaryContainer + onTertiaryContainer 同一色系，
+    // 修掉 M3 默认 onSecondaryContainer 与玻璃底色不同色系的问题，也拉出层级。
+    val selectedContainer = MaterialTheme.colorScheme.tertiaryContainer
+    val selectedContent = MaterialTheme.colorScheme.onTertiaryContainer
+    val unselectedContent = MaterialTheme.colorScheme.onSurfaceVariant
+    GlassFilterChip(
+        selected = selected,
+        onClick = onClick,
+        style = GlassStyle.Dense,
+        glassContainerColor = neutralContainer,
+        glassSelectedContainerColor = selectedContainer,
+        colors = FilterChipDefaults.filterChipColors(
+            containerColor = neutralContainer,
+            selectedContainerColor = selectedContainer,
+            labelColor = unselectedContent,
+            selectedLabelColor = selectedContent,
+            selectedLeadingIconColor = selectedContent,
+        ),
+        modifier = Modifier.height(28.dp),
+        border = null,
+        glassBorderWidth = 0.dp,
+        label = {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelMedium,
+                maxLines = 1,
+            )
+        },
+        leadingIcon = leadingIcon?.let { icon ->
+            {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    modifier = Modifier.size(14.dp),
+                    tint = unselectedContent,
+                )
+            }
+        },
+        trailingIcon = if (selected) {
+            {
+                Box(
+                    modifier = Modifier
+                        .size(28.dp)
+                        .clip(CircleShape)
+                        .clickable(
+                            interactionSource = closeInteractionSource,
+                            indication = null,
+                            onClick = onClose,
+                        ),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
+                        contentDescription = closeLabel,
+                        tint = selectedContent,
+                        modifier = Modifier.size(14.dp),
+                    )
+                }
+            }
+        } else {
+            null
+        },
+        // 带 × 的选中 chip 把右侧内边距收窄，抵消图标槽位，
+        // 让文字与 × 图形到各自边缘的视觉距离接近左侧。
+        contentPadding = PaddingValues(
+            start = 8.dp,
+            end = if (selected) 4.dp else 8.dp,
+            top = 0.dp,
+            bottom = 0.dp,
+        ),
+    )
+}
 
 private fun createScreenForListType(listType: ListItemType): Screen = when (listType) {
     ListItemType.AGENT -> Screen.CreateAIAgent()
