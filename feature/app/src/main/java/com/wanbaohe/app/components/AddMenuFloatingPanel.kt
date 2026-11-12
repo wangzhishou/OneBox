@@ -394,7 +394,10 @@ fun AddMenuFloatingPanel(
                         color = MaterialTheme.colorScheme.surface,
                         shape = panelShape,
                     )
-                    .padding(top = 20.dp, start = 16.dp, end = 16.dp, bottom = 36.dp),
+                    // 底部气泡箭头会占掉 panelShape 的 arrowSize(12.dp) 高度，
+                    // 多补一个箭头高度，让最后一行文字到卡片下边缘的留白
+                    // 与顶部标题上方在视觉上一样宽松。
+                    .padding(top = 20.dp, start = 16.dp, end = 16.dp, bottom = 48.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 // 标题
