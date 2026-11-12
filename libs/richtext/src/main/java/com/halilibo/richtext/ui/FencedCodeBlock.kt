@@ -107,13 +107,15 @@ fun AsyncFencedCodeBlock(
         .substringBefore('\t')
         .lowercase()
 
-    // Mermaid 代码块使用专用渲染组件
-    if (normalizedLanguage == "mermaid") {
-        MermaidCodeBlock(
-            codeBlock = codeBlock,
-            codeBlockClickListener = codeBlockClickListener
-        )
-        return
+    when (normalizedLanguage) {
+        "mermaid", "mmd", "plantuml", "puml", "uml", "dot", "gv", "graphviz" -> {
+            MermaidCodeBlock(
+                codeBlock = codeBlock,
+                codeBlockClickListener = codeBlockClickListener,
+                language = normalizedLanguage
+            )
+            return
+        }
     }
 
     // a2ui 代码块使用 A2UI 渲染组件（"uijson" 为旧标记，向后兼容）

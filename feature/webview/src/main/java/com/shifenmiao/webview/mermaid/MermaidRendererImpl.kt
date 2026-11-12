@@ -38,12 +38,13 @@ class MermaidRendererImpl : MermaidRenderer {
     override fun RenderDiagram(
         code: String,
         modifier: Modifier,
+        language: String,
     ) {
-        NativeMermaidDiagram(code = code, modifier = modifier)
+        NativeMermaidDiagram(code = code, modifier = modifier, language = language)
     }
 
-    override suspend fun getCachedBitmap(code: String): Bitmap? {
-        val file = getCachedSvgFile(code) ?: return null
+    override suspend fun getCachedBitmap(code: String, language: String): Bitmap? {
+        val file = getCachedSvgFile(code, language) ?: return null
         return try {
             val context = AppContext.getContext()
             val imageLoader = ImageLoader.Builder(context)
@@ -63,13 +64,13 @@ class MermaidRendererImpl : MermaidRenderer {
         }
     }
 
-    override fun getCachedSvg(code: String): String? {
-        return MermaidBitmapCache.get(code, isDark = true)?.svgString
-            ?: MermaidBitmapCache.get(code, isDark = false)?.svgString
+    override fun getCachedSvg(code: String, language: String): String? {
+        return MermaidBitmapCache.get(code, isDark = true, language = language)?.svgString
+            ?: MermaidBitmapCache.get(code, isDark = false, language = language)?.svgString
     }
 
-    override fun getCachedSvgFile(code: String): File? {
-        return MermaidBitmapCache.get(code, isDark = true)?.svgFile
-            ?: MermaidBitmapCache.get(code, isDark = false)?.svgFile
+    override fun getCachedSvgFile(code: String, language: String): File? {
+        return MermaidBitmapCache.get(code, isDark = true, language = language)?.svgFile
+            ?: MermaidBitmapCache.get(code, isDark = false, language = language)?.svgFile
     }
 }

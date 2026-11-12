@@ -19,16 +19,22 @@
 
 package com.wanbaohe.diagram
 
+import com.hrm.diagram.core.draw.Color
 import com.hrm.diagram.core.draw.DrawCommand
 import com.hrm.diagram.core.draw.TextAnchorX
 import com.hrm.diagram.core.draw.TextAnchorY
+import com.hrm.diagram.core.export.ExportBackground
+import com.hrm.diagram.core.export.SvgExportOptions
 import com.hrm.diagram.render.export.toSvg
 import com.hrm.diagram.render.streaming.DiagramSnapshot
 
-internal fun DiagramSnapshot.exportNativeSvg(): String {
+internal fun DiagramSnapshot.exportNativeSvg(backgroundArgb: Int): String {
     val textCommands = drawCommands.textCommandsInPaintOrder()
     var textIndex = 0
-    return toSvg().replace(TEXT_ELEMENT_REGEX) { match ->
+    val options = SvgExportOptions(
+        background = ExportBackground.Solid(Color(backgroundArgb))
+    )
+    return toSvg(options).replace(TEXT_ELEMENT_REGEX) { match ->
         val command = textCommands.getOrNull(textIndex++)
             ?: return@replace match.value
         match.value

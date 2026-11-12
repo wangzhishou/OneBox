@@ -55,26 +55,27 @@ import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 
 /**
- * Mermaid 代码块组件 —— 带"图表 / 代码"Tab 切换的 Mermaid 渲染器。
+ * 图表代码块组件 —— 带"图表 / 代码"Tab 切换，支持 Mermaid、PlantUML 和 DOT。
  *
- * 图表 Tab：通过 [LocalMermaidRenderer] 提供的渲染器渲染 Mermaid 图表。
- * 代码 Tab：显示带语法高亮的 Mermaid 源码。
+ * 图表 Tab：通过 [LocalMermaidRenderer] 提供的渲染器渲染图表。
+ * 代码 Tab：显示带语法高亮的图表源码。
  *
  * 操作按钮：
- * - 复制：始终可见，复制 Mermaid 源码。
+ * - 复制：始终可见，复制图表源码。
  * - 保存：图表 Tab 可见，优先保存 SVG，无法取得 SVG 时保存 Bitmap。
  * - 全屏：图表 Tab 可见，优先打开 SVG，无法取得 SVG 时打开 Bitmap。
  */
 @Composable
 fun MermaidCodeBlock(
     codeBlock: AstFencedCodeBlock,
-    codeBlockClickListener: CodeBlockClickListener?
+    codeBlockClickListener: CodeBlockClickListener?,
+    language: String = "mermaid",
 ) {
     val mermaidRenderer = LocalMermaidRenderer.current
 
-    // 如果没有提供 MermaidRenderer，回退到纯代码显示
+    // 如果没有提供图表渲染器，回退到纯代码显示
     if (mermaidRenderer == null) {
-        MermaidCodeOnlyBlock(codeBlock, codeBlockClickListener)
+        MermaidCodeOnlyBlock(codeBlock, codeBlockClickListener, language)
         return
     }
 
@@ -85,9 +86,9 @@ fun MermaidCodeBlock(
 
     // 代码高亮
     var highlightedText by remember { mutableStateOf<AnnotatedString?>(null) }
-    LaunchedEffect(codeBlock.literal) {
+    LaunchedEffect(codeBlock.literal, language) {
         highlightedText = withContext(Dispatchers.IO) {
-            parseAndHighlightMermaidCode(codeBlock.literal)
+            parseAndHighlightMermaidCode(codeBlock.literal, language)
         }
     }
 
@@ -157,12 +158,18 @@ fun MermaidCodeBlock(
                             text = stringResource(R.string.save),
                             onClick = {
                                 // 优先使用 SVG 文件（零转换），回退到 Bitmap
-                                val svgFile = mermaidRenderer.getCachedSvgFile(codeBlock.literal)
+                                val svgFile = mermaidRenderer.getCachedSvgFile(
+                                    codeBlock.literal,
+                                    language
+                                )
                                 if (svgFile != null) {
                                     listener.onMermaidSaveFile(codeBlock.literal, svgFile)
                                 } else {
                                     coroutineScope.launch {
-                                        val bitmap = mermaidRenderer.getCachedBitmap(codeBlock.literal)
+                                        val bitmap = mermaidRenderer.getCachedBitmap(
+                                            codeBlock.literal,
+                                            language
+                                        )
                                         if (bitmap != null) {
                                             listener.onMermaidSaveClicked(codeBlock.literal, bitmap)
                                         }
@@ -184,12 +191,18 @@ fun MermaidCodeBlock(
                             text = stringResource(R.string.mermaid_fullscreen),
                             onClick = {
                                 // 优先使用 SVG 文件（零转换），回退到 Bitmap
-                                val svgFile = mermaidRenderer.getCachedSvgFile(codeBlock.literal)
+                                val svgFile = mermaidRenderer.getCachedSvgFile(
+                                    codeBlock.literal,
+                                    language
+                                )
                                 if (svgFile != null) {
                                     listener.onMermaidFullscreenFile(codeBlock.literal, svgFile)
                                 } else {
                                     coroutineScope.launch {
-                                        val bitmap = mermaidRenderer.getCachedBitmap(codeBlock.literal)
+                                        val bitmap = mermaidRenderer.getCachedBitmap(
+                                            codeBlock.literal,
+                                            language
+                                        )
                                         if (bitmap != null) {
                                             listener.onMermaidFullscreenClicked(
                                                 codeBlock.literal,
@@ -244,6 +257,7 @@ fun MermaidCodeBlock(
                 mermaidRenderer.RenderDiagram(
                     code = codeBlock.literal,
                     modifier = Modifier.fillMaxWidth(),
+                    language = language,
                 )
             } else {
                 // 代码视图
@@ -262,18 +276,19 @@ fun MermaidCodeBlock(
 }
 
 /**
- * MermaidRenderer 未提供时的回退视图：仅显示代码 + 复制按钮
+ * 图表渲染器未提供时的回退视图：仅显示代码 + 复制按钮
  */
 @Composable
 private fun MermaidCodeOnlyBlock(
     codeBlock: AstFencedCodeBlock,
-    codeBlockClickListener: CodeBlockClickListener?
+    codeBlockClickListener: CodeBlockClickListener?,
+    language: String,
 ) {
     val scrollState = rememberScrollState()
     var highlightedText by remember { mutableStateOf<AnnotatedString?>(null) }
-    LaunchedEffect(codeBlock.literal) {
+    LaunchedEffect(codeBlock.literal, language) {
         highlightedText = withContext(Dispatchers.IO) {
-            parseAndHighlightMermaidCode(codeBlock.literal)
+            parseAndHighlightMermaidCode(codeBlock.literal, language)
         }
     }
 
@@ -295,7 +310,7 @@ private fun MermaidCodeOnlyBlock(
                 .fillMaxWidth()
         ) {
             Text(
-                text = "MERMAID",
+                text = language.uppercase(),
                 style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
                 color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(4.dp)
@@ -415,13 +430,20 @@ internal fun MermaidActionButton(
 //  语法高亮工具函数
 // ══════════════════════════════════════════════════════════════
 
-private suspend fun parseAndHighlightMermaidCode(code: String): AnnotatedString {
+private suspend fun parseAndHighlightMermaidCode(
+    code: String,
+    language: String,
+): AnnotatedString {
     return withContext(Dispatchers.IO) {
         try {
             val prism4j = Prism4j(PrismGrammarLocator())
             val theme = Prism4jThemeMaterial3.create()
             val highlight = Prism4jSyntaxHighlight(prism4j, theme, "java")
-            val spanned = highlight.highlight("yaml", code)
+            val grammar = when (language) {
+                "dot", "gv", "graphviz" -> "clike"
+                else -> "yaml"
+            }
+            val spanned = highlight.highlight(grammar, code)
             MarkdownStringUtils.spannedToAnnotatedString(
                 SpannableBuilder(spanned).spannableStringBuilder()
             )

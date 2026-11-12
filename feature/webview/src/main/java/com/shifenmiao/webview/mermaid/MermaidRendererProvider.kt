@@ -64,13 +64,17 @@ private class LazyMermaidRenderer(
     override fun RenderDiagram(
         code: String,
         modifier: Modifier,
+        language: String,
     ) {
-        delegate().RenderDiagram(code = code, modifier = modifier)
+        delegate().RenderDiagram(code = code, modifier = modifier, language = language)
     }
 
-    override suspend fun getCachedBitmap(code: String) = delegate().getCachedBitmap(code)
+    override suspend fun getCachedBitmap(code: String, language: String) =
+        delegate().getCachedBitmap(code, language)
 
-    override fun getCachedSvg(code: String) = delegate().getCachedSvg(code)
+    override fun getCachedSvg(code: String, language: String) =
+        delegate().getCachedSvg(code, language)
 
-    override fun getCachedSvgFile(code: String): java.io.File? = delegate().getCachedSvgFile(code)
+    override fun getCachedSvgFile(code: String, language: String): java.io.File? =
+        delegate().getCachedSvgFile(code, language)
 }

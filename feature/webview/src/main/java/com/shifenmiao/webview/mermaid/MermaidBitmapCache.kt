@@ -28,7 +28,7 @@ import java.io.File
 import java.security.MessageDigest
 
 /**
- * Mermaid SVG 文件缓存（文件 + MMKV 元数据）
+ * 图表 SVG 文件缓存（文件 + MMKV 元数据）
  *
  * SVG 文本写入 `cacheDir/mermaid/{cacheKey}.svg` 文件，
  * MMKV 仅存储轻量元数据（文件路径、高度、时间戳）。
@@ -38,7 +38,7 @@ import java.security.MessageDigest
  * - 文件可直接通过 `file://` URI 传给 ImageViewer / Coil
  * - 便于调试：adb pull 即可查看 SVG 原文
  *
- * 缓存 key = `"${CACHE_VERSION}_${SHA-256(code + theme)}_${isDark}"`
+ * 缓存 key = `"${CACHE_VERSION}_${SHA-256(language + code + theme)}_${isDark}"`
  */
 object MermaidBitmapCache {
 
@@ -78,12 +78,13 @@ object MermaidBitmapCache {
      * v3: getComputedStyle 内联文字属性 + foreignObject→text 转换
      * v4: SVG 文件存储（MMKV 仅存元数据）
      * v5: SHA-256 缓存键，避免不同源码发生 hashCode 碰撞
+     * v6: 缓存键包含图表语言，避免相同源码跨语法命中
      */
-    private const val CACHE_VERSION = "v5"
+    private const val CACHE_VERSION = "v6"
 
-    private fun cacheKey(code: String, isDark: Boolean): String {
+    private fun cacheKey(code: String, isDark: Boolean, language: String): String {
         val digest = MessageDigest.getInstance("SHA-256")
-            .digest("$code\u0000$isDark".toByteArray(Charsets.UTF_8))
+            .digest("${language.lowercase()}\u0000$code\u0000$isDark".toByteArray(Charsets.UTF_8))
         val sourceHash = digest.joinToString("") { "%02x".format(it) }
         return "${CACHE_VERSION}_${sourceHash}_$isDark"
     }
@@ -97,12 +98,13 @@ object MermaidBitmapCache {
     /**
      * 获取缓存的 SVG
      *
-     * @param code   Mermaid 源码
-     * @param isDark 当前是否暗色主题
+     * @param code     图表源码
+     * @param isDark   当前是否暗色主题
+     * @param language 图表语言
      * @return 缓存项，未命中返回 null
      */
-    fun get(code: String, isDark: Boolean): CachedMermaid? {
-        val key = cacheKey(code, isDark)
+    fun get(code: String, isDark: Boolean, language: String = "mermaid"): CachedMermaid? {
+        val key = cacheKey(code, isDark, language)
         val json = mmkv.decodeString(metaKey(key)) ?: return null
         return try {
             val obj = JSONObject(json)
@@ -126,14 +128,21 @@ object MermaidBitmapCache {
     /**
      * 写入缓存（SVG 文件 + 元数据，同步写入）
      *
-     * @param code       Mermaid 源码
+     * @param code       图表源码
      * @param isDark     当前是否暗色主题
-     * @param svgString  JS 提取的 SVG 字符串
+     * @param svgString  原生或 JS 提取的 SVG 字符串
      * @param heightPx   SVG 实际高度（像素）
+     * @param language   图表语言
      * @return 写入的 SVG 文件，失败返回 null
      */
-    fun put(code: String, isDark: Boolean, svgString: String, heightPx: Int): File? {
-        val key = cacheKey(code, isDark)
+    fun put(
+        code: String,
+        isDark: Boolean,
+        svgString: String,
+        heightPx: Int,
+        language: String = "mermaid",
+    ): File? {
+        val key = cacheKey(code, isDark, language)
         val file = svgFile(key)
         return try {
             file.writeText(svgString, Charsets.UTF_8)

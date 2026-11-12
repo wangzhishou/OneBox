@@ -138,7 +138,7 @@ fun rememberCodeBlockClickListener(
                 pendingSaveRequest.value = PendingCodeBlockSave.MermaidBitmap(
                     bitmap = bitmap,
                 )
-                createDocumentLauncher.launch("mermaid_${System.currentTimeMillis()}.png")
+                createDocumentLauncher.launch("diagram_${System.currentTimeMillis()}.png")
                 return true
             }
 
@@ -152,7 +152,7 @@ fun rememberCodeBlockClickListener(
                 pendingSaveRequest.value = PendingCodeBlockSave.MermaidFile(
                     file = file,
                 )
-                createDocumentLauncher.launch("mermaid_${System.currentTimeMillis()}.$extension")
+                createDocumentLauncher.launch("diagram_${System.currentTimeMillis()}.$extension")
                 return true
             }
 

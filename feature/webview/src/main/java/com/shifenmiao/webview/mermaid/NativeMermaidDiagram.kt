@@ -40,15 +40,17 @@ private const val NATIVE_ERROR_SETTLE_MS = 400L
 fun NativeMermaidDiagram(
     code: String,
     modifier: Modifier = Modifier,
+    language: String = "mermaid",
 ) {
     val isDark = isSystemInDarkTheme()
-    var nativeFailed by remember(code) { mutableStateOf(false) }
-    var nativeHasErrors by remember(code) { mutableStateOf(false) }
-    var diagnostics by remember(code) { mutableStateOf<List<String>>(emptyList()) }
-    var exportFrame by remember { mutableStateOf<NativeDiagramFrame?>(null) }
+    val supportsWebViewFallback = language == "mermaid" || language == "mmd"
+    var nativeFailed by remember(code, language) { mutableStateOf(false) }
+    var nativeHasErrors by remember(code, language) { mutableStateOf(false) }
+    var diagnostics by remember(code, language) { mutableStateOf<List<String>>(emptyList()) }
+    var exportFrame by remember(code, language) { mutableStateOf<NativeDiagramFrame?>(null) }
 
-    LaunchedEffect(code, nativeHasErrors) {
-        if (!nativeHasErrors) return@LaunchedEffect
+    LaunchedEffect(code, language, nativeHasErrors) {
+        if (!nativeHasErrors || !supportsWebViewFallback) return@LaunchedEffect
         delay(NATIVE_ERROR_SETTLE_MS)
         if (nativeHasErrors) {
             Log.w(TAG, "Native Mermaid failed, using WebView: $diagnostics")
@@ -56,7 +58,7 @@ fun NativeMermaidDiagram(
         }
     }
 
-    LaunchedEffect(exportFrame, isDark) {
+    LaunchedEffect(exportFrame, isDark, language) {
         val frame = exportFrame ?: return@LaunchedEffect
         val svg = frame.svg ?: return@LaunchedEffect
         withContext(Dispatchers.IO) {
@@ -65,6 +67,7 @@ fun NativeMermaidDiagram(
                 isDark = isDark,
                 svgString = svg,
                 heightPx = frame.height,
+                language = language,
             )
         }
     }
@@ -75,6 +78,7 @@ fun NativeMermaidDiagram(
         NativeDiagram(
             source = code,
             modifier = modifier,
+            languageHint = language,
             onFrame = { frame ->
                 if (frame.source == code) {
                     nativeHasErrors = frame.hasErrors ||

@@ -12,13 +12,14 @@ interface MermaidRenderer {
     fun RenderDiagram(
         code: String,
         modifier: Modifier,
+        language: String,
     )
 
-    suspend fun getCachedBitmap(code: String): Bitmap? = null
+    suspend fun getCachedBitmap(code: String, language: String): Bitmap? = null
 
-    fun getCachedSvg(code: String): String? = null
+    fun getCachedSvg(code: String, language: String): String? = null
 
-    fun getCachedSvgFile(code: String): File? = null
+    fun getCachedSvgFile(code: String, language: String): File? = null
 }
 
 val LocalMermaidRenderer = compositionLocalOf<MermaidRenderer?> { null }

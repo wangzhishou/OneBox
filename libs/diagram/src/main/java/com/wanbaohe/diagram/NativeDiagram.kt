@@ -19,14 +19,18 @@
 
 package com.wanbaohe.diagram
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import com.hrm.diagram.core.ir.Severity
 import com.hrm.diagram.core.ir.SourceLanguage
 import com.hrm.diagram.core.theme.DiagramTheme
+import com.hrm.diagram.render.Diagram
 import com.hrm.diagram.render.compose.DiagramPresentationMode
 import com.hrm.diagram.render.compose.DiagramSurface
 import com.hrm.diagram.render.compose.rememberDiagramRenderState
@@ -43,22 +47,27 @@ fun NativeDiagram(
     source: String,
     modifier: Modifier = Modifier,
     zoomEnabled: Boolean = false,
+    languageHint: String? = null,
     onFrame: (NativeDiagramFrame) -> Unit = {},
 ) {
     val currentOnFrame by rememberUpdatedState(onFrame)
+    val language = remember(source, languageHint) {
+        Diagram.detectSource(source, hint = languageHint).language ?: SourceLanguage.MERMAID
+    }
     val state = rememberDiagramRenderState(
         source = source,
         theme = DiagramTheme.material3(),
-        languageHint = SourceLanguage.MERMAID,
+        languageHint = language,
     )
 
-    LaunchedEffect(state.snapshot) {
+    val exportBackgroundArgb = MaterialTheme.colorScheme.surfaceContainer.toArgb()
+    LaunchedEffect(state.snapshot, exportBackgroundArgb) {
         val snapshot = state.snapshot
         if (!snapshot.isFinal) return@LaunchedEffect
         val errors = snapshot.diagnostics.filter { it.severity == Severity.ERROR }
         val svg = if (errors.isEmpty() && snapshot.drawCommands.isNotEmpty()) {
             delay(EXPORT_SETTLE_DEBOUNCE_MS)
-            withContext(Dispatchers.Default) { snapshot.exportNativeSvg() }
+            withContext(Dispatchers.Default) { snapshot.exportNativeSvg(exportBackgroundArgb) }
         } else {
             null
         }
