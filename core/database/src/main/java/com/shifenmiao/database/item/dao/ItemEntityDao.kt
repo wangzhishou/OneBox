@@ -67,6 +67,24 @@ interface ItemEntityDao {
     @Query("SELECT * FROM item WHERE title = :title LIMIT 1")
     suspend fun getItemByTitle(title: String): ItemEntity?
 
+    /**
+     * 同一来源下同类型、同标题的全部行，按 id 倒序。
+     * 用于 [upsertItemFromSync] 的 documentId 漂移兜底与历史重复收敛；
+     * 不带 documentId 条件，因此documentId 被 CMS 重建后仍能命中旧行。
+     */
+    @Query(
+        """
+        SELECT * FROM item
+        WHERE source = :source AND list_type = :listType AND title = :title
+        ORDER BY id DESC
+        """
+    )
+    suspend fun getItemsByTypeTitleAndSource(
+        source: Source,
+        listType: Int,
+        title: String,
+    ): List<ItemEntity>
+
     @Query("SELECT MAX(updated_at) FROM item")
     fun lastUpdated(): Long
 
@@ -135,40 +153,79 @@ interface ItemEntityDao {
         // 同步主键是 documentId（Strapi v5 稳定标识）；老数据没有 documentId 时降级 remoteId 匹配。
         val documentId = item.documentId?.takeIf { it.isNotBlank() }
         val remoteId = item.remoteId
-        val existing = when {
+        val bySyncKey = when {
             documentId != null -> getItemByDocumentId(documentId = documentId, source = item.source)
             remoteId != null -> getItemByRemoteId(remoteId = remoteId, source = item.source)
             else -> null
         }
-        return if (existing == null) {
-            insertItem(item.copy(id = 0)).toInt()
+
+        // CMS 重建 / 跨环境导入会让同一条目的 documentId 整体漂移，只按 documentId 去重会
+        // 不断插入同名新行（真机上出现过 43 组重复，其中两条 AGENT 旧行还因为没有 agent link
+        // 点不开）。这里按 (source, listType, title) 收敛：既作为主键漂移时的兜底合并键，
+        // 也顺带淘汰历史重复行。空标题不参与，避免把一批无标题条目错误合并。
+        // 查询只在同步写入时发生，走 index_item_list_type，item 表百行量级，无需新增索引 / DB 迁移。
+        val sameKey = if (item.title.isNotBlank()) {
+            getItemsByTypeTitleAndSource(item.source, item.listType, item.title)
         } else {
-            updateItemFromSync(
-                id = existing.id,
-                title = item.title,
-                description = item.description,
-                createdAt = item.createdAt,
-                updatedAt = item.updatedAt,
-                publishedAt = item.publishedAt,
-                url = item.url,
-                miniProgramId = item.miniProgramId,
-                source = item.source,
-                placeholder = item.placeholder,
-                listType = item.listType,
-                iconPath = item.iconPath,
-                iconName = item.iconName,
-                keywords = item.keywords,
-                recommend = item.recommend,
-                remoteId = item.remoteId,
-                vipLevel = item.vipLevel,
-                isHighlighted = item.isHighlighted,
-                isOnline = item.isOnline,
-                isAi = item.isAi,
-                documentId = item.documentId,
-                commentCount = item.commentCount,
-            )
-            existing.id
+            emptyList()
         }
+        // id 倒序，优先保留最新一行（通常也是资源 / agent link 完整的那行）。
+        val existing = bySyncKey ?: sameKey.firstOrNull()
+        if (existing == null) {
+            return insertItem(item.copy(id = 0)).toInt()
+        }
+
+        // 先淘汰同键其它行，再 UPDATE：否则新 documentId 可能与被淘汰行冲突，
+        // 撞上 (source, document_id) 唯一索引。删除前把用户态合并到保留行，
+        // 避免 FK CASCADE 把收藏 / 置顶 / 授权码一起清掉；点击统计是低价值汇总，随旧行清理。
+        sameKey.filter { it.id != existing.id }.forEach { duplicate ->
+            mergeUserStateInto(duplicate.id, existing.id)
+            deleteItemById(duplicate.id)
+        }
+
+        updateItemFromSync(
+            id = existing.id,
+            title = item.title,
+            description = item.description,
+            createdAt = item.createdAt,
+            updatedAt = item.updatedAt,
+            publishedAt = item.publishedAt,
+            url = item.url,
+            miniProgramId = item.miniProgramId,
+            source = item.source,
+            placeholder = item.placeholder,
+            listType = item.listType,
+            iconPath = item.iconPath,
+            iconName = item.iconName,
+            keywords = item.keywords,
+            recommend = item.recommend,
+            remoteId = item.remoteId,
+            vipLevel = item.vipLevel,
+            isHighlighted = item.isHighlighted,
+            isOnline = item.isOnline,
+            isAi = item.isAi,
+            documentId = item.documentId,
+            commentCount = item.commentCount,
+        )
+        return existing.id
+    }
+
+    /**
+     * 合并待删除重复行的用户态到保留行；两边都有标记时按「或」保留更宽松的一侧。
+     * 带方法体，Room 不会为其生成查询实现。
+     */
+    suspend fun mergeUserStateInto(fromId: Int, intoId: Int) {
+        val from = getUserStateByItemId(fromId) ?: return
+        val into = getUserStateByItemId(intoId)
+        val merged = (into ?: from.copy(itemId = intoId)).copy(
+            isFavorited = (into?.isFavorited == true) || from.isFavorited,
+            isPinned = (into?.isPinned == true) || from.isPinned,
+            pinnedAt = into?.pinnedAt ?: from.pinnedAt,
+            canEdit = (into?.canEdit == true) || from.canEdit,
+            requiresAuth = (into?.requiresAuth == true) || from.requiresAuth,
+            updatedAt = maxOf(into?.updatedAt ?: 0L, from.updatedAt),
+        )
+        upsertUserState(merged)
     }
 
     // ── UserState ────────────────────────────────────────────────────────
