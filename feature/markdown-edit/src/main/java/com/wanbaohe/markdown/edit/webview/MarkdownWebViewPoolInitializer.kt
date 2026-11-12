@@ -32,9 +32,16 @@ import com.shifenmiao.webview.common.WebViewPool
 object MarkdownWebViewPoolHelper {
 
     /**
-     * Markdown 编辑器预加载 key
+     * Markdown 编辑器预加载 key 前缀。
+     *
+     * 实际 cacheKey 是 `"$PRELOAD_KEY:$storageKey"`：记事本全屏页、新建笔记、编辑提示词
+     * 三个组件会各自在 init 里预拼接 HTML，共用一个 key 时后写的会覆盖先写的，
+     * 而 matchKey 里又含 storageKey，被覆盖的那个页面取缓存必然 miss、白做一次拼接；
+     * 更糟的是任意组件 doOnDestroy 都会把整个桶清掉，连别的页面刚预热的也一起没了。
      */
     const val PRELOAD_KEY = "markdown_editor"
+
+    private fun cacheKeyOf(storageKey: String) = "$PRELOAD_KEY:$storageKey"
 
     /**
      * 预加载 Markdown 编辑器 HTML
@@ -42,7 +49,7 @@ object MarkdownWebViewPoolHelper {
      * @param config Markdown 编辑器配置
      */
     fun preloadHtml(config: MarkdownPreloadConfig) {
-        WebViewPool.preloadHtml(PRELOAD_KEY, matchKeyOf(config), config, MarkdownHtmlGenerator)
+        WebViewPool.preloadHtml(cacheKeyOf(config.storageKey), matchKeyOf(config), config, MarkdownHtmlGenerator)
     }
 
     /**
@@ -52,16 +59,24 @@ object MarkdownWebViewPoolHelper {
      * @return 预加载的 HTML，如果命中键不匹配则返回 null
      */
     fun getPreloadedHtml(config: MarkdownPreloadConfig): String? {
-        return WebViewPool.getPreloadedHtml(PRELOAD_KEY, matchKeyOf(config))
+        return WebViewPool.getPreloadedHtml(cacheKeyOf(config.storageKey), matchKeyOf(config))
     }
 
     /**
-     * 清除预加载的 HTML 缓存
+     * 只清除当前页面的预加载 HTML，不动其它页面刚预热的缓存。
+     * 应在业务模块销毁时调用，释放内存。
      *
-     * 应在业务模块销毁时调用，释放内存
+     * @param storageKey 与 [preloadHtml] 时传入的 storageKey 一致
+     */
+    fun clearPreloadedHtml(storageKey: String) {
+        WebViewPool.clearPreloadedHtml(cacheKeyOf(storageKey))
+    }
+
+    /**
+     * 清除 Markdown 编辑器全部预加载缓存（切主题 / 换语言时整体失效用）。
      */
     fun clearPreloadedHtml() {
-        WebViewPool.clearPreloadedHtml(PRELOAD_KEY)
+        WebViewPool.clearPreloadedHtmlByPrefix("$PRELOAD_KEY:")
     }
 }
 

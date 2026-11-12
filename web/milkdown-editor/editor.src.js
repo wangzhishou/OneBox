@@ -625,18 +625,24 @@ function scheduleDiagramRender() {
     }, 160);
 }
 
-/** 光标在图表代码块内时显示源码，移开后恢复内联图表。 */
+/** 光标在图表代码块内且编辑器真正获得焦点时，才显示源码、隐藏内联图表。 */
 function updateDiagramEditingState() {
     if (!editor || isSourceView) return;
 
     let activePre = null;
     try {
         const view = editor.action(ctx => ctx.get(editorViewCtx));
-        const $from = view.state.selection.$from;
-        if ($from.parent.type.name === 'code_block') {
-            const dom = view.nodeDOM($from.before($from.depth));
-            if (dom && dom.nodeType === 1 && dom.dataset && dom.dataset.diagramKey) {
-                activePre = dom;
+        // replaceAll 会把选区留在文档末尾：如果最后一段正好是图表代码块，不判断焦点
+        // 就会在首屏把这个块标成「正在编辑」，CSS 把内联预览藏起来，用户打开笔记
+        // 看到的是原始代码。只有用户真的点进来（enterDiagramEditing 会 view.focus()）
+        // 才切换到源码视图。
+        if (view.hasFocus()) {
+            const $from = view.state.selection.$from;
+            if ($from.parent.type.name === 'code_block') {
+                const dom = view.nodeDOM($from.before($from.depth));
+                if (dom && dom.nodeType === 1 && dom.dataset && dom.dataset.diagramKey) {
+                    activePre = dom;
+                }
             }
         }
     } catch (e) {

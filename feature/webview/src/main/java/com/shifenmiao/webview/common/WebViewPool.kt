@@ -363,6 +363,21 @@ object WebViewPool {
         preloadedCache.remove(key)
     }
 
+    /**
+     * 清除同一业务下按分桶拆分的所有预加载缓存。
+     *
+     * 业务可以把 cacheKey 拆成 `"业务前缀:实例标识"`（例如每个 storageKey 一份），
+     * 避免多个页面互相覆盖；需要整体失效（切主题 / 换语言 / 释放内存）时用这个入口。
+     *
+     * @param prefix cacheKey 前缀，调用方自行带上分隔符
+     */
+    fun clearPreloadedHtmlByPrefix(prefix: String) {
+        if (prefix.isEmpty()) return
+        preloadedCache.keys.forEach { key ->
+            if (key.startsWith(prefix)) preloadedCache.remove(key)
+        }
+    }
+
     // ======================== WebView 工厂 ========================
 
     /**

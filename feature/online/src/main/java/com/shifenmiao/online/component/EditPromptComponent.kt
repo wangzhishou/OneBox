@@ -106,7 +106,7 @@ class EditPromptComponent @AssistedInject internal constructor(
             )
         )
         componentContext.lifecycle.doOnDestroy {
-            MarkdownWebViewPoolHelper.clearPreloadedHtml()
+            MarkdownWebViewPoolHelper.clearPreloadedHtml("edit_prompt_item")
         }
 
         componentScope.launch(ioDispatcher) {

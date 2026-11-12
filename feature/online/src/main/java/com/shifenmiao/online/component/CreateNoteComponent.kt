@@ -111,7 +111,7 @@ class CreateNoteComponent @AssistedInject internal constructor(
             )
         )
         componentContext.lifecycle.doOnDestroy {
-            MarkdownWebViewPoolHelper.clearPreloadedHtml()
+            MarkdownWebViewPoolHelper.clearPreloadedHtml("create_note_item")
             if (draftId != 0L) {
                 val scope = kotlinx.coroutines.CoroutineScope(Dispatchers.IO)
                 scope.launch { dataDraftHelper.deleteById(draftId) }

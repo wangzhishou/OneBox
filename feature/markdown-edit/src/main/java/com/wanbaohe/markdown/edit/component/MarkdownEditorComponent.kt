@@ -175,7 +175,7 @@ class MarkdownEditorComponent @AssistedInject internal constructor(
         )
 
         componentContext.lifecycle.doOnDestroy {
-            MarkdownWebViewPoolHelper.clearPreloadedHtml()
+            MarkdownWebViewPoolHelper.clearPreloadedHtml("markdown_editor_screen")
             // 组件销毁时清理编辑模式草稿
             if (editDraftId != 0L) {
                 val scope = kotlinx.coroutines.CoroutineScope(Dispatchers.IO)
