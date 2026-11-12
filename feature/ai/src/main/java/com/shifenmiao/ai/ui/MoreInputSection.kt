@@ -149,7 +149,6 @@ fun MoreInputSection(
                 ChatModeSelector(
                     currentMode = chatMode,
                     onModeSelected = onChatModeSelected,
-                    compact = true,
                     enabled = modeSelectionEnabled,
                 )
                 Spacer(modifier = Modifier.height(16.dp))

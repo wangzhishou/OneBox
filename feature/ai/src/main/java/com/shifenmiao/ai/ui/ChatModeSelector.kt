@@ -48,7 +48,6 @@ fun ChatModeSelector(
     currentMode: AIChatMode,
     onModeSelected: (AIChatMode) -> Unit,
     modifier: Modifier = Modifier,
-    compact: Boolean = false,
     enabled: Boolean = true,
 ) {
     DisableContainer(enabled = enabled) {
@@ -57,7 +56,7 @@ fun ChatModeSelector(
             selectedOption = currentMode,
             onOptionSelected = onModeSelected,
             modifier = modifier,
-            buttonHeight = if (compact) 44.dp else 64.dp,
+            buttonHeight = 64.dp,
             label = { mode ->
                 val title = stringResource(
                     when (mode) {
@@ -78,7 +77,7 @@ fun ChatModeSelector(
                             AIChatMode.AGENT -> Icons.Outlined.LineAiChat
                         },
                         contentDescription = null,
-                        modifier = Modifier.size(if (compact) 20.dp else 24.dp),
+                        modifier = Modifier.size(24.dp),
                     )
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
@@ -89,19 +88,17 @@ fun ChatModeSelector(
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                         )
-                        if (!compact) {
-                            Text(
-                                text = stringResource(
-                                    when (mode) {
-                                        AIChatMode.CHAT -> R.string.ai_chat_mode_chat_description
-                                        AIChatMode.AGENT -> R.string.ai_chat_mode_agent_description
-                                    }
-                                ),
-                                style = MaterialTheme.typography.labelSmall,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                        }
+                        Text(
+                            text = stringResource(
+                                when (mode) {
+                                    AIChatMode.CHAT -> R.string.ai_chat_mode_chat_description
+                                    AIChatMode.AGENT -> R.string.ai_chat_mode_agent_description
+                                }
+                            ),
+                            style = MaterialTheme.typography.labelSmall,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
                     }
                 }
             }
