@@ -19,7 +19,6 @@
 
 package com.shifenmiao.webview.mermaid
 
-import android.webkit.WebView
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
@@ -28,11 +27,6 @@ import com.halilibo.richtext.ui.mermaid.LocalMermaidRenderer
 import com.halilibo.richtext.ui.mermaid.MermaidRenderer
 import java.util.concurrent.atomic.AtomicReference
 
-/**
- * 在真正需要 Markdown / Mermaid 渲染的子树中局部提供 MermaidRenderer。
- *
- * 这里仍保留懒初始化：只有首次触发 Mermaid 相关调用时，才真正创建 [MermaidRendererImpl]。
- */
 @Composable
 fun ProvideMermaidRenderer(
     content: @Composable () -> Unit
@@ -70,22 +64,13 @@ private class LazyMermaidRenderer(
     override fun RenderDiagram(
         code: String,
         modifier: Modifier,
-        onWebViewReady: ((WebView) -> Unit)?
     ) {
-        delegate().RenderDiagram(
-            code = code,
-            modifier = modifier,
-            onWebViewReady = onWebViewReady
-        )
+        delegate().RenderDiagram(code = code, modifier = modifier)
     }
-
-    override fun captureBitmap(webView: WebView?): android.graphics.Bitmap? =
-        delegate().captureBitmap(webView)
 
     override suspend fun getCachedBitmap(code: String) = delegate().getCachedBitmap(code)
 
     override fun getCachedSvg(code: String) = delegate().getCachedSvg(code)
 
-    override fun getCachedSvgFile(code: String) = delegate().getCachedSvgFile(code)
+    override fun getCachedSvgFile(code: String): java.io.File? = delegate().getCachedSvgFile(code)
 }
-

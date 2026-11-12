@@ -53,7 +53,7 @@ import com.halilibo.richtext.ui.string.InlineContent
 import com.halilibo.richtext.ui.string.RichTextString
 import com.halilibo.richtext.ui.string.Text
 import com.halilibo.richtext.ui.string.withFormat
-import io.noties.markwon.MarkdownJLatexInlineMath
+import com.wanbaohe.latex.NativeInlineLatex
 import com.t8rin.imagetoolbox.core.resources.icons.OpenInNew
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAppShortcut
 
@@ -162,9 +162,9 @@ private fun computeRichTextString(
                 initialSize = {
                     inlineMathPlaceholderSize
                 },
-                placeholderVerticalAlign = PlaceholderVerticalAlign.Center
+                placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
               ) {
-                MarkdownJLatexInlineMath(
+                NativeInlineLatex(
                   latex = latexContent
                 )
               }

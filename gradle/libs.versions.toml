@@ -128,7 +128,12 @@ opencv = "5.0.0.1"
 onnxruntime = "1.31.1"
 coilResvg = "1.1.2"
 litertlm = "0.19.0"
+hrmDiagram = "1.1.0"
+hrmLatex = "1.7.2"
 [libraries]
+hrm-diagram-render = { module = "io.github.huarangmeng:diagram-render", version.ref = "hrmDiagram" }
+hrm-latex-renderer = { module = "io.github.huarangmeng:latex-renderer", version.ref = "hrmLatex" }
+hrm-latex-fonts-katex = { module = "io.github.huarangmeng:latex-fonts-katex", version.ref = "hrmLatex" }
 litertlm-android = { group = "com.google.ai.edge.litertlm", name = "litertlm-android", version.ref = "litertlm" }
 coil-resvg = { module = "com.hashsequence:coil-resvg", version.ref = "coilResvg" }
 flinger = { module = "com.github.iamjosephmj.flinger:flinger", version.ref = "flinger" }

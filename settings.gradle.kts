@@ -91,6 +91,8 @@ include(":libs:snowfall")
 //include(":libs:cropper")
 include(":libs:dynamic-theme")
 include(":libs:twain")
+include(":libs:latex")
+include(":libs:diagram")
 include(":libs:richtext")
 include(":feature:image-viewer")
 

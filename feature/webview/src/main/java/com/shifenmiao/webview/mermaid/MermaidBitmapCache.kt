@@ -25,6 +25,7 @@ import com.shifenmiao.storage.MMKVName
 import com.tencent.mmkv.MMKV
 import org.json.JSONObject
 import java.io.File
+import java.security.MessageDigest
 
 /**
  * Mermaid SVG 文件缓存（文件 + MMKV 元数据）
@@ -37,7 +38,7 @@ import java.io.File
  * - 文件可直接通过 `file://` URI 传给 ImageViewer / Coil
  * - 便于调试：adb pull 即可查看 SVG 原文
  *
- * 缓存 key = `"${CACHE_VERSION}_${code.hashCode()}_${isDark}"`
+ * 缓存 key = `"${CACHE_VERSION}_${SHA-256(code + theme)}_${isDark}"`
  */
 object MermaidBitmapCache {
 
@@ -76,11 +77,15 @@ object MermaidBitmapCache {
      * v2: 保留原始 SVG CSS（AndroidSVG 原生解析，复杂选择器仍失效）
      * v3: getComputedStyle 内联文字属性 + foreignObject→text 转换
      * v4: SVG 文件存储（MMKV 仅存元数据）
+     * v5: SHA-256 缓存键，避免不同源码发生 hashCode 碰撞
      */
-    private const val CACHE_VERSION = "v4"
+    private const val CACHE_VERSION = "v5"
 
     private fun cacheKey(code: String, isDark: Boolean): String {
-        return "${CACHE_VERSION}_${code.hashCode()}_$isDark"
+        val digest = MessageDigest.getInstance("SHA-256")
+            .digest("$code\u0000$isDark".toByteArray(Charsets.UTF_8))
+        val sourceHash = digest.joinToString("") { "%02x".format(it) }
+        return "${CACHE_VERSION}_${sourceHash}_$isDark"
     }
 
     private fun metaKey(cacheKey: String): String = "meta_$cacheKey"

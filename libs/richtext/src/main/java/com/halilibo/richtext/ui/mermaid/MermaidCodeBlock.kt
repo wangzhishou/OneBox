@@ -1,6 +1,5 @@
 package com.halilibo.richtext.ui.mermaid
 
-import android.webkit.WebView
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
@@ -63,8 +62,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
  *
  * 操作按钮：
  * - 复制：始终可见，复制 Mermaid 源码。
- * - 保存：图表 Tab 可见，截图并通过 [CodeBlockClickListener.onMermaidSaveClicked] 保存。
- * - 全屏：图表 Tab 可见，截图并通过 [CodeBlockClickListener.onMermaidFullscreenClicked] 打开图片浏览器。
+ * - 保存：图表 Tab 可见，优先保存 SVG，无法取得 SVG 时保存 Bitmap。
+ * - 全屏：图表 Tab 可见，优先打开 SVG，无法取得 SVG 时打开 Bitmap。
  */
 @Composable
 fun MermaidCodeBlock(
@@ -81,7 +80,6 @@ fun MermaidCodeBlock(
 
     var selectedTab by remember { mutableIntStateOf(0) } // 0 = 图表, 1 = 代码
     var hasUserSwitchedTab by remember { mutableStateOf(false) } // 是否手动切换过 Tab
-    var webViewRef by remember { mutableStateOf<WebView?>(null) }
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
 
@@ -246,9 +244,6 @@ fun MermaidCodeBlock(
                 mermaidRenderer.RenderDiagram(
                     code = codeBlock.literal,
                     modifier = Modifier.fillMaxWidth(),
-                    onWebViewReady = { wv: WebView ->
-                        webViewRef = wv
-                    }
                 )
             } else {
                 // 代码视图

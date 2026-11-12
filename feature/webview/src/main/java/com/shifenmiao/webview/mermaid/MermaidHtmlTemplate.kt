@@ -274,7 +274,7 @@ $escapedCode
             mermaid.initialize({
                 startOnLoad: true,
                 theme: '$mermaidTheme',
-                securityLevel: 'loose',
+                securityLevel: 'strict',
                 fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
                 sequence: {
                     actorFontSize: 13,

@@ -39,6 +39,7 @@ dependencies {
     implementation(projects.core.base)
     implementation(projects.core.theme)
     implementation(projects.libs.twain)
+    implementation(projects.libs.diagram)
     implementation(projects.libs.richtext)
     implementation(projects.feature.common)
 

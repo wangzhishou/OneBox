@@ -41,7 +41,7 @@ import com.shifenmiao.model.node.AstTableRow
 import com.shifenmiao.model.node.AstText
 import com.shifenmiao.model.node.AstThematicBreak
 import com.shifenmiao.model.node.AstUnorderedList
-import io.noties.markwon.MarkdownJLatexBlockMath
+import com.wanbaohe.latex.NativeBlockLatex
 import io.noties.markwon.plugins.codeblock.CodeBlockClickListener
 
 /**
@@ -330,7 +330,7 @@ private val DefaultAstNodeComposer = object : AstBlockNodeComposer {
 
             is AstJLatexBlockMath -> {
                 astNodeType.latex?.let { latex ->
-                    MarkdownJLatexBlockMath(
+                    NativeBlockLatex(
                         latex = latex
                     )
                 }

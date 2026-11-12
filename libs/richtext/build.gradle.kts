@@ -20,5 +20,6 @@ dependencies {
     implementation(libs.coilGif)
     implementation(libs.jsoup)
     implementation(projects.libs.twain)
+    implementation(projects.libs.latex)
     implementation(libs.androidx.constraintlayout)
 }

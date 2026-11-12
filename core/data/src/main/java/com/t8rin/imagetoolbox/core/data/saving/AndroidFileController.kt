@@ -441,8 +441,12 @@ internal class AndroidFileController @Inject constructor(
         block = { output ->
             context.contentResolver.openInputStream(fromUri.toUri())?.buffered()?.use { input ->
                 val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
-                while (input.read(buffer) != -1) {
-                    output.writeBytes(buffer)
+                while (true) {
+                    val count = input.read(buffer)
+                    if (count == -1) break
+                    output.writeBytes(
+                        if (count == buffer.size) buffer else buffer.copyOf(count)
+                    )
                 }
             } ?: throw IllegalAccessException("File inaccessible")
         }
@@ -455,8 +459,12 @@ internal class AndroidFileController @Inject constructor(
         runSuspendCatching {
             context.contentResolver.openInputStream(fromUri.toUri())?.buffered()?.use { input ->
                 val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
-                while (input.read(buffer) != -1) {
-                    to.writeBytes(buffer)
+                while (true) {
+                    val count = input.read(buffer)
+                    if (count == -1) break
+                    to.writeBytes(
+                        if (count == buffer.size) buffer else buffer.copyOf(count)
+                    )
                 }
             } ?: throw IllegalAccessException("File inaccessible")
         }.onSuccess {
