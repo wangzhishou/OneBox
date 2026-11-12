@@ -20,8 +20,10 @@
 package com.wanbaohe.blog.screen
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,6 +40,8 @@ import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBarType
 import com.wanbaohe.blog.logic.BlogComponent
 import com.shifenmiao.common.components.blog.BlogHeader
 import com.wanbaohe.blog.ui.BlogContent
+import com.wanbaohe.core.ui.utils.helper.scrollToContentStart
+import kotlinx.coroutines.launch
 
 @Composable
 fun BlogDetailScreen(
@@ -51,6 +55,8 @@ fun BlogDetailScreen(
         )
     }
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    val lazyListState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
     BaseScreen(
         title = {
             BlogHeader(title = currentTitle.value, isFixed = false)
@@ -59,6 +65,10 @@ fun BlogDetailScreen(
         type = EnhancedTopAppBarType.Medium,
         supportGlassEffect = true,
         scrollBehavior = scrollBehavior,
+        // 标题栏点击只回到正文首条，不改动 MarkdownLazyContent 自身的滚动行为
+        onTitleClick = {
+            coroutineScope.launch { lazyListState.scrollToContentStart() }
+        },
         showNavigationBarsPadding = true
     ) {
         val pullRefreshLayoutState = rememberPullToRefreshStateOnTime(
@@ -79,7 +89,8 @@ fun BlogDetailScreen(
                 blogComponent = blogComponent,
                 appComponent = appComponent,
                 onGoBack = { appComponent.onGoBack },
-                modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+                modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+                lazyListState = lazyListState
             )
         }
     }

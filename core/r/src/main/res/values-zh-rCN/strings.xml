@@ -2282,4 +2282,8 @@
     <string name="translator">翻译</string>
     <string name="translator_description">支持云端与本地模型、语音输入和拍照取词的文本翻译</string>
 
+    <!-- AI 聊天 Loading:Google 渠道的轻量自有 API 引导 -->
+    <string name="ai_chat_loading_byok_hint">等待有点久？配置自有 API Key 可直连模型，减少排队</string>
+    <string name="ai_chat_loading_byok_action">去配置</string>
+
 </resources>

@@ -66,6 +66,7 @@ import com.shifenmiao.model.ListItemType
 import com.shifenmiao.online.component.NoteItemComponent
 import com.shifenmiao.online.ui.ReadOnlyNoteCategorySelection
 import com.shifenmiao.theme.AppTheme
+import com.wanbaohe.core.ui.utils.helper.scrollToContentStart
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedButton
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBarType
@@ -136,6 +137,10 @@ fun NoteItemScreen(
                 }
             }
         },
+        // 标题栏点击只回到正文首条，不改动 MarkdownLazyContent 自身的滚动行为
+        onTitleClick = {
+            scope.launch { lazyListState.scrollToContentStart() }
+        },
         showNavigationBarsPadding = true
     ) {
         if (noteUIState.isLocked) {
@@ -166,9 +171,13 @@ fun NoteItemScreen(
                             uriHandler.openUri(url)
                         }
                     },
+                    // 页面级已由 BaseScreen 补 navigationBarsPadding；这里给正文末尾再留一段
+                    // 可滚动留白，避免最后一行紧贴系统手势条上沿(与 Blog 详情底部留白对齐)
                     paddingValues = PaddingValues(
-                        vertical = 0.dp,
-                        horizontal = AppTheme.dimens.paddingNormal
+                        start = AppTheme.dimens.paddingNormal,
+                        top = 0.dp,
+                        end = AppTheme.dimens.paddingNormal,
+                        bottom = 30.dp
                     ),
                     headerContent = {
                         if (noteUIState.selectedCategories.isNotEmpty()) {

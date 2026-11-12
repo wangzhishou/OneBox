@@ -23,6 +23,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.MarqueeSpacing
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
@@ -40,8 +41,11 @@ import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -82,6 +86,8 @@ fun BaseScreen(
     isBackHandler: Boolean = true,
     immersiveModeState: ImmersiveModeState? = null,
     scrollBehavior: TopAppBarScrollBehavior? = null,
+    // 传入后，点击标题栏会把内容滚动区一次性送回首条；不传则标题栏无任何点击行为
+    onTitleClick: (() -> Unit)? = null,
     content: @Composable (ColumnScope.() -> Unit)? = null,
 ) {
     BaseScreen(
@@ -111,6 +117,7 @@ fun BaseScreen(
         isBackHandler = isBackHandler,
         immersiveModeState = immersiveModeState,
         scrollBehavior = scrollBehavior,
+        onTitleClick = onTitleClick,
         content = content
     )
 }
@@ -147,11 +154,23 @@ fun BaseScreen(
     type: EnhancedTopAppBarType = EnhancedTopAppBarType.Center,
     containerColor: Color? = null,
     scrollBehavior: TopAppBarScrollBehavior? = null,
+    // 传入后，点击标题栏会把内容滚动区一次性送回首条；不传则标题栏无任何点击行为
+    onTitleClick: (() -> Unit)? = null,
     content: @Composable (ColumnScope.() -> Unit)? = null
 ) {
     // 判断玻璃效果是否真正激活：需要参数开启 + 全局设置启用
     val settingsState = LocalSettingsState.current
     val isGlassActive = supportGlassEffect && settingsState.isGlassAlphaEnabled
+
+    // 标题栏点击只负责「一次性回到首条内容」：不接管子按钮的点击(它们会先消费事件)，
+    // 也不触碰页面自身的自动跟随 / nestedScroll / 悬浮回顶按钮等既有滚动行为。
+    // 用 onTap 而非 onDoubleTap：单击即时响应无双击判定延迟，双击只会重复一次幂等滚动。
+    val currentOnTitleClick by rememberUpdatedState(onTitleClick)
+    val titleBarTapModifier = if (onTitleClick != null) {
+        Modifier.pointerInput(Unit) {
+            detectTapGestures(onTap = { currentOnTitleClick?.invoke() })
+        }
+    } else Modifier
 
     // 玻璃模式：全部透明，让背景内容完全透出；非玻璃模式：恢复原始配色
     val resolvedTopBarColors = if (isGlassActive) {
@@ -179,6 +198,7 @@ fun BaseScreen(
             // TopAppBar 使用沉浸式动画
             ImmersiveTopContent(visible = isUiVisible) {
                 EnhancedTopAppBar(
+                    modifier = titleBarTapModifier,
                     type = type,
                     title = title,
                     isGlassActive = supportGlassEffect,

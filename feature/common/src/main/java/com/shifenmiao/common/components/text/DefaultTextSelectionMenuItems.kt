@@ -27,10 +27,12 @@ import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.core.R
 import com.shifenmiao.model.ListItemType
 import com.t8rin.imagetoolbox.core.resources.Icons
+// 与 AI 聊天底部操作栏保持同一套系统 Outline 语义图标(项目自绘线条)，
+// 避免同一功能在两处出现不同造型
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
+import com.t8rin.imagetoolbox.core.resources.icons.Image
 import com.t8rin.imagetoolbox.core.resources.icons.NoteAdd
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineTextCard
+import com.t8rin.imagetoolbox.core.resources.icons.Share
 import com.wanbaohe.core.ui.utils.helper.Clipboard
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import kotlinx.coroutines.launch
@@ -53,19 +55,19 @@ fun defaultTextSelectionMenuItems(
         TextSelectionMenuItem(
             key = "copy",
             label = stringResource(R.string.copy),
-            icon = Icons.Rounded.ContentCopy,
+            icon = Icons.Outlined.ContentCopy,
             onSelected = { text -> Clipboard.copy(text) },
         ),
         TextSelectionMenuItem(
             key = "share",
             label = stringResource(R.string.share_url),
-            icon = Icons.Outlined.LineShare,
+            icon = Icons.Outlined.Share,
             onSelected = { text -> appComponent.shareText(text) },
         ),
         TextSelectionMenuItem(
             key = "image",
             label = stringResource(R.string.button_export_image),
-            icon = Icons.Outlined.LineTextCard,
+            icon = Icons.Outlined.Image,
             onSelected = { text ->
                 onNavigate(Screen.TextCard(initialText = text))
             },

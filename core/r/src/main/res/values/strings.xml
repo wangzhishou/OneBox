@@ -2316,4 +2316,8 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="translator">Translate</string>
     <string name="translator_description">Translate text with cloud or on-device AI, voice input and camera OCR</string>
 
+    <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
+    <string name="ai_chat_loading_byok_hint">Taking a while? Add your own API key to connect directly and skip the queue</string>
+    <string name="ai_chat_loading_byok_action">Set up</string>
+
 </resources>

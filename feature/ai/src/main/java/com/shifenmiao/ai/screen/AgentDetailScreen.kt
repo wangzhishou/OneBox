@@ -47,6 +47,7 @@ import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.state.PageState
 import com.shifenmiao.model.state.LocalChatUIState
 import com.shifenmiao.theme.AppTheme
+import com.wanbaohe.core.ui.utils.helper.scrollToContentStart
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import kotlinx.coroutines.launch
@@ -131,6 +132,12 @@ fun AgentDetailScreen(
                     else -> {
                         appComponent.onGoBack()
                     }
+                }
+            },
+            // 标题栏点击只回到首条内容；聊天列表是 reverseLayout，首条在最后一个 index
+            onTitleClick = {
+                coroutineScope.launch {
+                    lazyListState.scrollToContentStart(reverseLayout = true)
                 }
             },
             foreground = {

@@ -957,7 +957,10 @@ fun RobotReasoningBlock(
 
 @Composable
 fun ChatLoadingIndicator(
-    backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainerLow
+    backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
+    // 等待态的附加轻量引导插槽：与跳动的圆点共用同一块玻璃卡，随回答返回一起消失。
+    // 默认空，互聊等其它调用方保持原有 Loading 视觉不变。
+    hint: @Composable () -> Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -969,7 +972,10 @@ fun ChatLoadingIndicator(
             .padding(horizontal = 12.dp),
         contentAlignment = Alignment.CenterStart
     ) {
-        LoadingStateContent()
+        Column {
+            LoadingStateContent()
+            hint()
+        }
     }
 }
 

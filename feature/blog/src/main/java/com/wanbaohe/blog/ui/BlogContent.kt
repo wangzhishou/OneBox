@@ -22,6 +22,7 @@ package com.wanbaohe.blog.ui
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -48,9 +49,10 @@ fun BlogContent(
     appComponent: AppComponent,
     onGoBack: () -> Unit = {},
     modifier: Modifier = Modifier,
+    // 允许外壳页持有同一个状态，供标题栏点击回到正文首条
+    lazyListState: LazyListState = rememberLazyListState(),
 ) {
     val blogDetailState by blogComponent.blogDetailState.collectAsState()
-    val lazyListState = rememberLazyListState()
     val navigator = LocalUrlNavigator.current
     val uriHandler = LocalUriHandler.current
     val selectionItems = defaultTextSelectionMenuItems(

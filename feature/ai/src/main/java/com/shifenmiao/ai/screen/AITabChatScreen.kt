@@ -20,12 +20,14 @@
 package com.shifenmiao.ai.screen
 
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -36,8 +38,10 @@ import com.shifenmiao.model.ai.AIConversationEntryType
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAddAiChat
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
+import com.wanbaohe.core.ui.utils.helper.scrollToContentStart
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
+import kotlinx.coroutines.launch
 import java.util.Date
 
 @Composable
@@ -49,6 +53,8 @@ fun AITabChatScreen(
     val conversation by aiChatComponent.conversation.collectAsState()
     val showCancelConfirm by aiChatComponent.showCancelConfirmDialog.collectAsState()
     val onNavigate = LocalOnNavigate.current
+    val lazyListState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
     BaseScreen(
         isBackHandler = false,
         showNavigationBarsPadding = false,
@@ -122,11 +128,18 @@ fun AITabChatScreen(
             }
         },
         supportGlassEffect = true,
+        // 标题栏点击只回到首条内容；聊天列表是 reverseLayout，首条在最后一个 index
+        onTitleClick = {
+            coroutineScope.launch {
+                lazyListState.scrollToContentStart(reverseLayout = true)
+            }
+        },
     ) {
         AIChatBody(
             appComponent = appComponent,
             aiChatComponent = aiChatComponent,
             onNavigate = onNavigate,
+            lazyListState = lazyListState,
         )
 
         // 取消确认弹窗：AI 正在回复时用户点击取消或返回

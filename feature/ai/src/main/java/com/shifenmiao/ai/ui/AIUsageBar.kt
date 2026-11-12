@@ -24,10 +24,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.NoteAdd
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,12 +39,14 @@ import com.shifenmiao.core.R
 import com.shifenmiao.database.ai.entity.MessageEntity
 import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.utils.helper.Clipboard
+// 统一使用 core/resources 里的系统 Outline 语义图标：造型一眼可辨，
+// 线条仍是项目自绘的 24dp 单色模板，由 ActionButton 统一 size / tint 收口
+import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
+import com.t8rin.imagetoolbox.core.resources.icons.Image
 import com.t8rin.imagetoolbox.core.resources.icons.NoteAdd
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
-import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineTextCard
+import com.t8rin.imagetoolbox.core.resources.icons.Share
 
 @Composable
 fun AIUsageBar(
@@ -83,7 +81,7 @@ fun AIUsageBar(
             Spacer(modifier = Modifier.width(AppTheme.dimens.spaceSmall))
         }
         ActionButton(
-            icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
             contentDescription = "",
             contentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
             onClick = {
@@ -92,7 +90,9 @@ fun AIUsageBar(
         )
         Spacer(modifier = Modifier.width(AppTheme.dimens.spaceSmall))
         ActionButton(
-            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTextCard,
+            // 原 LineTextCard 是「卡片+横线+小图」的自绘方块，表意含混；
+            // 功能是生成图片卡片，换成一眼可辨的 Outline 图片图标
+            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Image,
             contentDescription = stringResource(R.string.text_card),
             contentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
             onClick = onCreateCard
@@ -119,7 +119,7 @@ fun AIUsageBar(
         )
         Spacer(modifier = Modifier.width(AppTheme.dimens.spaceSmall))
         ActionButton(
-            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineShare,
+            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Share,
             contentDescription = "",
             contentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
             onClick = {

@@ -64,12 +64,14 @@ import com.shifenmiao.ai.a2ui.A2uiRendererImpl
 import com.shifenmiao.ai.component.AIChatComponent
 import com.shifenmiao.ai.component.AgentToolCallUIState
 import com.shifenmiao.ai.component.ChatErrorMessage
+import com.shifenmiao.ai.component.ChatLoadingIndicator
 import com.shifenmiao.ai.component.RobotMessageFooter
 import com.shifenmiao.ai.component.ToolCallHistoryCard
 import com.shifenmiao.ai.logic.ChatInputComponent
 import com.shifenmiao.ai.model.MessageUiModel
 import com.shifenmiao.ai.ui.AIChatBottom
 import com.shifenmiao.ai.ui.AIContentNotice
+import com.shifenmiao.ai.ui.GoogleByokLoadingHint
 import com.shifenmiao.ai.ui.AIPromptsPickerBottomSheet
 import com.shifenmiao.ai.ui.NewChatInput
 import com.shifenmiao.ai.ui.PlaceHolderMessageCard
@@ -97,6 +99,7 @@ import com.shifenmiao.webview.mermaid.ProvideMermaidRenderer
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAddAiChat
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.helper.scrollToContentStart
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
@@ -205,6 +208,12 @@ fun AIChatScreen(
                     else -> {
                         appComponent.onGoBack()
                     }
+                }
+            },
+            // 标题栏点击只回到首条内容；聊天列表是 reverseLayout，首条在最后一个 index
+            onTitleClick = {
+                coroutineScope.launch {
+                    lazyListState.scrollToContentStart(reverseLayout = true)
                 }
             },
             foreground = {
@@ -498,6 +507,23 @@ fun ChatMessagesList(
                             item = item,
                             index = index,
                             codeBlockClickListener = codeBlockClickListener,
+                            // 等待气泡内附一行轻量引导，点击直达「新增引擎」；
+                            // 回答返回后 Loading item 被替换，引导随之消失，不打断等待
+                            onRobotLoading = {
+                                ChatLoadingIndicator(
+                                    hint = {
+                                        GoogleByokLoadingHint(
+                                            onClick = {
+                                                onNavigate(
+                                                    Screen.AISettings(
+                                                        Screen.AISettings.Type.AddEngine()
+                                                    )
+                                                )
+                                            }
+                                        )
+                                    }
+                                )
+                            },
                             onRobotToolCallHistory = { historyItem ->
                                 if (historyItem.isLive && agentToolCallStatus !is AgentToolCallUIState.Idle) {
                                     ToolCallHistoryCard(

@@ -39,6 +39,22 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 
+/**
+ * 把滚动区一次性送到「内容首条」，供顶部标题栏点击时调用。
+ *
+ * reverseLayout = true 的聊天列表里，index 0 是视觉底部的最新消息，
+ * 首条内容(最早一条)在最后一个 index；普通长文列表的首条就是 0。
+ * 只执行这一次平滑滚动，不干预调用方已有的自动跟随、nestedScroll 等滚动行为。
+ */
+suspend fun LazyListState.scrollToContentStart(reverseLayout: Boolean = false) {
+    val targetIndex = if (reverseLayout) {
+        (layoutInfo.totalItemsCount - 1).coerceAtLeast(0)
+    } else {
+        0
+    }
+    animateScrollToItem(targetIndex)
+}
+
 @Composable
 fun LazyListState.isScrollingUp(): Boolean {
     var previousIndex by remember(this) { mutableIntStateOf(firstVisibleItemIndex) }

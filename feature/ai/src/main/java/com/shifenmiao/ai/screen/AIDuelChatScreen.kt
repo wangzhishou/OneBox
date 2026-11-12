@@ -114,6 +114,7 @@ import com.shifenmiao.model.state.PageState
 import com.shifenmiao.model.state.LocalChatUIState
 import com.shifenmiao.theme.AppTheme
 import com.shifenmiao.webview.mermaid.ProvideMermaidRenderer
+import com.wanbaohe.core.ui.utils.helper.scrollToContentStart
 import com.wanbaohe.core.ui.utils.content_pickers.rememberImagePicker
 import com.wanbaohe.core.ui.widget.dialogs.ExitBackHandler
 import com.wanbaohe.core.ui.widget.dialogs.ExitWithoutSavingDialog
@@ -246,6 +247,12 @@ fun AIDuelChatScreen(
                     ) {
                         coroutineScope.launch { lazyListState.animateScrollToItem(0) }
                     }
+                }
+            },
+            // 标题栏点击只回到首条内容；互聊列表是 reverseLayout，首条在最后一个 index
+            onTitleClick = {
+                coroutineScope.launch {
+                    lazyListState.scrollToContentStart(reverseLayout = true)
                 }
             },
             showNavigationBarsPadding = false
