@@ -29,12 +29,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import com.hrm.diagram.core.ir.Severity
 import com.hrm.diagram.core.ir.SourceLanguage
-import com.hrm.diagram.core.theme.DiagramTheme
 import com.hrm.diagram.render.Diagram
 import com.hrm.diagram.render.compose.DiagramPresentationMode
 import com.hrm.diagram.render.compose.DiagramSurface
 import com.hrm.diagram.render.compose.rememberDiagramRenderState
-import com.hrm.diagram.render.theme.material3
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -54,9 +52,14 @@ fun NativeDiagram(
     val language = remember(source, languageHint) {
         Diagram.detectSource(source, hint = languageHint).language ?: SourceLanguage.MERMAID
     }
+    val normalizedSource = remember(source, language) {
+        if (language == SourceLanguage.MERMAID) normalizeMermaidChainedEdges(source) else source
+    }
+    val colorScheme = MaterialTheme.colorScheme
+    val diagramTheme = remember(colorScheme) { oneBoxDiagramTheme(colorScheme) }
     val state = rememberDiagramRenderState(
-        source = source,
-        theme = DiagramTheme.material3(),
+        source = normalizedSource,
+        theme = diagramTheme,
         languageHint = language,
     )
 

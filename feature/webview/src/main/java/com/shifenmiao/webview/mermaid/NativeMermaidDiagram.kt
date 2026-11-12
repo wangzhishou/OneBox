@@ -28,6 +28,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import com.wanbaohe.diagram.NativeDiagram
 import com.wanbaohe.diagram.NativeDiagramFrame
 import kotlinx.coroutines.Dispatchers
@@ -77,7 +78,7 @@ fun NativeMermaidDiagram(
     } else {
         NativeDiagram(
             source = code,
-            modifier = modifier,
+            modifier = modifier.alpha(if (nativeHasErrors) 0f else 1f),
             languageHint = language,
             onFrame = { frame ->
                 if (frame.source == code) {
