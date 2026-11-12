@@ -1,7 +1,7 @@
 package com.halilibo.richtext.markwon
 
+import com.halilibo.richtext.commonmark.MarkdownMathBlock
 import io.noties.markwon.AbstractMarkwonPlugin
-import io.noties.markwon.ext.latex.JLatexMathBlock
 import org.commonmark.node.Block
 import org.commonmark.parser.Parser
 import org.commonmark.parser.SourceLine
@@ -35,7 +35,7 @@ internal class MarkdownMathBlockParserFactory : AbstractBlockParserFactory() {
 private class MarkdownMathBlockParser(
     private val delimiterLength: Int
 ) : AbstractBlockParser() {
-    private val block = JLatexMathBlock()
+    private val block = MarkdownMathBlock()
     private val content = StringBuilder()
 
     override fun getBlock(): Block = block
@@ -57,7 +57,7 @@ private class MarkdownMathBlockParser(
     }
 
     override fun closeBlock() {
-        block.latex(content.toString())
+        block.latex = content.toString()
     }
 }
 

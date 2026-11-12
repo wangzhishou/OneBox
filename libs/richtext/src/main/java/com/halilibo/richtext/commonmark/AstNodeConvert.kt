@@ -33,8 +33,6 @@ import com.shifenmiao.model.node.AstTableRow
 import com.shifenmiao.model.node.AstText
 import com.shifenmiao.model.node.AstThematicBreak
 import com.shifenmiao.model.node.AstUnorderedList
-import io.noties.markwon.ext.latex.JLatexMathBlock
-import io.noties.markwon.ext.latex.JLatexMathNode
 import org.commonmark.ext.gfm.strikethrough.Strikethrough
 import org.commonmark.ext.gfm.tables.TableBlock
 import org.commonmark.ext.gfm.tables.TableBody
@@ -196,8 +194,7 @@ private fun Node.toAstNodeType(): AstNodeType? = when (this) {
     )
 
     is Strikethrough -> AstStrikethrough(openingDelimiter)
-    is JLatexMathNode -> AstJLatexNodeMath(latex = latex(), spanned = null)
-    is JLatexMathBlock -> AstJLatexBlockMath(latex = latex(), spanned = null)
+    is MarkdownMathBlock -> AstJLatexBlockMath(latex = latex, spanned = null)
     is CustomNode -> null
     is CustomBlock -> null
     else -> null

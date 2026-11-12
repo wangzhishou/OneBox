@@ -333,7 +333,6 @@ markwon-image-coil = { module = "io.noties.markwon:image-coil", version.ref = "m
 markwon-strikethrough = { module = "io.noties.markwon:ext-strikethrough", version.ref = "markwon" }
 markwon-tables = { module = "io.noties.markwon:ext-tables", version.ref = "markwon" }
 markwon-syntax-prism4j = {module = "io.noties:prism4j", version.ref = "prism4j" }
-markwon-latex = { module = "io.noties.markwon:ext-latex", version.ref = "markwon" }
 markwon-linkify = { module = "io.noties.markwon:linkify", version.ref = "markwon" }
 markwon-inline-parser = { module = "io.noties.markwon:inline-parser", version.ref = "markwon" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
@@ -350,7 +349,7 @@ androidx-compose-material3 = { group = "androidx.compose.material3", name = "mat
 
 [bundles]
 compose = ["compose-runtime", "compose-foundation", "androidx-material3", "compose-material-icons-core", "compose-ui", "compose-ui-tooling", "compose-ui-util"]
-markwon = ["markwon-core", "markwon-editor", "markwon-html", "markwon-image-coil", "markwon-strikethrough", "markwon-tables", "markwon-latex", "markwon-linkify", "markwon-inline-parser", "markwon-syntax-prism4j"]
+markwon = ["markwon-core", "markwon-editor", "markwon-html", "markwon-image-coil", "markwon-strikethrough", "markwon-tables", "markwon-linkify", "markwon-inline-parser", "markwon-syntax-prism4j"]
 
 [plugins]
 image-toolbox-library = { id = "image.toolbox.library", version = "unspecified" }
