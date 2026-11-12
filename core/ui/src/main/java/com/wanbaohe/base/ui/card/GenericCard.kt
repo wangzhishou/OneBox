@@ -61,6 +61,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.BlendMode
@@ -337,7 +338,8 @@ fun GenericTonalCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(AppTheme.dimens.paddingNormal)
-                // 高度锁死, 描述固定三行也落在这 188dp 里, 双列才能对齐
+                // 高度锁死, 描述固定三行也落在这 188dp 里, 双列才能对齐。
+                // 底部 stateBar 由 weight 优先占位, 见中间段的说明
                 .height(188.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
@@ -389,8 +391,19 @@ fun GenericTonalCard(
                 }
             }
 
-            // Middle section: title + description
-            Column(modifier = Modifier.fillMaxWidth()) {
+            // Middle section: title + description。
+            // weight 让 Column 先量完顶部图标区和底部 stateBar, 剩余高度才给中间段:
+            // 笔记 tab 的两行标题 + 三行描述在系统大字体下会超过 188dp 预算, 此前
+            // SpaceBetween 出现负间距, 把底部分类 tag 挤出卡片并被外层 clip 裁掉。
+            // 现在中间段最多只占剩余空间, 内容超出时由 clipToBounds 就地裁切,
+            // 分类 tag 始终拿得到自己的位置。weight 必须 fill = true(默认值):
+            // fill = false 时 Column 不约束该子项的测量高度, 长文本照样把 tag 顶出去。
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .clipToBounds()
+            ) {
                 val titleText = highlightedTitle ?: AnnotatedString(title)
                 if (maxTitleLines == 1) {
                     Text(
