@@ -778,6 +778,17 @@
             });
         }
     </script>
+    <!--
+      浏览器调试副本不打包 mermaid.min.js（运行时模板里才有按需加载器）。
+      这里提供同名接口并直接置为 failed，让编辑器走 native 兜底；浏览器里没有
+      native 桥时最终会回退到原始代码，与改造前的开发副本行为一致。
+    -->
+    <script>
+        window.OneBoxMermaid = {
+            state: 'failed',
+            request: function () {}
+        };
+    </script>
     <script src="editor.bundle.js"></script>
 </body>
 </html>

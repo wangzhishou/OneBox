@@ -716,64 +716,45 @@ object MarkdownEditorHtmlTemplate {
         }
     </script>
     <!--
-      mermaid（2.5 MB）不在这里同步引入。
+      mermaid.min.js（2.4 MB）按需加载：只有文档里真的出现 mermaid 围栏时才注入。
 
-      原来它是 <script src> 直接写在 editor.bundle.js 前面，两个都是经典脚本、按文档顺序执行，
-      所以 editor.bundle.js 必须等这 2.5 MB 下载并解析完才开始跑——而 mermaid 只是编辑器里的
-      可选预览功能。改成：editor.bundle.js 照常先执行，编辑器就绪之后再把这个脚本注入进来。
-
-      就绪信号：editor.src.js 在初始化完成时把 #editor-container 的 display 改成 block。
-      图表现在按代码块位置内联渲染（Mermaid 走 JS，PlantUML / DOT 走 native 桥），mermaid
-      异步到位时编辑器可能已经用 native 画过一轮：onload 里调 AndroidBridge.setTheme() 清空
-      图表缓存并重新渲染一次，传当前主题过去不会改变主题本身。
+      之前是「编辑器就绪就无条件注入 + 8 秒兜底再拉一次」，绝大多数笔记根本没有图表，
+      却要为这 2.4 MB 付出下载、解析与一次全量图表重渲染的代价。现在由 editor.src.js
+      扫到 ```mermaid / ```mmd 围栏后调用 window.OneBoxMermaid.request() 触发；加载完成或
+      失败分别回调 AndroidBridge.onMermaidReady() / onMermaidFailed()，由编辑器决定是重画
+      mermaid 块还是走 native 兜底 —— 不再借 setTheme() 清空全部图表缓存，避免
+      native 先画一遍、JS 到位再画一遍的二次闪烁。
     -->
     <script>
         (function () {
             var MERMAID_SRC = 'https://appassets.androidplatform.net/assets/js/mermaid.min.js';
-            var POLL_MS = 120;
-            var GIVE_UP_MS = 8000;
-
-            function loadMermaid() {
-                if (window.mermaid || window.__mermaidLoading) return;
-                window.__mermaidLoading = true;
-                var s = document.createElement('script');
-                s.src = MERMAID_SRC;
-                s.onload = function () {
-                    try {
-                        if (window.AndroidBridge && window.AndroidBridge.setTheme) {
-                            window.AndroidBridge.setTheme(
-                                document.documentElement.classList.contains('dark')
-                            );
+            window.OneBoxMermaid = {
+                state: 'idle', // idle -> loading -> ready / failed
+                request: function () {
+                    if (this.state !== 'idle') return;
+                    this.state = 'loading';
+                    var self = this;
+                    var s = document.createElement('script');
+                    s.src = MERMAID_SRC;
+                    s.onload = function () {
+                        self.state = window.mermaid ? 'ready' : 'failed';
+                        var bridge = window.AndroidBridge;
+                        if (!bridge) return;
+                        if (self.state === 'ready' && bridge.onMermaidReady) {
+                            bridge.onMermaidReady();
+                        } else if (bridge.onMermaidFailed) {
+                            bridge.onMermaidFailed();
                         }
-                    } catch (e) { /* 重渲染失败不影响编辑器本身 */ }
-                };
-                document.head.appendChild(s);
-            }
-
-            function watchEditorReady() {
-                var container = document.getElementById('editor-container');
-                if (!container) return;
-
-                var ready = function () {
-                    return container.style.display && container.style.display !== 'none';
-                };
-                if (ready()) { loadMermaid(); return; }
-
-                var timer = setInterval(function () {
-                    if (ready()) {
-                        clearInterval(timer);
-                        loadMermaid();
-                    }
-                }, POLL_MS);
-                // 编辑器一直起不来时也别把 mermaid 永远挂着（真起不来时它也无所谓）
-                setTimeout(function () { clearInterval(timer); loadMermaid(); }, GIVE_UP_MS);
-            }
-
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', watchEditorReady);
-            } else {
-                watchEditorReady();
-            }
+                    };
+                    s.onerror = function () {
+                        self.state = 'failed';
+                        if (window.AndroidBridge && window.AndroidBridge.onMermaidFailed) {
+                            window.AndroidBridge.onMermaidFailed();
+                        }
+                    };
+                    document.head.appendChild(s);
+                }
+            };
         })();
     </script>
     <script src="editor.bundle.js"></script>

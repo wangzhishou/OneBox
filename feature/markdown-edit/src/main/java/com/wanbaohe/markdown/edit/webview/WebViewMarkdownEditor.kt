@@ -100,7 +100,9 @@ fun WebViewMarkdownEditor(
     var isLoading by remember { mutableStateOf(true) }
     var isEditorReady by remember { mutableStateOf(false) }
     var webView by remember { mutableStateOf<WebView?>(null) }
-    var hasInitialized by remember { mutableStateOf(false) }
+    // 最近一次已经下发给 WebView 的初始内容；内容只在变化时下发，避免配置变化覆盖用户编辑。
+    // 以 webView 实例为 key：实例被换掉时记忆归零，保证新 WebView 一定会拿到一次内容。
+    var lastPushedContent by remember(webView) { mutableStateOf<String?>(null) }
 
     // 图片缩放弹窗状态
     var showImageResizeDialog by remember { mutableStateOf(false) }
@@ -273,70 +275,43 @@ fun WebViewMarkdownEditor(
         return colors.toString()
     }
 
-    // 编辑器就绪后设置初始内容（只执行一次）
-    LaunchedEffect(isEditorReady) {
-        if (isEditorReady && webView != null && !hasInitialized) {
-            hasInitialized = true
+    // 编辑器就绪后，把内容 / 主题 / 配色 / 占位符 / 只读 / 字体合成一次 JS 调用下发。
+    // 原来是 6 次 evaluateJavascript 排队等 IPC，且 setTheme 与 setColors 各清一次
+    // 图表缓存；合并后图表只在内容灌完之后统一渲染一轮。
+    // initialValue 也进 key：从文件/草稿异步加载的内容晚到时会补发一次，不会丢。
+    LaunchedEffect(
+        isEditorReady, webView, initialValue,
+        isDarkTheme, editorColors,
+        fontSizeSp, lineHeightSp, letterSpacingSp, fontWeight,
+        placeholder, readOnly
+    ) {
+        if (!isEditorReady || webView == null) return@LaunchedEffect
 
-            // 设置初始内容，如果为空则会从 localStorage 加载草稿
-            // storage key 已在 HTML 模板中通过 window.MILKDOWN_STORAGE_KEY 设置
-            val escapedValue = initialValue
-                .replace("\\", "\\\\")
-                .replace("\"", "\\\"")
-                .replace("\n", "\\n")
-                .replace("\r", "\\r")
-            webView?.evaluateJavascript(
-                "if (window.AndroidBridge && window.AndroidBridge.setContent) { window.AndroidBridge.setContent(\"$escapedValue\"); }",
-                null
-            )
-        }
-    }
+        val payload = JSONObject().apply {
+            put("isDark", isDarkTheme)
+            put("colors", generateColorsJson())
+            put("textStyle", JSONObject().apply {
+                put("fontSizePx", fontSizeSp.toDouble())
+                put("lineHeightPx", lineHeightSp.toDouble())
+                put("letterSpacingPx", letterSpacingSp.toDouble())
+                put("fontWeight", fontWeight)
+            })
+            put("placeholder", placeholder)
+            put("readOnly", readOnly)
+            // 只有内容真的变了才 replaceAll，避免主题/字体切换覆盖用户正在编辑的内容
+            if (initialValue != lastPushedContent) {
+                put("content", initialValue)
+                lastPushedContent = initialValue
+            }
+        }.toString()
+            // U+2028/U+2029 在老 WebView 里会提前结束 JS 字符串，JSONObject 不转义它们
+            .replace("\u2028", "\\u2028")
+            .replace("\u2029", "\\u2029")
 
-    // 设置主题（动态切换时）
-    LaunchedEffect(isEditorReady, isDarkTheme) {
-        if (isEditorReady && webView != null) {
-            webView?.evaluateJavascript(
-                "if (window.AndroidBridge && window.AndroidBridge.setTheme) { window.AndroidBridge.setTheme($isDarkTheme); }",
-                null
-            )
-            webView?.evaluateJavascript(
-                "if (window.AndroidBridge && window.AndroidBridge.setColors) { window.AndroidBridge.setColors('${generateColorsJson()}'); }",
-                null
-            )
-        }
-    }
-
-    // 设置占位符
-    LaunchedEffect(isEditorReady, placeholder) {
-        if (isEditorReady && webView != null) {
-            val escapedPlaceholder = placeholder
-                .replace("\\", "\\\\")
-                .replace("\"", "\\\"")
-            webView?.evaluateJavascript(
-                "if (window.AndroidBridge && window.AndroidBridge.setPlaceholder) { window.AndroidBridge.setPlaceholder(\"$escapedPlaceholder\"); }",
-                null
-            )
-        }
-    }
-
-    // 设置只读模式
-    LaunchedEffect(isEditorReady, readOnly) {
-        if (isEditorReady && webView != null) {
-            webView?.evaluateJavascript(
-                "if (window.AndroidBridge && window.AndroidBridge.setReadOnly) { window.AndroidBridge.setReadOnly($readOnly); }",
-                null
-            )
-        }
-    }
-
-    // 设置字体样式（响应系统字体缩放及外部 TextStyle 更改）
-    LaunchedEffect(isEditorReady, fontSizeSp, lineHeightSp, letterSpacingSp, fontWeight) {
-        if (isEditorReady && webView != null) {
-            webView?.evaluateJavascript(
-                "if (window.AndroidBridge && window.AndroidBridge.setTextStyle) { window.AndroidBridge.setTextStyle($fontSizeSp, $lineHeightSp, $letterSpacingSp, $fontWeight); }",
-                null
-            )
-        }
+        webView?.evaluateJavascript(
+            "if (window.AndroidBridge && window.AndroidBridge.init) { window.AndroidBridge.init($payload); }",
+            null
+        )
     }
 
     Box(

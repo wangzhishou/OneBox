@@ -25,10 +25,12 @@ import { math } from '@milkdown/plugin-math';
 
 // KaTeX CSS 按需加载标记
 let katexCSSLoaded = false;
+let katexCSSRequested = false;
 
 // 动态加载 KaTeX CSS（从本地 assets 按需加载）
 function loadKatexCSS() {
-    if (katexCSSLoaded) return Promise.resolve();
+    if (katexCSSRequested) return Promise.resolve();
+    katexCSSRequested = true;
 
     return new Promise((resolve) => {
         const link = document.createElement('link');
@@ -45,6 +47,65 @@ function loadKatexCSS() {
         };
         document.head.appendChild(link);
     });
+}
+
+// ── 大资源按内容按需加载 ────────────────────────────────────────────────────
+// katex.bundle.css 1.3 MB、mermaid.min.js 2.4 MB。旧实现里 CSS 只要正文出现任意
+// '$'（"预算 $5" 也算）就加载、mermaid 更是编辑器一就绪就无条件注入，绝大多数
+// 笔记白白付出下载 + 解析的代价。这里按 remark-math 的实际语法规则判断公式，
+// 按围栏语言判断图表，两者都在「内容灌入时」和「编辑过程中新输入时」各检查一次；
+// 另外在渲染完成后按真实 math 节点兜一次底，防止正则比解析器保守导致公式没样式。
+
+// 块公式 $$...$$
+const MATH_BLOCK_RE = /\$\$[\s\S]+?\$\$/;
+// 行内 $...$：开 $ 不能紧跟在转义反斜杠、空白或另一个 $ 后面；内容里必须出现
+// 数学符号或字母（排除「预算 $100 和 $200」这类纯金额），闭合 $ 前必须是非空白、
+// 后面不能紧跟数字。不用后行断言，老 WebView 内核不一定支持。
+const MATH_INLINE_RE = /(^|[^\\])\$(?!\$|\s)(?=[^$\n]*[\\^_{}=+*\/()\[\]a-zA-Z])([^$\n]*?[^\s$\n])\$(?!\d)/;
+// LaTeX 分隔符 \(...\) / \[...\]
+const MATH_LATEX_RE = /\\\([\s\S]+?\\\)|\\\[[\s\S]+?\\\]/;
+// Markdown 围栏上的 mermaid / mmd 语言标识（也兼容 ~~~ 围栏）
+const MERMAID_FENCE_RE = /^[ \t]{0,3}(?:`{3,}|~{3,})[ \t]*(?:mermaid|mmd)\b/im;
+
+function hasMathContent(markdown) {
+    if (!markdown) return false;
+    return MATH_BLOCK_RE.test(markdown)
+        || MATH_INLINE_RE.test(markdown)
+        || MATH_LATEX_RE.test(markdown);
+}
+
+function ensureOptionalAssets(markdown) {
+    if (!markdown) return;
+    if (hasMathContent(markdown)) loadKatexCSS();
+    if (MERMAID_FENCE_RE.test(markdown) && window.OneBoxMermaid) {
+        window.OneBoxMermaid.request();
+    }
+}
+
+// remark-math 的 $...$ 规则相当宽松：「预算 $100 和 $200」也会被切出一个
+// math_inline 节点并交给 KaTeX 渲染。上面的正则比解析器保守，单靠它会让这类
+// 公式有了 .katex 结构却没有 katex.bundle.css。这里在事务落地后按真实 DOM
+// 判断一次，只有解析器真的生成了公式节点才补加载，避免再退回「见 $ 就加载」。
+let mathStylesCheckTimer = null;
+
+function ensureMathStylesFromDom() {
+    if (katexCSSRequested) return;
+    const hasMathNode = document.querySelector(
+        '.milkdown .ProseMirror [data-type="math_inline"], ' +
+        '.milkdown .ProseMirror [data-type="math_block"], ' +
+        '.milkdown .ProseMirror .katex'
+    );
+    if (hasMathNode) loadKatexCSS();
+}
+
+function scheduleMathStylesCheck(markdown) {
+    if (katexCSSRequested || mathStylesCheckTimer) return;
+    // 没有 '$' 就不可能产生 math 节点，别在每次击键时白做一次 DOM 查询
+    if (typeof markdown !== 'string' || markdown.indexOf('$') === -1) return;
+    mathStylesCheckTimer = setTimeout(() => {
+        mathStylesCheckTimer = null;
+        ensureMathStylesFromDom();
+    }, 0);
 }
 
 import {
@@ -342,6 +403,22 @@ function rememberDiagramResult(key, result) {
     }
 }
 
+/** mermaid.min.js 正在路上：先留 loading 占位，别用 native 画一遍再被 JS 覆盖。 */
+function isMermaidLoading() {
+    const loader = window.OneBoxMermaid;
+    return !!(loader && loader.state === 'loading');
+}
+
+/** 只失效某一种语法的缓存；setTheme() 那种整表 clear 会连 PlantUML / DOT 一起重画。 */
+function invalidateDiagramResults(kind) {
+    const prefix = kind + '\u0000';
+    Array.from(diagramCache.keys()).forEach(key => {
+        if (key.indexOf(prefix) === 0) diagramCache.delete(key);
+    });
+    document.querySelectorAll('.milkdown .ProseMirror pre[data-diagram-kind="' + kind + '"]')
+        .forEach(pre => { delete pre.dataset.diagramStatus; });
+}
+
 function escapeDiagramText(text) {
     return String(text)
         .replace(/&/g, '&amp;')
@@ -493,6 +570,11 @@ function updateDiagramPreviews() {
             else applyDiagramError(pre, key, epoch, cached.error);
             return;
         }
+
+        // JS 引擎正在按需加载：保留 loading 占位，等 onMermaidReady 再统一画一轮，
+        // 不做「native 先画、JS 到位再画」的二次渲染。加载失败则由 onMermaidFailed
+        // 触发重渲染并回退 native。
+        if (block.kind === 'mermaid' && isMermaidLoading()) return;
 
         if (block.kind === 'mermaid' && getMermaidApi()) {
             renderMermaidSvg(block.code)
@@ -691,6 +773,9 @@ function configureDiagramRefractor(refractor) {
 function notifyContentChange(force = false) {
     const markdown = getCurrentMarkdown();
 
+    // 编辑过程中才输入公式 / mermaid 围栏时，也要把对应资源补加载进来
+    ensureOptionalAssets(markdown);
+    scheduleMathStylesCheck(markdown);
     updatePlaceholderState(markdown);
     scheduleDiagramRender();
 
@@ -714,6 +799,41 @@ function notifyContentChange(force = false) {
 
 // Android Bridge 接口
 window.AndroidBridge = {
+    /**
+     * 一次性下发启动配置，替代原来 6 次 evaluateJavascript。
+     * setTheme / setColors 各自会清一次图表缓存，但 scheduleDiagramRender 是
+     * 防抖的，同一次 init 里的多次调用最终只会在内容灌完之后真正渲染一轮。
+     */
+    init: function(options) {
+        const o = options || {};
+        try {
+            // 顺序有讲究：先主题 / 配色 / 字体，再内容，最后占位符与只读状态。
+            if (typeof o.isDark === 'boolean') this.setTheme(o.isDark);
+            if (o.colors) this.setColors(o.colors);
+            if (o.textStyle) {
+                const t = o.textStyle;
+                this.setTextStyle(t.fontSizePx, t.lineHeightPx, t.letterSpacingPx, t.fontWeight);
+            }
+            if (typeof o.placeholder === 'string') this.setPlaceholder(o.placeholder);
+            if (typeof o.readOnly === 'boolean') this.setReadOnly(o.readOnly);
+            if (o.content !== undefined) this.setContent(o.content);
+        } catch (e) {
+            console.error('AndroidBridge.init error:', e);
+        }
+    },
+
+    // mermaid.min.js 按需加载完成：只让 mermaid 块重渲染，不惊动 PlantUML / DOT
+    onMermaidReady: function() {
+        mermaidThemeMode = null;
+        invalidateDiagramResults('mermaid');
+        scheduleDiagramRender();
+    },
+
+    // 脚本没下来：mermaid 块回退 native 渲染器
+    onMermaidFailed: function() {
+        scheduleDiagramRender();
+    },
+
     // 设置 Markdown 内容
     // markdown 为 null/undefined 时从 localStorage 加载草稿
     // markdown 为空字符串时清空编辑器
@@ -730,13 +850,15 @@ window.AndroidBridge = {
             // 空字符串表示要清空编辑器
             const content = (markdown === null || markdown === undefined) ? loadDraft() : markdown;
 
-            // 检测内容是否包含数学公式，如果有则加载 KaTeX CSS
-            if (content && (content.includes('$') || content.includes('\\('))) {
-                loadKatexCSS();
-            }
+            // 按内容决定要不要拉 KaTeX CSS（1.3 MB）与 mermaid.min.js（2.4 MB）
+            ensureOptionalAssets(content);
 
             // 使用 replaceAll 设置内容（包括空字符串）
             editor.action(replaceAll(content || ''));
+
+            // setContent 期间 isInitializing=true，markdownUpdated 会跳过 notifyContentChange，
+            // 所以这里要单独排一次「按真实 math 节点补加载 CSS」的检查。
+            scheduleMathStylesCheck(content || '');
 
             // 等编辑器事务和 DOM 完成后再同步基线，避免首次内容被误判为脏数据
             setTimeout(() => {
