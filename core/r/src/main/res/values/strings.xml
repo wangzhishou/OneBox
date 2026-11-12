@@ -1193,10 +1193,10 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="save_as">Save As</string>
     <string name="save_as_pdf">Save as PDF</string>
     <string name="home_qr_code">QR Code</string>
-    <string name="add_to_home_screen">Create Shortcut</string>
+    <string name="add_to_home_screen">Shortcut</string>
     <string name="item_action_start_entry">Launch</string>
     <string name="start_entry_set_toast">Set as launch entry. %1$s will open directly on next launch</string>
-    <string name="cannot_create_shortcut">Shortcut creation not supported.</string>
+    <string name="cannot_create_shortcut">Couldn\'t add the shortcut. Enable Home screen shortcuts for OneBox in system settings.</string>
     <string name="pdf_export_prepare">Preparing PDF export...</string>
     <string name="pdf_export_failure">PDF export failed: %s</string>
     <string name="pdf_url_not_found">PDF file not found. You may not have permission.</string>

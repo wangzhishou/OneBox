@@ -1003,10 +1003,10 @@
     <string name="save_as">Сохранить как</string>
     <string name="save_as_pdf">Сохранить как PDF</string>
     <string name="home_qr_code">QR-код</string>
-    <string name="add_to_home_screen">Создать ярлык</string>
+    <string name="add_to_home_screen">Ярлык</string>
     <string name="item_action_start_entry">Запуск</string>
     <string name="start_entry_set_toast">Установлено как точка запуска. %1$s откроется сразу при следующем запуске</string>
-    <string name="cannot_create_shortcut">Создание ярлыка не поддерживается.</string>
+    <string name="cannot_create_shortcut">Не удалось создать ярлык. Разрешите ярлыки на главном экране в настройках системы.</string>
     <string name="pdf_export_prepare">Подготовка экспорта в PDF...</string>
     <string name="pdf_export_failure">Ошибка экспорта в PDF: %s</string>
     <string name="pdf_url_not_found">PDF-файл не найден. Возможно, у вас нет разрешения.</string>

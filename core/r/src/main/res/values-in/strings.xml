@@ -1003,10 +1003,10 @@
     <string name="save_as">Simpan Sebagai</string>
     <string name="save_as_pdf">Simpan sebagai PDF</string>
     <string name="home_qr_code">Kode QR</string>
-    <string name="add_to_home_screen">Buat Pintasan</string>
+    <string name="add_to_home_screen">Pintasan</string>
     <string name="item_action_start_entry">Buka</string>
     <string name="start_entry_set_toast">Ditetapkan sebagai entri peluncuran. %1$s akan langsung terbuka pada peluncuran berikutnya</string>
-    <string name="cannot_create_shortcut">Pembuatan pintasan tidak didukung.</string>
+    <string name="cannot_create_shortcut">Pintasan gagal dibuat. Aktifkan izin pintasan layar utama di setelan sistem.</string>
     <string name="pdf_export_prepare">Menyiapkan ekspor PDF...</string>
     <string name="pdf_export_failure">Ekspor PDF gagal: %s</string>
     <string name="pdf_url_not_found">File PDF tidak ditemukan. Anda mungkin tidak memiliki izin.</string>

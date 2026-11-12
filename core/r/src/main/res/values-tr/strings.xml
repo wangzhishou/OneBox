@@ -1003,10 +1003,10 @@
     <string name="save_as">Farklı Kaydet</string>
     <string name="save_as_pdf">PDF olarak kaydet</string>
     <string name="home_qr_code">QR Kod</string>
-    <string name="add_to_home_screen">Kısayol Oluştur</string>
+    <string name="add_to_home_screen">Kısayol</string>
     <string name="item_action_start_entry">Başlat</string>
     <string name="start_entry_set_toast">Başlatma girişi olarak ayarlandı. %1$s bir sonraki açılışta doğrudan açılacak</string>
-    <string name="cannot_create_shortcut">Kısayol oluşturma desteklenmiyor.</string>
+    <string name="cannot_create_shortcut">Kısayol oluşturulamadı. Sistem ayarlarından ana ekran kısayolları iznini açın.</string>
     <string name="pdf_export_prepare">PDF dışa aktarımı hazırlanıyor...</string>
     <string name="pdf_export_failure">PDF dışa aktarma başarısız: %s</string>
     <string name="pdf_url_not_found">PDF dosyası bulunamadı. İzniniz olmayabilir.</string>

@@ -46,6 +46,9 @@
         android:required="false" />
 	
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 厂商桌面兼容通道: 小米/HyperOS 等仍用 INSTALL_SHORTCUT 广播创建快捷方式,
+         该权限为 normal 级, 声明即授予, 不会弹权限框 -->
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />

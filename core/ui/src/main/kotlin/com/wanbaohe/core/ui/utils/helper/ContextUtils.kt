@@ -36,6 +36,7 @@ import android.content.ContextWrapper
 import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.graphics.Bitmap
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
@@ -550,6 +551,7 @@ object ContextUtils {
 
     private const val SCREEN_ID_EXTRA = "screen_id"
     const val SHORTCUT_OPEN_ACTION = "shortcut"
+    private const val INSTALL_SHORTCUT_ACTION = "com.android.launcher.action.INSTALL_SHORTCUT"
 
     fun Intent?.getScreenExtra(): Screen? {
         if (this?.hasExtra(SCREEN_ID_EXTRA) != true) return null
@@ -595,48 +597,81 @@ object ContextUtils {
     ) = withContext(Dispatchers.Main.immediate) {
         runCatching {
             val context = this@createScreenShortcut
-            if (ShortcutManagerCompat.isRequestPinShortcutSupported(context) && screen.icon != null) {
-                val imageBitmap = screen.icon!!.toImageBitmap(
-                    context = context,
-                    width = 256,
-                    height = 256,
-                    tint = tint.takeOrElse { AppTheme.colorScheme.onPrimaryContainer },
-                    backgroundColor = backgroundColor.takeOrElse { AppTheme.colorScheme.primaryContainer },
-                    iconPadding = if (backgroundColor != Color.Unspecified) 80 else 0
-                )
+            val icon = screen.icon
+                ?: throw UnsupportedOperationException("screen has no icon: $screen")
+            val imageBitmap = icon.toImageBitmap(
+                context = context,
+                width = 256,
+                height = 256,
+                tint = tint.takeOrElse { AppTheme.colorScheme.onPrimaryContainer },
+                backgroundColor = backgroundColor.takeOrElse { AppTheme.colorScheme.primaryContainer },
+                iconPadding = if (backgroundColor != Color.Unspecified) 80 else 0
+            )
+            val iconBitmap = imageBitmap.asAndroidBitmap()
 
-                val info = ShortcutInfoCompat.Builder(context, screen.id.toString())
-                    .setShortLabel(getString(screen.title))
-                    .setLongLabel(getString(screen.subtitle))
-                    .setIcon(IconCompat.createWithAdaptiveBitmap(imageBitmap.asAndroidBitmap()))
-                    .setIntent(
-                        context.buildIntent(AppActivityClass) {
-                            action = SHORTCUT_OPEN_ACTION
-                            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            putScreenExtra(screen)
-                        }
-                    )
-                    .build()
+            val shortcutIntent = context.buildIntent(AppActivityClass) {
+                action = SHORTCUT_OPEN_ACTION
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                putScreenExtra(screen)
+            }
+            val label = getString(screen.title)
+            val info = ShortcutInfoCompat.Builder(context, screen.id.toString())
+                .setShortLabel(label)
+                .setLongLabel(getString(screen.subtitle))
+                .setIcon(IconCompat.createWithAdaptiveBitmap(iconBitmap))
+                .setIntent(shortcutIntent)
+                .build()
 
+            // 小米/HyperOS 的「桌面快捷方式」开关走私有 AppOps, 关闭时标准 API 会静默
+            // 失败(isRequestPinShortcutSupported=false 或 requestPinShortcut=false)。
+            // 先按标准流程请求, 被拒后补一次厂商桌面仍保留的 INSTALL_SHORTCUT 广播;
+            // 两条路都不通就交给 onFailure 给可见反馈, 绝不让点击「看起来没反应」。
+            var accepted = false
+            if (ShortcutManagerCompat.isRequestPinShortcutSupported(context)) {
                 val callbackIntent =
                     ShortcutManagerCompat.createShortcutResultIntent(context, info)
-
                 val successCallback = PendingIntentCompat.getBroadcast(
                     context, 0, callbackIntent, 0, false
                 )
-
-                ShortcutManagerCompat.requestPinShortcut(
-                    context,
-                    info,
-                    successCallback?.intentSender
+                accepted = ShortcutManagerCompat.requestPinShortcut(
+                    context, info, successCallback?.intentSender
                 )
-            } else {
-                throw UnsupportedOperationException()
             }
+            if (!accepted) {
+                accepted = installShortcutByBroadcast(
+                    context, label, shortcutIntent, iconBitmap
+                )
+            }
+            check(accepted) { "launcher rejected pin shortcut" }
         }.onFailure {
+            it.makeLog("createScreenShortcut")
             onFailure(it)
         }
     }
+
+    /**
+     * 厂商桌面兼容通道: MIUI/HyperOS 桌面仍注册着 INSTALL_SHORTCUT 接收器,
+     * 标准 API 被私有权限挡住时这条老路往往还能加上图标。广播没有回执, 尽力而为。
+     */
+    private fun installShortcutByBroadcast(
+        context: Context,
+        label: String,
+        launchIntent: Intent,
+        icon: Bitmap,
+    ): Boolean = runCatching {
+        val homeIntent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME)
+        val launcherPackage = context.packageManager
+            .resolveActivity(homeIntent, 0)?.activityInfo?.packageName
+        val shortcut = Intent(INSTALL_SHORTCUT_ACTION).apply {
+            launcherPackage?.let { setPackage(it) }
+            putExtra(Intent.EXTRA_SHORTCUT_NAME, label)
+            putExtra(Intent.EXTRA_SHORTCUT_ICON, icon)
+            putExtra(Intent.EXTRA_SHORTCUT_INTENT, launchIntent)
+            putExtra("duplicate", false)
+        }
+        context.sendBroadcast(shortcut)
+        true
+    }.getOrDefault(false)
 
     fun Context.canPinShortcuts(): Boolean = runCatching {
         ShortcutManagerCompat.isRequestPinShortcutSupported(this)

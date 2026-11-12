@@ -1139,10 +1139,10 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="save_as">Enregistrer sous</string>
     <string name="save_as_pdf">Enregistrer en PDF</string>
     <string name="home_qr_code">Code QR</string>
-    <string name="add_to_home_screen">Bureau</string>
+    <string name="add_to_home_screen">Raccourci</string>
     <string name="item_action_start_entry">Lancer</string>
     <string name="start_entry_set_toast">Défini comme point d\'entrée de démarrage, le prochain lancement ouvrira directement « %1$s »</string>
-    <string name="cannot_create_shortcut">Création de raccourci non prise en charge</string>
+    <string name="cannot_create_shortcut">Impossible de créer le raccourci. Autorisez les raccourcis sur l\'écran d\'accueil dans les paramètres système.</string>
     <string name="pdf_export_prepare">Préparation de l\'export PDF...</string>
     <string name="pdf_export_failure">Échec de l\'export PDF : %s</string>
     <string name="pdf_url_not_found">Le fichier PDF n\'existe pas, permission peut-être manquante</string>

@@ -1003,10 +1003,10 @@
     <string name="save_as">Speichern unter</string>
     <string name="save_as_pdf">Als PDF speichern</string>
     <string name="home_qr_code">QR-Code</string>
-    <string name="add_to_home_screen">Verknüpfung erstellen</string>
+    <string name="add_to_home_screen">Shortcut</string>
     <string name="item_action_start_entry">Start</string>
     <string name="start_entry_set_toast">Als Starteintrag festgelegt. %1$s wird beim nächsten Start direkt geöffnet</string>
-    <string name="cannot_create_shortcut">Erstellen von Verknüpfungen wird nicht unterstützt.</string>
+    <string name="cannot_create_shortcut">Verknüpfung konnte nicht erstellt werden. Bitte Desktop-Verknüpfungen in den Systemeinstellungen erlauben.</string>
     <string name="pdf_export_prepare">PDF-Export wird vorbereitet...</string>
     <string name="pdf_export_failure">PDF-Export fehlgeschlagen: %s</string>
     <string name="pdf_url_not_found">PDF-Datei nicht gefunden. Möglicherweise haben Sie keine Berechtigung.</string>

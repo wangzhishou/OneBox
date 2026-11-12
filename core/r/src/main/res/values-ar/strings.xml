@@ -1080,10 +1080,10 @@
     <string name="save_as">حفظ باسم</string>
     <string name="save_as_pdf">حفظ كملف PDF</string>
     <string name="home_qr_code">رمز QR</string>
-    <string name="add_to_home_screen">إنشاء اختصار</string>
+    <string name="add_to_home_screen">اختصار</string>
     <string name="item_action_start_entry">تشغيل</string>
     <string name="start_entry_set_toast">تم تعيينه كمدخل التشغيل. سيُفتح %1$s مباشرة عند التشغيل التالي</string>
-    <string name="cannot_create_shortcut">إنشاء الاختصارات غير مدعوم.</string>
+    <string name="cannot_create_shortcut">تعذّر إنشاء الاختصار. اسمح باختصارات الشاشة الرئيسية من إعدادات النظام.</string>
     <string name="pdf_export_prepare">جارٍ التحضير لتصدير PDF...</string>
     <string name="pdf_export_failure">فشل تصدير PDF: %s</string>
     <string name="pdf_url_not_found">لم يتم العثور على ملف PDF. قد لا تملك الإذن.</string>

@@ -33,7 +33,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.core.content.pm.ShortcutManagerCompat
 import com.wanbaohe.base.ui.card.CardAction
 import com.wanbaohe.base.ui.card.GenericTonalCard
 import com.wanbaohe.base.ui.card.TonalCardPaletteDefaults
@@ -54,7 +53,6 @@ import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.helper.ContextUtils.createScreenShortcut
-import com.t8rin.imagetoolbox.core.utils.appContext
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
@@ -305,25 +303,33 @@ fun VerticalStaggeredCard(
                         icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAddToHome,
                         contentDescription = addToHomeScreenLabel,
                         onClick = {
-                            if (ShortcutManagerCompat.isRequestPinShortcutSupported(appContext)) {
-                                item.miniProgramId.toIntOrNull()?.let { id ->
-                                    val screen = Screen.entries.find { it.id == id }
-                                    if (screen != null) {
+                            // 是否支持 pin shortcut 交给 createScreenShortcut 判断:
+                            // 小米/HyperOS 的私有权限会让预检查说谎, 这里提前拦一道只会
+                            // 让按钮永远静默。所有失败统一给可见反馈。
+                            val screen = item.miniProgramId.toIntOrNull()
+                                ?.let { id -> Screen.entries.find { it.id == id } }
+                            if (screen == null) {
+                                scope.launch {
+                                    AppToastHost.showToast(
+                                        AppContext.getString(R.string.cannot_create_shortcut)
+                                    )
+                                }
+                                return@CardAction
+                            }
+                            scope.launch {
+                                context.createScreenShortcut(
+                                    screen = screen,
+                                    tint = resolvedPalette.iconContentColor,
+                                    backgroundColor = resolvedPalette.iconContainerColor,
+                                    onFailure = {
                                         scope.launch {
-                                            context.createScreenShortcut(
-                                                screen = screen,
-                                                tint = resolvedPalette.iconContentColor,
-                                                backgroundColor = resolvedPalette.iconContainerColor
+                                            AppToastHost.showToast(
+                                                AppContext.getString(R.string.cannot_create_shortcut)
                                             )
                                         }
                                     }
-                                    return@CardAction
-                                }
+                                )
                             }
-                            scope.launch {
-                                AppToastHost.showToast(AppContext.getString(R.string.cannot_create_shortcut))
-                            }
-                            return@CardAction
                         }
                     )
                 )

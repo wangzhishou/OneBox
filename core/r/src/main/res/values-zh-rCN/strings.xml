@@ -1304,7 +1304,7 @@
     <string name="add_to_home_screen">桌面</string>
     <string name="item_action_start_entry">启动</string>
     <string name="start_entry_set_toast">已设为启动入口,下次启动将直接进入「%1$s」</string>
-    <string name="cannot_create_shortcut">不支持创建快捷方式</string>
+    <string name="cannot_create_shortcut">创建桌面快捷方式失败，请在系统设置中为万宝盒开启「桌面快捷方式」权限</string>
     <string name="pdf_export_prepare">正在准备PDF导出...</string>
     <string name="pdf_export_failure">PDF导出失败: %s</string>
     <string name="pdf_url_not_found">Pdf文件不存在,可能没权限</string>

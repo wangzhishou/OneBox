@@ -1003,10 +1003,10 @@
     <string name="save_as">Guardar como</string>
     <string name="save_as_pdf">Guardar como PDF</string>
     <string name="home_qr_code">Código QR</string>
-    <string name="add_to_home_screen">Crear acceso directo</string>
+    <string name="add_to_home_screen">Atajo</string>
     <string name="item_action_start_entry">Inicio</string>
     <string name="start_entry_set_toast">Establecido como entrada de inicio. %1$s se abrirá directamente en el próximo inicio</string>
-    <string name="cannot_create_shortcut">No se admite la creación de accesos directos.</string>
+    <string name="cannot_create_shortcut">No se pudo crear el acceso directo. Activa los accesos directos en los ajustes del sistema.</string>
     <string name="pdf_export_prepare">Preparando exportación a PDF...</string>
     <string name="pdf_export_failure">Error al exportar PDF: %s</string>
     <string name="pdf_url_not_found">No se encontró el archivo PDF. Es posible que no tengas permiso.</string>

@@ -1123,7 +1123,7 @@
     <string name="add_to_home_screen">桌面</string>
     <string name="item_action_start_entry">啟動</string>
     <string name="start_entry_set_toast">已設為啟動入口，下次啟動將直接進入「%1$s」</string>
-    <string name="cannot_create_shortcut">不支援建立捷徑</string>
+    <string name="cannot_create_shortcut">建立桌面捷徑失敗，請在系統設定中為萬寶盒開啟「桌面捷徑」權限</string>
     <string name="pdf_export_prepare">正在準備PDF匯出...</string>
     <string name="pdf_export_failure">PDF匯出失敗: %s</string>
     <string name="pdf_url_not_found">Pdf檔案不存在，可能沒權限</string>

@@ -1003,10 +1003,10 @@
     <string name="save_as">I-save Bilang</string>
     <string name="save_as_pdf">I-save bilang PDF</string>
     <string name="home_qr_code">QR Code</string>
-    <string name="add_to_home_screen">Gumawa ng Shortcut</string>
+    <string name="add_to_home_screen">Shortcut</string>
     <string name="item_action_start_entry">Launch</string>
     <string name="start_entry_set_toast">Itinakda bilang launch entry. Direktang magbubukas ang %1$s sa susunod na pagbubukas</string>
-    <string name="cannot_create_shortcut">Hindi suportado ang paggawa ng shortcut.</string>
+    <string name="cannot_create_shortcut">Hindi nagawa ang shortcut. I-enable ang pahintulot sa home screen shortcuts sa mga setting ng system.</string>
     <string name="pdf_export_prepare">Inihahanda ang PDF export...</string>
     <string name="pdf_export_failure">Nabigo ang PDF export: %s</string>
     <string name="pdf_url_not_found">Hindi nahanap ang PDF file. Maaaring wala kang pahintulot.</string>

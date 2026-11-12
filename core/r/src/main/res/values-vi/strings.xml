@@ -1139,10 +1139,10 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <string name="save_as">Lưu thành</string>
     <string name="save_as_pdf">Lưu dưới dạng PDF</string>
     <string name="home_qr_code">Mã QR</string>
-    <string name="add_to_home_screen">Màn hình chính</string>
+    <string name="add_to_home_screen">Lối tắt</string>
     <string name="item_action_start_entry">Khởi chạy</string>
     <string name="start_entry_set_toast">Đã đặt làm mục khởi chạy, lần khởi động tới sẽ vào thẳng 「%1$s」</string>
-    <string name="cannot_create_shortcut">Không hỗ trợ tạo lối tắt</string>
+    <string name="cannot_create_shortcut">Không thể tạo lối tắt. Hãy bật quyền lối tắt màn hình chính trong cài đặt hệ thống.</string>
     <string name="pdf_export_prepare">Đang chuẩn bị xuất PDF...</string>
     <string name="pdf_export_failure">Xuất PDF thất bại: %s</string>
     <string name="pdf_url_not_found">Tệp PDF không tồn tại, có thể không có quyền</string>

@@ -1003,10 +1003,10 @@
     <string name="save_as">Salvar como</string>
     <string name="save_as_pdf">Salvar como PDF</string>
     <string name="home_qr_code">Código QR</string>
-    <string name="add_to_home_screen">Criar Atalho</string>
+    <string name="add_to_home_screen">Atalho</string>
     <string name="item_action_start_entry">Iniciar</string>
     <string name="start_entry_set_toast">Definido como entrada de início. %1$s abrirá diretamente na próxima inicialização</string>
-    <string name="cannot_create_shortcut">Criação de atalho não suportada.</string>
+    <string name="cannot_create_shortcut">Não foi possível criar o atalho. Ative os atalhos da tela inicial nas configurações do sistema.</string>
     <string name="pdf_export_prepare">Preparando exportação de PDF...</string>
     <string name="pdf_export_failure">Falha na exportação de PDF: %s</string>
     <string name="pdf_url_not_found">Arquivo PDF não encontrado. Você pode não ter permissão.</string>
