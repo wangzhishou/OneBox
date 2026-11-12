@@ -1,8 +1,14 @@
-package com.t8rin.imagetoolbox.core.crash.data
-
 /*
- * ImageToolbox is an image editor for android
+ * OneBox is a free AI agent and toolbox for Android
+ * This file is part of OneBox, a derivative work based on
+ * ImageToolbox (https://github.com/T8RIN/ImageToolbox) by T8RIN.
+ *
  * Copyright (c) 2025 T8RIN (Malik Mukhametzyanov)
+ * Copyright (c) 2026 zhishouwang(网址兽)
+ *
+ * This file has been modified from the original ImageToolbox source.
+ *
+ * Origin: ImageToolbox derivative, modified
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +22,10 @@ package com.t8rin.imagetoolbox.core.crash.data
  * You should have received a copy of the Apache License
  * along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
  */
+
+package com.t8rin.imagetoolbox.core.crash.data
+
+
 
 import com.t8rin.imagetoolbox.core.domain.remote.AnalyticsManager
 import com.t8rin.logger.makeLog

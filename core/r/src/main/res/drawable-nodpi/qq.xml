@@ -1,3 +1,22 @@
+<!--
+  ~ OneBox is a free AI agent and toolbox for Android
+  ~ Copyright (c) 2026 zhishouwang(网址兽)
+  ~
+  ~ Origin: OneBox original work, not derived from ImageToolbox
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~ You should have received a copy of the Apache License
+  ~ along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+  -->
+
 <vector xmlns:android="http://schemas.android.com/apk/res/android" android:height="28dp" android:viewportHeight="48" android:viewportWidth="48" android:width="28dp">
       
     <path android:fillColor="#E48013" android:pathData="M34.568,37.874C34.383,39.334 32,40.234 29.246,39.884 26.493,39.533 24.411,38.064 24.598,36.602 24.784,35.142 27.167,34.242 29.92,34.593 32.674,34.943 34.754,36.413 34.568,37.874M13.79,37.732C14.007,39.197 16.483,40.135 19.323,39.828 22.163,39.521 24.289,38.084 24.072,36.618 23.856,35.154 21.377,34.216 18.538,34.524 15.698,34.831 13.571,36.268 13.79,37.732"/>

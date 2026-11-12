@@ -300,7 +300,7 @@ OneBox ships **107 feature modules**. Local tools run entirely on-device; only t
 
 ## Architecture Entry Points
 
-Paths beginning with `com.t8rin.*` are inherited from upstream ImageToolbox and left unchanged on purpose, so the diff against upstream stays reviewable. Everything written for this project lives under `com.wanbaohe.*` / `com.shifenmiao.*`.
+Package paths beginning with `com.t8rin.*` are kept for compatibility with the upstream ImageToolbox module layout; the package name alone does **not** indicate provenance. Some files in that namespace were newly written for OneBox, and some inherited files have since been moved or renamed upstream. The header templates in `scripts/license_header_origin.py` record provenance explicitly with an `Origin:` marker — unmodified upstream copy, modified derivative, or OneBox original work — and the script classifies files by git blob SHA rather than by package name.
 
 - **App entry**: `app/src/main/java/com/shifenmiao/app/AppActivity.kt`
 - **Runtime navigation root**: `feature/app/src/main/java/com/t8rin/imagetoolbox/feature/root/presentation/screenLogic/RootComponent.kt`
@@ -476,7 +476,7 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md). No keystores, API keys or backend
 
 ## License
 
-Apache-2.0, see `LICENSE`. The project is a fork of [ImageToolbox](https://github.com/T8RIN/ImageToolbox) (T8RIN, Apache-2.0): the image-processing core deliberately stays close to upstream so the diff stays reviewable, and upstream copyright notices are preserved in the files they came from.
+Apache-2.0, see `LICENSE`. The project is a fork of [ImageToolbox](https://github.com/T8RIN/ImageToolbox) (T8RIN, Apache-2.0): the image-processing core deliberately stays close to upstream so the diff stays reviewable, and upstream copyright notices are preserved in the files they came from. See `NOTICE` for the project-level attribution and the meaning of the per-file `Origin:` markers.
 
 ## Feature Gallery
 

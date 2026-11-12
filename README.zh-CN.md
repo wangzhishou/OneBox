@@ -493,7 +493,9 @@ App 内「我的 → 加入社区」是与下面一致的入口：
 
 ## 许可证
 
-Apache-2.0，详见 `LICENSE`。本项目基于 [ImageToolbox](https://github.com/T8RIN/ImageToolbox)（T8RIN，Apache-2.0）二次开发，源文件中保留上游版权声明。
+Apache-2.0，详见 `LICENSE`。本项目基于 [ImageToolbox](https://github.com/T8RIN/ImageToolbox)（T8RIN，Apache-2.0）二次开发，源文件中保留上游版权声明；项目级归属说明见 `NOTICE`。
+
+`com.t8rin.*` 包名仅为兼容上游模块结构而保留，**不代表文件来源**：该命名空间下既有上游继承文件，也有本项目纯自研的新文件；上游的部分文件在 fork 之后也被移动或改名。文件来源不由包名判断，而由文件头中显式的 `Origin:` 标记记录（未改动的 upstream 副本 / 已修改的衍生文件 / OneBox 原创）；`scripts/license_header_origin.py` 以 git blob SHA 比对完成分类并提供文件头模板，可从 CSV 清单逐类审阅后再写盘。
 
 ## 功能图鉴
 

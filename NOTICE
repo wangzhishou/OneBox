@@ -1,0 +1,24 @@
+OneBox
+Copyright (c) 2026 zhishouwang(网址兽)
+
+This product is a derivative work based on ImageToolbox
+(https://github.com/T8RIN/ImageToolbox), by T8RIN (Malik Mukhametzyanov),
+licensed under the Apache License, Version 2.0. The source snapshot this
+fork started from corresponds to upstream commit
+09059f46551f965afc37af7b243376de2d805467 (2026-08-07).
+
+The upstream project does not distribute a NOTICE file. Its copyright
+notices are preserved verbatim in the headers of the source files to which
+they apply, together with the original copyright years. Files derived from
+upstream and modified carry an "Origin: ImageToolbox derivative, modified"
+marker; files written for this project carry an "Origin: OneBox original
+work" marker. Unmodified upstream copies keep their original headers.
+See scripts/license_header_origin.py for the classification rules.
+
+OneBox is not affiliated with, endorsed by, or sponsored by T8RIN or the
+ImageToolbox project. The names ImageToolbox and T8RIN are used solely to
+identify the origin of the upstream code.
+
+This work is licensed under the Apache License, Version 2.0.
+See LICENSE for the full license text. Third-party notices shipped with
+vendored libraries are kept in their respective directories.
