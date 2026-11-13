@@ -48,6 +48,7 @@ import com.t8rin.imagetoolbox.core.domain.image.model.Quality
 import com.t8rin.imagetoolbox.core.domain.image.model.ResizeType
 import com.t8rin.imagetoolbox.core.domain.json.JsonParser
 import com.t8rin.imagetoolbox.core.domain.model.ColorModel
+import com.t8rin.imagetoolbox.core.domain.model.ColorPalette
 import com.t8rin.imagetoolbox.core.domain.model.HashingType
 import com.t8rin.imagetoolbox.core.domain.model.PerformanceClass
 import com.t8rin.imagetoolbox.core.domain.model.SystemBarsVisibility
@@ -102,6 +103,7 @@ import com.t8rin.imagetoolbox.feature.settings.data.keys.COPY_TO_CLIPBOARD_MODE
 import com.t8rin.imagetoolbox.feature.settings.data.keys.CUSTOM_BACKGROUND_IMAGE_URI
 import com.t8rin.imagetoolbox.feature.settings.data.keys.CUSTOM_BACKGROUND_OVERLAY_ALPHA
 import com.t8rin.imagetoolbox.feature.settings.data.keys.CUSTOM_FONTS
+import com.t8rin.imagetoolbox.feature.settings.data.keys.CUSTOM_PALETTES
 import com.t8rin.imagetoolbox.feature.settings.data.keys.DEFAULT_DRAW_COLOR
 import com.t8rin.imagetoolbox.feature.settings.data.keys.DEFAULT_DRAW_LINE_WIDTH
 import com.t8rin.imagetoolbox.feature.settings.data.keys.DEFAULT_DRAW_PATH_MODE
@@ -870,6 +872,14 @@ internal class AndroidSettingsManager @Inject constructor(
         colors: List<ColorModel>
     ) = edit { preferences ->
         preferences[FAVORITE_COLORS] = colors.joinToString("/") { it.colorInt.toString() }
+    }
+
+    override suspend fun setCustomPalettes(
+        palettes: List<ColorPalette>
+    ) = edit { preferences ->
+        preferences[CUSTOM_PALETTES] = ColorPalette.encode(
+            palettes.take(ColorPalette.MAX_PALETTES)
+        )
     }
 
     override suspend fun setBackgroundColorForNoAlphaFormats(

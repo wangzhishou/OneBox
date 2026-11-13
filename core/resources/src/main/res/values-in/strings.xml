@@ -2069,4 +2069,36 @@
 
     <string name="backup_center">Cadangkan &amp; Pulihkan</string>
     <string name="backup_center_sub">Cadangkan data ke penyimpanan awan Anda sendiri</string>
+
+    <string name="palette_tab">Palet</string>
+    <string name="my_palettes">Palet saya</string>
+    <string name="palette_new">Palet baru</string>
+    <string name="palette_rename">Ganti nama palet</string>
+    <string name="rename">Ganti nama</string>
+    <string name="palette_delete">Hapus palet</string>
+    <string name="palette_delete_confirm">Hapus “%1$s”? Tindakan ini tidak dapat dibatalkan.</string>
+    <string name="palette_add_current">Tambahkan warna saat ini</string>
+    <string name="palette_already_exists">Warna ini sudah ada di palet</string>
+    <string name="palette_full">Palet dapat menampung hingga %1$d warna</string>
+    <string name="palette_max_reached">Anda dapat menyimpan hingga %1$d palet</string>
+    <string name="palette_empty_title">Belum ada palet</string>
+    <string name="palette_empty_desc">Simpan warna yang sering Anda gunakan bersamaan, lalu pilih langsung dari pemilih warna.</string>
+    <string name="palette_no_colors">Palet ini kosong</string>
+    <string name="palette_no_colors_desc">Ketuk “Tambahkan warna saat ini” untuk menyimpan warna yang Anda pilih.</string>
+    <string name="palette_copy_all">Salin semua nilai hex</string>
+    <string name="palette_copied">Palet disalin</string>
+    <string name="palette_created">Palet dibuat</string>
+    <string name="palette_color_removed">Dihapus dari palet</string>
+    <string name="palette_from_favorites">Buat dari favorit</string>
+    <string name="palette_remove_color">Hapus dari palet</string>
+    <string name="palette_added">Ditambahkan ke palet</string>
+    <string name="palette_default_name">Palet %1$d</string>
+    <string name="recently_picked">Baru-baru ini dipilih</string>
+    <string name="use_this_color">Gunakan warna ini</string>
+    <string name="add_to_palette">Tambahkan ke palet</string>
+    <string name="image_palette">Warna gambar</string>
+    <string name="image_palette_save_all">Simpan sebagai palet</string>
+    <string name="pick_color_recent_hint">Warna yang Anda pilih akan muncul di sini</string>
+    <string name="palette_added_count">%1$d warna ditambahkan</string>
+    <string name="palette_already_contains">Sudah berisi warna ini</string>
 </resources>

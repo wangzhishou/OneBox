@@ -2069,4 +2069,36 @@
 
     <string name="backup_center">النسخ الاحتياطي والاستعادة</string>
     <string name="backup_center_sub">احتفظ بنسخة احتياطية من بياناتك على وحدة التخزين السحابية الخاصة بك</string>
+
+    <string name="palette_tab">لوحات الألوان</string>
+    <string name="my_palettes">لوحاتي</string>
+    <string name="palette_new">لوحة ألوان جديدة</string>
+    <string name="palette_rename">إعادة تسمية لوحة الألوان</string>
+    <string name="rename">إعادة تسمية</string>
+    <string name="palette_delete">حذف لوحة الألوان</string>
+    <string name="palette_delete_confirm">حذف «%1$s»؟ لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="palette_add_current">إضافة اللون الحالي</string>
+    <string name="palette_already_exists">هذا اللون موجود بالفعل في لوحة الألوان</string>
+    <string name="palette_full">يمكن للوحة الألوان أن تضم حتى %1$d لونًا</string>
+    <string name="palette_max_reached">يمكنك الاحتفاظ بما يصل إلى %1$d لوحة ألوان</string>
+    <string name="palette_empty_title">لا توجد لوحات ألوان بعد</string>
+    <string name="palette_empty_desc">احفظ الألوان التي تستخدمها معًا غالبًا، ثم اخترها مباشرةً من منتقي الألوان.</string>
+    <string name="palette_no_colors">لوحة الألوان هذه فارغة</string>
+    <string name="palette_no_colors_desc">اضغط على «إضافة اللون الحالي» لحفظ اللون الذي اخترته.</string>
+    <string name="palette_copy_all">نسخ جميع قيم HEX</string>
+    <string name="palette_copied">تم نسخ لوحة الألوان</string>
+    <string name="palette_created">تم إنشاء لوحة الألوان</string>
+    <string name="palette_color_removed">تمت الإزالة من لوحة الألوان</string>
+    <string name="palette_from_favorites">إنشاء من المفضلة</string>
+    <string name="palette_remove_color">إزالة من لوحة الألوان</string>
+    <string name="palette_added">تمت الإضافة إلى لوحة الألوان</string>
+    <string name="palette_default_name">لوحة الألوان %1$d</string>
+    <string name="recently_picked">الألوان المختارة مؤخرًا</string>
+    <string name="use_this_color">استخدام هذا اللون</string>
+    <string name="add_to_palette">إضافة إلى لوحة الألوان</string>
+    <string name="image_palette">ألوان الصورة</string>
+    <string name="image_palette_save_all">حفظ كلوحة ألوان</string>
+    <string name="pick_color_recent_hint">ستظهر الألوان التي تختارها هنا</string>
+    <string name="palette_added_count">تمت إضافة %1$d لونًا</string>
+    <string name="palette_already_contains">يحتوي هذه الألوان بالفعل</string>
 </resources>

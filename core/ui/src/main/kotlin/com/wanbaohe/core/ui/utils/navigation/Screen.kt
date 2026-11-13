@@ -829,11 +829,22 @@ sealed class Screen(
 
     @Serializable
     @SerialName("ColorTools")
-    data object ColorTools : Screen(
+    data class ColorTools(
+        /** 打开时落在哪个 tab（0=颜色信息 1=颜色混合 2=色彩阴影 3=调色板 4=柱状图） */
+        val initialTab: Int = TAB_INFO
+    ) : Screen(
         id = 30,
         title = R.string.color_tools,
         subtitle = R.string.color_tools_sub
-    )
+    ) {
+        companion object {
+            const val TAB_INFO = 0
+            const val TAB_MIXING = 1
+            const val TAB_SHADING = 2
+            const val TAB_PALETTE = 3
+            const val TAB_HISTOGRAM = 4
+        }
+    }
 
     @Serializable
     @SerialName("WebpTools")

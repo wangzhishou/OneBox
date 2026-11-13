@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  OneBox is a free AI agent and toolbox for Android
+  Copyright (c) 2026 zhishouwang(网址兽)
+
+  Origin: OneBox original work, not derived from ImageToolbox
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+
+  You should have received a copy of the Apache License
+  along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+-->
+<resources>
+    <!-- 调色板 AI 工具 -->
+    <string name="agent_tool_palette_deeplink_label">Buka alat warna</string>
+    <string name="agent_tool_palette_deeplink_guidance">Buka alat warna untuk melihat, mengedit, dan memakai ulang palet tersimpan</string>
+
+    <string name="agent_tool_palette_list_title">Daftar palet</string>
+    <string name="agent_tool_palette_list_summary">Tampilkan palet warna tersimpan milik pengguna beserta kode hex-nya</string>
+    <string name="agent_tool_palette_list_param_include_colors">Apakah kode hex setiap palet perlu dikembalikan (default true)</string>
+    <string name="agent_tool_palette_list_empty">Pengguna belum menyimpan palet apa pun</string>
+
+    <string name="agent_tool_palette_generate_title">Buat palet</string>
+    <string name="agent_tool_palette_generate_summary">Buat warna yang selaras dari satu warna dasar tanpa menyimpannya</string>
+    <string name="agent_tool_palette_generate_param_seed">Warna dasar dalam hex, mis. #4F5B92</string>
+    <string name="agent_tool_palette_generate_param_harmony">Aturan harmoni: complementary, analogous, triadic, split_complementary, tetradic, atau square</string>
+    <string name="agent_tool_palette_generate_param_count">Berapa warna yang dikembalikan (2-16, default 5)</string>
+    <string name="agent_tool_palette_generate_invalid_seed">Warna dasar tidak dapat dibaca, perlu hex seperti #4F5B92</string>
+    <string name="agent_tool_palette_generate_invalid_harmony">Aturan harmoni tidak dikenal, gunakan salah satu nilai yang terdaftar</string>
+
+    <string name="agent_tool_palette_save_title">Simpan palet</string>
+    <string name="agent_tool_palette_save_summary">Buat palet, atau perbarui palet yang ada berdasarkan nama, dengan mengganti atau menambah warna</string>
+    <string name="agent_tool_palette_save_param_name">Nama palet; palet yang ada dengan nama sama akan diperbarui</string>
+    <string name="agent_tool_palette_save_param_colors">Warna hex, mis. [\"#4F5B92\", \"#E3E7F3\"]</string>
+    <string name="agent_tool_palette_save_param_mode">replace (default) menimpa warna, append menambahkannya setelah warna yang ada</string>
+    <string name="agent_tool_palette_save_missing_name">Nama palet wajib diisi</string>
+    <string name="agent_tool_palette_save_missing_colors">Tidak ada warna hex yang valid dalam permintaan</string>
+    <string name="agent_tool_palette_save_too_many">Batas palet sudah tercapai atau daftar warna terlalu panjang</string>
+
+    <string name="agent_tool_palette_delete_title">Hapus palet</string>
+    <string name="agent_tool_palette_delete_summary">Hapus satu palet tersimpan berdasarkan nama atau id</string>
+    <string name="agent_tool_palette_delete_param_name">Nama palet (alternatif selain id)</string>
+    <string name="agent_tool_palette_delete_param_id">Id palet (alternatif selain nama)</string>
+    <string name="agent_tool_palette_delete_missing_target">Berikan nama palet atau id</string>
+    <string name="agent_tool_palette_delete_not_found">Tidak ada palet yang cocok dengan nama atau id itu</string>
+    <string name="agent_tool_palette_delete_ok">Palet dihapus</string>
+
+    <string name="agent_tool_palette_unknown_action">Aksi tidak dikenal</string>
+    <string name="agent_tool_palette_failed">Operasi palet gagal: %1$s</string>
+
+    <string-array name="agent_tool_palette_keywords">
+        <item>palet</item>
+        <item>warna</item>
+        <item>skema warna</item>
+        <item>hex</item>
+        <item>padu warna</item>
+        <item>palet warna</item>
+        <item>kombinasi warna</item>
+    </string-array>
+
+    <string-array name="agent_tool_palette_examples">
+        <item>Tolong buatkan palet bernuansa Morandi lalu simpan</item>
+        <item>Buat palet triadik dari #4F5B92</item>
+        <item>Simpan warna brand yang biasa saya pakai sebagai palet</item>
+        <item>Tampilkan palet yang saya simpan</item>
+        <item>Hapus palet «Visual Musim Semi»</item>
+    </string-array>
+</resources>

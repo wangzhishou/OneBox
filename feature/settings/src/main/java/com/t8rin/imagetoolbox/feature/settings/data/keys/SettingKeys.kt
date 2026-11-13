@@ -156,3 +156,6 @@ internal val FILENAME_BEHAVIOR = stringPreferencesKey("FILENAME_BEHAVIOR")
 
 internal val ENABLE_BACKGROUND_COLOR_FOR_ALPHA_FORMATS =
     booleanPreferencesKey("ENABLE_BACKGROUND_COLOR_FOR_ALPHA_FORMATS")
+
+/** 用户自建调色板列表,存 JSON 字符串(见 ColorPalette.encode) */
+internal val CUSTOM_PALETTES = stringPreferencesKey("CUSTOM_PALETTES")

@@ -2069,4 +2069,36 @@
 
     <string name="backup_center">Резервное копирование и восстановление</string>
     <string name="backup_center_sub">Резервное копирование данных в ваше собственное облачное хранилище</string>
+
+    <string name="palette_tab">Палитры</string>
+    <string name="my_palettes">Мои палитры</string>
+    <string name="palette_new">Новая палитра</string>
+    <string name="palette_rename">Переименовать палитру</string>
+    <string name="rename">Переименовать</string>
+    <string name="palette_delete">Удалить палитру</string>
+    <string name="palette_delete_confirm">Удалить «%1$s»? Это действие нельзя отменить.</string>
+    <string name="palette_add_current">Добавить текущий цвет</string>
+    <string name="palette_already_exists">Этот цвет уже есть в палитре</string>
+    <string name="palette_full">В палитре может быть до %1$d цветов</string>
+    <string name="palette_max_reached">Можно сохранить до %1$d палитр</string>
+    <string name="palette_empty_title">Палитр пока нет</string>
+    <string name="palette_empty_desc">Сохраняйте цвета, которые часто используете вместе, и выбирайте их прямо в палитре выбора цвета.</string>
+    <string name="palette_no_colors">Эта палитра пуста</string>
+    <string name="palette_no_colors_desc">Нажмите «Добавить текущий цвет», чтобы сохранить выбранный цвет.</string>
+    <string name="palette_copy_all">Копировать все значения HEX</string>
+    <string name="palette_copied">Палитра скопирована</string>
+    <string name="palette_created">Палитра создана</string>
+    <string name="palette_color_removed">Удалено из палитры</string>
+    <string name="palette_from_favorites">Создать из избранного</string>
+    <string name="palette_remove_color">Удалить из палитры</string>
+    <string name="palette_added">Добавлено в палитру</string>
+    <string name="palette_default_name">Палитра %1$d</string>
+    <string name="recently_picked">Недавно выбранные</string>
+    <string name="use_this_color">Использовать этот цвет</string>
+    <string name="add_to_palette">Добавить в палитру</string>
+    <string name="image_palette">Цвета изображения</string>
+    <string name="image_palette_save_all">Сохранить как палитру</string>
+    <string name="pick_color_recent_hint">Выбранные цвета появятся здесь</string>
+    <string name="palette_added_count">Добавлено цветов: %1$d</string>
+    <string name="palette_already_contains">Уже содержит эти цвета</string>
 </resources>

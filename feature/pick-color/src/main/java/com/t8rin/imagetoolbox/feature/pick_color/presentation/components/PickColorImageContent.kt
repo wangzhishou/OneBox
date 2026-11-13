@@ -25,8 +25,11 @@ package com.t8rin.imagetoolbox.feature.pick_color.presentation.components
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -38,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.input.pointer.pointerInput
@@ -65,6 +69,7 @@ import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
 @Composable
 internal fun PickColorImageContent(
     bitmap: Bitmap,
+    paletteSource: ImageBitmap?,
     color: Color,
     isFavorite: Boolean,
     bottomInset: Dp,
@@ -114,25 +119,31 @@ internal fun PickColorImageContent(
         }
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            if (color.isSpecified) {
-                PickColorColorCard(
-                    color = color,
-                    isFavorite = isFavorite,
-                    onCopy = onCopy,
-                    onToggleFavorite = onToggleFavorite,
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(horizontal = 12.dp, vertical = 10.dp)
-                        // 卡片浮在图片上：吃掉卡片范围内的按下事件，避免点卡片背景时取到卡片后面的颜色
-                        .pointerInput(Unit) { detectTapGestures { } }
-                )
-            } else {
-                PickColorHintCard(
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(horizontal = 12.dp, vertical = 10.dp)
-                        .pointerInput(Unit) { detectTapGestures { } }
-                )
+            Column(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp, vertical = 10.dp)
+                    // 浮层浮在图片上：吃掉这块范围内的按下事件，避免点卡片时取到卡片后面的颜色
+                    .pointerInput(Unit) { detectTapGestures { } },
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                if (paletteSource != null) {
+                    PickColorImagePalette(
+                        paletteSource = paletteSource,
+                        onColorSelected = onColorChange
+                    )
+                }
+                if (color.isSpecified) {
+                    PickColorColorCard(
+                        color = color,
+                        isFavorite = isFavorite,
+                        onCopy = onCopy,
+                        onToggleFavorite = onToggleFavorite
+                    )
+                } else {
+                    PickColorHintCard()
+                }
             }
         }
     }

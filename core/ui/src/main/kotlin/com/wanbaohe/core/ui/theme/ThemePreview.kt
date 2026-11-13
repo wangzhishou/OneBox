@@ -50,6 +50,7 @@ import com.t8rin.dynamic.theme.ColorTuple
 import com.t8rin.dynamic.theme.DynamicTheme
 import com.t8rin.dynamic.theme.rememberDynamicThemeState
 import com.t8rin.imagetoolbox.core.domain.model.ColorModel
+import com.t8rin.imagetoolbox.core.domain.model.ColorPalette
 import com.t8rin.imagetoolbox.core.domain.resource.ResourceManager
 import com.t8rin.imagetoolbox.core.settings.domain.SimpleSettingsInteractor
 import com.t8rin.imagetoolbox.core.settings.domain.model.OneTimeSaveLocation
@@ -252,6 +253,8 @@ private val FakeSettings = object : SimpleSettingsInteractor {
     override suspend fun clearRecentColors() = Unit
 
     override suspend fun updateFavoriteColors(colors: List<ColorModel>) = Unit
+
+    override suspend fun setCustomPalettes(palettes: List<ColorPalette>) = Unit
 
     override suspend fun setBackgroundColorForNoAlphaFormats(color: ColorModel) =
         Unit

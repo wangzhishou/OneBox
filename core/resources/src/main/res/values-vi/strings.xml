@@ -2069,4 +2069,36 @@
 
     <string name="backup_center">Sao lưu và khôi phục</string>
     <string name="backup_center_sub">Sao lưu dữ liệu lên ổ đĩa đám mây của riêng bạn</string>
+
+    <string name="palette_tab">Bảng màu</string>
+    <string name="my_palettes">Bảng màu của tôi</string>
+    <string name="palette_new">Bảng màu mới</string>
+    <string name="palette_rename">Đổi tên bảng màu</string>
+    <string name="rename">Đổi tên</string>
+    <string name="palette_delete">Xóa bảng màu</string>
+    <string name="palette_delete_confirm">Xóa “%1$s”? Không thể hoàn tác thao tác này.</string>
+    <string name="palette_add_current">Thêm màu hiện tại</string>
+    <string name="palette_already_exists">Màu này đã có trong bảng màu</string>
+    <string name="palette_full">Mỗi bảng màu chứa tối đa %1$d màu</string>
+    <string name="palette_max_reached">Bạn có thể lưu tối đa %1$d bảng màu</string>
+    <string name="palette_empty_title">Chưa có bảng màu nào</string>
+    <string name="palette_empty_desc">Lưu những màu bạn thường dùng cùng nhau, rồi chọn chúng ngay trong trình chọn màu.</string>
+    <string name="palette_no_colors">Bảng màu này đang trống</string>
+    <string name="palette_no_colors_desc">Nhấn “Thêm màu hiện tại” để lưu màu bạn đã chọn.</string>
+    <string name="palette_copy_all">Sao chép tất cả giá trị hex</string>
+    <string name="palette_copied">Đã sao chép bảng màu</string>
+    <string name="palette_created">Đã tạo bảng màu</string>
+    <string name="palette_color_removed">Đã xóa khỏi bảng màu</string>
+    <string name="palette_from_favorites">Tạo từ mục yêu thích</string>
+    <string name="palette_remove_color">Xóa khỏi bảng màu</string>
+    <string name="palette_added">Đã thêm vào bảng màu</string>
+    <string name="palette_default_name">Bảng màu %1$d</string>
+    <string name="recently_picked">Màu chọn gần đây</string>
+    <string name="use_this_color">Dùng màu này</string>
+    <string name="add_to_palette">Thêm vào bảng màu</string>
+    <string name="image_palette">Màu trong ảnh</string>
+    <string name="image_palette_save_all">Lưu thành bảng màu</string>
+    <string name="pick_color_recent_hint">Màu bạn chọn sẽ xuất hiện ở đây</string>
+    <string name="palette_added_count">Đã thêm %1$d màu</string>
+    <string name="palette_already_contains">Đã chứa các màu này</string>
 </resources>

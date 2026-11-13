@@ -26,6 +26,7 @@
 package com.t8rin.imagetoolbox.core.settings.domain
 
 import com.t8rin.imagetoolbox.core.domain.model.ColorModel
+import com.t8rin.imagetoolbox.core.domain.model.ColorPalette
 import com.t8rin.imagetoolbox.core.settings.domain.model.OneTimeSaveLocation
 
 interface SimpleSettingsInteractor {
@@ -55,6 +56,11 @@ interface SimpleSettingsInteractor {
 
     suspend fun updateFavoriteColors(
         colors: List<ColorModel>
+    )
+
+    /** 整体覆盖用户调色板列表(新增/改名/删除/改色都走这一条,列表很短,不做增量)。 */
+    suspend fun setCustomPalettes(
+        palettes: List<ColorPalette>
     )
 
     suspend fun setBackgroundColorForNoAlphaFormats(

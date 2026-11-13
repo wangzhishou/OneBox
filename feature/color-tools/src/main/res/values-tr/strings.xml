@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  OneBox is a free AI agent and toolbox for Android
+  Copyright (c) 2026 zhishouwang(网址兽)
+
+  Origin: OneBox original work, not derived from ImageToolbox
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+
+  You should have received a copy of the Apache License
+  along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+-->
+<resources>
+    <!-- 调色板 AI 工具 -->
+    <string name="agent_tool_palette_deeplink_label">Renk araçlarını aç</string>
+    <string name="agent_tool_palette_deeplink_guidance">Kaydedilmiş paletleri görüntülemek, düzenlemek ve yeniden kullanmak için renk araçlarını açın</string>
+
+    <string name="agent_tool_palette_list_title">Paletleri listele</string>
+    <string name="agent_tool_palette_list_summary">Kullanıcının kaydedilmiş paletlerini hex renkleriyle listeler</string>
+    <string name="agent_tool_palette_list_param_include_colors">Her paletin hex renklerinin döndürülüp döndürülmeyeceği (varsayılan true)</string>
+    <string name="agent_tool_palette_list_empty">Kullanıcı henüz hiç palet kaydetmedi</string>
+
+    <string name="agent_tool_palette_generate_title">Palet oluştur</string>
+    <string name="agent_tool_palette_generate_summary">Tek bir başlangıç renginden uyumlu renkler oluşturur, kaydetmez</string>
+    <string name="agent_tool_palette_generate_param_seed">Hex biçiminde başlangıç rengi, ör. #4F5B92</string>
+    <string name="agent_tool_palette_generate_param_harmony">Uyum kuralı: complementary, analogous, triadic, split_complementary, tetradic veya square</string>
+    <string name="agent_tool_palette_generate_param_count">Döndürülecek renk sayısı (2-16, varsayılan 5)</string>
+    <string name="agent_tool_palette_generate_invalid_seed">Başlangıç rengi okunamadı, #4F5B92 gibi bir hex gerekli</string>
+    <string name="agent_tool_palette_generate_invalid_harmony">Bilinmeyen uyum kuralı, listedeki değerlerden birini kullanın</string>
+
+    <string name="agent_tool_palette_save_title">Palet kaydet</string>
+    <string name="agent_tool_palette_save_summary">Palet oluşturur veya aynı adlı mevcut paleti günceller; renkleri değiştirir ya da ekler</string>
+    <string name="agent_tool_palette_save_param_name">Palet adı; aynı ada sahip mevcut palet güncellenir</string>
+    <string name="agent_tool_palette_save_param_colors">Hex renkler, ör. [\"#4F5B92\", \"#E3E7F3\"]</string>
+    <string name="agent_tool_palette_save_param_mode">replace (varsayılan) renklerin üzerine yazar, append mevcut renklerin ardına ekler</string>
+    <string name="agent_tool_palette_save_missing_name">Palet adı gerekli</string>
+    <string name="agent_tool_palette_save_missing_colors">İstekte geçerli hex rengi yok</string>
+    <string name="agent_tool_palette_save_too_many">Palet sınırına ulaşıldı veya renk listesi çok uzun</string>
+
+    <string name="agent_tool_palette_delete_title">Paleti sil</string>
+    <string name="agent_tool_palette_delete_summary">Ad veya id ile kaydedilmiş bir paleti siler</string>
+    <string name="agent_tool_palette_delete_param_name">Palet adı (id yerine)</string>
+    <string name="agent_tool_palette_delete_param_id">Palet id (ad yerine)</string>
+    <string name="agent_tool_palette_delete_missing_target">Bir palet adı veya id girin</string>
+    <string name="agent_tool_palette_delete_not_found">Bu ad veya id ile eşleşen palet yok</string>
+    <string name="agent_tool_palette_delete_ok">Palet silindi</string>
+
+    <string name="agent_tool_palette_unknown_action">Bilinmeyen işlem</string>
+    <string name="agent_tool_palette_failed">Palet işlemi başarısız: %1$s</string>
+
+    <string-array name="agent_tool_palette_keywords">
+        <item>palet</item>
+        <item>renk</item>
+        <item>renk şeması</item>
+        <item>hex</item>
+        <item>renk uyumu</item>
+        <item>renk paleti</item>
+        <item>renk kombinasyonu</item>
+    </string-array>
+
+    <string-array name="agent_tool_palette_examples">
+        <item>Bana Morandi tonlarında bir palet hazırlayıp kaydet</item>
+        <item>#4F5B92 renginden üçlü bir palet oluştur</item>
+        <item>Sık kullandığım marka renklerini palet olarak kaydet</item>
+        <item>Kaydedilmiş paletlerimi listele</item>
+        <item>«Bahar Görseli» paletini sil</item>
+    </string-array>
+</resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  OneBox is a free AI agent and toolbox for Android
+  Copyright (c) 2026 zhishouwang(网址兽)
+
+  Origin: OneBox original work, not derived from ImageToolbox
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+
+  You should have received a copy of the Apache License
+  along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+-->
+<resources>
+    <!-- 调色板 AI 工具 -->
+    <string name="agent_tool_palette_deeplink_label">Mở công cụ màu</string>
+    <string name="agent_tool_palette_deeplink_guidance">Mở công cụ màu để xem, sửa và dùng lại các bảng màu đã lưu</string>
+
+    <string name="agent_tool_palette_list_title">Liệt kê bảng màu</string>
+    <string name="agent_tool_palette_list_summary">Liệt kê các bảng màu đã lưu của người dùng kèm mã màu hex</string>
+    <string name="agent_tool_palette_list_param_include_colors">Có trả về mã màu hex của từng bảng màu hay không (mặc định true)</string>
+    <string name="agent_tool_palette_list_empty">Người dùng chưa lưu bảng màu nào</string>
+
+    <string name="agent_tool_palette_generate_title">Tạo bảng màu</string>
+    <string name="agent_tool_palette_generate_summary">Tạo các màu hài hòa từ một màu gốc, không lưu lại</string>
+    <string name="agent_tool_palette_generate_param_seed">Màu gốc dạng hex, ví dụ #4F5B92</string>
+    <string name="agent_tool_palette_generate_param_harmony">Quy tắc hài hòa: complementary, analogous, triadic, split_complementary, tetradic hoặc square</string>
+    <string name="agent_tool_palette_generate_param_count">Số màu cần trả về (2-16, mặc định 5)</string>
+    <string name="agent_tool_palette_generate_invalid_seed">Không đọc được màu gốc, cần hex như #4F5B92</string>
+    <string name="agent_tool_palette_generate_invalid_harmony">Quy tắc hài hòa không xác định, hãy dùng một trong các giá trị đã liệt kê</string>
+
+    <string name="agent_tool_palette_save_title">Lưu bảng màu</string>
+    <string name="agent_tool_palette_save_summary">Tạo bảng màu mới hoặc cập nhật bảng màu đã có theo tên, thay thế hoặc thêm màu</string>
+    <string name="agent_tool_palette_save_param_name">Tên bảng màu; bảng màu đã có cùng tên sẽ được cập nhật</string>
+    <string name="agent_tool_palette_save_param_colors">Màu hex, ví dụ [\"#4F5B92\", \"#E3E7F3\"]</string>
+    <string name="agent_tool_palette_save_param_mode">replace (mặc định) ghi đè màu, append thêm vào sau các màu đã có</string>
+    <string name="agent_tool_palette_save_missing_name">Cần có tên bảng màu</string>
+    <string name="agent_tool_palette_save_missing_colors">Không có màu hex hợp lệ trong yêu cầu</string>
+    <string name="agent_tool_palette_save_too_many">Đã đạt giới hạn bảng màu hoặc danh sách màu quá dài</string>
+
+    <string name="agent_tool_palette_delete_title">Xóa bảng màu</string>
+    <string name="agent_tool_palette_delete_summary">Xóa một bảng màu đã lưu theo tên hoặc id</string>
+    <string name="agent_tool_palette_delete_param_name">Tên bảng màu (thay cho id)</string>
+    <string name="agent_tool_palette_delete_param_id">Id bảng màu (thay cho tên)</string>
+    <string name="agent_tool_palette_delete_missing_target">Hãy truyền tên bảng màu hoặc id</string>
+    <string name="agent_tool_palette_delete_not_found">Không có bảng màu nào khớp tên hoặc id đó</string>
+    <string name="agent_tool_palette_delete_ok">Đã xóa bảng màu</string>
+
+    <string name="agent_tool_palette_unknown_action">Hành động không xác định</string>
+    <string name="agent_tool_palette_failed">Thao tác bảng màu thất bại: %1$s</string>
+
+    <string-array name="agent_tool_palette_keywords">
+        <item>bảng màu</item>
+        <item>màu</item>
+        <item>phối màu</item>
+        <item>hex</item>
+        <item>phối màu hài hòa</item>
+        <item>bảng màu sắc</item>
+        <item>tổ hợp màu</item>
+    </string-array>
+
+    <string-array name="agent_tool_palette_examples">
+        <item>Giúp tôi tạo một bảng màu tông Morandi và lưu lại</item>
+        <item>Tạo bảng màu bộ ba từ #4F5B92</item>
+        <item>Lưu các màu thương hiệu tôi hay dùng thành một bảng màu</item>
+        <item>Liệt kê các bảng màu tôi đã lưu</item>
+        <item>Xóa bảng màu «Xuân Sắc»</item>
+    </string-array>
+</resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  OneBox is a free AI agent and toolbox for Android
+  Copyright (c) 2026 zhishouwang(网址兽)
+
+  Origin: OneBox original work, not derived from ImageToolbox
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+
+  You should have received a copy of the Apache License
+  along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+-->
+<resources>
+    <!-- 调色板 AI 工具 -->
+    <string name="agent_tool_palette_deeplink_label">打开色彩工具</string>
+    <string name="agent_tool_palette_deeplink_guidance">打开色彩工具，查看、编辑并取用已保存的调色板</string>
+
+    <string name="agent_tool_palette_list_title">列出调色板</string>
+    <string name="agent_tool_palette_list_summary">列出用户保存的调色板及其色值</string>
+    <string name="agent_tool_palette_list_param_include_colors">是否返回每组的色值，默认 true</string>
+    <string name="agent_tool_palette_list_empty">用户还没有保存过调色板</string>
+
+    <string name="agent_tool_palette_generate_title">生成配色</string>
+    <string name="agent_tool_palette_generate_summary">从一个种子颜色生成一组协调的配色，不落盘</string>
+    <string name="agent_tool_palette_generate_param_seed">种子颜色，十六进制，如 #4F5B92</string>
+    <string name="agent_tool_palette_generate_param_harmony">配色规则：complementary、analogous、triadic、split_complementary、tetradic、square</string>
+    <string name="agent_tool_palette_generate_param_count">返回颜色数量，2-16，默认 5</string>
+    <string name="agent_tool_palette_generate_invalid_seed">种子颜色解析失败，需要 #4F5B92 这种十六进制</string>
+    <string name="agent_tool_palette_generate_invalid_harmony">没有这个配色规则，请使用列出的取值</string>
+
+    <string name="agent_tool_palette_save_title">保存调色板</string>
+    <string name="agent_tool_palette_save_summary">新建调色板，或按名称更新已有调色板（覆盖或追加颜色）</string>
+    <string name="agent_tool_palette_save_param_name">调色板名称；同名调色板会被更新</string>
+    <string name="agent_tool_palette_save_param_colors">十六进制颜色数组，如 [\"#4F5B92\", \"#E3E7F3\"]</string>
+    <string name="agent_tool_palette_save_param_mode">replace（默认）覆盖原有颜色，append 追加到原有颜色之后</string>
+    <string name="agent_tool_palette_save_missing_name">需要提供调色板名称</string>
+    <string name="agent_tool_palette_save_missing_colors">请求里没有合法的十六进制颜色</string>
+    <string name="agent_tool_palette_save_too_many">达到调色板数量上限，或颜色数量超出限制</string>
+
+    <string name="agent_tool_palette_delete_title">删除调色板</string>
+    <string name="agent_tool_palette_delete_summary">按名称或 id 删除一组已保存的调色板</string>
+    <string name="agent_tool_palette_delete_param_name">调色板名称（与 id 二选一）</string>
+    <string name="agent_tool_palette_delete_param_id">调色板 id（与 name 二选一）</string>
+    <string name="agent_tool_palette_delete_missing_target">需要提供调色板名称或 id</string>
+    <string name="agent_tool_palette_delete_not_found">没有找到对应的调色板</string>
+    <string name="agent_tool_palette_delete_ok">调色板已删除</string>
+
+    <string name="agent_tool_palette_unknown_action">未知操作</string>
+    <string name="agent_tool_palette_failed">调色板操作失败：%1$s</string>
+
+    <string-array name="agent_tool_palette_keywords">
+        <item>palette</item>
+        <item>color</item>
+        <item>colour scheme</item>
+        <item>hex</item>
+        <item>配色</item>
+        <item>调色板</item>
+        <item>颜色搭配</item>
+    </string-array>
+
+    <string-array name="agent_tool_palette_examples">
+        <item>帮我配一套莫兰迪色系的调色板并保存</item>
+        <item>用 #4F5B92 生成一组三角配色</item>
+        <item>把我常用的品牌色存成调色板</item>
+        <item>列出我保存的调色板</item>
+        <item>删掉「春季视觉」这组调色板</item>
+    </string-array>
+</resources>

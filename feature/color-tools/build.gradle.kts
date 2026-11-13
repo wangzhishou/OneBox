@@ -34,4 +34,6 @@ android.namespace = "com.t8rin.imagetoolbox.feature.color_tools"
 
 dependencies {
     api(projects.feature.common)
+    // 调色板 AI 工具需要 AgentTool 抽象（ToolCategory / ToolParameters 等）
+    implementation(projects.feature.ai)
 }

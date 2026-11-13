@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Check
+import com.wanbaohe.core.ui.widget.color_picker.colorSwatchOutline
 import com.wanbaohe.core.ui.widget.glass.glassMedium
 import com.wanbaohe.core.ui.widget.modifier.transparencyChecker
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
@@ -60,6 +61,7 @@ internal fun PickColorSwatch(
                 .clip(shape)
                 .transparencyChecker()
                 .background(Color(argb))
+                .colorSwatchOutline(color = Color(argb), shape = shape)
         )
         if (showCheck) {
             Box(

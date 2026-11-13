@@ -2062,4 +2062,37 @@
 
     <string name="backup_center">備份與復原</string>
     <string name="backup_center_sub">將資料備份到你自己的網盤</string>
+
+    <!-- 調色盤：使用者自建配色，色彩工具裡編輯、全域選色面板裡取用 -->
+    <string name="palette_tab">調色盤</string>
+    <string name="my_palettes">我的調色盤</string>
+    <string name="palette_new">新增調色盤</string>
+    <string name="palette_rename">重新命名調色盤</string>
+    <string name="rename">重新命名</string>
+    <string name="palette_delete">刪除調色盤</string>
+    <string name="palette_delete_confirm">刪除「%1$s」？此操作無法復原。</string>
+    <string name="palette_add_current">加入目前顏色</string>
+    <string name="palette_already_exists">這個顏色已經在調色盤裡了</string>
+    <string name="palette_full">一組調色盤最多放 %1$d 個顏色</string>
+    <string name="palette_max_reached">最多儲存 %1$d 組調色盤</string>
+    <string name="palette_empty_title">還沒有調色盤</string>
+    <string name="palette_empty_desc">把常搭配的顏色存成一組，選顏色時可以直接叫出來用。</string>
+    <string name="palette_no_colors">這組調色盤還是空的</string>
+    <string name="palette_no_colors_desc">點「加入目前顏色」，把上面選取的顏色存進來。</string>
+    <string name="palette_copy_all">複製整組色值</string>
+    <string name="palette_copied">已複製整組色值</string>
+    <string name="palette_created">調色盤已建立</string>
+    <string name="palette_color_removed">已從調色盤移除</string>
+    <string name="palette_from_favorites">從收藏建立</string>
+    <string name="palette_remove_color">從調色盤移除</string>
+    <string name="palette_added">已加入調色盤</string>
+    <string name="palette_default_name">調色盤 %1$d</string>
+    <string name="recently_picked">最近取得</string>
+    <string name="use_this_color">選用此顏色</string>
+    <string name="add_to_palette">加入調色盤</string>
+    <string name="image_palette">圖片配色</string>
+    <string name="image_palette_save_all">存為調色盤</string>
+    <string name="pick_color_recent_hint">取過的顏色會出現在這裡</string>
+    <string name="palette_added_count">已加入 %1$d 個顏色</string>
+    <string name="palette_already_contains">已包含這些顏色</string>
 </resources>

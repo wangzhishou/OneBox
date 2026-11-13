@@ -92,6 +92,11 @@ fun ColorPickerSheet(
                         onFavoriteColorClick = { tempColor = it }
                     )
 
+                    PaletteColorsCard(
+                        currentColor = tempColor,
+                        onColorClick = { tempColor = it }
+                    )
+
                     ColorSelection(
                         value = tempColor,
                         onValueChange = { tempColor = it },

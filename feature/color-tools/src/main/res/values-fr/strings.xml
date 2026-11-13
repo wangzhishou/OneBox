@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  OneBox is a free AI agent and toolbox for Android
+  Copyright (c) 2026 zhishouwang(网址兽)
+
+  Origin: OneBox original work, not derived from ImageToolbox
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+
+  You should have received a copy of the Apache License
+  along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+-->
+<resources>
+    <!-- 调色板 AI 工具 -->
+    <string name="agent_tool_palette_deeplink_label">Ouvrir les outils de couleur</string>
+    <string name="agent_tool_palette_deeplink_guidance">Ouvrez les outils de couleur pour consulter, modifier et réutiliser les palettes enregistrées</string>
+
+    <string name="agent_tool_palette_list_title">Lister les palettes</string>
+    <string name="agent_tool_palette_list_summary">Liste les palettes enregistrées de l\'utilisateur avec leurs couleurs hex</string>
+    <string name="agent_tool_palette_list_param_include_colors">Indique si les couleurs hex de chaque palette sont renvoyées (par défaut true)</string>
+    <string name="agent_tool_palette_list_empty">L\'utilisateur n\'a encore enregistré aucune palette</string>
+
+    <string name="agent_tool_palette_generate_title">Générer une palette</string>
+    <string name="agent_tool_palette_generate_summary">Génère des couleurs harmonieuses à partir d\'une couleur de base sans les enregistrer</string>
+    <string name="agent_tool_palette_generate_param_seed">Couleur de base en hex, par ex. #4F5B92</string>
+    <string name="agent_tool_palette_generate_param_harmony">Règle d\'harmonie : complementary, analogous, triadic, split_complementary, tetradic ou square</string>
+    <string name="agent_tool_palette_generate_param_count">Nombre de couleurs à renvoyer (2-16, par défaut 5)</string>
+    <string name="agent_tool_palette_generate_invalid_seed">Impossible de lire la couleur de base, un hex comme #4F5B92 est attendu</string>
+    <string name="agent_tool_palette_generate_invalid_harmony">Règle d\'harmonie inconnue, utilisez l\'une des valeurs listées</string>
+
+    <string name="agent_tool_palette_save_title">Enregistrer une palette</string>
+    <string name="agent_tool_palette_save_summary">Crée une palette ou met à jour une palette existante par nom, en remplaçant ou en ajoutant des couleurs</string>
+    <string name="agent_tool_palette_save_param_name">Nom de la palette ; une palette existante portant ce nom est mise à jour</string>
+    <string name="agent_tool_palette_save_param_colors">Couleurs hex, par ex. [\"#4F5B92\", \"#E3E7F3\"]</string>
+    <string name="agent_tool_palette_save_param_mode">replace (par défaut) remplace les couleurs, append les ajoute après celles existantes</string>
+    <string name="agent_tool_palette_save_missing_name">Un nom de palette est requis</string>
+    <string name="agent_tool_palette_save_missing_colors">Aucune couleur hex valide dans la requête</string>
+    <string name="agent_tool_palette_save_too_many">La limite de palettes est atteinte ou la liste de couleurs est trop longue</string>
+
+    <string name="agent_tool_palette_delete_title">Supprimer une palette</string>
+    <string name="agent_tool_palette_delete_summary">Supprime une palette enregistrée par nom ou par id</string>
+    <string name="agent_tool_palette_delete_param_name">Nom de la palette (alternative à l\'id)</string>
+    <string name="agent_tool_palette_delete_param_id">Id de la palette (alternative au nom)</string>
+    <string name="agent_tool_palette_delete_missing_target">Indiquez un nom de palette ou un id</string>
+    <string name="agent_tool_palette_delete_not_found">Aucune palette ne correspond à ce nom ou à cet id</string>
+    <string name="agent_tool_palette_delete_ok">Palette supprimée</string>
+
+    <string name="agent_tool_palette_unknown_action">Action inconnue</string>
+    <string name="agent_tool_palette_failed">Échec de l\'opération sur la palette : %1$s</string>
+
+    <string-array name="agent_tool_palette_keywords">
+        <item>palette</item>
+        <item>couleur</item>
+        <item>jeu de couleurs</item>
+        <item>hex</item>
+        <item>accord de couleurs</item>
+        <item>nuancier</item>
+        <item>combinaison de couleurs</item>
+    </string-array>
+
+    <string-array name="agent_tool_palette_examples">
+        <item>Aide-moi à composer une palette dans les tons Morandi et à l\'enregistrer</item>
+        <item>Génère une palette triadique à partir de #4F5B92</item>
+        <item>Enregistre mes couleurs de marque habituelles dans une palette</item>
+        <item>Liste mes palettes enregistrées</item>
+        <item>Supprime la palette « Vision printanière »</item>
+    </string-array>
+</resources>

@@ -55,6 +55,7 @@ import com.t8rin.imagetoolbox.color_tools.presentation.components.ColorHistogram
 import com.t8rin.imagetoolbox.color_tools.presentation.components.ColorInfo
 import com.t8rin.imagetoolbox.color_tools.presentation.components.ColorMixing
 import com.t8rin.imagetoolbox.color_tools.presentation.components.ColorShading
+import com.t8rin.imagetoolbox.color_tools.presentation.components.PaletteEditor
 import com.t8rin.imagetoolbox.color_tools.presentation.screenLogic.ColorToolsComponent
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.R
@@ -62,6 +63,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Swatch
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAreaChart
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBlender
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineInfo
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePaletteTools
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.rememberAppColorTuple
 import com.wanbaohe.core.ui.widget.controls.selection.ColorRowSelector
@@ -69,7 +71,7 @@ import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
 import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBarStyle
 
-private enum class ColorToolTab { INFO, MIXING, SHADING, HISTOGRAM }
+private enum class ColorToolTab { INFO, MIXING, SHADING, PALETTE, HISTOGRAM }
 
 @Composable
 fun ColorToolsContent(
@@ -90,7 +92,9 @@ fun ColorToolsContent(
     }
 
     var selectedTab by rememberSaveable {
-        mutableStateOf(ColorToolTab.INFO)
+        mutableStateOf(
+            ColorToolTab.entries.getOrNull(component.initialTab) ?: ColorToolTab.INFO
+        )
     }
 
     BaseScreen(
@@ -147,6 +151,11 @@ fun ColorToolsContent(
                         selectedColor = selectedColor
                     )
 
+                    ColorToolTab.PALETTE -> PaletteEditor(
+                        selectedColor = selectedColor,
+                        onColorChange = component::updateSelectedColor
+                    )
+
                     ColorToolTab.HISTOGRAM -> ColorHistogram()
                 }
             }
@@ -167,6 +176,11 @@ fun ColorToolsContent(
                     id = ColorToolTab.SHADING.name,
                     label = stringResource(R.string.color_shading_tab),
                     icon = Icons.Rounded.Swatch
+                ),
+                BottomNavItem(
+                    id = ColorToolTab.PALETTE.name,
+                    label = stringResource(R.string.palette_tab),
+                    icon = Icons.Outlined.LinePaletteTools
                 ),
                 BottomNavItem(
                     id = ColorToolTab.HISTOGRAM.name,

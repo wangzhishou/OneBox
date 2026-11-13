@@ -736,7 +736,7 @@ internal object ScreenConstantsImpl : ScreenConstants {
                     AiChatScreen(),
                     ScanCode,
                     ScanQrCode(),
-                    ColorTools,
+                    ColorTools(),
                     Marquee(),
                     PdfTools(),
                     DocumentScanner,

@@ -2069,4 +2069,36 @@
 
     <string name="backup_center">बैकअप और पुनर्स्थापना</string>
     <string name="backup_center_sub">अपना डेटा अपने ही क्लाउड स्टोरेज में बैकअप करें</string>
+
+    <string name="palette_tab">पैलेट</string>
+    <string name="my_palettes">मेरे पैलेट</string>
+    <string name="palette_new">नया पैलेट</string>
+    <string name="palette_rename">पैलेट का नाम बदलें</string>
+    <string name="rename">नाम बदलें</string>
+    <string name="palette_delete">पैलेट हटाएँ</string>
+    <string name="palette_delete_confirm">“%1$s” हटाएँ? इसे पूर्ववत नहीं किया जा सकता।</string>
+    <string name="palette_add_current">मौजूदा रंग जोड़ें</string>
+    <string name="palette_already_exists">यह रंग पहले से पैलेट में है</string>
+    <string name="palette_full">एक पैलेट में अधिकतम %1$d रंग रखे जा सकते हैं</string>
+    <string name="palette_max_reached">आप अधिकतम %1$d पैलेट सहेज सकते हैं</string>
+    <string name="palette_empty_title">अभी कोई पैलेट नहीं</string>
+    <string name="palette_empty_desc">जिन रंगों को आप अक्सर साथ में इस्तेमाल करते हैं उन्हें सहेजें, फिर उन्हें सीधे रंग चयनकर्ता से चुनें।</string>
+    <string name="palette_no_colors">यह पैलेट खाली है</string>
+    <string name="palette_no_colors_desc">चुने गए रंग को सहेजने के लिए “मौजूदा रंग जोड़ें” पर टैप करें।</string>
+    <string name="palette_copy_all">सभी हेक्स मान कॉपी करें</string>
+    <string name="palette_copied">पैलेट कॉपी हो गया</string>
+    <string name="palette_created">पैलेट बन गया</string>
+    <string name="palette_color_removed">पैलेट से हटा दिया गया</string>
+    <string name="palette_from_favorites">पसंदीदा से बनाएँ</string>
+    <string name="palette_remove_color">पैलेट से हटाएँ</string>
+    <string name="palette_added">पैलेट में जोड़ दिया गया</string>
+    <string name="palette_default_name">पैलेट %1$d</string>
+    <string name="recently_picked">हाल में चुने गए रंग</string>
+    <string name="use_this_color">यह रंग इस्तेमाल करें</string>
+    <string name="add_to_palette">पैलेट में जोड़ें</string>
+    <string name="image_palette">छवि के रंग</string>
+    <string name="image_palette_save_all">पैलेट के रूप में सहेजें</string>
+    <string name="pick_color_recent_hint">आपके चुने रंग यहाँ दिखाई देंगे</string>
+    <string name="palette_added_count">%1$d रंग जोड़े गए</string>
+    <string name="palette_already_contains">ये रंग पहले से मौजूद हैं</string>
 </resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  OneBox is a free AI agent and toolbox for Android
+  Copyright (c) 2026 zhishouwang(网址兽)
+
+  Origin: OneBox original work, not derived from ImageToolbox
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+
+  You should have received a copy of the Apache License
+  along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+-->
+<resources>
+    <!-- 调色板 AI 工具 -->
+    <string name="agent_tool_palette_deeplink_label">रंग टूल्स खोलें</string>
+    <string name="agent_tool_palette_deeplink_guidance">सहेजी गई पैलेट देखने, संपादित करने और दोबारा उपयोग करने के लिए रंग टूल्स खोलें</string>
+
+    <string name="agent_tool_palette_list_title">पैलेट की सूची</string>
+    <string name="agent_tool_palette_list_summary">उपयोगकर्ता की सहेजी गई पैलेट उनके हेक्स रंगों के साथ सूचीबद्ध करें</string>
+    <string name="agent_tool_palette_list_param_include_colors">हर पैलेट के हेक्स रंग लौटाने हैं या नहीं (डिफ़ॉल्ट true)</string>
+    <string name="agent_tool_palette_list_empty">उपयोगकर्ता ने अभी तक कोई पैलेट सहेजी नहीं है</string>
+
+    <string name="agent_tool_palette_generate_title">पैलेट बनाएँ</string>
+    <string name="agent_tool_palette_generate_summary">एक बीज रंग से सामंजस्यपूर्ण रंग बनाएँ, बिना सहेजे</string>
+    <string name="agent_tool_palette_generate_param_seed">बीज रंग हेक्स में, जैसे #4F5B92</string>
+    <string name="agent_tool_palette_generate_param_harmony">सामंजस्य नियम: complementary, analogous, triadic, split_complementary, tetradic या square</string>
+    <string name="agent_tool_palette_generate_param_count">कितने रंग लौटाने हैं (2-16, डिफ़ॉल्ट 5)</string>
+    <string name="agent_tool_palette_generate_invalid_seed">बीज रंग पढ़ा नहीं जा सका, #4F5B92 जैसा हेक्स चाहिए</string>
+    <string name="agent_tool_palette_generate_invalid_harmony">अज्ञात सामंजस्य नियम, सूचीबद्ध मानों में से कोई एक चुनें</string>
+
+    <string name="agent_tool_palette_save_title">पैलेट सहेजें</string>
+    <string name="agent_tool_palette_save_summary">पैलेट बनाएँ, या नाम से मौजूदा पैलेट अपडेट करें, रंग बदलकर या जोड़कर</string>
+    <string name="agent_tool_palette_save_param_name">पैलेट का नाम; इसी नाम वाली मौजूदा पैलेट अपडेट हो जाएगी</string>
+    <string name="agent_tool_palette_save_param_colors">हेक्स रंग, जैसे [\"#4F5B92\", \"#E3E7F3\"]</string>
+    <string name="agent_tool_palette_save_param_mode">replace (डिफ़ॉल्ट) रंग बदल देता है, append उन्हें मौजूदा रंगों के बाद जोड़ता है</string>
+    <string name="agent_tool_palette_save_missing_name">पैलेट का नाम आवश्यक है</string>
+    <string name="agent_tool_palette_save_missing_colors">अनुरोध में कोई मान्य हेक्स रंग नहीं है</string>
+    <string name="agent_tool_palette_save_too_many">पैलेट की सीमा पूरी हो गई या रंगों की सूची बहुत लंबी है</string>
+
+    <string name="agent_tool_palette_delete_title">पैलेट हटाएँ</string>
+    <string name="agent_tool_palette_delete_summary">नाम या id से एक सहेजी गई पैलेट हटाएँ</string>
+    <string name="agent_tool_palette_delete_param_name">पैलेट का नाम (id का विकल्प)</string>
+    <string name="agent_tool_palette_delete_param_id">पैलेट id (नाम का विकल्प)</string>
+    <string name="agent_tool_palette_delete_missing_target">पैलेट का नाम या id दें</string>
+    <string name="agent_tool_palette_delete_not_found">उस नाम या id से कोई पैलेट मेल नहीं खाती</string>
+    <string name="agent_tool_palette_delete_ok">पैलेट हटा दी गई</string>
+
+    <string name="agent_tool_palette_unknown_action">अज्ञात क्रिया</string>
+    <string name="agent_tool_palette_failed">पैलेट कार्रवाई विफल: %1$s</string>
+
+    <string-array name="agent_tool_palette_keywords">
+        <item>पैलेट</item>
+        <item>रंग</item>
+        <item>रंग योजना</item>
+        <item>हेक्स</item>
+        <item>रंग मेल</item>
+        <item>रंग पैलेट</item>
+        <item>रंग संयोजन</item>
+    </string-array>
+
+    <string-array name="agent_tool_palette_examples">
+        <item>मेरे लिए मोरांदी टोन की पैलेट बनाकर सहेज दो</item>
+        <item>#4F5B92 से त्रिकोणीय पैलेट बनाओ</item>
+        <item>मेरे आम ब्रांड रंगों को पैलेट के रूप में सहेजो</item>
+        <item>मेरी सहेजी गई पैलेट की सूची दो</item>
+        <item>«स्प्रिंग विज़ुअल» पैलेट हटा दो</item>
+    </string-array>
+</resources>

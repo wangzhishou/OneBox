@@ -2068,4 +2068,36 @@
 
     <string name="backup_center">バックアップと復元</string>
     <string name="backup_center_sub">データを自分のクラウドストレージにバックアップ</string>
+
+    <string name="palette_tab">パレット</string>
+    <string name="my_palettes">マイパレット</string>
+    <string name="palette_new">新しいパレット</string>
+    <string name="palette_rename">パレット名を変更</string>
+    <string name="rename">名前を変更</string>
+    <string name="palette_delete">パレットを削除</string>
+    <string name="palette_delete_confirm">「%1$s」を削除しますか？この操作は元に戻せません。</string>
+    <string name="palette_add_current">現在の色を追加</string>
+    <string name="palette_already_exists">この色はすでにパレットにあります</string>
+    <string name="palette_full">1つのパレットには最大%1$d色まで保存できます</string>
+    <string name="palette_max_reached">パレットは最大%1$d個まで保存できます</string>
+    <string name="palette_empty_title">パレットはまだありません</string>
+    <string name="palette_empty_desc">よく一緒に使う色をまとめて保存すると、カラーピッカーからすぐに選べます。</string>
+    <string name="palette_no_colors">このパレットは空です</string>
+    <string name="palette_no_colors_desc">「現在の色を追加」をタップして、選択中の色を保存します。</string>
+    <string name="palette_copy_all">すべてのHEX値をコピー</string>
+    <string name="palette_copied">パレットをコピーしました</string>
+    <string name="palette_created">パレットを作成しました</string>
+    <string name="palette_color_removed">パレットから削除しました</string>
+    <string name="palette_from_favorites">お気に入りから作成</string>
+    <string name="palette_remove_color">パレットから削除</string>
+    <string name="palette_added">パレットに追加しました</string>
+    <string name="palette_default_name">パレット%1$d</string>
+    <string name="recently_picked">最近選んだ色</string>
+    <string name="use_this_color">この色を使う</string>
+    <string name="add_to_palette">パレットに追加</string>
+    <string name="image_palette">画像の色</string>
+    <string name="image_palette_save_all">パレットとして保存</string>
+    <string name="pick_color_recent_hint">選んだ色がここに表示されます</string>
+    <string name="palette_added_count">%1$d色を追加しました</string>
+    <string name="palette_already_contains">この色はすでに含まれています</string>
 </resources>

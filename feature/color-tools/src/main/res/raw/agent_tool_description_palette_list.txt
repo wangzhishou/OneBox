@@ -1,0 +1,7 @@
+列出用户保存在「色彩工具 → 调色板」里的全部配色组。
+
+参数：
+- include_colors: 是否返回每组的色值，默认 true
+
+返回 palettes 数组，每项包含 id、name、colors（十六进制）、color_count、updated_at。
+用户还没保存过调色板时返回空数组，不要编造不存在的调色板。

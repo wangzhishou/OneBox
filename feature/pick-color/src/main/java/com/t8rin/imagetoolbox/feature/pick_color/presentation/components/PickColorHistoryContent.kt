@@ -23,9 +23,8 @@
 
 package com.t8rin.imagetoolbox.feature.pick_color.presentation.components
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,18 +32,20 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SwipeToDismissBox
-import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -57,30 +58,43 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDirection
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.wanbaohe.base.ui.empty.EmptyStateGuide
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.model.color.ColorPickHistoryEntry
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineCheckCircleOutline
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDeleteForever
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFavorite
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFavoriteFilled
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePaletteTools
+import com.wanbaohe.base.ui.empty.EmptyStateGuide
 import com.wanbaohe.core.ui.utils.helper.Clipboard
 import com.wanbaohe.core.ui.utils.helper.toHex
+import com.wanbaohe.core.ui.widget.color_picker.AddToPaletteSheet
+import com.wanbaohe.core.ui.widget.color_picker.LargeColorBlock
+import com.wanbaohe.core.ui.widget.color_picker.contentColor
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedChip
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.wanbaohe.core.ui.widget.enhanced.hapticsClickable
 import com.wanbaohe.core.ui.widget.system.OneBoxDangerButton
-import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.system.OneBoxListItem
 import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
+import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
 
+/**
+ * 取色历史：按日期分组的大色块网格。
+ *
+ * 与色彩工具里的色块保持一致——一眼看到颜色本身，色值压在色块上；
+ * 点色块直接复制色值，左上方星星切收藏，长按弹出「选用 / 复制 / 收藏 / 删除」。
+ */
 @Composable
 internal fun PickColorHistoryContent(
     history: List<ColorPickHistoryEntry>,
@@ -95,6 +109,8 @@ internal fun PickColorHistoryContent(
 ) {
     var favoritesOnly by rememberSaveable { mutableStateOf(false) }
     var showClearDialog by rememberSaveable { mutableStateOf(false) }
+    var actionEntry by remember { mutableStateOf<ColorPickHistoryEntry?>(null) }
+    var paletteTargetArgb by remember { mutableStateOf<Int?>(null) }
 
     val todayLabel = stringResource(R.string.today)
     val yesterdayLabel = stringResource(R.string.yesterday)
@@ -166,7 +182,8 @@ internal fun PickColorHistoryContent(
                     favoritesOnly = favoritesOnly && history.isNotEmpty()
                 )
             } else {
-                LazyColumn(
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(
                         start = 16.dp,
@@ -174,10 +191,14 @@ internal fun PickColorHistoryContent(
                         top = 8.dp,
                         bottom = 16.dp
                     ),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     groups.forEach { group ->
-                        item(key = "header-${group.title}") {
+                        item(
+                            key = "header-${group.title}",
+                            span = { GridItemSpan(maxLineSpan) }
+                        ) {
                             Text(
                                 text = group.title,
                                 style = MaterialTheme.typography.titleSmall,
@@ -196,19 +217,18 @@ internal fun PickColorHistoryContent(
                             val time = remember(entry.pickedAtMillis, timeFormatter) {
                                 localTimeOf(entry.pickedAtMillis).format(timeFormatter)
                             }
-                            PickColorHistoryRow(
+                            PickColorHistoryBlock(
                                 entry = entry,
                                 isCurrent = entry.argb == currentArgb,
                                 time = time,
-                                onClick = { onSelect(entry.argb) },
-                                onCopy = {
+                                onClick = {
                                     Clipboard.copy(
                                         text = Color(entry.argb).toHex(),
                                         message = R.string.color_copied
                                     )
                                 },
-                                onToggleFavorite = { onToggleFavorite(entry.argb) },
-                                onDelete = { onRemove(entry.argb) }
+                                onLongClick = { actionEntry = entry },
+                                onToggleFavorite = { onToggleFavorite(entry.argb) }
                             )
                         }
                     }
@@ -246,6 +266,205 @@ internal fun PickColorHistoryContent(
             }
         )
     }
+
+    actionEntry?.let { entry ->
+        PickColorHistoryActionsSheet(
+            entry = entry,
+            onDismiss = { actionEntry = null },
+            onSelect = {
+                actionEntry = null
+                onSelect(entry.argb)
+            },
+            onCopy = {
+                actionEntry = null
+                Clipboard.copy(
+                    text = Color(entry.argb).toHex(),
+                    message = R.string.color_copied
+                )
+            },
+            onToggleFavorite = {
+                actionEntry = null
+                onToggleFavorite(entry.argb)
+            },
+            onAddToPalette = {
+                actionEntry = null
+                paletteTargetArgb = entry.argb
+            },
+            onDelete = {
+                actionEntry = null
+                onRemove(entry.argb)
+            }
+        )
+    }
+
+    paletteTargetArgb?.let { argb ->
+        AddToPaletteSheet(
+            color = Color(argb),
+            visible = true,
+            onDismiss = { paletteTargetArgb = null }
+        )
+    }
+}
+
+@Composable
+private fun PickColorHistoryBlock(
+    entry: ColorPickHistoryEntry,
+    isCurrent: Boolean,
+    time: String,
+    onClick: () -> Unit,
+    onLongClick: () -> Unit,
+    onToggleFavorite: () -> Unit
+) {
+    val color = Color(entry.argb)
+    val shape = RoundedCornerShape(20.dp)
+
+    Box(
+        modifier = Modifier
+            .then(
+                if (isCurrent) {
+                    Modifier.border(
+                        width = 2.dp,
+                        color = MaterialTheme.colorScheme.primary,
+                        shape = shape
+                    )
+                } else {
+                    Modifier
+                }
+            )
+    ) {
+        LargeColorBlock(
+            color = color,
+            onClick = onClick,
+            onLongClick = onLongClick,
+            shape = shape,
+            primaryText = color.toHex(),
+            secondaryText = time,
+            textStyle = MaterialTheme.typography.titleSmall,
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 108.dp),
+            badge = {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .padding(8.dp)
+                        .size(26.dp)
+                        .clip(CircleShape)
+                        .background(color.copy(alpha = 1f))
+                        .hapticsClickable(onClick = onToggleFavorite),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = if (entry.isFavorite) {
+                            Icons.Outlined.LineFavoriteFilled
+                        } else {
+                            Icons.Outlined.LineFavorite
+                        },
+                        contentDescription = stringResource(
+                            if (entry.isFavorite) R.string.pick_color_unfavorite
+                            else R.string.favorite
+                        ),
+                        modifier = Modifier.size(16.dp),
+                        tint = color.contentColor()
+                    )
+                }
+            }
+        )
+    }
+}
+
+@Composable
+internal fun PickColorHistoryActionsSheet(
+    entry: ColorPickHistoryEntry,
+    onDismiss: () -> Unit,
+    onSelect: () -> Unit,
+    onCopy: () -> Unit,
+    onToggleFavorite: () -> Unit,
+    onAddToPalette: () -> Unit,
+    onDelete: () -> Unit,
+    showUseColor: Boolean = true,
+) {
+    val color = Color(entry.argb)
+
+    EnhancedModalBottomSheet(
+        visible = true,
+        onDismiss = { onDismiss() },
+        title = color.toHex()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 8.dp)
+                .padding(bottom = 16.dp)
+        ) {
+            if (showUseColor) {
+                HistoryActionRow(
+                    icon = Icons.Outlined.LineCheckCircleOutline,
+                    text = stringResource(R.string.use_this_color),
+                    onClick = onSelect
+                )
+            }
+            HistoryActionRow(
+                icon = Icons.Rounded.ContentCopy,
+                text = stringResource(R.string.copy),
+                onClick = onCopy
+            )
+            HistoryActionRow(
+                icon = if (entry.isFavorite) {
+                    Icons.Outlined.LineFavoriteFilled
+                } else {
+                    Icons.Outlined.LineFavorite
+                },
+                text = stringResource(
+                    if (entry.isFavorite) R.string.pick_color_unfavorite else R.string.favorite
+                ),
+                onClick = onToggleFavorite
+            )
+            HistoryActionRow(
+                icon = Icons.Outlined.LinePaletteTools,
+                text = stringResource(R.string.add_to_palette),
+                onClick = onAddToPalette
+            )
+            HistoryActionRow(
+                icon = Icons.Outlined.Delete,
+                text = stringResource(R.string.delete),
+                tint = MaterialTheme.colorScheme.onErrorContainer,
+                textColor = MaterialTheme.colorScheme.onErrorContainer,
+                onClick = onDelete
+            )
+        }
+    }
+}
+
+@Composable
+private fun HistoryActionRow(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    text: String,
+    onClick: () -> Unit,
+    tint: Color = MaterialTheme.colorScheme.onSurface,
+    textColor: Color = MaterialTheme.colorScheme.onSurface
+) {
+    OneBoxListItem(
+        headlineContent = {
+            Text(
+                text = text,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                fontWeight = FontWeight.Medium,
+                color = textColor
+            )
+        },
+        leadingContent = {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = tint
+            )
+        },
+        onClick = onClick,
+        shape = ShapeDefaults.default
+    )
 }
 
 @Composable
@@ -268,159 +487,4 @@ private fun EmptyHistory(
         ),
         actions = emptyList()
     )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun PickColorHistoryRow(
-    entry: ColorPickHistoryEntry,
-    isCurrent: Boolean,
-    time: String,
-    onClick: () -> Unit,
-    onCopy: () -> Unit,
-    onToggleFavorite: () -> Unit,
-    onDelete: () -> Unit
-) {
-    val dismissState = rememberSwipeToDismissBoxState(
-        confirmValueChange = { value ->
-            if (value == SwipeToDismissBoxValue.EndToStart) {
-                onDelete()
-                true
-            } else {
-                false
-            }
-        }
-    )
-    val backgroundColor by animateColorAsState(
-        targetValue = if (dismissState.dismissDirection == SwipeToDismissBoxValue.EndToStart) {
-            MaterialTheme.colorScheme.errorContainer
-        } else {
-            Color.Transparent
-        },
-        animationSpec = tween(200),
-        label = "color_history_dismiss_bg"
-    )
-    val color = Color(entry.argb)
-    val rgb = color.toRgbTriplet()
-
-    SwipeToDismissBox(
-        state = dismissState,
-        enableDismissFromStartToEnd = false,
-        backgroundContent = {
-            // 行本身是半透明玻璃，删除图标只在真正左滑时绘制；
-            // 否则它会一直透在行后面，和收藏爱心叠成一团。
-            if (dismissState.dismissDirection == SwipeToDismissBoxValue.EndToStart) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(OneBoxDesignSystem.listRowShape)
-                        .background(backgroundColor)
-                        .padding(end = 20.dp),
-                    contentAlignment = Alignment.CenterEnd
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Delete,
-                        contentDescription = stringResource(R.string.delete_history_item),
-                        tint = MaterialTheme.colorScheme.onErrorContainer
-                    )
-                }
-            }
-        }
-    ) {
-        OneBoxListItem(
-            contained = true,
-            selected = isCurrent,
-            onClick = onClick,
-            leadingContent = {
-                PickColorSwatch(
-                    argb = entry.argb,
-                    size = 48.dp,
-                    shape = RoundedCornerShape(14.dp),
-                    showCheck = isCurrent
-                )
-            },
-            headlineContent = {
-                Text(
-                    text = color.toHex(),
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        textDirection = TextDirection.Ltr
-                    ),
-                    fontWeight = FontWeight.Bold
-                )
-            },
-            subtitle = {
-                Text(
-                    text = stringResource(
-                        R.string.pick_color_rgb_value,
-                        rgb.red,
-                        rgb.green,
-                        rgb.blue
-                    ),
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        textDirection = TextDirection.Ltr
-                    ),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            },
-            trailingContent = {
-                Column(
-                    horizontalAlignment = Alignment.End,
-                    verticalArrangement = Arrangement.spacedBy(2.dp)
-                ) {
-                    Text(
-                        text = time,
-                        style = MaterialTheme.typography.labelSmall.copy(
-                            textDirection = TextDirection.Ltr
-                        ),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(2.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        EnhancedIconButton(
-                            onClick = onCopy,
-                            forceMinimumInteractiveComponentSize = false,
-                            containerColor = Color.Transparent,
-                            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(32.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Rounded.ContentCopy,
-                                contentDescription = stringResource(R.string.copy),
-                                modifier = Modifier.size(18.dp)
-                            )
-                        }
-                        EnhancedIconButton(
-                            onClick = onToggleFavorite,
-                            forceMinimumInteractiveComponentSize = false,
-                            containerColor = Color.Transparent,
-                            contentColor = if (entry.isFavorite) {
-                                MaterialTheme.colorScheme.onPrimaryContainer
-                            } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant
-                            },
-                            modifier = Modifier.size(32.dp)
-                        ) {
-                            Icon(
-                                imageVector = if (entry.isFavorite) {
-                                    Icons.Outlined.LineFavoriteFilled
-                                } else {
-                                    Icons.Outlined.LineFavorite
-                                },
-                                contentDescription = stringResource(
-                                    if (entry.isFavorite) {
-                                        R.string.pick_color_unfavorite
-                                    } else {
-                                        R.string.favorite
-                                    }
-                                ),
-                                modifier = Modifier.size(18.dp)
-                            )
-                        }
-                    }
-                }
-            }
-        )
-    }
 }

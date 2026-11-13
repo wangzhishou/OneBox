@@ -269,10 +269,11 @@ class ChildProvider @Inject constructor(
             )
         )
 
-        Screen.ColorTools -> ColorTools(
+        is Screen.ColorTools -> ColorTools(
             imageFactories.get().colorToolsComponentFactory(
                 componentContext = componentContext,
-                onGoBack = ::navigateBack
+                onGoBack = ::navigateBack,
+                initialTab = config.initialTab
             )
         )
 

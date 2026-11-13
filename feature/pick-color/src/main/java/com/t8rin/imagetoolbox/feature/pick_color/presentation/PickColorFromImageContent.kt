@@ -37,6 +37,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -99,6 +100,10 @@ fun PickColorFromImageContent(
         mutableStateOf(false)
     }
 
+    val recentColors = remember(component.history) {
+        component.history.take(12)
+    }
+
     val bottomInset = AppTheme.dimens.navigationHeight +
         WindowInsets.systemBars.asPaddingValues().calculateBottomPadding()
 
@@ -125,14 +130,21 @@ fun PickColorFromImageContent(
                 val bitmap = component.bitmap
                 if (bitmap == null) {
                     PickColorEmptyContent(
+                        recentColors = recentColors,
                         bottomInset = bottomInset,
                         onBack = component.onGoBack,
                         onPickImage = pickImage,
-                        onTakePhoto = takePhoto
+                        onTakePhoto = takePhoto,
+                        onShowHistory = { component.selectTab(PickColorTab.HISTORY) },
+                        onToggleFavorite = { argb ->
+                            component.toggleFavorite(Color(argb))
+                        },
+                        onRemove = component::removeHistoryEntry
                     )
                 } else {
                     PickColorImageContent(
                         bitmap = bitmap,
+                        paletteSource = component.paletteSource,
                         color = component.color,
                         isFavorite = component.isFavorite(component.color),
                         bottomInset = bottomInset,

@@ -1,0 +1,9 @@
+根据一个种子颜色生成一组协调的配色（只生成，不保存）。
+
+参数：
+- seed_color: 种子颜色，十六进制，如 #4F5B92
+- harmony: 配色规则，可选 complementary / analogous / triadic / split_complementary / tetradic / square，默认 triadic
+- count: 返回颜色数量，2-16，默认 5
+
+返回 colors 数组（十六进制，主色在前，其余按明度/饱和度阶梯补足）。
+生成结果不会自动落盘；用户确认满意后再调用 palette_save 保存。

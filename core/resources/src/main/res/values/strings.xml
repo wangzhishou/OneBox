@@ -2084,4 +2084,37 @@
     <string name="upstream_credit_author">T8RIN (Malik Mukhametzyanov)</string>
     <string name="upstream_credit_license">Apache-2.0</string>
     <string name="upstream_credit_description">OneBox is a derivative work based on ImageToolbox. Tap to view the upstream project and its license.</string>
+
+    <!-- 调色板:用户自建色彩搭配,色彩工具里编辑、全局选色面板里取用 -->
+    <string name="palette_tab">Palettes</string>
+    <string name="my_palettes">My palettes</string>
+    <string name="palette_new">New palette</string>
+    <string name="palette_rename">Rename palette</string>
+    <string name="rename">Rename</string>
+    <string name="palette_delete">Delete palette</string>
+    <string name="palette_delete_confirm">Delete \"%1$s\"? This can\'t be undone.</string>
+    <string name="palette_add_current">Add current color</string>
+    <string name="palette_already_exists">This color is already in the palette</string>
+    <string name="palette_full">A palette can hold up to %1$d colors</string>
+    <string name="palette_max_reached">You can keep up to %1$d palettes</string>
+    <string name="palette_empty_title">No palettes yet</string>
+    <string name="palette_empty_desc">Save the colors you often use together, then pick them straight from the color picker.</string>
+    <string name="palette_no_colors">This palette is empty</string>
+    <string name="palette_no_colors_desc">Tap “Add current color” to keep the color you selected.</string>
+    <string name="palette_copy_all">Copy all hex values</string>
+    <string name="palette_copied">Palette copied</string>
+    <string name="palette_created">Palette created</string>
+    <string name="palette_color_removed">Removed from palette</string>
+    <string name="palette_from_favorites">Create from favorites</string>
+    <string name="palette_remove_color">Remove from palette</string>
+    <string name="palette_added">Added to palette</string>
+    <string name="palette_default_name">Palette %1$d</string>
+    <string name="recently_picked">Recently picked</string>
+    <string name="use_this_color">Use this color</string>
+    <string name="add_to_palette">Add to palette</string>
+    <string name="image_palette">Image colors</string>
+    <string name="image_palette_save_all">Save as palette</string>
+    <string name="pick_color_recent_hint">Colors you pick will show up here</string>
+    <string name="palette_added_count">Added %1$d colors</string>
+    <string name="palette_already_contains">Already has these colors</string>
 </resources>

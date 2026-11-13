@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  OneBox is a free AI agent and toolbox for Android
+  Copyright (c) 2026 zhishouwang(网址兽)
+
+  Origin: OneBox original work, not derived from ImageToolbox
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+
+  You should have received a copy of the Apache License
+  along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+-->
+<resources>
+    <!-- 调色板 AI 工具 -->
+    <string name="agent_tool_palette_deeplink_label">افتح أدوات الألوان</string>
+    <string name="agent_tool_palette_deeplink_guidance">افتح أدوات الألوان لعرض لوحات الألوان المحفوظة وتعديلها وإعادة استخدامها</string>
+
+    <string name="agent_tool_palette_list_title">عرض لوحات الألوان</string>
+    <string name="agent_tool_palette_list_summary">اعرض لوحات الألوان التي حفظها المستخدم مع أكواد الألوان بصيغة hex</string>
+    <string name="agent_tool_palette_list_param_include_colors">هل تُرجع أكواد hex لكل لوحة ألوان (الافتراضي true)</string>
+    <string name="agent_tool_palette_list_empty">لم يحفظ المستخدم أي لوحة ألوان بعد</string>
+
+    <string name="agent_tool_palette_generate_title">إنشاء لوحة ألوان</string>
+    <string name="agent_tool_palette_generate_summary">أنشئ ألوانًا متناسقة من لون أساسي واحد دون حفظها</string>
+    <string name="agent_tool_palette_generate_param_seed">لون الأساس بصيغة hex، مثل #4F5B92</string>
+    <string name="agent_tool_palette_generate_param_harmony">قاعدة التناسق: complementary أو analogous أو triadic أو split_complementary أو tetradic أو square</string>
+    <string name="agent_tool_palette_generate_param_count">عدد الألوان المطلوب إرجاعها (2-16، الافتراضي 5)</string>
+    <string name="agent_tool_palette_generate_invalid_seed">تعذّر تحليل لون الأساس، المطلوب صيغة hex مثل #4F5B92</string>
+    <string name="agent_tool_palette_generate_invalid_harmony">قاعدة تناسق غير معروفة، استخدم إحدى القيم المذكورة</string>
+
+    <string name="agent_tool_palette_save_title">حفظ لوحة ألوان</string>
+    <string name="agent_tool_palette_save_summary">أنشئ لوحة ألوان أو حدّث لوحة موجودة بالاسم مع استبدال الألوان أو إضافتها</string>
+    <string name="agent_tool_palette_save_param_name">اسم لوحة الألوان؛ تُحدَّث اللوحة التي تحمل الاسم نفسه</string>
+    <string name="agent_tool_palette_save_param_colors">أكواد ألوان بصيغة hex، مثل [\"#4F5B92\", \"#E3E7F3\"]</string>
+    <string name="agent_tool_palette_save_param_mode">replace (الافتراضي) يستبدل الألوان، وappend يضيفها بعد الألوان الموجودة</string>
+    <string name="agent_tool_palette_save_missing_name">اسم لوحة الألوان مطلوب</string>
+    <string name="agent_tool_palette_save_missing_colors">لا يوجد لون hex صالح في الطلب</string>
+    <string name="agent_tool_palette_save_too_many">تم بلوغ حد لوحات الألوان أو قائمة الألوان طويلة جدًا</string>
+
+    <string name="agent_tool_palette_delete_title">حذف لوحة ألوان</string>
+    <string name="agent_tool_palette_delete_summary">احذف لوحة ألوان محفوظة بالاسم أو بالمعرّف</string>
+    <string name="agent_tool_palette_delete_param_name">اسم لوحة الألوان (بديل عن المعرّف)</string>
+    <string name="agent_tool_palette_delete_param_id">معرّف لوحة الألوان (بديل عن الاسم)</string>
+    <string name="agent_tool_palette_delete_missing_target">مرّر اسم لوحة الألوان أو المعرّف</string>
+    <string name="agent_tool_palette_delete_not_found">لا توجد لوحة ألوان تطابق هذا الاسم أو المعرّف</string>
+    <string name="agent_tool_palette_delete_ok">تم حذف لوحة الألوان</string>
+
+    <string name="agent_tool_palette_unknown_action">إجراء غير معروف</string>
+    <string name="agent_tool_palette_failed">فشلت عملية لوحة الألوان: %1$s</string>
+
+    <string-array name="agent_tool_palette_keywords">
+        <item>لوحة ألوان</item>
+        <item>لون</item>
+        <item>نظام ألوان</item>
+        <item>hex</item>
+        <item>تنسيق الألوان</item>
+        <item>ألوان متناسقة</item>
+        <item>مزيج ألوان</item>
+    </string-array>
+
+    <string-array name="agent_tool_palette_examples">
+        <item>ساعدني في تجهيز لوحة ألوان بدرجات موراندي وحفظها</item>
+        <item>أنشئ من #4F5B92 لوحة ألوان ثلاثية</item>
+        <item>احفظ ألوان علامتي التجارية المعتادة في لوحة ألوان</item>
+        <item>اعرض لوحات الألوان التي حفظتها</item>
+        <item>احذف لوحة الألوان «الرؤية الربيعية»</item>
+    </string-array>
+</resources>

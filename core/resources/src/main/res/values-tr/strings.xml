@@ -2068,4 +2068,36 @@
 
     <string name="backup_center">Yedekleme ve geri yükleme</string>
     <string name="backup_center_sub">Verilerinizi kendi bulut sürücünüze yedekleyin</string>
+
+    <string name="palette_tab">Paletler</string>
+    <string name="my_palettes">Paletlerim</string>
+    <string name="palette_new">Yeni palet</string>
+    <string name="palette_rename">Paleti yeniden adlandır</string>
+    <string name="rename">Yeniden adlandır</string>
+    <string name="palette_delete">Paleti sil</string>
+    <string name="palette_delete_confirm">“%1$s” silinsin mi? Bu işlem geri alınamaz.</string>
+    <string name="palette_add_current">Geçerli rengi ekle</string>
+    <string name="palette_already_exists">Bu renk zaten palet içinde</string>
+    <string name="palette_full">Bir palet en fazla %1$d renk içerebilir</string>
+    <string name="palette_max_reached">En fazla %1$d palet saklayabilirsiniz</string>
+    <string name="palette_empty_title">Henüz palet yok</string>
+    <string name="palette_empty_desc">Sık birlikte kullandığınız renkleri kaydedin, sonra bunları doğrudan renk seçiciden seçin.</string>
+    <string name="palette_no_colors">Bu palet boş</string>
+    <string name="palette_no_colors_desc">Seçtiğiniz rengi saklamak için “Geçerli rengi ekle”ye dokunun.</string>
+    <string name="palette_copy_all">Tüm hex değerlerini kopyala</string>
+    <string name="palette_copied">Palet kopyalandı</string>
+    <string name="palette_created">Palet oluşturuldu</string>
+    <string name="palette_color_removed">Paletten kaldırıldı</string>
+    <string name="palette_from_favorites">Favorilerden oluştur</string>
+    <string name="palette_remove_color">Paletten kaldır</string>
+    <string name="palette_added">Palete eklendi</string>
+    <string name="palette_default_name">Palet %1$d</string>
+    <string name="recently_picked">Son seçilen renkler</string>
+    <string name="use_this_color">Bu rengi kullan</string>
+    <string name="add_to_palette">Palete ekle</string>
+    <string name="image_palette">Görsel renkleri</string>
+    <string name="image_palette_save_all">Palet olarak kaydet</string>
+    <string name="pick_color_recent_hint">Seçtiğiniz renkler burada görünecek</string>
+    <string name="palette_added_count">%1$d renk eklendi</string>
+    <string name="palette_already_contains">Bu renkler zaten var</string>
 </resources>

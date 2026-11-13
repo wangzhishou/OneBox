@@ -40,6 +40,8 @@ import dagger.assisted.AssistedInject
 class ColorToolsComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted val onGoBack: () -> Unit,
+    /** 打开时落在哪个 tab，见 Screen.ColorTools.TAB_* */
+    @Assisted val initialTab: Int,
     dispatchersHolder: DispatchersHolder
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
@@ -55,6 +57,7 @@ class ColorToolsComponent @AssistedInject internal constructor(
         operator fun invoke(
             componentContext: ComponentContext,
             onGoBack: () -> Unit,
+            initialTab: Int,
         ): ColorToolsComponent
     }
 

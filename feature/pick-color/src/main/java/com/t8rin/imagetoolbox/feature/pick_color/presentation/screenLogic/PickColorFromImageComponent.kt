@@ -27,6 +27,8 @@ package com.t8rin.imagetoolbox.feature.pick_color.presentation.screenLogic
 
 import android.graphics.Bitmap
 import android.net.Uri
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -68,6 +70,13 @@ class PickColorFromImageComponent @AssistedInject internal constructor(
     private val _bitmap: MutableState<Bitmap?> = mutableStateOf(null)
     val bitmap: Bitmap? by _bitmap
 
+    /**
+     * 图片配色的取色源：原图 4000px 直接做颜色量化会卡主线程，
+     * 加载图时顺手缩到 ~180px，量化 25k 像素毫秒级完成，主色分布不变。
+     */
+    private val _paletteSource: MutableState<ImageBitmap?> = mutableStateOf(null)
+    val paletteSource: ImageBitmap? by _paletteSource
+
     private val _color: MutableState<Color> = mutableStateOf(Color.Unspecified)
     val color: Color by _color
 
@@ -90,14 +99,35 @@ class PickColorFromImageComponent @AssistedInject internal constructor(
     ) {
         _uri.value = uri
         _color.value = Color.Unspecified
+        _paletteSource.value = null
         componentScope.launch {
             runSuspendCatching {
-                _bitmap.value = imageGetter.getImage(
+                val bitmap = imageGetter.getImage(
                     data = uri,
                     size = 4000
                 )
+                _bitmap.value = bitmap
+                _paletteSource.value = bitmap?.let {
+                    kotlinx.coroutines.withContext(ioDispatcher) {
+                        it.toPaletteSource()
+                    }
+                }
             }.onFailure(onFailure)
         }
+    }
+
+    private fun Bitmap.toPaletteSource(): ImageBitmap {
+        val maxSide = 180
+        val longest = maxOf(width, height)
+        if (longest <= maxSide) return asImageBitmap()
+        val scale = maxSide.toFloat() / longest
+        val scaled = Bitmap.createScaledBitmap(
+            this,
+            maxOf(1, (width * scale).toInt()),
+            maxOf(1, (height * scale).toInt()),
+            true
+        )
+        return scaled.asImageBitmap()
     }
 
     fun updateColor(color: Color) {

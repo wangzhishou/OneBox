@@ -38,6 +38,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -51,8 +55,10 @@ import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFavorite
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFavoriteFilled
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePaletteTools
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTouchApp
 import com.wanbaohe.core.ui.utils.helper.toHex
+import com.wanbaohe.core.ui.widget.color_picker.AddToPaletteSheet
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
@@ -72,6 +78,7 @@ internal fun PickColorColorCard(
 ) {
     val rgb = color.toRgbTriplet()
     val hsl = color.toHslTriplet()
+    var showPaletteSheet by remember { mutableStateOf(false) }
 
     GlassCard(
         modifier = modifier.fillMaxWidth(),
@@ -131,20 +138,32 @@ internal fun PickColorColorCard(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 EnhancedIconButton(
                     onClick = onCopy,
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     shape = RoundedCornerShape(14.dp),
-                    modifier = Modifier.size(44.dp)
+                    modifier = Modifier.size(40.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.ContentCopy,
                         contentDescription = stringResource(R.string.copy)
+                    )
+                }
+                EnhancedIconButton(
+                    onClick = { showPaletteSheet = true },
+                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    shape = RoundedCornerShape(14.dp),
+                    modifier = Modifier.size(40.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.LinePaletteTools,
+                        contentDescription = stringResource(R.string.add_to_palette)
                     )
                 }
                 EnhancedIconButton(
@@ -160,7 +179,7 @@ internal fun PickColorColorCard(
                         MaterialTheme.colorScheme.onSurfaceVariant
                     },
                     shape = RoundedCornerShape(14.dp),
-                    modifier = Modifier.size(44.dp)
+                    modifier = Modifier.size(40.dp)
                 ) {
                     Icon(
                         imageVector = if (isFavorite) {
@@ -177,6 +196,12 @@ internal fun PickColorColorCard(
             }
         }
     }
+
+    AddToPaletteSheet(
+        color = color,
+        visible = showPaletteSheet,
+        onDismiss = { showPaletteSheet = false }
+    )
 }
 
 @Composable

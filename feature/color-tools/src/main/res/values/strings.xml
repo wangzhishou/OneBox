@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  OneBox is a free AI agent and toolbox for Android
+  Copyright (c) 2026 zhishouwang(网址兽)
+
+  Origin: OneBox original work, not derived from ImageToolbox
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+
+  You should have received a copy of the Apache License
+  along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+-->
+<resources>
+    <!-- 调色板 AI 工具 -->
+    <string name="agent_tool_palette_deeplink_label">Open color tools</string>
+    <string name="agent_tool_palette_deeplink_guidance">Open color tools to view, edit and reuse saved palettes</string>
+
+    <string name="agent_tool_palette_list_title">List color palettes</string>
+    <string name="agent_tool_palette_list_summary">List the user\'s saved color palettes with their hex colors</string>
+    <string name="agent_tool_palette_list_param_include_colors">Whether to return each palette\'s hex colors (default true)</string>
+    <string name="agent_tool_palette_list_empty">The user has not saved any palette yet</string>
+
+    <string name="agent_tool_palette_generate_title">Generate a palette</string>
+    <string name="agent_tool_palette_generate_summary">Generate harmonious colors from one seed color without saving them</string>
+    <string name="agent_tool_palette_generate_param_seed">Seed color in hex, e.g. #4F5B92</string>
+    <string name="agent_tool_palette_generate_param_harmony">Harmony rule: complementary, analogous, triadic, split_complementary, tetradic or square</string>
+    <string name="agent_tool_palette_generate_param_count">How many colors to return (2-16, default 5)</string>
+    <string name="agent_tool_palette_generate_invalid_seed">Cannot parse the seed color, expected hex like #4F5B92</string>
+    <string name="agent_tool_palette_generate_invalid_harmony">Unknown harmony rule, expected one of the listed values</string>
+
+    <string name="agent_tool_palette_save_title">Save a palette</string>
+    <string name="agent_tool_palette_save_summary">Create a palette, or update an existing one by name, replacing or appending colors</string>
+    <string name="agent_tool_palette_save_param_name">Palette name; an existing palette with the same name is updated</string>
+    <string name="agent_tool_palette_save_param_colors">Hex colors, e.g. [\"#4F5B92\", \"#E3E7F3\"]</string>
+    <string name="agent_tool_palette_save_param_mode">replace (default) overwrites the colors, append adds them after the existing ones</string>
+    <string name="agent_tool_palette_save_missing_name">A palette name is required</string>
+    <string name="agent_tool_palette_save_missing_colors">No valid hex color in the request</string>
+    <string name="agent_tool_palette_save_too_many">The palette limit was reached or the color list is too long</string>
+
+    <string name="agent_tool_palette_delete_title">Delete a palette</string>
+    <string name="agent_tool_palette_delete_summary">Delete one saved palette by name or id</string>
+    <string name="agent_tool_palette_delete_param_name">Palette name (alternative to id)</string>
+    <string name="agent_tool_palette_delete_param_id">Palette id (alternative to name)</string>
+    <string name="agent_tool_palette_delete_missing_target">Pass either a palette name or an id</string>
+    <string name="agent_tool_palette_delete_not_found">No palette matches that name or id</string>
+    <string name="agent_tool_palette_delete_ok">Palette deleted</string>
+
+    <string name="agent_tool_palette_unknown_action">Unknown action</string>
+    <string name="agent_tool_palette_failed">Palette operation failed: %1$s</string>
+
+    <string-array name="agent_tool_palette_keywords">
+        <item>palette</item>
+        <item>color</item>
+        <item>colour scheme</item>
+        <item>hex</item>
+        <item>配色</item>
+        <item>调色板</item>
+        <item>颜色搭配</item>
+    </string-array>
+
+    <string-array name="agent_tool_palette_examples">
+        <item>帮我配一套莫兰迪色系的调色板并保存</item>
+        <item>用 #4F5B92 生成一组三角配色</item>
+        <item>把我常用的品牌色存成调色板</item>
+        <item>列出我保存的调色板</item>
+        <item>删掉「春季视觉」这组调色板</item>
+    </string-array>
+</resources>

@@ -73,7 +73,6 @@ import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
 import com.wanbaohe.core.ui.widget.enhanced.hapticsClickable
 import com.wanbaohe.core.ui.widget.enhanced.longPress
 import com.wanbaohe.core.ui.widget.enhanced.press
-import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.core.ui.widget.modifier.container
 import com.wanbaohe.core.ui.widget.modifier.fadingEdges
 import com.wanbaohe.core.ui.widget.modifier.transparencyChecker
@@ -103,15 +102,12 @@ fun RecentAndFavoriteColorsCard(
     ) {
         val itemWidth = with(LocalDensity.current) { 48.dp.toPx() }
 
+        // 和「我的调色板」保持同一套排版：不再套第二层卡，内容直接对齐整张面板的左边距
         Column(
             modifier = Modifier
-                .padding(bottom = 16.dp)
-                .container(
-                    shape = ShapeDefaults.extraLarge,
-                    resultPadding = 0.dp
-                )
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             BoxAnimatedVisibility(recentColors.isNotEmpty()) {
                 Column {

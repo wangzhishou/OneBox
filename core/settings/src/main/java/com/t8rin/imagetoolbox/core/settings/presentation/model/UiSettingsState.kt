@@ -56,6 +56,7 @@ import com.t8rin.imagetoolbox.core.domain.image.model.ImageScaleMode
 import com.t8rin.imagetoolbox.core.domain.image.model.Preset
 import com.t8rin.imagetoolbox.core.domain.image.model.Quality
 import com.t8rin.imagetoolbox.core.domain.image.model.ResizeType
+import com.t8rin.imagetoolbox.core.domain.model.ColorPalette
 import com.t8rin.imagetoolbox.core.domain.model.DomainAspectRatio
 import com.t8rin.imagetoolbox.core.domain.model.HashingType
 import com.t8rin.imagetoolbox.core.domain.model.SystemBarsVisibility
@@ -187,6 +188,7 @@ data class UiSettingsState(
     val flingType: FlingType,
     val filenameBehavior: FilenameBehavior,
     val enableBackgroundColorForAlphaFormats: Boolean,
+    val customPalettes: List<ColorPalette>,
 )
 
 fun UiSettingsState.isFirstLaunch(
@@ -450,6 +452,7 @@ fun SettingsState.toUiState(
                 flingType = flingType,
                 filenameBehavior = filenameBehavior,
                 enableBackgroundColorForAlphaFormats = enableBackgroundColorForAlphaFormats,
+                customPalettes = customPalettes,
             )
         }
     }.value

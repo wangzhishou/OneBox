@@ -34,6 +34,7 @@ import com.t8rin.imagetoolbox.core.domain.image.model.Preset.Percentage
 import com.t8rin.imagetoolbox.core.domain.image.model.Quality
 import com.t8rin.imagetoolbox.core.domain.image.model.ResizeType
 import com.t8rin.imagetoolbox.core.domain.model.ColorModel
+import com.t8rin.imagetoolbox.core.domain.model.ColorPalette
 import com.t8rin.imagetoolbox.core.domain.model.DomainAspectRatio
 import com.t8rin.imagetoolbox.core.domain.model.HashingType
 import com.t8rin.imagetoolbox.core.domain.model.SystemBarsVisibility
@@ -150,7 +151,9 @@ data class SettingsState(
     /** 色彩规范版本 ordinal: 0 = 2021 原版, 1 = 2025(Material 3 Expressive 更饱和配色) */
     val themeColorSpec: Int = 0,
     /** 是否启用 MaterialExpressiveTheme(表达性动效与形状) */
-    val isExpressiveTheme: Boolean = false
+    val isExpressiveTheme: Boolean = false,
+    /** 用户自己调的一组组颜色(调色板),JSON 持久化,见 [ColorPalette.encode] */
+    val customPalettes: List<ColorPalette> = emptyList()
 ) {
 
     companion object {
@@ -246,6 +249,7 @@ data class SettingsState(
                 customFonts = emptyList(),
                 enableToolExitConfirmation = true,
                 recentColors = emptyList(),
+                customPalettes = emptyList(),
                 backgroundForNoAlphaImageFormats = ColorModel(-0x1000000),
                 addPresetInfoToFilename = false,
                 addImageScaleModeInfoToFilename = false,

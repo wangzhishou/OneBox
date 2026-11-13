@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  OneBox is a free AI agent and toolbox for Android
+  Copyright (c) 2026 zhishouwang(网址兽)
+
+  Origin: OneBox original work, not derived from ImageToolbox
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+
+  You should have received a copy of the Apache License
+  along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+-->
+<resources>
+    <!-- 调色板 AI 工具 -->
+    <string name="agent_tool_palette_deeplink_label">Открыть инструменты цвета</string>
+    <string name="agent_tool_palette_deeplink_guidance">Откройте инструменты цвета, чтобы просматривать, редактировать и повторно использовать сохранённые палитры</string>
+
+    <string name="agent_tool_palette_list_title">Список палитр</string>
+    <string name="agent_tool_palette_list_summary">Показать сохранённые палитры пользователя с их hex-цветами</string>
+    <string name="agent_tool_palette_list_param_include_colors">Возвращать ли hex-цвета каждой палитры (по умолчанию true)</string>
+    <string name="agent_tool_palette_list_empty">Пользователь ещё не сохранил ни одной палитры</string>
+
+    <string name="agent_tool_palette_generate_title">Создать палитру</string>
+    <string name="agent_tool_palette_generate_summary">Создать гармоничные цвета из одного базового цвета без сохранения</string>
+    <string name="agent_tool_palette_generate_param_seed">Базовый цвет в hex, например #4F5B92</string>
+    <string name="agent_tool_palette_generate_param_harmony">Правило гармонии: complementary, analogous, triadic, split_complementary, tetradic или square</string>
+    <string name="agent_tool_palette_generate_param_count">Сколько цветов вернуть (2-16, по умолчанию 5)</string>
+    <string name="agent_tool_palette_generate_invalid_seed">Не удалось разобрать базовый цвет; нужен hex вида #4F5B92</string>
+    <string name="agent_tool_palette_generate_invalid_harmony">Неизвестное правило гармонии; используйте одно из перечисленных значений</string>
+
+    <string name="agent_tool_palette_save_title">Сохранить палитру</string>
+    <string name="agent_tool_palette_save_summary">Создать палитру или обновить существующую по имени, заменив или добавив цвета</string>
+    <string name="agent_tool_palette_save_param_name">Имя палитры; существующая палитра с тем же именем будет обновлена</string>
+    <string name="agent_tool_palette_save_param_colors">Hex-цвета, например [\"#4F5B92\", \"#E3E7F3\"]</string>
+    <string name="agent_tool_palette_save_param_mode">replace (по умолчанию) заменяет цвета, append добавляет их после существующих</string>
+    <string name="agent_tool_palette_save_missing_name">Требуется имя палитры</string>
+    <string name="agent_tool_palette_save_missing_colors">В запросе нет корректного hex-цвета</string>
+    <string name="agent_tool_palette_save_too_many">Достигнут лимит палитр или список цветов слишком длинный</string>
+
+    <string name="agent_tool_palette_delete_title">Удалить палитру</string>
+    <string name="agent_tool_palette_delete_summary">Удалить одну сохранённую палитру по имени или id</string>
+    <string name="agent_tool_palette_delete_param_name">Имя палитры (альтернатива id)</string>
+    <string name="agent_tool_palette_delete_param_id">id палитры (альтернатива имени)</string>
+    <string name="agent_tool_palette_delete_missing_target">Укажите имя палитры или id</string>
+    <string name="agent_tool_palette_delete_not_found">Нет палитры с таким именем или id</string>
+    <string name="agent_tool_palette_delete_ok">Палитра удалена</string>
+
+    <string name="agent_tool_palette_unknown_action">Неизвестное действие</string>
+    <string name="agent_tool_palette_failed">Ошибка операции с палитрой: %1$s</string>
+
+    <string-array name="agent_tool_palette_keywords">
+        <item>палитра</item>
+        <item>цвет</item>
+        <item>цветовая схема</item>
+        <item>hex</item>
+        <item>сочетание цветов</item>
+        <item>цветовая палитра</item>
+        <item>гармония цветов</item>
+    </string-array>
+
+    <string-array name="agent_tool_palette_examples">
+        <item>Собери палитру в оттенках Моранди и сохрани её</item>
+        <item>Сгенерируй триадическую палитру из #4F5B92</item>
+        <item>Сохрани мои обычные брендовые цвета как палитру</item>
+        <item>Покажи мои сохранённые палитры</item>
+        <item>Удали палитру «Весенний образ»</item>
+    </string-array>
+</resources>

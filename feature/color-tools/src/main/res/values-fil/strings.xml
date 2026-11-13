@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  OneBox is a free AI agent and toolbox for Android
+  Copyright (c) 2026 zhishouwang(网址兽)
+
+  Origin: OneBox original work, not derived from ImageToolbox
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+
+  You should have received a copy of the Apache License
+  along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+-->
+<resources>
+    <!-- 调色板 AI 工具 -->
+    <string name="agent_tool_palette_deeplink_label">Buksan ang mga tool sa kulay</string>
+    <string name="agent_tool_palette_deeplink_guidance">Buksan ang mga tool sa kulay para tingnan, i-edit at muling gamitin ang mga naka-save na paleta</string>
+
+    <string name="agent_tool_palette_list_title">Ilista ang mga paleta</string>
+    <string name="agent_tool_palette_list_summary">Ilista ang mga naka-save na paleta ng user kasama ang mga hex na kulay</string>
+    <string name="agent_tool_palette_list_param_include_colors">Kung ibabalik ang mga hex na kulay ng bawat paleta (default true)</string>
+    <string name="agent_tool_palette_list_empty">Wala pang naka-save na paleta ang user</string>
+
+    <string name="agent_tool_palette_generate_title">Gumawa ng paleta</string>
+    <string name="agent_tool_palette_generate_summary">Gumawa ng magkakatugmang kulay mula sa isang seed na kulay nang hindi ito sine-save</string>
+    <string name="agent_tool_palette_generate_param_seed">Seed na kulay sa hex, hal. #4F5B92</string>
+    <string name="agent_tool_palette_generate_param_harmony">Tuntunin ng harmoniya: complementary, analogous, triadic, split_complementary, tetradic o square</string>
+    <string name="agent_tool_palette_generate_param_count">Ilang kulay ang ibabalik (2-16, default 5)</string>
+    <string name="agent_tool_palette_generate_invalid_seed">Hindi mabasa ang seed na kulay, kailangan ng hex tulad ng #4F5B92</string>
+    <string name="agent_tool_palette_generate_invalid_harmony">Hindi kilalang tuntunin ng harmoniya, gamitin ang isa sa mga nakalistang value</string>
+
+    <string name="agent_tool_palette_save_title">I-save ang paleta</string>
+    <string name="agent_tool_palette_save_summary">Gumawa ng paleta, o i-update ang existing na paleta sa pamamagitan ng pangalan, pinapalitan o dinadagdag ang mga kulay</string>
+    <string name="agent_tool_palette_save_param_name">Pangalan ng paleta; ia-update ang existing na paleta na may parehong pangalan</string>
+    <string name="agent_tool_palette_save_param_colors">Mga hex na kulay, hal. [\"#4F5B92\", \"#E3E7F3\"]</string>
+    <string name="agent_tool_palette_save_param_mode">replace (default) pinapalitan ang mga kulay, append idinadagdag ang mga ito pagkatapos ng mga existing</string>
+    <string name="agent_tool_palette_save_missing_name">Kailangan ng pangalan ng paleta</string>
+    <string name="agent_tool_palette_save_missing_colors">Walang valid na hex na kulay sa request</string>
+    <string name="agent_tool_palette_save_too_many">Naabot na ang limitasyon ng paleta o masyadong mahaba ang listahan ng kulay</string>
+
+    <string name="agent_tool_palette_delete_title">Burahin ang paleta</string>
+    <string name="agent_tool_palette_delete_summary">Burahin ang isang naka-save na paleta sa pamamagitan ng pangalan o id</string>
+    <string name="agent_tool_palette_delete_param_name">Pangalan ng paleta (alternatibo sa id)</string>
+    <string name="agent_tool_palette_delete_param_id">Id ng paleta (alternatibo sa pangalan)</string>
+    <string name="agent_tool_palette_delete_missing_target">Magbigay ng pangalan ng paleta o id</string>
+    <string name="agent_tool_palette_delete_not_found">Walang paleta na tumutugma sa pangalan o id na iyon</string>
+    <string name="agent_tool_palette_delete_ok">Nabura ang paleta</string>
+
+    <string name="agent_tool_palette_unknown_action">Hindi kilalang aksyon</string>
+    <string name="agent_tool_palette_failed">Nabigo ang operasyon sa paleta: %1$s</string>
+
+    <string-array name="agent_tool_palette_keywords">
+        <item>paleta</item>
+        <item>kulay</item>
+        <item>scheme ng kulay</item>
+        <item>hex</item>
+        <item>pagtutugma ng kulay</item>
+        <item>paleta ng kulay</item>
+        <item>kombinasyon ng kulay</item>
+    </string-array>
+
+    <string-array name="agent_tool_palette_examples">
+        <item>Tulungan mo akong gumawa ng paleta sa Morandi tones at i-save ito</item>
+        <item>Gumawa ng triadic na paleta mula sa #4F5B92</item>
+        <item>I-save ang karaniwang brand colors ko bilang paleta</item>
+        <item>Ilista ang mga naka-save kong paleta</item>
+        <item>Burahin ang paletang «Spring Visual»</item>
+    </string-array>
+</resources>

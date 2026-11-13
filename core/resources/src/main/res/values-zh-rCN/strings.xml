@@ -2082,4 +2082,37 @@
     <string name="upstream_credit_author">T8RIN (Malik Mukhametzyanov)</string>
     <string name="upstream_credit_license">Apache-2.0</string>
     <string name="upstream_credit_description">OneBox 基于 ImageToolbox 二次开发，点击查看上游项目及其许可证。</string>
+
+    <!-- 调色板：用户自建色彩搭配，色彩工具里编辑、全局选色面板里取用 -->
+    <string name="palette_tab">调色板</string>
+    <string name="my_palettes">我的调色板</string>
+    <string name="palette_new">新建调色板</string>
+    <string name="palette_rename">重命名调色板</string>
+    <string name="rename">重命名</string>
+    <string name="palette_delete">删除调色板</string>
+    <string name="palette_delete_confirm">删除「%1$s」？此操作不可恢复。</string>
+    <string name="palette_add_current">添加当前颜色</string>
+    <string name="palette_already_exists">这个颜色已经在调色板里了</string>
+    <string name="palette_full">一组调色板最多放 %1$d 个颜色</string>
+    <string name="palette_max_reached">最多保存 %1$d 组调色板</string>
+    <string name="palette_empty_title">还没有调色板</string>
+    <string name="palette_empty_desc">把常搭配的颜色存成一组，选颜色时可以直接调出来用。</string>
+    <string name="palette_no_colors">这组调色板还是空的</string>
+    <string name="palette_no_colors_desc">点「添加当前颜色」，把上面选中的颜色存进来。</string>
+    <string name="palette_copy_all">复制整套色值</string>
+    <string name="palette_copied">已复制整套色值</string>
+    <string name="palette_created">调色板已创建</string>
+    <string name="palette_color_removed">已从调色板移除</string>
+    <string name="palette_from_favorites">从收藏创建</string>
+    <string name="palette_remove_color">从调色板移除</string>
+    <string name="palette_added">已加入调色板</string>
+    <string name="palette_default_name">调色板 %1$d</string>
+    <string name="recently_picked">最近取到</string>
+    <string name="use_this_color">选用此颜色</string>
+    <string name="add_to_palette">加入调色板</string>
+    <string name="image_palette">图片配色</string>
+    <string name="image_palette_save_all">存为调色板</string>
+    <string name="pick_color_recent_hint">取过的颜色会出现在这里</string>
+    <string name="palette_added_count">已加入 %1$d 个颜色</string>
+    <string name="palette_already_contains">已包含这些颜色</string>
 </resources>

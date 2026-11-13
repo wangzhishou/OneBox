@@ -2069,4 +2069,36 @@
 
     <string name="backup_center">Backup e restauração</string>
     <string name="backup_center_sub">Faça backup dos seus dados no seu próprio armazenamento em nuvem</string>
+
+    <string name="palette_tab">Paletas</string>
+    <string name="my_palettes">Minhas paletas</string>
+    <string name="palette_new">Nova paleta</string>
+    <string name="palette_rename">Renomear paleta</string>
+    <string name="rename">Renomear</string>
+    <string name="palette_delete">Excluir paleta</string>
+    <string name="palette_delete_confirm">Excluir “%1$s”? Não é possível desfazer esta ação.</string>
+    <string name="palette_add_current">Adicionar cor atual</string>
+    <string name="palette_already_exists">Esta cor já está na paleta</string>
+    <string name="palette_full">Uma paleta pode conter até %1$d cores</string>
+    <string name="palette_max_reached">Você pode manter até %1$d paletas</string>
+    <string name="palette_empty_title">Nenhuma paleta ainda</string>
+    <string name="palette_empty_desc">Salve as cores que você costuma usar juntas e escolha-as direto no seletor de cores.</string>
+    <string name="palette_no_colors">Esta paleta está vazia</string>
+    <string name="palette_no_colors_desc">Toque em “Adicionar cor atual” para guardar a cor selecionada.</string>
+    <string name="palette_copy_all">Copiar todos os valores hex</string>
+    <string name="palette_copied">Paleta copiada</string>
+    <string name="palette_created">Paleta criada</string>
+    <string name="palette_color_removed">Removido da paleta</string>
+    <string name="palette_from_favorites">Criar a partir dos favoritos</string>
+    <string name="palette_remove_color">Remover da paleta</string>
+    <string name="palette_added">Adicionado à paleta</string>
+    <string name="palette_default_name">Paleta %1$d</string>
+    <string name="recently_picked">Escolhidos recentemente</string>
+    <string name="use_this_color">Usar esta cor</string>
+    <string name="add_to_palette">Adicionar à paleta</string>
+    <string name="image_palette">Cores da imagem</string>
+    <string name="image_palette_save_all">Salvar como paleta</string>
+    <string name="pick_color_recent_hint">As cores que você escolher aparecerão aqui</string>
+    <string name="palette_added_count">%1$d cores adicionadas</string>
+    <string name="palette_already_contains">Já contém estas cores</string>
 </resources>

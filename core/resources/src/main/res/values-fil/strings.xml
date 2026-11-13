@@ -2069,4 +2069,36 @@
 
     <string name="backup_center">Pag-backup at Pag-recover</string>
     <string name="backup_center_sub">I-backup ang data sa iyong sariling cloud drive</string>
+
+    <string name="palette_tab">Mga palette</string>
+    <string name="my_palettes">Aking mga palette</string>
+    <string name="palette_new">Bagong palette</string>
+    <string name="palette_rename">Palitan ng pangalan ang palette</string>
+    <string name="rename">Palitan ng pangalan</string>
+    <string name="palette_delete">Tanggalin ang palette</string>
+    <string name="palette_delete_confirm">Tanggalin ang “%1$s”? Hindi na ito maibabalik.</string>
+    <string name="palette_add_current">Idagdag ang kasalukuyang kulay</string>
+    <string name="palette_already_exists">Nasa palette na ang kulay na ito</string>
+    <string name="palette_full">Hanggang %1$d kulay ang kasya sa isang palette</string>
+    <string name="palette_max_reached">Hanggang %1$d palette ang maaari mong i-save</string>
+    <string name="palette_empty_title">Wala pang palette</string>
+    <string name="palette_empty_desc">I-save ang mga kulay na madalas mong gamitin nang sabay, pagkatapos ay piliin ang mga ito nang direkta mula sa color picker.</string>
+    <string name="palette_no_colors">Walang laman ang palette na ito</string>
+    <string name="palette_no_colors_desc">I-tap ang “Idagdag ang kasalukuyang kulay” para i-save ang napili mong kulay.</string>
+    <string name="palette_copy_all">Kopyahin ang lahat ng hex value</string>
+    <string name="palette_copied">Nakopya ang palette</string>
+    <string name="palette_created">Nagawa ang palette</string>
+    <string name="palette_color_removed">Inalis mula sa palette</string>
+    <string name="palette_from_favorites">Gumawa mula sa mga paborito</string>
+    <string name="palette_remove_color">Alisin mula sa palette</string>
+    <string name="palette_added">Naidagdag sa palette</string>
+    <string name="palette_default_name">Palette %1$d</string>
+    <string name="recently_picked">Kamakailang pinili</string>
+    <string name="use_this_color">Gamitin ang kulay na ito</string>
+    <string name="add_to_palette">Idagdag sa palette</string>
+    <string name="image_palette">Mga kulay ng larawan</string>
+    <string name="image_palette_save_all">I-save bilang palette</string>
+    <string name="pick_color_recent_hint">Lalabas dito ang mga kulay na pipiliin mo</string>
+    <string name="palette_added_count">Naidagdag ang %1$d kulay</string>
+    <string name="palette_already_contains">Nasa palette na ang mga kulay na ito</string>
 </resources>

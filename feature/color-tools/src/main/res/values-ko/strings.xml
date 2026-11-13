@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  OneBox is a free AI agent and toolbox for Android
+  Copyright (c) 2026 zhishouwang(网址兽)
+
+  Origin: OneBox original work, not derived from ImageToolbox
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+
+  You should have received a copy of the Apache License
+  along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+-->
+<resources>
+    <!-- 调色板 AI 工具 -->
+    <string name="agent_tool_palette_deeplink_label">색상 도구 열기</string>
+    <string name="agent_tool_palette_deeplink_guidance">저장한 팔레트를 보고 편집하고 다시 쓰려면 색상 도구를 여세요</string>
+
+    <string name="agent_tool_palette_list_title">팔레트 목록</string>
+    <string name="agent_tool_palette_list_summary">사용자가 저장한 색상 팔레트와 헥스 색상을 나열합니다</string>
+    <string name="agent_tool_palette_list_param_include_colors">각 팔레트의 헥스 색상을 반환할지 여부(기본값 true)</string>
+    <string name="agent_tool_palette_list_empty">사용자가 아직 저장한 팔레트가 없습니다</string>
+
+    <string name="agent_tool_palette_generate_title">팔레트 생성</string>
+    <string name="agent_tool_palette_generate_summary">시드 색상 하나로 조화로운 색상을 생성합니다(저장하지 않음)</string>
+    <string name="agent_tool_palette_generate_param_seed">시드 색상(헥스), 예: #4F5B92</string>
+    <string name="agent_tool_palette_generate_param_harmony">조화 규칙: complementary, analogous, triadic, split_complementary, tetradic, square</string>
+    <string name="agent_tool_palette_generate_param_count">반환할 색상 수(2-16, 기본값 5)</string>
+    <string name="agent_tool_palette_generate_invalid_seed">시드 색상을 해석할 수 없습니다. #4F5B92 같은 헥스가 필요합니다</string>
+    <string name="agent_tool_palette_generate_invalid_harmony">알 수 없는 조화 규칙입니다. 나열된 값 중 하나를 쓰세요</string>
+
+    <string name="agent_tool_palette_save_title">팔레트 저장</string>
+    <string name="agent_tool_palette_save_summary">팔레트를 만들거나 같은 이름의 기존 팔레트를 이름으로 갱신합니다(색상 교체 또는 추가)</string>
+    <string name="agent_tool_palette_save_param_name">팔레트 이름. 같은 이름의 기존 팔레트는 갱신됩니다</string>
+    <string name="agent_tool_palette_save_param_colors">헥스 색상, 예: [\"#4F5B92\", \"#E3E7F3\"]</string>
+    <string name="agent_tool_palette_save_param_mode">replace(기본값)는 색상을 덮어쓰고, append는 기존 색상 뒤에 추가합니다</string>
+    <string name="agent_tool_palette_save_missing_name">팔레트 이름이 필요합니다</string>
+    <string name="agent_tool_palette_save_missing_colors">요청에 유효한 헥스 색상이 없습니다</string>
+    <string name="agent_tool_palette_save_too_many">팔레트 한도에 도달했거나 색상 목록이 너무 깁니다</string>
+
+    <string name="agent_tool_palette_delete_title">팔레트 삭제</string>
+    <string name="agent_tool_palette_delete_summary">이름 또는 id로 저장된 팔레트 하나를 삭제합니다</string>
+    <string name="agent_tool_palette_delete_param_name">팔레트 이름(id와 택일)</string>
+    <string name="agent_tool_palette_delete_param_id">팔레트 id(이름과 택일)</string>
+    <string name="agent_tool_palette_delete_missing_target">팔레트 이름이나 id를 전달하세요</string>
+    <string name="agent_tool_palette_delete_not_found">그 이름이나 id와 일치하는 팔레트가 없습니다</string>
+    <string name="agent_tool_palette_delete_ok">팔레트를 삭제했습니다</string>
+
+    <string name="agent_tool_palette_unknown_action">알 수 없는 작업</string>
+    <string name="agent_tool_palette_failed">팔레트 작업 실패: %1$s</string>
+
+    <string-array name="agent_tool_palette_keywords">
+        <item>팔레트</item>
+        <item>색상</item>
+        <item>배색</item>
+        <item>헥스</item>
+        <item>색 조합</item>
+        <item>색상 팔레트</item>
+        <item>컬러 조합</item>
+    </string-array>
+
+    <string-array name="agent_tool_palette_examples">
+        <item>모란디 톤 팔레트를 만들어서 저장해 줘</item>
+        <item>#4F5B92로 삼각 배색 팔레트를 만들어 줘</item>
+        <item>자주 쓰는 브랜드 색상을 팔레트로 저장해 줘</item>
+        <item>내가 저장한 팔레트를 보여 줘</item>
+        <item>“봄 비주얼” 팔레트를 삭제해 줘</item>
+    </string-array>
+</resources>

@@ -34,6 +34,7 @@ import com.t8rin.imagetoolbox.core.domain.image.model.ResizeType
 import com.t8rin.imagetoolbox.core.domain.image.model.ScaleColorSpace
 import com.t8rin.imagetoolbox.core.domain.json.JsonParser
 import com.t8rin.imagetoolbox.core.domain.model.ColorModel
+import com.t8rin.imagetoolbox.core.domain.model.ColorPalette
 import com.t8rin.imagetoolbox.core.domain.model.HashingType
 import com.t8rin.imagetoolbox.core.domain.model.SystemBarsVisibility
 import com.t8rin.imagetoolbox.core.settings.domain.model.ColorHarmonizer
@@ -257,7 +258,11 @@ internal fun Preferences.toSettingsState(
         )
     } ?: default.filenameBehavior,
     enableBackgroundColorForAlphaFormats = this[ENABLE_BACKGROUND_COLOR_FOR_ALPHA_FORMATS]
-        ?: default.enableBackgroundColorForAlphaFormats
+        ?: default.enableBackgroundColorForAlphaFormats,
+    customPalettes = this[CUSTOM_PALETTES]
+        ?.let(ColorPalette::decode)
+        ?.takeIf { it.isNotEmpty() }
+        ?: default.customPalettes
 )
 
 private fun Preferences.toDefaultImageScaleMode(default: SettingsState): ImageScaleMode {
