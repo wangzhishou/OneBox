@@ -830,18 +830,18 @@ sealed class Screen(
     @Serializable
     @SerialName("ColorTools")
     data class ColorTools(
-        /** 打开时落在哪个 tab（0=颜色信息 1=颜色混合 2=色彩阴影 3=调色板 4=柱状图） */
-        val initialTab: Int = TAB_INFO
+        /** 打开时落在哪个 tab，见 TAB_*（调色板排第一，默认落在调色板） */
+        val initialTab: Int = TAB_PALETTE
     ) : Screen(
         id = 30,
         title = R.string.color_tools,
         subtitle = R.string.color_tools_sub
     ) {
         companion object {
-            const val TAB_INFO = 0
-            const val TAB_MIXING = 1
-            const val TAB_SHADING = 2
-            const val TAB_PALETTE = 3
+            const val TAB_PALETTE = 0
+            const val TAB_INFO = 1
+            const val TAB_MIXING = 2
+            const val TAB_SHADING = 3
             const val TAB_HISTOGRAM = 4
         }
     }

@@ -155,7 +155,10 @@ fun ColorSelectionRow(
                             color = background,
                             resultPadding = 0.dp
                         )
-                        .transparencyChecker()
+                        .then(
+                            if (background.alpha < 1f) Modifier.transparencyChecker()
+                            else Modifier
+                        )
                         .background(background, shape)
                         .hapticsCombinedClickable(
                             onLongClick = {
@@ -251,7 +254,10 @@ fun ColorSelectionRow(
                                 color = color,
                                 resultPadding = 0.dp
                             )
-                            .transparencyChecker()
+                            .then(
+                                if (color.alpha < 1f) Modifier.transparencyChecker()
+                                else Modifier
+                            )
                             .background(color, shape)
                             .hapticsClickable {
                                 onValueChange(color.copy(if (allowAlpha) color.alpha else 1f))

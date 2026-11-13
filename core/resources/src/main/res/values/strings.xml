@@ -2117,4 +2117,5 @@
     <string name="pick_color_recent_hint">Colors you pick will show up here</string>
     <string name="palette_added_count">Added %1$d colors</string>
     <string name="palette_already_contains">Already has these colors</string>
+    <string name="default_palette">Default palette</string>
 </resources>

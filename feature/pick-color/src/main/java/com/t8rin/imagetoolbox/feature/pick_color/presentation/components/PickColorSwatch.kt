@@ -55,13 +55,14 @@ internal fun PickColorSwatch(
     showCheck: Boolean = false
 ) {
     Box(modifier = modifier.size(size)) {
+        val color = Color(argb)
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .clip(shape)
-                .transparencyChecker()
-                .background(Color(argb))
-                .colorSwatchOutline(color = Color(argb), shape = shape)
+                .then(if (color.alpha < 1f) Modifier.transparencyChecker() else Modifier)
+                .background(color)
+                .colorSwatchOutline(color = color, shape = shape)
         )
         if (showCheck) {
             Box(

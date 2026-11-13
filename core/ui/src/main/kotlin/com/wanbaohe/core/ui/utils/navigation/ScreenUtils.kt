@@ -243,6 +243,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
+import java.util.Locale
 import android.net.Uri as AndroidUri
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLock
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineInfo
@@ -674,6 +675,17 @@ internal object ScreenConstantsImpl : ScreenConstants {
                 isScreen = queryParams["isScreen"]?.toIntOrNull() == 1
             )
             when (path) {
+                // 色彩工具带 tab 参数直达：onebox://screen/ColorTools?tab=palette
+                "ColorTools", "colortools", "color_tools" -> return ColorTools(
+                    initialTab = when (queryParams["tab"]?.lowercase(Locale.ROOT)) {
+                        "palette", "palettes" -> ColorTools.TAB_PALETTE
+                        "info" -> ColorTools.TAB_INFO
+                        "mixing" -> ColorTools.TAB_MIXING
+                        "shading" -> ColorTools.TAB_SHADING
+                        "histogram" -> ColorTools.TAB_HISTOGRAM
+                        else -> ColorTools.TAB_PALETTE
+                    }
+                )
                 "BlogDetail" -> return Screen.BlogDetail(
                     screenParams = screenParams
                 )

@@ -40,11 +40,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -58,6 +60,7 @@ import com.t8rin.imagetoolbox.color_tools.presentation.components.ColorShading
 import com.t8rin.imagetoolbox.color_tools.presentation.components.PaletteEditor
 import com.t8rin.imagetoolbox.color_tools.presentation.screenLogic.ColorToolsComponent
 import com.t8rin.imagetoolbox.core.resources.Icons
+import com.t8rin.imagetoolbox.core.domain.model.ColorPalette
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.Swatch
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAreaChart
@@ -71,7 +74,7 @@ import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
 import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBarStyle
 
-private enum class ColorToolTab { INFO, MIXING, SHADING, PALETTE, HISTOGRAM }
+private enum class ColorToolTab { PALETTE, INFO, MIXING, SHADING, HISTOGRAM }
 
 @Composable
 fun ColorToolsContent(
@@ -85,6 +88,20 @@ fun ColorToolsContent(
 
     val selectedColor = component.selectedColor.takeOrElse { appColorTuple.primary }
 
+    // 色板行的颜色来自「当前调色板」：默认调色板就是原来那套预置色，
+    // 用户在调色板 tab 切到自己的分组后，这行立刻变成那组颜色的快捷选择。
+    val palettes = LocalSettingsState.current.customPalettes
+    val activePalette = remember(palettes, component.activePaletteId) {
+        palettes.firstOrNull { it.id == component.activePaletteId }
+            ?: palettes.firstOrNull()
+    }
+    val quickColors = remember(activePalette) {
+        activePalette?.colors
+            ?.takeIf { it.isNotEmpty() }
+            ?.map { Color(it) }
+            ?: ColorPalette.DEFAULT_COLORS.map { Color(it) }
+    }
+
     LaunchedEffect(selectedColor) {
         if (allowChangeColor) {
             themeState.updateColor(selectedColor)
@@ -93,7 +110,7 @@ fun ColorToolsContent(
 
     var selectedTab by rememberSaveable {
         mutableStateOf(
-            ColorToolTab.entries.getOrNull(component.initialTab) ?: ColorToolTab.INFO
+            ColorToolTab.entries.getOrNull(component.initialTab) ?: ColorToolTab.PALETTE
         )
     }
 
@@ -109,7 +126,8 @@ fun ColorToolsContent(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             icon = null,
-            title = stringResource(R.string.selected_color)
+            title = stringResource(R.string.selected_color),
+            defaultColors = quickColors
         )
         AnimatedContent(
             targetState = selectedTab,
@@ -119,49 +137,63 @@ fun ColorToolsContent(
             modifier = Modifier.weight(1f),
             label = "color_tool_tab"
         ) { tab ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                when (tab) {
-                    ColorToolTab.INFO -> {
-                        ColorInfo(
+            // 调色板页自己带 LazyColumn：色块多/分组多时只组合可见行，
+            // 不再跟着外层整页 verticalScroll 一次性铺开。
+            if (tab == ColorToolTab.PALETTE) {
+                PaletteEditor(
+                    selectedColor = selectedColor,
+                    onColorChange = component::updateSelectedColor,
+                    selectedPaletteId = activePalette?.id,
+                    onSelectPalette = component::selectPalette,
+                    modifier = Modifier.fillMaxSize()
+                )
+            } else {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    when (tab) {
+                        ColorToolTab.INFO -> {
+                            ColorInfo(
+                                selectedColor = selectedColor,
+                                onColorChange = component::updateSelectedColor
+                            )
+                            Text(
+                                text = stringResource(R.string.color_harmonies),
+                                style = MaterialTheme.typography.titleMedium,
+                                modifier = Modifier.padding(top = 8.dp)
+                            )
+                            ColorHarmonies(
+                                selectedColor = selectedColor
+                            )
+                        }
+
+                        ColorToolTab.MIXING -> ColorMixing(
                             selectedColor = selectedColor,
-                            onColorChange = component::updateSelectedColor
+                            appColorTuple = appColorTuple
                         )
-                        Text(
-                            text = stringResource(R.string.color_harmonies),
-                            style = MaterialTheme.typography.titleMedium,
-                            modifier = Modifier.padding(top = 8.dp)
-                        )
-                        ColorHarmonies(
+
+                        ColorToolTab.SHADING -> ColorShading(
                             selectedColor = selectedColor
                         )
+
+                        ColorToolTab.HISTOGRAM -> ColorHistogram()
+
+                        ColorToolTab.PALETTE -> Unit
                     }
-
-                    ColorToolTab.MIXING -> ColorMixing(
-                        selectedColor = selectedColor,
-                        appColorTuple = appColorTuple
-                    )
-
-                    ColorToolTab.SHADING -> ColorShading(
-                        selectedColor = selectedColor
-                    )
-
-                    ColorToolTab.PALETTE -> PaletteEditor(
-                        selectedColor = selectedColor,
-                        onColorChange = component::updateSelectedColor
-                    )
-
-                    ColorToolTab.HISTOGRAM -> ColorHistogram()
                 }
             }
         }
         BottomNavigationBar(
             items = listOf(
+                BottomNavItem(
+                    id = ColorToolTab.PALETTE.name,
+                    label = stringResource(R.string.palette_tab),
+                    icon = Icons.Outlined.LinePaletteTools
+                ),
                 BottomNavItem(
                     id = ColorToolTab.INFO.name,
                     label = stringResource(R.string.color_info_tab),
@@ -176,11 +208,6 @@ fun ColorToolsContent(
                     id = ColorToolTab.SHADING.name,
                     label = stringResource(R.string.color_shading_tab),
                     icon = Icons.Rounded.Swatch
-                ),
-                BottomNavItem(
-                    id = ColorToolTab.PALETTE.name,
-                    label = stringResource(R.string.palette_tab),
-                    icon = Icons.Outlined.LinePaletteTools
                 ),
                 BottomNavItem(
                     id = ColorToolTab.HISTOGRAM.name,

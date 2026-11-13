@@ -236,7 +236,7 @@ private fun PaletteColorCell(
         modifier = Modifier
             .size(44.dp)
             .clip(shape)
-            .transparencyChecker()
+            .then(if (color.alpha < 1f) Modifier.transparencyChecker() else Modifier)
             .background(color)
             .colorSwatchOutline(color = color, shape = shape)
             .then(

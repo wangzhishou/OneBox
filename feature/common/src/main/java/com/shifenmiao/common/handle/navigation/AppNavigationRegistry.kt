@@ -1119,6 +1119,41 @@ object AppNavigationRegistry {
                         autoPlay = params.autoPlayParam(),
                     )
                 }
+            ),
+            // 色彩工具：调色板排第一，深链可带 tab 参数直达
+            // onebox://screen/ColorTools?tab=palette|info|mixing|shading|histogram
+            AppNavigationTarget(
+                targetType = AppNavigationTargetType.SCREEN,
+                routeKey = Screen.ColorTools().routeKey,
+                canonicalName = Screen.ColorTools().canonicalName,
+                title = "色彩工具",
+                description = "调色板、颜色信息、颜色混合、色彩阴影与直方图；默认落在调色板",
+                aliases = listOf(
+                    "ColorTools",
+                    "color_tools",
+                    "colortools",
+                    "palette",
+                    "palettes",
+                    "调色板",
+                    "配色",
+                    "色彩工具"
+                ),
+                deeplink = buildStructuredDeeplink(
+                    targetType = AppNavigationTargetType.SCREEN,
+                    routeKey = Screen.ColorTools().routeKey
+                ),
+                screenBuilder = { params ->
+                    Screen.ColorTools(
+                        initialTab = when (params["tab"]?.trim()?.lowercase(Locale.ROOT)) {
+                            "palette", "palettes" -> Screen.ColorTools.TAB_PALETTE
+                            "info" -> Screen.ColorTools.TAB_INFO
+                            "mixing" -> Screen.ColorTools.TAB_MIXING
+                            "shading" -> Screen.ColorTools.TAB_SHADING
+                            "histogram" -> Screen.ColorTools.TAB_HISTOGRAM
+                            else -> Screen.ColorTools.TAB_PALETTE
+                        }
+                    )
+                }
             )
         )
 
@@ -1214,7 +1249,7 @@ object AppNavigationRegistry {
                         )
                     )
                 }
-            )
+            ),
         )
 
     val screenTargets: List<AppNavigationTarget> by lazy {

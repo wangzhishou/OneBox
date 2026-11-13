@@ -66,7 +66,9 @@ internal fun ColorInfo(
                 )
             },
             primaryText = selectedColor.toHex(),
-            secondaryText = ColorNameParser.parseColorName(selectedColor),
+            secondaryText = remember(selectedColor) {
+                ColorNameParser.parseColorName(selectedColor)
+            },
             modifier = Modifier
                 .heightIn(min = 80.dp)
                 .fillMaxWidth()

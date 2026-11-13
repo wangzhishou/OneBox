@@ -71,6 +71,7 @@ object AppSharedStorage {
     private const val UPDATE_PROMPT_DISMISSED_AT = "update_prompt_dismissed_at"
     private const val CURRENCY_CODE = "currency_code"
     private const val ITEM_KEYWORD_DEFAULTS_SEEDED = "item_keyword_defaults_seeded"
+    private const val PALETTE_DEFAULTS_SEEDED = "palette_defaults_seeded"
 
     // ─── 启动关键设置 key（DataStore → MMKV 镜像缓存） ────────────────────────
     private const val S_FONT_SCALE = "s_font_scale"
@@ -644,6 +645,17 @@ object AppSharedStorage {
 
     fun saveHabitPresetsSeeded(seeded: Boolean) {
         localeMmkv.encode(HABIT_PRESETS_SEEDED, seeded)
+    }
+
+    // ─── 默认调色板播种 flag（全局：调色板是跨语言的用户数据） ─────────────
+
+    /** 「默认调色板」是否已经播种过；播过之后再删掉也不会重新补回来 */
+    fun loadPaletteDefaultsSeeded(): Boolean =
+        load(PALETTE_DEFAULTS_SEEDED, false) ?: false
+
+    fun savePaletteDefaultsSeeded(seeded: Boolean) {
+        mmkv.encode(PALETTE_DEFAULTS_SEEDED, seeded)
+        memoryCache[PALETTE_DEFAULTS_SEEDED] = seeded
     }
 
     // ─── 语言切换重启提醒 ──────────────────────────────────────────────────

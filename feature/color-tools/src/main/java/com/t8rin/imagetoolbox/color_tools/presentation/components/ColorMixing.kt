@@ -102,6 +102,9 @@ internal fun ColorMixing(
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     rowColors.forEach { color ->
+                        val colorName = remember(color) {
+                            ColorNameParser.parseColorName(color)
+                        }
                         LargeColorBlock(
                             color = color,
                             onClick = {
@@ -111,7 +114,7 @@ internal fun ColorMixing(
                                 )
                             },
                             primaryText = color.toHex(),
-                            secondaryText = ColorNameParser.parseColorName(color),
+                            secondaryText = colorName,
                             modifier = Modifier
                                 .weight(1f)
                                 .heightIn(min = 100.dp)

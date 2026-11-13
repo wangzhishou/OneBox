@@ -48,8 +48,21 @@ class ColorToolsComponent @AssistedInject internal constructor(
     private val _selectedColor: MutableState<Color> = mutableStateOf(Color.Unspecified)
     val selectedColor: Color by _selectedColor
 
+    /**
+     * 当前生效的调色板 id（null = 取用户列表里的第一组）。
+     *
+     * 色彩工具顶上那行快捷色板就是这一组颜色；调色板页切换调色板时，
+     * 这行快捷选择跟着变，四个 tab 共用同一份选择。
+     */
+    private val _activePaletteId: MutableState<String?> = mutableStateOf(null)
+    val activePaletteId: String? by _activePaletteId
+
     fun updateSelectedColor(newColor: Color) {
         _selectedColor.update { newColor }
+    }
+
+    fun selectPalette(id: String?) {
+        _activePaletteId.value = id
     }
 
     @AssistedFactory

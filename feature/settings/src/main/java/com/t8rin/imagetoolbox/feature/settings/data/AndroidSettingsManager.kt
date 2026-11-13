@@ -180,6 +180,7 @@ import com.t8rin.imagetoolbox.feature.settings.data.keys.USE_RANDOM_EMOJIS
 import com.t8rin.imagetoolbox.feature.settings.data.keys.VIBRATION_STRENGTH
 import com.t8rin.imagetoolbox.feature.settings.data.keys.toSettingsState
 import com.shifenmiao.storage.AppSharedStorage
+import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.logger.Logger
 import com.t8rin.logger.makeLog
 import dagger.Lazy
@@ -236,6 +237,7 @@ internal class AndroidSettingsManager @Inject constructor(
     override val settingsState: StateFlow<SettingsState> = rawFlow()
         .onEach {
             syncStartupSettingsToMmkv(it)
+            seedDefaultPaletteIfNeeded(it)
             if (!settingsLoaded.isCompleted) {
                 settingsLoaded.complete(Unit)
             }
@@ -277,6 +279,32 @@ internal class AndroidSettingsManager @Inject constructor(
             glassBorderAlpha = state.glassBorderAlpha,
             customBackgroundImageUri = state.customBackgroundImageUri,
             activeThemeId = state.activeThemeId,
+        )
+    }
+
+    /**
+     * 首次启动（或升级到带调色板的版本）预置一组「默认调色板」。
+     *
+     * - 只播一次，靠 MMKV flag 控制；用户删掉后不再补回来；
+     * - 插到列表最前面，色彩工具默认落在调色板 tab，色板行也默认取这一组；
+     * - 已经到数量上限时跳过，避免为了播种挤掉用户自己的一组。
+     */
+    private suspend fun seedDefaultPaletteIfNeeded(state: SettingsState) {
+        if (AppSharedStorage.loadPaletteDefaultsSeeded()) return
+        AppSharedStorage.savePaletteDefaultsSeeded(true)
+
+        if (state.customPalettes.any { it.id == ColorPalette.DEFAULT_PALETTE_ID }) return
+        if (state.customPalettes.size >= ColorPalette.MAX_PALETTES) return
+
+        setCustomPalettes(
+            listOf(
+                ColorPalette(
+                    id = ColorPalette.DEFAULT_PALETTE_ID,
+                    name = context.getString(R.string.default_palette),
+                    colors = ColorPalette.DEFAULT_COLORS,
+                    updatedAtMillis = System.currentTimeMillis()
+                )
+            ) + state.customPalettes
         )
     }
 

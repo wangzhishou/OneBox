@@ -2095,4 +2095,5 @@
     <string name="pick_color_recent_hint">取過的顏色會出現在這裡</string>
     <string name="palette_added_count">已加入 %1$d 個顏色</string>
     <string name="palette_already_contains">已包含這些顏色</string>
+    <string name="default_palette">預設調色盤</string>
 </resources>

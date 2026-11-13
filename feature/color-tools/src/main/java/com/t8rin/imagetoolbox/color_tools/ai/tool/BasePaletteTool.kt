@@ -54,7 +54,8 @@ abstract class BasePaletteTool(
             ToolDeepLink(
                 uri = AppNavigationRegistry.buildStructuredDeeplink(
                     targetType = AppNavigationTargetType.SCREEN,
-                    routeKey = Screen.ColorTools().routeKey
+                    routeKey = Screen.ColorTools().routeKey,
+                    params = mapOf("tab" to "palette")
                 ),
                 label = textProvider.string(R.string.agent_tool_palette_deeplink_label),
                 guidance = textProvider.string(R.string.agent_tool_palette_deeplink_guidance),

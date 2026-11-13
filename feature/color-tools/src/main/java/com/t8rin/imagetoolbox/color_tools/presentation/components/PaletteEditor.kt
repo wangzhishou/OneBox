@@ -23,12 +23,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.DropdownMenuItem
@@ -40,7 +44,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -94,6 +97,9 @@ import java.util.UUID
 internal fun PaletteEditor(
     selectedColor: Color,
     onColorChange: (Color) -> Unit,
+    selectedPaletteId: String?,
+    onSelectPalette: (String?) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val settings = LocalSettingsState.current
     val interactor = LocalSimpleSettingsInteractor.current
@@ -102,7 +108,6 @@ internal fun PaletteEditor(
     val palettes = settings.customPalettes
     val favoriteColors = settings.favoriteColors
 
-    var selectedPaletteId by rememberSaveable { mutableStateOf<String?>(null) }
     var nameEditTarget by remember { mutableStateOf<PaletteNameEdit?>(null) }
     var deleteTarget by remember { mutableStateOf<ColorPalette?>(null) }
 
@@ -115,6 +120,11 @@ internal fun PaletteEditor(
     )
     // 命名规则是「调色板 N」；@Composable 取字符串，不能放进点击回调里现算
     val defaultName = newPaletteName(palettes)
+
+    // 最多 24 色：两列分组一次算好，LazyColumn 只组合可见行
+    val colorRows = remember(currentPalette?.colors) {
+        currentPalette?.colors?.chunked(2).orEmpty()
+    }
 
     fun persist(updated: List<ColorPalette>) {
         scope.launch {
@@ -129,152 +139,164 @@ internal fun PaletteEditor(
         } else {
             palettes + palette
         }
-        selectedPaletteId = palette.id
+        onSelectPalette(palette.id)
         persist(updated)
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 8.dp),
+    LazyColumn(
+        modifier = modifier.fillMaxSize(),
+        contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         if (palettes.isEmpty()) {
-            PaletteEmptyContent(
-                canCreateFromFavorites = favoriteColors.isNotEmpty(),
-                onCreate = {
-                    nameEditTarget = PaletteNameEdit(
-                        palette = null,
-                        initialName = defaultName
-                    )
-                },
-                onCreateFromFavorites = {
-                    if (favoriteColors.isNotEmpty()) {
-                        savePalette(
-                            ColorPalette(
-                                id = UUID.randomUUID().toString(),
-                                name = defaultName,
-                                colors = favoriteColors
-                                    .map { it.toArgb() }
-                                    .distinct()
-                                    .take(ColorPalette.MAX_COLORS),
-                                updatedAtMillis = System.currentTimeMillis()
-                            )
-                        )
-                        AppToastHost.showToast(R.string.palette_created)
-                    }
-                }
-            )
-        } else {
-            val palette = currentPalette
-            if (palette != null) {
-                // 调色板名可能很长（用户会写「2026 春季品牌视觉 主色系」这种），
-                // 用下拉选择器：选中行单行省略，菜单里看全名，也不会把一行撑爆。
-                PaletteSelector(
-                    selected = palette,
-                    palettes = palettes,
-                    favorites = favoriteColors,
-                    onSelect = { selectedPaletteId = it.id },
+            item(key = "empty") {
+                PaletteEmptyContent(
+                    canCreateFromFavorites = favoriteColors.isNotEmpty(),
                     onCreate = {
                         nameEditTarget = PaletteNameEdit(
                             palette = null,
                             initialName = defaultName
                         )
                     },
-                    onCreateFromFavorites = favoriteColors.takeIf { it.isNotEmpty() }?.let {
-                        {
+                    onCreateFromFavorites = {
+                        if (favoriteColors.isNotEmpty()) {
                             savePalette(
                                 ColorPalette(
                                     id = UUID.randomUUID().toString(),
                                     name = defaultName,
-                                    colors = it.map { color -> color.toArgb() }
+                                    colors = favoriteColors
+                                        .map { it.toArgb() }
                                         .distinct()
                                         .take(ColorPalette.MAX_COLORS),
                                     updatedAtMillis = System.currentTimeMillis()
                                 )
                             )
+                            AppToastHost.showToast(R.string.palette_created)
                         }
                     }
                 )
-
-                PaletteHeader(
-                    palette = palette,
-                    onRename = {
-                        nameEditTarget = PaletteNameEdit(
-                            palette = palette,
-                            initialName = palette.name
-                        )
-                    },
-                    onCopyAll = {
-                        if (palette.colors.isNotEmpty()) {
-                            Clipboard.copy(
-                                text = palette.colors
-                                    .joinToString(", ") { Color(it).toHex() },
-                                message = R.string.palette_copied
+            }
+        } else {
+            val palette = currentPalette
+            if (palette != null) {
+                item(key = "selector") {
+                    // 调色板名可能很长（用户会写「2026 春季品牌视觉 主色系」这种），
+                    // 用下拉选择器：选中行单行省略，菜单里看全名，也不会把一行撑爆。
+                    PaletteSelector(
+                        selected = palette,
+                        palettes = palettes,
+                        favorites = favoriteColors,
+                        onSelect = { onSelectPalette(it.id) },
+                        onCreate = {
+                            nameEditTarget = PaletteNameEdit(
+                                palette = null,
+                                initialName = defaultName
                             )
-                        }
-                    },
-                    onDelete = { deleteTarget = palette }
-                )
-
-                if (palette.colors.isEmpty()) {
-                    PaletteEmptyColors()
-                } else {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        palette.colors.chunked(2).forEach { rowColors ->
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                rowColors.forEach { argb ->
-                                    PaletteColorBlock(
-                                        argb = argb,
-                                        onClick = { onColorChange(Color(argb)) },
-                                        onRemove = {
-                                            val updated = palette.removing(argb)
-                                            persist(
-                                                palettes.map {
-                                                    if (it.id == palette.id) updated else it
-                                                }
-                                            )
-                                            AppToastHost.showToast(R.string.palette_color_removed)
-                                        },
-                                        modifier = Modifier.weight(1f)
+                        },
+                        onCreateFromFavorites = favoriteColors
+                            .takeIf { it.isNotEmpty() }
+                            ?.let { favorites ->
+                                {
+                                    savePalette(
+                                        ColorPalette(
+                                            id = UUID.randomUUID().toString(),
+                                            name = defaultName,
+                                            colors = favorites
+                                                .map { color -> color.toArgb() }
+                                                .distinct()
+                                                .take(ColorPalette.MAX_COLORS),
+                                            updatedAtMillis = System.currentTimeMillis()
+                                        )
                                     )
                                 }
-                                if (rowColors.size == 1) {
-                                    Spacer(modifier = Modifier.weight(1f))
-                                }
+                            }
+                    )
+                }
+
+                item(key = "header") {
+                    PaletteHeader(
+                        palette = palette,
+                        onRename = {
+                            nameEditTarget = PaletteNameEdit(
+                                palette = palette,
+                                initialName = palette.name
+                            )
+                        },
+                        onCopyAll = {
+                            if (palette.colors.isNotEmpty()) {
+                                Clipboard.copy(
+                                    text = palette.colors
+                                        .joinToString(", ") { Color(it).toHex() },
+                                    message = R.string.palette_copied
+                                )
+                            }
+                        },
+                        onDelete = { deleteTarget = palette }
+                    )
+                }
+
+                if (palette.colors.isEmpty()) {
+                    item(key = "empty_colors") {
+                        PaletteEmptyColors()
+                    }
+                } else {
+                    items(
+                        items = colorRows,
+                        key = { row -> row.firstOrNull() ?: Int.MIN_VALUE }
+                    ) { rowColors ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            rowColors.forEach { argb ->
+                                PaletteColorBlock(
+                                    argb = argb,
+                                    onClick = { onColorChange(Color(argb)) },
+                                    onRemove = {
+                                        val updated = palette.removing(argb)
+                                        persist(
+                                            palettes.map {
+                                                if (it.id == palette.id) updated else it
+                                            }
+                                        )
+                                        AppToastHost.showToast(
+                                            R.string.palette_color_removed
+                                        )
+                                    },
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
+                            if (rowColors.size == 1) {
+                                Spacer(modifier = Modifier.weight(1f))
                             }
                         }
                     }
                 }
 
-                OnePrimaryButton(
-                    text = stringResource(R.string.palette_add_current),
-                    onClick = {
-                        if (palette.colors.size >= ColorPalette.MAX_COLORS) {
-                            AppToastHost.showToast(paletteFullToast)
-                        } else if (palette.contains(selectedColor.toArgb())) {
-                            AppToastHost.showToast(R.string.palette_already_exists)
-                        } else {
-                            val updated = palette.appending(selectedColor.toArgb())
-                            persist(
-                                palettes.map {
-                                    if (it.id == palette.id) updated else it
-                                }
-                            )
-                            AppToastHost.showToast(R.string.palette_added)
-                        }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = 52.dp),
-                    leadingIcon = Icons.Outlined.LinePaletteTools
-                )
+                item(key = "add_current") {
+                    OnePrimaryButton(
+                        text = stringResource(R.string.palette_add_current),
+                        onClick = {
+                            if (palette.colors.size >= ColorPalette.MAX_COLORS) {
+                                AppToastHost.showToast(paletteFullToast)
+                            } else if (palette.contains(selectedColor.toArgb())) {
+                                AppToastHost.showToast(R.string.palette_already_exists)
+                            } else {
+                                val updated = palette.appending(selectedColor.toArgb())
+                                persist(
+                                    palettes.map {
+                                        if (it.id == palette.id) updated else it
+                                    }
+                                )
+                                AppToastHost.showToast(R.string.palette_added)
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = 52.dp),
+                        leadingIcon = Icons.Outlined.LinePaletteTools
+                    )
+                }
             }
         }
     }
@@ -334,7 +356,9 @@ internal fun PaletteEditor(
                     text = stringResource(R.string.delete),
                     onClick = {
                         deleteTarget = null
-                        selectedPaletteId = palettes.firstOrNull { it.id != target.id }?.id
+                        onSelectPalette(
+                            palettes.firstOrNull { it.id != target.id }?.id
+                        )
                         persist(palettes.filterNot { it.id == target.id })
                     }
                 )
@@ -492,12 +516,14 @@ private fun PaletteColorBlock(
     modifier: Modifier = Modifier
 ) {
     val color = Color(argb)
+    // 色名解析是 O(n) 的最近色扫描，别每次重组都跑一遍
+    val colorName = remember(color) { ColorNameParser.parseColorName(color) }
     LargeColorBlock(
         color = color,
         onClick = onClick,
         modifier = modifier.heightIn(min = 96.dp),
         primaryText = color.toHex(),
-        secondaryText = ColorNameParser.parseColorName(color),
+        secondaryText = colorName,
         badge = {
             // 移除按钮压在左上角：右下角留给色值，右上角留给复制图标
             Box(

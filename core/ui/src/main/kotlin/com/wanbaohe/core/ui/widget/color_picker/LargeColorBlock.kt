@@ -78,11 +78,13 @@ fun LargeColorBlock(
 ) {
     val contentColor = color.contentColor()
     val textBackground = color.copy(alpha = 1f)
+    // 不透明色块画透明棋盘是纯浪费：棋盘会被背景完全盖住，只对带 alpha 的色块保留
+    val needsChecker = color.alpha < 1f
 
     Box(
         modifier = modifier
             .clip(shape)
-            .transparencyChecker()
+            .then(if (needsChecker) Modifier.transparencyChecker() else Modifier)
             .background(color)
             .colorSwatchOutline(color = color, shape = shape)
             .then(

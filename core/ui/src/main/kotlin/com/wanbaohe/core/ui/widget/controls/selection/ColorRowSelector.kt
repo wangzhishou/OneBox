@@ -58,10 +58,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.t8rin.imagetoolbox.core.domain.model.ColorPalette
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.wanbaohe.core.ui.widget.color_picker.ColorSelectionRow
-import com.wanbaohe.core.ui.widget.color_picker.ColorSelectionRowDefaults
 import com.wanbaohe.core.ui.widget.enhanced.hapticsCombinedClickable
 import com.wanbaohe.core.ui.widget.icon_shape.IconShapeContainer
 import com.wanbaohe.core.ui.widget.modifier.container
@@ -208,23 +208,10 @@ fun ColorRowSelector(
     }
 }
 
-private val defaultColorList by lazy {
-    listOf(
-        Color(0xFF6B8E9F),
-        Color(0xFF22B8CF),
-        Color(0xFF52C41A),
-        Color(0xFF9CCC65),
-        Color(0xFFFFE066),
-        Color(0xFFFF9A00),
-        Color(0xFFFF6B4A),
-        Color(0xFFF8130D),
-        Color(0xFFFC50A6),
-        Color(0xFF7B2BEC),
-        Color(0xFF005FFF),
-        Color(0xFF59CBF0),
-        Color(0xFF07DDC3),
-        Color.White,
-        Color(0xFF333333),
-        Color.Black,
-    )
+/**
+ * 色板行没指定颜色时的预置色，直接取「默认调色板」的颜色，
+ * 保证首启的色板行和默认调色板是同一套颜色。
+ */
+private val defaultColorList: List<Color> by lazy {
+    ColorPalette.DEFAULT_COLORS.map(::Color)
 }
