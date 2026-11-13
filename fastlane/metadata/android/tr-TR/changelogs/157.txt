@@ -1,0 +1,4 @@
+• Yeni: renk paletleri ve yapay zekâ renk araçları
+• Yapay zekâ sohbeti Mermaid/PlantUML/DOT diyagramlarını ve formülleri gösterir
+• Ana sayfada filtreleme, sayfalı metin kartları
+• Geri bildirim gönderilemezse nedeni gösterilir ve metniniz korunur

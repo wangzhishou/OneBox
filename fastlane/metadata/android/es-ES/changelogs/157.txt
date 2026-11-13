@@ -1,0 +1,4 @@
+• Nuevo: paletas de color y herramientas de color con IA
+• El chat con IA muestra diagramas Mermaid/PlantUML/DOT y fórmulas
+• Filtros en el inicio y tarjetas de texto paginadas
+• Si el envío de comentarios falla, se explica el motivo y se conserva el texto

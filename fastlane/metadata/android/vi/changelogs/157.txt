@@ -1,0 +1,4 @@
+• Mới: bảng màu và công cụ phối màu AI
+• Trò chuyện AI hiển thị sơ đồ Mermaid/PlantUML/DOT và công thức
+• Lọc ở trang chủ và thẻ văn bản phân trang
+• Gửi phản hồi thất bại sẽ nêu lý do và giữ nguyên nội dung

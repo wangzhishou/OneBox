@@ -1,0 +1,4 @@
+• Bago: mga color palette at AI color tool
+• Nagpapakita na ang AI chat ng Mermaid/PlantUML/DOT diagram at formula
+• Pagsala sa home at pagination ng text card
+• Kapag nabigo ang pagpapadala ng feedback, may dahilan at naitatago ang teksto

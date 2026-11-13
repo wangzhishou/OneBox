@@ -1,0 +1,4 @@
+• Baru: palet warna dan alat warna AI
+• Chat AI menampilkan diagram Mermaid/PlantUML/DOT dan rumus
+• Filter di beranda dan kartu teks berhalaman
+• Gagal mengirim masukan kini menjelaskan penyebabnya dan teks tetap disimpan

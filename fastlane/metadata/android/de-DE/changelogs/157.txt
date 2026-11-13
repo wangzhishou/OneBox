@@ -1,0 +1,4 @@
+• Neu: Farbpaletten und KI-Farbwerkzeuge
+• KI-Chat zeigt Mermaid/PlantUML/DOT-Diagramme und Formeln
+• Filter auf der Startseite, mehrseitige Textkarten
+• Fehlgeschlagenes Feedback nennt den Grund und behält deinen Text

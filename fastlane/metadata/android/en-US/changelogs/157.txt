@@ -1,0 +1,4 @@
+• New: color palette & AI color tools
+• AI chat now renders Mermaid/PlantUML/DOT diagrams and math
+• Home filtering and paginated text cards
+• Failed feedback now tells you why and keeps your text

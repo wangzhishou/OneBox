@@ -1,0 +1,4 @@
+• Nouveau : palettes de couleurs et outils de couleur IA
+• Le chat IA affiche les diagrammes Mermaid/PlantUML/DOT et les formules
+• Filtres sur l'accueil et cartes de texte paginées
+• Un envoi de retour échoué indique la raison et conserve votre texte
