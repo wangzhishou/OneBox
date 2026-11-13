@@ -2151,4 +2151,9 @@
     <string name="long_task_notification_more">и ещё %1$d в работе</string>
     <!-- TextSelectionMenuContainer: label under the "Note" icon -->
     <string name="text_selection_action_note">Заметка</string>
+    <string name="feedback_error_network">Нет соединения. Текст сохранён — восстановите сеть и отправьте ещё раз.</string>
+    <string name="feedback_error_auth">Сеанс истёк. Войдите снова и отправьте ещё раз — текст сохранён.</string>
+    <string name="feedback_error_invalid">Сервер отклонил содержимое. Проверьте заголовок и описание и отправьте снова.</string>
+    <string name="feedback_error_rate_limited">Слишком много попыток. Подождите несколько секунд и отправьте снова.</string>
+    <string name="feedback_error_server">Сервер не сохранил запись. Текст сохранён — отправьте ещё раз через минуту.</string>
 </resources>

@@ -2151,4 +2151,9 @@
     <string name="long_task_notification_more">و%1$d مهام أخرى قيد التنفيذ</string>
     <!-- TextSelectionMenuContainer: label under the "Note" icon -->
     <string name="text_selection_action_note">ملاحظة</string>
+    <string name="feedback_error_network">لا يوجد اتصال بالشبكة. نصّك محفوظ — أعد الاتصال ثم أرسل مرة أخرى.</string>
+    <string name="feedback_error_auth">انتهت جلستك. سجّل الدخول مرة أخرى ثم أعد الإرسال — نصّك محفوظ.</string>
+    <string name="feedback_error_invalid">رفض الخادم المحتوى. راجع العنوان والوصف ثم أعد الإرسال.</string>
+    <string name="feedback_error_rate_limited">محاولات كثيرة جدًا. انتظر بضع ثوانٍ ثم أعد الإرسال.</string>
+    <string name="feedback_error_server">لم يحفظه الخادم هذه المرة. نصّك محفوظ — أعد الإرسال بعد قليل.</string>
 </resources>

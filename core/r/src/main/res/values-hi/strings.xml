@@ -2117,4 +2117,9 @@
     <string name="long_task_notification_more">और %1$d अन्य चल रहे हैं</string>
     <!-- TextSelectionMenuContainer: label under the "Note" icon -->
     <string name="text_selection_action_note">नोट</string>
+    <string name="feedback_error_network">नेटवर्क नहीं है। आपका लिखा हुआ सुरक्षित है — कनेक्ट होने पर दोबारा भेजें।</string>
+    <string name="feedback_error_auth">आपका सत्र समाप्त हो गया। दोबारा साइन इन करके भेजें — आपका लिखा हुआ सुरक्षित है।</string>
+    <string name="feedback_error_invalid">सर्वर ने सामग्री स्वीकार नहीं की। शीर्षक और विवरण जाँचें, फिर दोबारा भेजें।</string>
+    <string name="feedback_error_rate_limited">बहुत ज़्यादा प्रयास। कुछ सेकंड रुककर दोबारा भेजें।</string>
+    <string name="feedback_error_server">इस बार सर्वर ने सहेजा नहीं। आपका लिखा हुआ सुरक्षित है — थोड़ी देर बाद दोबारा भेजें।</string>
 </resources>

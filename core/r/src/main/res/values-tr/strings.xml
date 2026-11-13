@@ -2117,4 +2117,9 @@
     <string name="long_task_notification_more">ve %1$d görev daha çalışıyor</string>
     <!-- TextSelectionMenuContainer: label under the "Note" icon -->
     <string name="text_selection_action_note">Not</string>
+    <string name="feedback_error_network">Ağ bağlantısı yok. Yazdıkların korunuyor — bağlanınca tekrar gönder.</string>
+    <string name="feedback_error_auth">Oturumun sona erdi. Yazdıkların korunuyor — yeniden giriş yapıp tekrar gönder.</string>
+    <string name="feedback_error_invalid">Sunucu içeriği kabul etmedi. Başlığı ve açıklamayı kontrol edip tekrar gönder.</string>
+    <string name="feedback_error_rate_limited">Çok fazla deneme. Birkaç saniye bekleyip tekrar gönder.</string>
+    <string name="feedback_error_server">Sunucu bu kez kaydedemedi. Yazdıkların korunuyor — birazdan tekrar gönder.</string>
 </resources>

@@ -2104,4 +2104,9 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <string name="long_task_notification_more">và %1$d tác vụ khác đang chạy</string>
     <!-- TextSelectionMenuContainer: label under the "Note" icon -->
     <string name="text_selection_action_note">Ghi chú</string>
+    <string name="feedback_error_network">Không có mạng. Nội dung bạn viết vẫn được giữ — kết nối lại rồi gửi lại.</string>
+    <string name="feedback_error_auth">Phiên đăng nhập đã hết hạn. Đăng nhập lại rồi gửi lại — nội dung vẫn được giữ.</string>
+    <string name="feedback_error_invalid">Máy chủ từ chối nội dung. Kiểm tra tiêu đề và mô tả rồi gửi lại.</string>
+    <string name="feedback_error_rate_limited">Gửi quá nhiều lần. Đợi vài giây rồi gửi lại.</string>
+    <string name="feedback_error_server">Lần này máy chủ không lưu được. Nội dung vẫn được giữ — gửi lại sau một lát.</string>
 </resources>

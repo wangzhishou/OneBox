@@ -2117,4 +2117,9 @@ Consejo: si eliges «Ocultar para siempre», podrás devolverme más tarde en Aj
     <string name="long_task_notification_more">y %1$d más en ejecución</string>
     <!-- TextSelectionMenuContainer: label under the "Note" icon -->
     <string name="text_selection_action_note">Nota</string>
+    <string name="feedback_error_network">Sin conexión. Tu texto se conserva: vuelve a enviarlo cuando recuperes la red.</string>
+    <string name="feedback_error_auth">Tu sesión ha caducado. Inicia sesión de nuevo y reenvía: tu texto se conserva.</string>
+    <string name="feedback_error_invalid">El servidor rechazó el contenido. Revisa el título y la descripción y vuelve a enviar.</string>
+    <string name="feedback_error_rate_limited">Demasiados intentos. Espera unos segundos y vuelve a enviar.</string>
+    <string name="feedback_error_server">El servidor no lo guardó esta vez. Tu texto se conserva: vuelve a enviarlo en un momento.</string>
 </resources>

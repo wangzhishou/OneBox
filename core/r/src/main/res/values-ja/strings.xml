@@ -2106,4 +2106,9 @@
     <string name="long_task_notification_more">他 %1$d 件のタスクが実行中</string>
     <!-- TextSelectionMenuContainer: label under the "Note" icon -->
     <string name="text_selection_action_note">メモ</string>
+    <string name="feedback_error_network">ネットワークに接続できません。入力内容は保持されています。接続後に再送信してください。</string>
+    <string name="feedback_error_auth">ログインの有効期限が切れました。入力内容は保持されています。再ログイン後に再送信してください。</string>
+    <string name="feedback_error_invalid">サーバーが内容を受け付けませんでした。タイトルと説明を確認して再送信してください。</string>
+    <string name="feedback_error_rate_limited">送信が多すぎます。数秒待ってから再送信してください。</string>
+    <string name="feedback_error_server">サーバーに保存できませんでした。入力内容は保持されています。しばらくしてから再送信してください。</string>
 </resources>

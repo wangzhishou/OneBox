@@ -2117,4 +2117,9 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
     <string name="long_task_notification_more">e mais %1$d em execução</string>
     <!-- TextSelectionMenuContainer: label under the "Note" icon -->
     <string name="text_selection_action_note">Nota</string>
+    <string name="feedback_error_network">Sem conexão. Seu texto foi mantido — reconecte e envie de novo.</string>
+    <string name="feedback_error_auth">Sua sessão expirou. Entre de novo e reenvie — seu texto foi mantido.</string>
+    <string name="feedback_error_invalid">O servidor recusou o conteúdo. Confira o título e a descrição e envie de novo.</string>
+    <string name="feedback_error_rate_limited">Muitas tentativas. Aguarde alguns segundos e envie de novo.</string>
+    <string name="feedback_error_server">O servidor não salvou desta vez. Seu texto foi mantido — envie de novo em instantes.</string>
 </resources>

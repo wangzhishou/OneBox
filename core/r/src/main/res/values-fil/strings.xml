@@ -2117,4 +2117,9 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <string name="long_task_notification_more">at %1$d pang tumatakbo</string>
     <!-- TextSelectionMenuContainer: label under the "Note" icon -->
     <string name="text_selection_action_note">Tala</string>
+    <string name="feedback_error_network">Walang koneksyon. Naitago ang teksto mo — kumonekta muli at ipadala ulit.</string>
+    <string name="feedback_error_auth">Nag-expire ang session mo. Mag-log in muli at ipadala ulit — naitago ang teksto mo.</string>
+    <string name="feedback_error_invalid">Tinanggihan ng server ang nilalaman. Suriin ang pamagat at paglalarawan, pagkatapos ipadala ulit.</string>
+    <string name="feedback_error_rate_limited">Sobra ang pagtatangka. Maghintay ng ilang segundo at ipadala ulit.</string>
+    <string name="feedback_error_server">Hindi ito na-save ng server sa pagkakataong ito. Naitago ang teksto mo — ipadala ulit mamaya.</string>
 </resources>

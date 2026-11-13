@@ -2105,4 +2105,9 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="long_task_notification_more">et %1$d autres en cours</string>
     <!-- TextSelectionMenuContainer: label under the "Note" icon -->
     <string name="text_selection_action_note">Note</string>
+    <string name="feedback_error_network">Pas de réseau. Ton texte est conservé : reconnecte-toi puis renvoie-le.</string>
+    <string name="feedback_error_auth">Ta session a expiré. Reconnecte-toi puis renvoie : ton texte est conservé.</string>
+    <string name="feedback_error_invalid">Le serveur a refusé le contenu. Vérifie le titre et la description, puis renvoie.</string>
+    <string name="feedback_error_rate_limited">Trop de tentatives. Attends quelques secondes puis renvoie.</string>
+    <string name="feedback_error_server">Le serveur n\'a pas pu l\'enregistrer cette fois. Ton texte est conservé : renvoie-le dans un instant.</string>
 </resources>

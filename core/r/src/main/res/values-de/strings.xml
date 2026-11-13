@@ -2117,4 +2117,9 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
     <string name="long_task_notification_more">und %1$d weitere aktiv</string>
     <!-- TextSelectionMenuContainer: label under the "Note" icon -->
     <string name="text_selection_action_note">Notiz</string>
+    <string name="feedback_error_network">Keine Verbindung. Dein Text bleibt erhalten – sobald du wieder online bist, erneut senden.</string>
+    <string name="feedback_error_auth">Deine Sitzung ist abgelaufen. Melde dich erneut an und sende noch einmal – dein Text bleibt erhalten.</string>
+    <string name="feedback_error_invalid">Der Server hat den Inhalt abgelehnt. Prüfe Titel und Beschreibung und sende erneut.</string>
+    <string name="feedback_error_rate_limited">Zu viele Versuche. Warte ein paar Sekunden und sende erneut.</string>
+    <string name="feedback_error_server">Der Server konnte es diesmal nicht speichern. Dein Text bleibt erhalten – gleich noch einmal senden.</string>
 </resources>

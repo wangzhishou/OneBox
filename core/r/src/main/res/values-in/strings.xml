@@ -2106,4 +2106,9 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
     <string name="long_task_notification_more">dan %1$d lainnya sedang berjalan</string>
     <!-- TextSelectionMenuContainer: label under the "Note" icon -->
     <string name="text_selection_action_note">Catatan</string>
+    <string name="feedback_error_network">Tidak ada jaringan. Tulisanmu tetap tersimpan — sambungkan lagi lalu kirim ulang.</string>
+    <string name="feedback_error_auth">Sesi kamu sudah berakhir. Masuk lagi lalu kirim ulang — tulisanmu tetap tersimpan.</string>
+    <string name="feedback_error_invalid">Server menolak isinya. Periksa judul dan deskripsi, lalu kirim ulang.</string>
+    <string name="feedback_error_rate_limited">Terlalu sering mengirim. Tunggu beberapa detik lalu kirim ulang.</string>
+    <string name="feedback_error_server">Server tidak menyimpannya kali ini. Tulisanmu tetap tersimpan — kirim ulang sebentar lagi.</string>
 </resources>

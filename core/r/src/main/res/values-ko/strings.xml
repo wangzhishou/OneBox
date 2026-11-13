@@ -2106,4 +2106,9 @@
     <string name="long_task_notification_more">외 %1$d개 작업 진행 중</string>
     <!-- TextSelectionMenuContainer: label under the "Note" icon -->
     <string name="text_selection_action_note">메모</string>
+    <string name="feedback_error_network">네트워크에 연결할 수 없습니다. 작성한 내용은 그대로 남아 있습니다. 연결 후 다시 제출하세요.</string>
+    <string name="feedback_error_auth">로그인 상태가 만료되었습니다. 작성한 내용은 그대로 남아 있습니다. 다시 로그인한 뒤 제출하세요.</string>
+    <string name="feedback_error_invalid">서버가 내용을 거부했습니다. 제목과 설명을 확인한 뒤 다시 제출하세요.</string>
+    <string name="feedback_error_rate_limited">제출이 너무 잦습니다. 몇 초 기다렸다가 다시 제출하세요.</string>
+    <string name="feedback_error_server">이번에는 서버에 저장되지 않았습니다. 작성한 내용은 그대로 남아 있습니다. 잠시 후 다시 제출하세요.</string>
 </resources>
