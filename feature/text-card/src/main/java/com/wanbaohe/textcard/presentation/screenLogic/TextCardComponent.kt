@@ -50,6 +50,7 @@ import com.wanbaohe.textcard.domain.CustomTextCardTemplateStore
 import com.wanbaohe.textcard.domain.StoredTextCardTemplate
 import com.wanbaohe.textcard.domain.TextCardImportService
 import com.wanbaohe.textcard.domain.TextCardExportRenderer
+import com.wanbaohe.textcard.domain.TextCardExportResult
 import com.wanbaohe.textcard.domain.TextCardExportService
 import com.wanbaohe.textcard.domain.TextCardPaperRepository
 import com.wanbaohe.textcard.domain.TextCardProjectStore
@@ -1114,35 +1115,13 @@ class TextCardComponent @AssistedInject internal constructor(
                 }
                 exportService.export(snapshot, currentLayout, pageIndices)
             }.onSuccess { result ->
-                result.saved.firstOrNull()?.let { first ->
-                    runCatching {
-                        imageSaveLogger.recordImageSave(
-                            screenId = Screen.TextCard().id.toString(),
-                            screenName = appContext.getString(
-                                com.shifenmiao.core.R.string.text_card
-                            ),
-                            description = "Text card export: ${result.saved.size} page(s)",
-                            fileUri = first.uri,
-                            fileName = first.fileName,
-                            savePath = first.savingPath
-                        )
-                    }
-                }
                 if (result.saved.isNotEmpty()) {
                     val first = result.saved.first()
+                    // 一次导出只落一条操作记录：多页汇总成「已保存 N 页」，不按页刷屏
+                    recordSaveLog(result)
                     AppToastHost.showFileSuccessToast(
                         uri = first.uri.takeIf(String::isNotBlank)?.toUri(),
-                        message = if (result.saved.size == 1) {
-                            SaveSuccessNotifier.successMessage(
-                                fileName = first.fileName,
-                                savingPath = first.savingPath
-                            )
-                        } else {
-                            appContext.getString(
-                                R.string.textcard_export_pages_success,
-                                result.saved.size
-                            )
-                        }
+                        message = saveOutcomeMessage(result)
                     )
                     AppToastHost.showConfetti()
                     registerSave()
@@ -1166,6 +1145,56 @@ class TextCardComponent @AssistedInject internal constructor(
             }.onFailure(AppToastHost::showFailureToast)
             _isSaving.value = false
         }
+    }
+
+    /**
+     * 一次导出的汇总文案：单页沿用标准保存文案（带文件名/目录），多页只报总页数。
+     *
+     * toast 和操作记录用同一份文案，避免两处口径不一致。
+     */
+    private fun saveOutcomeMessage(result: TextCardExportResult): String {
+        val first = result.saved.first()
+        return if (result.saved.size == 1) {
+            SaveSuccessNotifier.successMessage(
+                fileName = first.fileName,
+                savingPath = first.savingPath
+            )
+        } else {
+            appContext.getString(R.string.textcard_export_pages_success, result.saved.size)
+        }
+    }
+
+    /**
+     * 写操作记录：整批导出结束后只记一条。
+     *
+     * 分页卡片按页记会在「操作记录」里刷出几十条同名记录，这里统一记成一条汇总；
+     * 单页时把文件名/目录链接化，记录里可以直接点开文件或所在文件夹。
+     */
+    private suspend fun recordSaveLog(result: TextCardExportResult) {
+        val first = result.saved.firstOrNull() ?: return
+        val message = saveOutcomeMessage(result)
+        val description = if (result.saved.size == 1) {
+            SaveSuccessNotifier.linkifiedMessage(
+                message = message,
+                fileName = first.fileName,
+                linkableFileUri = first.uri,
+                savingPath = first.savingPath
+            )
+        } else {
+            message
+        }
+        runCatching {
+            imageSaveLogger.recordImageSave(
+                screenId = Screen.TextCard().id.toString(),
+                screenName = appContext.getString(
+                    com.shifenmiao.core.R.string.text_card
+                ),
+                description = description,
+                fileUri = first.uri,
+                fileName = first.fileName,
+                savePath = first.savingPath
+            )
+        }.onFailure { it.makeLog("TextCardSaveLog") }
     }
 
     fun shareCard(currentPageOnly: Boolean = false) {

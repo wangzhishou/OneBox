@@ -53,7 +53,7 @@ object ActivityLogNavigator {
             ActivityCategory.AI_CHAT -> resolveAiChat(payload)
             ActivityCategory.AI_DUEL -> resolveAiDuel(payload)
             ActivityCategory.AI_AGENT -> resolveAiAgent(payload)
-            ActivityCategory.IMAGE_EDIT -> resolveImageEdit(entry)
+            ActivityCategory.IMAGE_EDIT -> resolveImageEdit(entry, payload)
             ActivityCategory.NOTE_EDIT -> resolveNote(payload, dataDraftHelper)
             ActivityCategory.HTML_EDIT -> resolveHtml(entry, payload)
             ActivityCategory.BOOKKEEPING -> Screen.Bookkeeping()
@@ -120,7 +120,13 @@ object ActivityLogNavigator {
 
     // ── 图片编辑 ─────────────────────────────────────
 
-    private fun resolveImageEdit(entry: ActivityLogEntry): Screen? {
+    private fun resolveImageEdit(entry: ActivityLogEntry, payload: JSONObject?): Screen? {
+        // 文字卡片一次导出只记一条汇总，点开直接看导出的那一页，而不是进空白编辑器
+        if (entry.screenRoute == Screen.TextCard().id.toString()) {
+            payload?.optString("fileUri")
+                ?.takeIf(String::isNotBlank)
+                ?.let { uri -> return Screen.ImagePreview(uris = listOf(Uri.parse(uri))) }
+        }
         return when {
             entry.screenRoute == "browser" -> Screen.WebBrowser()
             else -> {
