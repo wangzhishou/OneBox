@@ -118,6 +118,8 @@
     <string name="allow_image_monet">允許來自圖片的莫內顏色</string>
     <string name="allow_image_monet_sub">如果啟用，當你選擇一張要編輯的圖片時，應用程式的顏色將根據此圖片改變</string>
     <string name="language">語言</string>
+    <string name="language_chinese_simplified">中文 (簡體中文)</string>
+    <string name="language_chinese_traditional">中文 (繁體中文)</string>
     <string name="language_switch_restart_message">切換語言後應用程式將自動重新啟動，進行中的工作會被中斷。</string>
     <string name="dynamic_colors">動態顏色</string>
     <string name="amoled_mode">AMOLED 模式</string>

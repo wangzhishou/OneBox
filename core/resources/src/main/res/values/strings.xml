@@ -143,6 +143,10 @@
     <string name="allow_image_monet">Allow Monet colors from images</string>
     <string name="allow_image_monet_sub">If enabled, when you pick an image to edit, the app colors will change based on it</string>
     <string name="language">Language</string>
+    <!-- 语言列表里中文条目的名称：ICU 对 zh-CN / zh-TW 会生成「中文 (中国) / 中文 (台灣)」，
+         统一改用简繁表述并随应用语言本地化（语言面板、设置页、DeviceInfo 同源）。 -->
+    <string name="language_chinese_simplified">Chinese (Simplified)</string>
+    <string name="language_chinese_traditional">Chinese (Traditional)</string>
     <string name="language_switch_restart_message">The app will restart to apply the new language. Ongoing tasks will be interrupted.</string>
     <string name="dynamic_colors">Dynamic colors</string>
     <string name="amoled_mode">AMOLED mode</string>

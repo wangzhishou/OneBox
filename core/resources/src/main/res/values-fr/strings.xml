@@ -123,6 +123,8 @@
     <string name="allow_image_monet">Autoriser les couleurs Monet à partir d\'une image</string>
     <string name="allow_image_monet_sub">Si activé, lorsque vous sélectionnez une image à modifier, les couleurs de l\'application changeront en fonction de cette image</string>
     <string name="language">Langue</string>
+    <string name="language_chinese_simplified">Chinois (simplifié)</string>
+    <string name="language_chinese_traditional">Chinois (traditionnel)</string>
     <string name="language_switch_restart_message">Après avoir changé de langue, l\'application redémarrera automatiquement et les tâches en cours seront interrompues.</string>
     <string name="dynamic_colors">Couleurs dynamiques</string>
     <string name="amoled_mode">Mode AMOLED</string>

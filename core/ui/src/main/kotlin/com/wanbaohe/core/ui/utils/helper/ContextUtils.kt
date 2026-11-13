@@ -485,7 +485,11 @@ object ContextUtils {
                 for (i in 0 until supportedLocales.size()) {
                     val locale = supportedLocales.get(i) ?: continue
                     add(
-                        locale.toLanguageTag() to locale.nativeLanguageDisplayName()
+                        locale.toLanguageTag() to (
+                            locale.chineseScript()
+                                ?.let { chineseLanguageName(it) }
+                                ?: locale.nativeLanguageDisplayName()
+                            )
                     )
                 }
             }
@@ -498,6 +502,45 @@ object ContextUtils {
         return languages.let { tags ->
             listOf(tags.first()) + tags.drop(1).sortedBy { it.second }
         }.toMap()
+    }
+
+    /**
+     * 中文变体返回简繁脚本标识（Hans / Hant），非中文返回 null。
+     * ICU 对带地区的 tag（zh-CN / zh-TW）会拼出「中文 (中国)」「中文 (台灣)」，
+     * 语言列表统一改用「简体中文 / 繁体中文」表述。
+     */
+    private fun Locale.chineseScript(): String? {
+        if (language != "zh") return null
+        return when {
+            script.equals("Hant", ignoreCase = true) -> "Hant"
+            script.equals("Hans", ignoreCase = true) -> "Hans"
+            country.equals("TW", ignoreCase = true) ||
+                country.equals("HK", ignoreCase = true) ||
+                country.equals("MO", ignoreCase = true) -> "Hant"
+            else -> "Hans"
+        }
+    }
+
+    private fun Context.chineseLanguageName(script: String): String =
+        if (script == "Hant") getString(R.string.language_chinese_traditional)
+        else getString(R.string.language_chinese_simplified)
+
+    /**
+     * 语言列表副标题：用当前应用语言显示该语言名。
+     * 中文变体与主标题同源（简繁表述、随应用语言本地化），
+     * 调用方的去重逻辑会隐藏重复的副标题行；非中文沿用 ICU 本地化名。
+     */
+    fun Context.getLanguageListSubtitle(lang: String): String {
+        val locale = if (lang.isEmpty()) {
+            // 空 key 是「跟随系统」，读系统 Configuration，避免显示成应用语言自己
+            val systemLocales = Resources.getSystem().configuration.locales
+            if (systemLocales.isEmpty) Locale.getDefault() else systemLocales[0]
+        } else {
+            Locale.forLanguageTag(lang)
+        }
+        return locale.chineseScript()
+            ?.let { chineseLanguageName(it) }
+            ?: getDisplayName(lang, useDefaultLocale = true)
     }
 
     // ICU 对印尼语返回的母语名是国名 "Indonesia",语言面板应显示 "Bahasa Indonesia"
@@ -522,10 +565,34 @@ object ContextUtils {
         if (locales == LocaleListCompat.getEmptyLocaleList()) {
             return getString(R.string.system)
         }
-        return locales.getDisplayName()
+        // 中文变体与语言列表主标题同源，避免显示名改写后选中态比较失效
+        return locales.get(0)?.chineseScript()
+            ?.let { chineseLanguageName(it) }
+            ?: locales.getDisplayName()
     }
 
-    fun LocaleListCompat.getDisplayName(): String = getDisplayName(toLanguageTags())
+    fun LocaleListCompat.getDisplayName(): String {
+        // 中文变体与语言面板的简繁表述同源（DeviceInfo 等处也走这里），
+        // 避免 ICU 带出「中文 (中国)」这类地区名；AppContext 未就绪时回落 ICU 名
+        val locale = if (isEmpty) {
+            val systemLocales = Resources.getSystem().configuration.locales
+            if (systemLocales.isEmpty) null else systemLocales[0]
+        } else {
+            get(0)
+        }
+        val script = locale?.chineseScript()
+        if (script != null) {
+            return runCatching { appContext.chineseLanguageName(script) }
+                .getOrElse {
+                    Locale.Builder()
+                        .setLanguage("zh")
+                        .setScript(script)
+                        .build()
+                        .getDisplayName(Locale.ENGLISH)
+                }
+        }
+        return getDisplayName(toLanguageTags())
+    }
 
     fun getDisplayName(
         lang: String?,

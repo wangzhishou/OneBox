@@ -54,7 +54,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.Info
 import com.t8rin.imagetoolbox.core.resources.icons.Language
 import com.wanbaohe.core.ui.utils.helper.ContextUtils.getCurrentLocaleString
-import com.wanbaohe.core.ui.utils.helper.ContextUtils.getDisplayName
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.getLanguageListSubtitle
 import com.wanbaohe.core.ui.utils.helper.ContextUtils.getLanguages
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedBottomSheetDefaults
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedButton
@@ -184,11 +184,8 @@ fun ChangeLanguageSheet(
                                 )
                             },
                             title = locale.value,
-                            subtitle = remember(locale) {
-                                getDisplayName(
-                                    lang = locale.key,
-                                    useDefaultLocale = true
-                                )
+                            subtitle = remember(locale.key) {
+                                context.getLanguageListSubtitle(locale.key)
                             }.takeIf { locale.value != it }
                         )
                     }

@@ -123,6 +123,8 @@
     <string name="allow_image_monet">وفقا لالوان الصورة المختارة</string>
     <string name="allow_image_monet_sub">في حالة التمكين ، عند اختيار صورة لتحريرها ، سيتم اعتماد ألوان التطبيق على هذه الصورة</string>
     <string name="language">اللغة</string>
+    <string name="language_chinese_simplified">الصينية (المبسطة)</string>
+    <string name="language_chinese_traditional">الصينية (التقليدية)</string>
     <string name="language_switch_restart_message">سيُعاد تشغيل التطبيق لتطبيق اللغة الجديدة. ستتوقف المهام الجارية.</string>
     <string name="dynamic_colors">ألوان ديناميكية</string>
     <string name="amoled_mode">وضع Amoled</string>

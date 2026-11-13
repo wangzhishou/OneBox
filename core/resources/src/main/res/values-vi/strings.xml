@@ -123,6 +123,8 @@
     <string name="allow_image_monet">Cho phép màu Monet từ hình ảnh</string>
     <string name="allow_image_monet_sub">Nếu bật, khi bạn chọn một hình ảnh để chỉnh sửa, màu của ứng dụng sẽ thay đổi theo hình ảnh đó</string>
     <string name="language">Ngôn ngữ</string>
+    <string name="language_chinese_simplified">Tiếng Trung (Giản thể)</string>
+    <string name="language_chinese_traditional">Tiếng Trung (Phồn thể)</string>
     <string name="language_switch_restart_message">Sau khi chuyển đổi ngôn ngữ, ứng dụng sẽ tự động khởi động lại và các tác vụ đang thực hiện sẽ bị gián đoạn.</string>
     <string name="dynamic_colors">Màu động</string>
     <string name="amoled_mode">Chế độ AMOLED</string>

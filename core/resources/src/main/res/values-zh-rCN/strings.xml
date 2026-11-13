@@ -143,6 +143,8 @@
     <string name="allow_image_monet">允许来自图片的莫奈颜色</string>
     <string name="allow_image_monet_sub">如果启用，当你选择一张要编辑的图片时，应用程序的颜色将根据此图片改变</string>
     <string name="language">语言</string>
+    <string name="language_chinese_simplified">中文 (简体中文)</string>
+    <string name="language_chinese_traditional">中文 (繁体中文)</string>
     <string name="language_switch_restart_message">切换语言后应用将自动重启，进行中的任务会被中断。</string>
     <string name="dynamic_colors">动态颜色</string>
     <string name="amoled_mode">AMOLED 模式</string>
