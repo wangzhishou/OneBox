@@ -73,32 +73,14 @@ class CreateFeedbackComponent @AssistedInject internal constructor(
     private val _tags: MutableStateFlow<List<Tag>> = MutableStateFlow(emptyList())
     val tags: StateFlow<List<Tag>> = _tags.asStateFlow()
 
-    // 初始选中只记 id, 名称在 fetchTags 成功后用接口下发的本地化文案补齐,
-    // 避免硬编码中文与列表项重复展示
-    private val _selectedTags: MutableStateFlow<List<Tag>> = MutableStateFlow(
-        listOf(
-            Tag(
-                id = 1,
-                name = "",
-                desc = ""
-            )
-        )
-    )
+    // 默认不预选任何分类: 标签 id 是按语言各存一行的真实主键(zh-CN 是 4/6/8…),
+    // 以前这里塞过一个占位 Tag(id = 1), 它既不出现在 entries 里(取消不掉),
+    // 又会被 initTags 写进 tagIds, 于是每次提交都带上不存在的 1 → 服务端 500。
+    private val _selectedTags: MutableStateFlow<List<Tag>> = MutableStateFlow(emptyList())
     val selectedTags: StateFlow<List<Tag>> = _selectedTags.asStateFlow()
 
     init {
         fetchTags()
-        initTags()
-    }
-
-    private fun initTags() {
-        componentScope.launch {
-            _feedbackRequest.value = _feedbackRequest.value.copy(
-                tagIds = _selectedTags.value.map { tag ->
-                    tag.id
-                }
-            )
-        }
     }
 
     private fun fetchTags() {
@@ -193,15 +175,10 @@ class CreateFeedbackComponent @AssistedInject internal constructor(
     }
 
     fun setSelected(selectTags: List<Tag>) {
-        if (selectTags.isNotEmpty()) {
-            componentScope.launch {
-                _selectedTags.value = selectTags
-                updateTags(
-                    selectTags.map { tag ->
-                        tag.id
-                    }
-                )
-            }
+        componentScope.launch {
+            _selectedTags.value = selectTags
+            // 取消到空也要同步, 否则 tagIds 会残留上一次的选中项
+            updateTags(selectTags.map { tag -> tag.id })
         }
     }
 
