@@ -507,19 +507,14 @@ fun ChatMessagesList(
                             item = item,
                             index = index,
                             codeBlockClickListener = codeBlockClickListener,
-                            // 等待气泡内附一行轻量引导，点击直达「新增引擎」；
+                            // 等待气泡内附一行轻量引导，点击进「服务与模型」列表
+                            // (先看清已有引擎再决定要不要新增，不直接跳到新增表单)；
                             // 回答返回后 Loading item 被替换，引导随之消失，不打断等待
                             onRobotLoading = {
                                 ChatLoadingIndicator(
                                     hint = {
                                         GoogleByokLoadingHint(
-                                            onClick = {
-                                                onNavigate(
-                                                    Screen.AISettings(
-                                                        Screen.AISettings.Type.AddEngine()
-                                                    )
-                                                )
-                                            }
+                                            onClick = { onNavigate(Screen.AISettings()) }
                                         )
                                     }
                                 )
