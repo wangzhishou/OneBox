@@ -912,6 +912,11 @@
     <string name="feedback_placeholder">Please describe the issue in detail so we can help faster</string>
     <string name="fields_required">Please fill in required fields.</string>
     <string name="feedback_failed">Submission failed. Please try again later.</string>
+    <string name="feedback_error_network">You\'re offline. Nothing you wrote is lost — reconnect and submit again.</string>
+    <string name="feedback_error_auth">Your session expired. Sign in again, then resubmit — your text is kept.</string>
+    <string name="feedback_error_invalid">The server rejected the content. Check the title and description, then submit again.</string>
+    <string name="feedback_error_rate_limited">Too many attempts. Wait a few seconds, then submit again.</string>
+    <string name="feedback_error_server">The server didn\'t save it this time. Your text is kept — submit again in a moment.</string>
     <string name="feedback_onSuccess">Feedback received! Thank you for helping us improve ❤️</string>
     <string name="feedback_title_placeholder">Briefly describe the issue</string>
     <string name="upload_failure">Upload failed. Please try again later.</string>

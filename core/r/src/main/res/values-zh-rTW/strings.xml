@@ -826,6 +826,11 @@
     <string name="feedback_placeholder">請詳細描述你遇到的問題，幫助我們更快解決</string>
     <string name="fields_required">請檢查必填欄位</string>
     <string name="feedback_failed">提交失敗，請稍後重試！</string>
+    <string name="feedback_error_network">網路連不上，內容已保留。恢復網路後再點一次提交。</string>
+    <string name="feedback_error_auth">登入狀態已過期，內容已保留。重新登入後再點一次提交。</string>
+    <string name="feedback_error_invalid">內容未通過服務端校驗。檢查一下標題和描述，改完再提交。</string>
+    <string name="feedback_error_rate_limited">提交太頻繁了，內容已保留。等幾秒再點一次。</string>
+    <string name="feedback_error_server">服務端這次沒存下，內容已保留。過一會兒再點一次提交。</string>
     <string name="feedback_onSuccess">回饋已收到！感謝你幫助我們改進產品 ❤️</string>
     <string name="feedback_title_placeholder">簡要描述問題或者點子</string>
     <string name="upload_failure">上傳失敗，請稍後重試</string>

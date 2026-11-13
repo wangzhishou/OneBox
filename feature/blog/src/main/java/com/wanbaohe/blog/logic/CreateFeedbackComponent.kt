@@ -31,6 +31,7 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.io.IOException
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.saving.FileController
 import com.t8rin.imagetoolbox.core.settings.domain.SettingsManager
@@ -101,22 +102,18 @@ class CreateFeedbackComponent @AssistedInject internal constructor(
         }
     }
 
+    // 清空输入要真的清空: 原来只要新值为空就整个忽略, 用户把标题删干净后
+    // 界面是空的、请求里却还带着上一次的旧标题。
     fun updateTitle(title: String) {
-        componentScope.launch {
-            if (title.isNotEmpty()) {
-                _isDataChange.value = true
-                _feedbackRequest.value = _feedbackRequest.value.copy(title = title)
-            }
-        }
+        if (_feedbackRequest.value.title == title) return
+        _isDataChange.value = true
+        _feedbackRequest.value = _feedbackRequest.value.copy(title = title)
     }
 
     fun updateContent(content: String) {
-        componentScope.launch {
-            if (content.isNotEmpty()) {
-                _isDataChange.value = true
-                _feedbackRequest.value = _feedbackRequest.value.copy(content = content)
-            }
-        }
+        if (_feedbackRequest.value.content == content) return
+        _isDataChange.value = true
+        _feedbackRequest.value = _feedbackRequest.value.copy(content = content)
     }
 
     private fun updateTags(tags: List<Int>) {
@@ -154,7 +151,7 @@ class CreateFeedbackComponent @AssistedInject internal constructor(
     }
 
     fun submitFeedback(
-        onFailed: () -> Unit = {},
+        onFailed: (FeedbackError) -> Unit = {},
         onSuccess: () -> Unit = {}
     ) {
         checkDataReadyDone {
@@ -165,10 +162,13 @@ class CreateFeedbackComponent @AssistedInject internal constructor(
                         _isDataChange.value = false
                         onSuccess()
                     } else {
-                        onFailed.invoke()
+                        onFailed.invoke(FeedbackError.fromHttpCode(response.code()))
                     }
+                } catch (_: IOException) {
+                    // 连不上/超时: 请求根本没到服务端, 与"服务端存不下"要分开说
+                    onFailed.invoke(FeedbackError.Network)
                 } catch (_: Exception) {
-                    onFailed.invoke()
+                    onFailed.invoke(FeedbackError.Unknown)
                 }
             }
         }

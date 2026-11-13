@@ -30,7 +30,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -65,6 +67,7 @@ import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.other.ToastDuration
 import com.t8rin.imagetoolbox.core.utils.getString
 import com.wanbaohe.blog.logic.CreateFeedbackComponent
+import com.wanbaohe.blog.logic.FeedbackError
 import com.wanbaohe.blog.ui.ImageUploadGallery
 import com.shifenmiao.common.upload.UploadingImage
 import kotlinx.coroutines.launch
@@ -82,6 +85,8 @@ fun CreateFeedbackScreen(
     var isLoading by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     var showExitDialog by rememberSaveable { mutableStateOf(false) }
+    // 提交失败的原因就地展示, 不靠一闪而过的 toast: 用户写的内容还在, 直接再点一次即可
+    var submitError by remember { mutableStateOf<FeedbackError?>(null) }
     var feedbackTitle by rememberSaveable { mutableStateOf(feedbackRequest.title) }
     val onBack = {
         if (isDataChange) {
@@ -191,6 +196,7 @@ fun CreateFeedbackScreen(
                     value = feedbackTitle,
                     onValueChange = {
                         feedbackTitle = it
+                        submitError = null
                         createFeedbackComponent.updateTitle(it)
                     },
                     placeholder = {
@@ -229,6 +235,7 @@ fun CreateFeedbackScreen(
                     value = markdownCode.value,
                     onValueChange = {
                         markdownCode.value = it
+                        submitError = null
                         createFeedbackComponent.updateContent(it.text)
                     },
                     placeholder = {
@@ -275,6 +282,12 @@ fun CreateFeedbackScreen(
                 )
             }
 
+            submitError?.let { error ->
+                item {
+                    SubmissionErrorHint(message = stringResource(error.messageRes()))
+                }
+            }
+
             item {
                 Spacer(modifier = Modifier.height(16.dp))
                 PrimaryButton(
@@ -282,10 +295,11 @@ fun CreateFeedbackScreen(
                     onClick = {
                         coroutineScope.launch {
                             isLoading = true
+                            submitError = null
                             createFeedbackComponent.submitFeedback(
-                                onFailed = {
+                                onFailed = { error ->
                                     isLoading = false
-                                    AppToastHost.showFailureToast(getString(R.string.feedback_failed))
+                                    submitError = error
                                 },
                                 onSuccess = {
                                     AppToastHost.showToast(
@@ -314,4 +328,33 @@ fun CreateFeedbackScreen(
         onDismiss = { showExitDialog = false },
         visible = showExitDialog
     )
+}
+
+/**
+ * 提交失败的原地提示: 说清是哪种失败、内容没丢、下一步怎么做。
+ */
+@Composable
+private fun SubmissionErrorHint(message: String) {
+    Surface(
+        color = MaterialTheme.colorScheme.errorContainer,
+        shape = MaterialTheme.shapes.medium,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = message,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onErrorContainer,
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp)
+        )
+    }
+}
+
+@StringRes
+private fun FeedbackError.messageRes(): Int = when (this) {
+    FeedbackError.Network -> R.string.feedback_error_network
+    FeedbackError.Auth -> R.string.feedback_error_auth
+    FeedbackError.Invalid -> R.string.feedback_error_invalid
+    FeedbackError.RateLimited -> R.string.feedback_error_rate_limited
+    FeedbackError.Server -> R.string.feedback_error_server
+    FeedbackError.Unknown -> R.string.feedback_failed
 }

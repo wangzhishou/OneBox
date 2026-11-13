@@ -949,6 +949,11 @@
     <string name="feedback_placeholder">请详细描述你遇到的问题，帮助我们更快解决</string>
     <string name="fields_required">请检查必填字段</string>
     <string name="feedback_failed">提交失败,请稍后重试!</string>
+    <string name="feedback_error_network">网络连不上,内容已保留。恢复网络后再点一次提交。</string>
+    <string name="feedback_error_auth">登录状态已过期,内容已保留。重新登录后再点一次提交。</string>
+    <string name="feedback_error_invalid">内容没通过服务端校验。检查一下标题和描述,改完再提交。</string>
+    <string name="feedback_error_rate_limited">提交太频繁了,内容已保留。等几秒再点一次。</string>
+    <string name="feedback_error_server">服务端这次没存下,内容已保留。过一会儿再点一次提交。</string>
     <string name="feedback_onSuccess">反馈已收到！感谢你帮助我们改进产品 ❤️</string>
     <string name="feedback_title_placeholder">简要描述问题或者点子</string>
     <string name="upload_failure">上传失败,请稍后重试</string>
