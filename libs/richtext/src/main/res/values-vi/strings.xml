@@ -2,7 +2,7 @@
 <resources>
     <string name="localized_description">Mô tả bản địa hóa</string>
     <string name="copy">Sao chép</string>
-    <string name="create_widget">Trang web yêu thích</string>
+    <string name="create_widget">Tiện ích nhỏ</string>
     <string name="run">Chạy</string>
     <string name="save">Lưu</string>
     <string name="mermaid_tab_diagram">Biểu đồ</string>

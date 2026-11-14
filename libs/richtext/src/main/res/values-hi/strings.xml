@@ -2,7 +2,7 @@
 <resources>
     <string name="localized_description">स्थानीय विवरण</string>
     <string name="copy">कॉपी करें</string>
-    <string name="create_widget">छोटे उपकरण बनाएं</string>
+    <string name="create_widget">मिनी टूल</string>
     <string name="run">चलाएं</string>
     <string name="save">सहेजें</string>
     <string name="mermaid_tab_diagram">आरेख</string>

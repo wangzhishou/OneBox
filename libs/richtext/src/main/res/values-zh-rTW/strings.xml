@@ -2,7 +2,7 @@
 <resources>
     <string name="localized_description">本地化描述</string>
     <string name="copy">複製</string>
-    <string name="create_widget">收藏網頁</string>
+    <string name="create_widget">小工具</string>
     <string name="run">執行</string>
     <string name="save">儲存</string>
     <string name="mermaid_tab_diagram">圖表</string>

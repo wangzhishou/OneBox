@@ -2,7 +2,7 @@
 <resources>
     <string name="localized_description">Lokal na paglalarawan</string>
     <string name="copy">Kopyahin</string>
-    <string name="create_widget">Gumawa ng maliliit na tool</string>
+    <string name="create_widget">Mini tool</string>
     <string name="run">Patakbuhin</string>
     <string name="save">I-save</string>
     <string name="mermaid_tab_diagram">Diagram</string>

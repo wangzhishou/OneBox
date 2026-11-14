@@ -2,7 +2,7 @@
 <resources>
     <string name="localized_description">ローカライズされた説明</string>
     <string name="copy">コピー</string>
-    <string name="create_widget">小さなツールを作成</string>
+    <string name="create_widget">ミニツール</string>
     <string name="run">実行</string>
     <string name="save">保存</string>
     <string name="mermaid_tab_diagram">図</string>

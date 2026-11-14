@@ -2,7 +2,7 @@
 <resources>
     <string name="localized_description">Descrição localizada</string>
     <string name="copy">Copiar</string>
-    <string name="create_widget">Criar ferramentas pequenas</string>
+    <string name="create_widget">Miniapp</string>
     <string name="run">Executar</string>
     <string name="save">Salvar</string>
     <string name="mermaid_tab_diagram">Diagrama</string>

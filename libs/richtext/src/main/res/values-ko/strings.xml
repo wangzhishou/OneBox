@@ -2,7 +2,7 @@
 <resources>
     <string name="localized_description">지역화된 설명</string>
     <string name="copy">복사</string>
-    <string name="create_widget">작은 도구 만들기</string>
+    <string name="create_widget">미니 도구</string>
     <string name="run">실행</string>
     <string name="save">저장</string>
     <string name="mermaid_tab_diagram">다이어그램</string>

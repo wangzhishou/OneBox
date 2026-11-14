@@ -62,7 +62,9 @@ fun CodeBlockActionButton(
         Text(
             text = title,
             style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1,
+            softWrap = false
         )
     }
 }
@@ -110,7 +112,9 @@ fun CreateWidgetActionButton(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(start = 4.dp),
                 // 建议也使用更小的字体
-                style = MaterialTheme.typography.labelSmall
+                style = MaterialTheme.typography.labelSmall,
+                maxLines = 1,
+                softWrap = false
             )
         }
     )

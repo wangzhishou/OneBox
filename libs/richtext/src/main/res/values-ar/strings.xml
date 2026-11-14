@@ -2,7 +2,7 @@
 <resources>
     <string name="localized_description">وصف مترجم</string>
     <string name="copy">نسخ</string>
-    <string name="create_widget">إنشاء أدوات صغيرة</string>
+    <string name="create_widget">أداة صغيرة</string>
     <string name="run">تشغيل</string>
     <string name="save">حفظ</string>
     <string name="mermaid_tab_diagram">مخطط</string>

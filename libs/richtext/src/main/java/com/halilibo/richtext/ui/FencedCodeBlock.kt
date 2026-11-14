@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalLayoutApi::class)
+
 package com.halilibo.richtext.ui
 
 import androidx.compose.foundation.background
@@ -5,6 +7,8 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -158,7 +162,6 @@ fun AsyncFencedCodeBlock(
             )
     ) {
         Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .padding(vertical = 8.dp)
@@ -175,36 +178,42 @@ fun AsyncFencedCodeBlock(
                     modifier = Modifier.padding(4.dp)
                 )
             }
-            Spacer(modifier = Modifier.weight(1f))
             codeBlockClickListener?.let {
-                if (codeBlockClickListener.isLanguageRunnable(codeBlock.info)) {
-                    CreateWidgetActionButton {
-                        codeBlockClickListener.onWidgetButtonClicked(
-                            language = codeBlock.info,
-                            code = codeBlock.literal
-                        )
+                // 长语种（俄/德/法/菲…）下 4 个按钮放不进一行：以前是固定 Row，
+                // 文字被压成竖排、末尾按钮直接被裁掉（俄文下「运行」都点不到）。
+                // 改成 FlowRow：放不下就换行，任何语言都能看到、点到全部按钮。
+                FlowRow(
+                    modifier = Modifier.weight(1f),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.End),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    itemVerticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (codeBlockClickListener.isLanguageRunnable(codeBlock.info)) {
+                        CreateWidgetActionButton {
+                            codeBlockClickListener.onWidgetButtonClicked(
+                                language = codeBlock.info,
+                                code = codeBlock.literal
+                            )
+                        }
                     }
-                }
-                Spacer(modifier = Modifier.width(4.dp))
-                CopyCodeActionButton {
-                    codeBlockClickListener.onCopyButtonClicked(code = codeBlock.literal)
-                }
-                Spacer(modifier = Modifier.width(4.dp))
-                if (codeBlockClickListener.isLanguageRunnable(codeBlock.info)) {
-                    RunCodeActionButton {
-                        codeBlockClickListener.onRunButtonClicked(
-                            code = codeBlock.literal,
-                            language = codeBlock.info
-                        )
+                    CopyCodeActionButton {
+                        codeBlockClickListener.onCopyButtonClicked(code = codeBlock.literal)
                     }
-                }
-                Spacer(modifier = Modifier.width(4.dp))
-                if (codeBlockClickListener.isLanguageSave(codeBlock.info)) {
-                    SaveCodeActionButton {
-                        codeBlockClickListener.onSaveButtonClicked(
-                            code = codeBlock.literal,
-                            language = codeBlock.info
-                        )
+                    if (codeBlockClickListener.isLanguageRunnable(codeBlock.info)) {
+                        RunCodeActionButton {
+                            codeBlockClickListener.onRunButtonClicked(
+                                code = codeBlock.literal,
+                                language = codeBlock.info
+                            )
+                        }
+                    }
+                    if (codeBlockClickListener.isLanguageSave(codeBlock.info)) {
+                        SaveCodeActionButton {
+                            codeBlockClickListener.onSaveButtonClicked(
+                                code = codeBlock.literal,
+                                language = codeBlock.info
+                            )
+                        }
                     }
                 }
             }

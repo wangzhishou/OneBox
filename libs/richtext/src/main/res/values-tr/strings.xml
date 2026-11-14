@@ -2,7 +2,7 @@
 <resources>
     <string name="localized_description">Yerelleştirilmiş açıklama</string>
     <string name="copy">Kopyala</string>
-    <string name="create_widget">Küçük araçlar oluştur</string>
+    <string name="create_widget">Mini araç</string>
     <string name="run">Çalıştır</string>
     <string name="save">Kaydet</string>
     <string name="mermaid_tab_diagram">Diyagram</string>

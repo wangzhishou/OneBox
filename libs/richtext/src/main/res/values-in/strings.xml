@@ -2,7 +2,7 @@
 <resources>
     <string name="localized_description">Deskripsi yang dilokalkan</string>
     <string name="copy">Salin</string>
-    <string name="create_widget">Buat alat kecil</string>
+    <string name="create_widget">Alat mini</string>
     <string name="run">Jalankan</string>
     <string name="save">Simpan</string>
     <string name="mermaid_tab_diagram">Diagram</string>

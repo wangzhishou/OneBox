@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources><string name="localized_description">Localized description</string>
     <string name="copy">Copy</string>
-    <string name="create_widget">Create small tools</string>
+    <string name="create_widget">Small tool</string>
     <string name="run">Run</string>
     <string name="save">Save</string>
     <string name="mermaid_tab_diagram">Diagram</string>

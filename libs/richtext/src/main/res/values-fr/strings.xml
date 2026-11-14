@@ -2,7 +2,7 @@
 <resources>
     <string name="localized_description">Description localisée</string>
     <string name="copy">Copier</string>
-    <string name="create_widget">Ajouter la page aux favoris</string>
+    <string name="create_widget">Mini-outil</string>
     <string name="run">Exécuter</string>
     <string name="save">Enregistrer</string>
     <string name="mermaid_tab_diagram">Graphique</string>
