@@ -132,7 +132,12 @@ data class StrapiImage(
     val ext: String? = null,
     val mime: String? = null,
     val size: Double? = null,
-    val url: String = ""
+    val url: String = "",
+    /**
+     * 文件记录更新时间（毫秒）。
+     * 封面缓存用它和 [hash] 判断资源头有没有变；旧缓存没有这个字段时按 null 读。
+     */
+    val updatedAt: Long? = null,
 ) : Parcelable
 
 @Parcelize

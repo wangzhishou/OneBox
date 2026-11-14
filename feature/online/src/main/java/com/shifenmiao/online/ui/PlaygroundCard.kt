@@ -19,7 +19,7 @@
 
 package com.shifenmiao.online.ui
 
-import androidx.compose.foundation.horizontalScroll
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,41 +28,44 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter
+import coil3.imageLoader
+import coil3.memory.MemoryCache
+import coil3.request.CachePolicy
+import coil3.request.ImageRequest
+import coil3.request.crossfade
+import coil3.size.Precision
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineStar
 import com.wanbaohe.com.string.TimeFormatter
 import java.util.Date
 import com.shifenmiao.common.components.Avatar
+import com.shifenmiao.common.components.blog.BlogTagChips
 import com.shifenmiao.core.R
+import com.shifenmiao.model.StrapiImage
 import com.shifenmiao.model.blog.BlogItem
-import com.shifenmiao.model.blog.Tag
 import com.shifenmiao.theme.AppTheme
-import com.wanbaohe.core.ui.widget.glass.GlassBadge
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineStar
 
 @Composable
 fun PlaygroundCard(
@@ -81,44 +84,20 @@ fun PlaygroundCard(
         Column(modifier = Modifier.fillMaxWidth()) {
             if (coverImage != null) {
                 // 小红书封面：比例夹在 3:4 和 4:3 之间，超出居中裁掉。
-                var coverRatio by remember(coverImage.url) {
-                    mutableFloatStateOf(
-                        xiaohongshuCoverRatio(coverImage.width, coverImage.height)
-                    )
-                }
+                // 只用接口给的原始宽高。解码后的 bitmap 是按显示框采样的，
+                // 拿它再改比例会换尺寸并触发第二次加载。
+                val coverRatio = xiaohongshuCoverRatio(coverImage.width, coverImage.height)
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .aspectRatio(coverRatio),
                     contentAlignment = Alignment.Center
                 ) {
-                    var isLoading by remember(coverImage.url) { mutableStateOf(true) }
-
-                    AsyncImage(
-                        // 网关 /api/blogs 的 formats 只保 thumbnail 小图,全宽封面直接用原图,避免放大模糊
-                        model = coverImage.url,
+                    CachedCoverImage(
+                        image = coverImage,
                         contentDescription = blog.title,
-                        contentScale = ContentScale.Crop,
-                        alignment = Alignment.Center,
                         modifier = Modifier.matchParentSize(),
-                        onState = { state ->
-                            isLoading = state is AsyncImagePainter.State.Loading
-                            if (state is AsyncImagePainter.State.Success) {
-                                val image = state.result.image
-                                if (image.width > 0 && image.height > 0) {
-                                    coverRatio = xiaohongshuCoverRatio(image.width, image.height)
-                                }
-                            }
-                        }
                     )
-
-                    if (isLoading) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(28.dp),
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            strokeWidth = 2.dp
-                        )
-                    }
 
                     if (blog.fixed) {
                         GlassSurface(
@@ -167,9 +146,10 @@ fun PlaygroundCard(
                     )
                 }
 
-                if (blog.tags.isNotEmpty()) {
-                    TagRow(tags = blog.tags)
-                }
+                BlogTagChips(
+                    tags = blog.tags,
+                    onTagClick = { onClick() },
+                )
 
                 PlaygroundAuthorRow(
                     name = blog.author?.nickname.orEmpty(),
@@ -182,30 +162,94 @@ fun PlaygroundCard(
 }
 
 @Composable
-private fun TagRow(tags: List<Tag>) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .horizontalScroll(rememberScrollState()),
-        horizontalArrangement = Arrangement.spacedBy(6.dp)
+private fun CachedCoverImage(
+    image: StrapiImage,
+    contentDescription: String?,
+    modifier: Modifier = Modifier,
+) {
+    val context = LocalContext.current
+    val cacheKey = remember(image.url, image.hash, image.updatedAt) {
+        coverCacheKey(image)
+    }
+    val memoryHit = remember(cacheKey) { memoryCacheContains(context, cacheKey) }
+    val diskHit = remember(cacheKey) { diskCacheContains(context, cacheKey) }
+    var forceNetwork by remember(cacheKey) { mutableStateOf(false) }
+    var showSpinner by remember(cacheKey) { mutableStateOf(!memoryHit && !diskHit) }
+    val request = remember(cacheKey, image.url, forceNetwork, context) {
+        ImageRequest.Builder(context)
+            .data(image.url)
+            .diskCacheKey(cacheKey)
+            .memoryCacheKey(cacheKey)
+            .placeholderMemoryCacheKey(MemoryCache.Key(cacheKey))
+            .precision(Precision.INEXACT)
+            .crossfade(false)
+            .networkCachePolicy(
+                if (diskHit && !forceNetwork) CachePolicy.DISABLED else CachePolicy.ENABLED
+            )
+            .build()
+    }
+
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center,
     ) {
-        tags.forEach { tag ->
-            GlassBadge(
-                style = GlassStyle.Thin,
-                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-            ) {
-                Text(
-                    text = tag.name,
-                    style = MaterialTheme.typography.labelSmall,
-                    modifier = Modifier.padding(
-                        horizontal = 8.dp,
-                        vertical = 4.dp
-                    )
-                )
+        AsyncImage(
+            model = request,
+            contentDescription = contentDescription,
+            contentScale = ContentScale.Crop,
+            alignment = Alignment.Center,
+            modifier = Modifier.matchParentSize(),
+            onState = { state ->
+                when (state) {
+                    is AsyncImagePainter.State.Success -> showSpinner = false
+                    is AsyncImagePainter.State.Error -> {
+                        showSpinner = false
+                        if (diskHit && !forceNetwork) forceNetwork = true
+                    }
+                    is AsyncImagePainter.State.Loading -> {
+                        if (!memoryHit && !diskHit) showSpinner = true
+                    }
+                    else -> Unit
+                }
             }
+        )
+
+        if (showSpinner) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(28.dp),
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                strokeWidth = 2.dp
+            )
         }
     }
+}
+
+/**
+ * 封面缓存键：URL 路径 + 文件 hash + 更新时间。
+ * 签名 query 会变，不参与键。路径、hash、updatedAt 都没变就命中旧缓存，不再请求。
+ */
+private fun coverCacheKey(image: StrapiImage): String {
+    val stableUrl = image.url.substringBefore('#').substringBefore('?')
+    val revision = buildString {
+        image.hash?.takeIf { it.isNotBlank() }?.let { append(it) }
+        val updatedAt = image.updatedAt
+        if (updatedAt != null && updatedAt > 0L) {
+            if (isNotEmpty()) append('|')
+            append(updatedAt)
+        }
+    }
+    return if (revision.isEmpty()) stableUrl else "$stableUrl|$revision"
+}
+
+private fun memoryCacheContains(context: Context, key: String): Boolean {
+    return context.imageLoader.memoryCache?.get(MemoryCache.Key(key)) != null
+}
+
+private fun diskCacheContains(context: Context, key: String): Boolean {
+    val cache = context.imageLoader.diskCache ?: return false
+    return runCatching {
+        cache.openSnapshot(key)?.use { true } ?: false
+    }.getOrDefault(false)
 }
 
 @Composable

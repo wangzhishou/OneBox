@@ -39,7 +39,7 @@ import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.core.R
 import com.shifenmiao.model.blog.BlogDetailState
 import com.shifenmiao.common.components.blog.AuthorInfo
-import com.shifenmiao.common.components.common.ImageThumbnailRow
+import com.shifenmiao.common.components.blog.BlogTagChips
 import com.shifenmiao.webview.mermaid.ProvideMermaidRenderer
 import com.wanbaohe.blog.logic.BlogComponent
 
@@ -86,12 +86,10 @@ fun BlogContent(
                 },
                 lazyListState = lazyListState,
                 headerContent = {
-                    // 图片区域
-                    blog?.picture?.takeIf { it.isNotEmpty() }?.let { images ->
-                        item(key = "blog_images") {
-                            Spacer(modifier = Modifier.height(8.dp))
-                            ImageThumbnailRow(images = images)
-                            Spacer(modifier = Modifier.height(8.dp))
+                    val tags = blog?.tags?.filter { it.name.isNotBlank() }.orEmpty()
+                    if (tags.isNotEmpty()) {
+                        item(key = "blog_tags") {
+                            BlogTagChips(tags = tags)
                         }
                     }
                 },
