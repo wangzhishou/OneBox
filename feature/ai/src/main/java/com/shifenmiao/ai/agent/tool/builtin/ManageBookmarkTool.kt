@@ -31,6 +31,7 @@ import com.shifenmiao.model.ai.ToolParameters
 import com.shifenmiao.model.ai.tool.ToolCategory
 import com.shifenmiao.model.ai.tool.ToolRiskLevel
 import org.json.JSONObject
+import java.util.Locale
 import javax.inject.Inject
 
 class ManageBookmarkTool @Inject constructor(
@@ -38,50 +39,54 @@ class ManageBookmarkTool @Inject constructor(
     private val textProvider: AgentToolTextProvider,
 ) : AgentTool {
 
+    private companion object {
+        /** 报错时回给模型的白名单，模型据此重试（schema 里的 enum 有的模型不遵守）。 */
+        val ALL_ACTIONS = listOf(
+            "add_bookmark", "remove_bookmark", "list_bookmarks",
+            "create_folder", "delete_folder", "list_folders",
+        )
+    }
+
     override val name = "manage_bookmark"
-    override val description = "管理网址收藏（浏览器书签与「网址收藏」是同一个收藏库，分类与笔记等全局分类共享）：添加/删除收藏网址、创建/删除收藏分类、分页列出收藏和分类"
-    override val title = "管理书签"
-    override val summary = "添加收藏网址、创建收藏夹分类"
+    override val description = textProvider.raw(R.raw.agent_tool_description_manage_bookmark)
+    override val title = textProvider.string(R.string.agent_tool_manage_bookmark_title)
+    override val summary = textProvider.string(R.string.agent_tool_manage_bookmark_summary)
     override val category = ToolCategory.BUSINESS
     override val riskLevel = ToolRiskLevel.SAFE
 
     /** 书签列表默认 20 条/页，最多 100 条；避免长列表撞上工具结果上限被硬截断。 */
     override val maxResultLength: Int = 16_384
 
-    override val keywords = listOf("书签", "收藏", "bookmark", "收藏夹", "添加书签", "删除书签", "整理收藏", "网址收藏")
-    override val examples = listOf(
-        "把 https://example.com 添加到书签",
-        "创建一个叫「技术博客」的书签分类",
-        "列出所有书签分类",
-    )
+    override val keywords = textProvider.array(R.array.agent_tool_manage_bookmark_keywords)
+    override val examples = textProvider.array(R.array.agent_tool_manage_bookmark_examples)
     override val parallelizable = false
 
     override val parametersSchema = ToolParameters(
         properties = mapOf(
             "action" to ToolParameterProperty(
                 type = "string",
-                description = "操作类型",
+                description = textProvider.string(R.string.agent_tool_manage_bookmark_param_action),
                 enum = listOf("add_bookmark", "remove_bookmark", "list_bookmarks", "create_folder", "delete_folder", "list_folders")
             ),
             "url" to ToolParameterProperty(
                 type = "string",
-                description = "网址（add_bookmark / remove_bookmark 时必填）"
+                description = textProvider.string(R.string.agent_tool_manage_bookmark_param_url)
             ),
             "title" to ToolParameterProperty(
                 type = "string",
-                description = "书签标题（add_bookmark 时可选，默认使用 URL）"
+                description = textProvider.string(R.string.agent_tool_manage_bookmark_param_title)
             ),
             "folder_id" to ToolParameterProperty(
                 type = "string",
-                description = "所属分类 ID（add_bookmark / delete_folder 时使用，来自 list_folders）"
+                description = textProvider.string(R.string.agent_tool_manage_bookmark_param_folder_id)
             ),
             "folder_name" to ToolParameterProperty(
                 type = "string",
-                description = "分类名称（create_folder 时必填）"
+                description = textProvider.string(R.string.agent_tool_manage_bookmark_param_folder_name)
             ),
             "bookmark_id" to ToolParameterProperty(
                 type = "string",
-                description = "书签条目 ID（remove_bookmark 时必填，来自 list_bookmarks）"
+                description = textProvider.string(R.string.agent_tool_manage_bookmark_param_bookmark_id)
             ),
             "limit" to ToolParameterProperty(
                 type = "integer",
@@ -98,52 +103,130 @@ class ManageBookmarkTool @Inject constructor(
     override suspend fun execute(arguments: String): AgentToolResult {
         return runCatching {
             val json = if (arguments.isBlank()) JSONObject() else JSONObject(arguments)
-            when (json.optString("action")) {
+            when (val action = resolveAction(json)) {
                 "add_bookmark" -> addBookmark(json)
                 "remove_bookmark" -> removeBookmark(json)
                 "list_bookmarks" -> listBookmarks(json)
                 "create_folder" -> createFolder(json)
                 "delete_folder" -> deleteFolder(json)
                 "list_folders" -> listFolders()
-                else -> AgentToolResult("未知 action，支持: add_bookmark, remove_bookmark, list_bookmarks, create_folder, delete_folder, list_folders", isError = true)
+                else -> AgentToolResult(
+                    content = textProvider.string(
+                        R.string.agent_tool_bookmark_unknown_action,
+                        action,
+                        ALL_ACTIONS.joinToString(", ")
+                    ),
+                    isError = true
+                )
             }
-        }.getOrElse { AgentToolResult("操作失败: ${it.message}", isError = true) }
+        }.getOrElse {
+            AgentToolResult(
+                content = textProvider.string(
+                    R.string.agent_tool_bookmark_failed,
+                    it.message ?: textProvider.string(R.string.agent_tool_unknown_error)
+                ),
+                isError = true
+            )
+        }
     }
+
+    /**
+     * 模型常按"用户怎么说"编动作名（add / create / new / remove …），收敛成真实动作。
+     *
+     * 裸动词按参数判意图：有 url 就是加书签，只有 folder_name 才是建分类 —— 不能一律当 add_bookmark，
+     * 否则「新建一个收藏分类」会被当成缺 url 的收藏而报错（线上就是这类失败）。
+     */
+    private fun resolveAction(json: JSONObject): String {
+        val key = json.optString("action")
+            .trim()
+            .lowercase(Locale.ROOT)
+            .replace('-', '_')
+            .replace(' ', '_')
+        val hasUrl = json.optString("url").isNotBlank()
+        val hasFolderName = json.optString("folder_name").isNotBlank()
+
+        return when (key) {
+            "add_bookmark", "add", "create", "new", "insert", "save", "save_bookmark",
+            "add_favorite", "bookmark", "add_url" ->
+                if (!hasUrl && hasFolderName) "create_folder" else "add_bookmark"
+
+            "remove_bookmark", "delete_bookmark", "remove", "delete", "delete_url" -> "remove_bookmark"
+            "list_bookmarks", "list", "get_list", "query", "browse", "list_favorite" -> "list_bookmarks"
+            "create_folder", "add_folder", "new_folder", "create_category", "add_category",
+            "create_collection" -> "create_folder"
+            "delete_folder", "remove_folder", "delete_category", "remove_category" -> "delete_folder"
+            "list_folders", "list_folder", "list_categories", "get_folders", "folders" -> "list_folders"
+            else -> key
+        }
+    }
+
+    private fun errorResult(resId: Int, vararg args: Any): AgentToolResult = AgentToolResult(
+        content = textProvider.string(resId, *args),
+        isError = true
+    )
 
     private suspend fun addBookmark(json: JSONObject): AgentToolResult {
         val url = json.optString("url").takeIf { it.isNotBlank() }
-            ?: return AgentToolResult("缺少 url 参数", isError = true)
+            ?: return errorResult(R.string.agent_tool_bookmark_missing_url)
         val title = json.optString("title").takeIf { it.isNotBlank() } ?: url
         val folderId = json.optString("folder_id").takeIf { it.isNotBlank() }?.toLongOrNull()
 
         if (folderId != null) {
             val folders = bookmarkService.listCategories()
             if (folders.none { it.id == folderId }) {
-                return AgentToolResult("分类 $folderId 不存在，可用: ${folders.map { "${it.id}(${it.name})" }}", isError = true)
+                return AgentToolResult(
+                    textProvider.string(
+                        R.string.agent_tool_bookmark_folder_not_found,
+                        folderId.toString(),
+                        folders.joinToString(", ") { "${it.id}(${it.name})" }
+                    ),
+                    isError = true
+                )
             }
         }
 
         bookmarkService.findByUrl(url)?.let {
-            return AgentToolResult("书签已存在: ${it.title} (id: ${it.itemId})", isError = true)
+            return AgentToolResult(
+                textProvider.string(
+                    R.string.agent_tool_bookmark_exists,
+                    it.title.orEmpty(),
+                    it.itemId.toString()
+                ),
+                isError = true
+            )
         }
 
         val itemId = bookmarkService.saveBookmark(url, title, folderId)
         val folderName = folderId?.let { id ->
             bookmarkService.listCategories().find { it.id == id }?.name
-        } ?: "未分类"
-        return AgentToolResult("已添加书签:\n- id: $itemId\n- 标题: $title\n- URL: $url\n- 分类: $folderName")
+        } ?: textProvider.string(R.string.agent_tool_bookmark_uncategorized)
+        return AgentToolResult(
+            textProvider.string(
+                R.string.agent_tool_bookmark_added,
+                itemId.toString(),
+                title,
+                url,
+                folderName
+            )
+        )
     }
 
     private suspend fun removeBookmark(json: JSONObject): AgentToolResult {
         val bookmarkId = json.optString("bookmark_id").takeIf { it.isNotBlank() }
-            ?: return AgentToolResult("缺少 bookmark_id 参数", isError = true)
+            ?: return errorResult(R.string.agent_tool_bookmark_missing_bookmark_id)
 
         val bookmarks = bookmarkService.listBookmarks()
         val target = bookmarks.find { it.itemId.toString() == bookmarkId }
-            ?: return AgentToolResult("书签 $bookmarkId 不存在", isError = true)
+            ?: return errorResult(R.string.agent_tool_bookmark_not_found, bookmarkId)
 
         bookmarkService.removeBookmark(target.itemId)
-        return AgentToolResult("已删除书签: ${target.title} (${target.url})")
+        return AgentToolResult(
+            textProvider.string(
+                R.string.agent_tool_bookmark_removed,
+                target.title.orEmpty(),
+                target.url
+            )
+        )
     }
 
     private suspend fun listBookmarks(json: JSONObject): AgentToolResult {
@@ -159,7 +242,10 @@ class ManageBookmarkTool @Inject constructor(
                 "id" to item.itemId,
                 "title" to item.title,
                 "url" to item.url,
-                "category" to (item.categoryIds.firstOrNull()?.let { categoryNames[it] } ?: "未分类"),
+                "category" to (
+                    item.categoryIds.firstOrNull()?.let { categoryNames[it] }
+                        ?: textProvider.string(R.string.agent_tool_bookmark_uncategorized)
+                    ),
             )
         }
         val hasMore = offset + page.size < bookmarks.size
@@ -179,39 +265,73 @@ class ManageBookmarkTool @Inject constructor(
 
     private suspend fun createFolder(json: JSONObject): AgentToolResult {
         val folderName = json.optString("folder_name").takeIf { it.isNotBlank() }
-            ?: return AgentToolResult("缺少 folder_name 参数", isError = true)
+            ?: return errorResult(R.string.agent_tool_bookmark_missing_folder_name)
 
         bookmarkService.listCategories().find { it.name == folderName }?.let {
-            return AgentToolResult("分类「$folderName」已存在 (id: ${it.id})", isError = true)
+            return AgentToolResult(
+                textProvider.string(
+                    R.string.agent_tool_bookmark_folder_exists,
+                    folderName,
+                    it.id.toString()
+                ),
+                isError = true
+            )
         }
 
         val categoryId = bookmarkService.createCategory(folderName)
-        return AgentToolResult("已创建书签分类: $folderName (id: $categoryId)")
+        return AgentToolResult(
+            textProvider.string(
+                R.string.agent_tool_bookmark_folder_created,
+                folderName,
+                categoryId.toString()
+            )
+        )
     }
 
     private suspend fun deleteFolder(json: JSONObject): AgentToolResult {
         val folderId = json.optString("folder_id").takeIf { it.isNotBlank() }?.toLongOrNull()
-            ?: return AgentToolResult("缺少 folder_id 参数", isError = true)
+            ?: return errorResult(R.string.agent_tool_bookmark_missing_folder_id)
 
         val folders = bookmarkService.listCategories()
         val target = folders.find { it.id == folderId }
-            ?: return AgentToolResult("分类 $folderId 不存在", isError = true)
+            ?: return errorResult(R.string.agent_tool_bookmark_not_found, folderId.toString())
 
         if (!bookmarkService.deleteCategory(folderId)) {
-            return AgentToolResult("分类「${target.name}」是内置分类，不可删除", isError = true)
+            return AgentToolResult(
+                textProvider.string(
+                    R.string.agent_tool_bookmark_folder_builtin,
+                    target.name.orEmpty()
+                ),
+                isError = true
+            )
         }
-        return AgentToolResult("已删除分类: ${target.name}，其中书签已移至未分类")
+        return AgentToolResult(
+            textProvider.string(
+                R.string.agent_tool_bookmark_folder_deleted,
+                target.name.orEmpty()
+            )
+        )
     }
 
     private suspend fun listFolders(): AgentToolResult {
         val folders = bookmarkService.listCategories()
-        if (folders.isEmpty()) return AgentToolResult("暂无书签分类")
+        if (folders.isEmpty()) {
+            return AgentToolResult(textProvider.string(R.string.agent_tool_bookmark_no_folders))
+        }
 
         val bookmarks = bookmarkService.listBookmarks()
-        val sb = StringBuilder("书签分类:\n")
+        val sb = StringBuilder(textProvider.string(R.string.agent_tool_bookmark_folder_list_header))
+        sb.appendLine()
         folders.forEach { folder ->
             val count = bookmarks.count { folder.id in it.categoryIds }
-            sb.appendLine("· ${folder.name} (id: ${folder.id}, $count 个书签)")
+            sb.appendLine(
+                textProvider.string(
+                    R.string.agent_tool_bookmark_folder_row,
+                    folder.name.orEmpty(),
+                    folder.id.toString(),
+                    count.toString()
+                )
+            )
         }
         return AgentToolResult(sb.toString().trimEnd())
     }

@@ -1,0 +1,1 @@
+Manage URL bookmarks (browser bookmarks and the in-app "URL favorites" share one library; folders are the same global categories used by notes): add/remove a bookmarked URL, create/delete a bookmark folder, list bookmarks and folders with pagination.

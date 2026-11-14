@@ -1137,5 +1137,19 @@
         <item>Create a decision wheel for weekend plans</item>
         <item>Spin a wheel to pick a random restaurant</item>
     </string-array>
+
+    <string-array name="agent_tool_manage_bookmark_keywords">
+        <item>bookmark</item>
+        <item>favorite</item>
+        <item>save link</item>
+        <item>read later</item>
+        <item>bookmark folder</item>
+    </string-array>
+
+    <string-array name="agent_tool_manage_bookmark_examples">
+        <item>Add https://example.com to my bookmarks</item>
+        <item>Create a bookmark folder called Tech Blogs</item>
+        <item>List all my bookmark folders</item>
+    </string-array>
 </resources>
 

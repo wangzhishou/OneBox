@@ -47,6 +47,13 @@ class ManageTodoTool @Inject constructor(
     private val textProvider: AgentToolTextProvider,
 ) : AgentTool {
 
+    /** 报错时回给模型的白名单，模型据此重试（schema 的 enum 有的模型不遵守）。 */
+    private val allowedActions = listOf(
+        "create_list", "create_task", "create_category", "list",
+        "complete_task", "reopen_task", "toggle_complete",
+        "star_task", "unstar_task", "toggle_star", "delete_task",
+    )
+
     override val name: String = "manage_todo"
 
     override val description: String =
@@ -164,7 +171,7 @@ class ManageTodoTool @Inject constructor(
     override suspend fun execute(arguments: String): AgentToolResult {
         return try {
             val params = AppJson.decodeFromString<ManageTodoParams>(arguments)
-            when (normalizeAction(params.action)) {
+            when (resolveAction(params)) {
                 "list" -> handleList(params)
                 "create_list" -> handleCreateList(params)
                 "create_task" -> handleCreateTask(params)
@@ -178,8 +185,9 @@ class ManageTodoTool @Inject constructor(
                 "delete_task" -> handleDeleteTask(params)
                 else -> AgentToolResult(
                     content = textProvider.string(
-                        R.string.agent_tool_manage_todo_unknown_action,
-                        params.action
+                        R.string.agent_tool_unknown_action_with_options,
+                        params.action,
+                        allowedActions.joinToString(", ")
                     ),
                     isError = true
                 )
@@ -204,6 +212,22 @@ class ManageTodoTool @Inject constructor(
      * 旧实现把 "complete"/"reopen"/"star" 都映射到 toggle，模型对已完成任务再说"完成"
      * 会把任务反开，属于会改错数据的语义 bug。
      */
+    /**
+     * 归一化后仍只是「裸动词」（add / create / new …）时，按参数判意图：
+     * 带了 tasks 或只有 title 就是一次建清单，否则按建任务处理。
+     *
+     * schema 里给了 enum，但模型经常不遵守（阿语实测先发 "add" 再发 "create"，
+     * 两次都被拒，第三次才蒙对）—— 这种可自愈的失败没理由让用户等三个来回。
+     */
+    private fun resolveAction(params: ManageTodoParams): String {
+        val key = normalizeAction(params.action)
+        return when (key) {
+            "add", "create", "new", "insert", "append", "make", "add_item", "create_item" ->
+                if (!params.tasks.isNullOrEmpty()) "create_list" else "create_task"
+            else -> key
+        }
+    }
+
     private fun normalizeAction(raw: String): String {
         val key = raw.trim().lowercase(Locale.ROOT).replace('-', '_').replace(' ', '_')
         return when (key) {

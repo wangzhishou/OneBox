@@ -1105,4 +1105,20 @@
         <item>Create a decision wheel for weekend plans</item>
         <item>Spin a wheel to pick a random restaurant</item>
     </string-array>
+
+    <string-array name="agent_tool_manage_bookmark_keywords">
+        <item>书签</item>
+        <item>收藏</item>
+        <item>网址收藏</item>
+        <item>收藏夹</item>
+        <item>添加书签</item>
+        <item>删除书签</item>
+        <item>整理收藏</item>
+    </string-array>
+
+    <string-array name="agent_tool_manage_bookmark_examples">
+        <item>把 https://example.com 添加到书签</item>
+        <item>创建一个叫「技术博客」的书签分类</item>
+        <item>列出所有书签分类</item>
+    </string-array>
 </resources>
