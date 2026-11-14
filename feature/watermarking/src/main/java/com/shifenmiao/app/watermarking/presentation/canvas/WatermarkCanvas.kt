@@ -20,11 +20,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons as MaterialIcons
+import androidx.compose.material.icons.outlined.ChevronLeft
+import androidx.compose.material.icons.outlined.ChevronRight
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.FitScreen
 import androidx.compose.material.icons.outlined.ZoomOutMap
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
@@ -37,12 +41,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -53,7 +59,6 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.calculateCentroid
 import androidx.compose.foundation.gestures.calculatePan
 import androidx.compose.foundation.gestures.calculateZoom
-import androidx.compose.foundation.gestures.detectTapGestures
 import com.shifenmiao.common.ui.ImmersiveModeState
 import com.shifenmiao.model.editor.LayerTransform
 import com.t8rin.imagetoolbox.core.resources.Icons
@@ -66,6 +71,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineZoomOut
 import com.shifenmiao.app.watermarking.data.render.WatermarkDrawEngine
 import com.shifenmiao.app.watermarking.domain.model.ResolvedWatermarkElement
 import com.shifenmiao.app.watermarking.domain.model.WatermarkKind
+import com.shifenmiao.app.watermarking.domain.model.kind
 import com.shifenmiao.app.watermarking.domain.render.WatermarkVisual
 import com.shifenmiao.app.watermarking.presentation.model.icon
 import com.shifenmiao.app.watermarking.presentation.model.title
@@ -102,7 +108,14 @@ fun WatermarkCanvas(
     onTransformChange: (String, LayerTransform) -> Unit,
     onTransformEnd: (String, LayerTransform) -> Unit,
     onDeleteElement: (String) -> Unit,
+    onEditElement: (String) -> Unit,
     onAddElement: (WatermarkKind) -> Unit,
+    imageIndex: Int,
+    imageCount: Int,
+    onPreviousImage: () -> Unit,
+    onNextImage: () -> Unit,
+    hasElements: Boolean,
+    hiddenOnly: Boolean,
     createVisuals: suspend (Int, Int) -> Map<String, WatermarkVisual<Bitmap>>,
     modifier: Modifier = Modifier,
 ) {
@@ -217,14 +230,10 @@ fun WatermarkCanvas(
                                 val element = resolved.element
                                 if (!element.transform.visible) return@forEach
                                 val visual = visuals[element.id] ?: return@forEach
+                                // 平铺层只画在全屏 Canvas 上,不接收点击:否则它会盖住
+                                // 其它图层,连"点空白取消选中"都会失效。
                                 if (element.layout.isRepeated) {
-                                    Canvas(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .pointerInput(element.id) {
-                                                detectTapGestures { onSelectElement(element.id) }
-                                            },
-                                    ) {
+                                    Canvas(modifier = Modifier.fillMaxSize()) {
                                         drawIntoCanvas { canvas ->
                                             WatermarkDrawEngine.drawRepeated(
                                                 canvas.nativeCanvas,
@@ -233,40 +242,44 @@ fun WatermarkCanvas(
                                             )
                                         }
                                     }
-                                } else {
-                                    Canvas(modifier = Modifier.fillMaxSize()) {
-                                        drawIntoCanvas { canvas ->
-                                            WatermarkDrawEngine.drawSingle(
-                                                canvas.nativeCanvas,
-                                                visual,
-                                                element,
-                                            )
+                                }
+                                // 平铺层的选框锚在平铺相位中心。单图层的内容直接放在选框内,
+                                // 位移、缩放、旋转和翻转都只由同一个容器处理。
+                                EditorLayerBox(
+                                    transform = element.transform,
+                                    isSelected = selectedElementId == element.id && !immersiveModeState.isImmersive,
+                                    onSelect = { onSelectElement(element.id) },
+                                    onEditRequest = { onEditElement(element.id) },
+                                    onTransformStart = onTransformStart,
+                                    onTransformChange = { onTransformChange(element.id, it) },
+                                    onTransformEnd = { onTransformEnd(element.id, it) },
+                                    onDelete = { onDeleteElement(element.id) },
+                                    labels = EditorLayerBoxLabels(
+                                        scale = stringResource(R.string.watermark_scale),
+                                        rotate = stringResource(R.string.watermark_rotate),
+                                        resizeWidth = stringResource(R.string.watermark_resize),
+                                        delete = stringResource(R.string.delete),
+                                    ),
+                                    gesturesEnabled = !immersiveModeState.isImmersive,
+                                    showHandles = selectedElementId == element.id,
+                                    canvasScale = viewport.scale,
+                                ) {
+                                    val contentModifier = Modifier.size(
+                                        with(density) { visual.width.toDp() },
+                                        with(density) { visual.height.toDp() },
+                                    )
+                                    if (element.layout.isRepeated) {
+                                        Box(modifier = contentModifier)
+                                    } else {
+                                        Canvas(modifier = contentModifier) {
+                                            drawIntoCanvas { canvas ->
+                                                WatermarkDrawEngine.drawContent(
+                                                    canvas.nativeCanvas,
+                                                    visual,
+                                                    element,
+                                                )
+                                            }
                                         }
-                                    }
-                                    EditorLayerBox(
-                                        transform = element.transform,
-                                        isSelected = selectedElementId == element.id && !immersiveModeState.isImmersive,
-                                        onSelect = { onSelectElement(element.id) },
-                                        onTransformStart = onTransformStart,
-                                        onTransformChange = { onTransformChange(element.id, it) },
-                                        onTransformEnd = { onTransformEnd(element.id, it) },
-                                        onDelete = { onDeleteElement(element.id) },
-                                        labels = EditorLayerBoxLabels(
-                                            scale = stringResource(R.string.watermark_scale),
-                                            rotate = stringResource(R.string.watermark_rotate),
-                                            resizeWidth = stringResource(R.string.watermark_resize),
-                                            delete = stringResource(R.string.delete),
-                                        ),
-                                        gesturesEnabled = !immersiveModeState.isImmersive,
-                                        showHandles = selectedElementId == element.id,
-                                        canvasScale = viewport.scale,
-                                    ) {
-                                        Box(
-                                            modifier = Modifier.size(
-                                                with(density) { visual.width.toDp() },
-                                                with(density) { visual.height.toDp() },
-                                            ),
-                                        )
                                     }
                                 }
                             }
@@ -294,9 +307,14 @@ fun WatermarkCanvas(
                 CanvasControl(Icons.Outlined.LineZoomIn, R.string.watermark_zoom_in, viewport.scale < viewport.maxScale) {
                     viewport.zoomTo(viewport.scale + 0.5f)
                 }
-                CanvasControl(Icons.Outlined.LineUndo, R.string.undo, canUndo, onUndo)
-                CanvasControl(Icons.Outlined.LineRedo, R.string.redo, canRedo, onRedo)
-                CanvasControl(Icons.Outlined.LineCompare, R.string.compare) { onCompareChange(!isComparing) }
+                CanvasControl(Icons.Outlined.LineUndo, R.string.undo, canUndo) { onUndo() }
+                CanvasControl(Icons.Outlined.LineRedo, R.string.redo, canRedo) { onRedo() }
+                HoldCanvasControl(
+                    icon = Icons.Outlined.LineCompare,
+                    descriptionRes = R.string.watermark_compare_hold,
+                    active = isComparing,
+                    onHold = onCompareChange,
+                )
             }
             VerticalDraggable(
                 containerHeightPx = constraints.maxHeight.toFloat(),
@@ -306,13 +324,104 @@ fun WatermarkCanvas(
                     tools = WatermarkKind.entries.map { kind ->
                         EditorRailTool(kind.name, kind.icon(), kind.title())
                     },
-                    activeId = null,
+                    activeId = resolvedElements.firstOrNull {
+                        it.element.id == selectedElementId
+                    }?.element?.content?.kind?.name,
                     onToolClick = { onAddElement(WatermarkKind.valueOf(it.id)) },
                     modifier = Modifier.padding(start = 8.dp),
                 )
             }
         }
         if (isLoading) CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        if (!immersiveModeState.isUiVisible) {
+            EnhancedIconButton(
+                onClick = { immersiveModeState.exitImmersive() },
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(12.dp)
+                    .glassBackground(GlassStyle.None, ShapeDefaults.circle, MaterialTheme.colorScheme.surfaceContainer),
+            ) {
+                Icon(
+                    MaterialIcons.Outlined.Close,
+                    contentDescription = stringResource(R.string.watermark_exit_immersive),
+                )
+            }
+        } else if (bitmap != null && !isLoading && !isComparing) {
+            val hint = when {
+                !hasElements -> R.string.watermark_empty_canvas
+                hiddenOnly -> R.string.watermark_hidden_only
+                else -> null
+            }
+            if (hint != null) {
+                Text(
+                    text = stringResource(hint),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(horizontal = 72.dp)
+                        .glassBackground(GlassStyle.None, ShapeDefaults.default, MaterialTheme.colorScheme.surfaceContainer)
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                )
+            }
+        }
+        if (imageCount > 1 && immersiveModeState.isUiVisible) {
+            Row(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 8.dp)
+                    .glassBackground(GlassStyle.None, ShapeDefaults.circle, MaterialTheme.colorScheme.surfaceContainer)
+                    .padding(horizontal = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                CanvasControl(MaterialIcons.Outlined.ChevronLeft, R.string.watermark_previous_image) { onPreviousImage() }
+                Text(
+                    text = stringResource(R.string.watermark_image_index, imageIndex.coerceAtLeast(1), imageCount),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                CanvasControl(MaterialIcons.Outlined.ChevronRight, R.string.watermark_next_image) { onNextImage() }
+            }
+        }
+    }
+}
+
+@Composable
+private fun HoldCanvasControl(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    descriptionRes: Int,
+    active: Boolean,
+    onHold: (Boolean) -> Unit,
+) {
+    Box(
+        modifier = Modifier
+            .size(38.dp)
+            .pointerInput(onHold) {
+                awaitEachGesture {
+                    val down = awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
+                    down.consume()
+                    onHold(true)
+                    try {
+                        while (true) {
+                            val event = awaitPointerEvent(PointerEventPass.Initial)
+                            event.changes.forEach { it.consume() }
+                            if (event.changes.none { it.pressed }) break
+                        }
+                    } finally {
+                        onHold(false)
+                    }
+                }
+            },
+        contentAlignment = Alignment.Center,
+    ) {
+        EnhancedIconButton(
+            onClick = {},
+            containerColor = if (active) MaterialTheme.colorScheme.primaryContainer else Color.Transparent,
+            modifier = Modifier.size(38.dp),
+        ) {
+            Icon(icon, contentDescription = stringResource(descriptionRes), modifier = Modifier.size(18.dp))
+        }
     }
 }
 
@@ -321,9 +430,15 @@ private fun CanvasControl(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     descriptionRes: Int,
     enabled: Boolean = true,
+    containerColor: Color = Color.Transparent,
     onClick: () -> Unit,
 ) {
-    EnhancedIconButton(onClick = onClick, enabled = enabled, modifier = Modifier.size(38.dp)) {
+    EnhancedIconButton(
+        onClick = onClick,
+        enabled = enabled,
+        containerColor = containerColor,
+        modifier = Modifier.size(38.dp),
+    ) {
         Icon(icon, contentDescription = stringResource(descriptionRes), modifier = Modifier.size(18.dp))
     }
 }

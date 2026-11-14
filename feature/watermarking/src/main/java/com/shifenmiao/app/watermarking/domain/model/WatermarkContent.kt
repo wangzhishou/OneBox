@@ -16,13 +16,9 @@ sealed interface WatermarkContent {
     ) : WatermarkContent
 
     data class Image(
-        val imageData: String = DEFAULT_IMAGE,
+        val imageData: String = "",
         val size: Float = 0.2f,
-    ) : WatermarkContent {
-        companion object {
-            const val DEFAULT_IMAGE = "file:///android_asset/svg/emotions/aasparkles.svg"
-        }
-    }
+    ) : WatermarkContent
 
     data class Stamp(
         val text: String = "Stamp",
@@ -85,4 +81,14 @@ fun WatermarkContent.sourceOrNull(): WatermarkValueSource? = when (this) {
     is WatermarkContent.Weather -> source
     is WatermarkContent.Coordinates -> source
     else -> null
+}
+
+/** 天气要用坐标去查，照片没有坐标时会落到设备位置。 */
+fun WatermarkDocument.usesDeviceLocation(): Boolean = elements.any { element ->
+    when (val content = element.content) {
+        is WatermarkContent.Weather -> content.source != WatermarkValueSource.MANUAL
+        is WatermarkContent.Altitude -> content.source == WatermarkValueSource.DEVICE
+        is WatermarkContent.Coordinates -> content.source == WatermarkValueSource.DEVICE
+        else -> false
+    }
 }

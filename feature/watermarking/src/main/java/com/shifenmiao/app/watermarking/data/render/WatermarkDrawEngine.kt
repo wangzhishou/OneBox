@@ -47,6 +47,19 @@ object WatermarkDrawEngine {
         canvas.restore()
     }
 
+    fun drawContent(
+        canvas: Canvas,
+        visual: WatermarkVisual<Bitmap>,
+        element: WatermarkElement,
+    ) {
+        canvas.drawBitmap(
+            visual.image,
+            0f,
+            0f,
+            paint(element).apply { alpha = 255 },
+        )
+    }
+
     fun drawRepeated(
         canvas: Canvas,
         visual: WatermarkVisual<Bitmap>,

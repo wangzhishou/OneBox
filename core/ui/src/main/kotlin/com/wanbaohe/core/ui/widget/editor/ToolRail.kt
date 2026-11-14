@@ -146,6 +146,7 @@ private fun EditorToolRailItem(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
+            .widthIn(min = 64.dp, max = 64.dp)
             .clip(ShapeDefaults.default)
             .background(
                 if (isActive) {

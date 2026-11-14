@@ -12,20 +12,20 @@ package com.shifenmiao.app.watermarking.presentation.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.shifenmiao.app.watermarking.domain.model.usesDeviceLocation
+import com.shifenmiao.app.watermarking.domain.preset.WatermarkPreset
 import com.shifenmiao.app.watermarking.presentation.WatermarkPanel
-import com.shifenmiao.app.watermarking.presentation.panels.ContentPanel
 import com.shifenmiao.app.watermarking.presentation.panels.ImageBatchPanel
 import com.shifenmiao.app.watermarking.presentation.panels.LayerPanel
 import com.shifenmiao.app.watermarking.presentation.panels.PresetPanel
-import com.shifenmiao.app.watermarking.presentation.panels.StylePanel
+import com.shifenmiao.app.watermarking.presentation.panels.PropertiesPanel
 import com.shifenmiao.app.watermarking.presentation.screenLogic.WatermarkingComponent
 
 @Composable
 fun WatermarkPanelHost(
     panel: WatermarkPanel,
     component: WatermarkingComponent,
-    closeAfterPreset: Boolean,
-    onClose: () -> Unit,
+    onPresetApplied: (WatermarkPreset) -> Unit,
     onRequestLocation: () -> Unit,
     onPickImages: () -> Unit,
     modifier: Modifier = Modifier,
@@ -33,29 +33,26 @@ fun WatermarkPanelHost(
     when (panel) {
         WatermarkPanel.PRESETS -> PresetPanel(
             presets = component.presets,
-            previewBitmap = component.internalBitmap,
+            hasLayers = component.document.elements.isNotEmpty(),
             onApplyPreset = { preset ->
                 component.applyPreset(preset)
-                if (closeAfterPreset) onClose()
+                onPresetApplied(preset)
+                if (preset.document.usesDeviceLocation()) onRequestLocation()
             },
-            onSaveCurrent = component::saveCurrentAsPreset,
-            onDeletePreset = component::deleteCustomPreset,
+            onSaveCurrent = { name, result -> component.saveCurrentAsPreset(name, result) },
+            onDeletePreset = { id, result -> component.deleteCustomPreset(id, result) },
             modifier = modifier,
         )
-        WatermarkPanel.CONTENT -> ContentPanel(
+        WatermarkPanel.PROPERTIES -> PropertiesPanel(
             selectedElement = component.selectedElement,
             needsDeviceLocation = component.needsDeviceLocation,
             weatherAvailable = component.weatherAvailable,
             isDynamicDataLoading = component.isDynamicDataLoading,
             locationLoadFailed = component.locationLoadFailed,
-            onKindChange = component::changeSelectedKind,
-            onContentChange = component::updateSelectedContent,
+            onContentChange = { content, mergeHistory ->
+                component.updateSelectedContent(content, mergeHistory)
+            },
             onRequestLocation = onRequestLocation,
-            modifier = modifier,
-        )
-        WatermarkPanel.STYLE -> StylePanel(
-            selectedElement = component.selectedElement,
-            document = component.document,
             onUpdateElement = { recordHistory, transform ->
                 component.updateSelectedElement(
                     resolve = true,
@@ -65,31 +62,27 @@ fun WatermarkPanelHost(
             },
             onBeginCompoundEdit = component::beginCompoundEdit,
             onEndCompoundEdit = component::endCompoundEdit,
-            onHiddenWatermarkChange = component::updateHiddenWatermark,
             modifier = modifier,
         )
-        WatermarkPanel.LAYERS -> androidx.compose.foundation.layout.Column {
-            HiddenWatermarkInfo(component.currentHiddenWatermark)
-            LayerPanel(
-                document = component.document,
-                selectedElementId = component.selectedElementId,
-                onSelect = component::selectElement,
-                onToggleVisible = { id ->
-                    component.updateElement(id) {
-                        it.copy(transform = it.transform.copy(visible = !it.transform.visible))
-                    }
-                },
-                onToggleLocked = { id ->
-                    component.updateElement(id) {
-                        it.copy(transform = it.transform.copy(locked = !it.transform.locked))
-                    }
-                },
-                onMove = component::moveSelectedElement,
-                onDuplicate = component::duplicateSelectedElement,
-                onDelete = component::removeSelectedElement,
-                modifier = modifier,
-            )
-        }
+        WatermarkPanel.LAYERS -> LayerPanel(
+            document = component.document,
+            selectedElementId = component.selectedElementId,
+            onSelect = component::selectElement,
+            onToggleVisible = { id ->
+                component.updateElement(id) {
+                    it.copy(transform = it.transform.copy(visible = !it.transform.visible))
+                }
+            },
+            onToggleLocked = { id ->
+                component.updateElement(id) {
+                    it.copy(transform = it.transform.copy(locked = !it.transform.locked))
+                }
+            },
+            onMove = component::moveSelectedElement,
+            onDelete = component::removeSelectedElement,
+            resolvedElements = component.resolvedElements,
+            modifier = modifier,
+        )
         WatermarkPanel.IMAGES -> ImageBatchPanel(
             uris = component.uris,
             selectedUri = component.selectedUri,

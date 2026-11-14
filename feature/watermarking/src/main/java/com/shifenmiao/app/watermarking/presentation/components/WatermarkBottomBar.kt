@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineImage
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineText
 import com.shifenmiao.app.watermarking.presentation.WatermarkPanel
 import com.shifenmiao.app.watermarking.presentation.title
 import com.wanbaohe.base.ui.button.ConfirmButton
@@ -77,8 +76,7 @@ fun WatermarkBottomBar(
                     Icon(
                         imageVector = when (panel) {
                             WatermarkPanel.PRESETS -> MaterialIcons.Outlined.Star
-                            WatermarkPanel.CONTENT -> Icons.Outlined.LineText
-                            WatermarkPanel.STYLE -> MaterialIcons.Outlined.Tune
+                            WatermarkPanel.PROPERTIES -> MaterialIcons.Outlined.Tune
                             WatermarkPanel.LAYERS -> MaterialIcons.Outlined.Layers
                             WatermarkPanel.IMAGES -> Icons.Outlined.LineImage
                         },

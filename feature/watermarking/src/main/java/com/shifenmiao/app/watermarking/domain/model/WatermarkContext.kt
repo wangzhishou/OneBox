@@ -49,3 +49,26 @@ data class ResolvedWatermarkElement(
     val imageData: String? = null,
     val hasData: Boolean = true,
 )
+
+/**
+ * 异步内容解析回来之前的占位结果:静态内容直接可用,动态内容等解析完成后补齐。
+ * 让刚添加的图层立刻出现在画布上,同时不把解析规则散落到界面层。
+ */
+fun WatermarkElement.staticResolution(): ResolvedWatermarkElement = when (val content = this.content) {
+    is WatermarkContent.Text -> ResolvedWatermarkElement(
+        element = this,
+        text = content.text,
+        hasData = content.text.isNotBlank(),
+    )
+    is WatermarkContent.Stamp -> ResolvedWatermarkElement(
+        element = this,
+        text = content.text,
+        hasData = content.text.isNotBlank(),
+    )
+    is WatermarkContent.Image -> ResolvedWatermarkElement(
+        element = this,
+        imageData = content.imageData,
+        hasData = content.imageData.isNotBlank(),
+    )
+    else -> ResolvedWatermarkElement(element = this, hasData = false)
+}

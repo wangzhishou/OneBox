@@ -21,9 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.settings.presentation.model.toUiFont
-import com.shifenmiao.app.watermarking.domain.model.HiddenWatermarkParams
 import com.shifenmiao.app.watermarking.domain.model.WatermarkContent
-import com.shifenmiao.app.watermarking.domain.model.WatermarkDocument
 import com.shifenmiao.app.watermarking.domain.model.WatermarkElement
 import com.shifenmiao.app.watermarking.domain.model.isTextBased
 import com.wanbaohe.core.ui.theme.toColor
@@ -37,16 +35,30 @@ import kotlin.math.roundToInt
 
 @Composable
 fun StylePanel(
-    selectedElement: WatermarkElement?,
-    document: WatermarkDocument,
+    selectedElement: WatermarkElement,
     onUpdateElement: (recordHistory: Boolean, transform: (WatermarkElement) -> WatermarkElement) -> Unit,
     onBeginCompoundEdit: () -> Unit,
     onEndCompoundEdit: () -> Unit,
-    onHiddenWatermarkChange: (HiddenWatermarkParams) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val element = selectedElement ?: return
     Column(modifier = modifier) {
+        LayerStyleControls(
+            element = selectedElement,
+            onUpdateElement = onUpdateElement,
+            onBeginCompoundEdit = onBeginCompoundEdit,
+            onEndCompoundEdit = onEndCompoundEdit,
+        )
+    }
+}
+
+@Composable
+private fun LayerStyleControls(
+    element: WatermarkElement,
+    onUpdateElement: (recordHistory: Boolean, transform: (WatermarkElement) -> WatermarkElement) -> Unit,
+    onBeginCompoundEdit: () -> Unit,
+    onEndCompoundEdit: () -> Unit,
+) {
+    Column {
         if (element.isTextBased()) {
             FontSelector(
                 value = element.style.font.toUiFont(),
@@ -56,7 +68,7 @@ fun StylePanel(
             )
             EnhancedSliderItem(
                 value = element.style.sizeRatio,
-                title = stringResource(R.string.watermark_size),
+                title = stringResource(R.string.font_size),
                 valueRange = 0.01f..0.5f,
                 internalStateTransformation = { (it * 100).roundToInt() / 100f },
                 onValueChange = { value ->
@@ -87,7 +99,7 @@ fun StylePanel(
             if (image != null) {
                 EnhancedSliderItem(
                     value = image.size,
-                    title = stringResource(R.string.watermark_size),
+                    title = stringResource(R.string.watermark_logo_size),
                     valueRange = 0.01f..1f,
                     internalStateTransformation = { (it * 100).roundToInt() / 100f },
                     onValueChange = { value ->
@@ -128,7 +140,7 @@ fun StylePanel(
         )
         PreferenceRowSwitch(
             title = stringResource(R.string.repeat_watermark),
-            subtitle = stringResource(R.string.repeat_watermark_sub),
+            subtitle = stringResource(R.string.watermark_repeat_sub),
             checked = element.layout.isRepeated,
             onClick = { repeated ->
                 onUpdateElement(true) { it.copy(layout = it.layout.copy(isRepeated = repeated)) }
@@ -156,28 +168,5 @@ fun StylePanel(
                 onUpdateElement(true) { it.copy(overlayMode = mode) }
             },
         )
-        val supportsHidden = document.elements.any {
-            it.content is WatermarkContent.Text || it.content is WatermarkContent.Image
-        }
-        PreferenceRowSwitch(
-            title = stringResource(R.string.invisible_mode),
-            subtitle = stringResource(R.string.watermark_hidden_subtitle),
-            checked = document.hiddenWatermark.enabled,
-            enabled = supportsHidden,
-            onClick = { enabled ->
-                onHiddenWatermarkChange(document.hiddenWatermark.copy(enabled = enabled))
-            },
-            drawContainer = false,
-        )
-        if (document.hiddenWatermark.enabled) {
-            PreferenceRowSwitch(
-                title = stringResource(R.string.use_lsb),
-                checked = document.hiddenWatermark.isLSB,
-                onClick = { isLSB ->
-                    onHiddenWatermarkChange(document.hiddenWatermark.copy(isLSB = isLSB))
-                },
-                drawContainer = false,
-            )
-        }
     }
 }

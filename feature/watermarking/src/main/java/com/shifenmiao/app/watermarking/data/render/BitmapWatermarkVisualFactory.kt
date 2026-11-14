@@ -46,6 +46,7 @@ class BitmapWatermarkVisualFactory @Inject constructor(
         val imageContent = resolved.element.content as? WatermarkContent.Image ?: return null
         val targetSize = (canvasWidth * imageContent.size.coerceIn(0.01f, 1f))
             .roundToInt().coerceIn(1, canvasWidth)
+        if (imageData.isBlank()) return imagePlaceholder(resolved.element.id, targetSize)
         val source = imageGetter.getImage(
             data = imageData,
             size = IntegerSize(targetSize, targetSize),
@@ -67,6 +68,37 @@ class BitmapWatermarkVisualFactory @Inject constructor(
             Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG),
         )
         return WatermarkVisual(resolved.element.id, bitmap, targetSize, targetSize)
+    }
+
+    /** 还没选图时也要有一块可点的占位，否则图层加出来却看不见、拖不动。 */
+    private fun imagePlaceholder(id: String, size: Int): WatermarkVisual<Bitmap> {
+        val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        val inset = size * 0.08f
+        val corner = size * 0.12f
+        val bounds = RectF(inset, inset, size - inset, size - inset)
+        canvas.drawRoundRect(
+            bounds,
+            corner,
+            corner,
+            Paint(Paint.ANTI_ALIAS_FLAG).apply {
+                color = Color.WHITE
+                alpha = 48
+                style = Paint.Style.FILL
+            },
+        )
+        canvas.drawRoundRect(
+            bounds,
+            corner,
+            corner,
+            Paint(Paint.ANTI_ALIAS_FLAG).apply {
+                color = Color.WHITE
+                alpha = 200
+                style = Paint.Style.STROKE
+                strokeWidth = (size * 0.035f).coerceAtLeast(2f)
+            },
+        )
+        return WatermarkVisual(id, bitmap, size, size)
     }
 
     private fun createTextVisual(

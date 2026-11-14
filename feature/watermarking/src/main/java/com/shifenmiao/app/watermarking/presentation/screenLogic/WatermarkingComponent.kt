@@ -46,8 +46,10 @@ import com.shifenmiao.app.watermarking.domain.model.ResolvedWatermarkElement
 import com.shifenmiao.app.watermarking.domain.model.WatermarkContent
 import com.shifenmiao.app.watermarking.domain.model.WatermarkDocument
 import com.shifenmiao.app.watermarking.domain.model.WatermarkKind
+import com.shifenmiao.app.watermarking.domain.model.WatermarkResolution
 import com.shifenmiao.app.watermarking.domain.model.defaultWatermarkElement
 import com.shifenmiao.app.watermarking.domain.model.kind
+import com.shifenmiao.app.watermarking.domain.model.staticResolution
 import com.shifenmiao.app.watermarking.domain.preset.BuiltinWatermarkPresets
 import com.shifenmiao.app.watermarking.domain.preset.WatermarkPreset
 import com.shifenmiao.app.watermarking.domain.preset.WatermarkPresetStore
@@ -64,6 +66,7 @@ import com.wanbaohe.core.weather.domain.repository.CurrentLocationSnapshot
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
@@ -150,7 +153,6 @@ class WatermarkingComponent @AssistedInject internal constructor(
 
     val selectedElement
         get() = document.elements.firstOrNull { it.id == selectedElementId }
-            ?: document.elements.firstOrNull()
 
     val hasVisibleElements: Boolean
         get() = document.elements.any { it.transform.visible }
@@ -172,24 +174,26 @@ class WatermarkingComponent @AssistedInject internal constructor(
         }
     }
 
-    fun addElement(kind: WatermarkKind) {
-        val content = contentDrafts[kind] ?: defaultContent(kind)
+    fun selectOrAddElement(kind: WatermarkKind, label: String = ""): Boolean {
+        val existing = document.elements.lastOrNull { it.content.kind == kind }
+        if (existing != null) {
+            _selectedElementId.update { existing.id }
+            return false
+        }
+        val content = contentDrafts[kind] ?: defaultContent(kind, label)
         val default = defaultWatermarkElement(content)
-        val shouldStack = kind != WatermarkKind.TEXT && kind != WatermarkKind.IMAGE
+        // 底部会被属性面板挡住，新图层放在画面中上段，叠加以免互相盖住。
         val element = default.copy(
             transform = default.transform.copy(
-                centerY = if (shouldStack) {
-                    (0.82f - document.elements.size * 0.08f).coerceAtLeast(0.15f)
-                } else default.transform.centerY,
+                centerY = (0.38f + document.elements.size * 0.08f).coerceAtMost(0.62f),
             ),
-            layout = default.layout.copy(
-                isRepeated = kind == WatermarkKind.TEXT && document.elements.isEmpty(),
-            )
+            layout = default.layout.copy(isRepeated = false),
         )
         applyDocument(
             document.copy(elements = document.elements + element),
         )
         _selectedElementId.update { element.id }
+        return true
     }
 
     fun selectElement(id: String?) {
@@ -205,25 +209,34 @@ class WatermarkingComponent @AssistedInject internal constructor(
         }
     }
 
-    fun updateSelectedContent(content: WatermarkContent) {
+    fun updateSelectedContent(content: WatermarkContent, mergeHistory: Boolean = false) {
+        val selected = selectedElement ?: return
+        if (selected.transform.locked) return
         contentDrafts[content.kind] = content
-        updateSelectedElement(resolve = true) { it.copy(content = content) }
+        val id = selected.id
+        updateSelectedElement(
+            resolve = true,
+            mergeKey = if (mergeHistory) "$id:${content.kind}" else null,
+        ) { it.copy(content = content) }
     }
 
     fun updateSelectedElement(
         resolve: Boolean = false,
         recordHistory: Boolean = true,
+        mergeKey: String? = null,
         transform: (com.shifenmiao.app.watermarking.domain.model.WatermarkElement) ->
         com.shifenmiao.app.watermarking.domain.model.WatermarkElement,
     ) {
-        val id = selectedElement?.id ?: return
-        updateElement(id, resolve, recordHistory, transform)
+        val selected = selectedElement ?: return
+        if (selected.transform.locked) return
+        updateElement(selected.id, resolve, recordHistory, mergeKey, transform)
     }
 
     fun updateElement(
         id: String,
         resolve: Boolean = false,
         recordHistory: Boolean = true,
+        mergeKey: String? = null,
         transform: (com.shifenmiao.app.watermarking.domain.model.WatermarkElement) ->
         com.shifenmiao.app.watermarking.domain.model.WatermarkElement,
     ) {
@@ -232,7 +245,7 @@ class WatermarkingComponent @AssistedInject internal constructor(
                 if (element.id == id) transform(element) else element
             }
         )
-        if (recordHistory) editSession.apply(newDocument) else editSession.updateTransient(newDocument)
+        if (recordHistory) editSession.apply(newDocument, mergeKey) else editSession.updateTransient(newDocument)
         publishDocument(resolve)
     }
 
@@ -244,21 +257,6 @@ class WatermarkingComponent @AssistedInject internal constructor(
         registerChanges()
     }
 
-    fun duplicateSelectedElement() {
-        val selected = selectedElement ?: return
-        val copy = selected.copy(
-            id = UUID.randomUUID().toString(),
-            transform = selected.transform.copy(
-                centerX = (selected.transform.centerX + 0.04f).coerceIn(0f, 1f),
-                centerY = (selected.transform.centerY + 0.04f).coerceIn(0f, 1f),
-            ),
-        )
-        val index = document.elements.indexOfFirst { it.id == selected.id }
-        val elements = document.elements.toMutableList().apply { add(index + 1, copy) }
-        applyDocument(document.copy(elements = elements))
-        _selectedElementId.update { copy.id }
-    }
-
     fun removeSelectedElement() {
         val selected = selectedElement ?: return
         val elements = document.elements.filterNot { it.id == selected.id }
@@ -268,6 +266,7 @@ class WatermarkingComponent @AssistedInject internal constructor(
 
     fun moveSelectedElement(offset: Int) {
         val selected = selectedElement ?: return
+        if (selected.transform.locked) return
         val index = document.elements.indexOfFirst { it.id == selected.id }
         val target = (index + offset).coerceIn(0, document.elements.lastIndex)
         if (index == target) return
@@ -287,25 +286,32 @@ class WatermarkingComponent @AssistedInject internal constructor(
         _selectedElementId.update { document.elements.lastOrNull()?.id }
     }
 
-    fun saveCurrentAsPreset(name: String) {
-        if (name.isBlank()) return
+    fun saveCurrentAsPreset(name: String, onResult: (Boolean) -> Unit = {}) {
+        if (name.isBlank()) {
+            onResult(false)
+            return
+        }
         componentScope.launch {
             val preset = WatermarkPreset(
                 id = UUID.randomUUID().toString(),
                 name = name.trim(),
                 document = document,
             )
-            runCatching { presetStore.savePreset(preset) }
-                .onSuccess { saved ->
-                    _customPresets.update { current -> listOf(saved) + current }
+            val saved = runCatching { presetStore.savePreset(preset) }
+                .onSuccess { stored ->
+                    _customPresets.update { current -> listOf(stored) + current }
                 }
+                .isSuccess
+            onResult(saved)
         }
     }
 
-    fun deleteCustomPreset(id: String) {
+    fun deleteCustomPreset(id: String, onResult: (Boolean) -> Unit = {}) {
         componentScope.launch {
-            runCatching { presetStore.deletePreset(id) }
+            val deleted = runCatching { presetStore.deletePreset(id) }
                 .onSuccess { _customPresets.update { current -> current.filterNot { it.id == id } } }
+                .isSuccess
+            onResult(deleted)
         }
     }
 
@@ -329,11 +335,20 @@ class WatermarkingComponent @AssistedInject internal constructor(
         componentScope.launch {
             _isDynamicDataLoading.update { true }
             _locationLoadFailed.update { false }
-            val location = withContext(ioDispatcher) { currentLocationProvider.currentLocation() }
-            deviceLocation = location?.toDomain()
-            _locationLoadFailed.update { location == null }
-            resolveCurrentDocument()
-            _isDynamicDataLoading.update { false }
+            try {
+                val location = try {
+                    withContext(ioDispatcher) { currentLocationProvider.currentLocation() }
+                } catch (cancellation: CancellationException) {
+                    throw cancellation
+                } catch (error: Exception) {
+                    null
+                }
+                deviceLocation = location?.toDomain()
+                _locationLoadFailed.update { location == null }
+                resolveCurrentDocument()
+            } finally {
+                _isDynamicDataLoading.update { false }
+            }
         }
     }
 
@@ -345,11 +360,11 @@ class WatermarkingComponent @AssistedInject internal constructor(
     private fun publishDocument(resolve: Boolean) {
         val current = documentFromSession()
         _document.update { current }
-        _resolvedElements.update { resolved ->
-            resolved.mapNotNull { item ->
-                current.elements.firstOrNull { it.id == item.element.id }?.let { element ->
-                    item.copy(element = element)
-                }
+        // 解析是异步的:这里只把 element 同步成最新值,绝不拿旧快照覆盖刚拖动过的变换。
+        _resolvedElements.update { previous ->
+            val resolvedById = previous.associateBy { it.element.id }
+            current.elements.map { element ->
+                resolvedById[element.id]?.copy(element = element) ?: element.staticResolution()
             }
         }
         updateHistoryFlags()
@@ -371,14 +386,42 @@ class WatermarkingComponent @AssistedInject internal constructor(
         val requestedLocation = deviceLocation
         resolutionJob = componentScope.launch {
             _isResolving.update { true }
-            val resolution = withContext(defaultDispatcher) {
-                contentResolver.resolve(uri.toString(), requestedDocument, requestedLocation)
+            try {
+                val resolution = try {
+                    withContext(defaultDispatcher) {
+                        contentResolver.resolve(uri.toString(), requestedDocument, requestedLocation)
+                    }
+                } catch (cancellation: CancellationException) {
+                    throw cancellation
+                } catch (error: Exception) {
+                    null
+                }
+                ensureActive()
+                if (resolution != null) {
+                    applyResolution(resolution)
+                    _needsDeviceLocation.update { resolution.needsDeviceLocation }
+                    _weatherAvailable.update { resolution.weatherAvailable }
+                }
+            } finally {
+                _isResolving.update { false }
             }
-            ensureActive()
-            _resolvedElements.update { resolution.elements }
-            _needsDeviceLocation.update { resolution.needsDeviceLocation }
-            _weatherAvailable.update { resolution.weatherAvailable }
-            _isResolving.update { false }
+        }
+    }
+
+    /** 解析结果只提供文本/图片数据,图层本身一律以当前文档为准。 */
+    private fun applyResolution(resolution: WatermarkResolution) {
+        val current = documentFromSession()
+        val incomingById = resolution.elements.associateBy { it.element.id }
+        _resolvedElements.update { previous ->
+            val previousById = previous.associateBy { it.element.id }
+            current.elements.map { element ->
+                val incoming = incomingById[element.id]
+                when {
+                    incoming != null -> incoming.copy(element = element)
+                    previousById[element.id] != null -> previousById[element.id]!!.copy(element = element)
+                    else -> element.staticResolution()
+                }
+            }
         }
     }
 
@@ -388,9 +431,15 @@ class WatermarkingComponent @AssistedInject internal constructor(
     ): Map<String, WatermarkVisual<Bitmap>> = buildMap {
         resolvedElements.forEach { resolved ->
             if (!resolved.element.transform.visible) return@forEach
-            visualFactory.create(resolved, canvasWidth, canvasHeight)?.let { visual ->
-                put(resolved.element.id, visual)
+            // 预设里保存的本地图片可能已被清理,单个图层失败不能拖垮整个预览。
+            val visual = try {
+                visualFactory.create(resolved, canvasWidth, canvasHeight)
+            } catch (cancellation: CancellationException) {
+                throw cancellation
+            } catch (error: Exception) {
+                null
             }
+            visual?.let { put(resolved.element.id, it) }
         }
     }
 
@@ -404,7 +453,11 @@ class WatermarkingComponent @AssistedInject internal constructor(
             _internalBitmap.update { null }
             _resolvedElements.update { emptyList() }
         } else {
-            updateSelectedUri(uris.first(), onFailure)
+            // 追加图片不应把正在编辑的那张踢回列表第一张,也不必重新解码同一张图。
+            val keepCurrent = selectedUri != Uri.EMPTY &&
+                uris.contains(selectedUri) &&
+                internalBitmap != null
+            if (!keepCurrent) updateSelectedUri(uris.first(), onFailure)
         }
     }
 
@@ -519,9 +572,21 @@ class WatermarkingComponent @AssistedInject internal constructor(
             val results = mutableListOf<SaveResult>()
             targets.forEachIndexed { index, uri ->
                 ensureActive()
-                val rendered = renderUri(uri)
+                val rendered = try {
+                    renderUri(uri)
+                } catch (cancellation: CancellationException) {
+                    throw cancellation
+                } catch (error: Exception) {
+                    results.add(SaveResult.Error.Exception(error))
+                    _done.update { it + 1 }
+                    return@forEachIndexed
+                }
                 if (rendered == null) {
-                    results.add(SaveResult.Error.Exception(Throwable()))
+                    results.add(
+                        SaveResult.Error.Exception(
+                            IllegalStateException("Watermark rendering produced no image for $uri")
+                        )
+                    )
                     _done.update { it + 1 }
                     return@forEachIndexed
                 }
@@ -555,12 +620,13 @@ class WatermarkingComponent @AssistedInject internal constructor(
     }
 
     fun shareBitmaps(onComplete: () -> Unit) {
+        val target = selectedUri.takeIf { it != Uri.EMPTY } ?: return
         savingJob = componentScope.launch {
             _isSaving.update { true }
             _done.update { 0 }
-            _left.update { uris.size }
+            _left.update { 1 }
             shareProvider.shareImages(
-                uris = uris.map(Uri::toString),
+                uris = listOf(target.toString()),
                 imageLoader = { uri ->
                     renderUri(uri.toUri())?.let { rendered ->
                         rendered.bitmap to rendered.imageInfo
@@ -649,10 +715,10 @@ private fun CurrentLocationSnapshot.toDomain() = LocationSnapshot(
     capturedAt = capturedAt,
 )
 
-private fun defaultContent(kind: WatermarkKind): WatermarkContent = when (kind) {
-    WatermarkKind.TEXT -> WatermarkContent.Text()
+private fun defaultContent(kind: WatermarkKind, label: String = ""): WatermarkContent = when (kind) {
+    WatermarkKind.TEXT -> WatermarkContent.Text(label.ifBlank { "Watermark" })
     WatermarkKind.IMAGE -> WatermarkContent.Image()
-    WatermarkKind.STAMP -> WatermarkContent.Stamp()
+    WatermarkKind.STAMP -> WatermarkContent.Stamp(label.ifBlank { "Stamp" })
     WatermarkKind.TIMESTAMP -> WatermarkContent.Timestamp()
     WatermarkKind.ALTITUDE -> WatermarkContent.Altitude()
     WatermarkKind.WEATHER -> WatermarkContent.Weather()

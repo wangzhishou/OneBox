@@ -18,6 +18,7 @@ import com.shifenmiao.app.watermarking.domain.model.WatermarkResolution
 import com.shifenmiao.app.watermarking.domain.render.HiddenWatermarkEmbedder
 import com.shifenmiao.app.watermarking.domain.render.WatermarkRenderer
 import com.shifenmiao.app.watermarking.domain.render.WatermarkVisualFactory
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -35,8 +36,13 @@ class BitmapWatermarkRenderer @Inject constructor(
         val canvas = Canvas(output)
         resolution.elements.forEach { resolved ->
             if (!resolved.element.transform.visible) return@forEach
-            val visual = visualFactory.create(resolved, output.width, output.height)
-                ?: return@forEach
+            val visual = try {
+                visualFactory.create(resolved, output.width, output.height)
+            } catch (cancellation: CancellationException) {
+                throw cancellation
+            } catch (error: Exception) {
+                null
+            } ?: return@forEach
             if (resolved.element.layout.isRepeated) {
                 WatermarkDrawEngine.drawRepeated(canvas, visual, resolved.element)
             } else {
@@ -44,6 +50,16 @@ class BitmapWatermarkRenderer @Inject constructor(
             }
             visual.image.recycle()
         }
-        hiddenWatermarkEmbedder.embed(output, resolution, hiddenWatermark)
+        // 隐形水印在库内部生成一张新位图。嵌入失败(文本过长、图片读取失败等)时
+        // 仍要交付带可见水印的原图,不能让整张图的导出直接失败。
+        val embedded = try {
+            hiddenWatermarkEmbedder.embed(output, resolution, hiddenWatermark) ?: output
+        } catch (cancellation: CancellationException) {
+            throw cancellation
+        } catch (error: Exception) {
+            output
+        }
+        if (embedded !== output) output.recycle()
+        embedded
     }
 }

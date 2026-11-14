@@ -49,6 +49,9 @@ import com.shifenmiao.model.event.PermissionRequest
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.ImageReset
+import com.shifenmiao.app.watermarking.domain.model.WatermarkContent
+import com.shifenmiao.app.watermarking.domain.model.WatermarkKind
+import com.shifenmiao.app.watermarking.domain.preset.WatermarkPreset
 import com.shifenmiao.app.watermarking.presentation.components.WatermarkBottomBar
 import com.shifenmiao.app.watermarking.presentation.components.WatermarkPanelHost
 import com.shifenmiao.app.watermarking.presentation.canvas.WatermarkCanvas
@@ -84,7 +87,9 @@ fun WatermarkingContent(
     }
     AutoFilePicker(
         onAutoPick = imagePicker::pickImage,
-        isPickedAlready = !component.initialUris.isNullOrEmpty(),
+        // initialUris 只在首次进入时有值;进程重建后用它判断会再弹一次选择器,
+        // 把用户正在编辑的图片覆盖掉。
+        isPickedAlready = component.uris.isNotEmpty(),
     )
     val immersiveModeState = rememberImmersiveModeState()
     val activity = LocalComponentActivity.current
@@ -97,6 +102,20 @@ fun WatermarkingContent(
     var showLocationDialog by rememberSaveable { mutableStateOf(false) }
     var isComparing by rememberSaveable { mutableStateOf(false) }
     var editSheetData by remember { mutableStateOf(listOf<Uri>()) }
+    val defaultText = stringResource(R.string.watermark_default_text)
+    val defaultStamp = stringResource(R.string.watermark_default_stamp)
+    val warnIfHiddenWillBeLost = {
+        if (component.document.hiddenWatermark.enabled && !component.imageFormat.keepsHiddenWatermark()) {
+            AppToastHost.showToast(R.string.watermark_hidden_lossy_warning)
+        }
+    }
+    val onPresetApplied = { preset: WatermarkPreset ->
+        val needsLogo = preset.document.elements.any { element ->
+            val image = element.content as? WatermarkContent.Image
+            image != null && image.imageData.isBlank()
+        }
+        if (needsLogo) activePanel = WatermarkPanel.PROPERTIES
+    }
     val requestLocation = {
         activity.requestPermissions(
             permissions = arrayOf(
@@ -135,8 +154,14 @@ fun WatermarkingContent(
         actions = {
             ShareButton(
                 enabled = component.internalBitmap != null,
-                onShare = { component.shareBitmaps(AppToastHost::showConfetti) },
-                onCopy = { component.cacheCurrentImage(Clipboard::copy) },
+                onShare = {
+                    warnIfHiddenWillBeLost()
+                    component.shareBitmaps(AppToastHost::showConfetti)
+                },
+                onCopy = {
+                    warnIfHiddenWillBeLost()
+                    component.cacheCurrentImage(Clipboard::copy)
+                },
                 onEdit = { component.cacheImages { editSheetData = it } },
             )
             EnhancedIconButton(
@@ -184,10 +209,24 @@ fun WatermarkingContent(
                             component.selectElement(id)
                             component.removeSelectedElement()
                         },
+                        onEditElement = { activePanel = WatermarkPanel.PROPERTIES },
                         onAddElement = { kind ->
-                            component.addElement(kind)
-                            activePanel = WatermarkPanel.CONTENT
+                            val label = when (kind) {
+                                WatermarkKind.TEXT -> defaultText
+                                WatermarkKind.STAMP -> defaultStamp
+                                else -> ""
+                            }
+                            val added = component.selectOrAddElement(kind, label)
+                            activePanel = WatermarkPanel.PROPERTIES
+                            if (added && kind == WatermarkKind.WEATHER) requestLocation()
                         },
+                        imageIndex = component.uris.indexOf(component.selectedUri) + 1,
+                        imageCount = component.uris.size,
+                        onPreviousImage = component::selectLeftUri,
+                        onNextImage = component::selectRightUri,
+                        hasElements = component.document.elements.isNotEmpty(),
+                        hiddenOnly = component.document.hiddenWatermark.enabled &&
+                            component.document.elements.none { it.transform.visible },
                         createVisuals = component::createPreviewVisuals,
                         modifier = Modifier.weight(1f).fillMaxHeight(),
                     )
@@ -202,8 +241,7 @@ fun WatermarkingContent(
                             WatermarkPanelHost(
                                 panel = activePanel!!,
                                 component = component,
-                                closeAfterPreset = false,
-                                onClose = { activePanel = null },
+                                onPresetApplied = onPresetApplied,
                                 onRequestLocation = requestLocation,
                                 onPickImages = imagePicker::pickImage,
                             )
@@ -236,8 +274,7 @@ fun WatermarkingContent(
                 WatermarkPanelHost(
                     panel = activePanel!!,
                     component = component,
-                    closeAfterPreset = true,
-                    onClose = { activePanel = null },
+                    onPresetApplied = onPresetApplied,
                     onRequestLocation = requestLocation,
                     onPickImages = imagePicker::pickImage,
                 )
@@ -255,11 +292,20 @@ fun WatermarkingContent(
             onlyCurrent = onlyCurrent,
             keepExif = component.keepExif,
             stripLocationMetadata = component.stripLocationMetadata,
+            currentHiddenWatermark = component.currentHiddenWatermark,
+            hiddenWatermark = component.document.hiddenWatermark,
+            supportsHiddenWatermark = component.document.elements.any {
+                it.content is WatermarkContent.Text || it.content is WatermarkContent.Image
+            },
             imageFormat = component.imageFormat,
             quality = component.quality,
             onOnlyCurrentChange = { onlyCurrent = it },
             onKeepExifChange = component::toggleKeepExif,
             onStripLocationChange = component::toggleStripLocationMetadata,
+            onHiddenWatermarkChange = component::updateHiddenWatermark,
+            onHiddenRejected = {
+                AppToastHost.showFailureToast(R.string.watermark_hidden_needs_content)
+            },
             onFormatChange = component::setImageFormat,
             onQualityChange = component::setQuality,
             onSave = {
@@ -270,7 +316,11 @@ fun WatermarkingContent(
                     onResult = component::parseSaveResults,
                 )
             },
-            onChooseLocation = { showLocationDialog = true },
+            onChooseLocation = {
+                // 两个 sheet 同时挂在同一屏会叠加遮罩,先收起导出面板。
+                showExport = false
+                showLocationDialog = true
+            },
             modifier = Modifier.navigationBarsPadding().padding(16.dp),
         )
     }
@@ -296,7 +346,7 @@ fun WatermarkingContent(
     ResetDialog(
         visible = showResetDialog,
         onDismiss = { showResetDialog = false },
-        title = stringResource(R.string.reset_properties),
+        title = stringResource(R.string.watermark_reset_title),
         text = stringResource(R.string.watermark_reset_sub),
         onReset = component::resetDocument,
     )

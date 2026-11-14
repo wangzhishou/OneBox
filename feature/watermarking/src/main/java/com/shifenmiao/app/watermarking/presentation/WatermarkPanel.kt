@@ -12,12 +12,12 @@ package com.shifenmiao.app.watermarking.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
 import com.t8rin.imagetoolbox.core.resources.R
 
 enum class WatermarkPanel {
     PRESETS,
-    CONTENT,
-    STYLE,
+    PROPERTIES,
     LAYERS,
     IMAGES,
 }
@@ -26,9 +26,19 @@ enum class WatermarkPanel {
 fun WatermarkPanel.title(): String = stringResource(
     when (this) {
         WatermarkPanel.PRESETS -> R.string.presets
-        WatermarkPanel.CONTENT -> R.string.content
-        WatermarkPanel.STYLE -> R.string.watermark_style
+        WatermarkPanel.PROPERTIES -> R.string.properties
         WatermarkPanel.LAYERS -> R.string.watermark_layers
-        WatermarkPanel.IMAGES -> R.string.watermark_images
+        WatermarkPanel.IMAGES -> R.string.watermark_batch
     }
 )
+
+fun ImageFormat.keepsHiddenWatermark(): Boolean = when (this) {
+    ImageFormat.Png.Lossless,
+    ImageFormat.Bmp,
+    ImageFormat.Webp.Lossless,
+    ImageFormat.Tiff,
+    ImageFormat.Tif,
+    ImageFormat.Qoi,
+    ImageFormat.Ico -> true
+    else -> false
+}

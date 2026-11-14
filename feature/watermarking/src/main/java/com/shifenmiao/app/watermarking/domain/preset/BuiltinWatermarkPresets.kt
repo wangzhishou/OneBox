@@ -81,6 +81,7 @@ object BuiltinWatermarkPresets {
                 nameRes = R.string.watermark_preset_hidden,
                 elements = listOf(
                     defaultWatermarkElement(WatermarkContent.Text("© OneBox")).copy(
+                        transform = LayerTransform(centerX = 0.5f, centerY = 0.85f, visible = false),
                         layout = WatermarkLayout(isRepeated = false),
                     )
                 ),

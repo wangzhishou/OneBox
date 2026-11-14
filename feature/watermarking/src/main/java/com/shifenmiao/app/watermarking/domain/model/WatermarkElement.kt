@@ -73,8 +73,6 @@ fun defaultWatermarkElement(content: WatermarkContent): WatermarkElement {
                 else -> 0.08f
             },
         ),
-        layout = WatermarkLayout(
-            isRepeated = content is WatermarkContent.Text,
-        ),
+        layout = WatermarkLayout(),
     )
 }

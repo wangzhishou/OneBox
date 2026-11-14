@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowDownward
 import androidx.compose.material.icons.outlined.ArrowUpward
-import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.LockOpen
@@ -34,6 +33,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.R
+import com.shifenmiao.app.watermarking.domain.model.ResolvedWatermarkElement
+import com.shifenmiao.app.watermarking.domain.model.WatermarkContent
 import com.shifenmiao.app.watermarking.domain.model.WatermarkDocument
 import com.shifenmiao.app.watermarking.domain.model.kind
 import com.shifenmiao.app.watermarking.presentation.model.sampleText
@@ -49,11 +50,17 @@ fun LayerPanel(
     onToggleVisible: (String) -> Unit,
     onToggleLocked: (String) -> Unit,
     onMove: (Int) -> Unit,
-    onDuplicate: () -> Unit,
     onDelete: () -> Unit,
+    resolvedElements: List<ResolvedWatermarkElement>,
     modifier: Modifier = Modifier,
 ) {
+    val resolvedById = resolvedElements.associateBy { it.element.id }
+    val selected = document.elements.firstOrNull { it.id == selectedElementId }
+    val canArrange = selected != null && !selected.transform.locked
     Column(modifier = modifier) {
+        if (document.elements.isEmpty()) {
+            EmptySelectionHint(R.string.watermark_no_layers)
+        }
         document.elements.asReversed().forEach { element ->
             GlassCard(
                 onClick = { onSelect(element.id) },
@@ -72,7 +79,7 @@ fun LayerPanel(
                             } else MaterialTheme.colorScheme.onSurface,
                         )
                         Text(
-                            text = element.content.sampleText(),
+                            text = layerSubtitle(element.content, resolvedById[element.id]),
                             style = MaterialTheme.typography.bodySmall,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
@@ -90,22 +97,37 @@ fun LayerPanel(
                 }
             }
         }
-        Row(horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(4.dp)) {
-            LayerAction(Icons.Outlined.ArrowUpward, stringResource(R.string.watermark_bring_forward)) { onMove(1) }
-            LayerAction(Icons.Outlined.ArrowDownward, stringResource(R.string.watermark_send_backward)) { onMove(-1) }
-            LayerAction(Icons.Outlined.ContentCopy, stringResource(R.string.watermark_duplicate)) { onDuplicate() }
-            LayerAction(Icons.Outlined.Delete, stringResource(R.string.delete)) { onDelete() }
+        if (document.elements.isNotEmpty()) {
+            Row(horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(4.dp)) {
+                LayerAction(Icons.Outlined.ArrowUpward, stringResource(R.string.watermark_bring_forward), canArrange) { onMove(1) }
+                LayerAction(Icons.Outlined.ArrowDownward, stringResource(R.string.watermark_send_backward), canArrange) { onMove(-1) }
+                LayerAction(Icons.Outlined.Delete, stringResource(R.string.delete), selected != null) { onDelete() }
+            }
         }
     }
+}
+
+@Composable
+private fun layerSubtitle(
+    content: WatermarkContent,
+    resolved: ResolvedWatermarkElement?,
+): String {
+    val resolvedText = resolved?.text
+    if (!resolvedText.isNullOrBlank() && resolved.hasData) return resolvedText
+    if (content is WatermarkContent.Image && content.imageData.isBlank()) {
+        return stringResource(R.string.watermark_pick_logo)
+    }
+    return content.sampleText()
 }
 
 @Composable
 private fun LayerAction(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     description: String,
+    enabled: Boolean = true,
     onClick: () -> Unit,
 ) {
-    EnhancedIconButton(onClick = onClick, modifier = Modifier.size(40.dp)) {
+    EnhancedIconButton(onClick = onClick, enabled = enabled, modifier = Modifier.size(40.dp)) {
         Icon(icon, contentDescription = description, modifier = Modifier.size(18.dp))
     }
 }
