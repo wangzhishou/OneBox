@@ -181,8 +181,8 @@ import com.t8rin.imagetoolbox.feature.svg_maker.presentation.SvgMakerContent
 import com.t8rin.imagetoolbox.feature.svg_maker.presentation.screenLogic.SvgMakerComponent
 import com.t8rin.imagetoolbox.feature.wallpapers_export.presentation.WallpapersExportContent
 import com.t8rin.imagetoolbox.feature.wallpapers_export.presentation.screenLogic.WallpapersExportComponent
-import com.t8rin.imagetoolbox.feature.watermarking.presentation.WatermarkingContent
-import com.t8rin.imagetoolbox.feature.watermarking.presentation.screenLogic.WatermarkingComponent
+import com.shifenmiao.app.watermarking.presentation.WatermarkingContent
+import com.shifenmiao.app.watermarking.presentation.screenLogic.WatermarkingComponent
 import com.t8rin.imagetoolbox.feature.webp_tools.presentation.WebpToolsContent
 import com.t8rin.imagetoolbox.feature.webp_tools.presentation.screenLogic.WebpToolsComponent
 import com.t8rin.imagetoolbox.feature.weight_resize.presentation.WeightResizeContent

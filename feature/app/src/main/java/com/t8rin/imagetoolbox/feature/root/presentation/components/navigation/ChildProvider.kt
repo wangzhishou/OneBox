@@ -149,7 +149,7 @@ import com.t8rin.imagetoolbox.feature.settings.presentation.screenLogic.Settings
 import com.t8rin.imagetoolbox.feature.single_edit.presentation.screenLogic.SingleEditComponent
 import com.t8rin.imagetoolbox.feature.svg_maker.presentation.screenLogic.SvgMakerComponent
 import com.t8rin.imagetoolbox.feature.wallpapers_export.presentation.screenLogic.WallpapersExportComponent
-import com.t8rin.imagetoolbox.feature.watermarking.presentation.screenLogic.WatermarkingComponent
+import com.shifenmiao.app.watermarking.presentation.screenLogic.WatermarkingComponent
 import com.t8rin.imagetoolbox.feature.webp_tools.presentation.screenLogic.WebpToolsComponent
 import com.t8rin.imagetoolbox.feature.weight_resize.presentation.screenLogic.WeightResizeComponent
 import com.t8rin.imagetoolbox.feature.zip.presentation.screenLogic.ZipComponent

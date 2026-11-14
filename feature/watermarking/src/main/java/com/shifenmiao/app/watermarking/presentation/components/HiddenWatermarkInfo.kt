@@ -1,0 +1,128 @@
+/*
+ * OneBox is a free AI agent and toolbox for Android
+ * This file is part of OneBox, a derivative work based on
+ * ImageToolbox (https://github.com/T8RIN/ImageToolbox) by T8RIN.
+ *
+ * Copyright (c) 2025 T8RIN (Malik Mukhametzyanov)
+ * Copyright (c) 2026 zhishouwang(网址兽)
+ *
+ * This file has been modified from the original ImageToolbox source.
+ *
+ * Origin: ImageToolbox derivative, modified
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * You should have received a copy of the Apache License
+ * along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+ */
+
+package com.shifenmiao.app.watermarking.presentation.components
+
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ContentCopy
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.compositeOver
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.t8rin.imagetoolbox.core.resources.R
+import com.t8rin.imagetoolbox.core.resources.icons.AddPhotoAlt
+import com.t8rin.imagetoolbox.core.resources.shapes.CloverShape
+import com.wanbaohe.core.ui.utils.helper.Clipboard
+import com.wanbaohe.core.ui.widget.image.Picture
+import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
+import com.wanbaohe.core.ui.widget.preferences.PreferenceItemDefaults
+import com.wanbaohe.core.ui.widget.preferences.PreferenceItemOverload
+import com.shifenmiao.app.watermarking.domain.HiddenWatermark
+import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineInfo
+
+@Composable
+internal fun HiddenWatermarkInfo(
+    hiddenWatermark: HiddenWatermark?
+) {
+
+
+    AnimatedContent(
+        targetState = hiddenWatermark,
+        modifier = Modifier.fillMaxWidth()
+    ) { hidden ->
+        hidden?.let {
+            PreferenceItemOverload(
+                title = stringResource(
+                    when (hidden) {
+                        is HiddenWatermark.Text -> R.string.hidden_watermark_text_detected
+                        is HiddenWatermark.Image -> R.string.hidden_watermark_image_detected
+                    }
+                ),
+                subtitle = when (hidden) {
+                    is HiddenWatermark.Text -> hidden.text
+                    is HiddenWatermark.Image -> stringResource(R.string.this_image_was_hidden)
+                },
+                onClick = if (hidden is HiddenWatermark.Text) {
+                    { Clipboard.copy(hidden.text) }
+                } else null,
+                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.35f),
+                titleFontStyle = PreferenceItemDefaults.TitleFontStyleSmall,
+                startIcon = {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineInfo,
+                        contentDescription = null
+                    )
+                },
+                endIcon = {
+                    when (hidden) {
+                        is HiddenWatermark.Text -> {
+                            Icon(
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                                contentDescription = null
+                            )
+                        }
+
+                        is HiddenWatermark.Image -> {
+                            Picture(
+                                model = hidden.image,
+                                shape = CloverShape,
+                                modifier = Modifier.size(48.dp),
+                                error = {
+                                    Icon(
+                                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.TwoTone.AddPhotoAlt,
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .clip(CloverShape)
+                                            .background(
+                                                color = MaterialTheme.colorScheme.secondaryContainer
+                                                    .copy(0.5f)
+                                                    .compositeOver(MaterialTheme.colorScheme.surfaceContainerLow)
+                                            )
+                                            .padding(8.dp)
+                                    )
+                                }
+                            )
+                        }
+                    }
+                },
+                modifier = Modifier.fillMaxWidth(),
+                shape = ShapeDefaults.large
+            )
+        }
+    }
+}

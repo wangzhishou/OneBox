@@ -30,9 +30,10 @@ plugins {
     alias(libs.plugins.image.toolbox.compose)
 }
 
-android.namespace = "com.t8rin.imagetoolbox.feature.watermarking"
+android.namespace = "com.shifenmiao.app.watermarking"
 
 dependencies {
-    implementation(projects.feature.compare)
+    implementation(projects.feature.common)
+    implementation(projects.core.weather)
     implementation(libs.onebox.androidwm)
 }

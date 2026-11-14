@@ -41,10 +41,12 @@ import com.t8rin.imagetoolbox.core.domain.saving.FileController
 import com.t8rin.imagetoolbox.core.domain.saving.model.ImageSaveTarget
 import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
 import com.wanbaohe.core.ui.utils.helper.SaveSuccessNotifier
-import com.t8rin.imagetoolbox.feature.watermarking.domain.TextParams
-import com.t8rin.imagetoolbox.feature.watermarking.domain.WatermarkApplier
-import com.t8rin.imagetoolbox.feature.watermarking.domain.WatermarkParams
-import com.t8rin.imagetoolbox.feature.watermarking.domain.WatermarkingType
+import com.shifenmiao.app.watermarking.domain.TextParams
+import com.shifenmiao.app.watermarking.domain.WatermarkParams
+import com.shifenmiao.app.watermarking.domain.WatermarkingType
+import com.shifenmiao.app.watermarking.domain.model.toDocument
+import com.shifenmiao.app.watermarking.domain.render.WatermarkContentResolver
+import com.shifenmiao.app.watermarking.domain.render.WatermarkRenderer
 import javax.inject.Inject
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
@@ -52,7 +54,8 @@ import kotlinx.serialization.encodeToString
 
 class AddWatermarkTool @Inject constructor(
     private val imageGetter: ImageGetter<Bitmap>,
-    private val watermarkApplier: WatermarkApplier<Bitmap>,
+    private val watermarkRenderer: WatermarkRenderer<Bitmap>,
+    private val contentResolver: WatermarkContentResolver,
     private val imageCompressor: ImageCompressor<Bitmap>,
     private val fileController: FileController,
     private val agentFileService: AgentFileService,
@@ -209,10 +212,12 @@ class AddWatermarkTool @Inject constructor(
         val imageData = imageGetter.getImage(resolvedUri)
             ?: error(textProvider.string(R.string.agent_tool_add_watermark_load_failed))
 
-        val watermarked = watermarkApplier.applyWatermark(
+        val document = watermarkParams.toDocument()
+        val resolution = contentResolver.resolve(resolvedUri, document, deviceLocation = null)
+        val watermarked = watermarkRenderer.render(
             image = imageData.image,
-            originalSize = true,
-            params = watermarkParams
+            resolution = resolution,
+            hiddenWatermark = document.hiddenWatermark,
         ) ?: error(textProvider.string(R.string.agent_tool_add_watermark_apply_failed))
 
         // 默认保留原图格式,避免转换带来的质量损失

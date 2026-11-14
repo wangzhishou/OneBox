@@ -1,0 +1,258 @@
+/*
+ * OneBox is a free AI agent and toolbox for Android
+ * Copyright (c) 2026 zhishouwang(网址兽)
+ *
+ * Origin: OneBox original work, not derived from ImageToolbox
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ */
+
+package com.shifenmiao.app.watermarking.data.context
+
+import android.graphics.Bitmap
+import com.t8rin.imagetoolbox.core.domain.image.ImageGetter
+import com.t8rin.imagetoolbox.core.domain.image.get
+import com.t8rin.imagetoolbox.core.domain.image.model.MetadataTag
+import com.shifenmiao.app.watermarking.domain.model.GeoPoint
+import com.shifenmiao.app.watermarking.domain.model.LocationSnapshot
+import com.shifenmiao.app.watermarking.domain.model.PhotoWatermarkContext
+import com.shifenmiao.app.watermarking.domain.model.ResolvedWatermarkElement
+import com.shifenmiao.app.watermarking.domain.model.WatermarkContent
+import com.shifenmiao.app.watermarking.domain.model.WatermarkDocument
+import com.shifenmiao.app.watermarking.domain.model.WatermarkElement
+import com.shifenmiao.app.watermarking.domain.model.WatermarkResolution
+import com.shifenmiao.app.watermarking.domain.model.WatermarkValueSource
+import com.shifenmiao.app.watermarking.domain.model.WeatherSnapshot
+import com.shifenmiao.app.watermarking.domain.render.WatermarkContentResolver
+import com.wanbaohe.core.weather.domain.repository.WeatherRepository
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import javax.inject.Inject
+import javax.inject.Singleton
+import kotlin.math.abs
+
+@Singleton
+class DefaultWatermarkContentResolver @Inject constructor(
+    private val imageGetter: ImageGetter<Bitmap>,
+    private val weatherRepository: WeatherRepository,
+) : WatermarkContentResolver {
+    private val photoCache = mutableMapOf<String, PhotoWatermarkContext>()
+    private val photoMutex = Mutex()
+    private val weatherCache = mutableMapOf<String, WeatherSnapshot?>()
+    private val weatherMutex = Mutex()
+
+    override suspend fun resolve(
+        uri: String,
+        document: WatermarkDocument,
+        deviceLocation: LocationSnapshot?,
+    ): WatermarkResolution {
+        val photo = photoContext(uri)
+        var needsDeviceLocation = false
+        var weatherAvailable = true
+        val resolved = document.elements.map { element ->
+            when (val content = element.content) {
+                is WatermarkContent.Text -> element.text(content.text)
+                is WatermarkContent.Stamp -> element.text(content.text)
+                is WatermarkContent.Image -> ResolvedWatermarkElement(
+                    element = element,
+                    imageData = content.imageData,
+                    hasData = content.imageData.isNotBlank(),
+                )
+                is WatermarkContent.Timestamp -> element.text(formatTimestamp(content, photo))
+                is WatermarkContent.Altitude -> {
+                    val value = when (content.source) {
+                        WatermarkValueSource.MANUAL -> content.manualValue
+                        WatermarkValueSource.PHOTO -> photo.altitudeMeters?.formatAltitude(content.useFeet)
+                            ?: deviceLocation?.altitudeMeters?.formatAltitude(content.useFeet)
+                        WatermarkValueSource.DEVICE -> deviceLocation?.altitudeMeters?.formatAltitude(content.useFeet)
+                    }
+                    if (value.isNullOrBlank()) needsDeviceLocation = content.source != WatermarkValueSource.MANUAL
+                    element.text(value.orMissing())
+                }
+                is WatermarkContent.Coordinates -> {
+                    val point = coordinatesFor(content.source, photo, deviceLocation)
+                    val value = when (content.source) {
+                        WatermarkValueSource.MANUAL -> content.manualValue
+                        else -> point?.formatCoordinates(content.useDecimalFormat)
+                    }
+                    if (value.isNullOrBlank()) needsDeviceLocation = content.source != WatermarkValueSource.MANUAL
+                    element.text(value.orMissing())
+                }
+                is WatermarkContent.Weather -> {
+                    if (content.source == WatermarkValueSource.MANUAL) {
+                        element.text(content.manualValue)
+                    } else {
+                        val point = coordinatesFor(content.source, photo, deviceLocation)
+                        if (point == null) needsDeviceLocation = true
+                        val weather = if (point == null) null else weatherAt(point)
+                        if (weather == null) weatherAvailable = false
+                        element.text(weather?.format(content).orMissing())
+                    }
+                }
+            }
+        }
+        return WatermarkResolution(
+            elements = resolved,
+            photoContext = photo,
+            needsDeviceLocation = needsDeviceLocation,
+            weatherAvailable = weatherAvailable,
+        )
+    }
+
+    private suspend fun photoContext(uri: String): PhotoWatermarkContext {
+        photoMutex.withLock { photoCache[uri]?.let { return it } }
+        val metadata = runCatching {
+            imageGetter.getImage(uri, originalSize = false)?.metadata
+        }.getOrNull()
+        val context = PhotoWatermarkContext(
+            dateTime = metadata?.get(MetadataTag.DatetimeOriginal)
+                ?: metadata?.get(MetadataTag.DatetimeDigitized)
+                ?: metadata?.get(MetadataTag.Datetime),
+            coordinates = parseCoordinates(
+                latitude = metadata?.get(MetadataTag.GpsLatitude),
+                latitudeRef = metadata?.get(MetadataTag.GpsLatitudeRef),
+                longitude = metadata?.get(MetadataTag.GpsLongitude),
+                longitudeRef = metadata?.get(MetadataTag.GpsLongitudeRef),
+            ),
+            altitudeMeters = parseRational(metadata?.get(MetadataTag.GpsAltitude))?.let { altitude ->
+                if (metadata?.get(MetadataTag.GpsAltitudeRef)?.trim() == "1") -altitude else altitude
+            },
+        )
+        photoMutex.withLock { photoCache[uri] = context }
+        return context
+    }
+
+    private suspend fun weatherAt(point: GeoPoint): WeatherSnapshot? {
+        val key = "%.3f,%.3f".format(Locale.US, point.latitude, point.longitude)
+        weatherMutex.withLock {
+            if (weatherCache.containsKey(key)) return weatherCache[key]
+        }
+        val snapshot = weatherRepository.getPlaceWeather(point.latitude, point.longitude)
+            .getOrNull()?.current?.let { current ->
+                WeatherSnapshot(
+                    text = current.text,
+                    temperatureCelsius = current.temp,
+                    observationTime = current.obsTime.ifBlank { current.updateTime },
+                    iconCode = current.icon,
+                )
+            }
+        if (snapshot != null) {
+            weatherMutex.withLock { weatherCache[key] = snapshot }
+        }
+        return snapshot
+    }
+
+    private fun coordinatesFor(
+        source: WatermarkValueSource,
+        photo: PhotoWatermarkContext,
+        device: LocationSnapshot?,
+    ): GeoPoint? = when (source) {
+        WatermarkValueSource.PHOTO -> photo.coordinates ?: device?.coordinates
+        WatermarkValueSource.DEVICE -> device?.coordinates
+        WatermarkValueSource.MANUAL -> null
+    }
+
+    private fun formatTimestamp(
+        content: WatermarkContent.Timestamp,
+        photo: PhotoWatermarkContext,
+    ): String {
+        val date = if (content.usePhotoTime) {
+            photo.dateTime?.let(::parseExifDate) ?: Date()
+        } else Date()
+        val pattern = content.format.ifBlank { "yyyy-MM-dd HH:mm" }
+        return runCatching { SimpleDateFormat(pattern, Locale.getDefault()).format(date) }
+            .getOrElse { SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(date) }
+    }
+
+    private fun parseExifDate(value: String): Date? = runCatching {
+        SimpleDateFormat("yyyy:MM:dd HH:mm:ss", Locale.getDefault()).parse(value)
+    }.getOrNull()
+
+    private fun WeatherSnapshot.format(content: WatermarkContent.Weather): String = buildString {
+        append(text)
+        if (content.includeTemperature && temperatureCelsius.isNotBlank()) {
+            if (isNotEmpty()) append(' ')
+            append(temperatureCelsius).append("°C")
+        }
+        if (content.includeObservationTime && observationTime.isNotBlank()) {
+            if (isNotEmpty()) append(" · ")
+            append(observationTime)
+        }
+    }
+
+    private fun Double.formatAltitude(useFeet: Boolean): String {
+        val value = if (useFeet) this * 3.28084 else this
+        return "≈ %.0f %s".format(Locale.getDefault(), value, if (useFeet) "ft" else "m")
+    }
+
+    private fun GeoPoint.formatCoordinates(decimal: Boolean): String {
+        if (decimal) return "%.5f°, %.5f°".format(Locale.getDefault(), latitude, longitude)
+        return "${dms(latitude, true)} ${dms(longitude, false)}"
+    }
+
+    private fun dms(value: Double, latitude: Boolean): String {
+        val absolute = abs(value)
+        val degrees = absolute.toInt()
+        val minutesFloat = (absolute - degrees) * 60
+        val minutes = minutesFloat.toInt()
+        val seconds = (minutesFloat - minutes) * 60
+        val direction = when {
+            latitude && value >= 0 -> "N"
+            latitude -> "S"
+            value >= 0 -> "E"
+            else -> "W"
+        }
+        return "%d°%d'%.1f\"%s".format(Locale.getDefault(), degrees, minutes, seconds, direction)
+    }
+
+    private fun parseCoordinates(
+        latitude: String?,
+        latitudeRef: String?,
+        longitude: String?,
+        longitudeRef: String?,
+    ): GeoPoint? {
+        val lat = parseDms(latitude) ?: return null
+        val lon = parseDms(longitude) ?: return null
+        return GeoPoint(
+            latitude = if (latitudeRef.equals("S", true)) -lat else lat,
+            longitude = if (longitudeRef.equals("W", true)) -lon else lon,
+        ).takeIf { it.latitude in -90.0..90.0 && it.longitude in -180.0..180.0 }
+    }
+
+    private fun parseDms(value: String?): Double? {
+        if (value.isNullOrBlank()) return null
+        val parts = value.split(',')
+        if (parts.size == 3) {
+            val degrees = parseRational(parts[0]) ?: return null
+            val minutes = parseRational(parts[1]) ?: return null
+            val seconds = parseRational(parts[2]) ?: return null
+            return abs(degrees) + minutes / 60.0 + seconds / 3600.0
+        }
+        return value.toDoubleOrNull()?.let(::abs)
+    }
+
+    private fun parseRational(value: String?): Double? {
+        if (value.isNullOrBlank()) return null
+        val parts = value.trim().split('/')
+        return when (parts.size) {
+            2 -> {
+                val numerator = parts[0].toDoubleOrNull() ?: return null
+                val denominator = parts[1].toDoubleOrNull()?.takeIf { it != 0.0 } ?: return null
+                numerator / denominator
+            }
+            else -> value.toDoubleOrNull()
+        }
+    }
+
+    private fun WatermarkElement.text(value: String) = ResolvedWatermarkElement(
+        element = this,
+        text = value,
+        hasData = value.isNotBlank() && value != "—",
+    )
+
+    private fun String?.orMissing() = this?.takeIf(String::isNotBlank) ?: "—"
+}

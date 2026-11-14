@@ -21,9 +21,11 @@ package com.wanbaohe.core.weather.di
 
 import com.wanbaohe.core.weather.data.cache.LocationCityCache
 import com.wanbaohe.core.weather.data.cache.WeatherDataCache
+import com.wanbaohe.core.weather.data.location.AndroidCurrentLocationProvider
 import com.wanbaohe.core.weather.data.location.AndroidLocationProvider
 import com.wanbaohe.core.weather.data.repository.WeatherRepositoryImpl
 import com.wanbaohe.core.weather.data.source.QWeatherDataSource
+import com.wanbaohe.core.weather.domain.repository.CurrentLocationProvider
 import com.wanbaohe.core.weather.domain.repository.LocationProvider
 import com.wanbaohe.core.weather.domain.repository.WeatherRepository
 import dagger.Module
@@ -68,6 +70,14 @@ object WeatherModule {
         @ApplicationContext context: Context,
     ): LocationProvider {
         return AndroidLocationProvider(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCurrentLocationProvider(
+        @ApplicationContext context: Context,
+    ): CurrentLocationProvider {
+        return AndroidCurrentLocationProvider(context)
     }
 
     @Provides
