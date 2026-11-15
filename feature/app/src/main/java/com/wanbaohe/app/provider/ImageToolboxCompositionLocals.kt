@@ -59,6 +59,9 @@ import com.wanbaohe.core.ui.utils.provider.LocalScreenSize
 import com.wanbaohe.core.ui.utils.provider.rememberScreenSize
 import com.wanbaohe.core.ui.widget.enhanced.rememberEnhancedHapticFeedback
 import com.wanbaohe.core.ui.widget.other.ToastHost
+import com.wanbaohe.markdown.LocalOneBoxMarkdownPlugins
+import com.wanbaohe.markdown.OneBoxMarkdownPlugin
+import com.wanbaohe.media.markdown.OneBoxMediaMarkdownPlugin
 import com.t8rin.imagetoolbox.feature.root.presentation.screenLogic.RootComponent
 import com.wanbaohe.core.ui.utils.confetti.ConfettiHost
 import com.wanbaohe.core.ui.utils.blessing.BlessingEffectHost
@@ -76,6 +79,7 @@ fun ImageToolboxCompositionLocals(
     val context = LocalContext.current
     val customHapticFeedback = rememberEnhancedHapticFeedback(settingsState.hapticsStrength)
     val screenSize = rememberScreenSize()
+    val markdownPlugins = remember { listOf<OneBoxMarkdownPlugin>(OneBoxMediaMarkdownPlugin) }
 
     val previewProvider = rememberFilterPreviewProvider(
         preview = component.filterPreviewModel,
@@ -120,7 +124,8 @@ fun ImageToolboxCompositionLocals(
         screenSize,
         previewProvider,
         snackBarHostState,
-        urlNavigator
+        urlNavigator,
+        markdownPlugins
     ) {
         listOfNotNull(
             LocalSettingsState provides settingsState,
@@ -129,6 +134,7 @@ fun ImageToolboxCompositionLocals(
             LocalThemeRepository provides component.themeRepository,
             LocalUrlNavigator provides urlNavigator,
             LocalOnNavigate provides urlNavigator.onNavigate,
+            LocalOneBoxMarkdownPlugins provides markdownPlugins,
             LocalEditPresetsController provides editPresetsController,
             LocalFilterPreviewModelProvider providesOrNull previewProvider,
             LocalHapticFeedback provides customHapticFeedback,

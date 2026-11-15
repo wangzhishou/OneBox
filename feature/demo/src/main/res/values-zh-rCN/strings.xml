@@ -19,6 +19,9 @@
   -->
 
 <resources>
+    <string name="demo_markdown_engine_legacy">现有渲染引擎</string>
+    <string name="demo_markdown_engine_kmp">KMP Markdown 1.7.2</string>
+    <string name="demo_markdown_media_sample">媒体示例</string>
     <string name="demo_glass_showcase_title">Glass 组件展示</string>
     <string name="demo_glass_showcase_button_title">Glass Showcase</string>
     <string name="demo_glass_showcase_sheet_subtitle">展示当前主题下的扁平玻璃卡片、按钮、容器、选择器与输入容器效果；所有示例颜色均跟随主题变化。</string>

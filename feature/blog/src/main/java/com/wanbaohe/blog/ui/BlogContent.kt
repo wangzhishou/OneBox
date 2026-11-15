@@ -6,15 +6,15 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * You should have received a copy of the Apache License
- * along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
  */
 
 package com.wanbaohe.blog.ui
@@ -22,8 +22,6 @@ package com.wanbaohe.blog.ui
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,15 +29,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.wanbaohe.base.ui.MarkdownLazyContent
-import com.shifenmiao.common.components.text.TextSelectionMenuContainer
+import com.shifenmiao.common.components.blog.AuthorInfo
+import com.shifenmiao.common.components.blog.BlogTagChips
 import com.shifenmiao.common.components.text.defaultTextSelectionMenuItems
 import com.shifenmiao.common.handle.LocalUrlNavigator
 import com.shifenmiao.common.logic.AppComponent
+import com.shifenmiao.common.markdown.OneBoxMarkdownContent
+import com.shifenmiao.common.markdown.OneBoxMarkdownContentState
+import com.shifenmiao.common.markdown.rememberOneBoxMarkdownContentState
 import com.shifenmiao.core.R
 import com.shifenmiao.model.blog.BlogDetailState
-import com.shifenmiao.common.components.blog.AuthorInfo
-import com.shifenmiao.common.components.blog.BlogTagChips
 import com.shifenmiao.webview.mermaid.ProvideMermaidRenderer
 import com.wanbaohe.blog.logic.BlogComponent
 
@@ -49,8 +48,7 @@ fun BlogContent(
     appComponent: AppComponent,
     onGoBack: () -> Unit = {},
     modifier: Modifier = Modifier,
-    // 允许外壳页持有同一个状态，供标题栏点击回到正文首条
-    lazyListState: LazyListState = rememberLazyListState(),
+    markdownState: OneBoxMarkdownContentState = rememberOneBoxMarkdownContentState(),
 ) {
     val blogDetailState by blogComponent.blogDetailState.collectAsState()
     val navigator = LocalUrlNavigator.current
@@ -60,57 +58,41 @@ fun BlogContent(
         onNavigate = { screen -> navigator.navigate(screen) },
     )
 
-    // 根据 BlogDetailState 映射到 MarkdownLazyContent 的参数
     val isLoading = blogDetailState is BlogDetailState.Loading
     val errorMessage = (blogDetailState as? BlogDetailState.Error)?.message
         ?: if (blogDetailState is BlogDetailState.Error) stringResource(R.string.error_message) else null
     val blog = (blogDetailState as? BlogDetailState.Success)?.blog
-    val markdownMessage = blog?.content.orEmpty()
 
     ProvideMermaidRenderer {
-        TextSelectionMenuContainer(
-            items = selectionItems,
-            modifier = Modifier.fillMaxSize(),
-        ) {
-            MarkdownLazyContent(
-                message = markdownMessage,
-                modifier = modifier.fillMaxSize(),
-                isLoading = isLoading,
-                errorMessage = errorMessage,
-                onRetry = { blogComponent.onRetry() },
-                onGoBack = onGoBack,
-                onLinkClick = { url ->
-                    if (!navigator.navigate(url)) {
-                        uriHandler.openUri(url)
-                    }
-                },
-                lazyListState = lazyListState,
-                headerContent = {
-                    val tags = blog?.tags?.filter { it.name.isNotBlank() }.orEmpty()
-                    if (tags.isNotEmpty()) {
-                        item(key = "blog_tags") {
-                            BlogTagChips(tags = tags)
-                        }
-                    }
-                },
-                footerContent = {
-                    // 作者信息
-                    blog?.author?.let { author ->
-                        item(key = "blog_author") {
-                            Spacer(modifier = Modifier.height(8.dp))
-                            AuthorInfo(
-                                authorName = author.nickname.orEmpty(),
-                                authorAvatar = author.avatar,
-                                publishDate = blog.publishedAt
-                            )
-                        }
-                    }
-                    // 底部留白
-                    item(key = "blog_bottom_spacer") {
-                        Spacer(modifier = Modifier.height(30.dp))
-                    }
+        OneBoxMarkdownContent(
+            message = blog?.content.orEmpty(),
+            modifier = modifier.fillMaxSize(),
+            isLoading = isLoading,
+            errorMessage = errorMessage,
+            onRetry = { blogComponent.onRetry() },
+            onGoBack = onGoBack,
+            onLinkClick = { url ->
+                if (!navigator.navigate(url)) {
+                    uriHandler.openUri(url)
                 }
-            )
-        }
+            },
+            state = markdownState,
+            selectionItems = selectionItems,
+            headerContent = {
+                val tags = blog?.tags?.filter { it.name.isNotBlank() }.orEmpty()
+                if (tags.isNotEmpty()) BlogTagChips(tags = tags)
+            },
+            footerContent = {
+                blog?.author?.let { author ->
+                    Spacer(modifier = Modifier.height(8.dp))
+                    AuthorInfo(
+                        authorName = author.nickname.orEmpty(),
+                        authorAvatar = author.avatar,
+                        publishDate = blog.publishedAt
+                    )
+                }
+                Spacer(modifier = Modifier.height(30.dp))
+            },
+        )
     }
 }

@@ -11,6 +11,8 @@ import com.halilibo.richtext.markwon.MarkdownAstNodeParser
 import com.halilibo.richtext.ui.RichTextScope
 import com.shifenmiao.model.node.AstNode
 import io.noties.markwon.plugins.codeblock.CodeBlockClickListener
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * A composable that renders Markdown content according to Commonmark specification using RichText.
@@ -37,7 +39,9 @@ fun RichTextScope.Markdown(
     key1 = commonmarkAstNodeParser,
     key2 = content
   ) {
-    value = commonmarkAstNodeParser.parse(content)
+    value = withContext(Dispatchers.Default) {
+      commonmarkAstNodeParser.parse(content)
+    }
   }
 
   astRootNode?.let {

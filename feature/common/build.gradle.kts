@@ -47,6 +47,7 @@ dependencies {
     ksp(libs.dagger.hilt.compiler)
 
     implementation(projects.libs.opencvTools)
+    implementation(projects.libs.markdown)
 
     implementation(libs.com.airbnb.lottie)
 

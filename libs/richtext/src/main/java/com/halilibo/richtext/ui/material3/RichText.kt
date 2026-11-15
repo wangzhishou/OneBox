@@ -67,7 +67,7 @@ fun RichMarkdown(
     }
 
     LaunchedEffect(content) {
-        withContext(Dispatchers.IO) {
+        withContext(Dispatchers.Default) {
             if (content.isNotEmpty()) {
                 val parser = MarkdownAstNodeParser(context, markdownParseOptions)
                 astNode = parser.parse(content)

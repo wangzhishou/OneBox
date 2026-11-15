@@ -130,7 +130,8 @@ private fun computeRichTextString(
   val richTextStringBuilder = RichTextString.Builder()
 
   // Modified pre-order traversal with pushFormat, popFormat support.
-  var iteratorStack = listOf(
+  val iteratorStack = ArrayDeque<AstNodeTraversalEntry>()
+  iteratorStack.addFirst(
     AstNodeTraversalEntry(
       astNode = astNode,
       isVisited = false,
@@ -139,8 +140,7 @@ private fun computeRichTextString(
   )
 
   while (iteratorStack.isNotEmpty()) {
-    val (currentNode, isVisited, formatIndex) = iteratorStack.first().copy()
-    iteratorStack = iteratorStack.drop(1)
+    val (currentNode, isVisited, formatIndex) = iteratorStack.removeFirst()
 
     if (!isVisited) {
       val newFormatIndex = when (val currentNodeType = currentNode.type) {
@@ -229,7 +229,7 @@ private fun computeRichTextString(
         else -> null
       }
 
-      iteratorStack = iteratorStack.addFirst(
+      iteratorStack.addFirst(
         AstNodeTraversalEntry(
           astNode = currentNode,
           isVisited = true,
@@ -240,7 +240,7 @@ private fun computeRichTextString(
       // Do not visit children of terminals such as Text, Image, etc.
       if (!currentNode.isRichTextTerminal()) {
         currentNode.childrenSequence(reverse = true).forEach {
-          iteratorStack = iteratorStack.addFirst(
+          iteratorStack.addFirst(
             AstNodeTraversalEntry(
               astNode = it,
               isVisited = false,
@@ -349,7 +349,3 @@ private data class AstNodeTraversalEntry(
   val isVisited: Boolean,
   val formatIndex: Int?
 )
-
-private inline fun <reified T> List<T>.addFirst(item: T): List<T> {
-  return listOf(item) + this
-}

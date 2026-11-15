@@ -29,6 +29,7 @@ android.namespace = "com.wanbaohe.media"
 dependencies {
     // 共用外壳（BaseScreen / 玻璃容器 / 底栏）
     implementation(projects.feature.common)
+    implementation(projects.libs.markdown)
 
     // 最近访问记录（与文件浏览器共用同一张表）
     implementation(projects.core.database)

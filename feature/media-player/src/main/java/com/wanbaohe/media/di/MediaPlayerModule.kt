@@ -31,7 +31,9 @@ import com.wanbaohe.media.domain.MediaFavoritesRepository
 import com.wanbaohe.media.domain.MediaLibraryRepository
 import com.wanbaohe.media.domain.MediaMetadataSource
 import com.wanbaohe.media.domain.MediaPermissionChecker
+import com.wanbaohe.media.domain.InlineMediaPlaybackControllerFactory
 import com.wanbaohe.media.domain.MediaPlaybackController
+import com.wanbaohe.media.playback.ExoInlineMediaPlaybackControllerFactory
 import com.wanbaohe.media.playback.ExoPlaybackEngine
 import dagger.Binds
 import dagger.Module
@@ -76,4 +78,9 @@ internal abstract class MediaPlayerModule {
     @Binds
     @Singleton
     abstract fun bindPlaybackController(impl: ExoPlaybackEngine): MediaPlaybackController
+
+    @Binds
+    abstract fun bindInlinePlaybackControllerFactory(
+        impl: ExoInlineMediaPlaybackControllerFactory,
+    ): InlineMediaPlaybackControllerFactory
 }

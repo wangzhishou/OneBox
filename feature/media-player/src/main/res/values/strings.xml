@@ -120,5 +120,9 @@
     <!-- 最近播放卡片可折叠 -->
     <string name="media_collapse_recent">Collapse</string>
     <string name="media_expand_recent">Expand</string>
+    <string name="media_inline_audio">Audio</string>
+    <string name="media_inline_video">Video</string>
+    <string name="media_inline_play_error">Playback failed. Tap play to try again.</string>
+    <string name="media_inline_invalid_url">Invalid or unsupported media URL</string>
 
 </resources>

@@ -253,22 +253,24 @@ class MessagePersistenceWorker(
         if (draft == null || !draft.active || draft.answerId <= 0) return false
         val now = System.currentTimeMillis()
         if (now - draft.lastWriteAt < STREAM_DRAFT_INTERVAL_MS) return false
-        val answer = sharedState.answerMessageEntity.value
-        if (answer.answer.length + answer.reasoningContent.length == draft.lastLength) return false
+        if (streamContentProcessor.currentStreamContentLength() == draft.lastLength) return false
         draft.lastWriteAt = now
         return true
     }
 
     /** 把当前已生成内容写回草稿行；失败只记日志，绝不影响正在进行的流。 */
-    suspend fun persistStreamDraft(draft: StreamDraft?) {
+    suspend fun persistStreamDraft(
+        draft: StreamDraft?,
+        answer: String,
+        reasoning: String,
+    ) {
         if (draft == null || !draft.active || draft.answerId <= 0) return
-        val answer = sharedState.answerMessageEntity.value
-        draft.lastLength = answer.answer.length + answer.reasoningContent.length
+        draft.lastLength = answer.length + reasoning.length
         runCatching {
             appDatabase.messageDao().updateStreamDraft(
                 id = draft.answerId,
-                answer = answer.answer,
-                reasoning = answer.reasoningContent,
+                answer = answer,
+                reasoning = reasoning,
                 // 只更新仍是草稿的行：完成/中断路径把哨兵改写之后，迟到的写入自动失效。
                 draftFinishReason = STREAM_DRAFT_FINISH_REASON,
             )

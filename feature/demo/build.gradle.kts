@@ -54,6 +54,7 @@ dependencies {
 
 
     implementation(projects.feature.common)
+    implementation(projects.libs.markdown)
 
     // A2UI renderer gallery
     implementation(projects.core.a2ui)

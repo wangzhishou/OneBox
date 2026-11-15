@@ -86,6 +86,8 @@ class StreamContentProcessor(
     // ── 流式内容缓冲 ──────────────────────────────────────────
     private val answerBuffer = StringBuilder()
     private val reasoningBuffer = StringBuilder()
+    private var hasPendingAnswerUpdate = false
+    private var hasPendingReasoningUpdate = false
 
     /**
      * reasoning 最后一段在 [reasoningBuffer] 中的起始索引。
@@ -139,10 +141,7 @@ class StreamContentProcessor(
     /** 追加 LLM 生成的回答内容（干净内容，会被持久化） */
     fun updateAnswerContentOptimized(incrementContent: String) {
         answerBuffer.append(incrementContent)
-        val current = sharedState.answerMessageEntity.value
-        sharedState.setAnswerMessage(current.copy(
-            answer = answerBuffer.toString()
-        ).also { it.uId = current.uId })
+        hasPendingAnswerUpdate = true
     }
 
     /** 追加推理内容，同时增量维护 [reasoningTailStartIndex] */
@@ -152,18 +151,36 @@ class StreamContentProcessor(
 
         val insertPos = reasoningBuffer.length
         reasoningBuffer.append(cleaned)
+        hasPendingReasoningUpdate = true
 
         // 增量更新 tail 起始索引：检查新增内容中的换行
         val lastLineBreak = cleaned.lastIndexOf('\n')
         if (lastLineBreak >= 0) {
             reasoningTailStartIndex = insertPos + lastLineBreak + 1
         }
-
-        val current = sharedState.answerMessageEntity.value
-        sharedState.setAnswerMessage(current.copy(
-            reasoningContent = reasoningBuffer.toString()
-        ).also { it.uId = current.uId })
     }
+
+    /** 完成事件读取消息前，以及占位消息实际刷新时，统一发布最新缓冲区。 */
+    fun flushBufferedContent() {
+        if (!hasPendingAnswerUpdate && !hasPendingReasoningUpdate) return
+        val current = sharedState.answerMessageEntity.value
+        val answer = if (hasPendingAnswerUpdate) answerBuffer.toString() else current.answer
+        val reasoning = if (hasPendingReasoningUpdate) {
+            reasoningBuffer.toString()
+        } else {
+            current.reasoningContent
+        }
+        sharedState.setAnswerMessage(
+            current.copy(answer = answer, reasoningContent = reasoning).also { it.uId = current.uId }
+        )
+        hasPendingAnswerUpdate = false
+        hasPendingReasoningUpdate = false
+    }
+
+    fun currentStreamContentLength(): Int = answerBuffer.length + reasoningBuffer.length
+
+    fun currentStreamContentSnapshot(): Pair<String, String> =
+        answerBuffer.toString() to reasoningBuffer.toString()
 
     /**
      * 归一化 reasoning 增量，避免多轮 Agent Loop 拼接后产生连续空行。
@@ -364,6 +381,7 @@ class StreamContentProcessor(
             return
         }
         lastPlaceholderUpdateTime = now
+        flushBufferedContent()
 
         val liveQuestion = sharedState.questionMessageEntity.value
         val liveAnswer = sharedState.answerMessageEntity.value
@@ -514,6 +532,8 @@ class StreamContentProcessor(
     fun resetBuffers() {
         answerBuffer.clear()
         reasoningBuffer.clear()
+        hasPendingAnswerUpdate = false
+        hasPendingReasoningUpdate = false
         reasoningTailStartIndex = 0
         lastStreamFrameTime = 0L
         lastRenderedAnswerLength = 0

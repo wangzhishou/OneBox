@@ -29,8 +29,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.text.selection.rememberSelectionState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Edit
@@ -49,16 +47,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.provider.LocalDataDraftHelper
-import com.wanbaohe.base.ui.MarkdownLazyContent
-import com.shifenmiao.common.components.text.TextSelectionMenuContainer
 import com.shifenmiao.common.components.text.defaultTextSelectionMenuItems
 import com.shifenmiao.common.handle.LocalUrlNavigator
 import com.shifenmiao.common.logic.AppComponent
+import com.shifenmiao.common.markdown.OneBoxMarkdownContent
+import com.shifenmiao.common.markdown.rememberOneBoxMarkdownContentState
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.rememberCodeBlockClickListener
 import com.shifenmiao.core.R
@@ -66,7 +63,6 @@ import com.shifenmiao.model.ListItemType
 import com.shifenmiao.online.component.NoteItemComponent
 import com.shifenmiao.online.ui.ReadOnlyNoteCategorySelection
 import com.shifenmiao.theme.AppTheme
-import com.wanbaohe.core.ui.utils.helper.scrollToContentStart
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedButton
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBarType
@@ -89,8 +85,7 @@ fun NoteItemScreen(
         onNavigate = { screen -> navigator.navigate(screen) },
     )
     val scope = rememberCoroutineScope()
-    val selectionState = rememberSelectionState()
-    val lazyListState = rememberLazyListState()
+    val markdownState = rememberOneBoxMarkdownContentState()
 
     // 页面显示时刷新数据，确保显示最新的编辑内容
     LaunchedEffect(Unit) {
@@ -99,6 +94,7 @@ fun NoteItemScreen(
 
     val codeBlockClickListener = rememberCodeBlockClickListener(appComponent = appComponent)
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    BackHandler { appComponent.onGoBack() }
     BaseScreen(
         title = {
             Text(
@@ -137,9 +133,8 @@ fun NoteItemScreen(
                 }
             }
         },
-        // 标题栏点击只回到正文首条，不改动 MarkdownLazyContent 自身的滚动行为
         onTitleClick = {
-            scope.launch { lazyListState.scrollToContentStart() }
+            scope.launch { markdownState.scrollToContentStart() }
         },
         showNavigationBarsPadding = true
     ) {
@@ -151,51 +146,37 @@ fun NoteItemScreen(
             return@BaseScreen
         }
         ProvideMermaidRenderer {
-            // 长按直接进选区并弹浮动工具条,与 AI 聊天 / 博客详情一致,不再先切「选择文本」模式
-            TextSelectionMenuContainer(
-                items = selectionMenuItems,
-                selectionState = selectionState,
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                MarkdownLazyContent(
-                    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-                    lazyListState = lazyListState,
-                    codeBlockClickListener = codeBlockClickListener,
-                    message = noteUIState.data,
-                    isLoading = noteUIState.isLoading,
-                    errorMessage = noteUIState.errorMessage,
-                    onRetry = { noteItemComponent.refreshData() },
-                    onGoBack = { appComponent.onGoBack() },
-                    onLinkClick = { url ->
-                        if (!navigator.navigate(url)) {
-                            uriHandler.openUri(url)
-                        }
-                    },
-                    // 页面级已由 BaseScreen 补 navigationBarsPadding；这里给正文末尾再留一段
-                    // 可滚动留白，避免最后一行紧贴系统手势条上沿(与 Blog 详情底部留白对齐)
-                    paddingValues = PaddingValues(
-                        start = AppTheme.dimens.paddingNormal,
-                        top = 0.dp,
-                        end = AppTheme.dimens.paddingNormal,
-                        bottom = 30.dp
-                    ),
-                    headerContent = {
-                        if (noteUIState.selectedCategories.isNotEmpty()) {
-                            item {
-                                Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
-                                ReadOnlyNoteCategorySelection(uiState = noteUIState)
-                                Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
-                            }
-                        }
+            OneBoxMarkdownContent(
+                modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
+                state = markdownState,
+                codeBlockClickListener = codeBlockClickListener,
+                selectionItems = selectionMenuItems,
+                message = noteUIState.data,
+                isLoading = noteUIState.isLoading,
+                errorMessage = noteUIState.errorMessage,
+                onRetry = { noteItemComponent.refreshData() },
+                onGoBack = { appComponent.onGoBack() },
+                onLinkClick = { url ->
+                    if (!navigator.navigate(url)) {
+                        uriHandler.openUri(url)
                     }
-                )
-            }
+                },
+                // 页面级已由 BaseScreen 补 navigationBarsPadding；正文末尾再留一段可滚动留白
+                paddingValues = PaddingValues(
+                    start = AppTheme.dimens.paddingNormal,
+                    top = 0.dp,
+                    end = AppTheme.dimens.paddingNormal,
+                    bottom = 30.dp
+                ),
+                headerContent = {
+                    if (noteUIState.selectedCategories.isNotEmpty()) {
+                        Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
+                        ReadOnlyNoteCategorySelection(uiState = noteUIState)
+                        Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
+                    }
+                }
+            )
         }
-    }
-
-    // 有选区时交给容器内部的 BackHandler 清选区,这里只处理页面返回
-    BackHandler(enabled = selectionState.selectedTexts.isEmpty()) {
-        appComponent.onGoBack()
     }
 }
 

@@ -1111,6 +1111,7 @@ open class AIChatComponent @AssistedInject internal constructor(
                     responseItemsJson = streamEvent.outputItemsJson.orEmpty(),
                     finishReason = streamEvent.finishReason.orEmpty()
                 )
+                streamContentProcessor.flushBufferedContent()
                 streamContentProcessor.markStreamSawEnd()
                 val hasVisibleAssistantOutput = _answerMessageEntity.value.answer.isNotBlank() ||
                     _answerMessageEntity.value.reasoningContent.isNotBlank()
@@ -1265,8 +1266,9 @@ open class AIChatComponent @AssistedInject internal constructor(
      */
     private fun persistStreamDraftIfNeeded(draft: MessagePersistenceWorker.StreamDraft?) {
         if (!messagePersistenceWorker.shouldPersistStreamDraft(draft)) return
+        val (answer, reasoning) = streamContentProcessor.currentStreamContentSnapshot()
         componentScope.launch(ioDispatcher) {
-            messagePersistenceWorker.persistStreamDraft(draft)
+            messagePersistenceWorker.persistStreamDraft(draft, answer, reasoning)
         }
     }
 
@@ -1282,6 +1284,7 @@ open class AIChatComponent @AssistedInject internal constructor(
         draft: MessagePersistenceWorker.StreamDraft?,
         generation: Int,
     ) {
+        streamContentProcessor.flushBufferedContent()
         // 中断消息复用草稿行原地 REPLACE；作废句柄，防止排队中的草稿写入覆盖中断后缀。
         messagePersistenceWorker.finishStreamDraft(draft)
 

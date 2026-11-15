@@ -32,6 +32,9 @@
     <string name="demo_schedule_event_linked_task">Linked todo: %1$s</string>
     <string name="demo_xiangqi_entry_title">Xiangqi</string>
     <string name="demo_blessing_wall_entry_title">Blessing Wall</string>
+    <string name="demo_markdown_engine_legacy">Current renderer</string>
+    <string name="demo_markdown_engine_kmp">KMP Markdown 1.7.2</string>
+    <string name="demo_markdown_media_sample">Media demo</string>
     <string name="demo_glass_showcase_title">Glass Components Showcase</string>
     <string name="demo_glass_showcase_button_title">Glass Showcase</string>
     <string name="demo_glass_showcase_sheet_subtitle">Shows flat glass cards, buttons, containers, selectors, and input containers under the current theme; all sample colors follow the theme.</string>

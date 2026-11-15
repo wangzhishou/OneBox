@@ -99,6 +99,7 @@ dependencies {
     implementation(projects.feature.fileBrowser)
     implementation(projects.feature.fileViewer)
     implementation(projects.feature.mediaPlayer)
+    implementation(projects.libs.markdown)
     implementation(projects.feature.cloudStorage)
     implementation(projects.feature.marktodo)
     implementation(projects.feature.minesweeper)

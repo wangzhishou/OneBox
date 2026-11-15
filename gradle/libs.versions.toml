@@ -130,7 +130,9 @@ coilResvg = "1.1.2"
 litertlm = "0.19.0"
 hrmDiagram = "1.1.0"
 hrmLatex = "1.7.2"
+hrmMarkdown = "1.7.2"
 [libraries]
+hrm-markdown-renderer = { module = "io.github.huarangmeng:markdown-renderer", version.ref = "hrmMarkdown" }
 hrm-diagram-render = { module = "io.github.huarangmeng:diagram-render", version.ref = "hrmDiagram" }
 hrm-latex-renderer = { module = "io.github.huarangmeng:latex-renderer", version.ref = "hrmLatex" }
 hrm-latex-fonts-katex = { module = "io.github.huarangmeng:latex-fonts-katex", version.ref = "hrmLatex" }

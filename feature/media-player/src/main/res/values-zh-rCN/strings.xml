@@ -119,5 +119,9 @@
     <!-- 最近播放卡片可折叠 -->
     <string name="media_collapse_recent">收起最近播放</string>
     <string name="media_expand_recent">展开最近播放</string>
+    <string name="media_inline_audio">音频</string>
+    <string name="media_inline_video">视频</string>
+    <string name="media_inline_play_error">播放失败，点击播放键重试</string>
+    <string name="media_inline_invalid_url">媒体地址无效或不受支持</string>
 
 </resources>

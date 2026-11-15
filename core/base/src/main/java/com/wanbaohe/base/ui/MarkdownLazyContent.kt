@@ -168,7 +168,7 @@ fun MarkdownLazyContent(
 
             LaunchedEffect(message) {
                 isParsing = true
-                withContext(Dispatchers.IO) {
+                withContext(Dispatchers.Default) {
                     try {
                         val parser = MarkdownAstNodeParser(
                             context,
