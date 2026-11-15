@@ -48,6 +48,7 @@ dependencies {
 
     implementation(projects.libs.opencvTools)
     implementation(projects.libs.markdown)
+    implementation(projects.libs.richTextEditor)
 
     implementation(libs.com.airbnb.lottie)
 

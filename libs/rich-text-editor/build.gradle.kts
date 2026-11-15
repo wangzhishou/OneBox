@@ -9,4 +9,5 @@ dependencies {
     api(libs.compose.foundation)
     api(libs.compose.ui)
     api(libs.androidx.material3)
+    api(libs.kotlinx.coroutines.core)
 }

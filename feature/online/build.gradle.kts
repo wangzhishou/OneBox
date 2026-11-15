@@ -38,6 +38,7 @@ dependencies {
     api(projects.feature.settings)
     api(projects.feature.webview)
     api(projects.feature.markdownEdit)
+    api(projects.libs.richTextEditor)
     api(projects.feature.codeEditor)
     /**
      * mmkv

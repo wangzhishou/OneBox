@@ -21,6 +21,10 @@ package com.shifenmiao.online.screen
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Folder
+import androidx.compose.material.icons.outlined.Title
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -36,28 +40,26 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.shifenmiao.common.editor.NativeEditorExtraAction
+import com.shifenmiao.common.editor.NativeMarkdownEditor
+import com.shifenmiao.common.editor.rememberNativeMarkdownEditorState
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.model.HomeTabKey
 import com.shifenmiao.online.component.CreateNoteComponent
-import com.shifenmiao.online.component.NOTE_EDITOR_TOOLBAR_EXTRAS
-import com.shifenmiao.online.component.NOTE_TOOLBAR_ACTION_CATEGORY
-import com.shifenmiao.online.component.NOTE_TOOLBAR_ACTION_TITLE
 import com.shifenmiao.online.ui.NoteCategoryDialog
 import com.shifenmiao.online.ui.NoteTitleDialog
+import com.t8rin.imagetoolbox.core.resources.icons.Check
+import com.wanbaohe.com.string.MarkdownSummary
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBarType
-import com.wanbaohe.core.ui.widget.text.EditorUiDefaults
-import com.wanbaohe.com.string.MarkdownSummary
-import com.wanbaohe.markdown.edit.webview.WebViewMarkdownEditor
-import com.wanbaohe.markdown.edit.webview.rememberWebViewMarkdownEditorState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import com.t8rin.imagetoolbox.core.resources.icons.Check
 
 @Composable
 fun CreateNoteScreen(
@@ -72,7 +74,7 @@ fun CreateNoteScreen(
 
     val scope = rememberCoroutineScope()
 
-    val editorState = rememberWebViewMarkdownEditorState()
+    val editorState = rememberNativeMarkdownEditorState(uiState.data)
 
     val onBack = {
         if (uiState.isDirty) {
@@ -85,7 +87,7 @@ fun CreateNoteScreen(
     // 当数据加载完成时，设置初始内容
     LaunchedEffect(uiState.data) {
         if (uiState.data.isNotEmpty()) {
-            editorState.setContent(uiState.data)
+            editorState.load(uiState.data)
         }
     }
     val titlePlaceholder = if (uiState.isEditing) {
@@ -108,12 +110,11 @@ fun CreateNoteScreen(
             IconButton(
                 onClick = {
                     scope.launch {
-                        val markdown = editorState.getContent()
+                        val markdown = editorState.exportMarkdown()
                         createNoteComponent.saveMarkDownData(
                             markdown = markdown,
                             onSuccess = {
                                 scope.launch(Dispatchers.Main) {
-                                    editorState.clearDraft()
                                     AppToastHost.showToast(
                                         AppContext.getString(R.string.save_success)
                                     )
@@ -139,29 +140,29 @@ fun CreateNoteScreen(
         supportGlassEffect = false,
         showNavigationBarsPadding = true
     ) {
-        WebViewMarkdownEditor(
-            initialValue = uiState.data,
+        NativeMarkdownEditor(
             state = editorState,
-            placeholder = stringResource(R.string.note_placeholder),
-            textStyle = EditorUiDefaults.contentTextStyle(),
             modifier = Modifier
-                .weight(1f),
-            storageKey = "create_note_item",
-            onContentChanged = {
-                createNoteComponent.markAsDirty()
-            },
-            toolbarExtras = NOTE_EDITOR_TOOLBAR_EXTRAS,
-            onCustomToolbarAction = { action ->
-                when (action) {
-                    NOTE_TOOLBAR_ACTION_TITLE -> {
+                .weight(1f)
+                .padding(horizontal = 12.dp),
+            extraActions = listOf(
+                NativeEditorExtraAction(
+                    label = stringResource(R.string.title),
+                    icon = Icons.Outlined.Title,
+                    onClick = {
                         scope.launch {
-                            titleContentHint = MarkdownSummary.derive(editorState.getContent()).title
+                            titleContentHint = MarkdownSummary.derive(editorState.exportMarkdown()).title
                             showTitleDialog.value = true
                         }
-                    }
-                    NOTE_TOOLBAR_ACTION_CATEGORY -> showCategoryDialog.value = true
-                }
-            }
+                    },
+                ),
+                NativeEditorExtraAction(
+                    label = stringResource(R.string.note_select_category),
+                    icon = Icons.Outlined.Folder,
+                    onClick = { showCategoryDialog.value = true },
+                ),
+            ),
+            onContentChanged = createNoteComponent::markAsDirty,
         )
     }
 

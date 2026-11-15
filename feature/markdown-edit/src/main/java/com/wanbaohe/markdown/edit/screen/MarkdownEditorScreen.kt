@@ -25,8 +25,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.NoteAdd
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
@@ -48,12 +48,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
-import com.wanbaohe.base.ui.ClearHistoryConfirmDialog
-import com.wanbaohe.base.ui.button.CancelButton
-import com.wanbaohe.base.ui.button.ConfirmButton
+import androidx.compose.ui.unit.dp
+import com.shifenmiao.common.editor.NativeMarkdownEditor
+import com.shifenmiao.common.editor.rememberNativeMarkdownEditorState
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
+import com.t8rin.imagetoolbox.core.resources.icons.DeleteSweep
+import com.t8rin.imagetoolbox.core.resources.icons.NoteAdd
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineFileOpen
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePdf
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineSaveAs
+import com.wanbaohe.base.ui.ClearHistoryConfirmDialog
+import com.wanbaohe.base.ui.button.CancelButton
+import com.wanbaohe.base.ui.button.ConfirmButton
 import com.wanbaohe.core.ui.utils.content.FileAccessGuidance
 import com.wanbaohe.core.ui.utils.content.rememberFileAccessController
 import com.wanbaohe.core.ui.utils.content_pickers.rememberFileCreator
@@ -62,25 +72,16 @@ import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
-import com.wanbaohe.core.ui.widget.text.EditorUiDefaults
 import com.wanbaohe.markdown.edit.component.MarkdownEditorComponent
 import com.wanbaohe.markdown.edit.component.MarkdownEditorUiState
-import com.wanbaohe.markdown.edit.webview.WebViewMarkdownEditor
-import com.wanbaohe.markdown.edit.webview.rememberWebViewMarkdownEditorState
+import com.wanbaohe.markdown.edit.export.NativeMarkdownPdfExporter
 import kotlinx.coroutines.launch
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
-import com.t8rin.imagetoolbox.core.resources.icons.NoteAdd
-import com.t8rin.imagetoolbox.core.resources.icons.DeleteSweep
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineFileOpen
-import com.t8rin.imagetoolbox.core.resources.icons.line.LinePdf
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineSaveAs
 
 /**
  * 纯净的 Markdown 编辑器页面
  *
  * 功能：
- * - 基于 WebView 的所见即所得 Markdown 编辑
+ * - 基于 Compose BasicTextField 的 Native 所见即所得 Markdown 编辑
  * - 打开 MD 文件编辑
  * - 保存为 MD 文件
  * - 新建文件
@@ -94,7 +95,7 @@ fun MarkdownEditorScreen(
 
 
     val uiState by component.uiState.collectAsState()
-    val editorState = rememberWebViewMarkdownEditorState()
+    val editorState = rememberNativeMarkdownEditorState(uiState.content)
 
     var showExitConfirmDialog by remember { mutableStateOf(false) }
     var pendingAction by remember { mutableStateOf<(() -> Unit)?>(null) }
@@ -106,13 +107,12 @@ fun MarkdownEditorScreen(
         mimeType = MimeType.Markdown,
         onSuccess = { uri ->
             scope.launch {
-                val content = editorState.getContent()
+                val content = editorState.exportMarkdown()
                 component.saveToNewFile(
                     context = context,
                     uri = uri,
                     content = content,
                     onSuccess = {
-                        editorState.clearDraft()
                         component.parseSaveResult(it)
                         // 执行待处理的操作（如退出）
                         pendingAction?.invoke()
@@ -150,13 +150,10 @@ fun MarkdownEditorScreen(
         }
     }
 
-    // 当 uiState.content 变化时，设置到编辑器
-    // 不使用 uiState.fileName 作为 key：保存后 fileName 可能变化但 content 未更新，
-    // 会导致 setContent 用旧内容覆盖编辑器中的用户编辑
+    // 异步加载或切换文件时同步到 Native 编辑器；用户输入不会回写 uiState.content。
     LaunchedEffect(uiState.content, uiState.isLoading) {
         if (!uiState.isLoading) {
-            // 无论内容是否为空都要设置，确保新建文件时能清空编辑器
-            editorState.setContent(uiState.content)
+            editorState.load(uiState.content)
         }
     }
 
@@ -182,7 +179,7 @@ fun MarkdownEditorScreen(
             IconButton(
                 onClick = {
                     scope.launch {
-                        val content = editorState.getContent()
+                        val content = editorState.exportMarkdown()
                         if (component.isEditMode()) {
                             component.saveEditResult(content) {
                                 AppToastHost.showToast(context.getString(R.string.save_success))
@@ -194,8 +191,7 @@ fun MarkdownEditorScreen(
                                 context = context,
                                 content = content,
                                 onSuccess = {
-                                    editorState.clearDraft()
-                                    component.parseSaveResult(saveResult = it)
+                                                component.parseSaveResult(saveResult = it)
                                 },
                                 onFailure = { msg ->
                                     AppToastHost.showToast(msg)
@@ -236,8 +232,7 @@ fun MarkdownEditorScreen(
                                 showMenu = false
                                 handleActionWithConfirm {
                                     component.newFile()
-                                    editorState.clearDraft()
-                                }
+                                            }
                             },
                             leadingIcon = {
                                 Icon(
@@ -270,7 +265,7 @@ fun MarkdownEditorScreen(
                             onClick = {
                                 showMenu = false
                                 scope.launch {
-                                    val content = editorState.getContent()
+                                    val content = editorState.exportMarkdown()
                                     fileSaver.make(component.generateFileNameFromContent(content))
                                 }
                             },
@@ -289,13 +284,13 @@ fun MarkdownEditorScreen(
                         onClick = {
                             showMenu = false
                             scope.launch {
-                                val content = editorState.getContent()
+                                val content = editorState.exportMarkdown()
 
-                                component.savePdf(
-                                    editorState.webView,
-                                    context,
-                                    component.generateFileNameFromContent(content)
-                                        .replace(".md", ".pdf")
+                                NativeMarkdownPdfExporter.export(
+                                    activity = context,
+                                    markdown = content,
+                                    fileName = component.generateFileNameFromContent(content)
+                                        .replace(".md", ".pdf"),
                                 ) { flag, msg ->
                                     if (flag) {
                                         AppToastHost.showToast(
@@ -386,16 +381,13 @@ fun MarkdownEditorScreen(
         showNavigationBarsPadding = false
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            WebViewMarkdownEditor(
-                modifier = Modifier.fillMaxSize().navigationBarsPadding(),
+            NativeMarkdownEditor(
                 state = editorState,
-                initialValue = uiState.content,
-                placeholder = stringResource(R.string.note_placeholder),
-                textStyle = EditorUiDefaults.contentTextStyle(),
-                storageKey = "markdown_editor_screen",
-                onContentChanged = {
-                    component.markAsDirty()
-                }
+                modifier = Modifier
+                    .fillMaxSize()
+                    .navigationBarsPadding()
+                    .padding(horizontal = 12.dp),
+                onContentChanged = component::markAsDirty,
             )
 
             // 授权引导覆盖层:面板是深色设计,浅色页面上垫深色容器;
@@ -405,7 +397,7 @@ fun MarkdownEditorScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(Color(0xFF121212))
-                        // 挡住触摸,避免穿透到底下被遮住的 WebView 编辑器
+                        // 挡住触摸,避免穿透到底下被遮住的 Native 编辑器
                         .pointerInput(Unit) {
                             awaitPointerEventScope {
                                 while (true) {
@@ -447,7 +439,7 @@ fun MarkdownEditorScreen(
                 showExitConfirmDialog = false
                 // 保存后执行待处理操作
                 scope.launch {
-                    val content = editorState.getContent()
+                    val content = editorState.exportMarkdown()
                     if (component.isEditMode()) {
                         component.saveEditResult(content) {
                             pendingAction?.invoke()
@@ -459,8 +451,7 @@ fun MarkdownEditorScreen(
                             context = context,
                             content = content,
                             onSuccess = {
-                                editorState.clearDraft()
-                                component.parseSaveResult(saveResult = it)
+                                        component.parseSaveResult(saveResult = it)
                                 pendingAction?.invoke()
                                 pendingAction = null
                             },

@@ -32,6 +32,8 @@ dependencies {
     implementation(projects.core.model)
     implementation(projects.libs.twain)
     implementation(projects.libs.diagram)
+    implementation(projects.libs.markdown)
+    implementation(projects.libs.richTextEditor)
     implementation(projects.feature.common)
     implementation(projects.feature.webview)
     implementation(libs.kotlinx.serialization.json)

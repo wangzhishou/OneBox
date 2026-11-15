@@ -24,23 +24,20 @@ import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.shifenmiao.core.R
 import com.shifenmiao.database.AppDatabase
 import com.shifenmiao.database.data_draft.DataDraftHelper
-import com.shifenmiao.database.data_draft.dao.DataDraftDao
 import com.shifenmiao.database.item.entity.Category
 import com.shifenmiao.database.item.entity.toModel
 import com.shifenmiao.interfaces.singleton.AppContext
+import com.shifenmiao.model.Source
 import com.shifenmiao.model.item.ItemDataUiState
 import com.shifenmiao.model.note.NoteResult
 import com.shifenmiao.model.note.NoteSaveParams
 import com.shifenmiao.model.note.NoteService
 import com.shifenmiao.model.reorderable.ReorderableType
-import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
+import com.wanbaohe.com.string.MarkdownSummary
 import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.core.ui.utils.navigation.ScreenCallback
 import com.wanbaohe.core.ui.utils.navigation.ScreenCallbackResult
-import com.wanbaohe.com.string.MarkdownSummary
-import com.wanbaohe.markdown.edit.webview.MarkdownPreloadConfig
-import com.wanbaohe.markdown.edit.webview.MarkdownWebViewPoolHelper
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -54,28 +51,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import com.shifenmiao.model.Source
-
-/** 笔记编辑器工具栏自定义按钮 action：标题 */
-internal const val NOTE_TOOLBAR_ACTION_TITLE = "noteTitle"
-
-/** 笔记编辑器工具栏自定义按钮 action：分类 */
-internal const val NOTE_TOOLBAR_ACTION_CATEGORY = "noteCategory"
-
-/**
- * 笔记编辑页追加在编辑器工具栏末尾的按钮 HTML：标题、分类。
- * 点击经 MarkdownEditorBridge.onCustomToolbarAction 回调给 Compose 层。
- */
-internal const val NOTE_EDITOR_TOOLBAR_EXTRAS = """
-    <button class="toolbar-btn" data-action="noteTitle" title="标题" onclick="window.Android && window.Android.onCustomToolbarAction && window.Android.onCustomToolbarAction('noteTitle')">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 4v3h5.5v12h3V7H19V4z"/></svg>
-    </button>
-    <button class="toolbar-btn" data-action="noteCategory" title="分类" onclick="window.Android && window.Android.onCustomToolbarAction && window.Android.onCustomToolbarAction('noteCategory')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-    </button>
-    <div class="toolbar-divider"></div>
-"""
-
 
 class CreateNoteComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
@@ -86,7 +61,6 @@ class CreateNoteComponent @AssistedInject internal constructor(
     appDatabase: AppDatabase,
     private val noteService: NoteService,
     private val dataDraftHelper: DataDraftHelper,
-    private val dataDraftDao: DataDraftDao
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
     private val itemDao = appDatabase.itemEntityDao()
@@ -102,16 +76,7 @@ class CreateNoteComponent @AssistedInject internal constructor(
     val reorderableType: ReorderableType = ReorderableType.CATEGORY
 
     init {
-        MarkdownWebViewPoolHelper.preloadHtml(
-            MarkdownPreloadConfig.fromColorScheme(
-                colorScheme = AppTheme.colorScheme,
-                isDarkTheme = AppTheme.isDarkTheme,
-                storageKey = "create_note_item",
-                toolbarExtras = NOTE_EDITOR_TOOLBAR_EXTRAS
-            )
-        )
         componentContext.lifecycle.doOnDestroy {
-            MarkdownWebViewPoolHelper.clearPreloadedHtml("create_note_item")
             if (draftId != 0L) {
                 val scope = kotlinx.coroutines.CoroutineScope(Dispatchers.IO)
                 scope.launch { dataDraftHelper.deleteById(draftId) }

@@ -92,7 +92,7 @@ fun rememberRichTextListInputTransformation(
     InputTransformation { autoContinueRichTextList(scheme.listStyle) }
 }
 
-private fun TextFieldBuffer.autoContinueRichTextList(listStyle: RichTextListStyle) {
+internal fun TextFieldBuffer.autoContinueRichTextList(listStyle: RichTextListStyle) {
     continueRichTextListOnNewline(listStyle)
     ensureCurrentListIndent(listStyle)
 }

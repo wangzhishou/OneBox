@@ -31,26 +31,23 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.arkivanov.essenty.lifecycle.doOnDestroy
-import com.shifenmiao.model.event.AppEventBus
 import com.shifenmiao.common.recent.RecentAccessRepository
 import com.shifenmiao.core.R
 import com.shifenmiao.database.data_draft.DataDraftHelper
 import com.shifenmiao.database.recent_access.entity.RecentAccessEntity
 import com.shifenmiao.interfaces.singleton.AppContext
-import com.shifenmiao.theme.AppTheme
+import com.shifenmiao.model.event.AppEventBus
+import com.shifenmiao.model.event.EditorResultEvent
 import com.t8rin.imagetoolbox.core.data.utils.getFilename
 import com.t8rin.imagetoolbox.core.data.utils.getPath
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.saving.FileController
 import com.t8rin.imagetoolbox.core.domain.saving.FilenameCreator
 import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
-import com.wanbaohe.core.ui.utils.BaseComponent
 import com.t8rin.imagetoolbox.core.utils.appContext
 import com.wanbaohe.com.string.MarkdownSummary
+import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.markdown.edit.EditorDataStore
-import com.shifenmiao.model.event.EditorResultEvent
-import com.wanbaohe.markdown.edit.webview.MarkdownPreloadConfig
-import com.wanbaohe.markdown.edit.webview.MarkdownWebViewPoolHelper
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -165,17 +162,7 @@ class MarkdownEditorComponent @AssistedInject internal constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        // 预加载 HTML（使用当前主题配色）
-        MarkdownWebViewPoolHelper.preloadHtml(
-            MarkdownPreloadConfig.fromColorScheme(
-                colorScheme = AppTheme.colorScheme,
-                isDarkTheme = AppTheme.isDarkTheme,
-                storageKey = "markdown_editor_screen"
-            )
-        )
-
         componentContext.lifecycle.doOnDestroy {
-            MarkdownWebViewPoolHelper.clearPreloadedHtml("markdown_editor_screen")
             // 组件销毁时清理编辑模式草稿
             if (editDraftId != 0L) {
                 val scope = kotlinx.coroutines.CoroutineScope(Dispatchers.IO)

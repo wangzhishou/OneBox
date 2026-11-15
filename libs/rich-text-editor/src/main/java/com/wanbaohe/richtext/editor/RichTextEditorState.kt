@@ -16,14 +16,18 @@ import androidx.compose.foundation.text.input.TextFieldBuffer
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.TextRange
 
 @Stable
 class RichTextEditorState internal constructor(
     val textFieldState: TextFieldState,
+    pendingInlineStyleIds: Set<String> = emptySet(),
 ) {
     constructor(snapshot: RichTextSnapshot = RichTextSnapshot.Empty) : this(
         TextFieldState(snapshot.text).also { state ->
@@ -54,27 +58,74 @@ class RichTextEditorState internal constructor(
         get() = textFieldState.textStyles.getSpanStyles(TextRange(0, text.length)).size +
             textFieldState.textStyles.getParagraphStyles(TextRange(0, text.length)).size
 
+    var pendingInlineStyleIds by mutableStateOf(pendingInlineStyleIds)
+        private set
+
+    val canUndo: Boolean
+        get() = textFieldState.undoState.canUndo
+
+    val canRedo: Boolean
+        get() = textFieldState.undoState.canRedo
+
     fun snapshot(): RichTextSnapshot = RichTextSnapshot(
         text = text.toString(),
         spanStyles = textFieldState.textStyles.getSpanStyles(TextRange(0, text.length)),
         paragraphStyles = textFieldState.textStyles.getParagraphStyles(TextRange(0, text.length)),
     )
 
+    var onContentChanged: ((RichTextSnapshot) -> Unit)? = null
+
     fun select(range: TextRange) {
-        edit { selection = range }
+        textFieldState.edit { selection = range }
     }
 
     fun edit(block: TextFieldBuffer.() -> Unit) {
         textFieldState.edit(block)
+        onContentChanged?.invoke(snapshot())
+    }
+
+    fun togglePendingInlineStyle(styleId: String) {
+        pendingInlineStyleIds = if (styleId in pendingInlineStyleIds) {
+            pendingInlineStyleIds - styleId
+        } else {
+            pendingInlineStyleIds + styleId
+        }
+    }
+
+    fun clearPendingInlineStyles() {
+        pendingInlineStyleIds = emptySet()
+    }
+
+    fun undo() {
+        textFieldState.undoState.undo()
+        onContentChanged?.invoke(snapshot())
+    }
+
+    fun redo() {
+        textFieldState.undoState.redo()
+        onContentChanged?.invoke(snapshot())
     }
 }
 
 object RichTextEditorStateSaver : Saver<RichTextEditorState, Any> {
-    override fun SaverScope.save(value: RichTextEditorState): Any? =
-        with(TextFieldState.Saver) { save(value.textFieldState) }
+    override fun SaverScope.save(value: RichTextEditorState): Any? = listOf(
+        with(TextFieldState.Saver) { save(value.textFieldState) },
+        value.pendingInlineStyleIds.toList(),
+    )
 
-    override fun restore(value: Any): RichTextEditorState? =
-        TextFieldState.Saver.restore(value)?.let(::RichTextEditorState)
+    override fun restore(value: Any): RichTextEditorState? {
+        val parts = value as? List<*> ?: return null
+        val hasPendingStyles = parts.firstOrNull() is List<*>
+        val savedState = if (hasPendingStyles) parts[0] else value
+        val pending = if (hasPendingStyles) {
+            (parts.getOrNull(1) as? List<*>)?.filterIsInstance<String>()?.toSet().orEmpty()
+        } else {
+            emptySet()
+        }
+        return TextFieldState.Saver.restore(savedState as Any)?.let { state ->
+            RichTextEditorState(state, pending)
+        }
+    }
 }
 
 @Composable

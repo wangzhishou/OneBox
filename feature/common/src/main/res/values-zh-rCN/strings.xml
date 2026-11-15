@@ -177,5 +177,33 @@
     <string name="markdown_create_widget">小工具</string>
     <string name="markdown_run_code">运行</string>
     <string name="markdown_save_code">保存</string>
+    <string name="native_editor_mode_edit">编辑</string>
+    <string name="native_editor_mode_preview">预览</string>
+    <string name="native_editor_mode_source">源码</string>
+    <string name="native_editor_title_formatting">格式</string>
+    <string name="native_editor_title_insert">插入</string>
+    <string name="native_editor_style_quote">引用</string>
+    <string name="native_editor_style_highlight">高亮</string>
+    <string name="native_editor_insert_text">文字</string>
+    <string name="native_editor_insert_code">代码</string>
+    <string name="native_editor_insert_diagram">图表</string>
+    <string name="native_editor_insert_image">图片</string>
+    <string name="native_editor_insert_video">视频</string>
+    <string name="native_editor_template_code">```kotlin\nprintln(\"Hello, OneBox\")\n```</string>
+    <string name="native_editor_template_diagram">```mermaid\nflowchart LR\n    A[开始] --> B[完成]\n```</string>
+    <string name="native_editor_template_image">![示例图片](https://mdn.github.io/shared-assets/images/examples/grapefruit-slice.jpg)</string>
+    <string name="native_editor_template_video">!VIDEO[示例视频](https://mdn.github.io/shared-assets/videos/flower.mp4){poster=https://mdn.github.io/shared-assets/images/examples/grapefruit-slice.jpg}</string>
+    <string name="native_editor_kind_code">代码</string>
+    <string name="native_editor_kind_diagram">流程图</string>
+    <string name="native_editor_kind_image">图片</string>
+    <string name="native_editor_kind_video">视频</string>
+    <string name="native_editor_kind_audio">音频</string>
+    <string name="native_editor_kind_math">公式</string>
+    <string name="native_editor_kind_html">HTML</string>
+    <string name="native_editor_kind_other">Markdown</string>
+    <string name="native_editor_show_preview">预览</string>
+    <string name="native_editor_delete_block">删除块</string>
+    <string name="native_editor_empty_hint">开始输入，或从下方插入内容。</string>
+    <string name="native_editor_source_hint">在这里直接编辑 Markdown 源码。</string>
 </resources>
 

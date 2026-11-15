@@ -21,8 +21,9 @@ fun RichTextEditorState.isInlineStyleActive(
     styleId: String,
     scheme: RichTextStyleScheme,
 ): Boolean {
-    val definition = scheme.inlineStyle(styleId) ?: return false
-    return !selection.collapsed && richTextSpanSegments(
+    if (selection.collapsed) return styleId in pendingInlineStyleIds
+    val definition = scheme.inlineStyle(styleId)
+    return definition != null && richTextSpanSegments(
         selection,
         textFieldState.textStyles.getSpanStyles(selection),
         scheme.reduceSpanStyle,
@@ -37,7 +38,10 @@ fun RichTextEditorState.toggleInlineStyle(
 ) {
     val definition = scheme.inlineStyle(styleId) ?: return
     val range = selection
-    if (range.collapsed) return
+    if (range.collapsed) {
+        togglePendingInlineStyle(styleId)
+        return
+    }
     val enabled = !isInlineStyleActive(styleId, scheme)
     edit {
         replaceSpanStyles(range, scheme) { style ->
@@ -51,7 +55,10 @@ fun RichTextEditorState.clearInlineFormatting(
     scheme: RichTextStyleScheme,
 ) {
     val range = selection
-    if (range.collapsed) return
+    if (range.collapsed) {
+        clearPendingInlineStyles()
+        return
+    }
     edit {
         replaceSpanStyles(range, scheme) { SpanStyle() }
         selection = range
