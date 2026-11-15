@@ -23,6 +23,14 @@ object LocalTranslationModel {
     const val FILE_NAME = "Hy-MT2-1.8B_int8.litertlm"
     const val MODEL_NAME = "Hy-MT2-1.8B_int8"
     const val DISPLAY_NAME = "Hy-MT2 1.8B"
+
+    /**
+     * 兜底下载地址：万宝盒 R2 镜像（与 gemma3 / Qwen3 同一 `models/` 前缀）。
+     *
+     * 线上地址以远程配置 `localTranslationModelUrl` 为准（见 DefaultLocalModelRepository，
+     * 未下发或为空才回退到这里），这里只是配置取不到时的兜底；官方来源是 LiteRT 社区的
+     * HuggingFace 仓库（litert-community/Hy-MT2-1.8B），国内不可直连。
+     */
     const val DEFAULT_DOWNLOAD_URL =
-        "https://huggingface.co/litert-community/Hy-MT2-1.8B/resolve/main/Hy-MT2-1.8B_int8.litertlm"
+        "https://images.oneboxable.com/models/Hy-MT2-1.8B_int8.litertlm"
 }

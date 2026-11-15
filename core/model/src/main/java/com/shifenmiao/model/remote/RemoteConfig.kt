@@ -359,7 +359,7 @@ data class RemoteConfig(
      */
     val localChatQwen3ModelUrl: String? = null,
 
-    /** 翻译页腾讯 Hy-MT2 端侧模型下载地址，未下发时使用 LiteRT 社区发布地址。 */
+    /** 翻译页腾讯 Hy-MT2 端侧模型下载地址；未下发或为空时回退 [LocalTranslationModel.DEFAULT_DOWNLOAD_URL]（R2 镜像）。 */
     val localTranslationModelUrl: String? = null,
 
     /**
