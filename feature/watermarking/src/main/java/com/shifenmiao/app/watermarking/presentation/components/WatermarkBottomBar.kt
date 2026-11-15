@@ -13,6 +13,7 @@ package com.shifenmiao.app.watermarking.presentation.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -57,8 +58,10 @@ fun WatermarkBottomBar(
         modifier = modifier
             .fillMaxWidth()
             .glassDense(shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
+            // 手势区 inset 只在玻璃底色内部让位;竖直 padding 收到 4dp,
+            // 避免 56dp 条目 + 8dp 内边距 + 系统 inset 叠出一条过高的空带。
             .navigationBarsPadding()
-            .padding(8.dp),
+            .padding(horizontal = 8.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Row(modifier = Modifier.weight(1f).horizontalScroll(rememberScrollState())) {
@@ -66,8 +69,9 @@ fun WatermarkBottomBar(
                 val selected = panel == activePanel
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
                     modifier = Modifier
-                        .size(width = 62.dp, height = 56.dp)
+                        .size(width = 62.dp, height = 52.dp)
                         .clip(ShapeDefaults.default)
                         .background(if (selected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent)
                         .clickable { onPanelClick(panel) }
