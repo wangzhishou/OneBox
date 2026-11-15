@@ -12,7 +12,6 @@ package com.shifenmiao.app.watermarking.presentation.canvas
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
@@ -48,10 +47,12 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -89,6 +90,7 @@ import com.wanbaohe.core.ui.widget.modifier.transparencyChecker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.math.min
+import kotlin.math.roundToInt
 
 @Composable
 fun WatermarkCanvas(
@@ -213,17 +215,33 @@ fun WatermarkCanvas(
             contentAlignment = Alignment.Center,
         ) {
             bitmap?.let { source ->
+                val sourceImage = remember(source) { source.asImageBitmap() }
+                val originalDescription = stringResource(R.string.original)
                 Box(
                     modifier = Modifier
                         .size(with(density) { fittedSize.width.toDp() }, with(density) { fittedSize.height.toDp() })
+                        .clipToBounds()
                         .transparencyChecker(),
                 ) {
-                    Image(
-                        bitmap = source.asImageBitmap(),
-                        contentDescription = stringResource(R.string.original),
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.FillBounds,
-                    )
+                    Canvas(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .semantics { contentDescription = originalDescription },
+                    ) {
+                        // 底图外扩 2~16px 再裁回画布:居中/缩放会把图片边缘落在亚像素上,
+                        // 双线性采样吸到透明像素后,棋盘格会从边缘漏出一条细线。
+                        // 与图片创作 EditorCanvas 同款处理,任意 density/缩放都不漏。
+                        val minScale = min(viewport.scale, 1f).coerceAtLeast(0.05f)
+                        val pad = (2f / minScale).roundToInt().coerceIn(2, 16)
+                        drawImage(
+                            image = sourceImage,
+                            dstOffset = IntOffset(-pad, -pad),
+                            dstSize = IntSize(
+                                size.width.roundToInt() + pad * 2,
+                                size.height.roundToInt() + pad * 2,
+                            ),
+                        )
+                    }
                     if (!isComparing) {
                         BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
                             resolvedElements.forEach { resolved ->
