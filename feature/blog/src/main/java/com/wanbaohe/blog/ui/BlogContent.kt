@@ -19,6 +19,7 @@
 
 package com.wanbaohe.blog.ui
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -61,35 +62,40 @@ fun BlogContent(
     val errorMessage = (blogDetailState as? BlogDetailState.Error)?.message
         ?: if (blogDetailState is BlogDetailState.Error) stringResource(R.string.error_message) else null
     val blog = (blogDetailState as? BlogDetailState.Success)?.blog
+    val tags = blog?.tags?.filter { it.name.isNotBlank() }.orEmpty()
 
-OneBoxMarkdownContent(
-    message = blog?.content.orEmpty(),
-    modifier = modifier.fillMaxSize(),
-    isLoading = isLoading,
-    errorMessage = errorMessage,
-    onRetry = { blogComponent.onRetry() },
-            onGoBack = onGoBack,
-            onLinkClick = { url ->
-                if (!navigator.navigate(url)) {
-                    uriHandler.openUri(url)
-                }
-            },
-            state = markdownState,
-            selectionItems = selectionItems,
-            headerContent = {
-                val tags = blog?.tags?.filter { it.name.isNotBlank() }.orEmpty()
-                if (tags.isNotEmpty()) BlogTagChips(tags = tags)
-            },
-            footerContent = {
-                blog?.author?.let { author ->
-                    Spacer(modifier = Modifier.height(8.dp))
-                    AuthorInfo(
-                        authorName = author.nickname.orEmpty(),
-                        authorAvatar = author.avatar,
-                        publishDate = blog.publishedAt
-                    )
-                }
-                Spacer(modifier = Modifier.height(30.dp))
-            },
-        )
+    OneBoxMarkdownContent(
+        message = blog?.content.orEmpty(),
+        modifier = modifier.fillMaxSize(),
+        isLoading = isLoading,
+        errorMessage = errorMessage,
+        onRetry = { blogComponent.onRetry() },
+        onGoBack = onGoBack,
+        onLinkClick = { url ->
+            if (!navigator.navigate(url)) {
+                uriHandler.openUri(url)
+            }
+        },
+        // 中号标题栏自己已经在标题下方留了空，这里不再叠一层上边距。
+        // 没有标签时也不传 header，避免空占位再被块间距撑开。
+        paddingValues = PaddingValues(start = 16.dp, top = 0.dp, end = 16.dp, bottom = 8.dp),
+        state = markdownState,
+        selectionItems = selectionItems,
+        headerContent = if (tags.isEmpty()) {
+            null
+        } else {
+            { BlogTagChips(tags = tags) }
+        },
+        footerContent = {
+            blog?.author?.let { author ->
+                Spacer(modifier = Modifier.height(8.dp))
+                AuthorInfo(
+                    authorName = author.nickname.orEmpty(),
+                    authorAvatar = author.avatar,
+                    publishDate = blog.publishedAt
+                )
+            }
+            Spacer(modifier = Modifier.height(30.dp))
+        },
+    )
 }
