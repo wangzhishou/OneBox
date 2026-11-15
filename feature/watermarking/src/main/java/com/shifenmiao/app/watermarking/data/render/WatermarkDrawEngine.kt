@@ -14,6 +14,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.PorterDuffXfermode
+import android.graphics.RectF
 import android.os.Build
 import com.t8rin.imagetoolbox.core.data.image.utils.toAndroidBlendMode
 import com.t8rin.imagetoolbox.core.data.image.utils.toPorterDuffMode
@@ -22,16 +23,26 @@ import com.shifenmiao.app.watermarking.domain.render.WatermarkVisual
 import kotlin.math.roundToInt
 
 object WatermarkDrawEngine {
+    /**
+     * [rect] 是元素锚定空间在输出画布上的像素矩形。
+     * 传 null 时用整张画布，保持历史行为；BAND 元素传白带 rect，
+     * centerX/centerY 只在该 rect 内归一化。
+     */
     fun drawSingle(
         canvas: Canvas,
         visual: WatermarkVisual<Bitmap>,
         element: WatermarkElement,
+        rect: RectF? = null,
     ) {
         val transform = element.transform
+        val left = rect?.left ?: 0f
+        val top = rect?.top ?: 0f
+        val width = rect?.width() ?: canvas.width.toFloat()
+        val height = rect?.height() ?: canvas.height.toFloat()
         canvas.save()
         canvas.translate(
-            transform.centerX * canvas.width,
-            transform.centerY * canvas.height,
+            left + transform.centerX * width,
+            top + transform.centerY * height,
         )
         canvas.rotate(transform.rotation)
         canvas.scale(

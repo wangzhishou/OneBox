@@ -576,6 +576,7 @@ class ChildProvider @Inject constructor(
             imageFactories.get().watermarkingComponentFactory(
                 componentContext = componentContext,
                 initialUris = config.uris,
+                presetId = config.presetId,
                 onGoBack = ::navigateBack,
                 onNavigate = ::navigateTo
             )

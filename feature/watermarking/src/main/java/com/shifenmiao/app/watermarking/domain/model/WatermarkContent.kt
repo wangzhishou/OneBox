@@ -18,6 +18,8 @@ sealed interface WatermarkContent {
     data class Image(
         val imageData: String = "",
         val size: Float = 0.2f,
+        /** 内置矢量 logo 的资源 id；非 0 时优先于 imageData，由渲染层显式解析。 */
+        val builtinResId: Int = 0,
     ) : WatermarkContent
 
     data class Stamp(
@@ -47,6 +49,44 @@ sealed interface WatermarkContent {
         val manualValue: String = "",
         val useDecimalFormat: Boolean = true,
     ) : WatermarkContent
+
+    /**
+     * 从照片 EXIF 拼出的相机参数行。
+     *
+     * [omitMissing] 为 true 时缺字段直接省略（不画 "--"、绝不填假值），
+     * [manualOverrides] 的 key 是 [ExifFieldKey.name]，由信息面板与这里共享同一份值。
+     */
+    data class CameraParams(
+        val fields: List<ExifFieldKey> = listOf(
+            ExifFieldKey.FOCAL_LENGTH,
+            ExifFieldKey.APERTURE,
+            ExifFieldKey.SHUTTER,
+            ExifFieldKey.ISO,
+        ),
+        val separator: String = "  ",
+        val manualOverrides: Map<String, String> = emptyMap(),
+        val omitMissing: Boolean = true,
+    ) : WatermarkContent
+
+    /** 竖分隔线，画在带内，不依赖外部图片资源。 */
+    data class Divider(
+        val thicknessRatio: Float = 0.015f,
+        val heightRatio: Float = 0.8f,
+    ) : WatermarkContent
+}
+
+/** 相机参数内容可选择展示的字段，同时用于模板声明 requiredFields。 */
+enum class ExifFieldKey {
+    CAMERA_MAKE,
+    CAMERA_MODEL,
+    LENS_MODEL,
+    FOCAL_LENGTH,
+    FOCAL_LENGTH_35MM,
+    APERTURE,
+    SHUTTER,
+    ISO,
+    CAPTURED_AT,
+    GPS,
 }
 
 enum class WatermarkKind {
@@ -57,6 +97,8 @@ enum class WatermarkKind {
     ALTITUDE,
     WEATHER,
     COORDINATES,
+    CAMERA_PARAMS,
+    DIVIDER,
 }
 
 enum class WatermarkValueSource {
@@ -74,6 +116,8 @@ val WatermarkContent.kind: WatermarkKind
         is WatermarkContent.Altitude -> WatermarkKind.ALTITUDE
         is WatermarkContent.Weather -> WatermarkKind.WEATHER
         is WatermarkContent.Coordinates -> WatermarkKind.COORDINATES
+        is WatermarkContent.CameraParams -> WatermarkKind.CAMERA_PARAMS
+        is WatermarkContent.Divider -> WatermarkKind.DIVIDER
     }
 
 fun WatermarkContent.sourceOrNull(): WatermarkValueSource? = when (this) {

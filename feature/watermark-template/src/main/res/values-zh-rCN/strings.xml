@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="watermark_template_leica_classic">徕卡经典</string>
+    <string name="watermark_template_apply">应用</string>
+    <string name="watermark_kind_camera_params">相机参数</string>
+    <string name="watermark_kind_divider">分隔线</string>
+</resources>

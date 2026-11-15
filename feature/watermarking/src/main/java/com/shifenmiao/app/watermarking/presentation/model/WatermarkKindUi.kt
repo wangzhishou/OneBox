@@ -25,6 +25,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineText
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTimer
 import com.shifenmiao.app.watermarking.domain.model.WatermarkContent
 import com.shifenmiao.app.watermarking.domain.model.WatermarkKind
+import com.wanbaohe.watermark.template.R as TemplateR
 
 fun WatermarkKind.icon(): ImageVector = when (this) {
     WatermarkKind.TEXT -> Icons.Outlined.LineText
@@ -34,6 +35,8 @@ fun WatermarkKind.icon(): ImageVector = when (this) {
     WatermarkKind.ALTITUDE -> Icons.Outlined.LineAltitude
     WatermarkKind.WEATHER -> MaterialIcons.Outlined.Cloud
     WatermarkKind.COORDINATES -> Icons.Outlined.LineLocationOn
+    WatermarkKind.CAMERA_PARAMS -> Icons.Outlined.LineText
+    WatermarkKind.DIVIDER -> Icons.Outlined.LineImage
 }
 
 @Composable
@@ -46,6 +49,8 @@ fun WatermarkKind.title(): String = stringResource(
         WatermarkKind.ALTITUDE -> R.string.watermark_altitude
         WatermarkKind.WEATHER -> R.string.watermark_weather
         WatermarkKind.COORDINATES -> R.string.watermark_coordinates
+        WatermarkKind.CAMERA_PARAMS -> TemplateR.string.watermark_kind_camera_params
+        WatermarkKind.DIVIDER -> TemplateR.string.watermark_kind_divider
     }
 )
 
@@ -57,4 +62,6 @@ fun WatermarkContent.sampleText(): String = when (this) {
     is WatermarkContent.Altitude -> "≈ 128 m"
     is WatermarkContent.Weather -> "☀ 22°C"
     is WatermarkContent.Coordinates -> "31.23040°, 121.47370°"
+    is WatermarkContent.CameraParams -> "50mm  f/1.8  1/125  ISO100"
+    is WatermarkContent.Divider -> "|"
 }

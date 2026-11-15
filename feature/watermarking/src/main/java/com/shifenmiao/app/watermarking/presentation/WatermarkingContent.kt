@@ -186,6 +186,7 @@ fun WatermarkingContent(
                 Row(modifier = Modifier.weight(1f).fillMaxWidth()) {
                     WatermarkCanvas(
                         bitmap = component.internalBitmap,
+                        frame = component.document.frame,
                         resolvedElements = component.resolvedElements,
                         selectedElementId = component.selectedElementId,
                         isLoading = component.isImageLoading || (component.isResolving && component.resolvedElements.isEmpty()),
@@ -227,7 +228,9 @@ fun WatermarkingContent(
                         hasElements = component.document.elements.isNotEmpty(),
                         hiddenOnly = component.document.hiddenWatermark.enabled &&
                             component.document.elements.none { it.transform.visible },
-                        createVisuals = component::createPreviewVisuals,
+                        createVisuals = { width, height, bandHeight ->
+                            component.createPreviewVisuals(width, height, bandHeight)
+                        },
                         modifier = Modifier.weight(1f).fillMaxHeight(),
                     )
                     if (wideLayout && activePanel != null) {

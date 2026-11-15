@@ -14,8 +14,11 @@ import com.shifenmiao.model.editor.LayerBlendMode
 import com.shifenmiao.model.editor.LayerTransform
 import com.t8rin.imagetoolbox.core.domain.image.model.BlendingMode
 import com.t8rin.imagetoolbox.core.settings.domain.model.FontType
+import com.shifenmiao.app.watermarking.domain.model.ExifFieldKey
 import com.shifenmiao.app.watermarking.domain.model.HiddenWatermarkParams
+import com.shifenmiao.app.watermarking.domain.model.WatermarkAnchor
 import com.shifenmiao.app.watermarking.domain.model.WatermarkContent
+import com.shifenmiao.app.watermarking.domain.model.WatermarkFrame
 import com.shifenmiao.app.watermarking.domain.model.WatermarkDocument
 import com.shifenmiao.app.watermarking.domain.model.WatermarkElement
 import com.shifenmiao.app.watermarking.domain.model.WatermarkLayout
@@ -33,6 +36,16 @@ object WatermarkPresetCodec {
         put("updatedAt", preset.updatedAt)
         put("hiddenEnabled", preset.document.hiddenWatermark.enabled)
         put("hiddenLSB", preset.document.hiddenWatermark.isLSB)
+        put("frame", JSONObject().apply {
+            when (val frame = preset.document.frame) {
+                WatermarkFrame.InPlace -> put("type", "in_place")
+                is WatermarkFrame.BottomBand -> {
+                    put("type", "bottom_band")
+                    put("heightRatio", frame.heightRatio.toDouble())
+                    put("color", frame.color)
+                }
+            }
+        })
         put("elements", JSONArray().apply {
             preset.document.elements.forEach { put(encodeElement(it)) }
         })
@@ -50,11 +63,25 @@ object WatermarkPresetCodec {
                 add(decodeElement(elementsJson.getJSONObject(index)))
             }
         }
+        // v1 文档没有 frame 字段，统一补 InPlace；v2 起按 type 还原。
+        val frameJson = json.optJSONObject("frame")
+        val frame = when (frameJson?.optString("type")) {
+            "bottom_band" -> WatermarkFrame.BottomBand(
+                heightRatio = frameJson.optDouble(
+                    "heightRatio",
+                    WatermarkFrame.BottomBand.DEFAULT_HEIGHT_RATIO.toDouble(),
+                ).toFloat(),
+                color = frameJson.optInt("color", -1),
+            )
+            else -> WatermarkFrame.InPlace
+        }
         return WatermarkPreset(
             id = json.getString("id"),
             name = json.optString("name"),
             document = WatermarkDocument(
-                schemaVersion = version,
+                // 补完 v2 默认字段后即视作已升级，下次保存写出 v2。
+                schemaVersion = WatermarkDocument.CURRENT_SCHEMA_VERSION,
+                frame = frame,
                 elements = elements.ifEmpty { WatermarkDocument().elements },
                 hiddenWatermark = HiddenWatermarkParams(
                     enabled = json.optBoolean("hiddenEnabled"),
@@ -89,6 +116,7 @@ object WatermarkPresetCodec {
         put("repeated", element.layout.isRepeated)
         put("repeatSpacing", element.layout.repeatSpacing.toDouble())
         put("overlayMode", element.overlayMode.value)
+        put("anchor", element.anchor.name)
     }
 
     private fun decodeElement(json: JSONObject): WatermarkElement {
@@ -124,6 +152,8 @@ object WatermarkPresetCodec {
             overlayMode = BlendingMode.newEntries.firstOrNull {
                 it.value == json.optInt("overlayMode")
             } ?: BlendingMode.SrcOver,
+            anchor = runCatching { WatermarkAnchor.valueOf(json.optString("anchor")) }
+                .getOrDefault(WatermarkAnchor.PHOTO),
         )
     }
 
@@ -137,6 +167,7 @@ object WatermarkPresetCodec {
                 put("type", "image")
                 put("imageData", content.imageData)
                 put("size", content.size.toDouble())
+                put("builtinResId", content.builtinResId)
             }
             is WatermarkContent.Stamp -> {
                 put("type", "stamp")
@@ -163,13 +194,53 @@ object WatermarkPresetCodec {
                 putSource(content.source, content.manualValue)
                 put("useDecimalFormat", content.useDecimalFormat)
             }
+            is WatermarkContent.CameraParams -> {
+                put("type", "camera_params")
+                put("fields", JSONArray().apply { content.fields.forEach { put(it.name) } })
+                put("separator", content.separator)
+                put("omitMissing", content.omitMissing)
+                put("manualOverrides", JSONObject().apply {
+                    content.manualOverrides.forEach { (key, value) -> put(key, value) }
+                })
+            }
+            is WatermarkContent.Divider -> {
+                put("type", "divider")
+                put("thicknessRatio", content.thicknessRatio.toDouble())
+                put("heightRatio", content.heightRatio.toDouble())
+            }
         }
     }
 
     private fun decodeContent(json: JSONObject): WatermarkContent = when (json.getString("type")) {
         "image" -> WatermarkContent.Image(
-            imageData = json.getString("imageData"),
+            imageData = json.optString("imageData"),
             size = json.optDouble("size", 0.2).toFloat(),
+            builtinResId = json.optInt("builtinResId"),
+        )
+        "camera_params" -> {
+            val fieldsJson = json.optJSONArray("fields")
+            val fields = buildList {
+                if (fieldsJson != null) {
+                    for (index in 0 until fieldsJson.length()) {
+                        runCatching { ExifFieldKey.valueOf(fieldsJson.getString(index)) }
+                            .getOrNull()?.let(::add)
+                    }
+                }
+            }.ifEmpty { WatermarkContent.CameraParams().fields }
+            val overridesJson = json.optJSONObject("manualOverrides")
+            val overrides = buildMap {
+                overridesJson?.keys()?.forEach { key -> put(key, overridesJson.optString(key)) }
+            }
+            WatermarkContent.CameraParams(
+                fields = fields,
+                separator = json.optString("separator", "  "),
+                omitMissing = json.optBoolean("omitMissing", true),
+                manualOverrides = overrides,
+            )
+        }
+        "divider" -> WatermarkContent.Divider(
+            thicknessRatio = json.optDouble("thicknessRatio", 0.015).toFloat(),
+            heightRatio = json.optDouble("heightRatio", 0.8).toFloat(),
         )
         "stamp" -> WatermarkContent.Stamp(json.optString("text"))
         "timestamp" -> WatermarkContent.Timestamp(

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="watermark_template_leica_classic">Leica classic</string>
+    <string name="watermark_template_apply">Apply</string>
+    <string name="watermark_kind_camera_params">Camera info</string>
+    <string name="watermark_kind_divider">Divider</string>
+</resources>

@@ -14,6 +14,7 @@ import android.graphics.Bitmap
 import com.t8rin.imagetoolbox.core.domain.image.ImageGetter
 import com.t8rin.imagetoolbox.core.domain.image.get
 import com.t8rin.imagetoolbox.core.domain.image.model.MetadataTag
+import com.shifenmiao.app.watermarking.domain.model.ExifFieldKey
 import com.shifenmiao.app.watermarking.domain.model.GeoPoint
 import com.shifenmiao.app.watermarking.domain.model.LocationSnapshot
 import com.shifenmiao.app.watermarking.domain.model.PhotoWatermarkContext
@@ -57,11 +58,16 @@ class DefaultWatermarkContentResolver @Inject constructor(
             when (val content = element.content) {
                 is WatermarkContent.Text -> element.text(content.text)
                 is WatermarkContent.Stamp -> element.text(content.text)
-                is WatermarkContent.Image -> ResolvedWatermarkElement(
-                    element = element,
-                    imageData = content.imageData,
-                    hasData = content.imageData.isNotBlank(),
-                )
+                is WatermarkContent.Image -> {
+                    val data = content.imageData.ifBlank {
+                        content.builtinResId.takeIf { it != 0 }?.let { "builtin://$it" }
+                    }
+                    ResolvedWatermarkElement(
+                        element = element,
+                        imageData = data,
+                        hasData = !data.isNullOrBlank(),
+                    )
+                }
                 is WatermarkContent.Timestamp -> element.text(formatTimestamp(content, photo))
                 is WatermarkContent.Altitude -> {
                     val photoValue = photo.altitudeMeters?.formatAltitude(content.useFeet)
@@ -105,6 +111,20 @@ class DefaultWatermarkContentResolver @Inject constructor(
                         )
                     }
                 }
+                is WatermarkContent.CameraParams -> {
+                    // 缺字段一律省略，不画 "--"、绝不填假值。
+                    val value = formatCameraParams(content, photo)
+                    ResolvedWatermarkElement(
+                        element = element,
+                        text = value,
+                        hasData = value.isNotBlank(),
+                        fromPhoto = true,
+                    )
+                }
+                is WatermarkContent.Divider -> ResolvedWatermarkElement(
+                    element = element,
+                    hasData = true,
+                )
             }
         }
         return WatermarkResolution(
@@ -112,6 +132,7 @@ class DefaultWatermarkContentResolver @Inject constructor(
             photoContext = photo,
             needsDeviceLocation = needsDeviceLocation,
             weatherAvailable = weatherAvailable,
+            frame = document.frame,
         )
     }
 
@@ -133,6 +154,17 @@ class DefaultWatermarkContentResolver @Inject constructor(
             altitudeMeters = parseRational(metadata?.get(MetadataTag.GpsAltitude))?.let { altitude ->
                 if (metadata?.get(MetadataTag.GpsAltitudeRef)?.trim() == "1") -altitude else altitude
             },
+            cameraMake = metadata?.get(MetadataTag.Make)?.trim()?.takeIf(String::isNotEmpty),
+            cameraModel = metadata?.get(MetadataTag.Model)?.trim()?.takeIf(String::isNotEmpty),
+            lensModel = metadata?.get(MetadataTag.LensModel)?.trim()?.takeIf(String::isNotEmpty),
+            focalLength = parseRational(metadata?.get(MetadataTag.FocalLength))
+                ?.let { "%.0fmm".format(Locale.US, it) },
+            focalLength35mm = metadata?.get(MetadataTag.FocalLengthIn35mmFilm)
+                ?.trim()?.toIntOrNull()?.let { "${it}mm" },
+            aperture = metadata?.get(MetadataTag.FNumber).let(::formatFNumber),
+            shutter = metadata?.get(MetadataTag.ExposureTime).let(::formatShutter),
+            iso = metadata?.get(MetadataTag.IsoSpeed)?.trim()
+                ?.takeIf(String::isNotEmpty)?.let { "ISO$it" },
         )
         photoMutex.withLock { photoCache[uri] = context }
         return context
@@ -168,21 +200,63 @@ class DefaultWatermarkContentResolver @Inject constructor(
         WatermarkValueSource.MANUAL -> null
     }
 
+    /**
+     * usePhotoTime=true 时只认照片 EXIF 时间，其次文件时间（面板会标注「非拍摄时间」），
+     * 两者都没有就返回空串让图层省略；绝不回落 now() 冒充拍摄时间。
+     * usePhotoTime=false 是「当前时间」语义，now() 合法。
+     */
     private fun formatTimestamp(
         content: WatermarkContent.Timestamp,
         photo: PhotoWatermarkContext,
     ): String {
-        val date = if (content.usePhotoTime) {
-            photo.dateTime?.let(::parseExifDate) ?: Date()
-        } else Date()
-        val pattern = content.format.ifBlank { "yyyy-MM-dd HH:mm" }
-        return runCatching { SimpleDateFormat(pattern, Locale.getDefault()).format(date) }
-            .getOrElse { SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(date) }
+        if (!content.usePhotoTime) return formatDate(Date(), content.format)
+        val date = photo.dateTime?.let(::parseExifDate)
+            ?: photo.fileDateTime?.let(::parseExifDate)
+            ?: return ""
+        return formatDate(date, content.format)
     }
 
+    private fun formatDate(date: Date, pattern: String): String =
+        runCatching { SimpleDateFormat(pattern.ifBlank { "yyyy-MM-dd HH:mm" }, Locale.US).format(date) }
+            .getOrElse { SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(date) }
+
     private fun parseExifDate(value: String): Date? = runCatching {
-        SimpleDateFormat("yyyy:MM:dd HH:mm:ss", Locale.getDefault()).parse(value)
+        SimpleDateFormat("yyyy:MM:dd HH:mm:ss", Locale.US).parse(value)
     }.getOrNull()
+
+    private fun formatCameraParams(
+        content: WatermarkContent.CameraParams,
+        photo: PhotoWatermarkContext,
+    ): String = buildList {
+        content.fields.forEach { field ->
+            val manual = content.manualOverrides[field.name]?.takeIf(String::isNotBlank)
+            val value = manual ?: photo.valueOf(field)
+            when {
+                !value.isNullOrBlank() -> add(value)
+                !content.omitMissing -> add("—")
+            }
+        }
+    }.joinToString(content.separator)
+
+    /** EXIF 的 FNumber 常见 "4.1" / "f/4.1" / "41/10"，统一成 f/x.x 且锁定 Locale.US。 */
+    private fun formatFNumber(raw: String?): String? {
+        if (raw.isNullOrBlank()) return null
+        val value = raw.trim().removePrefix("f/").removePrefix("F/")
+        val numeric = parseRational(value) ?: return raw.trim()
+        return "f/%.1f".format(Locale.US, numeric)
+    }
+
+    /** ExposureTime 是秒的 rational，>=1s 用 Ns，否则用 1/N。 */
+    private fun formatShutter(raw: String?): String? {
+        if (raw.isNullOrBlank()) return null
+        val value = parseRational(raw) ?: return raw.trim()
+        if (value <= 0.0) return null
+        return if (value >= 1.0) {
+            "%.1fs".format(Locale.US, value)
+        } else {
+            "1/%.0f".format(Locale.US, 1.0 / value)
+        }
+    }
 
     private fun WeatherSnapshot.format(content: WatermarkContent.Weather): String = buildString {
         append(text)
@@ -198,11 +272,11 @@ class DefaultWatermarkContentResolver @Inject constructor(
 
     private fun Double.formatAltitude(useFeet: Boolean): String {
         val value = if (useFeet) this * 3.28084 else this
-        return "≈ %.0f %s".format(Locale.getDefault(), value, if (useFeet) "ft" else "m")
+        return "≈ %.0f %s".format(Locale.US, value, if (useFeet) "ft" else "m")
     }
 
     private fun GeoPoint.formatCoordinates(decimal: Boolean): String {
-        if (decimal) return "%.5f°, %.5f°".format(Locale.getDefault(), latitude, longitude)
+        if (decimal) return "%.5f°, %.5f°".format(Locale.US, latitude, longitude)
         return "${dms(latitude, true)} ${dms(longitude, false)}"
     }
 
@@ -218,7 +292,7 @@ class DefaultWatermarkContentResolver @Inject constructor(
             value >= 0 -> "E"
             else -> "W"
         }
-        return "%d°%d'%.1f\"%s".format(Locale.getDefault(), degrees, minutes, seconds, direction)
+        return "%d°%d'%.1f\"%s".format(Locale.US, degrees, minutes, seconds, direction)
     }
 
     private fun parseCoordinates(

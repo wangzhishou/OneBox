@@ -31,10 +31,16 @@ data class WatermarkVisual<T>(
 )
 
 interface WatermarkVisualFactory<T> {
+    /**
+     * [sizeBasisWidth] 是字号 / 图片尺寸的计算基准。
+     * PHOTO 锚定元素等于 canvasWidth；BAND 锚定元素传白带内容高度，
+     * 避免带高按宽度成比例时字号随原图宽高比漂移。
+     */
     suspend fun create(
         resolved: ResolvedWatermarkElement,
         canvasWidth: Int,
         canvasHeight: Int,
+        sizeBasisWidth: Int = canvasWidth,
     ): WatermarkVisual<T>?
 }
 

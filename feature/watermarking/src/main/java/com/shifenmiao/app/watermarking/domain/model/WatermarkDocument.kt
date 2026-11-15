@@ -12,13 +12,15 @@ package com.shifenmiao.app.watermarking.domain.model
 
 data class WatermarkDocument(
     val schemaVersion: Int = CURRENT_SCHEMA_VERSION,
+    val frame: WatermarkFrame = WatermarkFrame.InPlace,
     val elements: List<WatermarkElement> = listOf(
         defaultWatermarkElement(WatermarkContent.Text())
     ),
     val hiddenWatermark: HiddenWatermarkParams = HiddenWatermarkParams(),
 ) {
     companion object {
-        const val CURRENT_SCHEMA_VERSION = 1
+        /** v2 引入 frame / anchor / 相机参数内容类型；v1 文档解码时补 InPlace + PHOTO 默认值。 */
+        const val CURRENT_SCHEMA_VERSION = 2
     }
 }
 

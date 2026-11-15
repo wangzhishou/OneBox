@@ -34,13 +34,38 @@ data class PhotoWatermarkContext(
     val dateTime: String? = null,
     val coordinates: GeoPoint? = null,
     val altitudeMeters: Double? = null,
-)
+    val cameraMake: String? = null,
+    val cameraModel: String? = null,
+    val lensModel: String? = null,
+    val focalLength: String? = null,
+    val focalLength35mm: String? = null,
+    val aperture: String? = null,
+    val shutter: String? = null,
+    val iso: String? = null,
+    /** 文件时间只在拍摄时间全部缺失时兜底，展示时必须标注「非拍摄时间」。 */
+    val fileDateTime: String? = null,
+) {
+    fun valueOf(field: ExifFieldKey): String? = when (field) {
+        ExifFieldKey.CAMERA_MAKE -> cameraMake
+        ExifFieldKey.CAMERA_MODEL -> cameraModel
+        ExifFieldKey.LENS_MODEL -> lensModel
+        ExifFieldKey.FOCAL_LENGTH -> focalLength
+        ExifFieldKey.FOCAL_LENGTH_35MM -> focalLength35mm
+        ExifFieldKey.APERTURE -> aperture
+        ExifFieldKey.SHUTTER -> shutter
+        ExifFieldKey.ISO -> iso
+        ExifFieldKey.CAPTURED_AT -> dateTime ?: fileDateTime
+        ExifFieldKey.GPS -> coordinates?.let { "%.5f, %.5f".format(java.util.Locale.US, it.latitude, it.longitude) }
+    }
+}
 
 data class WatermarkResolution(
     val elements: List<ResolvedWatermarkElement>,
     val photoContext: PhotoWatermarkContext,
     val needsDeviceLocation: Boolean = false,
     val weatherAvailable: Boolean = true,
+    /** 输出画布版式，由 resolve 从 document 透传，预览与导出共用。 */
+    val frame: WatermarkFrame = WatermarkFrame.InPlace,
 )
 
 data class ResolvedWatermarkElement(
@@ -73,8 +98,14 @@ fun WatermarkElement.staticResolution(): ResolvedWatermarkElement = when (val co
     )
     is WatermarkContent.Image -> ResolvedWatermarkElement(
         element = this,
-        imageData = content.imageData,
-        hasData = content.imageData.isNotBlank(),
+        imageData = content.imageData.ifBlank {
+            content.builtinResId.takeIf { it != 0 }?.let { "builtin://$it" }
+        },
+        hasData = content.imageData.isNotBlank() || content.builtinResId != 0,
+    )
+    is WatermarkContent.Divider -> ResolvedWatermarkElement(
+        element = this,
+        hasData = true,
     )
     else -> ResolvedWatermarkElement(element = this, hasData = false)
 }

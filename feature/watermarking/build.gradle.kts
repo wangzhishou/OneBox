@@ -34,6 +34,7 @@ android.namespace = "com.shifenmiao.app.watermarking"
 
 dependencies {
     implementation(projects.feature.common)
+    implementation(projects.feature.watermarkTemplate)
     implementation(projects.core.weather)
     implementation(libs.onebox.androidwm)
 }

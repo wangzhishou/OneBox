@@ -12,8 +12,12 @@ package com.shifenmiao.app.watermarking.data.render
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.RectF
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.shifenmiao.app.watermarking.domain.model.HiddenWatermarkParams
+import com.shifenmiao.app.watermarking.domain.model.WatermarkAnchor
+import com.shifenmiao.app.watermarking.domain.model.WatermarkFrame
 import com.shifenmiao.app.watermarking.domain.model.WatermarkResolution
 import com.shifenmiao.app.watermarking.domain.render.HiddenWatermarkEmbedder
 import com.shifenmiao.app.watermarking.domain.render.WatermarkRenderer
@@ -32,12 +36,51 @@ class BitmapWatermarkRenderer @Inject constructor(
         resolution: WatermarkResolution,
         hiddenWatermark: HiddenWatermarkParams,
     ): Bitmap? = withContext(defaultDispatcher) {
-        val output = image.copy(Bitmap.Config.ARGB_8888, true) ?: return@withContext null
+        val frame = resolution.frame
+        // 带高按「图片宽度」成比例，与旧相机水印渲染器、预览共用同一套护栏。
+        val bandHeight = when (frame) {
+            is WatermarkFrame.BottomBand -> frame.bandHeightFor(image.width)
+            WatermarkFrame.InPlace -> 0
+        }
+        val output = Bitmap.createBitmap(
+            image.width,
+            image.height + bandHeight,
+            Bitmap.Config.ARGB_8888,
+        )
         val canvas = Canvas(output)
+        canvas.drawBitmap(image, 0f, 0f, null)
+        if (frame is WatermarkFrame.BottomBand && bandHeight > 0) {
+            canvas.drawRect(
+                0f,
+                image.height.toFloat(),
+                image.width.toFloat(),
+                output.height.toFloat(),
+                Paint(Paint.ANTI_ALIAS_FLAG).apply {
+                    color = frame.color
+                    style = Paint.Style.FILL
+                },
+            )
+        }
+        val photoRect = RectF(0f, 0f, image.width.toFloat(), image.height.toFloat())
+        val bandRect = RectF(
+            0f,
+            image.height.toFloat(),
+            image.width.toFloat(),
+            output.height.toFloat(),
+        )
         resolution.elements.forEach { resolved ->
             if (!resolved.element.transform.visible) return@forEach
+            val inBand = resolved.element.anchor == WatermarkAnchor.BAND && bandHeight > 0
+            val rect = if (inBand) bandRect else photoRect
+            // BAND 元素的字号 / 图片尺寸以带内容为基准，不随原图宽高比漂移。
+            val sizeBasis = if (inBand) bandHeight else image.width
             val visual = try {
-                visualFactory.create(resolved, output.width, output.height)
+                visualFactory.create(
+                    resolved = resolved,
+                    canvasWidth = image.width,
+                    canvasHeight = rect.height().toInt().coerceAtLeast(1),
+                    sizeBasisWidth = sizeBasis,
+                )
             } catch (cancellation: CancellationException) {
                 throw cancellation
             } catch (error: Exception) {
@@ -46,7 +89,7 @@ class BitmapWatermarkRenderer @Inject constructor(
             if (resolved.element.layout.isRepeated) {
                 WatermarkDrawEngine.drawRepeated(canvas, visual, resolved.element)
             } else {
-                WatermarkDrawEngine.drawSingle(canvas, visual, resolved.element)
+                WatermarkDrawEngine.drawSingle(canvas, visual, resolved.element, rect)
             }
             visual.image.recycle()
         }

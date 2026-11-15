@@ -43,14 +43,18 @@ import com.shifenmiao.app.watermarking.domain.model.GeoPoint
 import com.shifenmiao.app.watermarking.domain.model.HiddenWatermarkParams
 import com.shifenmiao.app.watermarking.domain.model.LocationSnapshot
 import com.shifenmiao.app.watermarking.domain.model.ResolvedWatermarkElement
+import com.shifenmiao.app.watermarking.domain.model.WatermarkAnchor
 import com.shifenmiao.app.watermarking.domain.model.WatermarkContent
 import com.shifenmiao.app.watermarking.domain.model.WatermarkDocument
 import com.shifenmiao.app.watermarking.domain.model.WatermarkKind
 import com.shifenmiao.app.watermarking.domain.model.WatermarkResolution
+import com.shifenmiao.app.watermarking.domain.model.asPlaceholderColor
 import com.shifenmiao.app.watermarking.domain.model.defaultWatermarkElement
 import com.shifenmiao.app.watermarking.domain.model.kind
+import com.shifenmiao.app.watermarking.domain.model.previewPlaceholder
 import com.shifenmiao.app.watermarking.domain.model.staticResolution
 import com.shifenmiao.app.watermarking.domain.preset.BuiltinWatermarkPresets
+import com.wanbaohe.watermark.template.domain.BuiltinTemplateId
 import com.shifenmiao.app.watermarking.domain.preset.WatermarkPreset
 import com.shifenmiao.app.watermarking.domain.preset.WatermarkPresetStore
 import com.shifenmiao.app.watermarking.domain.render.HiddenWatermarkDetector
@@ -76,6 +80,7 @@ import java.util.UUID
 class WatermarkingComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted val initialUris: List<Uri>?,
+    @Assisted val presetId: String?,
     @Assisted val onGoBack: () -> Unit,
     @Assisted val onNavigate: (Screen) -> Unit,
     private val fileController: FileController,
@@ -161,7 +166,14 @@ class WatermarkingComponent @AssistedInject internal constructor(
         debounce {
             loadCustomPresets()
             initialUris?.takeIf(List<Uri>::isNotEmpty)?.let { setUris(it) }
+            // 深链 / 模板直达入口携带 presetId 时，进页面即套用，预览立即可见。
+            presetId?.let(::applyPresetById)
         }
+    }
+
+    private fun applyPresetById(id: String) {
+        val templateId = BuiltinTemplateId.fromId(id) ?: return
+        applyPresetDocument(BuiltinWatermarkPresets.documentFor(templateId))
     }
 
     private var savingJob: Job? by smartJob {
@@ -428,12 +440,24 @@ class WatermarkingComponent @AssistedInject internal constructor(
     suspend fun createPreviewVisuals(
         canvasWidth: Int,
         canvasHeight: Int,
+        bandHeight: Int,
     ): Map<String, WatermarkVisual<Bitmap>> = buildMap {
+        // bandHeight 由预览画布按「源图带高 × fit」算出，与导出 sizeBasisWidth 同源；
+        // BAND 元素字号不随原图宽高比漂移，PHOTO 元素仍以整张画布宽为基准。
+        val bandBasis = bandHeight.coerceAtLeast(1)
         resolvedElements.forEach { resolved ->
             if (!resolved.element.transform.visible) return@forEach
+            // 没有真实数据时在编辑器里画淡色格式占位，模板版式完整、图层仍可拖动。
+            // 只替换预览用的副本；导出走 contentResolver 的原始 resolution，不经过这里。
+            val previewResolved = resolved.forPreview()
             // 预设里保存的本地图片可能已被清理,单个图层失败不能拖垮整个预览。
+            val sizeBasis = if (resolved.element.anchor == WatermarkAnchor.BAND) {
+                bandBasis
+            } else {
+                canvasWidth
+            }
             val visual = try {
-                visualFactory.create(resolved, canvasWidth, canvasHeight)
+                visualFactory.create(previewResolved, canvasWidth, canvasHeight, sizeBasis)
             } catch (cancellation: CancellationException) {
                 throw cancellation
             } catch (error: Exception) {
@@ -441,6 +465,25 @@ class WatermarkingComponent @AssistedInject internal constructor(
             }
             visual?.let { put(resolved.element.id, it) }
         }
+    }
+
+    /**
+     * 只对「动态内容且没有真值」的图层做占位替换。
+     * 静态文本 / 图片未选图的占位块 / 分隔线一律保持原行为，不受影响。
+     */
+    private fun ResolvedWatermarkElement.forPreview(): ResolvedWatermarkElement {
+        val hasRealValue = hasData && !text.isNullOrBlank() && text != "\u2014"
+        if (hasRealValue) return this
+        val placeholder = element.content.previewPlaceholder() ?: return this
+        return copy(
+            element = element.copy(
+                style = element.style.copy(
+                    color = element.style.color.asPlaceholderColor(),
+                    backgroundColor = 0,
+                ),
+            ),
+            text = placeholder,
+        )
     }
 
     fun setUris(
@@ -701,6 +744,7 @@ class WatermarkingComponent @AssistedInject internal constructor(
         operator fun invoke(
             componentContext: ComponentContext,
             initialUris: List<Uri>?,
+            presetId: String?,
             onGoBack: () -> Unit,
             onNavigate: (Screen) -> Unit,
         ): WatermarkingComponent
@@ -723,4 +767,6 @@ private fun defaultContent(kind: WatermarkKind, label: String = ""): WatermarkCo
     WatermarkKind.ALTITUDE -> WatermarkContent.Altitude()
     WatermarkKind.WEATHER -> WatermarkContent.Weather()
     WatermarkKind.COORDINATES -> WatermarkContent.Coordinates()
+    WatermarkKind.CAMERA_PARAMS -> WatermarkContent.CameraParams()
+    WatermarkKind.DIVIDER -> WatermarkContent.Divider()
 }

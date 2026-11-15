@@ -10,11 +10,14 @@
 
 package com.shifenmiao.app.watermarking.data.render
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
+import androidx.core.content.ContextCompat
+import dagger.hilt.android.qualifiers.ApplicationContext
 import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
@@ -32,25 +35,41 @@ import kotlin.math.roundToInt
 
 class BitmapWatermarkVisualFactory @Inject constructor(
     private val imageGetter: ImageGetter<Bitmap>,
+    @ApplicationContext private val context: Context,
 ) : WatermarkVisualFactory<Bitmap> {
+    companion object {
+        const val BUILTIN_SCHEME = "builtin://"
+    }
+
     override suspend fun create(
         resolved: ResolvedWatermarkElement,
         canvasWidth: Int,
         canvasHeight: Int,
+        sizeBasisWidth: Int,
     ): WatermarkVisual<Bitmap>? {
         if (canvasWidth <= 0 || canvasHeight <= 0) return null
+        if (resolved.element.content is WatermarkContent.Divider) {
+            return createDividerVisual(resolved, sizeBasisWidth)
+        }
         resolved.text?.let { text ->
-            return createTextVisual(resolved, text, canvasWidth)
+            // 动态内容缺数据时用空串表达「省略」，不能画出空白或 "--"。
+            if (text.isBlank()) return null
+            return createTextVisual(resolved, text, canvasWidth, sizeBasisWidth)
         }
         val imageData = resolved.imageData ?: return null
         val imageContent = resolved.element.content as? WatermarkContent.Image ?: return null
-        val targetSize = (canvasWidth * imageContent.size.coerceIn(0.01f, 1f))
+        val targetSize = (sizeBasisWidth * imageContent.size.coerceIn(0.01f, 1f))
             .roundToInt().coerceIn(1, canvasWidth)
         if (imageData.isBlank()) return imagePlaceholder(resolved.element.id, targetSize)
-        val source = imageGetter.getImage(
-            data = imageData,
-            size = IntegerSize(targetSize, targetSize),
-        ) ?: return null
+        // 内置资源或用户图片加载失败都出占位块，不静默把图层丢掉。
+        val source = if (imageData.startsWith(BUILTIN_SCHEME)) {
+            loadBuiltinDrawable(imageData, targetSize)
+        } else {
+            imageGetter.getImage(
+                data = imageData,
+                size = IntegerSize(targetSize, targetSize),
+            )
+        } ?: return imagePlaceholder(resolved.element.id, targetSize)
         val bitmap = Bitmap.createBitmap(targetSize, targetSize, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         val scale = min(
@@ -68,6 +87,36 @@ class BitmapWatermarkVisualFactory @Inject constructor(
             Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG),
         )
         return WatermarkVisual(resolved.element.id, bitmap, targetSize, targetSize)
+    }
+
+    /** 内置 vector logo 显式解析成位图，不依赖 Coil 的 scheme 支持。 */
+    private fun loadBuiltinDrawable(imageData: String, targetSize: Int): Bitmap? {
+        val resId = imageData.removePrefix(BUILTIN_SCHEME).toIntOrNull() ?: return null
+        val drawable = runCatching { ContextCompat.getDrawable(context, resId) }.getOrNull() ?: return null
+        val bitmap = Bitmap.createBitmap(targetSize, targetSize, Bitmap.Config.ARGB_8888)
+        val boundsDrawable = drawable.mutate()
+        boundsDrawable.setBounds(0, 0, targetSize, targetSize)
+        boundsDrawable.draw(Canvas(bitmap))
+        return bitmap
+    }
+
+    private fun createDividerVisual(
+        resolved: ResolvedWatermarkElement,
+        sizeBasisWidth: Int,
+    ): WatermarkVisual<Bitmap> {
+        val content = resolved.element.content as WatermarkContent.Divider
+        val basis = sizeBasisWidth.coerceAtLeast(1)
+        val height = (basis * content.heightRatio).roundToInt().coerceAtLeast(2)
+        val thickness = (basis * content.thicknessRatio).roundToInt().coerceAtLeast(1)
+        val bitmap = Bitmap.createBitmap(thickness, height, Bitmap.Config.ARGB_8888)
+        Canvas(bitmap).drawRect(
+            0f,
+            0f,
+            thickness.toFloat(),
+            height.toFloat(),
+            Paint(Paint.ANTI_ALIAS_FLAG).apply { color = resolved.element.style.color },
+        )
+        return WatermarkVisual(resolved.element.id, bitmap, thickness, height)
     }
 
     /** 还没选图时也要有一块可点的占位，否则图层加出来却看不见、拖不动。 */
@@ -105,9 +154,10 @@ class BitmapWatermarkVisualFactory @Inject constructor(
         resolved: ResolvedWatermarkElement,
         text: String,
         canvasWidth: Int,
+        sizeBasisWidth: Int,
     ): WatermarkVisual<Bitmap> {
         val element = resolved.element
-        val textSize = (canvasWidth * element.style.sizeRatio.coerceIn(0.005f, 1f))
+        val textSize = (sizeBasisWidth * element.style.sizeRatio.coerceIn(0.005f, 1f))
             .coerceAtLeast(1f)
         val paint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
             color = element.style.color

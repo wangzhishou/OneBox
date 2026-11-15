@@ -172,6 +172,17 @@ object AppNavigationRegistry {
                 aliases = listOf("mahjong", "majiang", "麻将", "单机麻将", "离线麻将")
             ),
             staticScreen(
+                screen = Screen.Watermarking(),
+                aliases = listOf("image_watermark", "图片水印", "加水印")
+            ).copy(
+                screenBuilder = { params ->
+                    Screen.Watermarking(
+                        uris = params.mediaUri()?.let(::listOf),
+                        presetId = params[Screen.PARAM_PRESET_ID]?.takeIf { it.isNotBlank() },
+                    )
+                }
+            ),
+            staticScreen(
                 screen = Screen.MarkupLayers(),
                 aliases = listOf(
                     "markuplayers", "markup_layers", "image_creation", "图片创作", "高级图片编辑"

@@ -619,7 +619,8 @@ sealed class Screen(
     @Serializable
     @SerialName("Watermarking")
     data class Watermarking(
-        val uris: List<Uri>? = null
+        val uris: List<Uri>? = null,
+        val presetId: String? = null,
     ) : Screen(
         id = 19,
         title = R.string.watermarking,
@@ -2514,7 +2515,10 @@ sealed class Screen(
         subtitle = 0,
     )
 
-    companion object : ScreenConstants by ScreenConstantsImpl
+    companion object : ScreenConstants by ScreenConstantsImpl {
+        /** 深链携带内置模板 id 的参数名，占位在 core:ui 供所有 feature 与导航注册表可见。 */
+        const val PARAM_PRESET_ID = "presetId"
+    }
 }
 
 data class ScreenGroup(

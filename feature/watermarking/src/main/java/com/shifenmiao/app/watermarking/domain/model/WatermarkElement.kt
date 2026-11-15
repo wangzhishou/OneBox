@@ -26,6 +26,7 @@ data class WatermarkElement(
     val style: WatermarkStyle = WatermarkStyle(),
     val layout: WatermarkLayout = WatermarkLayout(),
     val overlayMode: BlendingMode = BlendingMode.SrcOver,
+    val anchor: WatermarkAnchor = WatermarkAnchor.PHOTO,
 )
 
 data class WatermarkStyle(
@@ -40,14 +41,16 @@ data class WatermarkLayout(
     val repeatSpacing: Float = 1.8f,
 )
 
-fun WatermarkElement.isTextBased(): Boolean = content !is WatermarkContent.Image
+fun WatermarkElement.isTextBased(): Boolean =
+    content !is WatermarkContent.Image && content !is WatermarkContent.Divider
 
 fun defaultWatermarkElement(content: WatermarkContent): WatermarkElement {
     val isStamp = content is WatermarkContent.Stamp
     val isDynamic = content is WatermarkContent.Timestamp ||
         content is WatermarkContent.Altitude ||
         content is WatermarkContent.Weather ||
-        content is WatermarkContent.Coordinates
+        content is WatermarkContent.Coordinates ||
+        content is WatermarkContent.CameraParams
     return WatermarkElement(
         content = content,
         transform = LayerTransform(

@@ -12,8 +12,11 @@ package com.shifenmiao.app.watermarking.presentation.canvas
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.BoxWithConstraintsScope
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -71,6 +74,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineZoomIn
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineZoomOut
 import com.shifenmiao.app.watermarking.data.render.WatermarkDrawEngine
 import com.shifenmiao.app.watermarking.domain.model.ResolvedWatermarkElement
+import com.shifenmiao.app.watermarking.domain.model.WatermarkAnchor
+import com.shifenmiao.app.watermarking.domain.model.WatermarkFrame
 import com.shifenmiao.app.watermarking.domain.model.WatermarkKind
 import com.shifenmiao.app.watermarking.domain.model.kind
 import com.shifenmiao.app.watermarking.domain.render.WatermarkVisual
@@ -95,6 +100,7 @@ import kotlin.math.roundToInt
 @Composable
 fun WatermarkCanvas(
     bitmap: Bitmap?,
+    frame: WatermarkFrame = WatermarkFrame.InPlace,
     resolvedElements: List<ResolvedWatermarkElement>,
     selectedElementId: String?,
     isLoading: Boolean,
@@ -118,44 +124,61 @@ fun WatermarkCanvas(
     onNextImage: () -> Unit,
     hasElements: Boolean,
     hiddenOnly: Boolean,
-    createVisuals: suspend (Int, Int) -> Map<String, WatermarkVisual<Bitmap>>,
+    createVisuals: suspend (Int, Int, Int) -> Map<String, WatermarkVisual<Bitmap>>,
     modifier: Modifier = Modifier,
 ) {
     BoxWithConstraints(modifier = modifier.clipToBounds()) {
         val viewport = remember { EditorViewportState() }
         val density = LocalDensity.current
         val paddingPx = with(density) { 16.dp.roundToPx() } * 2
-        val fittedSize = bitmap?.let {
+        // BottomBand 的输出画布 = 原图 + 下方白带。预览必须按「整张输出画布」做 fit，
+        // 否则白带会被挤出视口，PHOTO / BAND 两套归一化坐标也无法与导出对齐。
+        val bandColor = (frame as? WatermarkFrame.BottomBand)?.color ?: -1
+        val canvasSize = bitmap?.let {
+            val outputWidth = it.width
+            // 护栏按源图宽度算，再随 fit 一起缩放；预览与导出因此保持同一比例。
+            val sourceBandHeight = (frame as? WatermarkFrame.BottomBand)
+                ?.bandHeightFor(outputWidth) ?: 0
+            val outputHeight = (it.height + sourceBandHeight).coerceAtLeast(1)
             val fit = min(
-                (constraints.maxWidth - paddingPx).coerceAtLeast(1) / it.width.toFloat(),
-                (constraints.maxHeight - paddingPx).coerceAtLeast(1) / it.height.toFloat(),
+                (constraints.maxWidth - paddingPx).coerceAtLeast(1) / outputWidth.toFloat(),
+                (constraints.maxHeight - paddingPx).coerceAtLeast(1) / outputHeight.toFloat(),
             )
             IntSize(
-                (it.width * fit).toInt().coerceAtLeast(1),
-                (it.height * fit).toInt().coerceAtLeast(1),
+                (outputWidth * fit).toInt().coerceAtLeast(1),
+                (outputHeight * fit).toInt().coerceAtLeast(1),
             )
         } ?: IntSize.Zero
-        val fittedSourceScale = bitmap?.let {
-            min(fittedSize.width / it.width.toFloat(), fittedSize.height / it.height.toFloat())
-        }?.takeIf { it > 0f } ?: 1f
+        // 白带高度取差值，保证 photoHeight + bandHeight 精确等于 canvasSize.height，
+        // 不因两次取整在照片与白带之间漏出一条缝。
+        val photoHeight = bitmap?.let {
+            (it.height * (canvasSize.width / it.width.toFloat())).roundToInt()
+                .coerceIn(1, canvasSize.height)
+        } ?: 0
+        val bandHeight = (canvasSize.height - photoHeight).coerceAtLeast(0)
+        val fittedSourceScale = bitmap?.let { canvasSize.width / it.width.toFloat() }
+            ?.takeIf { it > 0f } ?: 1f
         SideEffect {
             viewport.configure(
                 layoutSize = Size(constraints.maxWidth.toFloat(), constraints.maxHeight.toFloat()),
-                contentSize = fittedSize,
+                contentSize = canvasSize,
                 actualSizeScale = 1f / fittedSourceScale,
             )
         }
-        LaunchedEffect(bitmap) { viewport.fit() }
+        // 切模板会改变输出画布比例（多出白带），复位用户缩放才能完整看到新画布。
+        LaunchedEffect(bitmap, frame) { viewport.fit() }
         val visualKey = resolvedElements.map {
             listOf(it.element.id, it.text, it.imageData, it.element.content, it.element.style)
         }
         val visuals by produceState<Map<String, WatermarkVisual<Bitmap>>>(
             initialValue = emptyMap(),
             visualKey,
-            fittedSize,
+            canvasSize,
+            bandHeight,
+            frame,
         ) {
             value = withContext(Dispatchers.Default) {
-                createVisuals(fittedSize.width, fittedSize.height)
+                createVisuals(canvasSize.width, canvasSize.height, bandHeight)
             }
         }
         Box(
@@ -217,88 +240,85 @@ fun WatermarkCanvas(
             bitmap?.let { source ->
                 val sourceImage = remember(source) { source.asImageBitmap() }
                 val originalDescription = stringResource(R.string.original)
-                Box(
+                val canvasWidthDp = with(density) { canvasSize.width.toDp() }
+                val canvasHeightDp = with(density) { canvasSize.height.toDp() }
+                val photoHeightDp = with(density) { photoHeight.toDp() }
+                val bandHeightDp = with(density) { bandHeight.toDp() }
+                // 没有白带时 BAND 元素一律降级回 PHOTO，避免出现「元素存在但落在画布外」。
+                val (photoElements, bandElements) = resolvedElements.partition { resolved ->
+                    resolved.element.anchor != WatermarkAnchor.BAND || bandHeight == 0
+                }
+                Column(
                     modifier = Modifier
-                        .size(with(density) { fittedSize.width.toDp() }, with(density) { fittedSize.height.toDp() })
-                        .clipToBounds()
-                        .transparencyChecker(),
+                        .size(canvasWidthDp, canvasHeightDp)
+                        .clipToBounds(),
                 ) {
-                    Canvas(
+                    // PHOTO 区：容器 constraints 恰好等于导出的 photoRect，
+                    // centerX/centerY 只在该 rect 内归一化，与 drawSingle 的换算一致。
+                    Box(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .semantics { contentDescription = originalDescription },
+                            .size(canvasWidthDp, photoHeightDp)
+                            .transparencyChecker(),
                     ) {
-                        // 底图外扩 2~16px 再裁回画布:居中/缩放会把图片边缘落在亚像素上,
-                        // 双线性采样吸到透明像素后,棋盘格会从边缘漏出一条细线。
-                        // 与图片创作 EditorCanvas 同款处理,任意 density/缩放都不漏。
-                        val minScale = min(viewport.scale, 1f).coerceAtLeast(0.05f)
-                        val pad = (2f / minScale).roundToInt().coerceIn(2, 16)
-                        drawImage(
-                            image = sourceImage,
-                            dstOffset = IntOffset(-pad, -pad),
-                            dstSize = IntSize(
-                                size.width.roundToInt() + pad * 2,
-                                size.height.roundToInt() + pad * 2,
-                            ),
-                        )
-                    }
-                    if (!isComparing) {
-                        BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
-                            resolvedElements.forEach { resolved ->
-                                val element = resolved.element
-                                if (!element.transform.visible) return@forEach
-                                val visual = visuals[element.id] ?: return@forEach
-                                // 平铺层只画在全屏 Canvas 上,不接收点击:否则它会盖住
-                                // 其它图层,连"点空白取消选中"都会失效。
-                                if (element.layout.isRepeated) {
-                                    Canvas(modifier = Modifier.fillMaxSize()) {
-                                        drawIntoCanvas { canvas ->
-                                            WatermarkDrawEngine.drawRepeated(
-                                                canvas.nativeCanvas,
-                                                visual,
-                                                element,
-                                            )
-                                        }
-                                    }
-                                }
-                                // 平铺层的选框锚在平铺相位中心。单图层的内容直接放在选框内,
-                                // 位移、缩放、旋转和翻转都只由同一个容器处理。
-                                EditorLayerBox(
-                                    transform = element.transform,
-                                    isSelected = selectedElementId == element.id && !immersiveModeState.isImmersive,
-                                    onSelect = { onSelectElement(element.id) },
-                                    onEditRequest = { onEditElement(element.id) },
+                        Canvas(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .semantics { contentDescription = originalDescription },
+                        ) {
+                            // 底图外扩 2~16px 再裁回画布:居中/缩放会把图片边缘落在亚像素上,
+                            // 双线性采样吸到透明像素后,棋盘格会从边缘漏出一条细线。
+                            // 与图片创作 EditorCanvas 同款处理,任意 density/缩放都不漏。
+                            val minScale = min(viewport.scale, 1f).coerceAtLeast(0.05f)
+                            val pad = (2f / minScale).roundToInt().coerceIn(2, 16)
+                            drawImage(
+                                image = sourceImage,
+                                dstOffset = IntOffset(-pad, -pad),
+                                dstSize = IntSize(
+                                    size.width.roundToInt() + pad * 2,
+                                    size.height.roundToInt() + pad * 2,
+                                ),
+                            )
+                        }
+                        if (!isComparing) {
+                            BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+                                WatermarkElementLayers(
+                                    elements = photoElements,
+                                    visuals = visuals,
+                                    selectedElementId = selectedElementId,
+                                    immersiveModeState = immersiveModeState,
+                                    viewportScale = viewport.scale,
+                                    onSelectElement = onSelectElement,
+                                    onEditElement = onEditElement,
                                     onTransformStart = onTransformStart,
-                                    onTransformChange = { onTransformChange(element.id, it) },
-                                    onTransformEnd = { onTransformEnd(element.id, it) },
-                                    onDelete = { onDeleteElement(element.id) },
-                                    labels = EditorLayerBoxLabels(
-                                        scale = stringResource(R.string.watermark_scale),
-                                        rotate = stringResource(R.string.watermark_rotate),
-                                        resizeWidth = stringResource(R.string.watermark_resize),
-                                        delete = stringResource(R.string.delete),
-                                    ),
-                                    gesturesEnabled = !immersiveModeState.isImmersive,
-                                    showHandles = selectedElementId == element.id,
-                                    canvasScale = viewport.scale,
-                                ) {
-                                    val contentModifier = Modifier.size(
-                                        with(density) { visual.width.toDp() },
-                                        with(density) { visual.height.toDp() },
+                                    onTransformChange = onTransformChange,
+                                    onTransformEnd = onTransformEnd,
+                                    onDeleteElement = onDeleteElement,
+                                )
+                            }
+                        }
+                    }
+                    // BAND 区：白底 + 独立的归一化空间，元素不随原图宽高比漂移。
+                    if (bandHeight > 0) {
+                        Box(
+                            modifier = Modifier
+                                .size(canvasWidthDp, bandHeightDp)
+                                .background(Color(bandColor)),
+                        ) {
+                            if (!isComparing) {
+                                BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+                                    WatermarkElementLayers(
+                                        elements = bandElements,
+                                        visuals = visuals,
+                                        selectedElementId = selectedElementId,
+                                        immersiveModeState = immersiveModeState,
+                                        viewportScale = viewport.scale,
+                                        onSelectElement = onSelectElement,
+                                        onEditElement = onEditElement,
+                                        onTransformStart = onTransformStart,
+                                        onTransformChange = onTransformChange,
+                                        onTransformEnd = onTransformEnd,
+                                        onDeleteElement = onDeleteElement,
                                     )
-                                    if (element.layout.isRepeated) {
-                                        Box(modifier = contentModifier)
-                                    } else {
-                                        Canvas(modifier = contentModifier) {
-                                            drawIntoCanvas { canvas ->
-                                                WatermarkDrawEngine.drawContent(
-                                                    canvas.nativeCanvas,
-                                                    visual,
-                                                    element,
-                                                )
-                                            }
-                                        }
-                                    }
                                 }
                             }
                         }
@@ -339,9 +359,13 @@ fun WatermarkCanvas(
                 modifier = Modifier.align(Alignment.CenterStart),
             ) {
                 EditorToolRail(
-                    tools = WatermarkKind.entries.map { kind ->
-                        EditorRailTool(kind.name, kind.icon(), kind.title())
-                    },
+                    // 模板专属元素由预设带入，不从工具栏新建（属性面板尚未提供对应编辑器）。
+                    tools = WatermarkKind.entries
+                        .filter {
+                            it != WatermarkKind.CAMERA_PARAMS && it != WatermarkKind.DIVIDER
+                        }.map { kind ->
+                            EditorRailTool(kind.name, kind.icon(), kind.title())
+                        },
                     activeId = resolvedElements.firstOrNull {
                         it.element.id == selectedElementId
                     }?.element?.content?.kind?.name,
@@ -400,6 +424,76 @@ fun WatermarkCanvas(
                     color = MaterialTheme.colorScheme.onSurface,
                 )
                 CanvasControl(MaterialIcons.Outlined.ChevronRight, R.string.watermark_next_image) { onNextImage() }
+            }
+        }
+    }
+}
+
+/**
+ * 单个锚定空间内的可交互图层。调用方必须把它放进一个尺寸等于导出 rect 的
+ * BoxWithConstraints：EditorLayerBox 用容器 constraints 归一化 centerX/centerY，
+ * 预览拖拽与 drawSingle 的 rect 换算才会是同一套坐标。
+ */
+@Composable
+private fun BoxWithConstraintsScope.WatermarkElementLayers(
+    elements: List<ResolvedWatermarkElement>,
+    visuals: Map<String, WatermarkVisual<Bitmap>>,
+    selectedElementId: String?,
+    immersiveModeState: ImmersiveModeState,
+    viewportScale: Float,
+    onSelectElement: (String?) -> Unit,
+    onEditElement: (String) -> Unit,
+    onTransformStart: () -> Unit,
+    onTransformChange: (String, LayerTransform) -> Unit,
+    onTransformEnd: (String, LayerTransform) -> Unit,
+    onDeleteElement: (String) -> Unit,
+) {
+    val density = LocalDensity.current
+    elements.forEach { resolved ->
+        val element = resolved.element
+        if (!element.transform.visible) return@forEach
+        val visual = visuals[element.id] ?: return@forEach
+        // 平铺层只画在本锚定空间的 Canvas 上,不接收点击:否则它会盖住
+        // 其它图层,连"点空白取消选中"都会失效。
+        if (element.layout.isRepeated) {
+            Canvas(modifier = Modifier.fillMaxSize()) {
+                drawIntoCanvas { canvas ->
+                    WatermarkDrawEngine.drawRepeated(canvas.nativeCanvas, visual, element)
+                }
+            }
+        }
+        // 单图层的内容直接放在选框内,位移、缩放、旋转和翻转都只由同一个容器处理。
+        EditorLayerBox(
+            transform = element.transform,
+            isSelected = selectedElementId == element.id && !immersiveModeState.isImmersive,
+            onSelect = { onSelectElement(element.id) },
+            onEditRequest = { onEditElement(element.id) },
+            onTransformStart = onTransformStart,
+            onTransformChange = { onTransformChange(element.id, it) },
+            onTransformEnd = { onTransformEnd(element.id, it) },
+            onDelete = { onDeleteElement(element.id) },
+            labels = EditorLayerBoxLabels(
+                scale = stringResource(R.string.watermark_scale),
+                rotate = stringResource(R.string.watermark_rotate),
+                resizeWidth = stringResource(R.string.watermark_resize),
+                delete = stringResource(R.string.delete),
+            ),
+            gesturesEnabled = !immersiveModeState.isImmersive,
+            showHandles = selectedElementId == element.id,
+            canvasScale = viewportScale,
+        ) {
+            val contentModifier = Modifier.size(
+                with(density) { visual.width.toDp() },
+                with(density) { visual.height.toDp() },
+            )
+            if (element.layout.isRepeated) {
+                Box(modifier = contentModifier)
+            } else {
+                Canvas(modifier = contentModifier) {
+                    drawIntoCanvas { canvas ->
+                        WatermarkDrawEngine.drawContent(canvas.nativeCanvas, visual, element)
+                    }
+                }
             }
         }
     }
