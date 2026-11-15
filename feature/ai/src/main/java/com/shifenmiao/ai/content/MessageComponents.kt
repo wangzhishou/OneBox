@@ -71,10 +71,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import coil3.compose.AsyncImage
-import com.halilibo.richtext.markdown.BasicMarkdown
-import com.halilibo.richtext.ui.RichTextStyle
-import com.halilibo.richtext.ui.a2ui.LocalIsMessageStreaming
-import com.halilibo.richtext.ui.material3.RichText
 import com.shifenmiao.ai.error.AiChatError
 import com.shifenmiao.ai.model.MessageUiModel
 import com.shifenmiao.ai.ui.AIUsageBar
@@ -87,8 +83,6 @@ import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.core.R
 import com.shifenmiao.core.constants.UrlConstants
 import com.shifenmiao.model.ListItemType
-import com.shifenmiao.model.node.AstNode
-import com.shifenmiao.model.node.AstText
 import com.shifenmiao.model.ai.AttachmentPayloadDto
 import com.shifenmiao.model.ai.event.MainClickEvent
 import com.shifenmiao.model.ai.event.MainShowType
@@ -106,7 +100,7 @@ import com.wanbaohe.core.ui.widget.glass.flatGlassCardSegment
 import com.wanbaohe.core.ui.widget.text.firstStrongLayoutDirection
 import com.wanbaohe.core.ui.widget.glass.glassCardSegment
 import com.t8rin.imagetoolbox.core.utils.appContext
-import io.noties.markwon.plugins.codeblock.CodeBlockClickListener
+import com.wanbaohe.markdown.OneBoxMarkdownCodeActions
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSettings
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
@@ -320,42 +314,20 @@ fun UserMessageFooter(
 @Composable
 fun UserMessageContent(
     userContent: MessageUiModel.UserContent,
-    codeBlockClickListener: CodeBlockClickListener
+    codeActions: OneBoxMarkdownCodeActions,
 ) {
-    if (userContent.source.isNotEmpty()) {
-        ModernMarkdownMessage(
-            source = userContent.source,
-            isStreaming = false,
-            codeBlockClickListener = codeBlockClickListener,
-            modifier = Modifier
-                .fillMaxWidth()
-                .glassCardSegment(
-                    segment = GlassCardSegment.Middle,
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                )
-                .padding(horizontal = 12.dp, vertical = 6.dp),
-        )
-        return
-    }
-    val node = userContent.node ?: return
-    RichText(
+    ModernMarkdownMessage(
+        source = userContent.source,
+        isStreaming = false,
+        codeActions = codeActions,
         modifier = Modifier
             .fillMaxWidth()
             .glassCardSegment(
                 segment = GlassCardSegment.Middle,
                 color = MaterialTheme.colorScheme.primaryContainer,
             )
-            .padding(horizontal = 12.dp, vertical = 6.dp)
-    ) {
-        CompositionLocalProvider(
-            LocalIsMessageStreaming provides false
-        ) {
-            BasicMarkdown(
-                astNode = node,
-                codeBlockClickListener = codeBlockClickListener
-            )
-        }
-    }
+            .padding(horizontal = 12.dp, vertical = 6.dp),
+    )
 }
 
 @Composable
@@ -379,8 +351,7 @@ fun UserMessageTextContent(userTextContent: MessageUiModel.UserTextContent) {
         else -> RoundedCornerShape(0.dp)
     }
     Row(
-        modifier = Modifier
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.End,
     ) {
         Text(
@@ -392,41 +363,8 @@ fun UserMessageTextContent(userTextContent: MessageUiModel.UserTextContent) {
                 )
                 .padding(horizontal = 12.dp, vertical = 10.dp),
             text = userTextContent.text,
-            color = MaterialTheme.colorScheme.onPrimaryContainer
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
         )
-    }
-}
-
-@Composable
-fun UserMessageMarkdownBlock(
-    userMarkdownBlock: MessageUiModel.UserMarkdownBlock,
-    codeBlockClickListener: CodeBlockClickListener
-) {
-    val verticalPadding = when (userMarkdownBlock.blockType) {
-        MessageUiModel.MarkdownBlock.BlockType.HEADING -> 12.dp
-        MessageUiModel.MarkdownBlock.BlockType.PARAGRAPH -> 4.dp
-        MessageUiModel.MarkdownBlock.BlockType.CODE_BLOCK -> 8.dp
-        // 分割线只画 1dp 线 + HorizontalRule 自带 4dp 呼吸位，这里不再叠 16dp block 内边距。
-        MessageUiModel.MarkdownBlock.BlockType.THEMATIC_BREAK -> 0.dp
-        else -> 8.dp
-    }
-    RichText(
-        modifier = Modifier
-            .fillMaxWidth()
-            .glassCardSegment(
-                segment = GlassCardSegment.Middle,
-                color = MaterialTheme.colorScheme.primaryContainer,
-            )
-            .padding(horizontal = 12.dp, vertical = verticalPadding)
-    ) {
-        CompositionLocalProvider(
-            LocalIsMessageStreaming provides false
-        ) {
-            BasicMarkdown(
-                astNode = userMarkdownBlock.node,
-                codeBlockClickListener = codeBlockClickListener
-            )
-        }
     }
 }
 
@@ -582,27 +520,13 @@ fun RobotMessageFooter(
 @Composable
 fun RobotMessageContent(
     robotContent: MessageUiModel.RobotContent,
-    codeBlockClickListener: CodeBlockClickListener
+    codeActions: OneBoxMarkdownCodeActions,
 ) {
-    if (robotContent.answerSource.isNotEmpty()) {
-        ModernMarkdownMessage(
-            source = robotContent.answerSource,
-            isStreaming = robotContent.isStreaming,
-            showCursor = robotContent.showCursor,
-            codeBlockClickListener = codeBlockClickListener,
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier
-                .fillMaxWidth()
-                .flatGlassCardSegment(
-                    segment = GlassCardSegment.Middle,
-                    color = MaterialTheme.colorScheme.surfaceContainerLow,
-                )
-                .padding(horizontal = 12.dp),
-        )
-        return
-    }
-    val answerNode = robotContent.answerAstNode ?: return
-    RichText(
+    ModernMarkdownMessage(
+        source = robotContent.answerSource,
+        isStreaming = robotContent.isStreaming,
+        showCursor = robotContent.showCursor,
+        codeActions = codeActions,
         contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = Modifier
             .fillMaxWidth()
@@ -610,54 +534,8 @@ fun RobotMessageContent(
                 segment = GlassCardSegment.Middle,
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
             )
-            .padding(horizontal = 12.dp)
-    ) {
-        CompositionLocalProvider(
-            LocalIsMessageStreaming provides robotContent.isStreaming
-        ) {
-            BasicMarkdown(
-                astNode = answerNode,
-                codeBlockClickListener = codeBlockClickListener,
-                showCursor = robotContent.showCursor
-            )
-        }
-    }
-}
-
-@Composable
-fun RobotMessageMarkdownBlock(
-    markdownBlock: MessageUiModel.MarkdownBlock,
-    codeBlockClickListener: CodeBlockClickListener
-) {
-    val verticalPadding = when (markdownBlock.blockType) {
-        MessageUiModel.MarkdownBlock.BlockType.HEADING -> 12.dp
-        MessageUiModel.MarkdownBlock.BlockType.PARAGRAPH -> 4.dp
-        MessageUiModel.MarkdownBlock.BlockType.CODE_BLOCK -> 8.dp
-        // 分割线只画 1dp 线 + HorizontalRule 自带 4dp 呼吸位，这里不再叠 16dp block 内边距。
-        MessageUiModel.MarkdownBlock.BlockType.THEMATIC_BREAK -> 0.dp
-        else -> 8.dp
-    }
-
-    RichText(
-        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = Modifier
-            .fillMaxWidth()
-            .flatGlassCardSegment(
-                segment = GlassCardSegment.Middle,
-                color = MaterialTheme.colorScheme.surfaceContainerLow,
-            )
-            .padding(horizontal = 12.dp, vertical = verticalPadding)
-    ) {
-        CompositionLocalProvider(
-            LocalIsMessageStreaming provides markdownBlock.isStreaming
-        ) {
-            BasicMarkdown(
-                astNode = markdownBlock.node,
-                codeBlockClickListener = codeBlockClickListener,
-                showCursor = markdownBlock.showCursor
-            )
-        }
-    }
+            .padding(horizontal = 12.dp),
+    )
 }
 
 @Composable
@@ -800,135 +678,15 @@ private fun ReasoningCollapseFooter(
 @Composable
 fun RobotReasoningContent(
     reasoningContent: MessageUiModel.RobotReasoningContent,
-    codeBlockClickListener: CodeBlockClickListener,
+    codeActions: OneBoxMarkdownCodeActions,
     backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     leftLine: Color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.32f),
 ) {
-    val reasoningDirection = remember(reasoningContent.reasoningAstNode) {
-        firstReasoningLiteral(reasoningContent.reasoningAstNode)?.firstStrongLayoutDirection()
+    val reasoningDirection = remember(reasoningContent.reasoningSource) {
+        reasoningContent.reasoningSource.firstStrongLayoutDirection()
     } ?: LocalLayoutDirection.current
-    if (reasoningContent.reasoningSource.isNotEmpty() || reasoningContent.reasoningAstNode != null) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .flatGlassCardSegment(
-                    segment = GlassCardSegment.Middle,
-                    color = backgroundColor,
-                )
-                .padding(start = 10.dp, end = 10.dp, top = 0.dp, bottom = 6.dp)
-        ) {
-            Box(
-                modifier = Modifier.fillMaxWidth().flatGlassCardSegment(
-                    segment = GlassCardSegment.Bottom,
-                    shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
-                    color = MaterialTheme.colorScheme.surfaceContainer,
-                    borderWidth = 0.dp,
-                ),
-            ) {
-                val lineWidth = 2.dp
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 22.dp, end = 14.dp, top = 2.dp, bottom = 14.dp)
-                        .drawBehind {
-                            val widthPx = lineWidth.toPx()
-                            val topOffsetPx = 2.dp.toPx()
-                            drawRoundRect(
-                                color = leftLine,
-                                topLeft = Offset(0f, topOffsetPx),
-                                size = Size(
-                                    widthPx,
-                                    (size.height - topOffsetPx).coerceAtLeast(0f)
-                                ),
-                                cornerRadius = CornerRadius(
-                                    x = widthPx / 2,
-                                    y = widthPx / 2
-                                )
-                            )
-                        }
-                ) {
-                    CompositionLocalProvider(LocalLayoutDirection provides reasoningDirection) {
-                        if (reasoningContent.reasoningSource.isNotEmpty()) {
-                            ModernMarkdownMessage(
-                                source = reasoningContent.reasoningSource,
-                                isStreaming = reasoningContent.isStreaming,
-                                codeBlockClickListener = codeBlockClickListener,
-                                textStyle = MaterialTheme.typography.bodyMedium.copy(
-                                    fontSize = 13.sp,
-                                    lineHeight = 20.sp
-                                ),
-                                contentColor = contentColor,
-                                blockSpacing = 0.dp,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 12.dp),
-                            )
-                        } else {
-                            val reasoningNode = reasoningContent.reasoningAstNode
-                                ?: return@CompositionLocalProvider
-                            RichText(
-                                textStyle = MaterialTheme.typography.bodyMedium.copy(
-                                    fontSize = 13.sp,
-                                    lineHeight = 20.sp
-                                ),
-                                style = RichTextStyle(paragraphSpacing = 0.sp),
-                                contentColor = contentColor,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 12.dp)
-                            ) {
-                                CompositionLocalProvider(
-                                    LocalIsMessageStreaming provides reasoningContent.isStreaming
-                                ) {
-                                    BasicMarkdown(
-                                        reasoningContent.reasoningAstNode,
-                                        codeBlockClickListener = codeBlockClickListener,
-                                        compactBlocks = true
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-@Composable
-fun RobotReasoningBlock(
-    reasoningBlock: MessageUiModel.RobotReasoningBlock,
-    codeBlockClickListener: CodeBlockClickListener,
-    backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
-    contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
-    leftLine: Color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.32f),
-) {
-    // 多 block reasoning 视觉上应表现为“一个连续 section”：
-    // - 中间 block 不收底部圆角；
-    // - 只有最后一个 block 负责底部收口；
-    // - 左侧竖线在所有 block 中连续贯通，而不是每段都像独立小卡片。
-    val blockDirection = remember(reasoningBlock.node) {
-        firstReasoningLiteral(reasoningBlock.node)?.firstStrongLayoutDirection()
-    } ?: LocalLayoutDirection.current
-    val containerBottomPadding = if (reasoningBlock.isLast) 6.dp else 0.dp
-    val surfaceShape = when {
-        reasoningBlock.isFirst && reasoningBlock.isLast -> RoundedCornerShape(
-            bottomStart = 16.dp,
-            bottomEnd = 16.dp
-        )
-
-        reasoningBlock.isLast -> RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)
-        else -> RoundedCornerShape(0.dp)
-    }
-    val contentTopPadding = if (reasoningBlock.isFirst) 6.dp else 2.dp
-    val showCollapseFooter = reasoningBlock.isLast && reasoningBlock.showCollapseFooter
-    val contentBottomPadding = when {
-        showCollapseFooter -> 2.dp
-        reasoningBlock.isLast -> 14.dp
-        else -> 2.dp
-    }
+    if (reasoningContent.reasoningSource.isEmpty()) return
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -936,75 +694,60 @@ fun RobotReasoningBlock(
                 segment = GlassCardSegment.Middle,
                 color = backgroundColor,
             )
-            .padding(start = 10.dp, end = 10.dp, top = 0.dp, bottom = containerBottomPadding)
+            .padding(start = 10.dp, end = 10.dp, bottom = 6.dp),
     ) {
         Box(
-            modifier = Modifier.fillMaxWidth()
-                .flatGlassCardSegment(
-                    segment = if (reasoningBlock.isLast) GlassCardSegment.Bottom else GlassCardSegment.Middle,
-                    color = MaterialTheme.colorScheme.surfaceContainer,
-                    shape = surfaceShape,
-                    borderWidth = 0.dp,
-                ),
+            modifier = Modifier.fillMaxWidth().flatGlassCardSegment(
+                segment = GlassCardSegment.Bottom,
+                shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
+                color = MaterialTheme.colorScheme.surfaceContainer,
+                borderWidth = 0.dp,
+            ),
         ) {
-            val lineWidth = 2.dp
             Column(modifier = Modifier.fillMaxWidth()) {
+                val lineWidth = 2.dp
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
                             start = 22.dp,
                             end = 14.dp,
-                            bottom = if (reasoningBlock.isLast) contentBottomPadding else 0.dp
+                            top = 2.dp,
+                            bottom = if (reasoningContent.showCollapseFooter) 0.dp else 14.dp,
                         )
                         .drawBehind {
                             val widthPx = lineWidth.toPx()
                             drawRoundRect(
                                 color = leftLine,
-                                topLeft = Offset.Zero,
-                                size = Size(widthPx, size.height),
-                                cornerRadius = CornerRadius(
-                                    x = widthPx / 2,
-                                    y = widthPx / 2
-                                )
+                                topLeft = Offset(0f, 2.dp.toPx()),
+                                size = Size(widthPx, (size.height - 2.dp.toPx()).coerceAtLeast(0f)),
+                                cornerRadius = CornerRadius(widthPx / 2, widthPx / 2),
                             )
-                        }
+                        },
                 ) {
-                    CompositionLocalProvider(LocalLayoutDirection provides blockDirection) {
-                        RichText(
+                    CompositionLocalProvider(LocalLayoutDirection provides reasoningDirection) {
+                        ModernMarkdownMessage(
+                            source = reasoningContent.reasoningSource,
+                            isStreaming = reasoningContent.isStreaming,
+                            codeActions = codeActions,
                             textStyle = MaterialTheme.typography.bodyMedium.copy(
                                 fontSize = 13.sp,
-                                lineHeight = 20.sp
+                                lineHeight = 20.sp,
                             ),
-                            style = RichTextStyle(paragraphSpacing = 0.sp),
                             contentColor = contentColor,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    start = 12.dp,
-                                    top = contentTopPadding,
-                                    bottom = if (reasoningBlock.isLast) 0.dp else contentBottomPadding
-                                )
-                        ) {
-                            CompositionLocalProvider(
-                                LocalIsMessageStreaming provides reasoningBlock.isStreaming
-                            ) {
-                                BasicMarkdown(
-                                    reasoningBlock.node,
-                                    codeBlockClickListener = codeBlockClickListener,
-                                    compactBlocks = true
-                                )
-                            }
-                        }
+                            blockSpacing = 0.dp,
+                            modifier = Modifier.fillMaxWidth().padding(start = 12.dp),
+                        )
                     }
                 }
-                if (showCollapseFooter) {
+                if (reasoningContent.showCollapseFooter) {
                     ReasoningCollapseFooter(contentColor = contentColor)
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun ChatLoadingIndicator(
@@ -1056,31 +799,6 @@ fun ChatErrorMessage(
             onSwitchModel = { appComponent.showAIModelsModalSheet() },
         )
     }
-}
-
-/** 取思考正文里第一段文字,用来判断这段该从左往右还是从右往左排。 */
-private fun firstReasoningLiteral(node: AstNode?): String? {
-    var current = node
-    var guard = 0
-    while (current != null && guard++ < 400) {
-        val type = current.type
-        if (type is AstText && type.literal.any { !it.isWhitespace() }) {
-            return type.literal
-        }
-        val child = current.links.firstChild
-        if (child != null) {
-            current = child
-            continue
-        }
-        var next = current.links.next
-        var parent = current.links.parent
-        while (next == null && parent != null && parent !== node) {
-            next = parent.links.next
-            parent = parent.links.parent
-        }
-        current = if (parent === node && next == null) null else next
-    }
-    return null
 }
 
 @Composable

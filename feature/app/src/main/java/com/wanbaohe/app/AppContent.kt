@@ -59,7 +59,6 @@ import com.shifenmiao.model.state.UIState
 import com.shifenmiao.model.user.event.VerifyContactEvent
 import com.shifenmiao.model.webview.WebViewParams
 import com.shifenmiao.storage.RemoteConfigStorage
-import com.shifenmiao.webview.mermaid.ProvideMermaidRenderer
 import com.t8rin.imagetoolbox.core.settings.domain.toSimpleSettingsInteractor
 import com.t8rin.imagetoolbox.core.domain.performance.StartupTrace
 import com.t8rin.imagetoolbox.core.domain.startup.StartupPhase
@@ -413,7 +412,6 @@ private fun AppOverlayHost(
         }
     }
 
-    ProvideMermaidRenderer {
         PrivacyPolicyDialog(
             showPrivacyPolicyDialog,
             onConfirm = {
@@ -430,7 +428,6 @@ private fun AppOverlayHost(
                 )
             }
         )
-    }
 
     openWebView?.let { webViewParams ->
         val webViewComponent = remember(webViewParams) {

@@ -34,7 +34,7 @@ import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.model.ai.RoleType
 import com.shifenmiao.model.channel.FlavorType
 import com.shifenmiao.theme.AppTheme
-import io.noties.markwon.utils.MarkdownStringUtils
+import com.wanbaohe.markdown.OneBoxMarkdownHtml
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
@@ -203,7 +203,7 @@ class DuelHtmlExporter {
             )
         }
         val model = escapeHtml(modelTitle.ifBlank { "AI" })
-        val content = MarkdownStringUtils.convertMarkdownToHtml(persona.trim())
+        val content = OneBoxMarkdownHtml.render(persona.trim())
         val isLong = persona.trim().length > 120
         val expandableClass = if (isLong) "prompt-text expandable" else "prompt-text"
         val expandBtn = if (isLong) {
@@ -261,7 +261,7 @@ class DuelHtmlExporter {
                 ?.takeIf { it.isNotBlank() }
             ?: "AI"
         val content = if (isSpeakerA) message.question else message.answer
-        val contentHtml = MarkdownStringUtils.convertMarkdownToHtml(content)
+        val contentHtml = OneBoxMarkdownHtml.render(content)
         val timeStr = escapeHtml(timeFormat.format(message.createdAt))
         val speakerClass = if (isSpeakerA) "speaker-a" else "speaker-b"
         val avatarText = escapeHtml(

@@ -58,7 +58,6 @@ dependencies {
     implementation(libs.onebox.placeholder)
     api(libs.toolbox.logger)
     implementation(projects.libs.twain)
-    implementation(projects.libs.richtext)
     implementation(projects.libs.markdown)
 
     implementation(projects.libs.zoomable)

@@ -110,7 +110,6 @@ dependencies {
      * markdown
      */
     implementation(projects.libs.twain)
-    implementation(projects.libs.richtext)
     implementation(projects.libs.markdown)
 
     /**

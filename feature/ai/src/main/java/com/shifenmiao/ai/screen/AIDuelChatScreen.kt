@@ -87,7 +87,6 @@ import coil3.compose.AsyncImage
 import com.shifenmiao.ai.component.AIDuelChatComponent
 import com.shifenmiao.ai.component.LocalAiMarkdownSelectionItems
 import com.shifenmiao.ai.component.ChatLoadingIndicator
-import com.shifenmiao.ai.component.RobotReasoningBlock
 import com.shifenmiao.ai.component.RobotReasoningContent
 import com.shifenmiao.ai.component.RobotReasoningHeader
 import com.shifenmiao.ai.model.AIDuelConfig
@@ -105,7 +104,7 @@ import com.shifenmiao.common.components.text.defaultTextSelectionMenuItems
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.ai.AIModelsPickerBottomSheet
-import com.shifenmiao.common.ui.rememberCodeBlockClickListener
+import com.shifenmiao.common.ui.rememberMarkdownCodeActions
 import com.shifenmiao.core.R
 import com.shifenmiao.core.constants.UrlConstants
 import com.shifenmiao.model.webview.WebViewParams
@@ -114,7 +113,6 @@ import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.model.state.PageState
 import com.shifenmiao.model.state.LocalChatUIState
 import com.shifenmiao.theme.AppTheme
-import com.shifenmiao.webview.mermaid.ProvideMermaidRenderer
 import com.wanbaohe.core.ui.utils.helper.scrollToContentStart
 import com.wanbaohe.core.ui.utils.content_pickers.rememberImagePicker
 import com.wanbaohe.core.ui.widget.dialogs.ExitBackHandler
@@ -1840,7 +1838,7 @@ private fun DuelMessagesList(
     onNavigate: (Screen) -> Unit,
     isDuelRunning: Boolean,
 ) {
-    val codeBlockClickListener = rememberCodeBlockClickListener(appComponent = appComponent)
+    val codeActions = rememberMarkdownCodeActions(appComponent = appComponent)
     // 与 AI 聊天共用同一套选区状态清理规则：切会话 / 开始互聊时收起工具条
     val selectionState = rememberSelectionState()
     LaunchedEffect(conversation.id) {
@@ -1855,7 +1853,6 @@ private fun DuelMessagesList(
         onNavigate = onNavigate,
     )
     CompositionLocalProvider(LocalAiMarkdownSelectionItems provides selectionItems) {
-        ProvideMermaidRenderer {
         // 全局复用组件：与 AI 聊天 / 博客详情 / 笔记详情完全一致的长按选区操作条
         TextSelectionMenuContainer(
             items = selectionItems,
@@ -1885,7 +1882,7 @@ private fun DuelMessagesList(
                     RenderChatMessageItem(
                         item = item,
                         index = index,
-                        codeBlockClickListener = codeBlockClickListener,
+                        codeActions = codeActions,
                         onUserContainerHeader = {
                             DuelUserMessageHeader(
                                 userContainerHeader = it,
@@ -1908,7 +1905,7 @@ private fun DuelMessagesList(
                         onUserReasoningContent = { reasoningContent, listener ->
                             RobotReasoningContent(
                                 reasoningContent = reasoningContent.toRobotReasoningContent(),
-                                codeBlockClickListener = listener,
+                                codeActions = listener,
                                 backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                                 leftLine = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.48f)
@@ -1919,15 +1916,6 @@ private fun DuelMessagesList(
                                 reasoningHeader = reasoningHeader.toRobotReasoningHeader(),
                                 backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                            )
-                        },
-                        onUserReasoningBlock = { reasoningBlock, listener ->
-                            RobotReasoningBlock(
-                                reasoningBlock = reasoningBlock.toRobotReasoningBlock(),
-                                codeBlockClickListener = listener,
-                                backgroundColor = MaterialTheme.colorScheme.primaryContainer,
-                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                leftLine = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.48f)
                             )
                         },
                         onRobotContainerHeader = {
@@ -1972,7 +1960,6 @@ private fun DuelMessagesList(
                 }
             }
         }
-    }
     }
 }
 

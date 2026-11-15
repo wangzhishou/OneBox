@@ -18,10 +18,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.ai.a2ui.rememberA2uiMarkdownPlugin
 import com.shifenmiao.common.components.text.TextSelectionMenuItem
 import com.shifenmiao.common.markdown.oneBoxMarkdownComponents
 import com.wanbaohe.markdown.OneBoxMarkdown
-import io.noties.markwon.plugins.codeblock.CodeBlockClickListener
+import com.wanbaohe.markdown.OneBoxMarkdownCodeActions
 
 val LocalAiMarkdownSelectionItems = compositionLocalOf<List<TextSelectionMenuItem>> { emptyList() }
 
@@ -29,7 +30,7 @@ val LocalAiMarkdownSelectionItems = compositionLocalOf<List<TextSelectionMenuIte
 fun ModernMarkdownMessage(
     source: String,
     isStreaming: Boolean,
-    codeBlockClickListener: CodeBlockClickListener,
+    codeActions: OneBoxMarkdownCodeActions,
     modifier: Modifier = Modifier,
     showCursor: Boolean = false,
     textStyle: TextStyle? = null,
@@ -37,9 +38,10 @@ fun ModernMarkdownMessage(
     blockSpacing: Dp? = null,
 ) {
     val selectionItems = LocalAiMarkdownSelectionItems.current
+    val a2uiPlugin = rememberA2uiMarkdownPlugin(isStreaming, codeActions)
     val baseComponents = oneBoxMarkdownComponents(
         selectionItems = selectionItems,
-        codeBlockClickListener = codeBlockClickListener,
+        codeActions = codeActions,
     )
     val components = if (showCursor && isStreaming) {
         baseComponents.copy(footer = { StreamingMarkdownCursor() })
@@ -55,6 +57,7 @@ fun ModernMarkdownMessage(
         contentColor = contentColor,
         blockSpacing = blockSpacing,
         components = components,
+        plugins = listOf(a2uiPlugin),
     )
 }
 
@@ -73,6 +76,6 @@ private fun StreamingMarkdownCursor() {
     Box(
         modifier = Modifier
             .size(width = 8.dp, height = 20.dp)
-            .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = alpha))
+            .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = alpha)),
     )
 }

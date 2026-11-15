@@ -36,7 +36,7 @@ import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.model.ai.RoleType
 import com.shifenmiao.model.channel.FlavorType
 import com.shifenmiao.theme.AppTheme
-import io.noties.markwon.utils.MarkdownStringUtils
+import com.wanbaohe.markdown.OneBoxMarkdownHtml
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.URLEncoder
@@ -194,7 +194,7 @@ class HtmlExporter {
         message: MessageEntity,
         timeFormat: SimpleDateFormat
     ): String {
-        val content = MarkdownStringUtils.convertMarkdownToHtml(message.question)
+        val content = OneBoxMarkdownHtml.render(message.question)
         val attachmentsHtml = createAttachmentsHtml(message)
         val timeStr = timeFormat.format(message.createdAt)
 
@@ -217,7 +217,7 @@ class HtmlExporter {
         timeFormat: SimpleDateFormat,
         conversation: Conversation,
     ): String {
-        val content = MarkdownStringUtils.convertMarkdownToHtml(message.answer)
+        val content = OneBoxMarkdownHtml.render(message.answer)
         val reasoningHtml = createReasoningHtml(message)
         val modelTitle = aiEngineCatalogManager.getAiModelTitleByModel(message.model)
             .takeIf { it.isNotBlank() } ?: message.model
@@ -328,7 +328,7 @@ class HtmlExporter {
         if (message.reasoningContent.isBlank()) return ""
         // 仅在 APP 中展开思考过程时，分享页才显示
         if (!AppSharedStorage.isExpandedReasoningChat.value) return ""
-        val formatted = MarkdownStringUtils.convertMarkdownToHtml(message.reasoningContent)
+        val formatted = OneBoxMarkdownHtml.render(message.reasoningContent)
         val timeStr = if (message.reasoningTime > 0) " (${message.reasoningTime / 1000}s)" else ""
         return """
             <div class="reasoning-block">
@@ -400,7 +400,7 @@ class HtmlExporter {
 
     private fun buildPromptHtml(conversation: Conversation, colorScheme: ColorScheme): String {
         if (conversation.prompt.isBlank()) return ""
-        val formatted = MarkdownStringUtils.convertMarkdownToHtml(conversation.prompt)
+        val formatted = OneBoxMarkdownHtml.render(conversation.prompt)
         return """
             <div class="prompt-block glass">
                 <div class="prompt-header">

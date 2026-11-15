@@ -40,7 +40,7 @@ dependencies {
     implementation(projects.core.theme)
     implementation(projects.libs.twain)
     implementation(projects.libs.diagram)
-    implementation(projects.libs.richtext)
+    implementation(projects.libs.markdown)
     implementation(projects.feature.common)
 
     /**

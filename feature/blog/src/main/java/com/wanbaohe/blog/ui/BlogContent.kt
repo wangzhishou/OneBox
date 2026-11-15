@@ -39,7 +39,6 @@ import com.shifenmiao.common.markdown.OneBoxMarkdownContentState
 import com.shifenmiao.common.markdown.rememberOneBoxMarkdownContentState
 import com.shifenmiao.core.R
 import com.shifenmiao.model.blog.BlogDetailState
-import com.shifenmiao.webview.mermaid.ProvideMermaidRenderer
 import com.wanbaohe.blog.logic.BlogComponent
 
 @Composable
@@ -63,13 +62,12 @@ fun BlogContent(
         ?: if (blogDetailState is BlogDetailState.Error) stringResource(R.string.error_message) else null
     val blog = (blogDetailState as? BlogDetailState.Success)?.blog
 
-    ProvideMermaidRenderer {
-        OneBoxMarkdownContent(
-            message = blog?.content.orEmpty(),
-            modifier = modifier.fillMaxSize(),
-            isLoading = isLoading,
-            errorMessage = errorMessage,
-            onRetry = { blogComponent.onRetry() },
+OneBoxMarkdownContent(
+    message = blog?.content.orEmpty(),
+    modifier = modifier.fillMaxSize(),
+    isLoading = isLoading,
+    errorMessage = errorMessage,
+    onRetry = { blogComponent.onRetry() },
             onGoBack = onGoBack,
             onLinkClick = { url ->
                 if (!navigator.navigate(url)) {
@@ -94,5 +92,4 @@ fun BlogContent(
                 Spacer(modifier = Modifier.height(30.dp))
             },
         )
-    }
 }

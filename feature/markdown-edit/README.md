@@ -243,7 +243,7 @@ com.wanbaohe.markdown.edit/
 ## 依赖
 
 - `androidx.compose.material3:material3`
-- `com.halilibo.richtext:markdown` (项目内部)
+- `com.wanbaohe.markdown` (项目内部 KMP 渲染、公式与图表)
 - `com.mohamedrejeb:richeditor` (项目内部)
 - `core.ui` (isPortraitOrientationAsState)
 

@@ -28,7 +28,6 @@ import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonObject
 import com.shifenmiao.ai.history.AIDuelConversationTitle
 import com.shifenmiao.ai.history.withHistorySnapshot
-import com.halilibo.richtext.markwon.MarkdownAstNodeParser
 import com.shifenmiao.ai.export.DuelHtmlExporter
 import com.shifenmiao.ai.mediator.MessageRemoteMediator
 import com.shifenmiao.model.moderation.SensitiveWordCheckField
@@ -122,7 +121,6 @@ class AIDuelChatComponent @AssistedInject internal constructor(
     @ApplicationContext applicationContext: Context,
     messageListUseCase: MessageListUseCase,
     a2uiRenderProvider: A2uiRenderProvider,
-    markdownAstNodeParserFactory: MarkdownAstNodeParser.Factory,
 ) : AIChatBaseComponent(
     componentContext,
     conversationParams,
@@ -156,7 +154,6 @@ class AIDuelChatComponent @AssistedInject internal constructor(
         const val SESSION_ENDED = "ENDED"
     }
 
-    private val parser = markdownAstNodeParserFactory.create()
     private val messageDao = appDatabase.messageDao()
     private val chatPromptDao = appDatabase.chatPromptDao()
     private val categoryDao = appDatabase.categoryDao()
@@ -396,7 +393,6 @@ class AIDuelChatComponent @AssistedInject internal constructor(
             if (cached != null) return@flatMap cached
 
             val uiModels = MessageUiModel.fromMessage(
-                parser = parser,
                 message = message,
                 conversation = _conversation.value,
                 getAIModel = { modelName ->

@@ -57,7 +57,7 @@ import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.markdown.OneBoxMarkdownContent
 import com.shifenmiao.common.markdown.rememberOneBoxMarkdownContentState
 import com.shifenmiao.common.ui.BaseScreen
-import com.shifenmiao.common.ui.rememberCodeBlockClickListener
+import com.shifenmiao.common.ui.rememberMarkdownCodeActions
 import com.shifenmiao.core.R
 import com.shifenmiao.model.ListItemType
 import com.shifenmiao.online.component.NoteItemComponent
@@ -67,7 +67,6 @@ import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedButton
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBarType
 import kotlinx.coroutines.launch
-import com.shifenmiao.webview.mermaid.ProvideMermaidRenderer
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLock
 
@@ -92,7 +91,7 @@ fun NoteItemScreen(
         noteItemComponent.refreshData()
     }
 
-    val codeBlockClickListener = rememberCodeBlockClickListener(appComponent = appComponent)
+    val codeActions = rememberMarkdownCodeActions(appComponent = appComponent)
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     BackHandler { appComponent.onGoBack() }
     BaseScreen(
@@ -145,38 +144,36 @@ fun NoteItemScreen(
             )
             return@BaseScreen
         }
-        ProvideMermaidRenderer {
-            OneBoxMarkdownContent(
-                modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
-                state = markdownState,
-                codeBlockClickListener = codeBlockClickListener,
-                selectionItems = selectionMenuItems,
-                message = noteUIState.data,
-                isLoading = noteUIState.isLoading,
-                errorMessage = noteUIState.errorMessage,
-                onRetry = { noteItemComponent.refreshData() },
-                onGoBack = { appComponent.onGoBack() },
-                onLinkClick = { url ->
-                    if (!navigator.navigate(url)) {
-                        uriHandler.openUri(url)
-                    }
-                },
-                // 页面级已由 BaseScreen 补 navigationBarsPadding；正文末尾再留一段可滚动留白
-                paddingValues = PaddingValues(
-                    start = AppTheme.dimens.paddingNormal,
-                    top = 0.dp,
-                    end = AppTheme.dimens.paddingNormal,
-                    bottom = 30.dp
-                ),
-                headerContent = {
-                    if (noteUIState.selectedCategories.isNotEmpty()) {
-                        Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
-                        ReadOnlyNoteCategorySelection(uiState = noteUIState)
-                        Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
-                    }
-                }
-            )
+OneBoxMarkdownContent(
+    modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
+    state = markdownState,
+    codeActions = codeActions,
+    selectionItems = selectionMenuItems,
+    message = noteUIState.data,
+    isLoading = noteUIState.isLoading,
+    errorMessage = noteUIState.errorMessage,
+    onRetry = { noteItemComponent.refreshData() },
+    onGoBack = { appComponent.onGoBack() },
+    onLinkClick = { url ->
+        if (!navigator.navigate(url)) {
+            uriHandler.openUri(url)
         }
+    },
+    // 页面级已由 BaseScreen 补 navigationBarsPadding；正文末尾再留一段可滚动留白
+    paddingValues = PaddingValues(
+        start = AppTheme.dimens.paddingNormal,
+        top = 0.dp,
+        end = AppTheme.dimens.paddingNormal,
+        bottom = 30.dp
+    ),
+    headerContent = {
+        if (noteUIState.selectedCategories.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
+            ReadOnlyNoteCategorySelection(uiState = noteUIState)
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
+        }
+    }
+)
     }
 }
 

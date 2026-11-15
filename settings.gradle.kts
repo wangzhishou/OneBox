@@ -94,7 +94,6 @@ include(":libs:twain")
 include(":libs:latex")
 include(":libs:diagram")
 include(":libs:markdown")
-include(":libs:richtext")
 include(":feature:image-viewer")
 
 

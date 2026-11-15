@@ -64,7 +64,6 @@ import com.wanbaohe.blog.logic.BlogComponent
 import com.shifenmiao.common.components.blog.BlogListItem
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
-import com.shifenmiao.webview.mermaid.ProvideMermaidRenderer
 import com.t8rin.imagetoolbox.core.resources.icons.NoteAdd
 
 @Composable
@@ -139,9 +138,7 @@ fun FeedbackScreen(
                 }
 
                 else -> {
-                    ProvideMermaidRenderer {
-                        BlogList(lazyPagingItems = lazyPagingItems)
-                    }
+                    BlogList(lazyPagingItems = lazyPagingItems)
                 }
             }
         }

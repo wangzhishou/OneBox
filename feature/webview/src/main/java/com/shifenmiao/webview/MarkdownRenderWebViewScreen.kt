@@ -61,7 +61,7 @@ import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.dialogs.LoadingDialog
-import io.noties.markwon.utils.MarkdownStringUtils
+import com.wanbaohe.markdown.OneBoxMarkdownHtml
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -129,7 +129,7 @@ fun MarkdownRenderWebViewScreen(
                 markdownText = text
                 val title = FileUtils.fileNameFromUri(uri)
                 val bodyHtml = withContext(Dispatchers.Default) {
-                    MarkdownStringUtils.convertMarkdownToHtmlGfm(text)
+                    OneBoxMarkdownHtml.render(text)
                 }
                 val html = MarkdownRenderHtmlTemplate.wrap(
                     title = title,

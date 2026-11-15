@@ -19,8 +19,6 @@
 
 package com.shifenmiao.ai.component
 
-import com.halilibo.richtext.markwon.MarkdownAstNodeParser
-import com.shifenmiao.ai.model.BlockReuseCache
 import com.shifenmiao.ai.model.MessageUiModel
 import com.shifenmiao.common.manager.AIEngineCatalogManager
 import com.shifenmiao.model.ai.MessageUIState
@@ -37,7 +35,7 @@ import kotlinx.coroutines.launch
  *
  * 从 [AIChatComponent] 中抽离，职责边界：
  * 1. 流式文本缓冲（answer / reasoning）+ O(n) 追加
- * 2. Markdown 解析 → MessageUiModel 列表 + 节流渲染
+ * 2. Markdown 源码 → MessageUiModel 列表 + 节流渲染
  * 3. SSE 看门狗（空闲超时检测 + 兜底取消）
  * 4. Placeholder 消息更新
  * 5. 打字机效果
@@ -46,10 +44,9 @@ import kotlinx.coroutines.launch
  * - [answerBuffer] / [reasoningBuffer] 仅在调用方指定的单协程中读写
  *   （executeStreamingChat 的 IO 协程），无需加锁。
  * - 看门狗协程与流式协程通过 [lastChunkAt] / [streamSawEnd] 的 @Volatile 保证可见性。
- * - [cachedMessageUiModels] / [blockReuseCache] 与 [doRenderMessage] 同协程，无需加锁。
+ * - [cachedMessageUiModels] 与 [doRenderMessage] 同协程，无需加锁。
  */
 class StreamContentProcessor(
-    private val parser: MarkdownAstNodeParser,
     private val sharedState: ChatSharedState,
     private val aiEngineCatalogManager: AIEngineCatalogManager,
     private val onStreamIdleTimeout: () -> Unit,
@@ -113,11 +110,8 @@ class StreamContentProcessor(
     private val _messageUiModels = MutableStateFlow<List<MessageUiModel>>(emptyList())
     val messageUiModels: MutableStateFlow<List<MessageUiModel>> = _messageUiModels
 
-    /** 缓存已解析的消息 UI 模型，key 为 completionId_role */
+    /** 缓存已构建的消息 UI 模型，key 为 completionId_role */
     private val cachedMessageUiModels = mutableMapOf<String, List<MessageUiModel>>()
-
-    /** 流式渲染下块复用缓存 */
-    private val blockReuseCache = BlockReuseCache()
 
     // ── 看门狗状态 ────────────────────────────────────────────
     @Volatile
@@ -264,8 +258,7 @@ class StreamContentProcessor(
      * 定位当前流式消息中应显示打字光标的 answer block 索引。
      *
      * UI 模型列表按视觉顺序排列（reverseLayout=true）：footer 在前，answer blocks 居中，
-     * header 在后。answer blocks 内部又经 [MessageUiModel.MarkdownBlock.splitIntoBlocks]
-     * 反转，因此 footer 之后遇到的第一个 answer block 即为文档末尾 block，光标应加在此处。
+     * header 在后。footer 之后遇到的第一个 answer block 即为文档末尾 block，光标应加在此处。
      */
     private fun findStreamingCursorIndex(uiModels: List<MessageUiModel>): Int? {
         val footerIndex = uiModels.indexOfFirst { it is MessageUiModel.RobotContainerFooter }
@@ -274,7 +267,7 @@ class StreamContentProcessor(
         if (footerIndex < 0 || footerIndex >= searchEnd) return null
 
         val firstAnswerBlockIndex = uiModels.subList(footerIndex, searchEnd)
-            .indexOfFirst { it is MessageUiModel.RobotContent || it is MessageUiModel.MarkdownBlock }
+            .indexOfFirst { it is MessageUiModel.RobotContent }
         return if (firstAnswerBlockIndex >= 0) footerIndex + firstAnswerBlockIndex else null
     }
 
@@ -314,13 +307,11 @@ class StreamContentProcessor(
                 cachedMessageUiModels[cacheKey]!!
             } else {
                 val uiModels = MessageUiModel.fromMessage(
-                    parser = parser,
                     message = message,
                     conversation = sharedState.conversation.value,
                     getAIModel = { modelName ->
                         aiEngineCatalogManager.getAiModelTitleByModel(modelName)
                     },
-                    blockReuseCache = if (isStreaming) blockReuseCache else null,
                     showExpandedReasoning = showExpandedReasoning
                 )
                 val finalUiModels = if (isStreaming) {
@@ -330,9 +321,6 @@ class StreamContentProcessor(
                         uiModels.mapIndexed { index, model ->
                             when {
                                 index == cursorIndex && model is MessageUiModel.RobotContent ->
-                                    model.copy(showCursor = true)
-
-                                index == cursorIndex && model is MessageUiModel.MarkdownBlock ->
                                     model.copy(showCursor = true)
 
                                 else -> model
@@ -544,7 +532,6 @@ class StreamContentProcessor(
     fun clearAll() {
         resetBuffers()
         cachedMessageUiModels.clear()
-        blockReuseCache.clear()
         _messageUiModels.value = emptyList()
         lastRenderTime = 0L
         lastPlaceholderUpdateTime = 0L
@@ -556,7 +543,6 @@ class StreamContentProcessor(
     /** 清理消息缓存（消息列表变化时调用） */
     fun invalidateMessageCache() {
         cachedMessageUiModels.clear()
-        blockReuseCache.clear()
     }
 }
 

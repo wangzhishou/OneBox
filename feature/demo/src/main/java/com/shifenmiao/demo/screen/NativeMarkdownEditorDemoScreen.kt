@@ -44,7 +44,6 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
@@ -66,7 +65,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.demo.R
-import com.wanbaohe.base.ui.MarkdownLazyContent
 
 /**
  * Debug-only native Markdown editor experiment.
@@ -83,7 +81,6 @@ fun NativeMarkdownEditorDemoScreen(
     val editorState = rememberTextFieldState(initialText = initialMarkdown)
     var markdown by remember { mutableStateOf(editorState.text.toString()) }
     var showPreview by remember { mutableStateOf(false) }
-    var previewEngine by remember { mutableStateOf(MarkdownPreviewEngine.Legacy) }
 
     androidx.compose.runtime.LaunchedEffect(editorState) {
         snapshotFlow { editorState.text.toString() }.collect { markdown = it }
@@ -119,37 +116,15 @@ fun NativeMarkdownEditorDemoScreen(
             onLoadLargeDocument = { editorState.replaceAll(largeMarkdownDocument()) },
             onLoadMediaSample = {
                 editorState.replaceAll(markdownMediaDemoDocument)
-                previewEngine = MarkdownPreviewEngine.Kmp
                 showPreview = true
             },
         )
 
         if (showPreview) {
-            Column(modifier = Modifier.fillMaxWidth().weight(1f)) {
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    FilterChip(
-                        selected = previewEngine == MarkdownPreviewEngine.Legacy,
-                        onClick = { previewEngine = MarkdownPreviewEngine.Legacy },
-                        label = { Text(stringResource(R.string.demo_markdown_engine_legacy)) },
-                    )
-                    FilterChip(
-                        selected = previewEngine == MarkdownPreviewEngine.Kmp,
-                        onClick = { previewEngine = MarkdownPreviewEngine.Kmp },
-                        label = { Text(stringResource(R.string.demo_markdown_engine_kmp)) },
-                    )
-                }
-                when (previewEngine) {
-                    MarkdownPreviewEngine.Legacy -> MarkdownLazyContent(
-                        message = markdown,
-                        modifier = Modifier.fillMaxWidth().weight(1f),
-                    )
-
-                    MarkdownPreviewEngine.Kmp -> KmpMarkdownPreview(
-                        markdown = markdown,
-                        modifier = Modifier.fillMaxWidth().weight(1f),
-                    )
-                }
-            }
+            KmpMarkdownPreview(
+                markdown = markdown,
+                modifier = Modifier.fillMaxWidth().weight(1f),
+            )
         } else {
             NativeMarkdownTextField(
                 state = editorState,
@@ -203,11 +178,6 @@ private fun MarkdownEditorToolbar(
             Text(stringResource(R.string.demo_markdown_media_sample))
         }
     }
-}
-
-private enum class MarkdownPreviewEngine {
-    Legacy,
-    Kmp,
 }
 
 @Composable
@@ -529,8 +499,31 @@ private const val initialMarkdown = """# 原生 Markdown 编辑器
 
 `TextFieldState` 会保留光标和选区。
 
+## 公式与图表
+
+${'$'}E = mc^2${'$'}
+
+$$
+\frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+$$
+
+```mermaid
+flowchart LR
+    Input[Markdown] --> Engine[KMP]
+    Engine --> Output[Compose]
+```
+
 ```kotlin
 val state = rememberTextFieldState("Hello Markdown")
+```
+
+```html
+<section class="card"><strong>HTML</strong></section>
+```
+
+```python
+def greet(name):
+    return f"Hello {name}"
 ```
 
 [项目主页](https://github.com/)

@@ -50,7 +50,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
@@ -60,21 +59,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import com.halilibo.richtext.commonmark.CommonMarkdownParseOptions
-import com.halilibo.richtext.markdown.BasicMarkdown
-import com.halilibo.richtext.markdown.splitMarkdownBlocks
-import com.halilibo.richtext.markwon.MarkdownAstNodeParser
-import com.halilibo.richtext.ui.material3.RichText
 import com.shifenmiao.ai.component.AIStreamAnswerComponent
 import com.shifenmiao.ai.component.AIStreamAnswerStatus
-import com.shifenmiao.ai.model.BlockReuseCache
-import com.wanbaohe.markdown.requiresLegacyMarkdown
 import com.wanbaohe.base.ui.AILoadingRow
 import com.wanbaohe.markdown.OneBoxMarkdown
 import com.wanbaohe.base.ui.ExpandableMarkdownContent
@@ -82,13 +73,9 @@ import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
 import com.shifenmiao.model.ai.AIConversationEntryType
-import com.shifenmiao.model.node.AstNode
 import com.shifenmiao.theme.AppTheme
-import com.shifenmiao.webview.mermaid.ProvideMermaidRenderer
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.wanbaohe.core.ui.utils.navigation.Screen
@@ -165,76 +152,74 @@ fun AIStreamAnswerScreen(
             }
         },
     ) {
-        ProvideMermaidRenderer {
-            AnimatedContent(
-                targetState = status,
-                transitionSpec = {
-                    fadeIn(tween(300)).togetherWith(fadeOut(tween(150)))
-                },
-                label = "AIStreamAnswerContent",
+AnimatedContent(
+    targetState = status,
+    transitionSpec = {
+        fadeIn(tween(300)).togetherWith(fadeOut(tween(150)))
+    },
+    label = "AIStreamAnswerContent",
+    modifier = Modifier
+        .weight(1f)
+        .fillMaxWidth(),
+) { currentStatus ->
+    when (currentStatus) {
+        AIStreamAnswerStatus.LOADING -> {
+            Column(
                 modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-            ) { currentStatus ->
-                when (currentStatus) {
-                    AIStreamAnswerStatus.LOADING -> {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(16.dp),
-                        ) {
-                            AILoadingRow()
-                        }
-                    }
-
-                    AIStreamAnswerStatus.STREAMING -> {
-                        MarkdownScrollContainer(
-                            modifier = Modifier.fillMaxSize(),
-                            autoScroll = true,
-                            scrollTrigger = accumulatedText.length + reasoningText.length,
-                        ) {
-                            if (reasoningText.isNotEmpty()) {
-                                ExpandableMarkdownContent(reasoningText)
-                            }
-                            MarkdownBlocksContent(
-                                text = accumulatedText,
-                                isStreaming = true,
-                            )
-                        }
-                    }
-
-                    AIStreamAnswerStatus.SUCCESS -> {
-                        if (component.useStreaming) {
-                            // 流式路径：文本已实时显示过，直接渲染分块 Markdown（无 cursor）
-                            MarkdownScrollContainer(modifier = Modifier.fillMaxSize()) {
-                                if (reasoningText.isNotEmpty()) {
-                                    ExpandableMarkdownContent(reasoningText)
-                                }
-                                MarkdownBlocksContent(
-                                    text = accumulatedText,
-                                    isStreaming = false,
-                                )
-                            }
-                        } else {
-                            // 同步路径：一次性返回，需打字机动画
-                            TypewriterMarkdownBlock(
-                                targetText = accumulatedText,
-                                engineInfo = engineInfo,
-                                modifier = Modifier.fillMaxSize(),
-                            )
-                        }
-                    }
-
-                    AIStreamAnswerStatus.ERROR -> {
-                        StreamAnswerErrorBlock(
-                            error = errorMessage,
-                            onRetry = component::retry,
-                            modifier = Modifier.fillMaxSize(),
-                        )
-                    }
-                }
+                    .fillMaxSize()
+                    .padding(16.dp),
+            ) {
+                AILoadingRow()
             }
         }
+
+        AIStreamAnswerStatus.STREAMING -> {
+            MarkdownScrollContainer(
+                modifier = Modifier.fillMaxSize(),
+                autoScroll = true,
+                scrollTrigger = accumulatedText.length + reasoningText.length,
+            ) {
+                if (reasoningText.isNotEmpty()) {
+                    ExpandableMarkdownContent(reasoningText)
+                }
+                MarkdownBlocksContent(
+                    text = accumulatedText,
+                    isStreaming = true,
+                )
+            }
+        }
+
+        AIStreamAnswerStatus.SUCCESS -> {
+            if (component.useStreaming) {
+                // 流式路径：文本已实时显示过，由 KMP 统一渲染完整正文（无 cursor）
+                MarkdownScrollContainer(modifier = Modifier.fillMaxSize()) {
+                    if (reasoningText.isNotEmpty()) {
+                        ExpandableMarkdownContent(reasoningText)
+                    }
+                    MarkdownBlocksContent(
+                        text = accumulatedText,
+                        isStreaming = false,
+                    )
+                }
+            } else {
+                // 同步路径：一次性返回，需打字机动画
+                TypewriterMarkdownBlock(
+                    targetText = accumulatedText,
+                    engineInfo = engineInfo,
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
+        }
+
+        AIStreamAnswerStatus.ERROR -> {
+            StreamAnswerErrorBlock(
+                error = errorMessage,
+                onRetry = component::retry,
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
+    }
+}
     }
 
     if (showInterruptDialog) {
@@ -290,75 +275,18 @@ private fun MarkdownScrollContainer(
     }
 }
 
-// ── 普通内容走 KMP；专属块保留分块 AST 与 inline cursor ───────────────
-
 @Composable
 private fun MarkdownBlocksContent(
     text: String,
     isStreaming: Boolean,
 ) {
-    if (!requiresLegacyMarkdown(text)) {
-        OneBoxMarkdown(
-            markdown = text,
-            isStreaming = isStreaming,
-            enableScroll = false,
-            textStyle = MaterialTheme.typography.bodyLarge,
-            contentColor = MaterialTheme.colorScheme.onSurface,
-        )
-        return
-    }
-    val context = LocalContext.current
-    val blockReuseCache = remember { BlockReuseCache() }
-    var blocks by remember { mutableStateOf<List<AstNode>>(emptyList()) }
-    // 流式期间和完成态必须分 key，否则签名跳过 cursor 会导致完成态错误复用带 cursor 的节点
-    val cacheKey = if (isStreaming) "stream_cursor" else "stream_final"
-
-    DisposableEffect(Unit) {
-        onDispose {
-            blockReuseCache.clear(cacheKey)
-        }
-    }
-
-    LaunchedEffect(text, isStreaming) {
-        if (text.isEmpty()) {
-            blocks = emptyList()
-            blockReuseCache.clear(cacheKey)
-            return@LaunchedEffect
-        }
-        val parsedBlocks = withContext(Dispatchers.IO) {
-            try {
-                val parser = MarkdownAstNodeParser(context, CommonMarkdownParseOptions.Default)
-                val rootNode = parser.parse(text)
-                val newBlocks = splitMarkdownBlocks(rootNode)
-                blockReuseCache.trim(cacheKey, newBlocks.size)
-                newBlocks.mapIndexed { index, newNode ->
-                    blockReuseCache.reuseOrPut(cacheKey, index, newNode)
-                }
-            } catch (_: Exception) {
-                emptyList()
-            }
-        }
-        blocks = parsedBlocks
-    }
-
-    if (blocks.isEmpty() && text.isNotBlank()) {
-        // 解析中或解析失败，fallback 到纯文本
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-    } else {
-        blocks.forEachIndexed { index, block ->
-            val isLast = index == blocks.lastIndex
-            RichText(modifier = Modifier.fillMaxWidth()) {
-                BasicMarkdown(
-                    astNode = block,
-                    showCursor = isLast && isStreaming,
-                )
-            }
-        }
-    }
+    OneBoxMarkdown(
+        markdown = text,
+        isStreaming = isStreaming,
+        enableScroll = false,
+        textStyle = MaterialTheme.typography.bodyLarge,
+        contentColor = MaterialTheme.colorScheme.onSurface,
+    )
 }
 
 // ── 完成态：打字机步进动画 → Markdown 渲染（同步路径） ─────────────────

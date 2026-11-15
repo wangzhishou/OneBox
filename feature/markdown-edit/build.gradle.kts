@@ -30,7 +30,6 @@ dependencies {
     implementation(projects.core.ui)
     implementation(projects.core.resources)
     implementation(projects.core.model)
-    implementation(projects.libs.richtext)
     implementation(projects.libs.twain)
     implementation(projects.libs.diagram)
     implementation(projects.feature.common)

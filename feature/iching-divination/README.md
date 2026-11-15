@@ -11,7 +11,7 @@ Independent Compose/Decompose feature implementing the casting flow shown in the
 
 The feature uses the shared Glass components for inputs, controls, cards, history, and hexagram surfaces. Every completed cast is stored in MMKV (newest first, up to 100 records), including the question, bottom-to-top line values, primary/changed hexagram numbers, timestamp, and generated AI interpretation. Hexagram names, judgments, and line texts are not persisted — they are resolved at display time from `res/raw/iching_texts.json` (English) / `res/raw-zh-rCN/iching_texts.json` (Chinese) via `IChingTextLibrary`, so both the UI and the AI prompt follow the current locale. Records can be restored, removed individually, or cleared together.
 
-Lines use values 6–9 and are stored bottom-to-top. AI text is explicitly presented as cultural reference rather than deterministic advice. Markdown is rendered via the shared `StreamingMarkdownContent` (core/base), which stays in Markdown during streaming: parsing runs off the main thread with `collectLatest` backpressure, and unchanged top-level blocks reuse their previous AST node references by content signature so only the growing tail block recomposes.
+Lines use values 6–9 and are stored bottom-to-top. AI text is explicitly presented as cultural reference rather than deterministic advice. Markdown is rendered via the shared `StreamingMarkdownContent` (core/base), which delegates to the KMP engine for incremental parsing, streaming updates, LaTeX and diagrams.
 
 ## Verification
 

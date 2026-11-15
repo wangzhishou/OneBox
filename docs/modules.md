@@ -228,7 +228,7 @@
 | `snowfall` | 雪花特效动画 |
 | `dynamic-theme` | 动态主题引擎 |
 | `twain` | TWAIN扫描仪接口 |
-| `richtext` | 富文本渲染 |
+| `markdown` | KMP Markdown、LaTeX、图表与插件渲染 |
 
 ---
 

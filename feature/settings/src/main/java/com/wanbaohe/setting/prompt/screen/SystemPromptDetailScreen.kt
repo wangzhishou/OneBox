@@ -76,7 +76,6 @@ import com.wanbaohe.core.ui.widget.text.EditorUiDefaults
 import com.wanbaohe.markdown.edit.webview.WebViewMarkdownEditor
 import com.wanbaohe.markdown.edit.webview.rememberWebViewMarkdownEditorState
 import com.wanbaohe.setting.prompt.component.SystemPromptDetailComponent
-import com.shifenmiao.webview.mermaid.ProvideMermaidRenderer
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
@@ -213,21 +212,19 @@ fun SystemPromptDetailScreen(
                 }
             }
         ) {
-            ProvideMermaidRenderer {
-                OneBoxMarkdownContent(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .nestedScroll(scrollBehavior.nestedScrollConnection),
-                    message = prompt?.prompt ?: "",
-                    isLoading = prompt == null,
-                    onLinkClick = { url ->
-                        if (!navigator.navigate(url)) {
-                            uriHandler.openUri(url)
-                        }
-                    },
-                    onGoBack = component.onGoBack
-                )
-            }
+OneBoxMarkdownContent(
+    modifier = Modifier
+        .fillMaxSize()
+        .nestedScroll(scrollBehavior.nestedScrollConnection),
+    message = prompt?.prompt ?: "",
+    isLoading = prompt == null,
+    onLinkClick = { url ->
+        if (!navigator.navigate(url)) {
+            uriHandler.openUri(url)
+        }
+    },
+    onGoBack = component.onGoBack
+)
         }
     }
 

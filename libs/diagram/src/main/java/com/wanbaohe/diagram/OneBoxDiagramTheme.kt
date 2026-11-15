@@ -7,7 +7,7 @@ import com.hrm.diagram.core.ir.ArgbColor
 import com.hrm.diagram.core.theme.DiagramTheme
 import com.hrm.diagram.render.theme.material3
 
-internal fun oneBoxDiagramTheme(colorScheme: ColorScheme): DiagramTheme {
+fun oneBoxDiagramTheme(colorScheme: ColorScheme): DiagramTheme {
     val base = DiagramTheme.material3(colorScheme)
     val accent = Color(colorScheme.onPrimaryContainer.toArgb())
     val nodeFill = Color(colorScheme.primaryContainer.toArgb())

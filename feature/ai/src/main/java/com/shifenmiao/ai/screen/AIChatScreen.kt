@@ -59,8 +59,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.halilibo.richtext.ui.a2ui.LocalA2uiRenderer
-import com.shifenmiao.ai.a2ui.A2uiRendererImpl
+import com.shifenmiao.ai.a2ui.LocalA2uiRenderProvider
+import com.shifenmiao.ai.a2ui.LocalA2uiSubmitHandler
 import com.shifenmiao.ai.component.AIChatComponent
 import com.shifenmiao.ai.component.LocalAiMarkdownSelectionItems
 import com.shifenmiao.ai.component.AgentToolCallUIState
@@ -85,7 +85,7 @@ import com.shifenmiao.common.components.text.defaultTextSelectionMenuItems
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.ai.AIModelsPickerBottomSheet
-import com.shifenmiao.common.ui.rememberCodeBlockClickListener
+import com.shifenmiao.common.ui.rememberMarkdownCodeActions
 import com.shifenmiao.core.R
 import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.ai.Conversation
@@ -96,7 +96,6 @@ import com.shifenmiao.model.state.ChatUIState
 import com.shifenmiao.model.state.LocalChatUIState
 import com.shifenmiao.model.state.PageState
 import com.shifenmiao.theme.AppTheme
-import com.shifenmiao.webview.mermaid.ProvideMermaidRenderer
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAddAiChat
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
@@ -455,134 +454,129 @@ fun ChatMessagesList(
     LaunchedEffect(chatUIState.chatActive) {
         if (chatUIState.chatActive) selectionState.clear()
     }
-    val codeBlockClickListener = rememberCodeBlockClickListener(
-        appComponent = appComponent,
-        onA2uiSubmit = { formData ->
-            selectionState.clear()
-            aiChatComponent.startChatWithStreaming(formData)
-        }
-    )
+    val codeActions = rememberMarkdownCodeActions(appComponent = appComponent)
     val agentToolCallStatus by aiChatComponent.agentToolCallStatus.collectAsState()
     val displayMessageUiModels = remember(messageUiModels, agentToolCallStatus) {
         messageUiModels.withLiveToolCallHistory(agentToolCallStatus)
     }
     val messageLazyKeys = rememberUniqueMessageLazyKeys(displayMessageUiModels)
-    val a2uiRenderer = remember { A2uiRendererImpl(aiChatComponent.a2uiRenderProvider) }
     val selectionItems = defaultTextSelectionMenuItems(
         appComponent = appComponent,
         onNavigate = onNavigate,
     )
 
     CompositionLocalProvider(
-        LocalA2uiRenderer provides a2uiRenderer,
+        LocalA2uiRenderProvider provides aiChatComponent.a2uiRenderProvider,
+        LocalA2uiSubmitHandler provides { formData ->
+            selectionState.clear()
+            aiChatComponent.startChatWithStreaming(formData)
+        },
         LocalAiMarkdownSelectionItems provides selectionItems,
     ) {
-        ProvideMermaidRenderer {
-            TextSelectionMenuContainer(
-                items = selectionItems,
-                selectionState = selectionState,
-                modifier = modifier,
+        TextSelectionMenuContainer(
+            items = selectionItems,
+            selectionState = selectionState,
+            modifier = modifier,
+        ) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                state = lazyListState,
+                reverseLayout = true,
+                contentPadding = PaddingValues(
+                    horizontal = AppTheme.dimens.paddingNormal,
+                    vertical = AppTheme.dimens.paddingSmall
+                ),
+                verticalArrangement = Arrangement.spacedBy(0.dp)
             ) {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    state = lazyListState,
-                    reverseLayout = true,
-                    contentPadding = PaddingValues(
-                        horizontal = AppTheme.dimens.paddingNormal,
-                        vertical = AppTheme.dimens.paddingSmall
-                    ),
-                    verticalArrangement = Arrangement.spacedBy(0.dp)
-                ) {
-                    val fixedKeyPrefix = "fixed_${conversation.id}_"
-                    if (displayMessageUiModels.isNotEmpty() && chatUIState.pageState != PageState.INITIALIZING) {
-                        item(key = "${fixedKeyPrefix}ai_content_notice") {
-                            AIContentNotice(
-                                true,
-                            )
-                        }
-                    }
-                    itemsIndexed(
-                        items = displayMessageUiModels,
-                        key = { index, _ -> messageLazyKeys[index] },
-                        contentType = { _, item -> item::class }
-                    ) { index, item ->
-                        RenderChatMessageItem(
-                            item = item,
-                            index = index,
-                            codeBlockClickListener = codeBlockClickListener,
-                            // 等待气泡内附一行轻量引导，点击进「服务与模型」列表
-                            // (先看清已有引擎再决定要不要新增，不直接跳到新增表单)；
-                            // 回答返回后 Loading item 被替换，引导随之消失，不打断等待
-                            onRobotLoading = {
-                                ChatLoadingIndicator(
-                                    hint = {
-                                        GoogleByokLoadingHint(
-                                            onClick = { onNavigate(Screen.AISettings()) }
-                                        )
-                                    }
-                                )
-                            },
-                            onRobotToolCallHistory = { historyItem ->
-                                if (historyItem.isLive && agentToolCallStatus !is AgentToolCallUIState.Idle) {
-                                    ToolCallHistoryCard(
-                                        agentToolCallStatus = agentToolCallStatus,
-                                        onCancelTool = aiChatComponent::cancelCurrentTool,
-                                        onContinueIteration = aiChatComponent::continueAgentLoop
-                                    )
-                                } else {
-                                    ToolCallHistoryCard(toolCallsJson = historyItem.toolCallsJson)
-                                }
-                            },
-                            onRobotContainerFooter = { footerItem, itemIndex ->
-                                RobotMessageFooter(
-                                    robotContainerFooter = footerItem,
-                                    index = itemIndex,
-                                    aiChatComponent = aiChatComponent,
-                                    appComponent = appComponent
-                                )
-                            },
-                            onRobotError = { errorItem ->
-                                ChatErrorMessage(
-                                    appComponent = appComponent,
-                                    aiChatComponent = aiChatComponent,
-                                    error = errorItem.error,
-                                )
-                            }
+                val fixedKeyPrefix = "fixed_${conversation.id}_"
+                if (displayMessageUiModels.isNotEmpty() && chatUIState.pageState != PageState.INITIALIZING) {
+                    item(key = "${fixedKeyPrefix}ai_content_notice") {
+                        AIContentNotice(
+                            true,
                         )
                     }
-                    if (displayMessageUiModels.isNotEmpty() && chatUIState.showMessageLimitNotice) {
-                        item(key = "${fixedKeyPrefix}message_limit_notice") {
-                            MessageLimitNoticeCard()
-                        }
-                    }
-                    if (displayMessageUiModels.isEmpty()) {
-                        item(key = "${fixedKeyPrefix}placeholder_message") {
-                            val placeholderScope = rememberCoroutineScope()
-                            PlaceHolderMessageCard(
-                                conversation = conversation,
-                                onSuggestionClick = onSuggestionClick,
-                                onContentHeightDelta = { delta ->
-                                    placeholderScope.launch {
-                                        lazyListState.scrollBy(delta.toFloat())
-                                    }
-                                },
-                                onPushToRemote = {
-                                    aiChatComponent.pushPromptToRemote(
-                                        onSuccess = {
-                                            AppToastHost.showToast(
-                                                getString(R.string.prompt_push_success)
-                                            )
-                                        },
-                                        onFailure = { message ->
-                                            AppToastHost.showToast(message)
-                                        }
+                }
+                itemsIndexed(
+                    items = displayMessageUiModels,
+                    key = { index, _ -> messageLazyKeys[index] },
+                    contentType = { _, item -> item::class }
+                ) { index, item ->
+                    RenderChatMessageItem(
+                        item = item,
+                        index = index,
+                        codeActions = codeActions,
+                        // 等待气泡内附一行轻量引导，点击进「服务与模型」列表
+                        // (先看清已有引擎再决定要不要新增，不直接跳到新增表单)；
+                        // 回答返回后 Loading item 被替换，引导随之消失，不打断等待
+                        onRobotLoading = {
+                            ChatLoadingIndicator(
+                                hint = {
+                                    GoogleByokLoadingHint(
+                                        onClick = { onNavigate(Screen.AISettings()) }
                                     )
-                                },
+                                }
+                            )
+                        },
+                        onRobotToolCallHistory = { historyItem ->
+                            if (historyItem.isLive && agentToolCallStatus !is AgentToolCallUIState.Idle) {
+                                ToolCallHistoryCard(
+                                    agentToolCallStatus = agentToolCallStatus,
+                                    onCancelTool = aiChatComponent::cancelCurrentTool,
+                                    onContinueIteration = aiChatComponent::continueAgentLoop
+                                )
+                            } else {
+                                ToolCallHistoryCard(toolCallsJson = historyItem.toolCallsJson)
+                            }
+                        },
+                        onRobotContainerFooter = { footerItem, itemIndex ->
+                            RobotMessageFooter(
+                                robotContainerFooter = footerItem,
+                                index = itemIndex,
+                                aiChatComponent = aiChatComponent,
+                                appComponent = appComponent
+                            )
+                        },
+                        onRobotError = { errorItem ->
+                            ChatErrorMessage(
                                 appComponent = appComponent,
                                 aiChatComponent = aiChatComponent,
-                                chatInputComponent = chatInputComponent
+                                error = errorItem.error,
                             )
                         }
+                    )
+                }
+                if (displayMessageUiModels.isNotEmpty() && chatUIState.showMessageLimitNotice) {
+                    item(key = "${fixedKeyPrefix}message_limit_notice") {
+                        MessageLimitNoticeCard()
+                    }
+                }
+                if (displayMessageUiModels.isEmpty()) {
+                    item(key = "${fixedKeyPrefix}placeholder_message") {
+                        val placeholderScope = rememberCoroutineScope()
+                        PlaceHolderMessageCard(
+                            conversation = conversation,
+                            onSuggestionClick = onSuggestionClick,
+                            onContentHeightDelta = { delta ->
+                                placeholderScope.launch {
+                                    lazyListState.scrollBy(delta.toFloat())
+                                }
+                            },
+                            onPushToRemote = {
+                                aiChatComponent.pushPromptToRemote(
+                                    onSuccess = {
+                                        AppToastHost.showToast(
+                                            getString(R.string.prompt_push_success)
+                                        )
+                                    },
+                                    onFailure = { message ->
+                                        AppToastHost.showToast(message)
+                                    }
+                                )
+                            },
+                            appComponent = appComponent,
+                            aiChatComponent = aiChatComponent,
+                            chatInputComponent = chatInputComponent
+                        )
                     }
                 }
             }

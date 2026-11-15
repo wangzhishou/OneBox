@@ -44,7 +44,6 @@ dependencies {
     implementation(projects.feature.marquee)
     implementation(projects.feature.online)
     implementation(projects.feature.webview)
-    implementation(projects.libs.richtext)
     implementation(projects.feature.login)
     implementation(projects.feature.profile)
     implementation(projects.feature.aiImage)

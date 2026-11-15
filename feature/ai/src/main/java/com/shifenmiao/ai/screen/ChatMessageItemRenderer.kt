@@ -1,22 +1,3 @@
-/*
- * OneBox is a free AI agent and toolbox for Android
- * Copyright (c) 2026 zhishouwang(网址兽)
- *
- * Origin: OneBox original work, not derived from ImageToolbox
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * You should have received a copy of the Apache License
- * along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
- */
-
 package com.shifenmiao.ai.screen
 
 import androidx.compose.foundation.layout.Spacer
@@ -28,8 +9,6 @@ import androidx.compose.ui.Modifier
 import com.shifenmiao.ai.component.ChatLoadingIndicator
 import com.shifenmiao.ai.component.RobotMessageContent
 import com.shifenmiao.ai.component.RobotMessageHeader
-import com.shifenmiao.ai.component.RobotMessageMarkdownBlock
-import com.shifenmiao.ai.component.RobotReasoningBlock
 import com.shifenmiao.ai.component.RobotReasoningContent
 import com.shifenmiao.ai.component.RobotReasoningHeader
 import com.shifenmiao.ai.component.RobotSearchResultsBlock
@@ -39,252 +18,98 @@ import com.shifenmiao.ai.component.UserMessageBlock
 import com.shifenmiao.ai.component.UserMessageContent
 import com.shifenmiao.ai.component.UserMessageFooter
 import com.shifenmiao.ai.component.UserMessageHeader
-import com.shifenmiao.ai.component.UserMessageMarkdownBlock
 import com.shifenmiao.ai.component.UserMessageTextContent
 import com.shifenmiao.ai.model.MessageUiModel
 import com.wanbaohe.core.ui.widget.glass.GlassCardSegment
 import com.wanbaohe.core.ui.widget.glass.flatGlassCardSegment
-import io.noties.markwon.plugins.codeblock.CodeBlockClickListener
+import com.wanbaohe.markdown.OneBoxMarkdownCodeActions
 
-/**
- * 扁平消息 item 的统一渲染入口。
- *
- * 普通消息由 KMP 管理文档内部布局，专属块继续使用现有 block 级 LazyColumn；
- * 屏幕层只保留统一分发，不重复实现各消息的渲染逻辑。
- */
 @Composable
 internal fun RenderChatMessageItem(
     item: MessageUiModel,
     index: Int,
-    codeBlockClickListener: CodeBlockClickListener,
-    // Header / footer 继续保留插槽，屏幕层只覆盖风格差异，不改扁平 item 结构。
+    codeActions: OneBoxMarkdownCodeActions,
     onUserContainerHeader: @Composable (MessageUiModel.UserContainerHeader) -> Unit = { UserMessageHeader(it) },
     onUserContainerFooter: @Composable (MessageUiModel.UserContainerFooter) -> Unit = { UserMessageFooter(it) },
     onUserVerticalSpace: @Composable (MessageUiModel.UserVerticalSpace) -> Unit = {
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(it.height)
-        )
+        Spacer(modifier = Modifier.fillMaxWidth().height(it.height))
     },
     onUserLoading: @Composable () -> Unit = { ChatLoadingIndicator() },
-    onUserReasoningContent: @Composable (MessageUiModel.UserReasoningContent, CodeBlockClickListener) -> Unit = { reasoningContent, listener ->
+    onUserReasoningContent: @Composable (MessageUiModel.UserReasoningContent, OneBoxMarkdownCodeActions) -> Unit = { content, actions ->
         RobotReasoningContent(
-            reasoningContent = reasoningContent.toRobotReasoningContent(),
-            codeBlockClickListener = listener,
+            reasoningContent = content.toRobotReasoningContent(),
+            codeActions = actions,
         )
     },
     onUserReasoningHeader: @Composable (MessageUiModel.UserReasoningHeader) -> Unit = {
         RobotReasoningHeader(reasoningHeader = it.toRobotReasoningHeader())
     },
-    onUserReasoningBlock: @Composable (MessageUiModel.UserReasoningBlock, CodeBlockClickListener) -> Unit = { reasoningBlock, listener ->
-        UserMessageMarkdownBlock(
-            userMarkdownBlock = reasoningBlock.toUserMarkdownBlock(),
-            codeBlockClickListener = listener
-        )
-    },
     onRobotContainerHeader: @Composable (MessageUiModel.RobotContainerHeader) -> Unit = { RobotMessageHeader(it) },
     onRobotToolCallHistory: @Composable (MessageUiModel.RobotToolCallHistory) -> Unit = {
         ToolCallHistoryCard(toolCallsJson = it.toolCallsJson)
     },
-    // 机器人正文 footer 与 reasoning footer 不是一回事：正文 footer 仍独立成 item，
-    // reasoning 多 block 的收口由最后一个 reasoning block 自己负责，避免多出无意义 Lazy item。
     onRobotContainerFooter: @Composable (MessageUiModel.RobotContainerFooter, Int) -> Unit,
     onRobotLoading: @Composable () -> Unit = { ChatLoadingIndicator() },
     onRobotError: @Composable (MessageUiModel.RobotError) -> Unit,
 ) {
     when (item) {
-        is MessageUiModel.UserAttachments -> {
-            UserAttachmentsBlock(userAttachments = item)
-        }
-
-        is MessageUiModel.UserBlock -> {
-            UserMessageBlock(userBlock = item)
-        }
-
-        is MessageUiModel.UserContainerHeader -> {
-            onUserContainerHeader(item)
-        }
-
-        is MessageUiModel.UserContainerFooter -> {
-            onUserContainerFooter(item)
-        }
-
-        is MessageUiModel.UserContent -> {
-            codeBlockClickListener.isHighlighted = item.isHighlighted
-            UserMessageContent(
-                userContent = item,
-                codeBlockClickListener = codeBlockClickListener
-            )
-        }
-
-        is MessageUiModel.UserTextContent -> {
-            UserMessageTextContent(userTextContent = item)
-        }
-
-        is MessageUiModel.UserMarkdownBlock -> {
-            codeBlockClickListener.isHighlighted = item.isHighlighted
-            UserMessageMarkdownBlock(
-                userMarkdownBlock = item,
-                codeBlockClickListener = codeBlockClickListener
-            )
-        }
-
-        is MessageUiModel.UserVerticalSpace -> {
-            onUserVerticalSpace(item)
-        }
-
-        is MessageUiModel.UserLoading -> {
-            onUserLoading()
-        }
-
-        is MessageUiModel.UserError -> {
-            UserMessageTextContent(userTextContent = item.toUserTextContent())
-        }
-
-        is MessageUiModel.UserSearchResults -> {
-            RobotSearchResultsBlock(searchResults = item.toRobotSearchResults())
-        }
-
-        is MessageUiModel.UserReasoningContent -> {
-            codeBlockClickListener.isHighlighted = item.isHighlighted
-            onUserReasoningContent(item, codeBlockClickListener)
-        }
-
-        is MessageUiModel.UserReasoningHeader -> {
-            onUserReasoningHeader(item)
-        }
-
-        is MessageUiModel.UserReasoningBlock -> {
-            codeBlockClickListener.isHighlighted = item.isHighlighted
-            onUserReasoningBlock(item, codeBlockClickListener)
-        }
-
-        is MessageUiModel.RobotContainerHeader -> {
-            onRobotContainerHeader(item)
-        }
-
-        is MessageUiModel.RobotSearchResults -> {
-            RobotSearchResultsBlock(searchResults = item)
-        }
-
-        is MessageUiModel.RobotToolCallHistory -> {
-            onRobotToolCallHistory(item)
-        }
-
-        is MessageUiModel.RobotContent -> {
-            codeBlockClickListener.isHighlighted = item.isHighlighted
-            RobotMessageContent(
-                robotContent = item,
-                codeBlockClickListener = codeBlockClickListener
-            )
-        }
-
-        is MessageUiModel.MarkdownBlock -> {
-            codeBlockClickListener.isHighlighted = item.isHighlighted
-            RobotMessageMarkdownBlock(
-                markdownBlock = item,
-                codeBlockClickListener = codeBlockClickListener
-            )
-        }
-
-        is MessageUiModel.RobotVerticalSpace -> {
-            DefaultRobotVerticalSpace(item)
-        }
-
-        is MessageUiModel.RobotReasoningContent -> {
-            codeBlockClickListener.isHighlighted = item.isHighlighted
-            RobotReasoningContent(
-                reasoningContent = item,
-                codeBlockClickListener = codeBlockClickListener
-            )
-        }
-
-        is MessageUiModel.RobotReasoningHeader -> {
-            RobotReasoningHeader(reasoningHeader = item)
-        }
-
-        is MessageUiModel.RobotReasoningBlock -> {
-            codeBlockClickListener.isHighlighted = item.isHighlighted
-            RobotReasoningBlock(
-                reasoningBlock = item,
-                codeBlockClickListener = codeBlockClickListener
-            )
-        }
-
-        is MessageUiModel.RobotContainerFooter -> {
-            onRobotContainerFooter(item, index)
-        }
-
-        is MessageUiModel.RobotLoading -> {
-            onRobotLoading()
-        }
-
-        is MessageUiModel.RobotError -> {
-            onRobotError(item)
-        }
+        is MessageUiModel.UserAttachments -> UserAttachmentsBlock(userAttachments = item)
+        is MessageUiModel.UserBlock -> UserMessageBlock(userBlock = item)
+        is MessageUiModel.UserContainerHeader -> onUserContainerHeader(item)
+        is MessageUiModel.UserContainerFooter -> onUserContainerFooter(item)
+        is MessageUiModel.UserContent -> UserMessageContent(userContent = item, codeActions = codeActions)
+        is MessageUiModel.UserTextContent -> UserMessageTextContent(userTextContent = item)
+        is MessageUiModel.UserVerticalSpace -> onUserVerticalSpace(item)
+        is MessageUiModel.UserLoading -> onUserLoading()
+        is MessageUiModel.UserError -> UserMessageTextContent(userTextContent = item.toUserTextContent())
+        is MessageUiModel.UserSearchResults -> RobotSearchResultsBlock(searchResults = item.toRobotSearchResults())
+        is MessageUiModel.UserReasoningContent -> onUserReasoningContent(item, codeActions)
+        is MessageUiModel.UserReasoningHeader -> onUserReasoningHeader(item)
+        is MessageUiModel.RobotContainerHeader -> onRobotContainerHeader(item)
+        is MessageUiModel.RobotSearchResults -> RobotSearchResultsBlock(searchResults = item)
+        is MessageUiModel.RobotToolCallHistory -> onRobotToolCallHistory(item)
+        is MessageUiModel.RobotContent -> RobotMessageContent(robotContent = item, codeActions = codeActions)
+        is MessageUiModel.RobotVerticalSpace -> DefaultRobotVerticalSpace(item)
+        is MessageUiModel.RobotReasoningContent -> RobotReasoningContent(
+            reasoningContent = item,
+            codeActions = codeActions,
+        )
+        is MessageUiModel.RobotReasoningHeader -> RobotReasoningHeader(reasoningHeader = item)
+        is MessageUiModel.RobotContainerFooter -> onRobotContainerFooter(item, index)
+        is MessageUiModel.RobotLoading -> onRobotLoading()
+        is MessageUiModel.RobotError -> onRobotError(item)
     }
 }
 
-private fun MessageUiModel.UserError.toUserTextContent(): MessageUiModel.UserTextContent {
-    return MessageUiModel.UserTextContent(
-        id = id,
-        text = errorMessage,
-        isHighlighted = false,
-        isFirst = true,
-        isLast = true
-    )
-}
+private fun MessageUiModel.UserError.toUserTextContent() = MessageUiModel.UserTextContent(
+    id = id,
+    text = errorMessage,
+    isHighlighted = false,
+    isFirst = true,
+    isLast = true,
+)
 
-private fun MessageUiModel.UserSearchResults.toRobotSearchResults(): MessageUiModel.RobotSearchResults {
-    return MessageUiModel.RobotSearchResults(
-        id = id,
-        searchResult = searchResult,
-        isExpanded = isExpanded
-    )
-}
+private fun MessageUiModel.UserSearchResults.toRobotSearchResults() = MessageUiModel.RobotSearchResults(
+    id = id,
+    searchResult = searchResult,
+    isExpanded = isExpanded,
+)
 
-internal fun MessageUiModel.UserReasoningContent.toRobotReasoningContent(): MessageUiModel.RobotReasoningContent {
-    return MessageUiModel.RobotReasoningContent(
+internal fun MessageUiModel.UserReasoningContent.toRobotReasoningContent() =
+    MessageUiModel.RobotReasoningContent(
         id = id,
         reasoningSource = source,
-        reasoningAstNode = node,
-        isHighlighted = isHighlighted,
-        isStreaming = false
+        isStreaming = false,
+        showCollapseFooter = showCollapseFooter,
     )
-}
 
-internal fun MessageUiModel.UserReasoningHeader.toRobotReasoningHeader(): MessageUiModel.RobotReasoningHeader {
-    return MessageUiModel.RobotReasoningHeader(
+internal fun MessageUiModel.UserReasoningHeader.toRobotReasoningHeader() =
+    MessageUiModel.RobotReasoningHeader(
         id = id,
         time = time,
         preview = preview,
         isStreaming = isStreaming,
     )
-}
-
-internal fun MessageUiModel.UserReasoningBlock.toRobotReasoningBlock(): MessageUiModel.RobotReasoningBlock {
-    return MessageUiModel.RobotReasoningBlock(
-        id = id,
-        node = node,
-        isHighlighted = isHighlighted,
-        isStreaming = false,
-        blockType = blockType,
-        isFirst = isFirst,
-        isLast = isLast
-    )
-}
-
-internal fun MessageUiModel.UserReasoningBlock.toUserMarkdownBlock(): MessageUiModel.UserMarkdownBlock {
-    return MessageUiModel.UserMarkdownBlock(
-        id = id,
-        isHighlighted = isHighlighted,
-        node = node,
-        blockType = blockType,
-        isFirst = isFirst,
-        isLast = isLast
-    )
-}
 
 @Composable
 private fun DefaultRobotVerticalSpace(item: MessageUiModel.RobotVerticalSpace) {
@@ -295,6 +120,6 @@ private fun DefaultRobotVerticalSpace(item: MessageUiModel.RobotVerticalSpace) {
             .flatGlassCardSegment(
                 segment = GlassCardSegment.Middle,
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
-            )
+            ),
     )
 }

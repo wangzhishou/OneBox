@@ -22,7 +22,6 @@ package com.shifenmiao.ai.component
 import android.content.Context
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnDestroy
-import com.halilibo.richtext.markwon.MarkdownAstNodeParser
 import com.shifenmiao.ai.BuildConfig
 import com.shifenmiao.ai.agent.AgentLoopExecutor
 import com.shifenmiao.ai.agent.callback.NavigationRequest
@@ -146,7 +145,6 @@ open class AIChatComponent @AssistedInject internal constructor(
     @ApplicationContext private val appContext: Context,
     messageListUseCase: MessageListUseCase,
     a2uiRenderProvider: A2uiRenderProvider,
-    markdownAstNodeParserFactory: MarkdownAstNodeParser.Factory,
     chatInputComponentFactory: ChatInputComponent.Factory,
     private val imageDao: ImageDao
 ) : AIChatBaseComponent(
@@ -179,7 +177,6 @@ open class AIChatComponent @AssistedInject internal constructor(
     )
 
     private val streamContentProcessor = StreamContentProcessor(
-        parser = markdownAstNodeParserFactory.create(),
         sharedState = sharedState,
         aiEngineCatalogManager = aiEngineCatalogManager,
         onStreamIdleTimeout = { onStreamIdleTimeout() }

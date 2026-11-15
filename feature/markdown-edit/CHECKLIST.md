@@ -14,7 +14,7 @@
 - [x] 添加 `core.ui` 依赖
 - [x] 添加 `core.resources` 依赖
 - [x] 添加 `core.model` 依赖
-- [x] 添加 `libs.richtext` 依赖
+- [x] 渲染已迁移至 `libs.markdown`，原 `libs.richtext` 依赖已删除
 - [x] 添加 `libs.composeRichEditor` 依赖
 - [x] 添加 `libs.twain` 依赖
 
@@ -73,10 +73,10 @@
 
 ### MarkdownPreview.kt
 - [x] 创建 `MarkdownPreview` 组件
-- [x] 集成 `MarkdownAstNodeParser`
-- [x] 使用 `produceState` 异步解析
-- [x] 集成 `BasicMarkdown` 渲染器
-- [x] 使用 `RichText` 容器
+- [x] 集成 `OneBoxMarkdown` KMP 渲染器
+- [x] 使用引擎内置增量解析
+- [x] 支持 LaTeX 与 Diagram 原生渲染
+- [x] 使用统一的选区与插件契约
 - [x] 支持垂直滚动
 - [x] 添加适当的 padding
 

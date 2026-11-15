@@ -36,7 +36,6 @@ dependencies {
     api(projects.core.storage)
     api(projects.core.database)
     api(projects.feature.common)
-    implementation(projects.libs.richtext)
     implementation(libs.kotlinx.serialization.json)
 
     "arm64Api"(libs.com.tencent.mmkv)
