@@ -174,7 +174,7 @@
     <string name="backup_center_delete_confirm_title">Delete this backup?</string>
     <string name="backup_center_delete_confirm_message">The copy on this device is removed. Copies saved to your drive are not affected.</string>
     <string name="backup_center_delete_action">Delete</string>
-    <string name="markdown_create_widget">Create widget</string>
-    <string name="markdown_run_code">Run code</string>
-    <string name="markdown_save_code">Save code</string>
+    <string name="markdown_create_widget">Widget</string>
+    <string name="markdown_run_code">Run</string>
+    <string name="markdown_save_code">Save</string>
 </resources>

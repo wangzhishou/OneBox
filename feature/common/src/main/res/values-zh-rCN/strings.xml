@@ -174,8 +174,8 @@
     <string name="backup_center_delete_confirm_title">删除这个备份?</string>
     <string name="backup_center_delete_confirm_message">会删掉本机这一份；已存到你网盘的副本不受影响。</string>
     <string name="backup_center_delete_action">删除</string>
-    <string name="markdown_create_widget">创建组件</string>
-    <string name="markdown_run_code">运行代码</string>
-    <string name="markdown_save_code">保存代码</string>
+    <string name="markdown_create_widget">小工具</string>
+    <string name="markdown_run_code">运行</string>
+    <string name="markdown_save_code">保存</string>
 </resources>
 

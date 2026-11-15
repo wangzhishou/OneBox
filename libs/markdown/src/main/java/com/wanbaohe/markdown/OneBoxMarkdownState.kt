@@ -10,6 +10,9 @@ import com.hrm.markdown.renderer.rememberMarkdownState
 class OneBoxMarkdownState internal constructor(
     internal val engineState: MarkdownState,
 ) {
+    val contentBlockCount: Int get() = engineState.blockCount
+    val isAtContentEnd: Boolean get() = !engineState.canScrollForward
+
     suspend fun scrollToContentStart(): Boolean = engineState.scrollToBlock(0)
     suspend fun scrollToEnd(): Boolean = engineState.scrollToEnd()
     fun clearSelection() = engineState.clearSelection()

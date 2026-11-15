@@ -13,9 +13,7 @@ fun oneBoxMarkdownComponents(
 ): OneBoxMarkdownComponents = OneBoxMarkdownComponents(
     header = header,
     footer = footer,
-    codeBlockHeader = codeActions?.let { actions ->
-        { info -> OneBoxMarkdownCodeBlockHeader(info, actions) }
-    },
+    codeBlockHeader = { info -> OneBoxMarkdownCodeBlockHeader(info, codeActions) },
     selectionToolbar = if (selectionItems.isEmpty()) {
         null
     } else {

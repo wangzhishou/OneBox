@@ -71,8 +71,9 @@ import com.shifenmiao.demo.R
  *
  * Markdown text remains the sole persisted representation. Formatting commands edit Markdown
  * delimiters, while [markdownOutputTransformation] adds display-only syntax highlighting without
- * modifying the buffer or selection offsets. This keeps the experiment suitable for evaluating
- * Compose input performance before replacing the production WebView editor.
+ * modifying the buffer or selection offsets. Large documents keep their raw delimiters instead of
+ * repeatedly rewriting the full source on the main thread. This keeps the experiment suitable for
+ * evaluating Compose input performance before replacing the production WebView editor.
  */
 @Composable
 fun NativeMarkdownEditorDemoScreen(
@@ -233,6 +234,7 @@ private fun markdownOutputTransformation(): OutputTransformation {
     return remember(colors) {
         OutputTransformation {
             val source = toString()
+            if (source.length > MAX_HIGHLIGHTED_SOURCE_LENGTH) return@OutputTransformation
             val activeRange = selection
             markdownPresentationRanges(source, activeRange, colors).forEach { (style, range) ->
                 addStyle(style, range.start, range.end)
@@ -528,6 +530,8 @@ def greet(name):
 
 [项目主页](https://github.com/)
 """
+
+private const val MAX_HIGHLIGHTED_SOURCE_LENGTH = 12_000
 
 private fun largeMarkdownDocument(): String = buildString {
     append("# 原生 Markdown 编辑性能压力文档\n\n")

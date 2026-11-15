@@ -39,7 +39,7 @@ internal fun OneBoxMarkdownCodeStyle.toEngineColors(): CodeColors {
         CodeDefaults.githubLightColors()
     }
     return preset.copy(
-        background = surface,
+        background = Color.Transparent,
         text = content,
         title = content,
         language = content,
@@ -47,5 +47,8 @@ internal fun OneBoxMarkdownCodeStyle.toEngineColors(): CodeColors {
         lineNumber = secondaryContent,
         lineNumberDivider = secondaryContent,
         comment = secondaryContent,
+        inlineText = content,
+        inlineBackground = Color.Transparent,
+        inlineBorder = Color.Transparent,
     )
 }

@@ -66,8 +66,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.ai.component.AIStreamAnswerComponent
 import com.shifenmiao.ai.component.AIStreamAnswerStatus
+import com.shifenmiao.ai.component.EmbeddedMarkdownMessage
+import com.shifenmiao.common.markdown.oneBoxMarkdownComponents
 import com.wanbaohe.base.ui.AILoadingRow
-import com.wanbaohe.markdown.OneBoxMarkdown
 import com.wanbaohe.base.ui.ExpandableMarkdownContent
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
@@ -280,10 +281,10 @@ private fun MarkdownBlocksContent(
     text: String,
     isStreaming: Boolean,
 ) {
-    OneBoxMarkdown(
-        markdown = text,
+    EmbeddedMarkdownMessage(
+        source = text,
         isStreaming = isStreaming,
-        enableScroll = false,
+        components = oneBoxMarkdownComponents(),
         textStyle = MaterialTheme.typography.bodyLarge,
         contentColor = MaterialTheme.colorScheme.onSurface,
     )

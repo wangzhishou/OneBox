@@ -82,6 +82,8 @@ internal fun KmpMarkdownRenderer(
                     )
                 }
             },
+            blockSurface = { _, content -> OneBoxMarkdownBlockSurface(content) },
+            inlineCode = { info -> OneBoxMarkdownInlineCode(info) },
             selectionToolbar = components.selectionToolbar?.let { toolbar ->
                 { info, actions ->
                     toolbar(
@@ -114,29 +116,58 @@ internal fun KmpMarkdownRenderer(
         )
     }
     val colorScheme = MaterialTheme.colorScheme
+    val markdownColors = remember(defaultColors, contentColor, colorScheme) {
+        defaultColors.copy(
+            text = contentColor ?: defaultColors.text,
+            heading = contentColor ?: defaultColors.heading,
+            blockQuoteText = contentColor ?: defaultColors.blockQuoteText,
+            listBullet = contentColor ?: defaultColors.listBullet,
+            tableHeaderBackground = Color.Transparent,
+            containerBackground = Color.Transparent,
+            containerHeaderBackground = Color.Transparent,
+            admonitions = defaultColors.admonitions.mapValues { (_, colors) ->
+                colors.copy(backgroundColor = Color.Transparent)
+            },
+        )
+    }
+    val markdownLayout = remember(defaultLayout, blockSpacing) {
+        defaultLayout.copy(
+            blockSpacing = blockSpacing ?: defaultLayout.blockSpacing,
+            blockCornerRadius = 12.dp,
+        )
+    }
     val diagramTheme = remember(colorScheme) { oneBoxDiagramTheme(colorScheme) }
     val codeStyle = remember(colorScheme) {
         oneBoxMarkdownCodeStyle(isDark = colorScheme.surfaceContainer.luminance() < 0.5f)
+            .copy(surface = colorScheme.surfaceContainer)
     }
     val codeColors = remember(codeStyle) { codeStyle.toEngineColors() }
     val codeShape = MaterialTheme.shapes.medium
-    val codeLayout = remember(codeShape) { CodeLayout(shape = codeShape) }
+    val inlineCodeShape = MaterialTheme.shapes.small
+    val codeLayout = remember(codeShape, inlineCodeShape) {
+        CodeLayout(shape = codeShape, inlineShape = inlineCodeShape)
+    }
+    val defaultCodeTypography = MarkdownDefaults.codeTypography()
+    val bodyTextStyle = textStyle ?: MaterialTheme.typography.bodyLarge
+    val codeLineHeight = bodyTextStyle.lineHeight.takeIf { it.isSpecified } ?: defaultCodeTypography.text.lineHeight
+    val codeTypography = remember(defaultCodeTypography, codeLineHeight) {
+        defaultCodeTypography.copy(
+            text = defaultCodeTypography.text.copy(lineHeight = codeLineHeight),
+            inlineCode = defaultCodeTypography.inlineCode.copy(lineHeight = codeLineHeight),
+        )
+    }
 
     CompositionLocalProvider(LocalOneBoxMarkdownCodeStyle provides codeStyle) {
         Markdown(
             markdown = markdown,
             modifier = modifier,
-            colors = if (contentColor == null) defaultColors else defaultColors.copy(
-                text = contentColor,
-                heading = contentColor,
-                blockQuoteText = contentColor,
-                listBullet = contentColor,
-            ),
-            typography = if (textStyle == null) defaultTypography else defaultTypography.copy(text = textStyle),
-            layout = if (blockSpacing == null) defaultLayout else defaultLayout.copy(blockSpacing = blockSpacing),
+            colors = markdownColors,
+            typography = defaultTypography.copy(text = bodyTextStyle),
+            layout = markdownLayout,
             latexConfig = latexConfig,
             diagramTheme = diagramTheme,
             codeColors = codeColors,
+            codeTypography = codeTypography,
             codeLayout = codeLayout,
             state = state.engineState,
             isStreaming = isStreaming,

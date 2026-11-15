@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -21,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.ai.a2ui.rememberA2uiMarkdownPlugin
 import com.shifenmiao.common.components.text.TextSelectionMenuItem
 import com.shifenmiao.common.markdown.oneBoxMarkdownComponents
-import com.wanbaohe.markdown.OneBoxMarkdown
 import com.wanbaohe.markdown.OneBoxMarkdownCodeActions
 
 val LocalAiMarkdownSelectionItems = compositionLocalOf<List<TextSelectionMenuItem>> { emptyList() }
@@ -39,25 +39,29 @@ fun ModernMarkdownMessage(
 ) {
     val selectionItems = LocalAiMarkdownSelectionItems.current
     val a2uiPlugin = rememberA2uiMarkdownPlugin(isStreaming, codeActions)
-    val baseComponents = oneBoxMarkdownComponents(
-        selectionItems = selectionItems,
-        codeActions = codeActions,
-    )
-    val components = if (showCursor && isStreaming) {
-        baseComponents.copy(footer = { StreamingMarkdownCursor() })
-    } else {
-        baseComponents
+    val baseComponents = remember(selectionItems, codeActions) {
+        oneBoxMarkdownComponents(
+            selectionItems = selectionItems,
+            codeActions = codeActions,
+        )
     }
-    OneBoxMarkdown(
-        markdown = source,
+    val components = remember(baseComponents, showCursor, isStreaming) {
+        if (showCursor && isStreaming) {
+            baseComponents.copy(footer = { StreamingMarkdownCursor() })
+        } else {
+            baseComponents
+        }
+    }
+    val plugins = remember(a2uiPlugin) { listOf(a2uiPlugin) }
+    EmbeddedMarkdownMessage(
+        source = source,
         modifier = modifier,
         isStreaming = isStreaming,
-        enableScroll = false,
         textStyle = textStyle,
         contentColor = contentColor,
         blockSpacing = blockSpacing,
         components = components,
-        plugins = listOf(a2uiPlugin),
+        plugins = plugins,
     )
 }
 
