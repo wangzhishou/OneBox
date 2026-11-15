@@ -48,6 +48,12 @@ data class ResolvedWatermarkElement(
     val text: String? = null,
     val imageData: String? = null,
     val hasData: Boolean = true,
+    /**
+     * 值是否来自照片本身（EXIF 拍摄时间 / GPS / 海拔）。
+     * 动态内容在照片里没有对应信息、靠设备位置补出来时为 false，
+     * 属性面板据此继续保留「获取」卡片，让用户能看到已经取到的值。
+     */
+    val fromPhoto: Boolean = true,
 )
 
 /**

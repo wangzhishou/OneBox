@@ -10,12 +10,12 @@
 
 package com.shifenmiao.app.watermarking.presentation.panels
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.app.watermarking.domain.model.ResolvedWatermarkElement
 import com.shifenmiao.app.watermarking.domain.model.WatermarkContent
 import com.shifenmiao.app.watermarking.domain.model.WatermarkElement
 import com.t8rin.imagetoolbox.core.resources.R
@@ -23,6 +23,7 @@ import com.t8rin.imagetoolbox.core.resources.R
 @Composable
 fun PropertiesPanel(
     selectedElement: WatermarkElement?,
+    resolvedElement: ResolvedWatermarkElement?,
     needsDeviceLocation: Boolean,
     weatherAvailable: Boolean,
     isDynamicDataLoading: Boolean,
@@ -34,13 +35,17 @@ fun PropertiesPanel(
     onEndCompoundEdit: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(20.dp),
+    ) {
         when {
             selectedElement == null -> EmptySelectionHint(R.string.watermark_no_selection)
             selectedElement.transform.locked -> EmptySelectionHint(R.string.watermark_layer_locked)
             else -> {
                 ContentPanel(
                     selectedElement = selectedElement,
+                    resolvedElement = resolvedElement,
                     needsDeviceLocation = needsDeviceLocation,
                     weatherAvailable = weatherAvailable,
                     isDynamicDataLoading = isDynamicDataLoading,
@@ -48,7 +53,6 @@ fun PropertiesPanel(
                     onContentChange = onContentChange,
                     onRequestLocation = onRequestLocation,
                 )
-                Spacer(Modifier.height(16.dp))
                 StylePanel(
                     selectedElement = selectedElement,
                     onUpdateElement = onUpdateElement,

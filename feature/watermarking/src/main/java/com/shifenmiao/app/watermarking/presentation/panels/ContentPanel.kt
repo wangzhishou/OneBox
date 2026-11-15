@@ -10,38 +10,33 @@
 
 package com.shifenmiao.app.watermarking.presentation.panels
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.resources.R
+import com.shifenmiao.app.watermarking.domain.model.ResolvedWatermarkElement
 import com.shifenmiao.app.watermarking.domain.model.WatermarkContent
 import com.shifenmiao.app.watermarking.domain.model.WatermarkElement
 import com.shifenmiao.app.watermarking.domain.model.WatermarkValueSource
 import com.shifenmiao.app.watermarking.domain.model.kind
 import com.shifenmiao.app.watermarking.domain.model.sourceOrNull
+import com.shifenmiao.app.watermarking.presentation.components.DynamicDataCard
+import com.shifenmiao.app.watermarking.presentation.components.PropertySectionTitle
+import com.shifenmiao.app.watermarking.presentation.model.icon
 import com.shifenmiao.app.watermarking.presentation.model.title
-import com.wanbaohe.base.ui.button.ConfirmButton
+import com.t8rin.imagetoolbox.core.resources.R
 import com.wanbaohe.core.ui.widget.controls.selection.ImageSelector
-import com.wanbaohe.core.ui.widget.enhanced.EnhancedButtonGroup
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedChip
+import com.wanbaohe.core.ui.widget.glass.SingleChoiceGlassSegmentedButtonRow
 import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.core.ui.widget.modifier.flatGlassContainer
 import com.wanbaohe.core.ui.widget.preferences.PreferenceRowSwitch
@@ -50,6 +45,7 @@ import com.wanbaohe.core.ui.widget.text.RoundedTextField
 @Composable
 fun ContentPanel(
     selectedElement: WatermarkElement?,
+    resolvedElement: ResolvedWatermarkElement?,
     needsDeviceLocation: Boolean,
     weatherAvailable: Boolean,
     isDynamicDataLoading: Boolean,
@@ -67,13 +63,20 @@ fun ContentPanel(
         return
     }
     val content = selectedElement.content
-    Column(modifier = modifier) {
-        Text(
+    val resolvedValue = resolvedElement
+        ?.takeIf { it.hasData }
+        ?.text
+        ?.takeIf { it.isNotBlank() && it != "\u2014" }
+    val resolvedFromDevice = resolvedElement?.fromPhoto == false
+
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        PropertySectionTitle(
             text = content.kind.title(),
-            style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.onSurface,
+            icon = content.kind.icon(),
         )
-        Spacer(Modifier.height(8.dp))
         when (content) {
             is WatermarkContent.Text -> WatermarkTextField(content.text) {
                 onContentChange(content.copy(text = it), true)
@@ -91,56 +94,44 @@ fun ContentPanel(
                 onValueChange = { onContentChange(content.copy(imageData = it.toString()), false) },
                 modifier = Modifier.fillMaxWidth(),
             )
-            is WatermarkContent.Timestamp -> {
-                TimestampFormats(content.format) { format ->
-                    onContentChange(content.copy(format = format), false)
-                }
-                Spacer(Modifier.height(8.dp))
-                WatermarkTextField(
-                    value = content.format,
-                    labelRes = R.string.watermark_time_format,
-                ) { onContentChange(content.copy(format = it), true) }
-                PreferenceRowSwitch(
-                    title = stringResource(R.string.watermark_use_photo_time),
-                    checked = content.usePhotoTime,
-                    onClick = { onContentChange(content.copy(usePhotoTime = it), false) },
-                    drawContainer = false,
-                )
-            }
-            else -> DynamicContentControls(
+            is WatermarkContent.Timestamp -> TimestampContent(
                 content = content,
                 onContentChange = onContentChange,
             )
+            else -> DynamicContentControls(
+                content = content,
+                resolvedValue = resolvedValue,
+                resolvedFromDevice = resolvedFromDevice,
+                needsDeviceLocation = needsDeviceLocation,
+                weatherAvailable = weatherAvailable,
+                isDynamicDataLoading = isDynamicDataLoading,
+                locationLoadFailed = locationLoadFailed,
+                onContentChange = onContentChange,
+                onRequestLocation = onRequestLocation,
+            )
         }
-        val source = content.sourceOrNull()
-        if (source != null && source != WatermarkValueSource.MANUAL) {
-            if (source == WatermarkValueSource.DEVICE || needsDeviceLocation) {
-                Spacer(Modifier.height(8.dp))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    ConfirmButton(
-                        text = stringResource(R.string.watermark_use_current_location),
-                        enabled = !isDynamicDataLoading,
-                        onClick = onRequestLocation,
-                        modifier = Modifier.weight(1f),
-                    )
-                    if (isDynamicDataLoading) {
-                        CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                    }
-                }
-            }
-            val status = when {
-                locationLoadFailed && (source == WatermarkValueSource.DEVICE || needsDeviceLocation) ->
-                    R.string.watermark_location_failed
-                content is WatermarkContent.Weather && !weatherAvailable ->
-                    R.string.watermark_weather_unavailable
-                needsDeviceLocation && source == WatermarkValueSource.PHOTO ->
-                    R.string.watermark_missing_dynamic_data
-                source == WatermarkValueSource.DEVICE && needsDeviceLocation ->
-                    R.string.watermark_tap_for_location
-                else -> null
-            }
-            if (status != null) StatusText(status)
+    }
+}
+
+@Composable
+private fun TimestampContent(
+    content: WatermarkContent.Timestamp,
+    onContentChange: (WatermarkContent, Boolean) -> Unit,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        WatermarkTextField(
+            value = content.format,
+            labelRes = R.string.watermark_time_format,
+        ) { onContentChange(content.copy(format = it), true) }
+        TimestampFormats(content.format) { format ->
+            onContentChange(content.copy(format = format), false)
         }
+        PreferenceRowSwitch(
+            title = stringResource(R.string.watermark_use_photo_time),
+            checked = content.usePhotoTime,
+            onClick = { onContentChange(content.copy(usePhotoTime = it), false) },
+            drawContainer = false,
+        )
     }
 }
 
@@ -155,27 +146,21 @@ private fun TimestampFormats(
         stringResource(R.string.watermark_time_local),
         stringResource(R.string.watermark_time_clock),
     )
-    Row(
-        modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
+    FlowRow(
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         patterns.forEach { pattern ->
-            val chosen = pattern == selected
-            Text(
-                text = pattern,
-                style = MaterialTheme.typography.labelMedium,
-                color = if (chosen) {
-                    MaterialTheme.colorScheme.onPrimaryContainer
-                } else MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(50))
-                    .background(
-                        if (chosen) MaterialTheme.colorScheme.primaryContainer
-                        else MaterialTheme.colorScheme.surfaceContainer
-                    )
-                    .clickable { onSelect(pattern) }
-                    .padding(horizontal = 12.dp, vertical = 8.dp),
-            )
+            EnhancedChip(
+                selected = pattern == selected,
+                onClick = { onSelect(pattern) },
+                selectedColor = MaterialTheme.colorScheme.primaryContainer,
+                selectedContentColor = MaterialTheme.colorScheme.primary,
+                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+            ) {
+                Text(text = pattern)
+            }
         }
     }
 }
@@ -183,58 +168,45 @@ private fun TimestampFormats(
 @Composable
 private fun DynamicContentControls(
     content: WatermarkContent,
+    resolvedValue: String?,
+    resolvedFromDevice: Boolean,
+    needsDeviceLocation: Boolean,
+    weatherAvailable: Boolean,
+    isDynamicDataLoading: Boolean,
+    locationLoadFailed: Boolean,
     onContentChange: (WatermarkContent, Boolean) -> Unit,
+    onRequestLocation: () -> Unit,
 ) {
     val source = content.sourceOrNull() ?: return
     val sources = WatermarkValueSource.entries
-    EnhancedButtonGroup(
-        items = sources.map {
-            stringResource(
-                when (it) {
-                    WatermarkValueSource.PHOTO -> R.string.watermark_source_photo
-                    WatermarkValueSource.DEVICE -> R.string.watermark_source_device
-                    WatermarkValueSource.MANUAL -> R.string.watermark_source_manual
-                }
+
+    SingleChoiceGlassSegmentedButtonRow(
+        options = sources,
+        selectedOption = source,
+        onOptionSelected = { newSource ->
+            onContentChange(content.withSource(newSource), false)
+        },
+        modifier = Modifier.fillMaxWidth(),
+        label = { option ->
+            Text(
+                text = stringResource(option.labelRes()),
+                style = MaterialTheme.typography.labelLarge,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
         },
-        selectedIndex = sources.indexOf(source),
-        onIndexChange = { index ->
-            val newSource = sources[index]
-            onContentChange(
-                when (content) {
-                    is WatermarkContent.Altitude -> content.copy(source = newSource)
-                    is WatermarkContent.Weather -> content.copy(source = newSource)
-                    is WatermarkContent.Coordinates -> content.copy(source = newSource)
-                    else -> content
-                },
-                false,
-            )
-        },
-        inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainer,
     )
+
     if (source == WatermarkValueSource.MANUAL) {
-        Spacer(Modifier.height(8.dp))
         WatermarkTextField(
-            value = when (content) {
-                is WatermarkContent.Altitude -> content.manualValue
-                is WatermarkContent.Weather -> content.manualValue
-                is WatermarkContent.Coordinates -> content.manualValue
-                else -> ""
-            },
+            value = content.manualValue(),
             labelRes = R.string.watermark_manual_value,
         ) { value ->
-            onContentChange(
-                when (content) {
-                    is WatermarkContent.Altitude -> content.copy(manualValue = value)
-                    is WatermarkContent.Weather -> content.copy(manualValue = value)
-                    is WatermarkContent.Coordinates -> content.copy(manualValue = value)
-                    else -> content
-                },
-                true,
-            )
+            onContentChange(content.withManualValue(value), true)
         }
+        return
     }
-    if (source == WatermarkValueSource.MANUAL) return
+
     when (content) {
         is WatermarkContent.Altitude -> PreferenceRowSwitch(
             title = stringResource(R.string.watermark_use_feet),
@@ -242,7 +214,7 @@ private fun DynamicContentControls(
             onClick = { onContentChange(content.copy(useFeet = it), false) },
             drawContainer = false,
         )
-        is WatermarkContent.Weather -> Column {
+        is WatermarkContent.Weather -> Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             PreferenceRowSwitch(
                 title = stringResource(R.string.watermark_include_temperature),
                 checked = content.includeTemperature,
@@ -264,6 +236,69 @@ private fun DynamicContentControls(
         )
         else -> Unit
     }
+
+    val weatherMissing = content is WatermarkContent.Weather && !weatherAvailable
+    val offersFetch = source == WatermarkValueSource.DEVICE ||
+        needsDeviceLocation ||
+        weatherMissing ||
+        // 照片本身没有这条信息、已经用设备位置补出来时，卡片继续留着，
+        // 让用户看得到取到的值，也能一键刷新。
+        resolvedFromDevice
+    if (!offersFetch) return
+
+    val failed = locationLoadFailed || weatherMissing
+    val hint = when {
+        isDynamicDataLoading -> stringResource(R.string.watermark_location_fetching)
+        failed -> stringResource(
+            if (weatherMissing && !locationLoadFailed) R.string.watermark_weather_unavailable
+            else R.string.watermark_location_failed
+        )
+        needsDeviceLocation && source == WatermarkValueSource.PHOTO ->
+            stringResource(R.string.watermark_missing_dynamic_data)
+        else -> stringResource(R.string.watermark_tap_for_location)
+    }
+    DynamicDataCard(
+        title = stringResource(
+            when (content) {
+                is WatermarkContent.Weather -> R.string.watermark_fetch_weather_title
+                is WatermarkContent.Altitude -> R.string.watermark_fetch_altitude_title
+                else -> R.string.watermark_use_current_location
+            }
+        ),
+        hint = hint,
+        value = resolvedValue,
+        icon = content.kind.icon(),
+        isLoading = isDynamicDataLoading,
+        failed = failed,
+        onAction = onRequestLocation,
+    )
+}
+
+private fun WatermarkValueSource.labelRes(): Int = when (this) {
+    WatermarkValueSource.PHOTO -> R.string.watermark_source_photo
+    WatermarkValueSource.DEVICE -> R.string.watermark_source_device
+    WatermarkValueSource.MANUAL -> R.string.watermark_source_manual
+}
+
+private fun WatermarkContent.withSource(source: WatermarkValueSource): WatermarkContent = when (this) {
+    is WatermarkContent.Altitude -> copy(source = source)
+    is WatermarkContent.Weather -> copy(source = source)
+    is WatermarkContent.Coordinates -> copy(source = source)
+    else -> this
+}
+
+private fun WatermarkContent.withManualValue(value: String): WatermarkContent = when (this) {
+    is WatermarkContent.Altitude -> copy(manualValue = value)
+    is WatermarkContent.Weather -> copy(manualValue = value)
+    is WatermarkContent.Coordinates -> copy(manualValue = value)
+    else -> this
+}
+
+private fun WatermarkContent.manualValue(): String = when (this) {
+    is WatermarkContent.Altitude -> manualValue
+    is WatermarkContent.Weather -> manualValue
+    is WatermarkContent.Coordinates -> manualValue
+    else -> ""
 }
 
 @Composable
@@ -277,17 +312,9 @@ private fun WatermarkTextField(
         onValueChange = onValueChange,
         label = { Text(stringResource(labelRes)) },
         singleLine = false,
-        modifier = Modifier.fillMaxWidth().flatGlassContainer(ShapeDefaults.large, resultPadding = 8.dp),
-    )
-}
-
-@Composable
-private fun StatusText(messageRes: Int) {
-    Text(
-        text = stringResource(messageRes),
-        style = MaterialTheme.typography.bodySmall,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .flatGlassContainer(ShapeDefaults.large, resultPadding = 8.dp),
     )
 }
 

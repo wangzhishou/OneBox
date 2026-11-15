@@ -64,14 +64,18 @@ class DefaultWatermarkContentResolver @Inject constructor(
                 )
                 is WatermarkContent.Timestamp -> element.text(formatTimestamp(content, photo))
                 is WatermarkContent.Altitude -> {
+                    val photoValue = photo.altitudeMeters?.formatAltitude(content.useFeet)
+                    val deviceValue = deviceLocation?.altitudeMeters?.formatAltitude(content.useFeet)
                     val value = when (content.source) {
                         WatermarkValueSource.MANUAL -> content.manualValue
-                        WatermarkValueSource.PHOTO -> photo.altitudeMeters?.formatAltitude(content.useFeet)
-                            ?: deviceLocation?.altitudeMeters?.formatAltitude(content.useFeet)
-                        WatermarkValueSource.DEVICE -> deviceLocation?.altitudeMeters?.formatAltitude(content.useFeet)
+                        WatermarkValueSource.PHOTO -> photoValue ?: deviceValue
+                        WatermarkValueSource.DEVICE -> deviceValue
                     }
                     if (value.isNullOrBlank()) needsDeviceLocation = content.source != WatermarkValueSource.MANUAL
-                    element.text(value.orMissing())
+                    element.text(
+                        value = value.orMissing(),
+                        fromPhoto = content.source != WatermarkValueSource.DEVICE && photoValue != null,
+                    )
                 }
                 is WatermarkContent.Coordinates -> {
                     val point = coordinatesFor(content.source, photo, deviceLocation)
@@ -80,7 +84,11 @@ class DefaultWatermarkContentResolver @Inject constructor(
                         else -> point?.formatCoordinates(content.useDecimalFormat)
                     }
                     if (value.isNullOrBlank()) needsDeviceLocation = content.source != WatermarkValueSource.MANUAL
-                    element.text(value.orMissing())
+                    element.text(
+                        value = value.orMissing(),
+                        fromPhoto = content.source == WatermarkValueSource.PHOTO &&
+                            photo.coordinates != null,
+                    )
                 }
                 is WatermarkContent.Weather -> {
                     if (content.source == WatermarkValueSource.MANUAL) {
@@ -90,7 +98,11 @@ class DefaultWatermarkContentResolver @Inject constructor(
                         if (point == null) needsDeviceLocation = true
                         val weather = if (point == null) null else weatherAt(point)
                         if (weather == null) weatherAvailable = false
-                        element.text(weather?.format(content).orMissing())
+                        element.text(
+                            value = weather?.format(content).orMissing(),
+                            fromPhoto = content.source == WatermarkValueSource.PHOTO &&
+                                photo.coordinates != null,
+                        )
                     }
                 }
             }
@@ -248,10 +260,14 @@ class DefaultWatermarkContentResolver @Inject constructor(
         }
     }
 
-    private fun WatermarkElement.text(value: String) = ResolvedWatermarkElement(
+    private fun WatermarkElement.text(
+        value: String,
+        fromPhoto: Boolean = true,
+    ) = ResolvedWatermarkElement(
         element = this,
         text = value,
         hasData = value.isNotBlank() && value != "—",
+        fromPhoto = fromPhoto,
     )
 
     private fun String?.orMissing() = this?.takeIf(String::isNotBlank) ?: "—"

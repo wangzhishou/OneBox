@@ -45,6 +45,9 @@ fun WatermarkPanelHost(
         )
         WatermarkPanel.PROPERTIES -> PropertiesPanel(
             selectedElement = component.selectedElement,
+            resolvedElement = component.resolvedElements.firstOrNull {
+                it.element.id == component.selectedElementId
+            },
             needsDeviceLocation = component.needsDeviceLocation,
             weatherAvailable = component.weatherAvailable,
             isDynamicDataLoading = component.isDynamicDataLoading,
