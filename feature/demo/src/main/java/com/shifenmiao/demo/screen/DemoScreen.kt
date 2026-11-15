@@ -112,7 +112,9 @@ fun DemoScreen(
     var showDeeplinkHelp by remember { mutableStateOf(false) }
     var showGlassShowcase by remember { mutableStateOf(false) }
     var showA2uiGallery by remember { mutableStateOf(false) }
-    var showNativeMarkdownEditorDemo by remember { mutableStateOf(false) }
+    var showNativeRichTextEditorDemo by androidx.compose.runtime.saveable.rememberSaveable {
+        mutableStateOf(false)
+    }
     EnhancedModalBottomSheet(
         visible = showDeeplinkHelp,
         title = stringResource(R.string.demo_navigation_deeplink_tool_title),
@@ -147,11 +149,11 @@ fun DemoScreen(
     )
 
     EnhancedModalBottomSheet(
-        visible = showNativeMarkdownEditorDemo,
-        onDismiss = { showNativeMarkdownEditorDemo = false },
+        visible = showNativeRichTextEditorDemo,
+        onDismiss = { showNativeRichTextEditorDemo = false },
         sheetContent = {
-            NativeMarkdownEditorDemoScreen(
-                onDismiss = { showNativeMarkdownEditorDemo = false },
+            NativeRichTextEditorDemoScreen(
+                onDismiss = { showNativeRichTextEditorDemo = false },
             )
         }
     )
@@ -180,10 +182,10 @@ fun DemoScreen(
             demoNavigationItems(entries = demoEntries, onNavigate = onNavigate)
             item {
                 DemoActionButton(
-                    title = "原生 Markdown 编辑器实验",
+                    title = stringResource(DemoR.string.demo_rich_editor_entry_title),
                     icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineNote,
                     emphasized = true,
-                    onClick = { showNativeMarkdownEditorDemo = true },
+                    onClick = { showNativeRichTextEditorDemo = true },
                 )
             }
             item {

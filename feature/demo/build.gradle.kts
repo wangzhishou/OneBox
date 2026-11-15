@@ -55,6 +55,7 @@ dependencies {
 
     implementation(projects.feature.common)
     implementation(projects.libs.markdown)
+    implementation(projects.libs.richTextEditor)
 
     // A2UI renderer gallery
     implementation(projects.core.a2ui)

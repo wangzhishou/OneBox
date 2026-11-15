@@ -110,4 +110,23 @@
     <string name="demo_aigc_value_blank">-</string>
     <string name="demo_aigc_pick_failed">Failed to pick file</string>
     <string name="demo_aigc_demo_parse_failed">Failed to parse demo AIGC</string>
+    <string name="demo_rich_editor_entry_title">Native rich text editor</string>
+    <string name="demo_rich_editor_title">Native WYSIWYG editor</string>
+    <string name="demo_rich_editor_description">Text and tracked styles are the source of truth. No WebView or Markdown delimiters in the editing surface.</string>
+    <string name="demo_rich_editor_mode_edit">Edit</string>
+    <string name="demo_rich_editor_mode_preview">Native preview</string>
+    <string name="demo_rich_editor_mode_source">Markdown</string>
+    <string name="demo_rich_editor_stats">%1$d characters · %2$d tracked style ranges</string>
+    <string name="demo_rich_editor_stats_with_hint">%1$d characters · %2$d style ranges · Select text to format it</string>
+    <string name="demo_rich_editor_copy_markdown">Copy Markdown</string>
+    <string name="demo_rich_editor_copied">Copied</string>
+    <string name="demo_rich_editor_close">Close experiment</string>
+    <string name="demo_rich_editor_highlight">Highlight</string>
+    <string name="demo_rich_editor_sample_title">Native WYSIWYG editing</string>
+    <string name="demo_rich_editor_sample_body">Edit the rendered text directly. Select any words to open the formatting menu.</string>
+    <string name="demo_rich_editor_sample_bullet_styles">TrackedRange keeps styles aligned as you type, delete, and paste</string>
+    <string name="demo_rich_editor_sample_bullet_export">Export Markdown and verify it in the existing native preview</string>
+    <string name="demo_rich_editor_sample_footer">%1$s keeps text and styles together; %2$s is not required.</string>
+    <string name="demo_rich_editor_sample_state_word">TextFieldState</string>
+    <string name="demo_rich_editor_sample_webview_word">WebView</string>
 </resources>

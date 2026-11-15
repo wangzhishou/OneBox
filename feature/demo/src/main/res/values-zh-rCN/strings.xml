@@ -118,4 +118,23 @@
     <string name="demo_aigc_value_blank">-</string>
     <string name="demo_aigc_pick_failed">文件选择失败</string>
     <string name="demo_aigc_demo_parse_failed">演示 AIGC 解析失败</string>
+    <string name="demo_rich_editor_entry_title">Native 富文本编辑器</string>
+    <string name="demo_rich_editor_title">Native 所见即所得编辑器</string>
+    <string name="demo_rich_editor_description">文字与可追踪样式是唯一事实源；编辑区不使用 WebView，也不显示 Markdown 标记。</string>
+    <string name="demo_rich_editor_mode_edit">直接编辑</string>
+    <string name="demo_rich_editor_mode_preview">Native 预览</string>
+    <string name="demo_rich_editor_mode_source">Markdown</string>
+    <string name="demo_rich_editor_stats">%1$d 个字符 · %2$d 个可追踪样式区间</string>
+    <string name="demo_rich_editor_stats_with_hint">%1$d 个字符 · %2$d 个样式区间 · 选中文字后可设置格式</string>
+    <string name="demo_rich_editor_copy_markdown">复制 Markdown</string>
+    <string name="demo_rich_editor_copied">已复制</string>
+    <string name="demo_rich_editor_close">关闭实验</string>
+    <string name="demo_rich_editor_highlight">高亮</string>
+    <string name="demo_rich_editor_sample_title">Native 所见即所得编辑</string>
+    <string name="demo_rich_editor_sample_body">直接编辑渲染后的文字，选中任意内容即可打开格式菜单。</string>
+    <string name="demo_rich_editor_sample_bullet_styles">样式通过 TrackedRange 随输入、删除和粘贴移动</string>
+    <string name="demo_rich_editor_sample_bullet_export">导出 Markdown，再用现有 Native 渲染器核对结果</string>
+    <string name="demo_rich_editor_sample_footer">%1$s 同时管理文字与样式，%2$s 也不再是必需品。</string>
+    <string name="demo_rich_editor_sample_state_word">TextFieldState</string>
+    <string name="demo_rich_editor_sample_webview_word">WebView</string>
 </resources>

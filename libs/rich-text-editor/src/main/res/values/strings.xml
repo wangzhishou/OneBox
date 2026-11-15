@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_bold">Bold</string>
+    <string name="rich_text_italic">Italic</string>
+    <string name="rich_text_underline">Underline</string>
+    <string name="rich_text_strikethrough">Strikethrough</string>
+    <string name="rich_text_inline_code">Inline code</string>
+    <string name="rich_text_body">Body</string>
+    <string name="rich_text_bullet_list">• List</string>
+    <string name="rich_text_clear_formatting">Clear formatting</string>
+</resources>
