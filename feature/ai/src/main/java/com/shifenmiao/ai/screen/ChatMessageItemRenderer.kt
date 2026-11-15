@@ -49,8 +49,8 @@ import io.noties.markwon.plugins.codeblock.CodeBlockClickListener
 /**
  * 扁平消息 item 的统一渲染入口。
  *
- * 目标不是把大消息重新收回一个巨型 item，而是保留现有 block 级 LazyColumn 性能模型，
- * 同时把屏幕层里冗长的 `when(item)` 分发逻辑收敛到一个可复用位置。
+ * 普通消息由 KMP 管理文档内部布局，专属块继续使用现有 block 级 LazyColumn；
+ * 屏幕层只保留统一分发，不重复实现各消息的渲染逻辑。
  */
 @Composable
 internal fun RenderChatMessageItem(
@@ -247,6 +247,7 @@ private fun MessageUiModel.UserSearchResults.toRobotSearchResults(): MessageUiMo
 internal fun MessageUiModel.UserReasoningContent.toRobotReasoningContent(): MessageUiModel.RobotReasoningContent {
     return MessageUiModel.RobotReasoningContent(
         id = id,
+        reasoningSource = source,
         reasoningAstNode = node,
         isHighlighted = isHighlighted,
         isStreaming = false

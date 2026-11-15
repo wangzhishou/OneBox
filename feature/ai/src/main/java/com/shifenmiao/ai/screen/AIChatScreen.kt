@@ -62,6 +62,7 @@ import androidx.compose.ui.unit.dp
 import com.halilibo.richtext.ui.a2ui.LocalA2uiRenderer
 import com.shifenmiao.ai.a2ui.A2uiRendererImpl
 import com.shifenmiao.ai.component.AIChatComponent
+import com.shifenmiao.ai.component.LocalAiMarkdownSelectionItems
 import com.shifenmiao.ai.component.AgentToolCallUIState
 import com.shifenmiao.ai.component.ChatErrorMessage
 import com.shifenmiao.ai.component.ChatLoadingIndicator
@@ -467,16 +468,18 @@ fun ChatMessagesList(
     }
     val messageLazyKeys = rememberUniqueMessageLazyKeys(displayMessageUiModels)
     val a2uiRenderer = remember { A2uiRendererImpl(aiChatComponent.a2uiRenderProvider) }
+    val selectionItems = defaultTextSelectionMenuItems(
+        appComponent = appComponent,
+        onNavigate = onNavigate,
+    )
 
     CompositionLocalProvider(
-        LocalA2uiRenderer provides a2uiRenderer
+        LocalA2uiRenderer provides a2uiRenderer,
+        LocalAiMarkdownSelectionItems provides selectionItems,
     ) {
         ProvideMermaidRenderer {
             TextSelectionMenuContainer(
-                items = defaultTextSelectionMenuItems(
-                    appComponent = appComponent,
-                    onNavigate = onNavigate,
-                ),
+                items = selectionItems,
                 selectionState = selectionState,
                 modifier = modifier,
             ) {

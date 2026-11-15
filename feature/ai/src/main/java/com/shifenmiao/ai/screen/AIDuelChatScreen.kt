@@ -85,6 +85,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import coil3.compose.AsyncImage
 import com.shifenmiao.ai.component.AIDuelChatComponent
+import com.shifenmiao.ai.component.LocalAiMarkdownSelectionItems
 import com.shifenmiao.ai.component.ChatLoadingIndicator
 import com.shifenmiao.ai.component.RobotReasoningBlock
 import com.shifenmiao.ai.component.RobotReasoningContent
@@ -1849,13 +1850,15 @@ private fun DuelMessagesList(
         if (isDuelRunning) selectionState.clear()
     }
 
-    ProvideMermaidRenderer {
+    val selectionItems = defaultTextSelectionMenuItems(
+        appComponent = appComponent,
+        onNavigate = onNavigate,
+    )
+    CompositionLocalProvider(LocalAiMarkdownSelectionItems provides selectionItems) {
+        ProvideMermaidRenderer {
         // 全局复用组件：与 AI 聊天 / 博客详情 / 笔记详情完全一致的长按选区操作条
         TextSelectionMenuContainer(
-            items = defaultTextSelectionMenuItems(
-                appComponent = appComponent,
-                onNavigate = onNavigate,
-            ),
+            items = selectionItems,
             selectionState = selectionState,
             modifier = modifier,
         ) {
@@ -1969,6 +1972,7 @@ private fun DuelMessagesList(
                 }
             }
         }
+    }
     }
 }
 

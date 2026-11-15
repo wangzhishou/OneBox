@@ -4,6 +4,9 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.Dp
 import com.wanbaohe.markdown.internal.KmpMarkdownPluginAdapter
 import com.wanbaohe.markdown.internal.KmpMarkdownRenderer
 
@@ -17,6 +20,9 @@ fun OneBoxMarkdown(
     externalScrollState: ScrollState? = null,
     enableSelection: Boolean = true,
     onLinkClick: ((String) -> Unit)? = null,
+    textStyle: TextStyle? = null,
+    contentColor: Color? = null,
+    blockSpacing: Dp? = null,
     components: OneBoxMarkdownComponents = OneBoxMarkdownComponents.Default,
     plugins: List<OneBoxMarkdownPlugin> = emptyList(),
 ) {
@@ -37,6 +43,9 @@ fun OneBoxMarkdown(
             externalScrollState = externalScrollState,
             enableSelection = enableSelection,
             onLinkClick = onLinkClick,
+            textStyle = textStyle,
+            contentColor = contentColor,
+            blockSpacing = blockSpacing,
             components = components,
             directivePlugins = directivePlugins,
         )

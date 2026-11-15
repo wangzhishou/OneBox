@@ -30,6 +30,7 @@ import kotlinx.serialization.json.jsonObject
 import com.halilibo.richtext.markwon.MarkdownAstNodeParser
 import com.shifenmiao.ai.error.AiChatError
 import com.shifenmiao.ai.error.AiChatErrorFactory
+import com.wanbaohe.markdown.requiresLegacyMarkdown
 import com.shifenmiao.core.R
 import com.shifenmiao.database.ai.entity.MessageEntity
 import com.shifenmiao.interfaces.singleton.AppContext
@@ -93,7 +94,8 @@ sealed class MessageUiModel(
     data class UserContent(
         override val id: String,
         val isHighlighted: Boolean,
-        val node: AstNode
+        val source: String = "",
+        val node: AstNode? = null
     ) : MessageUiModel(id)
 
     data class UserTextContent(
@@ -116,7 +118,8 @@ sealed class MessageUiModel(
     data class UserReasoningContent(
         override val id: String,
         val isHighlighted: Boolean,
-        val node: AstNode
+        val source: String = "",
+        val node: AstNode? = null
     ) : MessageUiModel(id)
 
     data class UserReasoningHeader(
@@ -163,6 +166,7 @@ sealed class MessageUiModel(
         val isHighlighted: Boolean,
         val isStreaming: Boolean,
         val showCursor: Boolean = false,
+        val answerSource: String = "",
         val answerAstNode: AstNode? = null
     ) : MessageUiModel(id)
 
@@ -171,6 +175,7 @@ sealed class MessageUiModel(
         override val id: String,
         val isHighlighted: Boolean,
         val isStreaming: Boolean,
+        val reasoningSource: String = "",
         val reasoningAstNode: AstNode? = null,
         val isFirst: Boolean = true,
         val isLast: Boolean = true,
@@ -638,7 +643,7 @@ sealed class MessageUiModel(
             addUserSearchSection(result, message, idPrefix)
         }
 
-        /** 用户侧正文 section：只处理 question，自身保持 block 化策略。 */
+        /** 普通用户内容直接保留 Markdown 源码，专属块才走旧 AST 分块。 */
         private fun addUserAnswerSection(
             parser: MarkdownAstNodeParser,
             result: MutableList<MessageUiModel>,
@@ -647,6 +652,16 @@ sealed class MessageUiModel(
         ) {
             val question = message.question
             if (question.isBlank()) return
+            if (!requiresLegacyMarkdown(question)) {
+                result.add(
+                    UserContent(
+                        id = "${idPrefix}_content",
+                        source = question,
+                        isHighlighted = message.uId > 0,
+                    )
+                )
+                return
+            }
 
             val parsedNode = try {
                 parser.parse(question)
@@ -708,8 +723,39 @@ sealed class MessageUiModel(
             idPrefix: String,
             showExpandedReasoning: Boolean,
         ) {
-            val parsedReasoningNode = parseReasoningNodeOrFallback(parser, message.reasoningContent)
-            if (message.reasoningContent.isBlank() || parsedReasoningNode == null) return
+            val reasoningText = message.reasoningContent
+            if (reasoningText.isBlank()) return
+            if (!requiresLegacyMarkdown(reasoningText) &&
+                reasoningText.length < REASONING_COLLAPSE_FOOTER_MIN_CHARS
+            ) {
+                if (showExpandedReasoning) {
+                    result.add(
+                        UserVerticalSpace(
+                            id = "${idPrefix}_reasoning_space",
+                            height = 8.dp
+                        )
+                    )
+                    result.add(
+                        UserReasoningContent(
+                            id = "${idPrefix}_reasoning",
+                            source = reasoningText,
+                            isHighlighted = message.uId > 0,
+                        )
+                    )
+                }
+                result.add(
+                    UserReasoningHeader(
+                        id = "${idPrefix}_reasoning_header",
+                        time = message.reasoningTime,
+                        preview = buildReasoningPreview(reasoningText),
+                        isStreaming = message.uId == MessageUIState.STREAMING.value,
+                    )
+                )
+                return
+            }
+
+            val parsedReasoningNode = parseReasoningNodeOrFallback(parser, reasoningText)
+            if (parsedReasoningNode == null) return
 
             if (showExpandedReasoning) {
                 result.add(
@@ -949,7 +995,7 @@ sealed class MessageUiModel(
             addRobotSearchSection(result, message, idPrefix)
         }
 
-        /** 机器人正文 section：维持“短内容单块 / 长内容拆 block”的性能模型。 */
+        /** 普通正文保留源码交给 KMP；专属代码块沿用 AST 分块与复用。 */
         private fun addRobotAnswerSection(
             parser: MarkdownAstNodeParser,
             result: MutableList<MessageUiModel>,
@@ -959,6 +1005,18 @@ sealed class MessageUiModel(
         ) {
             val answerText = message.answer
             if (answerText.isBlank()) return
+            if (!requiresLegacyMarkdown(answerText)) {
+                result.add(
+                    RobotContent(
+                        id = "${idPrefix}_content",
+                        answerSource = answerText,
+                        isHighlighted = message.uId > 0,
+                        isStreaming = message.uId == MessageUIState.STREAMING.value,
+                        showCursor = false,
+                    )
+                )
+                return
+            }
 
             val parsedAnswerNode = try {
                 parser.parse(answerText)
@@ -1020,8 +1078,44 @@ sealed class MessageUiModel(
             blockReuseCache: BlockReuseCache? = null,
             showExpandedReasoning: Boolean,
         ) {
-            val parsedReasoningNode = parseReasoningNodeOrFallback(parser, message.reasoningContent)
-            if (message.reasoningContent.isBlank() || parsedReasoningNode == null) return
+            val reasoningText = message.reasoningContent
+            if (reasoningText.isBlank()) return
+            if (!requiresLegacyMarkdown(reasoningText) &&
+                reasoningText.length < REASONING_COLLAPSE_FOOTER_MIN_CHARS
+            ) {
+                if (showExpandedReasoning) {
+                    result.add(
+                        RobotVerticalSpace(
+                            id = "${idPrefix}_reasoning_Space",
+                            height = 8.dp
+                        )
+                    )
+                    result.add(
+                        RobotReasoningContent(
+                            id = "${idPrefix}_reasoning",
+                            reasoningSource = reasoningText,
+                            isHighlighted = message.uId > 0,
+                            isStreaming = message.uId == MessageUIState.STREAMING.value,
+                            isFirst = true,
+                            isLast = true,
+                        )
+                    )
+                }
+                result.add(
+                    RobotReasoningHeader(
+                        id = "${idPrefix}_reasoning_header",
+                        time = message.reasoningTime,
+                        preview = buildReasoningPreview(reasoningText),
+                        isStreaming = message.uId == MessageUIState.STREAMING.value,
+                        isFirst = !showExpandedReasoning,
+                        isLast = false,
+                    )
+                )
+                return
+            }
+
+            val parsedReasoningNode = parseReasoningNodeOrFallback(parser, reasoningText)
+            if (parsedReasoningNode == null) return
 
             var hasExpandedContent = false
 

@@ -342,7 +342,11 @@ internal fun PoemAiSection(
                 }
 
                 !content.isNullOrBlank() -> {
-                    StreamingMarkdownContent(content = content, contentColor = contentColor)
+                    StreamingMarkdownContent(
+                        content = content,
+                        isStreaming = isGenerating,
+                        contentColor = contentColor,
+                    )
                     if (error != null) {
                         Text(
                             text = error,

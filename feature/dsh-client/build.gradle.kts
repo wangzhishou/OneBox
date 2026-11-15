@@ -33,6 +33,7 @@ dependencies {
     api(projects.feature.common)
     implementation(projects.core.network)
     implementation(projects.libs.richtext)
+    implementation(projects.libs.markdown)
     implementation(libs.com.squareup.okhttp3.okhttp)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.quickie.foss)

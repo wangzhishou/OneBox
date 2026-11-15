@@ -117,7 +117,6 @@ import com.wanbaohe.dsh.component.DshRootComponent
 import com.wanbaohe.dsh.component.DshUiState
 import com.wanbaohe.dsh.connection.ConnectionPhase
 import com.wanbaohe.dsh.screen.node.ChatNodeItem
-import com.wanbaohe.dsh.screen.node.rememberMarkdownParser
 import com.wanbaohe.dsh.session.AllowedImageMediaTypes
 import com.wanbaohe.dsh.session.AttachmentRejectException
 import com.wanbaohe.dsh.session.AttachmentRejection
@@ -1032,7 +1031,6 @@ private fun MessageList(
         return
     }
 
-    val parser = rememberMarkdownParser()
     val listState = rememberLazyListState()
     LaunchedEffect(nodes.size) {
         listState.animateScrollToItem(0)
@@ -1072,7 +1070,7 @@ private fun MessageList(
                 ?.messageId
             if (messageId != null && sessionId != null) {
                 Column {
-                    ChatNodeItem(node, parser)
+                    ChatNodeItem(node)
                     FeedbackRow(
                         store = feedbackStore,
                         sessionId = sessionId,
@@ -1084,7 +1082,7 @@ private fun MessageList(
                     )
                 }
             } else {
-                ChatNodeItem(node, parser)
+                ChatNodeItem(node)
             }
         }
         if (hasOlder) {

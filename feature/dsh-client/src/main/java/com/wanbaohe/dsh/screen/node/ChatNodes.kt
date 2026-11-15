@@ -55,7 +55,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -71,11 +70,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.halilibo.richtext.commonmark.CommonMarkdownParseOptions
-import com.halilibo.richtext.markdown.BasicMarkdown
-import com.halilibo.richtext.markwon.MarkdownAstNodeParser
-import com.halilibo.richtext.ui.material3.RichText
-import com.shifenmiao.model.node.AstNode
 import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
@@ -91,8 +85,7 @@ import com.wanbaohe.dsh.session.NoticeSessionInterruptedDetail
 import com.wanbaohe.dsh.session.NoticeTurnStopped
 import com.wanbaohe.dsh.session.ToolStatus
 import com.wanbaohe.dsh.session.formatNodeValue
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.wanbaohe.markdown.OneBoxMarkdown
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -104,27 +97,19 @@ import java.util.Locale
 /**
  * 会话流节点渲染(对齐 Flutter node_widgets.dart):纯展示无业务逻辑。
  *
- * - assistant 文本走 markdown(libs/richtext 的 BasicMarkdown;解析共享单个
- *   [MarkdownAstNodeParser] 实例,挂到默认调度器,不卡组合线程)
+ * - assistant 文本走 OneBoxMarkdown,由 KMP 引擎负责解析和流式更新
  * - think 折叠行**始终默认收起**(直播中也不抢占滚动);展开态 rememberSaveable
  *   按节点 key 挂在 LazyColumn item 上,加载更早历史不张冠李戴
  * - 工具卡:状态色点 + 名称 + 摘要行;点击展开输入/输出详情(等宽横向滚动)
  * - todo / 检查点 / 统计行 / 提示行:轻量分隔样式,与气泡同色系
  */
 
-/** 共享 markdown 解析器(Markwon 构建昂贵,全列表一个实例) */
-@Composable
-fun rememberMarkdownParser(): MarkdownAstNodeParser {
-    val context = LocalContext.current
-    return remember { MarkdownAstNodeParser(context, CommonMarkdownParseOptions.Default) }
-}
-
 /** 单节点分发(LazyColumn item 内调用,key = node.key 由调用方保证) */
 @Composable
-fun ChatNodeItem(node: ChatNode, parser: MarkdownAstNodeParser) {
+fun ChatNodeItem(node: ChatNode) {
     when (node) {
         is ChatNode.UserMessage -> UserBubble(node)
-        is ChatNode.AssistantMessage -> AssistantBubble(node, parser)
+        is ChatNode.AssistantMessage -> AssistantBubble(node)
         is ChatNode.Think -> ThinkRow(node)
         is ChatNode.Tool -> ToolCard(node)
         is ChatNode.Todo -> TodoDock(node)
@@ -207,7 +192,7 @@ private fun UserBubble(node: ChatNode.UserMessage) {
  * streaming 时头部带「生成中」小字。
  */
 @Composable
-private fun AssistantBubble(node: ChatNode.AssistantMessage, parser: MarkdownAstNodeParser) {
+private fun AssistantBubble(node: ChatNode.AssistantMessage) {
     Column(modifier = Modifier.fillMaxWidth()) {
         if (node.streaming) {
             Text(
@@ -218,7 +203,7 @@ private fun AssistantBubble(node: ChatNode.AssistantMessage, parser: MarkdownAst
             Spacer(Modifier.height(2.dp))
         }
         if (node.text.isNotEmpty()) {
-            MarkdownContent(parser, node.text)
+            MarkdownContent(content = node.text, isStreaming = node.streaming)
         }
         if (node.images.isNotEmpty()) {
             if (node.text.isNotEmpty()) Spacer(Modifier.height(6.dp))
@@ -227,20 +212,15 @@ private fun AssistantBubble(node: ChatNode.AssistantMessage, parser: MarkdownAst
     }
 }
 
-/** markdown 内容:解析挂默认调度器;解析中/失败回落纯文本(绝不留白) */
 @Composable
-private fun MarkdownContent(parser: MarkdownAstNodeParser, content: String) {
-    val ast by produceState<AstNode?>(initialValue = null, parser, content) {
-        value = withContext(Dispatchers.Default) {
-            runCatching { parser.parse(content) }.getOrNull()
-        }
-    }
-    val node = ast
-    if (node != null) {
-        RichText { BasicMarkdown(astNode = node) }
-    } else {
-        Text(text = content, fontSize = 15.sp)
-    }
+private fun MarkdownContent(content: String, isStreaming: Boolean) {
+    OneBoxMarkdown(
+        markdown = content,
+        isStreaming = isStreaming,
+        enableScroll = false,
+        textStyle = MaterialTheme.typography.bodyMedium.copy(fontSize = 15.sp),
+        contentColor = MaterialTheme.colorScheme.onSurface,
+    )
 }
 
 /** 图片引用占位缩略条(无视觉模型环境无法活体采样,按 ImageAttachmentRef fixture 形状呈现) */

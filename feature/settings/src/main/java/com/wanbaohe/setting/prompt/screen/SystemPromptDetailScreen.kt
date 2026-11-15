@@ -57,7 +57,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.entrypoint.ChannelConfigEntryPoint
-import com.wanbaohe.base.ui.MarkdownLazyContent
+import com.shifenmiao.common.markdown.OneBoxMarkdownContent
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.common.handle.LocalUrlNavigator
 import com.shifenmiao.common.ui.BaseScreen
@@ -214,7 +214,7 @@ fun SystemPromptDetailScreen(
             }
         ) {
             ProvideMermaidRenderer {
-                MarkdownLazyContent(
+                OneBoxMarkdownContent(
                     modifier = Modifier
                         .fillMaxSize()
                         .nestedScroll(scrollBehavior.nestedScrollConnection),

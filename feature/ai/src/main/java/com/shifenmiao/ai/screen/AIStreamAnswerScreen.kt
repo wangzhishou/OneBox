@@ -74,7 +74,9 @@ import com.halilibo.richtext.ui.material3.RichText
 import com.shifenmiao.ai.component.AIStreamAnswerComponent
 import com.shifenmiao.ai.component.AIStreamAnswerStatus
 import com.shifenmiao.ai.model.BlockReuseCache
+import com.wanbaohe.markdown.requiresLegacyMarkdown
 import com.wanbaohe.base.ui.AILoadingRow
+import com.wanbaohe.markdown.OneBoxMarkdown
 import com.wanbaohe.base.ui.ExpandableMarkdownContent
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
@@ -288,13 +290,23 @@ private fun MarkdownScrollContainer(
     }
 }
 
-// ── 分块 AST 渲染 + 可选 inline cursor ────────────────────────────────
+// ── 普通内容走 KMP；专属块保留分块 AST 与 inline cursor ───────────────
 
 @Composable
 private fun MarkdownBlocksContent(
     text: String,
     isStreaming: Boolean,
 ) {
+    if (!requiresLegacyMarkdown(text)) {
+        OneBoxMarkdown(
+            markdown = text,
+            isStreaming = isStreaming,
+            enableScroll = false,
+            textStyle = MaterialTheme.typography.bodyLarge,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+        )
+        return
+    }
     val context = LocalContext.current
     val blockReuseCache = remember { BlockReuseCache() }
     var blocks by remember { mutableStateOf<List<AstNode>>(emptyList()) }

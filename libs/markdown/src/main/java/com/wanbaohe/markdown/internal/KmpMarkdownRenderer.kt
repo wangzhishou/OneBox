@@ -7,6 +7,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.hrm.markdown.renderer.Markdown
 import com.hrm.markdown.renderer.MarkdownBlockSlot
@@ -31,6 +34,9 @@ internal fun KmpMarkdownRenderer(
     externalScrollState: ScrollState?,
     enableSelection: Boolean,
     onLinkClick: ((String) -> Unit)?,
+    textStyle: TextStyle?,
+    contentColor: Color?,
+    blockSpacing: Dp?,
     components: OneBoxMarkdownComponents,
     directivePlugins: List<MarkdownDirectivePlugin>,
 ) {
@@ -80,11 +86,21 @@ internal fun KmpMarkdownRenderer(
             },
         )
     }
+    val defaultTypography = MarkdownDefaults.typography()
+    val defaultColors = MarkdownDefaults.material3Colors()
+    val defaultLayout = MarkdownDefaults.layout()
 
     Markdown(
         markdown = markdown,
         modifier = modifier,
-        colors = MarkdownDefaults.material3Colors(),
+        colors = if (contentColor == null) defaultColors else defaultColors.copy(
+            text = contentColor,
+            heading = contentColor,
+            blockQuoteText = contentColor,
+            listBullet = contentColor,
+        ),
+        typography = if (textStyle == null) defaultTypography else defaultTypography.copy(text = textStyle),
+        layout = if (blockSpacing == null) defaultLayout else defaultLayout.copy(blockSpacing = blockSpacing),
         state = state.engineState,
         isStreaming = isStreaming,
         enableScroll = enableScroll,

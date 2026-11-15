@@ -31,7 +31,7 @@ import com.wanbaohe.base.ui.MarkdownLazyContent
 import com.wanbaohe.base.ui.loading.EmptyBox
 import com.wanbaohe.core.ui.loading.DotDanceLoading
 import com.wanbaohe.markdown.OneBoxMarkdown
-import com.wanbaohe.markdown.OneBoxMarkdownComponents
+import com.wanbaohe.markdown.requiresLegacyMarkdown
 import io.noties.markwon.plugins.codeblock.CodeBlockClickListener
 
 @Composable
@@ -88,19 +88,11 @@ fun OneBoxMarkdownContent(
                     )
                 }
             } else {
-                val components = OneBoxMarkdownComponents(
+                val components = oneBoxMarkdownComponents(
                     header = headerContent,
                     footer = footerContent,
-                    codeBlockHeader = codeBlockClickListener?.let { listener ->
-                        { info -> OneBoxMarkdownCodeBlockHeader(info, listener) }
-                    },
-                    selectionToolbar = if (selectionItems.isEmpty()) {
-                        null
-                    } else {
-                        { info, actions ->
-                            OneBoxMarkdownSelectionToolbar(info, actions, selectionItems)
-                        }
-                    },
+                    selectionItems = selectionItems,
+                    codeBlockClickListener = codeBlockClickListener,
                 )
                 OneBoxMarkdown(
                     markdown = message,

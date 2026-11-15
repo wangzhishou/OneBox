@@ -53,7 +53,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.halilibo.richtext.ui.material3.RichMarkdown
+import com.wanbaohe.markdown.OneBoxMarkdown
 import com.shifenmiao.base.provider.LocalDataDraftHelper
 import com.shifenmiao.model.ListItemType
 import com.shifenmiao.model.ai.AIConversationEntryType
@@ -376,8 +376,9 @@ fun MarkdownContent(
                 .heightIn(max = 200.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-            RichMarkdown(
-                content = message
+            OneBoxMarkdown(
+                markdown = message,
+                enableScroll = false,
             )
             content.invoke()
         }

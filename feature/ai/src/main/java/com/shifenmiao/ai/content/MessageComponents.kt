@@ -322,6 +322,22 @@ fun UserMessageContent(
     userContent: MessageUiModel.UserContent,
     codeBlockClickListener: CodeBlockClickListener
 ) {
+    if (userContent.source.isNotEmpty()) {
+        ModernMarkdownMessage(
+            source = userContent.source,
+            isStreaming = false,
+            codeBlockClickListener = codeBlockClickListener,
+            modifier = Modifier
+                .fillMaxWidth()
+                .glassCardSegment(
+                    segment = GlassCardSegment.Middle,
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                )
+                .padding(horizontal = 12.dp, vertical = 6.dp),
+        )
+        return
+    }
+    val node = userContent.node ?: return
     RichText(
         modifier = Modifier
             .fillMaxWidth()
@@ -335,7 +351,7 @@ fun UserMessageContent(
             LocalIsMessageStreaming provides false
         ) {
             BasicMarkdown(
-                astNode = userContent.node,
+                astNode = node,
                 codeBlockClickListener = codeBlockClickListener
             )
         }
@@ -568,8 +584,12 @@ fun RobotMessageContent(
     robotContent: MessageUiModel.RobotContent,
     codeBlockClickListener: CodeBlockClickListener
 ) {
-    if (robotContent.answerAstNode != null) {
-        RichText(
+    if (robotContent.answerSource.isNotEmpty()) {
+        ModernMarkdownMessage(
+            source = robotContent.answerSource,
+            isStreaming = robotContent.isStreaming,
+            showCursor = robotContent.showCursor,
+            codeBlockClickListener = codeBlockClickListener,
             contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier
                 .fillMaxWidth()
@@ -577,17 +597,29 @@ fun RobotMessageContent(
                     segment = GlassCardSegment.Middle,
                     color = MaterialTheme.colorScheme.surfaceContainerLow,
                 )
-                .padding(horizontal = 12.dp)
+                .padding(horizontal = 12.dp),
+        )
+        return
+    }
+    val answerNode = robotContent.answerAstNode ?: return
+    RichText(
+        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = Modifier
+            .fillMaxWidth()
+            .flatGlassCardSegment(
+                segment = GlassCardSegment.Middle,
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
+            )
+            .padding(horizontal = 12.dp)
+    ) {
+        CompositionLocalProvider(
+            LocalIsMessageStreaming provides robotContent.isStreaming
         ) {
-            CompositionLocalProvider(
-                LocalIsMessageStreaming provides robotContent.isStreaming
-            ) {
-                BasicMarkdown(
-                    astNode = robotContent.answerAstNode,
-                    codeBlockClickListener = codeBlockClickListener,
-                    showCursor = robotContent.showCursor
-                )
-            }
+            BasicMarkdown(
+                astNode = answerNode,
+                codeBlockClickListener = codeBlockClickListener,
+                showCursor = robotContent.showCursor
+            )
         }
     }
 }
@@ -776,7 +808,7 @@ fun RobotReasoningContent(
     val reasoningDirection = remember(reasoningContent.reasoningAstNode) {
         firstReasoningLiteral(reasoningContent.reasoningAstNode)?.firstStrongLayoutDirection()
     } ?: LocalLayoutDirection.current
-    if (reasoningContent.reasoningAstNode != null) {
+    if (reasoningContent.reasoningSource.isNotEmpty() || reasoningContent.reasoningAstNode != null) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -817,27 +849,46 @@ fun RobotReasoningContent(
                         }
                 ) {
                     CompositionLocalProvider(LocalLayoutDirection provides reasoningDirection) {
-                    RichText(
-                        textStyle = MaterialTheme.typography.bodyMedium.copy(
-                            fontSize = 13.sp,
-                            lineHeight = 20.sp
-                        ),
-                        style = RichTextStyle(paragraphSpacing = 0.sp),
-                        contentColor = contentColor,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 12.dp)
-                    ) {
-                        CompositionLocalProvider(
-                            LocalIsMessageStreaming provides reasoningContent.isStreaming
-                        ) {
-                            BasicMarkdown(
-                                reasoningContent.reasoningAstNode,
+                        if (reasoningContent.reasoningSource.isNotEmpty()) {
+                            ModernMarkdownMessage(
+                                source = reasoningContent.reasoningSource,
+                                isStreaming = reasoningContent.isStreaming,
                                 codeBlockClickListener = codeBlockClickListener,
-                                compactBlocks = true
+                                textStyle = MaterialTheme.typography.bodyMedium.copy(
+                                    fontSize = 13.sp,
+                                    lineHeight = 20.sp
+                                ),
+                                contentColor = contentColor,
+                                blockSpacing = 0.dp,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 12.dp),
                             )
+                        } else {
+                            val reasoningNode = reasoningContent.reasoningAstNode
+                                ?: return@CompositionLocalProvider
+                            RichText(
+                                textStyle = MaterialTheme.typography.bodyMedium.copy(
+                                    fontSize = 13.sp,
+                                    lineHeight = 20.sp
+                                ),
+                                style = RichTextStyle(paragraphSpacing = 0.sp),
+                                contentColor = contentColor,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 12.dp)
+                            ) {
+                                CompositionLocalProvider(
+                                    LocalIsMessageStreaming provides reasoningContent.isStreaming
+                                ) {
+                                    BasicMarkdown(
+                                        reasoningContent.reasoningAstNode,
+                                        codeBlockClickListener = codeBlockClickListener,
+                                        compactBlocks = true
+                                    )
+                                }
+                            }
                         }
-                    }
                     }
                 }
             }

@@ -68,7 +68,6 @@ import androidx.compose.ui.unit.sp
 import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.dsh.R
 import com.wanbaohe.dsh.screen.node.ChatNodeItem
-import com.wanbaohe.dsh.screen.node.rememberMarkdownParser
 import com.wanbaohe.dsh.session.SubagentCatalogPhase
 import com.wanbaohe.dsh.session.SubagentCatalogState
 import com.wanbaohe.dsh.session.SubagentStore
@@ -433,7 +432,6 @@ private fun SubagentTranscriptView(
     }
 
     val nodes = remember(events) { extractNodes(events) }
-    val parser = rememberMarkdownParser()
     val canContinue = parentAvailable &&
         liveEntry.mode == SubagentModeContinuable &&
         liveEntry.activity != ActivityRunning
@@ -534,7 +532,7 @@ private fun SubagentTranscriptView(
                 }
             }
             items(nodes, key = { it.key }) { node ->
-                ChatNodeItem(node, parser)
+                ChatNodeItem(node)
             }
         }
         // 续聊:仅 parentAvailable 且可继续、非运行中的子会话暴露

@@ -81,7 +81,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.halilibo.richtext.ui.material3.RichMarkdown
+import com.wanbaohe.markdown.OneBoxMarkdown
 import com.shifenmiao.ai.component.AIChatComponent
 import com.shifenmiao.ai.logic.ChatInputComponent
 import com.shifenmiao.base.provider.LocalDataDraftHelper
@@ -369,7 +369,7 @@ private fun PromptWorkCard(
                 )
             } else {
                 if (expanded) {
-                    RichMarkdown(content = message)
+                    OneBoxMarkdown(markdown = message, enableScroll = false)
                 } else {
                     val previewScrollState = rememberScrollState()
                     Box(
@@ -383,7 +383,7 @@ private fun PromptWorkCard(
                                 enabled = false
                             )
                         ) {
-                            RichMarkdown(content = message)
+                            OneBoxMarkdown(markdown = message, enableScroll = false)
                         }
                         if (previewScrollState.maxValue > 0) {
                             Box(

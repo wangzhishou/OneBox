@@ -28,7 +28,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,8 +41,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.wanbaohe.base.ui.ConfirmContentDialog
-import com.wanbaohe.base.ui.MarkdownLazyContent
-import com.wanbaohe.base.ui.styleVerticalScrollbar
+import com.shifenmiao.common.markdown.OneBoxMarkdownContent
 import com.shifenmiao.common.utils.ShareUtils
 import com.shifenmiao.core.R
 import com.shifenmiao.core.constants.Constants
@@ -62,7 +60,6 @@ fun PrivacyPolicyDialog(
     onUrlClick: (String) -> Unit
 ) {
     if (showPrivacyPolicyDialog.value) {
-        val listState = rememberLazyListState()
         val isFirstLaunch = AppSharedStorage.loadPrivacyPolicyVersion() == 0
         val componentActivity = LocalComponentActivity.current
 
@@ -102,12 +99,9 @@ fun PrivacyPolicyDialog(
                         .fillMaxWidth()
                         .height(300.dp)
                 ) {
-                    MarkdownLazyContent(
+                    OneBoxMarkdownContent(
                         message = markdown,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .styleVerticalScrollbar(listState),
-                        lazyListState = listState,
+                        modifier = Modifier.fillMaxSize(),
                         paddingValues = PaddingValues(horizontal = 0.dp, vertical = 8.dp)
                     )
                 }

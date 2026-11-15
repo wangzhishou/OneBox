@@ -111,6 +111,7 @@ dependencies {
      */
     implementation(projects.libs.twain)
     implementation(projects.libs.richtext)
+    implementation(projects.libs.markdown)
 
     /**
      * 端侧 LLM 推理(LiteRT-LM),仅海外渠道携带
