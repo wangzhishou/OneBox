@@ -53,10 +53,11 @@ data class RichTextBlockStyle(
             fontSize: TextUnit,
             lineHeight: TextUnit,
             markdownPrefix: String,
+            fontWeight: FontWeight = FontWeight.SemiBold,
         ) = RichTextBlockStyle(
             id = id,
             label = label,
-            spanStyle = SpanStyle(fontSize = fontSize, fontWeight = FontWeight.SemiBold),
+            spanStyle = SpanStyle(fontSize = fontSize, fontWeight = fontWeight),
             paragraphStyle = ParagraphStyle(lineHeight = lineHeight),
             markdownPrefix = markdownPrefix,
             matches = { block ->
@@ -68,7 +69,7 @@ data class RichTextBlockStyle(
                 if (style.fontSize == fontSize) {
                     style.copy(
                         fontSize = TextUnit.Unspecified,
-                        fontWeight = if (style.fontWeight == FontWeight.SemiBold) {
+                        fontWeight = if (style.fontWeight == fontWeight) {
                             null
                         } else {
                             style.fontWeight

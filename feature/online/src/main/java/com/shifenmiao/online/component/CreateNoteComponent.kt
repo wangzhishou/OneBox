@@ -21,6 +21,7 @@ package com.shifenmiao.online.component
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnDestroy
+import com.shifenmiao.common.ai.AIPromptExecutor
 import com.shifenmiao.core.R
 import com.shifenmiao.database.AppDatabase
 import com.shifenmiao.database.data_draft.DataDraftHelper
@@ -51,6 +52,10 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 
 class CreateNoteComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
@@ -61,6 +66,7 @@ class CreateNoteComponent @AssistedInject internal constructor(
     appDatabase: AppDatabase,
     private val noteService: NoteService,
     private val dataDraftHelper: DataDraftHelper,
+    private val aiPromptExecutor: AIPromptExecutor,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
     private val itemDao = appDatabase.itemEntityDao()
@@ -159,6 +165,10 @@ class CreateNoteComponent @AssistedInject internal constructor(
         _uiState.update { it.copy(title = title, isDirty = true) }
     }
 
+    fun onDescriptionChange(description: String) {
+        _uiState.update { it.copy(description = description, isDirty = true) }
+    }
+
     fun markAsDirty() {
         _uiState.update { it.copy(isDirty = true) }
     }
@@ -170,15 +180,124 @@ class CreateNoteComponent @AssistedInject internal constructor(
     ) {
         val derived = MarkdownSummary.derive(markdown = markdown)
         val currentTitle = _uiState.value.title
+        val currentDescription = _uiState.value.description
         _uiState.update {
             it.copy(
                 data = markdown,
                 title = if (currentTitle.isNotBlank()) currentTitle else derived.title,
-                description = derived.description,
+                description = if (currentDescription.isNotBlank()) {
+                    currentDescription
+                } else {
+                    derived.description
+                },
                 isDirty = true
             )
         }
         saveItem(onSuccess, onFailure)
+    }
+
+    /**
+     * 保存确认弹窗确认后使用：标题/简介/分类已经在弹窗里编辑完成，
+     * 这里只负责把它们和正文一起提交，不再二次覆盖用户输入。
+     */
+    fun saveNoteData(
+        markdown: String,
+        title: String,
+        description: String,
+        categories: List<com.shifenmiao.model.Category>,
+        onSuccess: () -> Unit,
+        onFailure: (String) -> Unit,
+    ) {
+        _uiState.update {
+            it.copy(
+                data = markdown,
+                title = title.trim(),
+                description = description.trim(),
+                selectedCategories = categories.toSet(),
+                isDirty = true,
+            )
+        }
+        saveItem(onSuccess, onFailure)
+    }
+
+    /**
+     * 用当前 AI 引擎为笔记生成标题、简介和分类建议。
+     *
+     * 失败（未登录/积分不足/网络/模型返回不可解析）时回退到本地 [MarkdownSummary]，
+     * 并把错误原因带回 UI：保存流程永远不会因为 AI 不可用而卡住。
+     */
+    suspend fun generateMetadata(markdown: String): NoteMetadata = withContext(ioDispatcher) {
+        val local = MarkdownSummary.derive(markdown)
+        if (markdown.isBlank()) {
+            return@withContext NoteMetadata(
+                title = local.title,
+                description = local.description,
+                categoryId = null,
+                usedFallback = true,
+                errorMessage = null,
+            )
+        }
+
+        val categories = _categories.value
+        val categoryNames = categories
+            .joinToString(separator = "、") { it.name }
+            .ifBlank { "（暂无）" }
+        val systemPrompt = """
+            你是笔记整理助手。请阅读用户给出的 Markdown 笔记正文，输出：
+            1. title：简洁标题，不超过 30 个字；
+            2. summary：一句话简介，不超过 80 个字；
+            3. category：从给定分类列表中选择最贴切的一个；没有合适分类时输出空字符串。
+            使用与正文相同的语言。只输出一个 JSON 对象，不要 Markdown 代码块或解释：
+            {"title":"...","summary":"...","category":"..."}
+        """.trimIndent()
+        val input = "可选分类：$categoryNames\n\n笔记正文：\n${markdown.take(6000)}"
+
+        val result = aiPromptExecutor.execute(
+            input = input,
+            systemPrompt = systemPrompt,
+            billingDesc = AppContext.getString(com.shifenmiao.common.R.string.note_ai_generate),
+        )
+        if (!result.isSuccess) {
+            return@withContext NoteMetadata(
+                title = local.title,
+                description = local.description,
+                categoryId = null,
+                usedFallback = true,
+                errorMessage = result.errorMessage,
+            )
+        }
+
+        val parsed = runCatching { parseMetadataJson(result.content) }.getOrNull()
+        val suggestedCategory = parsed?.category.orEmpty().trim()
+        val matchedCategory = categories.firstOrNull {
+            it.name.equals(suggestedCategory, ignoreCase = true)
+        } ?: categories.firstOrNull {
+            suggestedCategory.isNotBlank() &&
+                (it.name.contains(suggestedCategory) || suggestedCategory.contains(it.name))
+        }
+
+        NoteMetadata(
+            title = parsed?.title?.takeIf { it.isNotBlank() } ?: local.title,
+            description = parsed?.description?.takeIf { it.isNotBlank() } ?: local.description,
+            categoryId = matchedCategory?.id,
+            usedFallback = false,
+            errorMessage = null,
+        )
+    }
+
+    private fun parseMetadataJson(content: String): AiNoteMetadataJson? {
+        val start = content.indexOf('{')
+        val end = content.lastIndexOf('}')
+        if (start < 0 || end <= start) return null
+        val obj = runCatching {
+            Json.parseToJsonElement(content.substring(start, end + 1)).jsonObject
+        }.getOrNull() ?: return null
+        return AiNoteMetadataJson(
+            title = obj["title"]?.jsonPrimitive?.contentOrNull.orEmpty().trim(),
+            description = obj["summary"]?.jsonPrimitive?.contentOrNull
+                ?: obj["description"]?.jsonPrimitive?.contentOrNull.orEmpty().trim(),
+            category = obj["category"]?.jsonPrimitive?.contentOrNull.orEmpty().trim(),
+        )
     }
 
     private fun saveItem(
@@ -270,3 +389,17 @@ class CreateNoteComponent @AssistedInject internal constructor(
         ): CreateNoteComponent
     }
 }
+
+data class NoteMetadata(
+    val title: String,
+    val description: String,
+    val categoryId: Int?,
+    val usedFallback: Boolean,
+    val errorMessage: String?,
+)
+
+private data class AiNoteMetadataJson(
+    val title: String,
+    val description: String,
+    val category: String,
+)

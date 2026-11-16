@@ -24,7 +24,6 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -35,6 +34,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -168,12 +168,19 @@ fun MarkdownEditorScreen(
     }
 
     BaseScreen(
-        modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-        title = resolveTitle(uiState),
+        modifier = Modifier,
+        title = resolveTitle(uiState).ifBlank { stringResource(R.string.markdown_editor) },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = Color.Transparent,
+            scrolledContainerColor = Color.Transparent,
+            titleContentColor = MaterialTheme.colorScheme.onSurface,
+            navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
+            actionIconContentColor = MaterialTheme.colorScheme.onSurface,
+        ),
         onGoBack = {
             handleActionWithConfirm { component.onGoBack() }
         },
-        supportGlassEffect = false,
+        supportGlassEffect = true,
         actions = {
             // 保存按钮（独立显示，方便快捷操作）
             IconButton(
@@ -383,10 +390,7 @@ fun MarkdownEditorScreen(
         Box(modifier = Modifier.fillMaxSize()) {
             NativeMarkdownEditor(
                 state = editorState,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .navigationBarsPadding()
-                    .padding(horizontal = 12.dp),
+                modifier = Modifier.fillMaxSize(),
                 onContentChanged = component::markAsDirty,
             )
 

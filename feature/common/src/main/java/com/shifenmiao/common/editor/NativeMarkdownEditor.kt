@@ -4,7 +4,7 @@
 package com.shifenmiao.common.editor
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -38,7 +38,6 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.R
 import com.shifenmiao.common.components.text.SuppressSystemTextSelectionMenu
 import com.shifenmiao.common.markdown.OneBoxMarkdownContent
-import com.wanbaohe.core.ui.widget.glass.GlassSegmentedButtonRow
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.markdown.OneBoxMarkdown
@@ -74,94 +73,69 @@ fun NativeMarkdownEditor(
     LaunchedEffect(state) {
         snapshotFlow { state.userContentVersion }.drop(1).collect { onContentChanged() }
     }
-    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        NativeMarkdownEditorModeBar(state)
-        if (state.mode == NativeMarkdownEditorMode.Edit) {
-            NativeMarkdownEditorActionBar(state, extraActions)
-        }
-        SuppressSystemTextSelectionMenu {
-            MarkdownDocumentEditor(
-                state = state,
-                scheme = scheme,
-                config = MarkdownDocumentEditorConfig(
-                    registry = registry,
-                    richTextBehavior = RichTextEditorBehaviorConfig(clipboard = clipboard),
-                    richTextVisual = RichTextEditorVisualConfig(
-                        cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
-                        selectionAnchorTracker = selectionTracker,
-                        minHeight = 72.dp,
-                        placeholder = {
-                            Text(
-                                text = stringResource(R.string.native_editor_empty_hint),
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                style = MaterialTheme.typography.bodyLarge,
-                            )
-                        },
+
+    Column(modifier = modifier) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        ) {
+            SuppressSystemTextSelectionMenu {
+                MarkdownDocumentEditor(
+                    state = state,
+                    scheme = scheme,
+                    config = MarkdownDocumentEditorConfig(
+                        registry = registry,
+                        richTextBehavior = RichTextEditorBehaviorConfig(clipboard = clipboard),
+                        richTextVisual = RichTextEditorVisualConfig(
+                            // 与预览使用同一套正文排版（字号/行高/字体），切模式时正文不跳。
+                            textStyle = MaterialTheme.typography.bodyLarge.copy(
+                                color = MaterialTheme.colorScheme.onSurface,
+                            ),
+                            cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
+                            selectionAnchorTracker = selectionTracker,
+                            // 只给空段落一个可点高度；非空块至少一行 32dp，不会被额外撑高。
+                            minHeight = 32.dp,
+                            placeholder = {
+                                Text(
+                                    text = stringResource(R.string.native_editor_empty_hint),
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                )
+                            },
+                        ),
                     ),
-                ),
-                previewContent = { markdown ->
-                    OneBoxMarkdownContent(
-                        message = markdown,
-                        modifier = Modifier.fillMaxSize(),
-                        paddingValues = PaddingValues(8.dp),
-                    )
-                },
-                modifier = Modifier.fillMaxWidth().weight(1f),
-            )
+                    previewContent = { markdown ->
+                        OneBoxMarkdownContent(
+                            message = markdown,
+                            modifier = Modifier.fillMaxSize(),
+                            // 外层统一 16dp 横向留白；预览自身不再额外缩进，避免切换时左右跳。
+                            paddingValues = PaddingValues(0.dp),
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                )
+            }
         }
-        NativeMarkdownEditorSelectionMenu(state, scheme, selectionTracker)
+
         if (state.mode == NativeMarkdownEditorMode.Source && state.sourceState.text.isEmpty()) {
             Text(
                 text = stringResource(R.string.native_editor_source_hint),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(horizontal = 16.dp),
             )
         }
-    }
-}
 
-@Composable
-private fun NativeMarkdownEditorModeBar(state: NativeMarkdownEditorState) {
-    Column {
-        GlassSegmentedButtonRow(
-            options = NativeMarkdownEditorMode.entries.toList(),
-            selectedOption = state.mode,
-            onOptionSelected = state::selectMode,
-            modifier = Modifier.fillMaxWidth(),
-            rowStyle = GlassStyle.None,
-            buttonHeight = 36.dp,
-            label = { mode ->
-                Text(
-                    text = stringResource(
-                        when (mode) {
-                            NativeMarkdownEditorMode.Edit -> R.string.native_editor_mode_edit
-                            NativeMarkdownEditorMode.Preview -> R.string.native_editor_mode_preview
-                            NativeMarkdownEditorMode.Source -> R.string.native_editor_mode_source
-                        },
-                    ),
-                    style = MaterialTheme.typography.labelMedium,
-                    maxLines = 1,
-                )
-            },
+        NativeMarkdownEditorDock(
+            state = state,
+            extraActions = extraActions,
         )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End,
-        ) {
-            NativeEditorToolbarButton(
-                label = stringResource(com.t8rin.imagetoolbox.core.resources.R.string.undo),
-                displayLabel = "↶",
-                enabled = state.canUndo(),
-                onClick = state::undo,
-            )
-            NativeEditorToolbarButton(
-                label = stringResource(com.t8rin.imagetoolbox.core.resources.R.string.redo),
-                displayLabel = "↷",
-                enabled = state.canRedo(),
-                onClick = state::redo,
-            )
-        }
     }
+
+    NativeMarkdownEditorSelectionMenu(state, scheme, selectionTracker)
 }
 
 @Composable

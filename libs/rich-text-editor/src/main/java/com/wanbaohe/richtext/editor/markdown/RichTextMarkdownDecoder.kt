@@ -24,7 +24,15 @@ class RichTextMarkdownDecoder(
         while (index < lines.size) {
             val trimmed = lines[index].trim()
             when {
-                trimmed.isEmpty() -> index++
+                // 空行是段落边界：拆成独立块，编辑区才能用 block spacing 复现预览的段间距。
+                // 例外：连续的列表项即使中间有空行（松散列表）也保持在同一个块里，
+                // 否则每个 bullet 都会被当成独立段落，编辑区会出现远大于预览的行距。
+                trimmed.isEmpty() -> {
+                    if (!keepsLooseListTogether(lines, index)) {
+                        flushRichText()
+                    }
+                    index++
+                }
                 FenceRegex.containsMatchIn(trimmed) -> {
                     flushRichText()
                     index = readFence(lines, index)
@@ -125,6 +133,13 @@ class RichTextMarkdownDecoder(
         return index
     }
 
+    private fun keepsLooseListTogether(lines: List<String>, blankIndex: Int): Boolean {
+        if (richLines.isEmpty() || richLines.any { !it.isListSourceLine() }) return false
+        var next = blankIndex + 1
+        while (next < lines.size && lines[next].isBlank()) next++
+        return next < lines.size && lines[next].isListSourceLine()
+    }
+
     private fun flushRichText() {
         if (richLines.isEmpty()) return
         val source = richLines.joinToString("\n")
@@ -209,7 +224,14 @@ class RichTextMarkdownDecoder(
     ) = AnnotatedString.Range(style, start, end + if (includeNewline) 1 else 0)
 }
 
+private fun String.isListSourceLine(): Boolean =
+    trimStart().startsWith("- ") ||
+        trimStart().startsWith("* ") ||
+        trimStart().startsWith("+ ") ||
+        ListOrderedRegex.containsMatchIn(trimStart())
+
 private val FenceRegex = Regex("^(`{3,}|~{3,})")
+private val ListOrderedRegex = Regex("^\\d+\\.\\s+")
 private val MediaDirectiveRegex = Regex("^\\{%\\s*(video|audio)\\b")
 private val HeadingRegex = Regex("^(#{1,3})\\s+(.*)$")
 private val BulletRegex = Regex("^[-*+]\\s+(.*)$")
