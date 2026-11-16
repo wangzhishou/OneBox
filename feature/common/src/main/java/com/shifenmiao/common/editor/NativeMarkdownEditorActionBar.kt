@@ -18,6 +18,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -73,6 +74,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineAudioFile
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLink
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
+import com.wanbaohe.core.ui.widget.glass.GlassSegmentedButtonRow
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.richtext.editor.command.applyBlockStyle
@@ -122,7 +124,7 @@ internal fun NativeMarkdownEditorDock(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(2.dp),
     ) {
-        NativeMarkdownEditorDockModeButtons(state, expanded)
+        NativeMarkdownEditorModeToggle(state, expanded)
         Spacer(modifier = Modifier.width(4.dp))
         NativeMarkdownEditorDockActionRow(
             state = state,
@@ -141,22 +143,52 @@ internal fun NativeMarkdownEditorDock(
 }
 
 @Composable
-private fun NativeMarkdownEditorDockModeButtons(
+private fun NativeMarkdownEditorModeToggle(
     state: NativeMarkdownEditorState,
     expanded: Boolean,
 ) {
-    Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-        // 预览入口暂时隐藏：只保留编辑/源码两个互斥模式。
-        listOf(NativeMarkdownEditorMode.Edit, NativeMarkdownEditorMode.Source).forEach { mode ->
-            DockIconChip(
-                label = stringResource(mode.labelRes()),
-                icon = mode.icon(),
-                expanded = expanded,
-                selected = state.mode == mode,
-                onClick = { state.selectMode(mode) },
-            )
-        }
+    val modes = listOf(NativeMarkdownEditorMode.Edit, NativeMarkdownEditorMode.Source)
+    val selected = if (state.mode == NativeMarkdownEditorMode.Source) {
+        NativeMarkdownEditorMode.Source
+    } else {
+        NativeMarkdownEditorMode.Edit
     }
+    GlassSegmentedButtonRow(
+        options = modes,
+        selectedOption = selected,
+        onOptionSelected = state::selectMode,
+        rowStyle = GlassStyle.Thin,
+        buttonHeight = if (expanded) 42.dp else 30.dp,
+        hugContent = true,
+        contentPadding = PaddingValues(2.dp),
+        spacing = 1.dp,
+        selectedColor = MaterialTheme.colorScheme.primaryContainer,
+        selectedContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        label = { mode ->
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                Icon(
+                    imageVector = mode.icon(),
+                    contentDescription = stringResource(mode.labelRes()),
+                    modifier = Modifier.size(18.dp),
+                )
+                AnimatedVisibility(
+                    visible = expanded,
+                    enter = fadeIn(tween(140)) + expandHorizontally(tween(180)),
+                    exit = fadeOut(tween(90)) + shrinkHorizontally(tween(140)),
+                ) {
+                    Text(
+                        text = stringResource(mode.labelRes()),
+                        style = MaterialTheme.typography.labelSmall,
+                        maxLines = 1,
+                    )
+                }
+            }
+        },
+    )
 }
 
 @Composable
@@ -216,21 +248,21 @@ private fun NativeMarkdownEditorDockActionRow(
             horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             if (onVoiceInput != null) {
-                DockIconChip(
+                DockIconButton(
                     label = stringResource(com.shifenmiao.core.R.string.ai_input_voice),
                     icon = OneBoxIcons.Outlined.Mic,
                     expanded = expanded,
                     onClick = onVoiceInput,
                 )
             }
-            DockIconChip(
+            DockIconButton(
                 label = stringResource(com.t8rin.imagetoolbox.core.resources.R.string.undo),
                 icon = OneBoxIcons.Outlined.LineUndo,
                 expanded = expanded,
                 enabled = state.canUndo(),
                 onClick = state::undo,
             )
-            DockIconChip(
+            DockIconButton(
                 label = stringResource(com.t8rin.imagetoolbox.core.resources.R.string.redo),
                 icon = OneBoxIcons.Outlined.LineRedo,
                 expanded = expanded,
