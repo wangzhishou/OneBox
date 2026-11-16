@@ -47,7 +47,6 @@ import com.shifenmiao.common.components.text.SuppressSystemTextSelectionMenu
 import com.shifenmiao.common.di.VoiceRecognizerEntryPoint
 import com.shifenmiao.common.markdown.OneBoxMarkdownContent
 import com.shifenmiao.common.voice.ui.VoiceInputSheet
-import com.shifenmiao.common.voice.ui.rememberVoiceInputEnabled
 import com.shifenmiao.common.voice.ui.rememberVoiceInputLauncher
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
@@ -92,7 +91,6 @@ fun NativeMarkdownEditor(
     var insertKind by remember { mutableStateOf<NativeEditorInsertKind?>(null) }
     var pendingLocalKind by remember { mutableStateOf<NativeEditorInsertKind?>(null) }
     var isImporting by remember { mutableStateOf(false) }
-    val voiceInputEnabled = rememberVoiceInputEnabled()
     var showVoiceSheet by remember { mutableStateOf(false) }
     val voiceRecognizer = remember(context) {
         EntryPointAccessors.fromApplication(
@@ -277,7 +275,7 @@ fun NativeMarkdownEditor(
             state = state,
             extraActions = extraActions,
             onInsert = { insertKind = it },
-            onVoiceInput = startVoiceInput.takeIf { voiceInputEnabled },
+            onVoiceInput = startVoiceInput,
         )
     }
 
