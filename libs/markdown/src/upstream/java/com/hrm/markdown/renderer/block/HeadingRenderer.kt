@@ -2,8 +2,6 @@ package com.hrm.markdown.renderer.block
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -12,7 +10,6 @@ import com.hrm.markdown.parser.ast.Node
 import com.hrm.markdown.parser.ast.SetextHeading
 import com.hrm.markdown.renderer.LocalMarkdownRenderOptions
 import com.hrm.markdown.renderer.LocalMarkdownStyle
-import com.hrm.markdown.renderer.internal.layout.LayoutTokens
 import com.hrm.markdown.renderer.LocalRendererDocument
 import com.hrm.markdown.renderer.inline.InlineLayoutBlockText
 import com.hrm.markdown.renderer.inline.rememberInlineModel
@@ -42,7 +39,6 @@ internal fun HeadingRenderer(
         level = level,
         numbering = numbering,
         inlineModel = inlineModel,
-        showDivider = node.level <= 2,
         modifier = modifier,
     )
 }
@@ -67,17 +63,19 @@ internal fun SetextHeadingRenderer(
         level = level,
         numbering = numbering,
         inlineModel = inlineModel,
-        showDivider = true,
         modifier = modifier,
     )
 }
 
+/**
+ * 标题不再画下划线：标题层级只靠字号/字重表达，
+ * 正文与标题之间的留白统一交给 blockSpacing，避免标题上下出现两段不等距空白。
+ */
 @Composable
 internal fun RenderHeadingBlockModel(
     level: Int,
     numbering: String?,
     inlineModel: InlineModel,
-    showDivider: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val theme = LocalMarkdownStyle.current
@@ -92,14 +90,6 @@ internal fun RenderHeadingBlockModel(
             style = style,
             isHeading = true,
         )
-
-        if (showDivider) {
-            HorizontalDivider(
-                modifier = Modifier.padding(top = LayoutTokens.HeadingDividerSpacing),
-                thickness = theme.layout.dividerThickness,
-                color = theme.colors.divider,
-            )
-        }
     }
 }
 

@@ -288,11 +288,9 @@ class MarkdownDocumentEditorState internal constructor(
             }
 
             is MarkdownEditorBlock.Raw -> {
-                if (isChangedBlock) {
-                    block.markdown = checkNotNull(changedSnapshot).text
-                } else if (refresh) {
-                    block.markdown = block.state.text.toString()
-                }
+                // raw block 的 TextFieldState 是唯一事实来源：表格/待办等原生编辑器
+                // 直接改 state 后，历史快照与导出都必须拿到最新文本。
+                block.markdown = block.state.text.toString()
                 MarkdownDocumentBlock.Raw(block.id, block.markdown, block.kind)
             }
         }

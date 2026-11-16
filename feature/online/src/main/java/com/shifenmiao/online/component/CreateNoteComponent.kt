@@ -21,7 +21,10 @@ package com.shifenmiao.online.component
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnDestroy
+import com.shifenmiao.base.longtask.LongTaskCenter
+import com.shifenmiao.base.longtask.LongTaskKind
 import com.shifenmiao.common.ai.AIPromptExecutor
+import com.shifenmiao.common.manager.AIEngineManager
 import com.shifenmiao.core.R
 import com.shifenmiao.database.AppDatabase
 import com.shifenmiao.database.data_draft.DataDraftHelper
@@ -29,6 +32,8 @@ import com.shifenmiao.database.item.entity.Category
 import com.shifenmiao.database.item.entity.toModel
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.model.Source
+import com.shifenmiao.model.ai.AiEngine
+import com.shifenmiao.online.R as OnlineR
 import com.shifenmiao.model.item.ItemDataUiState
 import com.shifenmiao.model.note.NoteResult
 import com.shifenmiao.model.note.NoteSaveParams
@@ -42,7 +47,10 @@ import com.wanbaohe.core.ui.utils.navigation.ScreenCallbackResult
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -67,6 +75,8 @@ class CreateNoteComponent @AssistedInject internal constructor(
     private val noteService: NoteService,
     private val dataDraftHelper: DataDraftHelper,
     private val aiPromptExecutor: AIPromptExecutor,
+    private val aiEngineManager: AIEngineManager,
+    private val longTaskCenter: LongTaskCenter,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
     private val itemDao = appDatabase.itemEntityDao()
@@ -78,6 +88,14 @@ class CreateNoteComponent @AssistedInject internal constructor(
 
     private val _categories = MutableStateFlow<List<Category>>(emptyList())
     val categories: StateFlow<List<Category>> = _categories.asStateFlow()
+
+    private val _aiState = MutableStateFlow(NoteAiUiState())
+    val aiState: StateFlow<NoteAiUiState> = _aiState.asStateFlow()
+
+    /** 当前全局 AI 引擎；面板展示与生成请求共用它，切换走 AppComponent 的公共模型选择面板。 */
+    val currentAiEngine: StateFlow<AiEngine> = aiEngineManager.currentAIEngine
+
+    private var aiGenerationJob: Job? = null
 
     val reorderableType: ReorderableType = ReorderableType.CATEGORY
 
@@ -159,6 +177,154 @@ class CreateNoteComponent @AssistedInject internal constructor(
                 }
             }
             .collect { }
+    }
+
+    /** 打开笔记 AI 写作面板；[markdown] 是点开面板那一刻的正文快照。 */
+    fun openAiAction(action: NoteAiAction, markdown: String) {
+        aiGenerationJob?.cancel()
+        aiGenerationJob = null
+        _aiState.update {
+            it.copy(
+                visible = true,
+                action = action,
+                prompt = AppContext.getString(action.promptRes),
+                originalMarkdown = markdown,
+                result = "",
+                isGenerating = false,
+                error = null,
+                tokens = 0,
+            )
+        }
+    }
+
+    fun changeAiAction(action: NoteAiAction) {
+        if (_aiState.value.action == action) return
+        aiGenerationJob?.cancel()
+        aiGenerationJob = null
+        _aiState.update {
+            it.copy(
+                action = action,
+                prompt = AppContext.getString(action.promptRes),
+                result = "",
+                isGenerating = false,
+                error = null,
+                tokens = 0,
+            )
+        }
+    }
+
+    fun updateAiPrompt(prompt: String) {
+        _aiState.update { it.copy(prompt = prompt) }
+    }
+
+    fun cancelAiGeneration() {
+        aiGenerationJob?.cancel()
+        aiGenerationJob = null
+        _aiState.update { it.copy(isGenerating = false, error = null) }
+    }
+
+    fun dismissAi() {
+        aiGenerationJob?.cancel()
+        aiGenerationJob = null
+        _aiState.update { it.copy(visible = false, isGenerating = false) }
+    }
+
+    /**
+     * 执行一次 AI 写作。请求包在 [LongTaskCenter] 里跑，退后台时进程仍有前台服务兜底，
+     * 流式结果会持续写进 [aiState]，回到前台能直接看到。
+     */
+    fun runAiGeneration() {
+        val state = _aiState.value
+        if (state.isGenerating) return
+        if (state.originalMarkdown.isBlank()) {
+            _aiState.update {
+                it.copy(error = AppContext.getString(OnlineR.string.note_ai_too_short))
+            }
+            return
+        }
+        val engine = aiEngineManager.getCurrentAiEngine()
+        if (engine.name.isBlank()) {
+            _aiState.update {
+                it.copy(error = AppContext.getString(OnlineR.string.note_ai_no_engine))
+            }
+            return
+        }
+
+        aiGenerationJob?.cancel()
+        aiGenerationJob = componentScope.launch(ioDispatcher) {
+            _aiState.update { it.copy(isGenerating = true, result = "", error = null, tokens = 0) }
+            val taskId = "note-ai-rewrite-$draftId"
+            longTaskCenter.begin(
+                id = taskId,
+                kind = LongTaskKind.AI_GENERATION,
+                title = AppContext.getString(OnlineR.string.note_ai_keepalive_title),
+            )
+            try {
+                val input = AppContext.getContext().getString(
+                    OnlineR.string.note_ai_input_template,
+                    state.prompt.trim(),
+                    state.originalMarkdown,
+                )
+                val result = aiPromptExecutor.executeStreaming(
+                    input = input,
+                    systemPrompt = AppContext.getString(OnlineR.string.note_ai_system_prompt),
+                    billingDesc = AppContext.getString(OnlineR.string.note_ai_billing_desc),
+                    onDelta = { full ->
+                        _aiState.update { it.copy(result = cleanAiMarkdown(full)) }
+                    },
+                )
+                // 用户点「停止」时 executeStreaming 会吞掉取消异常并返回失败结果，这里直接丢弃。
+                if (!isActive) return@launch
+                if (result.isSuccess) {
+                    val cleaned = cleanAiMarkdown(result.content)
+                    _aiState.update {
+                        it.copy(
+                            isGenerating = false,
+                            result = cleaned,
+                            error = if (cleaned.isBlank()) {
+                                AppContext.getString(OnlineR.string.note_ai_empty_result)
+                            } else {
+                                null
+                            },
+                            tokens = result.totalTokens,
+                        )
+                    }
+                } else {
+                    _aiState.update {
+                        it.copy(
+                            isGenerating = false,
+                            error = result.errorMessage
+                                ?: AppContext.getString(OnlineR.string.note_ai_empty_result),
+                        )
+                    }
+                }
+            } catch (t: Throwable) {
+                if (t is CancellationException) throw t
+                _aiState.update {
+                    it.copy(
+                        isGenerating = false,
+                        error = t.message ?: AppContext.getString(OnlineR.string.note_ai_empty_result),
+                    )
+                }
+            } finally {
+                longTaskCenter.end(taskId)
+            }
+        }
+    }
+
+    /**
+     * 清理模型常见的外层代码块围栏；只在整个输出都被 ``` 包裹时剥壳，
+     * 正文内部真正的代码块不受影响。
+     */
+    private fun cleanAiMarkdown(raw: String): String {
+        val trimmed = raw.trim()
+        if (!trimmed.startsWith("```")) return trimmed
+        val firstNewline = trimmed.indexOf('\n')
+        if (firstNewline < 0) return trimmed
+        val closingFence = trimmed.lastIndexOf("```")
+        if (closingFence <= firstNewline) return trimmed
+        if (trimmed.substring(closingFence).trim() != "```") return trimmed
+        return trimmed.substring(firstNewline + 1, closingFence).trim()
     }
 
     fun onTitleChange(title: String) {
@@ -360,7 +526,10 @@ class CreateNoteComponent @AssistedInject internal constructor(
     /**
      * 新增一个本地分类，并自动将其加入已选分类。
      */
-    fun addCategory(name: String) {
+    fun addCategory(
+        name: String,
+        onAdded: (com.shifenmiao.model.Category) -> Unit = {},
+    ) {
         if (name.isBlank()) return
         componentScope.launch(ioDispatcher) {
             val newCategory = com.shifenmiao.database.item.entity.Category(
@@ -376,6 +545,7 @@ class CreateNoteComponent @AssistedInject internal constructor(
                     isDirty = true
                 )
             }
+            withContext(Dispatchers.Main) { onAdded(inserted) }
         }
     }
 

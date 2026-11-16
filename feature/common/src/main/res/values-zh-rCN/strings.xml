@@ -200,10 +200,13 @@
     <string name="native_editor_style_heading_1">标题 1</string>
     <string name="native_editor_style_heading_2">标题 2</string>
     <string name="native_editor_style_heading_3">标题 3</string>
+    <string name="native_editor_style_heading_4">标题 4</string>
     <string name="native_editor_style_highlight">高亮</string>
     <string name="native_editor_insert_text">文字</string>
     <string name="native_editor_insert_code">代码</string>
     <string name="native_editor_insert_diagram">图表</string>
+    <string name="native_editor_insert_table">表格</string>
+    <string name="native_editor_insert_task_list">复选框列表</string>
     <string name="native_editor_insert_image">图片</string>
     <string name="native_editor_insert_video">视频</string>
     <string name="native_editor_insert_link">链接</string>
@@ -222,6 +225,8 @@
     <string name="native_editor_template_diagram">```mermaid\nflowchart LR\n    A[开始] --> B[完成]\n```</string>
     <string name="native_editor_template_image">![示例图片](https://mdn.github.io/shared-assets/images/examples/grapefruit-slice.jpg)</string>
     <string name="native_editor_template_video">!VIDEO[示例视频](https://mdn.github.io/shared-assets/videos/flower.mp4){poster=https://mdn.github.io/shared-assets/images/examples/grapefruit-slice.jpg}</string>
+    <string name="native_editor_template_table">| 列 1 | 列 2 |\n| --- | --- |\n| 内容 | 内容 |</string>
+    <string name="native_editor_template_task_list">- [ ] 待办事项</string>
     <string name="native_editor_kind_code">代码</string>
     <string name="native_editor_kind_diagram">流程图</string>
     <string name="native_editor_kind_image">图片</string>
@@ -230,9 +235,20 @@
     <string name="native_editor_kind_math">公式</string>
     <string name="native_editor_kind_html">HTML</string>
     <string name="native_editor_kind_other">Markdown</string>
+    <string name="native_editor_kind_table">表格</string>
+    <string name="native_editor_kind_task_list">复选框列表</string>
     <string name="native_editor_show_preview">预览</string>
     <string name="native_editor_delete_block">删除块</string>
     <string name="native_editor_empty_hint">开始输入，或从下方插入内容。</string>
+    <string name="native_editor_table_add_row">添加行</string>
+    <string name="native_editor_table_add_column">添加列</string>
+    <string name="native_editor_table_delete_row">删除行</string>
+    <string name="native_editor_table_delete_column">删除列</string>
+    <string name="native_editor_table_edit_source">编辑源码</string>
+    <string name="native_editor_table_cell_hint">单元格</string>
+    <string name="native_editor_task_add_item">添加待办</string>
+    <string name="native_editor_task_delete_item">删除待办</string>
+    <string name="native_editor_task_item_hint">待办事项</string>
     <string name="native_editor_source_hint">在这里直接编辑 Markdown 源码。</string>
 </resources>
 

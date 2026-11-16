@@ -34,7 +34,7 @@ object MarkdownSummary {
     )
 
     // 匹配 h1-h3 标题的正则
-    private val headingRegex = Regex("^(#{1,3})\\s+(.+)$")
+    private val headingRegex = Regex("^(#{1,4})\\s+(.+)$")
 
     fun derive(
         markdown: String,
@@ -49,6 +49,13 @@ object MarkdownSummary {
         var inFrontMatter = false
         var inCodeFence = false
 
+        fun isTableSeparatorRow(line: String): Boolean {
+            val cells = line.trim().trim('|').split('|')
+            return cells.isNotEmpty() && cells.all { cell ->
+                cell.trim().matches(Regex(":?-{1,}:?"))
+            }
+        }
+
         fun isFence(line: String): Boolean {
             val t = line.trimStart()
             return t.startsWith("```") || t.startsWith("~~~")
@@ -59,6 +66,9 @@ object MarkdownSummary {
             if (line.isEmpty()) return true
             if (line == "---" || line == "+++") return true
             if (line == ">") return true
+            // GFM 表格分隔行（| --- | :---: |）不是正文，派生简介时跳过，
+            // 否则自动标题/简介会把分隔线当成内容。
+            if (line.startsWith("|") && isTableSeparatorRow(line)) return true
             return false
         }
 
@@ -142,7 +152,7 @@ object MarkdownSummary {
         var s = input.trim()
 
         // headings / quotes / list markers
-        s = s.replace(Regex("^#{1,6}\\s+"), "")
+        s = s.replace(Regex("^#{1,6}\\s*"), "")
         s = s.replace(Regex("^>\\s*"), "")
         s = s.replace(Regex("^\\s*([-*+]\\s+|\\d+\\.\\s+)"), "")
 

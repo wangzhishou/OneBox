@@ -227,5 +227,5 @@ private fun String.isListSourceLine(): Boolean =
 private val FenceRegex = Regex("^(`{3,}|~{3,})")
 private val ListOrderedRegex = Regex("^\\d+\\.\\s+")
 private val MediaDirectiveRegex = Regex("^\\{%\\s*(video|audio)\\b")
-private val HeadingRegex = Regex("^(#{1,3})\\s+(.*)$")
+private val HeadingRegex = Regex("^(#{1,4})\\s+(.*)$")
 private val BulletRegex = Regex("^[-*+]\\s+(.*)$")

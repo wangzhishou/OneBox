@@ -99,7 +99,7 @@ object MarkdownDefaults {
         text = scheme.onSurface, link = scheme.primary,
         blockQuoteBorder = scheme.outline, blockQuoteText = scheme.onSurfaceVariant, divider = scheme.outlineVariant,
         tableBorder = scheme.outlineVariant, tableHeaderBackground = scheme.surfaceContainerHighest,
-        highlight = scheme.tertiaryContainer, taskChecked = scheme.primary, taskUnchecked = scheme.outline,
+        highlight = scheme.tertiaryContainer, taskChecked = scheme.primaryContainer, taskUnchecked = scheme.outline,
         footnote = scheme.onSurfaceVariant, kbdBackground = scheme.surfaceVariant, spoiler = scheme.onSurfaceVariant,
         containerBackground = scheme.surfaceVariant, containerHeaderBackground = scheme.surfaceContainerHighest,
         admonitions = material3AdmonitionColors(scheme),

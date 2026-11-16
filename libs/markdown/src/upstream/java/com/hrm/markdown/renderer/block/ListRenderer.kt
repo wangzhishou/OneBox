@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
@@ -205,6 +206,7 @@ private fun ListItemRow(
                     .then(if (startsWithText) Modifier.alignBy { it.measuredHeight / 2 } else alignment),
                 colors = CheckboxDefaults.colors(
                     checkedColor = theme.colors.taskChecked,
+                    checkmarkColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     uncheckedColor = theme.colors.taskUnchecked,
                 ),
             )

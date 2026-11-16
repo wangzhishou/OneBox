@@ -30,7 +30,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -146,54 +145,25 @@ fun NoteCategorySelection(
     }
 }
 
-private val ReadOnlyCategoryChipPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp)
-
 /**
- * 只读分类 chip 的弱化样式:小字号 + 低对比配色,避免在笔记详情页喧宾夺主。
+ * 展示态分类 chip：与编辑页共用 [NoteReadOnlyCategoryBar]，
+ * 尺寸/内边距/圆角与编辑页完全一致，最新更新的分类排在最前。
  */
-@Composable
-private fun ReadOnlyCategoryChipLabel(text: String) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.bodySmall
-    )
-}
-
-@Composable
-private fun readOnlyCategoryChipColors() = FilterChipDefaults.filterChipColors().copy(
-    selectedContainerColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.5f),
-    selectedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant
-)
-
 @Composable
 fun ReadOnlyNoteCategorySelection(
     modifier: Modifier = Modifier,
     uiState: ItemDataUiState
 ) {
-    if (uiState.selectedCategories.isEmpty()) return
-
-    val listState = rememberLazyListState()
-
-    LazyRow(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        state = listState
-    ) {
-        items(uiState.selectedCategories.toList(), key = { it.id }) { category ->
-            GlassFilterChip(
-                selected = true,
-                onClick = {},
-                label = {
-                    ReadOnlyCategoryChipLabel(text = category.name.orEmpty())
-                },
-                shape = EditorCategoryChipShape,
-                contentPadding = ReadOnlyCategoryChipPadding,
-                colors = readOnlyCategoryChipColors(),
-                border = null
+    NoteReadOnlyCategoryBar(
+        categories = uiState.selectedCategories.map { category ->
+            NoteCategoryChipItem(
+                id = category.id,
+                name = category.name,
+                updatedAt = category.updatedAt,
             )
-        }
-    }
+        },
+        modifier = modifier,
+    )
 }
 
 // ===================== CategorySelection for CreateHtmlComponent =====================

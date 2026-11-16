@@ -24,14 +24,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -168,9 +163,8 @@ OneBoxMarkdownContent(
     ),
     headerContent = {
         if (noteUIState.selectedCategories.isNotEmpty()) {
-            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
+            // 与编辑页使用同一个分类栏、同一套 4dp 上下留白；不再额外插 Spacer 撑大间距。
             ReadOnlyNoteCategorySelection(uiState = noteUIState)
-            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
         }
     }
 )

@@ -22,7 +22,7 @@ internal class MarkdownRawBlockClassifier(
         line.startsWith("    ") ||
             line.startsWith('\t') ||
             line.startsWith('|') ||
-            line.startsWith("####") ||
+            line.startsWith("#####") ||
             line.startsWith("<") && !line.startsWith("<u>")
 
     private fun hasRawInlineSyntax(line: String): Boolean =

@@ -76,13 +76,7 @@ internal fun LayoutEnvironment.measureLeafBlockContentHeight(
             0,
             markdownTheme.headingStyles.lastIndex
         )]
-        measureInlineBlock(block.inline, style, widthPx) + if (block.level <= 2) {
-            with(density) {
-                LayoutTokens.HeadingDividerSpacing.toPx() + markdownTheme.layout.dividerThickness.toPx()
-            }
-        } else {
-            0f
-        }
+        measureInlineBlock(block.inline, style, widthPx)
     }
 
     is TableBlockModel -> measureTableBlockContentHeight(block, widthPx)

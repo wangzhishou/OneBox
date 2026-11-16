@@ -11,7 +11,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -68,7 +67,9 @@ import com.t8rin.imagetoolbox.core.resources.Icons as OneBoxIcons
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.Mic
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAudioFile
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineCheckBoxBlank
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLink
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineTableChart
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
@@ -82,7 +83,6 @@ import com.wanbaohe.richtext.editor.command.toggleList
 import com.wanbaohe.richtext.editor.markdown.MarkdownRawBlockKind
 import com.wanbaohe.richtext.editor.style.RichTextBlockStyle
 import com.wanbaohe.richtext.editor.style.RichTextInlineStyle
-import com.wanbaohe.richtext.editor.style.RichTextStyleScheme
 
 private val DockButtonShape = RoundedCornerShape(13.dp)
 private const val DockCollapsedHeight = 34
@@ -203,6 +203,8 @@ private fun NativeMarkdownEditorDockActionRow(
     val activeBlockStyleId = editor?.currentBlockStyle(scheme)?.id
     val codeTemplate = stringResource(R.string.native_editor_template_code)
     val diagramTemplate = stringResource(R.string.native_editor_template_diagram)
+    val tableTemplate = stringResource(R.string.native_editor_template_table)
+    val taskListTemplate = stringResource(R.string.native_editor_template_task_list)
     val actionScrollState = rememberScrollState()
     LaunchedEffect(Unit) {
         // 进入新编辑页时把工具条复位到最左侧，优先露出语音/撤销/重做。
@@ -297,6 +299,16 @@ private fun NativeMarkdownEditorDockActionRow(
                     onClick = { editor?.applyBlockStyle(style.id, scheme) },
                 )
             }
+            scheme.blockStyle(NATIVE_EDITOR_HEADING_4_ID)?.let { style ->
+                DockTextButton(
+                    label = stringResource(R.string.native_editor_style_heading_4),
+                    displayLabel = "H4",
+                    expanded = expanded,
+                    selected = activeBlockStyleId == style.id,
+                    enabled = editor != null,
+                    onClick = { editor?.applyBlockStyle(style.id, scheme) },
+                )
+            }
             scheme.blockStyle(NATIVE_EDITOR_QUOTE_ID)?.let { style ->
                 DockTextButton(
                     label = style.label,
@@ -343,6 +355,28 @@ private fun NativeMarkdownEditorDockActionRow(
                     state.insertRawBlock(
                         kind = MarkdownRawBlockKind.Diagram,
                         markdown = diagramTemplate,
+                    )
+                },
+            )
+            DockIconButton(
+                label = stringResource(R.string.native_editor_insert_table),
+                icon = OneBoxIcons.Outlined.LineTableChart,
+                expanded = expanded,
+                onClick = {
+                    state.insertRawBlock(
+                        kind = MarkdownRawBlockKind.Table,
+                        markdown = tableTemplate,
+                    )
+                },
+            )
+            DockIconButton(
+                label = stringResource(R.string.native_editor_insert_task_list),
+                icon = OneBoxIcons.Outlined.LineCheckBoxBlank,
+                expanded = expanded,
+                onClick = {
+                    state.insertRawBlock(
+                        kind = MarkdownRawBlockKind.TaskList,
+                        markdown = taskListTemplate,
                     )
                 },
             )

@@ -73,15 +73,15 @@ internal fun rememberNativeMarkdownStyleScheme(): RichTextStyleScheme {
             markdown = RichTextMarkdownInlineRule.delimited("==", order = 15),
         )
 
-        // 与 libs/markdown 的 MarkdownTypography 默认值对齐：H1 32/40、H2 24/32、H3 20/28。
-        // 编辑区用同一套字号/行高，切到预览时正文不会跳字号，也不会整体位移。
+        // 与 libs/markdown 的 MarkdownTypography 默认值一字不差：H1 与页面标题同为 18sp，
+        // H2/H3/H4 依次递减。编辑区与预览共用这套字号/行高，切模式时正文不跳、标题不缩水。
         val blockStyles = base.blockStyles.map { style ->
             when (style.id) {
                 RichTextBlockStyle.Heading1Id -> RichTextBlockStyle.heading(
                     id = RichTextBlockStyle.Heading1Id,
                     label = style.label,
-                    fontSize = 32.sp,
-                    lineHeight = 40.sp,
+                    fontSize = HEADING_1_SIZE,
+                    lineHeight = HEADING_1_LINE_HEIGHT,
                     markdownPrefix = "# ",
                     fontWeight = FontWeight.Bold,
                 )
@@ -89,8 +89,8 @@ internal fun rememberNativeMarkdownStyleScheme(): RichTextStyleScheme {
                 RichTextBlockStyle.Heading2Id -> RichTextBlockStyle.heading(
                     id = RichTextBlockStyle.Heading2Id,
                     label = style.label,
-                    fontSize = 24.sp,
-                    lineHeight = 32.sp,
+                    fontSize = HEADING_2_SIZE,
+                    lineHeight = HEADING_2_LINE_HEIGHT,
                     markdownPrefix = "## ",
                     fontWeight = FontWeight.Bold,
                 )
@@ -101,9 +101,17 @@ internal fun rememberNativeMarkdownStyleScheme(): RichTextStyleScheme {
             RichTextBlockStyle.heading(
                 id = NATIVE_EDITOR_HEADING_3_ID,
                 label = "H3",
-                fontSize = 20.sp,
-                lineHeight = 28.sp,
+                fontSize = HEADING_3_SIZE,
+                lineHeight = HEADING_3_LINE_HEIGHT,
                 markdownPrefix = "### ",
+            ),
+            RichTextBlockStyle.heading(
+                id = NATIVE_EDITOR_HEADING_4_ID,
+                label = "H4",
+                fontSize = HEADING_4_SIZE,
+                lineHeight = HEADING_4_LINE_HEIGHT,
+                markdownPrefix = "#### ",
+                fontWeight = FontWeight.Medium,
             ),
             RichTextBlockStyle(
                 id = NATIVE_EDITOR_QUOTE_ID,
@@ -144,4 +152,15 @@ internal fun rememberNativeMarkdownStyleScheme(): RichTextStyleScheme {
 }
 
 internal const val NATIVE_EDITOR_HEADING_3_ID = "heading_3"
+internal const val NATIVE_EDITOR_HEADING_4_ID = "heading_4"
 internal const val NATIVE_EDITOR_QUOTE_ID = "quote"
+
+// 与 libs/markdown MarkdownTypography 的 h1–h4 保持一致（改一处必须同步另一处）。
+internal val HEADING_1_SIZE = 18.sp
+internal val HEADING_1_LINE_HEIGHT = 26.sp
+internal val HEADING_2_SIZE = 17.sp
+internal val HEADING_2_LINE_HEIGHT = 25.sp
+internal val HEADING_3_SIZE = 16.sp
+internal val HEADING_3_LINE_HEIGHT = 24.sp
+internal val HEADING_4_SIZE = 15.sp
+internal val HEADING_4_LINE_HEIGHT = 22.sp

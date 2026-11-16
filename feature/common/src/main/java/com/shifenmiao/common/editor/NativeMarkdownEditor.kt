@@ -253,7 +253,8 @@ fun NativeMarkdownEditor(
                     },
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                        // 与预览完全同一套留白：只留 16dp 横向，顶部不再额外加 8dp。
+                        .padding(horizontal = 16.dp),
                 )
             }
         }
@@ -428,8 +429,15 @@ private fun NativeMarkdownEditorSelectionMenu(
 
 @Composable
 private fun rememberNativeMarkdownBlockRegistry(): MarkdownBlockRegistry {
-    val editors = remember {
-        MarkdownRawBlockKind.entries.associateWith { NativeRawBlockEditor() }
+    val rawEditor = remember { NativeRawBlockEditor() }
+    val editors = remember(rawEditor) {
+        MarkdownRawBlockKind.entries.associateWith { kind ->
+            when (kind) {
+                MarkdownRawBlockKind.Table -> NativeTableBlockEditor
+                MarkdownRawBlockKind.TaskList -> NativeTaskListBlockEditor
+                else -> rawEditor
+            }
+        }
     }
     return remember(editors) { MarkdownBlockRegistry(editors) }
 }

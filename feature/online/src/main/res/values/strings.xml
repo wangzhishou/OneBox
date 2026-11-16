@@ -22,4 +22,48 @@
     <!-- WeChat mini program redirect -->
     <string name="mini_program_jump_confirm">You\'re about to leave and open this in WeChat. Continue?</string>
     <string name="mini_program_redirecting">Redirecting…</string>
+
+    <!-- Note editor menu -->
+    <string name="note_menu_settings">Settings</string>
+    <string name="note_ai_action_format">Format with AI</string>
+    <string name="note_ai_action_expand">Expand with AI</string>
+    <string name="note_ai_action_polish">Polish with AI</string>
+    <string name="note_ai_action_condense">Shorten with AI</string>
+    <string name="note_ai_action_checklist">Extract to-dos</string>
+    <string name="note_ai_action_summary">Generate summary</string>
+
+    <!-- Note AI writing panel -->
+    <string name="note_ai_engine">Engine</string>
+    <string name="note_ai_prompt_label">Instruction</string>
+    <string name="note_ai_prompt_hint">Tell the AI how to change the note</string>
+    <string name="note_ai_original_label">Original</string>
+    <string name="note_ai_original_meta">Original · %1$d chars</string>
+    <string name="note_ai_result_label">AI result</string>
+    <string name="note_ai_panel_generate">Generate</string>
+    <string name="note_ai_regenerate">Regenerate</string>
+    <string name="note_ai_stop">Stop</string>
+    <string name="note_ai_copy">Copy</string>
+    <string name="note_ai_copied">Copied</string>
+    <string name="note_ai_apply_replace">Replace note</string>
+    <string name="note_ai_apply_append">Append to note</string>
+    <string name="note_ai_apply_prepend">Insert at top</string>
+    <string name="note_ai_undo_apply">Undo</string>
+    <string name="note_ai_applied">Applied. You can undo it while this panel is open.</string>
+    <string name="note_ai_panel_generating">Generating…</string>
+    <string name="note_ai_empty_hint">Pick an action, adjust the instruction, then generate.</string>
+    <string name="note_ai_empty_result">The AI returned an empty result. Try again or switch engines.</string>
+    <string name="note_ai_no_engine">No AI engine available. Add one in Settings → AI engines.</string>
+    <string name="note_ai_result_meta">%1$s · %2$d tokens</string>
+    <string name="note_ai_too_short">Write something in the note first.</string>
+    <string name="note_ai_keepalive_title">AI is working on your note</string>
+    <string name="note_ai_billing_desc">Note AI writing</string>
+    <string name="note_ai_system_prompt">You are the Markdown editor of a notes app. Follow the user instruction and edit the note. Preserve the note language, facts, numbers, links, images, media directives, tables and code. Output only the final complete Markdown document: no explanations, no preamble, no surrounding code fence.</string>
+    <string name="note_ai_input_template">Instruction:\n%1$s\n\nOriginal Markdown:\n%2$s</string>
+    <string name="note_ai_prompt_format">Reformat this note: fix heading levels, unify lists, indentation and blank lines, split overlong paragraphs, and turn run-on points into lists or tables. Do not change the meaning or facts.</string>
+    <string name="note_ai_prompt_expand">Expand this note: add explanations, examples and details while keeping the original points and facts. Do not invent data or personal experiences.</string>
+    <string name="note_ai_prompt_polish">Polish this note: fix typos and grammar, make the wording smoother and more natural, and unify terms and tone. Keep the meaning and the amount of information unchanged.</string>
+    <string name="note_ai_prompt_condense">Shorten this note: keep the core information and structure, remove repetition and filler, and do not lose any key fact.</string>
+    <string name="note_ai_prompt_checklist">Extract the actionable to-dos from this note and output a Markdown task list (- [ ]), one action per line, with dates or owners when present. Start with a "## To-dos" heading and output only that list.</string>
+    <string name="note_ai_prompt_summary">Write a 2-4 sentence summary of this note starting with a "## Summary" heading. Output only the summary section.</string>
+
 </resources>

@@ -25,34 +25,41 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.R as CommonR
+import com.shifenmiao.common.components.category.AddCategoryDialog
 import com.shifenmiao.core.R as CoreR
 import com.shifenmiao.database.item.entity.Category
 import com.t8rin.imagetoolbox.core.resources.Icons
-import com.t8rin.imagetoolbox.core.resources.icons.AutoMode
-import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.NoteAdd
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineRobot
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineSettings
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
-import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
+import com.wanbaohe.core.ui.widget.glass.GlassAssistChip
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.GlassTextButton
+import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
+import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
 
 /**
  * 保存笔记前的确认弹窗。
@@ -75,7 +82,11 @@ fun NoteSaveConfirmDialog(
     onGenerate: () -> Unit,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
+    onCreateCategory: ((String) -> Unit)? = null,
+    onManageCategories: (() -> Unit)? = null,
 ) {
+    var showAddCategoryDialog by remember(visible) { mutableStateOf(false) }
+
     EnhancedAlertDialog(
         visible = visible,
         onDismissRequest = {
@@ -108,7 +119,8 @@ fun NoteSaveConfirmDialog(
                     onValueChange = onTitleChange,
                     modifier = Modifier.fillMaxWidth(),
                     enabled = !isSaving,
-                    label = { Text(stringResource(CoreR.string.title)) },
+                    // 用笔记自己的「标题」文案；CoreR.string.title 的中文是「职位」，曾被误用到笔记上。
+                    label = { Text(stringResource(CoreR.string.note_edit_title)) },
                     singleLine = true,
                     maxLines = 1,
                     style = GlassStyle.Medium,
@@ -129,50 +141,81 @@ fun NoteSaveConfirmDialog(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End,
                 ) {
-                    TextButton(
+                    // AI 生成：共用 AssistChip + 机器人图标，和 App 内其他 AI 入口一致。
+                    GlassAssistChip(
                         onClick = onGenerate,
                         enabled = !isGenerating && !isSaving,
-                        colors = ButtonDefaults.textButtonColors(
-                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                            disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = GlassStyle.Thin,
+                        colors = AssistChipDefaults.assistChipColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                            labelColor = MaterialTheme.colorScheme.onSurface,
                         ),
-                        contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp),
-                    ) {
-                        if (isGenerating) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(15.dp),
-                                strokeWidth = 2.dp,
-                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        glassContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                        leadingIcon = {
+                            if (isGenerating) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(15.dp),
+                                    strokeWidth = 2.dp,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                )
+                            } else {
+                                Icon(
+                                    imageVector = Icons.Outlined.LineRobot,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(16.dp),
+                                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                                )
+                            }
+                        },
+                        label = {
+                            Text(
+                                text = stringResource(
+                                    if (isGenerating) {
+                                        CommonR.string.note_ai_generating
+                                    } else {
+                                        CommonR.string.note_ai_generate
+                                    },
+                                ),
+                                style = MaterialTheme.typography.labelLarge,
+                                maxLines = 1,
                             )
-                        } else {
-                            Icon(
-                                imageVector = Icons.Rounded.AutoMode,
-                                contentDescription = null,
-                                modifier = Modifier.size(16.dp),
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(
-                            text = stringResource(
-                                if (isGenerating) {
-                                    CommonR.string.note_ai_generating
-                                } else {
-                                    CommonR.string.note_ai_generate
-                                },
-                            ),
-                            style = MaterialTheme.typography.labelLarge,
-                            maxLines = 1,
-                        )
-                    }
+                        },
+                    )
                 }
 
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
 
-                Text(
-                    text = stringResource(CoreR.string.note_select_category),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = stringResource(CoreR.string.note_select_category),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    if (onManageCategories != null) {
+                        // 分类管理从 ⋮ 菜单移到分类标题右侧，和「新增分类」一起都在这个弹窗里。
+                        GlassTextButton(
+                            onClick = onManageCategories,
+                            style = GlassStyle.Thin,
+                            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.LineSettings,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp),
+                                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = stringResource(CoreR.string.manage),
+                                style = MaterialTheme.typography.labelMedium,
+                            )
+                        }
+                    }
+                }
                 if (categories.isEmpty()) {
                     Text(
                         text = stringResource(CommonR.string.note_category_empty_hint),
@@ -184,62 +227,53 @@ fun NoteSaveConfirmDialog(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalArrangement = Arrangement.spacedBy(6.dp),
                     ) {
-                        categories.forEach { category ->
-                            val selected = category.id in selectedCategoryIds
-                            GlassFilterChip(
-                                selected = selected,
-                                onClick = { onToggleCategory(category) },
-                                label = {
-                                    Text(
-                                        text = category.name,
-                                        style = MaterialTheme.typography.bodySmall,
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis,
-                                        modifier = Modifier.padding(vertical = 2.dp),
-                                    )
-                                },
-                                leadingIcon = if (selected) {
-                                    {
-                                        Icon(
-                                            imageVector = Icons.Outlined.Check,
-                                            contentDescription = null,
-                                            modifier = Modifier.size(14.dp),
-                                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                                        )
-                                    }
-                                } else {
-                                    null
-                                },
-                                style = GlassStyle.Thin,
-                            )
+                        if (onCreateCategory != null) {
+                            NoteAddCategoryChip(onClick = { showAddCategoryDialog = true })
                         }
+                        // 最新更新的分类排最前，与展示/编辑页的分类栏顺序一致。
+                        categories
+                            .sortedWith(
+                                compareByDescending<Category> { it.updatedAt }
+                                    .thenBy { it.name }
+                            )
+                            .forEach { category ->
+                                NoteCategoryChip(
+                                    name = category.name,
+                                    selected = category.id in selectedCategoryIds,
+                                    onClick = { onToggleCategory(category) },
+                                )
+                            }
                     }
                 }
             }
         },
         confirmButton = {
-            TextButton(
-                onClick = onConfirm,
+            // 按钮统一走共用胶囊按钮：确认是实心玻璃按钮，取消是次按钮。
+            OnePrimaryButton(
+                text = stringResource(CommonR.string.common_save),
+                leadingIcon = Icons.Outlined.LineSave,
                 enabled = !isSaving && title.isNotBlank(),
-            ) {
-                if (isSaving) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(16.dp),
-                        strokeWidth = 2.dp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                }
-                Text(text = stringResource(CoreR.string.save_file))
-            }
+                onClick = {
+                    if (!isSaving) onConfirm()
+                },
+            )
         },
         dismissButton = {
-            TextButton(
-                onClick = onDismiss,
+            OneSecondaryButton(
+                text = stringResource(CommonR.string.common_cancel),
                 enabled = !isSaving,
-            ) {
-                Text(text = stringResource(CoreR.string.button_cancel))
-            }
+                onClick = onDismiss,
+            )
         },
     )
+
+    if (showAddCategoryDialog && onCreateCategory != null) {
+        AddCategoryDialog(
+            onDismiss = { showAddCategoryDialog = false },
+            onConfirm = { name ->
+                onCreateCategory(name)
+                showAddCategoryDialog = false
+            },
+        )
+    }
 }

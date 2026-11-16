@@ -22,4 +22,48 @@
     <!-- 微信小程序跳转 -->
     <string name="mini_program_jump_confirm">即将离开并跳转到微信打开？</string>
     <string name="mini_program_redirecting">正在跳转中…</string>
+
+    <!-- Note editor menu -->
+    <string name="note_menu_settings">设置</string>
+    <string name="note_ai_action_format">AI 格式排版</string>
+    <string name="note_ai_action_expand">AI 一键扩写</string>
+    <string name="note_ai_action_polish">AI 一键润色</string>
+    <string name="note_ai_action_condense">AI 精简</string>
+    <string name="note_ai_action_checklist">AI 提炼待办</string>
+    <string name="note_ai_action_summary">AI 生成摘要</string>
+
+    <!-- Note AI writing panel -->
+    <string name="note_ai_engine">引擎</string>
+    <string name="note_ai_prompt_label">提示词</string>
+    <string name="note_ai_prompt_hint">告诉 AI 你想怎么改这篇笔记</string>
+    <string name="note_ai_original_label">原文</string>
+    <string name="note_ai_original_meta">原文 · %1$d 字</string>
+    <string name="note_ai_result_label">AI 结果</string>
+    <string name="note_ai_panel_generate">生成</string>
+    <string name="note_ai_regenerate">重新生成</string>
+    <string name="note_ai_stop">停止</string>
+    <string name="note_ai_copy">复制</string>
+    <string name="note_ai_copied">已复制</string>
+    <string name="note_ai_apply_replace">替换原文</string>
+    <string name="note_ai_apply_append">追加到末尾</string>
+    <string name="note_ai_apply_prepend">插入到开头</string>
+    <string name="note_ai_undo_apply">撤销</string>
+    <string name="note_ai_applied">已应用到笔记，面板关闭前可以撤销。</string>
+    <string name="note_ai_panel_generating">生成中…</string>
+    <string name="note_ai_empty_hint">先选一个动作、调整提示词，然后生成。</string>
+    <string name="note_ai_empty_result">AI 返回了空结果，可以重试或换个引擎。</string>
+    <string name="note_ai_no_engine">没有可用的 AI 引擎，请先在「设置 → AI 引擎」里添加。</string>
+    <string name="note_ai_result_meta">%1$s · %2$d tokens</string>
+    <string name="note_ai_too_short">请先在笔记里写点内容。</string>
+    <string name="note_ai_keepalive_title">AI 正在处理笔记</string>
+    <string name="note_ai_billing_desc">笔记 AI 写作</string>
+    <string name="note_ai_system_prompt">你是笔记应用的 Markdown 编辑器。按用户指令修改笔记，保留原文语言、事实、数字、链接、图片、音视频指令、表格和代码。只输出修改后的完整 Markdown 全文，不要解释、不要前后缀、不要用代码块围栏包裹。</string>
+    <string name="note_ai_input_template">指令：\n%1$s\n\n原文 Markdown：\n%2$s</string>
+    <string name="note_ai_prompt_format">整理这篇笔记的排版：修正标题层级，统一列表、缩进和空行，拆分过长段落，把连续要点整理成列表或表格；不改变原意和事实。</string>
+    <string name="note_ai_prompt_expand">扩写这篇笔记：补充解释、例子和细节，让内容更完整；保持原有观点和事实，不要编造数据或个人经历。</string>
+    <string name="note_ai_prompt_polish">润色这篇笔记：修正错别字和语法，让表达更通顺自然，统一术语和语气；不改变原意和信息量。</string>
+    <string name="note_ai_prompt_condense">精简这篇笔记：保留核心信息和结构，删掉重复和冗余表达；不丢失关键事实。</string>
+    <string name="note_ai_prompt_checklist">从这篇笔记中提炼可执行的待办事项，输出 Markdown 复选框列表（- [ ]），每条一个动作，原文里有时间或负责人时一并带上。以「## 待办」开头，只输出待办列表。</string>
+    <string name="note_ai_prompt_summary">为这篇笔记写一段 2–4 句的摘要，以「## 摘要」开头，只输出摘要部分。</string>
+
 </resources>

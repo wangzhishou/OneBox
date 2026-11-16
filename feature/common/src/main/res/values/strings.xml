@@ -200,10 +200,13 @@
     <string name="native_editor_style_heading_1">Heading 1</string>
     <string name="native_editor_style_heading_2">Heading 2</string>
     <string name="native_editor_style_heading_3">Heading 3</string>
+    <string name="native_editor_style_heading_4">Heading 4</string>
     <string name="native_editor_style_highlight">Highlight</string>
     <string name="native_editor_insert_text">Text</string>
     <string name="native_editor_insert_code">Code</string>
     <string name="native_editor_insert_diagram">Diagram</string>
+    <string name="native_editor_insert_table">Table</string>
+    <string name="native_editor_insert_task_list">Checklist</string>
     <string name="native_editor_insert_image">Image</string>
     <string name="native_editor_insert_video">Video</string>
     <string name="native_editor_insert_link">Link</string>
@@ -222,6 +225,8 @@
     <string name="native_editor_template_diagram">```mermaid\nflowchart LR\n    A[Start] --> B[Done]\n```</string>
     <string name="native_editor_template_image">![Sample image](https://mdn.github.io/shared-assets/images/examples/grapefruit-slice.jpg)</string>
     <string name="native_editor_template_video">!VIDEO[Sample video](https://mdn.github.io/shared-assets/videos/flower.mp4){poster=https://mdn.github.io/shared-assets/images/examples/grapefruit-slice.jpg}</string>
+    <string name="native_editor_template_table">| Column 1 | Column 2 |\n| --- | --- |\n| Content | Content |</string>
+    <string name="native_editor_template_task_list">- [ ] To-do item</string>
     <string name="native_editor_kind_code">Code</string>
     <string name="native_editor_kind_diagram">Diagram</string>
     <string name="native_editor_kind_image">Image</string>
@@ -230,8 +235,19 @@
     <string name="native_editor_kind_math">Formula</string>
     <string name="native_editor_kind_html">HTML</string>
     <string name="native_editor_kind_other">Markdown</string>
+    <string name="native_editor_kind_table">Table</string>
+    <string name="native_editor_kind_task_list">Checklist</string>
     <string name="native_editor_show_preview">Preview</string>
     <string name="native_editor_delete_block">Delete block</string>
     <string name="native_editor_empty_hint">Start writing, or insert a block below.</string>
+    <string name="native_editor_table_add_row">Add row</string>
+    <string name="native_editor_table_add_column">Add column</string>
+    <string name="native_editor_table_delete_row">Delete row</string>
+    <string name="native_editor_table_delete_column">Delete column</string>
+    <string name="native_editor_table_edit_source">Edit source</string>
+    <string name="native_editor_table_cell_hint">Cell</string>
+    <string name="native_editor_task_add_item">Add item</string>
+    <string name="native_editor_task_delete_item">Delete item</string>
+    <string name="native_editor_task_item_hint">To-do item</string>
     <string name="native_editor_source_hint">Edit Markdown source here.</string>
 </resources>
