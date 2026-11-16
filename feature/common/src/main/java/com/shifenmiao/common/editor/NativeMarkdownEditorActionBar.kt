@@ -7,18 +7,15 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -74,7 +71,6 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineAudioFile
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLink
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
-import com.wanbaohe.core.ui.widget.glass.GlassSegmentedButtonRow
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.richtext.editor.command.applyBlockStyle
@@ -147,46 +143,23 @@ private fun NativeMarkdownEditorModeToggle(
     state: NativeMarkdownEditorState,
     expanded: Boolean,
 ) {
-    val modes = listOf(NativeMarkdownEditorMode.Edit, NativeMarkdownEditorMode.Source)
-    val selected = if (state.mode == NativeMarkdownEditorMode.Source) {
+    val current = if (state.mode == NativeMarkdownEditorMode.Source) {
         NativeMarkdownEditorMode.Source
     } else {
         NativeMarkdownEditorMode.Edit
     }
-    GlassSegmentedButtonRow(
-        options = modes,
-        selectedOption = selected,
-        onOptionSelected = state::selectMode,
-        rowStyle = GlassStyle.Thin,
-        buttonHeight = if (expanded) 42.dp else 30.dp,
-        hugContent = true,
-        contentPadding = PaddingValues(2.dp),
-        spacing = 1.dp,
-        selectedColor = MaterialTheme.colorScheme.primaryContainer,
-        selectedContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-        label = { mode ->
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                Icon(
-                    imageVector = mode.icon(),
-                    contentDescription = stringResource(mode.labelRes()),
-                    modifier = Modifier.size(18.dp),
-                )
-                AnimatedVisibility(
-                    visible = expanded,
-                    enter = fadeIn(tween(140)) + expandHorizontally(tween(180)),
-                    exit = fadeOut(tween(90)) + shrinkHorizontally(tween(140)),
-                ) {
-                    Text(
-                        text = stringResource(mode.labelRes()),
-                        style = MaterialTheme.typography.labelSmall,
-                        maxLines = 1,
-                    )
+    DockIconButton(
+        label = stringResource(current.labelRes()),
+        icon = current.icon(),
+        expanded = expanded,
+        onClick = {
+            state.selectMode(
+                if (current == NativeMarkdownEditorMode.Edit) {
+                    NativeMarkdownEditorMode.Source
+                } else {
+                    NativeMarkdownEditorMode.Edit
                 }
-            }
+            )
         },
     )
 }
