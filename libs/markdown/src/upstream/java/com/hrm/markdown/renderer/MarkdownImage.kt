@@ -1,17 +1,33 @@
 package com.hrm.markdown.renderer
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter
@@ -95,31 +111,61 @@ internal fun DefaultMarkdownImage(
     data: MarkdownImageData,
     modifier: Modifier = Modifier,
 ) {
+    var painterState by remember(data.url) {
+        mutableStateOf<AsyncImagePainter.State>(AsyncImagePainter.State.Empty)
+    }
+    val loaded = painterState is AsyncImagePainter.State.Success
+    val failed = painterState is AsyncImagePainter.State.Error
+    val imageAlpha by animateFloatAsState(
+        targetValue = if (loaded) 1f else 0f,
+        animationSpec = tween(durationMillis = 220),
+        label = "markdown-image-alpha",
+    )
+    val placeholderShape = RoundedCornerShape(10.dp)
+
     Box(
         modifier = modifier
             .applyImageSize(data.width, data.height)
-            .padding(vertical = 4.dp),
+            // 未拿到真实高度时先占一块 16:9 左右的空间，避免图片加载完成后整页突然跳一下。
+            .then(if (!loaded && data.height == null) Modifier.height(180.dp) else Modifier)
+            .padding(vertical = 4.dp)
+            .clip(placeholderShape)
+            .background(MaterialTheme.colorScheme.surfaceContainer),
         contentAlignment = Alignment.Center,
     ) {
+        when {
+            !loaded && !failed -> {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(24.dp),
+                    strokeWidth = 2.dp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+
+            failed -> {
+                Text(
+                    text = data.altText.ifBlank { data.title.orEmpty() },
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
         AsyncImage(
             model = data.url,
             contentDescription = data.altText.ifEmpty { data.title },
             modifier = Modifier
-                .applyImageSize(data.width, data.height),
+                .applyImageSize(data.width, data.height)
+                .graphicsLayer { alpha = imageAlpha },
             contentScale = if (data.width != null || data.height != null) {
                 ContentScale.Fit
             } else {
                 ContentScale.FillWidth
             },
-            onState = { /* 可用于调试日志 */ },
-            transform = { state ->
-                when (state) {
-                    is AsyncImagePainter.State.Loading -> state
-                    is AsyncImagePainter.State.Error -> state
-                    is AsyncImagePainter.State.Success -> state
-                    is AsyncImagePainter.State.Empty -> state
-                }
-            },
+            onState = { painterState = it },
         )
     }
 }

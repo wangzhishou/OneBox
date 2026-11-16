@@ -17,7 +17,9 @@ import androidx.compose.ui.unit.sp
 data class RichTextListStyle(
     val marker: String = "• ",
     val paragraphStyle: ParagraphStyle = ParagraphStyle(
-        textIndent = TextIndent(firstLine = 0.sp, restLine = 22.sp),
+        // 与预览的列表内容列对齐：listIndent(24dp) + 无序列表 marker 列(16dp)。
+        // 编辑区整体再通过 LIST_INDENT 补 24dp，所以这里只保留 16sp 悬挂缩进。
+        textIndent = TextIndent(firstLine = 0.sp, restLine = 16.sp),
     ),
     val markdownPrefix: String = "- ",
 ) {

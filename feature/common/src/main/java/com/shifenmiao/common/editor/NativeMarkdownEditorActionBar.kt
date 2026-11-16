@@ -116,12 +116,12 @@ internal fun NativeMarkdownEditorDock(
                 ),
             )
             .navigationBarsPadding()
-            .padding(horizontal = 6.dp, vertical = 4.dp),
+            .padding(horizontal = 4.dp, vertical = 3.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(2.dp),
+        horizontalArrangement = Arrangement.spacedBy(1.dp),
     ) {
         NativeMarkdownEditorModeToggle(state, expanded)
-        Spacer(modifier = Modifier.width(4.dp))
+        Spacer(modifier = Modifier.width(1.dp))
         NativeMarkdownEditorDockActionRow(
             state = state,
             expanded = expanded,
@@ -130,7 +130,7 @@ internal fun NativeMarkdownEditorDock(
             onVoiceInput = onVoiceInput,
             modifier = Modifier.weight(1f),
         )
-        Spacer(modifier = Modifier.width(2.dp))
+        Spacer(modifier = Modifier.width(1.dp))
         NativeMarkdownEditorDockCollapseButton(
             expanded = expanded,
             onToggleExpanded = { expanded = !expanded },
@@ -220,7 +220,7 @@ private fun NativeMarkdownEditorDockActionRow(
                 .weight(1f)
                 .horizontalScroll(actionScrollState),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(3.dp),
         ) {
             if (onVoiceInput != null) {
                 DockIconButton(
@@ -442,7 +442,7 @@ private fun DockIconChip(
         enabled = enabled,
         modifier = modifier
             .height(if (expanded) DockExpandedHeight.dp else DockCollapsedHeight.dp)
-            .widthIn(min = if (expanded) 46.dp else 34.dp)
+            .widthIn(min = if (expanded) 44.dp else 32.dp)
             .semantics(mergeDescendants = true) {
                 contentDescription = label
                 role = Role.Button
@@ -553,7 +553,7 @@ private fun DockButtonSurface(
             .height(
                 if (expanded) DockExpandedHeight.dp else DockCollapsedHeight.dp,
             )
-            .widthIn(min = if (expanded) 46.dp else 34.dp)
+            .widthIn(min = if (expanded) 44.dp else 32.dp)
             .animateContentSize(tween(180))
             .semantics(mergeDescendants = true) {
                 contentDescription = label
@@ -571,7 +571,7 @@ private fun DockButtonSurface(
         Column(
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(horizontal = if (expanded) 6.dp else 0.dp, vertical = 3.dp),
+                .padding(horizontal = if (expanded) 4.dp else 0.dp, vertical = 2.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {

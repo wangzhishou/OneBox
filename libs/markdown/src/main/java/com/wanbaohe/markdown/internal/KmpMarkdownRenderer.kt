@@ -1,6 +1,7 @@
 package com.wanbaohe.markdown.internal
 
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -143,7 +144,8 @@ internal fun KmpMarkdownRenderer(
     }
     val codeColors = remember(codeStyle) { codeStyle.toEngineColors() }
     val codeShape = MaterialTheme.shapes.medium
-    val inlineCodeShape = MaterialTheme.shapes.small
+    // 行内代码固定 6dp 圆角：不跟随主题的方角设置，避免出现直角小方块。
+    val inlineCodeShape = RoundedCornerShape(6.dp)
     val codeLayout = remember(codeShape, inlineCodeShape) {
         CodeLayout(shape = codeShape, inlineShape = inlineCodeShape)
     }
@@ -152,8 +154,9 @@ internal fun KmpMarkdownRenderer(
     val codeLineHeight = bodyTextStyle.lineHeight.takeIf { it.isSpecified } ?: defaultCodeTypography.text.lineHeight
     val codeTypography = remember(defaultCodeTypography, codeLineHeight) {
         defaultCodeTypography.copy(
+            // 代码块正文跟正文行高对齐；行内代码保持自身行高，32sp 会把背景撑高、文字偏下。
             text = defaultCodeTypography.text.copy(lineHeight = codeLineHeight),
-            inlineCode = defaultCodeTypography.inlineCode.copy(lineHeight = codeLineHeight),
+            inlineCode = defaultCodeTypography.inlineCode,
         )
     }
 

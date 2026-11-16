@@ -24,6 +24,13 @@ data class RichTextInlineStyle(
     val matches: (SpanStyle) -> Boolean,
     val apply: (style: SpanStyle, enabled: Boolean) -> SpanStyle,
     val markdown: RichTextMarkdownInlineRule? = null,
+    /**
+     * 该样式需要的圆角背景色。为 Unspecified 时不做背景装饰。
+     *
+     * 不用 SpanStyle.background：Compose 的 span 背景是直角矩形，无法做圆角；
+     * 编辑区会按这个颜色在文字下方画圆角矩形。
+     */
+    val decorationBackground: Color = Color.Unspecified,
 ) {
     companion object {
         const val BoldId = "bold"
@@ -87,10 +94,10 @@ data class RichTextInlineStyle(
             apply = { style, enabled ->
                 style.copy(
                     fontFamily = if (enabled) FontFamily.Monospace else null,
-                    background = if (enabled) background else Color.Unspecified,
                 )
             },
             markdown = RichTextMarkdownInlineRule.inlineCode(),
+            decorationBackground = background,
         )
     }
 }

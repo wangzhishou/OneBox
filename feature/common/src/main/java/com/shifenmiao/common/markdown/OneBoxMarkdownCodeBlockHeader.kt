@@ -39,7 +39,8 @@ internal fun OneBoxMarkdownCodeBlockHeader(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(end = 8.dp),
+            // 代码块头部按钮原本贴着容器顶边，留一点上边距更像浮在代码块里的工具栏。
+            .padding(top = 8.dp, end = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.End),
         verticalAlignment = Alignment.CenterVertically,
     ) {

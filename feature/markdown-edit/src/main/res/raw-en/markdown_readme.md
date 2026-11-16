@@ -1,47 +1,42 @@
 # Markdown Editor
 
-Welcome to the Markdown Editor! A WYSIWYG Markdown editing tool.
+Welcome to the Markdown Editor! This WYSIWYG editor supports the syntax below.
 
-## Features
+## Headings
 
-- **Live preview**: See the final result as you type
-- **Rich formatting**: Headings, bold, italic, strikethrough, code, and more
-- **List support**: Bullet lists, numbered lists, and task lists
-- **Insert tools**: Links, images, quotes, code blocks, and dividers
+# Heading 1
+## Heading 2
+### Heading 3
+#### Heading 4
+##### Heading 5
+###### Heading 6
 
-## Quick Start
+## Inline formatting
 
-### Text Formatting
+**Bold**, *italic*, ~~strikethrough~~, ==highlight==, `inline code`, and a [link](https://www.oneboxable.com).
 
-- **Bold text**: Select text and tap the **B** button
-- *Italic text*: Select text and tap the *I* button
-- ~~Strikethrough~~: Select text and tap the strikethrough button
-- `Inline code`: Select text and tap the code button
+## Lists
 
-### Headings
+- Bullet item one
+- Bullet item two
+- Bullet item three
 
-Tap the H1, H2, or H3 buttons to insert headings of different levels.
+1. Numbered item one
+2. Numbered item two
+3. Numbered item three
 
-### Lists
-
-- Bullet list item 1
-- Bullet list item 2
-- Bullet list item 3
-
-1. Numbered list item 1
-2. Numbered list item 2
-3. Numbered list item 3
-
-- [ ] To-do item 1
+- [ ] To-do item
 - [x] Completed item
-- [ ] To-do item 2
+- [ ] Another to-do
 
-### Quotes
+## Quotes
 
-> This is a quote.
-> It can span multiple lines.
+> A quote can span multiple lines.
+> It can also contain **bold text** and `inline code`.
 
-### Code Blocks
+## Code
+
+Inline code: `val name = "OneBox"`.
 
 ```kotlin
 fun main() {
@@ -49,16 +44,46 @@ fun main() {
 }
 ```
 
-### Links
+## Tables
 
-[Visit the OneBox website](https://www.oneboxable.com)
+| Capability | Description | Status |
+| :--- | :---: | ---: |
+| Live preview | See the result while typing | Supported |
+| Tables | GFM table syntax | Supported |
+| Task lists | Checkable to-dos | Supported |
+
+## Math
+
+Inline math: $E = mc^2$.
+
+$$
+\int_0^1 x^2\,dx = \frac{1}{3}
+$$
+
+## Diagrams
+
+```mermaid
+flowchart LR
+    A[Write] --> B[Preview]
+    B --> C[Share]
+```
+
+## Images and dividers
+
+![Sample image](https://mdn.github.io/shared-assets/images/examples/grapefruit-slice.jpg)
 
 ---
 
-## How to Use
+## Footnotes
 
-1. Tap the **Open** button in the top-right corner to open an existing Markdown file
-2. Tap the **Save** button in the top-right corner to save your content as a `.md` file
-3. Tap the **New** button in the top-right corner to create a new blank document
+Here is a footnote reference[^1].
 
-Enjoy! 🎉
+[^1]: This is the footnote text. Tap the marker to jump back.
+
+## How to use
+
+1. Top-right save button: save as a `.md` file
+2. Top-right more menu: new, open, save as, export PDF
+3. Bottom dock: edit/source, voice, undo/redo, formatting, table, checklist and inserts
+
+Happy writing!

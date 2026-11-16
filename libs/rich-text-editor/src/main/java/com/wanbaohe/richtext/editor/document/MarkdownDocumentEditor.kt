@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.items
@@ -186,7 +187,13 @@ private fun RichTextDocumentBlock(
         }
         if (textStyle != baseVisual.textStyle) baseVisual.copy(textStyle = textStyle) else baseVisual
     }
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            // 与 MarkdownLayout.listIndent 对齐：预览里的列表整体缩进 24dp，
+            // 编辑区没有这层缩进时，切换预览会看到项目符号整体左移。
+            .then(if (isListBlock) Modifier.padding(start = LIST_INDENT) else Modifier)
+    ) {
         RichTextEditor(
             state = block.state,
             scheme = scheme,
@@ -234,6 +241,9 @@ private fun RawDocumentBlock(
         )
     }
 }
+
+// 与 libs/markdown MarkdownLayout.listIndent 默认值一致。
+private val LIST_INDENT = 24.dp
 
 private const val PREVIEW_ENCODE_DEBOUNCE_MS = 300L
 private const val EDITOR_MODE_FADE_MS = 180

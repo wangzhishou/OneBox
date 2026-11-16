@@ -19,13 +19,9 @@
 
 package com.shifenmiao.online.ui
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
@@ -34,8 +30,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -47,23 +41,13 @@ import com.t8rin.imagetoolbox.core.resources.Icons as OneBoxIcons
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 
 /**
- * 笔记分类 chip 的唯一实现：展示页、保存/设置弹窗都从这里取值，
- * 保证 chip 尺寸、内边距、圆角、选中态完全一致。
+ * 笔记分类 chip 的唯一实现：保存/设置弹窗从这里取值，
+ * 保证 chip 尺寸、内边距、圆角、选中态一致。
  */
-internal data class NoteCategoryChipItem(
-    val id: Int,
-    val name: String,
-    val updatedAt: Long = 0L,
-)
-
 internal val NoteCategoryChipShape = RoundedCornerShape(16.dp)
 private val NoteCategoryChipPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)
 private val NoteCategoryBarVerticalPadding = 4.dp
 private val NoteCategoryChipSpacing = 8.dp
-
-/** 最新更新时间戳排在前面；时间戳相同时按名称稳定排序，避免列表跳动。 */
-internal fun List<NoteCategoryChipItem>.sortedByLatest(): List<NoteCategoryChipItem> =
-    sortedWith(compareByDescending<NoteCategoryChipItem> { it.updatedAt }.thenBy { it.name })
 
 @Composable
 internal fun NoteCategoryChip(
@@ -151,32 +135,4 @@ internal fun NoteAddCategoryChip(
         ),
         glassContainerColor = MaterialTheme.colorScheme.surfaceContainer,
     )
-}
-
-/**
- * 展示态分类栏：与保存弹窗同一套 chip，只是不可点。
- * 上边距由内容区统一控制（4dp），不再额外插 Spacer。
- */
-@Composable
-internal fun NoteReadOnlyCategoryBar(
-    categories: List<NoteCategoryChipItem>,
-    modifier: Modifier = Modifier,
-) {
-    if (categories.isEmpty()) return
-    val sorted = remember(categories) { categories.sortedByLatest() }
-    LazyRow(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = NoteCategoryBarVerticalPadding),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(NoteCategoryChipSpacing),
-    ) {
-        items(items = sorted, key = { it.id }) { category ->
-            NoteCategoryChip(
-                name = category.name,
-                selected = true,
-                onClick = {},
-            )
-        }
-    }
 }

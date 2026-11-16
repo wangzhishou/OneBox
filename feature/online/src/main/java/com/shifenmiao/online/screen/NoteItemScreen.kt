@@ -56,7 +56,6 @@ import com.shifenmiao.common.ui.rememberMarkdownCodeActions
 import com.shifenmiao.core.R
 import com.shifenmiao.model.ListItemType
 import com.shifenmiao.online.component.NoteItemComponent
-import com.shifenmiao.online.ui.ReadOnlyNoteCategorySelection
 import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedButton
@@ -154,6 +153,7 @@ OneBoxMarkdownContent(
             uriHandler.openUri(url)
         }
     },
+    // 阅读态不再展示分类 chip：分类只在保存/设置弹窗里维护，正文直接从标题下方开始。
     // 页面级已由 BaseScreen 补 navigationBarsPadding；正文末尾再留一段可滚动留白
     paddingValues = PaddingValues(
         start = AppTheme.dimens.paddingNormal,
@@ -161,12 +161,6 @@ OneBoxMarkdownContent(
         end = AppTheme.dimens.paddingNormal,
         bottom = 30.dp
     ),
-    headerContent = {
-        if (noteUIState.selectedCategories.isNotEmpty()) {
-            // 与编辑页使用同一个分类栏、同一套 4dp 上下留白；不再额外插 Spacer 撑大间距。
-            ReadOnlyNoteCategorySelection(uiState = noteUIState)
-        }
-    }
 )
     }
 }

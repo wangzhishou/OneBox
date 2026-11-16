@@ -145,27 +145,6 @@ fun NoteCategorySelection(
     }
 }
 
-/**
- * 展示态分类 chip：与编辑页共用 [NoteReadOnlyCategoryBar]，
- * 尺寸/内边距/圆角与编辑页完全一致，最新更新的分类排在最前。
- */
-@Composable
-fun ReadOnlyNoteCategorySelection(
-    modifier: Modifier = Modifier,
-    uiState: ItemDataUiState
-) {
-    NoteReadOnlyCategoryBar(
-        categories = uiState.selectedCategories.map { category ->
-            NoteCategoryChipItem(
-                id = category.id,
-                name = category.name,
-                updatedAt = category.updatedAt,
-            )
-        },
-        modifier = modifier,
-    )
-}
-
 // ===================== CategorySelection for CreateHtmlComponent =====================
 
 @Composable

@@ -25,6 +25,9 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.outlined.AutoAwesome
+import androidx.compose.material.icons.outlined.FormatAlignLeft
+import androidx.compose.material.icons.outlined.OpenInFull
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -67,7 +70,6 @@ import com.shifenmiao.online.ui.NoteAiRewriteSheet
 import com.shifenmiao.online.ui.NoteSaveConfirmDialog
 import com.t8rin.imagetoolbox.core.resources.Icons as OneBoxIcons
 import com.t8rin.imagetoolbox.core.resources.icons.NoteAdd
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSettings
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
@@ -317,6 +319,11 @@ fun CreateNoteScreen(
                         NoteAiAction.Expand,
                         NoteAiAction.Polish,
                     ).forEach { action ->
+                        val icon = when (action) {
+                            NoteAiAction.Format -> MaterialIcons.Outlined.FormatAlignLeft
+                            NoteAiAction.Expand -> MaterialIcons.Outlined.OpenInFull
+                            else -> MaterialIcons.Outlined.AutoAwesome
+                        }
                         DropdownMenuItem(
                             text = { Text(stringResource(action.labelRes)) },
                             onClick = {
@@ -325,7 +332,7 @@ fun CreateNoteScreen(
                             },
                             leadingIcon = {
                                 Icon(
-                                    imageVector = OneBoxIcons.Outlined.LineMagic,
+                                    imageVector = icon,
                                     contentDescription = null,
                                     tint = MaterialTheme.colorScheme.onPrimaryContainer,
                                 )
