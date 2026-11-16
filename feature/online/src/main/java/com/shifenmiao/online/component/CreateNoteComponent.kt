@@ -242,14 +242,18 @@ class CreateNoteComponent @AssistedInject internal constructor(
             }
             return
         }
-        val engine = aiEngineManager.getCurrentAiEngine()
-        if (engine.name.isBlank()) {
-            _aiState.update {
-                it.copy(error = AppContext.getString(OnlineR.string.note_ai_no_engine))
-            }
-            return
+        // 统一准入：直连引擎直接执行；代理引擎先拉起登录；积分闸门由 AIPromptExecutor 的 MANAGED 计费负责。
+        aiPromptExecutor.runWithAccessGate(source = NOTE_AI_WRITER_SOURCE) {
+            startAiGeneration(state)
         }
+    }
 
+    /** 供保存弹窗的「AI 生成标题/摘要」复用同一套登录准入。 */
+    fun runWithAiAccess(source: String, onAllowed: () -> Unit) {
+        aiPromptExecutor.runWithAccessGate(source = source, onAllowed = onAllowed)
+    }
+
+    private fun startAiGeneration(state: NoteAiUiState) {
         aiGenerationJob?.cancel()
         aiGenerationJob = componentScope.launch(ioDispatcher) {
             _aiState.update { it.copy(isGenerating = true, result = "", error = null, tokens = 0) }
@@ -573,3 +577,5 @@ private data class AiNoteMetadataJson(
     val description: String,
     val category: String,
 )
+
+private const val NOTE_AI_WRITER_SOURCE = "note_ai_writer"

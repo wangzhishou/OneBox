@@ -142,45 +142,48 @@ fun CreateNoteScreen(
 
     fun generateMetadata() {
         if (isGenerating) return
-        scope.launch {
-            isGenerating = true
-            try {
-                val metadata = runCatching {
-                    createNoteComponent.generateMetadata(pendingMarkdown)
-                }.getOrNull()
-                if (metadata == null) {
-                    AppToastHost.showToast(
-                        AppContext.getString(CommonR.string.note_ai_generate_failed)
-                    )
-                    return@launch
-                }
-                if (metadata.title.isNotBlank()) {
-                    draftTitle = metadata.title
-                    createNoteComponent.onTitleChange(metadata.title)
-                }
-                if (metadata.description.isNotBlank()) {
-                    draftDescription = metadata.description
-                    createNoteComponent.onDescriptionChange(metadata.description)
-                }
-                val suggestedCategory = metadata.categoryId
-                    ?.let { id -> categories.firstOrNull { it.id == id } }
-                if (suggestedCategory != null) {
-                    val current = createNoteComponent.uiState.value.selectedCategories
-                    if (current.none { it.id == suggestedCategory.id }) {
-                        draftCategoryIds = draftCategoryIds + suggestedCategory.id
-                        createNoteComponent.saveCategories(
-                            (current + suggestedCategory.toModel()).toList()
+        // 与写作面板共用准入逻辑：直连直接跑，代理引擎先拉起登录，再交给 MANAGED 执行器做积分闸门。
+        createNoteComponent.runWithAiAccess(source = "note_ai_metadata") {
+            scope.launch {
+                isGenerating = true
+                try {
+                    val metadata = runCatching {
+                        createNoteComponent.generateMetadata(pendingMarkdown)
+                    }.getOrNull()
+                    if (metadata == null) {
+                        AppToastHost.showToast(
+                            AppContext.getString(CommonR.string.note_ai_generate_failed)
+                        )
+                        return@launch
+                    }
+                    if (metadata.title.isNotBlank()) {
+                        draftTitle = metadata.title
+                        createNoteComponent.onTitleChange(metadata.title)
+                    }
+                    if (metadata.description.isNotBlank()) {
+                        draftDescription = metadata.description
+                        createNoteComponent.onDescriptionChange(metadata.description)
+                    }
+                    val suggestedCategory = metadata.categoryId
+                        ?.let { id -> categories.firstOrNull { it.id == id } }
+                    if (suggestedCategory != null) {
+                        val current = createNoteComponent.uiState.value.selectedCategories
+                        if (current.none { it.id == suggestedCategory.id }) {
+                            draftCategoryIds = draftCategoryIds + suggestedCategory.id
+                            createNoteComponent.saveCategories(
+                                (current + suggestedCategory.toModel()).toList()
+                            )
+                        }
+                    }
+                    if (metadata.usedFallback) {
+                        AppToastHost.showToast(
+                            metadata.errorMessage
+                                ?: AppContext.getString(CommonR.string.note_ai_generate_failed)
                         )
                     }
+                } finally {
+                    isGenerating = false
                 }
-                if (metadata.usedFallback) {
-                    AppToastHost.showToast(
-                        metadata.errorMessage
-                            ?: AppContext.getString(CommonR.string.note_ai_generate_failed)
-                    )
-                }
-            } finally {
-                isGenerating = false
             }
         }
     }

@@ -19,6 +19,7 @@
 
 package com.shifenmiao.common.ai
 
+import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.model.ModelProvider.AppJson
 import kotlinx.serialization.decodeFromString
 import com.shifenmiao.common.manager.AIEngineManager
@@ -182,6 +183,42 @@ class AIPromptExecutor @Inject constructor(
                 engineName = engine.name,
                 modelName = engine.model.name,
             )
+        }
+    }
+
+    /**
+     * 单轮提示词实际会使用的云端引擎：端侧槽位按 [resolveEngine] 的规则回退，
+     * 全部槽位都不可用时返回 null。
+     */
+    fun effectiveEngine(): AiEngine? = resolveEngine(EngineMode.DEFAULT)
+
+    /**
+     * UI 侧主动调用 AI 前的准入闸门（配合 [execute]/[executeStreaming] 的 MANAGED 计费使用）：
+     *
+     * - 直连引擎（自带 token / 端侧回退后的直连）：直接执行，不要求登录、不扣积分；
+     * - 代理路由：先拉起全局登录，登录成功后再执行；积分预估与成功后扣费仍由
+     *   [execute]/[executeStreaming] 的 MANAGED 计费统一处理；
+     * - 没有可用路由：提示先完成 AI 引擎设置，不发起请求。
+     *
+     * 注意：本方法只管登录兜底，不替代 [execute] 里的积分闸门。
+     */
+    fun runWithAccessGate(
+        source: String,
+        onAllowed: () -> Unit,
+    ) {
+        val engine = effectiveEngine()
+        if (engine == null || engine.name.isBlank()) {
+            ActionUtils.showError(R.string.ai_chat_engine_unavailable_toast)
+            return
+        }
+        when (AiRequestUrlResolver.resolveRequestRoute(engine)) {
+            AiRequestUrlResolver.RequestRoute.DIRECT -> onAllowed()
+            AiRequestUrlResolver.RequestRoute.PROXY -> {
+                ActionUtils.showLogin(source = source) { onAllowed() }
+            }
+            AiRequestUrlResolver.RequestRoute.UNAVAILABLE -> {
+                ActionUtils.showError(R.string.ai_chat_engine_unavailable_toast)
+            }
         }
     }
 
