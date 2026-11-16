@@ -181,12 +181,16 @@ private fun RichTextDocumentBlock(
     // 每个块只有一种段落样式；把行高下沉到 BasicTextField 的 textStyle，
     // 保证标题块高度与预览的 40/32/28sp 行高一致（段落样式在部分版本不会覆盖默认行高）。
     val baseVisual = config.richTextVisual
-    val blockVisual = blockStyle.paragraphStyle.lineHeight.let { lineHeight ->
-        if (lineHeight.isSpecified && baseVisual.textStyle != TextStyle.Default) {
-            baseVisual.copy(textStyle = baseVisual.textStyle.copy(lineHeight = lineHeight))
-        } else {
-            baseVisual
+    val isListBlock = snapshot.text.startsWith(scheme.listStyle.marker)
+    val blockVisual = run {
+        var textStyle = baseVisual.textStyle
+        if (blockStyle.paragraphStyle.lineHeight.isSpecified && textStyle != TextStyle.Default) {
+            textStyle = textStyle.copy(lineHeight = blockStyle.paragraphStyle.lineHeight)
         }
+        if (isListBlock && textStyle != TextStyle.Default) {
+            textStyle = textStyle.copy(textIndent = scheme.listStyle.paragraphStyle.textIndent)
+        }
+        if (textStyle != baseVisual.textStyle) baseVisual.copy(textStyle = textStyle) else baseVisual
     }
     Column(modifier = Modifier.fillMaxWidth()) {
         RichTextEditor(

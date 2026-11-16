@@ -18,7 +18,6 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -30,7 +29,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -52,14 +50,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
@@ -76,7 +73,6 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineAudioFile
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLink
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
-import com.wanbaohe.core.ui.widget.glass.GlassSegmentedButtonRow
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.richtext.editor.command.applyBlockStyle
@@ -126,7 +122,7 @@ internal fun NativeMarkdownEditorDock(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(2.dp),
     ) {
-        NativeMarkdownEditorModeSegments(state)
+        NativeMarkdownEditorDockModeButtons(state, expanded)
         Spacer(modifier = Modifier.width(4.dp))
         NativeMarkdownEditorDockActionRow(
             state = state,
@@ -145,36 +141,22 @@ internal fun NativeMarkdownEditorDock(
 }
 
 @Composable
-private fun NativeMarkdownEditorModeSegments(
+private fun NativeMarkdownEditorDockModeButtons(
     state: NativeMarkdownEditorState,
+    expanded: Boolean,
 ) {
-    val focusManager = LocalFocusManager.current
-    GlassSegmentedButtonRow(
-        options = NativeMarkdownEditorMode.entries.toList(),
-        selectedOption = state.mode,
-        onOptionSelected = { mode ->
-            if (mode == NativeMarkdownEditorMode.Preview) {
-                // 预览是只读的，切换过去时收起键盘，避免遮住正文。
-                focusManager.clearFocus(force = true)
-            }
-            state.selectMode(mode)
-        },
-        rowStyle = GlassStyle.Thin,
-        buttonHeight = 30.dp,
-        hugContent = true,
-        contentPadding = PaddingValues(2.dp),
-        spacing = 1.dp,
-        selectedColor = MaterialTheme.colorScheme.primaryContainer,
-        selectedContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-        label = { mode ->
-            Icon(
-                imageVector = mode.icon(),
-                contentDescription = stringResource(mode.labelRes()),
-                modifier = Modifier.size(16.dp),
+    Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+        // 预览入口暂时隐藏：只保留编辑/源码两个互斥模式。
+        listOf(NativeMarkdownEditorMode.Edit, NativeMarkdownEditorMode.Source).forEach { mode ->
+            DockIconChip(
+                label = stringResource(mode.labelRes()),
+                icon = mode.icon(),
+                expanded = expanded,
+                selected = state.mode == mode,
+                onClick = { state.selectMode(mode) },
             )
-        },
-    )
+        }
+    }
 }
 
 @Composable
@@ -187,33 +169,19 @@ private fun NativeMarkdownEditorDockCollapseButton(
         animationSpec = tween(durationMillis = 220),
         label = "editor-dock-chevron",
     )
-    val toggleLabel = stringResource(
-        if (expanded) {
-            R.string.native_editor_toolbar_collapse
-        } else {
-            R.string.native_editor_toolbar_expand
-        },
-    )
-    Box(
-        modifier = Modifier
-            .size(32.dp)
-            .clip(CircleShape)
-            .clickable(onClick = onToggleExpanded)
-            .semantics {
-                contentDescription = toggleLabel
-                role = Role.Button
+    DockIconChip(
+        label = stringResource(
+            if (expanded) {
+                R.string.native_editor_toolbar_collapse
+            } else {
+                R.string.native_editor_toolbar_expand
             },
-        contentAlignment = Alignment.Center,
-    ) {
-        Icon(
-            imageVector = MaterialIcons.Filled.KeyboardArrowDown,
-            contentDescription = null,
-            modifier = Modifier
-                .size(20.dp)
-                .rotate(chevronRotation),
-            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-        )
-    }
+        ),
+        icon = MaterialIcons.Filled.KeyboardArrowDown,
+        expanded = expanded,
+        onClick = onToggleExpanded,
+        iconModifier = Modifier.rotate(chevronRotation),
+    )
 }
 
 @Composable
@@ -248,22 +216,24 @@ private fun NativeMarkdownEditorDockActionRow(
             horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             if (onVoiceInput != null) {
-                DockHeaderIconButton(
+                DockIconChip(
                     label = stringResource(com.shifenmiao.core.R.string.ai_input_voice),
                     icon = OneBoxIcons.Outlined.Mic,
-                    enabled = true,
+                    expanded = expanded,
                     onClick = onVoiceInput,
                 )
             }
-            DockHeaderIconButton(
+            DockIconChip(
                 label = stringResource(com.t8rin.imagetoolbox.core.resources.R.string.undo),
                 icon = OneBoxIcons.Outlined.LineUndo,
+                expanded = expanded,
                 enabled = state.canUndo(),
                 onClick = state::undo,
             )
-            DockHeaderIconButton(
+            DockIconChip(
                 label = stringResource(com.t8rin.imagetoolbox.core.resources.R.string.redo),
                 icon = OneBoxIcons.Outlined.LineRedo,
+                expanded = expanded,
                 enabled = state.canRedo(),
                 onClick = state::redo,
             )
@@ -412,37 +382,49 @@ private fun NativeMarkdownEditorDockActionRow(
 }
 
 @Composable
-private fun DockHeaderIconButton(
+private fun DockIconChip(
     label: String,
     icon: ImageVector,
-    enabled: Boolean,
+    expanded: Boolean,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    selected: Boolean = false,
+    iconModifier: Modifier = Modifier,
 ) {
-    val color = if (enabled) {
-        MaterialTheme.colorScheme.onPrimaryContainer
-    } else {
-        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
+    val colorScheme = MaterialTheme.colorScheme
+    val contentColor = when {
+        !enabled -> colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
+        selected -> colorScheme.onPrimaryContainer
+        else -> colorScheme.onSurfaceVariant
     }
     GlassSurface(
         onClick = onClick,
         enabled = enabled,
-        modifier = Modifier
-            .size(32.dp)
+        modifier = modifier
+            .height(if (expanded) DockExpandedHeight.dp else DockCollapsedHeight.dp)
+            .widthIn(min = if (expanded) 46.dp else 34.dp)
             .semantics(mergeDescendants = true) {
                 contentDescription = label
                 role = Role.Button
+                this.selected = selected
             },
-        shape = CircleShape,
-        color = MaterialTheme.colorScheme.surfaceContainer,
-        contentColor = color,
-        style = GlassStyle.Thin,
-        borderWidth = 0.6.dp,
+        shape = DockButtonShape,
+        color = if (selected) colorScheme.primaryContainer else colorScheme.surfaceContainer,
+        contentColor = contentColor,
+        style = if (selected) GlassStyle.Medium else GlassStyle.Thin,
+        borderWidth = 0.7.dp,
     ) {
-        Box(contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier.fillMaxHeight(),
+            contentAlignment = Alignment.Center,
+        ) {
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                modifier = Modifier.size(17.dp),
+                modifier = Modifier
+                    .size(18.dp)
+                    .then(iconModifier),
             )
         }
     }

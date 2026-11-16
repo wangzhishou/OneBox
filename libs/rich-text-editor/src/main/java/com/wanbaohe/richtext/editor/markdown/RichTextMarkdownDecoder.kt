@@ -201,14 +201,8 @@ class RichTextMarkdownDecoder(
                         lineIndex < lines.lastIndex,
                     )
                 }
-                if (bullet != null) {
-                    paragraphStyles += paragraphRange(
-                        scheme.listStyle.paragraphStyle,
-                        contentStart,
-                        contentEnd,
-                        lineIndex < lines.lastIndex,
-                    )
-                }
+                // 列表悬挂缩进改由 RichTextDocumentBlock 的 textStyle.textIndent 提供，
+                // 避免 ParagraphStyle 在每个条目后额外撑出一行。
             }
             text.append(inline.text)
             if (lineIndex < lines.lastIndex) text.append('\n')
