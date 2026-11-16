@@ -42,7 +42,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.wanbaohe.base.ui.ConfirmContentDialog
 import com.shifenmiao.common.markdown.OneBoxMarkdownContent
-import com.shifenmiao.common.utils.ShareUtils
 import com.shifenmiao.core.R
 import com.shifenmiao.core.constants.Constants
 import com.shifenmiao.model.event.AgreePrivacyPolicyEvent
@@ -128,7 +127,7 @@ fun WeChatConfirmDialog(
     message: String = stringResource(R.string.profile_item_wechat_tips),
     copValue: String = stringResource(R.string.profile_item_wechat_account),
     confirmButtonText: String = stringResource(id = R.string.button_copy),
-    dismissButtonText: String = stringResource(id = R.string.button_share_to_wechat),
+    dismissButtonText: String = stringResource(id = R.string.button_close),
     onConfirm: () -> Unit = {},
     onDismiss: () -> Unit = {}
 ) {
@@ -148,7 +147,6 @@ fun WeChatConfirmDialog(
             onDismiss = {
                 showDialogState.value = false
                 onDismiss()
-                ShareUtils.shareWechatQRCode()
             }
         ) {
             Column(

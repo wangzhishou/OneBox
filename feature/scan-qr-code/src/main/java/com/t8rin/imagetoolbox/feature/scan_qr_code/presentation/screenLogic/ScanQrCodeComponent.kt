@@ -31,11 +31,9 @@ import android.net.Uri
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.core.net.toUri
 import com.arkivanov.decompose.ComponentContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.image.ImageCompressor
-import com.t8rin.imagetoolbox.core.domain.image.ImageShareProvider
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageInfo
 import com.t8rin.imagetoolbox.core.domain.image.model.Quality
@@ -66,7 +64,6 @@ class ScanQrCodeComponent @AssistedInject internal constructor(
     @Assisted uriToAnalyze: Uri?,
     @Assisted val onGoBack: () -> Unit,
     private val fileController: FileController,
-    private val shareProvider: ImageShareProvider<Bitmap>,
     private val imageCompressor: ImageCompressor<Bitmap>,
     private val filterParamsInteractor: FilterParamsInteractor,
     private val imageBarcodeReader: ImageBarcodeReader,
@@ -143,59 +140,10 @@ class ScanQrCodeComponent @AssistedInject internal constructor(
         }
     }
 
-    fun shareImage(
-        bitmap: Bitmap,
-        onComplete: () -> Unit
-    ) {
-        _isSaving.value = false
-        savingJob?.cancel()
-        savingJob = componentScope.launch {
-            _isSaving.value = true
-            bitmap.let { image ->
-                shareProvider.shareImage(
-                    imageInfo = ImageInfo(
-                        width = image.width,
-                        height = image.height,
-                        imageFormat = ImageFormat.Png.Lossless
-                    ),
-                    image = image,
-                    onComplete = {
-                        _isSaving.value = false
-                        onComplete()
-                    }
-                )
-            }
-        }
-    }
-
     fun cancelSaving() {
         savingJob?.cancel()
         savingJob = null
         _isSaving.value = false
-    }
-
-    fun cacheImage(
-        bitmap: Bitmap,
-        onComplete: (Uri) -> Unit
-    ) {
-        _isSaving.value = false
-        savingJob?.cancel()
-        savingJob = componentScope.launch {
-            _isSaving.value = true
-            bitmap.let { image ->
-                shareProvider.cacheImage(
-                    image = image,
-                    imageInfo = ImageInfo(
-                        width = image.width,
-                        height = image.height,
-                        imageFormat = ImageFormat.Png.Lossless
-                    )
-                )?.let { uri ->
-                    onComplete(uri.toUri())
-                }
-            }
-            _isSaving.value = false
-        }
     }
 
     fun processFilterTemplateFromQrContent(

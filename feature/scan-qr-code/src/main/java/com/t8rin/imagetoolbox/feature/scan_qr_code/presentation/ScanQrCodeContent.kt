@@ -59,7 +59,6 @@ import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.AdaptiveLayoutScreen
 import com.wanbaohe.core.ui.widget.buttons.BottomButtonsBlock
-import com.wanbaohe.core.ui.widget.buttons.ShareButton
 import com.wanbaohe.core.ui.widget.dialogs.LoadingDialog
 import com.wanbaohe.core.ui.widget.dialogs.OneTimeImagePickingDialog
 import com.wanbaohe.core.ui.widget.dialogs.OneTimeSaveLocationSelectionDialog
@@ -74,7 +73,6 @@ import com.t8rin.imagetoolbox.feature.scan_qr_code.presentation.components.QrCod
 import com.t8rin.imagetoolbox.feature.scan_qr_code.presentation.components.ScanQrCodeControls
 import com.t8rin.imagetoolbox.feature.scan_qr_code.presentation.screenLogic.ScanQrCodeComponent
 import com.shifenmiao.theme.AppTheme
-import com.wanbaohe.core.ui.utils.helper.Clipboard
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAutoFix
@@ -182,27 +180,7 @@ fun ScanQrCodeContent(
             }
         },
         onGoBack = component.onGoBack,
-        actions = {
-            ShareButton(
-                enabled = params.content.raw.isNotEmpty(),
-                onShare = {
-                    scope.launch {
-                        component.shareImage(
-                            bitmap = captureController.bitmap(),
-                            onComplete = showConfetti
-                        )
-                    }
-                },
-                onCopy = {
-                    scope.launch {
-                        component.cacheImage(
-                            bitmap = captureController.bitmap(),
-                            onComplete = Clipboard::copy
-                        )
-                    }
-                }
-            )
-        },
+        actions = {},
         topAppBarPersistentActions = {
             TopAppBarEmoji()
         },
