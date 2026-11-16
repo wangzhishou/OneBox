@@ -51,6 +51,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.R as CommonR
@@ -213,7 +214,7 @@ fun CreateNoteScreen(
                 onTitleChange = createNoteComponent::onTitleChange,
             )
         },
-        type = EnhancedTopAppBarType.Normal,
+        type = EnhancedTopAppBarType.Center,
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.Transparent,
             scrolledContainerColor = Color.Transparent,
@@ -344,11 +345,12 @@ private fun NoteTitleField(
         textStyle = MaterialTheme.typography.titleLarge.copy(
             color = MaterialTheme.colorScheme.onSurface,
             fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
         ),
         cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
         singleLine = true,
         decorationBox = { innerTextField ->
-            Box(contentAlignment = Alignment.CenterStart) {
+            Box(contentAlignment = Alignment.Center) {
                 if (title.isBlank()) {
                     Text(
                         text = stringResource(CommonR.string.note_untitled),
@@ -356,6 +358,8 @@ private fun NoteTitleField(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
                 innerTextField()

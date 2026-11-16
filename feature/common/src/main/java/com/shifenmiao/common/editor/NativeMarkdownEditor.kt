@@ -44,7 +44,11 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.R
 import com.shifenmiao.common.components.text.SuppressSystemTextSelectionMenu
+import com.shifenmiao.common.di.VoiceRecognizerEntryPoint
 import com.shifenmiao.common.markdown.OneBoxMarkdownContent
+import com.shifenmiao.common.voice.ui.VoiceInputSheet
+import com.shifenmiao.common.voice.ui.rememberVoiceInputEnabled
+import com.shifenmiao.common.voice.ui.rememberVoiceInputLauncher
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
@@ -66,6 +70,7 @@ import com.wanbaohe.richtext.editor.ui.RichTextSelectionToolbar
 import com.wanbaohe.richtext.editor.ui.RichTextSelectionToolbarConfig
 import com.wanbaohe.richtext.editor.ui.rememberRichTextSelectionAnchorTracker
 import com.wanbaohe.richtext.editor.ui.richTextInlineSelectionActions
+import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
 
@@ -87,6 +92,14 @@ fun NativeMarkdownEditor(
     var insertKind by remember { mutableStateOf<NativeEditorInsertKind?>(null) }
     var pendingLocalKind by remember { mutableStateOf<NativeEditorInsertKind?>(null) }
     var isImporting by remember { mutableStateOf(false) }
+    val voiceInputEnabled = rememberVoiceInputEnabled()
+    var showVoiceSheet by remember { mutableStateOf(false) }
+    val voiceRecognizer = remember(context) {
+        EntryPointAccessors.fromApplication(
+            context,
+            VoiceRecognizerEntryPoint::class.java,
+        ).voiceRecognizer()
+    }
 
     fun insertMarkdown(kind: NativeEditorInsertKind, url: String, name: String) {
         val markdown = when (kind) {
@@ -118,6 +131,50 @@ fun NativeMarkdownEditor(
             markdown = markdown,
         )
     }
+
+    fun insertVoiceText(recognized: String) {
+        val text = recognized.trim()
+        if (text.isBlank()) return
+        if (state.mode == NativeMarkdownEditorMode.Preview) {
+            state.selectMode(NativeMarkdownEditorMode.Edit)
+        }
+        if (state.mode == NativeMarkdownEditorMode.Source) {
+            val buffer = state.sourceState
+            val start = buffer.selection.min
+            val end = buffer.selection.max
+            val source = buffer.text.toString()
+            val prefix = if (start > 0 && !source[start - 1].isWhitespace()) " " else ""
+            val insertion = prefix + text
+            buffer.edit {
+                replace(start, end, insertion)
+                selection = TextRange(start + insertion.length)
+            }
+            state.notifyContentChanged()
+            return
+        }
+        val editor = state.richTextState() ?: run {
+            state.insertTextBlock()
+            state.richTextState()
+        } ?: return
+        val start = editor.selection.min
+        val end = editor.selection.max
+        val source = editor.text
+        val prefix = if (start > 0 && start <= source.length && !source[start - 1].isWhitespace()) {
+            " "
+        } else {
+            ""
+        }
+        val insertion = prefix + text
+        editor.edit {
+            replace(start, end, insertion)
+            selection = TextRange(start + insertion.length)
+        }
+    }
+
+    val startVoiceInput = rememberVoiceInputLauncher(
+        onResult = ::insertVoiceText,
+        onShowIflytekSheet = { showVoiceSheet = true },
+    )
 
     val localFilePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument(),
@@ -220,8 +277,16 @@ fun NativeMarkdownEditor(
             state = state,
             extraActions = extraActions,
             onInsert = { insertKind = it },
+            onVoiceInput = startVoiceInput.takeIf { voiceInputEnabled },
         )
     }
+
+    VoiceInputSheet(
+        visible = showVoiceSheet,
+        recognizer = voiceRecognizer,
+        onResult = ::insertVoiceText,
+        onDismiss = { showVoiceSheet = false },
+    )
 
     NativeEditorInsertSheet(
         kind = insertKind,

@@ -18,6 +18,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -69,6 +70,7 @@ import androidx.compose.ui.unit.sp
 import com.shifenmiao.common.R
 import com.t8rin.imagetoolbox.core.resources.Icons as OneBoxIcons
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
+import com.t8rin.imagetoolbox.core.resources.icons.Mic
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAudioFile
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLink
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
@@ -106,6 +108,7 @@ internal fun NativeMarkdownEditorDock(
     extraActions: List<NativeEditorExtraAction>,
     modifier: Modifier = Modifier,
     onInsert: (NativeEditorInsertKind) -> Unit = {},
+    onVoiceInput: (() -> Unit)? = null,
 ) {
     var expanded by rememberSaveable { mutableStateOf(true) }
 
@@ -123,31 +126,68 @@ internal fun NativeMarkdownEditorDock(
         style = GlassStyle.Thick,
         borderWidth = 0.7.dp,
     ) {
-        Column(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .navigationBarsPadding()
-                .padding(top = 6.dp, bottom = 6.dp),
+                .padding(horizontal = 6.dp, vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(2.dp),
         ) {
-            NativeMarkdownEditorDockModeRow(
-                state = state,
-                expanded = expanded,
-                onToggleExpanded = { expanded = !expanded },
-            )
-            Spacer(modifier = Modifier.height(2.dp))
+            NativeMarkdownEditorModeSegments(state)
+            Spacer(modifier = Modifier.width(4.dp))
             NativeMarkdownEditorDockActionRow(
                 state = state,
                 expanded = expanded,
                 extraActions = extraActions,
                 onInsert = onInsert,
+                onVoiceInput = onVoiceInput,
+                modifier = Modifier.weight(1f),
+            )
+            Spacer(modifier = Modifier.width(2.dp))
+            NativeMarkdownEditorDockCollapseButton(
+                expanded = expanded,
+                onToggleExpanded = { expanded = !expanded },
             )
         }
     }
 }
 
 @Composable
-private fun NativeMarkdownEditorDockModeRow(
+private fun NativeMarkdownEditorModeSegments(
     state: NativeMarkdownEditorState,
+) {
+    val focusManager = LocalFocusManager.current
+    GlassSegmentedButtonRow(
+        options = NativeMarkdownEditorMode.entries.toList(),
+        selectedOption = state.mode,
+        onOptionSelected = { mode ->
+            if (mode == NativeMarkdownEditorMode.Preview) {
+                // 预览是只读的，切换过去时收起键盘，避免遮住正文。
+                focusManager.clearFocus(force = true)
+            }
+            state.selectMode(mode)
+        },
+        rowStyle = GlassStyle.Thin,
+        buttonHeight = 30.dp,
+        hugContent = true,
+        contentPadding = PaddingValues(2.dp),
+        spacing = 1.dp,
+        selectedColor = MaterialTheme.colorScheme.primaryContainer,
+        selectedContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        label = { mode ->
+            Icon(
+                imageVector = mode.icon(),
+                contentDescription = stringResource(mode.labelRes()),
+                modifier = Modifier.size(16.dp),
+            )
+        },
+    )
+}
+
+@Composable
+private fun NativeMarkdownEditorDockCollapseButton(
     expanded: Boolean,
     onToggleExpanded: () -> Unit,
 ) {
@@ -156,96 +196,32 @@ private fun NativeMarkdownEditorDockModeRow(
         animationSpec = tween(durationMillis = 220),
         label = "editor-dock-chevron",
     )
-    val focusManager = LocalFocusManager.current
-
-    Row(
+    val toggleLabel = stringResource(
+        if (expanded) {
+            R.string.native_editor_toolbar_collapse
+        } else {
+            R.string.native_editor_toolbar_expand
+        },
+    )
+    Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 8.dp, end = 6.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(2.dp),
+            .size(32.dp)
+            .clip(CircleShape)
+            .clickable(onClick = onToggleExpanded)
+            .semantics {
+                contentDescription = toggleLabel
+                role = Role.Button
+            },
+        contentAlignment = Alignment.Center,
     ) {
-        DockHeaderIconButton(
-            label = stringResource(com.t8rin.imagetoolbox.core.resources.R.string.undo),
-            icon = OneBoxIcons.Outlined.LineUndo,
-            enabled = state.canUndo(),
-            onClick = state::undo,
-        )
-        DockHeaderIconButton(
-            label = stringResource(com.t8rin.imagetoolbox.core.resources.R.string.redo),
-            icon = OneBoxIcons.Outlined.LineRedo,
-            enabled = state.canRedo(),
-            onClick = state::redo,
-        )
-        Spacer(modifier = Modifier.width(2.dp))
-        GlassSegmentedButtonRow(
-            options = NativeMarkdownEditorMode.entries.toList(),
-            selectedOption = state.mode,
-            onOptionSelected = { mode ->
-                if (mode == NativeMarkdownEditorMode.Preview) {
-                    // 预览是只读的，切换过去时收起键盘，避免遮住正文。
-                    focusManager.clearFocus(force = true)
-                }
-                state.selectMode(mode)
-            },
-            modifier = Modifier.weight(1f),
-            rowStyle = GlassStyle.Thin,
-            buttonHeight = 30.dp,
-            selectedColor = MaterialTheme.colorScheme.primaryContainer,
-            selectedContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            label = { mode ->
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(3.dp),
-                ) {
-                    Icon(
-                        imageVector = mode.icon(),
-                        contentDescription = null,
-                        modifier = Modifier.size(14.dp),
-                    )
-                    AnimatedVisibility(
-                        visible = expanded,
-                        enter = fadeIn(tween(140)) + expandHorizontally(tween(180)),
-                        exit = fadeOut(tween(90)) + shrinkHorizontally(tween(140)),
-                    ) {
-                        Text(
-                            text = stringResource(mode.labelRes()),
-                            style = MaterialTheme.typography.labelSmall,
-                            maxLines = 1,
-                        )
-                    }
-                }
-            },
-        )
-        Spacer(modifier = Modifier.width(2.dp))
-        val toggleLabel = stringResource(
-            if (expanded) {
-                R.string.native_editor_toolbar_collapse
-            } else {
-                R.string.native_editor_toolbar_expand
-            },
-        )
-        Box(
+        Icon(
+            imageVector = MaterialIcons.Filled.KeyboardArrowDown,
+            contentDescription = null,
             modifier = Modifier
-                .size(32.dp)
-                .clip(CircleShape)
-                .clickable(onClick = onToggleExpanded)
-                .semantics {
-                    contentDescription = toggleLabel
-                    role = Role.Button
-                },
-            contentAlignment = Alignment.Center,
-        ) {
-            Icon(
-                imageVector = MaterialIcons.Filled.KeyboardArrowDown,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(20.dp)
-                    .rotate(chevronRotation),
-                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-            )
-        }
+                .size(20.dp)
+                .rotate(chevronRotation),
+            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+        )
     }
 }
 
@@ -255,6 +231,8 @@ private fun NativeMarkdownEditorDockActionRow(
     expanded: Boolean,
     extraActions: List<NativeEditorExtraAction>,
     onInsert: (NativeEditorInsertKind) -> Unit,
+    onVoiceInput: (() -> Unit)?,
+    modifier: Modifier = Modifier,
 ) {
     val scheme = rememberNativeMarkdownStyleScheme()
     val editor = state.richTextState()
@@ -263,9 +241,7 @@ private fun NativeMarkdownEditorDockActionRow(
     val diagramTemplate = stringResource(R.string.native_editor_template_diagram)
 
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp),
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Row(
@@ -275,6 +251,28 @@ private fun NativeMarkdownEditorDockActionRow(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
+            if (onVoiceInput != null) {
+                DockHeaderIconButton(
+                    label = stringResource(com.shifenmiao.core.R.string.ai_input_voice),
+                    icon = OneBoxIcons.Outlined.Mic,
+                    enabled = true,
+                    onClick = onVoiceInput,
+                )
+            }
+            DockHeaderIconButton(
+                label = stringResource(com.t8rin.imagetoolbox.core.resources.R.string.undo),
+                icon = OneBoxIcons.Outlined.LineUndo,
+                enabled = state.canUndo(),
+                onClick = state::undo,
+            )
+            DockHeaderIconButton(
+                label = stringResource(com.t8rin.imagetoolbox.core.resources.R.string.redo),
+                icon = OneBoxIcons.Outlined.LineRedo,
+                enabled = state.canRedo(),
+                onClick = state::redo,
+            )
+            DockDivider()
+
             scheme.inlineStyles.forEach { definition ->
                 DockTextButton(
                     label = definition.label,
