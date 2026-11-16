@@ -18,6 +18,7 @@ import androidx.compose.foundation.text.input.KeyboardActionHandler
 import androidx.compose.foundation.text.input.TextFieldDecorator
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
@@ -34,6 +35,8 @@ data class RichTextEditorBehaviorConfig(
     val clipboard: RichTextClipboard? = null,
     val onUndo: (() -> Unit)? = null,
     val onRedo: (() -> Unit)? = null,
+    /** 长按时回调窗口坐标附近的位置，用于在没有选区时也能拉起编辑菜单。 */
+    val onLongPress: ((Rect) -> Unit)? = null,
 )
 
 data class RichTextEditorVisualConfig(

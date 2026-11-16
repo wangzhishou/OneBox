@@ -59,6 +59,8 @@ class MarkdownDocumentEditorState internal constructor(
         private set
     var userContentVersion by mutableLongStateOf(0L)
         private set
+    var revealBlockId by mutableStateOf<String?>(null)
+        private set
 
     init {
         decodeMarkdown(initialMarkdown, immediate = true, resetHistory = true)
@@ -141,6 +143,12 @@ class MarkdownDocumentEditorState internal constructor(
         activeBlockId = blockId
     }
 
+    internal fun consumeRevealBlockId(): String? {
+        val id = revealBlockId
+        revealBlockId = null
+        return id
+    }
+
     fun richTextState(): RichTextEditorState? {
         val active = blocks.filterIsInstance<MarkdownEditorBlock.RichText>()
         val activeId = activeBlockId ?: return active.lastOrNull()?.state
@@ -199,6 +207,7 @@ class MarkdownDocumentEditorState internal constructor(
         val activeIndex = blocks.indexOfFirst { it.id == activeBlockId }
         blocks.add(if (activeIndex >= 0) activeIndex + 1 else blocks.size, block)
         activeBlockId = block.id
+        revealBlockId = block.id
         notifyContentChanged()
     }
 

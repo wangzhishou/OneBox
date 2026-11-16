@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.input.InputTransformation
@@ -30,6 +31,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
@@ -82,25 +84,37 @@ fun MarkdownDocumentEditor(
             label = "markdown-editor-mode",
         ) { mode ->
             when (mode) {
-                MarkdownEditorMode.Edit -> LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(bottom = 32.dp),
-                    // 与预览的 blockSpacing 保持一致，切换模式时正文不会整体位移。
-                    verticalArrangement = Arrangement.spacedBy(20.dp),
-                ) {
-                    items(
-                        items = state.blocks,
-                        key = { block -> block.id },
-                        contentType = { block -> block::class },
-                    ) { block ->
-                        when (block) {
-                            is MarkdownEditorBlock.RichText -> RichTextDocumentBlock(
-                                block = block,
-                                state = state,
-                                scheme = scheme,
-                                config = config,
-                            )
-                            is MarkdownEditorBlock.Raw -> RawDocumentBlock(block, state, config.registry)
+                MarkdownEditorMode.Edit -> {
+                    val listState = rememberLazyListState()
+                    LaunchedEffect(state.revealBlockId, state.blocks.size) {
+                        val revealId = state.revealBlockId ?: return@LaunchedEffect
+                        val index = state.blocks.indexOfFirst { block -> block.id == revealId }
+                        if (index >= 0) {
+                            listState.animateScrollToItem(index)
+                            state.consumeRevealBlockId()
+                        }
+                    }
+                    LazyColumn(
+                        state = listState,
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(bottom = 32.dp),
+                        // 与预览 blockSpacing 的视觉间距对齐，切换模式时正文不会整体位移。
+                        verticalArrangement = Arrangement.spacedBy(20.dp),
+                    ) {
+                        items(
+                            items = state.blocks,
+                            key = { block -> block.id },
+                            contentType = { block -> block::class },
+                        ) { block ->
+                            when (block) {
+                                is MarkdownEditorBlock.RichText -> RichTextDocumentBlock(
+                                    block = block,
+                                    state = state,
+                                    scheme = scheme,
+                                    config = config,
+                                )
+                                is MarkdownEditorBlock.Raw -> RawDocumentBlock(block, state, config.registry)
+                            }
                         }
                     }
                 }

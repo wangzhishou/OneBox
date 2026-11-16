@@ -86,6 +86,7 @@ object BackupFormat {
         "signatures",
         "customFonts",
         "ocr_history",
+        "editor-media",
     )
 
     fun dbFileNameOf(role: String): String = when (role) {

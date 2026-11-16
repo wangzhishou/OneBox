@@ -11,9 +11,12 @@
 package com.wanbaohe.richtext.editor.ui
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LocalContentColor
@@ -57,10 +60,11 @@ fun RichTextSelectionToolbar(
         ?: MaterialTheme.colorScheme.onPrimaryContainer
     Popup(
         popupPositionProvider = positionProvider,
+        onDismissRequest = config.onDismiss,
         properties = PopupProperties(
             focusable = false,
-            dismissOnBackPress = false,
-            dismissOnClickOutside = false,
+            dismissOnBackPress = config.dismissOnClickOutside,
+            dismissOnClickOutside = config.dismissOnClickOutside,
             clippingEnabled = false,
             usePlatformDefaultWidth = false,
         ),
@@ -72,7 +76,12 @@ fun RichTextSelectionToolbar(
             contentColor = contentColor,
             shadowElevation = 6.dp,
         ) {
-            Row(modifier = Modifier.padding(4.dp)) {
+            Row(
+                modifier = Modifier
+                    .widthIn(max = config.maxWidth)
+                    .horizontalScroll(rememberScrollState())
+                    .padding(4.dp),
+            ) {
                 actions.forEach { action ->
                     RichTextSelectionActionButton(action, contentColor)
                 }

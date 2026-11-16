@@ -6,12 +6,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.components.CenterErrorBox
 import com.shifenmiao.common.components.text.TextSelectionMenuItem
+import com.shifenmiao.common.editor.EditorMediaStore
 import com.shifenmiao.core.R
 import com.wanbaohe.base.ui.loading.EmptyBox
 import com.wanbaohe.core.ui.loading.DotDanceLoading
@@ -35,6 +38,10 @@ fun OneBoxMarkdownContent(
     headerContent: (@Composable () -> Unit)? = null,
     footerContent: (@Composable () -> Unit)? = null,
 ) {
+    val context = LocalContext.current
+    val resolvedMessage = remember(context, message) {
+        EditorMediaStore.resolveForDisplay(context, message)
+    }
     when {
         isLoading -> Box(modifier.fillMaxSize(), Alignment.Center) { DotDanceLoading() }
         errorMessage != null -> CenterErrorBox(
@@ -49,7 +56,7 @@ fun OneBoxMarkdownContent(
             )
         }
         else -> OneBoxMarkdown(
-            markdown = message,
+            markdown = resolvedMessage,
             modifier = modifier.padding(paddingValues),
             state = state.modernState,
             onLinkClick = onLinkClick,

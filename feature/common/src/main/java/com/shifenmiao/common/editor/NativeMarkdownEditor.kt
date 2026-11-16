@@ -3,6 +3,8 @@
 
 package com.shifenmiao.common.editor
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +22,7 @@ import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,17 +30,22 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.R
 import com.shifenmiao.common.components.text.SuppressSystemTextSelectionMenu
 import com.shifenmiao.common.markdown.OneBoxMarkdownContent
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.markdown.OneBoxMarkdown
@@ -55,9 +63,11 @@ import com.wanbaohe.richtext.editor.ui.RichTextEditorBehaviorConfig
 import com.wanbaohe.richtext.editor.ui.RichTextEditorVisualConfig
 import com.wanbaohe.richtext.editor.ui.RichTextSelectionAction
 import com.wanbaohe.richtext.editor.ui.RichTextSelectionToolbar
+import com.wanbaohe.richtext.editor.ui.RichTextSelectionToolbarConfig
 import com.wanbaohe.richtext.editor.ui.rememberRichTextSelectionAnchorTracker
 import com.wanbaohe.richtext.editor.ui.richTextInlineSelectionActions
 import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.launch
 
 @Composable
 fun NativeMarkdownEditor(
@@ -70,6 +80,73 @@ fun NativeMarkdownEditor(
     val registry = rememberNativeMarkdownBlockRegistry()
     val selectionTracker = rememberRichTextSelectionAnchorTracker()
     val clipboard = rememberRichTextClipboard(scheme)
+    var contextMenuVisible by remember { mutableStateOf(false) }
+    var contextMenuAnchor by remember { mutableStateOf(Rect.Zero) }
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    var insertKind by remember { mutableStateOf<NativeEditorInsertKind?>(null) }
+    var pendingLocalKind by remember { mutableStateOf<NativeEditorInsertKind?>(null) }
+    var isImporting by remember { mutableStateOf(false) }
+
+    fun insertMarkdown(kind: NativeEditorInsertKind, url: String, name: String) {
+        val markdown = when (kind) {
+            NativeEditorInsertKind.Link -> "[${name.ifBlank { url }}]($url)"
+            NativeEditorInsertKind.Image -> "![${name.ifBlank { "image" }}]($url)"
+            NativeEditorInsertKind.Audio -> "!AUDIO[${name.ifBlank { "audio" }}]($url)"
+            NativeEditorInsertKind.Video -> "!VIDEO[${name.ifBlank { "video" }}]($url)"
+        }
+        if (state.mode == NativeMarkdownEditorMode.Source) {
+            val source = state.sourceState.text.toString().trimEnd()
+            val merged = if (source.isBlank()) markdown else "$source\n\n$markdown"
+            state.sourceState.edit {
+                replace(0, length, merged)
+                selection = androidx.compose.ui.text.TextRange(merged.length)
+            }
+            state.notifyContentChanged()
+            return
+        }
+        if (state.mode == NativeMarkdownEditorMode.Preview) {
+            state.selectMode(NativeMarkdownEditorMode.Edit)
+        }
+        state.insertRawBlock(
+            kind = when (kind) {
+                NativeEditorInsertKind.Link -> MarkdownRawBlockKind.Link
+                NativeEditorInsertKind.Image -> MarkdownRawBlockKind.Image
+                NativeEditorInsertKind.Audio -> MarkdownRawBlockKind.Audio
+                NativeEditorInsertKind.Video -> MarkdownRawBlockKind.Video
+            },
+            markdown = markdown,
+        )
+    }
+
+    val localFilePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument(),
+    ) { uri ->
+        val kind = pendingLocalKind
+        pendingLocalKind = null
+        if (uri == null || kind == null) return@rememberLauncherForActivityResult
+        scope.launch {
+            isImporting = true
+            val media = EditorMediaStore.import(
+                context = context,
+                uri = uri,
+                fallbackBaseName = kind.fallbackName,
+            )
+            isImporting = false
+            if (media == null) {
+                AppToastHost.showToast(
+                    context.getString(R.string.native_editor_insert_copy_failed)
+                )
+                return@launch
+            }
+            insertMarkdown(
+                kind = kind,
+                url = EditorMediaStore.markdownUri(media.fileName),
+                name = media.displayName.substringBeforeLast('.'),
+            )
+        }
+    }
+
     LaunchedEffect(state) {
         snapshotFlow { state.userContentVersion }.drop(1).collect { onContentChanged() }
     }
@@ -86,7 +163,13 @@ fun NativeMarkdownEditor(
                     scheme = scheme,
                     config = MarkdownDocumentEditorConfig(
                         registry = registry,
-                        richTextBehavior = RichTextEditorBehaviorConfig(clipboard = clipboard),
+                        richTextBehavior = RichTextEditorBehaviorConfig(
+                            clipboard = clipboard,
+                            onLongPress = { anchor ->
+                                contextMenuAnchor = anchor
+                                contextMenuVisible = true
+                            },
+                        ),
                         richTextVisual = RichTextEditorVisualConfig(
                             // 与预览使用同一套正文排版（字号/行高/字体），切模式时正文不跳。
                             textStyle = MaterialTheme.typography.bodyLarge.copy(
@@ -129,13 +212,44 @@ fun NativeMarkdownEditor(
             )
         }
 
+        if (isImporting) {
+            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+        }
+
         NativeMarkdownEditorDock(
             state = state,
             extraActions = extraActions,
+            onInsert = { insertKind = it },
         )
     }
 
-    NativeMarkdownEditorSelectionMenu(state, scheme, selectionTracker)
+    NativeEditorInsertSheet(
+        kind = insertKind,
+        isImporting = isImporting,
+        onDismiss = { insertKind = null },
+        onInsertUrl = { kind, url, linkText ->
+            insertMarkdown(
+                kind = kind,
+                url = url,
+                name = if (kind == NativeEditorInsertKind.Link) linkText else "",
+            )
+            insertKind = null
+        },
+        onPickLocalFile = { kind ->
+            insertKind = null
+            pendingLocalKind = kind
+            localFilePicker.launch(kind.pickerMimeTypes)
+        },
+    )
+
+    NativeMarkdownEditorSelectionMenu(
+        state = state,
+        scheme = scheme,
+        selectionTracker = selectionTracker,
+        contextMenuVisible = contextMenuVisible,
+        contextMenuAnchor = contextMenuAnchor,
+        onDismissContextMenu = { contextMenuVisible = false },
+    )
 }
 
 @Composable
@@ -143,39 +257,109 @@ private fun NativeMarkdownEditorSelectionMenu(
     state: NativeMarkdownEditorState,
     scheme: RichTextStyleScheme,
     selectionTracker: com.wanbaohe.richtext.editor.ui.RichTextSelectionAnchorTracker,
+    contextMenuVisible: Boolean,
+    contextMenuAnchor: Rect,
+    onDismissContextMenu: () -> Unit,
 ) {
     val editor = state.richTextState() ?: return
-    if (editor.selection.collapsed) return
+    val hasSelection = !editor.selection.collapsed
+    if (!hasSelection && !contextMenuVisible) return
+    val anchor = if (hasSelection) selectionTracker.anchorBounds else contextMenuAnchor
+    if (anchor == Rect.Zero) return
     val clipboard = rememberRichTextClipboard(scheme)
-    val actions = richTextInlineSelectionActions(editor, scheme) + listOf(
-        RichTextSelectionAction(
-            id = "copy",
-            label = stringResource(android.R.string.copy),
-            glyph = "⧉",
-            onClick = { clipboard.copySelection(editor) },
-        ),
-        RichTextSelectionAction(
-            id = "cut",
-            label = stringResource(android.R.string.cut),
-            glyph = "✂",
-            onClick = { clipboard.cutSelection(editor) },
-        ),
-        RichTextSelectionAction(
-            id = "paste",
-            label = stringResource(android.R.string.paste),
-            glyph = "▣",
-            onClick = { clipboard.paste(editor) },
-        ),
-        RichTextSelectionAction(
-            id = "clear",
-            label = stringResource(com.wanbaohe.richtext.editor.R.string.rich_text_clear_formatting),
-            glyph = "⌫",
-            onClick = { editor.clearInlineFormatting(scheme) },
-        ),
-    )
+    val actions = buildList {
+        if (state.canUndo()) {
+            add(
+                RichTextSelectionAction(
+                    id = "undo",
+                    label = stringResource(com.t8rin.imagetoolbox.core.resources.R.string.undo),
+                    glyph = "↶",
+                    onClick = {
+                        onDismissContextMenu()
+                        state.undo()
+                    },
+                )
+            )
+        }
+        if (state.canRedo()) {
+            add(
+                RichTextSelectionAction(
+                    id = "redo",
+                    label = stringResource(com.t8rin.imagetoolbox.core.resources.R.string.redo),
+                    glyph = "↷",
+                    onClick = {
+                        onDismissContextMenu()
+                        state.redo()
+                    },
+                )
+            )
+        }
+        if (hasSelection) {
+            addAll(richTextInlineSelectionActions(editor, scheme))
+            add(
+                RichTextSelectionAction(
+                    id = "copy",
+                    label = stringResource(android.R.string.copy),
+                    glyph = "⧉",
+                    onClick = { clipboard.copySelection(editor) },
+                )
+            )
+            add(
+                RichTextSelectionAction(
+                    id = "cut",
+                    label = stringResource(android.R.string.cut),
+                    glyph = "✂",
+                    onClick = { clipboard.cutSelection(editor) },
+                )
+            )
+            add(
+                RichTextSelectionAction(
+                    id = "paste",
+                    label = stringResource(android.R.string.paste),
+                    glyph = "▣",
+                    onClick = { clipboard.paste(editor) },
+                )
+            )
+            add(
+                RichTextSelectionAction(
+                    id = "clear",
+                    label = stringResource(com.wanbaohe.richtext.editor.R.string.rich_text_clear_formatting),
+                    glyph = "⌫",
+                    onClick = { editor.clearInlineFormatting(scheme) },
+                )
+            )
+        } else {
+            add(
+                RichTextSelectionAction(
+                    id = "paste",
+                    label = stringResource(android.R.string.paste),
+                    glyph = "▣",
+                    onClick = {
+                        onDismissContextMenu()
+                        clipboard.paste(editor)
+                    },
+                )
+            )
+            add(
+                RichTextSelectionAction(
+                    id = "select_all",
+                    label = stringResource(android.R.string.selectAll),
+                    glyph = "全",
+                    onClick = {
+                        onDismissContextMenu()
+                        editor.select(TextRange(0, editor.text.length))
+                    },
+                )
+            )
+        }
+    }
     RichTextSelectionToolbar(
-        anchorBounds = selectionTracker.anchorBounds,
+        anchorBounds = anchor,
         actions = actions,
+        config = RichTextSelectionToolbarConfig(
+            dismissOnClickOutside = !hasSelection && contextMenuVisible,
+            onDismiss = onDismissContextMenu.takeIf { !hasSelection && contextMenuVisible },
+        ),
     )
 }
 
@@ -194,7 +378,17 @@ private class NativeRawBlockEditor : MarkdownBlockEditor {
         onDelete: () -> Unit,
         onContentChanged: (com.wanbaohe.richtext.editor.RichTextSnapshot) -> Unit,
     ) {
-        var showPreview by remember(block.id) { mutableStateOf(false) }
+        val context = LocalContext.current
+        var showPreview by remember(block.id) {
+            mutableStateOf(
+                block.kind in setOf(
+                    MarkdownRawBlockKind.Link,
+                    MarkdownRawBlockKind.Image,
+                    MarkdownRawBlockKind.Audio,
+                    MarkdownRawBlockKind.Video,
+                )
+            )
+        }
         GlassSurface(
             modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
             style = GlassStyle.Thin,
@@ -208,7 +402,10 @@ private class NativeRawBlockEditor : MarkdownBlockEditor {
                 )
                 if (showPreview) {
                     OneBoxMarkdown(
-                        markdown = block.state.text.toString(),
+                        markdown = EditorMediaStore.resolveForDisplay(
+                            context = context,
+                            markdown = block.state.text.toString(),
+                        ),
                         modifier = Modifier.fillMaxWidth(),
                         enableScroll = false,
                     )
@@ -243,6 +440,7 @@ private val MarkdownRawBlockKind.labelRes: Int
         MarkdownRawBlockKind.Image -> R.string.native_editor_kind_image
         MarkdownRawBlockKind.Video -> R.string.native_editor_kind_video
         MarkdownRawBlockKind.Audio -> R.string.native_editor_kind_audio
+        MarkdownRawBlockKind.Link -> R.string.native_editor_insert_link
         MarkdownRawBlockKind.Math -> R.string.native_editor_kind_math
         MarkdownRawBlockKind.Html -> R.string.native_editor_kind_html
         else -> R.string.native_editor_kind_other

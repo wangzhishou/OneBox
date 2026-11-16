@@ -49,6 +49,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.common.editor.EditorMediaStore
 import com.shifenmiao.common.editor.NativeMarkdownEditor
 import com.shifenmiao.common.editor.rememberNativeMarkdownEditorState
 import com.shifenmiao.common.ui.BaseScreen
@@ -292,10 +293,14 @@ fun MarkdownEditorScreen(
                             showMenu = false
                             scope.launch {
                                 val content = editorState.exportMarkdown()
+                                val printableContent = EditorMediaStore.resolveForDisplay(
+                                    context = context,
+                                    markdown = content,
+                                )
 
                                 NativeMarkdownPdfExporter.export(
                                     activity = context,
-                                    markdown = content,
+                                    markdown = printableContent,
                                     fileName = component.generateFileNameFromContent(content)
                                         .replace(".md", ".pdf"),
                                 ) { flag, msg ->

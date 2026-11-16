@@ -13,6 +13,8 @@ package com.wanbaohe.richtext.editor.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -25,6 +27,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -33,6 +39,7 @@ import com.wanbaohe.richtext.editor.RichTextEditorState
 import com.wanbaohe.richtext.editor.command.rememberRichTextInputTransformation
 import com.wanbaohe.richtext.editor.command.richTextEditorKeyboardShortcuts
 import com.wanbaohe.richtext.editor.style.RichTextStyleScheme
+import kotlinx.coroutines.withTimeoutOrNull
 
 @Composable
 fun RichTextEditor(
@@ -64,7 +71,38 @@ fun RichTextEditor(
         fieldCoordinates = coordinates
         selectionTracker?.updateCoordinates(coordinates, state.selection, scrollState.value)
     }
-    Box(modifier = editorModifier) {
+    val longPressModifier = if (behavior.onLongPress != null) {
+        Modifier.pointerInput(behavior.onLongPress) {
+            awaitEachGesture {
+                val down = awaitFirstDown(
+                    requireUnconsumed = false,
+                    pass = PointerEventPass.Initial,
+                )
+                val longPressed = withTimeoutOrNull(viewConfiguration.longPressTimeoutMillis) {
+                    var stillPressed = true
+                    while (stillPressed) {
+                        val event = awaitPointerEvent(PointerEventPass.Initial)
+                        if (event.changes.any {
+                                (it.position - down.position).getDistance() > viewConfiguration.touchSlop
+                            }
+                        ) {
+                            return@withTimeoutOrNull false
+                        }
+                        stillPressed = event.changes.any { it.pressed }
+                    }
+                    false
+                } ?: true
+                if (longPressed) {
+                    val position = fieldCoordinates?.localToWindow(down.position) ?: down.position
+                    behavior.onLongPress?.invoke(Rect(position, Size(1f, 1f)))
+                }
+            }
+        }
+    } else {
+        Modifier
+    }
+
+    Box(modifier = editorModifier.then(longPressModifier)) {
         BasicTextField(
             state = state.textFieldState,
             modifier = Modifier
