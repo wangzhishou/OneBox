@@ -45,6 +45,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -89,7 +90,6 @@ import com.wanbaohe.richtext.editor.style.RichTextBlockStyle
 import com.wanbaohe.richtext.editor.style.RichTextInlineStyle
 import com.wanbaohe.richtext.editor.style.RichTextStyleScheme
 
-private val DockShape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
 private val DockButtonShape = RoundedCornerShape(13.dp)
 private const val DockCollapsedHeight = 34
 private const val DockExpandedHeight = 46
@@ -100,7 +100,7 @@ private const val DockExpandedHeight = 46
  * 设计目标：
  * - 把模式切换、撤销重做、格式/插入操作全部移出正文上方，正文从标题栏下方直接开始；
  * - 收起态只保留 40dp 图标行，展开态显示文字标签，两个状态之间用高度/透明度动画过渡；
- * - 所有容器走玻璃管线，颜色全部取自 MaterialTheme，跟随浅色/深色/动态取色与全局背景。
+ * - 外层不铺整体背景，按钮/模式分段各自走玻璃管线，直接浮在页面主题背景上。
  */
 @Composable
 internal fun NativeMarkdownEditorDock(
@@ -112,7 +112,7 @@ internal fun NativeMarkdownEditorDock(
 ) {
     var expanded by rememberSaveable { mutableStateOf(true) }
 
-    GlassSurface(
+    Row(
         modifier = modifier
             .fillMaxWidth()
             .animateContentSize(
@@ -120,36 +120,27 @@ internal fun NativeMarkdownEditorDock(
                     dampingRatio = 0.86f,
                     stiffness = 420f,
                 ),
-            ),
-        shape = DockShape,
-        color = MaterialTheme.colorScheme.surfaceContainer,
-        style = GlassStyle.Thick,
-        borderWidth = 0.7.dp,
+            )
+            .navigationBarsPadding()
+            .padding(horizontal = 6.dp, vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(2.dp),
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .navigationBarsPadding()
-                .padding(horizontal = 6.dp, vertical = 4.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(2.dp),
-        ) {
-            NativeMarkdownEditorModeSegments(state)
-            Spacer(modifier = Modifier.width(4.dp))
-            NativeMarkdownEditorDockActionRow(
-                state = state,
-                expanded = expanded,
-                extraActions = extraActions,
-                onInsert = onInsert,
-                onVoiceInput = onVoiceInput,
-                modifier = Modifier.weight(1f),
-            )
-            Spacer(modifier = Modifier.width(2.dp))
-            NativeMarkdownEditorDockCollapseButton(
-                expanded = expanded,
-                onToggleExpanded = { expanded = !expanded },
-            )
-        }
+        NativeMarkdownEditorModeSegments(state)
+        Spacer(modifier = Modifier.width(4.dp))
+        NativeMarkdownEditorDockActionRow(
+            state = state,
+            expanded = expanded,
+            extraActions = extraActions,
+            onInsert = onInsert,
+            onVoiceInput = onVoiceInput,
+            modifier = Modifier.weight(1f),
+        )
+        Spacer(modifier = Modifier.width(2.dp))
+        NativeMarkdownEditorDockCollapseButton(
+            expanded = expanded,
+            onToggleExpanded = { expanded = !expanded },
+        )
     }
 }
 
@@ -239,6 +230,11 @@ private fun NativeMarkdownEditorDockActionRow(
     val activeBlockStyleId = editor?.currentBlockStyle(scheme)?.id
     val codeTemplate = stringResource(R.string.native_editor_template_code)
     val diagramTemplate = stringResource(R.string.native_editor_template_diagram)
+    val actionScrollState = rememberScrollState()
+    LaunchedEffect(Unit) {
+        // 进入新编辑页时把工具条复位到最左侧，优先露出语音/撤销/重做。
+        actionScrollState.scrollTo(0)
+    }
 
     Row(
         modifier = modifier,
@@ -247,7 +243,7 @@ private fun NativeMarkdownEditorDockActionRow(
         Row(
             modifier = Modifier
                 .weight(1f)
-                .horizontalScroll(rememberScrollState()),
+                .horizontalScroll(actionScrollState),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
