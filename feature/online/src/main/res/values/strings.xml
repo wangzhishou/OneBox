@@ -24,6 +24,7 @@
     <string name="mini_program_redirecting">Redirecting…</string>
 
     <!-- Note editor menu -->
+    <string name="note_menu_copy_all">Copy all text</string>
     <string name="note_menu_settings">Settings</string>
     <string name="note_ai_action_format">Format with AI</string>
     <string name="note_ai_action_expand">Expand with AI</string>

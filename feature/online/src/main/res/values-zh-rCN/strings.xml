@@ -24,6 +24,7 @@
     <string name="mini_program_redirecting">正在跳转中…</string>
 
     <!-- Note editor menu -->
+    <string name="note_menu_copy_all">复制全部内容</string>
     <string name="note_menu_settings">设置</string>
     <string name="note_ai_action_format">AI 格式排版</string>
     <string name="note_ai_action_expand">AI 一键扩写</string>

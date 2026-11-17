@@ -26,6 +26,7 @@ import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.AutoAwesome
+import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.FormatAlignLeft
 import androidx.compose.material.icons.outlined.OpenInFull
 import androidx.compose.material3.DropdownMenuItem
@@ -48,8 +49,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -106,6 +109,7 @@ fun CreateNoteScreen(
     var isGenerating by remember { mutableStateOf(false) }
     var draftCategoryIds by remember { mutableStateOf<Set<Int>>(emptySet()) }
     var showMoreMenu by rememberSaveable { mutableStateOf(false) }
+    val clipboard = LocalClipboardManager.current
     val onNavigate = LocalOnNavigate.current
 
     val aiState by createNoteComponent.aiState.collectAsState()
@@ -299,6 +303,26 @@ fun CreateNoteScreen(
                     expanded = showMoreMenu,
                     onDismissRequest = { showMoreMenu = false },
                 ) {
+                    // 一键复制整篇 markdown：编辑器里的文本选不了/系统选择菜单被抑制时，
+                    // 这是用户把内容导出（贴给别人、发给 AI）的唯一可靠出口。
+                    DropdownMenuItem(
+                        text = { Text(stringResource(OnlineR.string.note_menu_copy_all)) },
+                        onClick = {
+                            showMoreMenu = false
+                            scope.launch {
+                                clipboard.setText(AnnotatedString(editorState.exportMarkdown()))
+                                AppToastHost.showToast(
+                                    AppContext.getString(OnlineR.string.note_ai_copied)
+                                )
+                            }
+                        },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = MaterialIcons.Outlined.ContentCopy,
+                                contentDescription = null,
+                            )
+                        },
+                    )
                     // 标题/摘要/分类统一放到保存（设置）弹窗里维护，不再单独显示分类栏。
                     DropdownMenuItem(
                         text = { Text(stringResource(OnlineR.string.note_menu_settings)) },
