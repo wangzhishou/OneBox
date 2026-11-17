@@ -27,7 +27,7 @@
     <string name="markup_entry_gallery">갤러리</string>
     <string name="markup_entry_camera">카메라</string>
     <string name="markup_entry_paste">붙여넣기</string>
-    <string name="markup_entry_blank_canvas">빈 캔버스</string>
+    <string name="markup_entry_blank_canvas">빈</string>
 
     <string name="markup_blank_canvas_title">새 빈 캔버스</string>
     <string name="markup_blank_canvas_size">캔버스 크기</string>

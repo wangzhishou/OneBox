@@ -28,7 +28,7 @@
     <string name="markup_entry_gallery">相册</string>
     <string name="markup_entry_camera">相机</string>
     <string name="markup_entry_paste">粘贴图片</string>
-    <string name="markup_entry_blank_canvas">空白画布</string>
+    <string name="markup_entry_blank_canvas">空白</string>
 
     <!-- 空白画布 -->
     <string name="markup_blank_canvas_title">新建空白画布</string>

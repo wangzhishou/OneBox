@@ -27,7 +27,7 @@
     <string name="markup_entry_gallery">Galería</string>
     <string name="markup_entry_camera">Cámara</string>
     <string name="markup_entry_paste">Pegar</string>
-    <string name="markup_entry_blank_canvas">Lienzo en blanco</string>
+    <string name="markup_entry_blank_canvas">En blanco</string>
 
     <string name="markup_blank_canvas_title">Nuevo lienzo en blanco</string>
     <string name="markup_blank_canvas_size">Tamaño del lienzo</string>

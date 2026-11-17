@@ -28,7 +28,7 @@
     <string name="markup_entry_gallery">गैलरी</string>
     <string name="markup_entry_camera">कैमरा</string>
     <string name="markup_entry_paste">पेस्ट करें</string>
-    <string name="markup_entry_blank_canvas">खाली कैनवस</string>
+    <string name="markup_entry_blank_canvas">खाली</string>
 
     <!-- 空白画布 -->
     <string name="markup_blank_canvas_title">नया खाली कैनवस</string>

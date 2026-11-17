@@ -27,7 +27,7 @@
     <string name="markup_entry_gallery">Galeri</string>
     <string name="markup_entry_camera">Kamera</string>
     <string name="markup_entry_paste">Yapıştır</string>
-    <string name="markup_entry_blank_canvas">Boş tuval</string>
+    <string name="markup_entry_blank_canvas">Boş</string>
 
     <string name="markup_blank_canvas_title">Yeni boş tuval</string>
     <string name="markup_blank_canvas_size">Tuval boyutu</string>

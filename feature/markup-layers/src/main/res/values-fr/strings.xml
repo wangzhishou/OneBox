@@ -27,7 +27,7 @@
     <string name="markup_entry_gallery">Galerie</string>
     <string name="markup_entry_camera">Appareil photo</string>
     <string name="markup_entry_paste">Coller l\'image</string>
-    <string name="markup_entry_blank_canvas">Canevas vierge</string>
+    <string name="markup_entry_blank_canvas">Vierge</string>
     <string name="markup_blank_canvas_title">Nouveau canevas vierge</string>
     <string name="markup_blank_canvas_size">Taille du canevas</string>
     <string name="markup_blank_canvas_custom">Personnalisé</string>

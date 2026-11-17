@@ -88,6 +88,8 @@ import com.wanbaohe.core.ui.utils.helper.rememberClipboardData
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.core.ui.widget.image.Picture
 import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.markuplayers.R
@@ -277,8 +279,10 @@ private fun ImportEntry(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .clip(ShapeDefaults.default)
-            .background(MaterialTheme.colorScheme.surfaceContainer)
+            .glassBackground(
+                style = GlassStyle.Medium,
+                shape = ShapeDefaults.default,
+            )
             .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
@@ -356,8 +360,10 @@ private fun QuickTaskEntry(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .clip(ShapeDefaults.default)
-            .background(MaterialTheme.colorScheme.surfaceContainer)
+            .glassBackground(
+                style = GlassStyle.Regular,
+                shape = ShapeDefaults.default,
+            )
             .clickable(onClick = onClick)
             .padding(horizontal = 8.dp, vertical = 12.dp)
     ) {

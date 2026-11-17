@@ -28,7 +28,7 @@
     <string name="markup_entry_gallery">Galeria</string>
     <string name="markup_entry_camera">Câmera</string>
     <string name="markup_entry_paste">Colar</string>
-    <string name="markup_entry_blank_canvas">Tela em branco</string>
+    <string name="markup_entry_blank_canvas">Em branco</string>
 
     <!-- 空白画布 -->
     <string name="markup_blank_canvas_title">Nova tela em branco</string>
