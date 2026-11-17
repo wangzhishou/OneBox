@@ -144,7 +144,14 @@ class CreateNoteTool @Inject constructor(
             val categorySelection = resolveCategorySelection(
                 categoryName = categoryName,
                 existingNote = existingNote
-            ) ?: return buildMissingCategoryResult(existingNoteId != null)
+            ) ?: if (existingNote == null) {
+                // 创建时没给分类：落到默认分类（未分类），不再整轮失败。
+                // 工具契约里 category 是"创建时必需、更新时可选"的条件必填，JSON Schema 表达不了
+                // 条件必填，模型省略它完全合法；之前这种省略会白跑一轮并在步骤卡留一个红叉。
+                resolveDefaultCategorySelection()
+            } else {
+                return buildMissingCategoryResult(isUpdateMode = true)
+            }
 
             val result = noteService.saveNote(
                 NoteSaveParams(
@@ -256,6 +263,19 @@ class CreateNoteTool @Inject constructor(
             categoryNames = existingCategories.map { it.second },
             categoryCreated = false,
             categoryPreserved = true
+        )
+    }
+
+    /** 创建笔记时未给分类的兜底：与 [NoteService] 用同一个默认分类名（未分类 / Uncategorized）。 */
+    private suspend fun resolveDefaultCategorySelection(): NoteCategorySelection {
+        val resolution = creationMetaService.resolveCategoryByName(
+            textProvider.string(com.shifenmiao.core.R.string.note_default_category)
+        )
+        return NoteCategorySelection(
+            categoryIds = listOf(resolution.category.id.toLong()),
+            categoryNames = listOf(resolution.category.name.trim()).filter(String::isNotEmpty),
+            categoryCreated = resolution.created,
+            categoryPreserved = false
         )
     }
 
