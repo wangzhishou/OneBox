@@ -237,7 +237,7 @@ private fun RawDocumentBlock(
         registry.Editor(
             block = block,
             onDelete = { state.removeBlock(block.id) },
-            onContentChanged = { snapshot -> state.notifyContentChanged(snapshot) },
+            onContentChanged = { snapshot -> state.notifyContentChanged(snapshot, block.id) },
         )
     }
 }

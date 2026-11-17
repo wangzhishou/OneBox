@@ -249,14 +249,16 @@ fun CreateNoteScreen(
         }
         if (applied.isBlank()) return
         aiUndoMarkdown = original
-        editorState.load(applied)
+        // 保留撤销栈：AI 改写也是「一次改动」，编辑器的撤销应该能退回去，
+        // 不能只靠面板里那个一次性的「撤销应用」。
+        editorState.load(applied, keepHistory = true)
         createNoteComponent.markAsDirty()
     }
 
     fun undoAiApply() {
         val before = aiUndoMarkdown ?: return
         aiUndoMarkdown = null
-        editorState.load(before)
+        editorState.load(before, keepHistory = true)
         createNoteComponent.markAsDirty()
     }
 

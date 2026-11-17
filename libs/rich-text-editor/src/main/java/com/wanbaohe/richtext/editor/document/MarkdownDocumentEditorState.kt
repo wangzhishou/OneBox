@@ -82,7 +82,7 @@ class MarkdownDocumentEditorState internal constructor(
 
     fun isUserChange(content: String): Boolean = content != externalMarkdown
 
-    fun load(markdown: String) {
+    fun load(markdown: String, keepHistory: Boolean = false) {
         if (skipNextLoad) {
             skipNextLoad = false
             externalMarkdown = markdown
@@ -94,8 +94,25 @@ class MarkdownDocumentEditorState internal constructor(
             replace(0, length, markdown)
             selection = TextRange(markdown.length)
         }
-        decodeMarkdown(markdown, immediate = true, resetHistory = true) {
+        if (keepHistory) {
+            reloadKeepingHistory(markdown)
+        } else {
+            decodeMarkdown(markdown, immediate = true, resetHistory = true) {
+                mode = MarkdownEditorMode.Edit
+            }
+        }
+    }
+
+    /**
+     * 外部整体换正文（AI 改写/扩写等）也走撤销：先把之前的编辑提交成撤销点，
+     * 解码时不重置历史，再把新内容立刻提交，于是替换前的状态留在撤销栈里。
+     */
+    private fun reloadKeepingHistory(markdown: String) {
+        history.flush()
+        decodeMarkdown(markdown, immediate = true, resetHistory = false) {
             mode = MarkdownEditorMode.Edit
+            notifyContentChanged()
+            history.flush()
         }
     }
 
@@ -126,7 +143,10 @@ class MarkdownDocumentEditorState internal constructor(
         }
     }
 
-    fun notifyContentChanged(snapshot: RichTextSnapshot? = null) {
+    fun notifyContentChanged(
+        snapshot: RichTextSnapshot? = null,
+        blockId: String? = null,
+    ) {
         contentVersion++
         if (skipHistoryRecording) return
         userContentVersion++
@@ -134,7 +154,9 @@ class MarkdownDocumentEditorState internal constructor(
             if (mode == MarkdownEditorMode.Source) {
                 MarkdownEditorSnapshot.Source(snapshot?.text ?: sourceState.text.toString())
             } else {
-                MarkdownEditorSnapshot.Blocks(captureBlocks(snapshot))
+                MarkdownEditorSnapshot.Blocks(
+                    captureBlocks(changedBlockId = blockId, changedSnapshot = snapshot),
+                )
             },
         )
     }
@@ -164,8 +186,15 @@ class MarkdownDocumentEditorState internal constructor(
     }
 
     fun removeBlock(blockId: String) {
+        // 结构变更前先把未提交的打字固化成独立撤销点。否则删块与之前的输入共用
+        // 同一个 500ms 防抖窗口，撤销会一步跳回上一次 flush 的旧状态（表现为回退过头）。
+        history.flush()
         blocks.removeAll { it.id == blockId }
-        if (blocks.isEmpty()) insertTextBlock()
+        if (blocks.isEmpty()) {
+            // 不再复用 insertTextBlock()：那边会再 flush 一次、再 record 一次，
+            // 同一次删除会多记一个撤销点；补块和记录统一在方法末尾做。
+            blocks += newRichTextBlock(newBlockId(), RichTextSnapshot.Empty)
+        }
         activeBlockId = blocks.filterIsInstance<MarkdownEditorBlock.RichText>().lastOrNull()?.id
         notifyContentChanged()
     }
@@ -204,6 +233,8 @@ class MarkdownDocumentEditorState internal constructor(
     }
 
     private fun insertBlock(block: MarkdownEditorBlock) {
+        // 与 removeBlock 同理：插入块是结构变更，先固化之前的编辑，使其成为独立撤销点。
+        history.flush()
         val activeIndex = blocks.indexOfFirst { it.id == activeBlockId }
         blocks.add(if (activeIndex >= 0) activeIndex + 1 else blocks.size, block)
         activeBlockId = block.id
@@ -211,7 +242,7 @@ class MarkdownDocumentEditorState internal constructor(
         notifyContentChanged()
     }
 
-    private fun newBlockId(): String = "block-new-${nextBlockId++}"
+    private fun newBlockId(): String = "$INSERTED_BLOCK_ID_PREFIX${nextBlockId++}"
 
     private fun decodeMarkdown(
         markdown: String,
@@ -240,8 +271,10 @@ class MarkdownDocumentEditorState internal constructor(
         id: String,
         snapshot: RichTextSnapshot,
     ): MarkdownEditorBlock.RichText = MarkdownEditorBlock.RichText(id, snapshot).also { block ->
+        // 用块自己的 id 上报改动：captureBlocks 里若拿 activeBlockId 猜，插入新块后
+        // 焦点可能还留在原块，猜错就会把这次输入记成「内容没变」而丢掉撤销点。
         block.state.onContentChanged = { changedSnapshot ->
-            notifyContentChanged(changedSnapshot)
+            notifyContentChanged(changedSnapshot, block.id)
         }
     }
 
@@ -265,7 +298,9 @@ class MarkdownDocumentEditorState internal constructor(
             blocks += newRichTextBlock("rich-text-empty", RichTextSnapshot.Empty)
         }
         activeBlockId = blocks.filterIsInstance<MarkdownEditorBlock.RichText>().lastOrNull()?.id
-        nextBlockId = decoded.size
+        // 只增不减：撤销/重新解码会把带 "block-new-N" 的旧块原样恢复回来，若按 decoded.size
+        // 重置计数器，下一次插入就会生成重名 id（LazyColumn key 冲突，removeBlock 一次删俩）。
+        nextBlockId = maxOf(nextBlockId, decoded.highestInsertedBlockIndex() + 1)
         if (resetHistory) history.reset(MarkdownEditorSnapshot.Blocks(captureBlocks()))
         contentVersion++
     }
@@ -273,29 +308,42 @@ class MarkdownDocumentEditorState internal constructor(
     private fun encodeBlocks(): String = codec.encode(captureBlocks(refresh = true))
 
     private fun captureBlocks(
+        changedBlockId: String? = null,
         changedSnapshot: RichTextSnapshot? = null,
         refresh: Boolean = false,
-    ): List<MarkdownDocumentBlock> = blocks.map { block ->
-        val isChangedBlock = changedSnapshot != null && block.id == activeBlockId
-        when (block) {
-            is MarkdownEditorBlock.RichText -> {
-                if (isChangedBlock) {
-                    block.snapshot = checkNotNull(changedSnapshot)
-                } else if (refresh) {
-                    block.snapshot = block.state.snapshot()
+    ): List<MarkdownDocumentBlock> {
+        // 只知道内容变了、不知道是哪个块时，宁可全量刷新也不能拿缓存冒充最新内容。
+        val refreshAll = refresh || (changedSnapshot != null && changedBlockId == null)
+        return blocks.map { block ->
+            val isChangedBlock = changedSnapshot != null && block.id == changedBlockId
+            when (block) {
+                is MarkdownEditorBlock.RichText -> {
+                    if (isChangedBlock) {
+                        block.snapshot = checkNotNull(changedSnapshot)
+                    } else if (refreshAll) {
+                        block.snapshot = block.state.snapshot()
+                    }
+                    MarkdownDocumentBlock.RichText(block.id, block.snapshot)
                 }
-                MarkdownDocumentBlock.RichText(block.id, block.snapshot)
-            }
 
-            is MarkdownEditorBlock.Raw -> {
-                // raw block 的 TextFieldState 是唯一事实来源：表格/待办等原生编辑器
-                // 直接改 state 后，历史快照与导出都必须拿到最新文本。
-                block.markdown = block.state.text.toString()
-                MarkdownDocumentBlock.Raw(block.id, block.markdown, block.kind)
+                is MarkdownEditorBlock.Raw -> {
+                    // raw block 的 TextFieldState 是唯一事实来源：表格/待办等原生编辑器
+                    // 直接改 state 后，历史快照与导出都必须拿到最新文本。
+                    block.markdown = block.state.text.toString()
+                    MarkdownDocumentBlock.Raw(block.id, block.markdown, block.kind)
+                }
             }
         }
     }
 }
+
+/** [replaceBlocks] 恢复出来的块里最大的 `block-new-N` 序号；没有就返回 -1。 */
+private fun List<MarkdownDocumentBlock>.highestInsertedBlockIndex(): Int = maxOfOrNull { block ->
+    block.id.takeIf { it.startsWith(INSERTED_BLOCK_ID_PREFIX) }
+        ?.removePrefix(INSERTED_BLOCK_ID_PREFIX)
+        ?.toIntOrNull()
+        ?: -1
+} ?: -1
 
 sealed interface MarkdownEditorBlock {
     val id: String
@@ -347,3 +395,6 @@ private fun markdownDocumentEditorStateSaver(
 }
 
 private const val SYNCHRONOUS_DECODE_LIMIT = 50_000
+
+/** 运行时插入的块 id 前缀，与解码出来的内容哈希 id 区分开。 */
+private const val INSERTED_BLOCK_ID_PREFIX = "block-new-"
