@@ -611,7 +611,8 @@ class AgentLoopRunner(
             "llm turn stream aborted, retrying (attempt=$attempt/$MAX_STREAM_ABORT_RETRIES)"
                 .makeLog("AgentLoopRunner")
             // 重试前清理: 残留的 tool_call 碎片直接丢弃(参数可能已被截断, 不能执行);
-            // UI 已流式渲染的内容回滚到回合开始快照。
+            // 已流式渲染的内容连同流式缓冲区一起回滚到回合开始快照, 否则重试输出会与
+            // 作废文本叠加成重复段落。
             agentLoopExecutor.resetAccumulator(session)
             callback.onRestoreStreamContent(answerSnapshot, reasoningSnapshot)
             callback.onResetStreamWatchdog()

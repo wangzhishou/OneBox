@@ -577,10 +577,9 @@ class AgentLoopOrchestrator(
 
         override fun onRestoreStreamContent(answerSnapshot: String, reasoningSnapshot: String) {
             if (isShuttingDown) return
-            sharedState.updateAnswerMessage { current ->
-                current.copy(answer = answerSnapshot, reasoningContent = reasoningSnapshot)
-            }
-            streamContentProcessor.updatePlaceHolderMessage(forceUpdate = true)
+            // 实体与流式缓冲区必须一起回滚：只改实体时，重试流的首个增量会把作废文本
+            // 重新发布回 UI（先回退再跳回），最终回答还会混入重复段落。
+            streamContentProcessor.restoreStreamSnapshot(answerSnapshot, reasoningSnapshot)
         }
     }
 

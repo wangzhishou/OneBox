@@ -73,6 +73,9 @@ interface AgentLoopCallback {
     /**
      * 流中断重试前调用：把本回合已流式渲染到 UI 的内容回滚到快照，
      * 避免重试后新旧内容重复叠加。
+     *
+     * 实现方必须同时回滚流式缓冲区（不只是消息实体），否则重试流的第一个
+     * 增量会把已作废的文本重新发布回 UI。
      */
     fun onRestoreStreamContent(answerSnapshot: String, reasoningSnapshot: String)
 }

@@ -21,6 +21,7 @@ package com.shifenmiao.ai.component
 
 import com.shifenmiao.ai.model.MessageUiModel
 import com.shifenmiao.common.manager.AIEngineCatalogManager
+import com.shifenmiao.database.ai.entity.MessageEntity
 import com.shifenmiao.model.ai.MessageUIState
 import com.shifenmiao.storage.AppSharedStorage
 import com.t8rin.logger.makeLog
@@ -171,6 +172,32 @@ class StreamContentProcessor(
         hasPendingReasoningUpdate = false
     }
 
+    /**
+     * 流中断重试前，把流式内容整体回滚到本回合开始时的快照。
+     *
+     * 为什么必须连缓冲区一起回滚：增量只写 [answerBuffer]/[reasoningBuffer]，
+     * UI 实体是 [flushBufferedContent] 的产物。只改实体不回滚缓冲区时，
+     * 重试流的第一个增量就会把已作废的文本整段冲回 UI（画面表现为"内容先回退、
+     * 随后又跳回旧长度"），且最终回答里会混入失败尝试的重复段落。
+     * 缓冲区回滚后，重试输出恰好接在快照之后，实体长度与缓冲区恒等。
+     */
+    fun restoreStreamSnapshot(answerSnapshot: String, reasoningSnapshot: String) {
+        answerBuffer.setLength(0)
+        answerBuffer.append(answerSnapshot)
+        reasoningBuffer.setLength(0)
+        reasoningBuffer.append(reasoningSnapshot)
+        // 与 updateReasoningContentOptimized 的增量维护口径一致：最后一段的起始索引
+        reasoningTailStartIndex = reasoningBuffer.lastIndexOf('\n') + 1
+        // 标记为待发布，复用统一的发布/驱逐路径（flushBufferedContent + 占位消息重建）
+        hasPendingAnswerUpdate = true
+        hasPendingReasoningUpdate = true
+        // 渲染基线归零，让下一帧按"回滚后的内容"重新计算增量阈值
+        lastStreamFrameTime = 0L
+        lastRenderedAnswerLength = 0
+        lastRenderedReasoningLength = 0
+        updatePlaceHolderMessage(forceUpdate = true)
+    }
+
     fun currentStreamContentLength(): Int = answerBuffer.length + reasoningBuffer.length
 
     fun currentStreamContentSnapshot(): Pair<String, String> =
@@ -285,15 +312,27 @@ class StreamContentProcessor(
         lastRenderTime = now
         val showExpandedReasoning = AppSharedStorage.isExpandedReasoningChat.value
 
+        val liveQuestion = sharedState.questionMessageEntity.value
+        val liveAnswer = sharedState.answerMessageEntity.value
         val messagesCopy = sharedState.getMessagesSnapshot()
             // 同一 DB 行在内存里可能滞留多份快照（cid 随 Agent 轮次漂移后按 cid 去重失效）,
             // 已落库的行优先按行主键归组; 未落库(id<=0)的占位仍按 cid+role。
-            // 组内即列表顺序, first() 取列表头部的 live 拷贝。
             .groupBy {
                 if (it.id > 0) RenderRowKey(it.id, it.role) else RenderCidKey(it.completionId, it.role)
             }
             .mapValues { (_, msgs) -> msgs.first() }
             .values
+            // 本回合的 Q/A 一律用 live 实体覆盖同组快照: 列表里可能残留这行的旧拷贝
+            // （例如刚 beginStreamDraft 时插入的空占位、或上一轮 uId 翻转前后的快照）。
+            // 不覆盖时会出现气泡短暂变空/回退到上一轮正文，随后又被下一帧"追平"的闪烁。
+            .map { message ->
+                when {
+                    message === liveAnswer || message === liveQuestion -> message
+                    isSameRenderRow(message, liveAnswer) -> liveAnswer
+                    isSameRenderRow(message, liveQuestion) -> liveQuestion
+                    else -> message
+                }
+            }
             .sortedByDescending { it.createdAt }
             .toList()
 
@@ -301,9 +340,16 @@ class StreamContentProcessor(
             val isStreaming = message.uId == MessageUIState.STREAMING.value
             // uId 决定消息的渲染形态(NORMAL / ERROR / ...); 错误态必须与流式/正常态分开缓存,
             // 否则本轮流式期间生成的 RobotContent 会被错误消息复用, 错误卡片退化成一坨纯文本.
-            val cacheKey = "${message.completionId}_${message.role}_${message.uId}_${if (showExpandedReasoning) 1 else 0}"
+            //
+            // 键里必须带上内容本身: cid 由每轮流式响应写入, 同一行会在 stream→normal 间来回切,
+            // 且不同轮次可能落到同一个 cid 上; 只用 cid+uId 做键时, 一轮结束后会命中"这行还是
+            // 短文本时"缓存的模型, 气泡正文/深度思考/token 数会整段回退到上一轮的样子。
+            val cacheKey = "${message.completionId}_${message.role}_${message.uId}_" +
+                "${if (showExpandedReasoning) 1 else 0}_${message.hashCode()}"
 
-            if (!isStreaming && message.uId > 0 && message.id > 0 && cachedMessageUiModels.containsKey(cacheKey)) {
+            if (!isStreaming && message.uId > 0 && message.id > 0 &&
+                cachedMessageUiModels.containsKey(cacheKey)
+            ) {
                 cachedMessageUiModels[cacheKey]!!
             } else {
                 val uiModels = MessageUiModel.fromMessage(
@@ -543,6 +589,22 @@ class StreamContentProcessor(
     /** 清理消息缓存（消息列表变化时调用） */
     fun invalidateMessageCache() {
         cachedMessageUiModels.clear()
+    }
+}
+
+/**
+ * 判断 [candidate] 是否就是 [live] 这条消息的某个快照。
+ *
+ * 已落库的行按行主键比对；尚未落库(id<=0)的占位按 completionId+role 比对——
+ * 与 [doRenderMessage] 的归组键保持一致，避免把别的消息误判成本回合的行。
+ */
+private fun isSameRenderRow(candidate: MessageEntity, live: MessageEntity): Boolean {
+    if (candidate.role != live.role) return false
+    return if (live.id > 0) {
+        candidate.id == live.id
+    } else {
+        candidate.id <= 0 && live.completionId.isNotBlank() &&
+            candidate.completionId == live.completionId
     }
 }
 
