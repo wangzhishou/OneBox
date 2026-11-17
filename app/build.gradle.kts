@@ -582,7 +582,6 @@ dependencies {
     api(libs.icons.extended)
     api(libs.androidx.material)
     implementation(libs.org.greenrebot.eventbus)
-    implementation(projects.libs.twain)
     implementation(projects.core.ui)
     implementation(projects.core.data)
     implementation(projects.core.settings)

@@ -109,7 +109,6 @@ dependencies {
     /**
      * markdown
      */
-    implementation(projects.libs.twain)
     implementation(projects.libs.markdown)
 
     /**

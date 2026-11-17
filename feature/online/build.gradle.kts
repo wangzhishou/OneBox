@@ -74,6 +74,5 @@ dependencies {
      */
     api(libs.decomposelifecycle)
 
-    implementation(projects.libs.twain)
     implementation(projects.libs.markdown)
 }

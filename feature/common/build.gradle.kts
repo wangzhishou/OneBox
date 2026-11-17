@@ -28,7 +28,6 @@ android.namespace = "com.shifenmiao.common"
 
 dependencies {
     implementation(projects.core.domain)
-    implementation(projects.libs.twain)
 
     /**
      * mmkv

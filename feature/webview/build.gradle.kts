@@ -38,7 +38,6 @@ dependencies {
     implementation(projects.core.network)
     implementation(projects.core.base)
     implementation(projects.core.theme)
-    implementation(projects.libs.twain)
     implementation(projects.libs.diagram)
     implementation(projects.libs.markdown)
     implementation(projects.feature.common)
