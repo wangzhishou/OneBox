@@ -37,6 +37,8 @@ dependencies {
     implementation(libs.com.airbnb.lottie)
 
     implementation(projects.feature.settings)
+    // 导航直接引用 MarkdownEditorComponent.Factory，不能只靠 feature/settings 的传递依赖
+    implementation(projects.feature.markdownEdit)
     implementation(projects.feature.ai)
     debugImplementation(projects.feature.demo)
     implementation(projects.feature.common)

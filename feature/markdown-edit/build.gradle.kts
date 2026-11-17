@@ -37,7 +37,6 @@ dependencies {
     implementation(projects.feature.common)
     implementation(projects.feature.webview)
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.androidx.webkit)
 
     implementation(libs.org.greenrebot.eventbus)
 

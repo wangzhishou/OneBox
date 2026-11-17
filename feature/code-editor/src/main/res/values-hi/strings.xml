@@ -27,4 +27,18 @@
     <string name="code_editor_toolbar_paste">पेस्ट करें</string>
     <string name="code_editor_toolbar_select_all">सभी चुनें</string>
     <string name="code_editor_toolbar_word_wrap">वर्ड रैप</string>
+    <string name="code_editor_cut">काटें</string>
+    <string name="code_editor_indent">इंडेंट करें</string>
+    <string name="code_editor_outdent">इंडेंट हटाएँ</string>
+    <string name="code_editor_comment">टिप्पणी करें</string>
+    <string name="code_editor_duplicate_line">पंक्ति की प्रतिलिपि बनाएँ</string>
+    <string name="code_editor_move_line_up">पंक्ति ऊपर ले जाएँ</string>
+    <string name="code_editor_move_line_down">पंक्ति नीचे ले जाएँ</string>
+    <string name="code_editor_find_placeholder">फ़ाइल में खोजें</string>
+    <string name="code_editor_find_previous">पिछला मिलान</string>
+    <string name="code_editor_find_next">अगला मिलान</string>
+    <string name="code_editor_find_close">खोज बंद करें</string>
+    <string name="code_editor_find_empty">कोई मिलान नहीं</string>
+    <string name="code_editor_find_position">%1$d/%2$d</string>
+    <string name="code_editor_draft_restored">असहेजा गया ड्राफ़्ट पुनर्स्थापित किया गया</string>
 </resources>

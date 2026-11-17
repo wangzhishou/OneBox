@@ -57,6 +57,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.entrypoint.ChannelConfigEntryPoint
+import com.shifenmiao.common.editor.NativeMarkdownEditor
+import com.shifenmiao.common.editor.rememberNativeMarkdownEditorState
 import com.shifenmiao.common.markdown.OneBoxMarkdownContent
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.common.handle.LocalUrlNavigator
@@ -72,9 +74,6 @@ import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBarType
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
-import com.wanbaohe.core.ui.widget.text.EditorUiDefaults
-import com.wanbaohe.markdown.edit.webview.WebViewMarkdownEditor
-import com.wanbaohe.markdown.edit.webview.rememberWebViewMarkdownEditorState
 import com.wanbaohe.setting.prompt.component.SystemPromptDetailComponent
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.Close
@@ -90,7 +89,7 @@ fun SystemPromptDetailScreen(
     val prompt by component.prompt.collectAsState()
 
     val scope = rememberCoroutineScope()
-    val editorState = rememberWebViewMarkdownEditorState()
+    val editorState = rememberNativeMarkdownEditorState(prompt?.prompt.orEmpty())
     var isDirty by remember { mutableStateOf(false) }
     var showVipDialog by remember { mutableStateOf(false) }
     val onNavigate = LocalOnNavigate.current
@@ -115,7 +114,7 @@ fun SystemPromptDetailScreen(
 
     LaunchedEffect(prompt) {
         prompt?.prompt?.let {
-            editorState.setContent(it)
+            editorState.load(it)
             isDirty = false
         }
     }
@@ -132,7 +131,7 @@ fun SystemPromptDetailScreen(
                     IconButton(
                         onClick = {
                             scope.launch {
-                                val content = editorState.getContent()
+                                val content = editorState.exportMarkdown()
                                 component.save(
                                     content = content,
                                     onSuccess = {
@@ -165,20 +164,12 @@ fun SystemPromptDetailScreen(
                     )
                     Spacer(modifier = Modifier.height(OneBoxDesignSystem.itemSpacing))
                 }
-                WebViewMarkdownEditor(
-                    initialValue = prompt?.prompt ?: "",
+                NativeMarkdownEditor(
                     state = editorState,
-                    placeholder = stringResource(R.string.note_placeholder),
-                    readOnly = false,
-                    textStyle = EditorUiDefaults.contentTextStyle(),
-                    storageKey = "system_prompt_${component.promptId}",
-                    onContentChanged = {
-                        isDirty = true
-                    },
+                    onContentChanged = { isDirty = true },
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
-                        .navigationBarsPadding()
                 )
             }
         }

@@ -32,8 +32,6 @@ dependencies {
     implementation(projects.core.model)
     implementation(projects.core.domain)
     implementation(projects.feature.common)
-    implementation(projects.feature.webview)
-
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.androidx.webkit)
+    implementation(projects.libs.codeEditor)
+    implementation(projects.libs.richTextEditor)
 }

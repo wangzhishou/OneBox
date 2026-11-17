@@ -27,4 +27,18 @@
     <string name="code_editor_toolbar_paste">Paste</string>
     <string name="code_editor_toolbar_select_all">Select all</string>
     <string name="code_editor_toolbar_word_wrap">Word wrap</string>
+    <string name="code_editor_cut">Cut</string>
+    <string name="code_editor_indent">Indent</string>
+    <string name="code_editor_outdent">Outdent</string>
+    <string name="code_editor_comment">Comment</string>
+    <string name="code_editor_duplicate_line">Duplicate line</string>
+    <string name="code_editor_move_line_up">Move line up</string>
+    <string name="code_editor_move_line_down">Move line down</string>
+    <string name="code_editor_find_placeholder">Find in file</string>
+    <string name="code_editor_find_previous">Previous match</string>
+    <string name="code_editor_find_next">Next match</string>
+    <string name="code_editor_find_close">Close find</string>
+    <string name="code_editor_find_empty">No matches</string>
+    <string name="code_editor_find_position">%1$d/%2$d</string>
+    <string name="code_editor_draft_restored">Restored the unsaved draft from last time</string>
 </resources>

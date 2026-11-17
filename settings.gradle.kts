@@ -95,6 +95,7 @@ include(":libs:latex")
 include(":libs:diagram")
 include(":libs:markdown")
 include(":libs:rich-text-editor")
+include(":libs:code-editor")
 include(":feature:image-viewer")
 
 

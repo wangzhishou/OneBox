@@ -21,7 +21,6 @@ package com.shifenmiao.online.component
 
 import androidx.compose.runtime.Immutable
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.shifenmiao.core.R
 import com.shifenmiao.database.AppDatabase
 import com.shifenmiao.database.activity.ActivityLogRecorder
@@ -38,13 +37,10 @@ import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.model.ListItemType
 import com.shifenmiao.model.Source
 import com.shifenmiao.model.reorderable.ReorderableType
-import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.core.ui.utils.navigation.ScreenCallback
 import com.wanbaohe.core.ui.utils.navigation.ScreenCallbackResult
-import com.wanbaohe.markdown.edit.webview.MarkdownPreloadConfig
-import com.wanbaohe.markdown.edit.webview.MarkdownWebViewPoolHelper
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -98,17 +94,6 @@ class EditPromptComponent @AssistedInject internal constructor(
     val reorderableType: ReorderableType = ReorderableType.CATEGORY
 
     init {
-        MarkdownWebViewPoolHelper.preloadHtml(
-            MarkdownPreloadConfig.fromColorScheme(
-                colorScheme = AppTheme.colorScheme,
-                isDarkTheme = AppTheme.isDarkTheme,
-                storageKey = "edit_prompt_item"
-            )
-        )
-        componentContext.lifecycle.doOnDestroy {
-            MarkdownWebViewPoolHelper.clearPreloadedHtml("edit_prompt_item")
-        }
-
         componentScope.launch(ioDispatcher) {
             coroutineScope {
                 launch { loadDraft() }

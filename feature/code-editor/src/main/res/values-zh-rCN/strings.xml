@@ -27,4 +27,18 @@
     <string name="code_editor_toolbar_paste">粘贴</string>
     <string name="code_editor_toolbar_select_all">全选</string>
     <string name="code_editor_toolbar_word_wrap">换行</string>
+    <string name="code_editor_cut">剪切</string>
+    <string name="code_editor_indent">缩进</string>
+    <string name="code_editor_outdent">反缩进</string>
+    <string name="code_editor_comment">注释</string>
+    <string name="code_editor_duplicate_line">复制当前行</string>
+    <string name="code_editor_move_line_up">上移一行</string>
+    <string name="code_editor_move_line_down">下移一行</string>
+    <string name="code_editor_find_placeholder">在文件中查找</string>
+    <string name="code_editor_find_previous">上一个匹配</string>
+    <string name="code_editor_find_next">下一个匹配</string>
+    <string name="code_editor_find_close">关闭查找</string>
+    <string name="code_editor_find_empty">无匹配</string>
+    <string name="code_editor_find_position">%1$d/%2$d</string>
+    <string name="code_editor_draft_restored">已恢复上次未保存的草稿</string>
 </resources>

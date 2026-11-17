@@ -27,4 +27,18 @@
     <string name="code_editor_toolbar_paste">Dán</string>
     <string name="code_editor_toolbar_select_all">Chọn tất cả</string>
     <string name="code_editor_toolbar_word_wrap">Tự động xuống dòng</string>
+    <string name="code_editor_cut">Cắt</string>
+    <string name="code_editor_indent">Thụt lề</string>
+    <string name="code_editor_outdent">Bỏ thụt lề</string>
+    <string name="code_editor_comment">Chú thích</string>
+    <string name="code_editor_duplicate_line">Nhân đôi dòng</string>
+    <string name="code_editor_move_line_up">Di chuyển dòng lên</string>
+    <string name="code_editor_move_line_down">Di chuyển dòng xuống</string>
+    <string name="code_editor_find_placeholder">Tìm trong tệp</string>
+    <string name="code_editor_find_previous">Kết quả trước</string>
+    <string name="code_editor_find_next">Kết quả tiếp theo</string>
+    <string name="code_editor_find_close">Đóng tìm kiếm</string>
+    <string name="code_editor_find_empty">Không có kết quả</string>
+    <string name="code_editor_find_position">%1$d/%2$d</string>
+    <string name="code_editor_draft_restored">Đã khôi phục bản nháp chưa lưu</string>
 </resources>

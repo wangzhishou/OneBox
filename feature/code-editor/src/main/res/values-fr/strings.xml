@@ -27,4 +27,18 @@
     <string name="code_editor_toolbar_paste">Coller</string>
     <string name="code_editor_toolbar_select_all">Tout sélectionner</string>
     <string name="code_editor_toolbar_word_wrap">Retour à la ligne</string>
+    <string name="code_editor_cut">Couper</string>
+    <string name="code_editor_indent">Indenter</string>
+    <string name="code_editor_outdent">Désindenter</string>
+    <string name="code_editor_comment">Commenter</string>
+    <string name="code_editor_duplicate_line">Dupliquer la ligne</string>
+    <string name="code_editor_move_line_up">Déplacer la ligne vers le haut</string>
+    <string name="code_editor_move_line_down">Déplacer la ligne vers le bas</string>
+    <string name="code_editor_find_placeholder">Rechercher dans le fichier</string>
+    <string name="code_editor_find_previous">Correspondance précédente</string>
+    <string name="code_editor_find_next">Correspondance suivante</string>
+    <string name="code_editor_find_close">Fermer la recherche</string>
+    <string name="code_editor_find_empty">Aucune correspondance</string>
+    <string name="code_editor_find_position">%1$d/%2$d</string>
+    <string name="code_editor_draft_restored">Brouillon non enregistré restauré</string>
 </resources>

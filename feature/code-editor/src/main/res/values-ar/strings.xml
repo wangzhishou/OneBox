@@ -27,4 +27,18 @@
     <string name="code_editor_toolbar_paste">لصق</string>
     <string name="code_editor_toolbar_select_all">تحديد الكل</string>
     <string name="code_editor_toolbar_word_wrap">التفاف النص</string>
+    <string name="code_editor_cut">قص</string>
+    <string name="code_editor_indent">إزاحة للداخل</string>
+    <string name="code_editor_outdent">إزاحة للخارج</string>
+    <string name="code_editor_comment">تعليق</string>
+    <string name="code_editor_duplicate_line">تكرار السطر</string>
+    <string name="code_editor_move_line_up">نقل السطر لأعلى</string>
+    <string name="code_editor_move_line_down">نقل السطر لأسفل</string>
+    <string name="code_editor_find_placeholder">البحث في الملف</string>
+    <string name="code_editor_find_previous">التطابق السابق</string>
+    <string name="code_editor_find_next">التطابق التالي</string>
+    <string name="code_editor_find_close">إغلاق البحث</string>
+    <string name="code_editor_find_empty">لا توجد تطابقات</string>
+    <string name="code_editor_find_position">%1$d/%2$d</string>
+    <string name="code_editor_draft_restored">تمت استعادة المسودة غير المحفوظة</string>
 </resources>

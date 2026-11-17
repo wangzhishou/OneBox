@@ -27,4 +27,18 @@
     <string name="code_editor_toolbar_paste">Einfügen</string>
     <string name="code_editor_toolbar_select_all">Alle auswählen</string>
     <string name="code_editor_toolbar_word_wrap">Zeilenumbruch</string>
+    <string name="code_editor_cut">Ausschneiden</string>
+    <string name="code_editor_indent">Einrücken</string>
+    <string name="code_editor_outdent">Ausrücken</string>
+    <string name="code_editor_comment">Kommentieren</string>
+    <string name="code_editor_duplicate_line">Zeile duplizieren</string>
+    <string name="code_editor_move_line_up">Zeile nach oben</string>
+    <string name="code_editor_move_line_down">Zeile nach unten</string>
+    <string name="code_editor_find_placeholder">In Datei suchen</string>
+    <string name="code_editor_find_previous">Vorheriger Treffer</string>
+    <string name="code_editor_find_next">Nächster Treffer</string>
+    <string name="code_editor_find_close">Suche schließen</string>
+    <string name="code_editor_find_empty">Keine Treffer</string>
+    <string name="code_editor_find_position">%1$d/%2$d</string>
+    <string name="code_editor_draft_restored">Nicht gespeicherter Entwurf wiederhergestellt</string>
 </resources>

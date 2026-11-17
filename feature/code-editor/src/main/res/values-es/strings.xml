@@ -27,4 +27,18 @@
     <string name="code_editor_toolbar_paste">Pegar</string>
     <string name="code_editor_toolbar_select_all">Seleccionar todo</string>
     <string name="code_editor_toolbar_word_wrap">Ajuste de línea</string>
+    <string name="code_editor_cut">Cortar</string>
+    <string name="code_editor_indent">Sangrar</string>
+    <string name="code_editor_outdent">Quitar sangría</string>
+    <string name="code_editor_comment">Comentar</string>
+    <string name="code_editor_duplicate_line">Duplicar línea</string>
+    <string name="code_editor_move_line_up">Subir línea</string>
+    <string name="code_editor_move_line_down">Bajar línea</string>
+    <string name="code_editor_find_placeholder">Buscar en el archivo</string>
+    <string name="code_editor_find_previous">Coincidencia anterior</string>
+    <string name="code_editor_find_next">Coincidencia siguiente</string>
+    <string name="code_editor_find_close">Cerrar búsqueda</string>
+    <string name="code_editor_find_empty">Sin coincidencias</string>
+    <string name="code_editor_find_position">%1$d/%2$d</string>
+    <string name="code_editor_draft_restored">Se restauró el borrador no guardado</string>
 </resources>

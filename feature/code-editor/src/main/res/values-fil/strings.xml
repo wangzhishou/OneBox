@@ -27,4 +27,18 @@
     <string name="code_editor_toolbar_paste">I-paste</string>
     <string name="code_editor_toolbar_select_all">Piliin lahat</string>
     <string name="code_editor_toolbar_word_wrap">Word wrap</string>
+    <string name="code_editor_cut">I-cut</string>
+    <string name="code_editor_indent">I-indent</string>
+    <string name="code_editor_outdent">Alisin ang indent</string>
+    <string name="code_editor_comment">I-comment</string>
+    <string name="code_editor_duplicate_line">I-duplicate ang linya</string>
+    <string name="code_editor_move_line_up">Igalaw ang linya pataas</string>
+    <string name="code_editor_move_line_down">Igalaw ang linya pababa</string>
+    <string name="code_editor_find_placeholder">Maghanap sa file</string>
+    <string name="code_editor_find_previous">Nakaraang tugma</string>
+    <string name="code_editor_find_next">Susunod na tugma</string>
+    <string name="code_editor_find_close">Isara ang paghahanap</string>
+    <string name="code_editor_find_empty">Walang tugma</string>
+    <string name="code_editor_find_position">%1$d/%2$d</string>
+    <string name="code_editor_draft_restored">Naibalik ang hindi na-save na draft</string>
 </resources>

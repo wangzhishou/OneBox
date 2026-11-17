@@ -27,4 +27,18 @@
     <string name="code_editor_toolbar_paste">Yapıştır</string>
     <string name="code_editor_toolbar_select_all">Tümünü seç</string>
     <string name="code_editor_toolbar_word_wrap">Satır kaydırma</string>
+    <string name="code_editor_cut">Kes</string>
+    <string name="code_editor_indent">Girintile</string>
+    <string name="code_editor_outdent">Girintiyi kaldır</string>
+    <string name="code_editor_comment">Yorumla</string>
+    <string name="code_editor_duplicate_line">Satırı çoğalt</string>
+    <string name="code_editor_move_line_up">Satırı yukarı taşı</string>
+    <string name="code_editor_move_line_down">Satırı aşağı taşı</string>
+    <string name="code_editor_find_placeholder">Dosyada ara</string>
+    <string name="code_editor_find_previous">Önceki eşleşme</string>
+    <string name="code_editor_find_next">Sonraki eşleşme</string>
+    <string name="code_editor_find_close">Aramayı kapat</string>
+    <string name="code_editor_find_empty">Eşleşme yok</string>
+    <string name="code_editor_find_position">%1$d/%2$d</string>
+    <string name="code_editor_draft_restored">Kaydedilmemiş taslak geri yüklendi</string>
 </resources>

@@ -141,6 +141,7 @@ hrm-diagram-core = { module = "io.github.huarangmeng:diagram-core", version.ref 
 hrm-diagram-layout = { module = "io.github.huarangmeng:diagram-layout", version.ref = "hrmDiagram" }
 hrm-diagram-parser = { module = "io.github.huarangmeng:diagram-parser", version.ref = "hrmDiagram" }
 hrm-codehigh-render = { module = "io.github.huarangmeng:codehighlight-render", version.ref = "hrmCodehigh" }
+hrm-codehigh-parser = { module = "io.github.huarangmeng:codehighlight-parser", version.ref = "hrmCodehigh" }
 hrm-latex-renderer = { module = "io.github.huarangmeng:latex-renderer", version.ref = "hrmLatex" }
 hrm-latex-fonts-katex = { module = "io.github.huarangmeng:latex-fonts-katex", version.ref = "hrmLatex" }
 litertlm-android = { group = "com.google.ai.edge.litertlm", name = "litertlm-android", version.ref = "litertlm" }

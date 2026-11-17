@@ -27,4 +27,18 @@
     <string name="code_editor_toolbar_paste">붙여넣기</string>
     <string name="code_editor_toolbar_select_all">모두 선택</string>
     <string name="code_editor_toolbar_word_wrap">자동 줄 바꿈</string>
+    <string name="code_editor_cut">잘라내기</string>
+    <string name="code_editor_indent">들여쓰기</string>
+    <string name="code_editor_outdent">내어쓰기</string>
+    <string name="code_editor_comment">주석</string>
+    <string name="code_editor_duplicate_line">줄 복제</string>
+    <string name="code_editor_move_line_up">줄 위로 이동</string>
+    <string name="code_editor_move_line_down">줄 아래로 이동</string>
+    <string name="code_editor_find_placeholder">파일에서 찾기</string>
+    <string name="code_editor_find_previous">이전 일치</string>
+    <string name="code_editor_find_next">다음 일치</string>
+    <string name="code_editor_find_close">찾기 닫기</string>
+    <string name="code_editor_find_empty">일치 항목 없음</string>
+    <string name="code_editor_find_position">%1$d/%2$d</string>
+    <string name="code_editor_draft_restored">저장하지 않은 초안을 복원했습니다</string>
 </resources>

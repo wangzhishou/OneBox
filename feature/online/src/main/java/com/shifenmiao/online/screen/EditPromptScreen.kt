@@ -43,6 +43,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.common.editor.NativeMarkdownEditor
+import com.shifenmiao.common.editor.rememberNativeMarkdownEditorState
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
@@ -54,9 +56,6 @@ import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBarType
 import com.wanbaohe.core.ui.widget.text.EditorTitleField
-import com.wanbaohe.core.ui.widget.text.EditorUiDefaults
-import com.wanbaohe.markdown.edit.webview.WebViewMarkdownEditor
-import com.wanbaohe.markdown.edit.webview.rememberWebViewMarkdownEditorState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.Check
@@ -71,7 +70,7 @@ fun EditPromptScreen(
 
     val scope = rememberCoroutineScope()
 
-    val editorState = rememberWebViewMarkdownEditorState()
+    val editorState = rememberNativeMarkdownEditorState(uiState.data)
 
     val onBack = {
         if (uiState.isDirty) {
@@ -81,10 +80,10 @@ fun EditPromptScreen(
         }
     }
 
-    // 当数据加载完成时，设置初始内容
+    // 当数据加载完成时，设置初始内容（内容没变时 load 不会重置撤销栈与光标）
     LaunchedEffect(uiState.data) {
         if (uiState.data.isNotEmpty()) {
-            editorState.setContent(uiState.data)
+            editorState.load(uiState.data)
         }
     }
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
@@ -93,13 +92,6 @@ fun EditPromptScreen(
     } else {
         stringResource(R.string.new_prompt)
     }
-    fun handleEditorScrollDelta(deltaY: Float) {
-        val topBarState = scrollBehavior.state
-        topBarState.contentOffset += deltaY
-        topBarState.heightOffset = (topBarState.heightOffset - deltaY)
-            .coerceIn(topBarState.heightOffsetLimit, 0f)
-    }
-
     BaseScreen(
         modifier = Modifier.background(MaterialTheme.colorScheme.surface),
         title = {
@@ -117,12 +109,11 @@ fun EditPromptScreen(
             IconButton(
                 onClick = {
                     scope.launch {
-                        val markdown = editorState.getContent()
+                        val markdown = editorState.exportMarkdown()
                         editPromptComponent.savePromptData(
                             markdown = markdown,
                             onSuccess = {
                                 scope.launch(Dispatchers.Main) {
-                                    editorState.clearDraft()
                                     AppToastHost.showToast(
                                         AppContext.getString(R.string.save_success)
                                     )
@@ -158,17 +149,12 @@ fun EditPromptScreen(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            // Markdown editor
-            WebViewMarkdownEditor(
-                initialValue = uiState.data,
+            // Markdown 编辑器（纯 Kotlin/Compose）
+            NativeMarkdownEditor(
                 state = editorState,
-                placeholder = stringResource(R.string.note_placeholder),
-                textStyle = EditorUiDefaults.contentTextStyle(),
-                onVerticalScrollDelta = ::handleEditorScrollDelta,
                 modifier = Modifier
                     .nestedScroll(scrollBehavior.nestedScrollConnection)
                     .weight(1f),
-                storageKey = "edit_prompt_item",
                 onContentChanged = {
                     editPromptComponent.markAsDirty()
                 }

@@ -48,7 +48,8 @@ dependencies {
 
     implementation(projects.libs.opencvTools)
     implementation(projects.libs.markdown)
-    implementation(projects.libs.richTextEditor)
+    // 编辑器状态类型（NativeMarkdownEditorState）出现在 feature/common 的公开 API 里，必须 api 暴露
+    api(projects.libs.richTextEditor)
 
     implementation(libs.com.airbnb.lottie)
 

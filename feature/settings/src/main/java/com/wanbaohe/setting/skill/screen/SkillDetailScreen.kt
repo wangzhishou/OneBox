@@ -33,7 +33,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -41,6 +40,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.shifenmiao.common.editor.NativeMarkdownEditor
+import com.shifenmiao.common.editor.rememberNativeMarkdownEditorState
+import com.shifenmiao.common.markdown.OneBoxMarkdownContent
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
 import com.shifenmiao.database.ai.SkillFrontMatterParser
@@ -48,9 +50,6 @@ import com.shifenmiao.database.ai.entity.SkillEntity
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.dialogs.ExitWithoutSavingDialog
-import com.wanbaohe.core.ui.widget.text.EditorUiDefaults
-import com.wanbaohe.markdown.edit.webview.WebViewMarkdownEditor
-import com.wanbaohe.markdown.edit.webview.rememberWebViewMarkdownEditorState
 import com.wanbaohe.setting.skill.component.SkillDetailComponent
 import com.wanbaohe.settings.R as SettingsR
 import kotlinx.coroutines.Dispatchers
@@ -74,7 +73,8 @@ fun SkillDetailScreen(component: SkillDetailComponent) {
     val showExitDialog = rememberSaveable { mutableStateOf(false) }
 
     val scope = rememberCoroutineScope()
-    val editorState = rememberWebViewMarkdownEditorState()
+    val body = skill?.let { SkillFrontMatterParser.extractBody(it.body) }.orEmpty()
+    val editorState = rememberNativeMarkdownEditorState(body)
 
     val saveSuccessText = stringResource(R.string.save_success)
     val saveInvalidText = stringResource(SettingsR.string.skill_save_invalid)
@@ -90,9 +90,10 @@ fun SkillDetailScreen(component: SkillDetailComponent) {
         }
     }
 
-    // 切换技能（含另存副本）后重置脏状态；正文经 key + initialValue 注入（见下）
+    // 切换技能（含另存副本）后重置脏状态，并把正文灌进原生编辑器（内容没变时 load 是空操作）
     LaunchedEffect(skill) {
         isDirty = false
+        editorState.load(body)
     }
 
     val onBack = {
@@ -105,11 +106,10 @@ fun SkillDetailScreen(component: SkillDetailComponent) {
 
     fun handleSave() {
         scope.launch {
-            component.saveEdit(editorState.getContent()) { result ->
+            component.saveEdit(editorState.exportMarkdown()) { result ->
                 scope.launch(Dispatchers.Main) {
                     when (result) {
                         SkillDetailComponent.SaveResult.SUCCESS -> {
-                            editorState.clearDraft()
                             AppToastHost.showToast(saveSuccessText)
                             component.onGoBack()
                         }
@@ -160,19 +160,19 @@ fun SkillDetailScreen(component: SkillDetailComponent) {
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            // 正文编辑器（剥掉 frontmatter；只读态 readOnly）。
-            // key + initialValue：技能加载完成后重建编辑器，让组件在 onEditorReady 时
-            // 用 initialValue 一次性注入正文——不用 state.setContent，
-            // 避免"setContent 早于 ready 存入暂存 → ready 后组件又用空 initialValue 覆盖"
-            // 的时序竞争把正文抹空。
-            key(component.skillId, skill?.id) {
-                WebViewMarkdownEditor(
-                    initialValue = skill?.let { SkillFrontMatterParser.extractBody(it.body) }.orEmpty(),
+            // 本地技能：原生 Markdown 编辑器（剥掉 frontmatter 的正文）；
+            // 内置/远程技能只读：直接走 KMP 渲染，不再挂 WebView。
+            if (editable) {
+                NativeMarkdownEditor(
                     state = editorState,
-                    readOnly = !editable,
-                    textStyle = EditorUiDefaults.contentTextStyle(),
-                    storageKey = "skill_detail_${component.skillId}",
-                    onContentChanged = { if (editable) isDirty = true },
+                    onContentChanged = { isDirty = true },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                )
+            } else {
+                OneBoxMarkdownContent(
+                    message = body,
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)

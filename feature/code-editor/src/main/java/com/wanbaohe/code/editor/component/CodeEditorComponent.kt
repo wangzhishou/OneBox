@@ -25,6 +25,7 @@ import androidx.compose.runtime.Immutable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.shifenmiao.common.recent.RecentAccessRepository
+import com.shifenmiao.core.R
 import com.shifenmiao.database.data_draft.DataDraftHelper
 import com.shifenmiao.database.recent_access.entity.RecentAccessEntity
 import com.shifenmiao.interfaces.singleton.AppContext
@@ -34,10 +35,11 @@ import com.t8rin.imagetoolbox.core.data.utils.getPath
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
 import com.t8rin.imagetoolbox.core.domain.saving.FilenameCreator
+import com.wanbaohe.code.editor.CodeEditorDataStore
+import com.wanbaohe.code.editor.draft.CodeEditorDraftRepository
+import com.wanbaohe.codeeditor.CodeLanguage
 import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
-import com.shifenmiao.core.R
-import com.wanbaohe.code.editor.CodeEditorDataStore
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -49,14 +51,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * WebView 通用代码编辑器 UI 状态
+ * 代码编辑器 UI 状态
  */
 @Immutable
 data class CodeEditorUiState(
     val content: String = "",
     val fileName: String? = null,
     val fileUri: Uri? = null,
-    val language: String = "plaintext",
+    val language: CodeLanguage = CodeLanguage.PlainText,
     val isDirty: Boolean = false,
     val isLoading: Boolean = false,
     /** file:// 加载失败(无读权限)标记,驱动统一授权引导;成功加载/新建时复位 */
@@ -65,39 +67,6 @@ data class CodeEditorUiState(
     val editTitle: String? = null,
     val historyList: List<RecentAccessEntity> = emptyList()
 )
-
-/**
- * 简易语言检测器（Phase 5 已实现，Phase 6 不变）
- */
-internal object LanguageDetector {
-    private val EXT_MAP = mapOf(
-        "kt" to "kotlin", "kts" to "kotlin",
-        "java" to "java",
-        "py" to "python",
-        "js" to "javascript", "jsx" to "javascript", "mjs" to "javascript",
-        "ts" to "typescript", "tsx" to "typescript",
-        "json" to "json",
-        "html" to "html", "htm" to "html", "xhtml" to "html",
-        "css" to "css", "scss" to "css",
-        "sql" to "sql",
-        "md" to "markdown", "markdown" to "markdown", "mdown" to "markdown",
-        "yml" to "yaml", "yaml" to "yaml",
-        "sh" to "shell", "bash" to "shell", "zsh" to "shell",
-        "xml" to "html",           // XML 用 html lang (cm6 没有专门的 xml lang)
-        "dart" to "plaintext",     // CM6 无官方 dart lang
-        "rs" to "plaintext",       // CM6 无官方 rust lang
-        "toml" to "plaintext",
-        "gradle" to "kotlin",      // groovy/kts: 与 kotlin 语法较接近
-        "groovy" to "kotlin",
-        "kts" to "kotlin",
-    )
-
-    fun fromExtension(uri: Uri?): String {
-        if (uri == null) return "plaintext"
-        val ext = uri.path?.substringAfterLast('.', "")?.lowercase().orEmpty()
-        return EXT_MAP[ext] ?: "plaintext"
-    }
-}
 
 /**
  * 可被代码编辑器打开的文件扩展名白名单（用于在历史记录中过滤）
@@ -113,7 +82,7 @@ private val TEXT_EXTENSIONS = setOf(
 )
 
 /**
- * WebView 通用代码编辑器 Component
+ * 代码编辑器 Component
  *
  * Phase 6：完整业务能力
  * - 文件 I/O（loadFile / saveToExistingFile / saveToNewFile / newFile）
@@ -121,6 +90,7 @@ private val TEXT_EXTENSIONS = setOf(
  * - 草稿自动保存（web 端 localStorage + Kotlin 端 dirty 标记）
  * - editDraftId 模式（基于 [CodeEditorDataStore]，保存后通过 EventBus 回传）
  */
+@Suppress("LongParameterList", "TooManyFunctions") // Decompose 组件：assisted + 注入依赖与文件/历史/草稿流程都收在这里
 class CodeEditorComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted val initialUri: Uri?,
@@ -130,6 +100,7 @@ class CodeEditorComponent @AssistedInject internal constructor(
     private val recentAccessRepository: RecentAccessRepository,
     private val filenameCreator: FilenameCreator,
     private val dataDraftHelper: DataDraftHelper,
+    private val draftRepository: CodeEditorDraftRepository,
     dispatchersHolder: DispatchersHolder
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
@@ -137,7 +108,7 @@ class CodeEditorComponent @AssistedInject internal constructor(
         CodeEditorUiState(
             fileName = initialUri?.lastPathSegment,
             fileUri = initialUri,
-            language = LanguageDetector.fromExtension(initialUri),
+            language = CodeLanguage.fromFileName(initialUri?.lastPathSegment),
             editDraftId = editDraftId,
             editTitle = editTitle
         )
@@ -164,7 +135,7 @@ class CodeEditorComponent @AssistedInject internal constructor(
                         _uiState.update {
                             it.copy(
                                 content = initialText,
-                                language = "html",
+                                language = CodeLanguage.Html,
                                 isLoading = false
                             )
                         }
@@ -180,6 +151,7 @@ class CodeEditorComponent @AssistedInject internal constructor(
     /**
      * 加载文件
      */
+    @Suppress("TooGenericExceptionCaught") // ContentResolver 的 provider 可能抛任意 RuntimeException，统一兜底提示
     fun loadFile(context: Context, uri: Uri) {
         _uiState.update { it.copy(isLoading = true) }
         componentScope.launch(ioDispatcher) {
@@ -188,7 +160,7 @@ class CodeEditorComponent @AssistedInject internal constructor(
                     inputStream.bufferedReader().readText()
                 } ?: ""
                 val displayName = uri.lastPathSegment ?: "untitled"
-                val language = LanguageDetector.fromExtension(uri)
+                val language = CodeLanguage.fromFileName(displayName)
                 withContext(Dispatchers.Main) {
                     _uiState.update {
                         it.copy(
@@ -226,6 +198,7 @@ class CodeEditorComponent @AssistedInject internal constructor(
     /**
      * 覆盖保存到已有文件
      */
+    @Suppress("TooGenericExceptionCaught") // 同上：写入失败的具体异常类型由 provider 决定
     fun saveToExistingFile(
         context: Context,
         content: String,
@@ -244,7 +217,8 @@ class CodeEditorComponent @AssistedInject internal constructor(
                 }
                 val displayName = uri.lastPathSegment ?: "untitled"
                 withContext(Dispatchers.Main) {
-                    _uiState.update { it.copy(isDirty = false) }
+                    // 内容已落盘：同步 content，后续草稿校验的「原始正文」才是磁盘上的最新版本
+                    _uiState.update { it.copy(isDirty = false, content = content) }
                 }
                 recordRecent(uri, displayName)
                 onSuccess()
@@ -259,6 +233,7 @@ class CodeEditorComponent @AssistedInject internal constructor(
     /**
      * 保存到新文件（另存为）
      */
+    @Suppress("TooGenericExceptionCaught") // 同上：写入失败的具体异常类型由 provider 决定
     fun saveToNewFile(
         context: Context,
         uri: Uri,
@@ -273,13 +248,14 @@ class CodeEditorComponent @AssistedInject internal constructor(
                     outputStream.write(content.toByteArray(Charsets.UTF_8))
                 }
                 val displayName = uri.lastPathSegment ?: "untitled"
-                val language = LanguageDetector.fromExtension(uri)
+                val language = CodeLanguage.fromFileName(displayName)
                 withContext(Dispatchers.Main) {
                     _uiState.update {
                         it.copy(
                             fileName = displayName,
                             fileUri = uri,
                             language = language,
+                            content = content,
                             isDirty = false
                         )
                     }
@@ -300,13 +276,13 @@ class CodeEditorComponent @AssistedInject internal constructor(
     fun generateFileNameFromContent(content: String): String {
         _uiState.value.fileName?.let { return it }
 
-        val extension = MimeType.All.fromLanguage(_uiState.value.language).toFileExtension()
+        val extension = MimeType.All.fromLanguage(_uiState.value.language.key).toFileExtension()
         val firstLine = content.lineSequence()
             .firstOrNull { it.isNotBlank() }
-            ?.take(30)
+            ?.take(FILE_NAME_SOURCE_CHARS)
             ?.replace(Regex("[\\\\/:*?\"<>|]"), "")
             ?.trim()
-            ?.take(10)
+            ?.take(FILE_NAME_MAX_CHARS)
             .orEmpty()
 
         return if (firstLine.isNotBlank()) {
@@ -329,6 +305,13 @@ class CodeEditorComponent @AssistedInject internal constructor(
 
     fun markAsDirty() {
         _uiState.update { it.copy(isDirty = true) }
+    }
+
+    /**
+     * 用户从工具坞切换高亮语言：只影响着色与另存为扩展名，不改文件本身。
+     */
+    fun updateLanguage(language: CodeLanguage) {
+        _uiState.update { it.copy(language = language) }
     }
 
     // ── 历史记录（基于 [RecentAccessRepository]） ─────────
@@ -411,6 +394,64 @@ class CodeEditorComponent @AssistedInject internal constructor(
 
     fun isEditMode(): Boolean = editDraftId != 0L
 
+    // ── 未保存草稿（进程被杀后恢复） ─────────────────────
+
+    /**
+     * 草稿分桶 key：
+     * - 临时编辑（editDraftId）不落草稿——正文本来就在 Room 草稿表里；
+     * - 有文件按 URI 分桶；
+     * - 新建页共用一个桶，靠 original="" 校验。
+     */
+    fun draftKey(): String = when {
+        editDraftId != 0L -> "edit_$editDraftId"
+        _uiState.value.fileUri != null -> "file_${_uiState.value.fileUri}"
+        else -> "code_editor_new_file"
+    }
+
+    /**
+     * 读取可恢复的草稿。
+     *
+     * 只有草稿里的「原始正文」与当前磁盘正文完全一致才返回——文件在别处被改过时，
+     * 恢复旧草稿会把磁盘内容盖回去，这里直接放弃并清掉脏草稿。
+     */
+    suspend fun restoreDraft(): String? = withContext(ioDispatcher) {
+        if (isEditMode()) return@withContext null
+        val key = draftKey()
+        val draft = draftRepository.load(key) ?: return@withContext null
+        if (draft.originalText != _uiState.value.content) {
+            draftRepository.clear(key)
+            return@withContext null
+        }
+        if (draft.text == draft.originalText) {
+            draftRepository.clear(key)
+            return@withContext null
+        }
+        draft.text
+    }
+
+    /** 输入停顿后落盘草稿；临时编辑模式不处理。 */
+    suspend fun persistDraft(content: String) = withContext(ioDispatcher) {
+        if (isEditMode()) return@withContext
+        draftRepository.save(
+            draftKey = draftKey(),
+            originalText = _uiState.value.content,
+            draftText = content,
+        )
+    }
+
+    /** 保存成功时清掉草稿。 */
+    suspend fun clearDraft(key: String = draftKey()) = withContext(ioDispatcher) {
+        draftRepository.clear(key)
+    }
+
+    /**
+     * 丢弃内容时同步清空草稿：退出页面的动作里不能依赖协程，
+     * 页面一销毁协程就被取消，草稿会留在磁盘上。
+     */
+    fun discardDraft(key: String = draftKey()) {
+        draftRepository.clear(key)
+    }
+
     @AssistedFactory
     fun interface Factory {
         operator fun invoke(
@@ -422,3 +463,9 @@ class CodeEditorComponent @AssistedInject internal constructor(
         ): CodeEditorComponent
     }
 }
+
+/** 生成文件名时参考的首行字符数上限。 */
+private const val FILE_NAME_SOURCE_CHARS = 30
+
+/** 生成文件名时最终保留的字符数上限。 */
+private const val FILE_NAME_MAX_CHARS = 10

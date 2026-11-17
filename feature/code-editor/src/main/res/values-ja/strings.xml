@@ -27,4 +27,18 @@
     <string name="code_editor_toolbar_paste">貼り付け</string>
     <string name="code_editor_toolbar_select_all">すべて選択</string>
     <string name="code_editor_toolbar_word_wrap">折り返し</string>
+    <string name="code_editor_cut">切り取り</string>
+    <string name="code_editor_indent">インデント</string>
+    <string name="code_editor_outdent">インデント解除</string>
+    <string name="code_editor_comment">コメント</string>
+    <string name="code_editor_duplicate_line">行を複製</string>
+    <string name="code_editor_move_line_up">行を上へ移動</string>
+    <string name="code_editor_move_line_down">行を下へ移動</string>
+    <string name="code_editor_find_placeholder">ファイル内を検索</string>
+    <string name="code_editor_find_previous">前の一致</string>
+    <string name="code_editor_find_next">次の一致</string>
+    <string name="code_editor_find_close">検索を閉じる</string>
+    <string name="code_editor_find_empty">一致なし</string>
+    <string name="code_editor_find_position">%1$d/%2$d</string>
+    <string name="code_editor_draft_restored">未保存の下書きを復元しました</string>
 </resources>

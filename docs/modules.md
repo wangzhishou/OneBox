@@ -1,6 +1,6 @@
 # 万宝盒（WanBaoHe）功能模块清单
 
-> 共 **143 个模块**：1 个 app + 24 个 core + 107 个 feature + 11 个 libs（以 `settings.gradle.kts` 为准，2026-10-23 核对）
+> 共 **154 个模块**：1 个 app + 27 个 core + 111 个 feature + 15 个 libs（以 `settings.gradle.kts` 为准，2026-11-17 核对）
 > 用户视角的功能总览（模块 → 功能 → 简介对照表，含“100+ 种文件打开”说明）另见根目录 `README.md` / `README.zh-CN.md`。
 
 ---
@@ -67,7 +67,7 @@
 | `ocr-document` | OCR识别 | OCR文档识别与格式转换，支持任务状态追踪、结果预览和导出 |
 | `document-scanner` | 文档扫描 | 文档扫描器，扫描纸质文档生成图片/PDF |
 | `markdown-edit` | Markdown编辑器 | Markdown编辑器，所见即所得编辑，支持导出PDF |
-| `code-editor` | 代码编辑器 | 代码编辑器，支持语法高亮、文件I/O和历史记录 |
+| `code-editor` | 代码编辑器 | 纯 Kotlin/Compose 原生代码编辑器：语法高亮、行号、查找、撤销重做、缩进/注释/整行操作、文件 I/O 与未保存草稿恢复 |
 | `file-viewer` | 文件预览 | 内置离线预览 Word / Excel / PowerPoint / OpenDocument / RTF / EPUB，支持页码跳转、查找与夜间模式 |
 
 ## 六、AI与智能
@@ -229,6 +229,10 @@
 | `dynamic-theme` | 动态主题引擎 |
 | `twain` | TWAIN扫描仪接口 |
 | `markdown` | KMP Markdown、LaTeX、图表与插件渲染 |
+| `latex` | LaTeX 渲染 |
+| `diagram` | Mermaid/流程图渲染（内置上游 vendor 代码） |
+| `rich-text-editor` | Compose 富文本编辑内核（Markdown 双向编解码、撤销栈、选区工具条） |
+| `code-editor` | Compose 代码编辑内核（语言表、撤销栈、CodeHigh 语法着色、编辑命令） |
 
 ---
 
