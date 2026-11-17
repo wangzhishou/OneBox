@@ -234,13 +234,8 @@ fun NativeMarkdownEditor(
                             selectionAnchorTracker = selectionTracker,
                             // 只给空段落一个可点高度；非空块至少一行 32dp，不会被额外撑高。
                             minHeight = 32.dp,
-                            placeholder = {
-                                Text(
-                                    text = stringResource(R.string.native_editor_empty_hint),
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                )
-                            },
+                            // 不给占位文案：文档编辑器里每个空段落都会画一次占位，
+                            // 正文上方/中间会莫名多出一行提示；空行本身已经能表达"这里没有内容"。
                         ),
                     ),
                     previewContent = { markdown ->
