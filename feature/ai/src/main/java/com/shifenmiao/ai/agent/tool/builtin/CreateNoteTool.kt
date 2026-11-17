@@ -42,6 +42,7 @@ import com.shifenmiao.model.note.NoteService
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
+import kotlinx.coroutines.withTimeoutOrNull
 import org.json.JSONObject
 import javax.inject.Inject
 
@@ -301,18 +302,26 @@ class CreateNoteTool @Inject constructor(
         result: NoteResult.Success
     ): Boolean {
         val toolCallId = context.toolCallId ?: "create_note_${result.itemId}_${System.currentTimeMillis()}"
-        val decision = interactiveToolRuntime.requestConfirmation(
-            toolCallId = "${toolCallId}_open_note",
-            toolName = name,
-            interactionOwnerId = context.interactionOwnerId,
-            dialogTitle = textProvider.string(R.string.agent_tool_create_note_open_confirm_title),
-            dialogMessage = textProvider.string(
-                R.string.agent_tool_create_note_open_confirm_message,
-                result.title
-            ),
-            confirmPayload = """{"decision":"open"}""",
-            dismissPayload = """{"decision":"not_open"}"""
-        )
+        // "是否打开笔记"只是落库后的附加动作，不能让它拖住整次工具调用：
+        // 没人应答时（锁屏/在别的页面/走开了）工具会被执行器的 60s 超时判成失败，
+        // 步骤卡留红叉、模型还会重试一次导致重复建笔记。这里自己先收口成"不打开"。
+        val decision = withTimeoutOrNull(OPEN_NOTE_CONFIRM_TIMEOUT_MS) {
+            interactiveToolRuntime.requestConfirmation(
+                toolCallId = "${toolCallId}_open_note",
+                toolName = name,
+                interactionOwnerId = context.interactionOwnerId,
+                dialogTitle = textProvider.string(R.string.agent_tool_create_note_open_confirm_title),
+                dialogMessage = textProvider.string(
+                    R.string.agent_tool_create_note_open_confirm_message,
+                    result.title
+                ),
+                confirmPayload = """{"decision":"open"}""",
+                dismissPayload = """{"decision":"not_open"}"""
+            )
+        }
+        if (decision == null) {
+            interactiveToolRuntime.cancelConfirmation()
+        }
         return runCatching {
             decision != null && JSONObject(decision).optString("decision") == "open"
         }.getOrDefault(false)
@@ -363,5 +372,10 @@ class CreateNoteTool @Inject constructor(
     private enum class OperationMode {
         CREATE,
         UPDATE
+    }
+
+    private companion object {
+        /** 打开笔记确认的等待上限：必须明显小于执行器的单次工具超时（60s）。 */
+        const val OPEN_NOTE_CONFIRM_TIMEOUT_MS = 20_000L
     }
 }
