@@ -93,8 +93,13 @@ fun rememberRichTextListInputTransformation(
 }
 
 internal fun TextFieldBuffer.autoContinueRichTextList(listStyle: RichTextListStyle) {
+    // 只做「回车自动续列表」；不再给光标所在段落补 textIndent 段落样式。
+    //
+    // 那个段落样式会在光标进入列表项时把这一段的悬挂缩进再加一次，行宽变窄后长条目
+    // 会重新折行（实测：6 行的列表聚焦后变 8 行、块高 +88px），表现为「光标一插入，
+    // 上下多出一大块间距」。悬挂缩进已经由文档编辑器在块级 textStyle 上统一给了，
+    // 这里再补一份纯属重复，而且只在聚焦后生效，等于把折行结果绑在了焦点上。
     continueRichTextListOnNewline(listStyle)
-    ensureCurrentListIndent(listStyle)
 }
 
 private fun TextFieldBuffer.continueRichTextListOnNewline(listStyle: RichTextListStyle) {
@@ -118,14 +123,3 @@ private fun TextFieldBuffer.continueRichTextListOnNewline(listStyle: RichTextLis
     }
 }
 
-private fun TextFieldBuffer.ensureCurrentListIndent(listStyle: RichTextListStyle) {
-    val source = toString()
-    val paragraph = source.paragraphRanges(selection).firstOrNull() ?: return
-    val fullRange = source.fullParagraphRange(paragraph)
-    val hasMarker = listStyle.hasMarker(source.substring(paragraph.start, paragraph.end))
-    if (!hasMarker || fullRange.collapsed) return
-    val hasIndent = getParagraphStyles(fullRange).any { range ->
-        range.isValid && range.paragraphStyle.textIndent == listStyle.paragraphStyle.textIndent
-    }
-    if (!hasIndent) addStyle(listStyle.paragraphStyle, fullRange, ExpandPolicy.AtEnd)
-}
