@@ -106,7 +106,6 @@ import com.shifenmiao.online.screen.NoteItemScreen
 import com.shifenmiao.search.logic.SearchComponent
 import com.shifenmiao.search.screen.SearchScreen
 import com.shifenmiao.webview.BaseWebViewScreen
-import com.shifenmiao.webview.MarkdownRenderWebViewScreen
 import com.shifenmiao.webview.WebViewComponent
 import com.t8rin.imagetoolbox.collage_maker.presentation.CollageMakerContent
 import com.t8rin.imagetoolbox.collage_maker.presentation.screenLogic.CollageMakerComponent
@@ -652,19 +651,6 @@ sealed interface NavigationChild {
         @Composable
         override fun Content() = BaseWebViewScreen(
             webViewComponent = webViewComponent
-        )
-    }
-
-    class MarkdownRenderWebView(
-        private val appComponent: AppComponent,
-        private val webViewComponent: WebViewComponent,
-        private val initialUri: Uri?
-    ) : NavigationChild {
-        @Composable
-        override fun Content() = MarkdownRenderWebViewScreen(
-            onGoBack = appComponent.onGoBack,
-            webViewComponent = webViewComponent,
-            initialUri = initialUri
         )
     }
 

@@ -1653,17 +1653,6 @@ sealed class Screen(
     )
 
     @Serializable
-    @SerialName("MarkdownRenderWebView")
-    data class MarkdownRenderWebView(
-        val initialUri: Uri? = null
-    ) : Screen(
-        id = 1044,
-        title = com.shifenmiao.core.R.string.markdown_editor,
-        subtitle = 0,
-        description = ""
-    )
-
-    @Serializable
     @SerialName("AgentJsonEditor")
     data class AgentJsonEditor(
         val editDraftId: Long = 0L,

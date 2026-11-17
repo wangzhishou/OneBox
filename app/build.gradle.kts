@@ -427,6 +427,13 @@ android {
             excludes += "lib/**/libde265.so"
             excludes += "lib/**/libx265.so"
             excludes += "lib/**/libaom.so"
+            // 上面已剔除 jxl/heif 主库，这两套随 coder 一起进来的后端库不再有任何调用方：
+            // jxlcoder/brotli 只服务 libjxl，dav1d 只服务已剔除的 libheif/AVIF
+            excludes += "lib/**/libjxlcoder.so"
+            excludes += "lib/**/libbrotlicommon.so"
+            excludes += "lib/**/libbrotlidec.so"
+            excludes += "lib/**/libbrotlienc.so"
+            excludes += "lib/**/libdav1d.so"
         }
         resources {
             excludes += "META-INF/"

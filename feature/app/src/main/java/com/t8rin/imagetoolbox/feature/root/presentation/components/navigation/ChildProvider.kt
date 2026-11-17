@@ -807,16 +807,6 @@ class ChildProvider @Inject constructor(
             )
         )
 
-        is Screen.MarkdownRenderWebView -> NavigationChild.MarkdownRenderWebView(
-            appComponent = appComponent,
-            webViewComponent = homeFactories.webViewComponentFactory(
-                componentContext = componentContext,
-                onGoBack = ::navigateBack,
-                webViewParams = null
-            ),
-            initialUri = config.initialUri
-        )
-
         is Screen.OpenFilePicker -> NavigationChild.OpenFilePicker(
             appComponent = appComponent,
             screen = config

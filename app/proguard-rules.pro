@@ -300,3 +300,13 @@
 # Method.invoke),无 keep 规则时 R8 会把 com.nlf.calendar 整个裁掉,release 下静默
 # 回退到本地简化算法,农历/干支/宜忌全部出错(如 2026-08-14 显示成庚子年腊月十五)。
 -keep class com.nlf.calendar.** { *; }
+
+# flavor 专属入口通过 Class.forName("全限定名") 调用（main 源集不能硬引用 google-only 类）。
+# R8 的反射追踪覆盖不到 runCatching 里的动态查找，必须显式保名，否则 release 下
+# Firebase 初始化 / FCM 补报 / 通知权限提示会静默失效。
+-keep class com.shifenmiao.app.channel.GoogleChannelInitializer { *; }
+-keep class com.shifenmiao.app.push.FcmTokenUploader { *; }
+-keep class com.shifenmiao.app.push.NotificationPermissionPrompter { *; }
+
+# 备注：实测 -repackageclasses 对压缩后的 dex 体积无收益（25.17 vs 25.14 MB），
+# 为降低 release 反射路径风险不启用；反射入口已在上方单独 keep。
