@@ -108,6 +108,13 @@ class PromptAssemblyService(
         return applyToolPredicates(tools).takeIf { it.isNotEmpty() }
     }
 
+    suspend fun buildChatRequestTools(): List<ToolDefinition>? {
+        val engine = toolConfigResolver.currentConversation().engine
+        if (!agentToolRegistry.isToolCallSupported(engine)) return null
+        return agentToolRegistry.getToolDefinitions(setOf("discover_apps"))
+            .takeIf { it.isNotEmpty() }
+    }
+
     /**
      * 谓词链筛选：对候选工具逐个过 [toolPredicates]，全部通过才保留。
      * 判定基于工具名 + 注册表已缓存的目录元数据（O(1) 查表），
@@ -192,6 +199,7 @@ class PromptAssemblyService(
      * - 保证工具不丢失：原始工具在后续轮次仍可调用
      * - 保证不重复：通过 LinkedHashSet 按名称去重
      * - 保证安全：仅扩展工具目录中已注册的可见工具
+     * - CHAT 模式保持原工具集，不允许发现后扩展
      *
      * 这样 LLM 可以在第1轮通过 discover_tools 搜索工具，
      * 第2轮直接调用新发现的工具，同时继续使用原始工具。
@@ -199,7 +207,10 @@ class PromptAssemblyService(
     suspend fun buildFollowUpToolsAfterDiscovery(
         results: List<Pair<ToolCall, AgentToolResult>>,
         currentTools: List<ToolDefinition>?,
+        chatMode: AIChatMode = AIChatMode.AGENT,
     ): List<ToolDefinition>? {
+        if (chatMode == AIChatMode.CHAT) return currentTools
+
         // Step 1: 识别本轮调用了哪些发现类工具
         val discoveryToolNames = agentToolRegistry.getDiscoveryToolNames()
         val calledDiscoveryTools = results

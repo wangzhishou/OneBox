@@ -857,9 +857,10 @@ open class AIChatComponent @AssistedInject internal constructor(
                 agentLoopOrchestrator.prepareToolSelection()
                 buildRequestTools()
             } else {
-                null
+                agentLoopOrchestrator.buildChatRequestTools()
             }
             val isToolCallSupported = tools != null
+            val canCallTools = isAgentRequest || isToolCallSupported
             logAgentTrace(
                 "initial_request mode=$chatMode questionLen=${currentQuestion.length} tools=${tools?.size ?: 0} " +
                     "toolNames=${tools?.joinToString { it.function.name }.orEmpty()} " +
@@ -897,7 +898,7 @@ open class AIChatComponent @AssistedInject internal constructor(
                 enableWebSearch,
                 shouldEnableReasoning,
                 tools,
-                includeToolCallHistory = isAgentRequest,
+                includeToolCallHistory = canCallTools,
             )
 
             streamContentProcessor.startStreamWatchdog(reason = "executeStreamingChat")
@@ -915,7 +916,7 @@ open class AIChatComponent @AssistedInject internal constructor(
                             streamEvent = streamEvent,
                             questionMessageEntityList = questionMessageEntityList,
                             draft = draft,
-                            allowToolCalls = isAgentRequest,
+                            allowToolCalls = canCallTools,
                         )
                     }
                 }
@@ -953,6 +954,7 @@ open class AIChatComponent @AssistedInject internal constructor(
                     originalQuestionMessages = questionMessageEntityList,
                     enableWebSearch = enableWebSearch,
                     tools = tools,
+                    chatMode = chatMode,
                 )
                 // Agent Loop 完成后持久化消息（包含工具调用链 JSON）。
                 // 触顶暂停时 paused=true：内容照常落库，评价/标题等终态副作用延后到续跑结束。

@@ -114,6 +114,11 @@ class SystemPromptRepository @Inject constructor(
             title = PromptEntity.SYSTEM_PROMPT_KEY_DEFAULT_PROMPT,
             fallback = textProvider.rawAsync(com.shifenmiao.database.R.raw.prompt_system_default)
         )
+        val interactionProtocol = if (chatMode == AIChatMode.CHAT) {
+            textProvider.rawAsync(com.shifenmiao.database.R.raw.chat_app_discovery)
+        } else {
+            ""
+        }
         val agentExecutionProtocol = if (chatMode == AIChatMode.AGENT) {
             getSystemPrompt(
                 title = PromptEntity.SYSTEM_PROMPT_KEY_WORKING_MODE_AGENT,
@@ -124,7 +129,7 @@ class SystemPromptRepository @Inject constructor(
         }
         val composition = composeToolAwarePrompt(
             systemRules = systemRules,
-            interactionProtocol = "",
+            interactionProtocol = interactionProtocol,
             agentExecutionProtocol = agentExecutionProtocol,
             agentRole = conversation.prompt,
             userOverride = userOverride.orEmpty(),

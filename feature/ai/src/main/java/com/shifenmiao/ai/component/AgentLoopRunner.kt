@@ -36,6 +36,7 @@ import com.shifenmiao.ai.service.PromptAssemblyService
 import com.shifenmiao.ai.execution.model.ExecutionStepStatus
 import com.shifenmiao.ai.execution.presenter.ToolExecutionTextResolver
 import com.shifenmiao.ai.utils.AiUtils
+import com.shifenmiao.model.ai.AIChatMode
 import com.shifenmiao.model.ai.AttachedMedia
 import com.shifenmiao.core.R
 import com.shifenmiao.database.ai.entity.MessageEntity
@@ -102,6 +103,7 @@ class AgentLoopRunner(
         val originalQuestionMessages: List<MessageEntity>,
         val enableWebSearch: Boolean,
         val tools: List<ToolDefinition>?,
+        val chatMode: AIChatMode,
     )
 
     /**
@@ -141,6 +143,7 @@ class AgentLoopRunner(
         enableWebSearch: Boolean,
         enableReasoning: Boolean,
         tools: List<ToolDefinition>?,
+        chatMode: AIChatMode,
         conversationId: String,
         completionIdProvider: () -> String,
         answerProvider: () -> String,
@@ -164,6 +167,7 @@ class AgentLoopRunner(
             enableWebSearch = enableWebSearch,
             initialTools = tools,
             activeTools = tools,
+            chatMode = chatMode,
             contextMessages = contextMessages,
         )
 
@@ -464,6 +468,7 @@ class AgentLoopRunner(
         val nextActiveTools = promptAssemblyService.buildFollowUpToolsAfterDiscovery(
             results = results,
             currentTools = activeTools,
+            chatMode = executionContext.chatMode,
         )
         val appendedMessages = appendToolResultsToContext(
             contextMessages = executionContext.contextMessages,
@@ -727,6 +732,7 @@ class AgentLoopRunner(
                     originalQuestionMessages = executionContext.originalQuestionMessages,
                     enableWebSearch = executionContext.enableWebSearch,
                     tools = executionContext.activeTools,
+                    chatMode = executionContext.chatMode,
                 ),
             )
         }
@@ -837,6 +843,7 @@ class AgentLoopRunner(
         val enableWebSearch: Boolean,
         val initialTools: List<ToolDefinition>?,
         var activeTools: List<ToolDefinition>?,
+        val chatMode: AIChatMode,
         val contextMessages: MutableList<LlmMessage>,
     )
 

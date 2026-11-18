@@ -151,6 +151,10 @@ class AgentLoopOrchestrator(
         return tools
     }
 
+    suspend fun buildChatRequestTools(): List<ToolDefinition>? {
+        return promptAssemblyService.buildChatRequestTools()
+    }
+
     suspend fun buildEffectiveConversation(
         baseConversation: Conversation,
         preResolvedConfig: ToolConfigResolver.EffectiveToolConfig? = null,
@@ -264,6 +268,7 @@ class AgentLoopOrchestrator(
         originalQuestionMessages: List<MessageEntity>,
         enableWebSearch: Boolean,
         tools: List<ToolDefinition>?,
+        chatMode: AIChatMode,
     ) {
         // P1 review M1: 新一轮 (含 continueAgentLoop 续跑) 开始时清除 shutdown 标记.
         isShuttingDown = false
@@ -289,6 +294,7 @@ class AgentLoopOrchestrator(
                 enableWebSearch = enableWebSearch,
                 enableReasoning = enableReasoning,
                 tools = tools,
+                chatMode = chatMode,
                 conversationId = conversationId,
                 completionIdProvider = completionIdProvider,
                 answerProvider = { sharedState.answerMessageEntity.value.answer },
@@ -306,6 +312,7 @@ class AgentLoopOrchestrator(
                     originalQuestionMessages = ctx.originalQuestionMessages,
                     enableWebSearch = ctx.enableWebSearch,
                     tools = ctx.tools,
+                    chatMode = ctx.chatMode,
                 )
                 toolUiCoordinator.showMaxIterationsReached(
                     iteration = agentLoopSession.currentIteration,
@@ -393,6 +400,7 @@ class AgentLoopOrchestrator(
                     originalQuestionMessages = ctx.originalQuestionMessages,
                     enableWebSearch = ctx.enableWebSearch,
                     tools = ctx.tools,
+                    chatMode = ctx.chatMode,
                 )
                 if (pausedAgentLoopContext == null) {
                     // Agent Loop 完成后触发持久化（工具调用链落库）
@@ -607,6 +615,7 @@ class AgentLoopOrchestrator(
         val originalQuestionMessages: List<MessageEntity>,
         val enableWebSearch: Boolean,
         val tools: List<ToolDefinition>?,
+        val chatMode: AIChatMode,
     )
 
     private companion object
