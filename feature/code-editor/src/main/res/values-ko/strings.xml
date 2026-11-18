@@ -41,4 +41,6 @@
     <string name="code_editor_find_empty">일치 항목 없음</string>
     <string name="code_editor_find_position">%1$d/%2$d</string>
     <string name="code_editor_draft_restored">저장하지 않은 초안을 복원했습니다</string>
+
+    <string name="code_editor_symbols">기호</string>
 </resources>

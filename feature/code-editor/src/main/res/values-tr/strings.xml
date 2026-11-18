@@ -41,4 +41,6 @@
     <string name="code_editor_find_empty">Eşleşme yok</string>
     <string name="code_editor_find_position">%1$d/%2$d</string>
     <string name="code_editor_draft_restored">Kaydedilmemiş taslak geri yüklendi</string>
+
+    <string name="code_editor_symbols">Sembol</string>
 </resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_bold">Gras</string>
+    <string name="rich_text_italic">Italique</string>
+    <string name="rich_text_underline">Souligné</string>
+    <string name="rich_text_strikethrough">Barré</string>
+    <string name="rich_text_inline_code">Code en ligne</string>
+    <string name="rich_text_body">Corps de texte</string>
+    <string name="rich_text_bullet_list">• Liste</string>
+    <string name="rich_text_clear_formatting">Effacer la mise en forme</string>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_bold">粗體</string>
+    <string name="rich_text_italic">斜體</string>
+    <string name="rich_text_underline">底線</string>
+    <string name="rich_text_strikethrough">刪除線</string>
+    <string name="rich_text_inline_code">行內程式碼</string>
+    <string name="rich_text_body">內文</string>
+    <string name="rich_text_bullet_list">• 清單</string>
+    <string name="rich_text_clear_formatting">清除格式</string>
+</resources>

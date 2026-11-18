@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_bold">Kalın</string>
+    <string name="rich_text_italic">İtalik</string>
+    <string name="rich_text_underline">Altı çizili</string>
+    <string name="rich_text_strikethrough">Üstü çizili</string>
+    <string name="rich_text_inline_code">Satır içi kod</string>
+    <string name="rich_text_body">Gövde metni</string>
+    <string name="rich_text_bullet_list">• Liste</string>
+    <string name="rich_text_clear_formatting">Biçimi temizle</string>
+</resources>

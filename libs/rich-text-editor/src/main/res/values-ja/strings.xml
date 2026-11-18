@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_bold">太字</string>
+    <string name="rich_text_italic">斜体</string>
+    <string name="rich_text_underline">下線</string>
+    <string name="rich_text_strikethrough">取り消し線</string>
+    <string name="rich_text_inline_code">インラインコード</string>
+    <string name="rich_text_body">本文</string>
+    <string name="rich_text_bullet_list">• リスト</string>
+    <string name="rich_text_clear_formatting">書式をクリア</string>
+</resources>

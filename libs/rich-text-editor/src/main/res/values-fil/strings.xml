@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_bold">Bold</string>
+    <string name="rich_text_italic">Italiko</string>
+    <string name="rich_text_underline">Salungguhit</string>
+    <string name="rich_text_strikethrough">Strikethrough</string>
+    <string name="rich_text_inline_code">Inline code</string>
+    <string name="rich_text_body">Teksto</string>
+    <string name="rich_text_bullet_list">• Listahan</string>
+    <string name="rich_text_clear_formatting">I-clear ang format</string>
+</resources>

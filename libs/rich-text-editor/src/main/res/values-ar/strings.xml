@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_bold">غامق</string>
+    <string name="rich_text_italic">مائل</string>
+    <string name="rich_text_underline">تسطير</string>
+    <string name="rich_text_strikethrough">يتوسطه خط</string>
+    <string name="rich_text_inline_code">كود مضمّن</string>
+    <string name="rich_text_body">نص عادي</string>
+    <string name="rich_text_bullet_list">• قائمة</string>
+    <string name="rich_text_clear_formatting">مسح التنسيق</string>
+</resources>

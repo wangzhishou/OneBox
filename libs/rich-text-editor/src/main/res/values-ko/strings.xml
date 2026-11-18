@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_bold">굵게</string>
+    <string name="rich_text_italic">기울임꼴</string>
+    <string name="rich_text_underline">밑줄</string>
+    <string name="rich_text_strikethrough">취소선</string>
+    <string name="rich_text_inline_code">인라인 코드</string>
+    <string name="rich_text_body">본문</string>
+    <string name="rich_text_bullet_list">• 목록</string>
+    <string name="rich_text_clear_formatting">서식 지우기</string>
+</resources>

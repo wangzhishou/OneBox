@@ -41,4 +41,6 @@
     <string name="code_editor_find_empty">Tidak ada kecocokan</string>
     <string name="code_editor_find_position">%1$d/%2$d</string>
     <string name="code_editor_draft_restored">Draf yang belum disimpan dipulihkan</string>
+
+    <string name="code_editor_symbols">Simbol</string>
 </resources>

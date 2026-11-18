@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_bold">Đậm</string>
+    <string name="rich_text_italic">Nghiêng</string>
+    <string name="rich_text_underline">Gạch chân</string>
+    <string name="rich_text_strikethrough">Gạch ngang</string>
+    <string name="rich_text_inline_code">Mã nội tuyến</string>
+    <string name="rich_text_body">Văn bản thường</string>
+    <string name="rich_text_bullet_list">• Danh sách</string>
+    <string name="rich_text_clear_formatting">Xóa định dạng</string>
+</resources>

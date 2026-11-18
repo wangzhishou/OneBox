@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_bold">Tebal</string>
+    <string name="rich_text_italic">Miring</string>
+    <string name="rich_text_underline">Garis bawah</string>
+    <string name="rich_text_strikethrough">Coret</string>
+    <string name="rich_text_inline_code">Kode sebaris</string>
+    <string name="rich_text_body">Teks isi</string>
+    <string name="rich_text_bullet_list">• Daftar</string>
+    <string name="rich_text_clear_formatting">Hapus format</string>
+</resources>

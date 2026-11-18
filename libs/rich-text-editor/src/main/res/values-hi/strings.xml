@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_bold">बोल्ड</string>
+    <string name="rich_text_italic">इटैलिक</string>
+    <string name="rich_text_underline">अंडरलाइन</string>
+    <string name="rich_text_strikethrough">स्ट्राइकथ्रू</string>
+    <string name="rich_text_inline_code">इनलाइन कोड</string>
+    <string name="rich_text_body">सामान्य टेक्स्ट</string>
+    <string name="rich_text_bullet_list">• सूची</string>
+    <string name="rich_text_clear_formatting">फ़ॉर्मेटिंग साफ़ करें</string>
+</resources>

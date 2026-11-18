@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_bold">Negrita</string>
+    <string name="rich_text_italic">Cursiva</string>
+    <string name="rich_text_underline">Subrayado</string>
+    <string name="rich_text_strikethrough">Tachado</string>
+    <string name="rich_text_inline_code">Código en línea</string>
+    <string name="rich_text_body">Texto normal</string>
+    <string name="rich_text_bullet_list">• Lista</string>
+    <string name="rich_text_clear_formatting">Borrar formato</string>
+</resources>

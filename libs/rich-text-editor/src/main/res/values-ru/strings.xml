@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_bold">Жирный</string>
+    <string name="rich_text_italic">Курсив</string>
+    <string name="rich_text_underline">Подчёркнутый</string>
+    <string name="rich_text_strikethrough">Зачёркнутый</string>
+    <string name="rich_text_inline_code">Встроенный код</string>
+    <string name="rich_text_body">Обычный текст</string>
+    <string name="rich_text_bullet_list">• Список</string>
+    <string name="rich_text_clear_formatting">Очистить форматирование</string>
+</resources>

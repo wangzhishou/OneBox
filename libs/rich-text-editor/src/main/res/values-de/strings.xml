@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_bold">Fett</string>
+    <string name="rich_text_italic">Kursiv</string>
+    <string name="rich_text_underline">Unterstrichen</string>
+    <string name="rich_text_strikethrough">Durchgestrichen</string>
+    <string name="rich_text_inline_code">Inline-Code</string>
+    <string name="rich_text_body">Fließtext</string>
+    <string name="rich_text_bullet_list">• Liste</string>
+    <string name="rich_text_clear_formatting">Formatierung löschen</string>
+</resources>

@@ -1,42 +1,42 @@
-# Markdown 编辑器
+# Markdown Editor
 
-欢迎使用 Markdown 编辑器！这是一个所见即所得的编辑工具，下面列出当前支持的常用语法。
+Welcome to the Markdown Editor! This WYSIWYG editor supports the syntax below.
 
-## 标题
+## Headings
 
-# 一级标题
-## 二级标题
-### 三级标题
-#### 四级标题
-##### 五级标题
-###### 六级标题
+# Heading 1
+## Heading 2
+### Heading 3
+#### Heading 4
+##### Heading 5
+###### Heading 6
 
-## 行内格式
+## Inline formatting
 
-**加粗**、*斜体*、~~删除线~~、==高亮==、`行内代码`，以及[链接](https://www.oneboxable.com)。
+**Bold**, *italic*, ~~strikethrough~~, ==highlight==, `inline code`, and a [link](https://www.oneboxable.com).
 
-## 列表
+## Lists
 
-- 无序列表项一
-- 无序列表项二
-- 无序列表项三
+- Bullet item one
+- Bullet item two
+- Bullet item three
 
-1. 有序列表项一
-2. 有序列表项二
-3. 有序列表项三
+1. Numbered item one
+2. Numbered item two
+3. Numbered item three
 
-- [ ] 待办事项
-- [x] 已完成事项
-- [ ] 另一个待办
+- [ ] To-do item
+- [x] Completed item
+- [ ] Another to-do
 
-## 引用
+## Quotes
 
-> 引用可以跨多行。
-> 也可以嵌套 **加粗** 和 `行内代码`。
+> A quote can span multiple lines.
+> It can also contain **bold text** and `inline code`.
 
-## 代码
+## Code
 
-行内代码：`val name = "OneBox"`。
+Inline code: `val name = "OneBox"`.
 
 ```kotlin
 fun main() {
@@ -44,46 +44,46 @@ fun main() {
 }
 ```
 
-## 表格
+## Tables
 
-| 能力 | 说明 | 状态 |
+| Capability | Description | Status |
 | :--- | :---: | ---: |
-| 实时预览 | 编辑时即可看到效果 | 已支持 |
-| 表格 | GFM 表格语法 | 已支持 |
-| 任务列表 | 可勾选的待办 | 已支持 |
+| Live preview | See the result while typing | Supported |
+| Tables | GFM table syntax | Supported |
+| Task lists | Checkable to-dos | Supported |
 
-## 数学公式
+## Math
 
-行内公式：$E = mc^2$。
+Inline math: $E = mc^2$.
 
 $$
 \int_0^1 x^2\,dx = \frac{1}{3}
 $$
 
-## 图表
+## Diagrams
 
 ```mermaid
 flowchart LR
-    A[写笔记] --> B[实时预览]
-    B --> C[保存分享]
+    A[Write] --> B[Preview]
+    B --> C[Share]
 ```
 
-## 图片与分隔线
+## Images and dividers
 
-![示例图片](https://mdn.github.io/shared-assets/images/examples/grapefruit-slice.jpg)
+![Sample image](https://mdn.github.io/shared-assets/images/examples/grapefruit-slice.jpg)
 
 ---
 
-## 脚注
+## Footnotes
 
-脚注示例[^1]。
+Here is a footnote reference[^1].
 
-[^1]: 这是脚注内容，点击文中的标记可以跳转回来。
+[^1]: This is the footnote text. Tap the marker to jump back.
 
-## 使用方式
+## How to use
 
-1. 右上角保存按钮：保存为 `.md` 文件
-2. 右上角更多菜单：新建、打开、另存为、导出 PDF
-3. 底部工具坞：编辑/源码切换、语音、撤销重做、格式、表格、复选框、插入内容
+1. Top-right save button: save as a `.md` file
+2. Top-right more menu: new, open, save as, export PDF
+3. Bottom dock: edit/source, voice, undo/redo, formatting, table, checklist and inserts
 
-祝你写作愉快！
+Happy writing!
