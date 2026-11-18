@@ -1135,4 +1135,5 @@
     <string name="watermark_compare_hold">Podržením porovnáte s originálem</string>
     <string name="watermark_hidden_needs_content">Nejprve přidejte text nebo obrázek, teprve pak lze zapnout skrytý vodoznak.</string>
     <string name="watermark_reset_title">Obnovit vodoznak</string>
+    <string name="watermark_preset_privacy">Skrytí soukromých údajů</string>
 </resources>

@@ -2192,4 +2192,5 @@
     <string name="watermark_compare_hold">Orijinalle karşılaştırmak için basılı tutun</string>
     <string name="watermark_hidden_needs_content">Gizli filigranı açmadan önce bir metin veya görsel katmanı ekleyin.</string>
     <string name="watermark_reset_title">Filigranı sıfırla</string>
+    <string name="watermark_preset_privacy">Gizlilik maskesi</string>
 </resources>

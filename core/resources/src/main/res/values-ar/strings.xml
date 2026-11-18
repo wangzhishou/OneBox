@@ -2193,4 +2193,5 @@
     <string name="watermark_compare_hold">اضغط مطولًا للمقارنة مع الأصل</string>
     <string name="watermark_hidden_needs_content">أضف طبقة نص أو صورة قبل تفعيل العلامة المائية المخفية.</string>
     <string name="watermark_reset_title">إعادة تعيين العلامة المائية</string>
+    <string name="watermark_preset_privacy">إخفاء بيانات الخصوصية</string>
 </resources>

@@ -1046,4 +1046,5 @@
     <string name="watermark_compare_hold">Tartsa nyomva az eredeti összehasonlításához</string>
     <string name="watermark_hidden_needs_content">A láthatatlan vízjel bekapcsolásához előbb adjon hozzá szöveg- vagy képréteget.</string>
     <string name="watermark_reset_title">Vízjel visszaállítása</string>
+    <string name="watermark_preset_privacy">Személyes adatok elfedése</string>
 </resources>

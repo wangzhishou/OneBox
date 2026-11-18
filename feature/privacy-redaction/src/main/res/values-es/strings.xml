@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="privacy_redaction">Ocultar datos privados</string>
+    <string name="privacy_redaction_subtitle">Detección y ocultación en el dispositivo</string>
+    <string name="privacy_regions_found">Zonas: %1$d</string>
+    <string name="privacy_rescan">Detectar de nuevo</string>
+    <string name="privacy_analysis_failed">Error de detección</string>
+    <string name="privacy_no_regions">No se encontraron teléfonos, documentos de identidad ni correos</string>
+    <string name="privacy_preparing_model">Preparando el modelo…</string>
+    <string name="privacy_model_percent">Descargando el modelo: %1$d%%</string>
+    <string name="privacy_recognizing">Detectando…</string>
+    <string name="privacy_mosaic">Mosaico</string>
+    <string name="privacy_solid">Color sólido</string>
+    <string name="privacy_strength">Intensidad</string>
+    <string name="privacy_add_region">Añadir zona</string>
+    <string name="privacy_finish_drawing">Finalizar selección</string>
+    <string name="privacy_disable">Salir de la ocultación</string>
+    <string name="privacy_category_phone">Teléfono</string>
+    <string name="privacy_category_id">Documento de identidad</string>
+    <string name="privacy_category_bank">Tarjeta bancaria</string>
+    <string name="privacy_category_email">Correo</string>
+    <string name="privacy_category_manual">Manual</string>
+    <string name="privacy_scale">Cambiar tamaño de la zona</string>
+    <string name="privacy_rotate">Girar la zona</string>
+    <string name="privacy_resize">Ajustar la zona</string>
+</resources>

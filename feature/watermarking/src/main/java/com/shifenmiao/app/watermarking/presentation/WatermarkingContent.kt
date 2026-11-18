@@ -110,11 +110,15 @@ fun WatermarkingContent(
         }
     }
     val onPresetApplied = { preset: WatermarkPreset ->
-        val needsLogo = preset.document.elements.any { element ->
-            val image = element.content as? WatermarkContent.Image
-            image != null && image.imageData.isBlank()
+        if (preset.id == com.wanbaohe.watermark.template.domain.BuiltinTemplateId.PRIVACY_REDACTION.id) {
+            activePanel = WatermarkPanel.PRIVACY
+        } else {
+            val needsLogo = preset.document.elements.any { element ->
+                val image = element.content as? WatermarkContent.Image
+                image != null && image.imageData.isBlank()
+            }
+            if (needsLogo) activePanel = WatermarkPanel.PROPERTIES
         }
-        if (needsLogo) activePanel = WatermarkPanel.PROPERTIES
     }
     val requestLocation = {
         activity.requestPermissions(
@@ -128,6 +132,11 @@ fun WatermarkingContent(
         )
     }
     LaunchedEffect(component.selectedUri) { isComparing = false }
+    LaunchedEffect(component.privacy.isActive) {
+        if (!component.privacy.isActive && activePanel == WatermarkPanel.PRIVACY) {
+            activePanel = WatermarkPanel.PRESETS
+        }
+    }
 
     BaseScreen(
         title = {
@@ -189,7 +198,9 @@ fun WatermarkingContent(
                         frame = component.document.frame,
                         resolvedElements = component.resolvedElements,
                         selectedElementId = component.selectedElementId,
-                        isLoading = component.isImageLoading || (component.isResolving && component.resolvedElements.isEmpty()),
+                        isLoading = component.isImageLoading ||
+                            (component.isResolving && component.resolvedElements.isEmpty()) ||
+                            component.privacy.analysisState.isRunning,
                         isComparing = isComparing,
                         canUndo = component.canUndo,
                         canRedo = component.canRedo,
@@ -228,6 +239,16 @@ fun WatermarkingContent(
                         hasElements = component.document.elements.isNotEmpty(),
                         hiddenOnly = component.document.hiddenWatermark.enabled &&
                             component.document.elements.none { it.transform.visible },
+                        privacyDocument = if (component.privacy.isActive) {
+                            component.privacy.document
+                        } else null,
+                        selectedPrivacyRegionId = component.privacy.selectedRegionId,
+                        isPrivacyDrawing = component.privacy.isDrawing,
+                        onSelectPrivacyRegion = component.privacy::selectRegion,
+                        onPrivacyBoundsChange = component.privacy::updateRegionBounds,
+                        onDeletePrivacyRegion = component.privacy::deleteRegion,
+                        onAddPrivacyRegion = component.privacy::addRegion,
+                        createPrivacyPreview = component.privacy::renderPreview,
                         createVisuals = { width, height, bandHeight ->
                             component.createPreviewVisuals(width, height, bandHeight)
                         },
@@ -254,6 +275,7 @@ fun WatermarkingContent(
                 AnimatedVisibility(visible = immersiveModeState.isUiVisible) {
                     WatermarkBottomBar(
                         activePanel = activePanel,
+                        isPrivacyActive = component.privacy.isActive,
                         onPanelClick = { panel -> activePanel = if (activePanel == panel) null else panel },
                         onExportClick = { showExport = true },
                     )
@@ -292,6 +314,7 @@ fun WatermarkingContent(
     ) {
         ExportPanel(
             imageCount = component.uris.size,
+            privacyMode = component.privacy.isActive,
             onlyCurrent = onlyCurrent,
             keepExif = component.keepExif,
             stripLocationMetadata = component.stripLocationMetadata,

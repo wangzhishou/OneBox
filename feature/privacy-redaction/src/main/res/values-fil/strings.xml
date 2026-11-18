@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="privacy_redaction">Takip ng pribadong datos</string>
+    <string name="privacy_redaction_subtitle">Lokal na pagtukoy at pagtakip</string>
+    <string name="privacy_regions_found">Mga lugar: %1$d</string>
+    <string name="privacy_rescan">Muling tukuyin</string>
+    <string name="privacy_analysis_failed">Nabigo ang pagtukoy</string>
+    <string name="privacy_no_regions">Walang natagpuang numero ng telepono, ID, o email</string>
+    <string name="privacy_preparing_model">Inihahanda ang modelo…</string>
+    <string name="privacy_model_percent">Daunlod ng modelo: %1$d%%</string>
+    <string name="privacy_recognizing">Tinutukoy…</string>
+    <string name="privacy_mosaic">Mosaic</string>
+    <string name="privacy_solid">Solid na kulay</string>
+    <string name="privacy_strength">Lakas</string>
+    <string name="privacy_add_region">Magdagdag ng lugar</string>
+    <string name="privacy_finish_drawing">Tapusin ang pagpili</string>
+    <string name="privacy_disable">Lumabas sa pagtakip</string>
+    <string name="privacy_category_phone">Telepono</string>
+    <string name="privacy_category_id">Numero ng ID</string>
+    <string name="privacy_category_bank">Bank card</string>
+    <string name="privacy_category_email">Email</string>
+    <string name="privacy_category_manual">Manual</string>
+    <string name="privacy_scale">Palakihin ang takip</string>
+    <string name="privacy_rotate">Ikutin ang takip</string>
+    <string name="privacy_resize">Ayusin ang takip</string>
+</resources>

@@ -947,4 +947,5 @@
     <string name="watermark_compare_hold">ਅਸਲ ਚਿੱਤਰ ਨਾਲ ਤੁਲਨਾ ਕਰਨ ਲਈ ਦਬਾਈ ਰੱਖੋ</string>
     <string name="watermark_hidden_needs_content">ਲੁਕਿਆ ਵਾਟਰਮਾਰਕ ਚਾਲੂ ਕਰਨ ਲਈ ਪਹਿਲਾਂ ਟੈਕਸਟ ਜਾਂ ਚਿੱਤਰ ਸ਼ਾਮਲ ਕਰੋ।</string>
     <string name="watermark_reset_title">ਵਾਟਰਮਾਰਕ ਰੀਸੈੱਟ ਕਰੋ</string>
+    <string name="watermark_preset_privacy">ਨਿੱਜੀ ਜਾਣਕਾਰੀ ਛੁਪਾਓ</string>
 </resources>

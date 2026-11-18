@@ -19,6 +19,7 @@ enum class WatermarkPanel {
     PRESETS,
     PROPERTIES,
     LAYERS,
+    PRIVACY,
     IMAGES,
 }
 
@@ -28,6 +29,7 @@ fun WatermarkPanel.title(): String = stringResource(
         WatermarkPanel.PRESETS -> R.string.presets
         WatermarkPanel.PROPERTIES -> R.string.properties
         WatermarkPanel.LAYERS -> R.string.watermark_layers
+        WatermarkPanel.PRIVACY -> com.wanbaohe.privacy.redaction.R.string.privacy_redaction
         WatermarkPanel.IMAGES -> R.string.watermark_batch
     }
 )

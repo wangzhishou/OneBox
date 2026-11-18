@@ -104,6 +104,8 @@ object BuiltinWatermarkPresets {
         )
 
         BuiltinTemplateId.LEICA_CLASSIC -> leicaDocument()
+
+        BuiltinTemplateId.PRIVACY_REDACTION -> document(elements = emptyList())
     }
 
     /**

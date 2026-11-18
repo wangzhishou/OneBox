@@ -2193,4 +2193,5 @@
     <string name="watermark_compare_hold">Tahan untuk membandingkan dengan asli</string>
     <string name="watermark_hidden_needs_content">Tambahkan lapisan teks atau gambar sebelum mengaktifkan tanda air tak terlihat.</string>
     <string name="watermark_reset_title">Atur ulang tanda air</string>
+    <string name="watermark_preset_privacy">Penyamaran privasi</string>
 </resources>

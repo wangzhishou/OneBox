@@ -1727,4 +1727,5 @@
     <string name="watermark_compare_hold">Houd ingedrukt om met het origineel te vergelijken</string>
     <string name="watermark_hidden_needs_content">Voeg eerst een tekst- of afbeeldingslaag toe voordat je het onzichtbare watermerk inschakelt.</string>
     <string name="watermark_reset_title">Watermerk resetten</string>
+    <string name="watermark_preset_privacy">Privégegevens verbergen</string>
 </resources>

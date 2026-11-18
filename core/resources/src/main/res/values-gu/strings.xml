@@ -166,4 +166,5 @@
     <string name="watermark_compare_hold">મૂળ સાથે સરખાવવા માટે દબાવી રાખો</string>
     <string name="watermark_hidden_needs_content">અદૃશ્ય વોટરમાર્ક ચાલુ કરવા માટે પહેલા ટેક્સ્ટ અથવા છબી ઉમેરો.</string>
     <string name="watermark_reset_title">વોટરમાર્ક રીસેટ કરો</string>
+    <string name="watermark_preset_privacy">ખાનગી માહિતી છુપાવો</string>
 </resources>

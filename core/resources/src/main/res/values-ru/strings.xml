@@ -2193,4 +2193,5 @@
     <string name="watermark_compare_hold">Удерживайте для сравнения с оригиналом</string>
     <string name="watermark_hidden_needs_content">Сначала добавьте текстовый или графический слой, чтобы включить невидимый водяной знак.</string>
     <string name="watermark_reset_title">Сбросить водяной знак</string>
+    <string name="watermark_preset_privacy">Скрытие личных данных</string>
 </resources>

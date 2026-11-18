@@ -193,4 +193,5 @@
     <string name="watermark_compare_hold">මුල් ඡායාරූපය සමඟ සංසන්දනය කිරීමට එබී තබන්න</string>
     <string name="watermark_hidden_needs_content">ගුප්ත ජල සලකුණ සක්‍රීය කිරීමට පෙර පෙළක් හෝ රූප ස්ථරයක් එක් කරන්න.</string>
     <string name="watermark_reset_title">ජල සලකුණ නැවත සකසන්න</string>
+    <string name="watermark_preset_privacy">පෞද්ගලික තොරතුරු සැඟවීම</string>
 </resources>

@@ -220,4 +220,5 @@
     <string name="watermark_compare_hold">Hoia all, et võrrelda originaaliga</string>
     <string name="watermark_hidden_needs_content">Enne peidetud vesimärgi sisselülitamist lisa tekst või pilt.</string>
     <string name="watermark_reset_title">Lähtesta vesimärk</string>
+    <string name="watermark_preset_privacy">Privaatsete andmete varjamine</string>
 </resources>

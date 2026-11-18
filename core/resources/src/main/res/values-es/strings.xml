@@ -2193,4 +2193,5 @@
     <string name="watermark_compare_hold">Mantén pulsado para comparar con el original</string>
     <string name="watermark_hidden_needs_content">Añade una capa de texto o imagen para activar la marca de agua invisible.</string>
     <string name="watermark_reset_title">Restablecer marca de agua</string>
+    <string name="watermark_preset_privacy">Ocultar datos privados</string>
 </resources>

@@ -2193,6 +2193,7 @@
     <string name="watermark_preset_weather">天气打卡</string>
     <string name="watermark_preset_coordinates">极简经纬度</string>
     <string name="watermark_preset_hidden">隐形版权</string>
+    <string name="watermark_preset_privacy">隐私打码</string>
     <string name="watermark_reset_sub">所有水印设置都会恢复默认值，可通过撤销恢复。</string>
     <string name="watermark_no_selection">还没有选中图层。从左侧选择水印类型，或在画布上点选已有图层。</string>
     <string name="watermark_no_layers">还没有水印图层，从左侧选择水印类型即可添加</string>

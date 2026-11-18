@@ -2195,6 +2195,7 @@
     <string name="watermark_preset_weather">Weather check-in</string>
     <string name="watermark_preset_coordinates">Minimal coordinates</string>
     <string name="watermark_preset_hidden">Invisible copyright</string>
+    <string name="watermark_preset_privacy">Privacy redaction</string>
     <string name="watermark_reset_sub">Reset all watermark settings. You can undo this action.</string>
     <string name="watermark_no_selection">Nothing is selected. Choose a watermark type on the left, or tap a layer on the canvas.</string>
     <string name="watermark_no_layers">No layers yet. Choose a watermark type from the tool rail on the left</string>

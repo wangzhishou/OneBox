@@ -947,4 +947,5 @@
     <string name="watermark_compare_hold">Түпнұсқамен салыстыру үшін басып тұрыңыз</string>
     <string name="watermark_hidden_needs_content">Жасырын су таңбасын қосу үшін алдымен мәтін немесе сурет қосыңыз.</string>
     <string name="watermark_reset_title">Су таңбасын қалпына келтіру</string>
+    <string name="watermark_preset_privacy">Жеке деректерді жасыру</string>
 </resources>

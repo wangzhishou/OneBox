@@ -947,4 +947,5 @@
     <string name="watermark_compare_hold">Mantendu sakatuta jatorrizkoarekin alderatzeko</string>
     <string name="watermark_hidden_needs_content">Gehitu testu- edo irudi-geruza bat uraren marka ikusezina aktibatzeko.</string>
     <string name="watermark_reset_title">Berrezarri uraren marka</string>
+    <string name="watermark_preset_privacy">Datu pribatuen ezkutatzea</string>
 </resources>

@@ -209,4 +209,5 @@
     <string name="watermark_compare_hold">মূল ছবির সাথে তুলনা করতে চেপে ধরুন</string>
     <string name="watermark_hidden_needs_content">অদৃশ্য জলছাপ চালু করার আগে টেক্সট বা ছবি যোগ করুন।</string>
     <string name="watermark_reset_title">জলছাপ রিসেট করুন</string>
+    <string name="watermark_preset_privacy">গোপনীয় তথ্য আড়াল</string>
 </resources>

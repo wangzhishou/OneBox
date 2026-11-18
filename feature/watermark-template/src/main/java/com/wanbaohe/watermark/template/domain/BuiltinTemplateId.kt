@@ -26,6 +26,7 @@ enum class BuiltinTemplateId(val id: String) {
     COORDINATES("coordinates"),
     HIDDEN_COPYRIGHT("hidden_copyright"),
     LEICA_CLASSIC("leica_classic"),
+    PRIVACY_REDACTION("privacy_redaction"),
     ;
 
     companion object {

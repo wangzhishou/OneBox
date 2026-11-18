@@ -2193,4 +2193,5 @@
     <string name="watermark_compare_hold">Maintenez pour comparer avec l\'original</string>
     <string name="watermark_hidden_needs_content">Ajoutez un calque de texte ou d\'image avant d\'activer le filigrane invisible.</string>
     <string name="watermark_reset_title">Réinitialiser le filigrane</string>
+    <string name="watermark_preset_privacy">Masquage des données privées</string>
 </resources>

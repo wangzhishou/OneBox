@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="privacy_redaction">隐私打码</string>
+    <string name="privacy_redaction_subtitle">本地识别，自动打码</string>
+    <string name="privacy_regions_found">%1$d 个区域</string>
+    <string name="privacy_rescan">重新识别</string>
+    <string name="privacy_analysis_failed">识别失败</string>
+    <string name="privacy_no_regions">未发现手机号、证件号或邮箱</string>
+    <string name="privacy_preparing_model">正在准备模型…</string>
+    <string name="privacy_model_percent">模型下载 %1$d%%</string>
+    <string name="privacy_recognizing">正在识别…</string>
+    <string name="privacy_mosaic">马赛克</string>
+    <string name="privacy_solid">纯色</string>
+    <string name="privacy_strength">打码强度</string>
+    <string name="privacy_add_region">添加区域</string>
+    <string name="privacy_finish_drawing">完成框选</string>
+    <string name="privacy_disable">退出打码</string>
+    <string name="privacy_category_phone">手机号</string>
+    <string name="privacy_category_id">身份证号</string>
+    <string name="privacy_category_bank">银行卡号</string>
+    <string name="privacy_category_email">邮箱</string>
+    <string name="privacy_category_manual">手动区域</string>
+    <string name="privacy_scale">缩放打码区域</string>
+    <string name="privacy_rotate">旋转打码区域</string>
+    <string name="privacy_resize">调整打码区域</string>
+</resources>

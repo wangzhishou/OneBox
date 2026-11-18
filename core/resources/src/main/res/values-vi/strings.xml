@@ -2193,4 +2193,5 @@
     <string name="watermark_compare_hold">Giữ để so sánh với ảnh gốc</string>
     <string name="watermark_hidden_needs_content">Thêm lớp văn bản hoặc hình ảnh trước khi bật hình mờ ẩn.</string>
     <string name="watermark_reset_title">Đặt lại hình mờ</string>
+    <string name="watermark_preset_privacy">Che dữ liệu riêng tư</string>
 </resources>

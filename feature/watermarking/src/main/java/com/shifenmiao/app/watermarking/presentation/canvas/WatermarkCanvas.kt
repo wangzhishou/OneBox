@@ -92,6 +92,9 @@ import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.core.ui.widget.modifier.transparencyChecker
+import com.wanbaohe.privacy.redaction.domain.model.PrivacyDocument
+import com.wanbaohe.privacy.redaction.domain.model.PrivacyRect
+import com.wanbaohe.privacy.redaction.presentation.PrivacyRedactionOverlay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.math.min
@@ -124,6 +127,14 @@ fun WatermarkCanvas(
     onNextImage: () -> Unit,
     hasElements: Boolean,
     hiddenOnly: Boolean,
+    privacyDocument: PrivacyDocument? = null,
+    selectedPrivacyRegionId: String? = null,
+    isPrivacyDrawing: Boolean = false,
+    onSelectPrivacyRegion: (String?) -> Unit = {},
+    onPrivacyBoundsChange: (String, PrivacyRect) -> Unit = { _, _ -> },
+    onDeletePrivacyRegion: (String) -> Unit = {},
+    onAddPrivacyRegion: (PrivacyRect) -> Unit = {},
+    createPrivacyPreview: suspend (Bitmap) -> Bitmap = { it },
     createVisuals: suspend (Int, Int, Int) -> Map<String, WatermarkVisual<Bitmap>>,
     modifier: Modifier = Modifier,
 ) {
@@ -222,7 +233,10 @@ fun WatermarkCanvas(
                             if (event.changes.none { it.pressed }) {
                                 if (!multiTouch && !moved && !consumed && !isComparing) {
                                     if (immersiveModeState.isImmersive) immersiveModeState.exitImmersive()
-                                    else onSelectElement(null)
+                                    else {
+                                        onSelectElement(null)
+                                        onSelectPrivacyRegion(null)
+                                    }
                                 }
                                 break
                             }
@@ -238,7 +252,18 @@ fun WatermarkCanvas(
             contentAlignment = Alignment.Center,
         ) {
             bitmap?.let { source ->
-                val sourceImage = remember(source) { source.asImageBitmap() }
+                val privacyPreview by produceState<Bitmap?>(null, source, privacyDocument) {
+                    val rendered = if (privacyDocument == null) source else createPrivacyPreview(source)
+                    value = rendered
+                    awaitDispose {
+                        if (rendered !== source && !rendered.isRecycled) {
+                            value = source
+                            rendered.recycle()
+                        }
+                    }
+                }
+                val displayedBitmap = if (isComparing) source else privacyPreview ?: source
+                val displayedImage = remember(displayedBitmap) { displayedBitmap.asImageBitmap() }
                 val originalDescription = stringResource(R.string.original)
                 val canvasWidthDp = with(density) { canvasSize.width.toDp() }
                 val canvasHeightDp = with(density) { canvasSize.height.toDp() }
@@ -271,7 +296,7 @@ fun WatermarkCanvas(
                             val minScale = min(viewport.scale, 1f).coerceAtLeast(0.05f)
                             val pad = (2f / minScale).roundToInt().coerceIn(2, 16)
                             drawImage(
-                                image = sourceImage,
+                                image = displayedImage,
                                 dstOffset = IntOffset(-pad, -pad),
                                 dstSize = IntSize(
                                     size.width.roundToInt() + pad * 2,
@@ -294,6 +319,19 @@ fun WatermarkCanvas(
                                     onTransformEnd = onTransformEnd,
                                     onDeleteElement = onDeleteElement,
                                 )
+                                if (privacyDocument != null && !immersiveModeState.isImmersive) {
+                                    PrivacyRedactionOverlay(
+                                        document = privacyDocument,
+                                        selectedRegionId = selectedPrivacyRegionId,
+                                        isDrawing = isPrivacyDrawing,
+                                        gesturesEnabled = !isLoading,
+                                        viewportScale = viewport.scale,
+                                        onSelectRegion = onSelectPrivacyRegion,
+                                        onBoundsChange = onPrivacyBoundsChange,
+                                        onDeleteRegion = onDeletePrivacyRegion,
+                                        onAddRegion = onAddPrivacyRegion,
+                                    )
+                                }
                             }
                         }
                     }
@@ -354,24 +392,26 @@ fun WatermarkCanvas(
                     onHold = onCompareChange,
                 )
             }
-            VerticalDraggable(
-                containerHeightPx = constraints.maxHeight.toFloat(),
-                modifier = Modifier.align(Alignment.CenterStart),
-            ) {
-                EditorToolRail(
-                    // 模板专属元素由预设带入，不从工具栏新建（属性面板尚未提供对应编辑器）。
-                    tools = WatermarkKind.entries
-                        .filter {
-                            it != WatermarkKind.CAMERA_PARAMS && it != WatermarkKind.DIVIDER
-                        }.map { kind ->
-                            EditorRailTool(kind.name, kind.icon(), kind.title())
-                        },
-                    activeId = resolvedElements.firstOrNull {
-                        it.element.id == selectedElementId
-                    }?.element?.content?.kind?.name,
-                    onToolClick = { onAddElement(WatermarkKind.valueOf(it.id)) },
-                    modifier = Modifier.padding(start = 8.dp),
-                )
+            if (privacyDocument == null) {
+                VerticalDraggable(
+                    containerHeightPx = constraints.maxHeight.toFloat(),
+                    modifier = Modifier.align(Alignment.CenterStart),
+                ) {
+                    EditorToolRail(
+                        // 模板专属元素由预设带入，不从工具栏新建（属性面板尚未提供对应编辑器）。
+                        tools = WatermarkKind.entries
+                            .filter {
+                                it != WatermarkKind.CAMERA_PARAMS && it != WatermarkKind.DIVIDER
+                            }.map { kind ->
+                                EditorRailTool(kind.name, kind.icon(), kind.title())
+                            },
+                        activeId = resolvedElements.firstOrNull {
+                            it.element.id == selectedElementId
+                        }?.element?.content?.kind?.name,
+                        onToolClick = { onAddElement(WatermarkKind.valueOf(it.id)) },
+                        modifier = Modifier.padding(start = 8.dp),
+                    )
+                }
             }
         }
         if (isLoading) CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -390,6 +430,7 @@ fun WatermarkCanvas(
             }
         } else if (bitmap != null && !isLoading && !isComparing) {
             val hint = when {
+                privacyDocument != null -> null
                 !hasElements -> R.string.watermark_empty_canvas
                 hiddenOnly -> R.string.watermark_hidden_only
                 else -> null

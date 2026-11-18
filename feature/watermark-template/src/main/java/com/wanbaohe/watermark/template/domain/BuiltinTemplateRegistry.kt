@@ -22,7 +22,7 @@ import com.wanbaohe.watermark.template.R
  */
 object BuiltinTemplateRegistry {
     /** 只控制排序与「最近使用」水位，新增内置模板时 +1，永不覆盖用户数据。 */
-    const val REGISTRY_VERSION = 2
+    const val REGISTRY_VERSION = 3
 
     val entries: List<WatermarkTemplate> = BuiltinTemplateId.entries.map(::metadata)
 
@@ -88,6 +88,11 @@ object BuiltinTemplateRegistry {
                 WatermarkField.CAPTURED_AT,
                 WatermarkField.GPS,
             ),
+        )
+
+        BuiltinTemplateId.PRIVACY_REDACTION -> preset(
+            id = id,
+            nameRes = CoreResourcesR.string.watermark_preset_privacy,
         )
     }
 

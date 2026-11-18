@@ -1148,4 +1148,5 @@
     <string name="watermark_compare_hold">Ține apăsat pentru a compara cu originalul</string>
     <string name="watermark_hidden_needs_content">Adaugă un strat de text sau imagine înainte de a activa marcajul invizibil.</string>
     <string name="watermark_reset_title">Resetează marcajul</string>
+    <string name="watermark_preset_privacy">Ascunderea datelor private</string>
 </resources>

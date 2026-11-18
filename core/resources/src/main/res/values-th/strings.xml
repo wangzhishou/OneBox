@@ -947,4 +947,5 @@
     <string name="watermark_compare_hold">กดค้างเพื่อเทียบกับต้นฉบับ</string>
     <string name="watermark_hidden_needs_content">เพิ่มเลเยอร์ข้อความหรือรูปภาพก่อนจึงจะเปิดลายน้ำแบบซ่อนได้</string>
     <string name="watermark_reset_title">รีเซ็ตลายน้ำ</string>
+    <string name="watermark_preset_privacy">ปกปิดข้อมูลส่วนตัว</string>
 </resources>

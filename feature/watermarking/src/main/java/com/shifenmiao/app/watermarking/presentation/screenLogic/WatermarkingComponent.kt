@@ -67,6 +67,9 @@ import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.utils.state.update
 import com.wanbaohe.core.weather.domain.repository.CurrentLocationProvider
 import com.wanbaohe.core.weather.domain.repository.CurrentLocationSnapshot
+import com.wanbaohe.privacy.redaction.domain.render.PrivacyRedactionRenderer
+import com.wanbaohe.privacy.redaction.domain.service.PrivacyAnalyzer
+import com.wanbaohe.privacy.redaction.presentation.controller.PrivacyRedactionController
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -95,12 +98,21 @@ class WatermarkingComponent @AssistedInject internal constructor(
     private val presetStore: WatermarkPresetStore,
     private val currentLocationProvider: CurrentLocationProvider,
     private val metadataWriter: WatermarkMetadataWriter,
+    privacyAnalyzer: PrivacyAnalyzer,
+    privacyRenderer: PrivacyRedactionRenderer<Bitmap>,
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
     private val editSession = WatermarkEditSession()
     private val contentDrafts = mutableMapOf<WatermarkKind, WatermarkContent>()
     private var resolutionJob: Job? = null
     private var deviceLocation: LocationSnapshot? = null
+    val privacy = PrivacyRedactionController(
+        analyzer = privacyAnalyzer,
+        renderer = privacyRenderer,
+        scope = componentScope,
+        onChanges = ::registerChanges,
+        onHistoryChange = ::updateHistoryFlags,
+    )
 
     private val _document = mutableStateOf(editSession.document)
     val document: WatermarkDocument by _document
@@ -172,8 +184,8 @@ class WatermarkingComponent @AssistedInject internal constructor(
     }
 
     private fun applyPresetById(id: String) {
-        val templateId = BuiltinTemplateId.fromId(id) ?: return
-        applyPresetDocument(BuiltinWatermarkPresets.documentFor(templateId))
+        BuiltinTemplateId.fromId(id) ?: return
+        BuiltinWatermarkPresets.entries.firstOrNull { it.id == id }?.let(::applyPreset)
     }
 
     private var savingJob: Job? by smartJob {
@@ -290,7 +302,16 @@ class WatermarkingComponent @AssistedInject internal constructor(
     }
 
     fun applyPreset(preset: WatermarkPreset) {
+        if (preset.id == BuiltinTemplateId.PRIVACY_REDACTION.id) {
+            privacy.activate(selectedUri.toString(), internalBitmap)
+        } else {
+            privacy.deactivate()
+        }
         applyPresetDocument(preset.document)
+    }
+
+    fun disablePrivacyMode() {
+        privacy.deactivate()
     }
 
     private fun applyPresetDocument(document: WatermarkDocument) {
@@ -328,15 +349,20 @@ class WatermarkingComponent @AssistedInject internal constructor(
     }
 
     fun undo() {
-        if (editSession.undo()) publishDocument(resolve = true)
+        if (privacy.isActive) privacy.undo()
+        else if (editSession.undo()) publishDocument(resolve = true)
     }
 
     fun redo() {
-        if (editSession.redo()) publishDocument(resolve = true)
+        if (privacy.isActive) privacy.redo()
+        else if (editSession.redo()) publishDocument(resolve = true)
     }
 
     fun resetDocument() {
-        applyPresetDocument(WatermarkDocument())
+        privacy.clearCurrent()
+        applyPresetDocument(
+            if (privacy.isActive) WatermarkDocument(elements = emptyList()) else WatermarkDocument()
+        )
     }
 
     fun updateHiddenWatermark(params: HiddenWatermarkParams) {
@@ -387,8 +413,8 @@ class WatermarkingComponent @AssistedInject internal constructor(
     private fun documentFromSession(): WatermarkDocument = editSession.document
 
     private fun updateHistoryFlags() {
-        _canUndo.update { editSession.canUndo }
-        _canRedo.update { editSession.canRedo }
+        _canUndo.update { if (privacy.isActive) privacy.canUndo else editSession.canUndo }
+        _canRedo.update { if (privacy.isActive) privacy.canRedo else editSession.canRedo }
     }
 
     private fun resolveCurrentDocument() {
@@ -495,6 +521,7 @@ class WatermarkingComponent @AssistedInject internal constructor(
             _selectedUri.update { Uri.EMPTY }
             _internalBitmap.update { null }
             _resolvedElements.update { emptyList() }
+            privacy.selectImage("", null)
         } else {
             // 追加图片不应把正在编辑的那张踢回列表第一张,也不必重新解码同一张图。
             val keepCurrent = selectedUri != Uri.EMPTY &&
@@ -522,6 +549,7 @@ class WatermarkingComponent @AssistedInject internal constructor(
                 return@launch
             }
             _internalBitmap.update { imageScaler.scaleUntilCanShow(imageData.image) }
+            privacy.selectImage(uri.toString(), internalBitmap)
             _imageFormat.update { imageData.imageInfo.imageFormat }
             _currentHiddenWatermark.update { hiddenWatermarkDetector.detect(imageData.image) }
             _isImageLoading.update { false }
@@ -532,6 +560,7 @@ class WatermarkingComponent @AssistedInject internal constructor(
     fun updateUrisSilently(removedUri: Uri) {
         val remaining = uris.filterNot { it == removedUri }
         _uris.update { remaining }
+        privacy.removeImage(removedUri.toString())
         if (selectedUri == removedUri) {
             if (remaining.isEmpty()) setUris(emptyList()) else updateSelectedUri(remaining.first())
         }
@@ -571,11 +600,16 @@ class WatermarkingComponent @AssistedInject internal constructor(
     private suspend fun renderUri(uri: Uri): RenderedImage? {
         val imageData = imageGetter.getImage(uri.toString(), originalSize = true) ?: return null
         val resolution = contentResolver.resolve(uri.toString(), documentFromSession(), deviceLocation)
-        val bitmap = watermarkRenderer.render(
-            image = imageData.image,
-            resolution = resolution,
-            hiddenWatermark = documentFromSession().hiddenWatermark,
-        ) ?: return null
+        val redacted = privacy.render(imageData.image, uri.toString())
+        val bitmap = try {
+            watermarkRenderer.render(
+                image = redacted,
+                resolution = resolution,
+                hiddenWatermark = documentFromSession().hiddenWatermark,
+            )
+        } finally {
+            if (redacted !== imageData.image) redacted.recycle()
+        } ?: return null
         val metadata = imageData.metadata?.let { metadata ->
             if (keepExif) {
                 resolution.photoContext.dateTime?.let { dateTime ->
@@ -608,7 +642,7 @@ class WatermarkingComponent @AssistedInject internal constructor(
         onResult: (List<SaveResult>) -> Unit,
     ) {
         savingJob = componentScope.launch {
-            val targets = if (onlyCurrent) listOf(selectedUri) else uris
+            val targets = if (onlyCurrent || privacy.isActive) listOf(selectedUri) else uris
             _isSaving.update { true }
             _done.update { 0 }
             _left.update { targets.size }
@@ -703,11 +737,12 @@ class WatermarkingComponent @AssistedInject internal constructor(
 
     fun cacheImages(onComplete: (List<Uri>) -> Unit) {
         savingJob = componentScope.launch {
+            val targets = if (privacy.isActive) listOf(selectedUri) else uris
             _isSaving.update { true }
             _done.update { 0 }
-            _left.update { uris.size }
+            _left.update { targets.size }
             val cached = mutableListOf<Uri>()
-            uris.forEach { uri ->
+            targets.forEach { uri ->
                 ensureActive()
                 renderUri(uri)?.let { rendered ->
                     shareProvider.cacheImage(
@@ -731,7 +766,7 @@ class WatermarkingComponent @AssistedInject internal constructor(
     }
 
     fun getFormatForFilenameSelection(): ImageFormat? =
-        if (uris.size == 1) imageFormat else null
+        if (uris.size == 1 || privacy.isActive) imageFormat else null
 
     private data class RenderedImage(
         val bitmap: Bitmap,

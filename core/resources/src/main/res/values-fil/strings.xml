@@ -2193,4 +2193,5 @@
     <string name="watermark_compare_hold">Pindutin nang matagal para ihambing sa orihinal</string>
     <string name="watermark_hidden_needs_content">Magdagdag muna ng teksto o larawan bago i-on ang nakatagong watermark.</string>
     <string name="watermark_reset_title">I-reset ang watermark</string>
+    <string name="watermark_preset_privacy">Takip ng pribadong datos</string>
 </resources>

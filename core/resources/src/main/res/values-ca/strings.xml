@@ -951,4 +951,5 @@
     <string name="watermark_compare_hold">Mantén premut per comparar amb l\'original</string>
     <string name="watermark_hidden_needs_content">Afegeix una capa de text o d\'imatge abans d\'activar la marca d\'aigua invisible.</string>
     <string name="watermark_reset_title">Restableix la marca d\'aigua</string>
+    <string name="watermark_preset_privacy">Ocultació de dades privades</string>
 </resources>

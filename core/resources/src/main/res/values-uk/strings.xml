@@ -1945,4 +1945,5 @@
     <string name="watermark_compare_hold">Утримуйте, щоб порівняти з оригіналом</string>
     <string name="watermark_hidden_needs_content">Спочатку додайте текст або зображення, щоб увімкнути прихований водяний знак.</string>
     <string name="watermark_reset_title">Скинути водяний знак</string>
+    <string name="watermark_preset_privacy">Приховування приватних даних</string>
 </resources>

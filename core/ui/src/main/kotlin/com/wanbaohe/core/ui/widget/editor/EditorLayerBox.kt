@@ -94,6 +94,7 @@ fun BoxWithConstraintsScope.EditorLayerBox(
     gesturesEnabled: Boolean = true,
     showHandles: Boolean = true,
     canvasScale: Float = 1f,
+    rotationEnabled: Boolean = true,
     resizeConfig: BoxResizeConfig? = null,
     content: @Composable BoxScope.() -> Unit,
 ) {
@@ -265,32 +266,34 @@ fun BoxWithConstraintsScope.EditorLayerBox(
                     HandleBlock()
                 }
             }
-            LayerTransformHandle(
-                description = labels.rotate,
-                alignment = Alignment.TopCenter,
-                offsetY = -(HANDLE_HALF_DP.dp + HANDLE_OUTSIDE_DP.dp * inverseScale),
-                inverseScale = inverseScale,
-                counterRotation = counterRotation,
-                onStart = { root ->
-                    startTransform = localTransform
-                    centerRoot = elementCoordinates?.localToRoot(
-                        Offset(boxSize.width / 2f, boxSize.height / 2f)
-                    ) ?: root
-                    startAngle = atan2(root.y - centerRoot.y, root.x - centerRoot.x)
-                    start()
-                },
-                onDrag = { root ->
-                    val angle = atan2(root.y - centerRoot.y, root.x - centerRoot.x)
-                    update(
-                        startTransform.copy(
-                            rotation = startTransform.rotation +
-                                Math.toDegrees((angle - startAngle).toDouble()).toFloat()
+            if (rotationEnabled) {
+                LayerTransformHandle(
+                    description = labels.rotate,
+                    alignment = Alignment.TopCenter,
+                    offsetY = -(HANDLE_HALF_DP.dp + HANDLE_OUTSIDE_DP.dp * inverseScale),
+                    inverseScale = inverseScale,
+                    counterRotation = counterRotation,
+                    onStart = { root ->
+                        startTransform = localTransform
+                        centerRoot = elementCoordinates?.localToRoot(
+                            Offset(boxSize.width / 2f, boxSize.height / 2f)
+                        ) ?: root
+                        startAngle = atan2(root.y - centerRoot.y, root.x - centerRoot.x)
+                        start()
+                    },
+                    onDrag = { root ->
+                        val angle = atan2(root.y - centerRoot.y, root.x - centerRoot.x)
+                        update(
+                            startTransform.copy(
+                                rotation = startTransform.rotation +
+                                    Math.toDegrees((angle - startAngle).toDouble()).toFloat()
+                            )
                         )
-                    )
-                },
-                onEnd = finish
-            ) {
-                HandleIcon(MaterialIcons.Outlined.RotateRight)
+                    },
+                    onEnd = finish
+                ) {
+                    HandleIcon(MaterialIcons.Outlined.RotateRight)
+                }
             }
             listOf(
                 Triple(Alignment.TopCenter, 0, -1),

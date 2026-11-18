@@ -2193,4 +2193,5 @@
     <string name="watermark_compare_hold">Gedrückt halten, um mit dem Original zu vergleichen</string>
     <string name="watermark_hidden_needs_content">Füge zuerst eine Text- oder Bildebene hinzu, um das unsichtbare Wasserzeichen zu aktivieren.</string>
     <string name="watermark_reset_title">Wasserzeichen zurücksetzen</string>
+    <string name="watermark_preset_privacy">Datenschutz-Mosaik</string>
 </resources>

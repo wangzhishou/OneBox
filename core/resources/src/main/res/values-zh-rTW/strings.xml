@@ -2148,6 +2148,7 @@
     <string name="watermark_preset_weather">天氣打卡</string>
     <string name="watermark_preset_coordinates">極簡經緯度</string>
     <string name="watermark_preset_hidden">隱形版權</string>
+    <string name="watermark_preset_privacy">隱私打碼</string>
     <string name="watermark_reset_sub">所有浮水印設定都會恢復預設值，可透過復原還原。</string>
     <string name="watermark_no_selection">尚未選取圖層。從左側選擇浮水印類型，或在畫布上點選現有圖層。</string>
     <string name="watermark_no_layers">尚無浮水印圖層，從左側選擇浮水印類型即可新增</string>

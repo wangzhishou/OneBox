@@ -1272,4 +1272,5 @@
     <string name="watermark_compare_hold">برای مقایسه با تصویر اصلی نگه دارید</string>
     <string name="watermark_hidden_needs_content">ابتدا یک لایه متن یا تصویر اضافه کنید تا واترمارک نامرئی فعال شود.</string>
     <string name="watermark_reset_title">بازنشانی واترمارک</string>
+    <string name="watermark_preset_privacy">پنهان‌سازی اطلاعات خصوصی</string>
 </resources>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="privacy_redaction">개인정보 가리기</string>
+    <string name="privacy_redaction_subtitle">기기에서 감지하고 가리기</string>
+    <string name="privacy_regions_found">영역 %1$d개</string>
+    <string name="privacy_rescan">다시 감지</string>
+    <string name="privacy_analysis_failed">감지 실패</string>
+    <string name="privacy_no_regions">전화번호, 신분증 번호 또는 이메일을 찾지 못했습니다</string>
+    <string name="privacy_preparing_model">모델 준비 중…</string>
+    <string name="privacy_model_percent">모델 다운로드 %1$d%%</string>
+    <string name="privacy_recognizing">감지 중…</string>
+    <string name="privacy_mosaic">모자이크</string>
+    <string name="privacy_solid">단색</string>
+    <string name="privacy_strength">강도</string>
+    <string name="privacy_add_region">영역 추가</string>
+    <string name="privacy_finish_drawing">선택 완료</string>
+    <string name="privacy_disable">가리기 종료</string>
+    <string name="privacy_category_phone">전화번호</string>
+    <string name="privacy_category_id">신분증 번호</string>
+    <string name="privacy_category_bank">은행 카드</string>
+    <string name="privacy_category_email">이메일</string>
+    <string name="privacy_category_manual">수동</string>
+    <string name="privacy_scale">가리기 크기 조절</string>
+    <string name="privacy_rotate">가리기 회전</string>
+    <string name="privacy_resize">가리기 조정</string>
+</resources>

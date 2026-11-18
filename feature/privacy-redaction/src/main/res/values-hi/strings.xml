@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="privacy_redaction">निजी डेटा छिपाएँ</string>
+    <string name="privacy_redaction_subtitle">डिवाइस पर पहचान और छिपाने की सुविधा</string>
+    <string name="privacy_regions_found">क्षेत्र: %1$d</string>
+    <string name="privacy_rescan">फिर से पहचानें</string>
+    <string name="privacy_analysis_failed">पहचान विफल</string>
+    <string name="privacy_no_regions">कोई फ़ोन नंबर, पहचान संख्या या ईमेल नहीं मिला</string>
+    <string name="privacy_preparing_model">मॉडल तैयार हो रहा है…</string>
+    <string name="privacy_model_percent">मॉडल डाउनलोड: %1$d%%</string>
+    <string name="privacy_recognizing">पहचान जारी है…</string>
+    <string name="privacy_mosaic">मोज़ेक</string>
+    <string name="privacy_solid">ठोस रंग</string>
+    <string name="privacy_strength">तीव्रता</string>
+    <string name="privacy_add_region">क्षेत्र जोड़ें</string>
+    <string name="privacy_finish_drawing">चयन पूरा करें</string>
+    <string name="privacy_disable">छिपाने से बाहर निकलें</string>
+    <string name="privacy_category_phone">फ़ोन</string>
+    <string name="privacy_category_id">पहचान संख्या</string>
+    <string name="privacy_category_bank">बैंक कार्ड</string>
+    <string name="privacy_category_email">ईमेल</string>
+    <string name="privacy_category_manual">मैनुअल</string>
+    <string name="privacy_scale">छिपाने का आकार बदलें</string>
+    <string name="privacy_rotate">छिपाने वाला क्षेत्र घुमाएँ</string>
+    <string name="privacy_resize">छिपाने वाला क्षेत्र समायोजित करें</string>
+</resources>

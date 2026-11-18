@@ -947,4 +947,5 @@
     <string name="watermark_compare_hold">అసలు ఫోటోతో పోల్చడానికి నొక్కి పట్టుకోండి</string>
     <string name="watermark_hidden_needs_content">అదృశ్య వాటర్‌మార్క్‌ను ఆన్ చేయడానికి ముందు టెక్స్ట్ లేదా చిత్రాన్ని జోడించండి.</string>
     <string name="watermark_reset_title">వాటర్‌మార్క్‌ను రీసెట్ చేయండి</string>
+    <string name="watermark_preset_privacy">వ్యక్తిగత సమాచారాన్ని దాచడం</string>
 </resources>

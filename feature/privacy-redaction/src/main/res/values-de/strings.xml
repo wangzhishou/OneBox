@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="privacy_redaction">Datenschutz-Mosaik</string>
+    <string name="privacy_redaction_subtitle">Lokale Erkennung und Maskierung</string>
+    <string name="privacy_regions_found">Bereiche: %1$d</string>
+    <string name="privacy_rescan">Erneut erkennen</string>
+    <string name="privacy_analysis_failed">Erkennung fehlgeschlagen</string>
+    <string name="privacy_no_regions">Keine Telefonnummern, Ausweisnummern oder E-Mail-Adressen gefunden</string>
+    <string name="privacy_preparing_model">Modell wird vorbereitet…</string>
+    <string name="privacy_model_percent">Modell wird heruntergeladen: %1$d%%</string>
+    <string name="privacy_recognizing">Wird erkannt…</string>
+    <string name="privacy_mosaic">Mosaik</string>
+    <string name="privacy_solid">Einfarbig</string>
+    <string name="privacy_strength">Stärke</string>
+    <string name="privacy_add_region">Bereich hinzufügen</string>
+    <string name="privacy_finish_drawing">Auswahl abschließen</string>
+    <string name="privacy_disable">Maskierung beenden</string>
+    <string name="privacy_category_phone">Telefonnummer</string>
+    <string name="privacy_category_id">Ausweisnummer</string>
+    <string name="privacy_category_bank">Bankkarte</string>
+    <string name="privacy_category_email">E-Mail</string>
+    <string name="privacy_category_manual">Manuell</string>
+    <string name="privacy_scale">Maskierung skalieren</string>
+    <string name="privacy_rotate">Maskierung drehen</string>
+    <string name="privacy_resize">Maskierung anpassen</string>
+</resources>

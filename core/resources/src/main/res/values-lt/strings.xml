@@ -202,4 +202,5 @@
     <string name="watermark_compare_hold">Laikykite, kad palygintumėte su originalu</string>
     <string name="watermark_hidden_needs_content">Prieš įjungdami nematomą vandenženklį pridėkite teksto arba vaizdo sluoksnį.</string>
     <string name="watermark_reset_title">Atkurti vandenženklį</string>
+    <string name="watermark_preset_privacy">Privačių duomenų slėpimas</string>
 </resources>

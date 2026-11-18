@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineImage
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineAutoAwesomeMosaic
 import com.shifenmiao.app.watermarking.presentation.WatermarkPanel
 import com.shifenmiao.app.watermarking.presentation.title
 import com.wanbaohe.base.ui.button.ConfirmButton
@@ -50,6 +51,7 @@ import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
 @Composable
 fun WatermarkBottomBar(
     activePanel: WatermarkPanel?,
+    isPrivacyActive: Boolean,
     onPanelClick: (WatermarkPanel) -> Unit,
     onExportClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -65,7 +67,13 @@ fun WatermarkBottomBar(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Row(modifier = Modifier.weight(1f).horizontalScroll(rememberScrollState())) {
-            WatermarkPanel.entries.forEach { panel ->
+            WatermarkPanel.entries.filter { panel ->
+                if (isPrivacyActive) {
+                    panel != WatermarkPanel.PROPERTIES && panel != WatermarkPanel.LAYERS
+                } else {
+                    panel != WatermarkPanel.PRIVACY
+                }
+            }.forEach { panel ->
                 val selected = panel == activePanel
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -82,6 +90,7 @@ fun WatermarkBottomBar(
                             WatermarkPanel.PRESETS -> MaterialIcons.Outlined.Star
                             WatermarkPanel.PROPERTIES -> MaterialIcons.Outlined.Tune
                             WatermarkPanel.LAYERS -> MaterialIcons.Outlined.Layers
+                            WatermarkPanel.PRIVACY -> Icons.Outlined.LineAutoAwesomeMosaic
                             WatermarkPanel.IMAGES -> Icons.Outlined.LineImage
                         },
                         contentDescription = panel.title(),

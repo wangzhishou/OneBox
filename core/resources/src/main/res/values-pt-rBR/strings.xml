@@ -2193,4 +2193,5 @@
     <string name="watermark_compare_hold">Segure para comparar com o original</string>
     <string name="watermark_hidden_needs_content">Adicione uma camada de texto ou imagem antes de ativar a marca d\'água invisível.</string>
     <string name="watermark_reset_title">Redefinir marca d\'água</string>
+    <string name="watermark_preset_privacy">Ocultar dados privados</string>
 </resources>

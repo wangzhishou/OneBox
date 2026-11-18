@@ -601,4 +601,5 @@
     <string name="watermark_compare_hold">Pidä painettuna verrataksesi alkuperäiseen</string>
     <string name="watermark_hidden_needs_content">Lisää teksti- tai kuvataso ennen näkymättömän vesileiman käyttöönottoa.</string>
     <string name="watermark_reset_title">Nollaa vesileima</string>
+    <string name="watermark_preset_privacy">Yksityistietojen peittäminen</string>
 </resources>

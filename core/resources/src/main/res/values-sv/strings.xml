@@ -418,4 +418,5 @@
     <string name="watermark_compare_hold">Håll nedtryckt för att jämföra med originalet</string>
     <string name="watermark_hidden_needs_content">Lägg till ett text- eller bildlager innan du aktiverar den osynliga vattenstämpeln.</string>
     <string name="watermark_reset_title">Återställ vattenstämpel</string>
+    <string name="watermark_preset_privacy">Dölj privata uppgifter</string>
 </resources>

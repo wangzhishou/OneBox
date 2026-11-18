@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="privacy_redaction">Privacy redaction</string>
+    <string name="privacy_redaction_subtitle">On-device detection and masking</string>
+    <string name="privacy_regions_found">Regions: %1$d</string>
+    <string name="privacy_rescan">Scan again</string>
+    <string name="privacy_analysis_failed">Detection failed</string>
+    <string name="privacy_no_regions">No phone numbers, ID numbers, or email addresses found</string>
+    <string name="privacy_preparing_model">Preparing model…</string>
+    <string name="privacy_model_percent">Downloading model %1$d%%</string>
+    <string name="privacy_recognizing">Detecting…</string>
+    <string name="privacy_mosaic">Mosaic</string>
+    <string name="privacy_solid">Solid</string>
+    <string name="privacy_strength">Strength</string>
+    <string name="privacy_add_region">Add region</string>
+    <string name="privacy_finish_drawing">Finish selection</string>
+    <string name="privacy_disable">Exit redaction</string>
+    <string name="privacy_category_phone">Phone</string>
+    <string name="privacy_category_id">ID number</string>
+    <string name="privacy_category_bank">Bank card</string>
+    <string name="privacy_category_email">Email</string>
+    <string name="privacy_category_manual">Manual</string>
+    <string name="privacy_scale">Resize redaction</string>
+    <string name="privacy_rotate">Rotate redaction</string>
+    <string name="privacy_resize">Adjust redaction</string>
+</resources>

@@ -1927,4 +1927,5 @@
     <string name="watermark_compare_hold">Przytrzymaj, aby porównać z oryginałem</string>
     <string name="watermark_hidden_needs_content">Dodaj warstwę tekstu lub obrazu, aby włączyć ukryty znak wodny.</string>
     <string name="watermark_reset_title">Resetuj znak wodny</string>
+    <string name="watermark_preset_privacy">Ukrywanie danych prywatnych</string>
 </resources>

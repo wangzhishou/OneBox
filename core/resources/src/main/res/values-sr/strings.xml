@@ -947,4 +947,5 @@
     <string name="watermark_compare_hold">Drži za poređenje sa originalom</string>
     <string name="watermark_hidden_needs_content">Dodaj sloj teksta ili slike pre uključivanja skrivenog vodenog žiga.</string>
     <string name="watermark_reset_title">Resetuj vodeni žig</string>
+    <string name="watermark_preset_privacy">Сакривање приватних података</string>
 </resources>

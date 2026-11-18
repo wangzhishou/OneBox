@@ -2191,4 +2191,5 @@
     <string name="watermark_compare_hold">길게 눌러 원본과 비교</string>
     <string name="watermark_hidden_needs_content">보이지 않는 워터마크를 켜려면 먼저 텍스트나 이미지를 추가하세요.</string>
     <string name="watermark_reset_title">워터마크 초기화</string>
+    <string name="watermark_preset_privacy">개인정보 가리기</string>
 </resources>

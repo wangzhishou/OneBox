@@ -86,6 +86,21 @@ fun WatermarkPanelHost(
             resolvedElements = component.resolvedElements,
             modifier = modifier,
         )
+        WatermarkPanel.PRIVACY -> com.wanbaohe.privacy.redaction.presentation.PrivacyRedactionPanel(
+            document = component.privacy.document,
+            analysisState = component.privacy.analysisState,
+            selectedRegionId = component.privacy.selectedRegionId,
+            isDrawing = component.privacy.isDrawing,
+            onRescan = component.privacy::analyzeCurrent,
+            onSelectRegion = component.privacy::selectRegion,
+            onToggleRegion = component.privacy::toggleRegion,
+            onDeleteRegion = component.privacy::deleteRegion,
+            onDrawingChange = component.privacy::setDrawingMode,
+            onMaskChange = component.privacy::updateMask,
+            onStrengthChange = component.privacy::updateStrength,
+            onDisable = component::disablePrivacyMode,
+            modifier = modifier,
+        )
         WatermarkPanel.IMAGES -> ImageBatchPanel(
             uris = component.uris,
             selectedUri = component.selectedUri,

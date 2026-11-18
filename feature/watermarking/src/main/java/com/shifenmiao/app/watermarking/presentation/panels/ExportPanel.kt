@@ -40,6 +40,7 @@ import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
 @Composable
 fun ExportPanel(
     imageCount: Int,
+    privacyMode: Boolean = false,
     onlyCurrent: Boolean,
     keepExif: Boolean,
     stripLocationMetadata: Boolean,
@@ -61,7 +62,7 @@ fun ExportPanel(
 ) {
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
         HiddenWatermarkInfo(currentHiddenWatermark)
-        if (imageCount > 1) {
+        if (imageCount > 1 && !privacyMode) {
             EnhancedButtonGroup(
                 items = listOf(
                     stringResource(R.string.watermark_current_image),

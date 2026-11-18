@@ -2193,4 +2193,5 @@
     <string name="watermark_compare_hold">मूल से तुलना करने के लिए दबाए रखें</string>
     <string name="watermark_hidden_needs_content">अदृश्य वॉटरमार्क चालू करने से पहले टेक्स्ट या छवि जोड़ें।</string>
     <string name="watermark_reset_title">वॉटरमार्क रीसेट करें</string>
+    <string name="watermark_preset_privacy">निजी डेटा छिपाएँ</string>
 </resources>

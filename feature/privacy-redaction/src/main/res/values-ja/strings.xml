@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="privacy_redaction">プライバシー保護</string>
+    <string name="privacy_redaction_subtitle">端末上で検出してマスキング</string>
+    <string name="privacy_regions_found">%1$d か所</string>
+    <string name="privacy_rescan">再検出</string>
+    <string name="privacy_analysis_failed">検出に失敗しました</string>
+    <string name="privacy_no_regions">電話番号、身分証番号、メールアドレスは見つかりませんでした</string>
+    <string name="privacy_preparing_model">モデルを準備中…</string>
+    <string name="privacy_model_percent">モデルをダウンロード中 %1$d%%</string>
+    <string name="privacy_recognizing">検出中…</string>
+    <string name="privacy_mosaic">モザイク</string>
+    <string name="privacy_solid">単色</string>
+    <string name="privacy_strength">強度</string>
+    <string name="privacy_add_region">領域を追加</string>
+    <string name="privacy_finish_drawing">選択を完了</string>
+    <string name="privacy_disable">マスキングを終了</string>
+    <string name="privacy_category_phone">電話番号</string>
+    <string name="privacy_category_id">身分証番号</string>
+    <string name="privacy_category_bank">銀行カード</string>
+    <string name="privacy_category_email">メール</string>
+    <string name="privacy_category_manual">手動</string>
+    <string name="privacy_scale">マスクを拡大・縮小</string>
+    <string name="privacy_rotate">マスクを回転</string>
+    <string name="privacy_resize">マスクを調整</string>
+</resources>

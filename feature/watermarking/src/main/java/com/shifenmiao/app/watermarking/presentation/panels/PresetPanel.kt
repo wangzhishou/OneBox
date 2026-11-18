@@ -47,6 +47,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.resources.R
+import com.t8rin.imagetoolbox.core.resources.Icons as CoreIcons
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineAutoAwesomeMosaic
 import com.shifenmiao.app.watermarking.domain.model.WatermarkContent
 import com.shifenmiao.app.watermarking.domain.model.WatermarkElement
 import com.shifenmiao.app.watermarking.domain.model.kind
@@ -172,7 +174,11 @@ private fun PresetCard(
     onDelete: () -> Unit,
 ) {
     val title = if (preset.nameRes != 0) stringResource(preset.nameRes) else preset.name
-    val typeNames = preset.document.elements.map { it.content.kind.title() }.joinToString(" · ")
+    val typeNames = if (preset.id == com.wanbaohe.watermark.template.domain.BuiltinTemplateId.PRIVACY_REDACTION.id) {
+        stringResource(com.wanbaohe.privacy.redaction.R.string.privacy_redaction_subtitle)
+    } else {
+        preset.document.elements.map { it.content.kind.title() }.joinToString(" · ")
+    }
     Box {
         GlassCard(
             onClick = onApply,
@@ -213,6 +219,23 @@ private fun PresetCard(
 
 @Composable
 private fun PresetSchematic(preset: WatermarkPreset) {
+    if (preset.id == com.wanbaohe.watermark.template.domain.BuiltinTemplateId.PRIVACY_REDACTION.id) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(82.dp)
+                .background(MaterialTheme.colorScheme.surfaceContainer),
+            contentAlignment = Alignment.Center,
+        ) {
+            Icon(
+                imageVector = CoreIcons.Outlined.LineAutoAwesomeMosaic,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier.size(48.dp),
+            )
+        }
+        return
+    }
     val elements = preset.document.elements.take(3)
     val ink = elements.firstOrNull()?.let { Color(it.style.color) } ?: Color.White
     BoxWithConstraints(

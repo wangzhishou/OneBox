@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="privacy_redaction">Penyamaran privasi</string>
+    <string name="privacy_redaction_subtitle">Deteksi dan penyamaran di perangkat</string>
+    <string name="privacy_regions_found">Area: %1$d</string>
+    <string name="privacy_rescan">Deteksi ulang</string>
+    <string name="privacy_analysis_failed">Deteksi gagal</string>
+    <string name="privacy_no_regions">Tidak ditemukan nomor telepon, ID, atau email</string>
+    <string name="privacy_preparing_model">Menyiapkan model…</string>
+    <string name="privacy_model_percent">Mengunduh model: %1$d%%</string>
+    <string name="privacy_recognizing">Mendeteksi…</string>
+    <string name="privacy_mosaic">Mosaik</string>
+    <string name="privacy_solid">Warna solid</string>
+    <string name="privacy_strength">Kekuatan</string>
+    <string name="privacy_add_region">Tambah area</string>
+    <string name="privacy_finish_drawing">Selesaikan pilihan</string>
+    <string name="privacy_disable">Keluar dari penyamaran</string>
+    <string name="privacy_category_phone">Telepon</string>
+    <string name="privacy_category_id">Nomor ID</string>
+    <string name="privacy_category_bank">Kartu bank</string>
+    <string name="privacy_category_email">Email</string>
+    <string name="privacy_category_manual">Manual</string>
+    <string name="privacy_scale">Ubah ukuran samaran</string>
+    <string name="privacy_rotate">Putar samaran</string>
+    <string name="privacy_resize">Sesuaikan samaran</string>
+</resources>

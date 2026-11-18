@@ -954,4 +954,5 @@
     <string name="watermark_compare_hold">החזיקו כדי להשוות לתמונה המקורית</string>
     <string name="watermark_hidden_needs_content">הוסיפו שכבת טקסט או תמונה לפני הפעלת סימן המים הנסתר.</string>
     <string name="watermark_reset_title">איפוס סימן המים</string>
+    <string name="watermark_preset_privacy">הסתרת מידע פרטי</string>
 </resources>

@@ -2192,4 +2192,5 @@
     <string name="watermark_compare_hold">長押しで元の画像と比較</string>
     <string name="watermark_hidden_needs_content">不可視透かしを有効にするには、先にテキストまたは画像を追加してください。</string>
     <string name="watermark_reset_title">透かしをリセット</string>
+    <string name="watermark_preset_privacy">プライバシー保護</string>
 </resources>

@@ -1888,4 +1888,5 @@
     <string name="watermark_compare_hold">அசல் படத்துடன் ஒப்பிட அழுத்திப் பிடிக்கவும்</string>
     <string name="watermark_hidden_needs_content">மறைநிலை வாட்டர்மார்க்கை இயக்க முதலில் உரை அல்லது பட அடுக்கைச் சேர்க்கவும்.</string>
     <string name="watermark_reset_title">வாட்டர்மார்க்கை மீட்டமை</string>
+    <string name="watermark_preset_privacy">தனிப்பட்ட தகவலை மறைத்தல்</string>
 </resources>

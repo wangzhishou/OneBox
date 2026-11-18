@@ -949,4 +949,5 @@
     <string name="watermark_compare_hold">Hold nede for at sammenligne med originalen</string>
     <string name="watermark_hidden_needs_content">Tilføj et tekst- eller billedlag, før du slår det skjulte vandmærke til.</string>
     <string name="watermark_reset_title">Nulstil vandmærke</string>
+    <string name="watermark_preset_privacy">Skjul private data</string>
 </resources>
