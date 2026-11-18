@@ -22,6 +22,7 @@
 
 package com.wanbaohe.code.editor.screen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.filled.MoreVert
@@ -31,13 +32,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.shifenmiao.core.R
 import com.shifenmiao.database.recent_access.entity.RecentAccessEntity
 import com.t8rin.imagetoolbox.core.resources.icons.DeleteSweep
@@ -48,6 +50,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSaveAs
 import com.wanbaohe.base.ui.button.CancelButton
 import com.wanbaohe.base.ui.button.ConfirmButton
+import com.wanbaohe.base.ui.button.SecondaryButton
 import com.wanbaohe.code.editor.component.CodeEditorUiState
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
@@ -210,11 +213,17 @@ internal fun CodeEditorExitDialog(
             ConfirmButton(stringResource(R.string.save_file), onClick = onSaveAndExit)
         },
         dismissButton = {
-            Row {
+            // 三个动作统一走胶囊按钮：TextButton 在弹窗里没有按钮外框，
+            // 又自带 48dp 最小触控高度，夹在两个胶囊中间会整体下沉，看着像漏排版的链接。
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 CancelButton(stringResource(R.string.discard), onClick = onDiscard)
-                TextButton(onClick = onDismiss) {
-                    Text(stringResource(com.shifenmiao.common.R.string.note_keep_editing))
-                }
+                SecondaryButton(
+                    text = stringResource(com.shifenmiao.common.R.string.note_keep_editing),
+                    onClick = onDismiss,
+                )
             }
         },
     )

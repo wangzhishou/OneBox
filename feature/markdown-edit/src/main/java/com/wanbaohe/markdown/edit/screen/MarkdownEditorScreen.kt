@@ -22,6 +22,7 @@ package com.wanbaohe.markdown.edit.screen
 import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,7 +36,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -68,6 +68,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineSaveAs
 import com.wanbaohe.base.ui.ClearHistoryConfirmDialog
 import com.wanbaohe.base.ui.button.CancelButton
 import com.wanbaohe.base.ui.button.ConfirmButton
+import com.wanbaohe.base.ui.button.SecondaryButton
 import com.wanbaohe.core.ui.utils.content.FileAccessGuidance
 import com.wanbaohe.core.ui.utils.content.rememberFileAccessController
 import com.wanbaohe.core.ui.utils.content_pickers.rememberFileCreator
@@ -506,7 +507,13 @@ fun MarkdownEditorScreen(
             }
         },
         dismissButton = {
-            Row {
+            // 三个动作统一走胶囊按钮：TextButton 在弹窗里既没有按钮外框，
+            // 又自带 48dp 最小触控高度，夹在两个胶囊中间会整体下沉，
+            // 看起来像一行漏排版的蓝色链接。
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 CancelButton(
                     stringResource(R.string.discard)
                 ) {
@@ -519,14 +526,13 @@ fun MarkdownEditorScreen(
                     if (action != null) action.invoke()
                     else component.onGoBack()
                 }
-                TextButton(
+                SecondaryButton(
+                    text = stringResource(com.shifenmiao.common.R.string.note_keep_editing),
                     onClick = {
                         showExitConfirmDialog = false
                         pendingAction = null
                     }
-                ) {
-                    Text(stringResource(com.shifenmiao.common.R.string.note_keep_editing))
-                }
+                )
             }
         }
     )
