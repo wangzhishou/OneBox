@@ -50,10 +50,15 @@ import androidx.core.widget.ImageViewCompat
 import androidx.pdf.ExperimentalPdfApi
 import androidx.pdf.PdfDocument
 import androidx.pdf.R
+import androidx.pdf.ocr.OcrProvider
 import androidx.pdf.view.PdfView
 import androidx.pdf.view.ToolBoxView
 import androidx.pdf.viewer.fragment.PdfViewerFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.t8rin.imagetoolbox.core.utils.makeLog
+import com.t8rin.imagetoolbox.feature.pdf_tools.data.ocr.PdfPageOcrProvider
+import com.t8rin.imagetoolbox.feature.pdf_tools.di.PdfOcrEntryPoint
+import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -78,6 +83,27 @@ internal class ModernPdfViewerDelegate : PdfViewerFragment() {
     override fun onLoadDocumentSuccess(document: PdfDocument) {
         super.onLoadDocumentSuccess(document)
         _isLoading.value = false
+    }
+
+    /**
+     * 扫描件的可搜索文字层走 App 自带的 PP-OCRv6(中文可用), 不用 androidx.pdf 默认的 GMS ML Kit 拉丁模型.
+     * 模型还没下载时返回 null, 预览/文字型 PDF 的搜索不受影响.
+     */
+    override fun onInitOcrProvider(): OcrProvider? {
+        val service = runCatching {
+            EntryPointAccessors.fromApplication(
+                requireContext().applicationContext,
+                PdfOcrEntryPoint::class.java,
+            ).ocrLayoutService()
+        }.onFailure {
+            it.makeLog("ModernPdfViewerDelegate")
+        }.getOrNull() ?: return null
+
+        return if (service.isModelReady()) {
+            PdfPageOcrProvider(service)
+        } else {
+            null
+        }
     }
 
     override fun onPdfViewCreated(pdfView: PdfView) {

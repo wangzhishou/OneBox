@@ -19,8 +19,10 @@
 
 package com.wanbaohe.ocr.di
 
+import com.shifenmiao.interfaces.ocr.OcrLayoutService
 import com.shifenmiao.interfaces.ocr.TextRecognitionService
 import com.wanbaohe.ocr.data.MmkvOcrHistoryRepository
+import com.wanbaohe.ocr.data.OnDeviceOcrLayoutService
 import com.wanbaohe.ocr.data.OnDeviceTextRecognitionService
 import com.wanbaohe.ocr.domain.OcrHistoryRepository
 import dagger.Binds
@@ -43,4 +45,10 @@ internal interface OcrModule {
     fun textRecognitionService(
         impl: OnDeviceTextRecognitionService,
     ): TextRecognitionService
+
+    @Binds
+    @Singleton
+    fun ocrLayoutService(
+        impl: OnDeviceOcrLayoutService,
+    ): OcrLayoutService
 }

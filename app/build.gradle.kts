@@ -604,8 +604,6 @@ dependencies {
     implementation(projects.feature.webview)
     implementation(projects.libs.opencvTools)
 
-    implementation(libs.pdfbox)
-
     // Google Play 渠道专属依赖: Firebase BoM + Crashlytics / Analytics
     // 国内渠道不引入, 减少 APK 体积 + 避免 google-services.json 找不到报错
     // BoM 自动管理 firebase-* 版本, 子模块不需要指定 version

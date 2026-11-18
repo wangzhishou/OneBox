@@ -32,6 +32,15 @@ plugins {
 
 android.namespace = "com.t8rin.imagetoolbox.feature.pdf_tools"
 
+/**
+ * 排除 androidx.pdf 自带的 GMS OCR provider: 它只认拉丁字母, 中文扫描件用不了,
+ * 且是 Play Services 私有依赖(foss 变体不能带).
+ * 扫描件可搜索文字层改由 PdfPageOcrProvider 走 App 自带的 PP-OCRv6.
+ */
+configurations.all {
+    exclude(group = "androidx.pdf", module = "pdf-ocr-play-services")
+}
+
 dependencies {
     implementation(projects.feature.common)
     implementation(projects.core.network)

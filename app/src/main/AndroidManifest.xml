@@ -34,6 +34,9 @@
         com.colintheshots.prism4j,
         com.google.mlkit.vision.segmentation.subject,
         androidx.pdf,
+        androidx.pdf.core,
+        androidx.pdf.ink,
+        androidx.pdf.compose,
         androidx.pdf.viewer.fragment,
         androidx.pdf.document.service" />
 

@@ -101,7 +101,9 @@ smbj = "0.15.0"
 bouncycastle = "1.86"
 androidxSecurityCrypto = "1.1.0"
 
-pdfviewer = "1.0.0-alpha18" # alpha19 起 minSdk 提到 28,与项目 minSdk 24 冲突
+# androidx.pdf 自 alpha18 起 AAR manifest 就是 minSdk 28(靠 app 的 tools:overrideLibrary 顶住, 运行时由 canUseNewPdf() 守门).
+# beta01 另外把 OCR provider 拆成 GMS ML Kit 依赖(pdf-ocr-play-services), 本模块用自建 PP-OCRv6 桥接, 故排除.
+pdfviewer = "1.0.0-beta01"
 fragmentCompose = "1.9.1"
 aboutlibraries = "15.3.0"
 
