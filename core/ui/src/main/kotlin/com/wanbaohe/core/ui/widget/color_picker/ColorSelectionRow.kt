@@ -80,6 +80,13 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineTheme
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineError
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDoneAll
 
+/**
+ * 横向快选色行。
+ *
+ * [onOpenPicker] 为空时,点最左的调色板按钮会在色行内部就地拉起 [ColorPickerSheet];
+ * 提供时只把"想取色"(带当前色)抛给宿主,由宿主决定面板挂在哪一层 ——
+ * 浮动工具条这类独立窗口宿主必须这么做,否则面板会被窗口压住(见 SelectionColorPicker)。
+ */
 @Composable
 fun ColorSelectionRow(
     modifier: Modifier = Modifier,
@@ -89,6 +96,7 @@ fun ColorSelectionRow(
     value: Color,
     onValueChange: (Color) -> Unit,
     contentPadding: PaddingValues = PaddingValues(),
+    onOpenPicker: ((Color) -> Unit)? = null,
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -180,7 +188,11 @@ fun ColorSelectionRow(
                                 )
                             },
                             onClick = {
-                                showColorPicker = true
+                                if (onOpenPicker != null) {
+                                    onOpenPicker(customColor ?: value)
+                                } else {
+                                    showColorPicker = true
+                                }
                             }
                         ),
                     contentAlignment = Alignment.Center

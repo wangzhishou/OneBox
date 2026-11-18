@@ -25,7 +25,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
@@ -55,17 +55,23 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import com.shifenmiao.common.components.text.ColorSheet
 import com.shifenmiao.common.components.text.MAX_SELECTION_SIZE_SCALE
 import com.shifenmiao.common.components.text.MIN_SELECTION_SIZE_SCALE
+import com.shifenmiao.common.components.text.QuickColorRow
 import com.shifenmiao.common.components.text.RichTextStyleSpan
 import com.shifenmiao.common.components.text.SuppressSystemTextSelectionMenu
 import com.shifenmiao.common.components.text.TextSelectionAction
@@ -74,12 +80,12 @@ import com.shifenmiao.common.components.text.applySelectionStyle
 import com.shifenmiao.common.components.text.clearSelectionStyles
 import com.shifenmiao.common.components.text.copySelection
 import com.shifenmiao.common.components.text.pasteAtSelection
+import com.shifenmiao.common.components.text.rememberSelectionColorPickerState
 import com.shifenmiao.common.components.text.toRichTextStyleSpan
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.ContentPaste
 import com.t8rin.imagetoolbox.core.settings.presentation.model.toUiFont
 import com.wanbaohe.core.ui.theme.toColor
-import com.wanbaohe.core.ui.widget.color_picker.ColorSelectionRow
 import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.model.LayerType
@@ -88,6 +94,7 @@ import com.wanbaohe.markuplayers.domain.model.effectiveSizeScaleAt
 import com.wanbaohe.markuplayers.domain.model.isRangeEffectivelyBold
 import com.wanbaohe.markuplayers.domain.model.isRangeEffectivelyItalic
 import kotlinx.coroutines.flow.drop
+import kotlin.math.abs
 
 /**
  * 文字层就地编辑(对齐图文卡片 InPlaceTextEditor):原位 BasicTextField,
@@ -108,6 +115,8 @@ fun InPlaceTextLayerEditor(
     onCommit: () -> Unit,
     selectionToolbarVisible: Boolean = true,
     onOpenStylePanel: () -> Unit = {},
+    /** 编辑框宽度变化量(px):宿主据此按对齐方式钉住锚点边,避免输入时文字左右飘 */
+    onContentWidthChanged: (Float) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val density = LocalDensity.current
@@ -123,9 +132,11 @@ fun InPlaceTextLayerEditor(
         initialSelection = TextRange(type.text.length)
     )
     var anchorBounds by remember { mutableStateOf(Rect.Zero) }
-    var showColors by remember { mutableStateOf(false) }
     val selection = state.selection
     val hasSelection = !selection.collapsed
+    // 快选色行 + 全屏取色面板:面板是 ModalSheet(decorView 图层),工具条是独立窗口,
+    // 两者同时存在时窗口会盖住面板,所以取色时工具条收起、面板由工具条外面承接
+    val colorPicker = rememberSelectionColorPickerState(state)
 
     fun sync() {
         val spans = state.textStyles
@@ -146,14 +157,36 @@ fun InPlaceTextLayerEditor(
         // 内容变化(键入/删除/粘贴)时回写;样式变化由工具条应用后显式调 sync()
         snapshotFlow { state.text.toString() }.drop(1).collect { sync() }
     }
-    LaunchedEffect(hasSelection) {
-        if (!hasSelection) showColors = false
-    }
 
-    val widthModifier = if (type.widthManuallySet && type.widthRatio != null) {
-        Modifier.requiredWidth(with(density) { (type.widthRatio * canvasWidthPx).toDp() })
+    // 编辑框宽度按内容自适应:BasicTextField 的测量结果恒等于 maxWidth 约束,
+    // 所以原来的 widthIn(上限) 实际等于整行铺满 —— 光标后面拖出一大片空白,
+    // 而且和提交后的预览(Text 自己贴合内容)宽度不一致,进出编辑会跳一下。
+    // 这里量出内容宽度给出精确 width,让编辑框和预览同宽。
+    val horizontalPaddingPx = fontSizePx / 6f
+    val fieldLimitPx = ((type.widthRatio ?: 1f) * canvasWidthPx).coerceAtLeast(fontSizePx * 2f)
+    val contentWidthPx = measureTextFieldContentWidth(
+        measurer = rememberTextMeasurer(),
+        state = state,
+        style = textStyle,
+        maxWidthPx = (fieldLimitPx - horizontalPaddingPx * 2f).coerceAtLeast(1f),
+    )
+    // 空文本也要留出能点到光标的宽度
+    val minFieldWidthPx = fontSizePx * 0.9f
+    val fieldWidthPx = if (type.widthManuallySet && type.widthRatio != null) {
+        type.widthRatio * canvasWidthPx
     } else {
-        Modifier.widthIn(max = with(density) { ((type.widthRatio ?: 1f) * canvasWidthPx).toDp() })
+        (contentWidthPx + horizontalPaddingPx * 2f).coerceIn(minFieldWidthPx, fieldLimitPx)
+    }
+    val widthModifier = Modifier.width(with(density) { fieldWidthPx.toDp() })
+
+    // 宽度变了就通知宿主(首帧不通知:那是从预览切进来的正常尺寸)
+    var lastFieldWidthPx by remember(state) { mutableStateOf<Float?>(null) }
+    LaunchedEffect(fieldWidthPx) {
+        val previous = lastFieldWidthPx
+        lastFieldWidthPx = fieldWidthPx
+        if (previous != null && abs(fieldWidthPx - previous) > 0.5f) {
+            onContentWidthChanged(fieldWidthPx - previous)
+        }
     }
 
     SuppressSystemTextSelectionMenu {
@@ -182,7 +215,8 @@ fun InPlaceTextLayerEditor(
         )
     }
 
-    if (hasSelection && selectionToolbarVisible) {
+    // 取色面板开着时工具条必须让位:它是独立窗口,会压在面板上面
+    if (hasSelection && selectionToolbarVisible && !colorPicker.isSheetVisible) {
         val start = selection.min
         val end = selection.max
         val bold = type.isRangeEffectivelyBold(start, end)
@@ -231,8 +265,8 @@ fun InPlaceTextLayerEditor(
                 key = "color",
                 label = stringResource(R.string.markup_text_color),
                 swatch = currentColor,
-                selected = showColors,
-                onClick = { showColors = !showColors }
+                selected = colorPicker.quickColorRowVisible,
+                onClick = { colorPicker.toggleQuickColorRow() }
             ),
             TextSelectionAction(
                 key = "size_down",
@@ -275,16 +309,15 @@ fun InPlaceTextLayerEditor(
         TextSelectionToolbar(
             anchorBounds = anchorBounds,
             actions = actions,
-            footer = if (showColors) {
+            footer = if (colorPicker.quickColorRowVisible) {
                 {
-                    ColorSelectionRow(
+                    colorPicker.QuickColorRow(
                         value = currentColor,
-                        onValueChange = { color ->
+                        onColorChange = { color ->
                             state.applySelectionStyle(
                                 style = SpanStyle(color = color),
                                 onChanged = ::sync
                             )
-                            showColors = false
                         },
                         allowAlpha = false
                     )
@@ -292,6 +325,17 @@ fun InPlaceTextLayerEditor(
             } else null
         )
     }
+
+    // 全屏取色面板挂在工具条外面:面板显示期间工具条收起,面板才不会被独立窗口压住
+    colorPicker.ColorSheet(
+        onColorPicked = { color ->
+            state.applySelectionStyle(
+                style = SpanStyle(color = color),
+                onChanged = ::sync
+            )
+        },
+        allowAlpha = false
+    )
 }
 
 /**
@@ -350,4 +394,28 @@ fun textLayerOutlineStroke(
         cap = StrokeCap.Round,
         join = StrokeJoin.Round
     )
+}
+
+/**
+ * 量出编辑框内容需要的宽度(取最宽一行的行宽)。
+ *
+ * 不能用 measure(...).size.width:它等于约束上限(段落按约束铺满),
+ * 拿它当宽度就成了"永远整行"。行宽才是内容的真实宽度。
+ */
+private fun measureTextFieldContentWidth(
+    measurer: TextMeasurer,
+    state: TextFieldState,
+    style: androidx.compose.ui.text.TextStyle,
+    maxWidthPx: Float,
+): Float {
+    val text = state.text.toString()
+    if (text.isEmpty()) return 0f
+    val spans = state.textStyles.getSpanStyles(TextRange(0, text.length))
+    val result = measurer.measure(
+        text = AnnotatedString(text, spanStyles = spans),
+        style = style,
+        constraints = Constraints(maxWidth = maxWidthPx.toInt().coerceAtLeast(1)),
+    )
+    if (result.lineCount <= 0) return 0f
+    return (0 until result.lineCount).maxOf { result.multiParagraph.getLineWidth(it) }
 }

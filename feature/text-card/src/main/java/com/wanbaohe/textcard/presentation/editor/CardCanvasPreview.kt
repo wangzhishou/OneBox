@@ -85,20 +85,22 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import com.shifenmiao.common.components.text.ColorSheet
 import com.shifenmiao.common.components.text.MAX_SELECTION_SIZE_SCALE
 import com.shifenmiao.common.components.text.MIN_SELECTION_SIZE_SCALE
+import com.shifenmiao.common.components.text.QuickColorRow
 import com.shifenmiao.common.components.text.SuppressSystemTextSelectionMenu
 import com.shifenmiao.common.components.text.TextSelectionAction
 import com.shifenmiao.common.components.text.TextSelectionToolbar
 import com.shifenmiao.common.components.text.applySelectionStyle
 import com.shifenmiao.common.components.text.copySelection
 import com.shifenmiao.common.components.text.pasteAtSelection
+import com.shifenmiao.common.components.text.rememberSelectionColorPickerState
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.ContentPaste
 import com.t8rin.imagetoolbox.core.settings.presentation.model.toUiFont
 import com.t8rin.imagetoolbox.core.utils.toTypeface
-import com.wanbaohe.core.ui.widget.color_picker.ColorSelectionRow
 import com.wanbaohe.core.ui.widget.editor.AnimatedSelectionBorder
 import com.wanbaohe.core.ui.widget.image.Picture
 import com.wanbaohe.core.ui.widget.modifier.meshGradient
@@ -495,17 +497,16 @@ internal fun InPlaceTextEditor(
     val keyboardController = LocalSoftwareKeyboardController.current
     val clipboard = LocalClipboardManager.current
     var anchorBounds by remember { mutableStateOf(Rect.Zero) }
-    var showColors by remember { mutableStateOf(false) }
     val selection = state.selection
     val hasSelection = !selection.collapsed
+    // 快选色行 + 全屏取色面板:面板是 ModalSheet(decorView 图层),工具条是独立窗口,
+    // 两者同时存在时窗口会盖住面板,所以取色时工具条收起、面板由工具条外面承接
+    val colorPicker = rememberSelectionColorPickerState(state)
 
     LaunchedEffect(state) {
-        showColors = false
+        colorPicker.collapseQuickColorRow()
         focusRequester.requestFocus()
         keyboardController?.show()
-    }
-    LaunchedEffect(hasSelection) {
-        if (!hasSelection) showColors = false
     }
 
     SuppressSystemTextSelectionMenu {
@@ -521,7 +522,8 @@ internal fun InPlaceTextEditor(
         )
     }
 
-    if (hasSelection && selectionToolbarVisible) {
+    // 取色面板开着时工具条必须让位:它是独立窗口,会压在面板上面
+    if (hasSelection && selectionToolbarVisible && !colorPicker.isSheetVisible) {
         val start = selection.min
         val end = selection.max
         val bold = block.isRangeEffectivelyBold(start, end)
@@ -570,8 +572,8 @@ internal fun InPlaceTextEditor(
                 key = "color",
                 label = stringResource(R.string.textcard_text_color),
                 swatch = currentColor,
-                selected = showColors,
-                onClick = { showColors = !showColors }
+                selected = colorPicker.quickColorRowVisible,
+                onClick = { colorPicker.toggleQuickColorRow() }
             ),
             TextSelectionAction(
                 key = "size_down",
@@ -614,16 +616,15 @@ internal fun InPlaceTextEditor(
         TextSelectionToolbar(
             anchorBounds = anchorBounds,
             actions = actions,
-            footer = if (showColors) {
+            footer = if (colorPicker.quickColorRowVisible) {
                 {
-                    ColorSelectionRow(
+                    colorPicker.QuickColorRow(
                         value = currentColor,
-                        onValueChange = { color ->
+                        onColorChange = { color ->
                             state.applySelectionStyle(
                                 style = SpanStyle(color = color),
                                 onChanged = onSync
                             )
-                            showColors = false
                         },
                         allowAlpha = false
                     )
@@ -631,6 +632,17 @@ internal fun InPlaceTextEditor(
             } else null
         )
     }
+
+    // 全屏取色面板挂在工具条外面:面板显示期间工具条收起,面板才不会被独立窗口压住
+    colorPicker.ColorSheet(
+        onColorPicked = { color ->
+            state.applySelectionStyle(
+                style = SpanStyle(color = color),
+                onChanged = onSync
+            )
+        },
+        allowAlpha = false
+    )
 }
 
 @Composable

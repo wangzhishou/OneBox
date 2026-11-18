@@ -1295,7 +1295,15 @@ private fun BoxScope.EditorLayerStack(
                                     component.setActiveTool(null)
                                 },
                                 selectionToolbarVisible = selectionToolbarVisible,
-                                onOpenStylePanel = onOpenTextStyle
+                                onOpenStylePanel = onOpenTextStyle,
+                                // 框宽随内容变:钉住锚点边,输入时文字不左右飘
+                                onContentWidthChanged = { deltaWidthPx ->
+                                    component.shiftTextLayerAnchor(
+                                        id = layer.id,
+                                        deltaWidthPx = deltaWidthPx,
+                                        canvasWidthPx = layerCanvasWidth
+                                    )
+                                }
                             )
                         } else {
                             LayerPreviewRenderers.Content(

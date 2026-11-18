@@ -1537,6 +1537,34 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         registerDocumentChange()
     }
 
+    /**
+     * 就地编辑时文字框宽度变了:按对齐方式钉住锚点边,防止"中心锚点"让文字边输入边左右飘。
+     * 左对齐 = 框往右长(中心右移半个增量);右对齐 = 往左长;居中/两端对齐 = 对称长,不动。
+     */
+    fun shiftTextLayerAnchor(
+        id: String,
+        deltaWidthPx: Float,
+        canvasWidthPx: Float
+    ) {
+        if (deltaWidthPx == 0f || canvasWidthPx <= 0f) return
+        val layer = _layers.value.find { it.id == id } ?: return
+        val text = layer.type as? LayerType.Text ?: return
+        val direction = when (text.alignment) {
+            LayerType.Text.TextAlignment.Left -> 1f
+            LayerType.Text.TextAlignment.Right -> -1f
+            else -> 0f
+        }
+        if (direction == 0f) return
+        val shift = direction * deltaWidthPx / 2f / canvasWidthPx
+        updateLayerInEditSession(id) { current ->
+            current.copy(
+                transform = current.transform.copy(
+                    centerX = (current.transform.centerX + shift).coerceIn(0f, 1f)
+                )
+            )
+        }
+    }
+
     /** 形状图层参数更新(形状种类/样式/颜色等离散修改),正常入历史 */
     fun updateShapeSpec(
         id: String,
