@@ -54,8 +54,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.Info
 import com.t8rin.imagetoolbox.core.resources.icons.Language
 import com.wanbaohe.core.ui.utils.helper.ContextUtils.getCurrentLocaleString
-import com.wanbaohe.core.ui.utils.helper.ContextUtils.getLanguageListSubtitle
 import com.wanbaohe.core.ui.utils.helper.ContextUtils.getLanguages
+import com.wanbaohe.core.ui.utils.helper.ContextUtils.getSystemLocaleNativeName
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedBottomSheetDefaults
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedButton
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
@@ -92,6 +92,9 @@ fun ChangeLanguageSheet(
         sheetContent = {
             val entries = remember { context.getLanguages() }
             val selected = remember { context.getCurrentLocaleString() }
+            // 每行标题已经是该语言的自称（不随应用语言翻译）；
+            // 只有「跟随系统」行需要副标题，显示系统当前语言自己的写法
+            val systemLanguageName = remember { context.getSystemLocaleNativeName() }
             Box(modifier = Modifier.fillMaxWidth().padding(bottom = 64.dp)) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -184,9 +187,7 @@ fun ChangeLanguageSheet(
                                 )
                             },
                             title = locale.value,
-                            subtitle = remember(locale.key) {
-                                context.getLanguageListSubtitle(locale.key)
-                            }.takeIf { locale.value != it }
+                            subtitle = systemLanguageName.takeIf { locale.key.isEmpty() }
                         )
                     }
                 }

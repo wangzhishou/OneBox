@@ -29,6 +29,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityManager
+import android.app.LocaleManager
 import android.content.ClipboardManager
 import android.content.ContentResolver
 import android.content.Context
@@ -478,19 +479,17 @@ object ContextUtils {
         }.getOrNull()
     }
 
+    /**
+     * 语言选择列表：每一项都用该语言自己的文字书写（自称），
+     * 不随当前应用语言翻译——切到任何语言看到的名字都相同。
+     */
     fun Context.getLanguages(): Map<String, String> {
         val supportedLocales = LocaleConfigCompat(this@getLanguages).supportedLocales
         val supportedLanguages = buildList {
             if (supportedLocales != null) {
                 for (i in 0 until supportedLocales.size()) {
                     val locale = supportedLocales.get(i) ?: continue
-                    add(
-                        locale.toLanguageTag() to (
-                            locale.chineseScript()
-                                ?.let { chineseLanguageName(it) }
-                                ?: locale.nativeLanguageDisplayName()
-                            )
-                    )
+                    add(locale.toLanguageTag() to locale.nativeLanguageName())
                 }
             }
         }
@@ -507,7 +506,7 @@ object ContextUtils {
     /**
      * 中文变体返回简繁脚本标识（Hans / Hant），非中文返回 null。
      * ICU 对带地区的 tag（zh-CN / zh-TW）会拼出「中文 (中国)」「中文 (台灣)」，
-     * 语言列表统一改用「简体中文 / 繁体中文」表述。
+     * 这里只用来区分简繁，显示名统一由 [nativeLanguageName] 给固定自称。
      */
     private fun Locale.chineseScript(): String? {
         if (language != "zh") return null
@@ -521,26 +520,34 @@ object ContextUtils {
         }
     }
 
-    private fun Context.chineseLanguageName(script: String): String =
-        if (script == "Hant") getString(R.string.language_chinese_traditional)
-        else getString(R.string.language_chinese_simplified)
+    /**
+     * 语言的「自称」：永远用该语言自己的文字书写，与当前应用语言无关。
+     * 语言名是不可翻译的专名，所以中文变体不走 string 资源，直接写死
+     * 「简体中文 / 繁體中文」——否则英文界面会显示成 Chinese (Simplified)，
+     * 日文界面会显示成「中国語 (簡体字)」。
+     */
+    private fun Locale.nativeLanguageName(): String =
+        when (chineseScript()) {
+            "Hant" -> "繁體中文"
+            "Hans" -> "简体中文"
+            else -> nativeLanguageDisplayName()
+        }
 
     /**
-     * 语言列表副标题：用当前应用语言显示该语言名。
-     * 中文变体与主标题同源（简繁表述、随应用语言本地化），
-     * 调用方的去重逻辑会隐藏重复的副标题行；非中文沿用 ICU 本地化名。
+     * 「跟随系统」那一行的副标题：设备系统语言的自称。
+     * 其余语言行的标题本身就是自称，不需要再挂一行译文。
      */
-    fun Context.getLanguageListSubtitle(lang: String): String {
-        val locale = if (lang.isEmpty()) {
-            // 空 key 是「跟随系统」，读系统 Configuration，避免显示成应用语言自己
-            val systemLocales = Resources.getSystem().configuration.locales
-            if (systemLocales.isEmpty) Locale.getDefault() else systemLocales[0]
+    fun Context.getSystemLocaleNativeName(): String {
+        // per-app 语言生效后 Resources.getSystem() 的 configuration 会跟着应用语言走，
+        // 读不出真正的系统语言；API 33+ 必须走 LocaleManager.systemLocales
+        val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            getSystemService(LocaleManager::class.java)?.systemLocales?.get(0)
         } else {
-            Locale.forLanguageTag(lang)
-        }
-        return locale.chineseScript()
-            ?.let { chineseLanguageName(it) }
-            ?: getDisplayName(lang, useDefaultLocale = true)
+            Resources.getSystem().configuration.locales.let {
+                if (it.isEmpty) null else it[0]
+            }
+        } ?: Locale.getDefault()
+        return locale.nativeLanguageName()
     }
 
     // ICU 对印尼语返回的母语名是国名 "Indonesia",语言面板应显示 "Bahasa Indonesia"
@@ -565,55 +572,21 @@ object ContextUtils {
         if (locales == LocaleListCompat.getEmptyLocaleList()) {
             return getString(R.string.system)
         }
-        // 中文变体与语言列表主标题同源，避免显示名改写后选中态比较失效
-        return locales.get(0)?.chineseScript()
-            ?.let { chineseLanguageName(it) }
-            ?: locales.getDisplayName()
+        // 与语言列表标题同源（语言自称），否则选中态比较会失效
+        return locales.get(0)?.nativeLanguageName()
+            ?: getString(R.string.system)
     }
 
     fun LocaleListCompat.getDisplayName(): String {
-        // 中文变体与语言面板的简繁表述同源（DeviceInfo 等处也走这里），
-        // 避免 ICU 带出「中文 (中国)」这类地区名；AppContext 未就绪时回落 ICU 名
+        // DeviceInfo 等处展示的当前语言：同样用语言自称，
+        // 避免 ICU 带出「中文 (中国)」这类地区名，或显示成当前界面的译名
         val locale = if (isEmpty) {
             val systemLocales = Resources.getSystem().configuration.locales
             if (systemLocales.isEmpty) null else systemLocales[0]
         } else {
             get(0)
         }
-        val script = locale?.chineseScript()
-        if (script != null) {
-            return runCatching { appContext.chineseLanguageName(script) }
-                .getOrElse {
-                    Locale.Builder()
-                        .setLanguage("zh")
-                        .setScript(script)
-                        .build()
-                        .getDisplayName(Locale.ENGLISH)
-                }
-        }
-        return getDisplayName(toLanguageTags())
-    }
-
-    fun getDisplayName(
-        lang: String?,
-        useDefaultLocale: Boolean = false
-    ): String {
-        if (lang == null) {
-            return ""
-        }
-
-        val locale = when (lang) {
-            // 空 key 是「跟随系统」。per-app locale 会改掉 Locale.getDefault()，
-            // 这里读系统 Configuration，避免副标题显示成应用语言自己。
-            "" -> {
-                val systemLocales = Resources.getSystem().configuration.locales
-                if (systemLocales.isEmpty) Locale.getDefault() else systemLocales[0]
-            }
-            else -> Locale.forLanguageTag(lang)
-        }
-        val displayLocale = if (useDefaultLocale) Locale.getDefault() else locale
-        return locale.getDisplayName(displayLocale)
-            .replaceFirstChar { it.uppercase(displayLocale) }
+        return (locale ?: Locale.getDefault()).nativeLanguageName()
     }
 
     private const val SCREEN_ID_EXTRA = "screen_id"
