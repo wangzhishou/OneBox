@@ -2111,4 +2111,8 @@
     <string name="feedback_error_invalid">서버가 내용을 거부했습니다. 제목과 설명을 확인한 뒤 다시 제출하세요.</string>
     <string name="feedback_error_rate_limited">제출이 너무 잦습니다. 몇 초 기다렸다가 다시 제출하세요.</string>
     <string name="feedback_error_server">이번에는 서버에 저장되지 않았습니다. 작성한 내용은 그대로 남아 있습니다. 잠시 후 다시 제출하세요.</string>
+
+    <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
+    <string name="ai_chat_loading_byok_hint">내 API 키로 대기열 건너뛰기</string>
+    <string name="ai_chat_loading_byok_action">설정</string>
 </resources>

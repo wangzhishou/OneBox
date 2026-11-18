@@ -2112,4 +2112,8 @@
     <string name="long_task_notification_more">等 %1$d 項任務進行中</string>
     <!-- TextSelectionMenuContainer: 長按選區工具條「筆記」圖示下方標籤 -->
     <string name="text_selection_action_note">筆記</string>
+
+    <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
+    <string name="ai_chat_loading_byok_hint">用自己的 API Key 跳過排隊</string>
+    <string name="ai_chat_loading_byok_action">設定</string>
 </resources>

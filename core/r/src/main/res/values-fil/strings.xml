@@ -2122,4 +2122,8 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <string name="feedback_error_invalid">Tinanggihan ng server ang nilalaman. Suriin ang pamagat at paglalarawan, pagkatapos ipadala ulit.</string>
     <string name="feedback_error_rate_limited">Sobra ang pagtatangka. Maghintay ng ilang segundo at ipadala ulit.</string>
     <string name="feedback_error_server">Hindi ito na-save ng server sa pagkakataong ito. Naitago ang teksto mo — ipadala ulit mamaya.</string>
+
+    <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
+    <string name="ai_chat_loading_byok_hint">Laktawan ang pila gamit ang sarili mong API key</string>
+    <string name="ai_chat_loading_byok_action">Itakda</string>
 </resources>

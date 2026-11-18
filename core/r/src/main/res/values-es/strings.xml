@@ -2122,4 +2122,8 @@ Consejo: si eliges «Ocultar para siempre», podrás devolverme más tarde en Aj
     <string name="feedback_error_invalid">El servidor rechazó el contenido. Revisa el título y la descripción y vuelve a enviar.</string>
     <string name="feedback_error_rate_limited">Demasiados intentos. Espera unos segundos y vuelve a enviar.</string>
     <string name="feedback_error_server">El servidor no lo guardó esta vez. Tu texto se conserva: vuelve a enviarlo en un momento.</string>
+
+    <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
+    <string name="ai_chat_loading_byok_hint">Evita la cola con tu clave API</string>
+    <string name="ai_chat_loading_byok_action">Configurar</string>
 </resources>

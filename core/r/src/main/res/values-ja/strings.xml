@@ -2111,4 +2111,8 @@
     <string name="feedback_error_invalid">サーバーが内容を受け付けませんでした。タイトルと説明を確認して再送信してください。</string>
     <string name="feedback_error_rate_limited">送信が多すぎます。数秒待ってから再送信してください。</string>
     <string name="feedback_error_server">サーバーに保存できませんでした。入力内容は保持されています。しばらくしてから再送信してください。</string>
+
+    <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
+    <string name="ai_chat_loading_byok_hint">自分の API キーで待ち時間を回避</string>
+    <string name="ai_chat_loading_byok_action">設定</string>
 </resources>

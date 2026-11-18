@@ -2122,4 +2122,8 @@
     <string name="feedback_error_invalid">सर्वर ने सामग्री स्वीकार नहीं की। शीर्षक और विवरण जाँचें, फिर दोबारा भेजें।</string>
     <string name="feedback_error_rate_limited">बहुत ज़्यादा प्रयास। कुछ सेकंड रुककर दोबारा भेजें।</string>
     <string name="feedback_error_server">इस बार सर्वर ने सहेजा नहीं। आपका लिखा हुआ सुरक्षित है — थोड़ी देर बाद दोबारा भेजें।</string>
+
+    <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
+    <string name="ai_chat_loading_byok_hint">अपनी API कुंजी से कतार छोड़ें</string>
+    <string name="ai_chat_loading_byok_action">सेटअप</string>
 </resources>

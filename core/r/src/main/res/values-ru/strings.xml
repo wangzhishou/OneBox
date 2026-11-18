@@ -2156,4 +2156,8 @@
     <string name="feedback_error_invalid">Сервер отклонил содержимое. Проверьте заголовок и описание и отправьте снова.</string>
     <string name="feedback_error_rate_limited">Слишком много попыток. Подождите несколько секунд и отправьте снова.</string>
     <string name="feedback_error_server">Сервер не сохранил запись. Текст сохранён — отправьте ещё раз через минуту.</string>
+
+    <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
+    <string name="ai_chat_loading_byok_hint">Свой ключ API — без очереди</string>
+    <string name="ai_chat_loading_byok_action">Настроить</string>
 </resources>

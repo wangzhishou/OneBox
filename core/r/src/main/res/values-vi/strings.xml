@@ -2109,4 +2109,8 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <string name="feedback_error_invalid">Máy chủ từ chối nội dung. Kiểm tra tiêu đề và mô tả rồi gửi lại.</string>
     <string name="feedback_error_rate_limited">Gửi quá nhiều lần. Đợi vài giây rồi gửi lại.</string>
     <string name="feedback_error_server">Lần này máy chủ không lưu được. Nội dung vẫn được giữ — gửi lại sau một lát.</string>
+
+    <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
+    <string name="ai_chat_loading_byok_hint">Bỏ qua hàng đợi bằng API Key của bạn</string>
+    <string name="ai_chat_loading_byok_action">Thiết lập</string>
 </resources>

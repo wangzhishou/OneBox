@@ -2156,4 +2156,8 @@
     <string name="feedback_error_invalid">رفض الخادم المحتوى. راجع العنوان والوصف ثم أعد الإرسال.</string>
     <string name="feedback_error_rate_limited">محاولات كثيرة جدًا. انتظر بضع ثوانٍ ثم أعد الإرسال.</string>
     <string name="feedback_error_server">لم يحفظه الخادم هذه المرة. نصّك محفوظ — أعد الإرسال بعد قليل.</string>
+
+    <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
+    <string name="ai_chat_loading_byok_hint">تجاوز الانتظار بمفتاح API الخاص بك</string>
+    <string name="ai_chat_loading_byok_action">إعداد</string>
 </resources>

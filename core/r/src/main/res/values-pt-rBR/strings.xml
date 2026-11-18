@@ -2122,4 +2122,8 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
     <string name="feedback_error_invalid">O servidor recusou o conteúdo. Confira o título e a descrição e envie de novo.</string>
     <string name="feedback_error_rate_limited">Muitas tentativas. Aguarde alguns segundos e envie de novo.</string>
     <string name="feedback_error_server">O servidor não salvou desta vez. Seu texto foi mantido — envie de novo em instantes.</string>
+
+    <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
+    <string name="ai_chat_loading_byok_hint">Evite a fila com sua chave de API</string>
+    <string name="ai_chat_loading_byok_action">Configurar</string>
 </resources>

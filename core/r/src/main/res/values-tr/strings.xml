@@ -2122,4 +2122,8 @@
     <string name="feedback_error_invalid">Sunucu içeriği kabul etmedi. Başlığı ve açıklamayı kontrol edip tekrar gönder.</string>
     <string name="feedback_error_rate_limited">Çok fazla deneme. Birkaç saniye bekleyip tekrar gönder.</string>
     <string name="feedback_error_server">Sunucu bu kez kaydedemedi. Yazdıkların korunuyor — birazdan tekrar gönder.</string>
+
+    <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
+    <string name="ai_chat_loading_byok_hint">Kendi API anahtarınızla sırayı atla</string>
+    <string name="ai_chat_loading_byok_action">Ayarla</string>
 </resources>

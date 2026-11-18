@@ -2111,4 +2111,8 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
     <string name="feedback_error_invalid">Server menolak isinya. Periksa judul dan deskripsi, lalu kirim ulang.</string>
     <string name="feedback_error_rate_limited">Terlalu sering mengirim. Tunggu beberapa detik lalu kirim ulang.</string>
     <string name="feedback_error_server">Server tidak menyimpannya kali ini. Tulisanmu tetap tersimpan — kirim ulang sebentar lagi.</string>
+
+    <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
+    <string name="ai_chat_loading_byok_hint">Lewati antrean dengan kunci API Anda</string>
+    <string name="ai_chat_loading_byok_action">Atur</string>
 </resources>

@@ -2122,4 +2122,8 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
     <string name="feedback_error_invalid">Der Server hat den Inhalt abgelehnt. Prüfe Titel und Beschreibung und sende erneut.</string>
     <string name="feedback_error_rate_limited">Zu viele Versuche. Warte ein paar Sekunden und sende erneut.</string>
     <string name="feedback_error_server">Der Server konnte es diesmal nicht speichern. Dein Text bleibt erhalten – gleich noch einmal senden.</string>
+
+    <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
+    <string name="ai_chat_loading_byok_hint">Warteschlange mit eigenem API-Schlüssel umgehen</string>
+    <string name="ai_chat_loading_byok_action">Einrichten</string>
 </resources>

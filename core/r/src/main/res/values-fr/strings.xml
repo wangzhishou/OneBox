@@ -2110,4 +2110,8 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="feedback_error_invalid">Le serveur a refusé le contenu. Vérifie le titre et la description, puis renvoie.</string>
     <string name="feedback_error_rate_limited">Trop de tentatives. Attends quelques secondes puis renvoie.</string>
     <string name="feedback_error_server">Le serveur n\'a pas pu l\'enregistrer cette fois. Ton texte est conservé : renvoie-le dans un instant.</string>
+
+    <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
+    <string name="ai_chat_loading_byok_hint">Évitez la file avec votre clé API</string>
+    <string name="ai_chat_loading_byok_action">Configurer</string>
 </resources>
