@@ -41,6 +41,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
 import com.t8rin.imagetoolbox.core.data.utils.getPath
@@ -205,7 +206,7 @@ fun CodeEditorScreen(
 
     BaseScreen(
         modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-        title = resolveTitle(uiState),
+        title = resolveTitle(uiState).ifBlank { stringResource(R.string.code_editor_title) },
         onGoBack = { handleActionWithConfirm { component.onGoBack() } },
         supportGlassEffect = false,
         isBackHandler = false,

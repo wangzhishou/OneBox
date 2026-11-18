@@ -36,6 +36,21 @@ fun CodeEditorState.insertText(text: String) {
     )
 }
 
+fun CodeEditorState.wrapSelection(prefix: String, suffix: String) {
+    val selection = value.selection
+    val selected = value.text.substring(selection.min, selection.max)
+    val replacement = prefix + selected + suffix
+    applyEdit(
+        range = selection.min..(selection.max - 1),
+        replacement = replacement,
+        selectionAfter = if (selection.collapsed) {
+            TextRange(selection.min + prefix.length)
+        } else {
+            TextRange(selection.min + replacement.length)
+        },
+    )
+}
+
 fun CodeEditorState.deleteSelection() {
     val selection = value.selection
     if (selection.collapsed) return

@@ -23,6 +23,7 @@ import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -34,6 +35,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,6 +45,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -76,6 +79,9 @@ import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.wanbaohe.markdown.edit.component.MarkdownEditorComponent
 import com.wanbaohe.markdown.edit.component.MarkdownEditorUiState
 import com.wanbaohe.markdown.edit.export.NativeMarkdownPdfExporter
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
 
 /**
@@ -102,6 +108,7 @@ fun MarkdownEditorScreen(
     var pendingAction by remember { mutableStateOf<(() -> Unit)?>(null) }
     var showMenu by remember { mutableStateOf(false) }
     val showClearHistoryDialog = remember { mutableStateOf(false) }
+    var restoredDraftKey by remember { mutableStateOf<String?>(null) }
 
     // 文件保存器（用于新建文件或另存为）
     val fileSaver = rememberFileCreator(
@@ -152,10 +159,29 @@ fun MarkdownEditorScreen(
     }
 
     // 异步加载或切换文件时同步到 Native 编辑器；用户输入不会回写 uiState.content。
-    LaunchedEffect(uiState.content, uiState.isLoading) {
-        if (!uiState.isLoading) {
+    LaunchedEffect(uiState.content, uiState.isLoading, uiState.loadFailed) {
+        if (!uiState.isLoading && !uiState.loadFailed) {
             editorState.load(uiState.content)
+            val draftKey = component.draftKey()
+            if (restoredDraftKey != draftKey) {
+                restoredDraftKey = draftKey
+                component.restoreDraft()?.let { draft ->
+                    editorState.load(draft)
+                    component.markAsDirty()
+                    AppToastHost.showToast(
+                        context.getString(com.shifenmiao.common.R.string.native_editor_draft_restored)
+                    )
+                }
+            }
         }
+    }
+    LaunchedEffect(editorState) {
+        snapshotFlow { editorState.userContentVersion }
+            .drop(1)
+            .collectLatest {
+                delay(DRAFT_SAVE_DEBOUNCE_MS)
+                component.persistDraft(editorState.exportMarkdown())
+            }
     }
 
     // 处理带确认的操作
@@ -239,8 +265,12 @@ fun MarkdownEditorScreen(
                             onClick = {
                                 showMenu = false
                                 handleActionWithConfirm {
+                                    component.discardDraft()
+                                    component.discardDraft("markdown_new_file")
                                     component.newFile()
-                                            }
+                                    editorState.load("")
+                                    restoredDraftKey = component.draftKey()
+                                }
                             },
                             leadingIcon = {
                                 Icon(
@@ -476,16 +506,27 @@ fun MarkdownEditorScreen(
             }
         },
         dismissButton = {
-            CancelButton(
-                stringResource(R.string.discard)
-            ) {
-                showExitConfirmDialog = false
-                val action = pendingAction
-                pendingAction = null
-                // 有 pendingAction (从"新建/打开/历史"menu 触发) → 执行该动作
-                // 没有 pendingAction (从返回键触发) → 退出页面
-                if (action != null) action.invoke()
-                else component.onGoBack()
+            Row {
+                CancelButton(
+                    stringResource(R.string.discard)
+                ) {
+                    showExitConfirmDialog = false
+                    component.discardDraft()
+                    val action = pendingAction
+                    pendingAction = null
+                    // 有 pendingAction (从"新建/打开/历史"menu 触发) → 执行该动作
+                    // 没有 pendingAction (从返回键触发) → 退出页面
+                    if (action != null) action.invoke()
+                    else component.onGoBack()
+                }
+                TextButton(
+                    onClick = {
+                        showExitConfirmDialog = false
+                        pendingAction = null
+                    }
+                ) {
+                    Text(stringResource(com.shifenmiao.common.R.string.note_keep_editing))
+                }
             }
         }
     )
@@ -509,3 +550,5 @@ private fun resolveTitle(uiState: MarkdownEditorUiState): String {
         else -> ""  // 新建状态:标题空白
     }
 }
+
+private const val DRAFT_SAVE_DEBOUNCE_MS = 800L

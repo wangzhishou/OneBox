@@ -129,7 +129,7 @@ class MarkdownDocumentEditorState internal constructor(
                 mode = nextMode
             }
 
-            MarkdownEditorMode.Edit -> {
+            MarkdownEditorMode.Edit, MarkdownEditorMode.Preview -> {
                 if (mode == MarkdownEditorMode.Source) {
                     decodeMarkdown(sourceState.text.toString(), resetHistory = true) {
                         mode = nextMode
@@ -138,8 +138,6 @@ class MarkdownDocumentEditorState internal constructor(
                     mode = nextMode
                 }
             }
-
-            MarkdownEditorMode.Preview -> mode = nextMode
         }
     }
 
@@ -171,6 +169,10 @@ class MarkdownDocumentEditorState internal constructor(
         return id
     }
 
+    val isEmpty: Boolean
+        get() = blocks.size == 1 &&
+            (blocks.first() as? MarkdownEditorBlock.RichText)?.state?.text?.isEmpty() == true
+
     fun richTextState(): RichTextEditorState? {
         val active = blocks.filterIsInstance<MarkdownEditorBlock.RichText>()
         val activeId = activeBlockId ?: return active.lastOrNull()?.state
@@ -178,11 +180,60 @@ class MarkdownDocumentEditorState internal constructor(
     }
 
     fun insertTextBlock() {
-        insertBlock(newRichTextBlock(newBlockId(), RichTextSnapshot.Empty))
+        when (mode) {
+            MarkdownEditorMode.Source -> insertSourceBlock("")
+            MarkdownEditorMode.Preview -> {
+                mode = MarkdownEditorMode.Edit
+                insertBlock(newRichTextBlock(newBlockId(), RichTextSnapshot.Empty))
+            }
+            MarkdownEditorMode.Edit -> insertBlock(newRichTextBlock(newBlockId(), RichTextSnapshot.Empty))
+        }
     }
 
     fun insertRawBlock(kind: MarkdownRawBlockKind, markdown: String) {
-        insertBlock(MarkdownEditorBlock.Raw(newBlockId(), kind, markdown))
+        when (mode) {
+            MarkdownEditorMode.Source -> insertSourceBlock(markdown)
+            MarkdownEditorMode.Preview -> {
+                mode = MarkdownEditorMode.Edit
+                insertBlock(MarkdownEditorBlock.Raw(newBlockId(), kind, markdown))
+            }
+            MarkdownEditorMode.Edit -> insertBlock(MarkdownEditorBlock.Raw(newBlockId(), kind, markdown))
+        }
+    }
+
+    fun insertSourceText(markdown: String) {
+        val source = sourceState.text.toString()
+        val start = sourceState.selection.min.coerceIn(0, source.length)
+        val end = sourceState.selection.max.coerceIn(start, source.length)
+        sourceState.edit {
+            replace(start, end, markdown)
+            selection = TextRange(start + markdown.length)
+        }
+        notifyContentChanged()
+    }
+
+    private fun insertSourceBlock(markdown: String) {
+        val source = sourceState.text.toString()
+        val start = sourceState.selection.min.coerceIn(0, source.length)
+        val end = sourceState.selection.max.coerceIn(start, source.length)
+        val before = source.substring(0, start)
+        val after = source.substring(end)
+        val prefix = when {
+            before.isEmpty() || before.endsWith("\n\n") -> ""
+            before.endsWith('\n') -> "\n"
+            else -> "\n\n"
+        }
+        val suffix = when {
+            after.isEmpty() || after.startsWith("\n\n") -> ""
+            after.startsWith('\n') -> "\n"
+            else -> "\n\n"
+        }
+        val insertion = prefix + markdown + suffix
+        sourceState.edit {
+            replace(start, end, insertion)
+            selection = TextRange(start + prefix.length + markdown.length)
+        }
+        notifyContentChanged()
     }
 
     fun removeBlock(blockId: String) {

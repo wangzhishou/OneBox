@@ -24,6 +24,7 @@ import android.net.Uri
 import androidx.compose.runtime.Immutable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnDestroy
+import com.shifenmiao.common.editor.EditorDraftRepository
 import com.shifenmiao.common.recent.RecentAccessRepository
 import com.shifenmiao.core.R
 import com.shifenmiao.database.data_draft.DataDraftHelper
@@ -36,7 +37,6 @@ import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
 import com.t8rin.imagetoolbox.core.domain.saving.FilenameCreator
 import com.wanbaohe.code.editor.CodeEditorDataStore
-import com.wanbaohe.code.editor.draft.CodeEditorDraftRepository
 import com.wanbaohe.codeeditor.CodeLanguage
 import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
@@ -87,7 +87,7 @@ private val TEXT_EXTENSIONS = setOf(
  * Phase 6：完整业务能力
  * - 文件 I/O（loadFile / saveToExistingFile / saveToNewFile / newFile）
  * - 历史记录（基于 [RecentAccessRepository]，与项目共用）
- * - 草稿自动保存（web 端 localStorage + Kotlin 端 dirty 标记）
+ * - 草稿自动保存（共享 MMKV 持久草稿 + dirty 标记）
  * - editDraftId 模式（基于 [CodeEditorDataStore]，保存后通过 EventBus 回传）
  */
 @Suppress("LongParameterList", "TooManyFunctions") // Decompose 组件：assisted + 注入依赖与文件/历史/草稿流程都收在这里
@@ -100,7 +100,7 @@ class CodeEditorComponent @AssistedInject internal constructor(
     private val recentAccessRepository: RecentAccessRepository,
     private val filenameCreator: FilenameCreator,
     private val dataDraftHelper: DataDraftHelper,
-    private val draftRepository: CodeEditorDraftRepository,
+    private val draftRepository: EditorDraftRepository,
     dispatchersHolder: DispatchersHolder
 ) : BaseComponent(dispatchersHolder, componentContext) {
 

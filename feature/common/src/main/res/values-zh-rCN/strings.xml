@@ -250,5 +250,6 @@
     <string name="native_editor_task_delete_item">删除待办</string>
     <string name="native_editor_task_item_hint">待办事项</string>
     <string name="native_editor_source_hint">在这里直接编辑 Markdown 源码。</string>
+    <string name="native_editor_draft_restored">已恢复上次未保存的草稿</string>
 </resources>
 

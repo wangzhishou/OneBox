@@ -30,6 +30,7 @@
     <string name="code_editor_cut">Cut</string>
     <string name="code_editor_indent">Indent</string>
     <string name="code_editor_outdent">Outdent</string>
+    <string name="code_editor_symbols">Symbols</string>
     <string name="code_editor_comment">Comment</string>
     <string name="code_editor_duplicate_line">Duplicate line</string>
     <string name="code_editor_move_line_up">Move line up</string>

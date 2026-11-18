@@ -113,6 +113,13 @@ internal fun rememberNativeMarkdownStyleScheme(): RichTextStyleScheme {
                 markdownPrefix = "#### ",
                 fontWeight = FontWeight.Medium,
             ),
+            RichTextBlockStyle.heading(
+                id = NATIVE_EDITOR_HEADING_5_ID,
+                label = "H5",
+                fontSize = HEADING_5_SIZE,
+                lineHeight = HEADING_5_LINE_HEIGHT,
+                markdownPrefix = "##### ",
+            ),
             RichTextBlockStyle(
                 id = NATIVE_EDITOR_QUOTE_ID,
                 label = quoteLabel,
@@ -153,9 +160,10 @@ internal fun rememberNativeMarkdownStyleScheme(): RichTextStyleScheme {
 
 internal const val NATIVE_EDITOR_HEADING_3_ID = "heading_3"
 internal const val NATIVE_EDITOR_HEADING_4_ID = "heading_4"
+internal const val NATIVE_EDITOR_HEADING_5_ID = "heading_5"
 internal const val NATIVE_EDITOR_QUOTE_ID = "quote"
 
-// 与 libs/markdown MarkdownTypography 的 h1–h4 保持一致（改一处必须同步另一处）。
+// 与 libs/markdown MarkdownTypography 的 h1–h5 保持一致（改一处必须同步另一处）。
 internal val HEADING_1_SIZE = 18.sp
 internal val HEADING_1_LINE_HEIGHT = 26.sp
 internal val HEADING_2_SIZE = 17.sp
@@ -164,3 +172,5 @@ internal val HEADING_3_SIZE = 16.sp
 internal val HEADING_3_LINE_HEIGHT = 24.sp
 internal val HEADING_4_SIZE = 15.sp
 internal val HEADING_4_LINE_HEIGHT = 22.sp
+internal val HEADING_5_SIZE = 14.sp
+internal val HEADING_5_LINE_HEIGHT = 20.sp

@@ -54,6 +54,7 @@ import com.wanbaohe.codeeditor.moveLines
 import com.wanbaohe.codeeditor.outdentSelection
 import com.wanbaohe.codeeditor.selectAll
 import com.wanbaohe.codeeditor.toggleComment
+import com.wanbaohe.codeeditor.wrapSelection
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import androidx.compose.material.icons.Icons as MaterialIcons
 import com.t8rin.imagetoolbox.core.resources.Icons as OneBoxIcons
@@ -64,9 +65,10 @@ internal fun codeEditorDockActions(
     state: CodeEditorState,
     clipboard: PlainTextClipboard,
     onFind: () -> Unit,
+    onSymbols: () -> Unit,
 ): List<NativeEditorDockAction> =
     dockHistoryActions(state = state, onFind = onFind) +
-        dockEditActions(state = state) +
+        dockEditActions(state = state, onSymbols = onSymbols) +
         dockClipboardActions(state = state, clipboard = clipboard)
 
 @Composable
@@ -99,7 +101,10 @@ private fun dockHistoryActions(
 )
 
 @Composable
-private fun dockEditActions(state: CodeEditorState): List<NativeEditorDockAction> = listOf(
+private fun dockEditActions(
+    state: CodeEditorState,
+    onSymbols: () -> Unit,
+): List<NativeEditorDockAction> = listOf(
     NativeEditorDockAction(
         id = "indent",
         label = stringResource(R.string.code_editor_indent),
@@ -111,6 +116,12 @@ private fun dockEditActions(state: CodeEditorState): List<NativeEditorDockAction
         label = stringResource(R.string.code_editor_outdent),
         glyph = "⇤",
         onClick = state::outdentSelection,
+    ),
+    NativeEditorDockAction(
+        id = "symbols",
+        label = stringResource(R.string.code_editor_symbols),
+        glyph = "{}",
+        onClick = onSymbols,
     ),
     NativeEditorDockAction(
         id = "comment",
@@ -181,6 +192,25 @@ private fun dockClipboardActions(
         onClick = state::selectAll,
     ),
 )
+
+@Composable
+internal fun CodeEditorSymbolMenu(
+    expanded: Boolean,
+    onDismiss: () -> Unit,
+    state: CodeEditorState,
+) {
+    EnhancedDropdownMenu(expanded = expanded, onDismissRequest = onDismiss) {
+        listOf("{}", "[]", "()", "<>", "\"\"", "''").forEach { symbol ->
+            DropdownMenuItem(
+                text = { Text(symbol) },
+                onClick = {
+                    onDismiss()
+                    state.wrapSelection(symbol.substring(0, 1), symbol.substring(1, 2))
+                },
+            )
+        }
+    }
+}
 
 /** 工具坞左侧的语言芯片：点开切换高亮语言。 */
 @Composable

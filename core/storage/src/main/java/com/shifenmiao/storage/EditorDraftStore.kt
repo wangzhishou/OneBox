@@ -22,7 +22,7 @@ package com.shifenmiao.storage
 import com.tencent.mmkv.MMKV
 
 /**
- * 代码编辑器未保存草稿（进程被杀后恢复）。
+ * 文本编辑器未保存草稿（进程被杀后恢复）。
  *
  * 每个「文件 / 新建页」一个桶，桶里同时存：
  * - `original`：进入编辑器时从磁盘读到的正文；
@@ -32,7 +32,7 @@ import com.tencent.mmkv.MMKV
  * 或者换了同名文件时，旧草稿会直接作废，不会把磁盘内容盖回去。
  * 存储走 MMKV（同步、进程被杀也不丢），按最近使用时间只保留 [MAX_DRAFTS] 份。
  */
-object CodeEditorDraftStore {
+object EditorDraftStore {
 
     private val mmkv: MMKV = MMKV.mmkvWithID(MMKVName.CODE_EDITOR_DRAFT)
 

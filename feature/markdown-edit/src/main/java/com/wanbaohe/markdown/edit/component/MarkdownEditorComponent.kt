@@ -31,6 +31,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.arkivanov.essenty.lifecycle.doOnDestroy
+import com.shifenmiao.common.editor.EditorDraftRepository
 import com.shifenmiao.common.recent.RecentAccessRepository
 import com.shifenmiao.core.R
 import com.shifenmiao.database.data_draft.DataDraftHelper
@@ -132,6 +133,7 @@ class MarkdownEditorComponent @AssistedInject internal constructor(
     private val filenameCreator: FilenameCreator,
     private val dataDraftHelper: DataDraftHelper,
     private val recentAccessRepository: RecentAccessRepository,
+    private val draftRepository: EditorDraftRepository,
     dispatchersHolder: DispatchersHolder
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
@@ -143,6 +145,11 @@ class MarkdownEditorComponent @AssistedInject internal constructor(
         componentContext.instanceKeeper.getOrCreate(draftStateKey) { DraftHolder(draft = null) }
 
     private val restoredDraft: DraftState? = draftHolder.draft
+    private val newFileDraft = if (restoredDraft == null && editDraftId == 0L && initialUri == null) {
+        draftRepository.load("markdown_new_file")
+    } else {
+        null
+    }
 
     private val _uiState = MutableStateFlow(
         restoredDraft?.let {
@@ -156,7 +163,8 @@ class MarkdownEditorComponent @AssistedInject internal constructor(
             )
         } ?: MarkdownEditorUiState(
             editDraftId = editDraftId,
-            editTitle = editTitle
+            editTitle = editTitle,
+            isLoading = editDraftId == 0L && initialUri == null
         )
     )
     val uiState = _uiState.asStateFlow()
@@ -219,12 +227,16 @@ class MarkdownEditorComponent @AssistedInject internal constructor(
                     .bufferedReader()
                     .use { it.readText() }
 
+                val recovered = newFileDraft?.takeIf { draft ->
+                    draft.text != draft.originalText &&
+                        (draft.originalText.isEmpty() || draft.originalText == content)
+                }?.text
                 withContext(Dispatchers.Main) {
                     _uiState.update {
                         it.copy(
-                            content = content,
+                            content = recovered ?: content,
                             fileName = null, // 不设置文件名，表示是新文档
-                            isDirty = false,
+                            isDirty = recovered != null,
                             isLoading = false
                         )
                     }
@@ -250,6 +262,46 @@ class MarkdownEditorComponent @AssistedInject internal constructor(
      */
     fun markAsDirty() {
         _uiState.update { it.copy(isDirty = true) }
+    }
+
+    fun draftKey(): String = when {
+        isEditMode() -> "markdown_edit_$editDraftId"
+        _uiState.value.fileUri != null -> "markdown_file_${_uiState.value.fileUri}"
+        else -> "markdown_new_file"
+    }
+
+    suspend fun restoreDraft(): String? {
+        val key = draftKey()
+        val draft = draftRepository.load(key) ?: return null
+        val currentContent = _uiState.value.content
+        if (currentContent == draft.text) return draft.text
+        val originalMatches = draft.originalText == currentContent ||
+            (_uiState.value.fileUri == null && draft.originalText.isEmpty() && !isEditMode())
+        if (!originalMatches || draft.text == draft.originalText) {
+            draftRepository.clear(key)
+            return null
+        }
+        return draft.text
+    }
+
+    suspend fun persistDraft(content: String) {
+        if (isEditMode()) {
+            EditorDataStore.update(dataDraftHelper, editDraftId, content)
+        } else {
+            draftRepository.save(
+                draftKey = draftKey(),
+                originalText = _uiState.value.content,
+                draftText = content,
+            )
+        }
+    }
+
+    suspend fun clearDraft(key: String = draftKey()) {
+        if (!isEditMode()) draftRepository.clear(key)
+    }
+
+    fun discardDraft(key: String = draftKey()) {
+        if (!isEditMode()) draftRepository.clear(key)
     }
 
     /**
@@ -338,10 +390,12 @@ class MarkdownEditorComponent @AssistedInject internal constructor(
 
                 // 更新历史记录
                 recordRecent(uri, displayName)
+                draftRepository.clear(draftKey())
 
                 withContext(Dispatchers.Main) {
                     _uiState.update {
                         it.copy(
+                            content = content,
                             fileName = displayName,
                             isDirty = false,
                             isSaving = false,
@@ -384,6 +438,7 @@ class MarkdownEditorComponent @AssistedInject internal constructor(
         onSuccess: (SaveResult.Success) -> Unit,
         onFailure: (String) -> Unit
     ) {
+        val previousDraftKey = draftKey()
         _uiState.update { it.copy(isSaving = true, errorMessage = null) }
 
         componentScope.launch(ioDispatcher) {
@@ -400,10 +455,12 @@ class MarkdownEditorComponent @AssistedInject internal constructor(
 
                 // 记录到历史
                 recordRecent(uri, displayName)
+                draftRepository.clear(previousDraftKey)
 
                 withContext(Dispatchers.Main) {
                     _uiState.update {
                         it.copy(
+                            content = content,
                             fileName = displayName, // 使用文章标题作为显示名称
                             fileUri = uri,
                             isDirty = false,

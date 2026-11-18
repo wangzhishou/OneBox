@@ -30,6 +30,7 @@
     <string name="code_editor_cut">剪切</string>
     <string name="code_editor_indent">缩进</string>
     <string name="code_editor_outdent">反缩进</string>
+    <string name="code_editor_symbols">符号</string>
     <string name="code_editor_comment">注释</string>
     <string name="code_editor_duplicate_line">复制当前行</string>
     <string name="code_editor_move_line_up">上移一行</string>

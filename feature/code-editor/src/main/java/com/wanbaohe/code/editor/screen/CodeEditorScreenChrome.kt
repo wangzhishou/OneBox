@@ -23,6 +23,7 @@
 package com.wanbaohe.code.editor.screen
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
@@ -30,6 +31,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -208,7 +210,12 @@ internal fun CodeEditorExitDialog(
             ConfirmButton(stringResource(R.string.save_file), onClick = onSaveAndExit)
         },
         dismissButton = {
-            CancelButton(stringResource(R.string.discard), onClick = onDiscard)
+            Row {
+                CancelButton(stringResource(R.string.discard), onClick = onDiscard)
+                TextButton(onClick = onDismiss) {
+                    Text(stringResource(com.shifenmiao.common.R.string.note_keep_editing))
+                }
+            }
         },
     )
 }

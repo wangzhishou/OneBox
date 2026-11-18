@@ -2,14 +2,26 @@
 
 package com.shifenmiao.common.editor
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import com.shifenmiao.common.R
 import com.t8rin.imagetoolbox.core.resources.icons.Mic
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineArrowDropDown
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.wanbaohe.richtext.editor.command.applyBlockStyle
 import com.wanbaohe.richtext.editor.command.currentBlockStyle
 import com.wanbaohe.richtext.editor.command.isInlineStyleActive
@@ -31,16 +43,24 @@ internal fun NativeMarkdownEditorDock(
     onInsert: (NativeEditorInsertKind) -> Unit = {},
     onVoiceInput: (() -> Unit)? = null,
 ) {
-    NativeEditorDock(
-        actions = markdownDockActions(
+    var showInsertMenu by remember { mutableStateOf(false) }
+    Box(modifier = modifier) {
+        NativeEditorDock(
+            actions = markdownDockActions(
+                state = state,
+                extraActions = extraActions,
+                onShowInsert = { showInsertMenu = true },
+                onVoiceInput = onVoiceInput,
+            ),
+            leading = { expanded -> NativeMarkdownEditorModeToggle(state = state, expanded = expanded) },
+        )
+        NativeEditorInsertMenu(
+            expanded = showInsertMenu,
+            onDismiss = { showInsertMenu = false },
             state = state,
-            extraActions = extraActions,
             onInsert = onInsert,
-            onVoiceInput = onVoiceInput,
-        ),
-        modifier = modifier,
-        leading = { expanded -> NativeMarkdownEditorModeToggle(state = state, expanded = expanded) },
-    )
+        )
+    }
 }
 
 @Composable
@@ -48,38 +68,48 @@ private fun NativeMarkdownEditorModeToggle(
     state: NativeMarkdownEditorState,
     expanded: Boolean,
 ) {
-    val current = if (state.mode == NativeMarkdownEditorMode.Source) {
-        NativeMarkdownEditorMode.Source
-    } else {
-        NativeMarkdownEditorMode.Edit
+    var menuExpanded by remember { mutableStateOf(false) }
+    Box {
+        NativeEditorDockChip(
+            label = stringResource(state.mode.labelRes()),
+            icon = OneBoxIcons.Outlined.LineArrowDropDown,
+            expanded = expanded,
+            onClick = { menuExpanded = true },
+        )
+        EnhancedDropdownMenu(
+            expanded = menuExpanded,
+            onDismissRequest = { menuExpanded = false },
+        ) {
+            NativeMarkdownEditorMode.entries.forEach { mode ->
+                DropdownMenuItem(
+                    text = { Text(stringResource(mode.labelRes())) },
+                    leadingIcon = { Icon(mode.icon(), contentDescription = null) },
+                    trailingIcon = {
+                        if (mode == state.mode) {
+                            Icon(Icons.Filled.Check, contentDescription = null)
+                        }
+                    },
+                    onClick = {
+                        menuExpanded = false
+                        state.selectMode(mode)
+                    },
+                )
+            }
+        }
     }
-    NativeEditorDockChip(
-        label = stringResource(current.labelRes()),
-        icon = current.icon(),
-        expanded = expanded,
-        onClick = {
-            state.selectMode(
-                if (current == NativeMarkdownEditorMode.Edit) {
-                    NativeMarkdownEditorMode.Source
-                } else {
-                    NativeMarkdownEditorMode.Edit
-                }
-            )
-        },
-    )
 }
 
 @Composable
 private fun markdownDockActions(
     state: NativeMarkdownEditorState,
     extraActions: List<NativeEditorExtraAction>,
-    onInsert: (NativeEditorInsertKind) -> Unit,
+    onShowInsert: () -> Unit,
     onVoiceInput: (() -> Unit)?,
 ): List<NativeEditorDockAction> =
     historyActions(state = state, onVoiceInput = onVoiceInput) +
         inlineStyleActions(state = state) +
         blockStyleActions(state = state) +
-        insertActions(state = state, onInsert = onInsert) +
+        insertActions(state = state, onShowInsert = onShowInsert) +
         extraActions.mapIndexed { index, action ->
             NativeEditorDockAction(
                 id = "extra_$index",
@@ -136,7 +166,7 @@ private fun inlineStyleActions(state: NativeMarkdownEditorState): List<NativeEdi
             glyph = definition.glyph,
             glyphStyle = inlineGlyphStyle(definition.id),
             selected = editor?.isInlineStyleActive(definition.id, scheme) == true,
-            enabled = editor != null,
+            enabled = editor != null && state.mode == NativeMarkdownEditorMode.Edit,
             dividerBefore = index == 0,
             onClick = { editor?.toggleInlineStyle(definition.id, scheme) },
         )
@@ -157,7 +187,7 @@ private fun blockStyleActions(state: NativeMarkdownEditorState): List<NativeEdit
                 label = bodyStyle.label,
                 glyph = "T",
                 selected = activeBlockStyleId == bodyStyle.id,
-                enabled = editor != null,
+                enabled = editor != null && state.mode == NativeMarkdownEditorMode.Edit,
                 dividerBefore = true,
                 onClick = { onApply(bodyStyle.id) },
             )
@@ -172,7 +202,7 @@ private fun blockStyleActions(state: NativeMarkdownEditorState): List<NativeEdit
                             label = stringResource(spec.labelRes),
                         ),
                         activeBlockStyleId = activeBlockStyleId,
-                        enabled = editor != null,
+                        enabled = editor != null && state.mode == NativeMarkdownEditorMode.Edit,
                         onApply = onApply,
                     )
                 )
@@ -183,7 +213,7 @@ private fun blockStyleActions(state: NativeMarkdownEditorState): List<NativeEdit
                 blockStyleAction(
                     spec = BlockStyleSpec(style = style, glyph = "❝", label = style.label),
                     activeBlockStyleId = activeBlockStyleId,
-                    enabled = editor != null,
+                    enabled = editor != null && state.mode == NativeMarkdownEditorMode.Edit,
                     onApply = onApply,
                 )
             )

@@ -22,7 +22,7 @@ internal class MarkdownRawBlockClassifier(
         line.startsWith("    ") ||
             line.startsWith('\t') ||
             line.startsWith('|') ||
-            line.startsWith("#####") ||
+            line.startsWith("######") ||
             line.startsWith("<") && !line.startsWith("<u>")
 
     private fun hasRawInlineSyntax(line: String): Boolean =
@@ -35,8 +35,7 @@ internal class MarkdownRawBlockClassifier(
             line.contains(SingleTildeRegex) ||
             line.contains(AlertRegex)
 
-    private fun isRawList(line: String): Boolean =
-        OrderedListRegex.matches(line) || TaskListRegex.matches(line)
+    private fun isRawList(line: String): Boolean = TaskListRegex.matches(line)
 
     private companion object {
         val MediaImageRegex = Regex("!\\[|!VIDEO\\[|!AUDIO\\[")

@@ -250,4 +250,5 @@
     <string name="native_editor_task_delete_item">Delete item</string>
     <string name="native_editor_task_item_hint">To-do item</string>
     <string name="native_editor_source_hint">Edit Markdown source here.</string>
+    <string name="native_editor_draft_restored">Restored the unsaved draft from last time</string>
 </resources>

@@ -277,7 +277,7 @@ enum class CodeLanguage(
     PlainText(
         key = "plaintext",
         lexerKey = "plaintext",
-        displayName = "Text",
+        displayName = "Plain Text",
         extensions = listOf("txt", "log", "ini", "conf", "cfg", "properties", "csv", "gitignore", "editorconfig"),
     ),
     ;

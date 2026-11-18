@@ -23,10 +23,15 @@
 package com.shifenmiao.common.editor
 
 import androidx.compose.material.icons.outlined.AccountTree
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.PlayCircle
 import androidx.compose.material.icons.outlined.TextFields
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -35,6 +40,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineAudioFile
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCheckBoxBlank
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLink
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTableChart
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.wanbaohe.richtext.editor.command.isListActive
 import com.wanbaohe.richtext.editor.command.toggleList
 import com.wanbaohe.richtext.editor.markdown.MarkdownRawBlockKind
@@ -48,11 +54,14 @@ import com.t8rin.imagetoolbox.core.resources.Icons as OneBoxIcons
 @Composable
 internal fun insertActions(
     state: NativeMarkdownEditorState,
-    onInsert: (NativeEditorInsertKind) -> Unit,
-): List<NativeEditorDockAction> =
-    insertContentActions(state = state) +
-        insertRawBlockActions(state = state) +
-        insertMediaActions(onInsert = onInsert)
+    onShowInsert: () -> Unit,
+): List<NativeEditorDockAction> = insertContentActions(state = state) + NativeEditorDockAction(
+    id = "insert",
+    label = stringResource(R.string.native_editor_insert_action),
+    icon = MaterialIcons.Outlined.Add,
+    dividerBefore = true,
+    onClick = onShowInsert,
+)
 
 @Composable
 private fun insertContentActions(state: NativeMarkdownEditorState): List<NativeEditorDockAction> {
@@ -64,15 +73,9 @@ private fun insertContentActions(state: NativeMarkdownEditorState): List<NativeE
             label = stringResource(com.wanbaohe.richtext.editor.R.string.rich_text_bullet_list),
             glyph = "•",
             selected = editor?.isListActive(scheme) == true,
-            enabled = editor != null,
+            enabled = editor != null && state.mode == NativeMarkdownEditorMode.Edit,
             dividerBefore = true,
             onClick = { editor?.toggleList(scheme) },
-        ),
-        NativeEditorDockAction(
-            id = "insert_text",
-            label = stringResource(R.string.native_editor_insert_text),
-            icon = MaterialIcons.Outlined.TextFields,
-            onClick = state::insertTextBlock,
         ),
     )
 }
@@ -148,6 +151,55 @@ private fun insertMediaActions(
         onClick = { onInsert(NativeEditorInsertKind.Video) },
     ),
 )
+
+@Composable
+internal fun NativeEditorInsertMenu(
+    expanded: Boolean,
+    onDismiss: () -> Unit,
+    state: NativeMarkdownEditorState,
+    onInsert: (NativeEditorInsertKind) -> Unit,
+) {
+    val rawActions = insertRawBlockActions(state)
+    val mediaActions = insertMediaActions(onInsert)
+    EnhancedDropdownMenu(expanded = expanded, onDismissRequest = onDismiss) {
+        if (state.mode != NativeMarkdownEditorMode.Source) {
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.native_editor_insert_text)) },
+                leadingIcon = {
+                    Icon(MaterialIcons.Outlined.TextFields, contentDescription = null)
+                },
+                onClick = {
+                    onDismiss()
+                    state.insertTextBlock()
+                },
+            )
+        }
+        rawActions.forEach { action ->
+            InsertMenuItem(action = action, onDismiss = onDismiss)
+        }
+        HorizontalDivider()
+        mediaActions.forEach { action ->
+            InsertMenuItem(action = action, onDismiss = onDismiss)
+        }
+    }
+}
+
+@Composable
+private fun InsertMenuItem(
+    action: NativeEditorDockAction,
+    onDismiss: () -> Unit,
+) {
+    DropdownMenuItem(
+        text = { Text(action.label) },
+        leadingIcon = {
+            action.icon?.let { Icon(it, contentDescription = null) }
+        },
+        onClick = {
+            onDismiss()
+            action.onClick()
+        },
+    )
+}
 
 /** 插入类原始块动作：同一套「插模板」逻辑，只有图标/标题/块类型不同。 */
 @Suppress("LongParameterList") // 图标/标题/模板/块类型一一对应，拆对象没有收益

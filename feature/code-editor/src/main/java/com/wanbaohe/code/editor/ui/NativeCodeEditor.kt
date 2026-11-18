@@ -33,6 +33,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -64,6 +68,7 @@ fun NativeCodeEditor(
     val clipboard = rememberPlainTextClipboard()
     val theme = rememberNativeCodeEditorTheme()
     val selectionUi = rememberCodeEditorSelectionUi()
+    var showSymbols by remember { mutableStateOf(false) }
 
     LaunchedEffect(state) {
         snapshotFlow { state.userContentVersion }.drop(1).collect { onContentChanged() }
@@ -83,22 +88,30 @@ fun NativeCodeEditor(
         ) {
             CodeEditorFindBar(state = state)
         }
-        NativeEditorDock(
-            actions = codeEditorDockActions(
-                state = state,
-                clipboard = clipboard,
-                onFind = {
-                    if (state.isFindVisible) state.closeFind() else state.openFind()
-                },
-            ),
-            leading = { expanded ->
-                CodeEditorLanguageChip(
+        Box {
+            NativeEditorDock(
+                actions = codeEditorDockActions(
                     state = state,
-                    expanded = expanded,
-                    onLanguageChange = onLanguageChange,
-                )
-            },
-        )
+                    clipboard = clipboard,
+                    onFind = {
+                        if (state.isFindVisible) state.closeFind() else state.openFind()
+                    },
+                    onSymbols = { showSymbols = true },
+                ),
+                leading = { expanded ->
+                    CodeEditorLanguageChip(
+                        state = state,
+                        expanded = expanded,
+                        onLanguageChange = onLanguageChange,
+                    )
+                },
+            )
+            CodeEditorSymbolMenu(
+                expanded = showSymbols,
+                onDismiss = { showSymbols = false },
+                state = state,
+            )
+        }
     }
 
     CodeEditorSelectionMenu(

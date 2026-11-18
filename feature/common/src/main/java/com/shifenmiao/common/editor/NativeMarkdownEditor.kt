@@ -106,18 +106,9 @@ fun NativeMarkdownEditor(
             NativeEditorInsertKind.Audio -> "!AUDIO[${name.ifBlank { "audio" }}]($url)"
             NativeEditorInsertKind.Video -> "!VIDEO[${name.ifBlank { "video" }}]($url)"
         }
-        if (state.mode == NativeMarkdownEditorMode.Source) {
-            val source = state.sourceState.text.toString().trimEnd()
-            val merged = if (source.isBlank()) markdown else "$source\n\n$markdown"
-            state.sourceState.edit {
-                replace(0, length, merged)
-                selection = androidx.compose.ui.text.TextRange(merged.length)
-            }
-            state.notifyContentChanged()
+        if (state.mode == NativeMarkdownEditorMode.Source && kind == NativeEditorInsertKind.Link) {
+            state.insertSourceText(markdown)
             return
-        }
-        if (state.mode == NativeMarkdownEditorMode.Preview) {
-            state.selectMode(NativeMarkdownEditorMode.Edit)
         }
         state.insertRawBlock(
             kind = when (kind) {
@@ -234,8 +225,17 @@ fun NativeMarkdownEditor(
                             selectionAnchorTracker = selectionTracker,
                             // 只给空段落一个可点高度；非空块至少一行 32dp，不会被额外撑高。
                             minHeight = 32.dp,
-                            // 不给占位文案：文档编辑器里每个空段落都会画一次占位，
-                            // 正文上方/中间会莫名多出一行提示；空行本身已经能表达"这里没有内容"。
+                            placeholder = if (state.isEmpty) {
+                                {
+                                    Text(
+                                        text = stringResource(R.string.native_editor_empty_hint),
+                                        style = MaterialTheme.typography.bodyLarge,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    )
+                                }
+                            } else {
+                                null
+                            },
                         ),
                     ),
                     previewContent = { markdown ->
@@ -320,6 +320,7 @@ private fun NativeMarkdownEditorSelectionMenu(
     contextMenuAnchor: Rect,
     onDismissContextMenu: () -> Unit,
 ) {
+    if (state.mode == NativeMarkdownEditorMode.Preview) return
     val editor = state.richTextState() ?: return
     val hasSelection = !editor.selection.collapsed
     if (!hasSelection && !contextMenuVisible) return
