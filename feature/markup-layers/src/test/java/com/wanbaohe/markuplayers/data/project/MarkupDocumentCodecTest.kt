@@ -19,6 +19,7 @@
 
 package com.wanbaohe.markuplayers.data.project
 
+import com.t8rin.imagetoolbox.core.domain.image.export.ImageExportCompressionControl
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
 import com.t8rin.imagetoolbox.core.domain.model.Outline
 import com.t8rin.imagetoolbox.core.filters.presentation.model.UiBrightnessFilter
@@ -80,6 +81,30 @@ class MarkupDocumentCodecTest {
             val restored = MarkupDocumentCodec.decode(MarkupDocumentCodec.encode(document))
             assertEquals(format, restored.exportSettings.format)
         }
+    }
+
+    @Test
+    fun acceptsLegacyExportSettingsWithoutCompressionControl() {
+        val source = baseDocument().copy(
+            exportSettings = ExportSettings(
+                maxFileSizeBytes = 102_400,
+                compressionControl = ImageExportCompressionControl.TargetFileSize,
+            )
+        )
+        val root = Json.parseToJsonElement(MarkupDocumentCodec.encode(source)).jsonObject
+        val document = root.getValue("document").jsonObject
+        val legacyExport = JsonObject(
+            document.getValue("exportSettings").jsonObject - "compressionControl"
+        )
+        val legacy = withDocument(
+            root,
+            JsonObject(document + ("exportSettings" to legacyExport)),
+        )
+        val restored = MarkupDocumentCodec.decode(legacy)
+        assertEquals(
+            ImageExportCompressionControl.TargetFileSize,
+            restored.exportSettings.compressionControl,
+        )
     }
 
     @Test

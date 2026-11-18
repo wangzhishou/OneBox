@@ -13,6 +13,8 @@ package com.shifenmiao.app.watermarking.presentation
 
 import android.Manifest
 import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -55,9 +57,18 @@ import com.shifenmiao.app.watermarking.domain.preset.WatermarkPreset
 import com.shifenmiao.app.watermarking.presentation.components.WatermarkBottomBar
 import com.shifenmiao.app.watermarking.presentation.components.WatermarkPanelHost
 import com.shifenmiao.app.watermarking.presentation.canvas.WatermarkCanvas
-import com.shifenmiao.app.watermarking.presentation.panels.ExportPanel
+import com.shifenmiao.app.watermarking.presentation.panels.WatermarkExportAdvancedOptions
 import com.shifenmiao.app.watermarking.presentation.screenLogic.WatermarkingComponent
+import com.t8rin.imagetoolbox.core.domain.image.export.ImageExportCapabilities
+import com.t8rin.imagetoolbox.core.domain.image.export.ImageExportConfig
+import com.t8rin.imagetoolbox.core.domain.image.export.ImageExportMetadataPolicy
+import com.t8rin.imagetoolbox.core.domain.image.export.ImageExportSummary
+import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
+import com.t8rin.imagetoolbox.core.domain.image.model.Quality
+import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
+import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSimpleSettingsInteractor
 import com.wanbaohe.core.ui.utils.content_pickers.rememberImagePicker
+import com.wanbaohe.core.ui.utils.helper.toModel
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.helper.Clipboard
 import com.wanbaohe.core.ui.utils.helper.ContextUtils.requestPermissions
@@ -66,13 +77,18 @@ import com.wanbaohe.core.ui.widget.utils.AutoContentBasedColors
 import com.wanbaohe.core.ui.widget.buttons.ShareButton
 import com.wanbaohe.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.wanbaohe.core.ui.widget.dialogs.LoadingDialog
-import com.wanbaohe.core.ui.widget.dialogs.OneTimeSaveLocationSelectionDialog
 import com.wanbaohe.core.ui.widget.dialogs.ResetDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.wanbaohe.core.ui.widget.export.ImageExportSection
+import com.wanbaohe.core.ui.widget.export.ImageExportSheet
+import com.wanbaohe.core.ui.widget.glass.GlassSegmentedButtonRow
 import com.wanbaohe.core.ui.widget.image.AutoFilePicker
 import com.wanbaohe.core.ui.widget.image.ImageNotPickedWidget
 import com.wanbaohe.core.ui.widget.sheets.ProcessImagesPreferenceSheet
+import com.t8rin.imagetoolbox.core.utils.fileSize
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun WatermarkingContent(
@@ -99,9 +115,30 @@ fun WatermarkingContent(
     var onlyCurrent by rememberSaveable { mutableStateOf(false) }
     var showExitDialog by rememberSaveable { mutableStateOf(false) }
     var showResetDialog by rememberSaveable { mutableStateOf(false) }
-    var showLocationDialog by rememberSaveable { mutableStateOf(false) }
+    var saveLocationUri by rememberSaveable { mutableStateOf<String?>(null) }
     var isComparing by rememberSaveable { mutableStateOf(false) }
     var editSheetData by remember { mutableStateOf(listOf<Uri>()) }
+    val saveLocationLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.OpenDocumentTree()
+    ) { uri ->
+        saveLocationUri = uri?.toString() ?: saveLocationUri
+    }
+    val settingsState = LocalSettingsState.current
+    val settingsInteractor = LocalSimpleSettingsInteractor.current
+    val settingsScope = rememberCoroutineScope()
+    val exportConfig = ImageExportConfig(
+        format = component.imageFormat,
+        quality = component.quality.qualityValue,
+        metadataPolicy = when {
+            !component.keepExif -> ImageExportMetadataPolicy.RemoveAll
+            component.stripLocationMetadata -> ImageExportMetadataPolicy.KeepWithoutLocation
+            else -> ImageExportMetadataPolicy.KeepAll
+        },
+    )
+    val exportItemCount = if (onlyCurrent || component.privacy.isActive) 1 else component.uris.size
+    val exportBitmap = component.internalBitmap
+    val hiddenWatermarkBlocked = component.document.hiddenWatermark.enabled &&
+        !component.imageFormat.keepsHiddenWatermark()
     val defaultText = stringResource(R.string.watermark_default_text)
     val defaultStamp = stringResource(R.string.watermark_default_stamp)
     val warnIfHiddenWillBeLost = {
@@ -307,67 +344,103 @@ fun WatermarkingContent(
         }
     }
 
-    EnhancedModalBottomSheet(
+    ImageExportSheet(
         visible = showExport,
+        config = exportConfig,
+        capabilities = ImageExportCapabilities(
+            formats = ImageFormat.entries,
+            supportsSaveLocation = true,
+            supportsBackgroundColor = exportBitmap?.hasAlpha() == true,
+            metadataPolicies = ImageExportMetadataPolicy.entries,
+        ),
+        summary = ImageExportSummary(
+            itemCount = exportItemCount,
+            width = exportBitmap?.width,
+            height = exportBitmap?.height,
+            sourceSizeBytes = component.selectedUri.fileSize(),
+        ),
+        estimateBitmap = exportBitmap,
+        saveLocation = saveLocationUri?.let {
+            Uri.parse(it).lastPathSegment?.substringAfterLast(':')
+        },
+        onChooseSaveLocation = { saveLocationLauncher.launch(null) },
+        onConfigChange = component::updateImageExportConfig,
         onDismiss = { showExport = false },
-        title = stringResource(R.string.export),
-    ) {
-        ExportPanel(
-            imageCount = component.uris.size,
-            privacyMode = component.privacy.isActive,
-            onlyCurrent = onlyCurrent,
-            keepExif = component.keepExif,
-            stripLocationMetadata = component.stripLocationMetadata,
-            currentHiddenWatermark = component.currentHiddenWatermark,
-            hiddenWatermark = component.document.hiddenWatermark,
-            supportsHiddenWatermark = component.document.elements.any {
-                it.content is WatermarkContent.Text || it.content is WatermarkContent.Image
-            },
-            imageFormat = component.imageFormat,
-            quality = component.quality,
-            onOnlyCurrentChange = { onlyCurrent = it },
-            onKeepExifChange = component::toggleKeepExif,
-            onStripLocationChange = component::toggleStripLocationMetadata,
-            onHiddenWatermarkChange = component::updateHiddenWatermark,
-            onHiddenRejected = {
-                AppToastHost.showFailureToast(R.string.watermark_hidden_needs_content)
-            },
-            onFormatChange = component::setImageFormat,
-            onQualityChange = component::setQuality,
-            onSave = {
-                showExport = false
-                component.saveBitmaps(
-                    oneTimeSaveLocationUri = null,
-                    onlyCurrent = onlyCurrent,
-                    onResult = component::parseSaveResults,
-                )
-            },
-            onChooseLocation = {
-                // 两个 sheet 同时挂在同一屏会叠加遮罩,先收起导出面板。
-                showExport = false
-                showLocationDialog = true
-            },
-            modifier = Modifier.navigationBarsPadding().padding(16.dp),
-        )
-    }
+        onSave = {
+            showExport = false
+            component.saveBitmaps(
+                oneTimeSaveLocationUri = saveLocationUri,
+                onlyCurrent = onlyCurrent,
+                onResult = component::parseSaveResults,
+            )
+        },
+        onShare = {
+            showExport = false
+            component.shareBitmaps(
+                onlyCurrent = onlyCurrent,
+                onComplete = AppToastHost::showConfetti,
+            )
+        },
+        saveEnabled = component.uris.isNotEmpty() && !component.isSaving,
+        shareEnabled = component.uris.isNotEmpty() && !component.isSaving,
+        blockingMessage = if (hiddenWatermarkBlocked) {
+            stringResource(R.string.watermark_hidden_lossy_warning)
+        } else {
+            null
+        },
+        onFixBlocking = if (hiddenWatermarkBlocked) {
+            { component.setImageFormat(ImageFormat.Png.Lossless) }
+        } else {
+            null
+        },
+        backgroundColor = settingsState.backgroundForNoAlphaImageFormats,
+        onBackgroundColorChange = { color ->
+            settingsScope.launch {
+                settingsInteractor.setBackgroundColorForNoAlphaFormats(color.toModel())
+            }
+        },
+        content = {
+            if (component.uris.size > 1 && !component.privacy.isActive) {
+                ImageExportSection(
+                    title = stringResource(R.string.image_export_items, exportItemCount)
+                ) {
+                    GlassSegmentedButtonRow(
+                        options = listOf(true, false),
+                        selectedOption = onlyCurrent,
+                        onOptionSelected = { onlyCurrent = it },
+                        label = { current ->
+                            Text(
+                                stringResource(
+                                    if (current) R.string.watermark_current_image
+                                    else R.string.watermark_all_images
+                                )
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
+            }
+        },
+        advancedContent = {
+            WatermarkExportAdvancedOptions(
+                currentHiddenWatermark = component.currentHiddenWatermark,
+                hiddenWatermark = component.document.hiddenWatermark,
+                supportsHiddenWatermark = component.document.elements.any {
+                    it.content is WatermarkContent.Text || it.content is WatermarkContent.Image
+                },
+                onHiddenWatermarkChange = component::updateHiddenWatermark,
+                onHiddenRejected = {
+                    AppToastHost.showFailureToast(R.string.watermark_hidden_needs_content)
+                },
+            )
+        },
+    )
 
     ProcessImagesPreferenceSheet(
         uris = editSheetData,
         visible = editSheetData.isNotEmpty(),
         onDismiss = { editSheetData = emptyList() },
         onNavigate = component.onNavigate,
-    )
-    OneTimeSaveLocationSelectionDialog(
-        visible = showLocationDialog,
-        onDismiss = { showLocationDialog = false },
-        onSaveRequest = { uri ->
-            component.saveBitmaps(
-                oneTimeSaveLocationUri = uri,
-                onlyCurrent = onlyCurrent,
-                onResult = component::parseSaveResults,
-            )
-        },
-        formatForFilenameSelection = component.getFormatForFilenameSelection(),
     )
     ResetDialog(
         visible = showResetDialog,
@@ -387,4 +460,25 @@ fun WatermarkingContent(
         onDismiss = { showExitDialog = false },
         visible = showExitDialog,
     )
+}
+
+private fun WatermarkingComponent.updateImageExportConfig(config: ImageExportConfig) {
+    if (imageFormat != config.format) setImageFormat(config.format)
+    val currentQuality = quality
+    val updatedQuality = when {
+        config.format is ImageFormat.Png.Lossy && currentQuality is Quality.PngLossy -> {
+            currentQuality.copy(compressionLevel = config.quality)
+        }
+        (config.format is ImageFormat.Tif || config.format is ImageFormat.Tiff) &&
+            currentQuality is Quality.Tiff -> {
+            currentQuality.copy(compressionScheme = config.quality)
+        }
+        else -> Quality.Base(config.quality)
+    }.coerceIn(config.format)
+    if (quality != updatedQuality) setQuality(updatedQuality)
+
+    val keepExif = config.metadataPolicy != ImageExportMetadataPolicy.RemoveAll
+    val stripLocation = config.metadataPolicy == ImageExportMetadataPolicy.KeepWithoutLocation
+    if (this.keepExif != keepExif) toggleKeepExif(keepExif)
+    if (stripLocationMetadata != stripLocation) toggleStripLocationMetadata(stripLocation)
 }

@@ -25,6 +25,7 @@ import android.os.Build
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.image.ImageCompressor
 import com.t8rin.imagetoolbox.core.domain.image.ImageScaler
+import com.t8rin.imagetoolbox.core.domain.image.export.ImageExportCompressionControl
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageScaleMode
 import com.t8rin.imagetoolbox.core.domain.image.model.Quality
@@ -109,7 +110,9 @@ class MarkupExportEncoder @Inject constructor(
             }
 
             val requested = encode(settings.quality)
-            val limit = settings.maxFileSizeBytes ?: return@withContext requested
+            val limit = settings.maxFileSizeBytes.takeIf {
+                settings.compressionControl == ImageExportCompressionControl.TargetFileSize
+            } ?: return@withContext requested
             if (requested.data.size.toLong() <= limit) return@withContext requested
             if (settings.format is ImageFormat.Png) {
                 throw ExportSizeLimitException(limit, requested.data.size.toLong(), settings.format)

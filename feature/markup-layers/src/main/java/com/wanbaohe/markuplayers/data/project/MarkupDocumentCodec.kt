@@ -19,6 +19,7 @@
 
 package com.wanbaohe.markuplayers.data.project
 
+import com.t8rin.imagetoolbox.core.domain.image.export.ImageExportCompressionControl
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
 import com.t8rin.imagetoolbox.core.domain.model.Outline
 import com.t8rin.imagetoolbox.core.filters.presentation.model.UiFilter
@@ -584,15 +585,25 @@ private fun encodeType(type: LayerType): JsonObject = when (type) {
             "customWidth" to json(customWidth), "customHeight" to json(customHeight),
             "shareAfterSave" to json(shareAfterSave), "saveCopy" to json(saveCopy),
             "jpegBackgroundColor" to json(jpegBackgroundColor),
-            "maxFileSizeBytes" to nullable(maxFileSizeBytes, ::json)
+            "maxFileSizeBytes" to nullable(maxFileSizeBytes, ::json),
+            "compressionControl" to json(compressionControl.name),
         )
     }
 
     private fun decodeExport(element: JsonElement): ExportSettings {
-        val value = element.objectWith(
-            "format", "quality", "resolution", "customWidth", "customHeight", "shareAfterSave",
-            "saveCopy", "jpegBackgroundColor", "maxFileSizeBytes"
+        val value = element.objectWithOptional(
+            arrayOf(
+                "format", "quality", "resolution", "customWidth", "customHeight", "shareAfterSave",
+                "saveCopy", "jpegBackgroundColor", "maxFileSizeBytes"
+            ),
+            optional = setOf("compressionControl"),
         )
+        val maxFileSizeBytes = value.optional("maxFileSizeBytes") {
+            it.primitive().let { number ->
+                if (number.isString) invalid("Expected a file size integer")
+                number.longOrNull ?: invalid("Invalid file size")
+            }
+        }
         val settings = ExportSettings(
             format = formats[value.string("format")] ?: invalid("Unknown export format"),
             quality = value.int("quality"),
@@ -601,11 +612,13 @@ private fun encodeType(type: LayerType): JsonObject = when (type) {
             shareAfterSave = value.boolean("shareAfterSave"),
             saveCopy = value.boolean("saveCopy"),
             jpegBackgroundColor = value.int("jpegBackgroundColor"),
-            maxFileSizeBytes = value.optional("maxFileSizeBytes") {
-                it.primitive().let { number ->
-                    if (number.isString) invalid("Expected a file size integer")
-                    number.longOrNull ?: invalid("Invalid file size")
-                }
+            maxFileSizeBytes = maxFileSizeBytes,
+            compressionControl = value["compressionControl"]?.let {
+                enumValue<ImageExportCompressionControl>(it.stringValue())
+            } ?: if (maxFileSizeBytes != null) {
+                ImageExportCompressionControl.TargetFileSize
+            } else {
+                ImageExportCompressionControl.Quality
             },
         )
         if (settings.quality !in ExportSettings.MIN_QUALITY..100 ||

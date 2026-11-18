@@ -6,32 +6,23 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * You should have received a copy of the Apache License
- * along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
  */
 
 package com.wanbaohe.textcard.presentation.editor
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Save
-import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,18 +33,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.wanbaohe.base.ui.button.PrimaryButton
-import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
-import com.wanbaohe.core.ui.widget.enhanced.EnhancedSliderItem
+import com.t8rin.imagetoolbox.core.domain.image.export.ImageExportCapabilities
+import com.t8rin.imagetoolbox.core.domain.image.export.ImageExportConfig
+import com.t8rin.imagetoolbox.core.domain.image.export.ImageExportSummary
+import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
+import com.wanbaohe.core.ui.widget.export.ImageExportSection
+import com.wanbaohe.core.ui.widget.export.ImageExportSheet
 import com.wanbaohe.core.ui.widget.glass.GlassSegmentedButtonRow
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.TextCardDocument
 import com.wanbaohe.textcard.domain.model.TextCardExportFormat
 import com.wanbaohe.textcard.domain.model.TextCardOutputMode
 import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
-import kotlin.math.roundToInt
 
 @Composable
 fun TextCardExportSheet(
@@ -77,111 +69,73 @@ fun TextCardExportSheet(
         }
     }
     val layoutPending = component.isLayoutComputing || !component.isLayoutCurrent
-    EnhancedModalBottomSheet(
+    val outputWidth = if (component.document.outputMode == TextCardOutputMode.LongImage) {
+        component.layout?.longImage?.canvas?.width ?: component.document.canvas.width
+    } else {
+        pages.firstOrNull()?.canvas?.width
+    }
+    val outputHeight = if (component.document.outputMode == TextCardOutputMode.LongImage) {
+        component.layout?.longImage?.canvas?.height ?: stitchedHeight.takeIf { it > 0 }
+    } else {
+        pages.firstOrNull()?.canvas?.height
+    }
+    val exportItemCount = when {
+        component.document.outputMode == TextCardOutputMode.LongImage -> 1
+        currentPageOnly -> 1
+        else -> pages.size
+    }
+    val config = ImageExportConfig(
+        format = component.document.exportFormat.toImageFormat(),
+        quality = component.document.exportQuality,
+    )
+
+    ImageExportSheet(
         visible = visible,
         title = stringResource(R.string.textcard_export_title),
-        onDismiss = { onDismiss() },
-        confirmButton = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.weight(1f),
-            ) {
-                when {
-                    component.layoutError != null -> Text(
-                        text = stringResource(R.string.textcard_layout_failed_short),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.error,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                    layoutPending -> {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(16.dp),
-                            strokeWidth = 2.dp,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        )
-                        Text(
-                            text = stringResource(R.string.textcard_export_preparing),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    }
-                }
-            }
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                PrimaryButton(
-                    text = stringResource(R.string.textcard_share_images),
-                    enable = canExport,
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Outlined.Share,
-                            contentDescription = null,
-                            modifier = Modifier.size(18.dp),
-                        )
-                    },
-                    onClick = {
-                        component.shareCard(currentPageOnly)
-                        onDismiss()
-                    }
-                )
-                PrimaryButton(
-                    text = stringResource(R.string.textcard_save_images),
-                    enable = canExport,
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Outlined.Save,
-                            contentDescription = null,
-                            modifier = Modifier.size(18.dp),
-                        )
-                    },
-                    onClick = {
-                        component.saveCard(currentPageOnly)
-                        onDismiss()
-                    }
-                )
-            }
+        config = config,
+        capabilities = ImageExportCapabilities(),
+        summary = ImageExportSummary(
+            itemCount = exportItemCount,
+            width = outputWidth,
+            height = outputHeight,
+        ),
+        onConfigChange = { updated ->
+            component.updateExportSettings(
+                format = updated.format.toTextCardExportFormat(),
+                quality = updated.quality,
+            )
         },
-        sheetContent = {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(14.dp),
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 16.dp)
-            ) {
-                val dimensions = if (component.document.outputMode == TextCardOutputMode.LongImage) {
-                    component.layout?.longImage?.canvas?.let { "${it.width}×${it.height}" }
-                        ?: component.layout?.longImageRequiredHeight?.let { height ->
-                            "${component.document.canvas.width}×$height"
-                        }
-                } else {
-                    pages.firstOrNull()?.canvas?.let { "${it.width}×${it.height}" }
-                }
-                Text(
-                    text = stringResource(
-                        if (component.document.outputMode == TextCardOutputMode.Pages) {
-                            R.string.textcard_export_pages_info
-                        } else R.string.textcard_export_long_info,
-                        pages.size,
-                        dimensions.orEmpty()
-                    ),
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                if (component.document.annotations.isNotEmpty() &&
-                    component.document.outputMode == TextCardOutputMode.LongImage
-                ) {
+        onDismiss = onDismiss,
+        onSave = {
+            component.saveCard(currentPageOnly)
+            onDismiss()
+        },
+        onShare = {
+            component.shareCard(currentPageOnly)
+            onDismiss()
+        },
+        saveEnabled = canExport && !component.isSaving,
+        shareEnabled = canExport && !component.isSaving,
+        blockingMessage = component.layoutError?.let {
+            stringResource(R.string.textcard_layout_failed_short)
+        },
+        content = {
+            if (layoutPending) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(18.dp),
+                        strokeWidth = 2.dp,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    )
                     Text(
-                        text = stringResource(R.string.textcard_annotated_long_image_hint),
+                        text = stringResource(R.string.textcard_export_preparing),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.weight(1f),
                     )
                 }
-                Text(
-                    text = stringResource(R.string.textcard_output_mode),
-                    style = MaterialTheme.typography.titleSmall
-                )
+            }
+            ImageExportSection(title = stringResource(R.string.textcard_output_mode)) {
                 GlassSegmentedButtonRow(
                     options = TextCardOutputMode.entries,
                     selectedOption = component.document.outputMode,
@@ -191,17 +145,27 @@ fun TextCardExportSheet(
                             stringResource(
                                 if (mode == TextCardOutputMode.Pages) {
                                     R.string.textcard_output_pages
-                                } else R.string.textcard_output_long_image
+                                } else {
+                                    R.string.textcard_output_long_image
+                                }
                             )
                         )
                     },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
-                if (component.document.outputMode == TextCardOutputMode.Pages && pages.size > 1) {
+                if (component.document.annotations.isNotEmpty() &&
+                    component.document.outputMode == TextCardOutputMode.LongImage
+                ) {
                     Text(
-                        text = stringResource(R.string.textcard_export_scope),
-                        style = MaterialTheme.typography.titleSmall
+                        text = stringResource(R.string.textcard_annotated_long_image_hint),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.fillMaxWidth(),
                     )
+                }
+            }
+            if (component.document.outputMode == TextCardOutputMode.Pages && pages.size > 1) {
+                ImageExportSection(title = stringResource(R.string.textcard_export_scope)) {
                     GlassSegmentedButtonRow(
                         options = listOf(false, true),
                         selectedOption = currentPageOnly,
@@ -211,45 +175,28 @@ fun TextCardExportSheet(
                                 stringResource(
                                     if (currentOnly) {
                                         R.string.textcard_export_current_page
-                                    } else R.string.textcard_export_all_pages
+                                    } else {
+                                        R.string.textcard_export_all_pages
+                                    }
                                 )
                             )
                         },
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-                Text(
-                    text = stringResource(R.string.textcard_export_format),
-                    style = MaterialTheme.typography.titleSmall
-                )
-                GlassSegmentedButtonRow(
-                    options = TextCardExportFormat.entries,
-                    selectedOption = component.document.exportFormat,
-                    onOptionSelected = { component.updateExportSettings(format = it) },
-                    label = { format ->
-                        Text(
-                            text = when (format) {
-                                TextCardExportFormat.Jpg -> "JPG"
-                                TextCardExportFormat.Png -> "PNG"
-                                TextCardExportFormat.Webp -> "WEBP"
-                            }
-                        )
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                if (component.document.exportFormat != TextCardExportFormat.Png) {
-                    EnhancedSliderItem(
-                        value = component.document.exportQuality.toFloat(),
-                        title = stringResource(R.string.textcard_export_quality),
-                        valueRange = 10f..100f,
-                        onValueChange = {
-                            component.updateExportSettings(quality = it.roundToInt())
-                        },
-                        internalStateTransformation = { it.roundToInt() },
-                        valueSuffix = "%"
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
             }
-        }
+        },
     )
+}
+
+private fun TextCardExportFormat.toImageFormat(): ImageFormat = when (this) {
+    TextCardExportFormat.Jpg -> ImageFormat.Jpg
+    TextCardExportFormat.Png -> ImageFormat.Png.Lossless
+    TextCardExportFormat.Webp -> ImageFormat.Webp.Lossy
+}
+
+private fun ImageFormat.toTextCardExportFormat(): TextCardExportFormat = when (this) {
+    is ImageFormat.Png -> TextCardExportFormat.Png
+    is ImageFormat.Webp -> TextCardExportFormat.Webp
+    else -> TextCardExportFormat.Jpg
 }

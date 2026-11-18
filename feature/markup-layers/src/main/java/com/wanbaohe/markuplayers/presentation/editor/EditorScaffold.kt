@@ -155,7 +155,18 @@ import com.wanbaohe.markuplayers.presentation.draw.BrushSettingsDialog
 import com.wanbaohe.markuplayers.presentation.draw.DrawFloatingBar
 import com.wanbaohe.markuplayers.presentation.draw.DrawOverlay
 import com.wanbaohe.markuplayers.presentation.draw.DrawSessionState
-import com.wanbaohe.markuplayers.presentation.export.ExportSettingsSheet
+import com.t8rin.imagetoolbox.core.domain.image.export.ImageExportCapabilities
+import com.t8rin.imagetoolbox.core.domain.image.export.ImageExportCompressionControl
+import com.t8rin.imagetoolbox.core.domain.image.export.ImageExportMetadataPolicy
+import com.t8rin.imagetoolbox.core.domain.image.export.ImageExportSummary
+import com.t8rin.imagetoolbox.core.domain.image.export.targetDimensions
+import com.t8rin.imagetoolbox.core.utils.fileSize
+import com.wanbaohe.core.ui.widget.export.ImageExportSection
+import com.wanbaohe.core.ui.widget.export.ImageExportSheet
+import com.wanbaohe.core.ui.widget.preferences.PreferenceRowSwitch
+import com.wanbaohe.markuplayers.presentation.export.toImageExportConfig
+import com.wanbaohe.markuplayers.presentation.export.ExportValidationError
+import com.wanbaohe.markuplayers.presentation.export.withImageExportConfig
 import com.wanbaohe.markuplayers.presentation.recipe.RecipeBatchSheet
 import com.wanbaohe.markuplayers.presentation.render.InPlaceTextLayerEditor
 import com.wanbaohe.markuplayers.presentation.render.LayerPreviewRenderers
@@ -692,25 +703,96 @@ fun EditorScaffold(
         onDismiss = { showCanvasBackgroundSheet = false }
     )
 
-    ExportSettingsSheet(
+    val exportConfig = component.exportSettings.toImageExportConfig(component.saveExif)
+    val exportBitmap = component.compositePreviewBitmap ?: component.displayBitmap ?: component.bitmap
+    val exportDimensions = component.sourceSize?.let { size ->
+        exportConfig.targetDimensions(size.width, size.height)
+    }
+    val exportValidationError = component.sourceSize.let { size ->
+        if (size == null) {
+            ExportValidationError.InvalidSourceSize
+        } else {
+            component.exportSettings.validationError(size.width, size.height)
+        }
+    }
+    val targetSizeMissing = exportConfig.compressionControl ==
+        ImageExportCompressionControl.TargetFileSize && exportConfig.maxFileSizeBytes == null
+    ImageExportSheet(
         visible = showExportSheet,
-        settings = component.exportSettings,
-        sourceSize = component.sourceSize,
-        imageUri = component.uri,
-        estimateBitmap = component.compositePreviewBitmap
-            ?: component.displayBitmap ?: component.bitmap,
-        canOverwriteOriginal = component.canOverwriteOriginal,
+        config = exportConfig,
+        capabilities = ImageExportCapabilities(
+            supportsResize = true,
+            supportsTargetFileSize = true,
+            supportsBackgroundColor = exportBitmap?.hasAlpha() == true,
+            metadataPolicies = listOf(
+                ImageExportMetadataPolicy.RemoveAll,
+                ImageExportMetadataPolicy.KeepAll,
+            ),
+        ),
+        summary = ImageExportSummary(
+            width = exportDimensions?.first,
+            height = exportDimensions?.second,
+            sourceSizeBytes = component.uri?.fileSize(),
+        ),
+        estimateBitmap = exportBitmap,
+        onConfigChange = { updated ->
+            component.updateExportSettings(component.exportSettings.withImageExportConfig(updated))
+            val saveExif = updated.metadataPolicy != ImageExportMetadataPolicy.RemoveAll
+            if (saveExif != component.saveExif) component.setSaveExif(saveExif)
+        },
         onDismiss = { showExportSheet = false },
-        onSettingsChange = component::updateExportSettings,
-        saveExif = component.saveExif,
-        onSaveExifChange = component::setSaveExif,
         onSave = {
             showExportSheet = false
             component.saveBitmap(
                 oneTimeSaveLocationUri = null,
-                onComplete = component::parseSaveResult
+                onComplete = component::parseSaveResult,
             )
-        }
+        },
+        onShare = {
+            showExportSheet = false
+            component.shareBitmap(AppToastHost::showConfetti)
+        },
+        saveEnabled = exportValidationError == null && !targetSizeMissing && !component.isSaving,
+        shareEnabled = exportValidationError == null && !targetSizeMissing && !component.isSaving,
+        blockingMessage = when {
+            targetSizeMissing -> stringResource(
+                com.t8rin.imagetoolbox.core.resources.R.string.image_export_target_size_required
+            )
+            exportValidationError != null -> stringResource(
+                when (exportValidationError) {
+                    ExportValidationError.InvalidSourceSize -> R.string.studio_export_invalid_source
+                    ExportValidationError.InvalidCustomSize -> R.string.studio_export_invalid_dimensions
+                    ExportValidationError.InvalidQuality -> R.string.studio_export_invalid_quality
+                    ExportValidationError.UnsupportedFormat -> R.string.studio_export_invalid_format
+                    ExportValidationError.TransparentJpegBackground -> R.string.studio_export_opaque_background
+                    ExportValidationError.FileSizeTooSmall -> R.string.studio_export_size_too_small
+                }
+            )
+            else -> null
+        },
+        advancedContent = {
+            if (component.canOverwriteOriginal) {
+                ImageExportSection(title = null) {
+                    PreferenceRowSwitch(
+                        title = stringResource(R.string.studio_export_save_copy),
+                        subtitle = stringResource(
+                            if (component.exportSettings.saveCopy) {
+                                R.string.studio_export_save_copy_hint
+                            } else {
+                                R.string.studio_export_overwrite_warning
+                            }
+                        ),
+                        checked = component.exportSettings.saveCopy,
+                        onClick = { saveCopy ->
+                            component.updateExportSettings(
+                                component.exportSettings.copy(saveCopy = saveCopy)
+                            )
+                        },
+                        drawContainer = false,
+                    )
+                }
+            }
+        },
     )
 
     // 打开导出面板时先触发一次合成预览,体积估算基于含图层的合成图而非裸底图

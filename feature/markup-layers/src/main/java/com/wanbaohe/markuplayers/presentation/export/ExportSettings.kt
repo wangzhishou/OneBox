@@ -20,6 +20,10 @@
 package com.wanbaohe.markuplayers.presentation.export
 
 import android.graphics.Color
+import com.t8rin.imagetoolbox.core.domain.image.export.ImageExportCompressionControl
+import com.t8rin.imagetoolbox.core.domain.image.export.ImageExportConfig
+import com.t8rin.imagetoolbox.core.domain.image.export.ImageExportMetadataPolicy
+import com.t8rin.imagetoolbox.core.domain.image.export.ImageExportResolution
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageInfo
 import com.t8rin.imagetoolbox.core.domain.image.model.Quality
@@ -34,7 +38,8 @@ data class ExportSettings(
     val shareAfterSave: Boolean = false,
     val saveCopy: Boolean = true,
     val jpegBackgroundColor: Int = Color.WHITE,
-    val maxFileSizeBytes: Long? = null
+    val maxFileSizeBytes: Long? = null,
+    val compressionControl: ImageExportCompressionControl = ImageExportCompressionControl.Quality,
 ) {
 
     fun validationError(sourceWidth: Int, sourceHeight: Int): ExportValidationError? = when {
@@ -45,7 +50,8 @@ data class ExportSettings(
             ExportValidationError.InvalidCustomSize
         format == ImageFormat.Jpg && Color.alpha(jpegBackgroundColor) != 255 ->
             ExportValidationError.TransparentJpegBackground
-        maxFileSizeBytes != null && maxFileSizeBytes < MIN_FILE_SIZE_BYTES ->
+        compressionControl == ImageExportCompressionControl.TargetFileSize &&
+            maxFileSizeBytes != null && maxFileSizeBytes < MIN_FILE_SIZE_BYTES ->
             ExportValidationError.FileSizeTooSmall
         else -> null
     }
@@ -147,3 +153,41 @@ internal fun ImageFormat.toExportFormat(): ImageFormat = when (this) {
     is ImageFormat.Webp -> ImageFormat.Webp.Lossy
     else -> ImageFormat.Jpg
 }
+
+internal fun ExportSettings.toImageExportConfig(saveExif: Boolean): ImageExportConfig = ImageExportConfig(
+    format = format,
+    quality = quality,
+    resolution = when (resolution) {
+        ExportResolution.Original -> ImageExportResolution.Original
+        ExportResolution.Half -> ImageExportResolution.Half
+        ExportResolution.Quarter -> ImageExportResolution.Quarter
+        ExportResolution.Custom -> ImageExportResolution.Custom
+    },
+    customWidth = customWidth,
+    customHeight = customHeight,
+    compressionControl = compressionControl,
+    maxFileSizeBytes = maxFileSizeBytes,
+    metadataPolicy = if (saveExif) {
+        ImageExportMetadataPolicy.KeepAll
+    } else {
+        ImageExportMetadataPolicy.RemoveAll
+    },
+    backgroundColor = jpegBackgroundColor,
+)
+
+internal fun ExportSettings.withImageExportConfig(config: ImageExportConfig): ExportSettings = copy(
+    format = config.format,
+    quality = config.quality,
+    resolution = when (config.resolution) {
+        ImageExportResolution.Original -> ExportResolution.Original
+        ImageExportResolution.Half -> ExportResolution.Half
+        ImageExportResolution.Quarter -> ExportResolution.Quarter
+        ImageExportResolution.Custom -> ExportResolution.Custom
+    },
+    customWidth = config.customWidth,
+    customHeight = config.customHeight,
+    compressionControl = config.compressionControl,
+    maxFileSizeBytes = config.maxFileSizeBytes,
+    jpegBackgroundColor = config.backgroundColor,
+    shareAfterSave = false,
+)

@@ -696,14 +696,15 @@ class WatermarkingComponent @AssistedInject internal constructor(
         }
     }
 
-    fun shareBitmaps(onComplete: () -> Unit) {
-        val target = selectedUri.takeIf { it != Uri.EMPTY } ?: return
+    fun shareBitmaps(onComplete: () -> Unit, onlyCurrent: Boolean = true) {
+        val targets = if (onlyCurrent || privacy.isActive) listOf(selectedUri) else uris
+        if (targets.isEmpty() || targets.first() == Uri.EMPTY) return
         savingJob = componentScope.launch {
             _isSaving.update { true }
             _done.update { 0 }
-            _left.update { 1 }
+            _left.update { targets.size }
             shareProvider.shareImages(
-                uris = listOf(target.toString()),
+                uris = targets.map(Uri::toString),
                 imageLoader = { uri ->
                     renderUri(uri.toUri())?.let { rendered ->
                         rendered.bitmap to rendered.imageInfo
