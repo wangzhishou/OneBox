@@ -535,10 +535,9 @@ fun ChatMessagesList(
                                 ToolCallHistoryCard(toolCallsJson = historyItem.toolCallsJson)
                             }
                         },
-                        onRobotContainerFooter = { footerItem, itemIndex ->
+                        onRobotContainerFooter = { footerItem, _ ->
                             RobotMessageFooter(
                                 robotContainerFooter = footerItem,
-                                index = itemIndex,
                                 aiChatComponent = aiChatComponent,
                                 appComponent = appComponent
                             )

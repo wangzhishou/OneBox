@@ -47,7 +47,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -78,7 +77,7 @@ import com.shifenmiao.base.provider.LocalDataDraftHelper
 import com.wanbaohe.base.ui.AILoadingRow
 import com.wanbaohe.base.ui.ExpandableMarkdownContent
 import com.wanbaohe.base.ui.MarkdownContent
-import com.shifenmiao.common.ai.report.AiContentReportButton
+import com.shifenmiao.common.ai.report.AiContentReportDialog
 import com.shifenmiao.common.handle.LocalUrlNavigator
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.core.R
@@ -413,19 +412,16 @@ fun RobotMessageHeader(robotContainerHeader: MessageUiModel.RobotContainerHeader
 @Composable
 fun RobotMessageFooter(
     robotContainerFooter: MessageUiModel.RobotContainerFooter,
-    index: Int,
     aiChatComponent: AIChatComponent,
     appComponent: AppComponent
 ) {
     val chatUIState = LocalChatUIState.current
     val messageEntity = robotContainerFooter.messageEntity
-    val isShowBar by remember {
-        derivedStateOf {
-            chatUIState.showTokens && robotContainerFooter.showTokens && index == 0
-        }
-    }
+    val isShowBar = robotContainerFooter.isReportable ||
+        (chatUIState.showTokens && robotContainerFooter.showTokens)
     // 添加控制导出HTML加载对话框显示的状态
     var isExporting by remember { mutableStateOf(false) }
+    var showAiContentReport by remember { mutableStateOf(false) }
 
     Spacer(
         modifier = Modifier
@@ -453,6 +449,7 @@ fun RobotMessageFooter(
                 color = MaterialTheme.colorScheme.surfaceContainerLow
             ),
             message = robotContainerFooter.messageEntity,
+            showTokens = chatUIState.showTokens && robotContainerFooter.showTokens,
             onDelete = aiChatComponent::deleteMessage,
             reGenerate = {
                 aiChatComponent.reGenerateMessage(robotContainerFooter.messageEntity.completionId)
@@ -487,14 +484,20 @@ fun RobotMessageFooter(
             },
             onCreateCard = {
                 appComponent.onNavigate(Screen.TextCard(initialText = messageEntity.answer))
-            }
+            },
+            onReport = if (robotContainerFooter.isReportable && messageEntity.answer.isNotBlank()) {
+                { showAiContentReport = true }
+            } else {
+                null
+            },
         )
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(4.dp))
     }
 
-    if (robotContainerFooter.isReportable && messageEntity.answer.isNotBlank()) {
-        AiContentReportButton(
+    if (showAiContentReport) {
+        AiContentReportDialog(
             contentPreview = messageEntity.answer,
+            onDismiss = { showAiContentReport = false },
             onSubmit = { reason, details ->
                 aiChatComponent.submitAiContentReport(messageEntity, reason, details)
             },

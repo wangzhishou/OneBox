@@ -47,17 +47,20 @@ import com.t8rin.imagetoolbox.core.resources.icons.Image
 import com.t8rin.imagetoolbox.core.resources.icons.NoteAdd
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
 import com.t8rin.imagetoolbox.core.resources.icons.Share
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineFlag
 
 @Composable
 fun AIUsageBar(
     modifier: Modifier = Modifier,
     message: MessageEntity,
     isShowReGenerate: Boolean = false,
+    showTokens: Boolean = true,
     onDelete: (String) -> Unit = {},
     reGenerate: () -> Unit = {},
     onShare: (String) -> Unit = {},
     onNoteAdd: () -> Unit = {},
     onCreateCard: () -> Unit = {},
+    onReport: (() -> Unit)? = null,
 ) {
     val showDeleteDialog = remember { mutableStateOf(false) }
 
@@ -106,18 +109,29 @@ fun AIUsageBar(
                 showDeleteDialog.value = true
             }
         )
-        Spacer(modifier = Modifier.weight(1f))
-        Text(
-            text = pluralStringResource(
-                R.plurals.ai_chat_token_count,
-                message.totalTokens.coerceAtLeast(0),
-                message.totalTokens.toString(),
-            ),
-            style = MaterialTheme.typography.labelSmall.copy(
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+        onReport?.let { report ->
+            Spacer(modifier = Modifier.width(AppTheme.dimens.spaceSmall))
+            ActionButton(
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFlag,
+                contentDescription = stringResource(R.string.ai_content_report_action),
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                onClick = report
             )
-        )
-        Spacer(modifier = Modifier.width(AppTheme.dimens.spaceSmall))
+        }
+        Spacer(modifier = Modifier.weight(1f))
+        if (showTokens) {
+            Text(
+                text = pluralStringResource(
+                    R.plurals.ai_chat_token_count,
+                    message.totalTokens.coerceAtLeast(0),
+                    message.totalTokens.toString(),
+                ),
+                style = MaterialTheme.typography.labelSmall.copy(
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                )
+            )
+            Spacer(modifier = Modifier.width(AppTheme.dimens.spaceSmall))
+        }
         ActionButton(
             icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Share,
             contentDescription = "",

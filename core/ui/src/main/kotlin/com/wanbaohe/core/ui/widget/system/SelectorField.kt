@@ -52,6 +52,7 @@ import com.wanbaohe.core.ui.widget.glass.GlassSurface
  * 单选下拉选择器：当前值直接显示，全部选项收进菜单。
  *
  * @param label 字段上方的说明文字；外层已经有分区标题时传 null 省掉这行
+ * @param enabled 是否允许展开选项
  */
 @Composable
 fun <T> SelectorField(
@@ -61,6 +62,7 @@ fun <T> SelectorField(
     optionLabel: @Composable (T) -> String,
     onSelect: (T) -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     menuFooter: (@Composable ColumnScope.(dismiss: () -> Unit) -> Unit)? = null,
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -78,12 +80,12 @@ fun <T> SelectorField(
         }
         ExposedDropdownMenuBox(
             expanded = expanded,
-            onExpandedChange = { expanded = it },
+            onExpandedChange = { if (enabled) expanded = it },
             modifier = Modifier.fillMaxWidth(),
         ) {
             GlassSurface(
                 onClick = { expanded = !expanded },
-                enabled = canExpand,
+                enabled = enabled && canExpand,
                 modifier = Modifier
                     .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable, enabled = false)
                     .fillMaxWidth(),
