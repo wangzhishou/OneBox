@@ -63,6 +63,7 @@ sealed class MessageUiModel(open val id: String) {
     data class UserContainerFooter(
         override val id: String,
         val messageEntity: MessageEntity,
+        val showActions: Boolean = false,
     ) : MessageUiModel(id)
 
     data class UserContent(
@@ -160,7 +161,7 @@ sealed class MessageUiModel(open val id: String) {
         override val id: String,
         val showTokens: Boolean,
         val messageEntity: MessageEntity,
-        val isReportable: Boolean = false,
+        val showActions: Boolean = false,
     ) : MessageUiModel(id)
 
     data class RobotContainerHeader(
@@ -360,7 +361,11 @@ sealed class MessageUiModel(open val id: String) {
                         modelName = getAIModel(message.model),
                     )
                     result.add(
-                        UserContainerFooter(id = "${idPrefix}_footer", messageEntity = normalizedMessage)
+                        UserContainerFooter(
+                            id = "${idPrefix}_footer",
+                            messageEntity = normalizedMessage,
+                            showActions = true,
+                        )
                     )
                     addUserAnswerSection(result, normalizedMessage, idPrefix)
                     addUserReasoningSection(result, normalizedMessage, idPrefix, showExpandedReasoning)
@@ -459,7 +464,7 @@ sealed class MessageUiModel(open val id: String) {
                     id = "${idPrefix}_footer",
                     showTokens = conversation.showTokens,
                     messageEntity = normalizedMessage,
-                    isReportable = true,
+                    showActions = true,
                 )
             )
             addRobotAnswerSection(result, normalizedMessage, idPrefix)

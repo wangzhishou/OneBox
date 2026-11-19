@@ -2204,4 +2204,19 @@
     <string name="file_viewer_search_previous">التطابق السابق</string>
     <string name="file_viewer_title">معاينة الملف</string>
     <string name="home_category_filter">تصفية الفئات</string>
+    <string name="ai_content_report_action">الإبلاغ عن محتوى AI</string>
+    <string name="ai_content_report_title">الإبلاغ عن محتوى أنشأه AI</string>
+    <string name="ai_content_report_description">سيتم إرسال مخرجات AI أو الموجّه النصي المرتبط بها، والنموذج، ومعرّف المحتوى، وسبب الإبلاغ إلى المطوّر لمراجعة المحتوى. يُرجى عدم إدخال كلمات المرور أو أي معلومات حساسة أخرى في التفاصيل الإضافية.</string>
+    <string name="ai_content_report_reason_label">ما المشكلة في هذا المحتوى؟</string>
+    <string name="ai_content_report_reason_sexual">محتوى جنسي أو غير مناسب للقُصّر</string>
+    <string name="ai_content_report_reason_hate">محتوى كراهية أو تحرّش أو تنمّر</string>
+    <string name="ai_content_report_reason_violence">محتوى عنيف أو خطير أو غير قانوني</string>
+    <string name="ai_content_report_reason_deceptive">محتوى مضلّل أو خادع</string>
+    <string name="ai_content_report_reason_privacy">معلومات شخصية أو خاصة</string>
+    <string name="ai_content_report_reason_other">محتوى مسيء آخر</string>
+    <string name="ai_content_report_details_hint">تفاصيل إضافية (اختياري)</string>
+    <string name="ai_content_report_submit">إرسال البلاغ</string>
+    <string name="ai_content_report_success">تم إرسال البلاغ. شكرًا لمساعدتك في الحفاظ على أمان OneBox.</string>
+    <string name="ai_content_report_failed">تعذّر إرسال البلاغ. تحقّق من اتصالك وحاول مرة أخرى.</string>
+    <string name="ai_content_report_image_preview">الصورة الحالية المولّدة بواسطة AI</string>
 </resources>

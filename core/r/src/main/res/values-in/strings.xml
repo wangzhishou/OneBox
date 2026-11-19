@@ -2131,4 +2131,19 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
     <string name="file_viewer_search_previous">Kecocokan sebelumnya</string>
     <string name="file_viewer_title">Pratinjau file</string>
     <string name="home_category_filter">Filter kategori</string>
+    <string name="ai_content_report_action">Laporkan konten AI</string>
+    <string name="ai_content_report_title">Laporkan konten yang dibuat AI</string>
+    <string name="ai_content_report_description">Output AI atau prompt terkait, model, ID konten, dan alasan laporan akan dikirim ke pengembang untuk moderasi. Jangan masukkan kata sandi atau informasi sensitif lainnya di detail tambahan.</string>
+    <string name="ai_content_report_reason_label">Apa masalah pada konten ini?</string>
+    <string name="ai_content_report_reason_sexual">Konten seksual atau tidak pantas untuk anak di bawah umur</string>
+    <string name="ai_content_report_reason_hate">Konten kebencian, pelecehan, atau perundungan</string>
+    <string name="ai_content_report_reason_violence">Konten kekerasan, berbahaya, atau ilegal</string>
+    <string name="ai_content_report_reason_deceptive">Konten menyesatkan atau menipu</string>
+    <string name="ai_content_report_reason_privacy">Informasi pribadi atau privat</string>
+    <string name="ai_content_report_reason_other">Konten ofensif lainnya</string>
+    <string name="ai_content_report_details_hint">Detail tambahan (opsional)</string>
+    <string name="ai_content_report_submit">Kirim laporan</string>
+    <string name="ai_content_report_success">Laporan terkirim. Terima kasih telah membantu menjaga OneBox tetap aman.</string>
+    <string name="ai_content_report_failed">Laporan gagal dikirim. Periksa koneksi Anda dan coba lagi.</string>
+    <string name="ai_content_report_image_preview">Gambar buatan AI saat ini</string>
 </resources>

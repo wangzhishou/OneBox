@@ -2142,4 +2142,19 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
     <string name="file_viewer_search_previous">Vorheriger Treffer</string>
     <string name="file_viewer_title">Dateivorschau</string>
     <string name="home_category_filter">Kategoriefilter</string>
+    <string name="ai_content_report_action">KI-Inhalt melden</string>
+    <string name="ai_content_report_title">KI-generierten Inhalt melden</string>
+    <string name="ai_content_report_description">Die KI-Ausgabe oder der zugehörige Prompt, das Modell, die Inhalts-ID und der Meldegrund werden zur Moderation an den Entwickler gesendet. Bitte keine Passwörter oder andere sensible Daten in den zusätzlichen Angaben angeben.</string>
+    <string name="ai_content_report_reason_label">Was stimmt mit diesem Inhalt nicht?</string>
+    <string name="ai_content_report_reason_sexual">Sexuelle oder für Minderjährige ungeeignete Inhalte</string>
+    <string name="ai_content_report_reason_hate">Hass-, Belästigungs- oder Mobbinginhalte</string>
+    <string name="ai_content_report_reason_violence">Gewalttätige, gefährliche oder illegale Inhalte</string>
+    <string name="ai_content_report_reason_deceptive">Irreführende oder täuschende Inhalte</string>
+    <string name="ai_content_report_reason_privacy">Persönliche oder private Informationen</string>
+    <string name="ai_content_report_reason_other">Sonstige anstößige Inhalte</string>
+    <string name="ai_content_report_details_hint">Zusätzliche Angaben (optional)</string>
+    <string name="ai_content_report_submit">Meldung senden</string>
+    <string name="ai_content_report_success">Meldung gesendet. Danke, dass du hilfst, OneBox sicher zu halten.</string>
+    <string name="ai_content_report_failed">Meldung konnte nicht gesendet werden. Prüfe deine Verbindung und versuche es erneut.</string>
+    <string name="ai_content_report_image_preview">Aktuelles KI-generiertes Bild</string>
 </resources>

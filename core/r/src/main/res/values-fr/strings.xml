@@ -2130,4 +2130,19 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="file_viewer_search_previous">Correspondance précédente</string>
     <string name="file_viewer_title">Aperçu du fichier</string>
     <string name="home_category_filter">Filtrer par catégorie</string>
+    <string name="ai_content_report_action">Signaler un contenu IA</string>
+    <string name="ai_content_report_title">Signaler un contenu généré par IA</string>
+    <string name="ai_content_report_description">La sortie de l\'IA ou le prompt associé, le modèle, l\'ID du contenu et le motif du signalement seront envoyés au développeur pour modération. N\'indiquez pas de mots de passe ni d\'autres informations sensibles dans les détails supplémentaires.</string>
+    <string name="ai_content_report_reason_label">Quel est le problème avec ce contenu ?</string>
+    <string name="ai_content_report_reason_sexual">Contenu sexuel ou inapproprié pour les mineurs</string>
+    <string name="ai_content_report_reason_hate">Contenu haineux, harcelant ou intimidant</string>
+    <string name="ai_content_report_reason_violence">Contenu violent, dangereux ou illégal</string>
+    <string name="ai_content_report_reason_deceptive">Contenu trompeur ou mensonger</string>
+    <string name="ai_content_report_reason_privacy">Informations personnelles ou privées</string>
+    <string name="ai_content_report_reason_other">Autre contenu offensant</string>
+    <string name="ai_content_report_details_hint">Détails supplémentaires (facultatif)</string>
+    <string name="ai_content_report_submit">Envoyer le signalement</string>
+    <string name="ai_content_report_success">Signalement envoyé. Merci d\'aider à garder OneBox sûr.</string>
+    <string name="ai_content_report_failed">Impossible d\'envoyer le signalement. Vérifiez votre connexion et réessayez.</string>
+    <string name="ai_content_report_image_preview">Image actuelle générée par IA</string>
 </resources>

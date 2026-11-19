@@ -2142,4 +2142,19 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <string name="file_viewer_search_previous">Nakaraang tugma</string>
     <string name="file_viewer_title">Preview ng file</string>
     <string name="home_category_filter">Salain ayon sa kategorya</string>
+    <string name="ai_content_report_action">I-ulat ang AI content</string>
+    <string name="ai_content_report_title">I-ulat ang content na gawa ng AI</string>
+    <string name="ai_content_report_description">Ang output ng AI o ang kaugnay na prompt, model, content ID, at dahilan ng pag-ulat ay ipapadala sa developer para sa moderation. Huwag maglagay ng password o iba pang sensitibong impormasyon sa karagdagang detalye.</string>
+    <string name="ai_content_report_reason_label">Ano ang problema sa content na ito?</string>
+    <string name="ai_content_report_reason_sexual">Sekswal o hindi angkop para sa mga menor de edad</string>
+    <string name="ai_content_report_reason_hate">Content na may poot, panliligalig, o bullying</string>
+    <string name="ai_content_report_reason_violence">Marahas, mapanganib, o ilegal na content</string>
+    <string name="ai_content_report_reason_deceptive">Nakalilinlang o mapanlinlang na content</string>
+    <string name="ai_content_report_reason_privacy">Personal o pribadong impormasyon</string>
+    <string name="ai_content_report_reason_other">Iba pang nakakasakit na content</string>
+    <string name="ai_content_report_details_hint">Karagdagang detalye (opsyonal)</string>
+    <string name="ai_content_report_submit">Isumite ang ulat</string>
+    <string name="ai_content_report_success">Naipadala ang ulat. Salamat sa pagtulong na mapanatiling ligtas ang OneBox.</string>
+    <string name="ai_content_report_failed">Hindi naipadala ang ulat. Suriin ang koneksyon at subukang muli.</string>
+    <string name="ai_content_report_image_preview">Kasalukuyang larawang gawa ng AI</string>
 </resources>

@@ -2129,4 +2129,19 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <string name="file_viewer_search_previous">Kết quả trước</string>
     <string name="file_viewer_title">Xem trước tệp</string>
     <string name="home_category_filter">Lọc theo danh mục</string>
+    <string name="ai_content_report_action">Báo cáo nội dung AI</string>
+    <string name="ai_content_report_title">Báo cáo nội dung do AI tạo</string>
+    <string name="ai_content_report_description">Đầu ra của AI hoặc câu lệnh liên quan, mô hình, ID nội dung và lý do báo cáo sẽ được gửi đến nhà phát triển để kiểm duyệt. Vui lòng không nhập mật khẩu hoặc thông tin nhạy cảm khác vào phần mô tả thêm.</string>
+    <string name="ai_content_report_reason_label">Nội dung này có vấn đề gì?</string>
+    <string name="ai_content_report_reason_sexual">Nội dung khiêu dâm hoặc không phù hợp với người chưa thành niên</string>
+    <string name="ai_content_report_reason_hate">Nội dung thù địch, quấy rối hoặc bắt nạt</string>
+    <string name="ai_content_report_reason_violence">Nội dung bạo lực, nguy hiểm hoặc bất hợp pháp</string>
+    <string name="ai_content_report_reason_deceptive">Nội dung gây hiểu nhầm hoặc lừa đảo</string>
+    <string name="ai_content_report_reason_privacy">Thông tin cá nhân hoặc riêng tư</string>
+    <string name="ai_content_report_reason_other">Nội dung xúc phạm khác</string>
+    <string name="ai_content_report_details_hint">Mô tả thêm (không bắt buộc)</string>
+    <string name="ai_content_report_submit">Gửi báo cáo</string>
+    <string name="ai_content_report_success">Đã gửi báo cáo. Cảm ơn bạn đã giúp giữ OneBox an toàn.</string>
+    <string name="ai_content_report_failed">Không thể gửi báo cáo. Vui lòng kiểm tra kết nối và thử lại.</string>
+    <string name="ai_content_report_image_preview">Hình ảnh hiện tại do AI tạo</string>
 </resources>

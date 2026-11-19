@@ -71,6 +71,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -89,26 +90,32 @@ import com.shifenmiao.ai.component.LocalAiMarkdownSelectionItems
 import com.shifenmiao.ai.component.ChatLoadingIndicator
 import com.shifenmiao.ai.component.RobotReasoningContent
 import com.shifenmiao.ai.component.RobotReasoningHeader
+import com.shifenmiao.ai.component.UserMessageFooter
 import com.shifenmiao.ai.model.AIDuelConfig
 import com.shifenmiao.ai.model.DuelSpeaker
 import com.shifenmiao.ai.model.MessageUiModel
 import com.shifenmiao.ai.ui.AIChatBottom
 import com.shifenmiao.ai.ui.AIContentNotice
+import com.shifenmiao.ai.ui.AIUsageBar
 import com.shifenmiao.ai.ui.AIDuelPersonaHistoryPickerBottomSheet
 import com.shifenmiao.ai.ui.AIPromptsPickerBottomSheet
 import com.wanbaohe.base.ui.CustomChatCard
 import com.wanbaohe.base.ui.DisableContainer
 import com.wanbaohe.base.ui.icon.LetterIcon
-import com.shifenmiao.common.ai.report.AiContentReportButton
+import com.shifenmiao.base.provider.LocalDataDraftHelper
+import com.shifenmiao.common.ai.report.AiContentReportDialog
 import com.shifenmiao.common.components.text.TextSelectionMenuContainer
 import com.shifenmiao.common.components.text.defaultTextSelectionMenuItems
+import com.shifenmiao.common.handle.LocalUrlNavigator
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.ai.AIModelsPickerBottomSheet
 import com.shifenmiao.common.ui.rememberMarkdownCodeActions
 import com.shifenmiao.core.R
 import com.shifenmiao.core.constants.UrlConstants
+import com.shifenmiao.database.ai.entity.MessageEntity
 import com.shifenmiao.model.webview.WebViewParams
+import com.shifenmiao.model.ListItemType
 import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.model.state.PageState
@@ -342,6 +349,22 @@ private fun DuelChatContent(
     val showRoleNameHistoryPicker = remember { mutableStateOf(false) }
     val pickingRoleNameHistoryRole = remember { mutableStateOf<DuelSpeaker?>(null) }
     val isExporting = remember { mutableStateOf(false) }
+    val shareDuelChat = {
+        isExporting.value = true
+        duelChatComponent.exportDuelChatHistory { html, aIgcInfo ->
+            isExporting.value = false
+            appComponent.showWebView(
+                WebViewParams(
+                    baseUrl = UrlConstants.WEB_VIEW_BASE_URL,
+                    isHtml = true,
+                    htmlData = html,
+                    enableSlowWholeDocumentDraw = true,
+                    enableCustomTouch = false,
+                    aIgcInfo = aIgcInfo
+                )
+            )
+        }
+    }
 
     val lastAppliedConfig = remember { mutableStateOf(duelConfig) }
 
@@ -497,6 +520,7 @@ private fun DuelChatContent(
                 duelConfig = duelConfig,
                 onNavigate = onNavigate,
                 isDuelRunning = duelState.running,
+                onShare = shareDuelChat,
             )
         }
         val showShare = messageUiModels.isNotEmpty() && !duelState.running
@@ -532,22 +556,7 @@ private fun DuelChatContent(
             onResume = duelChatComponent::resumeDuel,
             onWrapUp = duelChatComponent::wrapUpDuel,
             onRetry = duelChatComponent::retryDuel,
-            onShare = {
-                isExporting.value = true
-                duelChatComponent.exportDuelChatHistory { html, aIgcInfo ->
-                    isExporting.value = false
-                    appComponent.showWebView(
-                        WebViewParams(
-                            baseUrl = UrlConstants.WEB_VIEW_BASE_URL,
-                            isHtml = true,
-                            htmlData = html,
-                            enableSlowWholeDocumentDraw = true,
-                            enableCustomTouch = false,
-                            aIgcInfo = aIgcInfo
-                        )
-                    )
-                }
-            }
+            onShare = shareDuelChat
         )
     }
 
@@ -1842,6 +1851,7 @@ private fun DuelMessagesList(
     onNavigate: (Screen) -> Unit,
     isDuelRunning: Boolean,
     duelChatComponent: AIDuelChatComponent,
+    onShare: () -> Unit,
 ) {
     val codeActions = rememberMarkdownCodeActions(appComponent = appComponent)
     // 与 AI 聊天共用同一套选区状态清理规则：切会话 / 开始互聊时收起工具条
@@ -1899,6 +1909,14 @@ private fun DuelMessagesList(
                                 avatarPath = duelConfig.avatarA,
                             )
                         },
+                        onUserContainerFooter = { footer ->
+                            DuelUserMessageFooter(
+                                footer = footer,
+                                duelChatComponent = duelChatComponent,
+                                appComponent = appComponent,
+                                onShare = onShare,
+                            )
+                        },
                         onUserVerticalSpace = { userSpace ->
                             Spacer(
                                 modifier = Modifier
@@ -1935,19 +1953,12 @@ private fun DuelMessagesList(
                             )
                         },
                         onRobotContainerFooter = { footer, _ ->
-                            DuelRobotFooter()
-                            if (footer.isReportable && footer.messageEntity.answer.isNotBlank()) {
-                                AiContentReportButton(
-                                    contentPreview = footer.messageEntity.answer,
-                                    onSubmit = { reason, details ->
-                                        duelChatComponent.submitAiContentReport(
-                                            footer.messageEntity,
-                                            reason,
-                                            details,
-                                        )
-                                    },
-                                )
-                            }
+                            DuelRobotMessageFooter(
+                                footer = footer,
+                                duelChatComponent = duelChatComponent,
+                                appComponent = appComponent,
+                                onShare = onShare,
+                            )
                         },
                         onRobotError = {}
                     )
@@ -1990,6 +2001,133 @@ private fun DuelMessagesList(
 // ──────────────────────────────────────────────────────────────
 //  Message header / footer composables
 // ──────────────────────────────────────────────────────────────
+
+@Composable
+private fun DuelUserMessageFooter(
+    footer: MessageUiModel.UserContainerFooter,
+    duelChatComponent: AIDuelChatComponent,
+    appComponent: AppComponent,
+    onShare: () -> Unit,
+) {
+    if (!footer.showActions) {
+        UserMessageFooter(footer)
+        return
+    }
+
+    DuelMessageActionBar(
+        message = footer.messageEntity.copy(answer = footer.messageEntity.question),
+        showTokens = false,
+        isHuman = true,
+        duelChatComponent = duelChatComponent,
+        appComponent = appComponent,
+        onShare = onShare,
+    )
+}
+
+@Composable
+private fun DuelRobotMessageFooter(
+    footer: MessageUiModel.RobotContainerFooter,
+    duelChatComponent: AIDuelChatComponent,
+    appComponent: AppComponent,
+    onShare: () -> Unit,
+) {
+    val chatUIState = LocalChatUIState.current
+    val isShowBar = footer.showActions || (chatUIState.showTokens && footer.showTokens)
+    if (!isShowBar) {
+        DuelRobotFooter()
+        return
+    }
+
+    DuelMessageActionBar(
+        message = footer.messageEntity,
+        showTokens = chatUIState.showTokens && footer.showTokens,
+        isHuman = false,
+        duelChatComponent = duelChatComponent,
+        appComponent = appComponent,
+        onShare = onShare,
+    )
+}
+
+@Composable
+private fun DuelMessageActionBar(
+    message: MessageEntity,
+    showTokens: Boolean,
+    isHuman: Boolean,
+    duelChatComponent: AIDuelChatComponent,
+    appComponent: AppComponent,
+    onShare: () -> Unit,
+) {
+    val localNavigator = LocalUrlNavigator.current
+    val dataDraftHelper = LocalDataDraftHelper.current
+    val noteScope = rememberCoroutineScope()
+    var showAiContentReport by remember { mutableStateOf(false) }
+    // 操作栏是消息卡片最后一段：底色与玻璃管线必须跟着所属消息走，
+    // 否则角色 A(primaryContainer 玻璃)的消息下面会接一条中性色条，像贴错了卡片。
+    val containerColor = if (isHuman) {
+        MaterialTheme.colorScheme.primaryContainer
+    } else {
+        MaterialTheme.colorScheme.surfaceContainerLow
+    }
+    val contentColor = if (isHuman) {
+        MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
+    } else {
+        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+    }
+    // 与 DuelUser/RobotMessageHeader 的 12dp 圆角对齐
+    val barShape = RoundedCornerShape(0.dp, 0.dp, 12.dp, 12.dp)
+    // 必须包在 Column 里：聊天列表是 reverseLayout，一个 item 若吐出两个相邻节点
+    // （栏 + 间距），间距会被排到栏上方，消息与操作栏之间就多出一条约 4dp 的透明缝。
+    Column {
+        AIUsageBar(
+            modifier = if (isHuman) {
+                Modifier.glassCardSegment(
+                    segment = GlassCardSegment.Bottom,
+                    shape = barShape,
+                    color = containerColor,
+                )
+            } else {
+                Modifier.flatGlassCardSegment(
+                    segment = GlassCardSegment.Bottom,
+                    shape = barShape,
+                    color = containerColor,
+                )
+            },
+            message = message,
+            showTokens = showTokens,
+            contentColor = contentColor,
+            onDelete = duelChatComponent::deleteMessage,
+            onShare = { onShare() },
+            onNoteAdd = {
+                noteScope.launch {
+                    val draftId = dataDraftHelper.createDraft(
+                        draftType = ListItemType.NOTE.id,
+                        data = message.answer
+                    )
+                    localNavigator.navigate(Screen.CreateNote(draftId = draftId))
+                }
+            },
+            onCreateCard = {
+                appComponent.onNavigate(Screen.TextCard(initialText = message.answer))
+            },
+            onReport = if (message.answer.isNotBlank()) {
+                { showAiContentReport = true }
+            } else {
+                null
+            },
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+    }
+
+    if (showAiContentReport) {
+        AiContentReportDialog(
+            contentPreview = message.answer,
+            onDismiss = { showAiContentReport = false },
+            onSubmit = { reason, details ->
+                duelChatComponent.submitAiContentReport(message, reason, details)
+            },
+        )
+    }
+}
 
 @Composable
 private fun DuelRobotFooter() {

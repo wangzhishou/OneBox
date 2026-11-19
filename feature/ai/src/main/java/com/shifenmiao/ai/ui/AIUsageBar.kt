@@ -31,6 +31,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import com.wanbaohe.base.ui.ActionButton
@@ -55,6 +56,9 @@ fun AIUsageBar(
     message: MessageEntity,
     isShowReGenerate: Boolean = false,
     showTokens: Boolean = true,
+    // 图标/计数的前景色由容器色系决定：中性卡片传 onSurfaceVariant，
+    // 彩色卡片（AI 互聊里 primaryContainer 那一侧）传 onPrimaryContainer，否则图标会糊在底上
+    contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
     onDelete: (String) -> Unit = {},
     reGenerate: () -> Unit = {},
     onShare: (String) -> Unit = {},
@@ -67,7 +71,7 @@ fun AIUsageBar(
     Row(
         modifier = modifier.padding(
             horizontal = AppTheme.dimens.paddingNormal,
-            vertical = AppTheme.dimens.paddingNormal
+            vertical = AppTheme.dimens.paddingSmall
         ),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
@@ -76,7 +80,7 @@ fun AIUsageBar(
             ActionButton(
                 icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
                 contentDescription = "",
-                contentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                contentColor = contentColor,
                 onClick = {
                     reGenerate.invoke()
                 }
@@ -86,7 +90,7 @@ fun AIUsageBar(
         ActionButton(
             icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
             contentDescription = "",
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+            contentColor = contentColor,
             onClick = {
                 Clipboard.copy(message.answer)
             }
@@ -97,14 +101,14 @@ fun AIUsageBar(
             // 功能是生成图片卡片，换成一眼可辨的 Outline 图片图标
             icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Image,
             contentDescription = stringResource(R.string.text_card),
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+            contentColor = contentColor,
             onClick = onCreateCard
         )
         Spacer(modifier = Modifier.width(AppTheme.dimens.spaceSmall))
         ActionButton(
             icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
             contentDescription = "",
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+            contentColor = contentColor,
             onClick = {
                 showDeleteDialog.value = true
             }
@@ -114,7 +118,7 @@ fun AIUsageBar(
             ActionButton(
                 icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFlag,
                 contentDescription = stringResource(R.string.ai_content_report_action),
-                contentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                contentColor = contentColor,
                 onClick = report
             )
         }
@@ -127,7 +131,7 @@ fun AIUsageBar(
                     message.totalTokens.toString(),
                 ),
                 style = MaterialTheme.typography.labelSmall.copy(
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                    color = contentColor
                 )
             )
             Spacer(modifier = Modifier.width(AppTheme.dimens.spaceSmall))
@@ -135,7 +139,7 @@ fun AIUsageBar(
         ActionButton(
             icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Share,
             contentDescription = "",
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+            contentColor = contentColor,
             onClick = {
                 onShare("")
             }
@@ -144,7 +148,7 @@ fun AIUsageBar(
         ActionButton(
             icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.NoteAdd,
             contentDescription = "",
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+            contentColor = contentColor,
             onClick = {
                 onNoteAdd()
             }

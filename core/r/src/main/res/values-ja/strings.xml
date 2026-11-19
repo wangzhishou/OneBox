@@ -2131,4 +2131,19 @@
     <string name="file_viewer_search_previous">前の一致</string>
     <string name="file_viewer_title">ファイルプレビュー</string>
     <string name="home_category_filter">カテゴリで絞り込み</string>
+    <string name="ai_content_report_action">AIコンテンツを報告</string>
+    <string name="ai_content_report_title">AI生成コンテンツを報告</string>
+    <string name="ai_content_report_description">AIの出力または関連するプロンプト、モデル、コンテンツID、報告理由がコンテンツ審査のために開発者に送信されます。追加の詳細には、パスワードなどの機密情報を入力しないでください。</string>
+    <string name="ai_content_report_reason_label">このコンテンツのどこに問題がありますか？</string>
+    <string name="ai_content_report_reason_sexual">性的または未成年者に不適切なコンテンツ</string>
+    <string name="ai_content_report_reason_hate">ヘイト、嫌がらせ、いじめを含むコンテンツ</string>
+    <string name="ai_content_report_reason_violence">暴力的、危険、または違法なコンテンツ</string>
+    <string name="ai_content_report_reason_deceptive">誤解を招く、または欺瞞的なコンテンツ</string>
+    <string name="ai_content_report_reason_privacy">個人情報またはプライバシー情報</string>
+    <string name="ai_content_report_reason_other">その他の不快なコンテンツ</string>
+    <string name="ai_content_report_details_hint">補足説明（任意）</string>
+    <string name="ai_content_report_submit">報告を送信</string>
+    <string name="ai_content_report_success">報告を送信しました。OneBoxの安全な運営にご協力いただきありがとうございます。</string>
+    <string name="ai_content_report_failed">報告を送信できませんでした。ネットワーク接続を確認して、もう一度お試しください。</string>
+    <string name="ai_content_report_image_preview">現在のAI生成画像</string>
 </resources>

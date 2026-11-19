@@ -2132,4 +2132,19 @@
     <string name="file_viewer_search_previous">上一個符合項目</string>
     <string name="file_viewer_title">檔案預覽</string>
     <string name="home_category_filter">分類篩選</string>
+    <string name="ai_content_report_action">檢舉 AI 內容</string>
+    <string name="ai_content_report_title">檢舉 AI 生成內容</string>
+    <string name="ai_content_report_description">AI 輸出或相關提示詞、模型、內容 ID 與檢舉原因會傳送給開發者進行內容審查。請勿在補充說明中填寫密碼等敏感資訊。</string>
+    <string name="ai_content_report_reason_label">這則內容有什麼問題？</string>
+    <string name="ai_content_report_reason_sexual">色情或不適宜未成年人的內容</string>
+    <string name="ai_content_report_reason_hate">仇恨、騷擾或霸凌內容</string>
+    <string name="ai_content_report_reason_violence">暴力、危險或違法內容</string>
+    <string name="ai_content_report_reason_deceptive">誤導或欺騙性內容</string>
+    <string name="ai_content_report_reason_privacy">個人或隱私資訊</string>
+    <string name="ai_content_report_reason_other">其他令人不適的內容</string>
+    <string name="ai_content_report_details_hint">補充說明（選填）</string>
+    <string name="ai_content_report_submit">提交檢舉</string>
+    <string name="ai_content_report_success">檢舉已提交，感謝你協助維護 OneBox 的內容安全。</string>
+    <string name="ai_content_report_failed">檢舉提交失敗，請檢查網路後重試。</string>
+    <string name="ai_content_report_image_preview">目前的 AI 生成圖片</string>
 </resources>

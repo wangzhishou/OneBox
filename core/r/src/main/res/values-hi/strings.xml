@@ -2142,4 +2142,19 @@
     <string name="file_viewer_search_previous">पिछला मिलान</string>
     <string name="file_viewer_title">फ़ाइल पूर्वावलोकन</string>
     <string name="home_category_filter">श्रेणी फ़िल्टर</string>
+    <string name="ai_content_report_action">AI सामग्री की रिपोर्ट करें</string>
+    <string name="ai_content_report_title">AI से बनी सामग्री की रिपोर्ट करें</string>
+    <string name="ai_content_report_description">AI का आउटपुट या उससे जुड़ा प्रॉम्प्ट, मॉडल, सामग्री ID और रिपोर्ट का कारण समीक्षा के लिए डेवलपर को भेजा जाएगा। अतिरिक्त विवरण में पासवर्ड या अन्य संवेदनशील जानकारी न लिखें।</string>
+    <string name="ai_content_report_reason_label">इस सामग्री में क्या समस्या है?</string>
+    <string name="ai_content_report_reason_sexual">यौन या नाबालिगों के लिए अनुपयुक्त सामग्री</string>
+    <string name="ai_content_report_reason_hate">नफ़रत, उत्पीड़न या बुलिंग वाली सामग्री</string>
+    <string name="ai_content_report_reason_violence">हिंसक, खतरनाक या अवैध सामग्री</string>
+    <string name="ai_content_report_reason_deceptive">भ्रामक या धोखाधड़ी वाली सामग्री</string>
+    <string name="ai_content_report_reason_privacy">व्यक्तिगत या निजी जानकारी</string>
+    <string name="ai_content_report_reason_other">अन्य आपत्तिजनक सामग्री</string>
+    <string name="ai_content_report_details_hint">अतिरिक्त विवरण (वैकल्पिक)</string>
+    <string name="ai_content_report_submit">रिपोर्ट सबमिट करें</string>
+    <string name="ai_content_report_success">रिपोर्ट सबमिट हो गई। OneBox को सुरक्षित रखने में मदद करने के लिए धन्यवाद।</string>
+    <string name="ai_content_report_failed">रिपोर्ट सबमिट नहीं हो सकी। कनेक्शन जाँचें और फिर से कोशिश करें।</string>
+    <string name="ai_content_report_image_preview">मौजूदा AI-जनित छवि</string>
 </resources>

@@ -2176,4 +2176,19 @@
     <string name="file_viewer_search_previous">Предыдущее совпадение</string>
     <string name="file_viewer_title">Предпросмотр файла</string>
     <string name="home_category_filter">Фильтр по категориям</string>
+    <string name="ai_content_report_action">Пожаловаться на контент ИИ</string>
+    <string name="ai_content_report_title">Пожаловаться на контент, созданный ИИ</string>
+    <string name="ai_content_report_description">Ответ ИИ или связанный с ним запрос, модель, ID контента и причина жалобы будут отправлены разработчику для проверки. Не указывайте пароли и другие конфиденциальные данные в дополнительных сведениях.</string>
+    <string name="ai_content_report_reason_label">Что не так с этим контентом?</string>
+    <string name="ai_content_report_reason_sexual">Сексуальный контент или контент для взрослых</string>
+    <string name="ai_content_report_reason_hate">Контент с ненавистью, травлей или буллингом</string>
+    <string name="ai_content_report_reason_violence">Жестокий, опасный или незаконный контент</string>
+    <string name="ai_content_report_reason_deceptive">Вводящий в заблуждение контент</string>
+    <string name="ai_content_report_reason_privacy">Личная или конфиденциальная информация</string>
+    <string name="ai_content_report_reason_other">Другой неприемлемый контент</string>
+    <string name="ai_content_report_details_hint">Дополнительные сведения (необязательно)</string>
+    <string name="ai_content_report_submit">Отправить жалобу</string>
+    <string name="ai_content_report_success">Жалоба отправлена. Спасибо, что помогаете делать OneBox безопаснее.</string>
+    <string name="ai_content_report_failed">Не удалось отправить жалобу. Проверьте соединение и повторите попытку.</string>
+    <string name="ai_content_report_image_preview">Текущее изображение, созданное ИИ</string>
 </resources>

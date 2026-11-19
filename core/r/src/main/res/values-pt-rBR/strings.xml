@@ -2142,4 +2142,19 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
     <string name="file_viewer_search_previous">Correspondência anterior</string>
     <string name="file_viewer_title">Pré-visualização do arquivo</string>
     <string name="home_category_filter">Filtrar por categoria</string>
+    <string name="ai_content_report_action">Denunciar conteúdo de IA</string>
+    <string name="ai_content_report_title">Denunciar conteúdo gerado por IA</string>
+    <string name="ai_content_report_description">A saída da IA ou o prompt relacionado, o modelo, o ID do conteúdo e o motivo da denúncia serão enviados ao desenvolvedor para moderação. Não inclua senhas ou outros dados sensíveis nos detalhes adicionais.</string>
+    <string name="ai_content_report_reason_label">Qual é o problema com este conteúdo?</string>
+    <string name="ai_content_report_reason_sexual">Conteúdo sexual ou impróprio para menores</string>
+    <string name="ai_content_report_reason_hate">Conteúdo de ódio, assédio ou bullying</string>
+    <string name="ai_content_report_reason_violence">Conteúdo violento, perigoso ou ilegal</string>
+    <string name="ai_content_report_reason_deceptive">Conteúdo enganoso ou fraudulento</string>
+    <string name="ai_content_report_reason_privacy">Informações pessoais ou privadas</string>
+    <string name="ai_content_report_reason_other">Outro conteúdo ofensivo</string>
+    <string name="ai_content_report_details_hint">Detalhes adicionais (opcional)</string>
+    <string name="ai_content_report_submit">Enviar denúncia</string>
+    <string name="ai_content_report_success">Denúncia enviada. Agradecemos por ajudar a manter o OneBox seguro.</string>
+    <string name="ai_content_report_failed">Não foi possível enviar a denúncia. Verifique sua conexão e tente novamente.</string>
+    <string name="ai_content_report_image_preview">Imagem atual gerada por IA</string>
 </resources>

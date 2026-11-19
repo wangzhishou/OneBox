@@ -2131,4 +2131,19 @@
     <string name="file_viewer_search_previous">이전 일치 항목</string>
     <string name="file_viewer_title">파일 미리보기</string>
     <string name="home_category_filter">분류 필터</string>
+    <string name="ai_content_report_action">AI 콘텐츠 신고</string>
+    <string name="ai_content_report_title">AI 생성 콘텐츠 신고</string>
+    <string name="ai_content_report_description">AI 출력 또는 관련 프롬프트, 모델, 콘텐츠 ID, 신고 사유가 콘텐츠 검토를 위해 개발자에게 전송됩니다. 추가 설명에 비밀번호 등 민감한 정보를 입력하지 마세요.</string>
+    <string name="ai_content_report_reason_label">이 콘텐츠에 어떤 문제가 있나요?</string>
+    <string name="ai_content_report_reason_sexual">성적이거나 미성년자에게 부적절한 콘텐츠</string>
+    <string name="ai_content_report_reason_hate">혐오, 괴롭힘 또는 따돌림 콘텐츠</string>
+    <string name="ai_content_report_reason_violence">폭력적이거나 위험하거나 불법적인 콘텐츠</string>
+    <string name="ai_content_report_reason_deceptive">오해의 소지가 있거나 기만적인 콘텐츠</string>
+    <string name="ai_content_report_reason_privacy">개인정보 또는 사생활 정보</string>
+    <string name="ai_content_report_reason_other">기타 불쾌한 콘텐츠</string>
+    <string name="ai_content_report_details_hint">추가 설명(선택 사항)</string>
+    <string name="ai_content_report_submit">신고 제출</string>
+    <string name="ai_content_report_success">신고가 접수되었습니다. OneBox의 콘텐츠 안전을 지키는 데 도움을 주셔서 감사합니다.</string>
+    <string name="ai_content_report_failed">신고를 제출하지 못했습니다. 네트워크 연결을 확인한 후 다시 시도해 주세요.</string>
+    <string name="ai_content_report_image_preview">현재 AI 생성 이미지</string>
 </resources>

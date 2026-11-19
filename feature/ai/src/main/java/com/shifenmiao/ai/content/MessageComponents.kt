@@ -418,23 +418,25 @@ fun RobotMessageFooter(
 ) {
     val chatUIState = LocalChatUIState.current
     val messageEntity = robotContainerFooter.messageEntity
-    val isShowBar = robotContainerFooter.isReportable ||
+    val isShowBar = robotContainerFooter.showActions ||
         (chatUIState.showTokens && robotContainerFooter.showTokens)
     // 添加控制导出HTML加载对话框显示的状态
     var isExporting by remember { mutableStateOf(false) }
     var showAiContentReport by remember { mutableStateOf(false) }
 
-    Spacer(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 24.dp)
-            .height(12.dp)
-            .flatGlassCardSegment(
-                segment = GlassCardSegment.Bottom,
-                shape = RoundedCornerShape(0.dp, 0.dp, 16.dp, 16.dp),
-                color = MaterialTheme.colorScheme.surfaceContainerLow,
-            )
-    )
+    if (!isShowBar) {
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 24.dp)
+                .height(12.dp)
+                .flatGlassCardSegment(
+                    segment = GlassCardSegment.Bottom,
+                    shape = RoundedCornerShape(0.dp, 0.dp, 16.dp, 16.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainerLow,
+                )
+        )
+    }
     val localNavigator = LocalUrlNavigator.current
     val dataDraftHelper = LocalDataDraftHelper.current
     val noteScope = rememberCoroutineScope()
@@ -445,8 +447,8 @@ fun RobotMessageFooter(
     ) {
         AIUsageBar(
             modifier = Modifier.flatGlassCardSegment(
-                segment = GlassCardSegment.Middle,
-                shape = RoundedCornerShape(0.dp),
+                segment = GlassCardSegment.Bottom,
+                shape = RoundedCornerShape(0.dp, 0.dp, 16.dp, 16.dp),
                 color = MaterialTheme.colorScheme.surfaceContainerLow
             ),
             message = robotContainerFooter.messageEntity,
@@ -486,7 +488,7 @@ fun RobotMessageFooter(
             onCreateCard = {
                 appComponent.onNavigate(Screen.TextCard(initialText = messageEntity.answer))
             },
-            onReport = if (robotContainerFooter.isReportable && messageEntity.answer.isNotBlank()) {
+            onReport = if (robotContainerFooter.showActions && messageEntity.answer.isNotBlank()) {
                 { showAiContentReport = true }
             } else {
                 null

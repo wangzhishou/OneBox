@@ -2142,4 +2142,19 @@
     <string name="file_viewer_search_previous">Önceki eşleşme</string>
     <string name="file_viewer_title">Dosya önizleme</string>
     <string name="home_category_filter">Kategori filtresi</string>
+    <string name="ai_content_report_action">AI içeriğini şikayet et</string>
+    <string name="ai_content_report_title">AI tarafından oluşturulan içeriği şikayet et</string>
+    <string name="ai_content_report_description">AI çıktısı veya ilgili istem, model, içerik kimliği ve şikayet nedeniniz incelenmek üzere geliştiriciye gönderilir. Ek açıklamaya parola veya benzeri hassas bilgiler yazmayın.</string>
+    <string name="ai_content_report_reason_label">Bu içerikteki sorun nedir?</string>
+    <string name="ai_content_report_reason_sexual">Cinsel veya reşit olmayanlar için uygun olmayan içerik</string>
+    <string name="ai_content_report_reason_hate">Nefret, taciz veya zorbalık içeren içerik</string>
+    <string name="ai_content_report_reason_violence">Şiddet içeren, tehlikeli veya yasa dışı içerik</string>
+    <string name="ai_content_report_reason_deceptive">Yanıltıcı veya aldatıcı içerik</string>
+    <string name="ai_content_report_reason_privacy">Kişisel veya özel bilgiler</string>
+    <string name="ai_content_report_reason_other">Diğer rahatsız edici içerik</string>
+    <string name="ai_content_report_details_hint">Ek açıklama (isteğe bağlı)</string>
+    <string name="ai_content_report_submit">Şikayeti gönder</string>
+    <string name="ai_content_report_success">Şikayetiniz alındı. OneBox\'ı güvende tutmaya yardımcı olduğunuz için teşekkürler.</string>
+    <string name="ai_content_report_failed">Şikayet gönderilemedi. Bağlantınızı kontrol edip tekrar deneyin.</string>
+    <string name="ai_content_report_image_preview">Mevcut AI görseli</string>
 </resources>
