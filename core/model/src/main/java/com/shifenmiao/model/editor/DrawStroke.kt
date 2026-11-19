@@ -25,6 +25,15 @@ data class DrawStroke(
     val widthRatio: Float,
     val brush: BrushType,
     val alpha: Float = 1f,
+    val ink: InkStrokeSnapshot? = null,
+)
+
+data class InkStrokeSnapshot(
+    val encodedInputs: String,
+    val brushSize: Float,
+    val epsilon: Float,
+    val canvasWidth: Float,
+    val canvasHeight: Float,
 )
 
 data class StrokePoint(

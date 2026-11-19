@@ -6,44 +6,34 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * You should have received a copy of the Apache License
- * along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
  */
 
 package com.wanbaohe.core.ui.widget.editor
 
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.layout.size
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.CompositingStrategy
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.input.pointer.positionChanged
-import androidx.compose.ui.platform.LocalDensity
+import androidx.ink.geometry.AffineTransform
+import androidx.ink.geometry.MutableParallelogram
+import androidx.ink.geometry.MutableSegment
+import androidx.ink.geometry.MutableVec
+import androidx.ink.strokes.Stroke
 import com.shifenmiao.model.editor.BrushType
 import com.shifenmiao.model.editor.DrawStroke
-import com.shifenmiao.model.editor.StrokePoint
 
 class EditorDrawSessionState {
     var strokes by mutableStateOf<List<DrawStroke>>(emptyList())
         private set
-    var redoStack by mutableStateOf<List<DrawStroke>>(emptyList())
-        private set
-    var currentPoints by mutableStateOf<List<StrokePoint>>(emptyList())
+    internal var inkStrokes by mutableStateOf<List<Stroke>>(emptyList())
         private set
 
     var brush by mutableStateOf(BrushType.Pencil)
@@ -52,12 +42,22 @@ class EditorDrawSessionState {
     var alpha by mutableStateOf(1f)
     var isEraser by mutableStateOf(false)
     var isPanMode by mutableStateOf(false)
+    var canUndo by mutableStateOf(false)
+        private set
+    var canRedo by mutableStateOf(false)
+        private set
 
-    val canUndo: Boolean get() = strokes.isNotEmpty()
-    val canRedo: Boolean get() = redoStack.isNotEmpty()
-    val effectiveBrush: BrushType get() = if (isEraser) BrushType.Eraser else brush
+    private var history = listOf(EditorDrawSnapshot())
+    private var historyIndex = 0
+    private var previousErasePoint: MutableVec? = null
+    private var eraseChanged = false
 
     fun selectBrush(type: BrushType) {
+        if (type == BrushType.Marker && brush != BrushType.Marker) {
+            alpha = DEFAULT_HIGHLIGHTER_ALPHA
+        } else if (type != BrushType.Marker && brush == BrushType.Marker) {
+            alpha = 1f
+        }
         brush = type
         isEraser = false
         isPanMode = false
@@ -83,108 +83,112 @@ class EditorDrawSessionState {
         isPanMode = !isPanMode
     }
 
-    fun beginStroke() {
-        currentPoints = emptyList()
-    }
+    internal fun currentInkBrush() = createEditorInkBrush(
+        type = brush,
+        colorInt = colorInt,
+        widthPx = widthPx,
+        alpha = alpha,
+    )
 
-    fun appendPoint(point: StrokePoint) {
-        currentPoints = currentPoints + point
-    }
-
-    fun finishStroke(canvasWidthPx: Float) {
-        val points = currentPoints
-        currentPoints = emptyList()
-        if (points.isEmpty() || canvasWidthPx <= 0f) return
-        strokes = strokes + DrawStroke(
-            points = points,
-            color = colorInt,
-            widthRatio = widthPx / canvasWidthPx,
-            brush = effectiveBrush,
-            alpha = alpha
+    internal fun addStrokes(
+        finishedStrokes: List<Stroke>,
+        canvasWidthPx: Float,
+        canvasHeightPx: Float,
+    ) {
+        val added = finishedStrokes.mapNotNull { stroke ->
+            stroke.toEditorDrawStroke(brush, canvasWidthPx, canvasHeightPx)?.let { stroke to it }
+        }
+        if (added.isEmpty()) return
+        commit(
+            models = strokes + added.map { it.second },
+            ink = inkStrokes + added.map { it.first },
         )
-        redoStack = emptyList()
     }
 
-    fun inProgressStroke(canvasWidthPx: Float): DrawStroke? {
-        val points = currentPoints
-        if (points.isEmpty() || canvasWidthPx <= 0f) return null
-        return DrawStroke(
-            points = points,
-            color = colorInt,
-            widthRatio = widthPx / canvasWidthPx,
-            brush = effectiveBrush,
-            alpha = alpha
-        )
+    internal fun startErase() {
+        previousErasePoint = null
+        eraseChanged = false
+    }
+
+    internal fun erase(x: Float, y: Float) {
+        if (inkStrokes.isEmpty()) return
+        val currentPoint = MutableVec(x, y)
+        val previousPoint = previousErasePoint
+        val padding = (widthPx / 2f).coerceAtLeast(12f)
+        val eraser = if (previousPoint == null) {
+            MutableParallelogram().populateFromCenterAndDimensions(
+                currentPoint,
+                padding * 2f,
+                padding * 2f,
+            )
+        } else {
+            MutableParallelogram().populateFromSegmentAndPadding(
+                MutableSegment(previousPoint, currentPoint),
+                padding,
+            )
+        }
+        previousErasePoint = currentPoint
+        val retainedIndices = inkStrokes.indices.filterNot { index ->
+            inkStrokes[index].shape.computeCoverageIsGreaterThan(
+                eraser,
+                0f,
+                AffineTransform.IDENTITY,
+            )
+        }
+        if (retainedIndices.size == inkStrokes.size) return
+        strokes = retainedIndices.map(strokes::get)
+        inkStrokes = retainedIndices.map(inkStrokes::get)
+        eraseChanged = true
+    }
+
+    internal fun endErase() {
+        previousErasePoint = null
+        if (eraseChanged) {
+            eraseChanged = false
+            commit(strokes, inkStrokes)
+        }
     }
 
     fun undo() {
-        val last = strokes.lastOrNull() ?: return
-        strokes = strokes.dropLast(1)
-        redoStack = redoStack + last
+        if (!canUndo) return
+        historyIndex--
+        applyHistory()
     }
 
     fun redo() {
-        val next = redoStack.lastOrNull() ?: return
-        redoStack = redoStack.dropLast(1)
-        strokes = strokes + next
+        if (!canRedo) return
+        historyIndex++
+        applyHistory()
     }
+
+    private fun commit(models: List<DrawStroke>, ink: List<Stroke>) {
+        history = history.take(historyIndex + 1) + EditorDrawSnapshot(models, ink)
+        if (history.size > MAX_HISTORY_SIZE) {
+            history = history.drop(1)
+        } else {
+            historyIndex++
+        }
+        applyHistory()
+    }
+
+    private fun applyHistory() {
+        val snapshot = history[historyIndex]
+        strokes = snapshot.models
+        inkStrokes = snapshot.ink
+        canUndo = historyIndex > 0
+        canRedo = historyIndex < history.lastIndex
+        previousErasePoint = null
+    }
+
+    private data class EditorDrawSnapshot(
+        val models: List<DrawStroke> = emptyList(),
+        val ink: List<Stroke> = emptyList(),
+    )
 
     private companion object {
         val DEFAULT_COLOR = 0xFF005FFF.toInt()
         const val DEFAULT_WIDTH_PX = 18f
+        const val DEFAULT_HIGHLIGHTER_ALPHA = 0.35f
+        const val MAX_HISTORY_SIZE = 50
     }
 }
-
-@Composable
-fun EditorDrawOverlay(
-    session: EditorDrawSessionState,
-    canvasWidthPx: Float,
-    canvasHeightPx: Float,
-    modifier: Modifier = Modifier,
-) {
-    val density = LocalDensity.current
-    Canvas(
-        modifier = modifier
-            .size(
-                width = with(density) { canvasWidthPx.toDp() },
-                height = with(density) { canvasHeightPx.toDp() }
-            )
-            .graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen }
-            .drawGesture(session, canvasWidthPx, canvasHeightPx)
-    ) {
-        session.strokes.forEach { drawEditorStroke(it, size.width, size.height) }
-        session.inProgressStroke(size.width)?.let {
-            drawEditorStroke(it, size.width, size.height)
-        }
-    }
-}
-
-private fun Modifier.drawGesture(
-    session: EditorDrawSessionState,
-    canvasWidthPx: Float,
-    canvasHeightPx: Float,
-): Modifier = pointerInput(canvasWidthPx, canvasHeightPx, session.isPanMode) {
-    if (session.isPanMode) return@pointerInput
-    awaitEachGesture {
-        val down = awaitFirstDown(requireUnconsumed = false)
-        if (down.isConsumed) return@awaitEachGesture
-        session.beginStroke()
-        session.appendPoint(down.position.normalized(canvasWidthPx, canvasHeightPx))
-        try {
-            while (true) {
-                val event = awaitPointerEvent()
-                if (event.changes.count { it.pressed } > 1) break
-                val change = event.changes.firstOrNull { it.id == down.id } ?: break
-                if (!change.pressed) break
-                if (change.positionChanged()) {
-                    session.appendPoint(change.position.normalized(canvasWidthPx, canvasHeightPx))
-                    change.consume()
-                }
-            }
-        } finally {
-            session.finishStroke(canvasWidthPx)
-        }
-    }
-}
-
-private fun Offset.normalized(width: Float, height: Float) = StrokePoint(x / width, y / height)

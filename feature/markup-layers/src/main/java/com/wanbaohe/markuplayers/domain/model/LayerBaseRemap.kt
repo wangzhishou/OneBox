@@ -244,7 +244,8 @@ object LayerBaseRemap {
                     strokes = content.strokes.map { stroke ->
                         stroke.copy(
                             points = stroke.points.map { context.mapLocalPoint(it, transform) },
-                            widthRatio = stroke.widthRatio.scaled(widthCompensation)
+                            widthRatio = stroke.widthRatio.scaled(widthCompensation),
+                            ink = null,
                         )
                     }
                 ),

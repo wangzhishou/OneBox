@@ -6,15 +6,15 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * You should have received a copy of the Apache License
- * along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
  */
 
 package com.wanbaohe.markuplayers.presentation.render
@@ -27,13 +27,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
-import com.wanbaohe.core.ui.widget.editor.drawEditorStroke
-import com.wanbaohe.markuplayers.domain.model.DrawStroke
+import com.wanbaohe.core.ui.widget.editor.EditorStrokeCanvas
 import com.wanbaohe.markuplayers.domain.model.LayerType
 import com.wanbaohe.markuplayers.domain.model.MarkupLayer
 import kotlin.math.roundToInt
@@ -54,15 +52,19 @@ object DrawLayerPreviewRenderer : LayerPreviewRenderer {
         if (layer.requiresBitmapProcessing && filteredBitmap == null) return
         if (type.strokes.isEmpty() && filteredBitmap == null) return
         val density = LocalDensity.current
-        Canvas(
-            modifier = Modifier
-                .size(
-                    width = with(density) { canvasWidthPx.toDp() },
-                    height = with(density) { canvasHeightPx.toDp() }
-                )
-                .graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen }
-        ) {
-            if (filteredBitmap != null) {
+        val canvasModifier = Modifier
+            .size(
+                width = with(density) { canvasWidthPx.toDp() },
+                height = with(density) { canvasHeightPx.toDp() }
+            )
+            .graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen }
+        if (filteredBitmap == null) {
+            EditorStrokeCanvas(
+                strokes = type.strokes,
+                modifier = canvasModifier,
+            )
+        } else {
+            Canvas(modifier = canvasModifier) {
                 drawImage(
                     image = filteredBitmap.asImageBitmap(),
                     srcOffset = IntOffset.Zero,
@@ -71,15 +73,7 @@ object DrawLayerPreviewRenderer : LayerPreviewRenderer {
                     dstSize = IntSize(size.width.roundToInt(), size.height.roundToInt()),
                     filterQuality = FilterQuality.Medium
                 )
-            } else {
-                type.strokes.forEach { stroke -> drawStroke(stroke, size.width, size.height) }
             }
         }
     }
 }
-
-internal fun DrawScope.drawStroke(
-    stroke: DrawStroke,
-    canvasWidthPx: Float,
-    canvasHeightPx: Float,
-) = drawEditorStroke(stroke, canvasWidthPx, canvasHeightPx)

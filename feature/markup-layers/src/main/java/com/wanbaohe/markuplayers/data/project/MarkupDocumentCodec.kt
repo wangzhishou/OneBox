@@ -32,6 +32,7 @@ import com.wanbaohe.core.ui.widget.editor.StickerSource
 import com.wanbaohe.markuplayers.domain.model.BrushType
 import com.wanbaohe.markuplayers.domain.model.BaseTransformSpec
 import com.wanbaohe.markuplayers.domain.model.DrawStroke
+import com.shifenmiao.model.editor.InkStrokeSnapshot
 import com.wanbaohe.markuplayers.domain.model.LayerBlendMode
 import com.wanbaohe.markuplayers.domain.model.LayerEffect
 import com.wanbaohe.markuplayers.domain.model.LayerMask
@@ -218,7 +219,8 @@ private fun encodeType(type: LayerType): JsonObject = when (type) {
                     "color" to json(it.color),
                     "widthRatio" to json(it.widthRatio),
                     "brush" to json(it.brush.name),
-                    "alpha" to json(it.alpha)
+                    "alpha" to json(it.alpha),
+                    "ink" to nullable(it.ink, ::encodeInkStroke)
                 )
             }
         )
@@ -305,13 +307,17 @@ private fun encodeType(type: LayerType): JsonObject = when (type) {
             "draw" -> {
                 value.objectWith("kind", "strokes")
                 LayerType.Draw(value.list("strokes") {
-                    val stroke = it.objectWith("points", "color", "widthRatio", "brush", "alpha")
+                    val stroke = it.objectWithOptional(
+                        required = arrayOf("points", "color", "widthRatio", "brush", "alpha"),
+                        optional = setOf("ink")
+                    )
                     DrawStroke(
                         points = stroke.list("points", ::decodePoint),
                         color = stroke.int("color"),
                         widthRatio = stroke.float("widthRatio").positive("Stroke width"),
                         brush = enumValue<BrushType>(stroke.string("brush")),
                         alpha = stroke.float("alpha").unitRange("Stroke alpha"),
+                        ink = stroke["ink"]?.takeIf { ink -> ink != JsonNull }?.let(::decodeInkStroke),
                     )
                 })
             }
@@ -765,6 +771,29 @@ private inline fun <T> formatErrors(block: () -> T): T = try {
     block()
 } catch (exception: IllegalArgumentException) {
     throw MarkupProjectFormatException("Invalid project data: ${exception.message}", exception)
+}
+
+private fun encodeInkStroke(snapshot: InkStrokeSnapshot): JsonObject = obj(
+    "inputs" to json(snapshot.encodedInputs),
+    "brushSize" to json(snapshot.brushSize),
+    "epsilon" to json(snapshot.epsilon),
+    "canvasWidth" to json(snapshot.canvasWidth),
+    "canvasHeight" to json(snapshot.canvasHeight),
+)
+
+private fun decodeInkStroke(element: JsonElement): InkStrokeSnapshot {
+    val value = element.objectWith("inputs", "brushSize", "epsilon", "canvasWidth", "canvasHeight")
+    return InkStrokeSnapshot(
+        encodedInputs = value.string("inputs").also {
+            if (it.isEmpty()) invalid("Ink inputs must not be empty")
+        },
+        brushSize = value.float("brushSize").positive("Ink brush size"),
+        epsilon = value.float("epsilon").positive("Ink epsilon"),
+        canvasWidth = value.float("canvasWidth").positive("Ink canvas width"),
+        canvasHeight = value.float("canvasHeight").positive("Ink canvas height"),
+    ).also {
+        if (it.epsilon > it.brushSize) invalid("Ink epsilon must not exceed brush size")
+    }
 }
 
 private fun obj(vararg fields: Pair<String, JsonElement>) = JsonObject(mapOf(*fields))

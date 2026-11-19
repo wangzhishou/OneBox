@@ -1551,7 +1551,7 @@ private fun EditorCanvas(
                                 onEditTextLayer = onEditTextLayer
                             )
                         }
-                        // 绘制模式:会话笔画覆盖层(含进行中笔画,橡皮擦离屏隔离)
+                        // 绘制模式:共享 Ink 笔画覆盖层(湿墨/干墨分层)
                         if (drawSession != null && !component.isComparing) {
                             DrawOverlay(
                                 session = drawSession,

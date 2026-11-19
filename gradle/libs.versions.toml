@@ -1,6 +1,6 @@
 [versions]
 alipaysdkAndroid = "15.8.42"
-androidMinSdk = "24"
+androidMinSdk = "26"
 androidTargetSdk = "37"
 androidCompileSdk = "37"
 androidCompileSdkMinor = "2"
@@ -65,6 +65,8 @@ scrollbar = "3.0.0"
 reorderable = "3.1.0"
 splashScreen = "1.2.0"
 room = "2.8.5"
+ink = "1.0.0"
+inputMotionPrediction = "1.0.1"
 
 espresso = "3.7.0"
 kotlinxSerializationJson = "1.12.0"
@@ -189,6 +191,16 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "room" }
+androidx-ink-authoring-android = { module = "androidx.ink:ink-authoring-android", version.ref = "ink" }
+androidx-ink-authoring-compose = { module = "androidx.ink:ink-authoring-compose", version.ref = "ink" }
+androidx-ink-brush = { module = "androidx.ink:ink-brush", version.ref = "ink" }
+androidx-ink-brush-compose = { module = "androidx.ink:ink-brush-compose", version.ref = "ink" }
+androidx-ink-geometry = { module = "androidx.ink:ink-geometry", version.ref = "ink" }
+androidx-ink-nativeloader = { module = "androidx.ink:ink-nativeloader", version.ref = "ink" }
+androidx-ink-rendering = { module = "androidx.ink:ink-rendering", version.ref = "ink" }
+androidx-ink-storage = { module = "androidx.ink:ink-storage", version.ref = "ink" }
+androidx-ink-strokes = { module = "androidx.ink:ink-strokes", version.ref = "ink" }
+androidx-input-motionprediction = { module = "androidx.input:input-motionprediction", version.ref = "inputMotionPrediction" }
 #noinspection SimilarGradleDependency
 androidx-fragment-compose = { module = "androidx.fragment:fragment-compose", version.ref = "fragmentCompose" }
 androidx-pdfviewer-fragment = { module = "androidx.pdf:pdf-viewer-fragment", version.ref = "pdfviewer" }

@@ -59,6 +59,16 @@ dependencies {
     api(libs.decomposeExtensions)
 
     //AndroidX
+    implementation(libs.androidx.ink.authoring.android)
+    implementation(libs.androidx.ink.authoring.compose)
+    implementation(libs.androidx.ink.brush)
+    implementation(libs.androidx.ink.brush.compose)
+    implementation(libs.androidx.ink.geometry)
+    implementation(libs.androidx.ink.nativeloader)
+    implementation(libs.androidx.ink.rendering)
+    implementation(libs.androidx.ink.storage)
+    implementation(libs.androidx.ink.strokes)
+    implementation(libs.androidx.input.motionprediction)
     api(libs.activityCompose)
     api(libs.splashScreen)
     api(libs.androidx.exifinterface)

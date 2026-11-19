@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import com.wanbaohe.core.ui.widget.editor.EditorLayerBox
 import com.wanbaohe.core.ui.widget.editor.EditorLayerBoxLabels
 import com.wanbaohe.core.ui.widget.editor.drawEditorShape
-import com.wanbaohe.core.ui.widget.editor.drawEditorStroke
+import com.wanbaohe.core.ui.widget.editor.EditorStrokeCanvas
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.TextCardAnnotation
 import com.wanbaohe.textcard.domain.model.TextCardAnnotationType
@@ -162,16 +162,15 @@ internal fun BoxWithConstraintsScope.CardAnnotationLayer(
                 }
             }
             is TextCardAnnotationType.Draw -> {
-                Canvas(
+                EditorStrokeCanvas(
+                    strokes = type.strokes,
                     modifier = Modifier
                         .size(
                             width = with(density) { canvasWidthPx.toDp() },
                             height = with(density) { canvasHeightPx.toDp() }
                         )
                         .graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen }
-                ) {
-                    type.strokes.forEach { drawEditorStroke(it, size.width, size.height) }
-                }
+                )
             }
             is TextCardAnnotationType.Shape -> {
                 val spec = type.spec

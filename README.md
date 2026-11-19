@@ -316,7 +316,7 @@ Package paths beginning with `com.t8rin.*` are kept for compatibility with the u
 
 - Use the bundled **Gradle Wrapper 9.8.2**
 - **JDK 17** (build-logic and CI target it)
-- Android targets: **Compile SDK 37.2 / Target SDK 37 / Min SDK 24**
+- Android targets: **Compile SDK 37.2 / Target SDK 37 / Min SDK 26**
 - Toolchain: **Kotlin 2.4.21 / AGP 9.4.1**
 - When in doubt, `gradle/libs.versions.toml` and `gradle/wrapper/gradle-wrapper.properties` are the source of truth
 

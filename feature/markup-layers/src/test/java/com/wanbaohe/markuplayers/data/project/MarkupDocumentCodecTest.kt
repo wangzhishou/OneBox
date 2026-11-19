@@ -39,6 +39,7 @@ import com.wanbaohe.markuplayers.domain.model.NormalizedRect
 import com.wanbaohe.markuplayers.domain.model.ShapeKind
 import com.wanbaohe.markuplayers.domain.model.ShapeSpec
 import com.wanbaohe.markuplayers.domain.model.StrokePoint
+import com.shifenmiao.model.editor.InkStrokeSnapshot
 import com.wanbaohe.markuplayers.domain.project.MarkupDocument
 import com.wanbaohe.markuplayers.domain.project.MarkupProjectSummary
 import com.wanbaohe.markuplayers.presentation.editor.CanvasBackground
@@ -189,10 +190,16 @@ class MarkupDocumentCodecTest {
         val types = listOf(
             text,
             text.copy(font = FontType.Resource(12345), outline = null, widthRatio = null),
-            LayerType.Draw(listOf(DrawStroke(
-                listOf(StrokePoint(0.1f, 0.2f), StrokePoint(0.8f, 0.9f)),
-                0xff123456.toInt(), 0.03f, BrushType.Marker, 0.6f
-            ))),
+            LayerType.Draw(listOf(
+                DrawStroke(
+                    listOf(StrokePoint(0.1f, 0.2f), StrokePoint(0.8f, 0.9f)),
+                    0xff123456.toInt(), 0.03f, BrushType.Marker, 0.6f,
+                    ink = InkStrokeSnapshot("AQIDBA==", 18f, 0.1f, 600f, 400f)
+                ),
+                DrawStroke(
+                    listOf(StrokePoint(0.2f, 0.3f)), -1, 0.02f, BrushType.Pen
+                )
+            )),
             LayerType.Shape(ShapeSpec(ShapeKind.Arrow, -1, false, 0.6f, 0.2f, 0.04f, 0.02f)),
             LayerType.Sticker(StickerSource.Asset("stickers/decor/flower.svg")),
             LayerType.Sticker(StickerSource.Emoji(42)),

@@ -22,6 +22,7 @@ package com.wanbaohe.textcard.data.project
 import com.shifenmiao.common.components.text.RichTextStyleSpan
 import com.shifenmiao.model.editor.BrushType
 import com.shifenmiao.model.editor.DrawStroke
+import com.shifenmiao.model.editor.InkStrokeSnapshot
 import com.shifenmiao.model.editor.LayerBlendMode
 import com.shifenmiao.model.editor.LayerTransform
 import com.shifenmiao.model.editor.ShapeKind
@@ -383,10 +384,22 @@ internal object TextCardDocumentCodec {
         "widthRatio" to json(stroke.widthRatio),
         "brush" to json(stroke.brush.name),
         "alpha" to json(stroke.alpha),
+        "ink" to nullable(stroke.ink, ::encodeInkStroke),
+    )
+
+    private fun encodeInkStroke(snapshot: InkStrokeSnapshot): JsonObject = obj(
+        "inputs" to json(snapshot.encodedInputs),
+        "brushSize" to json(snapshot.brushSize),
+        "epsilon" to json(snapshot.epsilon),
+        "canvasWidth" to json(snapshot.canvasWidth),
+        "canvasHeight" to json(snapshot.canvasHeight),
     )
 
     private fun decodeStroke(element: JsonElement): DrawStroke {
-        val value = element.objectWith("points", "color", "widthRatio", "brush", "alpha")
+        val value = element.objectWithOptional(
+            required = arrayOf("points", "color", "widthRatio", "brush", "alpha"),
+            optional = setOf("ink"),
+        )
         return DrawStroke(
             points = value.list("points", ::decodePoint).also {
                 if (it.isEmpty()) invalid("Stroke must contain points")
@@ -395,7 +408,23 @@ internal object TextCardDocumentCodec {
             widthRatio = value.float("widthRatio").positive("Stroke width"),
             brush = enumValue<BrushType>(value.string("brush")),
             alpha = value.float("alpha").unitRange("Stroke opacity"),
+            ink = value["ink"]?.takeIf { it != JsonNull }?.let(::decodeInkStroke),
         )
+    }
+
+    private fun decodeInkStroke(element: JsonElement): InkStrokeSnapshot {
+        val value = element.objectWith("inputs", "brushSize", "epsilon", "canvasWidth", "canvasHeight")
+        return InkStrokeSnapshot(
+            encodedInputs = value.string("inputs").also {
+                if (it.isEmpty()) invalid("Ink inputs must not be empty")
+            },
+            brushSize = value.float("brushSize").positive("Ink brush size"),
+            epsilon = value.float("epsilon").positive("Ink epsilon"),
+            canvasWidth = value.float("canvasWidth").positive("Ink canvas width"),
+            canvasHeight = value.float("canvasHeight").positive("Ink canvas height"),
+        ).also {
+            if (it.epsilon > it.brushSize) invalid("Ink epsilon must not exceed brush size")
+        }
     }
 
     private fun encodePoint(point: StrokePoint): JsonObject = obj(
