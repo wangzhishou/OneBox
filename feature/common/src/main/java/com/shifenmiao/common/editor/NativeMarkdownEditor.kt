@@ -51,6 +51,7 @@ import com.shifenmiao.common.R
 import com.shifenmiao.common.components.text.SuppressSystemTextSelectionMenu
 import com.shifenmiao.common.di.VoiceRecognizerEntryPoint
 import com.shifenmiao.common.markdown.OneBoxMarkdownContent
+import com.shifenmiao.common.markdown.rememberInAppLinkHandler
 import com.shifenmiao.common.voice.ui.VoiceInputSheet
 import com.shifenmiao.common.voice.ui.rememberVoiceInputLauncher
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
@@ -274,11 +275,14 @@ fun NativeMarkdownEditor(
                         ),
                     ),
                     previewContent = { markdown ->
+                        // 预览态里的链接与 App 其它正文一致：http(s) 进内置浏览器。
+                        val onLinkClick = rememberInAppLinkHandler()
                         OneBoxMarkdownContent(
                             message = markdown,
                             modifier = Modifier.fillMaxSize(),
                             // 外层统一 16dp 横向留白；预览自身不再额外缩进，避免切换时左右跳。
                             paddingValues = PaddingValues(0.dp),
+                            onLinkClick = onLinkClick,
                         )
                     },
                     modifier = Modifier
@@ -503,6 +507,7 @@ private class NativeRawBlockEditor : MarkdownBlockEditor {
                     onDelete = onDelete,
                 )
                 if (showPreview) {
+                    val onLinkClick = rememberInAppLinkHandler()
                     OneBoxMarkdown(
                         markdown = EditorMediaStore.resolveForDisplay(
                             context = context,
@@ -514,6 +519,8 @@ private class NativeRawBlockEditor : MarkdownBlockEditor {
                             // 圆角处看起来像正文跑出了块外。留白与源码编辑态保持一致。
                             .padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
                         enableScroll = false,
+                        // 局部预览里的链接同样进内置浏览器。
+                        onLinkClick = onLinkClick,
                         // 和正文编辑器同一套排版，预览态不会比其它块的正文明显偏大。
                         textStyle = MaterialTheme.typography.bodyLarge.copy(
                             color = MaterialTheme.colorScheme.onSurface,
