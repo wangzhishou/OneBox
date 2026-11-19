@@ -66,7 +66,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.ai.component.AIStreamAnswerComponent
 import com.shifenmiao.ai.component.AIStreamAnswerStatus
-import com.shifenmiao.ai.component.EmbeddedMarkdownMessage
 import com.shifenmiao.common.markdown.oneBoxMarkdownComponents
 import com.wanbaohe.base.ui.AILoadingRow
 import com.wanbaohe.base.ui.ExpandableMarkdownContent
@@ -76,6 +75,7 @@ import com.shifenmiao.core.R
 import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.markdown.OneBoxMarkdown
 import kotlinx.coroutines.delay
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
@@ -281,9 +281,10 @@ private fun MarkdownBlocksContent(
     text: String,
     isStreaming: Boolean,
 ) {
-    EmbeddedMarkdownMessage(
-        source = text,
+    OneBoxMarkdown(
+        markdown = text,
         isStreaming = isStreaming,
+        enableScroll = false,
         components = oneBoxMarkdownComponents(),
         textStyle = MaterialTheme.typography.bodyLarge,
         contentColor = MaterialTheme.colorScheme.onSurface,

@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.ai.a2ui.rememberA2uiMarkdownPlugin
 import com.shifenmiao.common.components.text.TextSelectionMenuItem
 import com.shifenmiao.common.markdown.oneBoxMarkdownComponents
+import com.wanbaohe.markdown.OneBoxMarkdown
 import com.wanbaohe.markdown.OneBoxMarkdownCodeActions
 
 val LocalAiMarkdownSelectionItems = compositionLocalOf<List<TextSelectionMenuItem>> { emptyList() }
@@ -53,10 +54,11 @@ fun ModernMarkdownMessage(
         }
     }
     val plugins = remember(a2uiPlugin) { listOf(a2uiPlugin) }
-    EmbeddedMarkdownMessage(
-        source = source,
+    OneBoxMarkdown(
+        markdown = source,
         modifier = modifier,
         isStreaming = isStreaming,
+        enableScroll = false,
         textStyle = textStyle,
         contentColor = contentColor,
         blockSpacing = blockSpacing,
