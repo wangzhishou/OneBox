@@ -84,11 +84,16 @@ private const val DISABLED_ALPHA = 0.38f
 private const val DOCK_LABEL_FONT_SIZE = 10
 private const val DOCK_LABEL_LINE_HEIGHT = 12
 private const val DOCK_LABEL_MAX_WIDTH = 78
+// 图标与文字字形共用同一个 19dp 内容区：字形字号按图标墨迹高度调平，
+// 否则 B/I/U/S 比麦克风、撤销那些矢量图标明显小一圈。
+private const val DOCK_GLYPH_FONT_SIZE = 19
+private const val DOCK_GLYPH_LINE_HEIGHT = 19
 private const val DOCK_SIZE_ANIMATION_MS = 180
 private const val DOCK_LABEL_FADE_IN_MS = 130
 private const val DOCK_LABEL_EXPAND_MS = 170
 private const val DOCK_LABEL_FADE_OUT_MS = 80
 private const val DOCK_LABEL_SHRINK_MS = 130
+private val DOCK_CONTENT_ICON_SIZE = 19.dp
 private val DOCK_MIN_WIDTH_EXPANDED = 44.dp
 private val DOCK_MIN_WIDTH_COLLAPSED = 32.dp
 private val DOCK_BORDER_WIDTH = 0.7.dp
@@ -118,7 +123,8 @@ data class NativeEditorDockAction(
  *
  * 设计目标（沿用 NativeMarkdownEditorDock）：
  * - 把撤销/重做、格式化/插入操作全部移出正文上方，正文从标题栏下方直接开始；
- * - 收起态只保留图标行，展开态显示文字标签，两个状态之间用高度/透明度动画过渡；
+ * - 默认收起，只保留一行图标，把正文空间还给用户；需要认字时才展开显示标签；
+ * - 收起/展开之间用高度/透明度动画过渡；
  * - 外层不铺整体背景，按钮各自走玻璃管线，直接浮在页面主题背景上。
  */
 @Composable
@@ -126,7 +132,7 @@ fun NativeEditorDock(
     actions: List<NativeEditorDockAction>,
     modifier: Modifier = Modifier,
     leading: (@Composable (expanded: Boolean) -> Unit)? = null,
-    initiallyExpanded: Boolean = true,
+    initiallyExpanded: Boolean = false,
 ) {
     var expanded by rememberSaveable { mutableStateOf(initiallyExpanded) }
 
@@ -272,13 +278,13 @@ fun NativeEditorDockChip(
                 imageVector = icon,
                 contentDescription = null,
                 modifier = Modifier
-                    .size(19.dp)
+                    .size(DOCK_CONTENT_ICON_SIZE)
                     .then(iconModifier),
             )
 
             glyph != null -> Text(
                 text = glyph,
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.labelMedium.asDockGlyph(),
                 maxLines = 1,
             )
         }
@@ -315,7 +321,7 @@ private fun NativeEditorDockIconButton(
         Icon(
             imageVector = icon,
             contentDescription = null,
-            modifier = Modifier.size(19.dp),
+            modifier = Modifier.size(DOCK_CONTENT_ICON_SIZE),
         )
     }
 }
@@ -342,11 +348,17 @@ private fun NativeEditorDockTextButton(
     ) {
         Text(
             text = displayLabel,
-            style = glyphStyle,
+            style = glyphStyle.asDockGlyph(),
             maxLines = 1,
         )
     }
 }
+
+/** 矢量图标与文字字形共用一个内容区高度，视觉大小才对得上。 */
+private fun TextStyle.asDockGlyph(): TextStyle = copy(
+    fontSize = DOCK_GLYPH_FONT_SIZE.sp,
+    lineHeight = DOCK_GLYPH_LINE_HEIGHT.sp,
+)
 
 @Composable
 private fun DockButtonLabel(

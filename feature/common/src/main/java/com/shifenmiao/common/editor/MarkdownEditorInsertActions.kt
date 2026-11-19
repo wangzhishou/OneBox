@@ -22,6 +22,7 @@
 
 package com.shifenmiao.common.editor
 
+import androidx.compose.material.icons.automirrored.outlined.FormatListBulleted
 import androidx.compose.material.icons.outlined.AccountTree
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.Image
@@ -72,7 +73,9 @@ private fun insertContentActions(state: NativeMarkdownEditorState): List<NativeE
         NativeEditorDockAction(
             id = "list_bullet",
             label = stringResource(com.wanbaohe.richtext.editor.R.string.rich_text_bullet_list),
-            glyph = "•",
+            // "•" 在 19dp 的图标行里只有一个点，和两侧矢量图标完全不是一个量级；
+            // 换成带缩进刻度的列表图标，尺寸才跟其它按钮一致。
+            icon = MaterialIcons.AutoMirrored.Outlined.FormatListBulleted,
             selected = editor?.isListActive(scheme) == true,
             enabled = editor != null && state.mode == NativeMarkdownEditorMode.Edit,
             dividerBefore = true,

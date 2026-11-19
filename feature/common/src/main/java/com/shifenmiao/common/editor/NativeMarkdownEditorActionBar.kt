@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import com.shifenmiao.common.R
 import com.t8rin.imagetoolbox.core.resources.icons.Mic
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineArrowDropDown
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
@@ -61,16 +60,21 @@ private fun NativeMarkdownEditorModeToggle(
     expanded: Boolean,
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
+    val modeLabel = stringResource(state.mode.labelRes())
     Box {
         NativeEditorDockChip(
-            label = stringResource(state.mode.labelRes()),
-            icon = OneBoxIcons.Outlined.LineArrowDropDown,
+            label = modeLabel,
+            // 始终显示当前模式自己的图标（编辑=笔 / 预览=眼睛 / 源码=尖括号），
+            // 展开时在后面补文字标签；收起时也一眼能看出现在处在哪个模式。
+            icon = state.mode.icon(),
             expanded = expanded,
             onClick = { menuExpanded = true },
         )
         EnhancedDropdownMenu(
             expanded = menuExpanded,
             onDismissRequest = { menuExpanded = false },
+            // 入口在屏幕底部，气泡只能向上展开；箭头必须朝下指向这个芯片。
+            expandUp = true,
         ) {
             NativeMarkdownEditorMode.entries.forEach { mode ->
                 DropdownMenuItem(
