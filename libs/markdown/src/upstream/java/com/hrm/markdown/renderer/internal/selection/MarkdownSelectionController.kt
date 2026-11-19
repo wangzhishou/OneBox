@@ -34,6 +34,7 @@ import com.hrm.markdown.renderer.internal.layout.model.LayoutTabBlockModel
 import com.hrm.markdown.renderer.internal.layout.model.LayoutTableBlockModel
 import com.hrm.markdown.renderer.internal.layout.model.LayoutTextRun
 import com.hrm.markdown.renderer.internal.layout.model.LayoutWidgetBlockModel
+import com.wanbaohe.markdown.MarkdownSelectionGroup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.launch
@@ -69,7 +70,17 @@ internal class MarkdownSelectionController(
     internal var fallbackTextMeasurementCount: Long = 0
         private set
 
+    /**
+     * 宿主在消息列表级共享的选区组。非空时，本控制器开始选区会先收起同组其它文档的选区，
+     * 保证一屏只有一份 Markdown 选区/工具条。
+     */
+    internal var selectionGroup: MarkdownSelectionGroup? = null
+
     val hasSelection: Boolean get() = state.hasSelection
+
+    private fun claimSelection() {
+        selectionGroup?.claim(this)
+    }
 
     fun bindClipboard(clipboard: Clipboard) {
         this.clipboard = clipboard
@@ -295,6 +306,7 @@ internal class MarkdownSelectionController(
 
     fun beginSelectionAt(windowOffset: Offset, requireTextHit: Boolean = false): Boolean {
         val anchor = anchorFromWindow(windowOffset, requireTextHit) ?: return false
+        claimSelection()
         startAnchor = anchor
         draggedHandleAnchor = null
         fixedHandleAnchor = null
@@ -371,6 +383,7 @@ internal class MarkdownSelectionController(
         val last = index.clampAnchor(SelectionAnchor(blockId, end)) ?: return false
         val range = index.normalize(first, last)
         if (range.start == range.end) return false
+        claimSelection()
         startAnchor = range.start
         draggedHandleAnchor = null
         fixedHandleAnchor = null
@@ -383,6 +396,7 @@ internal class MarkdownSelectionController(
     fun selectAll() {
         val first = index.firstAnchor ?: return
         val last = index.lastAnchor ?: return
+        claimSelection()
         startAnchor = first
         state.range = index.normalize(first, last)
     }
@@ -390,6 +404,7 @@ internal class MarkdownSelectionController(
     fun beginSelectionHandleDrag(handle: SelectionActiveHandle) {
         if (handle == SelectionActiveHandle.None) return
         val range = state.range ?: return
+        claimSelection()
         draggedHandleAnchor = when (handle) {
             SelectionActiveHandle.Start -> range.start
             SelectionActiveHandle.End -> range.end

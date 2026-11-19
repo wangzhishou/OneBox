@@ -33,6 +33,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
@@ -484,7 +485,13 @@ private fun EnhancedModalSheetImpl(
                     },
                     enabled = visible && enableBackHandler
                 )
-                content()
+                // 底部弹层是独立窗口，组合却继承宿主的 CompositionLocals。宿主有
+                // SelectionContainer 时，弹层标题/正文里的 Text 会被注册成宿主选区节点，
+                // 布局坐标却属于另一个窗口，宿主下次排序选区就抛
+                // "layouts are not part of the same hierarchy"（AI 助手全文 Markdown 弹层
+                // 长按标题即可复现）。跨窗口无法选区，这里统一断开；弹层内部若自带
+                // SelectionContainer（如 TextSelectionMenuContainer）仍会提供自己的 registrar。
+                DisableSelection { content() }
             },
         )
     }

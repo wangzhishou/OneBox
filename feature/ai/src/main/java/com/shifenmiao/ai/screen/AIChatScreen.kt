@@ -103,6 +103,8 @@ import com.wanbaohe.core.ui.utils.helper.scrollToContentStart
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.markdown.LocalMarkdownSelectionGroup
+import com.wanbaohe.markdown.MarkdownSelectionGroup
 import com.t8rin.imagetoolbox.core.utils.getString
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -464,6 +466,10 @@ fun ChatMessagesList(
         appComponent = appComponent,
         onNavigate = onNavigate,
     )
+    // 每条消息各是一个 Markdown 文档、各有自己的选区；用一个共享 group 让它们互斥，
+    // 同时 Markdown 开始选区时收起 Foundation 选区，避免层叠多个浮动工具条。
+    // Foundation 一侧由 TextSelectionMenuContainer 自己登记，这里只管 Markdown 文档。
+    val markdownSelectionGroup = remember { MarkdownSelectionGroup() }
 
     CompositionLocalProvider(
         LocalA2uiRenderProvider provides aiChatComponent.a2uiRenderProvider,
@@ -472,6 +478,7 @@ fun ChatMessagesList(
             aiChatComponent.startChatWithStreaming(formData)
         },
         LocalAiMarkdownSelectionItems provides selectionItems,
+        LocalMarkdownSelectionGroup provides markdownSelectionGroup,
     ) {
         TextSelectionMenuContainer(
             items = selectionItems,

@@ -31,6 +31,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -177,39 +178,47 @@ fun TextSelectionToolbar(
             usePlatformDefaultWidth = false
         )
     ) {
-        // 实底,避免玻璃透出底下的文字;颜色跟选区手柄走同一套强调色
-        GlassCard(
-            shape = shape,
-            style = GlassStyle.None,
-            colors = CardDefaults.cardColors(
-                containerColor = menuBackground,
-                contentColor = menuContent,
-            ),
-            modifier = modifier.onSizeChanged { toolbarSize = it }
-        ) {
-            Column(
-                modifier = Modifier.padding(
-                    start = 6.dp,
-                    end = 6.dp,
-                    top = 6.dp + if (placement.above) 0.dp else TOOLBAR_ARROW_SIZE,
-                    bottom = 6.dp + if (placement.above) TOOLBAR_ARROW_SIZE else 0.dp
-                )
+        // 选区工具条是覆盖在主窗口之上的 Popup，但组合位置可能落在宿主的 SelectionContainer
+        // 内部（AI 助手的 Markdown 消息就是如此），于是它继承了宿主的 LocalSelectionRegistrar。
+        // 一旦工具条里的 Text 也被注册成可选节点，Compose 排序选区块时就会拿 Popup 窗口和
+        // 主窗口的 LayoutCoordinates 做 localPositionOf，抛
+        // "layouts are not part of the same hierarchy"：长按出现工具条后，再长按正文/用户气泡
+        // 开始新选区必崩。工具条本身永远不需要被选中，这里直接关掉它的选区注册。
+        DisableSelection {
+            // 实底,避免玻璃透出底下的文字;颜色跟选区手柄走同一套强调色
+            GlassCard(
+                shape = shape,
+                style = GlassStyle.None,
+                colors = CardDefaults.cardColors(
+                    containerColor = menuBackground,
+                    contentColor = menuContent,
+                ),
+                modifier = modifier.onSizeChanged { toolbarSize = it }
             ) {
-                Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-                    actions.forEach { action ->
-                        TextSelectionActionButton(
-                            action = action,
-                            contentColor = menuContent,
-                        )
+                Column(
+                    modifier = Modifier.padding(
+                        start = 6.dp,
+                        end = 6.dp,
+                        top = 6.dp + if (placement.above) 0.dp else TOOLBAR_ARROW_SIZE,
+                        bottom = 6.dp + if (placement.above) TOOLBAR_ARROW_SIZE else 0.dp
+                    )
+                ) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+                        actions.forEach { action ->
+                            TextSelectionActionButton(
+                                action = action,
+                                contentColor = menuContent,
+                            )
+                        }
                     }
-                }
-                if (footer != null) {
-                    Column(
-                        modifier = Modifier
-                            .padding(top = 6.dp)
-                            .widthIn(max = 320.dp)
-                    ) {
-                        footer()
+                    if (footer != null) {
+                        Column(
+                            modifier = Modifier
+                                .padding(top = 6.dp)
+                                .widthIn(max = 320.dp)
+                        ) {
+                            footer()
+                        }
                     }
                 }
             }

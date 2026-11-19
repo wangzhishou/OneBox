@@ -27,6 +27,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionContext
 import androidx.compose.runtime.DisposableEffect
@@ -73,7 +74,13 @@ fun FullscreenPopup(
         ).apply {
             setContent(parentComposition) {
                 Box(Modifier.semantics { this.popup() }) {
-                    currentContent()
+                    // 弹层挂在 decorView 上，是独立于宿主窗口的 view 树根，但组合仍继承宿主的
+                    // CompositionLocals。宿主若有 SelectionContainer，弹层里的 Text 会注册成
+                    // 宿主选区节点，布局坐标却属于另一个窗口；宿主下次排序选区就会抛
+                    // "layouts are not part of the same hierarchy"（AI 助手长按 Markdown 后
+                    // 打开全文弹层、再长按标题即可复现）。跨窗口本来无法选区，这里统一断开注册；
+                    // 弹层内部若自带 SelectionContainer，仍会提供自己的 registrar，照常可选。
+                    DisableSelection { currentContent() }
                 }
             }
         }

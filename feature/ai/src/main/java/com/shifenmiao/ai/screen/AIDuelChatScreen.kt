@@ -128,6 +128,8 @@ import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.core.ui.widget.glass.glassCardSegment
 import com.wanbaohe.core.ui.widget.glass.flatGlassCardSegment
+import com.wanbaohe.markdown.LocalMarkdownSelectionGroup
+import com.wanbaohe.markdown.MarkdownSelectionGroup
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.drop
@@ -1852,7 +1854,12 @@ private fun DuelMessagesList(
         appComponent = appComponent,
         onNavigate = onNavigate,
     )
-    CompositionLocalProvider(LocalAiMarkdownSelectionItems provides selectionItems) {
+    // 与 AI 聊天一致：互聊的两列/多条消息同屏，共享一个选区组，保证只有一份选区工具条。
+    val markdownSelectionGroup = remember { MarkdownSelectionGroup() }
+    CompositionLocalProvider(
+        LocalAiMarkdownSelectionItems provides selectionItems,
+        LocalMarkdownSelectionGroup provides markdownSelectionGroup,
+    ) {
         // 全局复用组件：与 AI 聊天 / 博客详情 / 笔记详情完全一致的长按选区操作条
         TextSelectionMenuContainer(
             items = selectionItems,

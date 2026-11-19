@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
@@ -34,6 +35,7 @@ import com.hrm.markdown.renderer.internal.selection.rememberMarkdownSelectionCon
 import com.hrm.markdown.renderer.internal.toCompileEnvironment
 import com.hrm.markdown.runtime.MarkdownDirectiveRegistry
 import com.hrm.markdown.runtime.MarkdownSourceMap
+import com.wanbaohe.markdown.LocalMarkdownSelectionGroup
 
 @OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
@@ -54,6 +56,8 @@ internal fun MarkdownDocumentRenderer(
     externalScrollState: ScrollState? = null,
 ) {
     DisposableEffect(state) { onDispose { state.clearSelectionAction = null; state.scrollEnabled = false } }
+    // 消息列表级共享的选区组：多篇 Markdown 文档同屏时只保留一份选区（见 MarkdownSelectionGroup）。
+    val selectionGroup = LocalMarkdownSelectionGroup.current
     val latexState = rememberMarkdownLatexState(config.latexConfig)
     val renderMode = remember(enableScroll) {
         resolveMarkdownRenderMode(enableScroll = enableScroll)
@@ -127,6 +131,13 @@ internal fun MarkdownDocumentRenderer(
             SideEffect {
                 state.blockCount = internalRenderDocument.blocks.size
                 state.clearSelectionAction = { selectionController?.clearSelection() }
+                selectionController?.selectionGroup = selectionGroup
+            }
+            if (selectionController != null) {
+                DisposableEffect(selectionController, selectionGroup) {
+                    selectionGroup?.register(selectionController)
+                    onDispose { selectionGroup?.unregister(selectionController) }
+                }
             }
             val navigationController = rememberMarkdownNavigationController(
                 renderMode = renderMode,
@@ -247,8 +258,15 @@ internal fun MarkdownDocumentRenderer(
                     }
                 }
                 if (enableSelection && selectionController != null) {
-                    SelectionHandlesHost(selectionController)
-                    SelectionToolbarHost(selectionController, components.selectionToolbar)
+                    // 选区手柄与工具条是覆盖在主窗口上的 Popup，却继承宿主的 CompositionLocals。
+                    // 若宿主的 Foundation SelectionContainer 把这里面的 Text 也注册成可选节点，
+                    // 宿主再次长按文本开始选区时，排序会拿两个窗口的 LayoutCoordinates 做
+                    // localPositionOf，抛 "layouts are not part of the same hierarchy"。
+                    // 这些浮层永远不需要被宿主选中，统一关掉选区注册。
+                    DisableSelection {
+                        SelectionHandlesHost(selectionController)
+                        SelectionToolbarHost(selectionController, components.selectionToolbar)
+                    }
                 }
             }
         }

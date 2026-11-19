@@ -45,6 +45,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
+import com.wanbaohe.markdown.LocalMarkdownSelectionGroup
 import kotlinx.coroutines.channels.Channel
 
 /** SelectionManager.getContentRect 底部多出来的手柄留白,单位是 px(见调用处注释) */
@@ -95,6 +96,18 @@ fun TextSelectionMenuContainer(
     }
     LaunchedEffect(selectionState.selectedTexts.isEmpty()) {
         if (selectionState.selectedTexts.isEmpty()) menuProvider.close()
+    }
+    // 同一屏里 Markdown 文档有自己的选区层。Foundation 选区一旦开始，就要收起 Markdown 的
+    // 选区与工具条，否则两套浮动条会同时停在屏幕上（另一侧见 MarkdownSelectionGroup.claim）。
+    val markdownSelectionGroup = LocalMarkdownSelectionGroup.current
+    val clearFoundationSelection = remember(selectionState) { { selectionState.clear() } }
+    DisposableEffect(markdownSelectionGroup, clearFoundationSelection) {
+        // 反向登记：Markdown 开始选区时也要收起本容器的选区（全文弹层里会再套一个容器）。
+        markdownSelectionGroup?.registerExternalSelection(clearFoundationSelection)
+        onDispose { markdownSelectionGroup?.unregisterExternalSelection(clearFoundationSelection) }
+    }
+    LaunchedEffect(selectionState.selectedTexts.isNotEmpty()) {
+        if (selectionState.selectedTexts.isNotEmpty()) markdownSelectionGroup?.clearAll()
     }
     BackHandler(enabled = selectionState.selectedTexts.isNotEmpty()) {
         menuProvider.close()
