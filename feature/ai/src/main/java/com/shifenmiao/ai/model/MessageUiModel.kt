@@ -147,6 +147,7 @@ sealed class MessageUiModel(open val id: String) {
         override val id: String,
         val showTokens: Boolean,
         val messageEntity: MessageEntity,
+        val isReportable: Boolean = false,
     ) : MessageUiModel(id)
 
     data class RobotContainerHeader(
@@ -445,6 +446,7 @@ sealed class MessageUiModel(open val id: String) {
                     id = "${idPrefix}_footer",
                     showTokens = conversation.showTokens,
                     messageEntity = normalizedMessage,
+                    isReportable = true,
                 )
             )
             addRobotAnswerSection(result, normalizedMessage, idPrefix)

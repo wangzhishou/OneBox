@@ -19,6 +19,8 @@
 
 package com.shifenmiao.common.di
 
+import com.shifenmiao.common.ai.report.AiContentReportRepository
+import com.shifenmiao.common.ai.report.AiContentReportRepositoryImpl
 import com.shifenmiao.common.blog.BlogRepository
 import com.shifenmiao.common.blog.BlogRepositoryImpl
 import com.shifenmiao.common.sync.ItemSyncManager
@@ -68,4 +70,10 @@ internal object CommonModule {
     fun provideBlogRepository(
         impl: BlogRepositoryImpl
     ): BlogRepository = impl
+
+    @Provides
+    @Singleton
+    fun provideAiContentReportRepository(
+        impl: AiContentReportRepositoryImpl
+    ): AiContentReportRepository = impl
 }

@@ -41,6 +41,10 @@ import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.essenty.lifecycle.doOnStop
 import com.shifenmiao.common.creation.BackgroundHandoffBus
 import com.shifenmiao.common.recent.RecentAccessRepository
+import com.shifenmiao.common.ai.report.AiContentReport
+import com.shifenmiao.common.ai.report.AiContentReportReason
+import com.shifenmiao.common.ai.report.AiContentReportRepository
+import com.shifenmiao.common.ai.report.AiContentType
 import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.database.recent_access.entity.RecentAccessEntity
 import com.shifenmiao.network.repository.BaiduImageProcessRepository
@@ -169,6 +173,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     private val imageProcessRepository: BaiduImageProcessRepository,
     private val imageGenerationLoader: ImageGenerationLoader,
     private val imageGenerationManager: ImageGenerationManager,
+    private val aiContentReportRepository: AiContentReportRepository,
     private val filterProvider: FilterProvider<Bitmap>,
     private val recentAccessRepository: RecentAccessRepository,
     private val projectStore: MarkupProjectStore,
@@ -183,6 +188,48 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     addFiltersSheetComponentFactory: AddFiltersSheetComponent.Factory,
     filterTemplateCreationSheetComponentFactory: FilterTemplateCreationSheetComponent.Factory
 ) : BaseComponent(dispatchersHolder, componentContext) {
+
+    private val _aiContentReport = mutableStateOf<AiContentReport?>(null)
+    val aiContentReportPreview: String
+        get() = _aiContentReport.value?.content?.takeIf(String::isNotBlank)
+            ?: appContext.getString(com.shifenmiao.core.R.string.ai_content_report_image_preview)
+
+    suspend fun submitAiContentReport(
+        reason: AiContentReportReason,
+        details: String,
+    ): Result<Unit> {
+        val report = _aiContentReport.value ?: AiContentReport(
+            source = "markup_ai_image",
+            contentType = AiContentType.IMAGE,
+            content = projectName,
+            model = currentImageModel(),
+        )
+        return aiContentReportRepository.submit(report, reason, details)
+    }
+
+    private fun recordAiContentReport(
+        source: String,
+        prompt: String,
+        cacheKey: String = "",
+        model: String = currentImageModel(),
+    ) {
+        _aiContentReport.value = AiContentReport(
+            source = source,
+            contentType = AiContentType.IMAGE,
+            content = prompt,
+            prompt = prompt,
+            model = model,
+            contentId = cacheKey,
+        )
+    }
+
+    private fun currentImageModel(): String {
+        val config = imageGenerationManager.getActiveConfig() ?: return ""
+        return listOf(config.displayName, config.model)
+            .filter(String::isNotBlank)
+            .distinct()
+            .joinToString(" / ")
+    }
 
     // AddFiltersSheet 子组件:随本组件创建,生命周期一致
     val addFiltersSheetComponent: AddFiltersSheetComponent = addFiltersSheetComponentFactory(
@@ -1118,6 +1165,11 @@ class MarkupLayersComponent @AssistedInject internal constructor(
             _taskLabel.value = appContext.getString(R.string.studio_task_ai_download)
             val path = projectStore.importAsset(image.file.absolutePath)
             ensureActive()
+            recordAiContentReport(
+                source = "markup_ai_image_generation",
+                prompt = trimmed,
+                cacheKey = image.cacheKey,
+            )
             when (target) {
                 AiGenerationTarget.NewLayer -> {
                     commitAddedLayer(MarkupLayer(type = LayerType.Image(path)))
@@ -1191,6 +1243,11 @@ class MarkupLayersComponent @AssistedInject internal constructor(
                 val path = projectStore.importAsset(image.file.absolutePath)
                 ensureActive()
                 check(projectId == currentProject) { "The image project was closed" }
+                recordAiContentReport(
+                    source = "markup_ai_sticker_generation",
+                    prompt = trimmed,
+                    cacheKey = image.cacheKey,
+                )
                 commitAddedLayer(
                     MarkupLayer(
                         type = LayerType.Sticker(StickerSource.Generated(path))
@@ -2622,6 +2679,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         _baseOrder.value = 0
         _pendingAiResult.value = null
         _aiGenerationTarget.value = AiGenerationTarget.NewLayer
+        _aiContentReport.value = null
         _filterPreviewBitmap.value = null
         layerFilterJob = null
         layerFilterCache.clear()

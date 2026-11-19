@@ -47,6 +47,10 @@ import com.shifenmiao.ai.usecase.MessageListUseCase
 import com.shifenmiao.ai.utils.AiUtils
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.base.utils.StringUtils
+import com.shifenmiao.common.ai.report.AiContentReport
+import com.shifenmiao.common.ai.report.AiContentReportReason
+import com.shifenmiao.common.ai.report.AiContentReportRepository
+import com.shifenmiao.common.ai.report.AiContentType
 import com.shifenmiao.common.manager.AIEngineCatalogManager
 import com.shifenmiao.common.manager.AIEngineManager
 import com.shifenmiao.common.manager.AIEngineSyncManager
@@ -118,6 +122,7 @@ class AIDuelChatComponent @AssistedInject internal constructor(
     private val messageRemoteMediator: MessageRemoteMediator,
     private val activityLogRecorder: ActivityLogRecorder,
     private val sensitiveWordChecker: SensitiveWordChecker,
+    private val aiContentReportRepository: AiContentReportRepository,
     @ApplicationContext applicationContext: Context,
     messageListUseCase: MessageListUseCase,
     a2uiRenderProvider: A2uiRenderProvider,
@@ -136,6 +141,23 @@ class AIDuelChatComponent @AssistedInject internal constructor(
     messageRepository,
     a2uiRenderProvider,
 ) {
+    suspend fun submitAiContentReport(
+        message: MessageEntity,
+        reason: AiContentReportReason,
+        details: String,
+    ): Result<Unit> = aiContentReportRepository.submit(
+        report = AiContentReport(
+            source = "ai_duel_chat",
+            contentType = AiContentType.TEXT,
+            content = message.answer,
+            prompt = message.question,
+            model = message.model,
+            contentId = message.providerResponseId.ifBlank { message.completionId },
+        ),
+        reason = reason,
+        details = details,
+    )
+
     private companion object {
         const val RENDER_THROTTLE_MS = 16L
         const val TYPEWRITER_CHAR_DELAY_MS = 18L

@@ -54,6 +54,7 @@ import com.shifenmiao.database.image.dao.ImageDao
 import com.shifenmiao.database.utils.DataBaseUtils
 import com.shifenmiao.model.AIChatObject
 import com.shifenmiao.model.ai.Agent
+import com.shifenmiao.common.ai.report.AiContentReportRepository
 import com.shifenmiao.network.api.ApiService
 import com.shifenmiao.model.ai.AiModel
 import com.shifenmiao.model.ai.AIConversationEntryType
@@ -77,6 +78,7 @@ open class AgentDetailComponent @AssistedInject internal constructor(
     resourceManager: ResourceManager,
     appDatabase: AppDatabase,
     apiService: ApiService,
+    aiContentReportRepository: AiContentReportRepository,
     aiEngineManager: AIEngineManager,
     aiEngineCatalogManager: AIEngineCatalogManager,
     aiEngineSyncManager: AIEngineSyncManager,
@@ -116,6 +118,7 @@ open class AgentDetailComponent @AssistedInject internal constructor(
     resourceManager = resourceManager,
     appDatabase = appDatabase,
     apiService = apiService,
+    aiContentReportRepository = aiContentReportRepository,
     aiEngineManager = aiEngineManager,
     aiEngineCatalogManager = aiEngineCatalogManager,
     aiEngineSyncManager = aiEngineSyncManager,

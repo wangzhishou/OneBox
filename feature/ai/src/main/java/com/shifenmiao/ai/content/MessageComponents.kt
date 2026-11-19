@@ -78,6 +78,7 @@ import com.shifenmiao.base.provider.LocalDataDraftHelper
 import com.wanbaohe.base.ui.AILoadingRow
 import com.wanbaohe.base.ui.ExpandableMarkdownContent
 import com.wanbaohe.base.ui.MarkdownContent
+import com.shifenmiao.common.ai.report.AiContentReportButton
 import com.shifenmiao.common.handle.LocalUrlNavigator
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.core.R
@@ -489,6 +490,15 @@ fun RobotMessageFooter(
             }
         )
         Spacer(modifier = Modifier.height(12.dp))
+    }
+
+    if (robotContainerFooter.isReportable && messageEntity.answer.isNotBlank()) {
+        AiContentReportButton(
+            contentPreview = messageEntity.answer,
+            onSubmit = { reason, details ->
+                aiChatComponent.submitAiContentReport(messageEntity, reason, details)
+            },
+        )
     }
 
     // 显示导出HTML时的加载对话框

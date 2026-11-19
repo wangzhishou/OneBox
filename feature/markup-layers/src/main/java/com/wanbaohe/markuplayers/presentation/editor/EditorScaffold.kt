@@ -101,6 +101,8 @@ import androidx.compose.ui.unit.dp
 import com.wanbaohe.base.ui.button.CancelButton
 import com.wanbaohe.base.ui.button.ConfirmButton
 import com.shifenmiao.base.utils.ActionUtils
+import com.shifenmiao.common.ai.report.AiContentReportDialog
+import com.shifenmiao.common.ai.report.AiContentReportMenuItem
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.ImmersiveModeState
 import com.shifenmiao.common.ui.rememberImmersiveModeState
@@ -958,6 +960,7 @@ private fun EditorTopBarActions(
     }
     // 「清空图层」二次确认:删除全部图层(可撤销),先弹确认对话框
     var showClearLayersDialog by remember { mutableStateOf(false) }
+    var showAiContentReport by remember { mutableStateOf(false) }
     EnhancedIconButton(
         onClick = { component.saveProject() },
         enabled = !component.isProjectSaving
@@ -1061,6 +1064,12 @@ private fun EditorTopBarActions(
                     component.cacheCurrentImage(Clipboard::copy)
                 }
             )
+            AiContentReportMenuItem(
+                onClick = {
+                    menuExpanded = false
+                    showAiContentReport = true
+                },
+            )
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.markup_menu_clear_layers)) },
                 leadingIcon = {
@@ -1084,6 +1093,16 @@ private fun EditorTopBarActions(
                 }
             )
         }
+    }
+
+    if (showAiContentReport) {
+        AiContentReportDialog(
+            contentPreview = component.aiContentReportPreview,
+            onDismiss = { showAiContentReport = false },
+            onSubmit = { reason, details ->
+                component.submitAiContentReport(reason, details)
+            },
+        )
     }
 
     EnhancedAlertDialog(

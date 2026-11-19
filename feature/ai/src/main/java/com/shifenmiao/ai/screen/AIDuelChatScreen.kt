@@ -99,6 +99,7 @@ import com.shifenmiao.ai.ui.AIPromptsPickerBottomSheet
 import com.wanbaohe.base.ui.CustomChatCard
 import com.wanbaohe.base.ui.DisableContainer
 import com.wanbaohe.base.ui.icon.LetterIcon
+import com.shifenmiao.common.ai.report.AiContentReportButton
 import com.shifenmiao.common.components.text.TextSelectionMenuContainer
 import com.shifenmiao.common.components.text.defaultTextSelectionMenuItems
 import com.shifenmiao.common.logic.AppComponent
@@ -488,6 +489,7 @@ private fun DuelChatContent(
         } else {
             DuelMessagesList(
                 modifier = Modifier.weight(1f),
+                duelChatComponent = duelChatComponent,
                 messageUiModels = messageUiModels,
                 lazyListState = lazyListState,
                 appComponent = appComponent,
@@ -1839,6 +1841,7 @@ private fun DuelMessagesList(
     duelConfig: AIDuelConfig,
     onNavigate: (Screen) -> Unit,
     isDuelRunning: Boolean,
+    duelChatComponent: AIDuelChatComponent,
 ) {
     val codeActions = rememberMarkdownCodeActions(appComponent = appComponent)
     // 与 AI 聊天共用同一套选区状态清理规则：切会话 / 开始互聊时收起工具条
@@ -1931,7 +1934,21 @@ private fun DuelMessagesList(
                                 avatarPath = duelConfig.avatarB,
                             )
                         },
-                        onRobotContainerFooter = { _, _ -> DuelRobotFooter() },
+                        onRobotContainerFooter = { footer, _ ->
+                            DuelRobotFooter()
+                            if (footer.isReportable && footer.messageEntity.answer.isNotBlank()) {
+                                AiContentReportButton(
+                                    contentPreview = footer.messageEntity.answer,
+                                    onSubmit = { reason, details ->
+                                        duelChatComponent.submitAiContentReport(
+                                            footer.messageEntity,
+                                            reason,
+                                            details,
+                                        )
+                                    },
+                                )
+                            }
+                        },
                         onRobotError = {}
                     )
                 }

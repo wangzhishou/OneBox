@@ -54,6 +54,10 @@ import com.shifenmiao.ai.usecase.MessageListUseCase
 import com.shifenmiao.ai.utils.AiUtils
 import com.shifenmiao.ai.utils.AttachmentPayloadUtils
 import com.shifenmiao.base.utils.ActionUtils
+import com.shifenmiao.common.ai.report.AiContentReport
+import com.shifenmiao.common.ai.report.AiContentReportReason
+import com.shifenmiao.common.ai.report.AiContentReportRepository
+import com.shifenmiao.common.ai.report.AiContentType
 import com.shifenmiao.common.manager.AIEngineCatalogManager
 import com.shifenmiao.common.manager.AIEngineManager
 import com.shifenmiao.common.manager.AIEngineSyncManager
@@ -117,6 +121,7 @@ open class AIChatComponent @AssistedInject internal constructor(
     resourceManager: ResourceManager,
     val appDatabase: AppDatabase,
     private val apiService: ApiService,
+    private val aiContentReportRepository: AiContentReportRepository,
     aiEngineManager: AIEngineManager,
     aiEngineCatalogManager: AIEngineCatalogManager,
     aiEngineSyncManager: AIEngineSyncManager,
@@ -1453,6 +1458,23 @@ open class AIChatComponent @AssistedInject internal constructor(
             }
         }
     }
+
+    suspend fun submitAiContentReport(
+        message: MessageEntity,
+        reason: AiContentReportReason,
+        details: String,
+    ): Result<Unit> = aiContentReportRepository.submit(
+        report = AiContentReport(
+            source = "ai_chat",
+            contentType = AiContentType.TEXT,
+            content = message.answer,
+            prompt = message.question,
+            model = message.model,
+            contentId = message.providerResponseId.ifBlank { message.completionId },
+        ),
+        reason = reason,
+        details = details,
+    )
 
     fun continueAgentLoop() = agentLoopOrchestrator.continueAgentLoop()
 
