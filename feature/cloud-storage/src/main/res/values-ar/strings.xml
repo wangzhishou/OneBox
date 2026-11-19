@@ -132,4 +132,35 @@
     <string name="cloud_storage_smb_error_share_deleted">المشاركة المحددة غير موجودة على الخادم</string>
     <string name="cloud_storage_smb_error_sharing_violation">الملف قيد الاستخدام من قِبل عملية أخرى ولا يمكن الوصول إليه</string>
     <string name="cloud_storage_smb_error_generic">خطأ SMB: %1$s (%2$s)</string>
+
+    <!-- i18n-fill: feature/cloud-storage -->
+    <string name="cloud_storage_add_connection">إضافة اتصال</string>
+    <string name="cloud_storage_connection_delete_action">حذف</string>
+    <string name="cloud_storage_connection_delete_message">حذف \"%s\"؟ سيتم مسح إعدادات الاتصال المحفوظة على هذا الجهاز فقط، ولن تتأثر الملفات السحابية.</string>
+    <string name="cloud_storage_connection_delete_title">حذف الاتصال</string>
+    <string name="cloud_storage_delete_connection">حذف</string>
+    <string name="cloud_storage_detail_location">الموقع</string>
+    <string name="cloud_storage_detail_modified">وقت التعديل</string>
+    <string name="cloud_storage_detail_type">النوع</string>
+    <string name="cloud_storage_done">تم</string>
+    <string name="cloud_storage_edit_connection">تعديل</string>
+    <string name="cloud_storage_error_auth">فشل تسجيل الدخول، يرجى التحقق من اسم المستخدم / كلمة المرور أو AccessKey</string>
+    <string name="cloud_storage_error_cleartext">لا تسمح القناة الحالية بـ HTTP غير المشفر، يرجى استخدام عنوان HTTPS</string>
+    <string name="cloud_storage_error_network">تعذّر الاتصال بالخادم، يرجى التحقق من العنوان والمنفذ والشبكة</string>
+    <string name="cloud_storage_error_not_found">الملف أو المجلد لم يعد موجودًا</string>
+    <string name="cloud_storage_error_permission">لا يملك الحساب الحالي إذنًا للوصول إلى هذا الملف</string>
+    <string name="cloud_storage_error_server">أعاد الخادم خطأً: %s</string>
+    <string name="cloud_storage_link_unavailable">الاتصال الحالي لا يدعم إنشاء رابط مشاركة</string>
+    <string name="cloud_storage_search_clear">مسح البحث</string>
+    <string name="cloud_storage_search_empty">لا توجد ملفات مطابقة</string>
+    <string name="cloud_storage_search_placeholder">البحث في المجلد الحالي</string>
+    <string name="cloud_storage_sort_ascending">تصاعدي</string>
+    <string name="cloud_storage_sort_date">وقت التعديل</string>
+    <string name="cloud_storage_sort_descending">تنازلي</string>
+    <string name="cloud_storage_sort_name">الاسم</string>
+    <string name="cloud_storage_sort_size">الحجم</string>
+    <string name="cloud_storage_sort_title">الترتيب</string>
+    <string name="cloud_storage_switch_to_grid">التبديل إلى عرض الشبكة</string>
+    <string name="cloud_storage_switch_to_list">التبديل إلى عرض القائمة</string>
+    <string name="cloud_storage_testing">جارٍ الاختبار...</string>
 </resources>

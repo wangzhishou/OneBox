@@ -21,4 +21,45 @@
 <resources>
     <string name="mini_program_jump_confirm">أنت على وشك المغادرة وفتح هذا في WeChat. هل تريد المتابعة؟</string>
     <string name="mini_program_redirecting">جارٍ إعادة التوجيه…</string>
+
+    <!-- i18n-fill: feature/online -->
+    <string name="note_menu_copy_all">نسخ كل المحتوى</string>
+    <string name="note_menu_settings">الإعدادات</string>
+    <string name="note_ai_action_format">تنسيق بالذكاء الاصطناعي</string>
+    <string name="note_ai_action_expand">توسيع بنقرة واحدة بالذكاء الاصطناعي</string>
+    <string name="note_ai_action_polish">تحسين بنقرة واحدة بالذكاء الاصطناعي</string>
+    <string name="note_ai_action_condense">اختصار بالذكاء الاصطناعي</string>
+    <string name="note_ai_action_checklist">استخراج المهام بالذكاء الاصطناعي</string>
+    <string name="note_ai_action_summary">إنشاء ملخص بالذكاء الاصطناعي</string>
+    <string name="note_ai_prompt_label">الموجّه</string>
+    <string name="note_ai_prompt_hint">أخبر الذكاء الاصطناعي كيف تريد تعديل هذه الملاحظة</string>
+    <string name="note_ai_original_label">النص الأصلي</string>
+    <string name="note_ai_original_meta">النص الأصلي · %1$d حرف</string>
+    <string name="note_ai_result_label">نتيجة الذكاء الاصطناعي</string>
+    <string name="note_ai_panel_generate">إنشاء</string>
+    <string name="note_ai_regenerate">إعادة الإنشاء</string>
+    <string name="note_ai_stop">إيقاف</string>
+    <string name="note_ai_copy">نسخ</string>
+    <string name="note_ai_copied">تم النسخ</string>
+    <string name="note_ai_apply_replace">استبدال النص الأصلي</string>
+    <string name="note_ai_apply_append">إلحاق في النهاية</string>
+    <string name="note_ai_apply_prepend">إدراج في البداية</string>
+    <string name="note_ai_undo_apply">تراجع</string>
+    <string name="note_ai_applied">تم التطبيق على الملاحظة، يمكنك التراجع قبل إغلاق اللوحة.</string>
+    <string name="note_ai_panel_generating">جارٍ الإنشاء…</string>
+    <string name="note_ai_empty_hint">اختر إجراءً أولاً، ثم عدّل الموجّه، ثم أنشئ.</string>
+    <string name="note_ai_empty_result">أعاد الذكاء الاصطناعي نتيجة فارغة، يمكنك إعادة المحاولة أو تغيير المحرّك.</string>
+    <string name="note_ai_no_engine">لا يوجد محرّك ذكاء اصطناعي متاح، يرجى إضافته أولاً من «الإعدادات ← محرّكات الذكاء الاصطناعي».</string>
+    <string name="note_ai_result_meta">%1$s · %2$d tokens</string>
+    <string name="note_ai_too_short">يرجى كتابة بعض المحتوى في الملاحظة أولاً.</string>
+    <string name="note_ai_keepalive_title">الذكاء الاصطناعي يعالج الملاحظة</string>
+    <string name="note_ai_billing_desc">الكتابة بالذكاء الاصطناعي للملاحظات</string>
+    <string name="note_ai_system_prompt">أنت محرّر Markdown لتطبيق ملاحظات. عدّل الملاحظة وفق تعليمات المستخدم، مع الحفاظ على لغة النص الأصلي والحقائق والأرقام والروابط والصور وتعليمات الصوت والفيديو والجداول والشيفرة. أخرج فقط نص Markdown الكامل المعدّل، دون شرح أو بادئات أو لواحق أو تغليفه بأسوار الشيفرة.</string>
+    <string name="note_ai_input_template">التعليمات:\n%1$s\n\nنص Markdown الأصلي:\n%2$s</string>
+    <string name="note_ai_prompt_format">رتّب تنسيق هذه الملاحظة: صحّح مستويات العناوين، ووحّد القوائم والمسافات البادئة والأسطر الفارغة، وقسّم الفقرات الطويلة، ونظّم النقاط المتتالية في قوائم أو جداول؛ دون تغيير المعنى والحقائق.</string>
+    <string name="note_ai_prompt_expand">وسّع هذه الملاحظة: أضف شروحات وأمثلة وتفاصيل لجعل المحتوى أكثر اكتمالاً؛ حافظ على الآراء والحقائق الأصلية، ولا تختلق بيانات أو تجارب شخصية.</string>
+    <string name="note_ai_prompt_polish">حسّن هذه الملاحظة: صحّح الأخطاء الإملائية والنحوية، واجعل التعبير أكثر سلاسة وطبيعية، ووحّد المصطلحات والنبرة؛ دون تغيير المعنى أو كمية المعلومات.</string>
+    <string name="note_ai_prompt_condense">اختصر هذه الملاحظة: حافظ على المعلومات الأساسية والبنية، واحذف التكرار والحشو؛ دون فقدان الحقائق الرئيسية.</string>
+    <string name="note_ai_prompt_checklist">استخرج من هذه الملاحظة مهامّ قابلة للتنفيذ، وأخرج قائمة مربعات اختيار Markdown (- [ ])، كل إجراء في بند واحد، مع ذكر الوقت أو المسؤول إن وُجد في النص. ابدأ بـ «## المهام» وأخرج قائمة المهام فقط.</string>
+    <string name="note_ai_prompt_summary">اكتب لهذه الملاحظة ملخّصاً من جملتين إلى أربع جمل، يبدأ بـ «## الملخّص»، وأخرج جزء الملخّص فقط.</string>
 </resources>

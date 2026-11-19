@@ -233,4 +233,10 @@
     <string name="markup_rasterize_message">Слои текста и фигур нужно сначала преобразовать в изображение, чтобы использовать фильтры. После преобразования параметры текста/фигуры больше нельзя редактировать, но их можно восстановить через «Отменить».</string>
     <string name="markup_rasterize_failed">Не удалось преобразовать слой</string>
     <string name="markup_tool_text_style">Стиль текста</string>
+
+    <!-- i18n-fill: feature/markup-layers -->
+    <string name="markup_select_text_first">Сначала выберите текстовый слой</string>
+    <string name="markup_text_clear_format">Очистить форматирование</string>
+    <string name="markup_text_size_decrease">Уменьшить размер шрифта</string>
+    <string name="markup_text_size_increase">Увеличить размер шрифта</string>
 </resources>

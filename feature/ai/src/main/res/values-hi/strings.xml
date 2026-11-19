@@ -1021,4 +1021,45 @@
     <string name="ai_chat_mode_chat_description">तुरंत बातचीत · त्वरित उत्तर</string>
     <string name="ai_chat_mode_agent_title">एजेंट मोड</string>
     <string name="ai_chat_mode_agent_description">योजना और क्रिया · स्वचालित कार्य</string>
+
+    <!-- i18n-fill: feature/ai -->
+    <string name="agent_tool_bookmark_added">बुकमार्क जोड़ा गया:\n- id: %1$s\n- शीर्षक: %2$s\n- URL: %3$s\n- श्रेणी: %4$s</string>
+    <string name="agent_tool_bookmark_exists">बुकमार्क पहले से मौजूद है: %1$s (id: %2$s)</string>
+    <string name="agent_tool_bookmark_failed">बुकमार्क ऑपरेशन विफल: %1$s</string>
+    <string name="agent_tool_bookmark_folder_builtin">श्रेणी \"%1$s\" एक अंतर्निहित श्रेणी है, इसे हटाया नहीं जा सकता</string>
+    <string name="agent_tool_bookmark_folder_created">बुकमार्क श्रेणी बनाई गई: %1$s (id: %2$s)</string>
+    <string name="agent_tool_bookmark_folder_deleted">श्रेणी हटाई गई: %1$s, इसके बुकमार्क अवर्गीकृत में स्थानांतरित किए गए</string>
+    <string name="agent_tool_bookmark_folder_exists">श्रेणी \"%1$s\" पहले से मौजूद है (id: %2$s)</string>
+    <string name="agent_tool_bookmark_folder_list_header">बुकमार्क श्रेणियाँ:</string>
+    <string name="agent_tool_bookmark_folder_not_found">श्रेणी %1$s मौजूद नहीं है, उपलब्ध: %2$s</string>
+    <string name="agent_tool_bookmark_folder_row">· %1$s (id: %2$s, %3$s बुकमार्क)</string>
+    <string name="agent_tool_bookmark_missing_bookmark_id">bookmark_id पैरामीटर अनुपलब्ध है</string>
+    <string name="agent_tool_bookmark_missing_folder_id">folder_id पैरामीटर अनुपलब्ध है</string>
+    <string name="agent_tool_bookmark_missing_folder_name">folder_name पैरामीटर अनुपलब्ध है</string>
+    <string name="agent_tool_bookmark_missing_url">url पैरामीटर अनुपलब्ध है</string>
+    <string name="agent_tool_bookmark_no_folders">अभी कोई बुकमार्क श्रेणी नहीं है</string>
+    <string name="agent_tool_bookmark_not_found">बुकमार्क %1$s मौजूद नहीं है</string>
+    <string name="agent_tool_bookmark_removed">बुकमार्क हटाया गया: %1$s (%2$s)</string>
+    <string name="agent_tool_bookmark_uncategorized">अवर्गीकृत</string>
+    <string name="agent_tool_bookmark_unknown_action">अज्ञात ऑपरेशन: %1$s, उपलब्ध: %2$s</string>
+    <string name="agent_tool_list_param_limit">प्रति पृष्ठ अधिकतम परिणाम, 1-100, डिफ़ॉल्ट 20।</string>
+    <string name="agent_tool_list_param_offset">पेजिनेशन ऑफ़सेट; पिछले परिणाम के next_offset से जारी रखें।</string>
+    <string name="agent_tool_manage_bookmark_param_action">ऑपरेशन प्रकार: add_bookmark / remove_bookmark / list_bookmarks / create_folder / delete_folder / list_folders</string>
+    <string name="agent_tool_manage_bookmark_param_bookmark_id">बुकमार्क आइटम ID (remove_bookmark के लिए आवश्यक, list_bookmarks से)</string>
+    <string name="agent_tool_manage_bookmark_param_folder_id">श्रेणी ID (add_bookmark / delete_folder में उपयोग, list_folders से)</string>
+    <string name="agent_tool_manage_bookmark_param_folder_name">श्रेणी नाम (create_folder के लिए आवश्यक)</string>
+    <string name="agent_tool_manage_bookmark_param_title">बुकमार्क शीर्षक (add_bookmark में वैकल्पिक, डिफ़ॉल्ट रूप से URL)</string>
+    <string name="agent_tool_manage_bookmark_param_url">वेबसाइट URL (add_bookmark / remove_bookmark के लिए आवश्यक)</string>
+    <string name="agent_tool_manage_bookmark_summary">बुकमार्क URL जोड़ें, बुकमार्क श्रेणियाँ बनाएँ</string>
+    <string name="agent_tool_manage_bookmark_title">बुकमार्क प्रबंधित करें</string>
+    <string name="agent_tool_manage_todo_category_exists">श्रेणी पहले से मौजूद है: %1$s</string>
+    <string name="agent_tool_manage_todo_inbox_title">इनबॉक्स</string>
+    <string name="agent_tool_manage_todo_list_reused">मौजूदा सूची \"%1$s\" में %2$d आइटम जोड़े गए, %3$d डुप्लिकेट छोड़े गए</string>
+    <string name="agent_tool_manage_todo_list_summary">कुल %1$d, पूर्ण %2$d, लंबित %3$d; इस बार %4$d लौटाए गए</string>
+    <string name="agent_tool_manage_todo_param_category_id">श्रेणी ID, list/create_task में उपयोग होती है, list से लौटाई गई id से ली जाती है; \"__inbox__\" का अर्थ इनबॉक्स है। id दिए जाने पर यह category_name पर प्राथमिकता रखती है।</string>
+    <string name="agent_tool_manage_todo_param_include_completed">list में पूर्ण कार्य शामिल करें या नहीं, डिफ़ॉल्ट true; केवल अपूर्ण देखने के लिए false भेजें।</string>
+    <string name="agent_tool_manage_todo_param_limit">list प्रति पृष्ठ अधिकतम कितने कार्य लौटाए, 1-100, डिफ़ॉल्ट 20।</string>
+    <string name="agent_tool_manage_todo_param_offset">list पेजिनेशन ऑफ़सेट; पिछले परिणाम के next_offset से अगला पृष्ठ लोड करें।</string>
+    <string name="agent_tool_manage_todo_param_query">वैकल्पिक कीवर्ड, कार्य शीर्षक, नोट्स और टैग खोजता है।</string>
+    <string name="agent_tool_unknown_action_with_options">अज्ञात ऑपरेशन: %1$s, उपलब्ध: %2$s</string>
 </resources>

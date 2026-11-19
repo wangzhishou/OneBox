@@ -1021,4 +1021,45 @@
     <string name="ai_chat_mode_chat_description">Direkter Chat · Schnelle Antworten</string>
     <string name="ai_chat_mode_agent_title">Agent-Modus</string>
     <string name="ai_chat_mode_agent_description">Planen und handeln · Aufgaben automatisch erledigen</string>
+
+    <!-- i18n-fill: feature/ai -->
+    <string name="agent_tool_bookmark_added">Lesezeichen hinzugefügt:\n- id: %1$s\n- Titel: %2$s\n- URL: %3$s\n- Kategorie: %4$s</string>
+    <string name="agent_tool_bookmark_exists">Lesezeichen existiert bereits: %1$s (id: %2$s)</string>
+    <string name="agent_tool_bookmark_failed">Lesezeichen-Vorgang fehlgeschlagen: %1$s</string>
+    <string name="agent_tool_bookmark_folder_builtin">Kategorie „%1$s“ ist eine integrierte Kategorie und kann nicht gelöscht werden</string>
+    <string name="agent_tool_bookmark_folder_created">Lesezeichen-Kategorie erstellt: %1$s (id: %2$s)</string>
+    <string name="agent_tool_bookmark_folder_deleted">Kategorie gelöscht: %1$s, enthaltene Lesezeichen wurden nach „Nicht kategorisiert“ verschoben</string>
+    <string name="agent_tool_bookmark_folder_exists">Kategorie „%1$s“ existiert bereits (id: %2$s)</string>
+    <string name="agent_tool_bookmark_folder_list_header">Lesezeichen-Kategorien:</string>
+    <string name="agent_tool_bookmark_folder_not_found">Kategorie %1$s existiert nicht, verfügbar: %2$s</string>
+    <string name="agent_tool_bookmark_folder_row">· %1$s (id: %2$s, %3$s Lesezeichen)</string>
+    <string name="agent_tool_bookmark_missing_bookmark_id">Parameter bookmark_id fehlt</string>
+    <string name="agent_tool_bookmark_missing_folder_id">Parameter folder_id fehlt</string>
+    <string name="agent_tool_bookmark_missing_folder_name">Parameter folder_name fehlt</string>
+    <string name="agent_tool_bookmark_missing_url">Parameter url fehlt</string>
+    <string name="agent_tool_bookmark_no_folders">Noch keine Lesezeichen-Kategorien</string>
+    <string name="agent_tool_bookmark_not_found">Lesezeichen %1$s existiert nicht</string>
+    <string name="agent_tool_bookmark_removed">Lesezeichen gelöscht: %1$s (%2$s)</string>
+    <string name="agent_tool_bookmark_uncategorized">Nicht kategorisiert</string>
+    <string name="agent_tool_bookmark_unknown_action">Unbekannter Vorgang: %1$s, verfügbar: %2$s</string>
+    <string name="agent_tool_list_param_limit">Maximale Anzahl pro Seite, 1-100, Standard 20.</string>
+    <string name="agent_tool_list_param_offset">Paginierungs-Offset; mit next_offset des letzten Ergebnisses fortfahren.</string>
+    <string name="agent_tool_manage_bookmark_param_action">Vorgangstyp: add_bookmark / remove_bookmark / list_bookmarks / create_folder / delete_folder / list_folders</string>
+    <string name="agent_tool_manage_bookmark_param_bookmark_id">Lesezeichen-ID (bei remove_bookmark erforderlich, aus list_bookmarks)</string>
+    <string name="agent_tool_manage_bookmark_param_folder_id">Kategorie-ID (bei add_bookmark / delete_folder verwendet, aus list_folders)</string>
+    <string name="agent_tool_manage_bookmark_param_folder_name">Kategoriename (bei create_folder erforderlich)</string>
+    <string name="agent_tool_manage_bookmark_param_title">Lesezeichen-Titel (bei add_bookmark optional, standardmäßig URL)</string>
+    <string name="agent_tool_manage_bookmark_param_url">URL (bei add_bookmark / remove_bookmark erforderlich)</string>
+    <string name="agent_tool_manage_bookmark_summary">Favoriten-URLs hinzufügen, Favoriten-Kategorien erstellen</string>
+    <string name="agent_tool_manage_bookmark_title">Lesezeichen verwalten</string>
+    <string name="agent_tool_manage_todo_category_exists">Kategorie existiert bereits: %1$s</string>
+    <string name="agent_tool_manage_todo_inbox_title">Eingang</string>
+    <string name="agent_tool_manage_todo_list_reused">%2$d Einträge zur bestehenden Liste „%1$s“ hinzugefügt, %3$d Duplikate übersprungen</string>
+    <string name="agent_tool_manage_todo_list_summary">Insgesamt %1$d, erledigt %2$d, offen %3$d; diesmal zurückgegeben %4$d</string>
+    <string name="agent_tool_manage_todo_param_category_id">Kategorie-ID, verwendet bei list/create_task, entnommen aus der von list zurückgegebenen id; \"__inbox__\" steht für den Eingang. Bei Angabe einer id hat diese Vorrang vor category_name.</string>
+    <string name="agent_tool_manage_todo_param_include_completed">Ob list erledigte Aufgaben einschließt, Standard true; für nur unerledigte false übergeben.</string>
+    <string name="agent_tool_manage_todo_param_limit">Maximale Anzahl an Aufgaben pro list-Seite, 1-100, Standard 20.</string>
+    <string name="agent_tool_manage_todo_param_offset">list-Seitenoffset; mit next_offset aus dem vorherigen Ergebnis weiterblättern.</string>
+    <string name="agent_tool_manage_todo_param_query">Optionales Stichwort, durchsucht Aufgabentitel, Notizen und Tags.</string>
+    <string name="agent_tool_unknown_action_with_options">Unbekannte Aktion: %1$s, verfügbar: %2$s</string>
 </resources>

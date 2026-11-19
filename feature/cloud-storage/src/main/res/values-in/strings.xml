@@ -133,4 +133,35 @@
     <string name="cloud_storage_ai_assist_title">Asisten Penyiapan Cloud Storage</string>
     <string name="cloud_storage_ai_assist_prompt">Anda asisten penyiapan cloud storage. Tambahkan koneksi dengan manage_cloud_connections. Jangan mengarang kredensial.</string>
     <string name="cloud_storage_ai_assist_fill_in">Bantu saya menambahkan koneksi Aliyun OSS untuk mencadangkan foto</string>
+
+    <!-- i18n-fill: feature/cloud-storage -->
+    <string name="cloud_storage_add_connection">Tambah koneksi</string>
+    <string name="cloud_storage_connection_delete_action">Hapus</string>
+    <string name="cloud_storage_connection_delete_message">Hapus \"%s\"? Hanya konfigurasi koneksi yang tersimpan di perangkat ini yang akan dihapus, file di cloud tidak terpengaruh.</string>
+    <string name="cloud_storage_connection_delete_title">Hapus koneksi</string>
+    <string name="cloud_storage_delete_connection">Hapus</string>
+    <string name="cloud_storage_detail_location">Lokasi</string>
+    <string name="cloud_storage_detail_modified">Waktu diubah</string>
+    <string name="cloud_storage_detail_type">Jenis</string>
+    <string name="cloud_storage_done">Selesai</string>
+    <string name="cloud_storage_edit_connection">Edit</string>
+    <string name="cloud_storage_error_auth">Gagal masuk, periksa nama pengguna / kata sandi atau AccessKey</string>
+    <string name="cloud_storage_error_cleartext">Kanal saat ini tidak mengizinkan HTTP tanpa enkripsi, gunakan alamat HTTPS</string>
+    <string name="cloud_storage_error_network">Tidak dapat terhubung ke server, periksa alamat, port, dan jaringan</string>
+    <string name="cloud_storage_error_not_found">File atau direktori sudah tidak ada</string>
+    <string name="cloud_storage_error_permission">Akun saat ini tidak memiliki izin untuk mengakses file tersebut</string>
+    <string name="cloud_storage_error_server">Server mengembalikan kesalahan: %s</string>
+    <string name="cloud_storage_link_unavailable">Koneksi saat ini tidak mendukung pembuatan tautan berbagi</string>
+    <string name="cloud_storage_search_clear">Hapus pencarian</string>
+    <string name="cloud_storage_search_empty">Tidak ada file yang cocok</string>
+    <string name="cloud_storage_search_placeholder">Cari di direktori saat ini</string>
+    <string name="cloud_storage_sort_ascending">Naik</string>
+    <string name="cloud_storage_sort_date">Waktu diubah</string>
+    <string name="cloud_storage_sort_descending">Turun</string>
+    <string name="cloud_storage_sort_name">Nama</string>
+    <string name="cloud_storage_sort_size">Ukuran</string>
+    <string name="cloud_storage_sort_title">Urutkan</string>
+    <string name="cloud_storage_switch_to_grid">Beralih ke tampilan kisi</string>
+    <string name="cloud_storage_switch_to_list">Beralih ke tampilan daftar</string>
+    <string name="cloud_storage_testing">Menguji...</string>
 </resources>

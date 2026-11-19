@@ -103,4 +103,10 @@
     <string name="media_play_failed">Не удалось воспроизвести, переход к следующему</string>
     <string name="media_collapse_recent">Свернуть недавние</string>
     <string name="media_expand_recent">Развернуть недавние</string>
+
+    <!-- i18n-fill: feature/media-player -->
+    <string name="media_inline_audio">Аудио</string>
+    <string name="media_inline_invalid_url">Недопустимый или неподдерживаемый адрес медиафайла</string>
+    <string name="media_inline_play_error">Не удалось воспроизвести. Нажмите кнопку воспроизведения, чтобы повторить</string>
+    <string name="media_inline_video">Видео</string>
 </resources>

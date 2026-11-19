@@ -59,4 +59,19 @@
     <string name="activity_log_poem_app_title">الشعر الصيني الكلاسيكي</string>
     <string name="activity_log_todo_app_title">قائمة المهام</string>
     <string name="activity_log_xiangqi_app_title">الشطرنج الصيني</string>
+
+    <!-- i18n-fill: core/database -->
+    <string name="activity_log_archive_app_title">ضغط الملفات</string>
+    <string name="activity_log_archive_created_title">إنشاء أرشيف مضغوط</string>
+    <string name="activity_log_archive_entry_extracted_description">تم فك ضغط «%1$s» إلى «%2$s»</string>
+    <string name="activity_log_archive_entry_extracted_title">فك ضغط الملف</string>
+    <string name="activity_log_archive_extracted_title">فك ضغط الأرشيف</string>
+    <string name="activity_log_archive_unknown_folder">المجلد المحدد</string>
+    <string name="activity_log_archive_unnamed">الأرشيف المضغوط</string>
+    <plurals name="activity_log_archive_created_description">
+        <item quantity="other">تم حفظ «%1$s»، بإجمالي %2$d ملف</item>
+    </plurals>
+    <plurals name="activity_log_archive_extracted_description">
+        <item quantity="other">تم فك ضغط %1$d ملف إلى «%2$s»</item>
+    </plurals>
 </resources>

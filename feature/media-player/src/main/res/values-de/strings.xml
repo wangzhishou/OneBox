@@ -101,4 +101,10 @@
     <string name="media_play_failed">Wiedergabe fehlgeschlagen, zum nächsten Element gesprungen</string>
     <string name="media_collapse_recent">Zuletzt wiedergegeben einklappen</string>
     <string name="media_expand_recent">Zuletzt wiedergegeben ausklappen</string>
+
+    <!-- i18n-fill: feature/media-player -->
+    <string name="media_inline_audio">Audio</string>
+    <string name="media_inline_invalid_url">Medienadresse ungültig oder nicht unterstützt</string>
+    <string name="media_inline_play_error">Wiedergabe fehlgeschlagen, zum Wiederholen auf Wiedergabetaste tippen</string>
+    <string name="media_inline_video">Video</string>
 </resources>

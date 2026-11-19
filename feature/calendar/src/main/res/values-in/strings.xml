@@ -219,4 +219,51 @@
     <!-- 大运走势 -->
     <string name="dayun_year_range">%1$d–%2$d</string>
     <string name="dayun_current">Saat ini</string>
+
+    <!-- i18n-fill: feature/calendar -->
+    <string name="calendar_share_ai_generating">Sedang membuat…</string>
+    <string name="calendar_share_ai_hint">AI akan membuat satu kalimat berdasarkan tanggal, kalender lunar, aktivitas baik/larangan, dan cuaca. Setelah dibuat, Anda masih bisa mengeditnya.</string>
+    <string name="calendar_share_ai_write">Tulis satu kalimat dengan AI</string>
+    <string name="calendar_share_air_prefix">Udara</string>
+    <string name="calendar_share_auspicious_title">Waktu baik</string>
+    <string name="calendar_share_blessing">Semoga segala urusan lancar dan damai</string>
+    <string name="calendar_share_brand">WanBaoHe · Kalender Abadi</string>
+    <string name="calendar_share_color_title">Warna</string>
+    <string name="calendar_share_content_title">Tampilan kartu</string>
+    <string name="calendar_share_day_suffix">Hari</string>
+    <string name="calendar_share_ji_seal">Hindari</string>
+    <string name="calendar_share_lunar_prefix">Kalender lunar</string>
+    <string name="calendar_share_month_suffix">Bulan</string>
+    <string name="calendar_share_note_counter">%1$d/%2$d</string>
+    <string name="calendar_share_note_label">Pesan hati</string>
+    <string name="calendar_share_note_placeholder">Kosongkan untuk tidak menampilkan, maksimal 80 karakter</string>
+    <string name="calendar_share_note_title">Pesan hati hari ini</string>
+    <string name="calendar_share_note_title_section">Tulis pesan hati</string>
+    <string name="calendar_share_page_title">Bagikan kalender</string>
+    <string name="calendar_share_preview_size">%1$d × %2$d · PNG</string>
+    <string name="calendar_share_render_failed">Gagal merender kartu</string>
+    <string name="calendar_share_retry">Coba lagi</string>
+    <string name="calendar_share_save">Simpan gambar</string>
+    <string name="calendar_share_save_failed">Gagal menyimpan</string>
+    <string name="calendar_share_saved_app">Tersimpan di direktori aplikasi (%1$s)</string>
+    <string name="calendar_share_saved_gallery">Tersimpan di galeri (%1$s)</string>
+    <string name="calendar_share_selected_day_prefix">Hari ini</string>
+    <string name="calendar_share_share">Bagikan gambar</string>
+    <string name="calendar_share_style_gold_ink">Emas Misterius</string>
+    <string name="calendar_share_style_ink_green">Biru Tosca</string>
+    <string name="calendar_share_style_theme">Ikuti tema</string>
+    <string name="calendar_share_style_vermilion">Merah Vermilion</string>
+    <string name="calendar_share_today_prefix">Hari ini</string>
+    <string name="calendar_share_toggle_note">Kata Hati</string>
+    <string name="calendar_share_toggle_today">Hari Libur Hari Ini</string>
+    <string name="calendar_share_toggle_upcoming">Hari Libur Mendatang</string>
+    <string name="calendar_share_toggle_weather">Cuaca</string>
+    <string name="calendar_share_transparent_background">Latar transparan</string>
+    <string name="calendar_share_upcoming_prefix">Mendatang</string>
+    <string name="calendar_share_weather_loading">Cuaca…</string>
+    <string name="calendar_share_weather_title">Cuaca</string>
+    <string name="calendar_share_weather_today_only">Cuaca hanya tersedia untuk hari ini</string>
+    <string name="calendar_share_weather_unavailable">Cuaca belum tersedia</string>
+    <string name="calendar_share_year_suffix">Tahun</string>
+    <string name="calendar_share_yi_seal">Baik</string>
 </resources>

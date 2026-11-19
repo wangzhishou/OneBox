@@ -2126,4 +2126,20 @@ Consejo: si eliges «Ocultar para siempre», podrás devolverme más tarde en Aj
     <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
     <string name="ai_chat_loading_byok_hint">Evita la cola con tu clave API</string>
     <string name="ai_chat_loading_byok_action">Configurar</string>
+
+    <!-- i18n-fill: core/r -->
+    <string name="device_status">Estado del dispositivo</string>
+    <string name="device_status_description">Copiar IP, red e información del dispositivo</string>
+    <string name="file_viewer_description">Abre archivos de Word, Excel, PowerPoint, EPUB y texto sin conexión</string>
+    <string name="file_viewer_error_cannot_open">No se puede abrir este archivo. Es posible que se haya movido o que la aplicación haya perdido el permiso de lectura.</string>
+    <string name="file_viewer_error_too_large">Este archivo tiene %1$s, es demasiado grande para previsualizarlo aquí. Ábrelo con otra aplicación.</string>
+    <string name="file_viewer_go_to_page">Ir al número de página</string>
+    <string name="file_viewer_night_mode">Modo nocturno</string>
+    <string name="file_viewer_open_with_other">Abrir con otra aplicación</string>
+    <string name="file_viewer_page_number">Número de página</string>
+    <string name="file_viewer_search_hint">Buscar en el documento</string>
+    <string name="file_viewer_search_next">Siguiente coincidencia</string>
+    <string name="file_viewer_search_previous">Coincidencia anterior</string>
+    <string name="file_viewer_title">Vista previa del archivo</string>
+    <string name="home_category_filter">Filtrar por categoría</string>
 </resources>

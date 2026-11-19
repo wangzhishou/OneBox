@@ -133,4 +133,35 @@
     <string name="cloud_storage_ai_assist_title">Assistente de configuração de armazenamento</string>
     <string name="cloud_storage_ai_assist_prompt">Você é o assistente de configuração de armazenamento remoto. Adicione conexões com manage_cloud_connections. Não invente credenciais.</string>
     <string name="cloud_storage_ai_assist_fill_in">Ajude-me a adicionar uma conexão Aliyun OSS para backup de fotos</string>
+
+    <!-- i18n-fill: feature/cloud-storage -->
+    <string name="cloud_storage_add_connection">Adicionar conexão</string>
+    <string name="cloud_storage_connection_delete_action">Excluir</string>
+    <string name="cloud_storage_connection_delete_message">Excluir \"%s\"? Apenas a configuração de conexão salva neste dispositivo será removida; os arquivos na nuvem não serão afetados.</string>
+    <string name="cloud_storage_connection_delete_title">Excluir conexão</string>
+    <string name="cloud_storage_delete_connection">Excluir</string>
+    <string name="cloud_storage_detail_location">Local</string>
+    <string name="cloud_storage_detail_modified">Data de modificação</string>
+    <string name="cloud_storage_detail_type">Tipo</string>
+    <string name="cloud_storage_done">Concluir</string>
+    <string name="cloud_storage_edit_connection">Editar</string>
+    <string name="cloud_storage_error_auth">Falha no login. Verifique o nome de usuário / senha ou a AccessKey</string>
+    <string name="cloud_storage_error_cleartext">O canal atual não permite HTTP sem criptografia. Use um endereço HTTPS</string>
+    <string name="cloud_storage_error_network">Não foi possível conectar ao servidor. Verifique o endereço, a porta e a rede</string>
+    <string name="cloud_storage_error_not_found">O arquivo ou diretório não existe mais</string>
+    <string name="cloud_storage_error_permission">A conta atual não tem permissão para acessar este arquivo</string>
+    <string name="cloud_storage_error_server">O servidor retornou um erro: %s</string>
+    <string name="cloud_storage_link_unavailable">A conexão atual não suporta a geração de links de compartilhamento</string>
+    <string name="cloud_storage_search_clear">Limpar pesquisa</string>
+    <string name="cloud_storage_search_empty">Nenhum arquivo correspondente</string>
+    <string name="cloud_storage_search_placeholder">Pesquisar no diretório atual</string>
+    <string name="cloud_storage_sort_ascending">Crescente</string>
+    <string name="cloud_storage_sort_date">Data de modificação</string>
+    <string name="cloud_storage_sort_descending">Decrescente</string>
+    <string name="cloud_storage_sort_name">Nome</string>
+    <string name="cloud_storage_sort_size">Tamanho</string>
+    <string name="cloud_storage_sort_title">Ordenar</string>
+    <string name="cloud_storage_switch_to_grid">Mudar para visualização em grade</string>
+    <string name="cloud_storage_switch_to_list">Mudar para visualização em lista</string>
+    <string name="cloud_storage_testing">Testando...</string>
 </resources>

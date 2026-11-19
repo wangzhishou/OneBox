@@ -101,4 +101,10 @@
     <string name="media_play_failed">प्लेबैक विफल, अगले आइटम पर जा रहे हैं</string>
     <string name="media_collapse_recent">हाल ही में चलाए गए को संकुचित करें</string>
     <string name="media_expand_recent">हाल ही में चलाए गए को विस्तृत करें</string>
+
+    <!-- i18n-fill: feature/media-player -->
+    <string name="media_inline_audio">ऑडियो</string>
+    <string name="media_inline_invalid_url">मीडिया पता अमान्य या असमर्थित है</string>
+    <string name="media_inline_play_error">प्लेबैक विफल, पुनः प्रयास के लिए प्ले बटन पर टैप करें</string>
+    <string name="media_inline_video">वीडियो</string>
 </resources>

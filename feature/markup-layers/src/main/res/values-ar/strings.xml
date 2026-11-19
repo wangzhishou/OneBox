@@ -214,4 +214,10 @@
     <string name="markup_rasterize_message">يجب تحويل طبقات النص والأشكال إلى صورة قبل استخدام المرشّحات. بعد التحويل، لن يمكن تعديل إعدادات النص أو الأشكال، لكن يمكنك استعادتها عبر التراجع.</string>
     <string name="markup_rasterize_failed">فشل تحويل الطبقة</string>
     <string name="markup_tool_text_style">نمط النص</string>
+
+    <!-- i18n-fill: feature/markup-layers -->
+    <string name="markup_select_text_first">يرجى تحديد طبقة نص أولاً</string>
+    <string name="markup_text_clear_format">مسح التنسيق</string>
+    <string name="markup_text_size_decrease">تصغير حجم الخط</string>
+    <string name="markup_text_size_increase">تكبير حجم الخط</string>
 </resources>

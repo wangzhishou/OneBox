@@ -20,4 +20,7 @@
 
 <resources>
     <string name="image_with_cropper">Kırpma araçlı özgün görsel</string>
+
+    <!-- i18n-fill: libs/documentscanner -->
+    <string name="document_scan_captured_image_unreadable">Yeni çekilen fotoğraf okunamadı, lütfen yeniden tarayın</string>
 </resources>

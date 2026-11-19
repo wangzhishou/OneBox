@@ -1018,4 +1018,45 @@
     <string name="ai_chat_mode_chat_description">Discussion instantanée · Réponses rapides</string>
     <string name="ai_chat_mode_agent_title">Mode Agent</string>
     <string name="ai_chat_mode_agent_description">Planifier et agir · Tâches automatiques</string>
+
+    <!-- i18n-fill: feature/ai -->
+    <string name="agent_tool_bookmark_added">Favori ajouté :\n- id : %1$s\n- titre : %2$s\n- URL : %3$s\n- catégorie : %4$s</string>
+    <string name="agent_tool_bookmark_exists">Le favori existe déjà : %1$s (id : %2$s)</string>
+    <string name="agent_tool_bookmark_failed">Échec de l\'opération sur le favori : %1$s</string>
+    <string name="agent_tool_bookmark_folder_builtin">La catégorie « %1$s » est une catégorie intégrée et ne peut pas être supprimée</string>
+    <string name="agent_tool_bookmark_folder_created">Catégorie de favoris créée : %1$s (id : %2$s)</string>
+    <string name="agent_tool_bookmark_folder_deleted">Catégorie supprimée : %1$s, ses favoris ont été déplacés vers Non classé</string>
+    <string name="agent_tool_bookmark_folder_exists">La catégorie « %1$s » existe déjà (id : %2$s)</string>
+    <string name="agent_tool_bookmark_folder_list_header">Catégories de favoris :</string>
+    <string name="agent_tool_bookmark_folder_not_found">La catégorie %1$s n\'existe pas, disponibles : %2$s</string>
+    <string name="agent_tool_bookmark_folder_row">· %1$s (id : %2$s, %3$s favoris)</string>
+    <string name="agent_tool_bookmark_missing_bookmark_id">Paramètre bookmark_id manquant</string>
+    <string name="agent_tool_bookmark_missing_folder_id">Paramètre folder_id manquant</string>
+    <string name="agent_tool_bookmark_missing_folder_name">Paramètre folder_name manquant</string>
+    <string name="agent_tool_bookmark_missing_url">Paramètre url manquant</string>
+    <string name="agent_tool_bookmark_no_folders">Aucune catégorie de favoris</string>
+    <string name="agent_tool_bookmark_not_found">Le favori %1$s n\'existe pas</string>
+    <string name="agent_tool_bookmark_removed">Favori supprimé : %1$s (%2$s)</string>
+    <string name="agent_tool_bookmark_uncategorized">Non classé</string>
+    <string name="agent_tool_bookmark_unknown_action">Opération inconnue : %1$s, disponibles : %2$s</string>
+    <string name="agent_tool_list_param_limit">Nombre maximal de résultats par page, 1-100, 20 par défaut.</string>
+    <string name="agent_tool_list_param_offset">Décalage de pagination ; utilisez next_offset du résultat précédent pour continuer.</string>
+    <string name="agent_tool_manage_bookmark_param_action">Type d\'opération : add_bookmark / remove_bookmark / list_bookmarks / create_folder / delete_folder / list_folders</string>
+    <string name="agent_tool_manage_bookmark_param_bookmark_id">ID de l\'entrée de favori (obligatoire pour remove_bookmark, issu de list_bookmarks)</string>
+    <string name="agent_tool_manage_bookmark_param_folder_id">ID de la catégorie (utilisé pour add_bookmark / delete_folder, issu de list_folders)</string>
+    <string name="agent_tool_manage_bookmark_param_folder_name">Nom de la catégorie (obligatoire pour create_folder)</string>
+    <string name="agent_tool_manage_bookmark_param_title">Titre du favori (facultatif pour add_bookmark, l\'URL est utilisée par défaut)</string>
+    <string name="agent_tool_manage_bookmark_param_url">URL (obligatoire pour add_bookmark / remove_bookmark)</string>
+    <string name="agent_tool_manage_bookmark_summary">Ajouter des sites favoris et créer des catégories de favoris</string>
+    <string name="agent_tool_manage_bookmark_title">Gérer les favoris</string>
+    <string name="agent_tool_manage_todo_category_exists">La catégorie existe déjà : %1$s</string>
+    <string name="agent_tool_manage_todo_inbox_title">Boîte de réception</string>
+    <string name="agent_tool_manage_todo_list_reused">%2$d élément(s) ajouté(s) à la liste existante « %1$s », %3$d doublon(s) ignoré(s)</string>
+    <string name="agent_tool_manage_todo_list_summary">%1$d au total, %2$d terminé(s), %3$d en attente ; %4$d renvoyé(s) cette fois</string>
+    <string name="agent_tool_manage_todo_param_category_id">ID de catégorie, utilisé par list/create_task, issu de l\'id renvoyé par list ; \"__inbox__\" désigne la boîte de réception. Si un id est fourni, il est prioritaire sur category_name.</string>
+    <string name="agent_tool_manage_todo_param_include_completed">Indique si list inclut les tâches terminées, true par défaut ; passez false pour n\'afficher que les non terminées.</string>
+    <string name="agent_tool_manage_todo_param_limit">Nombre maximal de tâches renvoyées par page pour list, 1-100, 20 par défaut.</string>
+    <string name="agent_tool_manage_todo_param_offset">Décalage de pagination pour list ; utilisez le next_offset du dernier résultat pour continuer.</string>
+    <string name="agent_tool_manage_todo_param_query">Mot-clé facultatif, recherche dans les titres, notes et étiquettes des tâches.</string>
+    <string name="agent_tool_unknown_action_with_options">Opération inconnue : %1$s, disponibles : %2$s</string>
 </resources>

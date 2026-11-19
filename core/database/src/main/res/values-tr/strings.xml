@@ -60,4 +60,19 @@
     <string name="activity_log_poem_app_title">Klasik Çin şiiri</string>
     <string name="activity_log_todo_app_title">Görevler</string>
     <string name="activity_log_xiangqi_app_title">Çin satrancı</string>
+
+    <!-- i18n-fill: core/database -->
+    <string name="activity_log_archive_app_title">Dosya sıkıştırma</string>
+    <string name="activity_log_archive_created_title">Arşiv oluştur</string>
+    <string name="activity_log_archive_entry_extracted_description">\"%1$s\" konumundan \"%2$s\" konumuna çıkarıldı</string>
+    <string name="activity_log_archive_entry_extracted_title">Dosyaları çıkar</string>
+    <string name="activity_log_archive_extracted_title">Arşivi çıkar</string>
+    <string name="activity_log_archive_unknown_folder">Seçili klasör</string>
+    <string name="activity_log_archive_unnamed">Arşiv</string>
+    <plurals name="activity_log_archive_created_description">
+        <item quantity="other">\"%1$s\" kaydedildi, toplam %2$d dosya</item>
+    </plurals>
+    <plurals name="activity_log_archive_extracted_description">
+        <item quantity="other">%1$d dosya \"%2$s\" konumuna çıkarıldı</item>
+    </plurals>
 </resources>

@@ -133,4 +133,35 @@
     <string name="cloud_storage_ai_assist_title">Bulut Depolama Kurulum Asistanı</string>
     <string name="cloud_storage_ai_assist_prompt">Bulut depolama kurulum asistanısın. manage_cloud_connections ile bağlantı ekle. Kimlik bilgilerini uydurma.</string>
     <string name="cloud_storage_ai_assist_fill_in">Fotoğrafları yedeklemek için bir Aliyun OSS bağlantısı eklememe yardımcı ol</string>
+
+    <!-- i18n-fill: feature/cloud-storage -->
+    <string name="cloud_storage_add_connection">Bağlantı ekle</string>
+    <string name="cloud_storage_connection_delete_action">Sil</string>
+    <string name="cloud_storage_connection_delete_message">\"%s\" silinsin mi? Yalnızca bu cihazda kayıtlı bağlantı yapılandırması temizlenir, bulut dosyaları etkilenmez.</string>
+    <string name="cloud_storage_connection_delete_title">Bağlantıyı sil</string>
+    <string name="cloud_storage_delete_connection">Sil</string>
+    <string name="cloud_storage_detail_location">Konum</string>
+    <string name="cloud_storage_detail_modified">Değiştirme zamanı</string>
+    <string name="cloud_storage_detail_type">Tür</string>
+    <string name="cloud_storage_done">Tamam</string>
+    <string name="cloud_storage_edit_connection">Düzenle</string>
+    <string name="cloud_storage_error_auth">Giriş başarısız, lütfen kullanıcı adı / parola veya AccessKey\'i kontrol edin</string>
+    <string name="cloud_storage_error_cleartext">Mevcut kanal düz HTTP\'ye izin vermiyor, lütfen HTTPS adresi kullanın</string>
+    <string name="cloud_storage_error_network">Sunucuya bağlanılamıyor, lütfen adresi, bağlantı noktasını ve ağı kontrol edin</string>
+    <string name="cloud_storage_error_not_found">Dosya veya dizin artık mevcut değil</string>
+    <string name="cloud_storage_error_permission">Mevcut hesabın bu dosyaya erişim yetkisi yok</string>
+    <string name="cloud_storage_error_server">Sunucu hata döndürdü: %s</string>
+    <string name="cloud_storage_link_unavailable">Mevcut bağlantı paylaşım bağlantısı oluşturmayı desteklemiyor</string>
+    <string name="cloud_storage_search_clear">Aramayı temizle</string>
+    <string name="cloud_storage_search_empty">Eşleşen dosya yok</string>
+    <string name="cloud_storage_search_placeholder">Geçerli dizinde ara</string>
+    <string name="cloud_storage_sort_ascending">Artan</string>
+    <string name="cloud_storage_sort_date">Değiştirme zamanı</string>
+    <string name="cloud_storage_sort_descending">Azalan</string>
+    <string name="cloud_storage_sort_name">Ad</string>
+    <string name="cloud_storage_sort_size">Boyut</string>
+    <string name="cloud_storage_sort_title">Sırala</string>
+    <string name="cloud_storage_switch_to_grid">Izgara görünümüne geç</string>
+    <string name="cloud_storage_switch_to_list">Liste görünümüne geç</string>
+    <string name="cloud_storage_testing">Test ediliyor...</string>
 </resources>

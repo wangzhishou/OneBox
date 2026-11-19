@@ -214,4 +214,10 @@
     <string name="markup_rasterize_message">Les calques de texte/forme doivent d\'abord être convertis en image pour utiliser les filtres. Après conversion, les paramètres de texte/forme ne seront plus modifiables, mais vous pouvez annuler l\'action pour les restaurer.</string>
     <string name="markup_rasterize_failed">Échec de la conversion du calque</string>
     <string name="markup_tool_text_style">Style de texte</string>
+
+    <!-- i18n-fill: feature/markup-layers -->
+    <string name="markup_select_text_first">Veuillez d\'abord sélectionner un calque de texte</string>
+    <string name="markup_text_clear_format">Effacer la mise en forme</string>
+    <string name="markup_text_size_decrease">Réduire la taille de police</string>
+    <string name="markup_text_size_increase">Augmenter la taille de police</string>
 </resources>

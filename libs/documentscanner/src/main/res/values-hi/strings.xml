@@ -20,4 +20,7 @@
 
 <resources>
     <string name="image_with_cropper">क्रॉपर के साथ मूल छवि</string>
+
+    <!-- i18n-fill: libs/documentscanner -->
+    <string name="document_scan_captured_image_unreadable">अभी खींची गई फ़ोटो पढ़ी नहीं जा सकी, कृपया फिर से स्कैन करें</string>
 </resources>

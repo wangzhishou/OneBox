@@ -105,4 +105,10 @@
     <string name="media_play_failed">فشل التشغيل، تم الانتقال إلى العنصر التالي</string>
     <string name="media_collapse_recent">طي</string>
     <string name="media_expand_recent">توسيع</string>
+
+    <!-- i18n-fill: feature/media-player -->
+    <string name="media_inline_audio">الصوت</string>
+    <string name="media_inline_invalid_url">عنوان الوسائط غير صالح أو غير مدعوم</string>
+    <string name="media_inline_play_error">فشل التشغيل، اضغط على زر التشغيل لإعادة المحاولة</string>
+    <string name="media_inline_video">الفيديو</string>
 </resources>

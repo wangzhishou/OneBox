@@ -101,4 +101,10 @@
     <string name="media_play_failed">Phát thất bại, đã chuyển sang mục tiếp theo</string>
     <string name="media_collapse_recent">Thu gọn phát gần đây</string>
     <string name="media_expand_recent">Mở rộng phát gần đây</string>
+
+    <!-- i18n-fill: feature/media-player -->
+    <string name="media_inline_audio">Âm thanh</string>
+    <string name="media_inline_invalid_url">Địa chỉ media không hợp lệ hoặc không được hỗ trợ</string>
+    <string name="media_inline_play_error">Phát thất bại, nhấn nút phát để thử lại</string>
+    <string name="media_inline_video">Video</string>
 </resources>

@@ -20,4 +20,7 @@
 
 <resources>
     <string name="image_with_cropper">Ảnh gốc có công cụ cắt</string>
+
+    <!-- i18n-fill: libs/documentscanner -->
+    <string name="document_scan_captured_image_unreadable">Không đọc được ảnh vừa chụp, vui lòng quét lại</string>
 </resources>

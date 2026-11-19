@@ -107,4 +107,28 @@
     <string name="demo_aigc_demo_parse_failed">डेमो AIGC पार्स करने में विफल</string>
     <string name="demo_glass_showcase_consistency_desc">एक ही टिंट और शैली GlassCard, GlassSurface और coloredGlass से रेंडर; ग्लास चालू या बंद, तीनों एक जैसे दिखने चाहिए।</string>
     <string name="demo_glass_showcase_consistency_title">पाइपलाइन की एकरूपता</string>
+
+    <!-- i18n-fill: feature/demo -->
+    <string name="demo_markdown_engine_kmp">KMP Markdown 1.7.2</string>
+    <string name="demo_markdown_engine_legacy">मौजूदा रेंडरिंग इंजन</string>
+    <string name="demo_markdown_media_sample">मीडिया उदाहरण</string>
+    <string name="demo_rich_editor_close">प्रयोग बंद करें</string>
+    <string name="demo_rich_editor_copied">कॉपी किया गया</string>
+    <string name="demo_rich_editor_copy_markdown">Markdown कॉपी करें</string>
+    <string name="demo_rich_editor_description">टेक्स्ट और ट्रैक करने योग्य स्टाइल ही एकमात्र स्रोत हैं; संपादन क्षेत्र WebView का उपयोग नहीं करता और Markdown चिह्न नहीं दिखाता।</string>
+    <string name="demo_rich_editor_entry_title">Native रिच टेक्स्ट एडिटर</string>
+    <string name="demo_rich_editor_highlight">हाइलाइट</string>
+    <string name="demo_rich_editor_mode_edit">सीधे संपादित करें</string>
+    <string name="demo_rich_editor_mode_preview">Native प्रीव्यू</string>
+    <string name="demo_rich_editor_mode_source">Markdown</string>
+    <string name="demo_rich_editor_sample_body">रेंडर किए गए टेक्स्ट को सीधे संपादित करें, किसी भी सामग्री को चुनकर फ़ॉर्मेट मेन्यू खोलें।</string>
+    <string name="demo_rich_editor_sample_bullet_export">Markdown निर्यात करें, फिर मौजूदा Native रेंडरर से परिणाम जाँचें</string>
+    <string name="demo_rich_editor_sample_bullet_styles">स्टाइल TrackedRange के माध्यम से टाइपिंग, हटाने और पेस्ट के साथ चलती हैं</string>
+    <string name="demo_rich_editor_sample_footer">%1$s टेक्स्ट और स्टाइल दोनों प्रबंधित करता है, %2$s अब आवश्यक नहीं है।</string>
+    <string name="demo_rich_editor_sample_state_word">TextFieldState</string>
+    <string name="demo_rich_editor_sample_title">Native WYSIWYG संपादन</string>
+    <string name="demo_rich_editor_sample_webview_word">WebView</string>
+    <string name="demo_rich_editor_stats">%1$d अक्षर · %2$d ट्रैक करने योग्य स्टाइल रेंज</string>
+    <string name="demo_rich_editor_stats_with_hint">%1$d अक्षर · %2$d स्टाइल रेंज · टेक्स्ट चुनकर फ़ॉर्मेट सेट करें</string>
+    <string name="demo_rich_editor_title">Native WYSIWYG एडिटर</string>
 </resources>

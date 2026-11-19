@@ -107,4 +107,28 @@
     <string name="demo_aigc_demo_parse_failed">تعذّر تحليل بيانات AIGC التجريبية</string>
     <string name="demo_glass_showcase_consistency_desc">النفس اللون والمستوى يُرسمان عبر GlassCard وGlassSurface وcoloredGlass؛ ومع تشغيل الزجاج أو إيقافه يجب أن تبدو الثلاثة متطابقة.</string>
     <string name="demo_glass_showcase_consistency_title">اتساق المسار</string>
+
+    <!-- i18n-fill: feature/demo -->
+    <string name="demo_markdown_engine_kmp">KMP Markdown 1.7.2</string>
+    <string name="demo_markdown_engine_legacy">محرّك العرض الحالي</string>
+    <string name="demo_markdown_media_sample">أمثلة الوسائط</string>
+    <string name="demo_rich_editor_close">إغلاق التجربة</string>
+    <string name="demo_rich_editor_copied">تم النسخ</string>
+    <string name="demo_rich_editor_copy_markdown">نسخ Markdown</string>
+    <string name="demo_rich_editor_description">النص والأنماط القابلة للتتبع هما المصدر الوحيد للحقيقة؛ لا تستخدم منطقة التحرير WebView ولا تعرض علامات Markdown.</string>
+    <string name="demo_rich_editor_entry_title">محرّر نص منسّق أصلي</string>
+    <string name="demo_rich_editor_highlight">تمييز</string>
+    <string name="demo_rich_editor_mode_edit">تحرير مباشر</string>
+    <string name="demo_rich_editor_mode_preview">معاينة أصلية</string>
+    <string name="demo_rich_editor_mode_source">Markdown</string>
+    <string name="demo_rich_editor_sample_body">حرّر النص المعروض مباشرة، وحدّد أي محتوى لفتح قائمة التنسيق.</string>
+    <string name="demo_rich_editor_sample_bullet_export">صدّر Markdown ثم تحقّق من النتيجة باستخدام محرّك العرض الأصلي الحالي</string>
+    <string name="demo_rich_editor_sample_bullet_styles">تنتقل الأنماط عبر TrackedRange مع الإدخال والحذف واللصق</string>
+    <string name="demo_rich_editor_sample_footer">يدير %1$s النص والأنماط معًا، ولم يعد %2$s ضروريًا.</string>
+    <string name="demo_rich_editor_sample_state_word">TextFieldState</string>
+    <string name="demo_rich_editor_sample_title">تحرير أصلي بما تراه هو ما تحصل عليه</string>
+    <string name="demo_rich_editor_sample_webview_word">WebView</string>
+    <string name="demo_rich_editor_stats">%1$d حرفًا · %2$d نطاق نمط قابل للتتبع</string>
+    <string name="demo_rich_editor_stats_with_hint">%1$d حرفًا · %2$d نطاق نمط · حدّد النص لضبط التنسيق</string>
+    <string name="demo_rich_editor_title">محرّر أصلي بما تراه هو ما تحصل عليه</string>
 </resources>

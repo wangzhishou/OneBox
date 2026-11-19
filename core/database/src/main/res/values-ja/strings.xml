@@ -60,4 +60,19 @@
     <string name="activity_log_poem_app_title">中国古典詩詞</string>
     <string name="activity_log_todo_app_title">タスクリスト</string>
     <string name="activity_log_xiangqi_app_title">シャンチー</string>
+
+    <!-- i18n-fill: core/database -->
+    <string name="activity_log_archive_app_title">ファイル圧縮</string>
+    <string name="activity_log_archive_created_title">圧縮ファイルを作成</string>
+    <string name="activity_log_archive_entry_extracted_description">「%1$s」を「%2$s」に解凍しました</string>
+    <string name="activity_log_archive_entry_extracted_title">ファイルを解凍</string>
+    <string name="activity_log_archive_extracted_title">圧縮ファイルを解凍</string>
+    <string name="activity_log_archive_unknown_folder">選択したフォルダ</string>
+    <string name="activity_log_archive_unnamed">圧縮ファイル</string>
+    <plurals name="activity_log_archive_created_description">
+        <item quantity="other">「%1$s」を保存しました（%2$d ファイル）</item>
+    </plurals>
+    <plurals name="activity_log_archive_extracted_description">
+        <item quantity="other">%1$d 個のファイルを「%2$s」に解凍しました</item>
+    </plurals>
 </resources>

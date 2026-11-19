@@ -20,4 +20,7 @@
 
 <resources>
     <string name="image_with_cropper">Imagen original con recortador</string>
+
+    <!-- i18n-fill: libs/documentscanner -->
+    <string name="document_scan_captured_image_unreadable">No se pudo leer la foto que acabas de tomar. Vuelve a escanear.</string>
 </resources>

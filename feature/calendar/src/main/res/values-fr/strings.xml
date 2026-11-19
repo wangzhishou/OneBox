@@ -219,4 +219,51 @@
     <!-- 大运走势 -->
     <string name="dayun_year_range">%1$d–%2$d</string>
     <string name="dayun_current">En cours</string>
+
+    <!-- i18n-fill: feature/calendar -->
+    <string name="calendar_share_ai_generating">Génération…</string>
+    <string name="calendar_share_ai_hint">L\'IA génère une phrase à partir de la date, du calendrier lunaire, des activités propices/défavorables et de la météo. Vous pourrez la modifier ensuite.</string>
+    <string name="calendar_share_ai_write">Écrire avec l\'IA</string>
+    <string name="calendar_share_air_prefix">Air</string>
+    <string name="calendar_share_auspicious_title">Heures fastes</string>
+    <string name="calendar_share_blessing">Tous mes vœux, paix et sérénité</string>
+    <string name="calendar_share_brand">WanBaoHe · Calendrier perpétuel</string>
+    <string name="calendar_share_color_title">Couleurs</string>
+    <string name="calendar_share_content_title">Affichage de la carte</string>
+    <string name="calendar_share_day_suffix">Jour</string>
+    <string name="calendar_share_ji_seal">À éviter</string>
+    <string name="calendar_share_lunar_prefix">Calendrier lunaire</string>
+    <string name="calendar_share_month_suffix">Mois</string>
+    <string name="calendar_share_note_counter">%1$d/%2$d</string>
+    <string name="calendar_share_note_label">Pensée</string>
+    <string name="calendar_share_note_placeholder">Laisser vide pour masquer, 80 caractères max</string>
+    <string name="calendar_share_note_title">Pensée du jour</string>
+    <string name="calendar_share_note_title_section">Écrire une pensée</string>
+    <string name="calendar_share_page_title">Partager le calendrier</string>
+    <string name="calendar_share_preview_size">%1$d × %2$d · PNG</string>
+    <string name="calendar_share_render_failed">Échec du rendu de la carte</string>
+    <string name="calendar_share_retry">Réessayer</string>
+    <string name="calendar_share_save">Enregistrer l\'image</string>
+    <string name="calendar_share_save_failed">Échec de l\'enregistrement</string>
+    <string name="calendar_share_saved_app">Enregistré dans le dossier de l\'application (%1$s)</string>
+    <string name="calendar_share_saved_gallery">Enregistré dans la galerie (%1$s)</string>
+    <string name="calendar_share_selected_day_prefix">Aujourd\'hui</string>
+    <string name="calendar_share_share">Partager l\'image</string>
+    <string name="calendar_share_style_gold_ink">Or sombre</string>
+    <string name="calendar_share_style_ink_green">Bleu ardoise</string>
+    <string name="calendar_share_style_theme">Suivre le thème</string>
+    <string name="calendar_share_style_vermilion">Cinabre</string>
+    <string name="calendar_share_today_prefix">Aujourd\'hui</string>
+    <string name="calendar_share_toggle_note">Pensée du jour</string>
+    <string name="calendar_share_toggle_today">Fête du jour</string>
+    <string name="calendar_share_toggle_upcoming">Fêtes à venir</string>
+    <string name="calendar_share_toggle_weather">Météo</string>
+    <string name="calendar_share_transparent_background">Fond transparent</string>
+    <string name="calendar_share_upcoming_prefix">À venir</string>
+    <string name="calendar_share_weather_loading">Météo…</string>
+    <string name="calendar_share_weather_title">Météo</string>
+    <string name="calendar_share_weather_today_only">La météo n\'est disponible que pour aujourd\'hui</string>
+    <string name="calendar_share_weather_unavailable">Météo indisponible pour le moment</string>
+    <string name="calendar_share_year_suffix">Année</string>
+    <string name="calendar_share_yi_seal">Favorable</string>
 </resources>

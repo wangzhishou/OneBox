@@ -101,4 +101,10 @@
     <string name="media_play_failed">재생에 실패하여 다음 항목으로 넘어갔습니다</string>
     <string name="media_collapse_recent">최근 재생 접기</string>
     <string name="media_expand_recent">최근 재생 펼치기</string>
+
+    <!-- i18n-fill: feature/media-player -->
+    <string name="media_inline_audio">오디오</string>
+    <string name="media_inline_invalid_url">미디어 주소가 유효하지 않거나 지원되지 않습니다</string>
+    <string name="media_inline_play_error">재생 실패, 재생 버튼을 눌러 다시 시도하세요</string>
+    <string name="media_inline_video">비디오</string>
 </resources>

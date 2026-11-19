@@ -133,4 +133,35 @@
     <string name="cloud_storage_ai_assist_title">Cloud-Speicher-Setup-Assistent</string>
     <string name="cloud_storage_ai_assist_prompt">Du bist der Cloud-Speicher-Setup-Assistent. Füge Verbindungen mit manage_cloud_connections hinzu. Erfinde keine Zugangsdaten.</string>
     <string name="cloud_storage_ai_assist_fill_in">Hilf mir, eine Aliyun-OSS-Verbindung für Foto-Backups hinzuzufügen</string>
+
+    <!-- i18n-fill: feature/cloud-storage -->
+    <string name="cloud_storage_add_connection">Verbindung hinzufügen</string>
+    <string name="cloud_storage_connection_delete_action">Löschen</string>
+    <string name="cloud_storage_connection_delete_message">„%s“ löschen? Es wird nur die lokal gespeicherte Verbindungskonfiguration entfernt, Cloud-Dateien bleiben unberührt.</string>
+    <string name="cloud_storage_connection_delete_title">Verbindung löschen</string>
+    <string name="cloud_storage_delete_connection">Löschen</string>
+    <string name="cloud_storage_detail_location">Speicherort</string>
+    <string name="cloud_storage_detail_modified">Änderungszeit</string>
+    <string name="cloud_storage_detail_type">Typ</string>
+    <string name="cloud_storage_done">Fertig</string>
+    <string name="cloud_storage_edit_connection">Bearbeiten</string>
+    <string name="cloud_storage_error_auth">Anmeldung fehlgeschlagen, Benutzername / Passwort oder AccessKey prüfen</string>
+    <string name="cloud_storage_error_cleartext">Unverschlüsseltes HTTP ist für diesen Kanal nicht erlaubt, bitte HTTPS-Adresse verwenden</string>
+    <string name="cloud_storage_error_network">Keine Verbindung zum Server, Adresse, Port und Netzwerk prüfen</string>
+    <string name="cloud_storage_error_not_found">Datei oder Verzeichnis existiert nicht mehr</string>
+    <string name="cloud_storage_error_permission">Dieses Konto hat keine Berechtigung für diese Datei</string>
+    <string name="cloud_storage_error_server">Serverfehler: %s</string>
+    <string name="cloud_storage_link_unavailable">Diese Verbindung unterstützt keine Freigabelinks</string>
+    <string name="cloud_storage_search_clear">Suche löschen</string>
+    <string name="cloud_storage_search_empty">Keine passenden Dateien</string>
+    <string name="cloud_storage_search_placeholder">Im aktuellen Verzeichnis suchen</string>
+    <string name="cloud_storage_sort_ascending">Aufsteigend</string>
+    <string name="cloud_storage_sort_date">Änderungszeit</string>
+    <string name="cloud_storage_sort_descending">Absteigend</string>
+    <string name="cloud_storage_sort_name">Name</string>
+    <string name="cloud_storage_sort_size">Größe</string>
+    <string name="cloud_storage_sort_title">Sortieren</string>
+    <string name="cloud_storage_switch_to_grid">Zur Rasteransicht wechseln</string>
+    <string name="cloud_storage_switch_to_list">Zur Listenansicht wechseln</string>
+    <string name="cloud_storage_testing">Wird getestet...</string>
 </resources>

@@ -219,4 +219,51 @@
     <!-- 大运走势 -->
     <string name="dayun_year_range">%1$d–%2$d</string>
     <string name="dayun_current">वर्तमान</string>
+
+    <!-- i18n-fill: feature/calendar -->
+    <string name="calendar_share_ai_generating">उत्पन्न हो रहा है…</string>
+    <string name="calendar_share_ai_hint">AI तारीख, चंद्र कैलेंडर, शुभ-अशुभ और मौसम के आधार पर एक वाक्य बनाएगा, उत्पन्न होने के बाद आप इसे संपादित कर सकते हैं।</string>
+    <string name="calendar_share_ai_write">AI से एक वाक्य लिखें</string>
+    <string name="calendar_share_air_prefix">वायु</string>
+    <string name="calendar_share_auspicious_title">शुभ समय</string>
+    <string name="calendar_share_blessing">सब कुछ शुभ हो, शांति और सुख बना रहे</string>
+    <string name="calendar_share_brand">वानबाओहे · पंचांग</string>
+    <string name="calendar_share_color_title">रंग योजना</string>
+    <string name="calendar_share_content_title">कार्ड प्रदर्शन</string>
+    <string name="calendar_share_day_suffix">दिन</string>
+    <string name="calendar_share_ji_seal">अशुभ</string>
+    <string name="calendar_share_lunar_prefix">चंद्र कैलेंडर</string>
+    <string name="calendar_share_month_suffix">माह</string>
+    <string name="calendar_share_note_counter">%1$d/%2$d</string>
+    <string name="calendar_share_note_label">मन की बात</string>
+    <string name="calendar_share_note_placeholder">खाली छोड़ने पर नहीं दिखेगा, अधिकतम 80 अक्षर</string>
+    <string name="calendar_share_note_title">आज की मन की बात</string>
+    <string name="calendar_share_note_title_section">एक वाक्य लिखें</string>
+    <string name="calendar_share_page_title">कैलेंडर साझा करें</string>
+    <string name="calendar_share_preview_size">%1$d × %2$d · PNG</string>
+    <string name="calendar_share_render_failed">कार्ड रेंडर विफल</string>
+    <string name="calendar_share_retry">पुनः प्रयास करें</string>
+    <string name="calendar_share_save">छवि सहेजें</string>
+    <string name="calendar_share_save_failed">सहेजना विफल</string>
+    <string name="calendar_share_saved_app">ऐप निर्देशिका में सहेजा गया (%1$s)</string>
+    <string name="calendar_share_saved_gallery">गैलरी में सहेजा गया (%1$s)</string>
+    <string name="calendar_share_selected_day_prefix">उस दिन</string>
+    <string name="calendar_share_share">छवि साझा करें</string>
+    <string name="calendar_share_style_gold_ink">काला-सुनहरा</string>
+    <string name="calendar_share_style_ink_green">गहरा नीला</string>
+    <string name="calendar_share_style_theme">थीम का पालन करें</string>
+    <string name="calendar_share_style_vermilion">सिंदूरी</string>
+    <string name="calendar_share_today_prefix">आज</string>
+    <string name="calendar_share_toggle_note">मन की बात</string>
+    <string name="calendar_share_toggle_today">आज का त्योहार</string>
+    <string name="calendar_share_toggle_upcoming">आगामी त्योहार</string>
+    <string name="calendar_share_toggle_weather">मौसम</string>
+    <string name="calendar_share_transparent_background">पारदर्शी पृष्ठभूमि</string>
+    <string name="calendar_share_upcoming_prefix">भविष्य</string>
+    <string name="calendar_share_weather_loading">मौसम…</string>
+    <string name="calendar_share_weather_title">मौसम</string>
+    <string name="calendar_share_weather_today_only">मौसम केवल आज के लिए उपलब्ध है</string>
+    <string name="calendar_share_weather_unavailable">अभी तक मौसम प्राप्त नहीं हुआ</string>
+    <string name="calendar_share_year_suffix">वर्ष</string>
+    <string name="calendar_share_yi_seal">शुभ</string>
 </resources>

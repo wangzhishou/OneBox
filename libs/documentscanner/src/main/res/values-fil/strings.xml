@@ -20,4 +20,7 @@
 
 <resources>
     <string name="image_with_cropper">Orihinal na larawan na may cropper</string>
+
+    <!-- i18n-fill: libs/documentscanner -->
+    <string name="document_scan_captured_image_unreadable">Hindi mabasa ang litratong kakuha lang, pakisuri muli</string>
 </resources>

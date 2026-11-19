@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- i18n-fill: feature/watermark-template -->
+    <string name="watermark_kind_camera_params">Kameraparameter</string>
+    <string name="watermark_kind_divider">Trennlinie</string>
+    <string name="watermark_template_apply">Anwenden</string>
+    <string name="watermark_template_leica_classic">Leica Classic</string>
+</resources>

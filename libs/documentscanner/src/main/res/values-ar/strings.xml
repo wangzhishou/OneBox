@@ -20,4 +20,7 @@
 
 <resources>
     <string name="image_with_cropper">الصورة الأصلية مع أداة القص</string>
+
+    <!-- i18n-fill: libs/documentscanner -->
+    <string name="document_scan_captured_image_unreadable">تعذّرت قراءة الصورة التي التُقطت للتو، يرجى إعادة المسح</string>
 </resources>

@@ -205,4 +205,12 @@
     <string name="select_exact_time_hint">Belirli saat ekle (isteğe bağlı)</string>
     <string name="action_select_time">Saat seç</string>
     <string name="action_clear_time">Saati temizle</string>
+
+    <!-- i18n-fill: feature/marktodo -->
+    <string name="action_duplicate">Kopyala</string>
+    <string name="marktodo_log_task_duplicated">Yapılacakları kopyala: %1$s</string>
+    <string name="quick_add_ai_action">AI ile oluştur</string>
+    <string name="quick_add_ai_dialog_title">AI ile yapılacak oluştur</string>
+    <string name="quick_add_ai_prompt_prefix">Yapılacak işlemler oluşturmama yardım et</string>
+    <string name="snackbar_task_duplicated">Yapılacaklar kopyalandı</string>
 </resources>

@@ -132,4 +132,35 @@
     <string name="cloud_storage_smb_error_share_deleted">Share được chỉ định không tồn tại trên máy chủ</string>
     <string name="cloud_storage_smb_error_sharing_violation">Tệp đang bị tiến trình khác chiếm dụng, không thể truy cập</string>
     <string name="cloud_storage_smb_error_generic">Lỗi SMB: %1$s (%2$s)</string>
+
+    <!-- i18n-fill: feature/cloud-storage -->
+    <string name="cloud_storage_add_connection">Thêm kết nối</string>
+    <string name="cloud_storage_connection_delete_action">Xóa</string>
+    <string name="cloud_storage_connection_delete_message">Xóa \"%s\"? Chỉ xóa cấu hình kết nối đã lưu trên máy này, tệp trên đám mây không bị ảnh hưởng.</string>
+    <string name="cloud_storage_connection_delete_title">Xóa kết nối</string>
+    <string name="cloud_storage_delete_connection">Xóa</string>
+    <string name="cloud_storage_detail_location">Vị trí</string>
+    <string name="cloud_storage_detail_modified">Thời gian sửa đổi</string>
+    <string name="cloud_storage_detail_type">Loại</string>
+    <string name="cloud_storage_done">Hoàn tất</string>
+    <string name="cloud_storage_edit_connection">Chỉnh sửa</string>
+    <string name="cloud_storage_error_auth">Đăng nhập thất bại, vui lòng kiểm tra tên người dùng / mật khẩu hoặc AccessKey</string>
+    <string name="cloud_storage_error_cleartext">Kênh hiện tại không cho phép HTTP không mã hóa, vui lòng dùng địa chỉ HTTPS</string>
+    <string name="cloud_storage_error_network">Không kết nối được máy chủ, vui lòng kiểm tra địa chỉ, cổng và mạng</string>
+    <string name="cloud_storage_error_not_found">Tệp hoặc thư mục không còn tồn tại</string>
+    <string name="cloud_storage_error_permission">Tài khoản hiện tại không có quyền truy cập tệp này</string>
+    <string name="cloud_storage_error_server">Máy chủ trả về lỗi: %s</string>
+    <string name="cloud_storage_link_unavailable">Kết nối hiện tại không hỗ trợ tạo liên kết chia sẻ</string>
+    <string name="cloud_storage_search_clear">Xóa tìm kiếm</string>
+    <string name="cloud_storage_search_empty">Không có tệp phù hợp</string>
+    <string name="cloud_storage_search_placeholder">Tìm kiếm trong thư mục hiện tại</string>
+    <string name="cloud_storage_sort_ascending">Tăng dần</string>
+    <string name="cloud_storage_sort_date">Thời gian sửa đổi</string>
+    <string name="cloud_storage_sort_descending">Giảm dần</string>
+    <string name="cloud_storage_sort_name">Tên</string>
+    <string name="cloud_storage_sort_size">Kích thước</string>
+    <string name="cloud_storage_sort_title">Sắp xếp</string>
+    <string name="cloud_storage_switch_to_grid">Chuyển sang dạng lưới</string>
+    <string name="cloud_storage_switch_to_list">Chuyển sang dạng danh sách</string>
+    <string name="cloud_storage_testing">Đang kiểm tra...</string>
 </resources>

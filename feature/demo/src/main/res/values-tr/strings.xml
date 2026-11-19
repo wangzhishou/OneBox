@@ -107,4 +107,28 @@
     <string name="demo_aigc_demo_parse_failed">Demo AIGC ayrıştırılamadı</string>
     <string name="demo_glass_showcase_consistency_desc">Aynı ton ve kademe GlassCard, GlassSurface ve coloredGlass ile çizilir; cam açıkken de kapalıyken de üçü birebir aynı görünmelidir.</string>
     <string name="demo_glass_showcase_consistency_title">İşlem hattı tutarlılığı</string>
+
+    <!-- i18n-fill: feature/demo -->
+    <string name="demo_markdown_engine_kmp">KMP Markdown 1.7.2</string>
+    <string name="demo_markdown_engine_legacy">Mevcut işleme motoru</string>
+    <string name="demo_markdown_media_sample">Medya örneği</string>
+    <string name="demo_rich_editor_close">Deneyi kapat</string>
+    <string name="demo_rich_editor_copied">Kopyalandı</string>
+    <string name="demo_rich_editor_copy_markdown">Markdown\'u kopyala</string>
+    <string name="demo_rich_editor_description">Metin ve izlenebilir stiller tek gerçek kaynaktır; düzenleme alanı WebView kullanmaz ve Markdown işaretlerini göstermez.</string>
+    <string name="demo_rich_editor_entry_title">Native zengin metin düzenleyici</string>
+    <string name="demo_rich_editor_highlight">Vurgulama</string>
+    <string name="demo_rich_editor_mode_edit">Doğrudan düzenle</string>
+    <string name="demo_rich_editor_mode_preview">Native önizleme</string>
+    <string name="demo_rich_editor_mode_source">Markdown</string>
+    <string name="demo_rich_editor_sample_body">İşlenmiş metni doğrudan düzenleyin; herhangi bir içeriği seçerek biçim menüsünü açın.</string>
+    <string name="demo_rich_editor_sample_bullet_export">Markdown\'u dışa aktarın, ardından sonucu mevcut Native işleyiciyle doğrulayın</string>
+    <string name="demo_rich_editor_sample_bullet_styles">Stiller, TrackedRange aracılığıyla yazma, silme ve yapıştırma ile birlikte taşınır</string>
+    <string name="demo_rich_editor_sample_footer">%1$s hem metni hem stilleri yönetir, %2$s artık zorunlu değildir.</string>
+    <string name="demo_rich_editor_sample_state_word">TextFieldState</string>
+    <string name="demo_rich_editor_sample_title">Native WYSIWYG düzenleme</string>
+    <string name="demo_rich_editor_sample_webview_word">WebView</string>
+    <string name="demo_rich_editor_stats">%1$d karakter · %2$d izlenebilir stil aralığı</string>
+    <string name="demo_rich_editor_stats_with_hint">%1$d karakter · %2$d stil aralığı · Metni seçerek biçimlendirebilirsiniz</string>
+    <string name="demo_rich_editor_title">Native WYSIWYG düzenleyici</string>
 </resources>

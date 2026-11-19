@@ -107,4 +107,28 @@
     <string name="demo_aigc_value_blank">-</string>
     <string name="demo_aigc_pick_failed">Chọn tệp thất bại</string>
     <string name="demo_aigc_demo_parse_failed">Phân tích AIGC demo thất bại</string>
+
+    <!-- i18n-fill: feature/demo -->
+    <string name="demo_markdown_engine_kmp">KMP Markdown 1.7.2</string>
+    <string name="demo_markdown_engine_legacy">Công cụ kết xuất hiện có</string>
+    <string name="demo_markdown_media_sample">Ví dụ phương tiện</string>
+    <string name="demo_rich_editor_close">Tắt thử nghiệm</string>
+    <string name="demo_rich_editor_copied">Đã sao chép</string>
+    <string name="demo_rich_editor_copy_markdown">Sao chép Markdown</string>
+    <string name="demo_rich_editor_description">Văn bản và kiểu có thể theo dõi là nguồn dữ liệu duy nhất; vùng chỉnh sửa không dùng WebView và không hiển thị ký hiệu Markdown.</string>
+    <string name="demo_rich_editor_entry_title">Trình soạn thảo văn bản phong phú Native</string>
+    <string name="demo_rich_editor_highlight">Tô sáng</string>
+    <string name="demo_rich_editor_mode_edit">Chỉnh sửa trực tiếp</string>
+    <string name="demo_rich_editor_mode_preview">Xem trước Native</string>
+    <string name="demo_rich_editor_mode_source">Markdown</string>
+    <string name="demo_rich_editor_sample_body">Chỉnh sửa trực tiếp văn bản đã kết xuất, chọn bất kỳ nội dung nào để mở menu định dạng.</string>
+    <string name="demo_rich_editor_sample_bullet_export">Xuất Markdown, sau đó dùng công cụ kết xuất Native hiện có để kiểm tra kết quả</string>
+    <string name="demo_rich_editor_sample_bullet_styles">Kiểu được di chuyển theo TrackedRange khi nhập, xóa và dán</string>
+    <string name="demo_rich_editor_sample_footer">%1$s quản lý đồng thời văn bản và kiểu, %2$s cũng không còn bắt buộc.</string>
+    <string name="demo_rich_editor_sample_state_word">TextFieldState</string>
+    <string name="demo_rich_editor_sample_title">Chỉnh sửa WYSIWYG Native</string>
+    <string name="demo_rich_editor_sample_webview_word">WebView</string>
+    <string name="demo_rich_editor_stats">%1$d ký tự · %2$d khoảng kiểu có thể theo dõi</string>
+    <string name="demo_rich_editor_stats_with_hint">%1$d ký tự · %2$d khoảng kiểu · Chọn văn bản để đặt định dạng</string>
+    <string name="demo_rich_editor_title">Trình soạn thảo WYSIWYG Native</string>
 </resources>

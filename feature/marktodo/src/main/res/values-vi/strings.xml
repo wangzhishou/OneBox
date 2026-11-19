@@ -205,4 +205,12 @@
     <string name="select_exact_time_hint">Thêm giờ cụ thể (tùy chọn)</string>
     <string name="action_select_time">Chọn giờ</string>
     <string name="action_clear_time">Xóa giờ</string>
+
+    <!-- i18n-fill: feature/marktodo -->
+    <string name="action_duplicate">Sao chép</string>
+    <string name="marktodo_log_task_duplicated">Sao chép việc cần làm: %1$s</string>
+    <string name="quick_add_ai_action">AI tạo</string>
+    <string name="quick_add_ai_dialog_title">AI tạo việc cần làm</string>
+    <string name="quick_add_ai_prompt_prefix">Giúp tôi tạo việc cần làm</string>
+    <string name="snackbar_task_duplicated">Đã sao chép việc cần làm</string>
 </resources>

@@ -2114,4 +2114,20 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
     <string name="ai_chat_loading_byok_hint">Évitez la file avec votre clé API</string>
     <string name="ai_chat_loading_byok_action">Configurer</string>
+
+    <!-- i18n-fill: core/r -->
+    <string name="device_status">État de l\'appareil</string>
+    <string name="device_status_description">Copier l\'IP, le réseau et les infos de l\'appareil</string>
+    <string name="file_viewer_description">Ouvrir hors ligne des fichiers Word, Excel, PowerPoint, EPUB et texte</string>
+    <string name="file_viewer_error_cannot_open">Impossible d\'ouvrir ce fichier. Il a peut-être été déplacé ou l\'application a perdu l\'accès en lecture.</string>
+    <string name="file_viewer_error_too_large">Ce fichier fait %1$s, trop volumineux pour un aperçu ici. Ouvrez-le avec une autre application.</string>
+    <string name="file_viewer_go_to_page">Aller à la page</string>
+    <string name="file_viewer_night_mode">Mode nuit</string>
+    <string name="file_viewer_open_with_other">Ouvrir avec une autre application</string>
+    <string name="file_viewer_page_number">Numéro de page</string>
+    <string name="file_viewer_search_hint">Rechercher dans le document</string>
+    <string name="file_viewer_search_next">Correspondance suivante</string>
+    <string name="file_viewer_search_previous">Correspondance précédente</string>
+    <string name="file_viewer_title">Aperçu du fichier</string>
+    <string name="home_category_filter">Filtrer par catégorie</string>
 </resources>

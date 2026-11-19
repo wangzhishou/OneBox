@@ -60,4 +60,19 @@
     <string name="activity_log_poem_app_title">Poesia clássica chinesa</string>
     <string name="activity_log_todo_app_title">Tarefas</string>
     <string name="activity_log_xiangqi_app_title">Xadrez chinês</string>
+
+    <!-- i18n-fill: core/database -->
+    <string name="activity_log_archive_app_title">Compactação de arquivos</string>
+    <string name="activity_log_archive_created_title">Criar arquivo compactado</string>
+    <string name="activity_log_archive_entry_extracted_description">Extraído \"%1$s\" para \"%2$s\"</string>
+    <string name="activity_log_archive_entry_extracted_title">Extrair arquivo</string>
+    <string name="activity_log_archive_extracted_title">Extrair arquivo compactado</string>
+    <string name="activity_log_archive_unknown_folder">Pasta selecionada</string>
+    <string name="activity_log_archive_unnamed">Arquivo compactado</string>
+    <plurals name="activity_log_archive_created_description">
+        <item quantity="other">Salvo \"%1$s\", %2$d arquivos no total</item>
+    </plurals>
+    <plurals name="activity_log_archive_extracted_description">
+        <item quantity="other">Extraídos %1$d arquivos para \"%2$s\"</item>
+    </plurals>
 </resources>

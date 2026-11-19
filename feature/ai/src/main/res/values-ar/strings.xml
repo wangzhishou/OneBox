@@ -1021,4 +1021,45 @@
     <string name="ai_chat_mode_chat_description">محادثة فورية · إجابات سريعة</string>
     <string name="ai_chat_mode_agent_title">وضع الوكيل</string>
     <string name="ai_chat_mode_agent_description">التخطيط والتنفيذ · إتمام المهام تلقائيًا</string>
+
+    <!-- i18n-fill: feature/ai -->
+    <string name="agent_tool_bookmark_added">تمت إضافة الإشارة المرجعية:\n- id: %1$s\n- العنوان: %2$s\n- URL: %3$s\n- التصنيف: %4$s</string>
+    <string name="agent_tool_bookmark_exists">الإشارة المرجعية موجودة بالفعل: %1$s (id: %2$s)</string>
+    <string name="agent_tool_bookmark_failed">فشلت عملية الإشارة المرجعية: %1$s</string>
+    <string name="agent_tool_bookmark_folder_builtin">التصنيف «%1$s» تصنيف مدمج ولا يمكن حذفه</string>
+    <string name="agent_tool_bookmark_folder_created">تم إنشاء تصنيف الإشارات المرجعية: %1$s (id: %2$s)</string>
+    <string name="agent_tool_bookmark_folder_deleted">تم حذف التصنيف: %1$s، ونُقلت إشاراته المرجعية إلى غير مصنّف</string>
+    <string name="agent_tool_bookmark_folder_exists">التصنيف «%1$s» موجود بالفعل (id: %2$s)</string>
+    <string name="agent_tool_bookmark_folder_list_header">تصنيفات الإشارات المرجعية:</string>
+    <string name="agent_tool_bookmark_folder_not_found">التصنيف %1$s غير موجود، المتاح: %2$s</string>
+    <string name="agent_tool_bookmark_folder_row">· %1$s (id: %2$s، %3$s إشارة مرجعية)</string>
+    <string name="agent_tool_bookmark_missing_bookmark_id">معامل bookmark_id مفقود</string>
+    <string name="agent_tool_bookmark_missing_folder_id">معامل folder_id مفقود</string>
+    <string name="agent_tool_bookmark_missing_folder_name">معامل folder_name مفقود</string>
+    <string name="agent_tool_bookmark_missing_url">معامل url مفقود</string>
+    <string name="agent_tool_bookmark_no_folders">لا توجد تصنيفات إشارات مرجعية بعد</string>
+    <string name="agent_tool_bookmark_not_found">الإشارة المرجعية %1$s غير موجودة</string>
+    <string name="agent_tool_bookmark_removed">تم حذف الإشارة المرجعية: %1$s (%2$s)</string>
+    <string name="agent_tool_bookmark_uncategorized">غير مصنّف</string>
+    <string name="agent_tool_bookmark_unknown_action">عملية غير معروفة: %1$s، المتاح: %2$s</string>
+    <string name="agent_tool_list_param_limit">عدد العناصر المرتجعة في الصفحة الواحدة، من 1 إلى 100، الافتراضي 20.</string>
+    <string name="agent_tool_list_param_offset">إزاحة الترقيم؛ تابع باستخدام next_offset من النتيجة السابقة.</string>
+    <string name="agent_tool_manage_bookmark_param_action">نوع العملية: add_bookmark / remove_bookmark / list_bookmarks / create_folder / delete_folder / list_folders</string>
+    <string name="agent_tool_manage_bookmark_param_bookmark_id">معرّف عنصر الإشارة المرجعية (مطلوب مع remove_bookmark، من list_bookmarks)</string>
+    <string name="agent_tool_manage_bookmark_param_folder_id">معرّف التصنيف (يُستخدم مع add_bookmark / delete_folder، من list_folders)</string>
+    <string name="agent_tool_manage_bookmark_param_folder_name">اسم التصنيف (مطلوب مع create_folder)</string>
+    <string name="agent_tool_manage_bookmark_param_title">عنوان الإشارة المرجعية (اختياري مع add_bookmark، الافتراضي هو URL)</string>
+    <string name="agent_tool_manage_bookmark_param_url">الرابط (مطلوب مع add_bookmark / remove_bookmark)</string>
+    <string name="agent_tool_manage_bookmark_summary">إضافة روابط مفضلة وإنشاء تصنيفات للمفضلة</string>
+    <string name="agent_tool_manage_bookmark_title">إدارة الإشارات المرجعية</string>
+    <string name="agent_tool_manage_todo_category_exists">التصنيف موجود بالفعل: %1$s</string>
+    <string name="agent_tool_manage_todo_inbox_title">صندوق الوارد</string>
+    <string name="agent_tool_manage_todo_list_reused">تمت إضافة %2$d عنصرًا إلى القائمة الحالية «%1$s»، وتم تخطي %3$d عنصرًا مكررًا</string>
+    <string name="agent_tool_manage_todo_list_summary">الإجمالي %1$d، المكتمل %2$d، المعلّق %3$d؛ تم إرجاع %4$d هذه المرة</string>
+    <string name="agent_tool_manage_todo_param_category_id">معرّف الفئة، يُستخدم في list/create_task، مأخوذ من id الذي يعيده list؛ \"__inbox__\" يعني صندوق الوارد. عند تمرير id تكون له الأولوية على category_name.</string>
+    <string name="agent_tool_manage_todo_param_include_completed">هل يتضمن list المهام المكتملة، الافتراضي true؛ لعرض غير المكتملة فقط مرّر false.</string>
+    <string name="agent_tool_manage_todo_param_limit">الحد الأقصى لعدد المهام التي يعيدها list في الصفحة الواحدة، 1-100، الافتراضي 20.</string>
+    <string name="agent_tool_manage_todo_param_offset">إزاحة ترقيم صفحات list؛ استخدم next_offset من النتيجة السابقة لمتابعة التصفح.</string>
+    <string name="agent_tool_manage_todo_param_query">كلمات مفتاحية اختيارية، تبحث في عناوين المهام والملاحظات والوسوم.</string>
+    <string name="agent_tool_unknown_action_with_options">عملية غير معروفة: %1$s، المتاح: %2$s</string>
 </resources>

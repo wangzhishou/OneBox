@@ -21,4 +21,45 @@
 <resources>
     <string name="mini_program_jump_confirm">Ayrılmak üzeresiniz ve bunu WeChat\'te açacaksınız. Devam edilsin mi?</string>
     <string name="mini_program_redirecting">Yönlendiriliyor…</string>
+
+    <!-- i18n-fill: feature/online -->
+    <string name="note_menu_copy_all">Tüm içeriği kopyala</string>
+    <string name="note_menu_settings">Ayarlar</string>
+    <string name="note_ai_action_format">AI biçimlendirme</string>
+    <string name="note_ai_action_expand">AI ile genişlet</string>
+    <string name="note_ai_action_polish">AI ile düzenle</string>
+    <string name="note_ai_action_condense">AI ile kısalt</string>
+    <string name="note_ai_action_checklist">AI ile yapılacakları çıkar</string>
+    <string name="note_ai_action_summary">AI ile özet oluştur</string>
+    <string name="note_ai_prompt_label">İstem</string>
+    <string name="note_ai_prompt_hint">AI\'ya bu notu nasıl değiştirmek istediğinizi söyleyin</string>
+    <string name="note_ai_original_label">Orijinal</string>
+    <string name="note_ai_original_meta">Orijinal · %1$d karakter</string>
+    <string name="note_ai_result_label">AI sonucu</string>
+    <string name="note_ai_panel_generate">Oluştur</string>
+    <string name="note_ai_regenerate">Yeniden oluştur</string>
+    <string name="note_ai_stop">Durdur</string>
+    <string name="note_ai_copy">Kopyala</string>
+    <string name="note_ai_copied">Kopyalandı</string>
+    <string name="note_ai_apply_replace">Orijinali değiştir</string>
+    <string name="note_ai_apply_append">Sona ekle</string>
+    <string name="note_ai_apply_prepend">Başa ekle</string>
+    <string name="note_ai_undo_apply">Geri al</string>
+    <string name="note_ai_applied">Nota uygulandı, panel kapanana kadar geri alabilirsiniz.</string>
+    <string name="note_ai_panel_generating">Oluşturuluyor…</string>
+    <string name="note_ai_empty_hint">Önce bir işlem seçin, istemi düzenleyin ve ardından oluşturun.</string>
+    <string name="note_ai_empty_result">AI boş sonuç döndürdü, yeniden deneyin veya motoru değiştirin.</string>
+    <string name="note_ai_no_engine">Kullanılabilir AI motoru yok, lütfen önce \"Ayarlar → AI motoru\" bölümünden ekleyin.</string>
+    <string name="note_ai_result_meta">%1$s · %2$d token</string>
+    <string name="note_ai_too_short">Lütfen önce nota biraz içerik yazın.</string>
+    <string name="note_ai_keepalive_title">AI notları işliyor</string>
+    <string name="note_ai_billing_desc">Not AI yazımı</string>
+    <string name="note_ai_system_prompt">Sen bir not uygulamasının Markdown editörüsün. Kullanıcı talimatlarına göre notu düzenle; orijinal dil, gerçekler, sayılar, bağlantılar, görseller, ses/video talimatları, tablolar ve kod korunmalı. Yalnızca düzenlenmiş tam Markdown metnini çıktı ver; açıklama, önek/sonek veya kod bloğu çiti kullanma.</string>
+    <string name="note_ai_input_template">Talimat:\n%1$s\n\nOrijinal Markdown:\n%2$s</string>
+    <string name="note_ai_prompt_format">Bu notun düzenini düzenle: başlık hiyerarşisini düzelt, listeleri, girintileri ve boş satırları tutarlı hale getir, uzun paragrafları böl, ardışık maddeleri liste veya tabloya dönüştür; anlamı ve gerçekleri değiştirme.</string>
+    <string name="note_ai_prompt_expand">Bu notu genişlet: açıklamalar, örnekler ve ayrıntılar ekleyerek içeriği daha kapsamlı hale getir; mevcut görüşleri ve gerçekleri koru, veri veya kişisel deneyim uydurma.</string>
+    <string name="note_ai_prompt_polish">Bu notu düzelt: yazım ve dilbilgisi hatalarını gider, ifadeyi daha akıcı ve doğal hale getir, terimleri ve üslubu tutarlı kıl; anlamı ve bilgi miktarını değiştirme.</string>
+    <string name="note_ai_prompt_condense">Bu notu sadeleştir: temel bilgileri ve yapıyı koru, tekrarları ve gereksiz ifadeleri kaldır; kilit gerçekleri kaybetme.</string>
+    <string name="note_ai_prompt_checklist">Bu nottan uygulanabilir yapılacaklar çıkar ve Markdown onay kutusu listesi (- [ ]) olarak çıktı ver; her satırda bir eylem olsun, orijinalde zaman veya sorumlu kişi varsa onları da ekle. \"## Yapılacaklar\" ile başla, yalnızca yapılacaklar listesini çıktı ver.</string>
+    <string name="note_ai_prompt_summary">Bu not için 2–4 cümlelik bir özet yaz, \"## Özet\" ile başla, yalnızca özet kısmını çıktı ver.</string>
 </resources>

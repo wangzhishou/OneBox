@@ -2160,4 +2160,20 @@
     <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
     <string name="ai_chat_loading_byok_hint">Свой ключ API — без очереди</string>
     <string name="ai_chat_loading_byok_action">Настроить</string>
+
+    <!-- i18n-fill: core/r -->
+    <string name="device_status">Состояние устройства</string>
+    <string name="device_status_description">Копировать IP-адрес, данные сети и устройства</string>
+    <string name="file_viewer_description">Открывайте файлы Word, Excel, PowerPoint, EPUB и текстовые файлы офлайн</string>
+    <string name="file_viewer_error_cannot_open">Не удалось открыть этот файл. Возможно, он был перемещён или у приложения нет прав на чтение.</string>
+    <string name="file_viewer_error_too_large">Размер этого файла — %1$s, он слишком большой для предпросмотра. Откройте его в другом приложении.</string>
+    <string name="file_viewer_go_to_page">Перейти к странице</string>
+    <string name="file_viewer_night_mode">Ночной режим</string>
+    <string name="file_viewer_open_with_other">Открыть в другом приложении</string>
+    <string name="file_viewer_page_number">Страница</string>
+    <string name="file_viewer_search_hint">Поиск в документе</string>
+    <string name="file_viewer_search_next">Следующее совпадение</string>
+    <string name="file_viewer_search_previous">Предыдущее совпадение</string>
+    <string name="file_viewer_title">Предпросмотр файла</string>
+    <string name="home_category_filter">Фильтр по категориям</string>
 </resources>

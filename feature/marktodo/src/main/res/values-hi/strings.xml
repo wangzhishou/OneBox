@@ -205,4 +205,12 @@
     <string name="select_exact_time_hint">सटीक समय जोड़ें (वैकल्पिक)</string>
     <string name="action_select_time">समय चुनें</string>
     <string name="action_clear_time">समय साफ़ करें</string>
+
+    <!-- i18n-fill: feature/marktodo -->
+    <string name="action_duplicate">कॉपी करें</string>
+    <string name="marktodo_log_task_duplicated">टू-डू कॉपी करें: %1$s</string>
+    <string name="quick_add_ai_action">AI द्वारा बनाया गया</string>
+    <string name="quick_add_ai_dialog_title">AI से टू-डू बनाएं</string>
+    <string name="quick_add_ai_prompt_prefix">मेरे लिए टू-डू बनाने में मदद करें</string>
+    <string name="snackbar_task_duplicated">टू-डू कॉपी हो गया</string>
 </resources>

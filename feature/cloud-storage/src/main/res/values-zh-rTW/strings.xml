@@ -132,4 +132,35 @@
     <string name="cloud_storage_smb_error_share_deleted">指定的 share 在伺服器上不存在</string>
     <string name="cloud_storage_smb_error_sharing_violation">檔案被另一程序占用，無法存取</string>
     <string name="cloud_storage_smb_error_generic">SMB 錯誤：%1$s（%2$s）</string>
+
+    <!-- i18n-fill: feature/cloud-storage -->
+    <string name="cloud_storage_add_connection">新增連線</string>
+    <string name="cloud_storage_connection_delete_action">刪除</string>
+    <string name="cloud_storage_connection_delete_message">刪除「%s」？只會清除本機儲存的連線設定，雲端檔案不受影響。</string>
+    <string name="cloud_storage_connection_delete_title">刪除連線</string>
+    <string name="cloud_storage_delete_connection">刪除</string>
+    <string name="cloud_storage_detail_location">位置</string>
+    <string name="cloud_storage_detail_modified">修改時間</string>
+    <string name="cloud_storage_detail_type">類型</string>
+    <string name="cloud_storage_done">完成</string>
+    <string name="cloud_storage_edit_connection">編輯</string>
+    <string name="cloud_storage_error_auth">登入失敗，請檢查使用者名稱 / 密碼或 AccessKey</string>
+    <string name="cloud_storage_error_cleartext">目前管道不允許明文 HTTP，請改用 HTTPS 位址</string>
+    <string name="cloud_storage_error_network">無法連線到伺服器，請檢查位址、連接埠和網路</string>
+    <string name="cloud_storage_error_not_found">檔案或目錄已不存在</string>
+    <string name="cloud_storage_error_permission">目前帳號沒有權限存取該檔案</string>
+    <string name="cloud_storage_error_server">伺服器傳回錯誤：%s</string>
+    <string name="cloud_storage_link_unavailable">目前連線不支援產生分享連結</string>
+    <string name="cloud_storage_search_clear">清除搜尋</string>
+    <string name="cloud_storage_search_empty">沒有符合的檔案</string>
+    <string name="cloud_storage_search_placeholder">在目前目錄中搜尋</string>
+    <string name="cloud_storage_sort_ascending">升冪</string>
+    <string name="cloud_storage_sort_date">修改時間</string>
+    <string name="cloud_storage_sort_descending">降冪</string>
+    <string name="cloud_storage_sort_name">名稱</string>
+    <string name="cloud_storage_sort_size">大小</string>
+    <string name="cloud_storage_sort_title">排序</string>
+    <string name="cloud_storage_switch_to_grid">切換到格狀檢視</string>
+    <string name="cloud_storage_switch_to_list">切換到清單檢視</string>
+    <string name="cloud_storage_testing">測試中...</string>
 </resources>

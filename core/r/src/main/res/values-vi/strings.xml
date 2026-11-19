@@ -2113,4 +2113,20 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
     <string name="ai_chat_loading_byok_hint">Bỏ qua hàng đợi bằng API Key của bạn</string>
     <string name="ai_chat_loading_byok_action">Thiết lập</string>
+
+    <!-- i18n-fill: core/r -->
+    <string name="device_status">Trạng thái thiết bị</string>
+    <string name="device_status_description">Sao chép IP, thông tin mạng và thiết bị của máy này</string>
+    <string name="file_viewer_description">Mở Word, Excel, PowerPoint, EPUB và tệp văn bản ngoại tuyến</string>
+    <string name="file_viewer_error_cannot_open">Không thể mở tệp này. Có thể tệp đã bị di chuyển hoặc ứng dụng đã mất quyền đọc.</string>
+    <string name="file_viewer_error_too_large">Tệp này có %1$s, quá lớn để xem trước tại đây. Vui lòng mở bằng ứng dụng khác.</string>
+    <string name="file_viewer_go_to_page">Chuyển đến số trang</string>
+    <string name="file_viewer_night_mode">Chế độ ban đêm</string>
+    <string name="file_viewer_open_with_other">Mở bằng ứng dụng khác</string>
+    <string name="file_viewer_page_number">Số trang</string>
+    <string name="file_viewer_search_hint">Tìm trong tài liệu</string>
+    <string name="file_viewer_search_next">Kết quả tiếp theo</string>
+    <string name="file_viewer_search_previous">Kết quả trước</string>
+    <string name="file_viewer_title">Xem trước tệp</string>
+    <string name="home_category_filter">Lọc theo danh mục</string>
 </resources>

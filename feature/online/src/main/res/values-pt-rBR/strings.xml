@@ -21,4 +21,45 @@
 <resources>
     <string name="mini_program_jump_confirm">Você está prestes a sair e abrir isso no WeChat. Continuar?</string>
     <string name="mini_program_redirecting">Redirecionando…</string>
+
+    <!-- i18n-fill: feature/online -->
+    <string name="note_ai_action_checklist">IA extrai tarefas</string>
+    <string name="note_ai_action_condense">IA resume</string>
+    <string name="note_ai_action_expand">IA expande</string>
+    <string name="note_ai_action_format">IA formata</string>
+    <string name="note_ai_action_polish">IA aprimora</string>
+    <string name="note_ai_action_summary">IA gera resumo</string>
+    <string name="note_ai_applied">Aplicado à nota; é possível desfazer antes de fechar o painel.</string>
+    <string name="note_ai_apply_append">Anexar ao final</string>
+    <string name="note_ai_apply_prepend">Inserir no início</string>
+    <string name="note_ai_apply_replace">Substituir original</string>
+    <string name="note_ai_billing_desc">Escrita com IA na nota</string>
+    <string name="note_ai_copied">Copiado</string>
+    <string name="note_ai_copy">Copiar</string>
+    <string name="note_ai_empty_hint">Escolha uma ação, ajuste o prompt e gere.</string>
+    <string name="note_ai_empty_result">A IA retornou um resultado vazio. Tente novamente ou troque o motor.</string>
+    <string name="note_ai_input_template">Instrução:\n%1$s\n\nMarkdown original:\n%2$s</string>
+    <string name="note_ai_keepalive_title">A IA está processando a nota</string>
+    <string name="note_ai_no_engine">Nenhum motor de IA disponível. Adicione um em «Configurações → Motor de IA».</string>
+    <string name="note_ai_original_label">Original</string>
+    <string name="note_ai_original_meta">Original · %1$d caracteres</string>
+    <string name="note_ai_panel_generate">Gerar</string>
+    <string name="note_ai_panel_generating">Gerando…</string>
+    <string name="note_ai_prompt_checklist">Extraia desta nota tarefas acionáveis e produza uma lista de caixas de seleção em Markdown (- [ ]), um item por ação; inclua prazos ou responsáveis quando presentes no original. Comece com «## Tarefas» e produza apenas a lista de tarefas.</string>
+    <string name="note_ai_prompt_condense">Resuma esta nota: mantenha as informações e a estrutura essenciais, remova repetições e redundâncias; não perca fatos importantes.</string>
+    <string name="note_ai_prompt_expand">Expanda esta nota: acrescente explicações, exemplos e detalhes para tornar o conteúdo mais completo; mantenha os pontos de vista e fatos originais, sem inventar dados ou experiências pessoais.</string>
+    <string name="note_ai_prompt_format">Organize a formatação desta nota: corrija a hierarquia de títulos, padronize listas, recuos e linhas em branco, divida parágrafos longos e transforme pontos consecutivos em listas ou tabelas; não altere o sentido nem os fatos.</string>
+    <string name="note_ai_prompt_hint">Diga à IA como você quer alterar esta nota</string>
+    <string name="note_ai_prompt_label">Prompt</string>
+    <string name="note_ai_prompt_polish">Aprimore esta nota: corrija erros de digitação e gramática, torne a expressão mais fluida e natural, padronize termos e tom; não altere o sentido nem a quantidade de informação.</string>
+    <string name="note_ai_prompt_summary">Escreva um resumo de 2 a 4 frases para esta nota, começando com \"## Resumo\", e exiba apenas a parte do resumo.</string>
+    <string name="note_ai_regenerate">Regenerar</string>
+    <string name="note_ai_result_label">Resultado da IA</string>
+    <string name="note_ai_result_meta">%1$s · %2$d tokens</string>
+    <string name="note_ai_stop">Parar</string>
+    <string name="note_ai_system_prompt">Você é o editor Markdown do aplicativo de notas. Modifique a nota conforme as instruções do usuário, preservando o idioma original, fatos, números, links, imagens, instruções de áudio e vídeo, tabelas e código. Exiba apenas o texto Markdown completo modificado, sem explicações, sem prefixos ou sufixos e sem envolver em blocos de código.</string>
+    <string name="note_ai_too_short">Escreva algo na nota primeiro.</string>
+    <string name="note_ai_undo_apply">Desfazer</string>
+    <string name="note_menu_copy_all">Copiar todo o conteúdo</string>
+    <string name="note_menu_settings">Configurações</string>
 </resources>

@@ -21,4 +21,45 @@
 <resources>
     <string name="mini_program_jump_confirm">Vous allez quitter et ouvrir WeChat ?</string>
     <string name="mini_program_redirecting">Redirection en cours…</string>
+
+    <!-- i18n-fill: feature/online -->
+    <string name="note_ai_action_checklist">Extraire les tâches avec l\'IA</string>
+    <string name="note_ai_action_condense">Condenser avec l\'IA</string>
+    <string name="note_ai_action_expand">Développer avec l\'IA</string>
+    <string name="note_ai_action_format">Mettre en forme avec l\'IA</string>
+    <string name="note_ai_action_polish">Peaufiner avec l\'IA</string>
+    <string name="note_ai_action_summary">Générer un résumé avec l\'IA</string>
+    <string name="note_ai_applied">Appliqué à la note. Vous pouvez annuler avant de fermer le panneau.</string>
+    <string name="note_ai_apply_append">Ajouter à la fin</string>
+    <string name="note_ai_apply_prepend">Insérer au début</string>
+    <string name="note_ai_apply_replace">Remplacer le texte</string>
+    <string name="note_ai_billing_desc">Écriture IA de notes</string>
+    <string name="note_ai_copied">Copié</string>
+    <string name="note_ai_copy">Copier</string>
+    <string name="note_ai_empty_hint">Choisissez une action, ajustez le prompt, puis générez.</string>
+    <string name="note_ai_empty_result">L\'IA a renvoyé un résultat vide. Réessayez ou changez de moteur.</string>
+    <string name="note_ai_input_template">Instruction :\n%1$s\n\nMarkdown d\'origine :\n%2$s</string>
+    <string name="note_ai_keepalive_title">L\'IA traite la note</string>
+    <string name="note_ai_no_engine">Aucun moteur IA disponible. Ajoutez-en un dans « Paramètres → Moteurs IA ».</string>
+    <string name="note_ai_original_label">Texte d\'origine</string>
+    <string name="note_ai_original_meta">Texte d\'origine · %1$d caractères</string>
+    <string name="note_ai_panel_generate">Générer</string>
+    <string name="note_ai_panel_generating">Génération…</string>
+    <string name="note_ai_prompt_checklist">Extrayez de cette note les tâches actionnables et produisez une liste Markdown à cases à cocher (- [ ]), une action par ligne, en incluant les échéances ou responsables présents dans le texte. Commencez par « ## Tâches » et ne produisez que la liste des tâches.</string>
+    <string name="note_ai_prompt_condense">Condensez cette note : conservez les informations et la structure essentielles, supprimez les répétitions et redondances ; ne perdez aucun fait clé.</string>
+    <string name="note_ai_prompt_expand">Développez cette note : ajoutez explications, exemples et détails pour un contenu plus complet ; conservez les idées et faits d\'origine, sans inventer de données ni d\'expériences personnelles.</string>
+    <string name="note_ai_prompt_format">Mettez en forme cette note : corrigez la hiérarchie des titres, harmonisez listes, indentation et sauts de ligne, scindez les paragraphes trop longs, transformez les points successifs en listes ou tableaux ; ne changez ni le sens ni les faits.</string>
+    <string name="note_ai_prompt_hint">Indiquez à l\'IA comment modifier cette note</string>
+    <string name="note_ai_prompt_label">Prompt</string>
+    <string name="note_ai_prompt_polish">Peaufinez cette note : corrigez les fautes d\'orthographe et de grammaire, rendez l\'expression plus fluide et naturelle, harmonisez terminologie et ton ; ne changez ni le sens ni la quantité d\'informations.</string>
+    <string name="note_ai_prompt_summary">Rédigez un résumé de 2 à 4 phrases de cette note, en commençant par « ## Résumé », et n\'affichez que la partie résumé.</string>
+    <string name="note_ai_regenerate">Régénérer</string>
+    <string name="note_ai_result_label">Résultat de l\'IA</string>
+    <string name="note_ai_result_meta">%1$s · %2$d tokens</string>
+    <string name="note_ai_stop">Arrêter</string>
+    <string name="note_ai_system_prompt">Vous êtes l\'éditeur Markdown de l\'application de notes. Modifiez la note selon les instructions de l\'utilisateur en conservant la langue d\'origine, les faits, les chiffres, les liens, les images, les instructions audio/vidéo, les tableaux et le code. N\'affichez que le texte Markdown complet modifié, sans explication, sans préfixe ni suffixe, et sans l\'encadrer de blocs de code.</string>
+    <string name="note_ai_too_short">Veuillez d\'abord écrire du contenu dans la note.</string>
+    <string name="note_ai_undo_apply">Annuler</string>
+    <string name="note_menu_copy_all">Copier tout le contenu</string>
+    <string name="note_menu_settings">Paramètres</string>
 </resources>

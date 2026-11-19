@@ -60,4 +60,19 @@
     <string name="activity_log_poem_app_title">Poesía clásica china</string>
     <string name="activity_log_todo_app_title">Tareas</string>
     <string name="activity_log_xiangqi_app_title">Ajedrez chino</string>
+
+    <!-- i18n-fill: core/database -->
+    <string name="activity_log_archive_app_title">Compresión de archivos</string>
+    <string name="activity_log_archive_created_title">Crear archivo comprimido</string>
+    <string name="activity_log_archive_entry_extracted_description">Se extrajo «%1$s» en «%2$s»</string>
+    <string name="activity_log_archive_entry_extracted_title">Extraer archivos</string>
+    <string name="activity_log_archive_extracted_title">Extraer archivo comprimido</string>
+    <string name="activity_log_archive_unknown_folder">Carpeta seleccionada</string>
+    <string name="activity_log_archive_unnamed">Archivo comprimido</string>
+    <plurals name="activity_log_archive_created_description">
+        <item quantity="other">Se guardó «%1$s» con %2$d archivos</item>
+    </plurals>
+    <plurals name="activity_log_archive_extracted_description">
+        <item quantity="other">Se extrajeron %1$d archivos en «%2$s»</item>
+    </plurals>
 </resources>

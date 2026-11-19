@@ -60,4 +60,19 @@
     <string name="sys_prompt_memory_recent_title">記憶近期日誌引導語</string>
     <string name="sys_prompt_skills_guidance_desc">可用技能清單的引導語</string>
     <string name="sys_prompt_skills_guidance_title">技能清單引導語</string>
+
+    <!-- i18n-fill: core/database -->
+    <string name="activity_log_archive_app_title">檔案壓縮</string>
+    <string name="activity_log_archive_created_title">製作壓縮檔</string>
+    <string name="activity_log_archive_entry_extracted_description">已解壓縮「%1$s」到「%2$s」</string>
+    <string name="activity_log_archive_entry_extracted_title">解壓縮檔案</string>
+    <string name="activity_log_archive_extracted_title">解壓縮壓縮檔</string>
+    <string name="activity_log_archive_unknown_folder">所選資料夾</string>
+    <string name="activity_log_archive_unnamed">壓縮檔</string>
+    <plurals name="activity_log_archive_created_description">
+        <item quantity="other">已儲存「%1$s」，共 %2$d 個檔案</item>
+    </plurals>
+    <plurals name="activity_log_archive_extracted_description">
+        <item quantity="other">已解壓縮 %1$d 個檔案到「%2$s」</item>
+    </plurals>
 </resources>

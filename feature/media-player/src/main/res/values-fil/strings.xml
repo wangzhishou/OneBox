@@ -101,4 +101,10 @@
     <string name="media_play_failed">Nabigo ang pag-play, lumalaktaw sa susunod</string>
     <string name="media_collapse_recent">I-collapse</string>
     <string name="media_expand_recent">I-expand</string>
+
+    <!-- i18n-fill: feature/media-player -->
+    <string name="media_inline_audio">Audio</string>
+    <string name="media_inline_invalid_url">Di-wasto o hindi suportadong address ng media</string>
+    <string name="media_inline_play_error">Nabigo ang pag-play, i-tap ang play button upang subukan muli</string>
+    <string name="media_inline_video">Video</string>
 </resources>

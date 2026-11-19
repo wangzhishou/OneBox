@@ -133,4 +133,35 @@
     <string name="cloud_storage_ai_assist_title">Cloud Storage Setup Assistant</string>
     <string name="cloud_storage_ai_assist_prompt">Ikaw ang cloud storage setup assistant. Magdagdag ng connection gamit ang manage_cloud_connections. Huwag gumawa-gawa ng credentials.</string>
     <string name="cloud_storage_ai_assist_fill_in">Tulungan akong magdagdag ng Aliyun OSS connection para mag-backup ng mga larawan</string>
+
+    <!-- i18n-fill: feature/cloud-storage -->
+    <string name="cloud_storage_add_connection">Magdagdag ng koneksyon</string>
+    <string name="cloud_storage_connection_delete_action">Tanggalin</string>
+    <string name="cloud_storage_connection_delete_message">Tanggalin ang \"%s\"? Iyong nililinis lamang ang naka-save na configuration ng koneksyon sa device na ito, hindi maaapektuhan ang mga file sa cloud.</string>
+    <string name="cloud_storage_connection_delete_title">Tanggalin ang koneksyon</string>
+    <string name="cloud_storage_delete_connection">Tanggalin</string>
+    <string name="cloud_storage_detail_location">Lokasyon</string>
+    <string name="cloud_storage_detail_modified">Oras ng pagbabago</string>
+    <string name="cloud_storage_detail_type">Uri</string>
+    <string name="cloud_storage_done">Tapos</string>
+    <string name="cloud_storage_edit_connection">I-edit</string>
+    <string name="cloud_storage_error_auth">Nabigo ang pag-login, pakisuri ang username / password o AccessKey</string>
+    <string name="cloud_storage_error_cleartext">Hindi pinapayagan ng kasalukuyang channel ang plaintext na HTTP, pakigamit ang HTTPS address</string>
+    <string name="cloud_storage_error_network">Hindi makakonekta sa server, pakisuri ang address, port, at network</string>
+    <string name="cloud_storage_error_not_found">Wala na ang file o direktoryo</string>
+    <string name="cloud_storage_error_permission">Walang pahintulot ang kasalukuyang account na i-access ang file na ito</string>
+    <string name="cloud_storage_error_server">Nagbalik ng error ang server: %s</string>
+    <string name="cloud_storage_link_unavailable">Hindi sinusuportahan ng kasalukuyang koneksyon ang paggawa ng share link</string>
+    <string name="cloud_storage_search_clear">I-clear ang paghahanap</string>
+    <string name="cloud_storage_search_empty">Walang tugmang file</string>
+    <string name="cloud_storage_search_placeholder">Maghanap sa kasalukuyang direktoryo</string>
+    <string name="cloud_storage_sort_ascending">Pataas</string>
+    <string name="cloud_storage_sort_date">Oras ng pagbabago</string>
+    <string name="cloud_storage_sort_descending">Pababa</string>
+    <string name="cloud_storage_sort_name">Pangalan</string>
+    <string name="cloud_storage_sort_size">Laki</string>
+    <string name="cloud_storage_sort_title">Pagbukud-bukurin</string>
+    <string name="cloud_storage_switch_to_grid">Lumipat sa grid view</string>
+    <string name="cloud_storage_switch_to_list">Lumipat sa list view</string>
+    <string name="cloud_storage_testing">Sinusubukan...</string>
 </resources>

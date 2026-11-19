@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- i18n-fill: feature/watermark-template -->
+    <string name="watermark_kind_camera_params">Mga parameter ng camera</string>
+    <string name="watermark_kind_divider">Linya ng paghahati</string>
+    <string name="watermark_template_apply">App</string>
+    <string name="watermark_template_leica_classic">Leica Classic</string>
+</resources>

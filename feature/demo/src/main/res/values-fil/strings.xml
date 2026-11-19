@@ -107,4 +107,28 @@
     <string name="demo_aigc_demo_parse_failed">Nabigong i-parse ang demo AIGC</string>
     <string name="demo_glass_showcase_consistency_desc">Parehong tint at estilo na nire-render sa pamamagitan ng GlassCard, GlassSurface, at coloredGlass; naka-on man o naka-off ang glass, dapat magkapareho ang itsura ng tatlo.</string>
     <string name="demo_glass_showcase_consistency_title">Pagkakapareho ng pipeline</string>
+
+    <!-- i18n-fill: feature/demo -->
+    <string name="demo_markdown_engine_kmp">KMP Markdown 1.7.2</string>
+    <string name="demo_markdown_engine_legacy">Kasalukuyang rendering engine</string>
+    <string name="demo_markdown_media_sample">Halimbawa ng media</string>
+    <string name="demo_rich_editor_close">Isara ang eksperimento</string>
+    <string name="demo_rich_editor_copied">Nakopya</string>
+    <string name="demo_rich_editor_copy_markdown">Kopyahin ang Markdown</string>
+    <string name="demo_rich_editor_description">Ang teksto at mga na-track na style ang tanging pinagmumulan ng katotohanan; ang edit area ay hindi gumagamit ng WebView at hindi nagpapakita ng Markdown markup.</string>
+    <string name="demo_rich_editor_entry_title">Native rich text editor</string>
+    <string name="demo_rich_editor_highlight">I-highlight</string>
+    <string name="demo_rich_editor_mode_edit">Direktang i-edit</string>
+    <string name="demo_rich_editor_mode_preview">Native preview</string>
+    <string name="demo_rich_editor_mode_source">Markdown</string>
+    <string name="demo_rich_editor_sample_body">Direktang i-edit ang na-render na teksto; piliin ang anumang nilalaman para buksan ang format menu.</string>
+    <string name="demo_rich_editor_sample_bullet_export">I-export ang Markdown, pagkatapos i-verify gamit ang kasalukuyang Native renderer</string>
+    <string name="demo_rich_editor_sample_bullet_styles">Gumagalaw ang mga style kasama ng input, pag-delete, at pag-paste sa pamamagitan ng TrackedRange</string>
+    <string name="demo_rich_editor_sample_footer">Pinamamahalaan ng %1$s ang teksto at style nang sabay, at hindi na kailangan ang %2$s.</string>
+    <string name="demo_rich_editor_sample_state_word">TextFieldState</string>
+    <string name="demo_rich_editor_sample_title">Native WYSIWYG editing</string>
+    <string name="demo_rich_editor_sample_webview_word">WebView</string>
+    <string name="demo_rich_editor_stats">%1$d character · %2$d na na-track na style range</string>
+    <string name="demo_rich_editor_stats_with_hint">%1$d character · %2$d na style range · pwedeng i-format ang teksto pagkatapos piliin</string>
+    <string name="demo_rich_editor_title">Native WYSIWYG editor</string>
 </resources>

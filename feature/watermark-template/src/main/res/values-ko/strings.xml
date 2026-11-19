@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- i18n-fill: feature/watermark-template -->
+    <string name="watermark_kind_camera_params">카메라 파라미터</string>
+    <string name="watermark_kind_divider">구분선</string>
+    <string name="watermark_template_apply">적용</string>
+    <string name="watermark_template_leica_classic">라이카 클래식</string>
+</resources>

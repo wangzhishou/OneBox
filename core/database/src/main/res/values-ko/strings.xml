@@ -60,4 +60,19 @@
     <string name="activity_log_poem_app_title">중국 고전 시가</string>
     <string name="activity_log_todo_app_title">할 일 목록</string>
     <string name="activity_log_xiangqi_app_title">중국 장기</string>
+
+    <!-- i18n-fill: core/database -->
+    <string name="activity_log_archive_app_title">파일 압축</string>
+    <string name="activity_log_archive_created_title">압축 파일 만들기</string>
+    <string name="activity_log_archive_entry_extracted_description">\'%1$s\'을(를) \'%2$s\'에 압축 해제했습니다</string>
+    <string name="activity_log_archive_entry_extracted_title">파일 압축 해제</string>
+    <string name="activity_log_archive_extracted_title">압축 파일 해제</string>
+    <string name="activity_log_archive_unknown_folder">선택한 폴더</string>
+    <string name="activity_log_archive_unnamed">압축 파일</string>
+    <plurals name="activity_log_archive_created_description">
+        <item quantity="other">\'%1$s\'을(를) 저장했습니다. 총 %2$d개 파일</item>
+    </plurals>
+    <plurals name="activity_log_archive_extracted_description">
+        <item quantity="other">%1$d개 파일을 \'%2$s\'에 압축 해제했습니다</item>
+    </plurals>
 </resources>

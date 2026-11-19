@@ -107,4 +107,28 @@
     <string name="demo_aigc_demo_parse_failed">Не удалось разобрать демо AIGC</string>
     <string name="demo_glass_showcase_consistency_desc">Один и тот же оттенок и уровень отрисовываются через GlassCard, GlassSurface и coloredGlass; со стеклом и без него все три должны выглядеть одинаково.</string>
     <string name="demo_glass_showcase_consistency_title">Согласованность конвейера</string>
+
+    <!-- i18n-fill: feature/demo -->
+    <string name="demo_markdown_engine_kmp">KMP Markdown 1.7.2</string>
+    <string name="demo_markdown_engine_legacy">Текущий движок рендеринга</string>
+    <string name="demo_markdown_media_sample">Примеры медиа</string>
+    <string name="demo_rich_editor_close">Закрыть эксперимент</string>
+    <string name="demo_rich_editor_copied">Скопировано</string>
+    <string name="demo_rich_editor_copy_markdown">Копировать Markdown</string>
+    <string name="demo_rich_editor_description">Текст и отслеживаемые стили — единственный источник истины; в редакторе не используется WebView и не отображается разметка Markdown.</string>
+    <string name="demo_rich_editor_entry_title">Native-редактор форматированного текста</string>
+    <string name="demo_rich_editor_highlight">Подсветка</string>
+    <string name="demo_rich_editor_mode_edit">Прямое редактирование</string>
+    <string name="demo_rich_editor_mode_preview">Native-предпросмотр</string>
+    <string name="demo_rich_editor_mode_source">Markdown</string>
+    <string name="demo_rich_editor_sample_body">Редактируйте отрендеренный текст напрямую: выделите любой фрагмент, чтобы открыть меню форматирования.</string>
+    <string name="demo_rich_editor_sample_bullet_export">Экспортируйте Markdown и проверьте результат в текущем Native-рендерере</string>
+    <string name="demo_rich_editor_sample_bullet_styles">Стили перемещаются вместе с вводом, удалением и вставкой через TrackedRange</string>
+    <string name="demo_rich_editor_sample_footer">%1$s одновременно управляет текстом и стилями, а %2$s больше не обязателен.</string>
+    <string name="demo_rich_editor_sample_state_word">TextFieldState</string>
+    <string name="demo_rich_editor_sample_title">Native WYSIWYG-редактирование</string>
+    <string name="demo_rich_editor_sample_webview_word">WebView</string>
+    <string name="demo_rich_editor_stats">Символов: %1$d · отслеживаемых диапазонов стилей: %2$d</string>
+    <string name="demo_rich_editor_stats_with_hint">Символов: %1$d · диапазонов стилей: %2$d · выделите текст, чтобы задать формат</string>
+    <string name="demo_rich_editor_title">Native WYSIWYG-редактор</string>
 </resources>

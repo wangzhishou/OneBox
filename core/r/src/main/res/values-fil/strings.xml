@@ -2126,4 +2126,20 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
     <string name="ai_chat_loading_byok_hint">Laktawan ang pila gamit ang sarili mong API key</string>
     <string name="ai_chat_loading_byok_action">Itakda</string>
+
+    <!-- i18n-fill: core/r -->
+    <string name="device_status">Katayuan ng device</string>
+    <string name="device_status_description">Kopyahin ang IP, network at impormasyon ng device</string>
+    <string name="file_viewer_description">Magbukas ng Word, Excel, PowerPoint, EPUB at text file offline</string>
+    <string name="file_viewer_error_cannot_open">Hindi mabuksan ang file na ito. Maaaring nailipat na ito, o nawalan na ng pahintulot sa pagbasa ang app.</string>
+    <string name="file_viewer_error_too_large">Ang file na ito ay may %1$s, masyadong malaki para i-preview dito. Buksan ito gamit ang ibang app.</string>
+    <string name="file_viewer_go_to_page">Pumunta sa numero ng pahina</string>
+    <string name="file_viewer_night_mode">Night mode</string>
+    <string name="file_viewer_open_with_other">Buksan gamit ang ibang app</string>
+    <string name="file_viewer_page_number">Numero ng pahina</string>
+    <string name="file_viewer_search_hint">Maghanap sa dokumento</string>
+    <string name="file_viewer_search_next">Susunod na tugma</string>
+    <string name="file_viewer_search_previous">Nakaraang tugma</string>
+    <string name="file_viewer_title">Preview ng file</string>
+    <string name="home_category_filter">Salain ayon sa kategorya</string>
 </resources>

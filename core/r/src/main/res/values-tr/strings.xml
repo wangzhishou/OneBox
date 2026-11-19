@@ -2126,4 +2126,20 @@
     <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
     <string name="ai_chat_loading_byok_hint">Kendi API anahtarınızla sırayı atla</string>
     <string name="ai_chat_loading_byok_action">Ayarla</string>
+
+    <!-- i18n-fill: core/r -->
+    <string name="device_status">Cihaz durumu</string>
+    <string name="device_status_description">Yerel IP, ağ ve cihaz bilgilerini kopyala</string>
+    <string name="file_viewer_description">Word, Excel, PowerPoint, EPUB ve metin dosyalarını çevrimdışı açın</string>
+    <string name="file_viewer_error_cannot_open">Bu dosya açılamıyor. Taşınmış olabilir veya uygulama okuma iznini kaybetmiş olabilir.</string>
+    <string name="file_viewer_error_too_large">Bu dosya %1$s içeriyor ve burada önizlemek için çok büyük. Lütfen başka bir uygulamayla açın.</string>
+    <string name="file_viewer_go_to_page">Sayfaya git</string>
+    <string name="file_viewer_night_mode">Gece modu</string>
+    <string name="file_viewer_open_with_other">Başka uygulamayla aç</string>
+    <string name="file_viewer_page_number">Sayfa numarası</string>
+    <string name="file_viewer_search_hint">Belgede ara</string>
+    <string name="file_viewer_search_next">Sonraki eşleşme</string>
+    <string name="file_viewer_search_previous">Önceki eşleşme</string>
+    <string name="file_viewer_title">Dosya önizleme</string>
+    <string name="home_category_filter">Kategori filtresi</string>
 </resources>

@@ -233,4 +233,10 @@
     <string name="markup_rasterize_message">Las capas de texto y forma deben convertirse en una imagen antes de usar filtros. Tras la conversión, los ajustes de texto/forma ya no se podrán editar, pero puedes restaurarlos con Deshacer.</string>
     <string name="markup_rasterize_failed">Error al convertir la capa</string>
     <string name="markup_tool_text_style">Estilo de texto</string>
+
+    <!-- i18n-fill: feature/markup-layers -->
+    <string name="markup_select_text_first">Primero selecciona una capa de texto</string>
+    <string name="markup_text_clear_format">Borrar formato</string>
+    <string name="markup_text_size_decrease">Reducir tamaño de fuente</string>
+    <string name="markup_text_size_increase">Aumentar tamaño de fuente</string>
 </resources>

@@ -205,4 +205,12 @@
     <string name="select_exact_time_hint">Añadir hora concreta (opcional)</string>
     <string name="action_select_time">Seleccionar hora</string>
     <string name="action_clear_time">Borrar hora</string>
+
+    <!-- i18n-fill: feature/marktodo -->
+    <string name="action_duplicate">Copiar</string>
+    <string name="marktodo_log_task_duplicated">Copiar tarea: %1$s</string>
+    <string name="quick_add_ai_action">Creado por IA</string>
+    <string name="quick_add_ai_dialog_title">Tarea creada por IA</string>
+    <string name="quick_add_ai_prompt_prefix">Ayúdame a crear una tarea</string>
+    <string name="snackbar_task_duplicated">Tarea copiada</string>
 </resources>

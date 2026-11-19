@@ -204,4 +204,45 @@
     <string name="textcard_template_name">टेम्पलेट नाम</string>
     <string name="textcard_template_saved">टेम्पलेट सहेजा गया</string>
     <string name="textcard_try_sample">नमूना</string>
+
+    <!-- i18n-fill: feature/text-card -->
+    <string name="textcard_annotated_long_image_hint">पेज के अंदर एनोटेशन होने पर, लंबी छवि पेजिनेशन परिणाम के अनुसार जोड़ी जाती है, एनोटेशन की स्थिति सुरक्षित रहती है।</string>
+    <string name="textcard_annotation_draw_mode">पेन · पेज %1$d</string>
+    <string name="textcard_annotation_edit_text">एनोटेशन टेक्स्ट संपादित हो रहा है</string>
+    <string name="textcard_annotation_empty">इस पेज पर अभी कोई एनोटेशन नहीं है, टेक्स्ट, पेन या आकृति जोड़ सकते हैं।</string>
+    <string name="textcard_annotation_mode">एनोटेट हो रहा है · पेज %1$d</string>
+    <string name="textcard_annotation_needs_review">जाँच आवश्यक</string>
+    <string name="textcard_annotation_review_count">%1$d एनोटेशन की जाँच आवश्यक</string>
+    <string name="textcard_apply">लागू करें</string>
+    <string name="textcard_backup_source">बैकअप के रूप में मूल टेक्स्ट कॉपी करें</string>
+    <string name="textcard_brush_color">पेन का रंग</string>
+    <string name="textcard_brush_marker">मार्कर</string>
+    <string name="textcard_brush_pencil">पेंसिल</string>
+    <string name="textcard_brush_settings">पेन सेटिंग्स</string>
+    <string name="textcard_brush_type">पेन प्रकार</string>
+    <string name="textcard_delete_page_break">पेजिनेशन हटाएँ</string>
+    <string name="textcard_draw_opacity">अपारदर्शिता</string>
+    <string name="textcard_eraser">इरेज़र</string>
+    <string name="textcard_export_preparing">लेआउट हो रहा है…</string>
+    <string name="textcard_go_to_page">जाएँ</string>
+    <string name="textcard_layers_reorder_hint">लेयर क्रम बदलने के लिए हैंडल खींचें</string>
+    <string name="textcard_layout_failed_short">लेआउट विफल</string>
+    <string name="textcard_layout_settings">पेज और कागज़</string>
+    <string name="textcard_layout_updating">लेआउट अपडेट हो रहा है…</string>
+    <string name="textcard_long_image_page_break_hint">लगातार लंबी छवि में, मैन्युअल पेजिनेशन को लाइन ब्रेक के रूप में माना जाता है; मल्टी-पेज पर वापस जाने पर पेजिनेशन बहाल हो जाता है।</string>
+    <string name="textcard_manual_page_break">मैन्युअल पेजिनेशन %1$d</string>
+    <string name="textcard_manual_page_break_short">मैन्युअल</string>
+    <string name="textcard_move_annotation_page">पेज नंबर पर ले जाएँ</string>
+    <string name="textcard_page_count_transition">पेज %1$d → पेज %2$d</string>
+    <string name="textcard_page_number_input">पेज नंबर</string>
+    <string name="textcard_project_meta_pending">पेज संख्या अपडेट होना बाकी · %1$s</string>
+    <string name="textcard_save_failed_retry">सहेजना विफल रहा, पुनः प्रयास के लिए सहेजें पर टैप करें</string>
+    <string name="textcard_save_now">कृति अभी सहेजें</string>
+    <string name="textcard_shape_corner_radius">गोल कोने</string>
+    <string name="textcard_shape_kind">आकार प्रकार</string>
+    <string name="textcard_shape_stroke">स्ट्रोक</string>
+    <string name="textcard_source_copied">मूल पाठ कॉपी हो गया</string>
+    <string name="textcard_tab_annotations">एनोटेशन</string>
+    <string name="textcard_tab_layout">पृष्ठ</string>
+    <string name="textcard_unsaved_changes">बिना सहेजे गए बदलाव हैं</string>
 </resources>

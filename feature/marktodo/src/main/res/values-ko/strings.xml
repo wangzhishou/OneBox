@@ -205,4 +205,12 @@
     <string name="select_exact_time_hint">정확한 시간 추가(선택)</string>
     <string name="action_select_time">시간 선택</string>
     <string name="action_clear_time">시간 지우기</string>
+
+    <!-- i18n-fill: feature/marktodo -->
+    <string name="action_duplicate">복사</string>
+    <string name="marktodo_log_task_duplicated">할 일 복사: %1$s</string>
+    <string name="quick_add_ai_action">AI 생성</string>
+    <string name="quick_add_ai_dialog_title">AI로 할 일 생성</string>
+    <string name="quick_add_ai_prompt_prefix">할 일 생성 도와줘</string>
+    <string name="snackbar_task_duplicated">할 일이 복사되었습니다</string>
 </resources>

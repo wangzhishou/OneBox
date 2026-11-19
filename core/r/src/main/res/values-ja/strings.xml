@@ -2115,4 +2115,20 @@
     <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
     <string name="ai_chat_loading_byok_hint">自分の API キーで待ち時間を回避</string>
     <string name="ai_chat_loading_byok_action">設定</string>
+
+    <!-- i18n-fill: core/r -->
+    <string name="device_status">デバイス情報</string>
+    <string name="device_status_description">デバイスのIP、ネットワーク、デバイス情報をコピー</string>
+    <string name="file_viewer_description">Word、Excel、PowerPoint、EPUB、テキストファイルをオフラインで開く</string>
+    <string name="file_viewer_error_cannot_open">このファイルを開けません。移動されたか、アプリの読み取り権限が失われた可能性があります。</string>
+    <string name="file_viewer_error_too_large">このファイルは%1$sあり、ここでプレビューするには大きすぎます。他のアプリで開いてください。</string>
+    <string name="file_viewer_go_to_page">ページ番号へ移動</string>
+    <string name="file_viewer_night_mode">ナイトモード</string>
+    <string name="file_viewer_open_with_other">他のアプリで開く</string>
+    <string name="file_viewer_page_number">ページ番号</string>
+    <string name="file_viewer_search_hint">文書内を検索</string>
+    <string name="file_viewer_search_next">次の一致</string>
+    <string name="file_viewer_search_previous">前の一致</string>
+    <string name="file_viewer_title">ファイルプレビュー</string>
+    <string name="home_category_filter">カテゴリで絞り込み</string>
 </resources>

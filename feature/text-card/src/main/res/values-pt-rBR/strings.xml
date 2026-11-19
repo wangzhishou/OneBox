@@ -204,4 +204,45 @@
     <string name="textcard_template_name">Nome do modelo</string>
     <string name="textcard_template_saved">Modelo salvo</string>
     <string name="textcard_try_sample">Exemplo</string>
+
+    <!-- i18n-fill: feature/text-card -->
+    <string name="textcard_annotated_long_image_hint">Com anotações na página, a imagem longa é montada conforme o resultado da paginação, preservando as posições das anotações.</string>
+    <string name="textcard_annotation_draw_mode">Pincel · Página %1$d</string>
+    <string name="textcard_annotation_edit_text">Editando texto da anotação</string>
+    <string name="textcard_annotation_empty">Nenhuma anotação nesta página. Você pode adicionar texto, pincel ou formas.</string>
+    <string name="textcard_annotation_mode">Anotando · Página %1$d</string>
+    <string name="textcard_annotation_needs_review">Verificar</string>
+    <string name="textcard_annotation_review_count">%1$d anotações para verificar</string>
+    <string name="textcard_apply">Aplicar</string>
+    <string name="textcard_backup_source">Copiar texto original como backup</string>
+    <string name="textcard_brush_color">Cor do pincel</string>
+    <string name="textcard_brush_marker">Marcador</string>
+    <string name="textcard_brush_pencil">Lápis</string>
+    <string name="textcard_brush_settings">Configurações do pincel</string>
+    <string name="textcard_brush_type">Tipo de pincel</string>
+    <string name="textcard_delete_page_break">Excluir paginação</string>
+    <string name="textcard_draw_opacity">Opacidade</string>
+    <string name="textcard_eraser">Borracha</string>
+    <string name="textcard_export_preparing">Formatando…</string>
+    <string name="textcard_go_to_page">Ir para</string>
+    <string name="textcard_layers_reorder_hint">Arraste a alça para ajustar a ordem das camadas</string>
+    <string name="textcard_layout_failed_short">Falha na formatação</string>
+    <string name="textcard_layout_settings">Página e papel</string>
+    <string name="textcard_layout_updating">Atualizando formatação…</string>
+    <string name="textcard_long_image_page_break_hint">Em imagem longa contínua, a paginação manual é tratada como quebra de linha; ao voltar para várias páginas, a paginação é restaurada.</string>
+    <string name="textcard_manual_page_break">Paginação manual %1$d</string>
+    <string name="textcard_manual_page_break_short">Manual</string>
+    <string name="textcard_move_annotation_page">Mover para página</string>
+    <string name="textcard_page_count_transition">Página %1$d → Página %2$d</string>
+    <string name="textcard_page_number_input">Número da página</string>
+    <string name="textcard_project_meta_pending">Páginas a atualizar · %1$s</string>
+    <string name="textcard_save_failed_retry">Falha ao salvar, toque em Salvar para tentar novamente</string>
+    <string name="textcard_save_now">Salvar obra agora</string>
+    <string name="textcard_shape_corner_radius">Cantos arredondados</string>
+    <string name="textcard_shape_kind">Tipo de forma</string>
+    <string name="textcard_shape_stroke">Contorno</string>
+    <string name="textcard_source_copied">Texto original copiado</string>
+    <string name="textcard_tab_annotations">Anotação</string>
+    <string name="textcard_tab_layout">Página</string>
+    <string name="textcard_unsaved_changes">Há alterações não salvas</string>
 </resources>

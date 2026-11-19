@@ -21,4 +21,45 @@
 <resources>
     <string name="mini_program_jump_confirm">Aalis ka na at bubuksan ito sa WeChat. Magpatuloy?</string>
     <string name="mini_program_redirecting">Nagre-redirect…</string>
+
+    <!-- i18n-fill: feature/online -->
+    <string name="note_menu_copy_all">Kopyahin lahat ng nilalaman</string>
+    <string name="note_menu_settings">Mga Setting</string>
+    <string name="note_ai_action_format">AI na pag-format</string>
+    <string name="note_ai_action_expand">AI one-tap na pagpapalawak</string>
+    <string name="note_ai_action_polish">AI one-tap na pagpapahusay</string>
+    <string name="note_ai_action_condense">AI pagpapasimple</string>
+    <string name="note_ai_action_checklist">AI pagkuha ng mga gawain</string>
+    <string name="note_ai_action_summary">AI pagbuo ng buod</string>
+    <string name="note_ai_prompt_label">Prompt</string>
+    <string name="note_ai_prompt_hint">Sabihin sa AI kung paano mo gustong baguhin ang note na ito</string>
+    <string name="note_ai_original_label">Orihinal na teksto</string>
+    <string name="note_ai_original_meta">Orihinal · %1$d salita</string>
+    <string name="note_ai_result_label">Resulta ng AI</string>
+    <string name="note_ai_panel_generate">Bumuo</string>
+    <string name="note_ai_regenerate">Bumuo muli</string>
+    <string name="note_ai_stop">Itigil</string>
+    <string name="note_ai_copy">Kopyahin</string>
+    <string name="note_ai_copied">Nakopya na</string>
+    <string name="note_ai_apply_replace">Palitan ang orihinal</string>
+    <string name="note_ai_apply_append">Idagdag sa dulo</string>
+    <string name="note_ai_apply_prepend">Ipasok sa simula</string>
+    <string name="note_ai_undo_apply">I-undo</string>
+    <string name="note_ai_applied">Naiaplay na sa note, maaari mong i-undo bago isara ang panel.</string>
+    <string name="note_ai_panel_generating">Bumubuo…</string>
+    <string name="note_ai_empty_hint">Pumili muna ng aksyon, i-adjust ang prompt, pagkatapos ay bumuo.</string>
+    <string name="note_ai_empty_result">Nagbalik ng walang laman ang AI, maaari mong subukan muli o palitan ang engine.</string>
+    <string name="note_ai_no_engine">Walang available na AI engine, pakidagdag muna sa \"Mga Setting → AI Engine\".</string>
+    <string name="note_ai_result_meta">%1$s · %2$d tokens</string>
+    <string name="note_ai_too_short">Mangyaring magsulat muna ng ilang nilalaman sa note.</string>
+    <string name="note_ai_keepalive_title">Pinoproseso ng AI ang mga tala</string>
+    <string name="note_ai_billing_desc">AI na Pagsulat ng Tala</string>
+    <string name="note_ai_system_prompt">Ikaw ang Markdown editor ng note app. Baguhin ang tala ayon sa utos ng user, panatilihin ang orihinal na wika, mga katotohanan, numero, link, larawan, audio/video na tagubilin, talahanayan at code. I-output lamang ang buong binagong Markdown, walang paliwanag, walang prefix/suffix, huwag balutin ng code block fence.</string>
+    <string name="note_ai_input_template">Utos:\n%1$s\n\nOrihinal na Markdown:\n%2$s</string>
+    <string name="note_ai_prompt_format">Ayusin ang layout ng talang ito: itama ang antas ng pamagat, pag-isahin ang listahan, indent at blangkong linya, hatiin ang masyadong mahabang talata, ayusin ang magkakasunod na punto bilang listahan o talahanayan; huwag baguhin ang kahulugan at katotohanan.</string>
+    <string name="note_ai_prompt_expand">Palawakin ang talang ito: magdagdag ng paliwanag, halimbawa at detalye upang maging mas kumpleto ang nilalaman; panatilihin ang orihinal na pananaw at katotohanan, huwag gumawa ng data o personal na karanasan.</string>
+    <string name="note_ai_prompt_polish">I-polish ang talang ito: itama ang mga typo at gramatika, gawing mas malinaw at natural ang pagpapahayag, pag-isahin ang terminolohiya at tono; huwag baguhin ang kahulugan at dami ng impormasyon.</string>
+    <string name="note_ai_prompt_condense">Paikliin ang talang ito: panatilihin ang pangunahing impormasyon at istruktura, tanggalin ang paulit-ulit at sobrang salita; huwag mawala ang mahalagang katotohanan.</string>
+    <string name="note_ai_prompt_checklist">Kunin mula sa talang ito ang mga magagawang gawain, i-output bilang Markdown checkbox list (- [ ]), isang aksyon bawat linya, isama ang oras o taong responsable kung nasa orihinal. Magsimula sa 「## 待办」, i-output lamang ang listahan ng gawain.</string>
+    <string name="note_ai_prompt_summary">Sumulat ng 2–4 pangungusap na buod para sa talang ito, magsimula sa 「## 摘要」, i-output lamang ang bahagi ng buod.</string>
 </resources>

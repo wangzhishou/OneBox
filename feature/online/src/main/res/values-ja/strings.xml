@@ -21,4 +21,45 @@
 <resources>
     <string name="mini_program_jump_confirm">WeChatで開こうとしています。続行しますか？</string>
     <string name="mini_program_redirecting">リダイレクト中…</string>
+
+    <!-- i18n-fill: feature/online -->
+    <string name="note_menu_copy_all">すべての内容をコピー</string>
+    <string name="note_menu_settings">設定</string>
+    <string name="note_ai_action_format">AI フォーマット整形</string>
+    <string name="note_ai_action_expand">AI 一括拡張</string>
+    <string name="note_ai_action_polish">AI 一括校正</string>
+    <string name="note_ai_action_condense">AI 簡略化</string>
+    <string name="note_ai_action_checklist">AI タスク抽出</string>
+    <string name="note_ai_action_summary">AI 要約生成</string>
+    <string name="note_ai_prompt_label">プロンプト</string>
+    <string name="note_ai_prompt_hint">このノートをどう変更したいか AI に伝えてください</string>
+    <string name="note_ai_original_label">原文</string>
+    <string name="note_ai_original_meta">原文 · %1$d 文字</string>
+    <string name="note_ai_result_label">AI 結果</string>
+    <string name="note_ai_panel_generate">生成</string>
+    <string name="note_ai_regenerate">再生成</string>
+    <string name="note_ai_stop">停止</string>
+    <string name="note_ai_copy">コピー</string>
+    <string name="note_ai_copied">コピーしました</string>
+    <string name="note_ai_apply_replace">原文を置換</string>
+    <string name="note_ai_apply_append">末尾に追加</string>
+    <string name="note_ai_apply_prepend">先頭に挿入</string>
+    <string name="note_ai_undo_apply">元に戻す</string>
+    <string name="note_ai_applied">ノートに適用しました。パネルを閉じるまでは元に戻せます。</string>
+    <string name="note_ai_panel_generating">生成中…</string>
+    <string name="note_ai_empty_hint">まずアクションを選び、プロンプトを調整してから生成してください。</string>
+    <string name="note_ai_empty_result">AI が空の結果を返しました。再試行するか、別のエンジンをお試しください。</string>
+    <string name="note_ai_no_engine">利用可能な AI エンジンがありません。「設定 → AI エンジン」で追加してください。</string>
+    <string name="note_ai_result_meta">%1$s · %2$d tokens</string>
+    <string name="note_ai_too_short">先にノートに内容を書いてください。</string>
+    <string name="note_ai_keepalive_title">AIがノートを処理中</string>
+    <string name="note_ai_billing_desc">ノートAIライティング</string>
+    <string name="note_ai_system_prompt">あなたはノートアプリのMarkdownエディターです。ユーザーの指示に従ってノートを修正し、原文の言語、事実、数字、リンク、画像、音声・動画の指示、表、コードを保持してください。修正後の完全なMarkdown全文のみを出力し、説明や前後の文章、コードブロックのフェンスで囲まないでください。</string>
+    <string name="note_ai_input_template">指示：\n%1$s\n\n原文Markdown：\n%2$s</string>
+    <string name="note_ai_prompt_format">このノートのレイアウトを整理してください：見出しの階層を修正し、リスト・インデント・空行を統一し、長すぎる段落を分割し、連続する要点をリストや表にまとめてください。元の意味や事実は変えないでください。</string>
+    <string name="note_ai_prompt_expand">このノートを加筆してください：説明・例・詳細を補い、内容をより充実させてください。元の主張や事実を保ち、データや個人的な体験を捏造しないでください。</string>
+    <string name="note_ai_prompt_polish">このノートを推敲してください：誤字脱字や文法を修正し、表現をより自然で滑らかにし、用語と語調を統一してください。元の意味や情報量は変えないでください。</string>
+    <string name="note_ai_prompt_condense">このノートを簡潔にしてください：核心的な情報と構成を保ち、重複や冗長な表現を削除してください。重要な事実は失わないでください。</string>
+    <string name="note_ai_prompt_checklist">このノートから実行可能なToDoを抽出し、Markdownのチェックボックスリスト（- [ ]）で出力してください。各項目は1つのアクションとし、原文に期限や担当者があれば併記してください。「## 待办」で始め、ToDoリストのみを出力してください。</string>
+    <string name="note_ai_prompt_summary">このノートの2〜4文の要約を書いてください。「## 摘要」で始め、要約部分のみを出力してください。</string>
 </resources>

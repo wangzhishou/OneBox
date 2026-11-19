@@ -60,4 +60,19 @@
     <string name="activity_log_poem_app_title">Китайская классическая поэзия</string>
     <string name="activity_log_todo_app_title">Задачи</string>
     <string name="activity_log_xiangqi_app_title">Китайские шахматы</string>
+
+    <!-- i18n-fill: core/database -->
+    <string name="activity_log_archive_app_title">Сжатие файлов</string>
+    <string name="activity_log_archive_created_title">Создать архив</string>
+    <string name="activity_log_archive_entry_extracted_description">«%1$s» распакован в «%2$s»</string>
+    <string name="activity_log_archive_entry_extracted_title">Распаковать файлы</string>
+    <string name="activity_log_archive_extracted_title">Распаковать архив</string>
+    <string name="activity_log_archive_unknown_folder">Выбранная папка</string>
+    <string name="activity_log_archive_unnamed">Архив</string>
+    <plurals name="activity_log_archive_created_description">
+        <item quantity="other">Сохранено «%1$s», файлов: %2$d</item>
+    </plurals>
+    <plurals name="activity_log_archive_extracted_description">
+        <item quantity="other">Распаковано файлов: %1$d в «%2$s»</item>
+    </plurals>
 </resources>

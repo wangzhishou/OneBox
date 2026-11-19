@@ -20,4 +20,7 @@
 
 <resources>
     <string name="image_with_cropper">トリミング付きの元画像</string>
+
+    <!-- i18n-fill: libs/documentscanner -->
+    <string name="document_scan_captured_image_unreadable">撮影したばかりの写真を読み取れませんでした。もう一度スキャンしてください</string>
 </resources>

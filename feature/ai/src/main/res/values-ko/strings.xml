@@ -1021,4 +1021,45 @@
     <string name="ai_chat_mode_chat_description">즉시 대화 · 빠른 답변</string>
     <string name="ai_chat_mode_agent_title">에이전트 모드</string>
     <string name="ai_chat_mode_agent_description">계획 및 실행 · 작업 자동 완료</string>
+
+    <!-- i18n-fill: feature/ai -->
+    <string name="agent_tool_bookmark_added">북마크 추가됨:\n- id: %1$s\n- 제목: %2$s\n- URL: %3$s\n- 분류: %4$s</string>
+    <string name="agent_tool_bookmark_exists">북마크가 이미 존재합니다: %1$s (id: %2$s)</string>
+    <string name="agent_tool_bookmark_failed">북마크 작업 실패: %1$s</string>
+    <string name="agent_tool_bookmark_folder_builtin">분류 \'%1$s\'은(는) 기본 제공 분류이므로 삭제할 수 없습니다</string>
+    <string name="agent_tool_bookmark_folder_created">북마크 분류 생성됨: %1$s (id: %2$s)</string>
+    <string name="agent_tool_bookmark_folder_deleted">분류 삭제됨: %1$s, 해당 북마크는 미분류로 이동되었습니다</string>
+    <string name="agent_tool_bookmark_folder_exists">분류 \'%1$s\'이(가) 이미 존재합니다 (id: %2$s)</string>
+    <string name="agent_tool_bookmark_folder_list_header">북마크 분류:</string>
+    <string name="agent_tool_bookmark_folder_not_found">분류 %1$s이(가) 존재하지 않습니다. 사용 가능: %2$s</string>
+    <string name="agent_tool_bookmark_folder_row">· %1$s (id: %2$s, 북마크 %3$s개)</string>
+    <string name="agent_tool_bookmark_missing_bookmark_id">bookmark_id 매개변수가 누락되었습니다</string>
+    <string name="agent_tool_bookmark_missing_folder_id">folder_id 매개변수가 누락되었습니다</string>
+    <string name="agent_tool_bookmark_missing_folder_name">folder_name 매개변수가 누락되었습니다</string>
+    <string name="agent_tool_bookmark_missing_url">url 매개변수가 누락되었습니다</string>
+    <string name="agent_tool_bookmark_no_folders">북마크 분류가 없습니다</string>
+    <string name="agent_tool_bookmark_not_found">북마크 %1$s이(가) 존재하지 않습니다</string>
+    <string name="agent_tool_bookmark_removed">북마크 삭제됨: %1$s (%2$s)</string>
+    <string name="agent_tool_bookmark_uncategorized">미분류</string>
+    <string name="agent_tool_bookmark_unknown_action">알 수 없는 작업: %1$s, 사용 가능: %2$s</string>
+    <string name="agent_tool_list_param_limit">페이지당 최대 반환 개수, 1-100, 기본값 20.</string>
+    <string name="agent_tool_list_param_offset">페이지 오프셋. 이전 결과의 next_offset으로 계속합니다.</string>
+    <string name="agent_tool_manage_bookmark_param_action">작업 유형: add_bookmark / remove_bookmark / list_bookmarks / create_folder / delete_folder / list_folders</string>
+    <string name="agent_tool_manage_bookmark_param_bookmark_id">북마크 항목 ID (remove_bookmark 시 필수, list_bookmarks에서 가져옴)</string>
+    <string name="agent_tool_manage_bookmark_param_folder_id">소속 분류 ID (add_bookmark / delete_folder 시 사용, list_folders에서 가져옴)</string>
+    <string name="agent_tool_manage_bookmark_param_folder_name">분류 이름 (create_folder 시 필수)</string>
+    <string name="agent_tool_manage_bookmark_param_title">북마크 제목 (add_bookmark 시 선택 사항, 기본값은 URL)</string>
+    <string name="agent_tool_manage_bookmark_param_url">URL (add_bookmark / remove_bookmark 시 필수)</string>
+    <string name="agent_tool_manage_bookmark_summary">즐겨찾기 URL 추가, 즐겨찾기 분류 생성</string>
+    <string name="agent_tool_manage_bookmark_title">북마크 관리</string>
+    <string name="agent_tool_manage_todo_category_exists">분류가 이미 존재합니다: %1$s</string>
+    <string name="agent_tool_manage_todo_inbox_title">수집함</string>
+    <string name="agent_tool_manage_todo_list_reused">기존 목록 \"%1$s\"에 %2$d개를 추가했고, 중복 %3$d개를 건너뛰었습니다</string>
+    <string name="agent_tool_manage_todo_list_summary">총 %1$d개, 완료 %2$d개, 대기 %3$d개; 이번에 %4$d개 반환</string>
+    <string name="agent_tool_manage_todo_param_category_id">카테고리 ID, list/create_task 시 사용, list가 반환한 id에서 가져옴; \"__inbox__\"는 수집함을 의미합니다. id를 전달하면 category_name보다 우선합니다.</string>
+    <string name="agent_tool_manage_todo_param_include_completed">list에 완료된 작업 포함 여부, 기본값 true; 미완료만 보려면 false를 전달하세요.</string>
+    <string name="agent_tool_manage_todo_param_limit">list 한 페이지당 최대 반환 작업 수, 1-100, 기본값 20.</string>
+    <string name="agent_tool_manage_todo_param_offset">list 페이지네이션 오프셋; 이전 결과의 next_offset으로 계속 페이징하세요.</string>
+    <string name="agent_tool_manage_todo_param_query">선택적 키워드, 작업 제목, 메모 및 태그를 검색합니다.</string>
+    <string name="agent_tool_unknown_action_with_options">알 수 없는 작업: %1$s, 사용 가능: %2$s</string>
 </resources>

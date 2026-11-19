@@ -205,4 +205,12 @@
     <string name="select_exact_time_hint">Добавить точное время (необязательно)</string>
     <string name="action_select_time">Выбрать время</string>
     <string name="action_clear_time">Очистить время</string>
+
+    <!-- i18n-fill: feature/marktodo -->
+    <string name="action_duplicate">Копировать</string>
+    <string name="marktodo_log_task_duplicated">Копировать задачу: %1$s</string>
+    <string name="quick_add_ai_action">Создано ИИ</string>
+    <string name="quick_add_ai_dialog_title">Создать задачу с помощью ИИ</string>
+    <string name="quick_add_ai_prompt_prefix">Помогите мне создать задачу</string>
+    <string name="snackbar_task_duplicated">Задача скопирована</string>
 </resources>

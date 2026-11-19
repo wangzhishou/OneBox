@@ -1021,4 +1021,45 @@
     <string name="ai_chat_mode_chat_description">Мгновенный диалог · Быстрые ответы</string>
     <string name="ai_chat_mode_agent_title">Режим агента</string>
     <string name="ai_chat_mode_agent_description">План и действия · Автоматизация задач</string>
+
+    <!-- i18n-fill: feature/ai -->
+    <string name="agent_tool_bookmark_added">Закладка добавлена:\n- id: %1$s\n- Заголовок: %2$s\n- URL: %3$s\n- Категория: %4$s</string>
+    <string name="agent_tool_bookmark_exists">Закладка уже существует: %1$s (id: %2$s)</string>
+    <string name="agent_tool_bookmark_failed">Не удалось выполнить операцию с закладкой: %1$s</string>
+    <string name="agent_tool_bookmark_folder_builtin">Категория «%1$s» является встроенной и не может быть удалена</string>
+    <string name="agent_tool_bookmark_folder_created">Создана категория закладок: %1$s (id: %2$s)</string>
+    <string name="agent_tool_bookmark_folder_deleted">Категория удалена: %1$s, её закладки перемещены в «Без категории»</string>
+    <string name="agent_tool_bookmark_folder_exists">Категория «%1$s» уже существует (id: %2$s)</string>
+    <string name="agent_tool_bookmark_folder_list_header">Категории закладок:</string>
+    <string name="agent_tool_bookmark_folder_not_found">Категория %1$s не существует, доступны: %2$s</string>
+    <string name="agent_tool_bookmark_folder_row">· %1$s (id: %2$s, закладок: %3$s)</string>
+    <string name="agent_tool_bookmark_missing_bookmark_id">Отсутствует параметр bookmark_id</string>
+    <string name="agent_tool_bookmark_missing_folder_id">Отсутствует параметр folder_id</string>
+    <string name="agent_tool_bookmark_missing_folder_name">Отсутствует параметр folder_name</string>
+    <string name="agent_tool_bookmark_missing_url">Отсутствует параметр url</string>
+    <string name="agent_tool_bookmark_no_folders">Категорий закладок пока нет</string>
+    <string name="agent_tool_bookmark_not_found">Закладка %1$s не существует</string>
+    <string name="agent_tool_bookmark_removed">Закладка удалена: %1$s (%2$s)</string>
+    <string name="agent_tool_bookmark_uncategorized">Без категории</string>
+    <string name="agent_tool_bookmark_unknown_action">Неизвестная операция: %1$s, доступны: %2$s</string>
+    <string name="agent_tool_list_param_limit">Сколько записей возвращать на страницу, 1–100, по умолчанию 20.</string>
+    <string name="agent_tool_list_param_offset">Смещение пагинации; продолжайте с next_offset из предыдущего результата.</string>
+    <string name="agent_tool_manage_bookmark_param_action">Тип операции: add_bookmark / remove_bookmark / list_bookmarks / create_folder / delete_folder / list_folders</string>
+    <string name="agent_tool_manage_bookmark_param_bookmark_id">ID записи закладки (обязательно для remove_bookmark, из list_bookmarks)</string>
+    <string name="agent_tool_manage_bookmark_param_folder_id">ID категории (используется в add_bookmark / delete_folder, из list_folders)</string>
+    <string name="agent_tool_manage_bookmark_param_folder_name">Название категории (обязательно для create_folder)</string>
+    <string name="agent_tool_manage_bookmark_param_title">Заголовок закладки (необязательно для add_bookmark, по умолчанию используется URL)</string>
+    <string name="agent_tool_manage_bookmark_param_url">URL-адрес (обязательно для add_bookmark / remove_bookmark)</string>
+    <string name="agent_tool_manage_bookmark_summary">Добавление закладок и создание категорий закладок</string>
+    <string name="agent_tool_manage_bookmark_title">Управление закладками</string>
+    <string name="agent_tool_manage_todo_category_exists">Категория уже существует: %1$s</string>
+    <string name="agent_tool_manage_todo_inbox_title">Входящие</string>
+    <string name="agent_tool_manage_todo_list_reused">Добавлено %2$d в существующий список «%1$s», пропущено дубликатов: %3$d</string>
+    <string name="agent_tool_manage_todo_list_summary">Всего %1$d, выполнено %2$d, в ожидании %3$d; возвращено %4$d</string>
+    <string name="agent_tool_manage_todo_param_category_id">ID категории, используется в list/create_task, берётся из id, возвращённого list; \"__inbox__\" означает «Входящие». Если передан id, он имеет приоритет над category_name.</string>
+    <string name="agent_tool_manage_todo_param_include_completed">Включать ли выполненные задачи в list, по умолчанию true; передайте false, чтобы видеть только незавершённые.</string>
+    <string name="agent_tool_manage_todo_param_limit">Максимум задач на страницу в list, 1-100, по умолчанию 20.</string>
+    <string name="agent_tool_manage_todo_param_offset">Смещение страницы list; используйте next_offset из предыдущего результата для продолжения.</string>
+    <string name="agent_tool_manage_todo_param_query">Необязательные ключевые слова для поиска по заголовку, заметкам и тегам задач.</string>
+    <string name="agent_tool_unknown_action_with_options">Неизвестная операция: %1$s, доступны: %2$s</string>
 </resources>

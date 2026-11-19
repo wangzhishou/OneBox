@@ -219,4 +219,51 @@
     <!-- 大运走势 -->
     <string name="dayun_year_range">%1$d–%2$d</string>
     <string name="dayun_current">현재</string>
+
+    <!-- i18n-fill: feature/calendar -->
+    <string name="calendar_share_ai_generating">생성 중…</string>
+    <string name="calendar_share_ai_hint">AI가 날짜, 음력, 길흉과 날씨를 결합하여 한 문장을 생성합니다. 생성 후 계속 수정할 수 있습니다.</string>
+    <string name="calendar_share_ai_write">AI로 한 문장 쓰기</string>
+    <string name="calendar_share_air_prefix">공기</string>
+    <string name="calendar_share_auspicious_title">길시</string>
+    <string name="calendar_share_blessing">만사여의 평안순수</string>
+    <string name="calendar_share_brand">완바오허 · 만년력</string>
+    <string name="calendar_share_color_title">색상</string>
+    <string name="calendar_share_content_title">카드 표시</string>
+    <string name="calendar_share_day_suffix">일</string>
+    <string name="calendar_share_ji_seal">기</string>
+    <string name="calendar_share_lunar_prefix">음력</string>
+    <string name="calendar_share_month_suffix">월</string>
+    <string name="calendar_share_note_counter">%1$d/%2$d</string>
+    <string name="calendar_share_note_label">마음의 말</string>
+    <string name="calendar_share_note_placeholder">비워두면 표시되지 않으며, 최대 80자</string>
+    <string name="calendar_share_note_title">오늘의 마음의 말</string>
+    <string name="calendar_share_note_title_section">마음의 말 한마디 쓰기</string>
+    <string name="calendar_share_page_title">달력 공유</string>
+    <string name="calendar_share_preview_size">%1$d × %2$d · PNG</string>
+    <string name="calendar_share_render_failed">카드 렌더링 실패</string>
+    <string name="calendar_share_retry">다시 시도</string>
+    <string name="calendar_share_save">이미지 저장</string>
+    <string name="calendar_share_save_failed">저장 실패</string>
+    <string name="calendar_share_saved_app">앱 디렉터리에 저장됨(%1$s)</string>
+    <string name="calendar_share_saved_gallery">앨범에 저장됨(%1$s)</string>
+    <string name="calendar_share_selected_day_prefix">당일</string>
+    <string name="calendar_share_share">이미지 공유</string>
+    <string name="calendar_share_style_gold_ink">현금</string>
+    <string name="calendar_share_style_ink_green">대청</string>
+    <string name="calendar_share_style_theme">테마 따르기</string>
+    <string name="calendar_share_style_vermilion">주사</string>
+    <string name="calendar_share_today_prefix">오늘</string>
+    <string name="calendar_share_toggle_note">마음의 말</string>
+    <string name="calendar_share_toggle_today">오늘의 기념일</string>
+    <string name="calendar_share_toggle_upcoming">다가오는 기념일</string>
+    <string name="calendar_share_toggle_weather">날씨</string>
+    <string name="calendar_share_transparent_background">투명 배경</string>
+    <string name="calendar_share_upcoming_prefix">미래</string>
+    <string name="calendar_share_weather_loading">날씨…</string>
+    <string name="calendar_share_weather_title">날씨</string>
+    <string name="calendar_share_weather_today_only">날씨는 오늘만 사용할 수 있습니다</string>
+    <string name="calendar_share_weather_unavailable">아직 날씨를 가져오지 못했습니다</string>
+    <string name="calendar_share_year_suffix">년</string>
+    <string name="calendar_share_yi_seal">길</string>
 </resources>

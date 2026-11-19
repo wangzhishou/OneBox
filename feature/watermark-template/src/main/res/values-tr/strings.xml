@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- i18n-fill: feature/watermark-template -->
+    <string name="watermark_kind_camera_params">Kamera parametreleri</string>
+    <string name="watermark_kind_divider">Ayırıcı çizgi</string>
+    <string name="watermark_template_apply">Uygulama</string>
+    <string name="watermark_template_leica_classic">Leica Klasik</string>
+</resources>

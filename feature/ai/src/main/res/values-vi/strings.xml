@@ -1018,4 +1018,45 @@
     <string name="ai_chat_mode_chat_description">Trò chuyện tức thì · Trả lời nhanh</string>
     <string name="ai_chat_mode_agent_title">Chế độ Agent</string>
     <string name="ai_chat_mode_agent_description">Lập kế hoạch và hành động · Tác vụ tự động</string>
+
+    <!-- i18n-fill: feature/ai -->
+    <string name="agent_tool_bookmark_added">Đã thêm dấu trang:\n- id: %1$s\n- Tiêu đề: %2$s\n- URL: %3$s\n- Danh mục: %4$s</string>
+    <string name="agent_tool_bookmark_exists">Dấu trang đã tồn tại: %1$s (id: %2$s)</string>
+    <string name="agent_tool_bookmark_failed">Thao tác dấu trang thất bại: %1$s</string>
+    <string name="agent_tool_bookmark_folder_builtin">Danh mục \"%1$s\" là danh mục tích hợp, không thể xóa</string>
+    <string name="agent_tool_bookmark_folder_created">Đã tạo danh mục dấu trang: %1$s (id: %2$s)</string>
+    <string name="agent_tool_bookmark_folder_deleted">Đã xóa danh mục: %1$s, các dấu trang trong đó đã được chuyển sang chưa phân loại</string>
+    <string name="agent_tool_bookmark_folder_exists">Danh mục \"%1$s\" đã tồn tại (id: %2$s)</string>
+    <string name="agent_tool_bookmark_folder_list_header">Danh mục dấu trang:</string>
+    <string name="agent_tool_bookmark_folder_not_found">Danh mục %1$s không tồn tại, khả dụng: %2$s</string>
+    <string name="agent_tool_bookmark_folder_row">· %1$s (id: %2$s, %3$s dấu trang)</string>
+    <string name="agent_tool_bookmark_missing_bookmark_id">Thiếu tham số bookmark_id</string>
+    <string name="agent_tool_bookmark_missing_folder_id">Thiếu tham số folder_id</string>
+    <string name="agent_tool_bookmark_missing_folder_name">Thiếu tham số folder_name</string>
+    <string name="agent_tool_bookmark_missing_url">Thiếu tham số url</string>
+    <string name="agent_tool_bookmark_no_folders">Chưa có danh mục dấu trang</string>
+    <string name="agent_tool_bookmark_not_found">Dấu trang %1$s không tồn tại</string>
+    <string name="agent_tool_bookmark_removed">Đã xóa dấu trang: %1$s (%2$s)</string>
+    <string name="agent_tool_bookmark_uncategorized">Chưa phân loại</string>
+    <string name="agent_tool_bookmark_unknown_action">Thao tác không xác định: %1$s, khả dụng: %2$s</string>
+    <string name="agent_tool_list_param_limit">Số mục tối đa trả về mỗi trang, 1-100, mặc định 20.</string>
+    <string name="agent_tool_list_param_offset">Độ lệch phân trang; dùng next_offset của kết quả trước để tiếp tục.</string>
+    <string name="agent_tool_manage_bookmark_param_action">Loại thao tác: add_bookmark / remove_bookmark / list_bookmarks / create_folder / delete_folder / list_folders</string>
+    <string name="agent_tool_manage_bookmark_param_bookmark_id">ID mục dấu trang (bắt buộc khi remove_bookmark, lấy từ list_bookmarks)</string>
+    <string name="agent_tool_manage_bookmark_param_folder_id">ID danh mục (dùng khi add_bookmark / delete_folder, lấy từ list_folders)</string>
+    <string name="agent_tool_manage_bookmark_param_folder_name">Tên danh mục (bắt buộc khi create_folder)</string>
+    <string name="agent_tool_manage_bookmark_param_title">Tiêu đề dấu trang (tùy chọn khi add_bookmark, mặc định dùng URL)</string>
+    <string name="agent_tool_manage_bookmark_param_url">Địa chỉ web (bắt buộc khi add_bookmark / remove_bookmark)</string>
+    <string name="agent_tool_manage_bookmark_summary">Thêm trang web yêu thích, tạo danh mục yêu thích</string>
+    <string name="agent_tool_manage_bookmark_title">Quản lý dấu trang</string>
+    <string name="agent_tool_manage_todo_category_exists">Danh mục đã tồn tại: %1$s</string>
+    <string name="agent_tool_manage_todo_inbox_title">Hộp thu thập</string>
+    <string name="agent_tool_manage_todo_list_reused">Đã thêm %2$d mục vào danh sách hiện có \"%1$s\", bỏ qua %3$d mục trùng lặp</string>
+    <string name="agent_tool_manage_todo_list_summary">Tổng %1$d mục, đã hoàn thành %2$d, chờ xử lý %3$d; lần này trả về %4$d mục</string>
+    <string name="agent_tool_manage_todo_param_category_id">ID danh mục, dùng khi list/create_task, lấy từ id trả về của list; \"__inbox__\" là hộp thu thập. Khi truyền id sẽ được ưu tiên hơn category_name.</string>
+    <string name="agent_tool_manage_todo_param_include_completed">list có bao gồm nhiệm vụ đã hoàn thành không, mặc định true; chỉ xem chưa hoàn thành thì truyền false.</string>
+    <string name="agent_tool_manage_todo_param_limit">list trả về tối đa bao nhiêu nhiệm vụ mỗi trang, 1-100, mặc định 20.</string>
+    <string name="agent_tool_manage_todo_param_offset">Độ lệch phân trang của list; dùng next_offset của kết quả trước để tiếp tục chuyển trang.</string>
+    <string name="agent_tool_manage_todo_param_query">Từ khóa tùy chọn, tìm kiếm tiêu đề, ghi chú và thẻ của nhiệm vụ.</string>
+    <string name="agent_tool_unknown_action_with_options">Thao tác không xác định: %1$s, khả dụng: %2$s</string>
 </resources>

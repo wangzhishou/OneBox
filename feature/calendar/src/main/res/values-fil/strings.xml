@@ -219,4 +219,51 @@
     <!-- 大运走势 -->
     <string name="dayun_year_range">%1$d–%2$d</string>
     <string name="dayun_current">Kasalukuyan</string>
+
+    <!-- i18n-fill: feature/calendar -->
+    <string name="calendar_share_ai_generating">Nagge-generate…</string>
+    <string name="calendar_share_ai_hint">Gagamit ang AI ng petsa, lunar calendar, yi/ji at panahon para gumawa ng isang pangungusap; maaari mo itong i-edit pagkatapos.</string>
+    <string name="calendar_share_ai_write">AI sumulat ng isang linya</string>
+    <string name="calendar_share_air_prefix">Hangin</string>
+    <string name="calendar_share_auspicious_title">Mabuting oras</string>
+    <string name="calendar_share_blessing">Lahat ay maayos, mapayapa at swerte</string>
+    <string name="calendar_share_brand">WanBaoHe · Perpetual na Kalendaryo</string>
+    <string name="calendar_share_color_title">Kulay</string>
+    <string name="calendar_share_content_title">Display ng card</string>
+    <string name="calendar_share_day_suffix">Araw</string>
+    <string name="calendar_share_ji_seal">Iwasan</string>
+    <string name="calendar_share_lunar_prefix">Lunar</string>
+    <string name="calendar_share_month_suffix">Buwan</string>
+    <string name="calendar_share_note_counter">%1$d/%2$d</string>
+    <string name="calendar_share_note_label">Mensahe</string>
+    <string name="calendar_share_note_placeholder">Iwanang blangko para hindi ipakita, max 80 character</string>
+    <string name="calendar_share_note_title">Mensahe ngayong araw</string>
+    <string name="calendar_share_note_title_section">Sumulat ng mensahe</string>
+    <string name="calendar_share_page_title">Ibahagi ang kalendaryo</string>
+    <string name="calendar_share_preview_size">%1$d × %2$d · PNG</string>
+    <string name="calendar_share_render_failed">Nabigo ang pag-render ng card</string>
+    <string name="calendar_share_retry">Subukan muli</string>
+    <string name="calendar_share_save">I-save ang larawan</string>
+    <string name="calendar_share_save_failed">Nabigo ang pag-save</string>
+    <string name="calendar_share_saved_app">Na-save sa app directory (%1$s)</string>
+    <string name="calendar_share_saved_gallery">Na-save sa gallery (%1$s)</string>
+    <string name="calendar_share_selected_day_prefix">Ngayong araw</string>
+    <string name="calendar_share_share">Ibahagi ang larawan</string>
+    <string name="calendar_share_style_gold_ink">Xuan Jin</string>
+    <string name="calendar_share_style_ink_green">Dai Qing</string>
+    <string name="calendar_share_style_theme">Sundin ang tema</string>
+    <string name="calendar_share_style_vermilion">Cinnabar</string>
+    <string name="calendar_share_today_prefix">Ngayon</string>
+    <string name="calendar_share_toggle_note">Mensahe ng puso</string>
+    <string name="calendar_share_toggle_today">Pista ngayong araw</string>
+    <string name="calendar_share_toggle_upcoming">Mga paparating na pista</string>
+    <string name="calendar_share_toggle_weather">Panahon</string>
+    <string name="calendar_share_transparent_background">Transparent na background</string>
+    <string name="calendar_share_upcoming_prefix">Hinaharap</string>
+    <string name="calendar_share_weather_loading">Panahon…</string>
+    <string name="calendar_share_weather_title">Panahon</string>
+    <string name="calendar_share_weather_today_only">Available lang ang panahon ngayong araw</string>
+    <string name="calendar_share_weather_unavailable">Wala pang nakuhang panahon</string>
+    <string name="calendar_share_year_suffix">Taon</string>
+    <string name="calendar_share_yi_seal">Angkop</string>
 </resources>

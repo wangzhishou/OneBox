@@ -101,4 +101,10 @@
     <string name="media_play_failed">Error de reproducción, se pasa al siguiente</string>
     <string name="media_collapse_recent">Contraer reproducción reciente</string>
     <string name="media_expand_recent">Expandir reproducción reciente</string>
+
+    <!-- i18n-fill: feature/media-player -->
+    <string name="media_inline_audio">Audio</string>
+    <string name="media_inline_invalid_url">Dirección de medio no válida o no compatible</string>
+    <string name="media_inline_play_error">Error de reproducción, toca el botón de reproducir para reintentar</string>
+    <string name="media_inline_video">Vídeo</string>
 </resources>

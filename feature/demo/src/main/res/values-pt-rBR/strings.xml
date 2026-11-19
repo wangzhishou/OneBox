@@ -107,4 +107,28 @@
     <string name="demo_aigc_demo_parse_failed">Falha ao analisar AIGC de demonstração</string>
     <string name="demo_glass_showcase_consistency_desc">Mesmo tom e estilo renderizados por GlassCard, GlassSurface e coloredGlass; com o vidro ligado ou desligado, os três devem ficar idênticos.</string>
     <string name="demo_glass_showcase_consistency_title">Consistência do pipeline</string>
+
+    <!-- i18n-fill: feature/demo -->
+    <string name="demo_markdown_engine_kmp">KMP Markdown 1.7.2</string>
+    <string name="demo_markdown_engine_legacy">Motor de renderização existente</string>
+    <string name="demo_markdown_media_sample">Exemplo de mídia</string>
+    <string name="demo_rich_editor_close">Desativar experimento</string>
+    <string name="demo_rich_editor_copied">Copiado</string>
+    <string name="demo_rich_editor_copy_markdown">Copiar Markdown</string>
+    <string name="demo_rich_editor_description">Texto e estilos rastreáveis são a única fonte de verdade; a área de edição não usa WebView nem exibe marcações Markdown.</string>
+    <string name="demo_rich_editor_entry_title">Editor de texto rico nativo</string>
+    <string name="demo_rich_editor_highlight">Destaque</string>
+    <string name="demo_rich_editor_mode_edit">Edição direta</string>
+    <string name="demo_rich_editor_mode_preview">Pré-visualização nativa</string>
+    <string name="demo_rich_editor_mode_source">Markdown</string>
+    <string name="demo_rich_editor_sample_body">Edite diretamente o texto renderizado; selecione qualquer conteúdo para abrir o menu de formatação.</string>
+    <string name="demo_rich_editor_sample_bullet_export">Exporte o Markdown e verifique o resultado com o renderizador nativo existente</string>
+    <string name="demo_rich_editor_sample_bullet_styles">Os estilos se movem com TrackedRange ao digitar, apagar e colar</string>
+    <string name="demo_rich_editor_sample_footer">%1$s gerencia texto e estilos ao mesmo tempo, e %2$s não é mais necessário.</string>
+    <string name="demo_rich_editor_sample_state_word">TextFieldState</string>
+    <string name="demo_rich_editor_sample_title">Edição WYSIWYG nativa</string>
+    <string name="demo_rich_editor_sample_webview_word">WebView</string>
+    <string name="demo_rich_editor_stats">%1$d caracteres · %2$d intervalos de estilo rastreáveis</string>
+    <string name="demo_rich_editor_stats_with_hint">%1$d caracteres · %2$d intervalos de estilo · selecione o texto para definir a formatação</string>
+    <string name="demo_rich_editor_title">Editor WYSIWYG nativo</string>
 </resources>

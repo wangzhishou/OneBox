@@ -204,4 +204,45 @@
     <string name="textcard_template_name">Название шаблона</string>
     <string name="textcard_template_saved">Шаблон сохранён</string>
     <string name="textcard_try_sample">Пример</string>
+
+    <!-- i18n-fill: feature/text-card -->
+    <string name="textcard_annotated_long_image_hint">При наличии встроенных пометок длинное изображение собирается по результатам разбиения на страницы с сохранением позиций пометок.</string>
+    <string name="textcard_annotation_draw_mode">Кисть · Страница %1$d</string>
+    <string name="textcard_annotation_edit_text">Редактирование текста пометки</string>
+    <string name="textcard_annotation_empty">На этой странице пока нет пометок. Можно добавить текст, рисунок или фигуру.</string>
+    <string name="textcard_annotation_mode">Пометки · Страница %1$d</string>
+    <string name="textcard_annotation_needs_review">Требует проверки</string>
+    <string name="textcard_annotation_review_count">Пометок требуют проверки: %1$d</string>
+    <string name="textcard_apply">Применить</string>
+    <string name="textcard_backup_source">Скопировать оригинал как резервную копию</string>
+    <string name="textcard_brush_color">Цвет кисти</string>
+    <string name="textcard_brush_marker">Маркер</string>
+    <string name="textcard_brush_pencil">Карандаш</string>
+    <string name="textcard_brush_settings">Настройки кисти</string>
+    <string name="textcard_brush_type">Тип кисти</string>
+    <string name="textcard_delete_page_break">Удалить разбиение</string>
+    <string name="textcard_draw_opacity">Непрозрачность</string>
+    <string name="textcard_eraser">Ластик</string>
+    <string name="textcard_export_preparing">Вёрстка…</string>
+    <string name="textcard_go_to_page">Перейти</string>
+    <string name="textcard_layers_reorder_hint">Перетащите маркер, чтобы изменить порядок слоёв</string>
+    <string name="textcard_layout_failed_short">Ошибка вёрстки</string>
+    <string name="textcard_layout_settings">Страницы и бумага</string>
+    <string name="textcard_layout_updating">Обновление вёрстки…</string>
+    <string name="textcard_long_image_page_break_hint">В непрерывном длинном изображении ручное разбиение обрабатывается как перенос строки; при возврате к многостраничному режиму разбиение восстанавливается.</string>
+    <string name="textcard_manual_page_break">Ручное разбиение %1$d</string>
+    <string name="textcard_manual_page_break_short">Вручную</string>
+    <string name="textcard_move_annotation_page">Перейти к странице</string>
+    <string name="textcard_page_count_transition">Страница %1$d → %2$d</string>
+    <string name="textcard_page_number_input">Номер страницы</string>
+    <string name="textcard_project_meta_pending">Количество страниц будет обновлено · %1$s</string>
+    <string name="textcard_save_failed_retry">Не удалось сохранить, нажмите «Сохранить», чтобы повторить</string>
+    <string name="textcard_save_now">Сохранить работу сейчас</string>
+    <string name="textcard_shape_corner_radius">Скругление</string>
+    <string name="textcard_shape_kind">Тип фигуры</string>
+    <string name="textcard_shape_stroke">Обводка</string>
+    <string name="textcard_source_copied">Исходный текст скопирован</string>
+    <string name="textcard_tab_annotations">Пометка</string>
+    <string name="textcard_tab_layout">Страница</string>
+    <string name="textcard_unsaved_changes">Есть несохранённые изменения</string>
 </resources>

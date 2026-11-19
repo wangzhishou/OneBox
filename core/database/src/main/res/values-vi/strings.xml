@@ -59,4 +59,19 @@
     <string name="activity_log_poem_app_title">Thơ cổ Trung Quốc</string>
     <string name="activity_log_todo_app_title">Danh sách việc cần làm</string>
     <string name="activity_log_xiangqi_app_title">Cờ tướng Trung Quốc</string>
+
+    <!-- i18n-fill: core/database -->
+    <string name="activity_log_archive_app_title">Nén tệp</string>
+    <string name="activity_log_archive_created_title">Tạo tệp nén</string>
+    <string name="activity_log_archive_entry_extracted_description">Đã giải nén \"%1$s\" vào \"%2$s\"</string>
+    <string name="activity_log_archive_entry_extracted_title">Giải nén tệp</string>
+    <string name="activity_log_archive_extracted_title">Giải nén tệp nén</string>
+    <string name="activity_log_archive_unknown_folder">Thư mục đã chọn</string>
+    <string name="activity_log_archive_unnamed">Tệp nén</string>
+    <plurals name="activity_log_archive_created_description">
+        <item quantity="other">Đã lưu \"%1$s\", tổng cộng %2$d tệp</item>
+    </plurals>
+    <plurals name="activity_log_archive_extracted_description">
+        <item quantity="other">Đã giải nén %1$d tệp vào \"%2$s\"</item>
+    </plurals>
 </resources>

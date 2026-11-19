@@ -21,4 +21,45 @@
 <resources>
     <string name="mini_program_jump_confirm">Estás a punto de salir y abrir esto en WeChat. ¿Continuar?</string>
     <string name="mini_program_redirecting">Redirigiendo…</string>
+
+    <!-- i18n-fill: feature/online -->
+    <string name="note_ai_action_checklist">IA extrae tareas pendientes</string>
+    <string name="note_ai_action_condense">IA acorta</string>
+    <string name="note_ai_action_expand">IA amplía con un toque</string>
+    <string name="note_ai_action_format">IA formatea</string>
+    <string name="note_ai_action_polish">IA pule con un toque</string>
+    <string name="note_ai_action_summary">IA genera resumen</string>
+    <string name="note_ai_applied">Aplicado a la nota; puedes deshacer antes de cerrar el panel.</string>
+    <string name="note_ai_apply_append">Añadir al final</string>
+    <string name="note_ai_apply_prepend">Insertar al inicio</string>
+    <string name="note_ai_apply_replace">Reemplazar original</string>
+    <string name="note_ai_billing_desc">Escritura con IA en notas</string>
+    <string name="note_ai_copied">Copiado</string>
+    <string name="note_ai_copy">Copiar</string>
+    <string name="note_ai_empty_hint">Elige una acción, ajusta el prompt y genera.</string>
+    <string name="note_ai_empty_result">La IA devolvió un resultado vacío; reintenta o cambia de motor.</string>
+    <string name="note_ai_input_template">Instrucción:\n%1$s\n\nMarkdown original:\n%2$s</string>
+    <string name="note_ai_keepalive_title">La IA está procesando la nota</string>
+    <string name="note_ai_no_engine">No hay motores de IA disponibles; añade uno en «Ajustes → Motor de IA».</string>
+    <string name="note_ai_original_label">Original</string>
+    <string name="note_ai_original_meta">Original · %1$d caracteres</string>
+    <string name="note_ai_panel_generate">Generar</string>
+    <string name="note_ai_panel_generating">Generando…</string>
+    <string name="note_ai_prompt_checklist">Extrae de esta nota tareas pendientes accionables y genera una lista Markdown con casillas (- [ ]), una acción por elemento; incluye fechas o responsables si aparecen en el original. Empieza con «## Tareas pendientes» y muestra solo la lista.</string>
+    <string name="note_ai_prompt_condense">Acorta esta nota: conserva la información y estructura clave, elimina repeticiones y redundancias; no pierdas hechos importantes.</string>
+    <string name="note_ai_prompt_expand">Amplía esta nota: añade explicaciones, ejemplos y detalles para que el contenido sea más completo; mantén las ideas y hechos originales, no inventes datos ni experiencias personales.</string>
+    <string name="note_ai_prompt_format">Ordena el formato de esta nota: corrige la jerarquía de títulos, unifica listas, sangrías y líneas en blanco, divide párrafos largos y convierte puntos consecutivos en listas o tablas; no cambies el sentido ni los hechos.</string>
+    <string name="note_ai_prompt_hint">Dile a la IA cómo quieres modificar esta nota</string>
+    <string name="note_ai_prompt_label">Prompt</string>
+    <string name="note_ai_prompt_polish">Pule esta nota: corrige errores ortográficos y gramaticales, haz la expresión más fluida y natural, unifica terminología y tono; no cambies el sentido ni la cantidad de información.</string>
+    <string name="note_ai_prompt_summary">Escribe un resumen de 2 a 4 frases para esta nota, comenzando con «## Resumen», y muestra solo la parte del resumen.</string>
+    <string name="note_ai_regenerate">Regenerar</string>
+    <string name="note_ai_result_label">Resultado de IA</string>
+    <string name="note_ai_result_meta">%1$s · %2$d tokens</string>
+    <string name="note_ai_stop">Detener</string>
+    <string name="note_ai_system_prompt">Eres el editor de Markdown de una app de notas. Modifica la nota según las instrucciones del usuario, conservando el idioma original, los hechos, los números, los enlaces, las imágenes, las instrucciones de audio y video, las tablas y el código. Muestra solo el Markdown completo modificado, sin explicaciones, sin prefijos ni sufijos, y sin envolverlo en bloques de código.</string>
+    <string name="note_ai_too_short">Primero escribe algo en la nota.</string>
+    <string name="note_ai_undo_apply">Deshacer</string>
+    <string name="note_menu_copy_all">Copiar todo el contenido</string>
+    <string name="note_menu_settings">Ajustes</string>
 </resources>

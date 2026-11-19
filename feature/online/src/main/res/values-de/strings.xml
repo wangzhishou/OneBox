@@ -21,4 +21,45 @@
 <resources>
     <string name="mini_program_jump_confirm">Du verlässt die App und öffnest dies in WeChat. Fortfahren?</string>
     <string name="mini_program_redirecting">Weiterleitung…</string>
+
+    <!-- i18n-fill: feature/online -->
+    <string name="note_ai_action_checklist">KI-Aufgaben extrahieren</string>
+    <string name="note_ai_action_condense">KI-Kürzen</string>
+    <string name="note_ai_action_expand">KI-Erweitern</string>
+    <string name="note_ai_action_format">KI-Formatierung</string>
+    <string name="note_ai_action_polish">KI-Überarbeiten</string>
+    <string name="note_ai_action_summary">KI-Zusammenfassung</string>
+    <string name="note_ai_applied">Auf Notiz angewendet. Rückgängig möglich, bis das Panel geschlossen wird.</string>
+    <string name="note_ai_apply_append">Am Ende anhängen</string>
+    <string name="note_ai_apply_prepend">Am Anfang einfügen</string>
+    <string name="note_ai_apply_replace">Original ersetzen</string>
+    <string name="note_ai_billing_desc">KI-Schreiben für Notizen</string>
+    <string name="note_ai_copied">Kopiert</string>
+    <string name="note_ai_copy">Kopieren</string>
+    <string name="note_ai_empty_hint">Zuerst eine Aktion auswählen, Prompt anpassen, dann generieren.</string>
+    <string name="note_ai_empty_result">Die KI hat ein leeres Ergebnis geliefert. Erneut versuchen oder Engine wechseln.</string>
+    <string name="note_ai_input_template">Anweisung:\n%1$s\n\nOriginal-Markdown:\n%2$s</string>
+    <string name="note_ai_keepalive_title">KI verarbeitet Notiz</string>
+    <string name="note_ai_no_engine">Keine KI-Engine verfügbar. Zuerst unter „Einstellungen → KI-Engine“ hinzufügen.</string>
+    <string name="note_ai_original_label">Original</string>
+    <string name="note_ai_original_meta">Original · %1$d Zeichen</string>
+    <string name="note_ai_panel_generate">Generieren</string>
+    <string name="note_ai_panel_generating">Wird generiert…</string>
+    <string name="note_ai_prompt_checklist">Extrahiere aus dieser Notiz umsetzbare Aufgaben und gib eine Markdown-Checkliste (- [ ]) aus, eine Aktion pro Eintrag. Falls Zeit oder Verantwortlicher im Original stehen, mit angeben. Beginne mit „## Aufgaben“ und gib nur die Aufgabenliste aus.</string>
+    <string name="note_ai_prompt_condense">Kürze diese Notiz: Kerninformationen und Struktur beibehalten, Wiederholungen und Redundanzen entfernen; keine wichtigen Fakten verlieren.</string>
+    <string name="note_ai_prompt_expand">Erweitere diese Notiz: Erklärungen, Beispiele und Details ergänzen, damit der Inhalt vollständiger wird; ursprüngliche Aussagen und Fakten beibehalten, keine Daten oder persönlichen Erfahrungen erfinden.</string>
+    <string name="note_ai_prompt_format">Ordne die Formatierung dieser Notiz: Überschriftenebenen korrigieren, Listen, Einrückungen und Leerzeilen vereinheitlichen, überlange Absätze aufteilen, aufeinanderfolgende Punkte in Listen oder Tabellen überführen; Bedeutung und Fakten nicht verändern.</string>
+    <string name="note_ai_prompt_hint">Der KI mitteilen, wie diese Notiz geändert werden soll</string>
+    <string name="note_ai_prompt_label">Prompt</string>
+    <string name="note_ai_prompt_polish">Überarbeite diese Notiz: Rechtschreibung und Grammatik korrigieren, Ausdruck flüssiger und natürlicher machen, Terminologie und Ton vereinheitlichen; Bedeutung und Informationsgehalt nicht verändern.</string>
+    <string name="note_ai_prompt_summary">Schreibe eine Zusammenfassung von 2–4 Sätzen für diese Notiz, beginnend mit „## Zusammenfassung“, und gib nur den Zusammenfassungsteil aus.</string>
+    <string name="note_ai_regenerate">Neu generieren</string>
+    <string name="note_ai_result_label">KI-Ergebnis</string>
+    <string name="note_ai_result_meta">%1$s · %2$d Tokens</string>
+    <string name="note_ai_stop">Stoppen</string>
+    <string name="note_ai_system_prompt">Du bist der Markdown-Editor einer Notiz-App. Ändere die Notiz gemäß den Anweisungen des Nutzers und behalte die Originalsprache, Fakten, Zahlen, Links, Bilder, Audio-/Videoanweisungen, Tabellen und Code bei. Gib nur den vollständigen geänderten Markdown-Text aus, ohne Erklärung, ohne Präfix oder Suffix und ohne Umrahmung durch Codeblöcke.</string>
+    <string name="note_ai_too_short">Bitte zuerst etwas Inhalt in die Notiz schreiben.</string>
+    <string name="note_ai_undo_apply">Rückgängig</string>
+    <string name="note_menu_copy_all">Gesamten Inhalt kopieren</string>
+    <string name="note_menu_settings">Einstellungen</string>
 </resources>

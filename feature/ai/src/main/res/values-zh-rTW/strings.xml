@@ -1022,4 +1022,45 @@
     <string name="ai_chat_mode_chat_description">即時對話 · 快速問答</string>
     <string name="ai_chat_mode_agent_title">Agent 模式</string>
     <string name="ai_chat_mode_agent_description">規劃執行 · 自動完成任務</string>
+
+    <!-- i18n-fill: feature/ai -->
+    <string name="agent_tool_bookmark_added">已加入書籤：\n- id: %1$s\n- 標題: %2$s\n- URL: %3$s\n- 分類: %4$s</string>
+    <string name="agent_tool_bookmark_exists">書籤已存在：%1$s (id: %2$s)</string>
+    <string name="agent_tool_bookmark_failed">書籤操作失敗：%1$s</string>
+    <string name="agent_tool_bookmark_folder_builtin">分類「%1$s」是內建分類，不可刪除</string>
+    <string name="agent_tool_bookmark_folder_created">已建立書籤分類：%1$s (id: %2$s)</string>
+    <string name="agent_tool_bookmark_folder_deleted">已刪除分類：%1$s，其中的書籤已移至未分類</string>
+    <string name="agent_tool_bookmark_folder_exists">分類「%1$s」已存在 (id: %2$s)</string>
+    <string name="agent_tool_bookmark_folder_list_header">書籤分類：</string>
+    <string name="agent_tool_bookmark_folder_not_found">分類 %1$s 不存在，可用：%2$s</string>
+    <string name="agent_tool_bookmark_folder_row">· %1$s (id: %2$s, %3$s 個書籤)</string>
+    <string name="agent_tool_bookmark_missing_bookmark_id">缺少 bookmark_id 參數</string>
+    <string name="agent_tool_bookmark_missing_folder_id">缺少 folder_id 參數</string>
+    <string name="agent_tool_bookmark_missing_folder_name">缺少 folder_name 參數</string>
+    <string name="agent_tool_bookmark_missing_url">缺少 url 參數</string>
+    <string name="agent_tool_bookmark_no_folders">目前沒有書籤分類</string>
+    <string name="agent_tool_bookmark_not_found">書籤 %1$s 不存在</string>
+    <string name="agent_tool_bookmark_removed">已刪除書籤：%1$s (%2$s)</string>
+    <string name="agent_tool_bookmark_uncategorized">未分類</string>
+    <string name="agent_tool_bookmark_unknown_action">未知操作：%1$s，可用：%2$s</string>
+    <string name="agent_tool_list_param_limit">單頁最多回傳幾筆，1-100，預設 20。</string>
+    <string name="agent_tool_list_param_offset">分頁位移；用上一次結果的 next_offset 繼續。</string>
+    <string name="agent_tool_manage_bookmark_param_action">操作類型：add_bookmark / remove_bookmark / list_bookmarks / create_folder / delete_folder / list_folders</string>
+    <string name="agent_tool_manage_bookmark_param_bookmark_id">書籤項目 ID（remove_bookmark 時必填，來自 list_bookmarks）</string>
+    <string name="agent_tool_manage_bookmark_param_folder_id">所屬分類 ID（add_bookmark / delete_folder 時使用，來自 list_folders）</string>
+    <string name="agent_tool_manage_bookmark_param_folder_name">分類名稱（create_folder 時必填）</string>
+    <string name="agent_tool_manage_bookmark_param_title">書籤標題（add_bookmark 時選填，預設使用 URL）</string>
+    <string name="agent_tool_manage_bookmark_param_url">網址（add_bookmark / remove_bookmark 時必填）</string>
+    <string name="agent_tool_manage_bookmark_summary">新增收藏網址、建立收藏夾分類</string>
+    <string name="agent_tool_manage_bookmark_title">管理書籤</string>
+    <string name="agent_tool_manage_todo_category_exists">分類已存在：%1$s</string>
+    <string name="agent_tool_manage_todo_inbox_title">收集箱</string>
+    <string name="agent_tool_manage_todo_list_reused">已向現有清單「%1$s」追加 %2$d 筆，略過重複 %3$d 筆</string>
+    <string name="agent_tool_manage_todo_list_summary">共 %1$d 筆，已完成 %2$d 筆，待處理 %3$d 筆；本次回傳 %4$d 筆</string>
+    <string name="agent_tool_manage_todo_param_category_id">分類 ID，list/create_task 時使用，取自 list 回傳的 id；\"__inbox__\" 表示收集箱。傳了 id 時優先於 category_name。</string>
+    <string name="agent_tool_manage_todo_param_include_completed">list 是否包含已完成任務，預設 true；只看未完成傳 false。</string>
+    <string name="agent_tool_manage_todo_param_limit">list 單頁最多回傳多少筆任務，1-100，預設 20。</string>
+    <string name="agent_tool_manage_todo_param_offset">list 分頁偏移；用上一次結果的 next_offset 繼續翻頁。</string>
+    <string name="agent_tool_manage_todo_param_query">可選關鍵字，搜尋任務標題、備註和標籤。</string>
+    <string name="agent_tool_unknown_action_with_options">未知操作: %1$s，可用: %2$s</string>
 </resources>

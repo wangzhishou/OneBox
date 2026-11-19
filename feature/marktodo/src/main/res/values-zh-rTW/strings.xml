@@ -213,4 +213,12 @@
     <string name="select_exact_time_hint">新增具體時間（選填）</string>
     <string name="action_select_time">選擇時間</string>
     <string name="action_clear_time">清除時間</string>
+
+    <!-- i18n-fill: feature/marktodo -->
+    <string name="action_duplicate">複製</string>
+    <string name="marktodo_log_task_duplicated">複製待辦：%1$s</string>
+    <string name="quick_add_ai_action">AI 建立</string>
+    <string name="quick_add_ai_dialog_title">AI 建立待辦</string>
+    <string name="quick_add_ai_prompt_prefix">幫我建立待辦事項</string>
+    <string name="snackbar_task_duplicated">已複製待辦</string>
 </resources>

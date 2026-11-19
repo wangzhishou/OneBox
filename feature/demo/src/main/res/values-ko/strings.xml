@@ -107,4 +107,28 @@
     <string name="demo_aigc_demo_parse_failed">데모 AIGC 파싱 실패</string>
     <string name="demo_glass_showcase_consistency_desc">같은 색조와 단계를 GlassCard, GlassSurface, coloredGlass로 렌더링합니다. 글래스가 켜져 있든 꺼져 있든 셋 다 똑같이 보여야 합니다.</string>
     <string name="demo_glass_showcase_consistency_title">파이프라인 일관성</string>
+
+    <!-- i18n-fill: feature/demo -->
+    <string name="demo_markdown_engine_kmp">KMP Markdown 1.7.2</string>
+    <string name="demo_markdown_engine_legacy">기존 렌더링 엔진</string>
+    <string name="demo_markdown_media_sample">미디어 예시</string>
+    <string name="demo_rich_editor_close">실험 종료</string>
+    <string name="demo_rich_editor_copied">복사됨</string>
+    <string name="demo_rich_editor_copy_markdown">Markdown 복사</string>
+    <string name="demo_rich_editor_description">텍스트와 추적 가능한 스타일이 유일한 소스이며, 편집 영역은 WebView를 사용하지 않고 Markdown 마크업도 표시하지 않습니다.</string>
+    <string name="demo_rich_editor_entry_title">Native 리치 텍스트 편집기</string>
+    <string name="demo_rich_editor_highlight">강조</string>
+    <string name="demo_rich_editor_mode_edit">직접 편집</string>
+    <string name="demo_rich_editor_mode_preview">Native 미리보기</string>
+    <string name="demo_rich_editor_mode_source">Markdown</string>
+    <string name="demo_rich_editor_sample_body">렌더링된 텍스트를 직접 편집하며, 원하는 내용을 선택하면 서식 메뉴가 열립니다.</string>
+    <string name="demo_rich_editor_sample_bullet_export">Markdown을 내보낸 후 기존 Native 렌더러로 결과를 확인</string>
+    <string name="demo_rich_editor_sample_bullet_styles">스타일은 TrackedRange를 통해 입력, 삭제, 붙여넣기 시 함께 이동합니다</string>
+    <string name="demo_rich_editor_sample_footer">%1$s가 텍스트와 스타일을 함께 관리하며, %2$s도 더 이상 필수가 아닙니다.</string>
+    <string name="demo_rich_editor_sample_state_word">TextFieldState</string>
+    <string name="demo_rich_editor_sample_title">Native WYSIWYG 편집</string>
+    <string name="demo_rich_editor_sample_webview_word">WebView</string>
+    <string name="demo_rich_editor_stats">%1$d자 · 추적 가능한 스타일 구간 %2$d개</string>
+    <string name="demo_rich_editor_stats_with_hint">%1$d자 · 스타일 구간 %2$d개 · 텍스트 선택 후 서식 설정 가능</string>
+    <string name="demo_rich_editor_title">Native WYSIWYG 편집기</string>
 </resources>

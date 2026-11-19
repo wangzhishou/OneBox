@@ -101,4 +101,10 @@
     <string name="media_play_failed">Pemutaran gagal, beralih ke item berikutnya</string>
     <string name="media_collapse_recent">Ciutkan</string>
     <string name="media_expand_recent">Bentangkan</string>
+
+    <!-- i18n-fill: feature/media-player -->
+    <string name="media_inline_audio">Audio</string>
+    <string name="media_inline_invalid_url">Alamat media tidak valid atau tidak didukung</string>
+    <string name="media_inline_play_error">Pemutaran gagal, ketuk tombol putar untuk mencoba lagi</string>
+    <string name="media_inline_video">Video</string>
 </resources>

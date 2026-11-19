@@ -204,4 +204,45 @@
     <string name="textcard_template_name">テンプレート名</string>
     <string name="textcard_template_saved">テンプレートを保存しました</string>
     <string name="textcard_try_sample">サンプル</string>
+
+    <!-- i18n-fill: feature/text-card -->
+    <string name="textcard_annotated_long_image_hint">ページ内注釈を含む場合、長い画像はページ分割結果に従って結合され、注釈の位置が保持されます。</string>
+    <string name="textcard_annotation_draw_mode">ペン · %1$d ページ</string>
+    <string name="textcard_annotation_edit_text">注釈テキストを編集中</string>
+    <string name="textcard_annotation_empty">このページには注釈がありません。テキスト、ペン、図形を追加できます。</string>
+    <string name="textcard_annotation_mode">注釈中 · %1$d ページ</string>
+    <string name="textcard_annotation_needs_review">要確認</string>
+    <string name="textcard_annotation_review_count">%1$d 件の注釈を確認してください</string>
+    <string name="textcard_apply">適用</string>
+    <string name="textcard_backup_source">原文をバックアップとしてコピー</string>
+    <string name="textcard_brush_color">ペンの色</string>
+    <string name="textcard_brush_marker">マーカー</string>
+    <string name="textcard_brush_pencil">鉛筆</string>
+    <string name="textcard_brush_settings">ペン設定</string>
+    <string name="textcard_brush_type">ペンの種類</string>
+    <string name="textcard_delete_page_break">ページ分割を削除</string>
+    <string name="textcard_draw_opacity">不透明度</string>
+    <string name="textcard_eraser">消しゴム</string>
+    <string name="textcard_export_preparing">レイアウト中…</string>
+    <string name="textcard_go_to_page">移動</string>
+    <string name="textcard_layers_reorder_hint">ハンドルをドラッグしてレイヤー順を調整</string>
+    <string name="textcard_layout_failed_short">レイアウトに失敗しました</string>
+    <string name="textcard_layout_settings">ページと用紙</string>
+    <string name="textcard_layout_updating">レイアウトを更新中…</string>
+    <string name="textcard_long_image_page_break_hint">連続長い画像では、手動改ページは改行として扱われます。複数ページに戻すと改ページが復元されます。</string>
+    <string name="textcard_manual_page_break">手動改ページ %1$d</string>
+    <string name="textcard_manual_page_break_short">手動</string>
+    <string name="textcard_move_annotation_page">ページ番号へ移動</string>
+    <string name="textcard_page_count_transition">%1$d ページ → %2$d ページ</string>
+    <string name="textcard_page_number_input">ページ番号</string>
+    <string name="textcard_project_meta_pending">ページ数は更新待ち · %1$s</string>
+    <string name="textcard_save_failed_retry">保存に失敗しました。保存をタップして再試行してください</string>
+    <string name="textcard_save_now">作品を今すぐ保存</string>
+    <string name="textcard_shape_corner_radius">角丸</string>
+    <string name="textcard_shape_kind">形状タイプ</string>
+    <string name="textcard_shape_stroke">線</string>
+    <string name="textcard_source_copied">原文をコピーしました</string>
+    <string name="textcard_tab_annotations">注釈</string>
+    <string name="textcard_tab_layout">ページ</string>
+    <string name="textcard_unsaved_changes">未保存の変更があります</string>
 </resources>

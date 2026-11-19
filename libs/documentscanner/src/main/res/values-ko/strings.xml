@@ -20,4 +20,7 @@
 
 <resources>
     <string name="image_with_cropper">자르기 도구가 있는 원본 이미지</string>
+
+    <!-- i18n-fill: libs/documentscanner -->
+    <string name="document_scan_captured_image_unreadable">방금 찍은 사진을 읽지 못했습니다. 다시 스캔해 주세요</string>
 </resources>

@@ -2126,4 +2126,20 @@
     <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
     <string name="ai_chat_loading_byok_hint">अपनी API कुंजी से कतार छोड़ें</string>
     <string name="ai_chat_loading_byok_action">सेटअप</string>
+
+    <!-- i18n-fill: core/r -->
+    <string name="device_status">स्थानीय स्थिति</string>
+    <string name="device_status_description">स्थानीय IP, नेटवर्क और डिवाइस जानकारी कॉपी करें</string>
+    <string name="file_viewer_description">Word, Excel, PowerPoint, EPUB और टेक्स्ट फ़ाइलें ऑफ़लाइन खोलें</string>
+    <string name="file_viewer_error_cannot_open">यह फ़ाइल नहीं खोली जा सकी। हो सकता है इसे स्थानांतरित कर दिया गया हो, या ऐप की पढ़ने की अनुमति हट गई हो।</string>
+    <string name="file_viewer_error_too_large">इस फ़ाइल का आकार %1$s है, यहाँ पूर्वावलोकन के लिए बहुत बड़ी है। कृपया इसे किसी अन्य ऐप से खोलें।</string>
+    <string name="file_viewer_go_to_page">पेज नंबर पर जाएं</string>
+    <string name="file_viewer_night_mode">नाइट मोड</string>
+    <string name="file_viewer_open_with_other">किसी अन्य ऐप से खोलें</string>
+    <string name="file_viewer_page_number">पेज नंबर</string>
+    <string name="file_viewer_search_hint">दस्तावेज़ में खोजें</string>
+    <string name="file_viewer_search_next">अगला मिलान</string>
+    <string name="file_viewer_search_previous">पिछला मिलान</string>
+    <string name="file_viewer_title">फ़ाइल पूर्वावलोकन</string>
+    <string name="home_category_filter">श्रेणी फ़िल्टर</string>
 </resources>

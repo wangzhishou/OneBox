@@ -20,4 +20,7 @@
 
 <resources>
     <string name="image_with_cropper">Gambar asli dengan pemotong</string>
+
+    <!-- i18n-fill: libs/documentscanner -->
+    <string name="document_scan_captured_image_unreadable">Gagal membaca foto yang baru diambil, silakan pindai ulang</string>
 </resources>

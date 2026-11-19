@@ -20,4 +20,7 @@
 
 <resources>
     <string name="image_with_cropper">Image originale avec outil de recadrage</string>
+
+    <!-- i18n-fill: libs/documentscanner -->
+    <string name="document_scan_captured_image_unreadable">Impossible de lire la photo qui vient d\'être prise, veuillez relancer le scan</string>
 </resources>

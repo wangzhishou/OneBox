@@ -132,4 +132,35 @@
     <string name="cloud_storage_smb_error_share_deleted">Le partage spécifié n\'existe pas sur le serveur</string>
     <string name="cloud_storage_smb_error_sharing_violation">Le fichier est utilisé par un autre processus et est inaccessible</string>
     <string name="cloud_storage_smb_error_generic">Erreur SMB : %1$s (%2$s)</string>
+
+    <!-- i18n-fill: feature/cloud-storage -->
+    <string name="cloud_storage_add_connection">Ajouter une connexion</string>
+    <string name="cloud_storage_connection_delete_action">Supprimer</string>
+    <string name="cloud_storage_connection_delete_message">Supprimer « %s » ? Seule la configuration de connexion enregistrée sur cet appareil sera effacée ; les fichiers cloud ne seront pas affectés.</string>
+    <string name="cloud_storage_connection_delete_title">Supprimer la connexion</string>
+    <string name="cloud_storage_delete_connection">Supprimer</string>
+    <string name="cloud_storage_detail_location">Emplacement</string>
+    <string name="cloud_storage_detail_modified">Date de modification</string>
+    <string name="cloud_storage_detail_type">Type</string>
+    <string name="cloud_storage_done">Terminé</string>
+    <string name="cloud_storage_edit_connection">Modifier</string>
+    <string name="cloud_storage_error_auth">Échec de la connexion, vérifiez le nom d\'utilisateur / mot de passe ou l\'AccessKey</string>
+    <string name="cloud_storage_error_cleartext">Ce canal n\'autorise pas le HTTP en clair, veuillez utiliser une adresse HTTPS</string>
+    <string name="cloud_storage_error_network">Impossible de joindre le serveur, vérifiez l\'adresse, le port et le réseau</string>
+    <string name="cloud_storage_error_not_found">Le fichier ou le dossier n\'existe plus</string>
+    <string name="cloud_storage_error_permission">Ce compte n\'a pas l\'autorisation d\'accéder à ce fichier</string>
+    <string name="cloud_storage_error_server">Le serveur a renvoyé une erreur : %s</string>
+    <string name="cloud_storage_link_unavailable">Cette connexion ne prend pas en charge la génération de liens de partage</string>
+    <string name="cloud_storage_search_clear">Effacer la recherche</string>
+    <string name="cloud_storage_search_empty">Aucun fichier correspondant</string>
+    <string name="cloud_storage_search_placeholder">Rechercher dans le dossier actuel</string>
+    <string name="cloud_storage_sort_ascending">Croissant</string>
+    <string name="cloud_storage_sort_date">Date de modification</string>
+    <string name="cloud_storage_sort_descending">Décroissant</string>
+    <string name="cloud_storage_sort_name">Nom</string>
+    <string name="cloud_storage_sort_size">Taille</string>
+    <string name="cloud_storage_sort_title">Trier</string>
+    <string name="cloud_storage_switch_to_grid">Passer à la vue grille</string>
+    <string name="cloud_storage_switch_to_list">Passer à la vue liste</string>
+    <string name="cloud_storage_testing">Test en cours...</string>
 </resources>

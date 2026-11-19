@@ -205,4 +205,12 @@
     <string name="select_exact_time_hint">具体的な時刻を追加（任意）</string>
     <string name="action_select_time">時刻を選択</string>
     <string name="action_clear_time">時刻をクリア</string>
+
+    <!-- i18n-fill: feature/marktodo -->
+    <string name="action_duplicate">コピー</string>
+    <string name="marktodo_log_task_duplicated">ToDoをコピー: %1$s</string>
+    <string name="quick_add_ai_action">AIで作成</string>
+    <string name="quick_add_ai_dialog_title">AIでToDoを作成</string>
+    <string name="quick_add_ai_prompt_prefix">ToDoの作成を手伝って</string>
+    <string name="snackbar_task_duplicated">ToDoをコピーしました</string>
 </resources>

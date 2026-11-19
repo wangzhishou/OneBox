@@ -60,4 +60,19 @@
     <string name="activity_log_poem_app_title">Klassische chinesische Gedichte</string>
     <string name="activity_log_todo_app_title">Aufgabenliste</string>
     <string name="activity_log_xiangqi_app_title">Chinesisches Schach</string>
+
+    <!-- i18n-fill: core/database -->
+    <string name="activity_log_archive_app_title">Dateikomprimierung</string>
+    <string name="activity_log_archive_created_title">Archiv erstellen</string>
+    <string name="activity_log_archive_entry_extracted_description">„%1$s“ nach „%2$s“ entpackt</string>
+    <string name="activity_log_archive_entry_extracted_title">Datei entpacken</string>
+    <string name="activity_log_archive_extracted_title">Archiv entpacken</string>
+    <string name="activity_log_archive_unknown_folder">Ausgewählter Ordner</string>
+    <string name="activity_log_archive_unnamed">Archiv</string>
+    <plurals name="activity_log_archive_created_description">
+        <item quantity="other">„%1$s“ gespeichert, insgesamt %2$d Dateien</item>
+    </plurals>
+    <plurals name="activity_log_archive_extracted_description">
+        <item quantity="other">%1$d Dateien nach „%2$s“ entpackt</item>
+    </plurals>
 </resources>

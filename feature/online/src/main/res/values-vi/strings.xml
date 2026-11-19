@@ -21,4 +21,45 @@
 <resources>
     <string name="mini_program_jump_confirm">Sắp rời đi và chuyển sang WeChat để mở?</string>
     <string name="mini_program_redirecting">Đang chuyển hướng…</string>
+
+    <!-- i18n-fill: feature/online -->
+    <string name="note_menu_copy_all">Sao chép toàn bộ nội dung</string>
+    <string name="note_menu_settings">Cài đặt</string>
+    <string name="note_ai_action_format">Định dạng bằng AI</string>
+    <string name="note_ai_action_expand">Mở rộng bằng AI</string>
+    <string name="note_ai_action_polish">Trau chuốt bằng AI</string>
+    <string name="note_ai_action_condense">Rút gọn bằng AI</string>
+    <string name="note_ai_action_checklist">Trích xuất việc cần làm bằng AI</string>
+    <string name="note_ai_action_summary">Tạo tóm tắt bằng AI</string>
+    <string name="note_ai_prompt_label">Gợi ý</string>
+    <string name="note_ai_prompt_hint">Cho AI biết bạn muốn sửa ghi chú này như thế nào</string>
+    <string name="note_ai_original_label">Nội dung gốc</string>
+    <string name="note_ai_original_meta">Nội dung gốc · %1$d từ</string>
+    <string name="note_ai_result_label">Kết quả AI</string>
+    <string name="note_ai_panel_generate">Tạo</string>
+    <string name="note_ai_regenerate">Tạo lại</string>
+    <string name="note_ai_stop">Dừng</string>
+    <string name="note_ai_copy">Sao chép</string>
+    <string name="note_ai_copied">Đã sao chép</string>
+    <string name="note_ai_apply_replace">Thay thế nội dung gốc</string>
+    <string name="note_ai_apply_append">Thêm vào cuối</string>
+    <string name="note_ai_apply_prepend">Chèn vào đầu</string>
+    <string name="note_ai_undo_apply">Hoàn tác</string>
+    <string name="note_ai_applied">Đã áp dụng vào ghi chú, có thể hoàn tác trước khi đóng bảng điều khiển.</string>
+    <string name="note_ai_panel_generating">Đang tạo…</string>
+    <string name="note_ai_empty_hint">Hãy chọn một thao tác, điều chỉnh gợi ý, sau đó tạo.</string>
+    <string name="note_ai_empty_result">AI trả về kết quả trống, bạn có thể thử lại hoặc đổi công cụ.</string>
+    <string name="note_ai_no_engine">Không có công cụ AI khả dụng, vui lòng thêm trong 「Cài đặt → Công cụ AI」.</string>
+    <string name="note_ai_result_meta">%1$s · %2$d tokens</string>
+    <string name="note_ai_too_short">Vui lòng viết nội dung vào ghi chú trước.</string>
+    <string name="note_ai_keepalive_title">AI đang xử lý ghi chú</string>
+    <string name="note_ai_billing_desc">Viết bằng AI cho ghi chú</string>
+    <string name="note_ai_system_prompt">Bạn là trình soạn thảo Markdown của ứng dụng ghi chú. Hãy sửa ghi chú theo chỉ dẫn của người dùng, giữ nguyên ngôn ngữ gốc, sự kiện, số liệu, liên kết, chỉ dẫn hình ảnh/âm thanh/video, bảng và mã. Chỉ xuất ra toàn bộ nội dung Markdown đã sửa, không giải thích, không thêm tiền tố/hậu tố, không bọc trong khối mã.</string>
+    <string name="note_ai_input_template">Chỉ dẫn:\n%1$s\n\nMarkdown gốc:\n%2$s</string>
+    <string name="note_ai_prompt_format">Sắp xếp lại bố cục của ghi chú này: sửa cấp độ tiêu đề, thống nhất danh sách, thụt lề và dòng trống, tách các đoạn quá dài, chuyển các ý liên tiếp thành danh sách hoặc bảng; không thay đổi ý nghĩa và sự kiện gốc.</string>
+    <string name="note_ai_prompt_expand">Mở rộng ghi chú này: bổ sung giải thích, ví dụ và chi tiết để nội dung đầy đủ hơn; giữ nguyên quan điểm và sự kiện gốc, không bịa đặt số liệu hay trải nghiệm cá nhân.</string>
+    <string name="note_ai_prompt_polish">Trau chuốt ghi chú này: sửa lỗi chính tả và ngữ pháp, làm cho cách diễn đạt trôi chảy tự nhiên hơn, thống nhất thuật ngữ và giọng điệu; không thay đổi ý nghĩa và lượng thông tin.</string>
+    <string name="note_ai_prompt_condense">Rút gọn ghi chú này: giữ lại thông tin cốt lõi và cấu trúc, xóa bỏ các diễn đạt trùng lặp và dư thừa; không làm mất các sự kiện quan trọng.</string>
+    <string name="note_ai_prompt_checklist">Trích xuất các việc cần làm có thể thực hiện từ ghi chú này, xuất ra danh sách hộp kiểm Markdown (- [ ]), mỗi dòng một hành động, nếu trong bản gốc có thời gian hoặc người phụ trách thì ghi kèm. Bắt đầu bằng 「## 待办」, chỉ xuất ra danh sách việc cần làm.</string>
+    <string name="note_ai_prompt_summary">Viết một đoạn tóm tắt 2–4 câu cho ghi chú này, bắt đầu bằng 「## 摘要」, chỉ xuất ra phần tóm tắt.</string>
 </resources>

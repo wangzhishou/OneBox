@@ -205,4 +205,12 @@
     <string name="select_exact_time_hint">إضافة وقت محدد (اختياري)</string>
     <string name="action_select_time">اختيار الوقت</string>
     <string name="action_clear_time">مسح الوقت</string>
+
+    <!-- i18n-fill: feature/marktodo -->
+    <string name="action_duplicate">نسخ</string>
+    <string name="marktodo_log_task_duplicated">نسخ المهمة: %1$s</string>
+    <string name="quick_add_ai_action">إنشاء بالذكاء الاصطناعي</string>
+    <string name="quick_add_ai_dialog_title">إنشاء مهمة بالذكاء الاصطناعي</string>
+    <string name="quick_add_ai_prompt_prefix">ساعدني في إنشاء مهمة</string>
+    <string name="snackbar_task_duplicated">تم نسخ المهمة</string>
 </resources>

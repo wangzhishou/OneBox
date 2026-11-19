@@ -101,4 +101,10 @@
     <string name="media_play_failed">再生に失敗したため、次の項目にスキップしました</string>
     <string name="media_collapse_recent">最近の再生を折りたたむ</string>
     <string name="media_expand_recent">最近の再生を展開する</string>
+
+    <!-- i18n-fill: feature/media-player -->
+    <string name="media_inline_audio">音声</string>
+    <string name="media_inline_invalid_url">メディアアドレスが無効か、サポートされていません</string>
+    <string name="media_inline_play_error">再生に失敗しました。再生ボタンをタップして再試行してください</string>
+    <string name="media_inline_video">動画</string>
 </resources>

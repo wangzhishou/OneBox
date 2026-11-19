@@ -206,4 +206,45 @@
     <string name="textcard_template_name">Tên mẫu</string>
     <string name="textcard_template_saved">Đã lưu mẫu</string>
     <string name="textcard_try_sample">Ví dụ</string>
+
+    <!-- i18n-fill: feature/text-card -->
+    <string name="textcard_annotated_long_image_hint">Khi có chú thích trong trang, ảnh dài được ghép theo kết quả phân trang, giữ nguyên vị trí chú thích.</string>
+    <string name="textcard_annotation_draw_mode">Bút vẽ · Trang %1$d</string>
+    <string name="textcard_annotation_edit_text">Đang chỉnh sửa văn bản chú thích</string>
+    <string name="textcard_annotation_empty">Trang này chưa có chú thích, có thể thêm văn bản, bút vẽ hoặc hình dạng.</string>
+    <string name="textcard_annotation_mode">Đang chú thích · Trang %1$d</string>
+    <string name="textcard_annotation_needs_review">Cần kiểm tra</string>
+    <string name="textcard_annotation_review_count">%1$d chú thích cần kiểm tra</string>
+    <string name="textcard_apply">Áp dụng</string>
+    <string name="textcard_backup_source">Sao chép bản gốc làm bản sao lưu</string>
+    <string name="textcard_brush_color">Màu bút vẽ</string>
+    <string name="textcard_brush_marker">Bút dạ quang</string>
+    <string name="textcard_brush_pencil">Bút chì</string>
+    <string name="textcard_brush_settings">Cài đặt bút vẽ</string>
+    <string name="textcard_brush_type">Loại bút vẽ</string>
+    <string name="textcard_delete_page_break">Xóa phân trang</string>
+    <string name="textcard_draw_opacity">Độ mờ</string>
+    <string name="textcard_eraser">Tẩy</string>
+    <string name="textcard_export_preparing">Đang dàn trang…</string>
+    <string name="textcard_go_to_page">Chuyển đến</string>
+    <string name="textcard_layers_reorder_hint">Kéo tay cầm để điều chỉnh thứ tự lớp</string>
+    <string name="textcard_layout_failed_short">Dàn trang thất bại</string>
+    <string name="textcard_layout_settings">Trang và khổ giấy</string>
+    <string name="textcard_layout_updating">Đang cập nhật dàn trang…</string>
+    <string name="textcard_long_image_page_break_hint">Trong ảnh dài liên tục, phân trang thủ công được xử lý như ngắt dòng; khi chuyển lại nhiều trang sẽ khôi phục phân trang.</string>
+    <string name="textcard_manual_page_break">Phân trang thủ công %1$d</string>
+    <string name="textcard_manual_page_break_short">Thủ công</string>
+    <string name="textcard_move_annotation_page">Chuyển đến số trang</string>
+    <string name="textcard_page_count_transition">Trang %1$d → Trang %2$d</string>
+    <string name="textcard_page_number_input">Số trang</string>
+    <string name="textcard_project_meta_pending">Số trang chờ cập nhật · %1$s</string>
+    <string name="textcard_save_failed_retry">Lưu thất bại, nhấn Lưu để thử lại</string>
+    <string name="textcard_save_now">Lưu tác phẩm ngay</string>
+    <string name="textcard_shape_corner_radius">Bo góc</string>
+    <string name="textcard_shape_kind">Loại hình dạng</string>
+    <string name="textcard_shape_stroke">Viền</string>
+    <string name="textcard_source_copied">Đã sao chép văn bản gốc</string>
+    <string name="textcard_tab_annotations">Chú thích</string>
+    <string name="textcard_tab_layout">Trang</string>
+    <string name="textcard_unsaved_changes">Có thay đổi chưa lưu</string>
 </resources>

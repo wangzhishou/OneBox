@@ -1021,4 +1021,45 @@
     <string name="ai_chat_mode_chat_description">Anında sohbet · Hızlı yanıtlar</string>
     <string name="ai_chat_mode_agent_title">Aracı modu</string>
     <string name="ai_chat_mode_agent_description">Planla ve uygula · Otomatik görevler</string>
+
+    <!-- i18n-fill: feature/ai -->
+    <string name="agent_tool_bookmark_added">Yer imi eklendi:\n- id: %1$s\n- Başlık: %2$s\n- URL: %3$s\n- Kategori: %4$s</string>
+    <string name="agent_tool_bookmark_exists">Yer imi zaten mevcut: %1$s (id: %2$s)</string>
+    <string name="agent_tool_bookmark_failed">Yer imi işlemi başarısız: %1$s</string>
+    <string name="agent_tool_bookmark_folder_builtin">\"%1$s\" kategorisi yerleşik bir kategoridir, silinemez</string>
+    <string name="agent_tool_bookmark_folder_created">Yer imi kategorisi oluşturuldu: %1$s (id: %2$s)</string>
+    <string name="agent_tool_bookmark_folder_deleted">Kategori silindi: %1$s, içindeki yer imleri kategorisize taşındı</string>
+    <string name="agent_tool_bookmark_folder_exists">\"%1$s\" kategorisi zaten mevcut (id: %2$s)</string>
+    <string name="agent_tool_bookmark_folder_list_header">Yer imi kategorileri:</string>
+    <string name="agent_tool_bookmark_folder_not_found">%1$s kategorisi mevcut değil, kullanılabilir: %2$s</string>
+    <string name="agent_tool_bookmark_folder_row">· %1$s (id: %2$s, %3$s yer imi)</string>
+    <string name="agent_tool_bookmark_missing_bookmark_id">bookmark_id parametresi eksik</string>
+    <string name="agent_tool_bookmark_missing_folder_id">folder_id parametresi eksik</string>
+    <string name="agent_tool_bookmark_missing_folder_name">folder_name parametresi eksik</string>
+    <string name="agent_tool_bookmark_missing_url">url parametresi eksik</string>
+    <string name="agent_tool_bookmark_no_folders">Henüz yer imi kategorisi yok</string>
+    <string name="agent_tool_bookmark_not_found">%1$s yer imi mevcut değil</string>
+    <string name="agent_tool_bookmark_removed">Yer imi silindi: %1$s (%2$s)</string>
+    <string name="agent_tool_bookmark_uncategorized">Kategorisiz</string>
+    <string name="agent_tool_bookmark_unknown_action">Bilinmeyen işlem: %1$s, kullanılabilir: %2$s</string>
+    <string name="agent_tool_list_param_limit">Sayfa başına döndürülecek maksimum kayıt sayısı, 1-100, varsayılan 20.</string>
+    <string name="agent_tool_list_param_offset">Sayfalama ofseti; önceki sonucun next_offset değeriyle devam edin.</string>
+    <string name="agent_tool_manage_bookmark_param_action">İşlem türü: add_bookmark / remove_bookmark / list_bookmarks / create_folder / delete_folder / list_folders</string>
+    <string name="agent_tool_manage_bookmark_param_bookmark_id">Yer imi öğe ID\'si (remove_bookmark için zorunlu, list_bookmarks\'tan alınır)</string>
+    <string name="agent_tool_manage_bookmark_param_folder_id">Ait olduğu kategori ID\'si (add_bookmark / delete_folder için kullanılır, list_folders\'tan alınır)</string>
+    <string name="agent_tool_manage_bookmark_param_folder_name">Kategori adı (create_folder için zorunlu)</string>
+    <string name="agent_tool_manage_bookmark_param_title">Yer imi başlığı (add_bookmark için isteğe bağlı, varsayılan olarak URL kullanılır)</string>
+    <string name="agent_tool_manage_bookmark_param_url">Web adresi (add_bookmark / remove_bookmark için zorunlu)</string>
+    <string name="agent_tool_manage_bookmark_summary">Yer imi ekle, yer imi klasörü kategorisi oluştur</string>
+    <string name="agent_tool_manage_bookmark_title">Yer imlerini yönet</string>
+    <string name="agent_tool_manage_todo_category_exists">Kategori zaten mevcut: %1$s</string>
+    <string name="agent_tool_manage_todo_inbox_title">Gelen Kutusu</string>
+    <string name="agent_tool_manage_todo_list_reused">Mevcut \"%1$s\" listesine %2$d öğe eklendi, %3$d yinelenen öğe atlandı</string>
+    <string name="agent_tool_manage_todo_list_summary">Toplam %1$d öğe, %2$d tamamlandı, %3$d beklemede; bu sefer %4$d öğe döndürüldü</string>
+    <string name="agent_tool_manage_todo_param_category_id">Kategori ID\'si, list/create_task sırasında kullanılır, list tarafından döndürülen id\'den alınır; \"__inbox__\" gelen kutusunu belirtir. id verildiğinde category_name\'e göre önceliklidir.</string>
+    <string name="agent_tool_manage_todo_param_include_completed">list tamamlanmış görevleri içersin mi, varsayılan true; yalnızca tamamlanmamışları görmek için false gönderin.</string>
+    <string name="agent_tool_manage_todo_param_limit">list sayfa başına en fazla kaç görev döndürsün, 1-100, varsayılan 20.</string>
+    <string name="agent_tool_manage_todo_param_offset">list sayfalama kayması; önceki sonucun next_offset\'u ile sayfalamaya devam edin.</string>
+    <string name="agent_tool_manage_todo_param_query">İsteğe bağlı anahtar kelime, görev başlığı, notlar ve etiketlerde arama yapar.</string>
+    <string name="agent_tool_unknown_action_with_options">Bilinmeyen işlem: %1$s, kullanılabilir: %2$s</string>
 </resources>

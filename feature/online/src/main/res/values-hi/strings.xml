@@ -21,4 +21,45 @@
 <resources>
     <string name="mini_program_jump_confirm">आप बाहर जाकर इसे WeChat में खोलने वाले हैं। जारी रखें?</string>
     <string name="mini_program_redirecting">पुनर्निर्देशित किया जा रहा है…</string>
+
+    <!-- i18n-fill: feature/online -->
+    <string name="note_menu_copy_all">सभी सामग्री कॉपी करें</string>
+    <string name="note_menu_settings">सेटिंग्स</string>
+    <string name="note_ai_action_format">AI फ़ॉर्मेटिंग</string>
+    <string name="note_ai_action_expand">AI एक-क्लिक विस्तार</string>
+    <string name="note_ai_action_polish">AI एक-क्लिक पॉलिश</string>
+    <string name="note_ai_action_condense">AI संक्षिप्त करें</string>
+    <string name="note_ai_action_checklist">AI से टू-डू निकालें</string>
+    <string name="note_ai_action_summary">AI सारांश बनाएं</string>
+    <string name="note_ai_prompt_label">प्रॉम्प्ट</string>
+    <string name="note_ai_prompt_hint">AI को बताएं कि इस नोट को कैसे बदलना है</string>
+    <string name="note_ai_original_label">मूल पाठ</string>
+    <string name="note_ai_original_meta">मूल पाठ · %1$d अक्षर</string>
+    <string name="note_ai_result_label">AI परिणाम</string>
+    <string name="note_ai_panel_generate">जनरेट करें</string>
+    <string name="note_ai_regenerate">फिर से जनरेट करें</string>
+    <string name="note_ai_stop">रोकें</string>
+    <string name="note_ai_copy">कॉपी करें</string>
+    <string name="note_ai_copied">कॉपी हो गया</string>
+    <string name="note_ai_apply_replace">मूल पाठ बदलें</string>
+    <string name="note_ai_apply_append">अंत में जोड़ें</string>
+    <string name="note_ai_apply_prepend">शुरुआत में डालें</string>
+    <string name="note_ai_undo_apply">पूर्ववत करें</string>
+    <string name="note_ai_applied">नोट पर लागू हो गया, पैनल बंद होने से पहले पूर्ववत कर सकते हैं।</string>
+    <string name="note_ai_panel_generating">जनरेट हो रहा है…</string>
+    <string name="note_ai_empty_hint">पहले एक क्रिया चुनें, प्रॉम्प्ट समायोजित करें, फिर जनरेट करें।</string>
+    <string name="note_ai_empty_result">AI ने खाली परिणाम लौटाया, फिर से प्रयास करें या दूसरा इंजन चुनें।</string>
+    <string name="note_ai_no_engine">कोई उपलब्ध AI इंजन नहीं है, कृपया पहले「सेटिंग्स → AI इंजन」में जोड़ें।</string>
+    <string name="note_ai_result_meta">%1$s · %2$d tokens</string>
+    <string name="note_ai_too_short">कृपया पहले नोट में कुछ लिखें।</string>
+    <string name="note_ai_keepalive_title">AI नोट पर काम कर रहा है</string>
+    <string name="note_ai_billing_desc">नोट AI लेखन</string>
+    <string name="note_ai_system_prompt">आप नोट ऐप के Markdown एडिटर हैं। उपयोगकर्ता के निर्देशों के अनुसार नोट संशोधित करें, मूल भाषा, तथ्य, संख्याएँ, लिंक, चित्र, ऑडियो-वीडियो निर्देश, तालिकाएँ और कोड सुरक्षित रखें। केवल संशोधित पूरा Markdown टेक्स्ट आउटपुट करें, कोई व्याख्या नहीं, कोई उपसर्ग/प्रत्यय नहीं, कोड ब्लॉक फ़ेंस में न लपेटें।</string>
+    <string name="note_ai_input_template">निर्देश:\n%1$s\n\nमूल Markdown:\n%2$s</string>
+    <string name="note_ai_prompt_format">इस नोट का फ़ॉर्मेटिंग ठीक करें: शीर्षक स्तर सुधारें, सूचियाँ, इंडेंटेशन और खाली पंक्तियाँ एकरूप करें, लंबे पैराग्राफ़ विभाजित करें, लगातार बिंदुओं को सूची या तालिका में व्यवस्थित करें; मूल अर्थ और तथ्य न बदलें।</string>
+    <string name="note_ai_prompt_expand">इस नोट का विस्तार करें: व्याख्या, उदाहरण और विवरण जोड़ें ताकि सामग्री अधिक पूर्ण हो; मूल विचार और तथ्य बनाए रखें, डेटा या व्यक्तिगत अनुभव न गढ़ें।</string>
+    <string name="note_ai_prompt_polish">इस नोट को परिष्कृत करें: टाइपो और व्याकरण सुधारें, अभिव्यक्ति को अधिक सहज और स्वाभाविक बनाएँ, शब्दावली और लहजा एकरूप करें; मूल अर्थ और सूचना की मात्रा न बदलें।</string>
+    <string name="note_ai_prompt_condense">इस नोट को संक्षिप्त करें: मुख्य जानकारी और संरचना बनाए रखें, दोहराव और अनावश्यक अभिव्यक्ति हटाएँ; प्रमुख तथ्य न खोएँ।</string>
+    <string name="note_ai_prompt_checklist">इस नोट से क्रियान्वयन योग्य कार्य निकालें, Markdown चेकबॉक्स सूची (- [ ]) आउटपुट करें, प्रत्येक पंक्ति में एक क्रिया, मूल में समय या ज़िम्मेदार व्यक्ति हो तो साथ लिखें। \"## कार्य\" से शुरू करें, केवल कार्य सूची आउटपुट करें।</string>
+    <string name="note_ai_prompt_summary">इस नोट के लिए 2–4 वाक्यों का सारांश लिखें, \"## सारांश\" से शुरू करें, केवल सारांश भाग आउटपुट करें।</string>
 </resources>

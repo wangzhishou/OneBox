@@ -219,4 +219,51 @@
     <!-- 大运走势 -->
     <string name="dayun_year_range">%1$d–%2$d</string>
     <string name="dayun_current">現在</string>
+
+    <!-- i18n-fill: feature/calendar -->
+    <string name="calendar_share_ai_generating">生成中…</string>
+    <string name="calendar_share_ai_hint">AIが日付・旧暦・吉凶・天気を組み合わせて一文を生成します。生成後も編集できます。</string>
+    <string name="calendar_share_ai_write">AIで一文作成</string>
+    <string name="calendar_share_air_prefix">空気</string>
+    <string name="calendar_share_auspicious_title">吉時</string>
+    <string name="calendar_share_blessing">万事如意 平安順遂</string>
+    <string name="calendar_share_brand">万宝盒 · 万年暦</string>
+    <string name="calendar_share_color_title">配色</string>
+    <string name="calendar_share_content_title">カード表示</string>
+    <string name="calendar_share_day_suffix">日</string>
+    <string name="calendar_share_ji_seal">凶</string>
+    <string name="calendar_share_lunar_prefix">旧暦</string>
+    <string name="calendar_share_month_suffix">月</string>
+    <string name="calendar_share_note_counter">%1$d/%2$d</string>
+    <string name="calendar_share_note_label">ひとこと</string>
+    <string name="calendar_share_note_placeholder">空欄なら非表示、最大80文字</string>
+    <string name="calendar_share_note_title">今日のひとこと</string>
+    <string name="calendar_share_note_title_section">ひとことを書く</string>
+    <string name="calendar_share_page_title">カレンダーを共有</string>
+    <string name="calendar_share_preview_size">%1$d × %2$d · PNG</string>
+    <string name="calendar_share_render_failed">カードのレンダリングに失敗しました</string>
+    <string name="calendar_share_retry">再試行</string>
+    <string name="calendar_share_save">画像を保存</string>
+    <string name="calendar_share_save_failed">保存に失敗しました</string>
+    <string name="calendar_share_saved_app">アプリディレクトリに保存しました（%1$s）</string>
+    <string name="calendar_share_saved_gallery">アルバムに保存しました（%1$s）</string>
+    <string name="calendar_share_selected_day_prefix">当日</string>
+    <string name="calendar_share_share">画像を共有</string>
+    <string name="calendar_share_style_gold_ink">玄金</string>
+    <string name="calendar_share_style_ink_green">黛青</string>
+    <string name="calendar_share_style_theme">テーマに従う</string>
+    <string name="calendar_share_style_vermilion">朱砂</string>
+    <string name="calendar_share_today_prefix">今日</string>
+    <string name="calendar_share_toggle_note">心の言葉</string>
+    <string name="calendar_share_toggle_today">今日の祝日</string>
+    <string name="calendar_share_toggle_upcoming">今後の祝日</string>
+    <string name="calendar_share_toggle_weather">天気</string>
+    <string name="calendar_share_transparent_background">透明な背景</string>
+    <string name="calendar_share_upcoming_prefix">未来</string>
+    <string name="calendar_share_weather_loading">天気…</string>
+    <string name="calendar_share_weather_title">天気</string>
+    <string name="calendar_share_weather_today_only">天気は今日のみ利用可能です</string>
+    <string name="calendar_share_weather_unavailable">天気を取得できませんでした</string>
+    <string name="calendar_share_year_suffix">年</string>
+    <string name="calendar_share_yi_seal">吉</string>
 </resources>

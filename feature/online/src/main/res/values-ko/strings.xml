@@ -21,4 +21,45 @@
 <resources>
     <string name="mini_program_jump_confirm">곧 떠나서 WeChat에서 이 내용을 열려고 합니다. 계속하시겠습니까?</string>
     <string name="mini_program_redirecting">리디렉션 중…</string>
+
+    <!-- i18n-fill: feature/online -->
+    <string name="note_menu_copy_all">전체 내용 복사</string>
+    <string name="note_menu_settings">설정</string>
+    <string name="note_ai_action_format">AI 서식 정리</string>
+    <string name="note_ai_action_expand">AI 한 번에 확장</string>
+    <string name="note_ai_action_polish">AI 한 번에 다듬기</string>
+    <string name="note_ai_action_condense">AI 간소화</string>
+    <string name="note_ai_action_checklist">AI 할 일 추출</string>
+    <string name="note_ai_action_summary">AI 요약 생성</string>
+    <string name="note_ai_prompt_label">프롬프트</string>
+    <string name="note_ai_prompt_hint">이 노트를 어떻게 수정할지 AI에게 알려주세요</string>
+    <string name="note_ai_original_label">원문</string>
+    <string name="note_ai_original_meta">원문 · %1$d자</string>
+    <string name="note_ai_result_label">AI 결과</string>
+    <string name="note_ai_panel_generate">생성</string>
+    <string name="note_ai_regenerate">다시 생성</string>
+    <string name="note_ai_stop">중지</string>
+    <string name="note_ai_copy">복사</string>
+    <string name="note_ai_copied">복사됨</string>
+    <string name="note_ai_apply_replace">원문 대체</string>
+    <string name="note_ai_apply_append">끝에 추가</string>
+    <string name="note_ai_apply_prepend">앞에 삽입</string>
+    <string name="note_ai_undo_apply">실행 취소</string>
+    <string name="note_ai_applied">노트에 적용되었습니다. 패널을 닫기 전까지 실행 취소할 수 있습니다.</string>
+    <string name="note_ai_panel_generating">생성 중…</string>
+    <string name="note_ai_empty_hint">먼저 동작을 선택하고 프롬프트를 조정한 뒤 생성하세요.</string>
+    <string name="note_ai_empty_result">AI가 빈 결과를 반환했습니다. 다시 시도하거나 다른 엔진을 사용해 보세요.</string>
+    <string name="note_ai_no_engine">사용 가능한 AI 엔진이 없습니다. 먼저 「설정 → AI 엔진」에서 추가하세요.</string>
+    <string name="note_ai_result_meta">%1$s · %2$d tokens</string>
+    <string name="note_ai_too_short">먼저 노트에 내용을 작성하세요.</string>
+    <string name="note_ai_keepalive_title">AI가 노트를 처리하고 있습니다</string>
+    <string name="note_ai_billing_desc">노트 AI 작성</string>
+    <string name="note_ai_system_prompt">당신은 노트 앱의 Markdown 편집기입니다. 사용자 지시에 따라 노트를 수정하고 원문 언어, 사실, 숫자, 링크, 이미지, 오디오·비디오 지시, 표, 코드를 유지하세요. 수정된 전체 Markdown 전문만 출력하고 설명, 앞뒤 문구, 코드 블록 펜스로 감싸지 마세요.</string>
+    <string name="note_ai_input_template">지시:\n%1$s\n\n원문 Markdown:\n%2$s</string>
+    <string name="note_ai_prompt_format">이 노트의 서식을 정리하세요: 제목 계층을 수정하고 목록, 들여쓰기, 빈 줄을 통일하며, 너무 긴 단락을 나누고 연속된 요점을 목록이나 표로 정리하세요. 원래 의미와 사실은 바꾸지 마세요.</string>
+    <string name="note_ai_prompt_expand">이 노트를 확장하세요: 설명, 예시, 세부 사항을 보충하여 내용을 더 완성도 있게 만드세요. 기존 관점과 사실을 유지하고 데이터나 개인 경험을 꾸며내지 마세요.</string>
+    <string name="note_ai_prompt_polish">이 노트를 다듬으세요: 오탈자와 문법을 수정하고 표현을 더 매끄럽고 자연스럽게 하며 용어와 어조를 통일하세요. 원래 의미와 정보량은 바꾸지 마세요.</string>
+    <string name="note_ai_prompt_condense">이 노트를 간결하게 하세요: 핵심 정보와 구조를 유지하고 중복되고 불필요한 표현을 삭제하세요. 핵심 사실을 잃지 마세요.</string>
+    <string name="note_ai_prompt_checklist">이 노트에서 실행 가능한 할 일을 추출하여 Markdown 체크박스 목록(- [ ])으로 출력하세요. 각 항목은 하나의 동작이며, 원문에 시간이나 담당자가 있으면 함께 포함하세요. 「## 할 일」로 시작하고 할 일 목록만 출력하세요.</string>
+    <string name="note_ai_prompt_summary">이 노트에 대해 2–4문장의 요약을 작성하세요. 「## 요약」으로 시작하고 요약 부분만 출력하세요.</string>
 </resources>

@@ -206,4 +206,45 @@
     <string name="textcard_template_name">模板名稱</string>
     <string name="textcard_template_saved">模板已儲存</string>
     <string name="textcard_try_sample">範例</string>
+
+    <!-- i18n-fill: feature/text-card -->
+    <string name="textcard_annotated_long_image_hint">含頁內標註時，長圖依分頁結果拼接，保留標註位置。</string>
+    <string name="textcard_annotation_draw_mode">畫筆 · 第 %1$d 頁</string>
+    <string name="textcard_annotation_edit_text">正在編輯標註文字</string>
+    <string name="textcard_annotation_empty">本頁尚無標註，可新增文字、畫筆或形狀。</string>
+    <string name="textcard_annotation_mode">正在標註 · 第 %1$d 頁</string>
+    <string name="textcard_annotation_needs_review">需核對</string>
+    <string name="textcard_annotation_review_count">%1$d 個標註需核對</string>
+    <string name="textcard_apply">套用</string>
+    <string name="textcard_backup_source">複製原文作為備份</string>
+    <string name="textcard_brush_color">畫筆顏色</string>
+    <string name="textcard_brush_marker">麥克筆</string>
+    <string name="textcard_brush_pencil">鉛筆</string>
+    <string name="textcard_brush_settings">畫筆設定</string>
+    <string name="textcard_brush_type">畫筆類型</string>
+    <string name="textcard_delete_page_break">刪除分頁</string>
+    <string name="textcard_draw_opacity">不透明度</string>
+    <string name="textcard_eraser">橡皮擦</string>
+    <string name="textcard_export_preparing">排版中…</string>
+    <string name="textcard_go_to_page">跳轉</string>
+    <string name="textcard_layers_reorder_hint">拖動手把調整圖層順序</string>
+    <string name="textcard_layout_failed_short">排版失敗</string>
+    <string name="textcard_layout_settings">頁面與紙張</string>
+    <string name="textcard_layout_updating">正在更新排版…</string>
+    <string name="textcard_long_image_page_break_hint">連續長圖中，手動分頁以換行處理；切回多頁後恢復分頁。</string>
+    <string name="textcard_manual_page_break">手動分頁 %1$d</string>
+    <string name="textcard_manual_page_break_short">手動</string>
+    <string name="textcard_move_annotation_page">移至頁碼</string>
+    <string name="textcard_page_count_transition">%1$d 頁 → %2$d 頁</string>
+    <string name="textcard_page_number_input">頁碼</string>
+    <string name="textcard_project_meta_pending">頁數待更新 · %1$s</string>
+    <string name="textcard_save_failed_retry">儲存失敗，點儲存重試</string>
+    <string name="textcard_save_now">立即儲存作品</string>
+    <string name="textcard_shape_corner_radius">圓角</string>
+    <string name="textcard_shape_kind">形狀類型</string>
+    <string name="textcard_shape_stroke">描邊</string>
+    <string name="textcard_source_copied">原文已複製</string>
+    <string name="textcard_tab_annotations">標註</string>
+    <string name="textcard_tab_layout">頁面</string>
+    <string name="textcard_unsaved_changes">有未儲存的變更</string>
 </resources>

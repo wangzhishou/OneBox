@@ -107,4 +107,28 @@
     <string name="demo_aigc_value_blank">-</string>
     <string name="demo_aigc_pick_failed">Échec de la sélection du fichier</string>
     <string name="demo_aigc_demo_parse_failed">Échec de l\'analyse AIGC de démonstration</string>
+
+    <!-- i18n-fill: feature/demo -->
+    <string name="demo_markdown_engine_kmp">KMP Markdown 1.7.2</string>
+    <string name="demo_markdown_engine_legacy">Moteur de rendu existant</string>
+    <string name="demo_markdown_media_sample">Exemples de médias</string>
+    <string name="demo_rich_editor_close">Désactiver l\'expérience</string>
+    <string name="demo_rich_editor_copied">Copié</string>
+    <string name="demo_rich_editor_copy_markdown">Copier le Markdown</string>
+    <string name="demo_rich_editor_description">Le texte et les styles suivis sont l\'unique source de vérité ; la zone d\'édition n\'utilise pas de WebView et n\'affiche pas le balisage Markdown.</string>
+    <string name="demo_rich_editor_entry_title">Éditeur de texte enrichi natif</string>
+    <string name="demo_rich_editor_highlight">Surlignage</string>
+    <string name="demo_rich_editor_mode_edit">Édition directe</string>
+    <string name="demo_rich_editor_mode_preview">Aperçu natif</string>
+    <string name="demo_rich_editor_mode_source">Markdown</string>
+    <string name="demo_rich_editor_sample_body">Modifiez directement le texte rendu ; sélectionnez n\'importe quel contenu pour ouvrir le menu de mise en forme.</string>
+    <string name="demo_rich_editor_sample_bullet_export">Exportez le Markdown, puis vérifiez le résultat avec le moteur de rendu natif existant</string>
+    <string name="demo_rich_editor_sample_bullet_styles">Les styles suivent la saisie, la suppression et le collage via TrackedRange</string>
+    <string name="demo_rich_editor_sample_footer">%1$s gère à la fois le texte et les styles, et %2$s n\'est plus indispensable.</string>
+    <string name="demo_rich_editor_sample_state_word">TextFieldState</string>
+    <string name="demo_rich_editor_sample_title">Édition WYSIWYG native</string>
+    <string name="demo_rich_editor_sample_webview_word">WebView</string>
+    <string name="demo_rich_editor_stats">%1$d caractères · %2$d plages de style suivies</string>
+    <string name="demo_rich_editor_stats_with_hint">%1$d caractères · %2$d plages de style · sélectionnez du texte pour le mettre en forme</string>
+    <string name="demo_rich_editor_title">Éditeur WYSIWYG natif</string>
 </resources>

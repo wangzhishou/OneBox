@@ -219,4 +219,51 @@
     <!-- 大运走势 -->
     <string name="dayun_year_range">%1$d–%2$d</string>
     <string name="dayun_current">目前</string>
+
+    <!-- i18n-fill: feature/calendar -->
+    <string name="calendar_share_ai_generating">正在生成…</string>
+    <string name="calendar_share_ai_hint">AI 會結合日期、農曆、宜忌和天氣生成一句，生成後可繼續修改。</string>
+    <string name="calendar_share_ai_write">AI 寫一句</string>
+    <string name="calendar_share_air_prefix">空氣</string>
+    <string name="calendar_share_auspicious_title">吉時</string>
+    <string name="calendar_share_blessing">萬事如意 平安順遂</string>
+    <string name="calendar_share_brand">萬寶盒 · 萬年曆</string>
+    <string name="calendar_share_color_title">配色</string>
+    <string name="calendar_share_content_title">卡面顯示</string>
+    <string name="calendar_share_day_suffix">日</string>
+    <string name="calendar_share_ji_seal">忌</string>
+    <string name="calendar_share_lunar_prefix">農曆</string>
+    <string name="calendar_share_month_suffix">月</string>
+    <string name="calendar_share_note_counter">%1$d/%2$d</string>
+    <string name="calendar_share_note_label">心語</string>
+    <string name="calendar_share_note_placeholder">留空則不顯示，最多 80 字</string>
+    <string name="calendar_share_note_title">今日心語</string>
+    <string name="calendar_share_note_title_section">寫一句心語</string>
+    <string name="calendar_share_page_title">分享日曆</string>
+    <string name="calendar_share_preview_size">%1$d × %2$d · PNG</string>
+    <string name="calendar_share_render_failed">卡片渲染失敗</string>
+    <string name="calendar_share_retry">重試</string>
+    <string name="calendar_share_save">儲存圖片</string>
+    <string name="calendar_share_save_failed">儲存失敗</string>
+    <string name="calendar_share_saved_app">已儲存到應用程式目錄（%1$s）</string>
+    <string name="calendar_share_saved_gallery">已儲存到相簿（%1$s）</string>
+    <string name="calendar_share_selected_day_prefix">當日</string>
+    <string name="calendar_share_share">分享圖片</string>
+    <string name="calendar_share_style_gold_ink">玄金</string>
+    <string name="calendar_share_style_ink_green">黛青</string>
+    <string name="calendar_share_style_theme">跟隨主題</string>
+    <string name="calendar_share_style_vermilion">硃砂</string>
+    <string name="calendar_share_today_prefix">今日</string>
+    <string name="calendar_share_toggle_note">心語</string>
+    <string name="calendar_share_toggle_today">今日節日</string>
+    <string name="calendar_share_toggle_upcoming">未來節日</string>
+    <string name="calendar_share_toggle_weather">天氣</string>
+    <string name="calendar_share_transparent_background">透明背景</string>
+    <string name="calendar_share_upcoming_prefix">未來</string>
+    <string name="calendar_share_weather_loading">天氣…</string>
+    <string name="calendar_share_weather_title">天氣</string>
+    <string name="calendar_share_weather_today_only">天氣僅今天可用</string>
+    <string name="calendar_share_weather_unavailable">暫未取得天氣</string>
+    <string name="calendar_share_year_suffix">年</string>
+    <string name="calendar_share_yi_seal">宜</string>
 </resources>

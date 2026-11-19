@@ -2160,4 +2160,48 @@
     <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
     <string name="ai_chat_loading_byok_hint">تجاوز الانتظار بمفتاح API الخاص بك</string>
     <string name="ai_chat_loading_byok_action">إعداد</string>
+
+    <!-- i18n-fill: core/r -->
+    <string name="ai_duel_advanced">إعدادات متقدمة</string>
+    <string name="ai_duel_batch_finished">انتهت هذه الجولة، اضغط في أي وقت للمتابعة.</string>
+    <string name="ai_duel_default_persona_a">أنت فضولي وتحب الاستفسار، ومستعد لإبداء رأيك.</string>
+    <string name="ai_duel_default_persona_b">أنت أكثر هدوءًا، معتاد على الاستماع أولاً ثم الرد، وتحب توضيح الأمور بأمثلة ملموسة.</string>
+    <string name="ai_duel_default_persona_preview">الافتراضي: %1$s</string>
+    <string name="ai_duel_done_editing">تم</string>
+    <string name="ai_duel_edit_role">تعديل</string>
+    <string name="ai_duel_ended_hint">تم الختام، يمكنك مواصلة الدردشة أو بدء محادثة جديدة.</string>
+    <string name="ai_duel_error_cannot_start">تعذّر بدء هذه الجملة، يرجى التحقق من تسجيل الدخول أو النقاط أو إعدادات النموذج.</string>
+    <string name="ai_duel_error_title">لم تكتمل هذه الجملة</string>
+    <string name="ai_duel_max_rounds_hint">في كل مرة تضغط \"متابعة الدردشة\"، يتم التحدث بهذا العدد من الجولات.</string>
+    <string name="ai_duel_pause">إيقاف مؤقت</string>
+    <string name="ai_duel_paused_hint">تم الإيقاف المؤقت، ستستأنف المتابعة من آخر جملة كاملة.</string>
+    <string name="ai_duel_pausing">بانتظار اكتمال هذه الجملة…</string>
+    <string name="ai_duel_persona_optional_hint">اتركه فارغًا لاستخدام الشخصية الافتراضية.</string>
+    <string name="ai_duel_quick_start_subtitle">ذكاءان اصطناعيان، محادثة واحدة. توقف متى شئت، وواصل في أي وقت.</string>
+    <string name="ai_duel_reset_persona">استعادة الافتراضي</string>
+    <string name="ai_duel_resume">متابعة الدردشة</string>
+    <string name="ai_duel_retry">إعادة المحاولة</string>
+    <string name="ai_duel_running_detail">تم التحدث %1$d جولة · الدور على %2$s</string>
+    <string name="ai_duel_scene_hint">اتركه فارغًا ليدعاهم يجدون موضوعًا بأنفسهم.</string>
+    <string name="ai_duel_scene_label">عن ماذا تتحدثون؟ (اختياري)</string>
+    <string name="ai_duel_scene_prompt">موضوع/سياق هذه المحادثة: %1$s</string>
+    <string name="ai_duel_system_prompt">أنت «%1$s».\nأنت تتحدث مع «%2$s». اكتب فقط ما تريد قوله، ولا تتحدث نيابة عن الطرف الآخر.</string>
+    <string name="ai_duel_title_format">%1$s × %2$s</string>
+    <string name="ai_duel_tokens_format">إجمالي %1$d tokens لهذه الجلسة</string>
+    <string name="ai_duel_wrap_up">ختام</string>
+    <string name="ai_duel_wrap_up_instruction">لنتوقف هنا، يرجى إنهاء المحادثة بشكل طبيعي بجملة أو جملتين.</string>
+    <string name="device_status">حالة الجهاز</string>
+    <string name="device_status_description">نسخ معلومات IP والشبكة والجهاز</string>
+    <string name="file_viewer_description">افتح ملفات Word وExcel وPowerPoint وEPUB والنصوص دون اتصال</string>
+    <string name="file_viewer_error_cannot_open">تعذّر فتح هذا الملف. ربما تم نقله أو فقد التطبيق إذن القراءة.</string>
+    <string name="file_viewer_error_too_large">حجم هذا الملف %1$s، وهو كبير جدًا للمعاينة هنا. افتحه بتطبيق آخر.</string>
+    <string name="file_viewer_go_to_page">الانتقال إلى رقم الصفحة</string>
+    <string name="file_viewer_night_mode">الوضع الليلي</string>
+    <string name="file_viewer_open_with_other">فتح بتطبيق آخر</string>
+    <string name="file_viewer_page_number">رقم الصفحة</string>
+    <string name="file_viewer_search_hint">البحث في المستند</string>
+    <string name="file_viewer_search_next">التطابق التالي</string>
+    <string name="file_viewer_search_previous">التطابق السابق</string>
+    <string name="file_viewer_title">معاينة الملف</string>
+    <string name="home_category_filter">تصفية الفئات</string>
 </resources>

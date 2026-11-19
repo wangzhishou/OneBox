@@ -1021,4 +1021,45 @@
     <string name="ai_chat_mode_chat_description">Chat instantáneo · Respuestas rápidas</string>
     <string name="ai_chat_mode_agent_title">Modo Agente</string>
     <string name="ai_chat_mode_agent_description">Planifica y ejecuta · Tareas automáticas</string>
+
+    <!-- i18n-fill: feature/ai -->
+    <string name="agent_tool_bookmark_added">Marcador añadido:\n- id: %1$s\n- Título: %2$s\n- URL: %3$s\n- Categoría: %4$s</string>
+    <string name="agent_tool_bookmark_exists">El marcador ya existe: %1$s (id: %2$s)</string>
+    <string name="agent_tool_bookmark_failed">Error en la operación del marcador: %1$s</string>
+    <string name="agent_tool_bookmark_folder_builtin">La categoría «%1$s» es integrada y no se puede eliminar</string>
+    <string name="agent_tool_bookmark_folder_created">Categoría de marcadores creada: %1$s (id: %2$s)</string>
+    <string name="agent_tool_bookmark_folder_deleted">Categoría eliminada: %1$s; sus marcadores se movieron a Sin categoría</string>
+    <string name="agent_tool_bookmark_folder_exists">La categoría «%1$s» ya existe (id: %2$s)</string>
+    <string name="agent_tool_bookmark_folder_list_header">Categorías de marcadores:</string>
+    <string name="agent_tool_bookmark_folder_not_found">La categoría %1$s no existe; disponibles: %2$s</string>
+    <string name="agent_tool_bookmark_folder_row">· %1$s (id: %2$s, %3$s marcadores)</string>
+    <string name="agent_tool_bookmark_missing_bookmark_id">Falta el parámetro bookmark_id</string>
+    <string name="agent_tool_bookmark_missing_folder_id">Falta el parámetro folder_id</string>
+    <string name="agent_tool_bookmark_missing_folder_name">Falta el parámetro folder_name</string>
+    <string name="agent_tool_bookmark_missing_url">Falta el parámetro url</string>
+    <string name="agent_tool_bookmark_no_folders">Aún no hay categorías de marcadores</string>
+    <string name="agent_tool_bookmark_not_found">El marcador %1$s no existe</string>
+    <string name="agent_tool_bookmark_removed">Marcador eliminado: %1$s (%2$s)</string>
+    <string name="agent_tool_bookmark_uncategorized">Sin categoría</string>
+    <string name="agent_tool_bookmark_unknown_action">Operación desconocida: %1$s; disponibles: %2$s</string>
+    <string name="agent_tool_list_param_limit">Número máximo de resultados por página, 1-100, por defecto 20.</string>
+    <string name="agent_tool_list_param_offset">Desplazamiento de paginación; usa next_offset del resultado anterior para continuar.</string>
+    <string name="agent_tool_manage_bookmark_param_action">Tipo de operación: add_bookmark / remove_bookmark / list_bookmarks / create_folder / delete_folder / list_folders</string>
+    <string name="agent_tool_manage_bookmark_param_bookmark_id">ID del marcador (obligatorio en remove_bookmark, proviene de list_bookmarks)</string>
+    <string name="agent_tool_manage_bookmark_param_folder_id">ID de la categoría (se usa en add_bookmark / delete_folder, proviene de list_folders)</string>
+    <string name="agent_tool_manage_bookmark_param_folder_name">Nombre de la categoría (obligatorio en create_folder)</string>
+    <string name="agent_tool_manage_bookmark_param_title">Título del marcador (opcional en add_bookmark, por defecto se usa la URL)</string>
+    <string name="agent_tool_manage_bookmark_param_url">URL (obligatoria en add_bookmark / remove_bookmark)</string>
+    <string name="agent_tool_manage_bookmark_summary">Añade sitios favoritos y crea categorías de favoritos</string>
+    <string name="agent_tool_manage_bookmark_title">Gestionar marcadores</string>
+    <string name="agent_tool_manage_todo_category_exists">La categoría ya existe: %1$s</string>
+    <string name="agent_tool_manage_todo_inbox_title">Bandeja de entrada</string>
+    <string name="agent_tool_manage_todo_list_reused">Se añadieron %2$d elementos a la lista existente «%1$s», se omitieron %3$d duplicados</string>
+    <string name="agent_tool_manage_todo_list_summary">Total %1$d, completadas %2$d, pendientes %3$d; esta vez se devolvieron %4$d</string>
+    <string name="agent_tool_manage_todo_param_category_id">ID de categoría, se usa en list/create_task, tomado del id devuelto por list; \"__inbox__\" indica la bandeja de entrada. Si se pasa id, tiene prioridad sobre category_name.</string>
+    <string name="agent_tool_manage_todo_param_include_completed">Indica si list incluye tareas completadas, por defecto true; pasa false para ver solo las pendientes.</string>
+    <string name="agent_tool_manage_todo_param_limit">Número máximo de tareas devueltas por página en list, 1-100, por defecto 20.</string>
+    <string name="agent_tool_manage_todo_param_offset">Desplazamiento de paginación de list; usa next_offset del resultado anterior para seguir paginando.</string>
+    <string name="agent_tool_manage_todo_param_query">Palabra clave opcional, busca en el título, las notas y las etiquetas de las tareas.</string>
+    <string name="agent_tool_unknown_action_with_options">Operación desconocida: %1$s, disponibles: %2$s</string>
 </resources>

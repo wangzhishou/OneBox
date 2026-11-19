@@ -204,4 +204,45 @@
     <string name="textcard_template_name">Pangalan ng template</string>
     <string name="textcard_template_saved">Nai-save ang template</string>
     <string name="textcard_try_sample">Halimbawa</string>
+
+    <!-- i18n-fill: feature/text-card -->
+    <string name="textcard_annotated_long_image_hint">Kapag may mga anotasyon sa loob ng pahina, ang mahabang larawan ay pinagsasama ayon sa resulta ng pag-pahina, pinapanatili ang posisyon ng mga anotasyon.</string>
+    <string name="textcard_annotation_draw_mode">Brush · Pahina %1$d</string>
+    <string name="textcard_annotation_edit_text">Ini-edit ang teksto ng anotasyon</string>
+    <string name="textcard_annotation_empty">Walang anotasyon sa pahinang ito, maaaring magdagdag ng teksto, brush, o hugis.</string>
+    <string name="textcard_annotation_mode">Nag-aannotate · Pahina %1$d</string>
+    <string name="textcard_annotation_needs_review">Kailangang suriin</string>
+    <string name="textcard_annotation_review_count">%1$d anotasyon ang kailangang suriin</string>
+    <string name="textcard_apply">Ilapat</string>
+    <string name="textcard_backup_source">Kopyahin ang orihinal na teksto bilang backup</string>
+    <string name="textcard_brush_color">Kulay ng brush</string>
+    <string name="textcard_brush_marker">Marker</string>
+    <string name="textcard_brush_pencil">Lapis</string>
+    <string name="textcard_brush_settings">Mga setting ng brush</string>
+    <string name="textcard_brush_type">Uri ng brush</string>
+    <string name="textcard_delete_page_break">Burahin ang pag-pahina</string>
+    <string name="textcard_draw_opacity">Opacity</string>
+    <string name="textcard_eraser">Pambura</string>
+    <string name="textcard_export_preparing">Nagla-layout…</string>
+    <string name="textcard_go_to_page">Lumipat</string>
+    <string name="textcard_layers_reorder_hint">I-drag ang handle upang ayusin ang pagkakasunod-sunod ng layer</string>
+    <string name="textcard_layout_failed_short">Nabigo ang layout</string>
+    <string name="textcard_layout_settings">Pahina at papel</string>
+    <string name="textcard_layout_updating">Ina-update ang layout…</string>
+    <string name="textcard_long_image_page_break_hint">Sa tuloy-tuloy na mahabang larawan, ang manual na pag-pahina ay itinuturing na line break; kapag bumalik sa maraming pahina, maibabalik ang pag-pahina.</string>
+    <string name="textcard_manual_page_break">Manual na pag-pahina %1$d</string>
+    <string name="textcard_manual_page_break_short">Manwal</string>
+    <string name="textcard_move_annotation_page">Ilipat sa pahina</string>
+    <string name="textcard_page_count_transition">Pahina %1$d → Pahina %2$d</string>
+    <string name="textcard_page_number_input">Numero ng pahina</string>
+    <string name="textcard_project_meta_pending">Bilang ng pahina, ia-update · %1$s</string>
+    <string name="textcard_save_failed_retry">Nabigo ang pag-save, i-tap ang save upang subukan muli</string>
+    <string name="textcard_save_now">I-save agad ang gawa</string>
+    <string name="textcard_shape_corner_radius">Bilog na sulok</string>
+    <string name="textcard_shape_kind">Uri ng hugis</string>
+    <string name="textcard_shape_stroke">Outline</string>
+    <string name="textcard_source_copied">Nakopya ang orihinal na teksto</string>
+    <string name="textcard_tab_annotations">Anotasyon</string>
+    <string name="textcard_tab_layout">Pahina</string>
+    <string name="textcard_unsaved_changes">May mga hindi na-save na pagbabago</string>
 </resources>

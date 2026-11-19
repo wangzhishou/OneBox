@@ -2116,4 +2116,20 @@
     <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
     <string name="ai_chat_loading_byok_hint">用自己的 API Key 跳過排隊</string>
     <string name="ai_chat_loading_byok_action">設定</string>
+
+    <!-- i18n-fill: core/r -->
+    <string name="device_status">本機狀態</string>
+    <string name="device_status_description">複製本機 IP、網路和裝置資訊</string>
+    <string name="file_viewer_description">離線開啟 Word、Excel、PowerPoint、EPUB 和文字檔案</string>
+    <string name="file_viewer_error_cannot_open">無法開啟這個檔案。它可能已被移動，或應用程式已失去讀取權限。</string>
+    <string name="file_viewer_error_too_large">這個檔案有 %1$s，太大，無法在這裡預覽。請用其他應用程式開啟。</string>
+    <string name="file_viewer_go_to_page">跳到頁碼</string>
+    <string name="file_viewer_night_mode">夜間模式</string>
+    <string name="file_viewer_open_with_other">用其他應用程式開啟</string>
+    <string name="file_viewer_page_number">頁碼</string>
+    <string name="file_viewer_search_hint">在文件中尋找</string>
+    <string name="file_viewer_search_next">下一個符合項目</string>
+    <string name="file_viewer_search_previous">上一個符合項目</string>
+    <string name="file_viewer_title">檔案預覽</string>
+    <string name="home_category_filter">分類篩選</string>
 </resources>

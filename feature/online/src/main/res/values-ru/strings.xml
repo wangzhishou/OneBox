@@ -21,4 +21,45 @@
 <resources>
     <string name="mini_program_jump_confirm">Вы собираетесь покинуть приложение и открыть это в WeChat. Продолжить?</string>
     <string name="mini_program_redirecting">Перенаправление…</string>
+
+    <!-- filled by scripts: note AI panel + missing keys -->
+    <string name="note_menu_copy_all">Копировать всё</string>
+    <string name="note_menu_settings">Настройки</string>
+    <string name="note_ai_action_format">Форматирование ИИ</string>
+    <string name="note_ai_action_expand">Расширить с ИИ</string>
+    <string name="note_ai_action_polish">Улучшить с ИИ</string>
+    <string name="note_ai_action_condense">Сократить с ИИ</string>
+    <string name="note_ai_action_checklist">Извлечь задачи с ИИ</string>
+    <string name="note_ai_action_summary">Создать сводку с ИИ</string>
+    <string name="note_ai_prompt_label">Промпт</string>
+    <string name="note_ai_prompt_hint">Опишите ИИ, как изменить эту заметку</string>
+    <string name="note_ai_original_label">Оригинал</string>
+    <string name="note_ai_original_meta">Оригинал · %1$d симв.</string>
+    <string name="note_ai_result_label">Результат ИИ</string>
+    <string name="note_ai_panel_generate">Сгенерировать</string>
+    <string name="note_ai_regenerate">Сгенерировать заново</string>
+    <string name="note_ai_stop">Остановить</string>
+    <string name="note_ai_copy">Копировать</string>
+    <string name="note_ai_copied">Скопировано</string>
+    <string name="note_ai_apply_replace">Заменить оригинал</string>
+    <string name="note_ai_apply_append">Добавить в конец</string>
+    <string name="note_ai_apply_prepend">Вставить в начало</string>
+    <string name="note_ai_undo_apply">Отменить</string>
+    <string name="note_ai_applied">Применено к заметке. Можно отменить, пока панель не закрыта.</string>
+    <string name="note_ai_panel_generating">Генерация…</string>
+    <string name="note_ai_empty_hint">Выберите действие, настройте промпт и сгенерируйте.</string>
+    <string name="note_ai_empty_result">ИИ вернул пустой результат. Повторите попытку или смените движок.</string>
+    <string name="note_ai_no_engine">Нет доступных движков ИИ. Сначала добавьте в «Настройки → Движки ИИ».</string>
+    <string name="note_ai_result_meta">%1$s · %2$d токенов</string>
+    <string name="note_ai_too_short">Сначала напишите что-нибудь в заметке.</string>
+    <string name="note_ai_keepalive_title">ИИ обрабатывает заметку</string>
+    <string name="note_ai_billing_desc">ИИ-написание заметок</string>
+    <string name="note_ai_system_prompt">Вы — Markdown-редактор приложения для заметок. Изменяйте заметку по инструкции пользователя, сохраняя язык оригинала, факты, числа, ссылки, команды для изображений, аудио и видео, таблицы и код. Выводите только полный изменённый текст Markdown без пояснений, без префиксов и суффиксов, без обёртки в блоки кода.</string>
+    <string name="note_ai_input_template">Инструкция:\n%1$s\n\nИсходный Markdown:\n%2$s</string>
+    <string name="note_ai_prompt_format">Приведите оформление этой заметки в порядок: исправьте уровни заголовков, унифицируйте списки, отступы и пустые строки, разбейте слишком длинные абзацы, оформите последовательные пункты в виде списка или таблицы; не меняйте смысл и факты.</string>
+    <string name="note_ai_prompt_expand">Дополните эту заметку: добавьте пояснения, примеры и детали, чтобы содержание стало полнее; сохраняйте исходные тезисы и факты, не выдумывайте данные или личный опыт.</string>
+    <string name="note_ai_prompt_polish">Отредактируйте эту заметку: исправьте опечатки и грамматику, сделайте изложение более плавным и естественным, унифицируйте термины и тон; не меняйте смысл и объём информации.</string>
+    <string name="note_ai_prompt_condense">Сократите эту заметку: сохраните ключевую информацию и структуру, уберите повторы и избыточные формулировки; не теряйте важные факты.</string>
+    <string name="note_ai_prompt_checklist">Извлеките из этой заметки выполнимые задачи и выведите список с флажками Markdown (- [ ]), по одному действию на пункт; если в оригинале указаны сроки или ответственные, добавьте их. Начните с «## Задачи» и выводите только список задач.</string>
+    <string name="note_ai_prompt_summary">Напишите краткое изложение этой заметки объёмом 2–4 предложения, начните с «## Краткое содержание» и выводите только эту часть.</string>
 </resources>

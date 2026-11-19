@@ -60,4 +60,19 @@
     <string name="activity_log_poem_app_title">चीनी शास्त्रीय कविता</string>
     <string name="activity_log_todo_app_title">कार्य सूची</string>
     <string name="activity_log_xiangqi_app_title">चीनी शतरंज</string>
+
+    <!-- i18n-fill: core/database -->
+    <string name="activity_log_archive_app_title">फ़ाइल संपीड़न</string>
+    <string name="activity_log_archive_created_title">संपीड़ित संग्रह बनाएं</string>
+    <string name="activity_log_archive_entry_extracted_description">\"%1$s\" को \"%2$s\" में निकाला गया</string>
+    <string name="activity_log_archive_entry_extracted_title">फ़ाइल निकालें</string>
+    <string name="activity_log_archive_extracted_title">संग्रह निकालें</string>
+    <string name="activity_log_archive_unknown_folder">चयनित फ़ोल्डर</string>
+    <string name="activity_log_archive_unnamed">संग्रह</string>
+    <plurals name="activity_log_archive_created_description">
+        <item quantity="other">\"%1$s\" सहेजा गया, कुल %2$d फ़ाइलें</item>
+    </plurals>
+    <plurals name="activity_log_archive_extracted_description">
+        <item quantity="other">%1$d फ़ाइलें \"%2$s\" में निकाली गईं</item>
+    </plurals>
 </resources>

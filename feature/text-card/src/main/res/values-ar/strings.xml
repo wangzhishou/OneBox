@@ -206,4 +206,45 @@
     <string name="textcard_template_name">اسم القالب</string>
     <string name="textcard_template_saved">تم حفظ القالب</string>
     <string name="textcard_try_sample">مثال</string>
+
+    <!-- i18n-fill: feature/text-card -->
+    <string name="textcard_annotated_long_image_hint">عند وجود تعليقات داخل الصفحة، تُدمج الصورة الطويلة وفق نتائج التقسيم مع الحفاظ على مواضع التعليقات.</string>
+    <string name="textcard_annotation_draw_mode">الفرشاة · الصفحة %1$d</string>
+    <string name="textcard_annotation_edit_text">جارٍ تحرير نص التعليق</string>
+    <string name="textcard_annotation_empty">لا توجد تعليقات في هذه الصفحة، يمكنك إضافة نص أو رسم بالفرشاة أو أشكال.</string>
+    <string name="textcard_annotation_mode">التعليق · الصفحة %1$d</string>
+    <string name="textcard_annotation_needs_review">يحتاج إلى مراجعة</string>
+    <string name="textcard_annotation_review_count">%1$d تعليقات تحتاج إلى مراجعة</string>
+    <string name="textcard_apply">تطبيق</string>
+    <string name="textcard_backup_source">نسخ النص الأصلي كنسخة احتياطية</string>
+    <string name="textcard_brush_color">لون الفرشاة</string>
+    <string name="textcard_brush_marker">قلم تحديد</string>
+    <string name="textcard_brush_pencil">قلم رصاص</string>
+    <string name="textcard_brush_settings">إعدادات الفرشاة</string>
+    <string name="textcard_brush_type">نوع الفرشاة</string>
+    <string name="textcard_delete_page_break">حذف التقسيم</string>
+    <string name="textcard_draw_opacity">الشفافية</string>
+    <string name="textcard_eraser">الممحاة</string>
+    <string name="textcard_export_preparing">جارٍ التنسيق…</string>
+    <string name="textcard_go_to_page">انتقال</string>
+    <string name="textcard_layers_reorder_hint">اسحب المقبض لترتيب الطبقات</string>
+    <string name="textcard_layout_failed_short">فشل التنسيق</string>
+    <string name="textcard_layout_settings">الصفحات والورق</string>
+    <string name="textcard_layout_updating">جارٍ تحديث التنسيق…</string>
+    <string name="textcard_long_image_page_break_hint">في الصورة الطويلة المتصلة، يُعامل التقسيم اليدوي كسطر جديد؛ وعند العودة إلى صفحات متعددة يُستعاد التقسيم.</string>
+    <string name="textcard_manual_page_break">تقسيم يدوي %1$d</string>
+    <string name="textcard_manual_page_break_short">يدوي</string>
+    <string name="textcard_move_annotation_page">الانتقال إلى رقم الصفحة</string>
+    <string name="textcard_page_count_transition">الصفحة %1$d ← الصفحة %2$d</string>
+    <string name="textcard_page_number_input">رقم الصفحة</string>
+    <string name="textcard_project_meta_pending">عدد الصفحات قيد التحديث · %1$s</string>
+    <string name="textcard_save_failed_retry">فشل الحفظ، اضغط على حفظ لإعادة المحاولة</string>
+    <string name="textcard_save_now">احفظ العمل الآن</string>
+    <string name="textcard_shape_corner_radius">زوايا دائرية</string>
+    <string name="textcard_shape_kind">نوع الشكل</string>
+    <string name="textcard_shape_stroke">الحدود</string>
+    <string name="textcard_source_copied">تم نسخ النص الأصلي</string>
+    <string name="textcard_tab_annotations">تعليق توضيحي</string>
+    <string name="textcard_tab_layout">الصفحة</string>
+    <string name="textcard_unsaved_changes">توجد تغييرات غير محفوظة</string>
 </resources>

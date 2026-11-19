@@ -101,4 +101,10 @@
     <string name="media_play_failed">Échec de la lecture, passage à l\'élément suivant</string>
     <string name="media_collapse_recent">Réduire</string>
     <string name="media_expand_recent">Développer</string>
+
+    <!-- i18n-fill: feature/media-player -->
+    <string name="media_inline_audio">Audio</string>
+    <string name="media_inline_invalid_url">Adresse du média invalide ou non prise en charge</string>
+    <string name="media_inline_play_error">Échec de la lecture, appuyez sur le bouton de lecture pour réessayer</string>
+    <string name="media_inline_video">Vidéo</string>
 </resources>

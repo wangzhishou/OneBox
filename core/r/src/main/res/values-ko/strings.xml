@@ -2115,4 +2115,20 @@
     <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
     <string name="ai_chat_loading_byok_hint">내 API 키로 대기열 건너뛰기</string>
     <string name="ai_chat_loading_byok_action">설정</string>
+
+    <!-- i18n-fill: core/r -->
+    <string name="device_status">기기 상태</string>
+    <string name="device_status_description">기기 IP, 네트워크 및 장치 정보 복사</string>
+    <string name="file_viewer_description">Word, Excel, PowerPoint, EPUB 및 텍스트 파일 오프라인으로 열기</string>
+    <string name="file_viewer_error_cannot_open">이 파일을 열 수 없습니다. 파일이 이동되었거나 앱의 읽기 권한이 없어졌을 수 있습니다.</string>
+    <string name="file_viewer_error_too_large">이 파일은 %1$s이(가) 있어 여기서 미리 볼 수 없습니다. 다른 앱으로 열어 주세요.</string>
+    <string name="file_viewer_go_to_page">페이지로 이동</string>
+    <string name="file_viewer_night_mode">야간 모드</string>
+    <string name="file_viewer_open_with_other">다른 앱으로 열기</string>
+    <string name="file_viewer_page_number">페이지 번호</string>
+    <string name="file_viewer_search_hint">문서에서 찾기</string>
+    <string name="file_viewer_search_next">다음 일치 항목</string>
+    <string name="file_viewer_search_previous">이전 일치 항목</string>
+    <string name="file_viewer_title">파일 미리보기</string>
+    <string name="home_category_filter">분류 필터</string>
 </resources>

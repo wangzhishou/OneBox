@@ -133,4 +133,35 @@
     <string name="cloud_storage_ai_assist_title">Помощник настройки облачного хранилища</string>
     <string name="cloud_storage_ai_assist_prompt">Ты помощник настройки облачного хранилища. Добавляй подключения через manage_cloud_connections. Не выдумывай учётные данные.</string>
     <string name="cloud_storage_ai_assist_fill_in">Помоги добавить подключение Aliyun OSS для резервного копирования фото</string>
+
+    <!-- i18n-fill: feature/cloud-storage -->
+    <string name="cloud_storage_add_connection">Добавить подключение</string>
+    <string name="cloud_storage_connection_delete_action">Удалить</string>
+    <string name="cloud_storage_connection_delete_message">Удалить «%s»? Будут удалены только сохранённые на этом устройстве настройки подключения, облачные файлы не затронуты.</string>
+    <string name="cloud_storage_connection_delete_title">Удалить подключение</string>
+    <string name="cloud_storage_delete_connection">Удалить</string>
+    <string name="cloud_storage_detail_location">Расположение</string>
+    <string name="cloud_storage_detail_modified">Время изменения</string>
+    <string name="cloud_storage_detail_type">Тип</string>
+    <string name="cloud_storage_done">Готово</string>
+    <string name="cloud_storage_edit_connection">Изменить</string>
+    <string name="cloud_storage_error_auth">Не удалось войти. Проверьте имя пользователя / пароль или AccessKey</string>
+    <string name="cloud_storage_error_cleartext">Для этого канала не разрешён открытый HTTP, используйте адрес HTTPS</string>
+    <string name="cloud_storage_error_network">Не удаётся подключиться к серверу. Проверьте адрес, порт и сеть</string>
+    <string name="cloud_storage_error_not_found">Файл или папка больше не существует</string>
+    <string name="cloud_storage_error_permission">У текущей учётной записи нет прав доступа к этому файлу</string>
+    <string name="cloud_storage_error_server">Сервер вернул ошибку: %s</string>
+    <string name="cloud_storage_link_unavailable">Текущее подключение не поддерживает создание ссылок для общего доступа</string>
+    <string name="cloud_storage_search_clear">Очистить поиск</string>
+    <string name="cloud_storage_search_empty">Нет подходящих файлов</string>
+    <string name="cloud_storage_search_placeholder">Поиск в текущей папке</string>
+    <string name="cloud_storage_sort_ascending">По возрастанию</string>
+    <string name="cloud_storage_sort_date">Время изменения</string>
+    <string name="cloud_storage_sort_descending">По убыванию</string>
+    <string name="cloud_storage_sort_name">Имя</string>
+    <string name="cloud_storage_sort_size">Размер</string>
+    <string name="cloud_storage_sort_title">Сортировка</string>
+    <string name="cloud_storage_switch_to_grid">Переключиться на сетку</string>
+    <string name="cloud_storage_switch_to_list">Переключиться на список</string>
+    <string name="cloud_storage_testing">Проверка...</string>
 </resources>

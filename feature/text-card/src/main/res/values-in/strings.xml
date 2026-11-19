@@ -204,4 +204,45 @@
     <string name="textcard_template_name">Nama template</string>
     <string name="textcard_template_saved">Template tersimpan</string>
     <string name="textcard_try_sample">Contoh</string>
+
+    <!-- i18n-fill: feature/text-card -->
+    <string name="textcard_annotated_long_image_hint">Jika ada anotasi dalam halaman, gambar panjang digabung sesuai hasil pemisahan halaman, posisi anotasi dipertahankan.</string>
+    <string name="textcard_annotation_draw_mode">Kuas · Halaman %1$d</string>
+    <string name="textcard_annotation_edit_text">Sedang mengedit teks anotasi</string>
+    <string name="textcard_annotation_empty">Belum ada anotasi di halaman ini, Anda dapat menambahkan teks, kuas, atau bentuk.</string>
+    <string name="textcard_annotation_mode">Menganotasi · Halaman %1$d</string>
+    <string name="textcard_annotation_needs_review">Perlu diperiksa</string>
+    <string name="textcard_annotation_review_count">%1$d anotasi perlu diperiksa</string>
+    <string name="textcard_apply">Terapkan</string>
+    <string name="textcard_backup_source">Salin teks asli sebagai cadangan</string>
+    <string name="textcard_brush_color">Warna kuas</string>
+    <string name="textcard_brush_marker">Spidol</string>
+    <string name="textcard_brush_pencil">Pensil</string>
+    <string name="textcard_brush_settings">Pengaturan kuas</string>
+    <string name="textcard_brush_type">Jenis kuas</string>
+    <string name="textcard_delete_page_break">Hapus pemisahan halaman</string>
+    <string name="textcard_draw_opacity">Opasitas</string>
+    <string name="textcard_eraser">Penghapus</string>
+    <string name="textcard_export_preparing">Sedang menata…</string>
+    <string name="textcard_go_to_page">Lompat</string>
+    <string name="textcard_layers_reorder_hint">Seret pegangan untuk mengatur urutan lapisan</string>
+    <string name="textcard_layout_failed_short">Penataan gagal</string>
+    <string name="textcard_layout_settings">Halaman dan kertas</string>
+    <string name="textcard_layout_updating">Sedang memperbarui tata letak…</string>
+    <string name="textcard_long_image_page_break_hint">Pada gambar panjang berkelanjutan, pemisahan halaman manual diperlakukan sebagai baris baru; pemisahan halaman dipulihkan saat beralih kembali ke multi-halaman.</string>
+    <string name="textcard_manual_page_break">Pemisahan halaman manual %1$d</string>
+    <string name="textcard_manual_page_break_short">Manual</string>
+    <string name="textcard_move_annotation_page">Pindah ke nomor halaman</string>
+    <string name="textcard_page_count_transition">Halaman %1$d → %2$d</string>
+    <string name="textcard_page_number_input">Nomor halaman</string>
+    <string name="textcard_project_meta_pending">Jumlah halaman akan diperbarui · %1$s</string>
+    <string name="textcard_save_failed_retry">Gagal menyimpan, ketuk simpan untuk mencoba lagi</string>
+    <string name="textcard_save_now">Simpan karya sekarang</string>
+    <string name="textcard_shape_corner_radius">Sudut membulat</string>
+    <string name="textcard_shape_kind">Jenis bentuk</string>
+    <string name="textcard_shape_stroke">Garis tepi</string>
+    <string name="textcard_source_copied">Teks asli telah disalin</string>
+    <string name="textcard_tab_annotations">Anotasi</string>
+    <string name="textcard_tab_layout">Halaman</string>
+    <string name="textcard_unsaved_changes">Ada perubahan yang belum disimpan</string>
 </resources>

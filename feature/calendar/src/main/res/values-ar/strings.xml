@@ -219,4 +219,51 @@
     <!-- 大运走势 -->
     <string name="dayun_year_range">%1$d–%2$d</string>
     <string name="dayun_current">الحالي</string>
+
+    <!-- i18n-fill: feature/calendar -->
+    <string name="calendar_share_ai_generating">جارٍ الإنشاء…</string>
+    <string name="calendar_share_ai_hint">سيُنشئ الذكاء الاصطناعي جملة بناءً على التاريخ والتقويم القمري والأنشطة المناسبة والمحظورة والطقس، ويمكنك تعديلها بعد الإنشاء.</string>
+    <string name="calendar_share_ai_write">اكتب جملة بالذكاء الاصطناعي</string>
+    <string name="calendar_share_air_prefix">الهواء</string>
+    <string name="calendar_share_auspicious_title">ساعة سعيدة</string>
+    <string name="calendar_share_blessing">كل الأمنيات تتحقق، سلام وطمأنينة</string>
+    <string name="calendar_share_brand">OneBox · التقويم الأبدي</string>
+    <string name="calendar_share_color_title">الألوان</string>
+    <string name="calendar_share_content_title">عرض البطاقة</string>
+    <string name="calendar_share_day_suffix">يوم</string>
+    <string name="calendar_share_ji_seal">تجنّب</string>
+    <string name="calendar_share_lunar_prefix">التقويم القمري</string>
+    <string name="calendar_share_month_suffix">شهر</string>
+    <string name="calendar_share_note_counter">%1$d/%2$d</string>
+    <string name="calendar_share_note_label">كلمة من القلب</string>
+    <string name="calendar_share_note_placeholder">اتركه فارغًا لإخفائه، بحد أقصى 80 حرفًا</string>
+    <string name="calendar_share_note_title">كلمة اليوم من القلب</string>
+    <string name="calendar_share_note_title_section">اكتب كلمة من القلب</string>
+    <string name="calendar_share_page_title">مشاركة التقويم</string>
+    <string name="calendar_share_preview_size">%1$d × %2$d · PNG</string>
+    <string name="calendar_share_render_failed">فشل عرض البطاقة</string>
+    <string name="calendar_share_retry">إعادة المحاولة</string>
+    <string name="calendar_share_save">حفظ الصورة</string>
+    <string name="calendar_share_save_failed">فشل الحفظ</string>
+    <string name="calendar_share_saved_app">تم الحفظ في دليل التطبيق (%1$s)</string>
+    <string name="calendar_share_saved_gallery">تم الحفظ في الألبوم (%1$s)</string>
+    <string name="calendar_share_selected_day_prefix">اليوم</string>
+    <string name="calendar_share_share">مشاركة الصورة</string>
+    <string name="calendar_share_style_gold_ink">ذهبي داكن</string>
+    <string name="calendar_share_style_ink_green">أزرق داكن</string>
+    <string name="calendar_share_style_theme">متابعة السمة</string>
+    <string name="calendar_share_style_vermilion">قرمزي</string>
+    <string name="calendar_share_today_prefix">اليوم</string>
+    <string name="calendar_share_toggle_note">كلمة القلب</string>
+    <string name="calendar_share_toggle_today">مناسبة اليوم</string>
+    <string name="calendar_share_toggle_upcoming">المناسبات القادمة</string>
+    <string name="calendar_share_toggle_weather">الطقس</string>
+    <string name="calendar_share_transparent_background">خلفية شفافة</string>
+    <string name="calendar_share_upcoming_prefix">المستقبل</string>
+    <string name="calendar_share_weather_loading">الطقس…</string>
+    <string name="calendar_share_weather_title">الطقس</string>
+    <string name="calendar_share_weather_today_only">الطقس متاح لليوم فقط</string>
+    <string name="calendar_share_weather_unavailable">لم يتم الحصول على الطقس بعد</string>
+    <string name="calendar_share_year_suffix">سنة</string>
+    <string name="calendar_share_yi_seal">مستحسن</string>
 </resources>

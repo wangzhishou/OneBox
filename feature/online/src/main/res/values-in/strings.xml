@@ -21,4 +21,45 @@
 <resources>
     <string name="mini_program_jump_confirm">Anda akan keluar dan membuka ini di WeChat. Lanjutkan?</string>
     <string name="mini_program_redirecting">Mengalihkan…</string>
+
+    <!-- i18n-fill: feature/online -->
+    <string name="note_menu_copy_all">Salin semua konten</string>
+    <string name="note_menu_settings">Pengaturan</string>
+    <string name="note_ai_action_format">Format AI</string>
+    <string name="note_ai_action_expand">Perluas dengan AI</string>
+    <string name="note_ai_action_polish">Poles dengan AI</string>
+    <string name="note_ai_action_condense">Ringkas dengan AI</string>
+    <string name="note_ai_action_checklist">Ekstrak tugas dengan AI</string>
+    <string name="note_ai_action_summary">Buat ringkasan dengan AI</string>
+    <string name="note_ai_prompt_label">Prompt</string>
+    <string name="note_ai_prompt_hint">Beri tahu AI bagaimana Anda ingin mengubah catatan ini</string>
+    <string name="note_ai_original_label">Teks asli</string>
+    <string name="note_ai_original_meta">Teks asli · %1$d karakter</string>
+    <string name="note_ai_result_label">Hasil AI</string>
+    <string name="note_ai_panel_generate">Buat</string>
+    <string name="note_ai_regenerate">Buat ulang</string>
+    <string name="note_ai_stop">Berhenti</string>
+    <string name="note_ai_copy">Salin</string>
+    <string name="note_ai_copied">Tersalin</string>
+    <string name="note_ai_apply_replace">Ganti teks asli</string>
+    <string name="note_ai_apply_append">Tambahkan ke akhir</string>
+    <string name="note_ai_apply_prepend">Sisipkan di awal</string>
+    <string name="note_ai_undo_apply">Urungkan</string>
+    <string name="note_ai_applied">Diterapkan ke catatan, dapat diurungkan sebelum panel ditutup.</string>
+    <string name="note_ai_panel_generating">Membuat…</string>
+    <string name="note_ai_empty_hint">Pilih tindakan, sesuaikan prompt, lalu buat.</string>
+    <string name="note_ai_empty_result">AI mengembalikan hasil kosong, coba lagi atau ganti mesin.</string>
+    <string name="note_ai_no_engine">Tidak ada mesin AI yang tersedia, tambahkan dulu di \"Pengaturan → Mesin AI\".</string>
+    <string name="note_ai_result_meta">%1$s · %2$d token</string>
+    <string name="note_ai_too_short">Tulis sesuatu di catatan terlebih dahulu.</string>
+    <string name="note_ai_keepalive_title">AI sedang memproses catatan</string>
+    <string name="note_ai_billing_desc">Penulisan catatan AI</string>
+    <string name="note_ai_system_prompt">Anda adalah editor Markdown untuk aplikasi catatan. Ubah catatan sesuai instruksi pengguna, pertahankan bahasa asli, fakta, angka, tautan, gambar, instruksi audio/video, tabel, dan kode. Hanya keluarkan teks Markdown lengkap yang telah diubah, tanpa penjelasan, tanpa awalan/akhiran, dan tanpa dibungkus blok kode.</string>
+    <string name="note_ai_input_template">Instruksi:\n%1$s\n\nMarkdown asli:\n%2$s</string>
+    <string name="note_ai_prompt_format">Rapikan tata letak catatan ini: perbaiki hierarki judul, seragamkan daftar, indentasi, dan baris kosong, pecah paragraf yang terlalu panjang, ubah poin-poin berurutan menjadi daftar atau tabel; jangan ubah makna dan fakta asli.</string>
+    <string name="note_ai_prompt_expand">Kembangkan catatan ini: tambahkan penjelasan, contoh, dan detail agar isinya lebih lengkap; pertahankan pandangan dan fakta asli, jangan mengarang data atau pengalaman pribadi.</string>
+    <string name="note_ai_prompt_polish">Perhalus catatan ini: perbaiki salah ketik dan tata bahasa, buat ekspresi lebih lancar dan alami, seragamkan istilah dan nada; jangan ubah makna dan jumlah informasi.</string>
+    <string name="note_ai_prompt_condense">Ringkas catatan ini: pertahankan informasi inti dan struktur, hapus pengulangan dan ekspresi berlebihan; jangan hilangkan fakta penting.</string>
+    <string name="note_ai_prompt_checklist">Ekstrak tugas yang dapat dilakukan dari catatan ini, keluarkan daftar kotak centang Markdown (- [ ]), satu tindakan per baris, sertakan waktu atau penanggung jawab jika ada di teks asli. Awali dengan \"## Tugas\", hanya keluarkan daftar tugas.</string>
+    <string name="note_ai_prompt_summary">Tulis ringkasan 2–4 kalimat untuk catatan ini, awali dengan \"## Ringkasan\", hanya keluarkan bagian ringkasan.</string>
 </resources>

@@ -219,4 +219,51 @@
     <!-- 大运走势 -->
     <string name="dayun_year_range">%1$d–%2$d</string>
     <string name="dayun_current">Aktuell</string>
+
+    <!-- i18n-fill: feature/calendar -->
+    <string name="calendar_share_ai_generating">Wird generiert…</string>
+    <string name="calendar_share_ai_hint">Die KI erstellt einen Satz aus Datum, Mondkalender, günstigen/ungünstigen Aktivitäten und Wetter. Nach der Generierung weiter bearbeitbar.</string>
+    <string name="calendar_share_ai_write">KI-Satz schreiben</string>
+    <string name="calendar_share_air_prefix">Luft</string>
+    <string name="calendar_share_auspicious_title">Günstige Stunde</string>
+    <string name="calendar_share_blessing">Alles Gute, Frieden und Wohlergehen</string>
+    <string name="calendar_share_brand">WanBaoHe · Ewiger Kalender</string>
+    <string name="calendar_share_color_title">Farbschema</string>
+    <string name="calendar_share_content_title">Kartenanzeige</string>
+    <string name="calendar_share_day_suffix">Tag</string>
+    <string name="calendar_share_ji_seal">Meiden</string>
+    <string name="calendar_share_lunar_prefix">Mondkalender</string>
+    <string name="calendar_share_month_suffix">Monat</string>
+    <string name="calendar_share_note_counter">%1$d/%2$d</string>
+    <string name="calendar_share_note_label">Herzensworte</string>
+    <string name="calendar_share_note_placeholder">Leer lassen zum Ausblenden, max. 80 Zeichen</string>
+    <string name="calendar_share_note_title">Herzensworte heute</string>
+    <string name="calendar_share_note_title_section">Herzensworte schreiben</string>
+    <string name="calendar_share_page_title">Kalender teilen</string>
+    <string name="calendar_share_preview_size">%1$d × %2$d · PNG</string>
+    <string name="calendar_share_render_failed">Kartenrendering fehlgeschlagen</string>
+    <string name="calendar_share_retry">Erneut versuchen</string>
+    <string name="calendar_share_save">Bild speichern</string>
+    <string name="calendar_share_save_failed">Speichern fehlgeschlagen</string>
+    <string name="calendar_share_saved_app">Im App-Verzeichnis gespeichert (%1$s)</string>
+    <string name="calendar_share_saved_gallery">In der Galerie gespeichert (%1$s)</string>
+    <string name="calendar_share_selected_day_prefix">Heute</string>
+    <string name="calendar_share_share">Bild teilen</string>
+    <string name="calendar_share_style_gold_ink">Dunkelgold</string>
+    <string name="calendar_share_style_ink_green">Dunkelblaugrün</string>
+    <string name="calendar_share_style_theme">Design folgen</string>
+    <string name="calendar_share_style_vermilion">Zinnober</string>
+    <string name="calendar_share_today_prefix">Heute</string>
+    <string name="calendar_share_toggle_note">Gedanken</string>
+    <string name="calendar_share_toggle_today">Heutiger Feiertag</string>
+    <string name="calendar_share_toggle_upcoming">Kommende Feiertage</string>
+    <string name="calendar_share_toggle_weather">Wetter</string>
+    <string name="calendar_share_transparent_background">Transparenter Hintergrund</string>
+    <string name="calendar_share_upcoming_prefix">Zukunft</string>
+    <string name="calendar_share_weather_loading">Wetter…</string>
+    <string name="calendar_share_weather_title">Wetter</string>
+    <string name="calendar_share_weather_today_only">Wetter nur für heute verfügbar</string>
+    <string name="calendar_share_weather_unavailable">Noch kein Wetter abgerufen</string>
+    <string name="calendar_share_year_suffix">Jahr</string>
+    <string name="calendar_share_yi_seal">Günstig</string>
 </resources>

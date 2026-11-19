@@ -2115,4 +2115,20 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
     <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
     <string name="ai_chat_loading_byok_hint">Lewati antrean dengan kunci API Anda</string>
     <string name="ai_chat_loading_byok_action">Atur</string>
+
+    <!-- i18n-fill: core/r -->
+    <string name="device_status">Status perangkat</string>
+    <string name="device_status_description">Salin IP, jaringan, dan info perangkat ini</string>
+    <string name="file_viewer_description">Buka file Word, Excel, PowerPoint, EPUB, dan teks secara offline</string>
+    <string name="file_viewer_error_cannot_open">Tidak dapat membuka file ini. File mungkin telah dipindahkan, atau aplikasi kehilangan izin baca.</string>
+    <string name="file_viewer_error_too_large">File ini berukuran %1$s, terlalu besar untuk dipratinjau di sini. Silakan buka dengan aplikasi lain.</string>
+    <string name="file_viewer_go_to_page">Lompat ke nomor halaman</string>
+    <string name="file_viewer_night_mode">Mode malam</string>
+    <string name="file_viewer_open_with_other">Buka dengan aplikasi lain</string>
+    <string name="file_viewer_page_number">Nomor halaman</string>
+    <string name="file_viewer_search_hint">Cari dalam dokumen</string>
+    <string name="file_viewer_search_next">Kecocokan berikutnya</string>
+    <string name="file_viewer_search_previous">Kecocokan sebelumnya</string>
+    <string name="file_viewer_title">Pratinjau file</string>
+    <string name="home_category_filter">Filter kategori</string>
 </resources>

@@ -34,7 +34,6 @@
     <string name="note_ai_action_summary">AI 生成摘要</string>
 
     <!-- Note AI writing panel -->
-    <string name="note_ai_engine">引擎</string>
     <string name="note_ai_prompt_label">提示词</string>
     <string name="note_ai_prompt_hint">告诉 AI 你想怎么改这篇笔记</string>
     <string name="note_ai_original_label">原文</string>

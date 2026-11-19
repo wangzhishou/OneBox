@@ -1021,4 +1021,45 @@
     <string name="ai_chat_mode_chat_description">即時チャット · すばやく回答</string>
     <string name="ai_chat_mode_agent_title">エージェントモード</string>
     <string name="ai_chat_mode_agent_description">計画して実行 · タスクを自動完了</string>
+
+    <!-- i18n-fill: feature/ai -->
+    <string name="agent_tool_bookmark_added">ブックマークを追加しました:\n- id: %1$s\n- タイトル: %2$s\n- URL: %3$s\n- カテゴリ: %4$s</string>
+    <string name="agent_tool_bookmark_exists">ブックマークは既に存在します: %1$s (id: %2$s)</string>
+    <string name="agent_tool_bookmark_failed">ブックマーク操作に失敗しました: %1$s</string>
+    <string name="agent_tool_bookmark_folder_builtin">カテゴリ「%1$s」は組み込みカテゴリのため削除できません</string>
+    <string name="agent_tool_bookmark_folder_created">ブックマークカテゴリを作成しました: %1$s (id: %2$s)</string>
+    <string name="agent_tool_bookmark_folder_deleted">カテゴリを削除しました: %1$s、含まれていたブックマークは未分類に移動しました</string>
+    <string name="agent_tool_bookmark_folder_exists">カテゴリ「%1$s」は既に存在します (id: %2$s)</string>
+    <string name="agent_tool_bookmark_folder_list_header">ブックマークカテゴリ:</string>
+    <string name="agent_tool_bookmark_folder_not_found">カテゴリ %1$s は存在しません。利用可能: %2$s</string>
+    <string name="agent_tool_bookmark_folder_row">· %1$s (id: %2$s, %3$s 件のブックマーク)</string>
+    <string name="agent_tool_bookmark_missing_bookmark_id">bookmark_id パラメータがありません</string>
+    <string name="agent_tool_bookmark_missing_folder_id">folder_id パラメータがありません</string>
+    <string name="agent_tool_bookmark_missing_folder_name">folder_name パラメータがありません</string>
+    <string name="agent_tool_bookmark_missing_url">url パラメータがありません</string>
+    <string name="agent_tool_bookmark_no_folders">ブックマークカテゴリはまだありません</string>
+    <string name="agent_tool_bookmark_not_found">ブックマーク %1$s は存在しません</string>
+    <string name="agent_tool_bookmark_removed">ブックマークを削除しました: %1$s (%2$s)</string>
+    <string name="agent_tool_bookmark_uncategorized">未分類</string>
+    <string name="agent_tool_bookmark_unknown_action">不明な操作: %1$s。利用可能: %2$s</string>
+    <string name="agent_tool_list_param_limit">1ページあたりの最大返却件数、1〜100、デフォルトは20です。</string>
+    <string name="agent_tool_list_param_offset">ページングのオフセット。前回の結果の next_offset で続行します。</string>
+    <string name="agent_tool_manage_bookmark_param_action">操作タイプ: add_bookmark / remove_bookmark / list_bookmarks / create_folder / delete_folder / list_folders</string>
+    <string name="agent_tool_manage_bookmark_param_bookmark_id">ブックマークエントリID（remove_bookmark 時に必須、list_bookmarks から取得）</string>
+    <string name="agent_tool_manage_bookmark_param_folder_id">所属カテゴリID（add_bookmark / delete_folder 時に使用、list_folders から取得）</string>
+    <string name="agent_tool_manage_bookmark_param_folder_name">カテゴリ名（create_folder 時に必須）</string>
+    <string name="agent_tool_manage_bookmark_param_title">ブックマークタイトル（add_bookmark 時は任意、デフォルトは URL）</string>
+    <string name="agent_tool_manage_bookmark_param_url">URL（add_bookmark / remove_bookmark 時に必須）</string>
+    <string name="agent_tool_manage_bookmark_summary">お気に入りURLの追加、お気に入りフォルダの作成</string>
+    <string name="agent_tool_manage_bookmark_title">ブックマークを管理</string>
+    <string name="agent_tool_manage_todo_category_exists">カテゴリは既に存在します: %1$s</string>
+    <string name="agent_tool_manage_todo_inbox_title">受信トレイ</string>
+    <string name="agent_tool_manage_todo_list_reused">既存のリスト「%1$s」に %2$d 件を追加し、重複 %3$d 件をスキップしました</string>
+    <string name="agent_tool_manage_todo_list_summary">全 %1$d 件、完了 %2$d 件、未処理 %3$d 件；今回 %4$d 件を返しました</string>
+    <string name="agent_tool_manage_todo_param_category_id">カテゴリ ID。list/create_task で使用し、list が返す id を指定します。\"__inbox__\" は受信トレイを表します。id を指定した場合は category_name より優先されます。</string>
+    <string name="agent_tool_manage_todo_param_include_completed">list に完了済みタスクを含めるかどうか。デフォルトは true。未完了のみ表示する場合は false を指定します。</string>
+    <string name="agent_tool_manage_todo_param_limit">list が 1 ページで返すタスクの最大件数。1〜100、デフォルトは 20。</string>
+    <string name="agent_tool_manage_todo_param_offset">list のページングオフセット。前回の結果の next_offset を使って続きを取得します。</string>
+    <string name="agent_tool_manage_todo_param_query">任意のキーワード。タスクのタイトル、メモ、タグを検索します。</string>
+    <string name="agent_tool_unknown_action_with_options">不明な操作: %1$s。使用可能: %2$s</string>
 </resources>

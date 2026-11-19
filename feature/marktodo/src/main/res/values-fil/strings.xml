@@ -205,4 +205,12 @@
     <string name="select_exact_time_hint">Magdagdag ng eksaktong oras (opsyonal)</string>
     <string name="action_select_time">Pumili ng oras</string>
     <string name="action_clear_time">I-clear ang oras</string>
+
+    <!-- i18n-fill: feature/marktodo -->
+    <string name="action_duplicate">Kopyahin</string>
+    <string name="marktodo_log_task_duplicated">Kopyahin ang gawain: %1$s</string>
+    <string name="quick_add_ai_action">Ginawa ng AI</string>
+    <string name="quick_add_ai_dialog_title">Gawain na ginawa ng AI</string>
+    <string name="quick_add_ai_prompt_prefix">Tulungan mo akong gumawa ng gawain</string>
+    <string name="snackbar_task_duplicated">Nakopya ang gawain</string>
 </resources>

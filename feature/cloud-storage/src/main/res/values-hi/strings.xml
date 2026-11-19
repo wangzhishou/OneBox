@@ -133,4 +133,35 @@
     <string name="cloud_storage_ai_assist_title">क्लाउड स्टोरेज सेटअप सहायक</string>
     <string name="cloud_storage_ai_assist_prompt">आप क्लाउड स्टोरेज सेटअप सहायक हैं। manage_cloud_connections से कनेक्शन जोड़ें। क्रेडेंशियल कभी न बनाएं।</string>
     <string name="cloud_storage_ai_assist_fill_in">फ़ोटो बैकअप के लिए Aliyun OSS कनेक्शन जोड़ने में मदद करें</string>
+
+    <!-- i18n-fill: feature/cloud-storage -->
+    <string name="cloud_storage_add_connection">कनेक्शन जोड़ें</string>
+    <string name="cloud_storage_connection_delete_action">हटाएं</string>
+    <string name="cloud_storage_connection_delete_message">\"%s\" हटाएं? केवल इस डिवाइस पर सहेजा गया कनेक्शन कॉन्फ़िगरेशन साफ़ होगा, क्लाउड फ़ाइलें प्रभावित नहीं होंगी।</string>
+    <string name="cloud_storage_connection_delete_title">कनेक्शन हटाएं</string>
+    <string name="cloud_storage_delete_connection">हटाएं</string>
+    <string name="cloud_storage_detail_location">स्थान</string>
+    <string name="cloud_storage_detail_modified">संशोधित समय</string>
+    <string name="cloud_storage_detail_type">प्रकार</string>
+    <string name="cloud_storage_done">पूर्ण</string>
+    <string name="cloud_storage_edit_connection">संपादित करें</string>
+    <string name="cloud_storage_error_auth">लॉगिन विफल, कृपया उपयोगकर्ता नाम / पासवर्ड या AccessKey जांचें</string>
+    <string name="cloud_storage_error_cleartext">यह चैनल सादे HTTP की अनुमति नहीं देता, कृपया HTTPS पता उपयोग करें</string>
+    <string name="cloud_storage_error_network">सर्वर से कनेक्ट नहीं हो सका, कृपया पता, पोर्ट और नेटवर्क जांचें</string>
+    <string name="cloud_storage_error_not_found">फ़ाइल या निर्देशिका अब मौजूद नहीं है</string>
+    <string name="cloud_storage_error_permission">इस खाते को उस फ़ाइल तक पहुंचने की अनुमति नहीं है</string>
+    <string name="cloud_storage_error_server">सर्वर ने त्रुटि लौटाई: %s</string>
+    <string name="cloud_storage_link_unavailable">यह कनेक्शन शेयर लिंक बनाने का समर्थन नहीं करता</string>
+    <string name="cloud_storage_search_clear">खोज साफ़ करें</string>
+    <string name="cloud_storage_search_empty">कोई मेल खाती फ़ाइल नहीं</string>
+    <string name="cloud_storage_search_placeholder">वर्तमान निर्देशिका में खोजें</string>
+    <string name="cloud_storage_sort_ascending">आरोही</string>
+    <string name="cloud_storage_sort_date">संशोधित समय</string>
+    <string name="cloud_storage_sort_descending">अवरोही</string>
+    <string name="cloud_storage_sort_name">नाम</string>
+    <string name="cloud_storage_sort_size">आकार</string>
+    <string name="cloud_storage_sort_title">क्रमबद्ध करें</string>
+    <string name="cloud_storage_switch_to_grid">ग्रिड दृश्य पर स्विच करें</string>
+    <string name="cloud_storage_switch_to_list">सूची दृश्य पर स्विच करें</string>
+    <string name="cloud_storage_testing">परीक्षण हो रहा है...</string>
 </resources>

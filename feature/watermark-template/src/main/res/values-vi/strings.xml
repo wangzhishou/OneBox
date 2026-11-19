@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- i18n-fill: feature/watermark-template -->
+    <string name="watermark_kind_camera_params">Thông số máy ảnh</string>
+    <string name="watermark_kind_divider">Đường phân cách</string>
+    <string name="watermark_template_apply">Ứng dụng</string>
+    <string name="watermark_template_leica_classic">Leica Cổ điển</string>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- i18n-fill: feature/watermark-template -->
+    <string name="watermark_kind_camera_params">कैमरा पैरामीटर</string>
+    <string name="watermark_kind_divider">विभाजक रेखा</string>
+    <string name="watermark_template_apply">लागू करें</string>
+    <string name="watermark_template_leica_classic">लीका क्लासिक</string>
+</resources>

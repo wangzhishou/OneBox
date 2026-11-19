@@ -107,4 +107,28 @@
     <string name="demo_aigc_demo_parse_failed">デモAIGCの解析に失敗しました</string>
     <string name="demo_glass_showcase_consistency_desc">同じ色調・同じ段階を GlassCard、GlassSurface、coloredGlass で描画。グラスがオンでもオフでも、3 つの見た目は一致している必要があります。</string>
     <string name="demo_glass_showcase_consistency_title">パイプラインの一貫性</string>
+
+    <!-- i18n-fill: feature/demo -->
+    <string name="demo_markdown_engine_kmp">KMP Markdown 1.7.2</string>
+    <string name="demo_markdown_engine_legacy">既存のレンダリングエンジン</string>
+    <string name="demo_markdown_media_sample">メディアサンプル</string>
+    <string name="demo_rich_editor_close">実験を終了</string>
+    <string name="demo_rich_editor_copied">コピーしました</string>
+    <string name="demo_rich_editor_copy_markdown">Markdownをコピー</string>
+    <string name="demo_rich_editor_description">テキストと追跡可能なスタイルが唯一の真実の情報源です。編集エリアはWebViewを使用せず、Markdown記号も表示しません。</string>
+    <string name="demo_rich_editor_entry_title">ネイティブリッチテキストエディタ</string>
+    <string name="demo_rich_editor_highlight">ハイライト</string>
+    <string name="demo_rich_editor_mode_edit">直接編集</string>
+    <string name="demo_rich_editor_mode_preview">ネイティブプレビュー</string>
+    <string name="demo_rich_editor_mode_source">Markdown</string>
+    <string name="demo_rich_editor_sample_body">レンダリング後のテキストを直接編集し、任意の内容を選択すると書式メニューが開きます。</string>
+    <string name="demo_rich_editor_sample_bullet_export">Markdownをエクスポートし、既存のネイティブレンダラーで結果を確認</string>
+    <string name="demo_rich_editor_sample_bullet_styles">スタイルはTrackedRangeにより入力・削除・貼り付けに追従して移動します</string>
+    <string name="demo_rich_editor_sample_footer">%1$s がテキストとスタイルを同時に管理し、%2$s も不要になります。</string>
+    <string name="demo_rich_editor_sample_state_word">TextFieldState</string>
+    <string name="demo_rich_editor_sample_title">ネイティブWYSIWYG編集</string>
+    <string name="demo_rich_editor_sample_webview_word">WebView</string>
+    <string name="demo_rich_editor_stats">%1$d 文字 · %2$d 個の追跡可能なスタイル範囲</string>
+    <string name="demo_rich_editor_stats_with_hint">%1$d 文字 · %2$d 個のスタイル範囲 · テキスト選択後に書式を設定できます</string>
+    <string name="demo_rich_editor_title">ネイティブWYSIWYGエディタ</string>
 </resources>

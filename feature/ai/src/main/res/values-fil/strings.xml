@@ -1021,4 +1021,45 @@
     <string name="ai_chat_mode_chat_description">Instant na chat · Mabilis na sagot</string>
     <string name="ai_chat_mode_agent_title">Mode ng Agent</string>
     <string name="ai_chat_mode_agent_description">Plano at aksyon · Awtomatikong mga gawain</string>
+
+    <!-- i18n-fill: feature/ai -->
+    <string name="agent_tool_bookmark_added">Naidagdag ang bookmark:\n- id: %1$s\n- Pamagat: %2$s\n- URL: %3$s\n- Kategorya: %4$s</string>
+    <string name="agent_tool_bookmark_exists">Umiiral na ang bookmark: %1$s (id: %2$s)</string>
+    <string name="agent_tool_bookmark_failed">Nabigo ang operasyon sa bookmark: %1$s</string>
+    <string name="agent_tool_bookmark_folder_builtin">Ang kategoryang \"%1$s\" ay built-in at hindi maaaring tanggalin</string>
+    <string name="agent_tool_bookmark_folder_created">Nagawa ang kategorya ng bookmark: %1$s (id: %2$s)</string>
+    <string name="agent_tool_bookmark_folder_deleted">Natanggal ang kategorya: %1$s, inilipat ang mga bookmark nito sa Walang Kategorya</string>
+    <string name="agent_tool_bookmark_folder_exists">Umiiral na ang kategoryang \"%1$s\" (id: %2$s)</string>
+    <string name="agent_tool_bookmark_folder_list_header">Mga kategorya ng bookmark:</string>
+    <string name="agent_tool_bookmark_folder_not_found">Walang kategoryang %1$s, available: %2$s</string>
+    <string name="agent_tool_bookmark_folder_row">· %1$s (id: %2$s, %3$s bookmark)</string>
+    <string name="agent_tool_bookmark_missing_bookmark_id">Kulang ang parameter na bookmark_id</string>
+    <string name="agent_tool_bookmark_missing_folder_id">Kulang ang parameter na folder_id</string>
+    <string name="agent_tool_bookmark_missing_folder_name">Kulang ang parameter na folder_name</string>
+    <string name="agent_tool_bookmark_missing_url">Kulang ang parameter na url</string>
+    <string name="agent_tool_bookmark_no_folders">Wala pang kategorya ng bookmark</string>
+    <string name="agent_tool_bookmark_not_found">Walang bookmark na %1$s</string>
+    <string name="agent_tool_bookmark_removed">Natatanggal ang bookmark: %1$s (%2$s)</string>
+    <string name="agent_tool_bookmark_uncategorized">Walang Kategorya</string>
+    <string name="agent_tool_bookmark_unknown_action">Hindi kilalang operasyon: %1$s, available: %2$s</string>
+    <string name="agent_tool_list_param_limit">Bilang ng item na ibabalik bawat pahina, 1-100, default 20.</string>
+    <string name="agent_tool_list_param_offset">Offset ng pagination; gamitin ang next_offset ng nakaraang resulta upang magpatuloy.</string>
+    <string name="agent_tool_manage_bookmark_param_action">Uri ng operasyon: add_bookmark / remove_bookmark / list_bookmarks / create_folder / delete_folder / list_folders</string>
+    <string name="agent_tool_manage_bookmark_param_bookmark_id">ID ng bookmark item (kailangan sa remove_bookmark, mula sa list_bookmarks)</string>
+    <string name="agent_tool_manage_bookmark_param_folder_id">ID ng kategoryang kinabibilangan (ginagamit sa add_bookmark / delete_folder, mula sa list_folders)</string>
+    <string name="agent_tool_manage_bookmark_param_folder_name">Pangalan ng kategorya (kailangan sa create_folder)</string>
+    <string name="agent_tool_manage_bookmark_param_title">Pamagat ng bookmark (opsyonal sa add_bookmark, default ay URL)</string>
+    <string name="agent_tool_manage_bookmark_param_url">URL (kailangan sa add_bookmark / remove_bookmark)</string>
+    <string name="agent_tool_manage_bookmark_summary">Magdagdag ng bookmark, gumawa ng kategorya ng bookmark</string>
+    <string name="agent_tool_manage_bookmark_title">Pamahalaan ang mga bookmark</string>
+    <string name="agent_tool_manage_todo_category_exists">Umiiral na ang kategorya: %1$s</string>
+    <string name="agent_tool_manage_todo_inbox_title">Inbox</string>
+    <string name="agent_tool_manage_todo_list_reused">Nagdagdag ng %2$d item sa umiiral na listahan na \"%1$s\", nilaktawan ang %3$d duplicate</string>
+    <string name="agent_tool_manage_todo_list_summary">Kabuuan %1$d item, %2$d tapos na, %3$d nakabinbin; ibinalik ngayon ang %4$d item</string>
+    <string name="agent_tool_manage_todo_param_category_id">Category ID, ginagamit sa list/create_task, kinuha mula sa id na ibinalik ng list; ang \"__inbox__\" ay nangangahulugang inbox. Kapag may id, mas priority ito kaysa sa category_name.</string>
+    <string name="agent_tool_manage_todo_param_include_completed">Kung isasama ng list ang mga tapos nang gawain, default true; para sa hindi pa tapos lang, ipasa ang false.</string>
+    <string name="agent_tool_manage_todo_param_limit">Maximum na bilang ng gawaing ibabalik ng list sa isang pahina, 1-100, default 20.</string>
+    <string name="agent_tool_manage_todo_param_offset">Offset ng pagination ng list; gamitin ang next_offset ng nakaraang resulta para magpatuloy sa pag-flip ng pahina.</string>
+    <string name="agent_tool_manage_todo_param_query">Opsyonal na keyword, naghahanap sa pamagat, tala, at tag ng gawain.</string>
+    <string name="agent_tool_unknown_action_with_options">Hindi kilalang operasyon: %1$s, magagamit: %2$s</string>
 </resources>

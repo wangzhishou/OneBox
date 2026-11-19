@@ -21,4 +21,45 @@
 <resources>
     <string name="mini_program_jump_confirm">即將離開並跳轉到微信開啟？</string>
     <string name="mini_program_redirecting">正在跳轉中…</string>
+
+    <!-- i18n-fill: feature/online -->
+    <string name="note_menu_copy_all">複製全部內容</string>
+    <string name="note_menu_settings">設定</string>
+    <string name="note_ai_action_format">AI 格式排版</string>
+    <string name="note_ai_action_expand">AI 一鍵擴寫</string>
+    <string name="note_ai_action_polish">AI 一鍵潤色</string>
+    <string name="note_ai_action_condense">AI 精簡</string>
+    <string name="note_ai_action_checklist">AI 提煉待辦</string>
+    <string name="note_ai_action_summary">AI 生成摘要</string>
+    <string name="note_ai_prompt_label">提示詞</string>
+    <string name="note_ai_prompt_hint">告訴 AI 你想怎麼改這篇筆記</string>
+    <string name="note_ai_original_label">原文</string>
+    <string name="note_ai_original_meta">原文 · %1$d 字</string>
+    <string name="note_ai_result_label">AI 結果</string>
+    <string name="note_ai_panel_generate">生成</string>
+    <string name="note_ai_regenerate">重新生成</string>
+    <string name="note_ai_stop">停止</string>
+    <string name="note_ai_copy">複製</string>
+    <string name="note_ai_copied">已複製</string>
+    <string name="note_ai_apply_replace">替換原文</string>
+    <string name="note_ai_apply_append">附加到末尾</string>
+    <string name="note_ai_apply_prepend">插入到開頭</string>
+    <string name="note_ai_undo_apply">復原</string>
+    <string name="note_ai_applied">已套用到筆記，面板關閉前可以復原。</string>
+    <string name="note_ai_panel_generating">生成中…</string>
+    <string name="note_ai_empty_hint">先選一個動作、調整提示詞，然後生成。</string>
+    <string name="note_ai_empty_result">AI 傳回空白結果，可以重試或換個引擎。</string>
+    <string name="note_ai_no_engine">沒有可用的 AI 引擎，請先在「設定 → AI 引擎」裡新增。</string>
+    <string name="note_ai_result_meta">%1$s · %2$d tokens</string>
+    <string name="note_ai_too_short">請先在筆記裡寫點內容。</string>
+    <string name="note_ai_keepalive_title">AI 正在處理筆記</string>
+    <string name="note_ai_billing_desc">筆記 AI 寫作</string>
+    <string name="note_ai_system_prompt">你是筆記應用程式的 Markdown 編輯器。依使用者指令修改筆記，保留原文語言、事實、數字、連結、圖片、音影片指令、表格和程式碼。只輸出修改後的完整 Markdown 全文，不要解釋、不要前後綴、不要用程式碼區塊圍欄包裹。</string>
+    <string name="note_ai_input_template">指令：\n%1$s\n\n原文 Markdown：\n%2$s</string>
+    <string name="note_ai_prompt_format">整理這篇筆記的排版：修正標題層級，統一清單、縮排和空行，拆分過長段落，把連續要點整理成清單或表格；不改變原意和事實。</string>
+    <string name="note_ai_prompt_expand">擴寫這篇筆記：補充解釋、例子和細節，讓內容更完整；保持原有觀點和事實，不要編造資料或個人經歷。</string>
+    <string name="note_ai_prompt_polish">潤飾這篇筆記：修正錯別字和語法，讓表達更通順自然，統一術語和語氣；不改變原意和資訊量。</string>
+    <string name="note_ai_prompt_condense">精簡這篇筆記：保留核心資訊和結構，刪掉重複和冗餘表達；不遺失關鍵事實。</string>
+    <string name="note_ai_prompt_checklist">從這篇筆記中提煉可執行的待辦事項，輸出 Markdown 核取方塊清單（- [ ]），每條一個動作，原文裡有時間或負責人時一併帶上。以「## 待辦」開頭，只輸出待辦清單。</string>
+    <string name="note_ai_prompt_summary">為這篇筆記寫一段 2–4 句的摘要，以「## 摘要」開頭，只輸出摘要部分。</string>
 </resources>

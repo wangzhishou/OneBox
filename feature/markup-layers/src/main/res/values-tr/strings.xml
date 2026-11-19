@@ -233,4 +233,10 @@
     <string name="markup_rasterize_message">Metin ve şekil katmanları, filtreleri kullanmadan önce resme dönüştürülmelidir. Dönüştürme sonrasında metin/şekil ayarları artık düzenlenemez, ancak Geri Al ile geri yüklenebilir.</string>
     <string name="markup_rasterize_failed">Katman dönüştürme başarısız</string>
     <string name="markup_tool_text_style">Metin stili</string>
+
+    <!-- i18n-fill: feature/markup-layers -->
+    <string name="markup_select_text_first">Lütfen önce bir metin katmanı seçin</string>
+    <string name="markup_text_clear_format">Biçimi temizle</string>
+    <string name="markup_text_size_decrease">Yazı tipi boyutunu küçült</string>
+    <string name="markup_text_size_increase">Yazı tipi boyutunu büyüt</string>
 </resources>

@@ -204,4 +204,45 @@
     <string name="textcard_template_name">Vorlagenname</string>
     <string name="textcard_template_saved">Vorlage gespeichert</string>
     <string name="textcard_try_sample">Beispiel</string>
+
+    <!-- i18n-fill: feature/text-card -->
+    <string name="textcard_annotated_long_image_hint">Bei Seitenanmerkungen wird das lange Bild gemäß der Seitenaufteilung zusammengesetzt; die Positionen der Anmerkungen bleiben erhalten.</string>
+    <string name="textcard_annotation_draw_mode">Stift · Seite %1$d</string>
+    <string name="textcard_annotation_edit_text">Anmerkungstext wird bearbeitet</string>
+    <string name="textcard_annotation_empty">Keine Anmerkungen auf dieser Seite. Text, Stift oder Formen hinzufügen.</string>
+    <string name="textcard_annotation_mode">Anmerkung · Seite %1$d</string>
+    <string name="textcard_annotation_needs_review">Prüfen</string>
+    <string name="textcard_annotation_review_count">%1$d Anmerkungen zu prüfen</string>
+    <string name="textcard_apply">Anwenden</string>
+    <string name="textcard_backup_source">Originaltext als Sicherung kopieren</string>
+    <string name="textcard_brush_color">Stiftfarbe</string>
+    <string name="textcard_brush_marker">Textmarker</string>
+    <string name="textcard_brush_pencil">Bleistift</string>
+    <string name="textcard_brush_settings">Stifteinstellungen</string>
+    <string name="textcard_brush_type">Stifttyp</string>
+    <string name="textcard_delete_page_break">Seitenumbruch löschen</string>
+    <string name="textcard_draw_opacity">Deckkraft</string>
+    <string name="textcard_eraser">Radierer</string>
+    <string name="textcard_export_preparing">Layout wird erstellt…</string>
+    <string name="textcard_go_to_page">Springen</string>
+    <string name="textcard_layers_reorder_hint">Griff ziehen, um die Ebenenreihenfolge zu ändern</string>
+    <string name="textcard_layout_failed_short">Layout fehlgeschlagen</string>
+    <string name="textcard_layout_settings">Seite und Papier</string>
+    <string name="textcard_layout_updating">Layout wird aktualisiert…</string>
+    <string name="textcard_long_image_page_break_hint">Im durchgehenden langen Bild werden manuelle Seitenumbrüche als Zeilenumbruch behandelt; beim Wechsel zurück zu mehreren Seiten werden die Umbrüche wiederhergestellt.</string>
+    <string name="textcard_manual_page_break">Manueller Umbruch %1$d</string>
+    <string name="textcard_manual_page_break_short">Manuell</string>
+    <string name="textcard_move_annotation_page">Zu Seite verschieben</string>
+    <string name="textcard_page_count_transition">Seite %1$d → Seite %2$d</string>
+    <string name="textcard_page_number_input">Seitenzahl</string>
+    <string name="textcard_project_meta_pending">Seitenzahl wird aktualisiert · %1$s</string>
+    <string name="textcard_save_failed_retry">Speichern fehlgeschlagen, zum Wiederholen auf Speichern tippen</string>
+    <string name="textcard_save_now">Werk jetzt speichern</string>
+    <string name="textcard_shape_corner_radius">Abgerundete Ecken</string>
+    <string name="textcard_shape_kind">Formtyp</string>
+    <string name="textcard_shape_stroke">Kontur</string>
+    <string name="textcard_source_copied">Originaltext kopiert</string>
+    <string name="textcard_tab_annotations">Beschriftung</string>
+    <string name="textcard_tab_layout">Seite</string>
+    <string name="textcard_unsaved_changes">Ungespeicherte Änderungen</string>
 </resources>

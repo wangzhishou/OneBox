@@ -107,4 +107,28 @@
     <string name="demo_aigc_demo_parse_failed">示範 AIGC 解析失敗</string>
     <string name="demo_glass_showcase_consistency_desc">同一色調、同一檔位分別經 GlassCard、GlassSurface、coloredGlass 渲染，開／關玻璃三者觀感都必須一致。</string>
     <string name="demo_glass_showcase_consistency_title">管線一致性對照</string>
+
+    <!-- i18n-fill: feature/demo -->
+    <string name="demo_markdown_engine_kmp">KMP Markdown 1.7.2</string>
+    <string name="demo_markdown_engine_legacy">現有渲染引擎</string>
+    <string name="demo_markdown_media_sample">媒體範例</string>
+    <string name="demo_rich_editor_close">關閉實驗</string>
+    <string name="demo_rich_editor_copied">已複製</string>
+    <string name="demo_rich_editor_copy_markdown">複製 Markdown</string>
+    <string name="demo_rich_editor_description">文字與可追蹤樣式是唯一事實來源；編輯區不使用 WebView，也不顯示 Markdown 標記。</string>
+    <string name="demo_rich_editor_entry_title">Native 富文字編輯器</string>
+    <string name="demo_rich_editor_highlight">醒目提示</string>
+    <string name="demo_rich_editor_mode_edit">直接編輯</string>
+    <string name="demo_rich_editor_mode_preview">Native 預覽</string>
+    <string name="demo_rich_editor_mode_source">Markdown</string>
+    <string name="demo_rich_editor_sample_body">直接編輯渲染後的文字，選取任意內容即可開啟格式選單。</string>
+    <string name="demo_rich_editor_sample_bullet_export">匯出 Markdown，再用現有 Native 渲染器核對結果</string>
+    <string name="demo_rich_editor_sample_bullet_styles">樣式透過 TrackedRange 隨輸入、刪除和貼上移動</string>
+    <string name="demo_rich_editor_sample_footer">%1$s 同時管理文字與樣式，%2$s 也不再是必需品。</string>
+    <string name="demo_rich_editor_sample_state_word">TextFieldState</string>
+    <string name="demo_rich_editor_sample_title">Native 所見即所得編輯</string>
+    <string name="demo_rich_editor_sample_webview_word">WebView</string>
+    <string name="demo_rich_editor_stats">%1$d 個字元 · %2$d 個可追蹤樣式區間</string>
+    <string name="demo_rich_editor_stats_with_hint">%1$d 個字元 · %2$d 個樣式區間 · 選取文字後可設定格式</string>
+    <string name="demo_rich_editor_title">Native 所見即所得編輯器</string>
 </resources>

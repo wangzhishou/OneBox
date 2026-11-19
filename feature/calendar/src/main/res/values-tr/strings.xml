@@ -219,4 +219,51 @@
     <!-- 大运走势 -->
     <string name="dayun_year_range">%1$d–%2$d</string>
     <string name="dayun_current">Şu an</string>
+
+    <!-- i18n-fill: feature/calendar -->
+    <string name="calendar_share_ai_generating">Oluşturuluyor…</string>
+    <string name="calendar_share_ai_hint">AI; tarih, ay takvimi, uygunluk ve havayı birleştirerek bir cümle oluşturur; oluşturduktan sonra düzenlemeye devam edebilirsiniz.</string>
+    <string name="calendar_share_ai_write">AI bir cümle yazsın</string>
+    <string name="calendar_share_air_prefix">Hava</string>
+    <string name="calendar_share_auspicious_title">Uğurlu saat</string>
+    <string name="calendar_share_blessing">Her şey gönlünüzce olsun, huzur ve esenlik dileriz</string>
+    <string name="calendar_share_brand">WanBaoHe · Ebedi Takvim</string>
+    <string name="calendar_share_color_title">Renk</string>
+    <string name="calendar_share_content_title">Kart görünümü</string>
+    <string name="calendar_share_day_suffix">Gün</string>
+    <string name="calendar_share_ji_seal">Sakıncalı</string>
+    <string name="calendar_share_lunar_prefix">Ay takvimi</string>
+    <string name="calendar_share_month_suffix">Ay</string>
+    <string name="calendar_share_note_counter">%1$d/%2$d</string>
+    <string name="calendar_share_note_label">İçten dilek</string>
+    <string name="calendar_share_note_placeholder">Boş bırakılırsa gösterilmez, en fazla 80 karakter</string>
+    <string name="calendar_share_note_title">Bugünün içten dileği</string>
+    <string name="calendar_share_note_title_section">Bir içten dilek yazın</string>
+    <string name="calendar_share_page_title">Takvimi paylaş</string>
+    <string name="calendar_share_preview_size">%1$d × %2$d · PNG</string>
+    <string name="calendar_share_render_failed">Kart oluşturulamadı</string>
+    <string name="calendar_share_retry">Yeniden dene</string>
+    <string name="calendar_share_save">Görseli kaydet</string>
+    <string name="calendar_share_save_failed">Kaydetme başarısız</string>
+    <string name="calendar_share_saved_app">Uygulama dizinine kaydedildi (%1$s)</string>
+    <string name="calendar_share_saved_gallery">Galeriye kaydedildi (%1$s)</string>
+    <string name="calendar_share_selected_day_prefix">Bugün</string>
+    <string name="calendar_share_share">Görseli paylaş</string>
+    <string name="calendar_share_style_gold_ink">Gizemli Altın</string>
+    <string name="calendar_share_style_ink_green">Koyu Yeşil</string>
+    <string name="calendar_share_style_theme">Temayı takip et</string>
+    <string name="calendar_share_style_vermilion">Zinober</string>
+    <string name="calendar_share_today_prefix">Bugün</string>
+    <string name="calendar_share_toggle_note">Gönül sözü</string>
+    <string name="calendar_share_toggle_today">Bugünkü özel gün</string>
+    <string name="calendar_share_toggle_upcoming">Yaklaşan özel günler</string>
+    <string name="calendar_share_toggle_weather">Hava durumu</string>
+    <string name="calendar_share_transparent_background">Şeffaf arka plan</string>
+    <string name="calendar_share_upcoming_prefix">Gelecek</string>
+    <string name="calendar_share_weather_loading">Hava durumu…</string>
+    <string name="calendar_share_weather_title">Hava durumu</string>
+    <string name="calendar_share_weather_today_only">Hava durumu yalnızca bugün için kullanılabilir</string>
+    <string name="calendar_share_weather_unavailable">Hava durumu henüz alınamadı</string>
+    <string name="calendar_share_year_suffix">Yıl</string>
+    <string name="calendar_share_yi_seal">Uygun</string>
 </resources>

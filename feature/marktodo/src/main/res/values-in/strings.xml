@@ -205,4 +205,12 @@
     <string name="select_exact_time_hint">Tambahkan waktu spesifik (opsional)</string>
     <string name="action_select_time">Pilih waktu</string>
     <string name="action_clear_time">Hapus waktu</string>
+
+    <!-- i18n-fill: feature/marktodo -->
+    <string name="action_duplicate">Salin</string>
+    <string name="marktodo_log_task_duplicated">Salin tugas: %1$s</string>
+    <string name="quick_add_ai_action">Dibuat oleh AI</string>
+    <string name="quick_add_ai_dialog_title">Tugas dibuat oleh AI</string>
+    <string name="quick_add_ai_prompt_prefix">Bantu saya membuat tugas</string>
+    <string name="snackbar_task_duplicated">Tugas disalin</string>
 </resources>

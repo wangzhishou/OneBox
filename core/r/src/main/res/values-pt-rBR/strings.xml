@@ -2126,4 +2126,20 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
     <!-- AI chat loading: lightweight BYOK hint, Google channel only -->
     <string name="ai_chat_loading_byok_hint">Evite a fila com sua chave de API</string>
     <string name="ai_chat_loading_byok_action">Configurar</string>
+
+    <!-- i18n-fill: core/r -->
+    <string name="device_status">Status do dispositivo</string>
+    <string name="device_status_description">Copiar IP, rede e informações do dispositivo</string>
+    <string name="file_viewer_description">Abrir arquivos Word, Excel, PowerPoint, EPUB e de texto offline</string>
+    <string name="file_viewer_error_cannot_open">Não foi possível abrir este arquivo. Ele pode ter sido movido ou o app perdeu a permissão de leitura.</string>
+    <string name="file_viewer_error_too_large">Este arquivo tem %1$s, grande demais para visualizar aqui. Abra com outro app.</string>
+    <string name="file_viewer_go_to_page">Ir para a página</string>
+    <string name="file_viewer_night_mode">Modo noturno</string>
+    <string name="file_viewer_open_with_other">Abrir com outro app</string>
+    <string name="file_viewer_page_number">Número da página</string>
+    <string name="file_viewer_search_hint">Localizar no documento</string>
+    <string name="file_viewer_search_next">Próxima correspondência</string>
+    <string name="file_viewer_search_previous">Correspondência anterior</string>
+    <string name="file_viewer_title">Pré-visualização do arquivo</string>
+    <string name="home_category_filter">Filtrar por categoria</string>
 </resources>

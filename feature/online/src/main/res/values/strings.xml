@@ -34,7 +34,6 @@
     <string name="note_ai_action_summary">Generate summary</string>
 
     <!-- Note AI writing panel -->
-    <string name="note_ai_engine">Engine</string>
     <string name="note_ai_prompt_label">Instruction</string>
     <string name="note_ai_prompt_hint">Tell the AI how to change the note</string>
     <string name="note_ai_original_label">Original</string>

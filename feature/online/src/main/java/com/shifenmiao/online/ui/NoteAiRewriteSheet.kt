@@ -21,7 +21,9 @@
 
 package com.shifenmiao.online.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -31,6 +33,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -50,6 +53,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -63,15 +68,19 @@ import com.shifenmiao.online.component.NoteAiApplyMode
 import com.shifenmiao.online.component.NoteAiUiState
 import com.t8rin.imagetoolbox.core.resources.Icons as OneBoxIcons
 import com.t8rin.imagetoolbox.core.resources.icons.Check
+import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineArrowDropDown
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRobot
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineStop
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.core.ui.widget.system.OneBoxDangerButton
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
 import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
 import kotlinx.coroutines.delay
@@ -104,6 +113,13 @@ fun NoteAiRewriteSheet(
         focusManager.clearFocus()
         onGenerate()
     }
+    val copyResult = {
+        if (state.result.isNotBlank()) {
+            clipboard.setText(AnnotatedString(state.result))
+            copied = true
+            AppToastHost.showToast(R.string.note_ai_copied)
+        }
+    }
     LaunchedEffect(copied) {
         if (copied) {
             delay(1500)
@@ -131,12 +147,6 @@ fun NoteAiRewriteSheet(
                 onSelect = onActionChange,
             )
 
-            NoteAiEngineButton(
-                engine = currentEngine,
-                enabled = !state.isGenerating,
-                onClick = onSwitchEngine,
-            )
-
             GlassOutlinedTextField(
                 value = state.prompt,
                 onValueChange = onPromptChange,
@@ -155,7 +165,12 @@ fun NoteAiRewriteSheet(
 
             NoteAiOriginalPreview(markdown = state.originalMarkdown)
 
-            NoteAiResultSection(state = state, engine = currentEngine)
+            NoteAiResultSection(
+                state = state,
+                engine = currentEngine,
+                copied = copied,
+                onCopy = copyResult,
+            )
 
             if (canUndo) {
                 Row(
@@ -186,6 +201,8 @@ fun NoteAiRewriteSheet(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
+                // 引擎胶囊和主按钮同一行, 垂直居中对齐
+                itemVerticalAlignment = Alignment.CenterVertically,
             ) {
                 when {
                     state.isGenerating -> {
@@ -215,16 +232,6 @@ fun NoteAiRewriteSheet(
                             text = stringResource(R.string.note_ai_regenerate),
                             onClick = generate,
                         )
-                        OneSecondaryButton(
-                            text = stringResource(
-                                if (copied) R.string.note_ai_copied else R.string.note_ai_copy
-                            ),
-                            leadingIcon = if (copied) OneBoxIcons.Outlined.Check else null,
-                            onClick = {
-                                clipboard.setText(AnnotatedString(state.result))
-                                copied = true
-                            },
-                        )
                     }
 
                     else -> {
@@ -234,16 +241,16 @@ fun NoteAiRewriteSheet(
                             enabled = currentEngine?.name?.isNotBlank() == true && state.prompt.isNotBlank(),
                             onClick = generate,
                         )
-                        OneSecondaryButton(
-                            text = stringResource(R.string.note_ai_copy),
-                            enabled = state.result.isNotBlank(),
-                            onClick = {
-                                clipboard.setText(AnnotatedString(state.result))
-                                copied = true
-                            },
-                        )
                     }
                 }
+
+                // 引擎切换紧跟主操作:胶囊本身就是「当前模型 + 可切换」的入口,
+                // 不再单独占一行写「引擎」标签; 点开仍是全局模型选择弹窗。
+                NoteAiEngineSwitcher(
+                    engine = currentEngine,
+                    enabled = !state.isGenerating,
+                    onClick = onSwitchEngine,
+                )
             }
         }
     }
@@ -291,27 +298,60 @@ private fun NoteAiActionChips(
     }
 }
 
+/**
+ * 引擎切换按钮：一枚「当前模型 + 切换箭头」的胶囊，和「生成」同排对齐。
+ *
+ * 刻意不写「引擎」标签 —— 胶囊显示的就是正在跑的模型，右下箭头表示可切换；
+ * 点击仍走全局模型选择弹窗（[onClick]），模型级选择逻辑不变。
+ */
 @Composable
-private fun NoteAiEngineButton(
+private fun NoteAiEngineSwitcher(
     engine: AiEngine?,
     enabled: Boolean,
     onClick: () -> Unit,
 ) {
-    Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-        Text(
-            text = stringResource(R.string.note_ai_engine),
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        OneSecondaryButton(
-            text = engine?.let { current ->
-                "${current.title.ifBlank { current.name }} · ${current.model.name}"
-            } ?: stringResource(R.string.note_ai_no_engine),
-            leadingIcon = OneBoxIcons.Outlined.LineRobot,
-            enabled = enabled,
-            modifier = Modifier.fillMaxWidth(),
-            onClick = onClick,
-        )
+    val label = engine?.model?.name?.takeIf { it.isNotBlank() }
+        ?: engine?.title?.takeIf { it.isNotBlank() }
+        ?: stringResource(R.string.note_ai_no_engine)
+    val accent = MaterialTheme.colorScheme.onPrimaryContainer
+
+    GlassSurface(
+        onClick = onClick,
+        modifier = Modifier.alpha(if (enabled) 1f else 0.5f),
+        enabled = enabled,
+        shape = OneBoxDesignSystem.pillShape,
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
+        style = GlassStyle.Medium,
+        borderWidth = 0.95.dp,
+    ) {
+        Row(
+            modifier = Modifier
+                .widthIn(max = 200.dp)
+                .padding(start = 12.dp, end = 8.dp, top = 8.dp, bottom = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            Icon(
+                imageVector = OneBoxIcons.Outlined.LineRobot,
+                contentDescription = null,
+                tint = accent,
+                modifier = Modifier.size(16.dp),
+            )
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f, fill = false),
+            )
+            Icon(
+                imageVector = OneBoxIcons.Outlined.LineArrowDropDown,
+                contentDescription = null,
+                tint = accent,
+                modifier = Modifier.size(18.dp),
+            )
+        }
     }
 }
 
@@ -356,6 +396,8 @@ private fun NoteAiOriginalPreview(markdown: String) {
 private fun NoteAiResultSection(
     state: NoteAiUiState,
     engine: AiEngine?,
+    copied: Boolean,
+    onCopy: () -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Row(
@@ -377,6 +419,14 @@ private fun NoteAiResultSection(
                     ),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            // 复制贴着要复制的内容（结果区）放，只留一个图标，不再占底部按钮位。
+            if (state.result.isNotBlank()) {
+                NoteAiCopyIcon(
+                    copied = copied,
+                    onCopy = onCopy,
+                    modifier = Modifier.padding(start = 4.dp),
                 )
             }
         }
@@ -420,3 +470,29 @@ private fun NoteAiResultSection(
         }
     }
 }
+
+/** 结果区右上角的复制按钮：只有一个图标，复制后短暂变成对勾。 */
+@Composable
+private fun NoteAiCopyIcon(
+    copied: Boolean,
+    onCopy: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .size(28.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .clickable(onClick = onCopy),
+        contentAlignment = Alignment.Center,
+    ) {
+        Icon(
+            imageVector = if (copied) OneBoxIcons.Outlined.Check else OneBoxIcons.Rounded.ContentCopy,
+            contentDescription = stringResource(
+                if (copied) R.string.note_ai_copied else R.string.note_ai_copy
+            ),
+            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+            modifier = Modifier.size(16.dp),
+        )
+    }
+}
+

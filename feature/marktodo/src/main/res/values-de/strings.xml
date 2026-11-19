@@ -205,4 +205,12 @@
     <string name="select_exact_time_hint">Genaue Uhrzeit hinzufügen (optional)</string>
     <string name="action_select_time">Uhrzeit auswählen</string>
     <string name="action_clear_time">Uhrzeit löschen</string>
+
+    <!-- i18n-fill: feature/marktodo -->
+    <string name="action_duplicate">Kopieren</string>
+    <string name="marktodo_log_task_duplicated">Aufgabe kopieren: %1$s</string>
+    <string name="quick_add_ai_action">Von KI erstellt</string>
+    <string name="quick_add_ai_dialog_title">Aufgabe von KI erstellen</string>
+    <string name="quick_add_ai_prompt_prefix">Aufgabe für mich erstellen</string>
+    <string name="snackbar_task_duplicated">Aufgabe kopiert</string>
 </resources>

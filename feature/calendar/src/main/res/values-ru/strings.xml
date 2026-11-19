@@ -219,4 +219,51 @@
     <!-- 大运走势 -->
     <string name="dayun_year_range">%1$d–%2$d</string>
     <string name="dayun_current">Сейчас</string>
+
+    <!-- i18n-fill: feature/calendar -->
+    <string name="calendar_share_ai_generating">Генерация…</string>
+    <string name="calendar_share_ai_hint">ИИ составит фразу с учётом даты, лунного календаря, благоприятных и неблагоприятных дел и погоды. После генерации можно отредактировать.</string>
+    <string name="calendar_share_ai_write">Фраза от ИИ</string>
+    <string name="calendar_share_air_prefix">Воздух</string>
+    <string name="calendar_share_auspicious_title">Благоприятный час</string>
+    <string name="calendar_share_blessing">Всего наилучшего, мира и благополучия</string>
+    <string name="calendar_share_brand">WanBaoHe · Вечный календарь</string>
+    <string name="calendar_share_color_title">Цвета</string>
+    <string name="calendar_share_content_title">Отображение на карточке</string>
+    <string name="calendar_share_day_suffix">День</string>
+    <string name="calendar_share_ji_seal">Не</string>
+    <string name="calendar_share_lunar_prefix">Лунный календарь</string>
+    <string name="calendar_share_month_suffix">Месяц</string>
+    <string name="calendar_share_note_counter">%1$d/%2$d</string>
+    <string name="calendar_share_note_label">Пожелание</string>
+    <string name="calendar_share_note_placeholder">Оставьте пустым, чтобы скрыть. Не более 80 символов</string>
+    <string name="calendar_share_note_title">Пожелание дня</string>
+    <string name="calendar_share_note_title_section">Напишите пожелание</string>
+    <string name="calendar_share_page_title">Поделиться календарём</string>
+    <string name="calendar_share_preview_size">%1$d × %2$d · PNG</string>
+    <string name="calendar_share_render_failed">Не удалось отрисовать карточку</string>
+    <string name="calendar_share_retry">Повторить</string>
+    <string name="calendar_share_save">Сохранить изображение</string>
+    <string name="calendar_share_save_failed">Не удалось сохранить</string>
+    <string name="calendar_share_saved_app">Сохранено в каталог приложения (%1$s)</string>
+    <string name="calendar_share_saved_gallery">Сохранено в галерею (%1$s)</string>
+    <string name="calendar_share_selected_day_prefix">Текущий день</string>
+    <string name="calendar_share_share">Поделиться изображением</string>
+    <string name="calendar_share_style_gold_ink">Тёмное золото</string>
+    <string name="calendar_share_style_ink_green">Тёмно-бирюзовый</string>
+    <string name="calendar_share_style_theme">Следовать теме</string>
+    <string name="calendar_share_style_vermilion">Киноварь</string>
+    <string name="calendar_share_today_prefix">Сегодня</string>
+    <string name="calendar_share_toggle_note">Мысли дня</string>
+    <string name="calendar_share_toggle_today">Праздник сегодня</string>
+    <string name="calendar_share_toggle_upcoming">Будущие праздники</string>
+    <string name="calendar_share_toggle_weather">Погода</string>
+    <string name="calendar_share_transparent_background">Прозрачный фон</string>
+    <string name="calendar_share_upcoming_prefix">Будущее</string>
+    <string name="calendar_share_weather_loading">Погода…</string>
+    <string name="calendar_share_weather_title">Погода</string>
+    <string name="calendar_share_weather_today_only">Погода доступна только на сегодня</string>
+    <string name="calendar_share_weather_unavailable">Погода пока недоступна</string>
+    <string name="calendar_share_year_suffix">Год</string>
+    <string name="calendar_share_yi_seal">Благоприятно</string>
 </resources>

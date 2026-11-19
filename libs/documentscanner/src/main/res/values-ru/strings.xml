@@ -20,4 +20,7 @@
 
 <resources>
     <string name="image_with_cropper">Исходное изображение с инструментом обрезки</string>
+
+    <!-- i18n-fill: libs/documentscanner -->
+    <string name="document_scan_captured_image_unreadable">Не удалось прочитать только что сделанное фото, повторите сканирование</string>
 </resources>

@@ -219,4 +219,51 @@
     <!-- 大运走势 -->
     <string name="dayun_year_range">%1$d–%2$d</string>
     <string name="dayun_current">Hiện tại</string>
+
+    <!-- i18n-fill: feature/calendar -->
+    <string name="calendar_share_ai_generating">Đang tạo…</string>
+    <string name="calendar_share_ai_hint">AI sẽ kết hợp ngày, âm lịch, việc nên và không nên làm cùng thời tiết để tạo một câu, sau khi tạo có thể tiếp tục chỉnh sửa.</string>
+    <string name="calendar_share_ai_write">AI viết một câu</string>
+    <string name="calendar_share_air_prefix">Không khí</string>
+    <string name="calendar_share_auspicious_title">Giờ tốt</string>
+    <string name="calendar_share_blessing">Vạn sự như ý, bình an thuận lợi</string>
+    <string name="calendar_share_brand">WanBaoHe · Lịch vạn niên</string>
+    <string name="calendar_share_color_title">Màu sắc</string>
+    <string name="calendar_share_content_title">Hiển thị thẻ</string>
+    <string name="calendar_share_day_suffix">Ngày</string>
+    <string name="calendar_share_ji_seal">Kiêng</string>
+    <string name="calendar_share_lunar_prefix">Âm lịch</string>
+    <string name="calendar_share_month_suffix">Tháng</string>
+    <string name="calendar_share_note_counter">%1$d/%2$d</string>
+    <string name="calendar_share_note_label">Lời nhắn</string>
+    <string name="calendar_share_note_placeholder">Để trống sẽ không hiển thị, tối đa 80 ký tự</string>
+    <string name="calendar_share_note_title">Lời nhắn hôm nay</string>
+    <string name="calendar_share_note_title_section">Viết một lời nhắn</string>
+    <string name="calendar_share_page_title">Chia sẻ lịch</string>
+    <string name="calendar_share_preview_size">%1$d × %2$d · PNG</string>
+    <string name="calendar_share_render_failed">Kết xuất thẻ thất bại</string>
+    <string name="calendar_share_retry">Thử lại</string>
+    <string name="calendar_share_save">Lưu ảnh</string>
+    <string name="calendar_share_save_failed">Lưu thất bại</string>
+    <string name="calendar_share_saved_app">Đã lưu vào thư mục ứng dụng (%1$s)</string>
+    <string name="calendar_share_saved_gallery">Đã lưu vào thư viện ảnh (%1$s)</string>
+    <string name="calendar_share_selected_day_prefix">Trong ngày</string>
+    <string name="calendar_share_share">Chia sẻ ảnh</string>
+    <string name="calendar_share_style_gold_ink">Huyền Kim</string>
+    <string name="calendar_share_style_ink_green">Đại Thanh</string>
+    <string name="calendar_share_style_theme">Theo chủ đề</string>
+    <string name="calendar_share_style_vermilion">Chu sa</string>
+    <string name="calendar_share_today_prefix">Hôm nay</string>
+    <string name="calendar_share_toggle_note">Lời tâm tình</string>
+    <string name="calendar_share_toggle_today">Ngày lễ hôm nay</string>
+    <string name="calendar_share_toggle_upcoming">Ngày lễ sắp tới</string>
+    <string name="calendar_share_toggle_weather">Thời tiết</string>
+    <string name="calendar_share_transparent_background">Nền trong suốt</string>
+    <string name="calendar_share_upcoming_prefix">Tương lai</string>
+    <string name="calendar_share_weather_loading">Thời tiết…</string>
+    <string name="calendar_share_weather_title">Thời tiết</string>
+    <string name="calendar_share_weather_today_only">Thời tiết chỉ có sẵn cho hôm nay</string>
+    <string name="calendar_share_weather_unavailable">Chưa lấy được thời tiết</string>
+    <string name="calendar_share_year_suffix">Năm</string>
+    <string name="calendar_share_yi_seal">Nên</string>
 </resources>

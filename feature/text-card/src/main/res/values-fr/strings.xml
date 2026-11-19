@@ -206,4 +206,45 @@
     <string name="textcard_template_name">Nom du modèle</string>
     <string name="textcard_template_saved">Modèle enregistré</string>
     <string name="textcard_try_sample">Exemple</string>
+
+    <!-- i18n-fill: feature/text-card -->
+    <string name="textcard_annotated_long_image_hint">Avec des annotations dans la page, l\'image longue est assemblée selon les résultats de pagination, en conservant la position des annotations.</string>
+    <string name="textcard_annotation_draw_mode">Pinceau · Page %1$d</string>
+    <string name="textcard_annotation_edit_text">Modification du texte d\'annotation</string>
+    <string name="textcard_annotation_empty">Aucune annotation sur cette page. Vous pouvez ajouter du texte, un pinceau ou des formes.</string>
+    <string name="textcard_annotation_mode">Annotation · Page %1$d</string>
+    <string name="textcard_annotation_needs_review">À vérifier</string>
+    <string name="textcard_annotation_review_count">%1$d annotations à vérifier</string>
+    <string name="textcard_apply">Appliquer</string>
+    <string name="textcard_backup_source">Copier l\'original comme sauvegarde</string>
+    <string name="textcard_brush_color">Couleur du pinceau</string>
+    <string name="textcard_brush_marker">Marqueur</string>
+    <string name="textcard_brush_pencil">Crayon</string>
+    <string name="textcard_brush_settings">Paramètres du pinceau</string>
+    <string name="textcard_brush_type">Type de pinceau</string>
+    <string name="textcard_delete_page_break">Supprimer la pagination</string>
+    <string name="textcard_draw_opacity">Opacité</string>
+    <string name="textcard_eraser">Gomme</string>
+    <string name="textcard_export_preparing">Mise en page…</string>
+    <string name="textcard_go_to_page">Aller à</string>
+    <string name="textcard_layers_reorder_hint">Faites glisser la poignée pour réorganiser les calques</string>
+    <string name="textcard_layout_failed_short">Échec de la mise en page</string>
+    <string name="textcard_layout_settings">Pages et papier</string>
+    <string name="textcard_layout_updating">Mise à jour de la mise en page…</string>
+    <string name="textcard_long_image_page_break_hint">Dans une image longue continue, la pagination manuelle est traitée comme un saut de ligne ; elle est restaurée en revenant au mode multipage.</string>
+    <string name="textcard_manual_page_break">Pagination manuelle %1$d</string>
+    <string name="textcard_manual_page_break_short">Manuel</string>
+    <string name="textcard_move_annotation_page">Déplacer vers la page</string>
+    <string name="textcard_page_count_transition">Page %1$d → Page %2$d</string>
+    <string name="textcard_page_number_input">Numéro de page</string>
+    <string name="textcard_project_meta_pending">Nombre de pages à mettre à jour · %1$s</string>
+    <string name="textcard_save_failed_retry">Échec de l\'enregistrement, appuyez sur Enregistrer pour réessayer</string>
+    <string name="textcard_save_now">Enregistrer l\'œuvre maintenant</string>
+    <string name="textcard_shape_corner_radius">Coins arrondis</string>
+    <string name="textcard_shape_kind">Type de forme</string>
+    <string name="textcard_shape_stroke">Contour</string>
+    <string name="textcard_source_copied">Texte original copié</string>
+    <string name="textcard_tab_annotations">Annotation</string>
+    <string name="textcard_tab_layout">Page</string>
+    <string name="textcard_unsaved_changes">Modifications non enregistrées</string>
 </resources>
