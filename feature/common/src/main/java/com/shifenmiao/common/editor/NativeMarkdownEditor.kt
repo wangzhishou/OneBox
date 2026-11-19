@@ -508,8 +508,16 @@ private class NativeRawBlockEditor : MarkdownBlockEditor {
                             context = context,
                             markdown = block.state.text.toString(),
                         ),
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            // 预览内容自身不带内边距：不补就会贴着玻璃卡左右/下边缘画，
+                            // 圆角处看起来像正文跑出了块外。留白与源码编辑态保持一致。
+                            .padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
                         enableScroll = false,
+                        // 和正文编辑器同一套排版，预览态不会比其它块的正文明显偏大。
+                        textStyle = MaterialTheme.typography.bodyLarge.copy(
+                            color = MaterialTheme.colorScheme.onSurface,
+                        ),
                     )
                 } else {
                     BasicTextField(
