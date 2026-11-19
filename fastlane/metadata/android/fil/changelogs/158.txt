@@ -1,0 +1,4 @@
+• Mag-ulat ng nilalamang AI; puwedeng kopyahin, i-share, at iulat ang bawat tugon
+• Bagong native na Markdown notes editor na may voice input
+• Mas mabilis ang mahabang tugon at mas mahusay ang paggawa at pag-export ng mga larawan
+• Naayos ang crash sa AI text selection, multi-turn streaming, at mga wika

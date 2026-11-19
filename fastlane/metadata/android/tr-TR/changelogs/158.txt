@@ -1,0 +1,4 @@
+• AI içeriklerini bildirin; her yanıtı kopyalayın, paylaşın veya bildirin
+• Sesli giriş destekli yeni yerel Markdown not düzenleyici
+• Uzun yanıtlar daha hızlı yüklenir; görsel oluşturma ve dışa aktarma iyileştirildi
+• AI metin seçimi çökmeleri, çok turlu akış ve dil sorunları düzeltildi

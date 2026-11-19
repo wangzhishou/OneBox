@@ -1,0 +1,4 @@
+• Laporkan konten AI; setiap respons dapat disalin, dibagikan, dan dilaporkan
+• Editor catatan Markdown native baru dengan input suara
+• Respons panjang lebih cepat dimuat, pembuatan dan ekspor gambar ditingkatkan
+• Memperbaiki crash pemilihan teks AI, streaming multi-putaran, dan masalah bahasa

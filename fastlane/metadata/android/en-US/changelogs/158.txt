@@ -1,0 +1,4 @@
+• Report AI-generated content, with copy and share actions on every reply
+• New native Markdown notes editor with voice input
+• Faster long AI responses, plus improved image creation and export
+• Fixed AI selection crashes, streaming issues, and localization bugs

@@ -1,0 +1,4 @@
+• Signalez les contenus IA et copiez, partagez ou signalez chaque réponse
+• Nouvel éditeur de notes Markdown natif avec saisie vocale
+• Réponses longues plus rapides, création et export d’images améliorés
+• Corrections des plantages de sélection IA, du streaming multitour et des langues

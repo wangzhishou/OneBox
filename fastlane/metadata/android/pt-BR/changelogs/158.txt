@@ -1,0 +1,4 @@
+• Denuncie conteúdo de IA; copie, compartilhe e denuncie cada resposta
+• Novo editor nativo de notas Markdown com entrada de voz
+• Respostas longas mais rápidas e melhorias na criação e exportação de imagens
+• Correções em falhas na seleção de texto da IA, streaming multiturno e idiomas

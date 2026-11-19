@@ -1,0 +1,4 @@
+• Báo cáo nội dung AI; sao chép, chia sẻ hoặc báo cáo từng câu trả lờи
+• Trình chỉnh sửa ghi chú Markdown gốc mới, hỗ trợ nhập bằng giọng nói
+• Tải câu trả lờи dài nhanh hơn, cải thiện tạo và xuất hình ảnh
+• Sửa lỗi treo khi chọn văn bản AI, hiển thị phát trực tiếp nhiều lượt và lỗi ngôn ngữ

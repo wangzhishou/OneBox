@@ -1,0 +1,4 @@
+• KI-Inhalte melden; jede Antwort kann kopiert, geteilt oder gemeldet werden
+• Neuer nativer Markdown-Notizeditor mit Spracheingabe
+• Lange Antworten laden schneller; Bilderstellung und Export wurden verbessert
+• Abstürze bei der KI-Textauswahl, Streaming-Anzeige und Lokalisierungsprobleme behoben
