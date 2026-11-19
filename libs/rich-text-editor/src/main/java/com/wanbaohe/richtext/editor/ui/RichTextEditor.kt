@@ -28,6 +28,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -129,7 +130,9 @@ fun RichTextEditor(
             state = state.textFieldState,
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = visual.minHeight),
+                .heightIn(min = visual.minHeight)
+                // 焦点入口挂在输入框本体上：外部（新建笔记等）可以用它在组合完成后直接聚焦。
+                .focusRequester(state.focusRequester),
             enabled = behavior.enabled,
             readOnly = behavior.readOnly,
             inputTransformation = behavior.inputTransformation ?: inputTransformation,

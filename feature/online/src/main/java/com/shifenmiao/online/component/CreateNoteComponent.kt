@@ -122,32 +122,31 @@ class CreateNoteComponent @AssistedInject internal constructor(
     }
 
     private suspend fun loadDraft() {
-        val draft = dataDraftHelper.getById(draftId) ?: return
+        val draft = dataDraftHelper.getById(draftId)
+        val relatedItem = draft?.itemId?.let { itemId -> itemDao.getItemById(itemId).firstOrNull() }
 
-        val draftItemId = draft.itemId
-        if (draftItemId != null) {
-            val itemWithRelation = itemDao.getItemById(draftItemId).firstOrNull()
-            if (itemWithRelation != null) {
-                val itemData = itemDataDao.getByItemId(itemWithRelation.item.id)?.data ?: ""
-                _uiState.update {
-                    it.copy(
-                        itemId = itemWithRelation.item.id,
-                        title = draft.title.ifEmpty { itemWithRelation.item.title },
-                        description = draft.description.ifEmpty { itemWithRelation.item.description },
-                        data = draft.data.ifEmpty { itemData },
-                        selectedCategories = itemWithRelation.categories.map(Category::toModel).toSet(),
-                        isEditing = true
-                    )
-                }
-                return
+        if (draft != null && relatedItem != null) {
+            val itemData = itemDataDao.getByItemId(relatedItem.item.id)?.data ?: ""
+            _uiState.update {
+                it.copy(
+                    itemId = relatedItem.item.id,
+                    title = draft.title.ifEmpty { relatedItem.item.title },
+                    description = draft.description.ifEmpty { relatedItem.item.description },
+                    data = draft.data.ifEmpty { itemData },
+                    selectedCategories = relatedItem.categories.map(Category::toModel).toSet(),
+                    isEditing = true,
+                    isLoading = false,
+                )
             }
+            return
         }
 
         _uiState.update {
             it.copy(
-                title = draft.title,
-                description = draft.description,
-                data = draft.data,
+                title = draft?.title.orEmpty(),
+                description = draft?.description.orEmpty(),
+                data = draft?.data.orEmpty(),
+                isLoading = false,
             )
         }
     }

@@ -6,6 +6,7 @@ package com.shifenmiao.common.editor
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,11 +34,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontFamily
@@ -78,6 +83,7 @@ fun NativeMarkdownEditor(
     state: NativeMarkdownEditorState,
     modifier: Modifier = Modifier,
     extraActions: List<NativeEditorExtraAction> = emptyList(),
+    autoFocus: Boolean = false,
     onContentChanged: () -> Unit = {},
 ) {
     val scheme = rememberNativeMarkdownStyleScheme()
@@ -197,11 +203,40 @@ fun NativeMarkdownEditor(
         snapshotFlow { state.userContentVersion }.drop(1).collect { onContentChanged() }
     }
 
+    val keyboardController = LocalSoftwareKeyboardController.current
+    // 进入编辑页即写入（新建笔记）：把光标放进正文并拉起输入法，省掉「先点一下占位文字」这一步。
+    // 只在 autoFocus 变 true 时触发一次；正文块要等布局完成才有可用的焦点节点，所以按帧重试。
+    LaunchedEffect(autoFocus) {
+        if (!autoFocus || state.mode != NativeMarkdownEditorMode.Edit) return@LaunchedEffect
+        val target = state.richTextState() ?: return@LaunchedEffect
+        if (!target.focusRequester.requestFocusWhenReady()) return@LaunchedEffect
+        keyboardController?.show()
+    }
+
     Column(modifier = modifier) {
+        // 空白笔记里除了那一行占位文字之外全是死区：点一下画布空白处也应该能接着写，
+        // 不能逼用户去精准命中 32dp 高的输入框（收起键盘后再想输入时尤其明显）。
+        val canTapBlankAreaToFocus = state.mode == NativeMarkdownEditorMode.Edit && state.isEmpty
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
+                .then(
+                    if (canTapBlankAreaToFocus) {
+                        Modifier.pointerInput(state) {
+                            detectTapGestures {
+                                scope.launch {
+                                    val target = state.richTextState() ?: return@launch
+                                    if (target.focusRequester.requestFocusWhenReady()) {
+                                        keyboardController?.show()
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        Modifier
+                    }
+                )
         ) {
             SuppressSystemTextSelectionMenu {
                 MarkdownDocumentEditor(
@@ -548,3 +583,19 @@ private fun NativeRawBlockHeader(
         }
     }
 }
+
+/**
+ * 等输入框的焦点节点挂载好再请求焦点。
+ *
+ * 组合结束不代表布局完成：刚进入页面时 BasicTextField 的焦点节点还没挂在窗口上，
+ * 直接 requestFocus 会抛 not initialized。按帧重试几次，直到真正拿到焦点。
+ */
+private suspend fun FocusRequester.requestFocusWhenReady(): Boolean {
+    repeat(FOCUS_REQUEST_ATTEMPTS) {
+        withFrameNanos { }
+        if (runCatching { requestFocus() }.isSuccess) return true
+    }
+    return false
+}
+
+private const val FOCUS_REQUEST_ATTEMPTS = 4

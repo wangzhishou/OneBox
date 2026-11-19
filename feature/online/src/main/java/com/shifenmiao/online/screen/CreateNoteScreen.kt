@@ -102,6 +102,16 @@ fun CreateNoteScreen(
 
     val editorState = rememberNativeMarkdownEditorState(uiState.data)
 
+    // 全新空白笔记（草稿已加载完成、没有正文/标题、编辑器仍是一张白纸）进入即写入：
+    // 自动聚焦正文并拉起输入法。编辑已有笔记、草稿自带内容时一律不抢焦点，
+    // 否则用户还没看清内容，键盘就盖住了半屏。
+    val autoFocusBody = !uiState.isLoading &&
+        !uiState.isEditing &&
+        !uiState.isLocked &&
+        uiState.title.isBlank() &&
+        uiState.data.isBlank() &&
+        editorState.isEmpty
+
     var showSaveConfirm by rememberSaveable { mutableStateOf(false) }
     var draftTitle by rememberSaveable { mutableStateOf("") }
     var draftDescription by rememberSaveable { mutableStateOf("") }
@@ -374,6 +384,7 @@ fun CreateNoteScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
+            autoFocus = autoFocusBody,
             onContentChanged = createNoteComponent::markAsDirty,
         )
     }

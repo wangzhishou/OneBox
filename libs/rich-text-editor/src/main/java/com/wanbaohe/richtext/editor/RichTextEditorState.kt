@@ -22,6 +22,7 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.text.TextRange
 
 @Stable
@@ -41,6 +42,13 @@ class RichTextEditorState internal constructor(
             }
         },
     )
+
+    /**
+     * 编辑器内部输入框的焦点入口，由 [com.wanbaohe.richtext.editor.ui.RichTextEditor] 挂在
+     * BasicTextField 上。页面可以在进入时把光标直接送进正文（如新建笔记自动聚焦），
+     * 不必让用户先点一下那行占位文字。
+     */
+    val focusRequester: FocusRequester = FocusRequester()
 
     val text: CharSequence
         get() = textFieldState.text
