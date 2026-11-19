@@ -33,6 +33,7 @@ import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.model.ai.MessageUIState
 import com.shifenmiao.model.ai.RoleType
 import com.shifenmiao.model.ai.SearchResult
+import com.wanbaohe.markdown.splitMarkdownForLazyRendering
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -108,11 +109,23 @@ sealed class MessageUiModel(open val id: String) {
         val height: Dp = 4.dp,
     ) : MessageUiModel(id)
 
+    /**
+     * 机器人回答正文（Markdown 源码）。
+     *
+     * 超长回答会被拆成多个 [RobotContent]（见 [addRobotAnswerSection]），这样外层聊天列表
+     * （LazyColumn）可以按 Markdown 顶层块虚拟化：进入会话只渲染可见的 1~2 块，而不是把
+     * 整篇几千字、十几个代码块和公式一次性排版。普通长度的回答不会被拆，行为与拆分前一致。
+     *
+     * @property partIndex 分块序号，0 表示文档开头；未拆分的整段回答恒为 0
+     * @property partCount 分块总数；1 表示整段回答（未拆分）
+     */
     data class RobotContent(
         override val id: String,
         val isStreaming: Boolean,
         val showCursor: Boolean = false,
         val answerSource: String,
+        val partIndex: Int = 0,
+        val partCount: Int = 1,
     ) : MessageUiModel(id)
 
     data class RobotReasoningContent(
@@ -469,19 +482,56 @@ sealed class MessageUiModel(open val id: String) {
             return result
         }
 
+        /**
+         * 回答正文：普通长度整段一个 item；超长回答按 Markdown 顶层块拆成多个 item。
+         *
+         * 拆分只发生在**已落库、非流式**的稳定回答上：
+         * - 流式期间正文每帧都在增长，分块会让打字光标和增量解析不停重建 item，所以整段渲染；
+         * - 流结束、消息转为 NORMAL 后，下一次 [fromMessage] 会自然产出分块版本。
+         *
+         * 注意顺序：聊天列表是 `reverseLayout = true`，列表索引 0 在屏幕底部，
+         * 因此把分块**逆序**加入 result，视觉上从上到下才是 partIndex 0 → N。
+         */
         private fun addRobotAnswerSection(
             result: MutableList<MessageUiModel>,
             message: MessageEntity,
             idPrefix: String,
         ) {
             if (message.answer.isBlank()) return
-            result.add(
-                RobotContent(
-                    id = "${idPrefix}_content",
-                    answerSource = message.answer,
-                    isStreaming = message.uId == MessageUIState.STREAMING.value,
+            val isStreaming = message.uId == MessageUIState.STREAMING.value
+            // 分块器内部会解析整篇 Markdown（CPU 工作；解析失败或含引用定义时自动退回整段）。
+            // 主聊天路径在 IO 线程构建消息；AIDuel 少数调用点可能在主线程，但同一条消息只会
+            // 构建一次（之后命中 cachedMessageUiModels），9000 字量级的解析是几十毫秒，可接受。
+            val chunks = if (isStreaming) {
+                emptyList()
+            } else {
+                splitMarkdownForLazyRendering(message.answer)
+            }
+
+            if (chunks.size <= 1) {
+                // 未拆分：保持原 id，LazyColumn key 与拆分前完全一致，避免普通消息被重建。
+                result.add(
+                    RobotContent(
+                        id = "${idPrefix}_content",
+                        answerSource = message.answer,
+                        isStreaming = isStreaming,
+                    )
                 )
-            )
+                return
+            }
+
+            chunks.asReversed().forEach { chunk ->
+                result.add(
+                    RobotContent(
+                        id = "${idPrefix}_content_${chunk.index}",
+                        answerSource = chunk.source,
+                        isStreaming = false,
+                        // partIndex/partCount 供界面区分"文档开头/续块"，补块间距与后续可视化策略使用。
+                        partIndex = chunk.index,
+                        partCount = chunks.size,
+                    )
+                )
+            }
         }
 
         private fun addRobotReasoningSection(

@@ -101,6 +101,7 @@ import com.wanbaohe.core.ui.widget.text.firstStrongLayoutDirection
 import com.wanbaohe.core.ui.widget.glass.glassCardSegment
 import com.t8rin.imagetoolbox.core.utils.appContext
 import com.wanbaohe.markdown.OneBoxMarkdownCodeActions
+import com.wanbaohe.markdown.OneBoxMarkdownChunkSpacing
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSettings
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
@@ -535,6 +536,11 @@ fun RobotMessageContent(
     robotContent: MessageUiModel.RobotContent,
     codeActions: OneBoxMarkdownCodeActions,
 ) {
+    // 超长回答被拆成多个 item 后，块与块之间没有引擎内部的 blockSpacing；
+    // 给续块补一个等值顶部间距，分块边界看起来才和整篇文档一致。
+    // partIndex == 0 的是文档开头，不要补，否则正文首行会莫名下沉。
+    val chunkContinuationTopPadding =
+        if (robotContent.partIndex > 0) OneBoxMarkdownChunkSpacing else 0.dp
     ModernMarkdownMessage(
         source = robotContent.answerSource,
         isStreaming = robotContent.isStreaming,
@@ -547,7 +553,8 @@ fun RobotMessageContent(
                 segment = GlassCardSegment.Middle,
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
             )
-            .padding(horizontal = 12.dp),
+            .padding(horizontal = 12.dp)
+            .padding(top = chunkContinuationTopPadding),
     )
 }
 
