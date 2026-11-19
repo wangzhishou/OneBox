@@ -14,12 +14,12 @@ versionCode = "157"
 gitVersion = "000"
 jvmTarget = "17"
 
-oneBoxLibs = "1.1.1"
-trickle = "1.9.3"
+oneBoxLibs = "1.1.2"
+trickle = "2.1.1"
 evaluator = "1.0.0"
 logger = "1.0.2"
 
-avifCoder = "3.0.1"
+avifCoder = "3.0.2"
 avifCoderCoil = "3.0.0"
 aire = "0.18.1"
 jxlCoder = "2.6.1"
@@ -35,7 +35,7 @@ androidx-datastorePreferencesAndroid = "1.3.0"
 shadowGadgets = "2.5.1"
 fadingEdges = "1.0.4"
 firebaseCrashlyticsKtx = "19.4.4"
-firebaseBom = "35.1.0"
+firebaseBom = "35.2.0"
 konfettiCompose = "2.2.0"
 reimagined = "1.5.0"
 shadowsPlus = "1.0.4"
@@ -43,18 +43,18 @@ exifinterface = "1.4.2"
 firebaseAnalyticsKtx = "22.5.0"
 detekt = "1.23.8"
 detektCompose = "0.6.8"
-decompose = "3.5.0"
+decompose = "3.6.2"
 essenty = "2.7.1"
 
 kotlin = "2.4.21"
-agp = "9.5.0"
+agp = "9.5.1"
 hilt = "2.60.1"
 
 ktor = "3.6.1"
 coil = "3.6.3"
 appCompat = "1.8.0"
 androidxCore = "1.19.1"
-camerax = "1.6.2"
+camerax = "1.7.0"
 
 androidxLifecycle = "2.11.0"
 desugaring-version = "2.1.5"
@@ -69,13 +69,13 @@ ink = "1.0.0"
 inputMotionPrediction = "1.0.1"
 
 espresso = "3.7.0"
-kotlinxSerializationJson = "1.12.0"
-ksp = "2.3.12"
+kotlinxSerializationJson = "1.13.0"
+ksp = "2.3.14"
 
 androidx-test-ext-junit = "1.3.0"
 documentfile = "1.1.0"
 uiautomator = "2.4.1"
-androidxMacroBenchmark = "1.6.0-alpha01"
+androidxMacroBenchmark = "1.6.0-alpha02"
 quickie = "1.19.0"
 playServicesAuth = "22.0.0"
 playServicesAds = "25.5.0"
@@ -100,7 +100,7 @@ zxingAndroidEmbedded = "4.3.0"
 capturable = "3.0.1"
 smbj = "0.15.0"
 
-bouncycastle = "1.86"
+bouncycastle = "1.87"
 androidxSecurityCrypto = "1.1.0"
 
 # androidx.pdf 自 alpha18 起 AAR manifest 就是 minSdk 28(靠 app 的 tools:overrideLibrary 顶住, 运行时由 canUseNewPdf() 守门).
@@ -116,7 +116,7 @@ window = "1.5.1"
 
 moduleGraphGradle = "0.15.0"
 dataStore = "1.3.0"
-lunarJava = "v1.7.7"
+lunarJava = "v1.7.8"
 
 markwon = "4.6.2"
 commonmark = "0.32.0"
@@ -127,14 +127,14 @@ foundationLayout = "1.13.0-rc01"
 ui = "1.13.0-rc01"
 animationCore = "1.13.0-rc01"
 pdfbox = "2.0.27.0"
-flinger = "2.0.2"
-opencv = "5.0.0.1"
-onnxruntime = "1.31.1"
+flinger = "2.1.1"
+opencv = "5.1.0"
+onnxruntime = "1.32.0"
 coilResvg = "1.1.2"
-litertlm = "0.19.0"
+litertlm = "0.19.1"
 hrmDiagram = "1.1.0"
-hrmLatex = "1.7.2"
-hrmMarkdown = "1.7.2"
+hrmLatex = "1.7.5"
+hrmMarkdown = "1.7.3"
 hrmCodehigh = "1.3.0"
 [libraries]
 hrm-markdown-renderer = { module = "io.github.huarangmeng:markdown-renderer", version.ref = "hrmMarkdown" }
@@ -150,7 +150,7 @@ hrm-latex-renderer = { module = "io.github.huarangmeng:latex-renderer", version.
 hrm-latex-fonts-katex = { module = "io.github.huarangmeng:latex-fonts-katex", version.ref = "hrmLatex" }
 litertlm-android = { group = "com.google.ai.edge.litertlm", name = "litertlm-android", version.ref = "litertlm" }
 coil-resvg = { module = "com.hashsequence:coil-resvg", version.ref = "coilResvg" }
-flinger = { module = "com.github.iamjosephmj.flinger:flinger", version.ref = "flinger" }
+flinger = { module = "com.github.iamjosephmj:flinger", version.ref = "flinger" }
 pdfbox = { module = "com.tom-roush:pdfbox-android", version.ref = "pdfbox" }
 squircle-shape = { group = "com.stoyanvuchev", name = "squircle-shape-android", version.ref = "squircle-shape" }
 capsule = { module = "io.github.kyant0:capsule", version.ref = "capsule" }

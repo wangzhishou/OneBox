@@ -111,6 +111,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
@@ -929,11 +930,8 @@ internal class AndroidPdfManager @Inject constructor(
                                 y = cellBottom + (cellHeight - scaledHeight) / 2
                             }
 
-                            val pdImage = Trickle
-                                .drawColorBehind(
-                                    input = renderer.safeRenderDpi(pageIndex, dpi),
-                                    color = Color.White.toArgb()
-                                )
+                            val pdImage = renderer.safeRenderDpi(pageIndex, dpi)
+                                .whiteBg()
                                 .asXObject(
                                     document = newDoc,
                                     quality = params.quality
@@ -1029,10 +1027,14 @@ internal class AndroidPdfManager @Inject constructor(
         }
     }
 
-    private fun Bitmap.whiteBg(): Bitmap = Trickle.drawColorBehind(
-        input = this,
-        color = Color.White.toArgb()
-    )
+    // Trickle 2.1 起 drawColorBehind 是 suspend，PDFBox 的回调不是协程。
+    // 这里已经在 catchPdf 的后台调度器上，runBlocking 只是把当前线程接进挂起函数。
+    private fun Bitmap.whiteBg(): Bitmap = runBlocking {
+        Trickle.drawColorBehind(
+            input = this@whiteBg,
+            color = Color.White.toArgb()
+        )
+    }
 
     private companion object {
         private const val PAGE_NUMBER_HORIZONTAL_MARGIN = 10f

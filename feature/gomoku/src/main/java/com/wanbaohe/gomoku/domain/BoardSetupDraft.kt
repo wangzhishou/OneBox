@@ -25,6 +25,7 @@ import com.wanbaohe.gomoku.domain.model.Side
 
 enum class SetupTool { MOVE, PLACE, ERASE }
 
+@ConsistentCopyVisibility
 data class BoardSetupDraft private constructor(
     val original: BoardState,
     val boardState: BoardState,

@@ -69,10 +69,10 @@ internal fun Project.configureCompose(
     }
 
     extensions.configure<ComposeCompilerGradlePluginExtension> {
-
-        stabilityConfigurationFiles.addAll(
-            rootProject.layout.projectDirectory.file("compose_compiler_config.conf")
-        )
+        val stabilityConfig = rootProject.layout.projectDirectory.file("compose_compiler_config.conf")
+        if (stabilityConfig.asFile.exists()) {
+            stabilityConfigurationFiles.add(stabilityConfig)
+        }
 
         metricsDestination = rootProject.layout.buildDirectory.dir("compose-metrics")
         reportsDestination = rootProject.layout.buildDirectory.dir("compose-reports")

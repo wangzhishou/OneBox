@@ -31,7 +31,6 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
@@ -123,39 +122,47 @@ val Project.javaVersion: JavaVersion
  */
 private inline fun <reified T : KotlinBaseExtension> Project.configureKotlin() = configure<T> {
     val args = listOf(
-        "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
-        "-opt-in=androidx.compose.material3.ExperimentalMaterial3ExpressiveApi",
-        "-opt-in=androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi",
-        "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
-        "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
-        "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
-        "-opt-in=androidx.compose.ui.unit.ExperimentalUnitApi",
         "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
         "-opt-in=kotlinx.coroutines.FlowPreview",
-        "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
-        "-opt-in=com.arkivanov.decompose.ExperimentalDecomposeApi",
-        "-opt-in=coil3.annotation.ExperimentalCoilApi",
-        "-opt-in=coil3.annotation.DelicateCoilApi",
         "-opt-in=kotlin.contracts.ExperimentalContracts",
-        "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
-        "-opt-in=androidx.compose.ui.text.ExperimentalTextApi",
         "-opt-in=kotlinx.coroutines.DelicateCoroutinesApi",
-        "-Xannotation-default-target=param-property",
-        "-XXLanguage:+PropertyParamAnnotationDefaultTargetMode"
     )
     // Treat all Kotlin warnings as errors (disabled by default)
     // Override by setting warningsAsErrors=true in your ~/.gradle/gradle.properties
-    val warningsAsErrors: String? by project
+    val warningsAsErrors = (project.findProperty("warningsAsErrors") as? String).toBoolean()
     when (this) {
         is KotlinAndroidProjectExtension -> compilerOptions
         is KotlinJvmProjectExtension -> compilerOptions
         else -> error("Unsupported project extension $this ${T::class}")
     }.apply {
         jvmTarget = JvmTarget.fromTarget(libs.versions.jvmTarget.get())
-        allWarningsAsErrors = warningsAsErrors.toBoolean()
+        allWarningsAsErrors = warningsAsErrors
         freeCompilerArgs.addAll(args)
     }
     tasks.withType<KotlinCompile>().configureEach {
         compilerOptions.freeCompilerArgs.addAll(args)
+        // Compose 的 opt-in 由 compose 约定插件加。这里只补不在每个模块类路径上的标记。
+        if (usesGroupPrefix("com.arkivanov.decompose")) {
+            compilerOptions.freeCompilerArgs.add(
+                "-opt-in=com.arkivanov.decompose.ExperimentalDecomposeApi",
+            )
+        }
+        if (usesGroupPrefix("io.coil-kt")) {
+            compilerOptions.freeCompilerArgs.addAll(coilOptIns)
+        }
     }
+}
+
+private val coilOptIns = listOf(
+    "-opt-in=coil3.annotation.ExperimentalCoilApi",
+    "-opt-in=coil3.annotation.DelicateCoilApi",
+)
+
+private fun Project.usesGroupPrefix(prefix: String): Boolean = configurations.any { configuration ->
+    runCatching {
+        configuration.dependencies.any { dependency ->
+            val group = dependency.group ?: return@any false
+            group == prefix || group.startsWith("$prefix.")
+        }
+    }.getOrDefault(false)
 }
