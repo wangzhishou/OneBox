@@ -43,24 +43,16 @@ internal fun NativeMarkdownEditorDock(
     onInsert: (NativeEditorInsertKind) -> Unit = {},
     onVoiceInput: (() -> Unit)? = null,
 ) {
-    var showInsertMenu by remember { mutableStateOf(false) }
-    Box(modifier = modifier) {
-        NativeEditorDock(
-            actions = markdownDockActions(
-                state = state,
-                extraActions = extraActions,
-                onShowInsert = { showInsertMenu = true },
-                onVoiceInput = onVoiceInput,
-            ),
-            leading = { expanded -> NativeMarkdownEditorModeToggle(state = state, expanded = expanded) },
-        )
-        NativeEditorInsertMenu(
-            expanded = showInsertMenu,
-            onDismiss = { showInsertMenu = false },
+    NativeEditorDock(
+        modifier = modifier,
+        actions = markdownDockActions(
             state = state,
+            extraActions = extraActions,
             onInsert = onInsert,
-        )
-    }
+            onVoiceInput = onVoiceInput,
+        ),
+        leading = { expanded -> NativeMarkdownEditorModeToggle(state = state, expanded = expanded) },
+    )
 }
 
 @Composable
@@ -103,13 +95,13 @@ private fun NativeMarkdownEditorModeToggle(
 private fun markdownDockActions(
     state: NativeMarkdownEditorState,
     extraActions: List<NativeEditorExtraAction>,
-    onShowInsert: () -> Unit,
+    onInsert: (NativeEditorInsertKind) -> Unit,
     onVoiceInput: (() -> Unit)?,
 ): List<NativeEditorDockAction> =
     historyActions(state = state, onVoiceInput = onVoiceInput) +
         inlineStyleActions(state = state) +
         blockStyleActions(state = state) +
-        insertActions(state = state, onShowInsert = onShowInsert) +
+        insertActions(state = state, onInsert = onInsert) +
         extraActions.mapIndexed { index, action ->
             NativeEditorDockAction(
                 id = "extra_$index",
