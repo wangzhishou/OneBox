@@ -40,7 +40,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -50,6 +49,7 @@ import com.shifenmiao.common.components.text.defaultTextSelectionMenuItems
 import com.shifenmiao.common.handle.LocalUrlNavigator
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.markdown.OneBoxMarkdownContent
+import com.shifenmiao.common.markdown.rememberInAppLinkHandler
 import com.shifenmiao.common.markdown.rememberOneBoxMarkdownContentState
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.rememberMarkdownCodeActions
@@ -71,7 +71,7 @@ fun NoteItemScreen(
 ) {
     val noteUIState by noteItemComponent.noteUIState.collectAsState()
     val navigator = LocalUrlNavigator.current
-    val uriHandler = LocalUriHandler.current
+    val onLinkClick = rememberInAppLinkHandler()
     val dataDraftHelper = LocalDataDraftHelper.current
     val selectionMenuItems = defaultTextSelectionMenuItems(
         appComponent = appComponent,
@@ -148,11 +148,7 @@ OneBoxMarkdownContent(
     errorMessage = noteUIState.errorMessage,
     onRetry = { noteItemComponent.refreshData() },
     onGoBack = { appComponent.onGoBack() },
-    onLinkClick = { url ->
-        if (!navigator.navigate(url)) {
-            uriHandler.openUri(url)
-        }
-    },
+    onLinkClick = onLinkClick,
     // 阅读态不再展示分类 chip：分类只在保存/设置弹窗里维护，正文直接从标题下方开始。
     // 页面级已由 BaseScreen 补 navigationBarsPadding；正文末尾再留一段可滚动留白
     paddingValues = PaddingValues(

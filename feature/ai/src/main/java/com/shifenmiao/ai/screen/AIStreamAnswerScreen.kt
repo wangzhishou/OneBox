@@ -67,6 +67,7 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.ai.component.AIStreamAnswerComponent
 import com.shifenmiao.ai.component.AIStreamAnswerStatus
 import com.shifenmiao.common.markdown.oneBoxMarkdownComponents
+import com.shifenmiao.common.markdown.rememberInAppLinkHandler
 import com.wanbaohe.base.ui.AILoadingRow
 import com.wanbaohe.base.ui.ExpandableMarkdownContent
 import com.shifenmiao.common.logic.AppComponent
@@ -281,10 +282,13 @@ private fun MarkdownBlocksContent(
     text: String,
     isStreaming: Boolean,
 ) {
+    // 正文里的网址与助手消息保持同一套打开方式：统一走内置浏览器。
+    val onLinkClick = rememberInAppLinkHandler()
     OneBoxMarkdown(
         markdown = text,
         isStreaming = isStreaming,
         enableScroll = false,
+        onLinkClick = onLinkClick,
         components = oneBoxMarkdownComponents(),
         textStyle = MaterialTheme.typography.bodyLarge,
         contentColor = MaterialTheme.colorScheme.onSurface,

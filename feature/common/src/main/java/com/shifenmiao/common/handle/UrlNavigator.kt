@@ -32,8 +32,6 @@ import com.shifenmiao.common.handle.navigation.DeeplinkRecentRecorder
 import com.shifenmiao.common.handle.navigation.ItemDeeplinkResolver
 import com.shifenmiao.core.constants.UrlConstants
 import com.shifenmiao.model.image.ImageViewerInfo
-import com.shifenmiao.model.webview.WebViewParams
-import com.shifenmiao.model.webview.WebViewType
 import com.t8rin.imagetoolbox.core.data.utils.SafUriUtils
 import com.wanbaohe.core.ui.utils.content.ContentRouter
 import com.wanbaohe.core.ui.utils.navigation.Screen
@@ -179,6 +177,9 @@ class OneBoxUrlHandler : UrlHandler {
 
 /**
  * 处理外部链接URL (http://, https://)
+ *
+ * 统一落内置浏览器 [Screen.WebBrowser]（与「网址」tab 里打开收藏一致），
+ * 而不是另起一个简易 WebView —— 站内所有网页打开体验共用同一套浏览器。
  */
 class WebUrlHandler : UrlHandler {
     override fun canHandle(url: String): Boolean {
@@ -186,14 +187,7 @@ class WebUrlHandler : UrlHandler {
     }
 
     override fun handleUrl(url: String, context: Context, onNavigate: (Screen) -> Unit): Boolean {
-        onNavigate(
-            Screen.WebView(
-                WebViewParams(
-                    url = url,
-                    type = WebViewType.COLUMN
-                )
-            )
-        )
+        onNavigate(Screen.WebBrowser(url = url))
         return true
     }
 }

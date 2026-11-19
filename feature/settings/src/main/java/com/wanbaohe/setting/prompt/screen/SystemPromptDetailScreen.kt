@@ -52,7 +52,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -61,7 +60,7 @@ import com.shifenmiao.common.editor.NativeMarkdownEditor
 import com.shifenmiao.common.editor.rememberNativeMarkdownEditorState
 import com.shifenmiao.common.markdown.OneBoxMarkdownContent
 import com.shifenmiao.base.utils.ActionUtils
-import com.shifenmiao.common.handle.LocalUrlNavigator
+import com.shifenmiao.common.markdown.rememberInAppLinkHandler
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
 import com.shifenmiao.storage.TokenStorage
@@ -93,8 +92,7 @@ fun SystemPromptDetailScreen(
     var isDirty by remember { mutableStateOf(false) }
     var showVipDialog by remember { mutableStateOf(false) }
     val onNavigate = LocalOnNavigate.current
-    val navigator = LocalUrlNavigator.current
-    val uriHandler = LocalUriHandler.current
+    val onLinkClick = rememberInAppLinkHandler()
 
     val vipLevel = remember { TokenStorage.getUserVipLevel() }
     val context = LocalComponentActivity.current
@@ -209,11 +207,7 @@ OneBoxMarkdownContent(
         .nestedScroll(scrollBehavior.nestedScrollConnection),
     message = prompt?.prompt ?: "",
     isLoading = prompt == null,
-    onLinkClick = { url ->
-        if (!navigator.navigate(url)) {
-            uriHandler.openUri(url)
-        }
-    },
+    onLinkClick = onLinkClick,
     onGoBack = component.onGoBack
 )
         }

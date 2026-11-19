@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.ai.a2ui.rememberA2uiMarkdownPlugin
 import com.shifenmiao.common.components.text.TextSelectionMenuItem
 import com.shifenmiao.common.markdown.oneBoxMarkdownComponents
+import com.shifenmiao.common.markdown.rememberInAppLinkHandler
 import com.wanbaohe.markdown.OneBoxMarkdown
 import com.wanbaohe.markdown.OneBoxMarkdownCodeActions
 
@@ -37,8 +38,12 @@ fun ModernMarkdownMessage(
     textStyle: TextStyle? = null,
     contentColor: Color? = null,
     blockSpacing: Dp? = null,
+    onLinkClick: ((String) -> Unit)? = null,
 ) {
     val selectionItems = LocalAiMarkdownSelectionItems.current
+    // 助手消息里的网址统一在内置浏览器里打开，和其它页面共用同一个 URL 路由。
+    val defaultLinkClick = rememberInAppLinkHandler()
+    val linkClick = onLinkClick ?: defaultLinkClick
     val a2uiPlugin = rememberA2uiMarkdownPlugin(isStreaming, codeActions)
     val baseComponents = remember(selectionItems, codeActions) {
         oneBoxMarkdownComponents(
@@ -59,6 +64,7 @@ fun ModernMarkdownMessage(
         modifier = modifier,
         isStreaming = isStreaming,
         enableScroll = false,
+        onLinkClick = linkClick,
         textStyle = textStyle,
         contentColor = contentColor,
         blockSpacing = blockSpacing,

@@ -27,7 +27,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.components.blog.AuthorInfo
@@ -37,6 +36,7 @@ import com.shifenmiao.common.handle.LocalUrlNavigator
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.markdown.OneBoxMarkdownContent
 import com.shifenmiao.common.markdown.OneBoxMarkdownContentState
+import com.shifenmiao.common.markdown.rememberInAppLinkHandler
 import com.shifenmiao.common.markdown.rememberOneBoxMarkdownContentState
 import com.shifenmiao.core.R
 import com.shifenmiao.model.blog.BlogDetailState
@@ -52,7 +52,7 @@ fun BlogContent(
 ) {
     val blogDetailState by blogComponent.blogDetailState.collectAsState()
     val navigator = LocalUrlNavigator.current
-    val uriHandler = LocalUriHandler.current
+    val onLinkClick = rememberInAppLinkHandler()
     val selectionItems = defaultTextSelectionMenuItems(
         appComponent = appComponent,
         onNavigate = { screen -> navigator.navigate(screen) },
@@ -71,11 +71,7 @@ fun BlogContent(
         errorMessage = errorMessage,
         onRetry = { blogComponent.onRetry() },
         onGoBack = onGoBack,
-        onLinkClick = { url ->
-            if (!navigator.navigate(url)) {
-                uriHandler.openUri(url)
-            }
-        },
+        onLinkClick = onLinkClick,
         // 中号标题栏自己已经在标题下方留了空，这里不再叠一层上边距。
         // 没有标签时也不传 header，避免空占位再被块间距撑开。
         paddingValues = PaddingValues(start = 16.dp, top = 0.dp, end = 16.dp, bottom = 8.dp),
