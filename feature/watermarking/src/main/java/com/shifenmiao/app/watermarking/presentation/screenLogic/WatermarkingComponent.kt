@@ -139,9 +139,11 @@ class WatermarkingComponent @AssistedInject internal constructor(
     private val _uris = mutableStateOf<List<Uri>>(emptyList())
     val uris: List<Uri> by _uris
 
-    private val _keepExif = mutableStateOf(false)
+    // 默认保留 EXIF 但剥离定位：拍摄参数对水印用户有价值，经纬度属于隐私。
+    // 见《图片水印整合重构·分阶段实施方案》§9 / 验收 §11.8。
+    private val _keepExif = mutableStateOf(true)
     val keepExif: Boolean by _keepExif
-    private val _stripLocationMetadata = mutableStateOf(false)
+    private val _stripLocationMetadata = mutableStateOf(true)
     val stripLocationMetadata: Boolean by _stripLocationMetadata
     private val _imageFormat = mutableStateOf<ImageFormat>(ImageFormat.Default)
     val imageFormat: ImageFormat by _imageFormat

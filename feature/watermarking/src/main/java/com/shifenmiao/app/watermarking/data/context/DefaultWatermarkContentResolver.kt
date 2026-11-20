@@ -344,5 +344,7 @@ class DefaultWatermarkContentResolver @Inject constructor(
         fromPhoto = fromPhoto,
     )
 
-    private fun String?.orMissing() = this?.takeIf(String::isNotBlank) ?: "—"
+    // 缺数据统一用空串表达「省略」：visualFactory 会跳过空文本图层，
+    // 绝不能回落成 "—"——那会让无 EXIF 图在导出成品里残留一个破折号。
+    private fun String?.orMissing() = this?.takeIf(String::isNotBlank).orEmpty()
 }
