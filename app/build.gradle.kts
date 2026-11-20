@@ -206,7 +206,7 @@ android {
             localeFilters += listOf(
                 "vi",        // 越南语
                 "fr",        // 法语
-                "en",        // 英文 (默认)
+                "en-rUS",    // 英文只保留 en-US，避免和默认 en-US 并成两行
                 "zh-rCN",    // 简体中文
                 "zh-rTW",    // 繁体中文 (台湾; zh-HK/zh-Hant 靠 locale 回退命中)
                 "es",        // 西班牙语
@@ -251,7 +251,7 @@ android {
             localeFilters += listOf(
                 "vi",        // 越南语
                 "fr",        // 法语
-                "en",        // 英文 (默认)
+                "en-rUS",    // 英文只保留 en-US，避免和默认 en-US 并成两行
                 "zh-rCN",    // 简体中文
                 "zh-rTW",    // 繁体中文 (台湾; zh-HK/zh-Hant 靠 locale 回退命中)
                 "es",        // 西班牙语

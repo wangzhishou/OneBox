@@ -26,15 +26,15 @@
     <string name="dead_pixel_color_red">红色</string>
     <string name="dead_pixel_color_green">绿色</string>
     <string name="dead_pixel_color_blue">蓝色</string>
-    <string name="dead_pixel_hint">点击可切换颜色...左右滑动可来回切换。</string>
+    <string name="dead_pixel_hint">タップで色を切り替えます。左右にスワイプしても切り替えられます。</string>
     <string name="dead_pixel_progress">%1$d / %2$d</string>
-    <string name="dead_pixel_grid_on">显示网格</string>
-    <string name="dead_pixel_grid_off">隐藏网格</string>
-    <string name="dead_pixel_auto_play">自动旋转</string>
+    <string name="dead_pixel_grid_on">グリッドを表示</string>
+    <string name="dead_pixel_grid_off">グリッドを隠す</string>
+    <string name="dead_pixel_auto_play">自動切り替え</string>
     <string name="dead_pixel_auto_stop">停止！</string>
     <string name="dead_pixel_fullscreen">全屏测试</string>
-    <string name="dead_pixel_exit_fullscreen">退出全屏</string>
+    <string name="dead_pixel_exit_fullscreen">全画面を終了</string>
     <string name="dead_pixel_guide_title">如何检测损坏？</string>
-    <string name="dead_pixel_guide_content">屏幕将依次显示五种纯色：白色、黑色、红色、绿色和蓝色。\n\n• 白色背景：检查黑色暗点（死像素）\n• 黑色背景：检查亮点（坏点）\n• 彩色背景：检查其他颜色的异常像素\n\n点击屏幕切换到下一种颜色，或启用自动播放。为了获得最佳效果，请在昏暗环境中进行测试。</string>
-    <string name="dead_pixel_guide_start">开始测试</string>
+    <string name="dead_pixel_guide_content">画面に白、黒、赤、緑、青の5色が順に表示されます。\n\n• 白背景：黒い暗点（ドット欠け）を確認\n• 黒背景：明るい点（常時点灯）を確認\n• 色背景：ほかの色の異常な画素を確認\n\n画面をタップすると次の色に進みます。自動再生も使えます。暗い場所で確認するとわかりやすいです。</string>
+    <string name="dead_pixel_guide_start">テストを開始</string>
 </resources>

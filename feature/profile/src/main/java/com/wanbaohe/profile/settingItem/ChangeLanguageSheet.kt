@@ -243,7 +243,7 @@ private fun Context.setGlobalLocale(locale: Locale?) {
             ?: Resources.getSystem().configuration.locales[0]?.toLanguageTag()
         LocaleSwitchWatcher.restartForLocaleSwitch(
             this,
-            newTag?.takeIf { it.isNotBlank() } ?: "en"
+            newTag?.takeIf { it.isNotBlank() } ?: "en-US"
         )
     }
 }

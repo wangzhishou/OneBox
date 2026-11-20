@@ -69,7 +69,7 @@
     <string name="demo_glass_showcase_switch_state_on">状態: オン</string>
     <string name="demo_glass_showcase_switch_state_off">状態: オフ</string>
     <string name="demo_glass_showcase_chip_primary">スマートフィルター</string>
-    <string name="demo_glass_showcase_chip_secondary">最近使用</string>
+    <string name="demo_glass_showcase_chip_secondary">最近使った</string>
     <string name="demo_glass_showcase_input_title">入力コンテナ</string>
     <string name="demo_glass_showcase_input_desc">`GlassTextFieldContainer` のみ表示します。`GlassOutlinedTextField` は別途ドキュメント化されています。</string>
     <string name="demo_glass_showcase_input_placeholder">検索コンポーネント。テーマを切り替えて詳細を確認</string>

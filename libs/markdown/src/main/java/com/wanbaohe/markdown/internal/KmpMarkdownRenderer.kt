@@ -72,16 +72,16 @@ internal fun KmpMarkdownRenderer(
         MarkdownComponents(
             header = components.header,
             footer = components.footer,
-            codeBlockHeader = components.codeBlockHeader?.let { header ->
-                MarkdownBlockSlot(CODE_BLOCK_HEADER_HEIGHT) { code ->
-                    header(
-                        OneBoxMarkdownCodeBlockInfo(
-                            code = code.code,
-                            language = code.language,
-                            title = code.title,
-                        )
-                    )
-                }
+            // 始终挂 header：库自带的 Copy 只区分中文和其他语言，其它语种一律英文。
+            // 调用方没给 header 时，用已有的 string/copy，覆盖全部已打包语言。
+            codeBlockHeader = MarkdownBlockSlot(CODE_BLOCK_HEADER_HEIGHT) { code ->
+                val info = OneBoxMarkdownCodeBlockInfo(
+                    code = code.code,
+                    language = code.language,
+                    title = code.title,
+                )
+                val header = components.codeBlockHeader
+                if (header != null) header(info) else OneBoxMarkdownCopyHeader(info)
             },
             blockSurface = { _, content -> OneBoxMarkdownBlockSurface(content) },
             inlineCode = { info -> OneBoxMarkdownInlineCode(info) },

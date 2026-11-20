@@ -95,10 +95,11 @@ fun AiContentReportDialog(
     var submitFailed by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val preview = remember(contentPreview) {
-        if (contentPreview.length > PREVIEW_CHARS) {
-            contentPreview.take(PREVIEW_CHARS) + "…"
+        val plain = contentPreview.toReportPreviewPlainText()
+        if (plain.length > PREVIEW_CHARS) {
+            plain.take(PREVIEW_CHARS) + "…"
         } else {
-            contentPreview
+            plain
         }
     }
 
@@ -206,3 +207,20 @@ fun AiContentReportDialog(
 
 private const val PREVIEW_CHARS = 600
 private const val MAX_DETAILS_CHARS = 2_000
+
+/** 弹窗预览只给用户看正文，去掉 Markdown 标记。提交内容仍用原文。 */
+private fun String.toReportPreviewPlainText(): String {
+    return replace(Regex("```[\\w-]*\\n?"), "")
+        .replace("```", "")
+        .replace(Regex("`([^`]*)`"), "$1")
+        .replace(Regex("!\\[([^\\]]*)]\\([^)]*\\)"), "$1")
+        .replace(Regex("\\[([^\\]]*)]\\([^)]*\\)"), "$1")
+        .replace(Regex("(?m)^#{1,6}\\s*"), "")
+        .replace(Regex("(?m)^\\s*[-*+]\\s+"), "")
+        .replace(Regex("(?m)^\\s*\\d+\\.\\s+"), "")
+        .replace(Regex("\\*\\*(.+?)\\*\\*"), "$1")
+        .replace(Regex("__(.+?)__"), "$1")
+        .replace("*", "")
+        .replace(Regex("[ \\t]{2,}"), " ")
+        .trim()
+}

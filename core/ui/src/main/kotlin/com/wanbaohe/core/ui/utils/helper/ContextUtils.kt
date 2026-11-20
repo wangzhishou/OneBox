@@ -485,10 +485,22 @@ object ContextUtils {
      */
     fun Context.getLanguages(): Map<String, String> {
         val supportedLocales = LocaleConfigCompat(this@getLanguages).supportedLocales
+        val hasRegionalEnglish = supportedLocales != null &&
+            (0 until supportedLocales.size()).any { index ->
+                val locale = supportedLocales.get(index) ?: return@any false
+                locale.language == "en" && locale.country.equals("US", ignoreCase = true)
+            }
         val supportedLanguages = buildList {
             if (supportedLocales != null) {
                 for (i in 0 until supportedLocales.size()) {
                     val locale = supportedLocales.get(i) ?: continue
+                    // 包内若同时带上 language-only 的 en，和 en-US 会变成两行 English。
+                    if (hasRegionalEnglish &&
+                        locale.language == "en" &&
+                        locale.country.isEmpty()
+                    ) {
+                        continue
+                    }
                     add(locale.toLanguageTag() to locale.nativeLanguageName())
                 }
             }
@@ -552,10 +564,11 @@ object ContextUtils {
 
     // ICU 对印尼语返回的母语名是国名 "Indonesia",语言面板应显示 "Bahasa Indonesia"
     private fun Locale.nativeLanguageDisplayName(): String =
-        if (language == "in" || language == "id") {
-            "Bahasa Indonesia"
-        } else {
-            getDisplayName(this).replaceFirstChar(Char::uppercase)
+        when {
+            language == "in" || language == "id" -> "Bahasa Indonesia"
+            // 可选英语只保留 en-US，列表里写成 English，不再带 (United States)
+            language == "en" && (country.isEmpty() || country.equals("US", ignoreCase = true)) -> "English"
+            else -> getDisplayName(this).replaceFirstChar(Char::uppercase)
         }
 
     /**

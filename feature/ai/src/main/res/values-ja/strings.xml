@@ -614,12 +614,12 @@
     <string name="agent_tool_manage_xiangqi_missing_title">titleパラメータがありません</string>
     <string name="agent_tool_manage_xiangqi_not_found">ゲーム%1$sは存在しません</string>
     <string name="agent_tool_manage_xiangqi_unknown_action">不明なアクション: %1$s</string>
-    <string name="agent_tool_manage_xiangqi_failed">象棋操作失败：%1$s</string>
-    <string name="agent_tool_manage_xiangqi_created">游戏已创建：%1$s</string>
+    <string name="agent_tool_manage_xiangqi_failed">シャンチーの操作に失敗しました：%1$s</string>
+    <string name="agent_tool_manage_xiangqi_created">対局を作成しました：%1$s</string>
     <string name="agent_tool_manage_xiangqi_deleted">游戏已删除：%1$s</string>
-    <string name="agent_tool_manage_xiangqi_param_fen">FEN记法字符串（import_fen所需）。用于導入残局或自定义开局。格式：\"局面 走子方 半回合数 全回合数\"，例如\"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w 0 1\"。局面部分由10行组成，以\"/\"分隔，每行9列；大写=红方（K=帅 A=仕 B=相 N=马 R=车 C=炮 P=兵），小写=黑方（k=将 a=士 b=象 n=马 r=车 c=炮 p=卒），数字=空位。</string>
+    <string name="agent_tool_manage_xiangqi_param_fen">FEN記法の文字列（import_fen に必要）。残局や任意の初期配置を読み込みます。形式：\"局面 手番 半手数 手数\"。例：\"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w 0 1\"。局面は / 区切りの10段、各段9マス。大文字が赤（K=帥 A=仕 B=相 N=馬 R=車 C=砲 P=兵）、小文字が黒（k=将 a=士 b=象 n=馬 r=車 c=砲 p=卒）、数字は空きマスです。</string>
     <string name="agent_tool_manage_xiangqi_param_preset">内蔵残局の名前（import_preset で必須）。選択肢: rook_vs_pawn=赤の車対黒の兵</string>
-    <string name="agent_tool_manage_xiangqi_param_json_data">JSON游戏记录字符串（import_json所需）。用于導入带走法回放的完整对局。格式：{\"version\":1,\"title\":\"标题\",\"initialFen\":\"初始FEN\",\"result\":\"结果\",\"moves\":[{\"move\":\"a0a1\",\"moveCn\":\"炮二平五\"},...]}。`move`为UCCI坐标格式（例如a0a1表示从a0移到a1）；`moves`按顺序回放。</string>
+    <string name="agent_tool_manage_xiangqi_param_json_data">JSONの対局記録（import_json に必要）。手順の再生を含む対局を読み込みます。形式：{\"version\":1,\"title\":\"タイトル\",\"initialFen\":\"初期FEN\",\"result\":\"結果\",\"moves\":[{\"move\":\"a0a1\",\"moveCn\":\"炮二平五\"},...]}。move は UCCI 座標（a0a1 は a0 から a1 への着手）。moves は順番に再生します。</string>
     <string name="agent_tool_manage_xiangqi_missing_fen">fen がありません。action=import_fen で一度だけ再試行し、title と fen を同時に渡し、局面はユーザーの指定どおりに。内蔵残局なら import_preset を使って</string>
     <string name="agent_tool_manage_xiangqi_missing_preset">preset がありません。選択肢: rook_vs_pawn（赤の車対黒の兵）。ユーザーが FEN を渡した場合は import_fen を使って</string>
     <string name="agent_tool_manage_xiangqi_unknown_preset">未知の内蔵残局: %1$s。選択肢: rook_vs_pawn（赤の車対黒の兵）</string>
@@ -627,7 +627,7 @@
     <string name="agent_tool_manage_xiangqi_imported_fen">FEN已導入</string>
     <string name="agent_tool_manage_xiangqi_preset_rook_vs_pawn_title">赤の車対黒の兵</string>
     <string name="agent_tool_manage_xiangqi_imported">対局をインポートしました: %1$s。局面は完全にインポート済みです。deepLinks をユーザーに渡してください。このツールの再呼び出しは不要です</string>
-    <string name="agent_tool_manage_xiangqi_import_failed">導入失败：%1$s</string>
+    <string name="agent_tool_manage_xiangqi_import_failed">読み込みに失敗しました：%1$s</string>
 
     <!-- manage_decision_wheel -->
     <string name="agent_tool_manage_decision_wheel_title">決定ルーレット管理</string>
@@ -658,13 +658,13 @@
     <string name="agent_tool_browser_navigate_unknown_action">未知操作：%1$s</string>
     <string name="agent_tool_browser_navigate_failed">ブラウザー操作に失敗しました: %1$s</string>
     <string name="agent_tool_browser_read_page_title">ページ内容を読み取る</string>
-    <string name="agent_tool_browser_read_page_summary">读取当前浏览器页面的文本、DOM或状态信息</string>
+    <string name="agent_tool_browser_read_page_summary">現在のブラウザページのテキスト、DOM、状態を読み取ります</string>
     <string name="agent_tool_browser_read_page_param_mode">读取模式：full_text / dom / info / snapshot</string>
     <string name="agent_tool_browser_read_page_param_selector">CSSセレクター（domモードで使用、デフォルトは body）</string>
     <string name="agent_tool_browser_read_page_param_max_length">返す最大文字数（デフォルト 8192）</string>
     <string name="agent_tool_browser_read_page_no_info">ページ情報を取得できません</string>
     <string name="agent_tool_browser_read_page_unknown_mode">未知模式：%1$s</string>
-    <string name="agent_tool_browser_read_page_failed">读取页面失败：%1$s</string>
+    <string name="agent_tool_browser_read_page_failed">ページの読み取りに失敗しました：%1$s</string>
     <string name="agent_tool_browser_execute_js_title">JavaScriptを実行</string>
     <string name="agent_tool_browser_execute_js_summary">現在のブラウザーページでJavaScriptコードを実行します</string>
     <string name="agent_tool_browser_execute_js_param_script">実行するJavaScriptコード</string>

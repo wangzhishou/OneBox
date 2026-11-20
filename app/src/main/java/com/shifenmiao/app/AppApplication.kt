@@ -213,9 +213,6 @@ class AppApplication : BaseApplication() {
      * LocaleUtils 缓存错误覆写成 "en"(strings 与数据源语言不一致的根因)。
      */
     private fun applyLocaleFallbackIfNeeded() {
-        // 用户显式选择过语言(含"跟随系统")就不再干预;
-        // 否则"跟随系统"的用户每次冷启动都会被强制改写语言
-        if (AppSharedStorage.loadLanguageUserChosen()) return
         val perAppTag: String? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             getSystemService(LocaleManager::class.java)
                 ?.applicationLocales
@@ -226,10 +223,28 @@ class AppApplication : BaseApplication() {
                 .takeIf { !it.isEmpty }
                 ?.toLanguageTags()
         }
+        // 旧版语言列表同时有 en 和 en-US。locale config 现在只留 en-US，
+        // 已保存的裸 en 要先改写，否则 Android 15 会因 locale 不在包内而 NPE。
+        val migratedTag = perAppTag?.split(',')?.joinToString(",") { part ->
+            if (part.equals("en", ignoreCase = true)) "en-US" else part
+        }
+        if (!perAppTag.isNullOrBlank() && migratedTag != perAppTag) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                getSystemService(LocaleManager::class.java).applicationLocales =
+                    android.os.LocaleList.forLanguageTags(migratedTag)
+            } else {
+                AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(migratedTag))
+            }
+            LocaleSwitchWatcher.onLocaleOverriddenAtStartup(migratedTag!!)
+            return
+        }
+        // 用户显式选择过语言(含"跟随系统")就不再干预;
+        // 否则"跟随系统"的用户每次冷启动都会被强制改写语言
+        if (AppSharedStorage.loadLanguageUserChosen()) return
         if (!perAppTag.isNullOrBlank()) return
         val systemLanguage = Resources.getSystem().configuration.locales[0]?.language
         if (systemLanguage == Locale.CHINESE.language) return
-        val fallbackTag = if (FlavorType.fromName().isOverseas) "en" else "zh-CN"
+        val fallbackTag = if (FlavorType.fromName().isOverseas) "en-US" else "zh-CN"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             getSystemService(LocaleManager::class.java).applicationLocales =
                 android.os.LocaleList.forLanguageTags(fallbackTag)
