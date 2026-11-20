@@ -533,7 +533,7 @@ fun PlaceholderCard(
         if (title == null) {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
-                contentDescription = "Add",
+                contentDescription = stringResource(com.shifenmiao.core.R.string.nav_add),
                 tint = MaterialTheme.colorScheme.contentColorFor(
                     MaterialTheme.colorScheme.surfaceContainer
                 ).copy(alpha = 0.3f),
@@ -549,7 +549,7 @@ fun PlaceholderCard(
             ) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
-                    contentDescription = "Add",
+                    contentDescription = stringResource(com.shifenmiao.core.R.string.nav_add),
                     tint = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f),
                     modifier = Modifier.size(32.dp),
                 )

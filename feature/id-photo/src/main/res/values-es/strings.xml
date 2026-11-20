@@ -19,7 +19,7 @@
   -->
 
 <resources>
-    <string name="id_photo_title">I.D.</string>
+    <string name="id_photo_title">Foto de documento</string>
     <string name="id_photo_tab_selected_images">Imagen seleccionada ( %d )</string>
     <string name="id_photo_tab_select_size">Seleccionar tamaño</string>
     <string name="id_photo_export_settings">Configuración de exportación</string>

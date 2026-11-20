@@ -129,7 +129,9 @@
     <string name="textcard_home_input_hint">引用、書籍の抜粋、お知らせ、長文などを貼り付けまたは入力…</string>
     <string name="textcard_create">カードを作成</string>
     <string name="textcard_recent_projects">最近の作品</string>
-    <string name="textcard_project_meta">%1$d ページ · %2$s</string>
+    <plurals name="textcard_project_meta">
+        <item quantity="other">%1$d ページ · %2$s</item>
+    </plurals>
     <string name="textcard_continue_editing">編集を続ける</string>
     <string name="textcard_rename_project">作品名を変更</string>
     <string name="textcard_delete_project">作品を削除</string>

@@ -359,7 +359,17 @@ class RootComponent @AssistedInject internal constructor(
         // 交给下方 handleDeeplinks 路由——默认进图片预览页,明确编辑意图才进图层创作
         val isSystemImageOpen = intent?.type?.startsWith("image/") == true &&
             (intent.action == Intent.ACTION_VIEW || intent.action == Intent.ACTION_EDIT)
+        val isInternalLink = !url.isNullOrBlank() && (
+            url.startsWith("onebox://") ||
+                url.startsWith("app://") ||
+                url.contains("://www.oneboxable.com/link/") ||
+                url.contains("://oneboxable.com/link/")
+            )
         if (!isSystemImageOpen && urlNavigator.navigate(url)) {
+            return
+        }
+        if (!isSystemImageOpen && isInternalLink) {
+            showToast(context.getString(com.shifenmiao.core.R.string.deeplink_not_found))
             return
         }
 

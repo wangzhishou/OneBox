@@ -555,7 +555,7 @@ private fun CompactGridItemCard(
                         color = MaterialTheme.colorScheme.outline,
                         maxLines = 1
                     )
-                } else {
+                } else if (item.item.updatedAt > 0L) {
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = TimeFormatter.formatRelativeTime(java.util.Date(item.item.updatedAt)),

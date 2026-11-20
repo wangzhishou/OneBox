@@ -131,7 +131,10 @@
     <string name="textcard_home_input_hint">Collez ou saisissez une citation, un extrait, une annonce ou un long article…</string>
     <string name="textcard_create">Créer une carte</string>
     <string name="textcard_recent_projects">Projets récents</string>
-    <string name="textcard_project_meta">%1$d pages · %2$s</string>
+    <plurals name="textcard_project_meta">
+        <item quantity="one">%1$d page · %2$s</item>
+        <item quantity="other">%1$d pages · %2$s</item>
+    </plurals>
     <string name="textcard_continue_editing">Continuer l\'édition</string>
     <string name="textcard_rename_project">Renommer le projet</string>
     <string name="textcard_delete_project">Supprimer le projet</string>

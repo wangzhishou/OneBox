@@ -129,7 +129,10 @@
     <string name="textcard_home_input_hint">Mag-paste o maglagay ng quote, excerpt, anunsyo, o mahabang artikulo…</string>
     <string name="textcard_create">Gumawa ng card</string>
     <string name="textcard_recent_projects">Mga kamakailang proyekto</string>
-    <string name="textcard_project_meta">%1$d pahina · %2$s</string>
+    <plurals name="textcard_project_meta">
+        <item quantity="one">%1$d pahina · %2$s</item>
+        <item quantity="other">%1$d pahina · %2$s</item>
+    </plurals>
     <string name="textcard_continue_editing">Magpatuloy sa pag-edit</string>
     <string name="textcard_rename_project">Palitan ang pangalan ng proyekto</string>
     <string name="textcard_delete_project">Burahin ang proyekto</string>

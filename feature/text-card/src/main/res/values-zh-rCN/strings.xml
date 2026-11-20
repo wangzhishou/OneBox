@@ -130,7 +130,9 @@
     <string name="textcard_home_input_hint">粘贴或输入语录、书摘、公告或长文章…</string>
     <string name="textcard_create">生成卡片</string>
     <string name="textcard_recent_projects">最近作品</string>
-    <string name="textcard_project_meta">%1$d 页 · %2$s</string>
+    <plurals name="textcard_project_meta">
+        <item quantity="other">%1$d 页 · %2$s</item>
+    </plurals>
     <string name="textcard_continue_editing">继续编辑</string>
     <string name="textcard_rename_project">重命名作品</string>
     <string name="textcard_delete_project">删除作品</string>

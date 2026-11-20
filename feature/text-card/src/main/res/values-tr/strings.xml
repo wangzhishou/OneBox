@@ -129,7 +129,9 @@
     <string name="textcard_home_input_hint">Alıntı, kitaptan bölüm, duyuru veya uzun makale yapıştır ya da yaz…</string>
     <string name="textcard_create">Kart oluştur</string>
     <string name="textcard_recent_projects">Son projeler</string>
-    <string name="textcard_project_meta">%1$d sayfa · %2$s</string>
+    <plurals name="textcard_project_meta">
+        <item quantity="other">%1$d sayfa · %2$s</item>
+    </plurals>
     <string name="textcard_continue_editing">Düzenlemeye devam et</string>
     <string name="textcard_rename_project">Projeyi yeniden adlandır</string>
     <string name="textcard_delete_project">Projeyi sil</string>

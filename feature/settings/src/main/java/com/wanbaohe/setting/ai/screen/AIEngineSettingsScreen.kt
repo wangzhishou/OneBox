@@ -431,17 +431,20 @@ private fun EngineListCard(
     }
 }
 
+@Composable
 private fun protocolBadgeLabel(protocol: AiRequestProtocol): String {
-    // 列表徽章用短名，完整名在详情页协议选择器里
-    return when (protocol) {
-        AiRequestProtocol.OPENAI_COMPATIBLE -> "OpenAI"
-        AiRequestProtocol.RESPONSES_COMPATIBLE -> "Responses"
-        AiRequestProtocol.ANTHROPIC_COMPATIBLE -> "Anthropic"
-        AiRequestProtocol.OWN_PROXY -> "Proxy"
-        AiRequestProtocol.LOCAL_ON_DEVICE -> "Local"
-        AiRequestProtocol.JEV -> "Jev"
-        AiRequestProtocol.PIKAFISH -> "Pikafish"
+    // 列表徽章用短名，完整名在详情页协议选择器里。
+    // 兼容协议不能标成 OpenAI，否则其它厂商看起来像接错了服务。
+    val res = when (protocol) {
+        AiRequestProtocol.OPENAI_COMPATIBLE -> R.string.ai_engine_protocol_badge_openai
+        AiRequestProtocol.RESPONSES_COMPATIBLE -> R.string.ai_engine_protocol_badge_responses
+        AiRequestProtocol.ANTHROPIC_COMPATIBLE -> R.string.ai_engine_protocol_badge_anthropic
+        AiRequestProtocol.OWN_PROXY -> R.string.ai_engine_protocol_badge_proxy
+        AiRequestProtocol.LOCAL_ON_DEVICE -> R.string.ai_engine_protocol_badge_local
+        AiRequestProtocol.JEV -> R.string.ai_engine_protocol_badge_jev
+        AiRequestProtocol.PIKAFISH -> R.string.ai_engine_protocol_badge_pikafish
     }
+    return stringResource(res)
 }
 
 @Composable

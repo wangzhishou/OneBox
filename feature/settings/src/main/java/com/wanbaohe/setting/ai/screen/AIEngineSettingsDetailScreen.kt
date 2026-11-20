@@ -390,7 +390,10 @@ fun AIEngineSettingsDetailScreen(
                     .fillMaxWidth()
                     .weight(1f)
                     .verticalScroll(rememberScrollState())
-                    .padding(horizontal = OneBoxDesignSystem.screenPadding),
+                    .padding(horizontal = OneBoxDesignSystem.screenPadding)
+                    // 底栏是滚动区的兄弟节点，贴在下面。非聊天协议不渲染 ParameterCard，
+                    // 最后一张卡会顶到 Cancelar / Guardar 上，留出底栏高度。
+                    .padding(bottom = 72.dp),
                 verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing),
             ) {
                 Spacer(modifier = Modifier.height(OneBoxDesignSystem.microSpacing))
@@ -1097,7 +1100,7 @@ private fun ModelSelectionCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(48.dp),
+                    .heightIn(min = 48.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
@@ -1108,7 +1111,8 @@ private fun ModelSelectionCard(
                     },
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 2,
+                    maxLines = 3,
+                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f),
                 )
                 // 远程下发模型没有编辑/删除权限, 这时整块按钮不渲染:

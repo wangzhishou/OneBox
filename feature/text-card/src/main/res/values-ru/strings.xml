@@ -129,7 +129,12 @@
     <string name="textcard_home_input_hint">Вставьте или введите цитату, отрывок из книги, объявление или длинную статью…</string>
     <string name="textcard_create">Создать карточку</string>
     <string name="textcard_recent_projects">Недавние проекты</string>
-    <string name="textcard_project_meta">%1$d стр. · %2$s</string>
+    <plurals name="textcard_project_meta">
+        <item quantity="one">%1$d стр. · %2$s</item>
+        <item quantity="few">%1$d стр. · %2$s</item>
+        <item quantity="many">%1$d стр. · %2$s</item>
+        <item quantity="other">%1$d стр. · %2$s</item>
+    </plurals>
     <string name="textcard_continue_editing">Продолжить редактирование</string>
     <string name="textcard_rename_project">Переименовать проект</string>
     <string name="textcard_delete_project">Удалить проект</string>

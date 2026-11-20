@@ -129,7 +129,9 @@
     <string name="textcard_home_input_hint">उद्धरण, पुस्तक अंश, घोषणा या लंबा लेख पेस्ट करें या दर्ज करें…</string>
     <string name="textcard_create">कार्ड बनाएं</string>
     <string name="textcard_recent_projects">हालिया प्रोजेक्ट</string>
-    <string name="textcard_project_meta">%1$d पेज · %2$s</string>
+    <plurals name="textcard_project_meta">
+        <item quantity="other">%1$d पेज · %2$s</item>
+    </plurals>
     <string name="textcard_continue_editing">संपादन जारी रखें</string>
     <string name="textcard_rename_project">प्रोजेक्ट का नाम बदलें</string>
     <string name="textcard_delete_project">प्रोजेक्ट हटाएं</string>

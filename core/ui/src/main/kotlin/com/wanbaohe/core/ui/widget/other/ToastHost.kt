@@ -97,6 +97,7 @@ import com.wanbaohe.core.ui.utils.animation.lessSpringySpec
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.helper.ContextUtils.requestStoragePermission
 import com.wanbaohe.core.ui.utils.helper.EnPreview
+import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.utils.provider.LocalScreenSize
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopSheetDefaults
 import com.wanbaohe.core.ui.widget.glass.GlassCard
@@ -188,7 +189,10 @@ fun ToastHost(
                             modifier = Modifier
                                 .align(alignment)
                                 .padding(
-                                    bottom = sizeMin * 0.2f,
+                                    // 至少让出底栏高度，避免操作提示压住「进行中」这类标签
+                                    bottom = (sizeMin * 0.2f).coerceAtLeast(
+                                        AppTheme.dimens.navigationHeight + 24.dp
+                                    ),
                                     top = 24.dp,
                                     start = 12.dp,
                                     end = 12.dp

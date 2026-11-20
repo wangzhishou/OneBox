@@ -77,7 +77,7 @@
     <string name="chess_switch_ai_model">Cambiar de IA</string>
     <string name="chess_ai_local_fallback_title">Se jugó con respaldo local</string>
     <string name="chess_ai_local_fallback_message">El motor no estaba disponible, así que movió una heurística local (%1$s).</string>
-    <string name="chess_mode_local">Local</string>
+    <string name="chess_mode_local">Dos en local</string>
     <string name="chess_mode_ai">vs IA</string>
     <string name="chess_mode_ai_vs_ai">IA vs IA</string>
     <string name="chess_new_local_game">Dos jugadores local</string>

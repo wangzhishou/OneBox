@@ -23,6 +23,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -55,8 +57,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.ai.a2ui.LocalA2uiRenderProvider
@@ -106,6 +111,8 @@ import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.markdown.LocalMarkdownSelectionGroup
 import com.wanbaohe.markdown.MarkdownSelectionGroup
 import com.t8rin.imagetoolbox.core.utils.getString
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.Date
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineInfo
@@ -456,6 +463,48 @@ fun ChatMessagesList(
     LaunchedEffect(chatUIState.chatActive) {
         if (chatUIState.chatActive) selectionState.clear()
     }
+    // 提示词详情是一张超高占位卡。reverseLayout 把卡片底部锚在视口底，打开时会停在文末。
+    // 卡片长高时 onContentHeightDelta 会 scrollBy，offset 立刻离开 0，而且 scrollBy 的
+    // NestedScrollSource 也是 UserInput，不能靠它判断「用户已经在滑」。只认手指按下。
+    val promptUserTouched = remember(conversation.id) { mutableStateOf(false) }
+    val promptTouchGuard = Modifier.pointerInput(conversation.id) {
+        awaitEachGesture {
+            // 只观察按下，不消费事件，列表自己的滑动还要收到这次手势
+            awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
+            promptUserTouched.value = true
+        }
+    }
+    LaunchedEffect(conversation.id, conversation.entryType) {
+        if (conversation.entryType != AIConversationEntryType.PROMPT) return@LaunchedEffect
+        // 正文是后到的。第一次测量往往还是短占位，不能据此把锚定关掉。
+        var anchoredSize = -1
+        snapshotFlow {
+            lazyListState.layoutInfo.visibleItemsInfo.maxOfOrNull { it.size } ?: 0
+        }.collect { itemSize ->
+            if (promptUserTouched.value || itemSize <= 0 || itemSize == anchoredSize) return@collect
+            delay(64)
+            if (promptUserTouched.value) return@collect
+            while (!promptUserTouched.value) {
+                if (lazyListState.isScrollInProgress) {
+                    snapshotFlow {
+                        promptUserTouched.value || !lazyListState.isScrollInProgress
+                    }.first { it }
+                    continue
+                }
+                val info = lazyListState.layoutInfo
+                val item = info.visibleItemsInfo.maxByOrNull { it.size } ?: return@collect
+                if (item.size != itemSize) return@collect
+                val viewport = (info.viewportEndOffset - info.viewportStartOffset).coerceAtLeast(1)
+                val overflow = item.size - viewport
+                if (overflow <= 0) return@collect
+                // 跳转前同步再判一次，避免 delay 窗口里刚按下的手势被打断
+                if (promptUserTouched.value || lazyListState.isScrollInProgress) continue
+                lazyListState.scrollToItem(item.index, overflow)
+                anchoredSize = itemSize
+                return@collect
+            }
+        }
+    }
     val codeActions = rememberMarkdownCodeActions(appComponent = appComponent)
     val agentToolCallStatus by aiChatComponent.agentToolCallStatus.collectAsState()
     val displayMessageUiModels = remember(messageUiModels, agentToolCallStatus) {
@@ -486,7 +535,9 @@ fun ChatMessagesList(
             modifier = modifier,
         ) {
             LazyColumn(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .then(promptTouchGuard),
                 state = lazyListState,
                 reverseLayout = true,
                 contentPadding = PaddingValues(

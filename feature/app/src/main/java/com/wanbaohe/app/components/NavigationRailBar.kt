@@ -32,6 +32,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -59,6 +60,9 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.Hyphens
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
@@ -84,7 +88,10 @@ fun NavigationRailBar(
         exit = slideOutHorizontally(targetOffsetX = { -it })
     ) {
         GlassSurface(
-            modifier = modifier.navigationBarsPadding().statusBarsPadding()
+            modifier = modifier
+                .displayCutoutPadding()
+                .navigationBarsPadding()
+                .statusBarsPadding()
                 .fillMaxHeight(),
             style = OneBoxDesignSystem.drawerGlassStyle,
             shape = OneBoxDesignSystem.sectionCardShape,
@@ -92,9 +99,10 @@ fun NavigationRailBar(
             borderWidth = 0.dp,
         ) {
             NavigationRail(
-                // 固定 80dp: 自绘 item 的 fillMaxWidth 在没有宽度约束时会把 rail 撑满全屏
+                // 固定宽度: 自绘 item 的 fillMaxWidth 在没有宽度约束时会把 rail 撑满全屏。
+                // 104dp 才能放下「Agregar / Configuración」这类标签，80dp 会截成 Agre / Con。
                 modifier = Modifier
-                    .width(80.dp)
+                    .width(104.dp)
                     .padding(vertical = OneBoxDesignSystem.compactSpacing),
                 containerColor = Color.Transparent
             ) {
@@ -177,7 +185,7 @@ private fun RailNavigationItem(
                         Modifier
                     }
                 )
-                .padding(horizontal = 10.dp, vertical = 6.dp),
+                .padding(horizontal = 4.dp, vertical = 6.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(2.dp),
         ) {
@@ -200,10 +208,13 @@ private fun RailNavigationItem(
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelSmall.copy(
-                    fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
+                    fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
+                    hyphens = Hyphens.Auto,
                 ),
                 color = contentColor,
-                maxLines = 1,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center,
             )
         }
     }

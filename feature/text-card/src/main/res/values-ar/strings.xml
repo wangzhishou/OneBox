@@ -131,7 +131,14 @@
     <string name="textcard_home_input_hint">الصق أو أدخل اقتباسًا أو مقتطفًا من كتاب أو إعلانًا أو مقالًا طويلاً…</string>
     <string name="textcard_create">إنشاء بطاقة</string>
     <string name="textcard_recent_projects">المشاريع الأخيرة</string>
-    <string name="textcard_project_meta">%1$d صفحة · %2$s</string>
+    <plurals name="textcard_project_meta">
+        <item quantity="zero">%1$d صفحة · %2$s</item>
+        <item quantity="one">%1$d صفحة · %2$s</item>
+        <item quantity="two">%1$d صفحة · %2$s</item>
+        <item quantity="few">%1$d صفحات · %2$s</item>
+        <item quantity="many">%1$d صفحة · %2$s</item>
+        <item quantity="other">%1$d صفحة · %2$s</item>
+    </plurals>
     <string name="textcard_continue_editing">متابعة التحرير</string>
     <string name="textcard_rename_project">إعادة تسمية المشروع</string>
     <string name="textcard_delete_project">حذف المشروع</string>

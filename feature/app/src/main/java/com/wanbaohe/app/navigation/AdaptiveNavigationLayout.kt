@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -284,6 +285,10 @@ private fun NavigationRailLayout(
 ) {
     var addMenuExpanded by rememberSaveable { mutableStateOf(false) }
     val isContentOnly = currentScreen.landscapeShellMode == LandscapeShellMode.ContentOnly
+    // 主区域已经是助手对话时，右侧再铺一块同一会话会看起来像页面复制了一份
+    val showAssistantPane = !isContentOnly &&
+        currentScreen !is Screen.AITabChatScreen &&
+        currentScreen !is Screen.AiChatScreen
     val overlayBottomPadding =
         WindowInsets.systemBars.asPaddingValues().calculateBottomPadding() + 24.dp
     val assistantPaneWidth = (LocalWindowInfo.current.containerDpSize.width * AssistantPaneWidthRatio)
@@ -341,7 +346,7 @@ private fun NavigationRailLayout(
                 appComponent = appComponent,
             )
         }
-        if (!isContentOnly) {
+        if (showAssistantPane) {
             WideScreenAssistantPane(
                 rootComponent = rootComponent,
                 appComponent = appComponent,
@@ -557,7 +562,12 @@ private fun LandscapeRailUtilityActions(
             )
         },
         label = {
-            Text(text = stringResource(id = com.shifenmiao.core.R.string.nav_add))
+            Text(
+                text = stringResource(id = com.shifenmiao.core.R.string.nav_add),
+                maxLines = 2,
+                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+            )
         }
     )
     NavigationRailItem(
@@ -570,7 +580,12 @@ private fun LandscapeRailUtilityActions(
             )
         },
         label = {
-            Text(text = stringResource(id = com.shifenmiao.core.R.string.settings))
+            Text(
+                text = stringResource(id = com.shifenmiao.core.R.string.settings),
+                maxLines = 2,
+                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+            )
         }
     )
 }

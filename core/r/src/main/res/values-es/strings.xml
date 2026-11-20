@@ -24,7 +24,7 @@
     <string name="app_description">Una app, más de 90 herramientas: edición de imágenes, chat con IA, productividad y minijuegos. Todo en una sola caja.</string>
     <string name="app_description_download_des">\n\nDescargar: https://gitcode.com/wangzhishou/OneBox/releases\nGitHub: https://github.com/wangzhishou/OneBox</string>
     <string name="app_launcher_name">OneBox</string>
-    <string name="app_slogan">Agente de IA y Toolbox</string>
+    <string name="app_slogan">Un agente de IA para cualquier cosa</string>
     <string name="dialog_title">Consejo</string>
     <string name="button_close">Cerrar</string>
     <string name="button_confirm">Confirmar</string>
@@ -55,7 +55,7 @@
     <string name="online">Descubrir</string>
     <string name="online_description">Explora contenido seleccionado</string>
     <string name="mini_program">Mini Programas</string>
-    <string name="ai_chat_title">Chat</string>
+    <string name="ai_chat_title">Conversación</string>
     <string name="ai_chat_send">Enviar</string>
     <string name="ai_chat_uploading_attachments">Subiendo archivos adjuntos…</string>
     <string name="ai_attachment_limit_reached">Se permiten máximo 6 archivos adjuntos</string>
@@ -453,7 +453,7 @@
     <string name="type_web">Web</string>
     <string name="type_wechat_miniprogram">Mini Programa</string>
     <string name="type_wechat_video">Video</string>
-    <string name="type_prompt">Prompt</string>
+    <string name="type_prompt">Indicaciones</string>
     <string name="profile_item_dynamic_colors">Sugerencias de color dinámicas</string>
     <string name="pay_success">Pago exitoso. Los puntos llegarán en unos minutos.</string>
     <string name="pay_fail">Error de pago: %s</string>
@@ -667,7 +667,7 @@
     <string name="playground_empty_title">Aún no hay ideas</string>
     <string name="playground_empty_description">Sé el primero en compartir tu idea</string>
     <string name="playground_footer_title">Comparte tu idea</string>
-    <string name="playground_footer_description">¿Tienes una buena idea? Escribe un artículo y explóralo juntos</string>
+    <string name="playground_footer_description">¿Tienes una buena idea? Escríbela y explorémosla juntos</string>
     <string name="favorite_time_just_now">Ahora mismo</string>
     <string name="back_prressed_once">Pulsa de nuevo para salir</string>
     <string name="privacy_item_camera_description">Se necesita acceso a la cámara para las funciones de escaneo.</string>
@@ -705,7 +705,7 @@
     <string name="prompt_prompt">Instrucciones del sistema</string>
     <string name="select_groups">Seleccionar categorías</string>
     <string name="title">Título</string>
-    <string name="prompt_create">Prompt</string>
+    <string name="prompt_create">Indicación</string>
     <string name="cancel">Cancelar</string>
     <string name="settings">Configuración</string>
     <string name="profile_group_ai_settings">Configuración de IA</string>
@@ -1116,7 +1116,7 @@
     <string name="loan_calculator_description">Admite métodos de capital igual + interés, capital igual, interés primero y tasa fija.</string>
     <string name="dice_roller_title">Lanzador de dados</string>
     <string name="dice_roller_description">Dados de mesa D4/D6/D8/D10/D12/D20</string>
-    <string name="teleprompter_title">Teleprompter</string>
+    <string name="teleprompter_title">Teleprónter</string>
     <string name="teleprompter_description">Teleprompter profesional con gestión de guiones y desplazamiento suave.</string>
     <string name="glass_alpha_effect">Vidrio esmerilado</string>
     <string name="liquid_glass_effect">Vidrio líquido</string>
@@ -1353,11 +1353,12 @@
     <string name="agent_push_success">Envío exitoso</string>
     <string name="agent_push_failed">Envío fallido</string>
     <string name="nav_add">Agregar</string>
+    <string name="deeplink_not_found">Esta página no existe</string>
     <string name="nav_create_new_task">Crear</string>
     <string name="nav_new_qr_code">Escanear</string>
     <string name="nav_notebook">Nota</string>
     <string name="nav_todo_list">Tareas</string>
-    <string name="nav_ai_app">Chat</string>
+    <string name="nav_ai_app">Conversación</string>
     <string name="game_2048_title">2048</string>
     <string name="game_2048_description">Juego clásico de fusión de números</string>
     <string name="xiangqi_title">Ajedrez chino</string>
@@ -1468,7 +1469,7 @@
     <string name="ai_xiaomi_description">Xiaomi MiMo</string>
     <string name="ai_tools_category_image">Imagen</string>
     <string name="ai_tools_category_media">Medios</string>
-    <string name="ai_tools_category_prompt">Prompt</string>
+    <string name="ai_tools_category_prompt">Indicaciones</string>
     <string name="ai_chat_quick_start_select">Seleccionar modelo</string>
     <string name="system_prompt_save_success">Guardado correctamente</string>
     <string name="system_prompt_save_failed">Error al guardar</string>
@@ -1640,7 +1641,7 @@
     <string name="home_tab_agent_description">Abre la pestaña Agentes en Inicio para explorar los agentes de IA disponibles.</string>
     <string name="home_tab_app_title">Herramientas</string>
     <string name="home_tab_app_description">Abre la pestaña Herramientas en Inicio para explorar herramientas comunes y mini aplicaciones.</string>
-    <string name="home_tab_prompt_title">Prompts</string>
+    <string name="home_tab_prompt_title">Indicaciones</string>
     <string name="home_tab_prompt_description">Abre la pestaña Prompts en Inicio para explorar y gestionar los prompts de IA.</string>
     <string name="home_tab_text_title">Notas</string>
     <string name="home_tab_text_description">Abre la pestaña Notas en Inicio para ver tus notas y documentos creados localmente.</string>

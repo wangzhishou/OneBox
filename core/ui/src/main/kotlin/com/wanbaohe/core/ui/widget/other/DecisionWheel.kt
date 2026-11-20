@@ -196,15 +196,23 @@ fun DecisionWheelCanvas(
                 drawContext.canvas.nativeCanvas.apply {
                     val paint = android.graphics.Paint().apply {
                         color = contentColor.copy(alpha = if (item.enabled) 1f else 0.62f).toArgb()
-                        textSize = 40f
                         textAlign = android.graphics.Paint.Align.CENTER
                         // 删除线是"这个已经出局了"最不需要解释的表达
                         isStrikeThruText = !item.enabled
                     }
-                    // 长文案按扇区可用宽度截断,避免选项文字互相压字
+                    // 先把字号收到扇区弧长里，仍放不下再省略，避免西语短语只剩一个词
                     val maxTextWidth = (sectorAngle / 360f * 2f * Math.PI * textRadius).toFloat() * 0.9f
+                    var textSizePx = 40f
+                    val minTextSize = 22f
+                    paint.textSize = textSizePx
+                    if (maxTextWidth > 0f) {
+                        while (textSizePx > minTextSize && paint.measureText(item.label) > maxTextWidth) {
+                            textSizePx -= 2f
+                            paint.textSize = textSizePx
+                        }
+                    }
                     val displayLabel = ellipsizeToWidth(item.label, paint, maxTextWidth)
-                    drawText(displayLabel, textX, textY + 15f, paint)
+                    drawText(displayLabel, textX, textY + paint.textSize * 0.35f, paint)
                 }
             }
         }

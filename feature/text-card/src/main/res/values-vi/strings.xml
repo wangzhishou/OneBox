@@ -131,7 +131,9 @@
     <string name="textcard_home_input_hint">Dán hoặc nhập trích dẫn, đoạn sách, thông báo hay bài viết dài…</string>
     <string name="textcard_create">Tạo thẻ</string>
     <string name="textcard_recent_projects">Dự án gần đây</string>
-    <string name="textcard_project_meta">%1$d trang · %2$s</string>
+    <plurals name="textcard_project_meta">
+        <item quantity="other">%1$d trang · %2$s</item>
+    </plurals>
     <string name="textcard_continue_editing">Tiếp tục chỉnh sửa</string>
     <string name="textcard_rename_project">Đổi tên dự án</string>
     <string name="textcard_delete_project">Xóa dự án</string>

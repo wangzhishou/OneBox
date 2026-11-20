@@ -183,7 +183,7 @@ fun TodoTaskRow(
                             text = task.note,
                             style = MaterialTheme.typography.labelSmall,
                             color = contentColor.copy(alpha = 0.55f * contentAlpha),
-                            maxLines = 1,
+                            maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.weight(1f),
                         )

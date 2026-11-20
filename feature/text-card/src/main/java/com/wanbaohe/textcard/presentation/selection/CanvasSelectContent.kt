@@ -66,6 +66,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -338,8 +339,9 @@ private fun RecentProjects(
                         )
                         Text(
                             text = if (project.pageCount > 0) {
-                                stringResource(
-                                    R.string.textcard_project_meta,
+                                pluralStringResource(
+                                    R.plurals.textcard_project_meta,
+                                    project.pageCount,
                                     project.pageCount,
                                     dateFormat.format(Date(project.updatedAt))
                                 )

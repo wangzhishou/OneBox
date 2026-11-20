@@ -1749,6 +1749,7 @@
 
     <!-- Bottom Navigation - Add Menu -->
     <string name="nav_add">添加</string>
+    <string name="deeplink_not_found">没有这个页面</string>
     <string name="nav_create_new_task">新建</string>
     <string name="nav_new_qr_code">扫一扫</string>
     <string name="nav_notebook">记事本</string>

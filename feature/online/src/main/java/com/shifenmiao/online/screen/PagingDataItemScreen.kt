@@ -82,6 +82,7 @@ import com.shifenmiao.base.pullrefresh.PullToRefreshLayout
 import com.shifenmiao.base.pullrefresh.rememberPullToRefreshStateOnTime
 import com.wanbaohe.base.ui.DeleteConfirmDialog
 import com.shifenmiao.base.utils.DateUtils.convertElapsedTimeIntoText
+import com.shifenmiao.base.utils.NetWorkUtils
 import com.shifenmiao.common.components.LoadingNextPageItem
 import com.shifenmiao.common.components.comments.commentUidForListType
 import com.shifenmiao.common.handle.HandleEvent
@@ -180,11 +181,12 @@ fun PagingDataItemScreen(
         if (manualRefreshFeedbackPending) {
             if (state is SyncState.Error) {
                 // 断网挂起触发的超时明确提示网络异常, 其余错误优先展示服务端/网络层文案
-                val message = when (state.cause) {
-                    is SyncTimeoutException -> networkErrorText
-                    else -> state.cause.message
-                        ?.takeIf { it.isNotBlank() }
-                        ?: refreshFailedText
+                val raw = state.cause.message?.takeIf { it.isNotBlank() }
+                val message = when {
+                    state.cause is SyncTimeoutException -> networkErrorText
+                    !NetWorkUtils.isNetworkValidated() -> networkErrorText
+                    raw == null || raw.startsWith("Failed to ") -> refreshFailedText
+                    else -> raw
                 }
                 AppToastHost.showToast(message)
             }

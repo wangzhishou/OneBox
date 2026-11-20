@@ -128,6 +128,7 @@ import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.core.ui.widget.glass.tintedGlassContentColor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import android.text.format.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -446,7 +447,8 @@ private fun CardActionIcon(
 }
 
 private fun formatPromptUpdatedAt(timestamp: Long): String {
-    return SimpleDateFormat("MM-dd HH:mm", Locale.getDefault()).format(Date(timestamp))
+    val pattern = DateFormat.getBestDateTimePattern(Locale.getDefault(), "MMddHHmm")
+    return SimpleDateFormat(pattern, Locale.getDefault()).format(Date(timestamp))
 }
 
 

@@ -1635,6 +1635,7 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
 
     <!-- Bottom Navigation - Add Menu -->
     <string name="nav_add">Add</string>
+    <string name="deeplink_not_found">This page does not exist</string>
     <string name="nav_create_new_task">Create</string>
     <string name="nav_new_qr_code">Scan</string>
     <string name="nav_notebook">Note</string>
