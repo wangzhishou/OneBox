@@ -273,7 +273,8 @@ private fun TaskMetadata(
                 text = task.note,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 2,
+                // 长语种的引导文案在两行里会断在半句，列表详情给到三行
+                maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
             )
         }

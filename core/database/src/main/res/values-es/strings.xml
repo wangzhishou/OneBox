@@ -53,7 +53,7 @@
     <string name="marktodo_preset_tag_study">Estudios</string>
     <string name="marktodo_preset_tag_travel">Viajes</string>
     <string name="marktodo_preset_tag_work">Trabajo</string>
-    <string name="marktodo_preset_task_note">Toca la casilla para completarme; tócame para editar; mantén pulsada la tarjeta del tema para editarla o eliminarla</string>
+    <string name="marktodo_preset_task_note">Casilla: completar. Tócame: editar. Pulsa el tema: editar o borrar.</string>
     <string name="marktodo_preset_task_title">Te damos la bienvenida a Tareas</string>
     <string name="activity_log_teleprompter_app_title">Teleprompter</string>
     <string name="activity_log_bookkeeping_app_title">Contabilidad</string>

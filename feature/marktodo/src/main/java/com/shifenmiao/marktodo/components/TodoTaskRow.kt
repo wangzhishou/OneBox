@@ -183,7 +183,9 @@ fun TodoTaskRow(
                             text = task.note,
                             style = MaterialTheme.typography.labelSmall,
                             color = contentColor.copy(alpha = 0.55f * contentAlpha),
-                            maxLines = 2,
+                            // 长语种的预设引导两行读不完，紧凑卡片也给到三行；
+                            // 短备注仍按原高度显示，不会把所有任务行都撑高。
+                            maxLines = 3,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.weight(1f),
                         )
