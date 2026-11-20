@@ -160,6 +160,7 @@ import com.t8rin.imagetoolbox.feature.settings.data.keys.SCREEN_SEARCH_ENABLED
 import com.t8rin.imagetoolbox.feature.settings.data.keys.SECURE_MODE
 import com.t8rin.imagetoolbox.feature.settings.data.keys.SELECTED_EMOJI_INDEX
 import com.t8rin.imagetoolbox.feature.settings.data.keys.SELECTED_FONT
+import com.t8rin.imagetoolbox.feature.settings.data.keys.SELECTED_PALETTE_ID
 import com.t8rin.imagetoolbox.feature.settings.data.keys.SETTINGS_GROUP_VISIBILITY
 import com.t8rin.imagetoolbox.feature.settings.data.keys.SHOW_SETTINGS_IN_LANDSCAPE
 import com.t8rin.imagetoolbox.feature.settings.data.keys.SHOW_UPDATE_DIALOG
@@ -238,6 +239,7 @@ internal class AndroidSettingsManager @Inject constructor(
         .onEach {
             syncStartupSettingsToMmkv(it)
             seedDefaultPaletteIfNeeded(it)
+            ensureTransparentInDefaultPalette(it)
             if (!settingsLoaded.isCompleted) {
                 settingsLoaded.complete(Unit)
             }
@@ -305,6 +307,32 @@ internal class AndroidSettingsManager @Inject constructor(
                     updatedAtMillis = System.currentTimeMillis()
                 )
             ) + state.customPalettes
+        )
+    }
+
+    /**
+     * 老版本用户的「默认调色板」补一个透明色。
+     *
+     * 预置色的第一格改成透明色后，已播种过的调色板不会自动变化；
+     * 这里只补一次（MMKV flag 控制），之后用户再删掉就不会反复加回来。
+     */
+    private suspend fun ensureTransparentInDefaultPalette(state: SettingsState) {
+        if (AppSharedStorage.loadPaletteTransparentSeeded()) return
+        AppSharedStorage.savePaletteTransparentSeeded(true)
+
+        val defaultPalette = state.customPalettes
+            .firstOrNull { it.id == ColorPalette.DEFAULT_PALETTE_ID }
+            ?: return
+        if (defaultPalette.contains(ColorPalette.TRANSPARENT)) return
+
+        setCustomPalettes(
+            state.customPalettes.map {
+                if (it.id == defaultPalette.id) {
+                    it.prepending(ColorPalette.TRANSPARENT)
+                } else {
+                    it
+                }
+            }
         )
     }
 
@@ -908,6 +936,14 @@ internal class AndroidSettingsManager @Inject constructor(
         preferences[CUSTOM_PALETTES] = ColorPalette.encode(
             palettes.take(ColorPalette.MAX_PALETTES)
         )
+    }
+
+    override suspend fun setSelectedPaletteId(id: String?) = edit { preferences ->
+        if (id.isNullOrBlank()) {
+            preferences.remove(SELECTED_PALETTE_ID)
+        } else {
+            preferences[SELECTED_PALETTE_ID] = id
+        }
     }
 
     override suspend fun setBackgroundColorForNoAlphaFormats(

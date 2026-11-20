@@ -2082,7 +2082,7 @@
     <string name="palette_empty_title">Belum ada palet</string>
     <string name="palette_empty_desc">Simpan warna yang sering Anda gunakan bersamaan, lalu pilih langsung dari pemilih warna.</string>
     <string name="palette_no_colors">Palet ini kosong</string>
-    <string name="palette_no_colors_desc">Ketuk “Tambahkan warna saat ini” untuk menyimpan warna yang Anda pilih.</string>
+    <string name="palette_no_colors_desc">Ketuk ubin + untuk menyimpan warna di palet ini.</string>
     <string name="palette_copy_all">Salin semua nilai hex</string>
     <string name="palette_copied">Palet disalin</string>
     <string name="palette_created">Palet dibuat</string>

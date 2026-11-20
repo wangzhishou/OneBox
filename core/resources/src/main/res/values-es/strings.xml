@@ -2082,7 +2082,7 @@
     <string name="palette_empty_title">Aún no hay paletas</string>
     <string name="palette_empty_desc">Guarda los colores que sueles usar juntos y elígelos directamente desde el selector de color.</string>
     <string name="palette_no_colors">Esta paleta está vacía</string>
-    <string name="palette_no_colors_desc">Toca «Añadir color actual» para guardar el color seleccionado.</string>
+    <string name="palette_no_colors_desc">Toca el mosaico + para guardar un color en esta paleta.</string>
     <string name="palette_copy_all">Copiar todos los valores hex</string>
     <string name="palette_copied">Paleta copiada</string>
     <string name="palette_created">Paleta creada</string>

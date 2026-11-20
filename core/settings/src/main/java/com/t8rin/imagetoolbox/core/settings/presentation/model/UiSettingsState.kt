@@ -189,6 +189,7 @@ data class UiSettingsState(
     val filenameBehavior: FilenameBehavior,
     val enableBackgroundColorForAlphaFormats: Boolean,
     val customPalettes: List<ColorPalette>,
+    val selectedPaletteId: String?,
 )
 
 fun UiSettingsState.isFirstLaunch(
@@ -453,6 +454,7 @@ fun SettingsState.toUiState(
                 filenameBehavior = filenameBehavior,
                 enableBackgroundColorForAlphaFormats = enableBackgroundColorForAlphaFormats,
                 customPalettes = customPalettes,
+                selectedPaletteId = selectedPaletteId,
             )
         }
     }.value

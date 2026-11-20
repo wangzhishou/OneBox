@@ -63,6 +63,9 @@ interface SimpleSettingsInteractor {
         palettes: List<ColorPalette>
     )
 
+    /** 记住上次选中的调色板;下次打开选色面板/色彩工具继续用这一组。 */
+    suspend fun setSelectedPaletteId(id: String?)
+
     suspend fun setBackgroundColorForNoAlphaFormats(
         color: ColorModel
     )

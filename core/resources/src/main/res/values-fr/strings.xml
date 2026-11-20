@@ -2082,7 +2082,7 @@
     <string name="palette_empty_title">Pas encore de palette</string>
     <string name="palette_empty_desc">Enregistrez les couleurs que vous associez souvent, puis retrouvez-les directement dans le sélecteur de couleur.</string>
     <string name="palette_no_colors">Cette palette est vide</string>
-    <string name="palette_no_colors_desc">Appuyez sur « Ajouter la couleur actuelle » pour conserver la couleur sélectionnée.</string>
+    <string name="palette_no_colors_desc">Appuyez sur la tuile + pour enregistrer une couleur dans cette palette.</string>
     <string name="palette_copy_all">Copier toutes les valeurs hex</string>
     <string name="palette_copied">Palette copiée</string>
     <string name="palette_created">Palette créée</string>

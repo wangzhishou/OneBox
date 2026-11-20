@@ -102,20 +102,38 @@ fun ColorSelectionRow(
     val context = LocalContext.current
     var customColor by remember { mutableStateOf<Color?>(null) }
     var showColorPicker by remember { mutableStateOf(false) }
+    // 不允许 alpha 的场景（部分滤镜参数）不该出现透明色：
+    // 透明色会被当成「黑色 + 不透明度 1」，点一下反而变成纯黑，容易误解。
+    val shownColors = remember(defaultColors, allowAlpha) {
+        if (allowAlpha) defaultColors else defaultColors.filter { it.alpha >= 1f }
+    }
     // 展开时直接从选中色开始,避免先渲染 index 0 再 scrollToItem 造成的跳动。
     // 选中色不在预设色板里(自定义取色)时从 0 开始,因为取色入口固定在最左侧。
-    val initialIndex = remember(defaultColors, allowScroll) {
+    val initialIndex = remember(shownColors, allowScroll) {
         if (!allowScroll) {
             0
         } else {
-            defaultColors.indexOf(value).takeIf { it >= 0 } ?: 0
+            shownColors.indexOf(value).takeIf { it >= 0 } ?: 0
         }
     }
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = initialIndex)
+    // 首次组合由 initialFirstVisibleItemIndex 定位；之后的选中色/色板变化才做滚动动画，
+    // 避免「调色板里新加的颜色」在屏幕外的快捷色行上完全看不到。
+    var scrollReady by remember { mutableStateOf(false) }
 
-    LaunchedEffect(value) {
-        if (value !in defaultColors) {
-            customColor = value
+    LaunchedEffect(value, shownColors) {
+        customColor = value.takeIf { it !in shownColors }
+        if (!scrollReady) {
+            scrollReady = true
+            return@LaunchedEffect
+        }
+        if (!allowScroll) return@LaunchedEffect
+        val index = shownColors.indexOf(value)
+        if (index < 0) return@LaunchedEffect
+        val alreadyVisible = listState.layoutInfo.visibleItemsInfo
+            .any { it.index == index }
+        if (!alreadyVisible) {
+            listState.animateScrollToItem(index)
         }
     }
 
@@ -237,7 +255,7 @@ fun ColorSelectionRow(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 items(
-                    items = defaultColors,
+                    items = shownColors,
                     key = { it.toArgb() }
                 ) { color ->
                     val isSelected = value == color && customColor == null
@@ -283,7 +301,7 @@ fun ColorSelectionRow(
                             shape = shape
                         )
                     }
-                    if (color != defaultColors.last()) {
+                    if (color != shownColors.last()) {
                         Spacer(modifier = Modifier.width(12.dp))
                     }
                 }
@@ -315,13 +333,19 @@ private fun ColorCheckmark(
         Icon(
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDoneAll,
             contentDescription = null,
-            tint = color.inverse(
-                fraction = {
-                    if (it) 0.8f
-                    else 0.5f
-                },
-                darkMode = color.luminance() < 0.3f
-            ),
+            // 半透明/透明色块上的反色对比度不可靠（棋盘格是浅灰白），
+            // 直接用主题前景色，保证透明预设也看得出选中态。
+            tint = if (color.alpha < 1f) {
+                MaterialTheme.colorScheme.onSurface
+            } else {
+                color.inverse(
+                    fraction = {
+                        if (it) 0.8f
+                        else 0.5f
+                    },
+                    darkMode = color.luminance() < 0.3f
+                )
+            },
             modifier = Modifier
                 .size(24.dp)
                 .rotate(

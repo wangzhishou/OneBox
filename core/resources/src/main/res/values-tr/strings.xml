@@ -2081,7 +2081,7 @@
     <string name="palette_empty_title">Henüz palet yok</string>
     <string name="palette_empty_desc">Sık birlikte kullandığınız renkleri kaydedin, sonra bunları doğrudan renk seçiciden seçin.</string>
     <string name="palette_no_colors">Bu palet boş</string>
-    <string name="palette_no_colors_desc">Seçtiğiniz rengi saklamak için “Geçerli rengi ekle”ye dokunun.</string>
+    <string name="palette_no_colors_desc">Bu palete renk kaydetmek için + kutucuğuna dokunun.</string>
     <string name="palette_copy_all">Tüm hex değerlerini kopyala</string>
     <string name="palette_copied">Palet kopyalandı</string>
     <string name="palette_created">Palet oluşturuldu</string>

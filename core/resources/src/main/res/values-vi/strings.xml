@@ -2082,7 +2082,7 @@
     <string name="palette_empty_title">Chưa có bảng màu nào</string>
     <string name="palette_empty_desc">Lưu những màu bạn thường dùng cùng nhau, rồi chọn chúng ngay trong trình chọn màu.</string>
     <string name="palette_no_colors">Bảng màu này đang trống</string>
-    <string name="palette_no_colors_desc">Nhấn “Thêm màu hiện tại” để lưu màu bạn đã chọn.</string>
+    <string name="palette_no_colors_desc">Nhấn vào ô + để lưu màu vào bảng màu này.</string>
     <string name="palette_copy_all">Sao chép tất cả giá trị hex</string>
     <string name="palette_copied">Đã sao chép bảng màu</string>
     <string name="palette_created">Đã tạo bảng màu</string>

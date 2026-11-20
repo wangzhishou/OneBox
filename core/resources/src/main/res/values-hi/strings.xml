@@ -2082,7 +2082,7 @@
     <string name="palette_empty_title">अभी कोई पैलेट नहीं</string>
     <string name="palette_empty_desc">जिन रंगों को आप अक्सर साथ में इस्तेमाल करते हैं उन्हें सहेजें, फिर उन्हें सीधे रंग चयनकर्ता से चुनें।</string>
     <string name="palette_no_colors">यह पैलेट खाली है</string>
-    <string name="palette_no_colors_desc">चुने गए रंग को सहेजने के लिए “मौजूदा रंग जोड़ें” पर टैप करें।</string>
+    <string name="palette_no_colors_desc">इस पैलेट में रंग सहेजने के लिए + टाइल पर टैप करें।</string>
     <string name="palette_copy_all">सभी हेक्स मान कॉपी करें</string>
     <string name="palette_copied">पैलेट कॉपी हो गया</string>
     <string name="palette_created">पैलेट बन गया</string>

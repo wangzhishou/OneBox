@@ -40,6 +40,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -107,13 +108,29 @@ fun AddToPaletteSheet(
     // @Composable 取名字，不能落在点击回调里现算
     val suggestedPaletteName = newPaletteName(palettes)
     val onNavigate = LocalOnNavigate.current
-    var selectedPaletteId by rememberSaveable { mutableStateOf<String?>(null) }
-    val selectedPalette = palettes.firstOrNull { it.id == selectedPaletteId }
+    // 默认落在上次用过的调色板；用户这次选了别的，也记下来，下次继续用这一组。
+    // pending 只用来接住 DataStore 回流前的一两帧，避免选中态闪回第一组。
+    var pendingPaletteId by rememberSaveable { mutableStateOf<String?>(null) }
+    val effectivePaletteId = pendingPaletteId ?: settingsState.selectedPaletteId
+    val selectedPalette = palettes.firstOrNull { it.id == effectivePaletteId }
         ?: palettes.firstOrNull()
+
+    LaunchedEffect(settingsState.selectedPaletteId, pendingPaletteId) {
+        if (pendingPaletteId == settingsState.selectedPaletteId) {
+            pendingPaletteId = null
+        }
+    }
 
     fun persist(updated: List<ColorPalette>) {
         scope.launch {
             interactor.setCustomPalettes(updated.take(ColorPalette.MAX_PALETTES))
+        }
+    }
+
+    fun rememberSelection(id: String?) {
+        pendingPaletteId = id
+        scope.launch {
+            interactor.setSelectedPaletteId(id)
         }
     }
 
@@ -126,11 +143,9 @@ fun AddToPaletteSheet(
                 AppToastHost.showToast(fullMessage)
 
             else -> {
-                var updated = palette
-                missing.take(ColorPalette.MAX_COLORS - palette.colors.size).forEach { argb ->
-                    updated = updated.appending(argb)
-                }
+                val updated = palette.prependingAll(missing)
                 persist(palettes.map { if (it.id == palette.id) updated else it })
+                rememberSelection(palette.id)
                 if (isGroup) {
                     AppToastHost.showToast(
                         context.getString(
@@ -214,6 +229,7 @@ fun AddToPaletteSheet(
                             updatedAtMillis = System.currentTimeMillis()
                         )
                         persist(palettes + newPalette)
+                        rememberSelection(newPalette.id)
                         AppToastHost.showToast(R.string.palette_created)
                         onDismiss()
                     },
@@ -268,7 +284,7 @@ fun AddToPaletteSheet(
                                 }
                             )
                         },
-                        onClick = { selectedPaletteId = palette.id },
+                        onClick = { rememberSelection(palette.id) },
                         shape = ShapeDefaults.default
                     )
                 }

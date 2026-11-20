@@ -159,3 +159,6 @@ internal val ENABLE_BACKGROUND_COLOR_FOR_ALPHA_FORMATS =
 
 /** 用户自建调色板列表,存 JSON 字符串(见 ColorPalette.encode) */
 internal val CUSTOM_PALETTES = stringPreferencesKey("CUSTOM_PALETTES")
+
+/** 上次选中的调色板 id,下次打开选色面板/色彩工具仍落在这一组 */
+internal val SELECTED_PALETTE_ID = stringPreferencesKey("SELECTED_PALETTE_ID")

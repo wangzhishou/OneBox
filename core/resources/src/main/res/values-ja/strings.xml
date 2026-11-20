@@ -2081,7 +2081,7 @@
     <string name="palette_empty_title">パレットはまだありません</string>
     <string name="palette_empty_desc">よく一緒に使う色をまとめて保存すると、カラーピッカーからすぐに選べます。</string>
     <string name="palette_no_colors">このパレットは空です</string>
-    <string name="palette_no_colors_desc">「現在の色を追加」をタップして、選択中の色を保存します。</string>
+    <string name="palette_no_colors_desc">「＋」タイルをタップして、このパレットに色を保存します。</string>
     <string name="palette_copy_all">すべてのHEX値をコピー</string>
     <string name="palette_copied">パレットをコピーしました</string>
     <string name="palette_created">パレットを作成しました</string>

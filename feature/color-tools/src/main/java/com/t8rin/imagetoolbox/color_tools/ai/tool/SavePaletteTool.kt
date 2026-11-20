@@ -145,9 +145,8 @@ class SavePaletteTool @Inject constructor(
                     updatedAtMillis = now
                 )
 
-                mode == MODE_APPEND -> colors.fold(existing) { acc, argb ->
-                    acc.appending(argb, now)
-                }.copy(name = name, updatedAtMillis = now)
+                mode == MODE_APPEND -> existing.prependingAll(colors, now)
+                    .copy(name = name, updatedAtMillis = now)
 
                 else -> existing.copy(
                     name = name,

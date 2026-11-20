@@ -26,8 +26,9 @@ import kotlinx.serialization.json.Json
 /**
  * 用户自己调的一组颜色(调色板)。
  *
- * [colors] 按用户添加顺序保存(主色 → 辅色 → 点缀),不是取色历史那种倒序;
- * 同一个颜色在同一组里只留一个,重复添加会被忽略,避免色块里出现两块一样的颜色。
+ * [colors] 按「最近添加的排最前」保存:刚加的颜色在第一位,打开选色面板立刻能看到,
+ * 不用滚到末尾确认;批量加入时组内顺序保持传入顺序。同一个颜色在同一组里只留一个,
+ * 重复添加会被忽略,避免色块里出现两块一样的颜色。
  *
  * 存在 settings 的 DataStore 里,序列化成 JSON 字符串,所以改动字段要保证向后兼容
  * (新增字段必须给默认值,[Json] 已经开了 ignoreUnknownKeys)。
@@ -44,15 +45,43 @@ data class ColorPalette(
 
     fun contains(argb: Int): Boolean = argb in colors
 
-    /** 追加一个颜色;已存在则原样返回(顺序即用户的搭配顺序,不做「最近使用」置顶)。 */
-    fun appending(
+    /**
+     * 插入一个颜色到最前面;已存在或已满则原样返回。
+     *
+     * 用户的预期是「刚加的颜色要马上看见」:调色板色块列表可能很长,
+     * 排到最后需要手动往下翻才能确认加进去了,所以统一置顶。
+     */
+    fun prepending(
         argb: Int,
         now: Long = System.currentTimeMillis()
     ): ColorPalette = if (contains(argb) || colors.size >= MAX_COLORS) {
         this
     } else {
         copy(
-            colors = colors + argb,
+            colors = listOf(argb) + colors,
+            updatedAtMillis = now
+        )
+    }
+
+    /**
+     * 一次插入一组颜色到最前面,组内保持传入顺序。
+     *
+     * 「从收藏创建」「一次把图片配色整组存进来」都会走这里;逐色 [prepending]
+     * 会把整组顺序倒过来,所以批量插入单独实现。
+     */
+    fun prependingAll(
+        argbs: List<Int>,
+        now: Long = System.currentTimeMillis()
+    ): ColorPalette {
+        val room = MAX_COLORS - colors.size
+        if (room <= 0) return this
+        val newColors = argbs
+            .distinct()
+            .filterNot { contains(it) }
+            .take(room)
+        if (newColors.isEmpty()) return this
+        return copy(
+            colors = newColors + colors,
             updatedAtMillis = now
         )
     }
@@ -69,16 +98,23 @@ data class ColorPalette(
         const val MAX_COLORS = 24
         const val MAX_PALETTES = 20
 
+        /** 完全透明色(#00000000)。预置色板第一位,色块用棋盘格展示。 */
+        const val TRANSPARENT = 0x00000000
+
         /** 预置「默认调色板」的固定 id：首启播种、重复播种检测都靠它 */
         const val DEFAULT_PALETTE_ID = "builtin_default"
 
         /**
          * 预置默认调色板的颜色，和色彩工具色板行的预置色一致。
          *
-         * 首次启动会把它播种成一组建模的调色板；之后用户改名/增删都不影响这份常量，
+         * 第一位是透明色:文字/水印/背景这类颜色经常要「无填充」,
+         * 没有透明色只能去取色器里把不透明度拉到 0,门槛太高。
+         *
+         * 首次启动会把它播种成一组调色板；之后用户改名/增删都不影响这份常量，
          * 删掉后也不会再补回来（靠播种标记控制）。
          */
         val DEFAULT_COLORS: List<Int> = listOf(
+            TRANSPARENT,
             0xFF6B8E9F.toInt(),
             0xFF22B8CF.toInt(),
             0xFF52C41A.toInt(),

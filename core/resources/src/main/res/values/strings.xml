@@ -2096,13 +2096,14 @@
     <string name="palette_empty_title">No palettes yet</string>
     <string name="palette_empty_desc">Save the colors you often use together, then pick them straight from the color picker.</string>
     <string name="palette_no_colors">This palette is empty</string>
-    <string name="palette_no_colors_desc">Tap “Add current color” to keep the color you selected.</string>
+    <string name="palette_no_colors_desc">Tap the + tile to save a color in this palette.</string>
     <string name="palette_copy_all">Copy all hex values</string>
     <string name="palette_copied">Palette copied</string>
     <string name="palette_created">Palette created</string>
     <string name="palette_color_removed">Removed from palette</string>
     <string name="palette_from_favorites">Create from favorites</string>
     <string name="palette_remove_color">Remove from palette</string>
+    <string name="color_transparent">Transparent</string>
     <string name="palette_added">Added to palette</string>
     <string name="palette_default_name">Palette %1$d</string>
     <string name="recently_picked">Recently picked</string>

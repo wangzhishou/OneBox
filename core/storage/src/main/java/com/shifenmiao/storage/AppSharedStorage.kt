@@ -72,6 +72,7 @@ object AppSharedStorage {
     private const val CURRENCY_CODE = "currency_code"
     private const val ITEM_KEYWORD_DEFAULTS_SEEDED = "item_keyword_defaults_seeded"
     private const val PALETTE_DEFAULTS_SEEDED = "palette_defaults_seeded"
+    private const val PALETTE_TRANSPARENT_SEEDED = "palette_transparent_seeded"
 
     // ─── 启动关键设置 key（DataStore → MMKV 镜像缓存） ────────────────────────
     private const val S_FONT_SCALE = "s_font_scale"
@@ -656,6 +657,15 @@ object AppSharedStorage {
     fun savePaletteDefaultsSeeded(seeded: Boolean) {
         mmkv.encode(PALETTE_DEFAULTS_SEEDED, seeded)
         memoryCache[PALETTE_DEFAULTS_SEEDED] = seeded
+    }
+
+    /** 老版本已播种的默认调色板是否补过透明色；只补一次，之后用户删掉不再补 */
+    fun loadPaletteTransparentSeeded(): Boolean =
+        load(PALETTE_TRANSPARENT_SEEDED, false) ?: false
+
+    fun savePaletteTransparentSeeded(seeded: Boolean) {
+        mmkv.encode(PALETTE_TRANSPARENT_SEEDED, seeded)
+        memoryCache[PALETTE_TRANSPARENT_SEEDED] = seeded
     }
 
     // ─── 语言切换重启提醒 ──────────────────────────────────────────────────

@@ -31,16 +31,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,23 +56,31 @@ import com.t8rin.imagetoolbox.core.domain.model.ColorPalette
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.Add
+import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePaletteTools
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSimpleSettingsInteractor
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.system.SelectorField
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedChip
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
 import com.wanbaohe.core.ui.widget.enhanced.hapticsClickable
 import com.wanbaohe.core.ui.widget.modifier.transparencyChecker
 import com.wanbaohe.core.ui.widget.text.TitleItem
 import kotlinx.coroutines.launch
 import java.util.UUID
+import com.t8rin.imagetoolbox.core.resources.icons.Check
+import com.t8rin.imagetoolbox.core.resources.icons.Edit
 
 /**
  * 选色面板里的「我的调色板」：在「最近使用 / 收藏」之外，多一组用户自己配好的颜色。
  *
  * 面板内自己闭环：新建调色板 → 把当前颜色存进去 → 再多取几个颜色继续加，
- * 不用跳去色彩工具。删色、改名这些重操作留在色彩工具的「调色板」页做。
+ * 不用跳去色彩工具。改名、删组这些重操作仍留在色彩工具里做；
+ * 但删单个颜色必须在这里能完成 —— 选色面板是用户最常停留的地方，
+ * 发现某个颜色不想要了却要退出去改，体验是断的。
+ *
+ * 选中的调色板 id 持久化在设置里：色彩工具里切过哪一组，下次打开还是那一组。
  */
 @Composable
 fun PaletteColorsCard(
@@ -82,9 +92,25 @@ fun PaletteColorsCard(
     val scope = rememberCoroutineScope()
 
     val palettes = settingsState.customPalettes
-    var selectedPaletteId by rememberSaveable { mutableStateOf<String?>(null) }
-    val palette = palettes.firstOrNull { it.id == selectedPaletteId }
+    // DataStore 回流有一到两帧延迟：新建调色板后先在本地记住它，避免闪一下第一组。
+    // 设置值追平后清掉 pending，之后的切换完全以持久化为准。
+    var pendingPaletteId by remember { mutableStateOf<String?>(null) }
+    val effectivePaletteId = pendingPaletteId ?: settingsState.selectedPaletteId
+    val palette = palettes.firstOrNull { it.id == effectivePaletteId }
         ?: palettes.firstOrNull()
+
+    var editMode by remember { mutableStateOf(false) }
+
+    LaunchedEffect(settingsState.selectedPaletteId, pendingPaletteId) {
+        if (pendingPaletteId == settingsState.selectedPaletteId) {
+            pendingPaletteId = null
+        }
+    }
+    // 切组后退出编辑态，避免手滑把另一组的颜色删了
+    LaunchedEffect(palette?.id) { editMode = false }
+    LaunchedEffect(palette?.colors?.isEmpty()) {
+        if (palette?.colors?.isEmpty() == true) editMode = false
+    }
 
     val currentArgb = currentColor.toArgb()
     val paletteFullMessage = stringResource(R.string.palette_full, ColorPalette.MAX_COLORS)
@@ -97,6 +123,14 @@ fun PaletteColorsCard(
         }
     }
 
+    fun selectPalette(id: String?) {
+        pendingPaletteId = id
+        editMode = false
+        scope.launch {
+            interactor.setSelectedPaletteId(id)
+        }
+    }
+
     fun createPalette() {
         val newPalette = ColorPalette(
             id = UUID.randomUUID().toString(),
@@ -104,8 +138,20 @@ fun PaletteColorsCard(
             colors = listOf(currentArgb),
             updatedAtMillis = System.currentTimeMillis()
         )
-        selectedPaletteId = newPalette.id
-        persist(palettes + newPalette)
+        pendingPaletteId = newPalette.id
+        scope.launch {
+            interactor.setCustomPalettes(
+                (palettes + newPalette).take(ColorPalette.MAX_PALETTES)
+            )
+            interactor.setSelectedPaletteId(newPalette.id)
+        }
+    }
+
+    fun removeColor(argb: Int) {
+        val target = palette ?: return
+        val updated = target.removing(argb)
+        persist(palettes.map { if (it.id == target.id) updated else it })
+        AppToastHost.showToast(R.string.palette_color_removed)
     }
 
     // 不再套第二层玻璃卡：外层容器的底色 + 16dp 内边距会让调色板这块内容
@@ -131,6 +177,28 @@ fun PaletteColorsCard(
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
+                    if (palette.colors.isNotEmpty()) {
+                        EnhancedIconButton(
+                            onClick = { editMode = !editMode },
+                            containerColor = Color.Transparent,
+                            contentColor = if (editMode) {
+                                MaterialTheme.colorScheme.primary
+                            } else {
+                                MaterialTheme.colorScheme.onSurfaceVariant
+                            }
+                        ) {
+                            Icon(
+                                imageVector = if (editMode) {
+                                    Icons.Outlined.Check
+                                } else {
+                                    Icons.Outlined.Edit
+                                },
+                                contentDescription = stringResource(
+                                    if (editMode) R.string.ok else R.string.edit
+                                )
+                            )
+                        }
+                    }
                 }
             }
         )
@@ -158,7 +226,7 @@ fun PaletteColorsCard(
                 selected = palette,
                 options = palettes,
                 optionLabel = { it.name },
-                onSelect = { selectedPaletteId = it.id },
+                onSelect = { selectPalette(it.id) },
                 menuFooter = { dismiss ->
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.palette_new)) },
@@ -193,10 +261,12 @@ fun PaletteColorsCard(
                     PaletteColorCell(
                         argb = argb,
                         selected = argb == currentArgb,
-                        onClick = { onColorClick(Color(argb)) }
+                        editMode = editMode,
+                        onClick = { onColorClick(Color(argb)) },
+                        onRemove = { removeColor(argb) }
                     )
                 }
-                if (palette.colors.size < ColorPalette.MAX_COLORS) {
+                if (!editMode && palette.colors.size < ColorPalette.MAX_COLORS) {
                     AddColorCell(
                         onClick = {
                             when {
@@ -207,7 +277,7 @@ fun PaletteColorsCard(
                                     AppToastHost.showToast(paletteFullMessage)
 
                                 else -> {
-                                    val updated = palette.appending(currentArgb)
+                                    val updated = palette.prepending(currentArgb)
                                     persist(
                                         palettes.map {
                                             if (it.id == palette.id) updated else it
@@ -228,7 +298,9 @@ fun PaletteColorsCard(
 private fun PaletteColorCell(
     argb: Int,
     selected: Boolean,
-    onClick: () -> Unit
+    editMode: Boolean,
+    onClick: () -> Unit,
+    onRemove: () -> Unit
 ) {
     val color = Color(argb)
     val shape = RoundedCornerShape(14.dp)
@@ -240,7 +312,7 @@ private fun PaletteColorCell(
             .background(color)
             .colorSwatchOutline(color = color, shape = shape)
             .then(
-                if (selected) {
+                if (selected && !editMode) {
                     Modifier.border(
                         width = 2.dp,
                         color = MaterialTheme.colorScheme.primary,
@@ -250,8 +322,29 @@ private fun PaletteColorCell(
                     Modifier
                 }
             )
-            .hapticsClickable(onClick = onClick)
-    )
+            .hapticsClickable(onClick = if (editMode) onRemove else onClick)
+    ) {
+        if (editMode) {
+            // 编辑态：每个色块右上角挂一个删除标记，点整块即删。
+            // 标记用错误色，和正常选中态区分开，避免误以为是在选色。
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(3.dp)
+                    .size(18.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.errorContainer),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Close,
+                    contentDescription = stringResource(R.string.palette_remove_color),
+                    modifier = Modifier.size(12.dp),
+                    tint = MaterialTheme.colorScheme.onErrorContainer
+                )
+            }
+        }
+    }
 }
 
 @Composable

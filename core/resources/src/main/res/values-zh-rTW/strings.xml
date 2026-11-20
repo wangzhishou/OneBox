@@ -2076,13 +2076,14 @@
     <string name="palette_empty_title">還沒有調色盤</string>
     <string name="palette_empty_desc">把常搭配的顏色存成一組，選顏色時可以直接叫出來用。</string>
     <string name="palette_no_colors">這組調色盤還是空的</string>
-    <string name="palette_no_colors_desc">點「加入目前顏色」，把上面選取的顏色存進來。</string>
+    <string name="palette_no_colors_desc">點「+」色塊，把顏色存進這組調色盤。</string>
     <string name="palette_copy_all">複製整組色值</string>
     <string name="palette_copied">已複製整組色值</string>
     <string name="palette_created">調色盤已建立</string>
     <string name="palette_color_removed">已從調色盤移除</string>
     <string name="palette_from_favorites">從收藏建立</string>
     <string name="palette_remove_color">從調色盤移除</string>
+    <string name="color_transparent">透明</string>
     <string name="palette_added">已加入調色盤</string>
     <string name="palette_default_name">調色盤 %1$d</string>
     <string name="recently_picked">最近取得</string>

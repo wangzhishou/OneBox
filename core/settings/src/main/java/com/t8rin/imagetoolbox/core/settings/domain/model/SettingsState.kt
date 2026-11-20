@@ -153,7 +153,9 @@ data class SettingsState(
     /** 是否启用 MaterialExpressiveTheme(表达性动效与形状) */
     val isExpressiveTheme: Boolean = false,
     /** 用户自己调的一组组颜色(调色板),JSON 持久化,见 [ColorPalette.encode] */
-    val customPalettes: List<ColorPalette> = emptyList()
+    val customPalettes: List<ColorPalette> = emptyList(),
+    /** 上次选中的调色板 id;下次打开选色面板/色彩工具仍落在这一组。null = 取第一组 */
+    val selectedPaletteId: String? = null
 ) {
 
     companion object {
@@ -250,6 +252,7 @@ data class SettingsState(
                 enableToolExitConfirmation = true,
                 recentColors = emptyList(),
                 customPalettes = emptyList(),
+                selectedPaletteId = null,
                 backgroundForNoAlphaImageFormats = ColorModel(-0x1000000),
                 addPresetInfoToFilename = false,
                 addImageScaleModeInfoToFilename = false,

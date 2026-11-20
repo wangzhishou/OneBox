@@ -2082,7 +2082,7 @@
     <string name="palette_empty_title">Wala pang palette</string>
     <string name="palette_empty_desc">I-save ang mga kulay na madalas mong gamitin nang sabay, pagkatapos ay piliin ang mga ito nang direkta mula sa color picker.</string>
     <string name="palette_no_colors">Walang laman ang palette na ito</string>
-    <string name="palette_no_colors_desc">I-tap ang “Idagdag ang kasalukuyang kulay” para i-save ang napili mong kulay.</string>
+    <string name="palette_no_colors_desc">I-tap ang + na tile para mag-save ng kulay sa palette na ito.</string>
     <string name="palette_copy_all">Kopyahin ang lahat ng hex value</string>
     <string name="palette_copied">Nakopya ang palette</string>
     <string name="palette_created">Nagawa ang palette</string>

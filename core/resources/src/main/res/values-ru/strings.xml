@@ -2082,7 +2082,7 @@
     <string name="palette_empty_title">Палитр пока нет</string>
     <string name="palette_empty_desc">Сохраняйте цвета, которые часто используете вместе, и выбирайте их прямо в палитре выбора цвета.</string>
     <string name="palette_no_colors">Эта палитра пуста</string>
-    <string name="palette_no_colors_desc">Нажмите «Добавить текущий цвет», чтобы сохранить выбранный цвет.</string>
+    <string name="palette_no_colors_desc">Нажмите на плитку +, чтобы сохранить цвет в этой палитре.</string>
     <string name="palette_copy_all">Копировать все значения HEX</string>
     <string name="palette_copied">Палитра скопирована</string>
     <string name="palette_created">Палитра создана</string>

@@ -262,7 +262,9 @@ internal fun Preferences.toSettingsState(
     customPalettes = this[CUSTOM_PALETTES]
         ?.let(ColorPalette::decode)
         ?.takeIf { it.isNotEmpty() }
-        ?: default.customPalettes
+        ?: default.customPalettes,
+    selectedPaletteId = this[SELECTED_PALETTE_ID]?.takeIf { it.isNotBlank() }
+        ?: default.selectedPaletteId
 )
 
 private fun Preferences.toDefaultImageScaleMode(default: SettingsState): ImageScaleMode {

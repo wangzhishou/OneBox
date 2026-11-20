@@ -2082,7 +2082,7 @@
     <string name="palette_empty_title">Noch keine Paletten</string>
     <string name="palette_empty_desc">Speichere Farben, die du oft zusammen verwendest, und wähle sie direkt in der Farbauswahl aus.</string>
     <string name="palette_no_colors">Diese Palette ist leer</string>
-    <string name="palette_no_colors_desc">Tippe auf „Aktuelle Farbe hinzufügen“, um die ausgewählte Farbe zu speichern.</string>
+    <string name="palette_no_colors_desc">Tippe auf die +-Kachel, um eine Farbe in dieser Palette zu speichern.</string>
     <string name="palette_copy_all">Alle Hex-Werte kopieren</string>
     <string name="palette_copied">Palette kopiert</string>
     <string name="palette_created">Palette erstellt</string>

@@ -2082,7 +2082,7 @@
     <string name="palette_empty_title">لا توجد لوحات ألوان بعد</string>
     <string name="palette_empty_desc">احفظ الألوان التي تستخدمها معًا غالبًا، ثم اخترها مباشرةً من منتقي الألوان.</string>
     <string name="palette_no_colors">لوحة الألوان هذه فارغة</string>
-    <string name="palette_no_colors_desc">اضغط على «إضافة اللون الحالي» لحفظ اللون الذي اخترته.</string>
+    <string name="palette_no_colors_desc">اضغط على مربع + لحفظ لون في هذه اللوحة.</string>
     <string name="palette_copy_all">نسخ جميع قيم HEX</string>
     <string name="palette_copied">تم نسخ لوحة الألوان</string>
     <string name="palette_created">تم إنشاء لوحة الألوان</string>

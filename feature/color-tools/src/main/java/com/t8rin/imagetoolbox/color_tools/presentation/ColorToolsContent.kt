@@ -43,6 +43,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -68,11 +69,13 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineBlender
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineInfo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePaletteTools
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
+import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSimpleSettingsInteractor
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.rememberAppColorTuple
 import com.wanbaohe.core.ui.widget.controls.selection.ColorRowSelector
 import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
 import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBarStyle
+import kotlinx.coroutines.launch
 
 private enum class ColorToolTab { PALETTE, INFO, MIXING, SHADING, HISTOGRAM }
 
@@ -90,10 +93,22 @@ fun ColorToolsContent(
 
     // 色板行的颜色来自「当前调色板」：默认调色板就是原来那套预置色，
     // 用户在调色板 tab 切到自己的分组后，这行立刻变成那组颜色的快捷选择。
-    val palettes = LocalSettingsState.current.customPalettes
-    val activePalette = remember(palettes, component.activePaletteId) {
-        palettes.firstOrNull { it.id == component.activePaletteId }
-            ?: palettes.firstOrNull()
+    // 选中的组写进设置：下次进色彩工具/选色面板仍是这一组，不回到第一组。
+    val interactor = LocalSimpleSettingsInteractor.current
+    val scope = rememberCoroutineScope()
+    val palettes = settingsState.customPalettes
+    // 切组时先在本地记住 id，等 DataStore 回流追平后再交还设置值，
+    // 否则下拉选中/顶部色板会先闪一下旧组。
+    var pendingPaletteId by remember { mutableStateOf<String?>(null) }
+    LaunchedEffect(settingsState.selectedPaletteId, pendingPaletteId) {
+        if (pendingPaletteId == settingsState.selectedPaletteId) {
+            pendingPaletteId = null
+        }
+    }
+    val activePalette = remember(palettes, settingsState.selectedPaletteId, pendingPaletteId) {
+        palettes.firstOrNull {
+            it.id == (pendingPaletteId ?: settingsState.selectedPaletteId)
+        } ?: palettes.firstOrNull()
     }
     val quickColors = remember(activePalette) {
         activePalette?.colors
@@ -144,7 +159,10 @@ fun ColorToolsContent(
                     selectedColor = selectedColor,
                     onColorChange = component::updateSelectedColor,
                     selectedPaletteId = activePalette?.id,
-                    onSelectPalette = component::selectPalette,
+                    onSelectPalette = { id ->
+                        pendingPaletteId = id
+                        scope.launch { interactor.setSelectedPaletteId(id) }
+                    },
                     modifier = Modifier.fillMaxSize()
                 )
             } else {

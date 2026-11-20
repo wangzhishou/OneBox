@@ -256,6 +256,8 @@ private val FakeSettings = object : SimpleSettingsInteractor {
 
     override suspend fun setCustomPalettes(palettes: List<ColorPalette>) = Unit
 
+    override suspend fun setSelectedPaletteId(id: String?) = Unit
+
     override suspend fun setBackgroundColorForNoAlphaFormats(color: ColorModel) =
         Unit
 

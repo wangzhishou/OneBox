@@ -2080,7 +2080,7 @@
     <string name="palette_empty_title">아직 팔레트가 없습니다</string>
     <string name="palette_empty_desc">자주 함께 쓰는 색상을 저장해 두면 색상 선택기에서 바로 꺼내 쓸 수 있습니다.</string>
     <string name="palette_no_colors">이 팔레트는 비어 있습니다</string>
-    <string name="palette_no_colors_desc">‘현재 색상 추가’를 눌러 선택한 색상을 저장하세요.</string>
+    <string name="palette_no_colors_desc">‘+’ 타일을 눌러 이 팔레트에 색상을 저장하세요.</string>
     <string name="palette_copy_all">모든 HEX 값 복사</string>
     <string name="palette_copied">팔레트를 복사했습니다</string>
     <string name="palette_created">팔레트가 생성되었습니다</string>
