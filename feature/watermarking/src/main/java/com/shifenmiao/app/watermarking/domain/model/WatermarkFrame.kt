@@ -32,8 +32,10 @@ sealed interface WatermarkFrame {
          * 按「源图宽度」算带高并加像素护栏。预览必须先用它得到源图尺度下的带高，
          * 再乘 fit 缩放，不能拿预览宽度直接算——否则窄图会被护栏拉成完全不同的比例。
          */
-        fun bandHeightFor(width: Int): Int =
-            (width * heightRatio).roundToInt().coerceIn(MIN_BAND_HEIGHT, MAX_BAND_HEIGHT)
+        fun bandHeightFor(width: Int): Int {
+            val minHeight = minOf(MIN_BAND_HEIGHT, width / 10).coerceAtLeast(1)
+            return (width * heightRatio).roundToInt().coerceIn(minHeight, MAX_BAND_HEIGHT)
+        }
 
         companion object {
             val DEFAULT_HEIGHT_RATIO: Float = 120f / 1080f

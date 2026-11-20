@@ -17,6 +17,7 @@ import com.shifenmiao.app.watermarking.domain.model.WatermarkContent
 import com.shifenmiao.app.watermarking.domain.model.WatermarkDocument
 import com.shifenmiao.app.watermarking.domain.model.WatermarkElement
 import com.shifenmiao.app.watermarking.domain.model.WatermarkFrame
+import com.shifenmiao.app.watermarking.domain.model.WatermarkHorizontalAlignment
 import com.shifenmiao.app.watermarking.domain.model.WatermarkLayout
 import com.shifenmiao.app.watermarking.domain.model.WatermarkStyle
 import com.shifenmiao.app.watermarking.domain.model.defaultWatermarkElement
@@ -34,25 +35,38 @@ import com.wanbaohe.watermark.template.R as TemplateR
  * 任何一侧漏掉都会因穷尽 when 在编译期报错，不需要运行时 id 对齐自检。
  */
 object BuiltinWatermarkPresets {
+    private val featuredIds = listOf(
+        BuiltinTemplateId.COPYRIGHT_TILE,
+        BuiltinTemplateId.LEICA_CLASSIC,
+    )
+
     val entries: List<WatermarkPreset> by lazy {
-        BuiltinTemplateId.entries.map { id ->
-            val metadata = BuiltinTemplateRegistry.entries.first { it.id == id.id }
-            WatermarkPreset(
-                id = id.id,
-                nameRes = metadata.nameRes,
-                document = documentFor(id),
-                isBuiltin = true,
-            )
-        }
+        BuiltinTemplateId.entries.map(::presetFor)
+    }
+
+    val featuredEntries: List<WatermarkPreset> by lazy {
+        featuredIds.map { id -> entries.first { it.id == id.id } }
+    }
+
+    fun findById(id: String): WatermarkPreset? = entries.firstOrNull { it.id == id }
+
+    private fun presetFor(id: BuiltinTemplateId): WatermarkPreset {
+        val metadata = BuiltinTemplateRegistry.entries.first { it.id == id.id }
+        return WatermarkPreset(
+            id = id.id,
+            nameRes = metadata.nameRes,
+            document = documentFor(id),
+            isBuiltin = true,
+        )
     }
 
     fun documentFor(id: BuiltinTemplateId): WatermarkDocument = when (id) {
         BuiltinTemplateId.COPYRIGHT_TILE -> document(
             elements = listOf(
                 defaultWatermarkElement(WatermarkContent.Text("© OneBox")).copy(
-                    transform = LayerTransform(centerX = 0.5f, centerY = 0.5f, rotation = -30f, alpha = 0.35f),
-                    style = WatermarkStyle(color = -1, sizeRatio = 0.09f),
-                    layout = WatermarkLayout(isRepeated = true),
+                    transform = LayerTransform(centerX = 0.5f, centerY = 0.5f, rotation = -30f, alpha = 0.26f),
+                    style = WatermarkStyle(color = -1, sizeRatio = 0.075f),
+                    layout = WatermarkLayout(isRepeated = true, repeatSpacing = 2f),
                 )
             ),
         )
@@ -121,16 +135,20 @@ object BuiltinWatermarkPresets {
                     fields = listOf(ExifFieldKey.CAMERA_MAKE, ExifFieldKey.CAMERA_MODEL),
                     separator = " ",
                 ),
-                centerX = 0.18f,
+                centerX = 0.04f,
                 centerY = 0.4f,
                 sizeRatio = 0.35f,
+                horizontalAlignment = WatermarkHorizontalAlignment.START,
+                maxWidthRatio = 0.38f,
             ),
             bandElement(
                 content = WatermarkContent.Timestamp(format = "yyyy.MM.dd HH:mm:ss"),
-                centerX = 0.18f,
+                centerX = 0.04f,
                 centerY = 0.75f,
                 sizeRatio = 0.22f,
                 color = -0x99999a,
+                horizontalAlignment = WatermarkHorizontalAlignment.START,
+                maxWidthRatio = 0.38f,
             ),
             WatermarkElement(
                 content = WatermarkContent.Image(
@@ -143,7 +161,7 @@ object BuiltinWatermarkPresets {
             ),
             bandElement(
                 content = WatermarkContent.Divider(),
-                centerX = 0.65f,
+                centerX = 0.67f,
                 centerY = 0.5f,
                 sizeRatio = 0.015f,
                 color = -0x1f1f20,
@@ -157,16 +175,20 @@ object BuiltinWatermarkPresets {
                         ExifFieldKey.ISO,
                     ),
                 ),
-                centerX = 0.83f,
+                centerX = 0.70f,
                 centerY = 0.4f,
                 sizeRatio = 0.35f,
+                horizontalAlignment = WatermarkHorizontalAlignment.START,
+                maxWidthRatio = 0.27f,
             ),
             bandElement(
                 content = WatermarkContent.Coordinates(useDecimalFormat = false),
-                centerX = 0.83f,
+                centerX = 0.70f,
                 centerY = 0.75f,
                 sizeRatio = 0.22f,
                 color = -0x99999a,
+                horizontalAlignment = WatermarkHorizontalAlignment.START,
+                maxWidthRatio = 0.27f,
             ),
         ),
     )
@@ -177,13 +199,21 @@ object BuiltinWatermarkPresets {
         centerY: Float,
         sizeRatio: Float,
         color: Int = -0xe6e6e7,
+        horizontalAlignment: WatermarkHorizontalAlignment = WatermarkHorizontalAlignment.CENTER,
+        maxWidthRatio: Float = 0.9f,
     ) = WatermarkElement(
         content = content,
         transform = LayerTransform(centerX = centerX, centerY = centerY, alpha = 1f),
-        style = WatermarkStyle(color = color, backgroundColor = 0, sizeRatio = sizeRatio),
+        style = WatermarkStyle(
+            color = color,
+            backgroundColor = 0,
+            sizeRatio = sizeRatio,
+            maxWidthRatio = maxWidthRatio,
+        ),
         layout = WatermarkLayout(isRepeated = false),
         overlayMode = BlendingMode.SrcOver,
         anchor = WatermarkAnchor.BAND,
+        horizontalAlignment = horizontalAlignment,
     )
 
     private fun infoElement(

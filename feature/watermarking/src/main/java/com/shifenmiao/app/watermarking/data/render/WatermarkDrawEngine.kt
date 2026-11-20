@@ -19,6 +19,7 @@ import android.os.Build
 import com.t8rin.imagetoolbox.core.data.image.utils.toAndroidBlendMode
 import com.t8rin.imagetoolbox.core.data.image.utils.toPorterDuffMode
 import com.shifenmiao.app.watermarking.domain.model.WatermarkElement
+import com.shifenmiao.app.watermarking.domain.model.WatermarkHorizontalAlignment
 import com.shifenmiao.app.watermarking.domain.render.WatermarkVisual
 import kotlin.math.roundToInt
 
@@ -39,9 +40,14 @@ object WatermarkDrawEngine {
         val top = rect?.top ?: 0f
         val width = rect?.width() ?: canvas.width.toFloat()
         val height = rect?.height() ?: canvas.height.toFloat()
+        val horizontalCenterOffset = if (element.horizontalAlignment == WatermarkHorizontalAlignment.START) {
+            visual.width / 2f
+        } else {
+            0f
+        }
         canvas.save()
         canvas.translate(
-            left + transform.centerX * width,
+            left + transform.centerX * width + horizontalCenterOffset,
             top + transform.centerY * height,
         )
         canvas.rotate(transform.rotation)

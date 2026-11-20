@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -31,12 +32,19 @@ import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextMeasurer
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.core.ui.widget.editor.EditorLayerBox
 import com.wanbaohe.core.ui.widget.editor.EditorLayerBoxLabels
 import com.wanbaohe.core.ui.widget.editor.drawEditorShape
 import com.wanbaohe.core.ui.widget.editor.EditorStrokeCanvas
 import com.wanbaohe.textcard.R
+import com.wanbaohe.textcard.domain.model.TextBlock
 import com.wanbaohe.textcard.domain.model.TextCardAnnotation
 import com.wanbaohe.textcard.domain.model.TextCardAnnotationType
 import com.wanbaohe.textcard.presentation.screenLogic.TextCardAnnotationEditor
@@ -139,8 +147,17 @@ internal fun BoxWithConstraintsScope.CardAnnotationLayer(
         when (val type = annotation.type) {
             is TextCardAnnotationType.Text -> {
                 val block = type.block
-                val width = with(density) { (block.widthRatio * canvasWidthPx).toDp() }
+                val maxWidthPx = block.widthRatio * canvasWidthPx
+                val width = with(density) { maxWidthPx.toDp() }
                 if (isEditing) {
+                    val fieldWidthPx = measureAnnotationFieldWidth(
+                        state = editingState,
+                        block = block,
+                        baseSizePx = canvasWidthPx * block.baseSizeRatio,
+                        maxWidthPx = maxWidthPx,
+                        measurer = rememberTextMeasurer(),
+                        style = cardTextStyle(block, canvasWidthPx * block.baseSizeRatio),
+                    )
                     InPlaceTextEditor(
                         block = block,
                         baseSizePx = canvasWidthPx * block.baseSizeRatio,
@@ -149,7 +166,7 @@ internal fun BoxWithConstraintsScope.CardAnnotationLayer(
                         onOpenStylePanel = onOpenStylePanel,
                         onClearSelectionStyles = onClearSelectionStyles,
                         selectionToolbarVisible = selectionToolbarVisible,
-                        modifier = Modifier.width(width)
+                        modifier = Modifier.width(with(density) { fieldWidthPx.toDp() })
                     )
                 } else {
                     CardText(
@@ -157,7 +174,11 @@ internal fun BoxWithConstraintsScope.CardAnnotationLayer(
                         baseSizePx = canvasWidthPx * block.baseSizeRatio,
                         canvasWidthPx = canvasWidthPx,
                         onTextLayout = {},
-                        modifier = Modifier.width(width)
+                        modifier = if (block.widthManuallySet) {
+                            Modifier.width(width)
+                        } else {
+                            Modifier.widthIn(max = width)
+                        }
                     )
                 }
             }
@@ -191,4 +212,28 @@ internal fun BoxWithConstraintsScope.CardAnnotationLayer(
             }
         }
     }
+}
+
+
+private fun measureAnnotationFieldWidth(
+    state: TextFieldState,
+    block: TextBlock,
+    baseSizePx: Float,
+    maxWidthPx: Float,
+    measurer: TextMeasurer,
+    style: TextStyle,
+): Float {
+    if (block.widthManuallySet) return maxWidthPx
+    val minWidthPx = (baseSizePx * block.sizeScale * 0.9f).coerceAtMost(maxWidthPx)
+    val text = state.text.toString()
+    if (text.isEmpty()) return minWidthPx
+    val spans = state.textStyles.getSpanStyles(TextRange(0, text.length))
+    val result = measurer.measure(
+        text = AnnotatedString(text, spanStyles = spans),
+        style = style,
+        constraints = Constraints(maxWidth = maxWidthPx.toInt().coerceAtLeast(1)),
+    )
+    if (result.lineCount <= 0) return minWidthPx
+    val contentWidth = (0 until result.lineCount).maxOf { result.multiParagraph.getLineWidth(it) }
+    return contentWidth.coerceIn(minWidthPx, maxWidthPx)
 }

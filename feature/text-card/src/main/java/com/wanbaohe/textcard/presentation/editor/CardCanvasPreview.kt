@@ -673,7 +673,7 @@ internal fun CardText(
 }
 
 @Composable
-private fun cardTextStyle(
+internal fun cardTextStyle(
     block: TextBlock,
     baseSizePx: Float,
 ): TextStyle {

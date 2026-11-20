@@ -19,8 +19,8 @@ data class WatermarkDocument(
     val hiddenWatermark: HiddenWatermarkParams = HiddenWatermarkParams(),
 ) {
     companion object {
-        /** v2 引入 frame / anchor / 相机参数内容类型；v1 文档解码时补 InPlace + PHOTO 默认值。 */
-        const val CURRENT_SCHEMA_VERSION = 2
+        /** v2 引入 frame / anchor；v3 引入水平对齐与栏宽，旧文档使用居中及默认栏宽。 */
+        const val CURRENT_SCHEMA_VERSION = 3
     }
 }
 

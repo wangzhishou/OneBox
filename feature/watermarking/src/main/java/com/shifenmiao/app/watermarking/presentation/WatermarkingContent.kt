@@ -111,6 +111,7 @@ fun WatermarkingContent(
     val activity = LocalComponentActivity.current
     val wideLayout = LocalConfiguration.current.screenWidthDp >= 840
     var activePanel by rememberSaveable { mutableStateOf<WatermarkPanel?>(null) }
+    var isToolRailVisible by rememberSaveable { mutableStateOf(false) }
     var showExport by rememberSaveable { mutableStateOf(false) }
     var onlyCurrent by rememberSaveable { mutableStateOf(false) }
     var showExitDialog by rememberSaveable { mutableStateOf(false) }
@@ -154,7 +155,7 @@ fun WatermarkingContent(
                 val image = element.content as? WatermarkContent.Image
                 image != null && image.imageData.isBlank()
             }
-            if (needsLogo) activePanel = WatermarkPanel.PROPERTIES
+            activePanel = if (needsLogo) WatermarkPanel.PROPERTIES else null
         }
     }
     val requestLocation = {
@@ -214,7 +215,13 @@ fun WatermarkingContent(
                 enabled = component.internalBitmap != null,
                 onClick = { showResetDialog = true },
             ) {
-                Icon(Icons.Rounded.ImageReset, contentDescription = stringResource(R.string.reset_image))
+                Icon(
+                    Icons.Rounded.ImageReset,
+                    contentDescription = stringResource(
+                        if (component.activePresetId == null) R.string.reset_image
+                        else R.string.watermark_restore_preset
+                    ),
+                )
             }
             EnhancedIconButton(onClick = { immersiveModeState.enterImmersive() }) {
                 Icon(
@@ -239,6 +246,7 @@ fun WatermarkingContent(
                             (component.isResolving && component.resolvedElements.isEmpty()) ||
                             component.privacy.analysisState.isRunning,
                         isComparing = isComparing,
+                        isToolRailVisible = isToolRailVisible,
                         canUndo = component.canUndo,
                         canRedo = component.canRedo,
                         immersiveModeState = immersiveModeState,
@@ -265,9 +273,9 @@ fun WatermarkingContent(
                                 WatermarkKind.STAMP -> defaultStamp
                                 else -> ""
                             }
-                            val added = component.selectOrAddElement(kind, label)
+                            component.addElement(kind, label)
                             activePanel = WatermarkPanel.PROPERTIES
-                            if (added && kind == WatermarkKind.WEATHER) requestLocation()
+                            if (kind == WatermarkKind.WEATHER) requestLocation()
                         },
                         imageIndex = component.uris.indexOf(component.selectedUri) + 1,
                         imageCount = component.uris.size,
@@ -313,7 +321,14 @@ fun WatermarkingContent(
                     WatermarkBottomBar(
                         activePanel = activePanel,
                         isPrivacyActive = component.privacy.isActive,
-                        onPanelClick = { panel -> activePanel = if (activePanel == panel) null else panel },
+                        isToolRailVisible = isToolRailVisible,
+                        onPanelClick = { panel ->
+                            if (panel == WatermarkPanel.TOOLS) {
+                                isToolRailVisible = !isToolRailVisible
+                            } else {
+                                activePanel = if (activePanel == panel) null else panel
+                            }
+                        },
                         onExportClick = { showExport = true },
                     )
                 }
@@ -445,8 +460,18 @@ fun WatermarkingContent(
     ResetDialog(
         visible = showResetDialog,
         onDismiss = { showResetDialog = false },
-        title = stringResource(R.string.watermark_reset_title),
-        text = stringResource(R.string.watermark_reset_sub),
+        title = stringResource(
+            if (component.activePresetId == null) R.string.watermark_reset_title
+            else R.string.watermark_restore_preset_title
+        ),
+        text = stringResource(
+            if (component.activePresetId == null) R.string.watermark_reset_sub
+            else R.string.watermark_restore_preset_sub
+        ),
+        confirmText = stringResource(
+            if (component.activePresetId == null) R.string.reset
+            else R.string.watermark_restore_preset
+        ),
         onReset = component::resetDocument,
     )
     LoadingDialog(

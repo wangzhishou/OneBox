@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons as MaterialIcons
+import androidx.compose.material.icons.outlined.Build
 import androidx.compose.material.icons.outlined.Layers
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.Tune
@@ -52,6 +53,7 @@ import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
 fun WatermarkBottomBar(
     activePanel: WatermarkPanel?,
     isPrivacyActive: Boolean,
+    isToolRailVisible: Boolean,
     onPanelClick: (WatermarkPanel) -> Unit,
     onExportClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -69,12 +71,18 @@ fun WatermarkBottomBar(
         Row(modifier = Modifier.weight(1f).horizontalScroll(rememberScrollState())) {
             WatermarkPanel.entries.filter { panel ->
                 if (isPrivacyActive) {
-                    panel != WatermarkPanel.PROPERTIES && panel != WatermarkPanel.LAYERS
+                    panel != WatermarkPanel.PROPERTIES &&
+                        panel != WatermarkPanel.LAYERS &&
+                        panel != WatermarkPanel.TOOLS
                 } else {
                     panel != WatermarkPanel.PRIVACY
                 }
             }.forEach { panel ->
-                val selected = panel == activePanel
+                val selected = if (panel == WatermarkPanel.TOOLS) {
+                    isToolRailVisible
+                } else {
+                    panel == activePanel
+                }
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
@@ -88,6 +96,7 @@ fun WatermarkBottomBar(
                     Icon(
                         imageVector = when (panel) {
                             WatermarkPanel.PRESETS -> MaterialIcons.Outlined.Star
+                            WatermarkPanel.TOOLS -> MaterialIcons.Outlined.Build
                             WatermarkPanel.PROPERTIES -> MaterialIcons.Outlined.Tune
                             WatermarkPanel.LAYERS -> MaterialIcons.Outlined.Layers
                             WatermarkPanel.PRIVACY -> Icons.Outlined.LineAutoAwesomeMosaic

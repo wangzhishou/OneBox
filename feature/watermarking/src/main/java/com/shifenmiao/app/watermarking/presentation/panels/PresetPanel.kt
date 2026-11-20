@@ -10,11 +10,13 @@
 
 package com.shifenmiao.app.watermarking.presentation.panels
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -39,6 +41,8 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -55,6 +59,7 @@ import com.shifenmiao.app.watermarking.domain.model.kind
 import com.shifenmiao.app.watermarking.domain.preset.WatermarkPreset
 import com.shifenmiao.app.watermarking.presentation.model.sampleText
 import com.shifenmiao.app.watermarking.presentation.model.title
+import com.wanbaohe.watermark.template.domain.BuiltinTemplateId
 import com.wanbaohe.base.ui.button.ConfirmButton
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
@@ -63,6 +68,7 @@ import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.system.OneBoxDangerButton
 import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
 import com.wanbaohe.core.ui.widget.text.RoundedTextField
+import com.wanbaohe.watermark.template.R as TemplateR
 
 @Composable
 fun PresetPanel(
@@ -193,13 +199,15 @@ private fun PresetCard(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
-                Text(
-                    text = typeNames,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
+                if (!preset.isBuiltin) {
+                    Text(
+                        text = typeNames,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
             }
         }
         if (!preset.isBuiltin) {
@@ -219,7 +227,11 @@ private fun PresetCard(
 
 @Composable
 private fun PresetSchematic(preset: WatermarkPreset) {
-    if (preset.id == com.wanbaohe.watermark.template.domain.BuiltinTemplateId.PRIVACY_REDACTION.id) {
+    if (preset.id == BuiltinTemplateId.LEICA_CLASSIC.id) {
+        LeicaPresetSchematic()
+        return
+    }
+    if (preset.id == BuiltinTemplateId.PRIVACY_REDACTION.id) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -250,20 +262,67 @@ private fun PresetSchematic(preset: WatermarkPreset) {
     ) {
         elements.forEach { element ->
             val spots = if (element.layout.isRepeated) {
-                listOf(0.28f to 0.32f, 0.72f to 0.32f, 0.28f to 0.72f, 0.72f to 0.72f)
+                listOf(
+                    -0.05f to 0.12f, 0.35f to 0.12f, 0.75f to 0.12f,
+                    0.15f to 0.4f, 0.55f to 0.4f, 0.95f to 0.4f,
+                    -0.05f to 0.68f, 0.35f to 0.68f, 0.75f to 0.68f,
+                    0.15f to 0.96f, 0.55f to 0.96f, 0.95f to 0.96f,
+                )
             } else {
                 listOf(element.transform.centerX to element.transform.centerY)
             }
             spots.forEach { (x, y) ->
                 SchematicLabel(
                     text = presetLabel(element),
-                    color = Color(element.style.color),
+                    color = Color(element.style.color).copy(
+                        alpha = Color(element.style.color).alpha * element.transform.alpha,
+                    ),
                     x = x,
                     y = y,
                     rotation = element.transform.rotation,
                     width = maxWidth,
                     height = maxHeight,
                 )
+            }
+        }
+    }
+}
+
+@Composable
+private fun LeicaPresetSchematic() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(82.dp)
+            .background(Color(0xFF2C2C2C)),
+    ) {
+        Row(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .height(30.dp)
+                .background(Color.White)
+                .padding(horizontal = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Box(Modifier.width(30.dp).height(3.dp).background(Color(0xFF202020)))
+                Spacer(Modifier.height(5.dp))
+                Box(Modifier.width(23.dp).height(2.dp).background(Color(0xFF888888)))
+            }
+            Image(
+                painter = painterResource(TemplateR.drawable.leica_logo),
+                contentDescription = null,
+                contentScale = ContentScale.Fit,
+                modifier = Modifier.size(20.dp),
+            )
+            Spacer(Modifier.width(10.dp))
+            Box(Modifier.width(1.dp).height(18.dp).background(Color(0xFFCCCCCC)))
+            Spacer(Modifier.width(10.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Box(Modifier.width(30.dp).height(3.dp).background(Color(0xFF202020)))
+                Spacer(Modifier.height(5.dp))
+                Box(Modifier.width(23.dp).height(2.dp).background(Color(0xFF888888)))
             }
         }
     }
@@ -296,7 +355,7 @@ private fun SchematicLabel(
 @Composable
 private fun presetLabel(element: WatermarkElement): String {
     val content = element.content
-    if (content is WatermarkContent.Image && content.imageData.isBlank()) {
+    if (content is WatermarkContent.Image && content.imageData.isBlank() && content.builtinResId == 0) {
         return stringResource(R.string.watermark_pick_logo)
     }
     return content.sampleText()

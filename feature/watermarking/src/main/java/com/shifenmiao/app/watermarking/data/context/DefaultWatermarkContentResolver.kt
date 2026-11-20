@@ -10,9 +10,10 @@
 
 package com.shifenmiao.app.watermarking.data.context
 
-import android.graphics.Bitmap
-import com.t8rin.imagetoolbox.core.domain.image.ImageGetter
-import com.t8rin.imagetoolbox.core.domain.image.get
+import android.content.Context
+import android.net.Uri
+import androidx.exifinterface.media.ExifInterface
+import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.image.model.MetadataTag
 import com.shifenmiao.app.watermarking.domain.model.ExifFieldKey
 import com.shifenmiao.app.watermarking.domain.model.GeoPoint
@@ -27,8 +28,10 @@ import com.shifenmiao.app.watermarking.domain.model.WatermarkValueSource
 import com.shifenmiao.app.watermarking.domain.model.WeatherSnapshot
 import com.shifenmiao.app.watermarking.domain.render.WatermarkContentResolver
 import com.wanbaohe.core.weather.domain.repository.WeatherRepository
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -38,9 +41,10 @@ import kotlin.math.abs
 
 @Singleton
 class DefaultWatermarkContentResolver @Inject constructor(
-    private val imageGetter: ImageGetter<Bitmap>,
+    @ApplicationContext private val context: Context,
     private val weatherRepository: WeatherRepository,
-) : WatermarkContentResolver {
+    dispatchersHolder: DispatchersHolder,
+) : WatermarkContentResolver, DispatchersHolder by dispatchersHolder {
     private val photoCache = mutableMapOf<String, PhotoWatermarkContext>()
     private val photoMutex = Mutex()
     private val weatherCache = mutableMapOf<String, WeatherSnapshot?>()
@@ -138,33 +142,40 @@ class DefaultWatermarkContentResolver @Inject constructor(
 
     private suspend fun photoContext(uri: String): PhotoWatermarkContext {
         photoMutex.withLock { photoCache[uri]?.let { return it } }
-        val metadata = runCatching {
-            imageGetter.getImage(uri, originalSize = false)?.metadata
-        }.getOrNull()
+        val exif = withContext(ioDispatcher) {
+            runCatching {
+                context.contentResolver.openInputStream(Uri.parse(uri))?.use { input ->
+                    ExifInterface(input)
+                }
+            }.getOrNull()
+        }
         val context = PhotoWatermarkContext(
-            dateTime = metadata?.get(MetadataTag.DatetimeOriginal)
-                ?: metadata?.get(MetadataTag.DatetimeDigitized)
-                ?: metadata?.get(MetadataTag.Datetime),
+            dateTime = exif?.getAttribute(MetadataTag.DatetimeOriginal.key)
+                ?: exif?.getAttribute(MetadataTag.DatetimeDigitized.key)
+                ?: exif?.getAttribute(MetadataTag.Datetime.key),
             coordinates = parseCoordinates(
-                latitude = metadata?.get(MetadataTag.GpsLatitude),
-                latitudeRef = metadata?.get(MetadataTag.GpsLatitudeRef),
-                longitude = metadata?.get(MetadataTag.GpsLongitude),
-                longitudeRef = metadata?.get(MetadataTag.GpsLongitudeRef),
+                latitude = exif?.getAttribute(MetadataTag.GpsLatitude.key),
+                latitudeRef = exif?.getAttribute(MetadataTag.GpsLatitudeRef.key),
+                longitude = exif?.getAttribute(MetadataTag.GpsLongitude.key),
+                longitudeRef = exif?.getAttribute(MetadataTag.GpsLongitudeRef.key),
             ),
-            altitudeMeters = parseRational(metadata?.get(MetadataTag.GpsAltitude))?.let { altitude ->
-                if (metadata?.get(MetadataTag.GpsAltitudeRef)?.trim() == "1") -altitude else altitude
+            altitudeMeters = parseRational(exif?.getAttribute(MetadataTag.GpsAltitude.key))?.let { altitude ->
+                if (exif?.getAttribute(MetadataTag.GpsAltitudeRef.key)?.trim() == "1") -altitude else altitude
             },
-            cameraMake = metadata?.get(MetadataTag.Make)?.trim()?.takeIf(String::isNotEmpty),
-            cameraModel = metadata?.get(MetadataTag.Model)?.trim()?.takeIf(String::isNotEmpty),
-            lensModel = metadata?.get(MetadataTag.LensModel)?.trim()?.takeIf(String::isNotEmpty),
-            focalLength = parseRational(metadata?.get(MetadataTag.FocalLength))
+            cameraMake = exif?.getAttribute(MetadataTag.Make.key)?.trim()?.takeIf(String::isNotEmpty),
+            cameraModel = exif?.getAttribute(MetadataTag.Model.key)?.trim()?.takeIf(String::isNotEmpty),
+            lensModel = exif?.getAttribute(MetadataTag.LensModel.key)?.trim()?.takeIf(String::isNotEmpty),
+            focalLength = parseRational(exif?.getAttribute(MetadataTag.FocalLength.key))
                 ?.let { "%.0fmm".format(Locale.US, it) },
-            focalLength35mm = metadata?.get(MetadataTag.FocalLengthIn35mmFilm)
+            focalLength35mm = exif?.getAttribute(MetadataTag.FocalLengthIn35mmFilm.key)
                 ?.trim()?.toIntOrNull()?.let { "${it}mm" },
-            aperture = metadata?.get(MetadataTag.FNumber).let(::formatFNumber),
-            shutter = metadata?.get(MetadataTag.ExposureTime).let(::formatShutter),
-            iso = metadata?.get(MetadataTag.IsoSpeed)?.trim()
-                ?.takeIf(String::isNotEmpty)?.let { "ISO$it" },
+            aperture = exif?.getAttribute(MetadataTag.FNumber.key).let(::formatFNumber),
+            shutter = exif?.getAttribute(MetadataTag.ExposureTime.key).let(::formatShutter),
+            iso = (
+                exif?.getAttribute(MetadataTag.PhotographicSensitivity.key)
+                    ?: exif?.getAttribute(ISO_SPEED_RATINGS)
+                    ?: exif?.getAttribute(MetadataTag.IsoSpeed.key)
+                )?.trim()?.takeIf(String::isNotEmpty)?.let { "ISO$it" },
         )
         photoMutex.withLock { photoCache[uri] = context }
         return context
@@ -227,16 +238,37 @@ class DefaultWatermarkContentResolver @Inject constructor(
     private fun formatCameraParams(
         content: WatermarkContent.CameraParams,
         photo: PhotoWatermarkContext,
-    ): String = buildList {
-        content.fields.forEach { field ->
-            val manual = content.manualOverrides[field.name]?.takeIf(String::isNotBlank)
-            val value = manual ?: photo.valueOf(field)
-            when {
-                !value.isNullOrBlank() -> add(value)
-                !content.omitMissing -> add("—")
-            }
+    ): String {
+        val cameraMake = if (ExifFieldKey.CAMERA_MAKE in content.fields) {
+            content.manualOverrides[ExifFieldKey.CAMERA_MAKE.name]
+                ?.takeIf(String::isNotBlank) ?: photo.cameraMake
+        } else {
+            null
         }
-    }.joinToString(content.separator)
+        return buildList {
+            content.fields.forEach { field ->
+                val manual = content.manualOverrides[field.name]?.takeIf(String::isNotBlank)
+                val rawValue = manual ?: photo.valueOf(field)
+                val value = if (field == ExifFieldKey.CAMERA_MODEL) {
+                    rawValue?.removeCameraMake(cameraMake)
+                } else {
+                    rawValue
+                }
+                when {
+                    !value.isNullOrBlank() -> add(value)
+                    !content.omitMissing -> add("—")
+                }
+            }
+        }.joinToString(content.separator)
+    }
+
+    private fun String.removeCameraMake(cameraMake: String?): String {
+        val prefix = cameraMake?.trim().orEmpty()
+        if (prefix.isEmpty() || !startsWith(prefix, ignoreCase = true)) return this
+        return substring(prefix.length)
+            .trimStart(' ', '-', '–', '—', '_', ',', ':')
+            .ifBlank { this }
+    }
 
     /** EXIF 的 FNumber 常见 "4.1" / "f/4.1" / "41/10"，统一成 f/x.x 且锁定 Locale.US。 */
     private fun formatFNumber(raw: String?): String? {
@@ -347,4 +379,8 @@ class DefaultWatermarkContentResolver @Inject constructor(
     // 缺数据统一用空串表达「省略」：visualFactory 会跳过空文本图层，
     // 绝不能回落成 "—"——那会让无 EXIF 图在导出成品里残留一个破折号。
     private fun String?.orMissing() = this?.takeIf(String::isNotBlank).orEmpty()
+
+    private companion object {
+        const val ISO_SPEED_RATINGS = "ISOSpeedRatings"
+    }
 }

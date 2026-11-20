@@ -2183,7 +2183,7 @@
     <string name="watermark_strip_location">移除位置元数据</string>
     <string name="watermark_strip_location_sub">保留其他 EXIF 信息，但移除 GPS 标签</string>
     <string name="watermark_choose_location">选择目录</string>
-    <string name="watermark_preset_copyright">版权平铺</string>
+    <string name="watermark_preset_copyright">全屏文字</string>
     <string name="watermark_preset_logo">品牌 Logo</string>
     <string name="watermark_preset_stamp">简约印章</string>
     <string name="watermark_preset_time">拍摄时间</string>
@@ -2202,6 +2202,7 @@
     <string name="watermark_preset_deleted">预设已删除</string>
     <string name="watermark_preset_delete_failed">预设删除失败</string>
     <string name="watermark_batch">选图</string>
+    <string name="watermark_tools">工具</string>
     <string name="watermark_default_text">水印</string>
     <string name="watermark_default_stamp">印章</string>
     <string name="watermark_logo_size">标志大小</string>
@@ -2231,6 +2232,9 @@
     <string name="watermark_compare_hold">按住对比原图</string>
     <string name="watermark_hidden_needs_content">先添加文字或图片，才能打开隐形水印。</string>
     <string name="watermark_reset_title">重置水印</string>
+    <string name="watermark_restore_preset">恢复预设</string>
+    <string name="watermark_restore_preset_title">恢复预设？</string>
+    <string name="watermark_restore_preset_sub">回到预设的初始版式，可通过撤销返回当前编辑。</string>
     <string name="image_export_title">导出图片</string>
     <string name="image_export_items">%1$d 张图片</string>
     <string name="image_export_dimensions">%1$d × %2$d</string>

@@ -17,6 +17,7 @@ import com.t8rin.imagetoolbox.core.resources.R
 
 enum class WatermarkPanel {
     PRESETS,
+    TOOLS,
     PROPERTIES,
     LAYERS,
     PRIVACY,
@@ -27,6 +28,7 @@ enum class WatermarkPanel {
 fun WatermarkPanel.title(): String = stringResource(
     when (this) {
         WatermarkPanel.PRESETS -> R.string.presets
+        WatermarkPanel.TOOLS -> R.string.watermark_tools
         WatermarkPanel.PROPERTIES -> R.string.properties
         WatermarkPanel.LAYERS -> R.string.watermark_layers
         WatermarkPanel.PRIVACY -> com.wanbaohe.privacy.redaction.R.string.privacy_redaction

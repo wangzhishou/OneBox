@@ -27,12 +27,16 @@ data class WatermarkElement(
     val layout: WatermarkLayout = WatermarkLayout(),
     val overlayMode: BlendingMode = BlendingMode.SrcOver,
     val anchor: WatermarkAnchor = WatermarkAnchor.PHOTO,
+    val horizontalAlignment: WatermarkHorizontalAlignment = WatermarkHorizontalAlignment.CENTER,
 )
+
+enum class WatermarkHorizontalAlignment { CENTER, START }
 
 data class WatermarkStyle(
     val color: Int = -16777216,
     val backgroundColor: Int = 0,
     val sizeRatio: Float = 0.08f,
+    val maxWidthRatio: Float = 0.9f,
     val font: FontType? = null,
 )
 

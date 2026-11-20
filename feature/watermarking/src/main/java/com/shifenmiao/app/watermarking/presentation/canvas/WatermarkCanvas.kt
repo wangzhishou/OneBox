@@ -11,6 +11,7 @@
 package com.shifenmiao.app.watermarking.presentation.canvas
 
 import android.graphics.Bitmap
+import android.graphics.RectF
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -58,6 +59,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.calculateCentroid
@@ -76,6 +78,7 @@ import com.shifenmiao.app.watermarking.data.render.WatermarkDrawEngine
 import com.shifenmiao.app.watermarking.domain.model.ResolvedWatermarkElement
 import com.shifenmiao.app.watermarking.domain.model.WatermarkAnchor
 import com.shifenmiao.app.watermarking.domain.model.WatermarkFrame
+import com.shifenmiao.app.watermarking.domain.model.WatermarkHorizontalAlignment
 import com.shifenmiao.app.watermarking.domain.model.WatermarkKind
 import com.shifenmiao.app.watermarking.domain.model.kind
 import com.shifenmiao.app.watermarking.domain.render.WatermarkVisual
@@ -108,6 +111,7 @@ fun WatermarkCanvas(
     selectedElementId: String?,
     isLoading: Boolean,
     isComparing: Boolean,
+    isToolRailVisible: Boolean,
     canUndo: Boolean,
     canRedo: Boolean,
     immersiveModeState: ImmersiveModeState,
@@ -274,20 +278,22 @@ fun WatermarkCanvas(
                     resolved.element.anchor != WatermarkAnchor.BAND || bandHeight == 0
                 }
                 Column(
-                    modifier = Modifier
-                        .size(canvasWidthDp, canvasHeightDp)
-                        .clipToBounds(),
+                    modifier = Modifier.size(canvasWidthDp, canvasHeightDp),
                 ) {
                     // PHOTO 区：容器 constraints 恰好等于导出的 photoRect，
                     // centerX/centerY 只在该 rect 内归一化，与 drawSingle 的换算一致。
                     Box(
                         modifier = Modifier
                             .size(canvasWidthDp, photoHeightDp)
+                            .zIndex(
+                                if (photoElements.any { it.element.id == selectedElementId }) 1f else 0f
+                            )
                             .transparencyChecker(),
                     ) {
                         Canvas(
                             modifier = Modifier
                                 .fillMaxSize()
+                                .clipToBounds()
                                 .semantics { contentDescription = originalDescription },
                         ) {
                             // 底图外扩 2~16px 再裁回画布:居中/缩放会把图片边缘落在亚像素上,
@@ -340,6 +346,9 @@ fun WatermarkCanvas(
                         Box(
                             modifier = Modifier
                                 .size(canvasWidthDp, bandHeightDp)
+                                .zIndex(
+                                    if (bandElements.any { it.element.id == selectedElementId }) 1f else 0f
+                                )
                                 .background(Color(bandColor)),
                         ) {
                             if (!isComparing) {
@@ -392,7 +401,7 @@ fun WatermarkCanvas(
                     onHold = onCompareChange,
                 )
             }
-            if (privacyDocument == null) {
+            if (privacyDocument == null && isToolRailVisible) {
                 VerticalDraggable(
                     containerHeightPx = constraints.maxHeight.toFloat(),
                     modifier = Modifier.align(Alignment.CenterStart),
@@ -494,16 +503,26 @@ private fun BoxWithConstraintsScope.WatermarkElementLayers(
         val element = resolved.element
         if (!element.transform.visible) return@forEach
         val visual = visuals[element.id] ?: return@forEach
-        // 平铺层只画在本锚定空间的 Canvas 上,不接收点击:否则它会盖住
-        // 其它图层,连"点空白取消选中"都会失效。
-        if (element.layout.isRepeated) {
-            Canvas(modifier = Modifier.fillMaxSize()) {
-                drawIntoCanvas { canvas ->
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            drawIntoCanvas { canvas ->
+                if (element.layout.isRepeated) {
                     WatermarkDrawEngine.drawRepeated(canvas.nativeCanvas, visual, element)
+                } else {
+                    WatermarkDrawEngine.drawSingle(
+                        canvas = canvas.nativeCanvas,
+                        visual = visual,
+                        element = element,
+                        rect = RectF(0f, 0f, size.width, size.height),
+                    )
                 }
             }
         }
-        // 单图层的内容直接放在选框内,位移、缩放、旋转和翻转都只由同一个容器处理。
+    }
+    // 内容与操作层分离：编辑时允许越界，手柄始终盖在内容上；导出由输出位图裁切。
+    elements.forEach { resolved ->
+        val element = resolved.element
+        if (!element.transform.visible) return@forEach
+        val visual = visuals[element.id] ?: return@forEach
         EditorLayerBox(
             transform = element.transform,
             isSelected = selectedElementId == element.id && !immersiveModeState.isImmersive,
@@ -522,20 +541,15 @@ private fun BoxWithConstraintsScope.WatermarkElementLayers(
             gesturesEnabled = !immersiveModeState.isImmersive,
             showHandles = selectedElementId == element.id,
             canvasScale = viewportScale,
+            startAligned = element.horizontalAlignment == WatermarkHorizontalAlignment.START,
+            allowOutside = true,
         ) {
-            val contentModifier = Modifier.size(
-                with(density) { visual.width.toDp() },
-                with(density) { visual.height.toDp() },
+            Box(
+                modifier = Modifier.size(
+                    with(density) { visual.width.toDp() },
+                    with(density) { visual.height.toDp() },
+                )
             )
-            if (element.layout.isRepeated) {
-                Box(modifier = contentModifier)
-            } else {
-                Canvas(modifier = contentModifier) {
-                    drawIntoCanvas { canvas ->
-                        WatermarkDrawEngine.drawContent(canvas.nativeCanvas, visual, element)
-                    }
-                }
-            }
         }
     }
 }

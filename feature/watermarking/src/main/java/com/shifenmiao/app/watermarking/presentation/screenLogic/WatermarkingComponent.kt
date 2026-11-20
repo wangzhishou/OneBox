@@ -130,7 +130,11 @@ class WatermarkingComponent @AssistedInject internal constructor(
 
     private val _customPresets = mutableStateOf<List<WatermarkPreset>>(emptyList())
     val presets: List<WatermarkPreset>
-        get() = BuiltinWatermarkPresets.entries + _customPresets.value
+        get() = BuiltinWatermarkPresets.featuredEntries + _customPresets.value
+
+    private val _activePresetId = mutableStateOf<String?>(null)
+    val activePresetId: String? by _activePresetId
+    private var activePresetDocument: WatermarkDocument? = null
 
     private val _internalBitmap = mutableStateOf<Bitmap?>(null)
     val internalBitmap: Bitmap? by _internalBitmap
@@ -187,7 +191,7 @@ class WatermarkingComponent @AssistedInject internal constructor(
 
     private fun applyPresetById(id: String) {
         BuiltinTemplateId.fromId(id) ?: return
-        BuiltinWatermarkPresets.entries.firstOrNull { it.id == id }?.let(::applyPreset)
+        BuiltinWatermarkPresets.findById(id)?.let(::applyPreset)
     }
 
     private var savingJob: Job? by smartJob {
@@ -200,12 +204,7 @@ class WatermarkingComponent @AssistedInject internal constructor(
         }
     }
 
-    fun selectOrAddElement(kind: WatermarkKind, label: String = ""): Boolean {
-        val existing = document.elements.lastOrNull { it.content.kind == kind }
-        if (existing != null) {
-            _selectedElementId.update { existing.id }
-            return false
-        }
+    fun addElement(kind: WatermarkKind, label: String = "") {
         val content = contentDrafts[kind] ?: defaultContent(kind, label)
         val default = defaultWatermarkElement(content)
         // 底部会被属性面板挡住，新图层放在画面中上段，叠加以免互相盖住。
@@ -219,7 +218,6 @@ class WatermarkingComponent @AssistedInject internal constructor(
             document.copy(elements = document.elements + element),
         )
         _selectedElementId.update { element.id }
-        return true
     }
 
     fun selectElement(id: String?) {
@@ -304,6 +302,8 @@ class WatermarkingComponent @AssistedInject internal constructor(
     }
 
     fun applyPreset(preset: WatermarkPreset) {
+        activePresetDocument = preset.document
+        _activePresetId.update { preset.id }
         if (preset.id == BuiltinTemplateId.PRIVACY_REDACTION.id) {
             privacy.activate(selectedUri.toString(), internalBitmap)
         } else {
@@ -361,6 +361,11 @@ class WatermarkingComponent @AssistedInject internal constructor(
     }
 
     fun resetDocument() {
+        val initialPreset = activePresetDocument
+        if (initialPreset != null && !privacy.isActive) {
+            applyPresetDocument(initialPreset)
+            return
+        }
         privacy.clearCurrent()
         applyPresetDocument(
             if (privacy.isActive) WatermarkDocument(elements = emptyList()) else WatermarkDocument()

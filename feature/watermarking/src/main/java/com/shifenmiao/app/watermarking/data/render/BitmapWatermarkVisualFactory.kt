@@ -25,7 +25,9 @@ import com.t8rin.imagetoolbox.core.domain.image.ImageGetter
 import com.t8rin.imagetoolbox.core.domain.model.IntegerSize
 import com.t8rin.imagetoolbox.core.utils.toTypeface
 import com.shifenmiao.app.watermarking.domain.model.ResolvedWatermarkElement
+import com.shifenmiao.app.watermarking.domain.model.WatermarkAnchor
 import com.shifenmiao.app.watermarking.domain.model.WatermarkContent
+import com.shifenmiao.app.watermarking.domain.model.WatermarkHorizontalAlignment
 import com.shifenmiao.app.watermarking.domain.render.WatermarkVisual
 import com.shifenmiao.app.watermarking.domain.render.WatermarkVisualFactory
 import javax.inject.Inject
@@ -165,14 +167,59 @@ class BitmapWatermarkVisualFactory @Inject constructor(
             textAlign = Paint.Align.LEFT
             element.style.font.toTypeface()?.let(::setTypeface)
         }
-        val maxTextWidth = (canvasWidth * 0.9f).roundToInt().coerceAtLeast(1)
-        val desiredWidth = text.lines().maxOf { line -> paint.measureText(line) }
+        val singleBandLine = element.anchor == WatermarkAnchor.BAND && !text.contains('\n')
+        val positionedMaxRatio = when {
+            element.anchor != WatermarkAnchor.BAND || element.layout.isRepeated -> 0.9f
+            element.horizontalAlignment == WatermarkHorizontalAlignment.START -> {
+                (1f - element.transform.centerX).coerceIn(0.05f, 1f)
+            }
+            else -> {
+                minOf(element.transform.centerX, 1f - element.transform.centerX)
+                    .coerceIn(0.05f, 0.5f) * 2f
+            }
+        }
+        val maxWidthRatio = min(
+            element.style.maxWidthRatio.coerceIn(0.05f, 1f),
+            positionedMaxRatio,
+        )
+        val maxTextWidth = (canvasWidth * maxWidthRatio).roundToInt().coerceAtLeast(1)
+        var desiredWidth = text.lines().maxOf { line -> paint.measureText(line) }
+        if (singleBandLine && desiredWidth > maxTextWidth) {
+            paint.textSize = (paint.textSize * maxTextWidth * 0.98f / desiredWidth).coerceAtLeast(1f)
+            desiredWidth = paint.measureText(text)
+        }
+        val padding = if (element.style.backgroundColor != Color.TRANSPARENT) paint.textSize * 0.3f else 0f
+        if (singleBandLine) {
+            val metrics = paint.fontMetrics
+            val width = ceil(desiredWidth + padding * 2).toInt().coerceAtLeast(1)
+            val height = ceil(metrics.descent - metrics.ascent + padding * 2).toInt().coerceAtLeast(1)
+            val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            if (element.style.backgroundColor != Color.TRANSPARENT) {
+                canvas.drawRoundRect(
+                    RectF(0f, 0f, width.toFloat(), height.toFloat()),
+                    paint.textSize * 0.25f,
+                    paint.textSize * 0.25f,
+                    Paint(Paint.ANTI_ALIAS_FLAG).apply {
+                        color = element.style.backgroundColor
+                        style = Paint.Style.FILL
+                    },
+                )
+            }
+            canvas.drawText(text, padding, padding - metrics.ascent, paint)
+            return WatermarkVisual(element.id, bitmap, width, height)
+        }
         val textWidth = ceil(min(desiredWidth, maxTextWidth.toFloat())).toInt().coerceAtLeast(1)
         val layout = StaticLayout.Builder.obtain(text, 0, text.length, paint, textWidth)
-            .setAlignment(Layout.Alignment.ALIGN_CENTER)
+            .setAlignment(
+                if (element.horizontalAlignment == WatermarkHorizontalAlignment.START) {
+                    Layout.Alignment.ALIGN_NORMAL
+                } else {
+                    Layout.Alignment.ALIGN_CENTER
+                }
+            )
             .setIncludePad(false)
             .build()
-        val padding = if (element.style.backgroundColor != Color.TRANSPARENT) textSize * 0.3f else 0f
         val width = ceil(textWidth + padding * 2).toInt().coerceAtLeast(1)
         val height = ceil(layout.height + padding * 2).toInt().coerceAtLeast(1)
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
@@ -180,8 +227,8 @@ class BitmapWatermarkVisualFactory @Inject constructor(
         if (element.style.backgroundColor != Color.TRANSPARENT) {
             canvas.drawRoundRect(
                 RectF(0f, 0f, width.toFloat(), height.toFloat()),
-                textSize * 0.25f,
-                textSize * 0.25f,
+                paint.textSize * 0.25f,
+                paint.textSize * 0.25f,
                 Paint(Paint.ANTI_ALIAS_FLAG).apply {
                     color = element.style.backgroundColor
                     style = Paint.Style.FILL

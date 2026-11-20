@@ -130,7 +130,7 @@ internal class TextCardAnnotationEditor(
             content = defaultText(),
             baseSizeRatio = 0.04f,
             widthRatio = 0.62f,
-            widthManuallySet = true,
+            widthManuallySet = false,
             lineSpacingMultiplier = 1.2f,
         )
         val annotation = TextCardAnnotation(

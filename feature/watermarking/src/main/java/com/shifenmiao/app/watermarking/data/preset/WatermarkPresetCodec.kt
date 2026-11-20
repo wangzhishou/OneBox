@@ -20,6 +20,7 @@ import com.shifenmiao.app.watermarking.domain.model.WatermarkAnchor
 import com.shifenmiao.app.watermarking.domain.model.WatermarkContent
 import com.shifenmiao.app.watermarking.domain.model.WatermarkFrame
 import com.shifenmiao.app.watermarking.domain.model.WatermarkDocument
+import com.shifenmiao.app.watermarking.domain.model.WatermarkHorizontalAlignment
 import com.shifenmiao.app.watermarking.domain.model.WatermarkElement
 import com.shifenmiao.app.watermarking.domain.model.WatermarkLayout
 import com.shifenmiao.app.watermarking.domain.model.WatermarkStyle
@@ -79,7 +80,7 @@ object WatermarkPresetCodec {
             id = json.getString("id"),
             name = json.optString("name"),
             document = WatermarkDocument(
-                // 补完 v2 默认字段后即视作已升级，下次保存写出 v2。
+                // 旧文档补完当前版本默认字段后，下次保存写出最新结构。
                 schemaVersion = WatermarkDocument.CURRENT_SCHEMA_VERSION,
                 frame = frame,
                 elements = elements.ifEmpty { WatermarkDocument().elements },
@@ -111,12 +112,14 @@ object WatermarkPresetCodec {
             put("color", element.style.color)
             put("backgroundColor", element.style.backgroundColor)
             put("sizeRatio", element.style.sizeRatio.toDouble())
+            put("maxWidthRatio", element.style.maxWidthRatio.toDouble())
             put("font", element.style.font?.let(::encodeFont) ?: JSONObject.NULL)
         })
         put("repeated", element.layout.isRepeated)
         put("repeatSpacing", element.layout.repeatSpacing.toDouble())
         put("overlayMode", element.overlayMode.value)
         put("anchor", element.anchor.name)
+        put("horizontalAlignment", element.horizontalAlignment.name)
     }
 
     private fun decodeElement(json: JSONObject): WatermarkElement {
@@ -143,6 +146,7 @@ object WatermarkPresetCodec {
                 color = style.optInt("color", -16777216),
                 backgroundColor = style.optInt("backgroundColor", 0),
                 sizeRatio = style.optDouble("sizeRatio", 0.08).toFloat(),
+                maxWidthRatio = style.optDouble("maxWidthRatio", 0.9).toFloat(),
                 font = style.optJSONObject("font")?.let(::decodeFont),
             ),
             layout = WatermarkLayout(
@@ -154,6 +158,9 @@ object WatermarkPresetCodec {
             } ?: BlendingMode.SrcOver,
             anchor = runCatching { WatermarkAnchor.valueOf(json.optString("anchor")) }
                 .getOrDefault(WatermarkAnchor.PHOTO),
+            horizontalAlignment = runCatching {
+                WatermarkHorizontalAlignment.valueOf(json.optString("horizontalAlignment"))
+            }.getOrDefault(WatermarkHorizontalAlignment.CENTER),
         )
     }
 

@@ -96,6 +96,8 @@ fun BoxWithConstraintsScope.EditorLayerBox(
     canvasScale: Float = 1f,
     rotationEnabled: Boolean = true,
     resizeConfig: BoxResizeConfig? = null,
+    startAligned: Boolean = false,
+    allowOutside: Boolean = false,
     content: @Composable BoxScope.() -> Unit,
 ) {
     if (!transform.visible) return
@@ -139,7 +141,8 @@ fun BoxWithConstraintsScope.EditorLayerBox(
                 scaleX = localTransform.scale
                 scaleY = localTransform.scale
                 rotationZ = localTransform.rotation
-                translationX = (localTransform.centerX - 0.5f) * canvasWidth
+                translationX = (localTransform.centerX - 0.5f) * canvasWidth +
+                    if (startAligned) boxSize.width / 2f else 0f
                 translationY = (localTransform.centerY - 0.5f) * canvasHeight
             }
             .pointerInput(canTransform, tapSelectable, gesturesEnabled, canvasWidth, canvasHeight) {
@@ -172,12 +175,12 @@ fun BoxWithConstraintsScope.EditorLayerBox(
                             if (moved && delta != Offset.Zero) {
                                 val canvasPan = (delta * localTransform.scale)
                                     .rotateBy(localTransform.rotation)
+                                val nextCenterX = localTransform.centerX + canvasPan.x / canvasWidth
+                                val nextCenterY = localTransform.centerY + canvasPan.y / canvasHeight
                                 update(
                                     localTransform.copy(
-                                        centerX = (localTransform.centerX + canvasPan.x / canvasWidth)
-                                            .coerceIn(0f, 1f),
-                                        centerY = (localTransform.centerY + canvasPan.y / canvasHeight)
-                                            .coerceIn(0f, 1f)
+                                        centerX = if (allowOutside) nextCenterX else nextCenterX.coerceIn(0f, 1f),
+                                        centerY = if (allowOutside) nextCenterY else nextCenterY.coerceIn(0f, 1f)
                                     )
                                 )
                                 change.consume()

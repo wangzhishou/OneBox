@@ -53,7 +53,8 @@ fun ResetDialog(
     onReset: () -> Unit,
     title: String = stringResource(R.string.reset_image),
     text: String = stringResource(R.string.reset_image_sub),
-    icon: ImageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ImageReset
+    icon: ImageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ImageReset,
+    confirmText: String = stringResource(R.string.reset)
 ) {
     val scope = rememberCoroutineScope()
 
@@ -81,7 +82,7 @@ fun ResetDialog(
         },
         confirmButton = {
             OneBoxDangerButton(
-                text = stringResource(R.string.reset),
+                text = confirmText,
                 onClick = {
                     onReset()
                     onDismiss()

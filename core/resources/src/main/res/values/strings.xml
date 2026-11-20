@@ -2183,7 +2183,7 @@
     <string name="watermark_strip_location">Remove location metadata</string>
     <string name="watermark_strip_location_sub">Keep other EXIF data but remove GPS tags</string>
     <string name="watermark_choose_location">Choose folder</string>
-    <string name="watermark_preset_copyright">Copyright tiles</string>
+    <string name="watermark_preset_copyright">Full-screen text</string>
     <string name="watermark_preset_logo">Brand logo</string>
     <string name="watermark_preset_stamp">Minimal stamp</string>
     <string name="watermark_preset_time">Capture time</string>
@@ -2202,6 +2202,7 @@
     <string name="watermark_preset_deleted">Preset deleted</string>
     <string name="watermark_preset_delete_failed">Couldn\'t delete the preset</string>
     <string name="watermark_batch">Photos</string>
+    <string name="watermark_tools">Tools</string>
     <string name="watermark_default_text">Watermark</string>
     <string name="watermark_default_stamp">Stamp</string>
     <string name="watermark_logo_size">Logo size</string>
@@ -2231,6 +2232,9 @@
     <string name="watermark_compare_hold">Hold to compare with the original</string>
     <string name="watermark_hidden_needs_content">Add a text or image layer before turning on the hidden watermark.</string>
     <string name="watermark_reset_title">Reset watermark</string>
+    <string name="watermark_restore_preset">Restore preset</string>
+    <string name="watermark_restore_preset_title">Restore this preset?</string>
+    <string name="watermark_restore_preset_sub">Return to the preset’s initial layout. You can undo this.</string>
     <string name="image_export_title">Export image</string>
     <string name="image_export_items">%1$d image(s)</string>
     <string name="image_export_dimensions">%1$d × %2$d</string>
