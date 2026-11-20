@@ -233,26 +233,12 @@ private val FakeSettings = object : SimpleSettingsInteractor {
     override suspend fun setOneTimeSaveLocations(value: List<OneTimeSaveLocation>) =
         Unit
 
-    override suspend fun toggleRecentColor(
-        color: ColorModel,
-        forceExclude: Boolean
-    ) = Unit
-
-    override suspend fun toggleFavoriteColor(
-        color: ColorModel,
-        forceExclude: Boolean
-    ) = Unit
-
     override fun isInstalledFromPlayStore(): Boolean = false
 
     override suspend fun toggleSettingsGroupVisibility(
         key: Int,
         value: Boolean
     ) = Unit
-
-    override suspend fun clearRecentColors() = Unit
-
-    override suspend fun updateFavoriteColors(colors: List<ColorModel>) = Unit
 
     override suspend fun setCustomPalettes(palettes: List<ColorPalette>) = Unit
 

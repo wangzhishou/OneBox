@@ -29,7 +29,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -52,7 +51,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -63,7 +61,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -71,10 +68,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.smarttoolfactory.colordetector.ImageColorDetector
-import com.t8rin.imagetoolbox.core.domain.model.toColorModel
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
-import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSimpleSettingsInteractor
 import com.wanbaohe.core.ui.utils.content_pickers.rememberImagePicker
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.helper.toHex
@@ -89,8 +84,6 @@ import com.wanbaohe.core.ui.widget.text.AutoSizeText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineBookmark
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineBookmarkRemove
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePickColor
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 
@@ -108,9 +101,6 @@ fun ColorPickerSheet(
     var tempColor by remember(visible) {
         mutableStateOf(color ?: Color.Black)
     }
-    val settingsState = LocalSettingsState.current
-
-    val simpleSettingsInteractor = LocalSimpleSettingsInteractor.current
 
     // 图片取色：系统相册选一张图 → 图内拖动取色 →「选用此颜色」回到面板。
     // 不跳独立的取色器页面，是为了不打断「正在配这个颜色」的上下文。
@@ -154,11 +144,7 @@ fun ColorPickerSheet(
                         .verticalScroll(rememberScrollState(), reverseScrolling = true)
                         .padding(24.dp)
                 ) {
-                    RecentAndFavoriteColorsCard(
-                        onRecentColorClick = { tempColor = it },
-                        onFavoriteColorClick = { tempColor = it }
-                    )
-
+                    // 调色板已经覆盖了「常用色」的场景：最近使用与收藏不再出现在选色面板里
                     PaletteColorsCard(
                         currentColor = tempColor,
                         onColorClick = { tempColor = it }
@@ -182,43 +168,6 @@ fun ColorPickerSheet(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                val favoriteColors = settingsState.favoriteColors
-
-                val inFavorite by remember(tempColor, favoriteColors) {
-                    derivedStateOf {
-                        tempColor in favoriteColors
-                    }
-                }
-
-                val containerColor by animateColorAsState(
-                    if (inFavorite) MaterialTheme.colorScheme.tertiaryContainer
-                    else MaterialTheme.colorScheme.surfaceContainerLow
-                )
-                val contentColor by animateColorAsState(
-                    if (inFavorite) MaterialTheme.colorScheme.onTertiaryContainer
-                    else MaterialTheme.colorScheme.onBackground
-                )
-
-                EnhancedIconButton(
-                    containerColor = containerColor,
-                    contentColor = contentColor,
-                    onClick = {
-                        scope.launch {
-                            simpleSettingsInteractor.toggleFavoriteColor(
-                                tempColor.toArgb().toColorModel()
-                            )
-                        }
-                    }
-                ) {
-                    Icon(
-                        imageVector = if (inFavorite) {
-                            com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBookmarkRemove
-                        } else {
-                            com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBookmark
-                        },
-                        contentDescription = null
-                    )
-                }
                 // 取色器贴着 OK 放：OK 旁边就是「这个颜色从哪来」的另一个入口
                 EnhancedIconButton(
                     containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
@@ -232,11 +181,6 @@ fun ColorPickerSheet(
                 }
                 EnhancedButton(
                     onClick = {
-                        scope.launch {
-                            simpleSettingsInteractor.toggleRecentColor(
-                                tempColor.toArgb().toColorModel()
-                            )
-                        }
                         onColorSelected(tempColor)
                         onDismiss()
                     }

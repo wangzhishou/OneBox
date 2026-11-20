@@ -68,7 +68,6 @@ import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineContentPasteGo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDeleteForever
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineFavorite
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePaletteTools
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRename
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
@@ -114,7 +113,6 @@ internal fun PaletteEditor(
     val listState = rememberLazyListState()
 
     val palettes = settings.customPalettes
-    val favoriteColors = settings.favoriteColors
 
     var nameEditTarget by remember { mutableStateOf<PaletteNameEdit?>(null) }
     var deleteTarget by remember { mutableStateOf<ColorPalette?>(null) }
@@ -214,28 +212,11 @@ internal fun PaletteEditor(
         if (palettes.isEmpty()) {
             item(key = "empty") {
                 PaletteEmptyContent(
-                    canCreateFromFavorites = favoriteColors.isNotEmpty(),
                     onCreate = {
                         nameEditTarget = PaletteNameEdit(
                             palette = null,
                             initialName = defaultName
                         )
-                    },
-                    onCreateFromFavorites = {
-                        if (favoriteColors.isNotEmpty()) {
-                            savePalette(
-                                ColorPalette(
-                                    id = UUID.randomUUID().toString(),
-                                    name = defaultName,
-                                    colors = favoriteColors
-                                        .map { it.toArgb() }
-                                        .distinct()
-                                        .take(ColorPalette.MAX_COLORS),
-                                    updatedAtMillis = System.currentTimeMillis()
-                                )
-                            )
-                            AppToastHost.showToast(R.string.palette_created)
-                        }
                     }
                 )
             }
@@ -248,31 +229,13 @@ internal fun PaletteEditor(
                     PaletteSelector(
                         selected = palette,
                         palettes = palettes,
-                        favorites = favoriteColors,
                         onSelect = { onSelectPalette(it.id) },
                         onCreate = {
                             nameEditTarget = PaletteNameEdit(
                                 palette = null,
                                 initialName = defaultName
                             )
-                        },
-                        onCreateFromFavorites = favoriteColors
-                            .takeIf { it.isNotEmpty() }
-                            ?.let { favorites ->
-                                {
-                                    savePalette(
-                                        ColorPalette(
-                                            id = UUID.randomUUID().toString(),
-                                            name = defaultName,
-                                            colors = favorites
-                                                .map { color -> color.toArgb() }
-                                                .distinct()
-                                                .take(ColorPalette.MAX_COLORS),
-                                            updatedAtMillis = System.currentTimeMillis()
-                                        )
-                                    )
-                                }
-                            }
+                        }
                     )
                 }
 
@@ -457,10 +420,8 @@ private data class PaletteNameEdit(
 private fun PaletteSelector(
     selected: ColorPalette,
     palettes: List<ColorPalette>,
-    favorites: List<Color>,
     onSelect: (ColorPalette) -> Unit,
-    onCreate: () -> Unit,
-    onCreateFromFavorites: (() -> Unit)?
+    onCreate: () -> Unit
 ) {
     SelectorField(
         label = stringResource(R.string.my_palettes),
@@ -478,17 +439,6 @@ private fun PaletteSelector(
                     onCreate()
                 }
             )
-            if (onCreateFromFavorites != null && favorites.isNotEmpty()) {
-                MenuActionRow(
-                    icon = Icons.Outlined.LineFavorite,
-                    text = stringResource(R.string.palette_from_favorites),
-                    enabled = palettes.size < ColorPalette.MAX_PALETTES,
-                    onClick = {
-                        dismiss()
-                        onCreateFromFavorites()
-                    }
-                )
-            }
         }
     )
 }
@@ -663,9 +613,7 @@ private fun PaletteColorBlock(
 
 @Composable
 private fun PaletteEmptyContent(
-    canCreateFromFavorites: Boolean,
-    onCreate: () -> Unit,
-    onCreateFromFavorites: () -> Unit
+    onCreate: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -702,29 +650,12 @@ private fun PaletteEmptyContent(
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(20.dp))
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            OnePrimaryButton(
-                text = stringResource(R.string.palette_new),
-                onClick = onCreate,
-                modifier = Modifier
-                    .weight(1f, fill = false)
-                    .heightIn(min = 48.dp),
-                leadingIcon = Icons.Rounded.Add
-            )
-            if (canCreateFromFavorites) {
-                OneSecondaryButton(
-                    text = stringResource(R.string.palette_from_favorites),
-                    onClick = onCreateFromFavorites,
-                    modifier = Modifier
-                        .weight(1f, fill = false)
-                        .heightIn(min = 48.dp),
-                    leadingIcon = Icons.Outlined.LineFavorite
-                )
-            }
-        }
+        OnePrimaryButton(
+            text = stringResource(R.string.palette_new),
+            onClick = onCreate,
+            modifier = Modifier.heightIn(min = 48.dp),
+            leadingIcon = Icons.Rounded.Add
+        )
     }
 }
 

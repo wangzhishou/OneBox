@@ -169,9 +169,6 @@ internal fun Preferences.toSettingsState(
         ?: default.addTimestampToFilename,
     useFormattedFilenameTimestamp = this[USE_FORMATTED_TIMESTAMP]
         ?: default.useFormattedFilenameTimestamp,
-    favoriteColors = this[FAVORITE_COLORS]?.split("/")?.mapNotNull { color ->
-        color.toIntOrNull()?.let { ColorModel(it) }
-    } ?: default.favoriteColors,
     defaultResizeType = this[DEFAULT_RESIZE_TYPE]?.let {
         ResizeType.entries.getOrNull(it)
     } ?: default.defaultResizeType,
@@ -194,9 +191,6 @@ internal fun Preferences.toSettingsState(
     customFonts = this[CUSTOM_FONTS].toCustomFonts(),
     enableToolExitConfirmation = this[ENABLE_TOOL_EXIT_CONFIRMATION]
         ?: default.enableToolExitConfirmation,
-    recentColors = this[RECENT_COLORS]?.mapNotNull { color ->
-        color.toIntOrNull()?.let { ColorModel(it) }
-    } ?: default.recentColors,
     backgroundForNoAlphaImageFormats = this[BACKGROUND_COLOR_FOR_NA_FORMATS]?.let { ColorModel(it) }
         ?: default.backgroundForNoAlphaImageFormats,
     addPresetInfoToFilename = this[ADD_PRESET_TO_FILENAME] ?: default.addPresetInfoToFilename,

@@ -119,7 +119,6 @@ import com.t8rin.imagetoolbox.feature.settings.data.keys.ENABLE_TOOL_EXIT_CONFIR
 import com.t8rin.imagetoolbox.feature.settings.data.keys.EXIF_WIDGET_INITIAL_STATE
 import com.t8rin.imagetoolbox.feature.settings.data.keys.FAB_ALIGNMENT
 import com.t8rin.imagetoolbox.feature.settings.data.keys.FAST_SETTINGS_SIDE
-import com.t8rin.imagetoolbox.feature.settings.data.keys.FAVORITE_COLORS
 import com.t8rin.imagetoolbox.feature.settings.data.keys.FAVORITE_SCREENS
 import com.t8rin.imagetoolbox.feature.settings.data.keys.FILENAME_PREFIX
 import com.t8rin.imagetoolbox.feature.settings.data.keys.FILENAME_SUFFIX
@@ -152,7 +151,6 @@ import com.t8rin.imagetoolbox.feature.settings.data.keys.OPEN_EDIT_INSTEAD_OF_PR
 import com.t8rin.imagetoolbox.feature.settings.data.keys.OVERWRITE_FILE
 import com.t8rin.imagetoolbox.feature.settings.data.keys.PRESETS
 import com.t8rin.imagetoolbox.feature.settings.data.keys.RANDOMIZE_FILENAME
-import com.t8rin.imagetoolbox.feature.settings.data.keys.RECENT_COLORS
 import com.t8rin.imagetoolbox.feature.settings.data.keys.SAVE_FOLDER_URI
 import com.t8rin.imagetoolbox.feature.settings.data.keys.SCREENS_WITH_BRIGHTNESS_ENFORCEMENT
 import com.t8rin.imagetoolbox.feature.settings.data.keys.SCREEN_ORDER
@@ -720,42 +718,6 @@ internal class AndroidSettingsManager @Inject constructor(
         }.distinctBy { it.uri }.joinToString(", ")
     }
 
-    override suspend fun toggleRecentColor(
-        color: ColorModel,
-        forceExclude: Boolean,
-    ) = edit { preferences ->
-        val current = currentSettings.recentColors
-        val newColors = if (color in current) {
-            if (forceExclude) {
-                current - color
-            } else {
-                listOf(color) + (current - color)
-            }
-        } else {
-            listOf(color) + current
-        }
-
-        preferences[RECENT_COLORS] = newColors.take(30).map { it.colorInt.toString() }.toSet()
-    }
-
-    override suspend fun toggleFavoriteColor(
-        color: ColorModel,
-        forceExclude: Boolean
-    ) = edit { preferences ->
-        val current = currentSettings.favoriteColors
-        val newColors = if (color in current) {
-            if (forceExclude) {
-                current - color
-            } else {
-                listOf(color) + (current - color)
-            }
-        } else {
-            listOf(color) + current
-        }
-
-        preferences[FAVORITE_COLORS] = newColors.joinToString("/") { it.colorInt.toString() }
-    }
-
     override suspend fun toggleOpenEditInsteadOfPreview() = toggle(
         key = OPEN_EDIT_INSTEAD_OF_PREVIEW,
         defaultValue = default.openEditInsteadOfPreview
@@ -918,16 +880,6 @@ internal class AndroidSettingsManager @Inject constructor(
                     "${it.key}:${it.value}"
                 }.toSet()
             }
-    }
-
-    override suspend fun clearRecentColors() = edit {
-        it[RECENT_COLORS] = emptySet()
-    }
-
-    override suspend fun updateFavoriteColors(
-        colors: List<ColorModel>
-    ) = edit { preferences ->
-        preferences[FAVORITE_COLORS] = colors.joinToString("/") { it.colorInt.toString() }
     }
 
     override suspend fun setCustomPalettes(

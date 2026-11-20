@@ -152,7 +152,6 @@ data class UiSettingsState(
     val defaultDrawPathMode: Int,
     val addTimestampToFilename: Boolean,
     val useFormattedFilenameTimestamp: Boolean,
-    val favoriteColors: List<Color>,
     val defaultResizeType: ResizeType,
     val systemBarsVisibility: SystemBarsVisibility,
     val isSystemBarsVisibleBySwipe: Boolean,
@@ -164,7 +163,6 @@ data class UiSettingsState(
     val hashingTypeForFilename: HashingType?,
     val customFonts: List<UiFontFamily.Custom>,
     val enableToolExitConfirmation: Boolean,
-    val recentColors: List<Color>,
     val backgroundForNoAlphaImageFormats: Color,
     val addPresetInfoToFilename: Boolean,
     val addImageScaleModeInfoToFilename: Boolean,
@@ -319,18 +317,6 @@ fun SettingsState.toUiState(
         }
     }
 
-    val favoriteColors by remember(favoriteColors) {
-        derivedStateOf {
-            favoriteColors.map { Color(it.colorInt) }
-        }
-    }
-
-    val recentColors by remember(recentColors) {
-        derivedStateOf {
-            recentColors.map { Color(it.colorInt) }
-        }
-    }
-
     val mainScreenTitle = mainScreenTitle.ifEmpty { stringResource(R.string.app_name) }
 
     val customFonts by remember(customFonts) {
@@ -416,7 +402,6 @@ fun SettingsState.toUiState(
                 defaultDrawPathMode = defaultDrawPathMode,
                 addTimestampToFilename = addTimestampToFilename,
                 useFormattedFilenameTimestamp = useFormattedFilenameTimestamp,
-                favoriteColors = favoriteColors,
                 defaultResizeType = defaultResizeType,
                 systemBarsVisibility = systemBarsVisibility,
                 isSystemBarsVisibleBySwipe = isSystemBarsVisibleBySwipe,
@@ -428,7 +413,6 @@ fun SettingsState.toUiState(
                 hashingTypeForFilename = hashingTypeForFilename,
                 customFonts = customFonts,
                 enableToolExitConfirmation = enableToolExitConfirmation,
-                recentColors = recentColors,
                 backgroundForNoAlphaImageFormats = Color(backgroundForNoAlphaImageFormats.colorInt),
                 addPresetInfoToFilename = addPresetInfoToFilename,
                 addImageScaleModeInfoToFilename = addImageScaleModeInfoToFilename,
