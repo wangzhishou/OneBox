@@ -30,12 +30,12 @@ android.namespace = "com.wanbaohe.adwatch"
 //   - google 渠道:   src/main + src/google (真实 GmsRewardedAdController, AdMob) + play-services-ads
 //   - 国内 6 渠道:   src/main + src/domestic (真实 GmRewardedAdController, GroMore 聚合, 内含穿山甲) + mediation-sdk
 //   - foss 渠道:     src/main + src/nogms (同签名 NoopRewardedAdController stub), 不携带广告 SDK
-afterEvaluate {
+androidComponents.finalizeDsl { android ->
     android.sourceSets {
         listOf("onebox", "xiaomi", "yyb", "oppo", "vivo", "huawei").forEach { flavor ->
-            getByName(flavor).kotlin.srcDir("src/domestic/java")
+            getByName(flavor).kotlin.directories.add("src/domestic/java")
         }
-        getByName("foss").kotlin.srcDir("src/nogms/java")
+        getByName("foss").kotlin.directories.add("src/nogms/java")
     }
 }
 

@@ -34,10 +34,10 @@ android.namespace = "com.t8rin.imagetoolbox.core.crash"
 // 与 core/r 相同的 flavor 隔离模式:
 //   - 国内渠道 + foss: src/main + src/domestic (no-op AnalyticsManagerImpl)
 //   - Google 渠道: src/main + src/google (Firebase AnalyticsManagerImpl)
-afterEvaluate {
+androidComponents.finalizeDsl { android ->
     android.sourceSets {
         listOf("onebox", "xiaomi", "yyb", "oppo", "vivo", "huawei", "foss").forEach { flavor ->
-            getByName(flavor).kotlin.srcDir("src/domestic/java")
+            getByName(flavor).kotlin.directories.add("src/domestic/java")
         }
     }
 }

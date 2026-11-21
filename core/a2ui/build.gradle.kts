@@ -30,10 +30,10 @@ android.namespace = "com.wanbaohe.a2ui"
 //   - 国内渠道:src/main + src/domestic(平台位置选择走行政区 CityPicker)
 //   - Google 渠道:src/main + src/google(平台位置选择走 Google Places Autocomplete)
 //   - foss 渠道:src/main + src/foss(与 Google 同一逻辑,可编辑文本输入;无 GMS 降级为手输)
-afterEvaluate {
+androidComponents.finalizeDsl { android ->
     android.sourceSets {
         listOf("onebox", "xiaomi", "yyb", "oppo", "vivo", "huawei").forEach { flavor ->
-            getByName(flavor).kotlin.srcDir("src/domestic/java")
+            getByName(flavor).kotlin.directories.add("src/domestic/java")
         }
     }
 }

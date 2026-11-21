@@ -107,7 +107,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OneBox.Launcher"
         android:usesCleartextTraffic="true"
-        tools:replace="android:allowBackup, android:label"
+        tools:replace="android:label"
         tools:targetApi="36">
 
         <profileable

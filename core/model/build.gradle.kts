@@ -28,10 +28,10 @@ android.namespace = "com.shifenmiao.model"
 // 微信 OpenSDK 为专有依赖, foss (F-Droid) 渠道不打包:
 //   - 非 foss 渠道: src/main + src/nonfoss (真实 Wechat 对象) + SDK
 //   - foss 渠道:    src/main + src/foss (同签名 no-op stub), 同 core/r 的 flavor 隔离范式
-afterEvaluate {
+androidComponents.finalizeDsl { android ->
     android.sourceSets {
         listOf("onebox", "xiaomi", "yyb", "oppo", "vivo", "huawei", "google").forEach { flavor ->
-            getByName(flavor).kotlin.srcDir("src/nonfoss/java")
+            getByName(flavor).kotlin.directories.add("src/nonfoss/java")
         }
     }
 }

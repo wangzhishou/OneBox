@@ -136,7 +136,7 @@ object AiEngineConfig {
         flavorType: FlavorType = FlavorType.fromName(),
     ): List<String> {
         val normalizedConfigured = configuredEngines.orEmpty()
-            .mapNotNull { it?.trim()?.takeIf(String::isNotBlank) }
+            .mapNotNull { it.trim().takeIf(String::isNotBlank) }
             .distinct()
         return normalizedConfigured.ifEmpty { getFlavorFallbackEngines(flavorType) }
     }
@@ -257,7 +257,6 @@ object AiEngineConfig {
             FlavorType.YYB -> true
             FlavorType.GOOGLE -> true
             FlavorType.FOSS -> true
-            else -> false
         }
     }
 

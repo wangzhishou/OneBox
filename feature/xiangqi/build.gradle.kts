@@ -57,6 +57,8 @@ val buildFairyStockfish = tasks.register("buildFairyStockfish") {
     val abi = engineAbi
     val minSdk = engineMinSdk
     val workers = Runtime.getRuntime().availableProcessors().coerceIn(1, 8)
+    val execProviders = providers
+    val taskLogger = logger
 
     // 源码或构建参数变化才重编(引擎全量编译在 M 系列机器上约 1 分钟)
     inputs.dir(sourceDir).withPathSensitivity(PathSensitivity.RELATIVE)
@@ -67,10 +69,6 @@ val buildFairyStockfish = tasks.register("buildFairyStockfish") {
     // 产物是纯编译结果, 允许 build cache 复用:CI 的 tag 构建是 8 渠道 × 1 ABI 的矩阵,
     // 每个 job 都重编一次引擎太浪费(setup-gradle 已开远端 build cache)
     outputs.cacheIf { true }
-
-    // NDK 目录只能在执行期解析(与 app 模块覆盖 libc++_shared 的任务同一处理方式):
-    // 配置期解析会让未安装 NDK 的机器连 sync 都过不去
-    notCompatibleWithConfigurationCache("NDK 目录在执行期解析")
 
     doLast {
         val ndk = ndkDirProvider.get().asFile
@@ -88,7 +86,7 @@ val buildFairyStockfish = tasks.register("buildFairyStockfish") {
         sourceDir.copyRecursively(workDir, overwrite = true)
 
         fun run(vararg args: String) {
-            val result = providers.exec {
+            val result = execProviders.exec {
                 commandLine(*args)
                 workingDir = workDir
                 isIgnoreExitValue = true
@@ -118,7 +116,7 @@ val buildFairyStockfish = tasks.register("buildFairyStockfish") {
         val target = File(File(outputDir, abi).apply { mkdirs() }, "libfairystockfish.so")
         run(strip.absolutePath, "--strip-unneeded", "-o", target.absolutePath, built.absolutePath)
         if (!target.isFile || target.length() == 0L) error("引擎剥离失败: $target")
-        logger.lifecycle("端侧象棋引擎: $target (${target.length() / 1024} KB)")
+        taskLogger.lifecycle("端侧象棋引擎: $target (${target.length() / 1024} KB)")
     }
 }
 

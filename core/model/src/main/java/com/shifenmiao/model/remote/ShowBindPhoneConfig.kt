@@ -38,9 +38,6 @@ enum class ShowBindPhoneConfig(val isShow: Boolean) {
                 FlavorType.HUAWEI -> ENABLED
                 // 海外渠道(google / foss)不提供绑定手机功能
                 FlavorType.GOOGLE, FlavorType.FOSS -> DISABLED
-                else -> {
-                    DISABLED
-                }
             }
         }
     }

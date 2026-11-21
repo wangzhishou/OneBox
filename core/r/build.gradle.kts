@@ -42,7 +42,7 @@ android {
     sourceSets {
         getByName("main") {
             assets {
-                srcDirs("src/main/assets")
+                directories.add("src/main/assets")
             }
         }
     }
@@ -53,10 +53,10 @@ android {
     //   - Google 渠道：src/main + src/google
 }
 
-afterEvaluate {
+androidComponents.finalizeDsl { android ->
     android.sourceSets {
         listOf("onebox", "xiaomi", "yyb", "oppo", "vivo", "huawei").forEach { flavor ->
-            getByName(flavor).kotlin.srcDir("src/domestic/java")
+            getByName(flavor).kotlin.directories.add("src/domestic/java")
         }
     }
 }

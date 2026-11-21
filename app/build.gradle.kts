@@ -488,7 +488,7 @@ androidComponents {
         android.signingConfigs.let { configs ->
             configs.findByName(configName)
         }?.let { targetConfig ->
-            variant.signingConfig.setConfig(targetConfig)
+            variant.signingConfig.from(targetConfig)
         }
     }
 }
@@ -500,7 +500,7 @@ base {
 // 生成 firebase CLI 上传 mapping.txt 所需的 --resource-file (每个 ABI 一份),
 // id 与注入 APK 的 com.google.firebase.crashlytics.mapping_file_id 一致,
 // 由 build_release.sh 在 google release 构建后用于手动上传
-val writeCrashlyticsMappingFileIds by tasks.registering {
+val writeCrashlyticsMappingFileIds = tasks.register("writeCrashlyticsMappingFileIds") {
     val outputDir = layout.buildDirectory.dir("crashlytics")
     // 配置期算好 id, doLast 只捕获普通 Map, 避免引用脚本对象破坏 configuration cache
     val idByAbi = mapOf(
@@ -642,29 +642,21 @@ afterEvaluate {
 }
 
 // 强制用 NDK 自带的 16 KB 对齐 libc++_shared.so 覆盖合并后的副本，避免 AAR 带下来的旧版 .so 导致 16 KB 警告
-val abiToNdkTriple = mapOf(
-    "arm64-v8a" to "aarch64-linux-android"
-)
-
-// Defer NDK resolution to execution time so Gradle configuration / IDE sync
-// doesn't fail when the NDK isn't installed yet.
-val ndkDirForLibCppProvider = androidComponents.sdkComponents.ndkDirectory
+val ndkDirectory = androidComponents.sdkComponents.ndkDirectory
 
 tasks.withType<com.android.build.gradle.internal.tasks.MergeNativeLibsTask>().configureEach {
-    notCompatibleWithConfigurationCache("Overrides libc++_shared.so from NDK at execution time")
+    // 执行期才解析 NDK，未安装 NDK 的机器也能同步工程。
+    val ndk = ndkDirectory
+    val mergedLibs = outputDir
     doLast {
-        val ndkDirForLibCpp = ndkDirForLibCppProvider.get().asFile
-        val prebuilt = ndkDirForLibCpp.resolve("toolchains/llvm/prebuilt")
+        val prebuilt = ndk.get().asFile.resolve("toolchains/llvm/prebuilt")
             .listFiles { f: File -> f.isDirectory }
             ?.firstOrNull()
             ?: return@doLast
-        val outputDirFile = outputDir.get().asFile
-        abiToNdkTriple.forEach { (abi, triple) ->
-            val source = prebuilt.resolve("sysroot/usr/lib/$triple/libc++_shared.so")
-            val dest = outputDirFile.resolve("lib/$abi/libc++_shared.so")
-            if (source.exists() && dest.parentFile?.exists() == true) {
-                source.copyTo(dest, overwrite = true)
-            }
+        val source = prebuilt.resolve("sysroot/usr/lib/aarch64-linux-android/libc++_shared.so")
+        val dest = mergedLibs.get().asFile.resolve("lib/arm64-v8a/libc++_shared.so")
+        if (source.exists() && dest.parentFile?.exists() == true) {
+            source.copyTo(dest, overwrite = true)
         }
     }
 }

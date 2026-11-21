@@ -38,7 +38,6 @@ dependencies {
     api(projects.core.theme)
     api(projects.feature.common)
     implementation(projects.feature.ai)
-    implementation(libs.androidx.compose.animation.core)
+    implementation(libs.compose.animation.core)
     implementation(libs.kotlinx.serialization.json)
 }
-

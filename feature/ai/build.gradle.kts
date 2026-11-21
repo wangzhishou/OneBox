@@ -30,13 +30,13 @@ android.namespace = "com.shifenmiao.ai"
 //   - google/foss:    src/main + src/litertlm (LiteRtLmRuntime + InMemoryLocalLlmModelRegistry)
 //   - 国内 6 渠道:    src/main + src/domestic (UnsupportedLocalLlmRuntime + EmptyLocalLlmModelRegistry)
 // 模型文件从 HuggingFace 分发, 国内用户拿不到, 且 ~21MB native .so 不进国内包
-afterEvaluate {
+androidComponents.finalizeDsl { android ->
     android.sourceSets {
         listOf("google", "foss").forEach { flavor ->
-            getByName(flavor).kotlin.srcDir("src/litertlm/java")
+            getByName(flavor).kotlin.directories.add("src/litertlm/java")
         }
         listOf("onebox", "xiaomi", "yyb", "oppo", "vivo", "huawei").forEach { flavor ->
-            getByName(flavor).kotlin.srcDir("src/domestic/java")
+            getByName(flavor).kotlin.directories.add("src/domestic/java")
         }
     }
 }

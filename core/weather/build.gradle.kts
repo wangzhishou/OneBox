@@ -27,10 +27,10 @@ android.namespace = "com.wanbaohe.core.weather"
 // 和风天气 SDK 为专有 jar, foss (F-Droid) 渠道不打包:
 //   - 非 foss 渠道: src/main + src/nonfoss (真实 WeatherInitializer / QWeatherDataSource) + SDK jar
 //   - foss 渠道:    src/main + src/foss (同签名 stub, 天气功能静默降级, 同 core/r 的 flavor 隔离范式)
-afterEvaluate {
+androidComponents.finalizeDsl { android ->
     android.sourceSets {
         listOf("onebox", "xiaomi", "yyb", "oppo", "vivo", "huawei", "google").forEach { flavor ->
-            getByName(flavor).kotlin.srcDir("src/nonfoss/java")
+            getByName(flavor).kotlin.directories.add("src/nonfoss/java")
         }
     }
 }
@@ -49,5 +49,5 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.androidxCore)
     implementation(libs.androidx.datastore)
-    implementation(libs.androidx.compose.ui)
+    implementation(libs.compose.ui)
 }

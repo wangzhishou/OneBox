@@ -23,7 +23,6 @@
  * along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
  */
 
-import com.t8rin.imagetoolbox.configureDetekt
 import com.t8rin.imagetoolbox.core
 import com.t8rin.imagetoolbox.crash
 import com.t8rin.imagetoolbox.data
@@ -34,17 +33,14 @@ import com.t8rin.imagetoolbox.projects
 import com.t8rin.imagetoolbox.resources
 import com.t8rin.imagetoolbox.settings
 import com.t8rin.imagetoolbox.ui
-import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.getByType
 
 @Suppress("UNUSED")
 class ImageToolboxLibraryFeaturePlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            configureDetekt(extensions.getByType<DetektExtension>())
             dependencies {
                 implementation(projects.core.data)
                 implementation(projects.core.ui)
@@ -54,13 +50,13 @@ class ImageToolboxLibraryFeaturePlugin : Plugin<Project> {
                 implementation(projects.core.di)
                 implementation(projects.core.crash)
 
-                "implementation"(project(":core:r"))
-                "implementation"(project(":core:base"))
-                "implementation"(project(":core:model"))
-                "implementation"(project(":core:theme"))
-                "implementation"(project(":core:database"))
-                "implementation"(project(":core:interfaces"))
-                "implementation"(project(":core:storage"))
+                implementation(projects.project(":core:r"))
+                implementation(projects.project(":core:base"))
+                implementation(projects.project(":core:model"))
+                implementation(projects.project(":core:theme"))
+                implementation(projects.project(":core:database"))
+                implementation(projects.project(":core:interfaces"))
+                implementation(projects.project(":core:storage"))
             }
         }
     }

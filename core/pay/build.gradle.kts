@@ -30,13 +30,13 @@ android.namespace = "com.shifenmiao.pay"
 //   - google 渠道:         额外 src/google (真实 GooglePlayBilling) + Play Billing SDK
 //   - 国内 6 渠道 + foss:  额外 src/nonbilling (GooglePlayBilling 同签名 stub)
 //   - foss 渠道:           src/foss (Alipay no-op stub), 不携带任何支付 SDK
-afterEvaluate {
+androidComponents.finalizeDsl { android ->
     android.sourceSets {
         listOf("onebox", "xiaomi", "yyb", "oppo", "vivo", "huawei", "google").forEach { flavor ->
-            getByName(flavor).kotlin.srcDir("src/nonfoss/java")
+            getByName(flavor).kotlin.directories.add("src/nonfoss/java")
         }
         listOf("onebox", "xiaomi", "yyb", "oppo", "vivo", "huawei", "foss").forEach { flavor ->
-            getByName(flavor).kotlin.srcDir("src/nonbilling/java")
+            getByName(flavor).kotlin.directories.add("src/nonbilling/java")
         }
     }
 }

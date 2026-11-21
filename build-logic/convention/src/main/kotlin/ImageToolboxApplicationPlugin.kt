@@ -39,7 +39,6 @@ import com.t8rin.imagetoolbox.resources
 import com.t8rin.imagetoolbox.settings
 import com.t8rin.imagetoolbox.ui
 import com.t8rin.imagetoolbox.utils
-import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -55,9 +54,9 @@ class ImageToolboxApplicationPlugin : Plugin<Project> {
 
             apply(plugin = "com.mikepenz.aboutlibraries.plugin.android")
             apply(plugin = "org.jetbrains.kotlin.plugin.compose")
-            apply(plugin = "io.gitlab.arturbosch.detekt")
+            apply(plugin = "dev.detekt")
 
-            configureDetekt(extensions.getByType<DetektExtension>())
+            configureDetekt()
 
             extensions.configure<ApplicationExtension> {
                 configureKotlinAndroid(

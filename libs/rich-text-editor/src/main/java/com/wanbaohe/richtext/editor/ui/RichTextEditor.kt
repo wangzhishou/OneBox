@@ -107,7 +107,7 @@ fun RichTextEditor(
                 } ?: true
                 if (longPressed) {
                     val position = fieldCoordinates?.localToWindow(down.position) ?: down.position
-                    behavior.onLongPress?.invoke(Rect(position, Size(1f, 1f)))
+                    behavior.onLongPress.invoke(Rect(position, Size(1f, 1f)))
                 }
             }
         }
