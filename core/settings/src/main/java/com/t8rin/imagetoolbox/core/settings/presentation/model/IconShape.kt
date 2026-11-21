@@ -70,7 +70,9 @@ data class IconShape(
 
         val entriesNoRandom: ImmutableList<IconShape> by lazy {
             listOf(
-                IconShape(SquircleShape),
+                // 默认图标底座：和卡片/色块/底部导航共用 12dp 圆角，
+                // 不再用 squircle，避免同一屏里出现两种圆角语言。
+                IconShape(RoundedCornerShape(12.dp)),
                 IconShape(RoundedCornerShape(15)),
                 IconShape(RoundedCornerShape(25)),
                 IconShape(RoundedCornerShape(35)),
@@ -131,7 +133,8 @@ data class IconShape(
         }
 
         val entries: ImmutableList<IconShape> by lazy {
-            (entriesNoRandom + Random).toPersistentList()
+            // Squircle 仍保留在形状选择列表末尾，但不作为默认值
+            (entriesNoRandom + Random + IconShape(SquircleShape)).toPersistentList()
         }
     }
 }

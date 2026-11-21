@@ -37,7 +37,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -279,7 +278,8 @@ private fun ChatPromptGridItem(
                             .size(36.dp)
                             .background(
                                 color = MaterialTheme.colorScheme.secondaryContainer,
-                                shape = CircleShape
+                                // 和卡片内其他图标底座统一：medium 圆角，不再用圆形
+                                shape = MaterialTheme.shapes.medium
                             ),
                         contentAlignment = Alignment.Center
                     ) {

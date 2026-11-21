@@ -629,7 +629,8 @@ private fun ChatQuickStartCard(
                     .size(32.dp)
                     .glassBackground(
                         style = GlassStyle.Thick,
-                        shape = CircleShape,
+                        // 卡片图标底统一用 medium 圆角（默认 12dp），和工具卡/收藏卡/调色板色块一致
+                        shape = MaterialTheme.shapes.medium,
                         color = sectionIconContainerColor(theme)
                     ),
                 contentAlignment = Alignment.Center
