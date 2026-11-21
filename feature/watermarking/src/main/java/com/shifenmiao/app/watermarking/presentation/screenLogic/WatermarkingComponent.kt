@@ -158,6 +158,8 @@ class WatermarkingComponent @AssistedInject internal constructor(
     val canRedo: Boolean by _canRedo
 
     private val _customPresets = mutableStateOf<List<WatermarkPreset>>(emptyList())
+    private val _lastSignature = mutableStateOf("")
+    val lastSignature: String get() = _lastSignature.value
     val presets: List<WatermarkPreset>
         get() = BuiltinWatermarkPresets.featuredEntries + _customPresets.value
 
@@ -210,6 +212,7 @@ class WatermarkingComponent @AssistedInject internal constructor(
         get() = document.elements.any { it.transform.visible }
 
     init {
+        componentScope.launch { _lastSignature.value = presetStore.lastSignature() }
         debounce {
             loadCustomPresets()
             initialUris?.takeIf(List<Uri>::isNotEmpty)?.let { setUris(it) }
@@ -271,6 +274,12 @@ class WatermarkingComponent @AssistedInject internal constructor(
             resolve = true,
             mergeKey = if (mergeHistory) "$id:${content.kind}" else null,
         ) { it.copy(content = content) }
+        if (activePresetId == BuiltinWatermarkPresets.SIGNATURE &&
+            activePresetDocument?.elements?.firstOrNull()?.id == id && content is WatermarkContent.Text
+        ) {
+            _lastSignature.value = content.text
+            componentScope.launch { presetStore.rememberSignature(content.text) }
+        }
     }
 
     fun updateSelectedElement(

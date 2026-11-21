@@ -32,6 +32,15 @@ class FileWatermarkPresetStore @Inject constructor(
     dispatchersHolder: DispatchersHolder,
 ) : WatermarkPresetStore, DispatchersHolder by dispatchersHolder {
     private val mutex = Mutex()
+    private val preferences by lazy { context.getSharedPreferences("watermark_quick_start", Context.MODE_PRIVATE) }
+
+    override suspend fun lastSignature(): String = withContext(ioDispatcher) {
+        preferences.getString("signature", "").orEmpty()
+    }
+
+    override suspend fun rememberSignature(text: String) = withContext(ioDispatcher) {
+        preferences.edit().putString("signature", text).apply()
+    }
 
     override suspend fun listCustomPresets(): List<WatermarkPreset> = withContext(ioDispatcher) {
         mutex.withLock {

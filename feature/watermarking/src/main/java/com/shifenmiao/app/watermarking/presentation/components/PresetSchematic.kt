@@ -11,6 +11,9 @@
 package com.shifenmiao.app.watermarking.presentation.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.Canvas
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -49,6 +52,7 @@ import com.shifenmiao.app.watermarking.domain.model.WatermarkContent
 import com.shifenmiao.app.watermarking.domain.model.WatermarkElement
 import com.shifenmiao.app.watermarking.domain.model.kind
 import com.shifenmiao.app.watermarking.domain.preset.WatermarkPreset
+import com.shifenmiao.app.watermarking.domain.preset.BuiltinWatermarkPresets
 import com.shifenmiao.app.watermarking.presentation.model.sampleText
 import com.shifenmiao.app.watermarking.presentation.model.title
 import com.wanbaohe.watermark.template.domain.BuiltinTemplateId
@@ -80,7 +84,8 @@ fun PresetSchematic(
         return
     }
     val elements = preset.document.elements.take(3)
-    SchematicBackdrop(modifier, height) {
+    val documentSample = preset.id == BuiltinWatermarkPresets.DOCUMENT_USE
+    SchematicBackdrop(modifier, height, documentSample) {
         BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         elements.forEach { element ->
             val spots = if (element.layout.isRepeated) {
@@ -104,6 +109,7 @@ fun PresetSchematic(
                     rotation = element.transform.rotation,
                     width = maxWidth,
                     height = maxHeight,
+                    labelWidth = if (documentSample) maxWidth * 0.46f else 72.dp,
                 )
             }
         }
@@ -151,6 +157,7 @@ private fun LeicaPresetSchematic(modifier: Modifier, height: Dp) {
 private fun SchematicBackdrop(
     modifier: Modifier,
     height: Dp,
+    documentSample: Boolean = false,
     content: @Composable BoxScope.() -> Unit,
 ) {
     Box(
@@ -159,13 +166,26 @@ private fun SchematicBackdrop(
             .height(height)
             .clipToBounds(),
     ) {
-        Image(
+        if (documentSample) Canvas(Modifier.fillMaxSize()) {
+            // 抽象证件示意，不使用真实证件或个人资料。
+            drawRect(Color(0xFFF2F4F2))
+            val w = size.width
+            val h = size.height
+            val ink = Color(0xFFCFD8D5)
+            drawCircle(ink, h * 0.105f, Offset(w * 0.21f, h * 0.42f))
+            drawOval(ink, Offset(w * 0.12f, h * 0.55f), Size(w * 0.18f, h * 0.14f))
+            listOf(0.36f, 0.48f, 0.32f).forEachIndexed { index, length ->
+                drawRect(ink, Offset(w * 0.37f, h * (0.36f + index * 0.14f)), Size(w * length, h * 0.032f))
+            }
+        } else {
+            Image(
             painter = painterResource(R.drawable.filter_preview_source),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize(),
         )
-        Box(Modifier.fillMaxSize().background(Color(0x33000000)))
+            Box(Modifier.fillMaxSize().background(Color(0x33000000)))
+        }
         content()
     }
 }
@@ -179,6 +199,7 @@ private fun SchematicLabel(
     rotation: Float,
     width: Dp,
     height: Dp,
+    labelWidth: Dp = 72.dp,
 ) {
     Text(
         text = text,
@@ -188,8 +209,8 @@ private fun SchematicLabel(
         overflow = TextOverflow.Ellipsis,
         textAlign = TextAlign.Center,
         modifier = Modifier
-            .offset(x = width * x - 36.dp, y = height * y - 8.dp)
-            .width(72.dp)
+            .offset(x = width * x - labelWidth / 2, y = height * y - 8.dp)
+            .width(labelWidth)
             .graphicsLayer { rotationZ = rotation },
     )
 }

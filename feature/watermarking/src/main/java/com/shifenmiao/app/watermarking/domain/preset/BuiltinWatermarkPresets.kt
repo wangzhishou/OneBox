@@ -35,6 +35,31 @@ import com.wanbaohe.watermark.template.R as TemplateR
  * 任何一侧漏掉都会因穷尽 when 在编译期报错，不需要运行时 id 对齐自检。
  */
 object BuiltinWatermarkPresets {
+    const val DOCUMENT_USE = "document_use"
+    const val SIGNATURE = "work_signature"
+
+    fun textPreset(id: String, nameRes: Int, text: String): WatermarkPreset {
+        require(id == DOCUMENT_USE || id == SIGNATURE)
+        val tile = id == DOCUMENT_USE
+        val base = defaultWatermarkElement(WatermarkContent.Text(text.trim()))
+        val layer = base.copy(
+            transform = base.transform.copy(
+                centerX = if (tile) 0.5f else 0.78f,
+                centerY = if (tile) 0.5f else 0.92f,
+                rotation = if (tile) -28f else 0f,
+                alpha = if (tile) 0.42f else 0.94f,
+            ),
+            style = base.style.copy(
+                color = if (tile) 0xFF535967.toInt() else -1,
+                backgroundColor = if (tile) 0 else 0x66000000,
+                sizeRatio = if (tile) 0.038f else 0.035f,
+                maxWidthRatio = if (tile) 0.6f else 0.38f,
+            ),
+            layout = WatermarkLayout(isRepeated = tile, repeatSpacing = 1.4f),
+        )
+        return WatermarkPreset(id = id, nameRes = nameRes, document = document(listOf(layer)), isBuiltin = true)
+    }
+
     private val featuredIds = listOf(
         BuiltinTemplateId.COPYRIGHT_TILE,
         BuiltinTemplateId.LEICA_CLASSIC,

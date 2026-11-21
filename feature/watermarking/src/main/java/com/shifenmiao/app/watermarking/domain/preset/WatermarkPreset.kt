@@ -23,6 +23,8 @@ data class WatermarkPreset(
 )
 
 interface WatermarkPresetStore {
+    suspend fun lastSignature(): String
+    suspend fun rememberSignature(text: String)
     suspend fun listCustomPresets(): List<WatermarkPreset>
     suspend fun savePreset(preset: WatermarkPreset): WatermarkPreset
     suspend fun deletePreset(id: String)

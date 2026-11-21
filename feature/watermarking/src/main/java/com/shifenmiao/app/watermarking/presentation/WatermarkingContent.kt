@@ -130,6 +130,7 @@ fun WatermarkingContent(
     var selectedStartTemplate by rememberSaveable {
         mutableStateOf(WatermarkStartTemplate.fromPresetId(component.activePresetId))
     }
+    var editTextAfterPick by rememberSaveable { mutableStateOf(false) }
     val saveLocationLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.OpenDocumentTree()
     ) { uri ->
@@ -183,17 +184,21 @@ fun WatermarkingContent(
             onFailed = { AppToastHost.showFailureToast(R.string.watermark_location_permission_required) },
         )
     }
-    val applyStartTemplate: (WatermarkStartTemplate) -> Unit = { template ->
-        val preset = template.presetId?.let(BuiltinWatermarkPresets::findById)
+    val startFromTemplate: (WatermarkPreset?) -> Unit = { preset ->
+        editTextAfterPick = preset?.id == BuiltinWatermarkPresets.DOCUMENT_USE ||
+            (preset?.id == BuiltinWatermarkPresets.SIGNATURE && component.lastSignature.isBlank())
         if (preset != null) component.applyPreset(preset) else component.applyBlankDocument()
         if (preset?.document?.usesDeviceLocation() == true) requestLocation()
         if (preset != null) onPresetApplied(preset) else activePanel = null
-    }
-    val startFromTemplate: (WatermarkStartTemplate) -> Unit = { template ->
-        applyStartTemplate(template)
         imagePicker.pickImage()
     }
-    LaunchedEffect(component.selectedUri) { isComparing = false }
+    LaunchedEffect(component.selectedUri) {
+        isComparing = false
+        if (editTextAfterPick && component.selectedUri != Uri.EMPTY) {
+            activePanel = WatermarkPanel.PROPERTIES
+            editTextAfterPick = false
+        }
+    }
     LaunchedEffect(component.privacy.isActive) {
         if (!component.privacy.isActive && activePanel == WatermarkPanel.PRIVACY) {
             activePanel = WatermarkPanel.PRESETS
@@ -254,7 +259,8 @@ fun WatermarkingContent(
                     WatermarkStartScreen(
                         selected = selectedStartTemplate,
                         onSelect = { selectedStartTemplate = it },
-                        onStart = { startFromTemplate(selectedStartTemplate) },
+                        lastSignature = component.lastSignature,
+                        onStart = startFromTemplate,
                     )
                 }
             } else {

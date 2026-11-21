@@ -2187,6 +2187,14 @@
     <string name="watermark_strip_location_sub">保留其他 EXIF 信息，但移除 GPS 标签</string>
     <string name="watermark_choose_location">选择目录</string>
     <string name="watermark_start_title">先选一个模板</string>
+    <string name="watermark_use_heading">水印用途</string>
+    <string name="watermark_use_document">证件限用</string>
+    <string name="watermark_use_signature">作品署名</string>
+    <string name="watermark_use_photo">摄影参数</string>
+    <string name="watermark_use_free">自由编辑</string>
+    <string name="watermark_use_label">用途说明</string>
+    <string name="watermark_use_example">仅供办理租房登记使用</string>
+    <string name="watermark_signature_example">© 林川</string>
     <string name="watermark_start_subtitle">选好起点再挑照片，之后仍然可以自由添加、删除和调整水印图层。</string>
     <string name="watermark_template_blank">空白</string>
     <string name="watermark_template_blank_desc">空画布，文字、标志和时间都由你自己加。</string>

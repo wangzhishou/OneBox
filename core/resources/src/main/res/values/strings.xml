@@ -2187,6 +2187,14 @@
     <string name="watermark_strip_location_sub">Keep other EXIF data but remove GPS tags</string>
     <string name="watermark_choose_location">Choose folder</string>
     <string name="watermark_start_title">Start with a template</string>
+    <string name="watermark_use_heading">Watermark style</string>
+    <string name="watermark_use_document">Document use</string>
+    <string name="watermark_use_signature">Signature</string>
+    <string name="watermark_use_photo">Camera details</string>
+    <string name="watermark_use_free">Free edit</string>
+    <string name="watermark_use_label">Usage note</string>
+    <string name="watermark_use_example">For rental registration only</string>
+    <string name="watermark_signature_example">© Alex Lin</string>
     <string name="watermark_start_subtitle">Pick a starting point, then choose your photos. You can still add, remove and edit layers afterwards.</string>
     <string name="watermark_template_blank">Blank</string>
     <string name="watermark_template_blank_desc">An empty canvas. Add your own text, logo or timestamp.</string>
