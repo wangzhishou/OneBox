@@ -15,6 +15,7 @@
     <!-- 调色板 AI 工具 -->
     <string name="agent_tool_palette_deeplink_label">Open color tools</string>
     <string name="agent_tool_palette_deeplink_guidance">Open color tools to view, edit and reuse saved palettes</string>
+    <string name="agent_tool_palette_deeplink_open_group">Open palette: %1$s</string>
 
     <string name="agent_tool_palette_list_title">List color palettes</string>
     <string name="agent_tool_palette_list_summary">List the user\'s saved color palettes with their hex colors</string>

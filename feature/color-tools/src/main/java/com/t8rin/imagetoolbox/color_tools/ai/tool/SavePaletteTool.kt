@@ -171,7 +171,9 @@ class SavePaletteTool @Inject constructor(
                     "palette" to PaletteToolSupport.paletteJson(
                         palette = updated,
                         includeColors = true
-                    )
+                    ),
+                    // 保存/覆盖后给出直达该组调色板的链接，AI 可直接回给用户
+                    "deepLinks" to listOf(paletteDeepLink(paletteId = updated.id))
                 )
             )
         }.getOrElse { failureResult(action = "save", error = it) }

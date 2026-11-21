@@ -676,16 +676,24 @@ internal object ScreenConstantsImpl : ScreenConstants {
             )
             when (path) {
                 // 色彩工具带 tab 参数直达：onebox://screen/ColorTools?tab=palette
-                "ColorTools", "colortools", "color_tools" -> return ColorTools(
-                    initialTab = when (queryParams["tab"]?.lowercase(Locale.ROOT)) {
-                        "palette", "palettes" -> ColorTools.TAB_PALETTE
-                        "info" -> ColorTools.TAB_INFO
-                        "mixing" -> ColorTools.TAB_MIXING
-                        "shading" -> ColorTools.TAB_SHADING
-                        "histogram" -> ColorTools.TAB_HISTOGRAM
-                        else -> ColorTools.TAB_PALETTE
-                    }
-                )
+                // 带 palette_id 时选中指定调色板并强制落在调色板页
+                "ColorTools", "colortools", "color_tools" -> {
+                    val paletteId = queryParams["palette_id"]?.trim()?.takeIf { it.isNotEmpty() }
+                    return ColorTools(
+                        initialTab = if (paletteId != null) {
+                            ColorTools.TAB_PALETTE
+                        } else {
+                            when (queryParams["tab"]?.lowercase(Locale.ROOT)) {
+                                "info" -> ColorTools.TAB_INFO
+                                "mixing" -> ColorTools.TAB_MIXING
+                                "shading" -> ColorTools.TAB_SHADING
+                                "histogram" -> ColorTools.TAB_HISTOGRAM
+                                else -> ColorTools.TAB_PALETTE
+                            }
+                        },
+                        initialPaletteId = paletteId
+                    )
+                }
                 "BlogDetail" -> return Screen.BlogDetail(
                     screenParams = screenParams
                 )

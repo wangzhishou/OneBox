@@ -100,6 +100,18 @@ fun ColorToolsContent(
     // 切组时先在本地记住 id，等 DataStore 回流追平后再交还设置值，
     // 否则下拉选中/顶部色板会先闪一下旧组。
     var pendingPaletteId by remember { mutableStateOf<String?>(null) }
+    // 深链直达：按 initialPaletteId 选中指定组。handledInitialPaletteId 保证只处理一次，
+    // 不被后续的 DataStore 回流或用户手动切组覆盖；组还没加载出来时等下一轮 palettes 更新。
+    var handledInitialPaletteId by remember { mutableStateOf<String?>(null) }
+    val initialPaletteId = component.initialPaletteId
+    LaunchedEffect(initialPaletteId, palettes) {
+        if (initialPaletteId.isNullOrBlank()) return@LaunchedEffect
+        if (handledInitialPaletteId == initialPaletteId) return@LaunchedEffect
+        if (palettes.none { it.id == initialPaletteId }) return@LaunchedEffect
+        handledInitialPaletteId = initialPaletteId
+        pendingPaletteId = initialPaletteId
+        interactor.setSelectedPaletteId(initialPaletteId)
+    }
     LaunchedEffect(settingsState.selectedPaletteId, pendingPaletteId) {
         if (pendingPaletteId == settingsState.selectedPaletteId) {
             pendingPaletteId = null

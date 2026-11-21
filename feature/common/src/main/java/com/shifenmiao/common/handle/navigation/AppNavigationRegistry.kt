@@ -1133,6 +1133,7 @@ object AppNavigationRegistry {
             ),
             // 色彩工具：调色板排第一，深链可带 tab 参数直达
             // onebox://screen/ColorTools?tab=palette|info|mixing|shading|histogram
+            // onebox://screen/ColorTools?palette_id=<ColorPalette.id> 直达并选中某组调色板
             AppNavigationTarget(
                 targetType = AppNavigationTargetType.SCREEN,
                 routeKey = Screen.ColorTools().routeKey,
@@ -1154,15 +1155,21 @@ object AppNavigationRegistry {
                     routeKey = Screen.ColorTools().routeKey
                 ),
                 screenBuilder = { params ->
+                    val paletteId = params["palette_id"]?.trim()?.takeIf { it.isNotEmpty() }
                     Screen.ColorTools(
-                        initialTab = when (params["tab"]?.trim()?.lowercase(Locale.ROOT)) {
-                            "palette", "palettes" -> Screen.ColorTools.TAB_PALETTE
-                            "info" -> Screen.ColorTools.TAB_INFO
-                            "mixing" -> Screen.ColorTools.TAB_MIXING
-                            "shading" -> Screen.ColorTools.TAB_SHADING
-                            "histogram" -> Screen.ColorTools.TAB_HISTOGRAM
-                            else -> Screen.ColorTools.TAB_PALETTE
-                        }
+                        // 带 palette_id 时无论 tab 传什么，都强制落在调色板页，否则选中了看不到
+                        initialTab = if (paletteId != null) {
+                            Screen.ColorTools.TAB_PALETTE
+                        } else {
+                            when (params["tab"]?.trim()?.lowercase(Locale.ROOT)) {
+                                "info" -> Screen.ColorTools.TAB_INFO
+                                "mixing" -> Screen.ColorTools.TAB_MIXING
+                                "shading" -> Screen.ColorTools.TAB_SHADING
+                                "histogram" -> Screen.ColorTools.TAB_HISTOGRAM
+                                else -> Screen.ColorTools.TAB_PALETTE
+                            }
+                        },
+                        initialPaletteId = paletteId
                     )
                 }
             )

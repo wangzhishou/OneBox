@@ -273,7 +273,8 @@ class ChildProvider @Inject constructor(
             imageFactories.get().colorToolsComponentFactory(
                 componentContext = componentContext,
                 onGoBack = ::navigateBack,
-                initialTab = config.initialTab
+                initialTab = config.initialTab,
+                initialPaletteId = config.initialPaletteId
             )
         )
 

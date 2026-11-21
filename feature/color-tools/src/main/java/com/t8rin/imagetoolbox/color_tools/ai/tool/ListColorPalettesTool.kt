@@ -84,6 +84,18 @@ class ListColorPalettesTool @Inject constructor(
                         palette = it,
                         includeColors = params.includeColors
                     )
+                },
+                // 每组附一个直达链接，用户可让 AI 列出调色板后点某组直接跳过去
+                "deepLinks" to palettes.map {
+                    paletteDeepLink(
+                        paletteId = it.id,
+                        label = it.name,
+                        guidance = textProvider.string(
+                            R.string.agent_tool_palette_deeplink_open_group,
+                            it.name
+                        ),
+                        primary = false
+                    )
                 }
             )
             if (palettes.isEmpty()) {

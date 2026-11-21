@@ -832,7 +832,9 @@ sealed class Screen(
     @SerialName("ColorTools")
     data class ColorTools(
         /** 打开时落在哪个 tab，见 TAB_*（调色板排第一，默认落在调色板） */
-        val initialTab: Int = TAB_PALETTE
+        val initialTab: Int = TAB_PALETTE,
+        /** 深链直达时选中哪一组调色板（ColorPalette.id）；为空则沿用全局已选组 */
+        val initialPaletteId: String? = null
     ) : Screen(
         id = 30,
         title = R.string.color_tools,

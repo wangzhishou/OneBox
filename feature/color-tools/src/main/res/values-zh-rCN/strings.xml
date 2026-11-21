@@ -15,6 +15,7 @@
     <!-- 调色板 AI 工具 -->
     <string name="agent_tool_palette_deeplink_label">打开色彩工具</string>
     <string name="agent_tool_palette_deeplink_guidance">打开色彩工具，查看、编辑并取用已保存的调色板</string>
+    <string name="agent_tool_palette_deeplink_open_group">打开调色板：%1$s</string>
 
     <string name="agent_tool_palette_list_title">列出调色板</string>
     <string name="agent_tool_palette_list_summary">列出用户保存的调色板及其色值</string>

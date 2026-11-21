@@ -42,6 +42,8 @@ class ColorToolsComponent @AssistedInject internal constructor(
     @Assisted val onGoBack: () -> Unit,
     /** 打开时落在哪个 tab，见 Screen.ColorTools.TAB_* */
     @Assisted val initialTab: Int,
+    /** 深链直达时选中哪一组调色板（ColorPalette.id）；为空则沿用全局已选组 */
+    @Assisted val initialPaletteId: String?,
     dispatchersHolder: DispatchersHolder
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
@@ -58,6 +60,7 @@ class ColorToolsComponent @AssistedInject internal constructor(
             componentContext: ComponentContext,
             onGoBack: () -> Unit,
             initialTab: Int,
+            initialPaletteId: String?,
         ): ColorToolsComponent
     }
 

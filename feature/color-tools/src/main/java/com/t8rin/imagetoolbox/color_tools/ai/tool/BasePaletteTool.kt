@@ -107,4 +107,27 @@ abstract class BasePaletteTool(
             error.message ?: error::class.java.simpleName
         )
     )
+
+    /**
+     * 直达某一组调色板的动态链接，供 save/delete 的成功结果塞进 `deepLinks` 数组。
+     * [paletteId] 为空时退化为不带 palette_id 的调色板页链接。
+     */
+    protected fun paletteDeepLink(
+        paletteId: String?,
+        label: String? = null,
+        guidance: String? = null,
+        primary: Boolean = true
+    ): Map<String, Any?> = mapOf(
+        "uri" to AppNavigationRegistry.buildStructuredDeeplink(
+            targetType = AppNavigationTargetType.SCREEN,
+            routeKey = Screen.ColorTools().routeKey,
+            params = buildMap {
+                put("tab", "palette")
+                if (!paletteId.isNullOrBlank()) put("palette_id", paletteId)
+            }
+        ),
+        "label" to (label ?: textProvider.string(R.string.agent_tool_palette_deeplink_label)),
+        "guidance" to (guidance ?: textProvider.string(R.string.agent_tool_palette_deeplink_guidance)),
+        "primary" to primary
+    )
 }
