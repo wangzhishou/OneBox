@@ -131,6 +131,17 @@ fun BoxWithConstraintsScope.EditorLayerBox(
         localTransform = it
         currentOnChange?.invoke(it)
     }
+    val moveBy: (Offset) -> Unit = { delta ->
+        val canvasPan = (delta * localTransform.scale).rotateBy(localTransform.rotation)
+        val nextCenterX = localTransform.centerX + canvasPan.x / canvasWidth
+        val nextCenterY = localTransform.centerY + canvasPan.y / canvasHeight
+        update(
+            localTransform.copy(
+                centerX = if (allowOutside) nextCenterX else nextCenterX.coerceIn(0f, 1f),
+                centerY = if (allowOutside) nextCenterY else nextCenterY.coerceIn(0f, 1f)
+            )
+        )
+    }
 
     Box(
         modifier = modifier
@@ -173,19 +184,11 @@ fun BoxWithConstraintsScope.EditorLayerBox(
                                 start()
                             }
                             if (moved && delta != Offset.Zero) {
-                                val canvasPan = (delta * localTransform.scale)
-                                    .rotateBy(localTransform.rotation)
-                                val nextCenterX = localTransform.centerX + canvasPan.x / canvasWidth
-                                val nextCenterY = localTransform.centerY + canvasPan.y / canvasHeight
-                                update(
-                                    localTransform.copy(
-                                        centerX = if (allowOutside) nextCenterX else nextCenterX.coerceIn(0f, 1f),
-                                        centerY = if (allowOutside) nextCenterY else nextCenterY.coerceIn(0f, 1f)
-                                    )
-                                )
+                                moveBy(delta)
                                 change.consume()
                             }
                             if (!change.pressed) {
+                                if (moved) change.consume()
                                 if (!moved && !canceled && tapSelectable &&
                                     pan.getDistance() * localTransform.scale * canvasScale <=
                                     viewConfiguration.touchSlop
@@ -264,7 +267,8 @@ fun BoxWithConstraintsScope.EditorLayerBox(
                             )
                         )
                     },
-                    onEnd = finish
+                    onEnd = finish,
+                    onLongPressDrag = moveBy
                 ) {
                     HandleBlock()
                 }
@@ -293,7 +297,8 @@ fun BoxWithConstraintsScope.EditorLayerBox(
                             )
                         )
                     },
-                    onEnd = finish
+                    onEnd = finish,
+                    onLongPressDrag = moveBy
                 ) {
                     HandleIcon(MaterialIcons.Outlined.RotateRight)
                 }
@@ -326,7 +331,8 @@ fun BoxWithConstraintsScope.EditorLayerBox(
                             )
                         )
                     },
-                    onEnd = finish
+                    onEnd = finish,
+                    onLongPressDrag = moveBy
                 ) {
                     HandleBlock(horizontal = true)
                 }
@@ -356,7 +362,8 @@ fun BoxWithConstraintsScope.EditorLayerBox(
                                 )
                             )
                         },
-                        onEnd = finish
+                        onEnd = finish,
+                    onLongPressDrag = moveBy
                     ) {
                         HandleBlock(horizontal = false)
                     }
@@ -401,7 +408,8 @@ fun BoxWithConstraintsScope.EditorLayerBox(
                             )
                             config.onResize(width, startSize.height.toFloat(), left, top)
                         },
-                        onEnd = finish
+                        onEnd = finish,
+                    onLongPressDrag = moveBy
                     ) {
                         HandleBlock(horizontal = false)
                     }
@@ -459,12 +467,14 @@ private fun BoxScope.LayerTransformHandle(
     onStart: (Offset) -> Unit,
     onDrag: (Offset) -> Unit,
     onEnd: () -> Unit,
+    onLongPressDrag: ((Offset) -> Unit)? = null,
     visual: @Composable BoxScope.() -> Unit,
 ) {
     var coordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
     val currentOnStart by rememberUpdatedState(onStart)
     val currentOnDrag by rememberUpdatedState(onDrag)
     val currentOnEnd by rememberUpdatedState(onEnd)
+    val currentOnLongPressDrag by rememberUpdatedState(onLongPressDrag)
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -485,6 +495,7 @@ private fun BoxScope.LayerTransformHandle(
                     val startRoot = coordinates?.localToRoot(down.position) ?: down.position
                     down.consume()
                     var dragging = false
+                    var longPressDragging = false
                     try {
                         while (true) {
                             val event = awaitPointerEvent()
@@ -495,13 +506,23 @@ private fun BoxScope.LayerTransformHandle(
                                 (root - startRoot).getDistance() > viewConfiguration.touchSlop
                             ) {
                                 dragging = true
+                                longPressDragging = currentOnLongPressDrag != null &&
+                                    change.uptimeMillis - down.uptimeMillis >=
+                                    viewConfiguration.longPressTimeoutMillis
                                 currentOnStart(startRoot)
                             }
                             if (dragging && change.positionChange() != Offset.Zero) {
-                                currentOnDrag(root)
+                                if (longPressDragging) {
+                                    currentOnLongPressDrag?.invoke(change.positionChange())
+                                } else {
+                                    currentOnDrag(root)
+                                }
                                 change.consume()
                             }
-                            if (!change.pressed) break
+                            if (!change.pressed) {
+                                if (dragging) change.consume()
+                                break
+                            }
                         }
                     } finally {
                         if (dragging) currentOnEnd()
