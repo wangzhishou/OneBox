@@ -32,8 +32,8 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
@@ -48,8 +48,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.resources.icons.Firebase
-import com.wanbaohe.core.ui.widget.icon_shape.IconShapeContainer
-import com.wanbaohe.core.ui.widget.icon_shape.IconShapeDefaults
 import com.wanbaohe.core.ui.widget.preferences.PreferenceItemDefaults
 
 @Composable
@@ -65,14 +63,12 @@ fun TitleItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         icon?.let { icon ->
-            IconShapeContainer(
-                enabled = true,
-                content = {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = null
-                    )
-                }
+            // 扁平标题：图标不再套彩色底座，直接用内容色压一个轻量图标
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = LocalContentColor.current.copy(alpha = 0.72f),
+                modifier = Modifier.size(22.dp)
             )
             Spacer(Modifier.width(8.dp))
         }
@@ -92,26 +88,21 @@ fun TitleItem(
     modifier: Modifier = Modifier.padding(16.dp),
     subtitle: String? = null,
     iconEndPadding: Dp = 8.dp,
-    iconContainerColor: Color = IconShapeDefaults.containerColor,
-    iconContentColor: Color = IconShapeDefaults.contentColor,
 ) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         icon?.let { icon ->
-            IconShapeContainer(
-                enabled = true,
-                content = {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = null,
-                        tint = if (icon == com.t8rin.imagetoolbox.core.resources.Icons.TwoTone.Firebase) Color.Unspecified
-                        else LocalContentColor.current
-                    )
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = if (icon == com.t8rin.imagetoolbox.core.resources.Icons.TwoTone.Firebase) {
+                    Color.Unspecified
+                } else {
+                    LocalContentColor.current.copy(alpha = 0.72f)
                 },
-                containerColor = iconContainerColor,
-                contentColor = iconContentColor
+                modifier = Modifier.size(22.dp)
             )
             Spacer(Modifier.width(iconEndPadding))
         }

@@ -540,7 +540,7 @@ private fun AddColorBlock(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val shape = MaterialTheme.shapes.medium
+    val shape = MaterialTheme.shapes.large
     Column(
         modifier = modifier
             .heightIn(min = 96.dp)
@@ -583,6 +583,7 @@ private fun PaletteColorBlock(
         color = color,
         onClick = onClick,
         modifier = modifier.heightIn(min = 96.dp),
+        shape = MaterialTheme.shapes.large,
         primaryText = color.toHex(),
         secondaryText = colorName ?: stringResource(R.string.color_transparent),
         badge = {

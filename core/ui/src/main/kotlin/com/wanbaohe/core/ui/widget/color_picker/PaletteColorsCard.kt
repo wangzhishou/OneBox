@@ -301,7 +301,7 @@ private fun PaletteColorCell(
     onRemove: () -> Unit
 ) {
     val color = Color(argb)
-    val shape = MaterialTheme.shapes.medium
+    val shape = MaterialTheme.shapes.large
     Box(
         modifier = Modifier
             .size(44.dp)
@@ -353,7 +353,7 @@ private fun PaletteColorCell(
 private fun AddColorCell(
     onClick: () -> Unit
 ) {
-    val shape = MaterialTheme.shapes.medium
+    val shape = MaterialTheme.shapes.large
     Box(
         modifier = Modifier
             .size(44.dp)

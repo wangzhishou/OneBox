@@ -286,7 +286,7 @@ private fun ImageEyedropperDialog(
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(16.dp))
+                        .clip(MaterialTheme.shapes.large)
                         // 图片取景框用中性底色，不要棋盘格：棋盘格会让上下留白
                         // 看起来像「图片没加载出来」；真正的透明色预览在下面色值行里。
                         .background(MaterialTheme.colorScheme.surfaceContainer)
@@ -310,7 +310,7 @@ private fun ImageEyedropperDialog(
                     Box(
                         modifier = Modifier
                             .size(44.dp)
-                            .clip(RoundedCornerShape(12.dp))
+                            .clip(MaterialTheme.shapes.large)
                             .then(
                                 if (pickedColor.alpha < 1f) Modifier.transparencyChecker()
                                 else Modifier

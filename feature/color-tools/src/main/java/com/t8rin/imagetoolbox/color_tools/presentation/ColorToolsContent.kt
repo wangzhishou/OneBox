@@ -144,7 +144,7 @@ fun ColorToolsContent(
             title = stringResource(R.string.selected_color),
             defaultColors = quickColors,
             // 和调色板色块、添加颜色格子同一圆角；选中态只显示对勾，不做形状/旋转动画
-            swatchShape = MaterialTheme.shapes.medium
+            swatchShape = MaterialTheme.shapes.large
         )
         AnimatedContent(
             targetState = selectedTab,

@@ -113,7 +113,7 @@ fun RecentColorsRow(
                     items = recentColors,
                     key = { it.toArgb() }
                 ) { color ->
-                    val shape = MaterialTheme.shapes.medium
+                    val shape = MaterialTheme.shapes.large
                     Box(
                         modifier = Modifier
                             .size(44.dp)

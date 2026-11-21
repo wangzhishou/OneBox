@@ -141,15 +141,15 @@ fun ColorInfo(
             modifier = Modifier
                 .size(48.dp)
                 .container(
-                    shape = MaterialTheme.shapes.medium,
+                    shape = MaterialTheme.shapes.large,
                     color = color,
                     resultPadding = 0.dp
                 )
-                .clip(MaterialTheme.shapes.medium)
+                .clip(MaterialTheme.shapes.large)
                 .transparencyChecker()
                 .background(
                     color = color,
-                    shape = MaterialTheme.shapes.medium
+                    shape = MaterialTheme.shapes.large
                 ),
             contentAlignment = Alignment.Center
         ) {
