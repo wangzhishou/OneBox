@@ -14,7 +14,7 @@ versionCode = "158"
 gitVersion = "000"
 jvmTarget = "17"
 
-oneBoxLibs = "1.1.2"
+oneBoxLibs = "1.1.3"
 trickle = "2.1.1"
 evaluator = "1.0.0"
 logger = "1.0.2"
@@ -227,7 +227,7 @@ onebox-beforeafter = { module = "com.wanbaohe.libs:beforeafter", version.ref = "
 onebox-image = { module = "com.wanbaohe.libs:image", version.ref = "oneBoxLibs" }
 onebox-screenshot = { module = "com.wanbaohe.libs:screenshot", version.ref = "oneBoxLibs" }
 onebox-gpuimage = { module = "com.wanbaohe.libs:gpuimage", version.ref = "oneBoxLibs" }
-onebox-colorpicker = { module = "com.wanbaohe.libs:colorpicker", version = "1.1.3" }
+onebox-colorpicker = { module = "com.wanbaohe.libs:colorpicker", version.ref = "oneBoxLibs" }
 onebox-systemuicontroller = { module = "com.wanbaohe.libs:systemuicontroller", version.ref = "oneBoxLibs" }
 onebox-placeholder = { module = "com.wanbaohe.libs:placeholder", version.ref = "oneBoxLibs" }
 onebox-extendedcolors = { module = "com.wanbaohe.libs:extendedcolors", version.ref = "oneBoxLibs" }

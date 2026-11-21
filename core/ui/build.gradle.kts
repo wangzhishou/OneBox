@@ -159,5 +159,8 @@ dependencies {
 
     api(libs.evaluator)
 
-    api(libs.flinger)
+    implementation(libs.flinger) {
+        // Flinger 2.1.1 的字节码不调用 Material 2，仅发布元数据声明了该依赖。
+        exclude(group = "androidx.compose.material", module = "material")
+    }
 }
