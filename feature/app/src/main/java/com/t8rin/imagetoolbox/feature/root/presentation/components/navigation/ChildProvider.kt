@@ -175,7 +175,6 @@ import com.wanbaohe.measurement.component.MeasurementComponent
 import com.wanbaohe.deadpixeltest.component.DeadPixelTestComponent
 import com.wanbaohe.decisionwheel.component.DecisionWheelRouterComponent
 import com.wanbaohe.passwordvault.router.screenLogic.PasswordVaultRouterComponent
-import com.wanbaohe.a2ui.viewModel.A2uiComponent
 import com.wanbaohe.diceroller.component.DiceRollerComponent
 import com.wanbaohe.file.browser.screenLogic.FileBrowserComponent
 import com.wanbaohe.file_transfer.screenLogic.FileTransferComponent

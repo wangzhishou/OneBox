@@ -29,6 +29,7 @@ jpegliCoder = "1.0.2"
 m3color = "2026.1"
 paletteKtx = "1.1.0"
 material3 = "1.5.0"
+material3A2ui = "1.0.0-alpha02"
 composeVersion = "1.13.0"
 materialIconsExtended = "1.7.8"
 shadowGadgets = "2.5.1"
@@ -322,6 +323,7 @@ compose-material-icons-core = { module = "androidx.compose.material:material-ico
 window-sizeclass = { module = "androidx.compose.material3:material3-window-size-class", version.ref = "material3" }
 icons-extended= { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+androidx-a2ui-material = { module = "androidx.compose.material3:material3-a2ui", version.ref = "material3A2ui" }
 
 desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugaring-version" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

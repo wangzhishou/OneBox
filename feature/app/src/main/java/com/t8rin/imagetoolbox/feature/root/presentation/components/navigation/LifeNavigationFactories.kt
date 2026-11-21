@@ -36,7 +36,7 @@ import com.shifenmiao.lifetime.component.LifeTimeSettingsComponent
 import com.shifenmiao.lifetime.component.LifeTimeWelcomeComponent
 import com.shifenmiao.marktodo.screenLogic.MarkTodoRouterComponent
 import com.shifenmiao.webview.browser.BrowserComponent
-import com.wanbaohe.a2ui.viewModel.A2uiComponent
+import com.wanbaohe.a2ui.workbench.A2uiWorkbenchComponent
 import com.wanbaohe.altitude.component.AltitudeComponent
 import com.wanbaohe.ocr.component.OnDeviceOcrComponent
 import com.wanbaohe.blessingwall.component.BlessingRecordComponent
@@ -141,7 +141,7 @@ class LifeNavigationFactories @Inject constructor(
     val codeEditorComponentFactory: AgentJsonEditorComponent.Factory,
     val settingRouterComponentFactory: SettingRouterComponent.Factory,
     val passwordVaultRouterComponentFactory: PasswordVaultRouterComponent.Factory,
-    val a2uiComponentFactory: A2uiComponent.Factory,
+    val a2uiComponentFactory: A2uiWorkbenchComponent.Factory,
     val blessingWallComponentFactory: BlessingWallComponent.Factory,
     val blessingRecordComponentFactory: BlessingRecordComponent.Factory,
     val poemComponentFactory: PoemComponent.Factory,

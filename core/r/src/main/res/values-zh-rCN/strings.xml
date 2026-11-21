@@ -2008,8 +2008,8 @@
 
     <string name="password_vault">密码保险箱</string>
     <string name="password_vault_description">安全保存网站、APP 与大门等密码</string>
-    <string name="a2ui_screen">A2UI 渲染器</string>
-    <string name="a2ui_screen_description">A2UI 协议动态界面渲染</string>
+    <string name="a2ui_screen">A2UI 工作台</string>
+    <string name="a2ui_screen_description">预览和调试 A2UI 协议消息</string>
     <string name="a2ui_modal_dismiss">关闭</string>
     <string name="a2ui_datetime_label">选择日期时间</string>
     <string name="a2ui_datetime_pick">选择</string>

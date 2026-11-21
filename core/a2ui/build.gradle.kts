@@ -39,6 +39,7 @@ androidComponents.finalizeDsl { android ->
 }
 
 dependencies {
+    implementation(libs.androidx.a2ui.material)
     implementation(libs.kotlinx.serialization.json)
     googleImplementation(libs.places)
 }

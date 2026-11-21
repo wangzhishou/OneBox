@@ -144,7 +144,7 @@ dependencies {
     implementation(projects.feature.blessingWall)
     implementation(projects.feature.poem)
     implementation(projects.feature.translator)
-    implementation(projects.core.a2ui)
+    implementation(projects.feature.a2ui)
     implementation(projects.core.network)
     implementation(projects.core.storage)
 

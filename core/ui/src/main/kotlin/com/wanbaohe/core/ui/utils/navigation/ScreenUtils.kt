@@ -822,6 +822,7 @@ internal object ScreenConstantsImpl : ScreenConstants {
                     WallpapersExport,
                     Base64Tools(),
                     SvgMaker(),
+                    Screen.A2UI,
                     PaletteTools(),
                     LoadNetImage(),
                     Screen.MarkTodoRouter(),

@@ -726,6 +726,10 @@ private data class DemoNavigationEntry(
 
 private fun demoNavigationEntries(): List<DemoNavigationEntry> = listOf(
     DemoNavigationEntry(
+        getString(R.string.a2ui_screen),
+        com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDashboardCustomize,
+    ) { Screen.A2UI },
+    DemoNavigationEntry(
         getString(R.string.on_device_ocr),
         com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ImageToText,
     ) { Screen.OnDeviceOcr() },
@@ -781,7 +785,6 @@ private fun demoNavigationEntries(): List<DemoNavigationEntry> = listOf(
     DemoNavigationEntry("浏览器", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTravelExplore) { Screen.WebBrowser() },
     DemoNavigationEntry("测量工具", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSquareFoot) { Screen.MeasurementTools },
     DemoNavigationEntry("密码保险箱", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineShield) { Screen.PasswordVault() },
-    DemoNavigationEntry("A2UI 渲染器", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDashboardCustomize) { Screen.A2UI }
 )
 
 private fun LazyGridScope.demoNavigationItems(

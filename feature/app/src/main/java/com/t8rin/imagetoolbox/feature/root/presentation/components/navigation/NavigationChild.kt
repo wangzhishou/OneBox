@@ -78,8 +78,8 @@ import com.shifenmiao.marktodo.screenLogic.MarkTodoRouterComponent
 import com.shifenmiao.marquee.screen.FullScreenSubtitles
 import com.wanbaohe.passwordvault.router.PasswordVaultRouterScreen
 import com.wanbaohe.passwordvault.router.screenLogic.PasswordVaultRouterComponent
-import com.wanbaohe.a2ui.A2uiScreen
-import com.wanbaohe.a2ui.viewModel.A2uiComponent
+import com.wanbaohe.a2ui.workbench.A2uiWorkbenchComponent
+import com.wanbaohe.a2ui.workbench.A2uiWorkbenchScreen
 import com.wanbaohe.blessingwall.component.BlessingRecordComponent
 import com.wanbaohe.blessingwall.component.BlessingWallComponent
 import com.wanbaohe.poem.component.PoemComponent
@@ -1041,11 +1041,11 @@ sealed interface NavigationChild {
     }
 
     class A2UI(
-        val a2uiComponent: A2uiComponent
+        val a2uiComponent: A2uiWorkbenchComponent
     ) : NavigationChild {
         @Composable
         override fun Content() {
-            A2uiScreen(component = a2uiComponent)
+            A2uiWorkbenchScreen(component = a2uiComponent)
         }
     }
 

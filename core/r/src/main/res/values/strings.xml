@@ -1863,8 +1863,8 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="auth_code_settings_title">Password Protection</string>
     <string name="auth_code_settings_subtitle">Verify your identity before sensitive operations</string>
 
-    <string name="a2ui_screen">A2UI Renderer</string>
-    <string name="a2ui_screen_description">Dynamic UI rendering via A2UI protocol</string>
+    <string name="a2ui_screen">A2UI Workbench</string>
+    <string name="a2ui_screen_description">Preview and debug A2UI protocol messages</string>
     <string name="a2ui_modal_dismiss">Close</string>
     <string name="a2ui_datetime_label">Select date/time</string>
     <string name="a2ui_datetime_pick">Pick</string>

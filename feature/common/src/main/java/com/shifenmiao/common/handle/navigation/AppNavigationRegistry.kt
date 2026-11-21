@@ -636,7 +636,7 @@ object AppNavigationRegistry {
             ),
             staticScreen(
                 screen = Screen.A2UI,
-                aliases = listOf("a2ui", "生成式UI")
+                aliases = listOf("a2ui", "a2ui_workbench", "生成式UI", "界面调试")
             ),
             staticScreen(
                 screen = Screen.IChingHistory,
