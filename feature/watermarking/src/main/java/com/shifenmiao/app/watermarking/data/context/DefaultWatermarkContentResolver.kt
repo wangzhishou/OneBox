@@ -138,6 +138,7 @@ class DefaultWatermarkContentResolver @Inject constructor(
             needsDeviceLocation = needsDeviceLocation,
             weatherAvailable = weatherAvailable,
             frame = document.frame,
+            mount = document.mount,
         )
     }
 

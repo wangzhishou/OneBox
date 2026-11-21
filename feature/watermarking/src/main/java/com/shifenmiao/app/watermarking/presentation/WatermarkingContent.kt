@@ -53,6 +53,7 @@ import com.t8rin.imagetoolbox.core.resources.R
 import com.shifenmiao.app.watermarking.domain.model.WatermarkContent
 import com.shifenmiao.app.watermarking.domain.model.WatermarkKind
 import com.shifenmiao.app.watermarking.domain.model.usesDeviceLocation
+import com.shifenmiao.app.watermarking.domain.model.watermarkCanvasLayout
 import com.shifenmiao.app.watermarking.domain.preset.BuiltinWatermarkPresets
 import com.shifenmiao.app.watermarking.domain.preset.WatermarkPreset
 import com.shifenmiao.app.watermarking.presentation.components.WatermarkBottomBar
@@ -86,6 +87,7 @@ import com.wanbaohe.core.ui.widget.dialogs.LoadingDialog
 import com.wanbaohe.core.ui.widget.dialogs.ResetDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.wanbaohe.core.ui.widget.enhanced.EditorPreviewBlurScope
 import com.wanbaohe.core.ui.widget.export.ImageExportSection
 import com.wanbaohe.core.ui.widget.export.ImageExportSheet
 import com.wanbaohe.core.ui.widget.glass.GlassSegmentedButtonRow
@@ -153,6 +155,9 @@ fun WatermarkingContent(
     )
     val exportItemCount = if (onlyCurrent || component.privacy.isActive) 1 else component.uris.size
     val exportBitmap = displayBitmap
+    val exportLayout = exportBitmap?.let {
+        watermarkCanvasLayout(it.width, it.height, component.document.frame, component.document.mount)
+    }
     val hiddenWatermarkBlocked = component.document.hiddenWatermark.enabled &&
         !component.imageFormat.keepsHiddenWatermark()
     val defaultText = stringResource(R.string.watermark_default_text)
@@ -165,6 +170,8 @@ fun WatermarkingContent(
     val onPresetApplied = { preset: WatermarkPreset ->
         if (preset.id == com.wanbaohe.watermark.template.domain.BuiltinTemplateId.PRIVACY_REDACTION.id) {
             activePanel = WatermarkPanel.PRIVACY
+        } else if (preset.id == BuiltinWatermarkPresets.PHOTO_MOUNT) {
+            activePanel = WatermarkPanel.MOUNT
         } else {
             val needsLogo = preset.document.elements.any { element ->
                 val image = element.content as? WatermarkContent.Image
@@ -270,6 +277,7 @@ fun WatermarkingContent(
                     WatermarkCanvas(
                         bitmap = displayBitmap,
                         frame = component.document.frame,
+                        mount = component.document.mount,
                         resolvedElements = component.resolvedElements,
                         selectedElementId = component.selectedElementId,
                         isLoading = component.isImageLoading ||
@@ -392,7 +400,7 @@ fun WatermarkingContent(
         },
     )
 
-    if (!wideLayout && activePanel != null) {
+    if (!wideLayout && activePanel != null && displayBitmap != null) EditorPreviewBlurScope {
         EnhancedModalBottomSheet(
             visible = true,
             onDismiss = { activePanel = null },
@@ -435,13 +443,13 @@ fun WatermarkingContent(
         capabilities = ImageExportCapabilities(
             formats = ImageFormat.entries,
             supportsSaveLocation = true,
-            supportsBackgroundColor = exportBitmap?.hasAlpha() == true,
+            supportsBackgroundColor = component.document.mount == null && exportBitmap?.hasAlpha() == true,
             metadataPolicies = ImageExportMetadataPolicy.entries,
         ),
         summary = ImageExportSummary(
             itemCount = exportItemCount,
-            width = exportBitmap?.width,
-            height = exportBitmap?.height,
+            width = exportLayout?.width,
+            height = exportLayout?.height,
             sourceSizeBytes = component.selectedUri.fileSize(),
         ),
         estimateBitmap = exportBitmap,

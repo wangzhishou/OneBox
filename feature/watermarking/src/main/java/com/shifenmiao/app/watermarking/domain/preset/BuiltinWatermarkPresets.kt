@@ -10,6 +10,8 @@
 
 package com.shifenmiao.app.watermarking.domain.preset
 
+import com.shifenmiao.app.watermarking.domain.model.PhotoMount
+
 import com.shifenmiao.app.watermarking.domain.model.ExifFieldKey
 import com.shifenmiao.app.watermarking.domain.model.HiddenWatermarkParams
 import com.shifenmiao.app.watermarking.domain.model.WatermarkAnchor
@@ -37,6 +39,14 @@ import com.wanbaohe.watermark.template.R as TemplateR
 object BuiltinWatermarkPresets {
     const val DOCUMENT_USE = "document_use"
     const val SIGNATURE = "work_signature"
+    const val PHOTO_MOUNT = "photo_mount"
+
+    private val mountPreset = WatermarkPreset(
+        id = PHOTO_MOUNT,
+        nameRes = R.string.watermark_photo_mount,
+        document = WatermarkDocument(elements = emptyList(), mount = PhotoMount()),
+        isBuiltin = true,
+    )
 
     fun textPreset(id: String, nameRes: Int, text: String): WatermarkPreset {
         require(id == DOCUMENT_USE || id == SIGNATURE)
@@ -70,10 +80,11 @@ object BuiltinWatermarkPresets {
     }
 
     val featuredEntries: List<WatermarkPreset> by lazy {
-        featuredIds.map { id -> entries.first { it.id == id.id } }
+        featuredIds.map { id -> entries.first { it.id == id.id } } + mountPreset
     }
 
-    fun findById(id: String): WatermarkPreset? = entries.firstOrNull { it.id == id }
+    fun findById(id: String): WatermarkPreset? =
+        if (id == PHOTO_MOUNT) mountPreset else entries.firstOrNull { it.id == id }
 
     private fun presetFor(id: BuiltinTemplateId): WatermarkPreset {
         val metadata = BuiltinTemplateRegistry.entries.first { it.id == id.id }

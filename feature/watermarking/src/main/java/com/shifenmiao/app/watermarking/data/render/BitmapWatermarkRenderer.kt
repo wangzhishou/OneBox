@@ -19,6 +19,7 @@ import com.shifenmiao.app.watermarking.domain.model.HiddenWatermarkParams
 import com.shifenmiao.app.watermarking.domain.model.WatermarkAnchor
 import com.shifenmiao.app.watermarking.domain.model.WatermarkFrame
 import com.shifenmiao.app.watermarking.domain.model.WatermarkResolution
+import com.shifenmiao.app.watermarking.domain.model.watermarkCanvasLayout
 import com.shifenmiao.app.watermarking.domain.render.HiddenWatermarkEmbedder
 import com.shifenmiao.app.watermarking.domain.render.WatermarkRenderer
 import com.shifenmiao.app.watermarking.domain.render.WatermarkVisualFactory
@@ -37,24 +38,35 @@ class BitmapWatermarkRenderer @Inject constructor(
         hiddenWatermark: HiddenWatermarkParams,
     ): Bitmap? = withContext(defaultDispatcher) {
         val frame = resolution.frame
-        // 带高按「图片宽度」成比例，与旧相机水印渲染器、预览共用同一套护栏。
-        val bandHeight = when (frame) {
-            is WatermarkFrame.BottomBand -> frame.bandHeightFor(image.width)
-            WatermarkFrame.InPlace -> 0
-        }
+        val mount = resolution.mount
+        val layout = watermarkCanvasLayout(image.width, image.height, frame, mount)
+        val bandHeight = layout.bandHeight
         val output = Bitmap.createBitmap(
-            image.width,
-            image.height + bandHeight,
+            layout.width,
+            layout.height,
             Bitmap.Config.ARGB_8888,
         )
         val canvas = Canvas(output)
+        if (mount != null) {
+            canvas.drawColor(mount.style.color)
+            mount.style.keylineColor?.let { color ->
+                val edge = layout.keylineWidth.toFloat()
+                val left = layout.contentLeft.toFloat()
+                val top = layout.contentTop.toFloat()
+                canvas.drawRect(
+                    left - edge, top - edge, left + image.width + edge,
+                    top + image.height + bandHeight + edge, Paint().apply { this.color = color },
+                )
+            }
+        }
+        canvas.translate(layout.contentLeft.toFloat(), layout.contentTop.toFloat())
         canvas.drawBitmap(image, 0f, 0f, null)
         if (frame is WatermarkFrame.BottomBand && bandHeight > 0) {
             canvas.drawRect(
                 0f,
                 image.height.toFloat(),
                 image.width.toFloat(),
-                output.height.toFloat(),
+                (image.height + bandHeight).toFloat(),
                 Paint(Paint.ANTI_ALIAS_FLAG).apply {
                     color = frame.color
                     style = Paint.Style.FILL
@@ -66,7 +78,7 @@ class BitmapWatermarkRenderer @Inject constructor(
             0f,
             image.height.toFloat(),
             image.width.toFloat(),
-            output.height.toFloat(),
+            (image.height + bandHeight).toFloat(),
         )
         resolution.elements.forEach { resolved ->
             if (!resolved.element.transform.visible) return@forEach
@@ -87,7 +99,7 @@ class BitmapWatermarkRenderer @Inject constructor(
                 null
             } ?: return@forEach
             if (resolved.element.layout.isRepeated) {
-                WatermarkDrawEngine.drawRepeated(canvas, visual, resolved.element)
+                WatermarkDrawEngine.drawRepeated(canvas, visual, resolved.element, rect.takeIf { mount != null })
             } else {
                 WatermarkDrawEngine.drawSingle(canvas, visual, resolved.element, rect)
             }

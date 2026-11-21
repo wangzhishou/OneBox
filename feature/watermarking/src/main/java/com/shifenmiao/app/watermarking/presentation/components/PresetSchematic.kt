@@ -55,6 +55,7 @@ import com.shifenmiao.app.watermarking.domain.preset.WatermarkPreset
 import com.shifenmiao.app.watermarking.domain.preset.BuiltinWatermarkPresets
 import com.shifenmiao.app.watermarking.presentation.model.sampleText
 import com.shifenmiao.app.watermarking.presentation.model.title
+import com.shifenmiao.app.watermarking.presentation.panels.PhotoMountThumbnail
 import com.wanbaohe.watermark.template.domain.BuiltinTemplateId
 import com.wanbaohe.watermark.template.R as TemplateR
 
@@ -68,6 +69,10 @@ fun PresetSchematic(
     modifier: Modifier = Modifier,
     height: Dp = 82.dp,
 ) {
+    preset.document.mount?.let { mount ->
+        Box(modifier) { PhotoMountThumbnail(mount, height) }
+        return
+    }
     if (preset.id == BuiltinTemplateId.LEICA_CLASSIC.id) {
         LeicaPresetSchematic(modifier, height)
         return

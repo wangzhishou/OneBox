@@ -2134,6 +2134,15 @@
     <string name="watermark_zoom_in">放大</string>
     <string name="watermark_zoom_fit">适应屏幕</string>
     <string name="watermark_actual_size">实际像素</string>
+    <string name="watermark_photo_mount">照片装裱</string>
+    <string name="watermark_photo_mount_short">边框</string>
+    <string name="watermark_photo_mount_desc">给照片加边框，保留完整原图</string>
+    <string name="watermark_mount_gallery">展览留白</string>
+    <string name="watermark_mount_darkroom">暗房黑框</string>
+    <string name="watermark_mount_instant">拍立得</string>
+    <string name="watermark_mount_width">边框宽度</string>
+    <string name="watermark_mount_natural_ratio">随照片</string>
+    <string name="watermark_mount_remove">移除边框</string>
     <string name="watermark_use_photo_time">使用照片拍摄时间</string>
     <string name="watermark_no_photo_time">这张照片没有可读取的拍摄时间。</string>
     <string name="watermark_time_fallback_text">缺少拍摄时间时显示的文字</string>

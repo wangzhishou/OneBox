@@ -66,6 +66,7 @@ data class WatermarkResolution(
     val weatherAvailable: Boolean = true,
     /** 输出画布版式，由 resolve 从 document 透传，预览与导出共用。 */
     val frame: WatermarkFrame = WatermarkFrame.InPlace,
+    val mount: PhotoMount? = null,
 )
 
 data class ResolvedWatermarkElement(

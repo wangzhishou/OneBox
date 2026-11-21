@@ -79,6 +79,11 @@ import com.shifenmiao.app.watermarking.data.render.WatermarkDrawEngine
 import com.shifenmiao.app.watermarking.domain.model.ResolvedWatermarkElement
 import com.shifenmiao.app.watermarking.domain.model.WatermarkAnchor
 import com.shifenmiao.app.watermarking.domain.model.WatermarkFrame
+import com.shifenmiao.app.watermarking.domain.model.PhotoMount
+import com.shifenmiao.app.watermarking.domain.model.watermarkCanvasLayout
+import androidx.compose.foundation.layout.absoluteOffset
+import androidx.compose.foundation.layout.width
+import androidx.compose.ui.draw.drawBehind
 import com.shifenmiao.app.watermarking.domain.model.WatermarkHorizontalAlignment
 import com.shifenmiao.app.watermarking.domain.model.WatermarkKind
 import com.shifenmiao.app.watermarking.domain.model.kind
@@ -108,6 +113,7 @@ import kotlin.math.roundToInt
 fun WatermarkCanvas(
     bitmap: Bitmap?,
     frame: WatermarkFrame = WatermarkFrame.InPlace,
+    mount: PhotoMount? = null,
     resolvedElements: List<ResolvedWatermarkElement>,
     selectedElementId: String?,
     isLoading: Boolean,
@@ -150,41 +156,31 @@ fun WatermarkCanvas(
         val viewport = remember { EditorViewportState() }
         val density = LocalDensity.current
         val paddingPx = with(density) { 16.dp.roundToPx() } * 2
-        // BottomBand 的输出画布 = 原图 + 下方白带。预览必须按「整张输出画布」做 fit，
-        // 否则白带会被挤出视口，PHOTO / BAND 两套归一化坐标也无法与导出对齐。
         val bandColor = (frame as? WatermarkFrame.BottomBand)?.color ?: -1
-        // 护栏按源图宽度算，再随 fit 一起缩放；预览与导出因此保持同一比例。
-        // 提到外层，photoHeight 与 canvasSize 共用同一个值。
-        val sourceBandHeight = bitmap?.width?.let { width ->
-            (frame as? WatermarkFrame.BottomBand)?.bandHeightFor(width) ?: 0
-        } ?: 0
-        val canvasSize = bitmap?.let {
-            val outputWidth = it.width
-            val outputHeight = (it.height + sourceBandHeight).coerceAtLeast(1)
-            val fit = min(
-                (constraints.maxWidth - paddingPx).coerceAtLeast(1) / outputWidth.toFloat(),
-                (constraints.maxHeight - paddingPx).coerceAtLeast(1) / outputHeight.toFloat(),
+        val layout = bitmap?.let { watermarkCanvasLayout(it.width, it.height, frame, mount) }
+        val fit = layout?.let {
+            min(
+                (constraints.maxWidth - paddingPx).coerceAtLeast(1) / it.width.toFloat(),
+                (constraints.maxHeight - paddingPx).coerceAtLeast(1) / it.height.toFloat(),
             )
+        } ?: 1f
+        fun fitPx(value: Int): Int = (value * fit).roundToInt()
+        val canvasSize = layout?.let {
             IntSize(
-                (outputWidth * fit).toInt().coerceAtLeast(1),
-                (outputHeight * fit).toInt().coerceAtLeast(1),
+                fitPx(it.width).coerceAtLeast(1),
+                fitPx(it.height).coerceAtLeast(1),
             )
         } ?: IntSize.Zero
-        // 白带高度取差值，保证 photoHeight + bandHeight 精确等于 canvasSize.height，
-        // 不因两次取整在照片与白带之间漏出一条缝。
-        val photoHeight = bitmap?.let {
-            // 没有白带时必须让照片区吃满整个画布高度，否则两处独立取整
-            // 会差出 1~2px，底部漏出一条假白带/棋盘格，看着像没对齐。
-            if (sourceBandHeight == 0) {
-                canvasSize.height
-            } else {
-                (it.height * (canvasSize.width / it.width.toFloat())).roundToInt()
-                    .coerceIn(1, canvasSize.height)
-            }
-        } ?: 0
-        val bandHeight = (canvasSize.height - photoHeight).coerceAtLeast(0)
-        val fittedSourceScale = bitmap?.let { canvasSize.width / it.width.toFloat() }
-            ?.takeIf { it > 0f } ?: 1f
+        val left = fitPx(layout?.contentLeft ?: 0)
+        val top = fitPx(layout?.contentTop ?: 0)
+        val photoWidth = if (bitmap == null || layout == null) 0
+            else (fitPx(layout.contentLeft + bitmap.width) - left).coerceAtLeast(1)
+        val photoHeight = if (bitmap == null || layout == null) 0
+            else (fitPx(layout.contentTop + bitmap.height) - top).coerceAtLeast(1)
+        val bandHeight = if (bitmap == null || layout == null) 0 else
+            (fitPx(layout.contentTop + bitmap.height + layout.bandHeight) - top - photoHeight)
+                .coerceAtLeast(0)
+        val fittedSourceScale = fit
         SideEffect {
             viewport.configure(
                 layoutSize = Size(constraints.maxWidth.toFloat(), constraints.maxHeight.toFloat()),
@@ -193,19 +189,19 @@ fun WatermarkCanvas(
             )
         }
         // 切模板会改变输出画布比例（多出白带），复位用户缩放才能完整看到新画布。
-        LaunchedEffect(bitmap, frame) { viewport.fit() }
+        LaunchedEffect(bitmap, frame, mount?.style, mount?.ratio) { viewport.fit() }
         val visualKey = resolvedElements.map {
             listOf(it.element.id, it.text, it.imageData, it.element.content, it.element.style)
         }
         val visuals by produceState<Map<String, WatermarkVisual<Bitmap>>>(
             initialValue = emptyMap(),
             visualKey,
-            canvasSize,
+            IntSize(photoWidth, photoHeight),
             bandHeight,
             frame,
         ) {
             value = withContext(Dispatchers.Default) {
-                createVisuals(canvasSize.width, canvasSize.height, bandHeight)
+                createVisuals(photoWidth, photoHeight, bandHeight)
             }
         }
         Box(
@@ -282,30 +278,54 @@ fun WatermarkCanvas(
                 val displayedImage = remember(displayedBitmap) { displayedBitmap.asImageBitmap() }
                 // 无 alpha 的图不该透出棋盘格：drawImage 的边缘亚像素外扩后，
                 // 容器棋盘底仍会从右侧/底部漏出一条，看着像画布没对齐。
-                val showTransparency = remember(displayedBitmap) { displayedBitmap.hasAlpha() }
+                val showTransparency = (mount == null || isComparing) &&
+                    remember(displayedBitmap) { displayedBitmap.hasAlpha() }
                 val originalDescription = stringResource(R.string.original)
                 val canvasWidthDp = with(density) { canvasSize.width.toDp() }
                 val canvasHeightDp = with(density) { canvasSize.height.toDp() }
+                val photoWidthDp = with(density) { photoWidth.toDp() }
                 val photoHeightDp = with(density) { photoHeight.toDp() }
                 val bandHeightDp = with(density) { bandHeight.toDp() }
                 // 没有白带时 BAND 元素一律降级回 PHOTO，避免出现「元素存在但落在画布外」。
                 val (photoElements, bandElements) = resolvedElements.partition { resolved ->
                     resolved.element.anchor != WatermarkAnchor.BAND || bandHeight == 0
                 }
+                Box(
+                    modifier = Modifier.size(canvasWidthDp, canvasHeightDp).drawBehind {
+                        if (mount != null && !isComparing) {
+                            drawRect(Color(mount.style.color))
+                            mount.style.keylineColor?.let { color ->
+                                val line = ((layout?.keylineWidth ?: 0) * fit).coerceAtLeast(0.5f)
+                                drawRect(
+                                    Color(color),
+                                    topLeft = Offset(left - line, top - line),
+                                    size = Size(photoWidth + 2 * line, photoHeight + bandHeight + 2 * line),
+                                )
+                                drawRect(
+                                    Color(mount.style.color),
+                                    topLeft = Offset(left.toFloat(), top.toFloat()),
+                                    size = Size(photoWidth.toFloat(), (photoHeight + bandHeight).toFloat()),
+                                )
+                            }
+                        }
+                    },
+                ) {
                 Column(
-                    modifier = Modifier.size(canvasWidthDp, canvasHeightDp),
+                    modifier = Modifier.absoluteOffset { IntOffset(left, top) }.width(photoWidthDp),
                 ) {
                     // PHOTO 区：容器 constraints 恰好等于导出的 photoRect，
                     // centerX/centerY 只在该 rect 内归一化，与 drawSingle 的换算一致。
                     Box(
                         modifier = Modifier
-                            .size(canvasWidthDp, photoHeightDp)
+                            .size(photoWidthDp, photoHeightDp)
                             .zIndex(
                                 if (photoElements.any { it.element.id == selectedElementId }) 1f else 0f
                             )
                             .then(
                                 if (showTransparency) {
                                     Modifier.transparencyChecker()
+                                } else if (mount != null && !isComparing) {
+                                    Modifier
                                 } else {
                                     Modifier.background(MaterialTheme.colorScheme.surface)
                                 }
@@ -366,7 +386,7 @@ fun WatermarkCanvas(
                     if (bandHeight > 0) {
                         Box(
                             modifier = Modifier
-                                .size(canvasWidthDp, bandHeightDp)
+                                .size(photoWidthDp, bandHeightDp)
                                 .zIndex(
                                     if (bandElements.any { it.element.id == selectedElementId }) 1f else 0f
                                 )
@@ -391,6 +411,7 @@ fun WatermarkCanvas(
                             }
                         }
                     }
+                }
                 }
             }
         }

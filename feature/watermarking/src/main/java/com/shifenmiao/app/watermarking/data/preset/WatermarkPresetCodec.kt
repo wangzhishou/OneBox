@@ -28,6 +28,9 @@ import com.shifenmiao.app.watermarking.domain.model.WatermarkValueSource
 import com.shifenmiao.app.watermarking.domain.preset.WatermarkPreset
 import org.json.JSONArray
 import org.json.JSONObject
+import com.shifenmiao.app.watermarking.domain.model.PhotoMount
+import com.shifenmiao.app.watermarking.domain.model.PhotoMountRatio
+import com.shifenmiao.app.watermarking.domain.model.PhotoMountStyle
 
 object WatermarkPresetCodec {
     fun encode(preset: WatermarkPreset): String = JSONObject().apply {
@@ -37,6 +40,13 @@ object WatermarkPresetCodec {
         put("updatedAt", preset.updatedAt)
         put("hiddenEnabled", preset.document.hiddenWatermark.enabled)
         put("hiddenLSB", preset.document.hiddenWatermark.isLSB)
+        preset.document.mount?.let { mount ->
+            put("mount", JSONObject().apply {
+                put("style", mount.style.name)
+                put("widthRatio", mount.widthRatio.toDouble())
+                put("ratio", mount.ratio.name)
+            })
+        }
         put("frame", JSONObject().apply {
             when (val frame = preset.document.frame) {
                 WatermarkFrame.InPlace -> put("type", "in_place")
@@ -83,7 +93,18 @@ object WatermarkPresetCodec {
                 // 旧文档补完当前版本默认字段后，下次保存写出最新结构。
                 schemaVersion = WatermarkDocument.CURRENT_SCHEMA_VERSION,
                 frame = frame,
-                elements = elements.ifEmpty { WatermarkDocument().elements },
+                elements = if (version < 4) elements.ifEmpty { WatermarkDocument().elements } else elements,
+                mount = json.optJSONObject("mount")?.let { data ->
+                    PhotoMountStyle.entries.firstOrNull { it.name == data.optString("style") }?.let { style ->
+                        PhotoMount(
+                            style = style,
+                            widthRatio = data.optDouble("widthRatio", style.defaultWidth.toDouble())
+                                .toFloat().takeIf { it.isFinite() } ?: style.defaultWidth,
+                            ratio = PhotoMountRatio.entries.firstOrNull { it.name == data.optString("ratio") }
+                                ?: PhotoMountRatio.NATURAL,
+                        )
+                    }
+                },
                 hiddenWatermark = HiddenWatermarkParams(
                     enabled = json.optBoolean("hiddenEnabled"),
                     isLSB = json.optBoolean("hiddenLSB", true),

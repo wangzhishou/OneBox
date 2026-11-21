@@ -53,6 +53,7 @@ import com.wanbaohe.core.ui.widget.text.RoundedTextField
 fun PresetPanel(
     presets: List<WatermarkPreset>,
     hasLayers: Boolean,
+    appliesWithoutReplacing: (WatermarkPreset) -> Boolean,
     onApplyPreset: (WatermarkPreset) -> Unit,
     onSaveCurrent: (String, (Boolean) -> Unit) -> Unit,
     onDeletePreset: (String, (Boolean) -> Unit) -> Unit,
@@ -69,7 +70,8 @@ fun PresetPanel(
                 PresetCard(
                     preset = preset,
                     onApply = {
-                        if (hasLayers) pendingApply = preset.id else onApplyPreset(preset)
+                        if (hasLayers && !appliesWithoutReplacing(preset)) pendingApply = preset.id
+                        else onApplyPreset(preset)
                     },
                     onDelete = { pendingDelete = preset.id },
                 )

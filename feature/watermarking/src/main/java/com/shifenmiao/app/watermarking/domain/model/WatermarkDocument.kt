@@ -17,10 +17,11 @@ data class WatermarkDocument(
         defaultWatermarkElement(WatermarkContent.Text())
     ),
     val hiddenWatermark: HiddenWatermarkParams = HiddenWatermarkParams(),
+    val mount: PhotoMount? = null,
 ) {
     companion object {
-        /** v2 引入 frame / anchor；v3 引入水平对齐与栏宽，旧文档使用居中及默认栏宽。 */
-        const val CURRENT_SCHEMA_VERSION = 3
+        /** v4 引入独立的照片装裱，并保留空图层列表。 */
+        const val CURRENT_SCHEMA_VERSION = 4
     }
 }
 

@@ -2203,6 +2203,15 @@
     <string name="watermark_template_repeat">Tiled</string>
     <string name="watermark_template_repeat_desc">Copyright text repeated across the whole photo.</string>
     <string name="watermark_template_leica">Leica classic</string>
+    <string name="watermark_photo_mount">Photo mounts</string>
+    <string name="watermark_photo_mount_short">Frame</string>
+    <string name="watermark_photo_mount_desc">Frame the whole photo without cropping</string>
+    <string name="watermark_mount_gallery">Gallery white</string>
+    <string name="watermark_mount_darkroom">Darkroom</string>
+    <string name="watermark_mount_instant">Instant print</string>
+    <string name="watermark_mount_width">Border width</string>
+    <string name="watermark_mount_natural_ratio">Fit photo</string>
+    <string name="watermark_mount_remove">Remove frame</string>
     <string name="watermark_template_leica_desc">A white info band with camera data, time and location.</string>
     <string name="watermark_start_pick_photo">Choose photos</string>
     <string name="watermark_start_selected">Selected</string>

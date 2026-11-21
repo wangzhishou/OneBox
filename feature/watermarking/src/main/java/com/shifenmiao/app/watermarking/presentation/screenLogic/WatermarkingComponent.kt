@@ -354,6 +354,13 @@ class WatermarkingComponent @AssistedInject internal constructor(
         privacy.deactivate()
     }
 
+    fun updateMount(mount: com.shifenmiao.app.watermarking.domain.model.PhotoMount?, recordHistory: Boolean = true) {
+        if (document.mount == mount) return
+        val updated = document.copy(mount = mount)
+        if (recordHistory) editSession.apply(updated) else editSession.updateTransient(updated)
+        publishDocument(resolve = false)
+    }
+
     private fun applyPresetDocument(document: WatermarkDocument) {
         applyDocument(document)
         _selectedElementId.update { document.elements.lastOrNull()?.id }

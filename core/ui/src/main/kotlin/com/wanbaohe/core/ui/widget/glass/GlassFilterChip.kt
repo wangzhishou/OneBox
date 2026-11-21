@@ -76,11 +76,14 @@ fun GlassFilterChip(
     selectedColor: Color = Color.Unspecified,
     glassContainerColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     glassSelectedContainerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    selectedSurfaceStyle: GlassStyle? = null,
 ) {
     val settingsState = LocalSettingsState.current
+    // 指定选中表面层级时，使用和 GlassCard 相同的玻璃与平涂底色。
+    val usesSurfaceStyle = enabled && selectedSurfaceStyle != null
 
     LocalMinimumInteractiveComponentSize.ProvidesValue(Dp.Unspecified) {
-        if (!settingsState.isGlassAlphaEnabled) {
+        if (!settingsState.isGlassAlphaEnabled && !usesSurfaceStyle) {
             FilterChip(
                 selected = selected,
                 onClick = onClick,
@@ -129,6 +132,29 @@ fun GlassFilterChip(
                 interactionSource = interactionSource,
             )
         } else {
+            val containerColor = if (selected) glassSelectedContainerColor else glassContainerColor
+            val surfaceModifier = if (usesSurfaceStyle) {
+                val surfaceStyle = if (selected) selectedSurfaceStyle ?: style else style
+                modifier.glassSimpleStyle(
+                    style = surfaceStyle,
+                    shape = shape,
+                    color = containerColor,
+                    borderWidth = glassBorderWidth,
+                )
+            } else {
+                modifier.glassControlStyle(
+                    style = style,
+                    backgroundAlpha = if (selected) {
+                        (style.backgroundAlpha + 0.02f).coerceAtMost(1f)
+                    } else {
+                        style.backgroundAlpha
+                    },
+                    shape = shape,
+                    color = containerColor,
+                    borderWidth = glassBorderWidth,
+                    enabled = enabled,
+                )
+            }
             val resolvedColors = colors.copy(
                 containerColor = Color.Transparent,
                 selectedContainerColor = Color.Transparent,
@@ -140,18 +166,7 @@ fun GlassFilterChip(
                 selected = selected,
                 onClick = onClick,
                 label = label,
-                modifier = modifier.glassControlStyle(
-                    style = style,
-                    backgroundAlpha = if (selected) {
-                        (style.backgroundAlpha + 0.02f).coerceAtMost(1f)
-                    } else {
-                        style.backgroundAlpha
-                    },
-                    shape = shape,
-                    color = if (selected) glassSelectedContainerColor else glassContainerColor,
-                    borderWidth = glassBorderWidth,
-                    enabled = enabled,
-                ),
+                modifier = surfaceModifier,
                 enabled = enabled,
                 leadingIcon = leadingIcon,
                 trailingIcon = trailingIcon,
@@ -166,6 +181,5 @@ fun GlassFilterChip(
         }
     }
 }
-
 
 

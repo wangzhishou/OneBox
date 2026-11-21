@@ -10,6 +10,8 @@
 
 package com.shifenmiao.app.watermarking.presentation.components
 
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineFilterFrames
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -105,6 +107,7 @@ fun WatermarkBottomBar(
                     Icon(
                         imageVector = when (panel) {
                             WatermarkPanel.PRESETS -> MaterialIcons.Outlined.Star
+                            WatermarkPanel.MOUNT -> Icons.Outlined.LineFilterFrames
                             WatermarkPanel.FILTER -> Icons.Outlined.LineFilters
                             WatermarkPanel.TOOLS -> MaterialIcons.Outlined.Build
                             WatermarkPanel.PROPERTIES -> MaterialIcons.Outlined.Tune

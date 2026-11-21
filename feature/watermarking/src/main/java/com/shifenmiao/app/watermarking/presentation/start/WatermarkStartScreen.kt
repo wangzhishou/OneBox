@@ -60,6 +60,11 @@ enum class WatermarkStartTemplate(
     BLANK(null, R.string.watermark_template_blank, R.string.watermark_template_blank_desc),
     REPEAT(BuiltinTemplateId.COPYRIGHT_TILE.id, R.string.watermark_template_repeat, R.string.watermark_template_repeat_desc),
     LEICA(BuiltinTemplateId.LEICA_CLASSIC.id, R.string.watermark_template_leica, R.string.watermark_template_leica_desc),
+    MOUNT(
+        BuiltinWatermarkPresets.PHOTO_MOUNT,
+        R.string.watermark_photo_mount,
+        R.string.watermark_photo_mount_desc,
+    ),
     DOCUMENT(
         BuiltinWatermarkPresets.DOCUMENT_USE,
         R.string.watermark_use_document,

@@ -17,6 +17,7 @@ import com.t8rin.imagetoolbox.core.resources.R
 
 enum class WatermarkPanel {
     PRESETS,
+    MOUNT,
     FILTER,
     TOOLS,
     PROPERTIES,
@@ -29,6 +30,7 @@ enum class WatermarkPanel {
 fun WatermarkPanel.title(): String = stringResource(
     when (this) {
         WatermarkPanel.PRESETS -> R.string.presets
+        WatermarkPanel.MOUNT -> R.string.watermark_photo_mount_short
         WatermarkPanel.FILTER -> R.string.filter
         WatermarkPanel.TOOLS -> R.string.watermark_tools
         WatermarkPanel.PROPERTIES -> R.string.properties

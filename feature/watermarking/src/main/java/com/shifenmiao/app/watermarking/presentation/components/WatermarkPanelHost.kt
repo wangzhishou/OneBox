@@ -10,6 +10,9 @@
 
 package com.shifenmiao.app.watermarking.presentation.components
 
+import com.shifenmiao.app.watermarking.domain.preset.BuiltinWatermarkPresets
+import com.shifenmiao.app.watermarking.presentation.panels.PhotoMountPanel
+
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.shifenmiao.app.watermarking.domain.model.usesDeviceLocation
@@ -33,11 +36,23 @@ fun WatermarkPanelHost(
     when (panel) {
         WatermarkPanel.TOOLS -> Unit
         WatermarkPanel.FILTER -> Unit
+        WatermarkPanel.MOUNT -> PhotoMountPanel(
+            mount = component.document.mount,
+            onChange = component::updateMount,
+            onBeginWidthEdit = component::beginCompoundEdit,
+            onEndWidthEdit = component::endCompoundEdit,
+            modifier = modifier,
+        )
         WatermarkPanel.PRESETS -> PresetPanel(
             presets = component.presets,
             hasLayers = component.document.elements.isNotEmpty(),
+            appliesWithoutReplacing = { it.id == BuiltinWatermarkPresets.PHOTO_MOUNT },
             onApplyPreset = { preset ->
-                component.applyPreset(preset)
+                if (preset.id == BuiltinWatermarkPresets.PHOTO_MOUNT) {
+                    if (component.document.mount == null) component.updateMount(preset.document.mount)
+                } else {
+                    component.applyPreset(preset)
+                }
                 onPresetApplied(preset)
                 if (preset.document.usesDeviceLocation()) onRequestLocation()
             },
