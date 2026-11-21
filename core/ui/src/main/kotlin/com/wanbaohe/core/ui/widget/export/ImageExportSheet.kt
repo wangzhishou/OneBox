@@ -21,7 +21,6 @@ package com.wanbaohe.core.ui.widget.export
 
 import android.graphics.Bitmap
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -138,9 +137,11 @@ fun ImageExportSheet(
         title = title,
         modifier = modifier,
         confirmButton = {
+            // 按钮按内容自适应宽度，整行靠右对齐（父级操作栏本身是 Arrangement.End）。
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.End),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 if (capabilities.supportsSharing && onShare != null) {
                     SecondaryButton(
@@ -154,7 +155,6 @@ fun ImageExportSheet(
                             )
                         },
                         onClick = onShare,
-                        modifier = Modifier.weight(1f),
                     )
                 }
                 PrimaryButton(
@@ -172,7 +172,6 @@ fun ImageExportSheet(
                         )
                     },
                     onClick = onSave,
-                    modifier = Modifier.weight(1.4f),
                 )
             }
         },
@@ -422,17 +421,6 @@ private fun PrimaryFormatSelector(
                         } else {
                             MaterialTheme.colorScheme.surfaceContainer
                         },
-                    )
-                    .then(
-                        if (selected) {
-                            Modifier.border(
-                                width = 1.dp,
-                                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                shape = ShapeDefaults.large,
-                            )
-                        } else {
-                            Modifier
-                        }
                     )
                     .semantics {
                         role = Role.Tab
