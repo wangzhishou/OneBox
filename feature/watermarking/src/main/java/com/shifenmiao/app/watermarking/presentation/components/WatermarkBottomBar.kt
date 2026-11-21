@@ -70,7 +70,14 @@ fun WatermarkBottomBar(
             .padding(horizontal = 8.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Row(modifier = Modifier.weight(1f).horizontalScroll(rememberScrollState())) {
+        // 标签本体原本是紧贴的(默认间距 0),未选中项背景透明时看不出来;
+        // 一旦相邻两项同时高亮(如 Filter + Tools),两块蓝色胶囊就会贴成一片。
+        // 给整行统一留 4dp 间距,让高亮项之间也有可见间隙;条目宽度同步
+        // 56→52dp,总宽 332dp(原 336dp),6 个标签仍完整显示、不被 Export 挤掉。
+        Row(
+            modifier = Modifier.weight(1f).horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
             WatermarkPanel.entries.filter { panel ->
                 if (isPrivacyActive) {
                     panel != WatermarkPanel.PROPERTIES &&
@@ -89,7 +96,7 @@ fun WatermarkBottomBar(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier
-                        .size(width = 56.dp, height = 52.dp)
+                        .size(width = 52.dp, height = 52.dp)
                         .clip(ShapeDefaults.default)
                         .background(if (selected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent)
                         .clickable { onPanelClick(panel) }
