@@ -155,7 +155,7 @@ OneBoxMarkdownContent(
         start = AppTheme.dimens.paddingNormal,
         top = 0.dp,
         end = AppTheme.dimens.paddingNormal,
-        bottom = 30.dp
+        bottom = 8.dp
     ),
 )
     }
