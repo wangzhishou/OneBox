@@ -141,7 +141,8 @@ data class BottomNavigationBarStyle(
     val outerTopPadding: Dp = 2.dp,
     val innerTopPadding: Dp = 4.dp,
     val selectedItemGlassStyle: GlassStyle = GlassStyle.Dense,
-    val tabItemShape: Shape = RoundedCornerShape(12.dp),
+    /** 选中胶囊(图标+文字)的圆角,与底栏容器顶角保持同一个 16dp */
+    val tabItemShape: Shape = RoundedCornerShape(16.dp),
     /** 选中胶囊的最大宽度:文字短时胶囊贴合文字,超长不突破该上限,内部跑马灯滚动 */
     val tabMaxWidth: Dp = 96.dp,
     val tabHorizontalPadding: Dp = 12.dp,
