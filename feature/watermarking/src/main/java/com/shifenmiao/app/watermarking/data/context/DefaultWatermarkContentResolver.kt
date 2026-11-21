@@ -32,6 +32,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -150,9 +151,12 @@ class DefaultWatermarkContentResolver @Inject constructor(
             }.getOrNull()
         }
         val context = PhotoWatermarkContext(
-            dateTime = exif?.getAttribute(MetadataTag.DatetimeOriginal.key)
-                ?: exif?.getAttribute(MetadataTag.DatetimeDigitized.key)
-                ?: exif?.getAttribute(MetadataTag.Datetime.key),
+            dateTime = sequenceOf(
+                MetadataTag.DatetimeOriginal,
+                MetadataTag.DatetimeDigitized,
+                MetadataTag.Datetime,
+            ).mapNotNull { exif?.getAttribute(it.key)?.trim() }
+                .firstOrNull { parseExifDate(it) != null },
             coordinates = parseCoordinates(
                 latitude = exif?.getAttribute(MetadataTag.GpsLatitude.key),
                 latitudeRef = exif?.getAttribute(MetadataTag.GpsLatitudeRef.key),
@@ -212,8 +216,7 @@ class DefaultWatermarkContentResolver @Inject constructor(
     }
 
     /**
-     * usePhotoTime=true 时只认照片 EXIF 时间，其次文件时间（面板会标注「非拍摄时间」），
-     * 两者都没有就返回空串让图层省略；绝不回落 now() 冒充拍摄时间。
+     * 拍摄模式优先用照片的 EXIF 时间，缺失时才用手填值，不用当前时间冒充。
      * usePhotoTime=false 是「当前时间」语义，now() 合法。
      */
     private fun formatTimestamp(
@@ -222,8 +225,7 @@ class DefaultWatermarkContentResolver @Inject constructor(
     ): String {
         if (!content.usePhotoTime) return formatDate(Date(), content.format)
         val date = photo.dateTime?.let(::parseExifDate)
-            ?: photo.fileDateTime?.let(::parseExifDate)
-            ?: return ""
+            ?: return content.fallbackText.trim().lineSequence().firstOrNull().orEmpty()
         return formatDate(date, content.format)
     }
 
@@ -231,9 +233,11 @@ class DefaultWatermarkContentResolver @Inject constructor(
         runCatching { SimpleDateFormat(pattern.ifBlank { "yyyy-MM-dd HH:mm" }, Locale.US).format(date) }
             .getOrElse { SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(date) }
 
-    private fun parseExifDate(value: String): Date? = runCatching {
-        SimpleDateFormat("yyyy:MM:dd HH:mm:ss", Locale.US).parse(value)
-    }.getOrNull()
+    private fun parseExifDate(value: String): Date? {
+        val position = ParsePosition(0)
+        val parser = SimpleDateFormat("yyyy:MM:dd HH:mm:ss", Locale.US).apply { isLenient = false }
+        return parser.parse(value, position)?.takeIf { position.index == value.length }
+    }
 
     private fun formatCameraParams(
         content: WatermarkContent.CameraParams,

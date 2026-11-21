@@ -53,6 +53,7 @@ fun WatermarkPanelHost(
             needsDeviceLocation = component.needsDeviceLocation,
             weatherAvailable = component.weatherAvailable,
             isDynamicDataLoading = component.isDynamicDataLoading,
+            isResolvingPhoto = component.isResolving,
             locationLoadFailed = component.locationLoadFailed,
             onContentChange = { content, mergeHistory ->
                 component.updateSelectedContent(content, mergeHistory)

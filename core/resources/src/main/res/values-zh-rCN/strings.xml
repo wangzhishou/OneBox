@@ -2135,6 +2135,8 @@
     <string name="watermark_zoom_fit">适应屏幕</string>
     <string name="watermark_actual_size">实际像素</string>
     <string name="watermark_use_photo_time">使用照片拍摄时间</string>
+    <string name="watermark_no_photo_time">这张照片没有可读取的拍摄时间。</string>
+    <string name="watermark_time_fallback_text">缺少拍摄时间时显示的文字</string>
     <string name="watermark_use_current_location">使用当前位置</string>
     <string name="watermark_location_failed">无法获取当前位置，请重试或手动填写</string>
     <string name="watermark_weather_unavailable">暂时无法获取天气，请检查网络或手动填写</string>

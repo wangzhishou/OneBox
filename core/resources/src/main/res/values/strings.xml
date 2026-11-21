@@ -2135,6 +2135,8 @@
     <string name="watermark_zoom_fit">Fit to screen</string>
     <string name="watermark_actual_size">Actual size</string>
     <string name="watermark_use_photo_time">Use photo capture time</string>
+    <string name="watermark_no_photo_time">No capture time found in this photo.</string>
+    <string name="watermark_time_fallback_text">Text to show when capture time is missing</string>
     <string name="watermark_use_current_location">Use current location</string>
     <string name="watermark_location_failed">Couldn\'t get the current location. Try again or enter it manually.</string>
     <string name="watermark_weather_unavailable">Weather is unavailable. Check the network or enter it manually.</string>

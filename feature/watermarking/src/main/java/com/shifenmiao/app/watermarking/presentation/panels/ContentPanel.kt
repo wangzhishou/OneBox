@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.app.watermarking.domain.model.ExifFieldKey
 import com.shifenmiao.app.watermarking.domain.model.ResolvedWatermarkElement
 import com.shifenmiao.app.watermarking.domain.model.WatermarkContent
 import com.shifenmiao.app.watermarking.domain.model.WatermarkElement
@@ -49,6 +50,7 @@ fun ContentPanel(
     needsDeviceLocation: Boolean,
     weatherAvailable: Boolean,
     isDynamicDataLoading: Boolean,
+    isResolvingPhoto: Boolean,
     locationLoadFailed: Boolean,
     onContentChange: (WatermarkContent, Boolean) -> Unit,
     onRequestLocation: () -> Unit,
@@ -96,8 +98,24 @@ fun ContentPanel(
             )
             is WatermarkContent.Timestamp -> TimestampContent(
                 content = content,
+                resolvedValue = resolvedValue,
+                isLoading = isResolvingPhoto,
                 onContentChange = onContentChange,
             )
+            is WatermarkContent.CameraParams -> {
+                resolvedValue?.let { Text(it, style = MaterialTheme.typography.bodyMedium) }
+                content.fields.distinct().forEach { field ->
+                    WatermarkTextField(
+                        value = content.manualOverrides[field.name].orEmpty(),
+                        labelRes = field.labelRes(),
+                        singleLine = true,
+                    ) { value ->
+                        val overrides = if (value.isEmpty()) content.manualOverrides - field.name
+                        else content.manualOverrides + (field.name to value)
+                        onContentChange(content.copy(manualOverrides = overrides), true)
+                    }
+                }
+            }
             else -> DynamicContentControls(
                 content = content,
                 resolvedValue = resolvedValue,
@@ -116,6 +134,8 @@ fun ContentPanel(
 @Composable
 private fun TimestampContent(
     content: WatermarkContent.Timestamp,
+    resolvedValue: String?,
+    isLoading: Boolean,
     onContentChange: (WatermarkContent, Boolean) -> Unit,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -132,6 +152,16 @@ private fun TimestampContent(
             onClick = { onContentChange(content.copy(usePhotoTime = it), false) },
             drawContainer = false,
         )
+        if (content.usePhotoTime) {
+            if (!isLoading && resolvedValue == null) {
+                EmptySelectionHint(R.string.watermark_no_photo_time)
+            }
+            WatermarkTextField(
+                value = content.fallbackText,
+                labelRes = R.string.watermark_time_fallback_text,
+                singleLine = true,
+            ) { onContentChange(content.copy(fallbackText = it), true) }
+        }
     }
 }
 
@@ -301,17 +331,31 @@ private fun WatermarkContent.manualValue(): String = when (this) {
     else -> ""
 }
 
+private fun ExifFieldKey.labelRes(): Int = when (this) {
+    ExifFieldKey.CAMERA_MAKE -> R.string.tag_make
+    ExifFieldKey.CAMERA_MODEL -> R.string.tag_model
+    ExifFieldKey.LENS_MODEL -> R.string.tag_lens_model
+    ExifFieldKey.FOCAL_LENGTH -> R.string.tag_focal_length
+    ExifFieldKey.FOCAL_LENGTH_35MM -> R.string.tag_focal_length_in_35mm_film
+    ExifFieldKey.APERTURE -> R.string.tag_f_number
+    ExifFieldKey.SHUTTER -> R.string.tag_exposure_time
+    ExifFieldKey.ISO -> R.string.tag_photographic_sensitivity
+    ExifFieldKey.CAPTURED_AT -> R.string.tag_datetime_original
+    ExifFieldKey.GPS -> R.string.watermark_coordinates
+}
+
 @Composable
 private fun WatermarkTextField(
     value: String,
     labelRes: Int = R.string.text,
+    singleLine: Boolean = false,
     onValueChange: (String) -> Unit,
 ) {
     RoundedTextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(stringResource(labelRes)) },
-        singleLine = false,
+        singleLine = singleLine,
         modifier = Modifier
             .fillMaxWidth()
             .flatGlassContainer(ShapeDefaults.large, resultPadding = 8.dp),

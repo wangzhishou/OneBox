@@ -38,6 +38,7 @@ data class WatermarkStyle(
     val sizeRatio: Float = 0.08f,
     val maxWidthRatio: Float = 0.9f,
     val font: FontType? = null,
+    val bold: Boolean = false,
 )
 
 data class WatermarkLayout(

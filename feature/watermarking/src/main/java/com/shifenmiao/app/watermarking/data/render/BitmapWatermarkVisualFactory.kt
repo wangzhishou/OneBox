@@ -165,7 +165,12 @@ class BitmapWatermarkVisualFactory @Inject constructor(
             color = element.style.color
             this.textSize = textSize
             textAlign = Paint.Align.LEFT
-            element.style.font.toTypeface()?.let(::setTypeface)
+            val font = element.style.font.toTypeface()
+            if (element.style.bold) {
+                typeface = android.graphics.Typeface.create(font, android.graphics.Typeface.BOLD)
+            } else if (font != null) {
+                typeface = font
+            }
         }
         val singleBandLine = element.anchor == WatermarkAnchor.BAND && !text.contains('\n')
         val positionedMaxRatio = when {

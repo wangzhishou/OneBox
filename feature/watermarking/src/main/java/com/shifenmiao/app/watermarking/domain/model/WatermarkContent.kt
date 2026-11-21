@@ -29,6 +29,7 @@ sealed interface WatermarkContent {
     data class Timestamp(
         val format: String = "yyyy-MM-dd HH:mm",
         val usePhotoTime: Boolean = true,
+        val fallbackText: String = "",
     ) : WatermarkContent
 
     data class Altitude(

@@ -114,6 +114,7 @@ object WatermarkPresetCodec {
             put("sizeRatio", element.style.sizeRatio.toDouble())
             put("maxWidthRatio", element.style.maxWidthRatio.toDouble())
             put("font", element.style.font?.let(::encodeFont) ?: JSONObject.NULL)
+            put("bold", element.style.bold)
         })
         put("repeated", element.layout.isRepeated)
         put("repeatSpacing", element.layout.repeatSpacing.toDouble())
@@ -148,6 +149,7 @@ object WatermarkPresetCodec {
                 sizeRatio = style.optDouble("sizeRatio", 0.08).toFloat(),
                 maxWidthRatio = style.optDouble("maxWidthRatio", 0.9).toFloat(),
                 font = style.optJSONObject("font")?.let(::decodeFont),
+                bold = style.optBoolean("bold"),
             ),
             layout = WatermarkLayout(
                 isRepeated = json.optBoolean("repeated"),
@@ -184,6 +186,7 @@ object WatermarkPresetCodec {
                 put("type", "timestamp")
                 put("format", content.format)
                 put("usePhotoTime", content.usePhotoTime)
+                put("fallbackText", content.fallbackText)
             }
             is WatermarkContent.Altitude -> {
                 put("type", "altitude")
@@ -253,6 +256,7 @@ object WatermarkPresetCodec {
         "timestamp" -> WatermarkContent.Timestamp(
             format = json.optString("format", "yyyy-MM-dd HH:mm"),
             usePhotoTime = json.optBoolean("usePhotoTime", true),
+            fallbackText = json.optString("fallbackText"),
         )
         "altitude" -> WatermarkContent.Altitude(
             source = decodeSource(json),
