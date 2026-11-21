@@ -152,7 +152,14 @@ fun GlassSwitch(
             onCheckedChange = onCheckedChange,
             modifier = modifier.glassControlStyle(
                 style = style,
-                backgroundAlpha = style.backgroundAlpha,
+                // 轨道底色按状态加厚，与 GlassCheckbox/GlassRadioButton 对齐。
+                // 原先直接传裸的 style.backgroundAlpha(Regular 仅 0.12f)，玻璃开启时
+                // 轨道淡到几乎看不见，开关只剩一个悬空的 thumb，边界与状态都分不清。
+                backgroundAlpha = if (checked) {
+                    (style.backgroundAlpha + 0.12f).coerceAtMost(1f)
+                } else {
+                    (style.backgroundAlpha + 0.05f).coerceAtMost(1f)
+                },
                 shape = shape,
                 color = glassColor,
                 borderWidth = resolvedBorderWidth,
