@@ -44,6 +44,7 @@ import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.PrivacyPolicyDialog
 import com.shifenmiao.common.ui.ai.AIModelsPickerBottomSheet
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.widget.enhanced.DialogBackdropHost
 import com.t8rin.imagetoolbox.core.utils.getString
 import kotlinx.coroutines.launch
 import com.shifenmiao.core.R
@@ -87,6 +88,15 @@ import kotlinx.coroutines.flow.map
 
 @Composable
 fun AppContent(
+    rootComponent: RootComponent,
+    appComponent: AppComponent,
+    startupPhaseController: StartupPhaseController,
+) = DialogBackdropHost {
+    AppContentImpl(rootComponent, appComponent, startupPhaseController)
+}
+
+@Composable
+private fun AppContentImpl(
     rootComponent: RootComponent,
     appComponent: AppComponent,
     startupPhaseController: StartupPhaseController,
@@ -639,4 +649,3 @@ private inline fun <T> com.shifenmiao.login.state.LoginStateHolder.collectLoginS
 
     return flow.collectAsState(initial = initial).value
 }
-

@@ -39,8 +39,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.material.icons.Icons
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.DatePickerColors
 import androidx.compose.material3.DatePickerDefaults
@@ -48,7 +47,7 @@ import androidx.compose.material3.DatePickerFormatter
 import androidx.compose.material3.DateRangePicker
 import androidx.compose.material3.DateRangePickerDefaults
 import androidx.compose.material3.DateRangePickerState
-import androidx.compose.material3.Icon
+import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -84,8 +83,6 @@ import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsS
 import com.wanbaohe.core.ui.widget.modifier.alertDialogBorder
 import com.wanbaohe.core.ui.widget.modifier.fadingEdges
 import kotlin.math.truncate
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineKeyboard
 
 @Composable
 fun EnhancedDateRangePickerDialog(
@@ -151,7 +148,7 @@ fun EnhancedDateRangePickerDialog(
                 ),
             state = state,
             dateFormatter = dateFormatter,
-            colors = colors,
+            colors = if (overlayBackdrop() != null) colors.copy(containerColor = Color.Transparent) else colors,
             title = title,
             headline = headline,
             showModeToggle = showModeToggle,
@@ -198,27 +195,16 @@ fun EnhancedTimePickerDialog(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    EnhancedIconButton(
-                        modifier = modifier,
-                        onClick = {
+                    TimePickerDialogDefaults.DisplayModeToggle(
+                        {
                             displayMode = if (displayMode == TimePickerDisplayMode.Picker) {
                                 TimePickerDisplayMode.Input
                             } else {
                                 TimePickerDisplayMode.Picker
                             }
-                        }
-                    ) {
-                        val icon = if (displayMode == TimePickerDisplayMode.Picker) {
-                            com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineKeyboard
-                        } else {
-                            com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory
-                        }
-
-                        Icon(
-                            imageVector = icon,
-                            contentDescription = icon.name
-                        )
-                    }
+                        },
+                        displayMode
+                    )
 
                     Spacer(modifier = Modifier.weight(1f))
 
@@ -291,17 +277,20 @@ private fun EnhancedDatePickerDialogContainer(
         modifier = modifier,
         placeAboveAll = placeAboveAll,
     ) {
+        val glass = overlayBackdrop() != null
         Surface(
             modifier = Modifier
                 .alertDialogBorder()
                 .then(
-                    if (showButtons) Modifier.requiredWidth(ContainerWidth)
+                    if (showButtons) Modifier.width(ContainerWidth)
                     else Modifier
                 )
-                .heightIn(max = ContainerHeight),
+                .heightIn(max = ContainerHeight)
+                .then(if (glass) Modifier.overlayTint(shape, containerColor, OverlaySurface.Dialog) else Modifier),
             shape = shape,
-            color = containerColor,
-            tonalElevation = tonalElevation,
+            color = if (glass) Color.Transparent else containerColor,
+            contentColor = contentColorFor(containerColor),
+            tonalElevation = if (glass) 0.dp else tonalElevation,
         ) {
             Column(verticalArrangement = Arrangement.SpaceBetween) {
                 DatePickerContainer(content = content)

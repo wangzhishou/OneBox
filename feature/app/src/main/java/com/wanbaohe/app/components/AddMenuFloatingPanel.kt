@@ -19,7 +19,6 @@
 
 package com.wanbaohe.app.components
 
-import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateFloatAsState
@@ -49,7 +48,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -79,7 +77,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineNote
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePrompt
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineScanQrCode
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSchedule
-import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
+import com.wanbaohe.core.ui.widget.enhanced.isOverlayGlassAvailable
+import com.wanbaohe.core.ui.widget.enhanced.floatingPanelTint
 import com.wanbaohe.core.ui.widget.glass.glassDense
 import com.shifenmiao.core.R as CoreR
 import com.t8rin.imagetoolbox.core.resources.R as ToolboxR
@@ -189,38 +188,22 @@ fun AddMenuFloatingPanel(
         )
     }
 
-    val settingsState = LocalSettingsState.current
+    val glass = isOverlayGlassAvailable()
 
     // 遮罩透明度动画
     val scrimAlpha by animateFloatAsState(
         targetValue = if (expanded) 1f else 0f,
-        animationSpec = tween(300),
+        animationSpec = tween(if (expanded) 300 else 250),
         label = "scrim_alpha"
     )
 
     // 全屏遮罩层 — 点击空白区域关闭面板
     if (expanded || visibleState.currentState || visibleState.isIdle.not()) {
-        // 遮罩背景色：liquid glass 模式用更轻的遮罩 + 模糊，普通模式用半透明深色
-        val scrimColor = if (settingsState.isLiquidGlassEnabled) {
-            MaterialTheme.colorScheme.scrim.copy(alpha = 0.65f * scrimAlpha)
-        } else {
-            MaterialTheme.colorScheme.scrim.copy(alpha = 0.65f * scrimAlpha)
-        }
+        val scrimColor = MaterialTheme.colorScheme.scrim.copy(alpha = (if (glass) .28f else .65f) * scrimAlpha)
 
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .then(
-                    // Liquid Glass + API 31+ → 高斯模糊遮罩
-                    if (settingsState.isLiquidGlassEnabled
-                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
-                        && expanded
-                    ) {
-                        Modifier.blur(radius = 12.dp)
-                    } else {
-                        Modifier
-                    }
-                )
                 .background(scrimColor)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
@@ -410,9 +393,9 @@ fun AddMenuFloatingPanel(
                 modifier = Modifier
                     .padding(horizontal = 32.dp)
                     .fillMaxWidth()
-                    .background(
-                        color = MaterialTheme.colorScheme.surface,
-                        shape = panelShape,
+                    .then(
+                        if (glass) Modifier.floatingPanelTint(panelShape, MaterialTheme.colorScheme.surfaceContainer)
+                        else Modifier.background(MaterialTheme.colorScheme.surface, panelShape)
                     )
                     // 底部气泡箭头会占掉 panelShape 的 arrowSize(12.dp) 高度，
                     // 多补一个箭头高度，让最后一行文字到卡片下边缘的留白
@@ -514,4 +497,3 @@ private fun AddMenuGridItem(
         )
     }
 }
-

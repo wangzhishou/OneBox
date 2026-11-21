@@ -158,6 +158,7 @@ import com.t8rin.imagetoolbox.feature.load_net_image.presentation.screenLogic.Lo
 import com.wanbaohe.markuplayers.presentation.MarkupLayersContent
 import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
 import com.wanbaohe.textcard.presentation.TextCardContent
+import com.wanbaohe.core.ui.widget.enhanced.EditorPreviewBlurScope
 import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
 import com.t8rin.imagetoolbox.feature.mesh_gradients.presentation.MeshGradientsContent
 import com.t8rin.imagetoolbox.feature.mesh_gradients.presentation.screenLogic.MeshGradientsComponent
@@ -487,12 +488,12 @@ sealed interface NavigationChild {
 
     class MarkupLayers(private val component: MarkupLayersComponent) : NavigationChild {
         @Composable
-        override fun Content() = MarkupLayersContent(component)
+        override fun Content() = EditorPreviewBlurScope { MarkupLayersContent(component) }
     }
 
     class TextCard(private val component: TextCardComponent) : NavigationChild {
         @Composable
-        override fun Content() = TextCardContent(component)
+        override fun Content() = EditorPreviewBlurScope { TextCardContent(component) }
     }
 
     class Base64Tools(private val component: Base64ToolsComponent) : NavigationChild {
@@ -1216,10 +1217,12 @@ sealed interface NavigationChild {
     ) : NavigationChild {
         @Composable
         override fun Content() {
-            CameraWatermarkScreen(
-                component = cameraWatermarkComponent,
-                appComponent = appComponent
-            )
+            EditorPreviewBlurScope {
+                CameraWatermarkScreen(
+                    component = cameraWatermarkComponent,
+                    appComponent = appComponent
+                )
+            }
         }
     }
 

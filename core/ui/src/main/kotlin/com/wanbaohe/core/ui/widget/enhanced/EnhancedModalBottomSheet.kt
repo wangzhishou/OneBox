@@ -42,7 +42,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -67,7 +66,6 @@ import com.t8rin.modalsheet.ModalBottomSheetValue
 import com.t8rin.modalsheet.ModalSheet
 import com.t8rin.modalsheet.rememberModalBottomSheetState
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
@@ -114,10 +112,10 @@ fun EnhancedModalBottomSheet(
     enableGlass: Boolean = true,
     sheetContent: @Composable ColumnScope.() -> Unit,
 ) {
-    val settingsState = LocalSettingsState.current
-    val useGlass = enableGlass && settingsState.isGlassAlphaEnabled
+    val useGlass = overlayBackdrop(enableGlass) != null
 
     EnhancedModalSheetImpl(
+        enableGlass = enableGlass,
         cancelable = cancelable,
         nestedScrollEnabled = nestedScrollEnabled,
         dragHandle = {},
@@ -144,11 +142,7 @@ fun EnhancedModalBottomSheet(
                     modifier = Modifier
                         .fillMaxWidth()
                         .then(confirmBarModifier)
-                        .then(if (useGlass) {
-                            Modifier.background(
-                                color = EnhancedBottomSheetDefaults.barContainerColor,
-                            )
-                        } else {
+                        .then(if (useGlass) Modifier else {
                             Modifier.drawHorizontalStroke(true, autoElevation = 6.dp).background(
                                 EnhancedBottomSheetDefaults.barContainerColor
                             )
@@ -208,10 +202,10 @@ fun EnhancedModalBottomSheet(
     enableGlass: Boolean,
     sheetContent: @Composable ColumnScope.() -> Unit,
 ) {
-    val settingsState = LocalSettingsState.current
-    val useGlass = enableGlass && settingsState.isGlassAlphaEnabled
+    val useGlass = overlayBackdrop(enableGlass) != null
 
     EnhancedModalSheetImpl(
+        enableGlass = enableGlass,
         cancelable = cancelable,
         nestedScrollEnabled = nestedScrollEnabled,
         dragHandle = dragHandle,
@@ -227,11 +221,7 @@ fun EnhancedModalBottomSheet(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .then(if (useGlass) {
-                        Modifier.background(
-                            color = EnhancedBottomSheetDefaults.barContainerColor,
-                        )
-                    } else {
+                    .then(if (useGlass) Modifier else {
                         Modifier.drawHorizontalStroke(true, autoElevation = 6.dp).background(
                             EnhancedBottomSheetDefaults.barContainerColor
                         )
@@ -291,10 +281,10 @@ fun EnhancedModalBottomSheet(
     enableGlass: Boolean,
     sheetContent: @Composable ColumnScope.() -> Unit,
 ) {
-    val settingsState = LocalSettingsState.current
-    val useGlass = enableGlass && settingsState.isGlassAlphaEnabled
+    val useGlass = overlayBackdrop(enableGlass) != null
 
     EnhancedModalSheetImpl(
+        enableGlass = enableGlass,
         cancelable = cancelable,
         nestedScrollEnabled = nestedScrollEnabled,
         dragHandle = dragHandle,
@@ -342,6 +332,7 @@ fun EnhancedModalBottomSheet(
 private fun EnhancedModalSheetImpl(
     visible: Boolean,
     onVisibleChange: (Boolean) -> Unit,
+    enableGlass: Boolean = true,
     modifier: Modifier = Modifier,
     dragHandle: @Composable ColumnScope.() -> Unit = { EnhancedModalSheetDragHandle() },
     nestedScrollEnabled: Boolean = false,
@@ -389,24 +380,15 @@ private fun EnhancedModalSheetImpl(
             true
         },
     )
-    val scope = rememberCoroutineScope()
     var isAnimating by remember { mutableStateOf(false) }
 
     LaunchedEffect(visible, cancelable) {
-        if (visible) {
-            internalCancelable.value = cancelable
-            isAnimating = true
-            scope.launch {
-                sheetState.show()
-                isAnimating = false
-            }
-        } else {
-            internalCancelable.value = true
-            isAnimating = true
-            scope.launch {
-                sheetState.hide()
-                isAnimating = false
-            }
+        internalCancelable.value = !visible || cancelable
+        isAnimating = true
+        try {
+            if (visible) sheetState.show() else sheetState.hide()
+        } finally {
+            isAnimating = false
         }
     }
 
@@ -422,6 +404,8 @@ private fun EnhancedModalSheetImpl(
 
     if (!visible && sheetState.currentValue == sheetState.targetValue && !sheetState.isVisible && !isAnimating) return
 
+    val backdrop = overlayBackdrop(enableGlass)
+    HoldOverlayBlur(backdrop) { sheetState.visibleFraction }
     val settingsState = LocalSettingsState.current
 
     ProvideContainerDefaults(
@@ -460,17 +444,18 @@ private fun EnhancedModalSheetImpl(
                     enabled = settingsState.drawContainerShadows,
                     isClipped = true
                 )
-                .clip(shape),
+                .clip(shape)
+                .then(if (backdrop != null) Modifier.overlayTint(shape, containerColor, OverlaySurface.Sheet) else Modifier),
             modifier = modifier,
             shape = shape,
             elevation = elevation,
-            containerColor = containerColor,
+            containerColor = if (backdrop != null) Color.Transparent else containerColor,
             contentColor = contentColor,
-            scrimColor = scrimColor,
+            scrimColor = if (backdrop != null) scrimColor.copy(alpha = OverlayScrimAlpha) else scrimColor,
             content = {
                 PredictiveBackObserver(
                     onProgress = { progress ->
-                        predictiveBackProgress = progress
+                        if (cancelable) predictiveBackProgress = progress
                     },
                     // onClean's only job now is to translate a completed back-gesture into
                     // onVisibleChange(false). The 400ms delay + resetPredictiveBack() were
@@ -479,9 +464,9 @@ private fun EnhancedModalSheetImpl(
                     // (re-arming the 400ms wait), and if the user re-opened within 400ms the
                     // reset was skipped, leaving the sheet at 0.8× scale.
                     onClean = { isCompleted ->
-                        if (isCompleted) {
+                        if (isCompleted && cancelable) {
                             onVisibleChange(false)
-                        }
+                        } else resetPredictiveBack()
                     },
                     enabled = visible && enableBackHandler
                 )

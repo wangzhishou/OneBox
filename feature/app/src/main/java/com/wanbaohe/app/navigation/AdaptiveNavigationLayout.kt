@@ -57,6 +57,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.wanbaohe.core.ui.widget.enhanced.behindCreatePanel
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalWindowInfo
@@ -299,7 +300,7 @@ private fun NavigationRailLayout(
     }
 
     Row(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().behindCreatePanel(addMenuExpanded)
     ) {
         if (!isContentOnly) {
             NavigationRailBar(
@@ -399,6 +400,7 @@ private fun BottomNavigationLayout(
         rootComponent = rootComponent,
         modifier = Modifier
             .fillMaxSize()
+            .behindCreatePanel(addMenuExpanded)
             .padding(bottom = contentBottomPadding)
     )
     Box(
@@ -728,4 +730,3 @@ private fun AIAssistantPaneContent(
         )
     }
 }
-

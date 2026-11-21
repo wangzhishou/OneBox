@@ -26,9 +26,8 @@
 package com.wanbaohe.core.ui.widget.enhanced
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -56,13 +55,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -80,7 +75,6 @@ import com.wanbaohe.core.ui.utils.helper.PredictiveBackObserver
 import com.wanbaohe.core.ui.widget.modifier.alertDialogBorder
 import com.wanbaohe.core.ui.widget.modifier.tappable
 import com.wanbaohe.core.ui.widget.utils.FullscreenPopup
-import kotlinx.coroutines.delay
 
 @Composable
 fun EnhancedAlertDialog(
@@ -142,15 +136,15 @@ fun EnhancedAlertDialog(
     tonalElevation: Dp = AlertDialogDefaults.TonalElevation,
     enableGlass: Boolean
 ) {
-    val settingsState = LocalSettingsState.current
-    val useGlass = enableGlass && settingsState.isGlassAlphaEnabled
+    val backdrop = overlayBackdrop(enableGlass)
+    val useGlass = backdrop != null
 
-    BasicEnhancedAlertDialog(
+    EnhancedDialogHost(
         visible = visible,
         onDismissRequest = onDismissRequest,
         placeAboveAll = placeAboveAll,
         properties = properties,
-        enableGlass = enableGlass,
+        backdrop = backdrop,
         content = {
             val isCenterAlignButtons = LocalSettingsState.current.isCenterAlignDialogButtons
 
@@ -196,7 +190,7 @@ fun EnhancedAlertDialog(
                         maxWidth = DialogMaxWidth
                     )
                     .then(Modifier.semantics { paneTitle = "Dialog" }),
-                enableGlass = enableGlass
+                enableGlass = useGlass
             )
         }
     )
@@ -232,37 +226,38 @@ fun BasicEnhancedAlertDialog(
     enableGlass: Boolean,
     content: @Composable BoxScope.() -> Unit
 ) {
-    var visibleAnimated by remember { mutableStateOf(false) }
+    EnhancedDialogHost(visible, onDismissRequest, modifier, placeAboveAll, properties,
+        backdrop = overlayBackdrop(enableGlass),
+        content = content)
+}
 
-    var scale by remember {
-        mutableFloatStateOf(1f)
-    }
-    val animatedScale by animateFloatAsState(scale)
-
-    val settingsState = LocalSettingsState.current
-    val useGlass = enableGlass && settingsState.isGlassAlphaEnabled
-
-    LaunchedEffect(visible) {
-        if (visible) {
-            scale = 1f
-            visibleAnimated = true
-        }
-    }
-
-    if (visibleAnimated) {
+@Composable
+private fun EnhancedDialogHost(
+    visible: Boolean,
+    onDismissRequest: (() -> Unit)?,
+    modifier: Modifier = Modifier,
+    placeAboveAll: Boolean,
+    properties: DialogProperties,
+    backdrop: DialogBackdrop?,
+    content: @Composable BoxScope.() -> Unit
+) {
+    val transition = remember { MutableTransitionState(false) }
+    transition.targetState = visible
+    if (visible || transition.currentState || !transition.isIdle) {
+        var scale by remember(visible) { mutableFloatStateOf(1f) }
+        val animatedScale by animateFloatAsState(scale)
+        HoldOverlayBlur(backdrop)
         FullscreenPopup(placeAboveAll = placeAboveAll) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                var animateIn by rememberSaveable { mutableStateOf(false) }
-                LaunchedEffect(Unit) { animateIn = true }
                 AnimatedVisibility(
-                    visible = animateIn && visible,
-                    enter = fadeIn(),
-                    exit = fadeOut(),
+                    visible = visible,
+                    enter = fadeIn(tween(180)),
+                    exit = fadeOut(tween(140)),
                 ) {
-                    val alpha = if (useGlass) 0.50f * animatedScale else 0.5f * animatedScale
+                    val alpha = (if (backdrop != null) OverlayScrimAlpha else 0.5f) * animatedScale
                     val baseScrim = MaterialTheme.colorScheme.scrim
 
                     Box(
@@ -277,21 +272,9 @@ fun BasicEnhancedAlertDialog(
                     )
                 }
                 AnimatedVisibility(
-                    visible = animateIn && visible,
-                    enter = fadeIn(tween(300)) + scaleIn(
-                        initialScale = .8f,
-                        animationSpec = spring(
-                            dampingRatio = Spring.DampingRatioMediumBouncy,
-                            stiffness = Spring.StiffnessMediumLow
-                        )
-                    ),
-                    exit = fadeOut(tween(300)) + scaleOut(
-                        targetScale = .8f,
-                        animationSpec = spring(
-                            dampingRatio = Spring.DampingRatioMediumBouncy,
-                            stiffness = Spring.StiffnessMediumLow
-                        )
-                    ),
+                    visibleState = transition,
+                    enter = fadeIn(tween(180)) + scaleIn(tween(180), initialScale = .96f),
+                    exit = fadeOut(tween(140)) + scaleOut(tween(140), targetScale = .98f),
                     modifier = Modifier.scale(animatedScale)
                 ) {
                     Box(
@@ -308,12 +291,6 @@ fun BasicEnhancedAlertDialog(
                 }
             }
 
-            DisposableEffect(Unit) {
-                onDispose {
-                    visibleAnimated = false
-                }
-            }
-
             if (onDismissRequest != null && properties.dismissOnBackPress) {
                 PredictiveBackObserver(
                     onProgress = { progress ->
@@ -322,7 +299,6 @@ fun BasicEnhancedAlertDialog(
                     onClean = { isCompleted ->
                         if (isCompleted) {
                             onDismissRequest()
-                            delay(400)
                         }
                         scale = 1f
                     },
@@ -355,10 +331,7 @@ private fun EnhancedAlertDialogContent(
     Surface(
         modifier = modifier.then(
             if (useGlass) {
-                Modifier.background(
-                    shape = shape,
-                    color = containerColor
-                )
+                Modifier.overlayTint(shape, containerColor, OverlaySurface.Dialog)
             } else Modifier
         ),
         shape = shape,

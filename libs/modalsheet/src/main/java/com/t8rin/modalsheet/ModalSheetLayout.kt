@@ -145,6 +145,15 @@ class ModalSheetState(
     val progress: Float
         get() = swipeableState.progress
 
+    /** 可见高度占比；拖动、回弹和程序关闭共用同一位移。 */
+    val visibleFraction: Float
+        get() {
+            val hidden = swipeableState.anchors[Hidden] ?: return 0f
+            val shown = swipeableState.anchors[Expanded] ?: return 0f
+            val offset = swipeableState.offset ?: return 0f
+            return if (hidden > shown) ((hidden - offset) / (hidden - shown)).coerceIn(0f, 1f) else 0f
+        }
+
     /**
      * Whether the bottom sheet is visible.
      */

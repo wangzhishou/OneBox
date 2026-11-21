@@ -43,6 +43,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -217,6 +218,7 @@ fun EnhancedDropdownMenu(
     if (!expanded) return
 
     val settings = LocalSettingsState.current
+    val glass = overlayBackdrop() != null
     val density = LocalDensity.current
     val windowSize = LocalWindowInfo.current.containerSize
 
@@ -341,8 +343,10 @@ fun EnhancedDropdownMenu(
                     .onSizeChanged { bubbleWidthPx = it.width }
             ) {
                 Surface(
+                    modifier = if (glass) Modifier.overlayTint(shape, containerColor, OverlaySurface.Menu) else Modifier,
                     shape = shape,
-                    color = containerColor,
+                    color = if (glass) Color.Transparent else containerColor,
+                    contentColor = contentColorFor(containerColor),
                     tonalElevation = 0.dp,
                     // 与主题快捷设置弹窗一致:2dp 阴影把气泡托起来;
                     // 描边跟随外观设置,默认不画(截图那种干净样式)
