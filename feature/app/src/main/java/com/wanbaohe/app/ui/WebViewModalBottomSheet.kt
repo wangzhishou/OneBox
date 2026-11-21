@@ -196,7 +196,7 @@ fun WebViewModalBottomSheet(
                         navigationIcon = {
                             if (webViewState.canGoBack) {
                                 IconButton(onClick = {
-                                    webViewComponent.getCurrentWebView()?.goBack()
+                                    webViewComponent.goBack()
                                 }) {
                                     Icon(
                                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack,
@@ -209,7 +209,7 @@ fun WebViewModalBottomSheet(
                         actions = {
                             if (webViewState.canGoForward) {
                                 IconButton(onClick = {
-                                    webViewComponent.getCurrentWebView()?.goForward()
+                                    webViewComponent.goForward()
                                 }) {
                                     Icon(
                                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineArrowForwardIos,
@@ -236,9 +236,6 @@ fun WebViewModalBottomSheet(
                         },
                         onWebViewReleased = webViewComponent::releaseWebView,
                         modifier = Modifier.weight(1f),
-                        onTitleChanged = { newTitle ->
-                            webViewComponent.updateTitle(newTitle)
-                        },
                         client = webViewComponent.getWebViewClient(),
                         chromeClient = webViewComponent.getWebChromeClient(),
                         onReload = { webViewComponent.reload() },
@@ -375,7 +372,7 @@ fun WebViewModalBottomSheet(
     BackHandler {
         if (isExporting) return@BackHandler
         if (webViewState.canGoBack) {
-            webViewComponent.getCurrentWebView()?.goBack()
+            webViewComponent.goBack()
         } else {
             destroyWebView()
         }

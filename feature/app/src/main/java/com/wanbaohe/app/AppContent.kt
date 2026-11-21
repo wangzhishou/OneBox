@@ -422,8 +422,7 @@ private fun AppOverlayHost(
                     webViewParams = WebViewParams(
                         url = url,
                         title = AppContext.getString(R.string.privacy_title),
-                        enableShare = false,
-                        enableCustomTouch = false
+                        enableShare = false
                     )
                 )
             }

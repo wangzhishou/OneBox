@@ -31,11 +31,9 @@ data class WebViewParams(
     val htmlData: String? = null,
     val title: String = "",
     val mimeType: String = "text/html",
-    val isHtml: Boolean = false,
     val type: WebViewType = WebViewType.DEFAULT,
     val enableSlowWholeDocumentDraw: Boolean = false,
     val enableShare: Boolean = true,
-    val enableCustomTouch: Boolean = true,
     val ignoreSslError: Boolean = true,
     val aIgcInfo: String = ""
 ) : Parcelable

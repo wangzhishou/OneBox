@@ -31,7 +31,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.essenty.lifecycle.doOnCreate
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.shifenmiao.base.utils.ActionUtils
@@ -131,17 +130,9 @@ class WebViewComponent @AssistedInject internal constructor(
     }
 
     init {
-        componentContext.lifecycle.doOnCreate {
-
-        }
-
         componentContext.lifecycle.doOnDestroy {
             clearWebView()
         }
-    }
-
-    fun setWebViewParams(params: WebViewParams?) {
-        _webViewParams.value = params
     }
 
     // 设置当前WebView引用
@@ -193,7 +184,7 @@ class WebViewComponent @AssistedInject internal constructor(
         }
     }
 
-    fun load() {
+    private fun load() {
         cachedWebView?.get()?.let { view ->
             val currentUrl = view.url
             val params = webViewParams.value
@@ -240,7 +231,7 @@ class WebViewComponent @AssistedInject internal constructor(
         }
     }
 
-    fun getCurrentWebView(): WebView? {
+    private fun getCurrentWebView(): WebView? {
         return cachedWebView?.get()
     }
 

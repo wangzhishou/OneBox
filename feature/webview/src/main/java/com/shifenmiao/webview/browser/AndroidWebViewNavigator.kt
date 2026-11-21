@@ -27,6 +27,8 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import com.shifenmiao.webview.utils.WebViewExportUtils
 import java.lang.ref.WeakReference
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class AndroidWebViewNavigator : WebViewNavigator {
 
@@ -55,8 +57,6 @@ class AndroidWebViewNavigator : WebViewNavigator {
         webViewRef?.clear()
         webViewRef = null
     }
-
-    override fun isAttached(): Boolean = webViewRef?.get() != null
 
     override fun loadUrl(url: String) {
         val webView = webViewRef?.get()
@@ -109,23 +109,11 @@ class AndroidWebViewNavigator : WebViewNavigator {
 
     override fun canGoForward(): Boolean = webViewRef?.get()?.canGoForward() == true
 
-    override fun captureBitmap(): Bitmap? {
+    override suspend fun captureBitmap(): Bitmap? {
         val webView = webViewRef?.get() ?: return null
-        if (Looper.myLooper() == Looper.getMainLooper()) {
-            return WebViewExportUtils.captureWebViewToBitmap(webView)
+        return withContext(Dispatchers.Main.immediate) {
+            WebViewExportUtils.captureWebViewToBitmap(webView)
         }
-        var result: Bitmap? = null
-        val latch = java.util.concurrent.CountDownLatch(1)
-        mainHandler.post {
-            result = try {
-                WebViewExportUtils.captureWebViewToBitmap(webView)
-            } catch (_: Exception) {
-                null
-            }
-            latch.countDown()
-        }
-        latch.await(5, java.util.concurrent.TimeUnit.SECONDS)
-        return result
     }
 
     override fun createPrintDocumentAdapter(jobName: String): PrintDocumentAdapter? {

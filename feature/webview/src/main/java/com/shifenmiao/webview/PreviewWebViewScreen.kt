@@ -109,7 +109,6 @@ fun PreviewWebViewScreen(
                 webViewComponent.setWebView(webView)
             },
             onWebViewReleased = webViewComponent::releaseWebView,
-            onTitleChanged = { newTitle -> webViewComponent.updateTitle(newTitle) },
             client = webViewComponent.getWebViewClient(),
             chromeClient = webViewComponent.getWebChromeClient(),
             onReload = { webViewComponent.reload() },

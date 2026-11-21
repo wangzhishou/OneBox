@@ -44,11 +44,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
@@ -92,7 +88,6 @@ fun CommonWebView(
     client: WebViewClient,
     chromeClient: WebChromeClient,
     modifier: Modifier = Modifier,
-    onTitleChanged: (String) -> Unit = {},
     onWebViewCreated: (WebView) -> Unit = {},
     onWebViewReleased: (WebView) -> Unit = {},
     onReload: () -> Unit = {},
@@ -100,18 +95,11 @@ fun CommonWebView(
     onCancelLoading: () -> Unit = {},
     canLoadingCancel: Boolean = true,
 ) {
-    var pageTitle by remember { mutableStateOf<String?>(null) }
-
     // 获取Material3主题背景色
     val backgroundColor = MaterialTheme.colorScheme.background.toArgb()
 
     // 是否需要完整文档绘制（用于截图整个页面）
     val needSlowWholeDocumentDraw = webViewParams?.enableSlowWholeDocumentDraw == true
-
-    // 将页面标题传递给调用方
-    LaunchedEffect(pageTitle) {
-        pageTitle?.let { onTitleChanged(it) }
-    }
 
     if (needSlowWholeDocumentDraw) {
         remember { WebView.enableSlowWholeDocumentDraw() }

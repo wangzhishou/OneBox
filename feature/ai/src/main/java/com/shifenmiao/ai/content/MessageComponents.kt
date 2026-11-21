@@ -467,10 +467,8 @@ fun RobotMessageFooter(
                     appComponent.showWebView(
                         WebViewParams(
                             baseUrl = UrlConstants.WEB_VIEW_BASE_URL,
-                            isHtml = true,
                             htmlData = html,
                             enableSlowWholeDocumentDraw = true,
-                            enableCustomTouch = false,
                             aIgcInfo = aIgc
                         )
                     )

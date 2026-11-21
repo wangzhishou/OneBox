@@ -21,11 +21,6 @@ package com.wanbaohe.markdown.edit.component
 
 import android.content.Context
 import android.net.Uri
-import android.print.PrintAttributes
-import android.print.PrintManager
-import android.webkit.WebView
-import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.compose.runtime.Immutable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
@@ -630,61 +625,6 @@ class MarkdownEditorComponent @AssistedInject internal constructor(
      * 检查是否有未保存的更改
      */
     fun hasUnsavedChanges(): Boolean = _uiState.value.isDirty
-
-    fun savePdf(
-        webView: WebView?,
-        context: ComponentActivity,
-        fileName: String? = null,
-        onComplete: (Boolean, String?) -> Unit = { _, _ -> }
-    ) {
-        if (webView == null) {
-            // 这条分支以前是：把消息拼出来就扔掉，而且不回调 onComplete。
-            // 两个后果：① 用户点"保存为 PDF"什么提示都没有（静默失败）；
-            // ② 调用方（MarkdownEditorScreen 的 scope.launch）永远等不到收尾。
-            // 另外 %s 收到的是资源 id（Int）而不是字符串，lint 的 StringFormatMatches 会直接报 error。
-            // 现在把拼好的消息交给 onComplete，由调用方统一弹出——它已经有 `msg ?: save_failed` 兜底。
-            onComplete(
-                false,
-                appContext.getString(
-                    R.string.pdf_export_failure,
-                    appContext.getString(R.string.pdf_url_not_found)
-                )
-            )
-            return
-        }
-        try {
-            val jobName = fileName ?: "Markdown_${System.currentTimeMillis()}.pdf"
-            val printManager = context.getSystemService(Context.PRINT_SERVICE) as PrintManager
-            val printAdapter = webView.createPrintDocumentAdapter(jobName)
-
-            printManager.print(
-                jobName,
-                printAdapter,
-                PrintAttributes.Builder()
-                    .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
-                    .setResolution(PrintAttributes.Resolution("pdf", "pdf", 600, 600))
-                    .setMinMargins(PrintAttributes.Margins.NO_MARGINS)
-                    .build()
-            )
-            Toast.makeText(
-                context,
-                appContext.getString(R.string.pdf_export_prepare),
-                Toast.LENGTH_SHORT
-            ).show()
-            // 注意：由于Android打印服务是异步的，这里无法精确知道PDF何时完成
-            // 只能对打印任务发起进行回调
-            onComplete(true, null)
-        } catch (e: Exception) {
-            Toast.makeText(
-                context,
-                appContext.getString(R.string.pdf_export_failure, e.localizedMessage),
-                Toast.LENGTH_SHORT
-            ).show()
-            e.printStackTrace()
-            onComplete(false, null)
-        }
-
-    }
 
     @AssistedFactory
     fun interface Factory {

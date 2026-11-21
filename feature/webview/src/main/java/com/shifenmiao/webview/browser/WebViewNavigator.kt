@@ -32,7 +32,6 @@ interface WebViewNavigator {
      */
     fun attach(webView: WebView): Boolean
     fun detach()
-    fun isAttached(): Boolean
     fun loadUrl(url: String)
 
     /**
@@ -47,7 +46,7 @@ interface WebViewNavigator {
     fun stopLoading()
     fun canGoBack(): Boolean
     fun canGoForward(): Boolean
-    fun captureBitmap(): Bitmap?
+    suspend fun captureBitmap(): Bitmap?
     fun createPrintDocumentAdapter(jobName: String): PrintDocumentAdapter?
     fun evaluateJavascript(script: String, callback: (String?) -> Unit)
     fun applySettings(settings: BrowserSettings)

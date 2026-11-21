@@ -97,7 +97,6 @@ fun BindPhoneSheet(
                             title = uri.host ?: "",
                             url = uriString,
                             enableShare = false,
-                            enableCustomTouch = false,
                         )
                     )
                 }

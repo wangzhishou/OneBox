@@ -591,7 +591,7 @@ class BrowserComponent @AssistedInject internal constructor(
      */
     fun sharePage() {
         componentScope.launch {
-            val bitmap = withContext(defaultDispatcher) { navigator.captureBitmap() }
+            val bitmap = navigator.captureBitmap()
             if (bitmap == null) {
                 withContext(uiDispatcher) {
                     AppToastHost.showToast(
@@ -631,7 +631,7 @@ class BrowserComponent @AssistedInject internal constructor(
 
     fun savePngFile(fileUri: Uri, onResult: (SaveResult) -> Unit) {
         componentScope.launch {
-            val bitmap = withContext(uiDispatcher) { navigator.captureBitmap() }
+            val bitmap = navigator.captureBitmap()
             val result = withContext(defaultDispatcher) {
                 runCatching {
                     if (bitmap != null) {
@@ -744,7 +744,7 @@ class BrowserComponent @AssistedInject internal constructor(
     }
 
     override suspend fun captureScreenshotBase64(): String? {
-        val bitmap = withContext(uiDispatcher) { navigator.captureBitmap() } ?: return null
+        val bitmap = navigator.captureBitmap() ?: return null
         return withContext(defaultDispatcher) {
             runCatching {
                 val stream = ByteArrayOutputStream()

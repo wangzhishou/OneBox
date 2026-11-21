@@ -706,7 +706,6 @@ class AppComponent @AssistedInject internal constructor(
                     WebViewParams(
                         baseUrl = UrlConstants.WEB_VIEW_BASE_URL,
                         title = "HTML",
-                        isHtml = true,
                         htmlData = code,
                         enableSlowWholeDocumentDraw = true,
                     )
@@ -718,7 +717,6 @@ class AppComponent @AssistedInject internal constructor(
                     WebViewParams(
                         baseUrl = UrlConstants.WEB_VIEW_BASE_URL,
                         title = "JavaScript",
-                        isHtml = true,
                         htmlData = StringUtils.generateHtmlByJavascript(code),
                         enableSlowWholeDocumentDraw = true,
                     )

@@ -22,7 +22,6 @@ package com.shifenmiao.webview.utils
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Paint
 import android.net.Uri
 import android.os.Looper
 import android.print.PrintAttributes
@@ -30,7 +29,6 @@ import android.print.PrintManager
 import android.view.View
 import android.webkit.WebView
 import android.widget.Toast
-import androidx.documentfile.provider.DocumentFile
 import com.shifenmiao.common.file.TempBitmapFileUtils
 import com.t8rin.logger.makeLog
 import kotlin.math.sqrt
@@ -72,26 +70,6 @@ object WebViewExportUtils {
         } catch (e: Exception) {
             Toast.makeText(context, "PDF导出失败: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
             e.printStackTrace()
-            onComplete(false, null)
-        }
-    }
-
-    /**
-     * 导出WebView为PNG
-     */
-    fun exportToPng(
-        webView: WebView,
-        context: Context,
-        uri: Uri,
-        fileName: String,
-        onComplete: (Boolean, Uri?) -> Unit = { _, _ ->}
-    ) {
-        try {
-            val bitmap = captureWebViewToBitmap(webView)
-            saveImageToUri(context, uri, fileName, bitmap, onComplete)
-            bitmap.recycle()
-        } catch (e: Exception) {
-            e.makeLog("WebViewExportUtils")
             onComplete(false, null)
         }
     }
@@ -374,122 +352,4 @@ object WebViewExportUtils {
         )
     }
 
-    /**
-     * 在 Bitmap 底部叠加一条 "AI 生成内容声明" 横幅 —— 徕卡水印风格。
-     *
-     * 设计要点:
-     * - **背景条**(主题色纯色,扁平化、无渐变/边框/阴影);
-     * - **一行文字,加粗,右对齐**(贴齐右边缘);
-     * - **紧贴图片最底部**,banner 之外不再留白;
-     * - 字号、padding 都是**固定 px**,不再按短边百分比算,方便用户直接调。
-     *
-     * @param backgroundColor 主题色背景(建议传入 `tertiaryContainer` 或 `secondaryContainer`)
-     * @param textColor       主题色文字(建议传入 `onTertiaryContainer` 等对应 on* 色)
-     */
-    fun drawAiNoticeOnBitmap(
-        source: Bitmap,
-        noticeText: String,
-        backgroundColor: Int,
-        textColor: Int,
-    ): Bitmap {
-        val srcWidth = source.width.coerceAtLeast(1)
-        val srcHeight = source.height.coerceAtLeast(1)
-
-        // 固定参数,用户自己调
-        val textSize = 64f                  // 文字字号(px)
-        val verticalPadding = 20f           // 上下 padding
-        val horizontalPadding = 32f         // 左右 padding(右对齐时只影响右边距)
-        val bannerHeight = (textSize + verticalPadding * 2).toInt()
-
-        val out = Bitmap.createBitmap(srcWidth, srcHeight + bannerHeight, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(out)
-        // 1) 原图
-        canvas.drawBitmap(source, 0f, 0f, null)
-        // 2) 主题色纯色背景(扁平化:无渐变/边框/阴影,直接贴最底部)
-        val bgPaint = Paint().apply { color = backgroundColor }
-        canvas.drawRect(
-            0f, srcHeight.toFloat(),
-            srcWidth.toFloat(), (srcHeight + bannerHeight).toFloat(),
-            bgPaint
-        )
-        // 3) 加粗文字,右对齐,贴齐右边缘
-        val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            this.textSize = textSize
-            color = textColor
-            isFakeBoldText = true
-            textAlign = Paint.Align.RIGHT
-        }
-        val finalText = ellipsizeText(noticeText, textPaint, srcWidth - horizontalPadding)
-        val textX = srcWidth - horizontalPadding
-        val textY = srcHeight + bannerHeight / 2f -
-            (textPaint.descent() + textPaint.ascent()) / 2f
-        canvas.drawText(finalText, textX, textY, textPaint)
-        return out
-    }
-
-    private fun ellipsizeText(text: String, paint: Paint, maxWidth: Float): String {
-        if (maxWidth <= 0f) return ""
-        if (paint.measureText(text) <= maxWidth) return text
-        val ellipsis = "…"
-        var end = text.length
-        while (end > 0 && paint.measureText(text.substring(0, end) + ellipsis) > maxWidth) {
-            end--
-        }
-        return if (end <= 0) ellipsis else text.substring(0, end) + ellipsis
-    }
-
-    /**
-     * 保存位图到文件
-     */
-    private fun saveImageToUri(
-        context: Context,
-        folderUri: Uri,
-        fileName: String,
-        bitmap: Bitmap,
-        onComplete: (Boolean, Uri?) -> Unit = { _, _ ->}
-    ) {
-        val documentFile = DocumentFile.fromTreeUri(context, folderUri)?.createFile("image/png", fileName)
-
-        if (documentFile != null) {
-            try {
-                context.contentResolver.openOutputStream(documentFile.uri)?.use { outputStream ->
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-                }
-                onComplete(true, documentFile.uri)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                onComplete(false, null)
-            }
-        } else {
-            onComplete(false, null)
-        }
-    }
-
-    /**
-     * 保存PDF字节数组到文件
-     */
-    fun savePdfBytes(
-        context: Context,
-        folderUri: Uri,
-        fileName: String,
-        pdfBytes: ByteArray,
-        onComplete: (Boolean, Uri?) -> Unit = { _, _ ->
-        }
-    ) {
-        val documentFile = DocumentFile.fromTreeUri(context, folderUri)?.createFile("application/pdf", fileName)
-
-        if (documentFile != null) {
-            try {
-                context.contentResolver.openOutputStream(documentFile.uri)?.use { outputStream ->
-                    outputStream.write(pdfBytes)
-                }
-                onComplete(true, documentFile.uri)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                onComplete(false, null)
-            }
-        } else {
-            onComplete(false, null)
-        }
-    }
 }
