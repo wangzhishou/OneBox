@@ -24,6 +24,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Base64
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.essenty.lifecycle.doOnStart
 import com.shifenmiao.base.utils.ImageUtils
@@ -44,6 +45,8 @@ import com.t8rin.imagetoolbox.core.domain.saving.FileController
 import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
 import com.shifenmiao.webview.R
 import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.widget.web.PersistentWebContentOwner
+import com.wanbaohe.core.ui.widget.web.PersistentWebContentViewModel
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -79,6 +82,9 @@ class BrowserComponent @AssistedInject internal constructor(
 ) : BaseComponent(dispatchersHolder, componentContext), BrowserController {
 
     private val navigator: WebViewNavigator = AndroidWebViewNavigator()
+    private val webContentOwner = instanceKeeper.getOrCreate("PersistentWebContentOwner") { PersistentWebContentOwner() }
+    val webContentSession: PersistentWebContentViewModel
+        get() = webContentOwner.session
 
     private val itemDao = appDatabase.itemEntityDao()
     private val itemDataDao = appDatabase.itemDataDao()

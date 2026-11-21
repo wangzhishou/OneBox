@@ -24,13 +24,13 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.VelocityTracker
-import android.webkit.WebView
+import androidx.web.WebContentView
 
 class CustomWebView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : WebView(context, attrs, defStyleAttr) {
+) : WebContentView(context, attrs, defStyleAttr) {
 
     // 拖动手势回调
     var onScrollEdgeReached: ((Boolean) -> Unit)? = null

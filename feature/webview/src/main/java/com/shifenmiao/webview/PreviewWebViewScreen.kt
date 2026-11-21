@@ -103,10 +103,12 @@ fun PreviewWebViewScreen(
         CommonWebView(
             webViewParams = webViewParams,
             webViewState = webViewState,
+            session = webViewComponent.webContentSession,
             modifier = Modifier.fillMaxSize(),
             onWebViewCreated = { webView ->
                 webViewComponent.setWebView(webView)
             },
+            onWebViewReleased = webViewComponent::releaseWebView,
             onTitleChanged = { newTitle -> webViewComponent.updateTitle(newTitle) },
             client = webViewComponent.getWebViewClient(),
             chromeClient = webViewComponent.getWebChromeClient(),

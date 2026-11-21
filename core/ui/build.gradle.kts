@@ -59,6 +59,8 @@ dependencies {
     api(libs.decomposeExtensions)
 
     //AndroidX
+    api(libs.androidx.web)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.ink.authoring.android)
     implementation(libs.androidx.ink.authoring.compose)
     implementation(libs.androidx.ink.brush)

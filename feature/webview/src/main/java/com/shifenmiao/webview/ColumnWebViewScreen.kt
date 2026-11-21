@@ -20,13 +20,22 @@
 package com.shifenmiao.webview
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.shifenmiao.webview.common.CommonWebView
@@ -40,6 +49,13 @@ fun ColumnWebViewScreen(
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val webViewParams by webViewComponent.webViewParams.collectAsState()
     val webViewState by webViewComponent.webViewState.collectAsState()
+    var isWebContentReady by remember { mutableStateOf(false) }
+
+    LaunchedEffect(webViewComponent) {
+        withFrameNanos { }
+        withFrameNanos { }
+        isWebContentReady = true
+    }
 
     Column(
         Modifier
@@ -52,16 +68,29 @@ fun ColumnWebViewScreen(
             scrollBehavior = scrollBehavior
         )
 
-        CommonWebView(
-            webViewParams = webViewParams,
-            webViewState = webViewState,
-            modifier = Modifier.fillMaxSize(),
-            onWebViewCreated = { webView -> webViewComponent.setWebView(webView) },
-            onTitleChanged = { newTitle -> webViewComponent.updateTitle(newTitle) },
-            client = webViewComponent.getWebViewClient(),
-            chromeClient = webViewComponent.getWebChromeClient(),
-            onReload = { webViewComponent.reload() }
-        )
+        if (isWebContentReady) {
+            CommonWebView(
+                webViewParams = webViewParams,
+                webViewState = webViewState,
+                session = webViewComponent.webContentSession,
+                modifier = Modifier.fillMaxSize(),
+                onWebViewCreated = { webView -> webViewComponent.setWebView(webView) },
+                onWebViewReleased = webViewComponent::releaseWebView,
+                onTitleChanged = { newTitle -> webViewComponent.updateTitle(newTitle) },
+                client = webViewComponent.getWebViewClient(),
+                chromeClient = webViewComponent.getWebChromeClient(),
+                onReload = { webViewComponent.reload() }
+            )
+        } else {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+            }
+        }
     }
 
     BackHandler {

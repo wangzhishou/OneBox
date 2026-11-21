@@ -20,7 +20,6 @@
 package com.wanbaohe.fileviewer.screen
 
 import android.text.format.Formatter
-import android.webkit.WebView
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -66,7 +65,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
+import com.wanbaohe.core.ui.widget.web.PersistentWebView
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
@@ -211,19 +210,11 @@ fun FileViewerScreen(component: FileViewerComponent) {
 
 @Composable
 private fun DocumentWebView(component: FileViewerComponent, nightMode: Boolean) {
-    AndroidView(
+    PersistentWebView(
+        session = component.webContentSession,
         modifier = Modifier.fillMaxSize(),
-        factory = { context ->
-            // canRender 为真才会走到这里；真拿不到就退化成一个空 WebView，不在这儿崩
-            component.createWebView(context, nightMode) ?: WebView(context)
-        },
-        onRelease = { webView ->
-            // 先断开页面通道，再销毁 View；WebView 不 destroy 的话页面里的 JS 会一直活着
-            component.release()
-            webView.stopLoading()
-            webView.loadUrl("about:blank")
-            webView.destroy()
-        },
+        configure = { webView -> component.bindWebView(webView, nightMode) },
+        onViewReleased = { component.release() },
     )
 }
 

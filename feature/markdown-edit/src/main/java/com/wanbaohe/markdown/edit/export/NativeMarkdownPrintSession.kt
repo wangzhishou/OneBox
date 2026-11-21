@@ -16,6 +16,9 @@ import android.webkit.WebViewClient
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.web.WebContent
+import androidx.web.WebContentView
+import androidx.web.WebFeature
 import com.shifenmiao.core.R
 
 internal class NativeMarkdownPrintSession(
@@ -23,7 +26,8 @@ internal class NativeMarkdownPrintSession(
     private val fileName: String,
     private val onComplete: (Boolean, String?) -> Unit,
 ) {
-    private val webView = WebView(activity)
+    private var webView: WebView? = null
+    private var webContent: WebContent? = null
     private var printStarted = false
     private var completed = false
     private var disposed = false
@@ -41,8 +45,9 @@ internal class NativeMarkdownPrintSession(
             return
         }
         activity.lifecycle.addObserver(lifecycleObserver)
-        activity.addContentView(webView, ViewGroup.LayoutParams(1, 1))
-        webView.webViewClient = object : WebViewClient() {
+        val web = createWebView()
+        activity.addContentView(web, ViewGroup.LayoutParams(1, 1))
+        web.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView, url: String) {
                 if (completed || printStarted) return
                 view.postDelayed({ startPrint() }, PRINT_DELAY_MS)
@@ -56,22 +61,37 @@ internal class NativeMarkdownPrintSession(
                 if (request.isForMainFrame) complete(false, error.description?.toString())
             }
         }
-        webView.loadDataWithBaseURL(
+        web.loadDataWithBaseURL(
             "https://www.oneboxable.com/",
             html,
             "text/html",
             "UTF-8",
             null,
         )
-        webView.postDelayed(timeout, PRINT_TIMEOUT_MS)
+        web.postDelayed(timeout, PRINT_TIMEOUT_MS)
+    }
+
+    private fun createWebView(): WebView {
+        val content = runCatching {
+            if (WebFeature.isFeatureSupported(WebFeature.WEB_CONTENT)) WebContent() else null
+        }.getOrNull()
+        webContent = content
+        val web = if (content == null) {
+            WebView(activity)
+        } else {
+            content.attach(activity, ::WebContentView)
+        }
+        webView = web
+        return web
     }
 
     private fun startPrint() {
         if (completed || disposed || activity.isDestroyed) return
+        val web = webView ?: return
         printStarted = true
         runCatching {
             val printManager = activity.getSystemService(Context.PRINT_SERVICE) as PrintManager
-            val adapter = webView.createPrintDocumentAdapter(fileName)
+            val adapter = web.createPrintDocumentAdapter(fileName)
             printManager.print(
                 fileName,
                 PrintCompletionAdapter(adapter, ::dispose),
@@ -98,7 +118,7 @@ internal class NativeMarkdownPrintSession(
     private fun complete(success: Boolean, message: String?) {
         if (completed || disposed) return
         completed = true
-        webView.removeCallbacks(timeout)
+        webView?.removeCallbacks(timeout)
         activity.lifecycle.removeObserver(lifecycleObserver)
         onComplete(success, message)
         if (!success) dispose()
@@ -107,11 +127,20 @@ internal class NativeMarkdownPrintSession(
     private fun dispose() {
         if (disposed) return
         disposed = true
-        webView.removeCallbacks(timeout)
+        webView?.removeCallbacks(timeout)
         activity.lifecycle.removeObserver(lifecycleObserver)
-        (webView.parent as? ViewGroup)?.removeView(webView)
-        webView.stopLoading()
-        webView.destroy()
+        val web = webView ?: return
+        (web.parent as? ViewGroup)?.removeView(web)
+        web.stopLoading()
+        val content = webContent
+        if (content == null) {
+            web.destroy()
+        } else {
+            content.detach()
+            content.close()
+        }
+        webContent = null
+        webView = null
     }
 }
 

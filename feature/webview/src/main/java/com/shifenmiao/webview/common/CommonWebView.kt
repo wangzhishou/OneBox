@@ -57,7 +57,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.viewinterop.AndroidView
+import com.wanbaohe.core.ui.widget.web.PersistentWebContentViewModel
+import com.wanbaohe.core.ui.widget.web.PersistentWebView
 import com.shifenmiao.webview.R
 import com.shifenmiao.common.ui.LoadingOverlay
 import com.shifenmiao.model.webview.WebViewParams
@@ -77,6 +78,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineError
  * CommonWebView(
  *     webViewParams = params,
  *     webViewState = state,
+ *     session = component.webContentSession,
  *     client = component.getWebViewClient(),
  *     chromeClient = component.getWebChromeClient(),
  * )
@@ -86,11 +88,13 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineError
 fun CommonWebView(
     webViewParams: WebViewParams?,
     webViewState: WebViewComponent.WebViewState,
+    session: PersistentWebContentViewModel,
     client: WebViewClient,
     chromeClient: WebChromeClient,
     modifier: Modifier = Modifier,
     onTitleChanged: (String) -> Unit = {},
     onWebViewCreated: (WebView) -> Unit = {},
+    onWebViewReleased: (WebView) -> Unit = {},
     onReload: () -> Unit = {},
     isLoading: Boolean = false,
     onCancelLoading: () -> Unit = {},
@@ -107,6 +111,10 @@ fun CommonWebView(
     // 将页面标题传递给调用方
     LaunchedEffect(pageTitle) {
         pageTitle?.let { onTitleChanged(it) }
+    }
+
+    if (needSlowWholeDocumentDraw) {
+        remember { WebView.enableSlowWholeDocumentDraw() }
     }
 
     Box(modifier = modifier) {
@@ -129,25 +137,19 @@ fun CommonWebView(
                 onReload = onReload
             )
         } else {
-            AndroidView(
-                factory = { ctx ->
-                    if (needSlowWholeDocumentDraw) {
-                        // 需要完整文档绘制时，必须在创建 WebView 之前调用
-                        WebView.enableSlowWholeDocumentDraw()
-                    }
-
-                    // 每次创建全新 WebView，不复用旧实例
-                    WebViewPool.create(ctx, backgroundColor).apply {
-                        WebViewSettings.applyCommonSettings(this, context)
-                        this.settings.blockNetworkImage = webViewParams?.type == WebViewType.PREVIEW
-                        this.webViewClient = client
-                        this.webChromeClient = chromeClient
-                        onWebViewCreated(this)
-                    }
+            PersistentWebView(
+                session = session,
+                viewFactory = { ctx -> WebViewPool.create(ctx, backgroundColor) },
+                configure = { view ->
+                    WebViewSettings.applyCommonSettings(view, view.context)
+                    view.settings.blockNetworkImage = webViewParams?.type == WebViewType.PREVIEW
+                    view.webViewClient = client
+                    view.webChromeClient = chromeClient
                 },
+                onViewReady = onWebViewCreated,
+                onViewReleased = onWebViewReleased,
                 modifier = Modifier.fillMaxSize().imePadding(),
                 update = { view ->
-                    // 确保背景颜色与主题一致
                     view.setBackgroundColor(backgroundColor)
                 }
             )

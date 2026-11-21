@@ -41,7 +41,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -58,7 +57,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
+import com.wanbaohe.core.ui.widget.web.PersistentWebView
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.webview.common.WebViewPool
 import com.shifenmiao.webview.common.WebViewSettings
@@ -129,10 +128,6 @@ fun BrowserScreen(
         addressText = state.currentUrl
     }
 
-    DisposableEffect(Unit) {
-        onDispose { component.detachWebView() }
-    }
-
     /** 收藏查看器里顶栏返回 = 回到收藏列表；普通浏览才回退历史。 */
     val onTopBarBack: () -> Unit = {
         when {
@@ -190,7 +185,6 @@ fun BrowserScreen(
                     state = state,
                     component = component,
                     backgroundColor = backgroundColor,
-                    context = context,
                     isWebViewReady = isWebViewReady,
                     onAddressUpdate = { addressText = it }
                 )
@@ -342,7 +336,6 @@ private fun BrowserWebViewContent(
     state: BrowserState,
     component: BrowserComponent,
     backgroundColor: Int,
-    context: android.content.Context,
     isWebViewReady: Boolean,
     onAddressUpdate: (String) -> Unit
 ) {
@@ -366,27 +359,30 @@ private fun BrowserWebViewContent(
             )
         }
         if (keepWebView) {
-            AndroidView(
-                factory = { ctx ->
-                    WebViewPool.create(ctx, backgroundColor).apply {
-                        // 先藏起来，等主帧真正可画再露。创建当下就是 VISIBLE 的话，
-                        // 第一帧经常是一块白，会盖住已经就位的顶栏。
-                        visibility = View.INVISIBLE
-                        WebViewSettings.applyCommonSettings(this, ctx)
-                        this.webViewClient = BrowserWebViewClient(context, component, onAddressUpdate)
-                        this.webChromeClient = object : WebChromeClient() {
-                            override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                                component.onProgressChanged(newProgress)
-                            }
-                        }
-                        // attach 只需要在 WebView 创建时做一次。
-                        // 之前放在 update 里，每次重组都会重新 attach + applySettings。
-                        val consumedPending = component.attachWebView(this)
-                        if (!consumedPending && urlToLoad.isNotBlank()) {
-                            loadUrl(urlToLoad)
+            PersistentWebView(
+                session = component.webContentSession,
+                viewFactory = { ctx -> WebViewPool.create(ctx, backgroundColor) },
+                configure = { view ->
+                    // 先藏起来，等主帧真正可画再露。创建当下就是 VISIBLE 的话，
+                    // 第一帧经常是一块白，会盖住已经就位的顶栏。
+                    view.visibility = View.INVISIBLE
+                    WebViewSettings.applyCommonSettings(view, view.context)
+                    view.webViewClient = BrowserWebViewClient(component, onAddressUpdate)
+                    view.webChromeClient = object : WebChromeClient() {
+                        override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                            component.onProgressChanged(newProgress)
                         }
                     }
                 },
+                onViewReady = { view ->
+                    val consumedPending = component.attachWebView(view)
+                    if (!consumedPending && urlToLoad.isNotBlank() && view.url.isNullOrBlank()) {
+                        view.loadUrl(urlToLoad)
+                    } else if (!view.url.isNullOrBlank() && view.url != "about:blank") {
+                        view.visibility = View.VISIBLE
+                    }
+                },
+                onViewReleased = { component.detachWebView() },
                 modifier = Modifier.fillMaxSize(),
                 update = { view ->
                     val isBlank = state.currentUrl.isBlank() || state.currentUrl == "about:blank"
@@ -411,7 +407,6 @@ private fun BrowserWebViewContent(
 }
 
 private class BrowserWebViewClient(
-    private val context: android.content.Context,
     private val component: BrowserComponent,
     private val onAddressUpdate: (String) -> Unit
 ) : WebViewClient() {
@@ -452,17 +447,18 @@ private class BrowserWebViewClient(
     }
 
     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-        return request?.url?.let { handleExternalUri(it) } ?: false
+        return request?.url?.let { handleExternalUri(view, it) } ?: false
     }
 
     @Suppress("OVERRIDE_DEPRECATION")
     override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-        return url?.let { handleExternalUri(Uri.parse(it)) } ?: false
+        return url?.let { handleExternalUri(view, Uri.parse(it)) } ?: false
     }
 
-    private fun handleExternalUri(uri: Uri): Boolean {
+    private fun handleExternalUri(view: WebView?, uri: Uri): Boolean {
         val scheme = uri.scheme?.lowercase() ?: return false
         if (scheme == "http" || scheme == "https") return false
+        val context = view?.context ?: return false
         return try {
             context.startActivity(Intent(Intent.ACTION_VIEW, uri))
             true
@@ -476,7 +472,7 @@ private class BrowserWebViewClient(
      *
      * 不接管的话 App 会跟着一起退出。这里返回 true 并提示用户重新打开，
      * 但没有做自动恢复：出事的 WebView 实例已经不可用，真正的恢复需要重建实例，
-     * 而实例由 Compose 的 AndroidView 持有，从 client 里换不掉。
+     * 而实例由 Compose 的 PersistentWebView 持有，从 client 里换不掉。
      */
     override fun onRenderProcessGone(view: WebView?, detail: RenderProcessGoneDetail?): Boolean {
         AppToastHost.showToast("页面渲染进程已终止，请返回后重新打开")

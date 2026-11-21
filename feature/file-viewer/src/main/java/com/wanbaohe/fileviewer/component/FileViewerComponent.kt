@@ -25,11 +25,14 @@ import android.content.res.Configuration
 import android.net.Uri
 import android.webkit.WebView
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.shifenmiao.core.R as CoreR
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.settings.domain.SettingsProvider
 import com.t8rin.imagetoolbox.core.settings.domain.model.NightMode
 import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.widget.web.PersistentWebContentOwner
+import com.wanbaohe.core.ui.widget.web.PersistentWebContentViewModel
 import com.wanbaohe.fileviewer.data.ViewerPageListener
 import com.wanbaohe.fileviewer.data.ViewerPreferences
 import com.wanbaohe.fileviewer.data.ViewerRequest
@@ -51,8 +54,8 @@ import kotlin.math.roundToInt
  * 文件预览页的 Decompose 组件。
  *
  * 它负责：把 URI 解析成"用哪个页面 + 名字 + 大小"，决定要不要拒开，
- * 以及把页面回报的页码/查找计数翻译成 UI 状态。WebView 本身归 Compose
- * 的 `AndroidView` 持有——组件被 retain 而 View 已 detach 的话必然泄漏。
+ * 以及把页面回报的页码/查找计数翻译成 UI 状态。View 由 PersistentWebView 挂载，
+ * WebContent 由页面级 Owner 持有；视图解绑时会清断引用，避免 retained Component 泄漏 Activity。
  *
  * 阅读能力（页码/跳页/夜间/查找）都建立在页面侧的 message port 上：
  * 端口由 [ViewerWebHost] 在 `onPageFinished` 打开，命令发不出去时静默丢弃，
@@ -78,6 +81,10 @@ class FileViewerComponent @AssistedInject internal constructor(
     val uiState = _uiState.asStateFlow()
 
     private val webHost = ViewerWebHost(source, this)
+    private val webContentOwner = instanceKeeper.getOrCreate("PersistentWebContentOwner") { PersistentWebContentOwner() }
+    val webContentSession: PersistentWebContentViewModel
+        get() = webContentOwner.session
+
     private var request: ViewerRequest? = null
     private var documentKey: String? = null
 
@@ -115,6 +122,7 @@ class FileViewerComponent @AssistedInject internal constructor(
     fun retry(overrideUri: String? = null) {
         val target = overrideUri?.let(Uri::parse) ?: activeUri
         activeUri = target
+        webContentOwner.reset()
         request = null
         _uiState.value = _uiState.value.copy(isLoading = true, error = null)
         componentScope.launch { load(target) }
@@ -165,22 +173,22 @@ class FileViewerComponent @AssistedInject internal constructor(
     }
 
     /**
-     * 给 Compose 的 `AndroidView` 用；解析失败或文件过大时返回 null。
+     * 给 Compose 的 PersistentWebView 绑定当前文档。
      *
      * [nightMode] 是 App 当前的全局日夜状态，创建页面时定下初始底色；
      * 之后用户切换主题由 [applyNightMode] 通过 message port 追上去。
      */
-    fun createWebView(webViewContext: Context, nightMode: Boolean): WebView? {
+    fun bindWebView(webView: WebView, nightMode: Boolean) {
         val state = _uiState.value
-        if (!state.canRender) return null
-        val target = request ?: return null
+        if (!state.canRender) return
+        val target = request ?: return
         val supportsNight = state.format?.supportsNight == true
         // App 的"文字大小"是 Activity 的 fontScale；可重排的阅读页跟，固定版式的文档不跟
         val textZoom = if (state.format?.followsTextSize == true) {
-            (webViewContext.resources.configuration.fontScale * 100f).roundToInt()
+            (webView.context.resources.configuration.fontScale * 100f).roundToInt()
         } else 100
-        return webHost.create(
-            webViewContext,
+        webHost.attach(
+            webView,
             target.copy(
                 // Word 有自己的夜间矩阵；其余页面交给 WebView 算法暗化
                 nightMode = nightMode && supportsNight,

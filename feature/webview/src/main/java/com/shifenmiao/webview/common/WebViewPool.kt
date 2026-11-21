@@ -29,6 +29,7 @@ import android.util.Log
 import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.webkit.WebView
+import androidx.web.WebContentView
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewOutcomeReceiver
 import androidx.webkit.WebViewStartUpConfig
@@ -390,8 +391,8 @@ object WebViewPool {
      * @param backgroundColor 背景色
      * @return 全新的 WebView 实例
      */
-    fun create(context: Context, backgroundColor: Int = Color.TRANSPARENT): WebView {
-        return WebView(context).apply {
+    fun create(context: Context, backgroundColor: Int = Color.TRANSPARENT): WebContentView {
+        return WebContentView(context).apply {
             layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT

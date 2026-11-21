@@ -111,6 +111,11 @@
 
 -keep class androidx.lifecycle.LiveData { *; }
 
+# ViewModelProvider 通过无参构造器反射创建持久 Web 会话。
+-keep public class com.wanbaohe.core.ui.widget.web.PersistentWebContentViewModel {
+    public <init>();
+}
+
 
 # Retrofit does reflection on generic parameters. InnerClasses is required to use Signature and
 # EnclosingMethod is required to use InnerClasses.

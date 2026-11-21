@@ -32,6 +32,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnCreate
+import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.base.utils.ImageUtils
@@ -46,7 +47,6 @@ import com.shifenmiao.model.wechat.common.MediaMessage
 import com.shifenmiao.model.wechat.common.WXScene
 import com.shifenmiao.webview.client.CustomWebChromeClient
 import com.shifenmiao.webview.client.CustomWebViewClient
-import com.shifenmiao.webview.common.WebViewPool
 import com.shifenmiao.webview.resource.WebResourceEngine
 import com.shifenmiao.webview.utils.WebViewExportUtils
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
@@ -62,6 +62,8 @@ import com.t8rin.imagetoolbox.core.domain.utils.runSuspendCatching
 import com.t8rin.imagetoolbox.core.domain.utils.smartJob
 import com.t8rin.imagetoolbox.core.domain.utils.timestamp
 import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.widget.web.PersistentWebContentOwner
+import com.wanbaohe.core.ui.widget.web.PersistentWebContentViewModel
 import com.wanbaohe.core.ui.utils.state.update
 import com.t8rin.imagetoolbox.feature.pdf_tools.domain.PdfManager
 import com.t8rin.imagetoolbox.feature.pdf_tools.domain.model.PdfCreationParams
@@ -99,6 +101,14 @@ class WebViewComponent @AssistedInject internal constructor(
     @ApplicationContext val applicationContext: Context,
     private val webResourceEngine: WebResourceEngine,
 ) : BaseComponent(dispatchersHolder, componentContext), ResourceManager by resourceManager {
+
+    private val webContentOwner = instanceKeeper.getOrCreate("PersistentWebContentOwner") { PersistentWebContentOwner() }
+    val webContentSession: PersistentWebContentViewModel
+        get() = webContentOwner.session
+
+    private var shouldLoadInitialContent = true
+    private var pendingReload = false
+    private var shouldRecreateSession = false
 
     // 当前持有的 WebView 弱引用（资源缓存由 [WebResourceEngine] 管理）
     private var cachedWebView: WeakReference<WebView>? = null
@@ -138,8 +148,25 @@ class WebViewComponent @AssistedInject internal constructor(
     fun setWebView(webView: WebView?) {
         webView?.let {
             cachedWebView = WeakReference(webView)
+            when {
+                pendingReload && webView.url != null -> {
+                    pendingReload = false
+                    webView.reload()
+                }
+
+                shouldLoadInitialContent || webView.url == null -> {
+                    pendingReload = false
+                    shouldLoadInitialContent = false
+                    load()
+                }
+            }
         }
-        load()
+    }
+
+    fun releaseWebView(webView: WebView) {
+        if (cachedWebView?.get() === webView) {
+            cachedWebView = null
+        }
     }
 
     // 更新标题
@@ -158,6 +185,9 @@ class WebViewComponent @AssistedInject internal constructor(
 
     // 更新加载错误状态
     fun updateErrorState(isError: Boolean, errorMessage: String = "", errorDetails: String = "") {
+        if (isError && errorDetails.contains("ERR_RENDERER_GONE")) {
+            shouldRecreateSession = true
+        }
         _webViewState.update {
             it.copy(isError = isError, errorMessage = errorMessage, errorDetails = errorDetails)
         }
@@ -216,16 +246,19 @@ class WebViewComponent @AssistedInject internal constructor(
 
     // 导航后退
     fun goBack() {
-        getCurrentWebView()?.let { webView ->
-            if (webView.canGoBack()) {
-                webView.goBack()
-                updateNavigationState(webView.canGoBack(), webView.canGoForward())
-                // 重置错误状态
-                updateErrorState(false)
-            } else {
-                clearWebView()
-                onGoBack()
-            }
+        val webView = getCurrentWebView()
+        if (webView == null) {
+            clearWebView()
+            onGoBack()
+            return
+        }
+        if (webView.canGoBack()) {
+            webView.goBack()
+            updateNavigationState(webView.canGoBack(), webView.canGoForward())
+            updateErrorState(false)
+        } else {
+            clearWebView()
+            onGoBack()
         }
     }
 
@@ -243,8 +276,15 @@ class WebViewComponent @AssistedInject internal constructor(
 
     // 重新加载当前页面
     fun reload() {
-        getCurrentWebView()?.reload()
-        // 重置错误状态
+        if (shouldRecreateSession) {
+            webContentOwner.reset()
+            shouldRecreateSession = false
+            shouldLoadInitialContent = true
+            pendingReload = false
+        } else {
+            val webView = getCurrentWebView()
+            if (webView == null) pendingReload = true else webView.reload()
+        }
         updateErrorState(false)
     }
 
@@ -815,11 +855,11 @@ class WebViewComponent @AssistedInject internal constructor(
     }
 
     fun clearWebView() {
-        cachedWebView?.get()?.let { webView ->
-            // 统一销毁 WebView：停止加载、移除视图、清除历史、销毁实例
-            WebViewPool.destroyWebView(webView)
-        }
         cachedWebView = null
+        shouldLoadInitialContent = true
+        pendingReload = false
+        shouldRecreateSession = false
+        webContentOwner.reset()
         _webViewState.update {
             it.copy(
                 currentTitle = "",

@@ -230,9 +230,11 @@ fun WebViewModalBottomSheet(
                     CommonWebView(
                         webViewParams = webViewParams,
                         webViewState = webViewState,
+                        session = webViewComponent.webContentSession,
                         onWebViewCreated = { webView ->
                             webViewComponent.setWebView(webView)
                         },
+                        onWebViewReleased = webViewComponent::releaseWebView,
                         modifier = Modifier.weight(1f),
                         onTitleChanged = { newTitle ->
                             webViewComponent.updateTitle(newTitle)

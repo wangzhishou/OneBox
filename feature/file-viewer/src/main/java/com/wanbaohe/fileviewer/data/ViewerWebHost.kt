@@ -98,11 +98,11 @@ internal class ViewerWebHost(
     private var released = false
 
     @SuppressLint("SetJavaScriptEnabled")
-    fun create(context: Context, request: ViewerRequest): WebView {
+    fun attach(web: WebView, request: ViewerRequest) {
         // 重建（授权重试、配置变化）后命令通道要重新可用，release() 不是终态
         released = false
-        val web = WebView(context)
         webView = web
+        val context = web.context
         // 页面自己决定底色：表格的桌布、Word 的页间都透明，让 App 的玻璃背景透出来
         web.setBackgroundColor(android.graphics.Color.TRANSPARENT)
 
@@ -131,7 +131,10 @@ internal class ViewerWebHost(
 
         val assetLoader = WebViewAssetLoader.Builder()
             .setDomain(ASSET_HOST)
-            .addPathHandler("/assets/", WebViewAssetLoader.AssetsPathHandler(context))
+            .addPathHandler(
+                "/assets/",
+                WebViewAssetLoader.AssetsPathHandler(context.applicationContext),
+            )
             .build()
 
         val mime = source.mimeType(request.uri, request.extension)
@@ -182,11 +185,16 @@ internal class ViewerWebHost(
             }
         }
 
-        web.loadUrl(buildPageUrl(request, context, web.settings.userAgentString, total))
-        return web
+        if (web.url == null) {
+            web.loadUrl(buildPageUrl(request, context, web.settings.userAgentString, total))
+        } else {
+            applyForceDarkTo(web, request.forceDark)
+            openPort(web)
+            setNightMode(request.nightMode)
+        }
     }
 
-    /** 页面离开时调用：关端口、断引用，WebView 本身由 Compose 的 onRelease 销毁。 */
+    /** 视图解绑时调用：关端口、断引用，attach/detach 由 PersistentWebView 统一处理。 */
     fun release() {
         released = true
         runCatching { port?.close() }
