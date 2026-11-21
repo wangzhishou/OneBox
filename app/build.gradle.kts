@@ -506,6 +506,7 @@ val writeCrashlyticsMappingFileIds = tasks.register("writeCrashlyticsMappingFile
     val idByAbi = mapOf(
         "arm64" to crashlyticsMappingFileId("arm64"),
     )
+    inputs.property("mappingFileIds", idByAbi)
     outputs.dir(outputDir)
     doLast {
         val dir = outputDir.get().asFile
@@ -645,17 +646,23 @@ afterEvaluate {
 val ndkDirectory = androidComponents.sdkComponents.ndkDirectory
 
 tasks.withType<com.android.build.gradle.internal.tasks.MergeNativeLibsTask>().configureEach {
-    // 执行期才解析 NDK，未安装 NDK 的机器也能同步工程。
-    val ndk = ndkDirectory
+    // 延迟定位 NDK；合并任务直接跟踪实际覆盖进 APK 的文件。
+    val ndkLibCpp = ndkDirectory.map { ndk ->
+        val prebuilt = ndk.asFile.resolve("toolchains/llvm/prebuilt")
+            .listFiles { file -> file.isDirectory }
+            ?.singleOrNull()
+            ?: error("找不到唯一的 NDK 预编译工具链: ${ndk.asFile}")
+        prebuilt.resolve("sysroot/usr/lib/aarch64-linux-android/libc++_shared.so")
+    }
+    inputs.file(ndkLibCpp)
+        .withPropertyName("ndkLibCpp")
+        .withPathSensitivity(PathSensitivity.NONE)
+
     val mergedLibs = outputDir
     doLast {
-        val prebuilt = ndk.get().asFile.resolve("toolchains/llvm/prebuilt")
-            .listFiles { f: File -> f.isDirectory }
-            ?.firstOrNull()
-            ?: return@doLast
-        val source = prebuilt.resolve("sysroot/usr/lib/aarch64-linux-android/libc++_shared.so")
+        val source = ndkLibCpp.get()
         val dest = mergedLibs.get().asFile.resolve("lib/arm64-v8a/libc++_shared.so")
-        if (source.exists() && dest.parentFile?.exists() == true) {
+        if (dest.parentFile?.exists() == true) {
             source.copyTo(dest, overwrite = true)
         }
     }

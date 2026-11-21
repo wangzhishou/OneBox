@@ -26,7 +26,8 @@ plugins {
 
 android.namespace = "com.wanbaohe.xiangqi"
 // 端侧引擎构建任务要从 NDK 目录取交叉编译器;版本与 app 模块同源(libs.versions.toml)
-android.ndkVersion = libs.versions.androidNdk.get()
+val engineNdkVersion = libs.versions.androidNdk.get()
+android.ndkVersion = engineNdkVersion
 
 /**
  * 端侧象棋引擎(Fairy-Stockfish, GPL-3.0)构建任务。
@@ -64,6 +65,7 @@ val buildFairyStockfish = tasks.register("buildFairyStockfish") {
     inputs.dir(sourceDir).withPathSensitivity(PathSensitivity.RELATIVE)
     inputs.property("abi", abi)
     inputs.property("minSdk", minSdk)
+    inputs.property("ndkVersion", engineNdkVersion)
     inputs.property("engineBuildFlags", "largeboards=yes nnue=no static-libstdc++")
     outputs.dir(outputDir)
     // 产物是纯编译结果, 允许 build cache 复用:CI 的 tag 构建是 8 渠道 × 1 ABI 的矩阵,
