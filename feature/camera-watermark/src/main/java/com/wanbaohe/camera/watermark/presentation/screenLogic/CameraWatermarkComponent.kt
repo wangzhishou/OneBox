@@ -52,6 +52,7 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.withContext
 
 /**
  * 相机水印 Component
@@ -454,7 +455,8 @@ class CameraWatermarkComponent @AssistedInject internal constructor(
                     }
                 } else null
 
-                val bitmap = renderer.render(uri, metadata, currentStyle)
+                val watermarkMetadata = withContext(ioDispatcher) { exifParser.parseFromUri(uri) }
+                val bitmap = renderer.render(uri, watermarkMetadata, currentStyle)
                 if (bitmap != null) {
                     val imageInfo = ImageInfo(
                         imageFormat = exportConfig.format,
@@ -518,4 +520,3 @@ class CameraWatermarkComponent @AssistedInject internal constructor(
         ): CameraWatermarkComponent
     }
 }
-

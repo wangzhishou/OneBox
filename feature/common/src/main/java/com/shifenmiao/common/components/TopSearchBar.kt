@@ -40,9 +40,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -62,7 +59,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Close
 
 @Composable
 fun TopSearchBar(
-    queryValue: MutableState<String>,
+    queryValue: String,
     onQueryChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     onSearchFocusChange: (Boolean) -> Unit = {},
@@ -83,7 +80,6 @@ fun TopSearchBar(
     LaunchedEffect(focused) {
         onSearchFocusChange(focused)
     }
-    val isShowEndIcon by remember { derivedStateOf { queryValue.value.isNotEmpty() } }
     GlassOutlinedTextField(
         singleLine = true,
         maxLines = 1,
@@ -107,16 +103,12 @@ fun TopSearchBar(
             imeAction = ImeAction.Search,
             autoCorrectEnabled = null
         ),
-        value = queryValue.value,
-        onValueChange = {
-            onQueryChange(it)
-        },
+        value = queryValue,
+        onValueChange = onQueryChange,
         leadingIcon = {
             if (isShowBack) {
                 IconButton(
                     onClick = {
-                        queryValue.value = ""
-                        onQueryChange("")
                         focus.clearFocus()
                         onSearchFocusChange(false)
                         appComponent.onGoBack()
@@ -132,7 +124,7 @@ fun TopSearchBar(
         },
         trailingIcon = {
             AnimatedVisibility(
-                visible = isShowEndIcon,
+                visible = queryValue.isNotEmpty(),
                 enter = fadeIn() + scaleIn(),
                 exit = fadeOut() + scaleOut()
             ) {

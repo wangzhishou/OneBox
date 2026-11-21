@@ -56,6 +56,9 @@ class SearchComponent @AssistedInject internal constructor(
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery
+
     private val _searchItemList = MutableStateFlow<List<ItemWithCategoriesAndStats>>(emptyList())
     val searchItemList: StateFlow<List<ItemWithCategoriesAndStats>> = _searchItemList
 
@@ -106,6 +109,8 @@ class SearchComponent @AssistedInject internal constructor(
     }
 
     fun onSearchQueryChange(text: String) {
+        if (_searchQuery.value == text) return
+        _searchQuery.value = text
         scheduleSearchTermReport(text)
         val query = text.trim()
         val generation = ++searchGeneration

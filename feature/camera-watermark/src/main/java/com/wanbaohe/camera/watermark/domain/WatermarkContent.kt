@@ -19,13 +19,9 @@
 
 package com.wanbaohe.camera.watermark.domain
 
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-
 /**
  * 水印内容配置
- * 定义水印 5 个位置的自定义内容，为 null 时使用图片 EXIF 元数据
+ * 自定义内容优先，其次使用图片 EXIF；两者都没有时不绘制该字段。
  */
 data class WatermarkContent(
     /** 左上角 - 相机+镜头信息 (如 "LEICA MP + AGFA APX100") */
@@ -49,78 +45,19 @@ data class WatermarkContent(
             bottomLeft = "Power by 万宝盒"
         )
 
-        // 占位符常量（Fake 数据，更有趣味性）
-        private const val PLACEHOLDER_CAMERA = "Unknown Camera"
-        private const val PLACEHOLDER_PARAMS = "Fake 50mm  f/1.8  1/125  ISO100"
-        private const val PLACEHOLDER_GPS = "Fake 40°04'33\"N  116°19'12\"E"  // 北京回龙观
-
-        /**
-         * 获取当前日期时间作为占位符
-         */
-        private fun getCurrentDateTime(): String {
-            val sdf = SimpleDateFormat("yyyy.MM.dd HH:mm:ss", Locale.getDefault())
-            return sdf.format(Date())
-        }
     }
 
-    /**
-     * 获取实际显示的左上角内容
-     * @param metadata 图片 EXIF 元数据
-     * @return 自定义内容 > 元数据 > 占位符
-     */
-    fun getTopLeftText(metadata: WatermarkMetadata): String {
-        // 优先使用自定义内容
-        if (!topLeft.isNullOrEmpty()) return topLeft
-        // 其次使用 EXIF 元数据
-        val cameraInfo = metadata.getCameraInfo()
-        if (cameraInfo.isNotEmpty()) return cameraInfo
-        // 最后使用占位符
-        return PLACEHOLDER_CAMERA
-    }
+    fun getTopLeftText(metadata: WatermarkMetadata): String =
+        topLeft?.takeUnless { it.isBlank() } ?: metadata.getCameraInfo()
 
-    /**
-     * 获取实际显示的右上角内容
-     * @param metadata 图片 EXIF 元数据
-     * @return 自定义内容 > 元数据 > 占位符
-     */
-    fun getTopRightText(metadata: WatermarkMetadata): String {
-        // 优先使用自定义内容
-        if (!topRight.isNullOrEmpty()) return topRight
-        // 其次使用 EXIF 元数据
-        val paramsInfo = metadata.getParamsInfo()
-        if (paramsInfo.isNotEmpty()) return paramsInfo
-        // 最后使用占位符
-        return PLACEHOLDER_PARAMS
-    }
+    fun getTopRightText(metadata: WatermarkMetadata): String =
+        topRight?.takeUnless { it.isBlank() } ?: metadata.getParamsInfo()
 
-    /**
-     * 获取实际显示的左下角内容
-     * @param metadata 图片 EXIF 元数据
-     * @return 自定义内容 > 元数据 > 当前日期时间
-     */
-    fun getBottomLeftText(metadata: WatermarkMetadata): String {
-        // 优先使用自定义内容
-        if (!bottomLeft.isNullOrEmpty()) return bottomLeft
-        // 其次使用 EXIF 时间
-        if (metadata.dateTime.isNotEmpty()) return metadata.dateTime
-        // 最后使用当前时间
-        return getCurrentDateTime()
-    }
+    fun getBottomLeftText(metadata: WatermarkMetadata): String =
+        bottomLeft?.takeUnless { it.isBlank() } ?: metadata.dateTime
 
-    /**
-     * 获取实际显示的右下角内容
-     * @param metadata 图片 EXIF 元数据
-     * @return 自定义内容 > 元数据 > 空（GPS 没有时不显示占位符）
-     */
-    fun getBottomRightText(metadata: WatermarkMetadata): String {
-        // 优先使用自定义内容
-        if (!bottomRight.isNullOrEmpty()) return bottomRight
-        // 其次使用 EXIF GPS
-        val gpsInfo = metadata.getGpsInfo()
-        if (gpsInfo.isNotEmpty()) return gpsInfo
-        // GPS 没有时不显示（返回空）
-        return PLACEHOLDER_GPS
-    }
+    fun getBottomRightText(metadata: WatermarkMetadata): String =
+        bottomRight?.takeUnless { it.isBlank() } ?: metadata.getGpsInfo()
 
     /**
      * 检查是否有自定义内容
@@ -129,4 +66,3 @@ data class WatermarkContent(
         return topLeft != null || topRight != null || bottomLeft != null || bottomRight != null
     }
 }
-

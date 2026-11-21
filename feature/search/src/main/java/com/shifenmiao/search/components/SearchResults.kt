@@ -39,7 +39,6 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -75,7 +74,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineSearchOff
 fun SearchResults(
     searchComponent: SearchComponent,
     itemListComponent: ItemListComponent,
-    queryValue: MutableState<String>
+    queryValue: String
 ) {
     val searchItemList = searchComponent.searchItemList.collectAsState()
     val searchMessageEntity = searchComponent.searchMessageEntity.collectAsState()
@@ -132,7 +131,7 @@ fun SearchResults(
                                 index = index,
                                 itemListComponent = itemListComponent,
                                 itemWithStats = itemWithRelation,
-                                highlightKeyword = queryValue.value,
+                                highlightKeyword = queryValue,
                                 commentCount = itemWithRelation.item.commentCount,
                                 onCommentClick = itemWithRelation.item.documentId
                                     ?.takeIf { it.isNotBlank() }
@@ -149,7 +148,7 @@ fun SearchResults(
                                 onDeleteRequest = deleteState::request,
                                 onClick = {
                                     SearchHistoryStore.addHistoryItem(
-                                        SuggestionModel(queryValue.value)
+                                        SuggestionModel(queryValue)
                                     )
                                     searchComponent.recordClick(itemWithRelation.item.id)
                                     scope.launch {
@@ -178,11 +177,11 @@ fun SearchResults(
                             id = messageEntity.id,
                             title = messageEntity.title,
                             description = messageEntity.answer + messageEntity.question,
-                            queryValue = queryValue.value,
+                            queryValue = queryValue,
                             tag = stringResource(R.string.message_card_tag)
                         ) {
                             SearchHistoryStore.addHistoryItem(
-                                SuggestionModel(queryValue.value)
+                                SuggestionModel(queryValue)
                             )
                             HandleEvent.onNavigateMessageEntity(
                                 onNavigate = onNavigate,
@@ -199,12 +198,12 @@ fun SearchResults(
                             id = result.id.hashCode(),
                             title = result.title,
                             description = result.description,
-                            queryValue = queryValue.value,
+                            queryValue = queryValue,
                             tag = stringResource(result.labelRes),
                             iconName = result.iconName,
                         ) {
                             SearchHistoryStore.addHistoryItem(
-                                SuggestionModel(queryValue.value)
+                                SuggestionModel(queryValue)
                             )
                             searchComponent.openGlobalSearchResult(
                                 result = result,

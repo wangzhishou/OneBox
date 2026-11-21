@@ -33,9 +33,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -67,20 +65,11 @@ fun SearchScreen(
     /**
      * 搜索相关
      */
-    val queryValue = remember { mutableStateOf("") }
-    val hasQuery by remember { derivedStateOf { queryValue.value.isNotEmpty() } }
-
-    // 缓存回调以避免不必要的重组
-    val onQueryChange = remember<(String) -> Unit>(searchComponent) {
-        { newQuery ->
-            queryValue.value = newQuery
-            searchComponent.onSearchQueryChange(newQuery)
-        }
-    }
+    val queryValue by searchComponent.searchQuery.collectAsState()
+    val autoFocus = remember(searchComponent) { queryValue.isEmpty() }
 
     val onSuggestionClick = remember<(com.shifenmiao.model.search.SuggestionModel) -> Unit>(searchComponent) {
         { suggestion ->
-            queryValue.value = suggestion.tag
             searchComponent.onSearchQueryChange(suggestion.tag)
         }
     }
@@ -95,14 +84,11 @@ fun SearchScreen(
             isShowBack = true,
             appComponent = appComponent,
             queryValue = queryValue,
-            onQueryChange = onQueryChange,
-            modifier = Modifier,
-            onSearchFocusChange = { _ ->
-
-            }
+            onQueryChange = searchComponent::onSearchQueryChange,
+            autoFocus = autoFocus,
         )
 
-        if (hasQuery) {
+        if (queryValue.isNotEmpty()) {
             SearchResults(
                 searchComponent = searchComponent,
                 itemListComponent = itemListComponent,

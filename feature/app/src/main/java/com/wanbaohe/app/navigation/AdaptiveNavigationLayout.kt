@@ -19,6 +19,7 @@
 
 package com.wanbaohe.app.navigation
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -122,6 +123,7 @@ fun AdaptiveNavigationLayout(
     val isPortrait by isShellPortraitOrientationAsState()
     val tabEntries = Navigation.rememberTabEntries()
     val currentScreen = childStack.active.configuration
+    var addMenuExpanded by rememberSaveable { mutableStateOf(false) }
 
     DrawerNavigationContainer(
         appComponent = appComponent,
@@ -134,7 +136,9 @@ fun AdaptiveNavigationLayout(
                 rootComponent = rootComponent,
                 appComponent = appComponent,
                 navigationState = navigationState,
-                tabEntries = tabEntries
+                tabEntries = tabEntries,
+                addMenuExpanded = addMenuExpanded,
+                onAddMenuExpandedChange = { addMenuExpanded = it },
             )
         } else {
             NavigationRailLayout(
@@ -143,11 +147,15 @@ fun AdaptiveNavigationLayout(
                 rootComponent = rootComponent,
                 currentScreen = currentScreen,
                 navigationState = navigationState,
-                tabEntries = tabEntries
+                tabEntries = tabEntries,
+                addMenuExpanded = addMenuExpanded,
+                onAddMenuExpandedChange = { addMenuExpanded = it },
             )
         }
     }
 
+    // 在主导航返回处理之后注册，优先关闭新建浮层。
+    BackHandler(enabled = addMenuExpanded) { addMenuExpanded = false }
     ImportProgressDialog(appComponent)
 }
 
@@ -253,6 +261,8 @@ private fun NavigationBottomLayout(
     appComponent: AppComponent,
     navigationState: NavigationState,
     tabEntries: List<Screen>,
+    addMenuExpanded: Boolean,
+    onAddMenuExpandedChange: (Boolean) -> Unit,
 ) {
     val isKeyboardOpen = rememberIsKeyboardOpen()
     BottomNavigationLayout(
@@ -262,6 +272,8 @@ private fun NavigationBottomLayout(
         tabEntries = tabEntries,
         isKeyboardOpen = isKeyboardOpen,
         appComponent = appComponent,
+        addMenuExpanded = addMenuExpanded,
+        onAddMenuExpandedChange = onAddMenuExpandedChange,
     )
 }
 
@@ -283,8 +295,9 @@ private fun NavigationRailLayout(
     navigationState: NavigationState,
     tabEntries: List<Screen>,
     appComponent: AppComponent,
+    addMenuExpanded: Boolean,
+    onAddMenuExpandedChange: (Boolean) -> Unit,
 ) {
-    var addMenuExpanded by rememberSaveable { mutableStateOf(false) }
     val isContentOnly = currentScreen.landscapeShellMode == LandscapeShellMode.ContentOnly
     // 主区域已经是助手对话时，右侧再铺一块同一会话会看起来像页面复制了一份
     val showAssistantPane = !isContentOnly &&
@@ -296,7 +309,7 @@ private fun NavigationRailLayout(
         .coerceIn(AssistantPaneMinWidth, AssistantPaneMaxWidth)
 
     LaunchedEffect(isContentOnly) {
-        if (isContentOnly) addMenuExpanded = false
+        if (isContentOnly) onAddMenuExpandedChange(false)
     }
 
     Row(
@@ -311,7 +324,7 @@ private fun NavigationRailLayout(
                 footer = {
                     LandscapeRailUtilityActions(
                         onOpenCreateMenu = {
-                            addMenuExpanded = !addMenuExpanded
+                            onAddMenuExpandedChange(!addMenuExpanded)
                         },
                         onOpenDrawer = {
                             appComponent.showDrawer()
@@ -363,7 +376,7 @@ private fun NavigationRailLayout(
 
     QuickCreateFloatingPanel(
         expanded = addMenuExpanded,
-        onDismiss = { addMenuExpanded = false },
+        onDismiss = { onAddMenuExpandedChange(false) },
         bottomBarHeight = overlayBottomPadding,
         rootComponent = rootComponent,
         onNavigateToAiApp = {
@@ -380,6 +393,8 @@ private fun BottomNavigationLayout(
     navigationState: NavigationState,
     tabEntries: List<Screen>,
     isKeyboardOpen: Boolean,
+    addMenuExpanded: Boolean,
+    onAddMenuExpandedChange: (Boolean) -> Unit,
 ) {
     val showBottomBar = navigationState.isShowBottomBar && !isKeyboardOpen
     val systemBarsBottom = if (showBottomBar) {
@@ -389,9 +404,6 @@ private fun BottomNavigationLayout(
     }
     val contentBottomPadding =
         if (showBottomBar) navigationState.bottomBarHeight + systemBarsBottom else 0.dp
-
-    // ADD 菜单展开状态
-    var addMenuExpanded by rememberSaveable { mutableStateOf(false) }
 
     NavigationContent(
         appComponent = appComponent,
@@ -409,7 +421,7 @@ private fun BottomNavigationLayout(
     ) {
         QuickCreateFloatingPanel(
             expanded = addMenuExpanded,
-            onDismiss = { addMenuExpanded = false },
+            onDismiss = { onAddMenuExpandedChange(false) },
             bottomBarHeight = contentBottomPadding,
             rootComponent = rootComponent,
             onNavigateToAiApp = appComponent::showAIChat,
@@ -421,7 +433,7 @@ private fun BottomNavigationLayout(
             showBottomBar = showBottomBar,
             currentTabPageIndex = navigationState.currentTabIndex,
             addMenuExpanded = addMenuExpanded,
-            onToggleAddMenu = { addMenuExpanded = !addMenuExpanded },
+            onToggleAddMenu = { onAddMenuExpandedChange(!addMenuExpanded) },
             onTabClick = rootComponent::navigateTo
         )
     }
