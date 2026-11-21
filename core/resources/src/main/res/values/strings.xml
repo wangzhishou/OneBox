@@ -1479,6 +1479,7 @@
     <string name="formatted_timestamp">Formatted timestamp</string>
     <string name="enable_timestamps_to_format_them">Enable timestamps to choose their format</string>
     <string name="recently_used">Recently used</string>
+    <string name="clear_recent_colors">Clear recent colors</string>
     <string name="ci_channel_sub">Get notifications about new app versions and read announcements</string>
     <string name="ci_channel">CI channel</string>
     <string name="one_time_save_location">One-time save location</string>

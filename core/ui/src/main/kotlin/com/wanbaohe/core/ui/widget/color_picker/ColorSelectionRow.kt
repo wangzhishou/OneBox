@@ -26,8 +26,6 @@
 package com.wanbaohe.core.ui.widget.color_picker
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -39,11 +37,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -55,30 +52,24 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.wanbaohe.core.ui.theme.inverse
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.helper.ContextUtils.pasteColorFromClipboard
 import com.wanbaohe.core.ui.utils.provider.LocalContainerColor
 import com.wanbaohe.core.ui.utils.provider.ProvideContainerDefaults
 import com.wanbaohe.core.ui.widget.enhanced.hapticsClickable
 import com.wanbaohe.core.ui.widget.enhanced.hapticsCombinedClickable
-import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
-import com.wanbaohe.core.ui.widget.modifier.animateShape
-import com.wanbaohe.core.ui.widget.modifier.container
 import com.wanbaohe.core.ui.widget.modifier.fadingEdges
 import com.wanbaohe.core.ui.widget.modifier.transparencyChecker
 import kotlinx.coroutines.launch
+import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTheme
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineError
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineDoneAll
 
 /**
  * 横向快选色行。
@@ -97,6 +88,7 @@ fun ColorSelectionRow(
     onValueChange: (Color) -> Unit,
     contentPadding: PaddingValues = PaddingValues(),
     onOpenPicker: ((Color) -> Unit)? = null,
+    swatchShape: Shape = CircleShape,
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -137,7 +129,7 @@ fun ColorSelectionRow(
         }
     }
 
-    val itemSize = 42.dp
+    val itemSize = 44.dp
 
     ProvideContainerDefaults(
         color = LocalContainerColor.current
@@ -149,13 +141,9 @@ fun ColorSelectionRow(
                 .padding(contentPadding),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Custom color picker — fixed, no background
+            // 自定义取色入口：和预设色块同一形状；选中时只显示对勾，不做形变
             val background = customColor ?: MaterialTheme.colorScheme.primaryContainer
             val isSelected = customColor != null
-            val shape = animateShape(
-                if (isSelected) ShapeDefaults.mini
-                else RoundedCornerShape(itemSize / 2)
-            )
             Box(
                 modifier = Modifier,
                 contentAlignment = Alignment.Center
@@ -164,28 +152,23 @@ fun ColorSelectionRow(
                     modifier = Modifier
                         .size(itemSize)
                         .aspectRatio(1f)
-                        .scale(
-                            animateFloatAsState(
-                                targetValue = if (isSelected) 0.7f else 1f,
-                                animationSpec = tween(400)
-                            ).value
-                        )
-                        .rotate(
-                            animateFloatAsState(
-                                targetValue = if (isSelected) 45f else 0f,
-                                animationSpec = tween(400)
-                            ).value
-                        )
-                        .container(
-                            shape = shape,
-                            color = background,
-                            resultPadding = 0.dp
-                        )
+                        .clip(swatchShape)
                         .then(
                             if (background.alpha < 1f) Modifier.transparencyChecker()
                             else Modifier
                         )
-                        .background(background, shape)
+                        .background(background, swatchShape)
+                        .then(
+                            // 自定义色才需要给浅色补可见性描边；primaryContainer 入口本身够清晰
+                            if (customColor != null) {
+                                Modifier.colorSwatchOutline(
+                                    color = background,
+                                    shape = swatchShape
+                                )
+                            } else {
+                                Modifier
+                            }
+                        )
                         .hapticsCombinedClickable(
                             onLongClick = {
                                 context.pasteColorFromClipboard(
@@ -216,28 +199,18 @@ fun ColorSelectionRow(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTheme,
+                        imageVector = if (isSelected) {
+                            com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check
+                        } else {
+                            com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTheme
+                        },
                         contentDescription = null,
-                        tint = background.inverse(
-                            fraction = {
-                                if (it) 0.8f
-                                else 0.5f
-                            },
-                            darkMode = background.luminance() < 0.3f
-                        ),
-                        modifier = Modifier
-                            .size(32.dp)
-                            .background(
-                                color = background.copy(alpha = 1f),
-                                shape = shape
-                            )
-                            .padding(4.dp)
-                            .rotate(
-                                animateFloatAsState(
-                                    targetValue = if (isSelected) -45f else 0f,
-                                    animationSpec = tween(400)
-                                ).value
-                            )
+                        tint = if (isSelected) {
+                            background.checkmarkColor()
+                        } else {
+                            MaterialTheme.colorScheme.onPrimaryContainer
+                        },
+                        modifier = Modifier.size(if (isSelected) 22.dp else 26.dp)
                     )
                 }
             }
@@ -259,36 +232,17 @@ fun ColorSelectionRow(
                     key = { it.toArgb() }
                 ) { color ->
                     val isSelected = value == color && customColor == null
-                    val shape = animateShape(
-                        if (isSelected) ShapeDefaults.mini
-                        else RoundedCornerShape(itemSize / 2)
-                    )
                     Box(
                         Modifier
                             .size(itemSize)
                             .aspectRatio(1f)
-                            .scale(
-                                animateFloatAsState(
-                                    targetValue = if (isSelected) 0.7f else 1f,
-                                    animationSpec = tween(400)
-                                ).value
-                            )
-                            .rotate(
-                                animateFloatAsState(
-                                    targetValue = if (isSelected) 45f else 0f,
-                                    animationSpec = tween(400)
-                                ).value
-                            )
-                            .container(
-                                shape = shape,
-                                color = color,
-                                resultPadding = 0.dp
-                            )
+                            .clip(swatchShape)
                             .then(
                                 if (color.alpha < 1f) Modifier.transparencyChecker()
                                 else Modifier
                             )
-                            .background(color, shape)
+                            .background(color, swatchShape)
+                            .colorSwatchOutline(color = color, shape = swatchShape)
                             .hapticsClickable {
                                 onValueChange(color.copy(if (allowAlpha) color.alpha else 1f))
                                 customColor = null
@@ -297,8 +251,7 @@ fun ColorSelectionRow(
                     ) {
                         ColorCheckmark(
                             isSelected = isSelected,
-                            color = color,
-                            shape = shape
+                            color = color
                         )
                     }
                     if (color != shownColors.last()) {
@@ -326,36 +279,24 @@ fun ColorSelectionRow(
 @Composable
 private fun ColorCheckmark(
     isSelected: Boolean,
-    color: Color,
-    shape: Shape
+    color: Color
 ) {
     AnimatedVisibility(isSelected) {
         Icon(
-            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDoneAll,
+            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check,
             contentDescription = null,
-            // 半透明/透明色块上的反色对比度不可靠（棋盘格是浅灰白），
-            // 直接用主题前景色，保证透明预设也看得出选中态。
-            tint = if (color.alpha < 1f) {
-                MaterialTheme.colorScheme.onSurface
-            } else {
-                color.inverse(
-                    fraction = {
-                        if (it) 0.8f
-                        else 0.5f
-                    },
-                    darkMode = color.luminance() < 0.3f
-                )
-            },
-            modifier = Modifier
-                .size(24.dp)
-                .rotate(
-                    animateFloatAsState(
-                        targetValue = if (isSelected) -45f else 0f,
-                        animationSpec = tween(400)
-                    ).value
-                )
+            tint = color.checkmarkColor(),
+            modifier = Modifier.size(22.dp)
         )
     }
+}
+
+/** 色块上对勾的反色：透明/半透明用主题前景色，其余按色块亮度反色。 */
+@Composable
+private fun Color.checkmarkColor(): Color = if (alpha < 1f) {
+    MaterialTheme.colorScheme.onSurface
+} else {
+    contentColor()
 }
 
 object ColorSelectionRowDefaults {

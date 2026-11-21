@@ -35,12 +35,19 @@ interface SimpleSettingsInteractor {
 
     suspend fun setOneTimeSaveLocations(value: List<OneTimeSaveLocation>)
 
+    suspend fun toggleRecentColor(
+        color: ColorModel,
+        forceExclude: Boolean = false
+    )
+
     fun isInstalledFromPlayStore(): Boolean
 
     suspend fun toggleSettingsGroupVisibility(
         key: Int,
         value: Boolean
     )
+
+    suspend fun clearRecentColors()
 
     /** 整体覆盖用户调色板列表(新增/改名/删除/改色都走这一条,列表很短,不做增量)。 */
     suspend fun setCustomPalettes(

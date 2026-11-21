@@ -240,6 +240,13 @@ private val FakeSettings = object : SimpleSettingsInteractor {
         value: Boolean
     ) = Unit
 
+    override suspend fun clearRecentColors() = Unit
+
+    override suspend fun toggleRecentColor(
+        color: ColorModel,
+        forceExclude: Boolean
+    ) = Unit
+
     override suspend fun setCustomPalettes(palettes: List<ColorPalette>) = Unit
 
     override suspend fun setSelectedPaletteId(id: String?) = Unit

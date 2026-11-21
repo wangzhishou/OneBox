@@ -20,7 +20,6 @@
 package com.t8rin.imagetoolbox.color_tools.presentation.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -64,6 +63,7 @@ import com.t8rin.imagetoolbox.core.domain.model.ColorPalette
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.Add
+import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineContentPasteGo
@@ -280,6 +280,7 @@ internal fun PaletteEditor(
 
                                 is PaletteGridCell.Swatch -> PaletteColorBlock(
                                     argb = cell.argb,
+                                    selected = cell.argb == selectedColor.toArgb(),
                                     onClick = { onColorChange(Color(cell.argb)) },
                                     onRemove = {
                                         val updated = palette.removing(cell.argb)
@@ -544,12 +545,7 @@ private fun AddColorBlock(
         modifier = modifier
             .heightIn(min = 96.dp)
             .clip(shape)
-            .background(MaterialTheme.colorScheme.surfaceContainer)
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.outlineVariant,
-                shape = shape
-            )
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
             .hapticsClickable(onClick = onClick),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -572,6 +568,7 @@ private fun AddColorBlock(
 @Composable
 private fun PaletteColorBlock(
     argb: Int,
+    selected: Boolean,
     onClick: () -> Unit,
     onRemove: () -> Unit,
     modifier: Modifier = Modifier
@@ -589,6 +586,21 @@ private fun PaletteColorBlock(
         primaryText = color.toHex(),
         secondaryText = colorName ?: stringResource(R.string.color_transparent),
         badge = {
+            // 选中态和选色面板/顶部色行保持一致：不加描边，只在色块中心压一个对勾
+            if (selected) {
+                Icon(
+                    imageVector = Icons.Outlined.Check,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .size(28.dp),
+                    tint = if (color.alpha < 1f) {
+                        MaterialTheme.colorScheme.onSurface
+                    } else {
+                        color.contentColor()
+                    }
+                )
+            }
             // 移除按钮压在左上角：右下角留给色值，右上角留给复制图标
             Box(
                 modifier = Modifier

@@ -159,6 +159,7 @@ import com.t8rin.imagetoolbox.feature.settings.data.keys.SECURE_MODE
 import com.t8rin.imagetoolbox.feature.settings.data.keys.SELECTED_EMOJI_INDEX
 import com.t8rin.imagetoolbox.feature.settings.data.keys.SELECTED_FONT
 import com.t8rin.imagetoolbox.feature.settings.data.keys.SELECTED_PALETTE_ID
+import com.t8rin.imagetoolbox.feature.settings.data.keys.RECENT_COLORS
 import com.t8rin.imagetoolbox.feature.settings.data.keys.SETTINGS_GROUP_VISIBILITY
 import com.t8rin.imagetoolbox.feature.settings.data.keys.SHOW_SETTINGS_IN_LANDSCAPE
 import com.t8rin.imagetoolbox.feature.settings.data.keys.SHOW_UPDATE_DIALOG
@@ -710,6 +711,24 @@ internal class AndroidSettingsManager @Inject constructor(
         it[DEFAULT_DRAW_LINE_WIDTH] = value
     }
 
+    override suspend fun toggleRecentColor(
+        color: ColorModel,
+        forceExclude: Boolean,
+    ) = edit { preferences ->
+        val current = currentSettings.recentColors
+        val newColors = if (color in current) {
+            if (forceExclude) {
+                current - color
+            } else {
+                listOf(color) + (current - color)
+            }
+        } else {
+            listOf(color) + current
+        }
+
+        preferences[RECENT_COLORS] = newColors.take(30).map { it.colorInt.toString() }.toSet()
+    }
+
     override suspend fun setOneTimeSaveLocations(
         value: List<OneTimeSaveLocation>
     ) = edit { preferences ->
@@ -896,6 +915,10 @@ internal class AndroidSettingsManager @Inject constructor(
         } else {
             preferences[SELECTED_PALETTE_ID] = id
         }
+    }
+
+    override suspend fun clearRecentColors() = edit {
+        it[RECENT_COLORS] = emptySet()
     }
 
     override suspend fun setBackgroundColorForNoAlphaFormats(

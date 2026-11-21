@@ -1441,6 +1441,7 @@
     <string name="formatted_timestamp">格式化時間戳記</string>
     <string name="enable_timestamps_to_format_them">啟用時間戳記以選擇其格式</string>
     <string name="recently_used">最近使用</string>
+    <string name="clear_recent_colors">清空最近使用</string>
     <string name="ci_channel_sub">取得應用程式新版本的通知並閱讀公告</string>
     <string name="ci_channel">自動建置（CI）頻道</string>
     <string name="one_time_save_location">單次儲存位置</string>

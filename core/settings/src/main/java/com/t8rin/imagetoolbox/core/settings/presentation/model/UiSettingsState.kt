@@ -163,6 +163,7 @@ data class UiSettingsState(
     val hashingTypeForFilename: HashingType?,
     val customFonts: List<UiFontFamily.Custom>,
     val enableToolExitConfirmation: Boolean,
+    val recentColors: List<Color>,
     val backgroundForNoAlphaImageFormats: Color,
     val addPresetInfoToFilename: Boolean,
     val addImageScaleModeInfoToFilename: Boolean,
@@ -317,6 +318,12 @@ fun SettingsState.toUiState(
         }
     }
 
+    val recentColors by remember(recentColors) {
+        derivedStateOf {
+            recentColors.map { Color(it.colorInt) }
+        }
+    }
+
     val mainScreenTitle = mainScreenTitle.ifEmpty { stringResource(R.string.app_name) }
 
     val customFonts by remember(customFonts) {
@@ -413,6 +420,7 @@ fun SettingsState.toUiState(
                 hashingTypeForFilename = hashingTypeForFilename,
                 customFonts = customFonts,
                 enableToolExitConfirmation = enableToolExitConfirmation,
+                recentColors = recentColors,
                 backgroundForNoAlphaImageFormats = Color(backgroundForNoAlphaImageFormats.colorInt),
                 addPresetInfoToFilename = addPresetInfoToFilename,
                 addImageScaleModeInfoToFilename = addImageScaleModeInfoToFilename,

@@ -52,6 +52,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
@@ -79,7 +80,8 @@ fun ColorRowSelector(
     allowAlpha: Boolean = true,
     allowScroll: Boolean = true,
     defaultColors: List<Color> = defaultColorList,
-    contentHorizontalPadding: Dp = 12.dp
+    contentHorizontalPadding: Dp = 12.dp,
+    swatchShape: Shape = CircleShape,
 ) {
     val isCompactLayout = LocalSettingsState.current.isCompactSelectorsLayout
     val tooltipState = rememberTooltipState()
@@ -202,6 +204,7 @@ fun ColorRowSelector(
                 allowScroll = allowScroll,
                 value = value,
                 onValueChange = onValueChange,
+                swatchShape = swatchShape,
                 modifier = Modifier.weight(1f)
             )
         }

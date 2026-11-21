@@ -20,7 +20,6 @@
 package com.wanbaohe.core.ui.widget.color_picker
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,7 +31,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -303,7 +301,7 @@ private fun PaletteColorCell(
     onRemove: () -> Unit
 ) {
     val color = Color(argb)
-    val shape = RoundedCornerShape(14.dp)
+    val shape = MaterialTheme.shapes.medium
     Box(
         modifier = Modifier
             .size(44.dp)
@@ -311,19 +309,23 @@ private fun PaletteColorCell(
             .then(if (color.alpha < 1f) Modifier.transparencyChecker() else Modifier)
             .background(color)
             .colorSwatchOutline(color = color, shape = shape)
-            .then(
-                if (selected && !editMode) {
-                    Modifier.border(
-                        width = 2.dp,
-                        color = MaterialTheme.colorScheme.primary,
-                        shape = shape
-                    )
-                } else {
-                    Modifier
-                }
-            )
             .hapticsClickable(onClick = if (editMode) onRemove else onClick)
     ) {
+        if (selected && !editMode) {
+            // 扁平选中态：不加描边、不换形状，只在色块中心压一个对勾
+            Icon(
+                imageVector = Icons.Outlined.Check,
+                contentDescription = null,
+                tint = if (color.alpha < 1f) {
+                    MaterialTheme.colorScheme.onSurface
+                } else {
+                    color.contentColor()
+                },
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .size(20.dp)
+            )
+        }
         if (editMode) {
             // 编辑态：每个色块右上角挂一个删除标记，点整块即删。
             // 标记用错误色，和正常选中态区分开，避免误以为是在选色。
@@ -351,17 +353,12 @@ private fun PaletteColorCell(
 private fun AddColorCell(
     onClick: () -> Unit
 ) {
-    val shape = RoundedCornerShape(14.dp)
+    val shape = MaterialTheme.shapes.medium
     Box(
         modifier = Modifier
             .size(44.dp)
             .clip(shape)
-            .background(MaterialTheme.colorScheme.surfaceContainer)
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.outlineVariant,
-                shape = shape
-            )
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
             .hapticsClickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {

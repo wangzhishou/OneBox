@@ -60,6 +60,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -68,8 +69,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.smarttoolfactory.colordetector.ImageColorDetector
+import com.t8rin.imagetoolbox.core.domain.model.toColorModel
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
+import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSimpleSettingsInteractor
 import com.wanbaohe.core.ui.utils.content_pickers.rememberImagePicker
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.helper.toHex
@@ -98,6 +101,7 @@ fun ColorPickerSheet(
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    val simpleSettingsInteractor = LocalSimpleSettingsInteractor.current
     var tempColor by remember(visible) {
         mutableStateOf(color ?: Color.Black)
     }
@@ -144,7 +148,11 @@ fun ColorPickerSheet(
                         .verticalScroll(rememberScrollState(), reverseScrolling = true)
                         .padding(24.dp)
                 ) {
-                    // 调色板已经覆盖了「常用色」的场景：最近使用与收藏不再出现在选色面板里
+                    RecentColorsRow(
+                        currentColor = tempColor,
+                        onColorClick = { tempColor = it }
+                    )
+
                     PaletteColorsCard(
                         currentColor = tempColor,
                         onColorClick = { tempColor = it }
@@ -181,6 +189,11 @@ fun ColorPickerSheet(
                 }
                 EnhancedButton(
                     onClick = {
+                        scope.launch {
+                            simpleSettingsInteractor.toggleRecentColor(
+                                tempColor.toArgb().toColorModel()
+                            )
+                        }
                         onColorSelected(tempColor)
                         onDismiss()
                     }
