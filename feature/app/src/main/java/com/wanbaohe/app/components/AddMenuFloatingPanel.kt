@@ -249,8 +249,25 @@ fun AddMenuFloatingPanel(
             ) + fadeOut(animationSpec = tween(150)),
         ) {
             // 网格菜单项
-            // 先放能直接办事的：扫描、PDF、笔记、待办。祈福放在最后。
+            // 记事本、待办事项是最高频入口，固定排在最前面；其后按「扫描 / PDF / AI / 记录类」
+            // 依次展开，祈福等低频入口放在最后。
             val menuItems = listOf(
+                AddMenuItem(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineNote,
+                    label = CoreR.string.nav_notebook,
+                    onClick = {
+                        onDismiss()
+                        onNavigateToNotebook()
+                    }
+                ),
+                AddMenuItem(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSchedule,
+                    label = CoreR.string.nav_todo_list,
+                    onClick = {
+                        onDismiss()
+                        onNavigateToTodoList()
+                    }
+                ),
                 AddMenuItem(
                     icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDocumentScanner,
                     label = ToolboxR.string.document_scanner,
@@ -281,22 +298,6 @@ fun AddMenuFloatingPanel(
                     onClick = {
                         onDismiss()
                         onNavigateToPdfTools()
-                    }
-                ),
-                AddMenuItem(
-                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineNote,
-                    label = CoreR.string.nav_notebook,
-                    onClick = {
-                        onDismiss()
-                        onNavigateToNotebook()
-                    }
-                ),
-                AddMenuItem(
-                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSchedule,
-                    label = CoreR.string.nav_todo_list,
-                    onClick = {
-                        onDismiss()
-                        onNavigateToTodoList()
                     }
                 ),
                 AddMenuItem(
