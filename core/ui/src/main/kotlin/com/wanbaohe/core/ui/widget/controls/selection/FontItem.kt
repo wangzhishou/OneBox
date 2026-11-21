@@ -25,6 +25,7 @@
 
 package com.wanbaohe.core.ui.widget.controls.selection
 
+import androidx.compose.foundation.gestures.animateTo
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsDraggedAsState
 import androidx.compose.foundation.background

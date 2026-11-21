@@ -31,16 +31,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -142,40 +139,33 @@ fun SearchTextField(
         shape = RoundedCornerShape(percent = 50),
         borderWidth = 0.dp,
     ) {
-        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-            Box(
-                contentAlignment = Alignment.CenterStart,
-                modifier = modifier
-            ) {
-
-                if (query.text.isEmpty()) {
-                    SearchHint(modifier.padding(start = 24.dp, end = 8.dp))
-                }
-
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    BasicTextField(
-                        value = query,
-                        onValueChange = onQueryChange,
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .weight(1f)
-                            .onFocusChanged {
-                                onSearchFocusChange(it.isFocused)
-                            }
-                            .focusRequester(focusRequester)
-                            .padding(top = 9.dp, bottom = 8.dp, start = 24.dp, end = 8.dp),
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Search
+        Box(
+            contentAlignment = Alignment.CenterStart,
+            modifier = modifier
+        ) {
+            if (query.text.isEmpty()) {
+                SearchHint(modifier.padding(start = 24.dp, end = 8.dp))
+            }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                BasicTextField(
+                    value = query,
+                    onValueChange = onQueryChange,
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .weight(1f)
+                        .onFocusChanged { onSearchFocusChange(it.isFocused) }
+                        .focusRequester(focusRequester)
+                        .padding(top = 9.dp, bottom = 8.dp, start = 24.dp, end = 8.dp),
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search)
+                )
+                if (query.text.isNotEmpty()) {
+                    IconButton(onClick = onClearQuery) {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
-                    )
-
-                    when {
-                        query.text.isNotEmpty() -> {
-                            IconButton(onClick = onClearQuery) {
-                                Icon(imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close, contentDescription = null)
-                            }
-                        }
                     }
                 }
             }

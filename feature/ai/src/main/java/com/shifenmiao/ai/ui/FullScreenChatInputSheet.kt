@@ -44,7 +44,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowUpward
 import androidx.compose.material.icons.outlined.Close
@@ -65,6 +66,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -74,12 +76,13 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.ai.logic.ChatInputComponent
 import com.shifenmiao.core.R
 import com.shifenmiao.model.ai.ChatInputEventHandler
+import com.shifenmiao.model.ai.ChatInputState
 import com.shifenmiao.model.state.ChatUIState
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowUpward
 import com.t8rin.imagetoolbox.core.resources.icons.Close
@@ -102,6 +105,14 @@ fun FullScreenChatInputSheet(
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
     val scope = rememberCoroutineScope()
+    val draft = remember(chatInputComponent) { ExpandedChatDraft(chatInputComponent) }
+
+    LaunchedEffect(draft) {
+        combine(
+            snapshotFlow { draft.editorDraft() },
+            chatInputComponent.chatInputState,
+        ) { _, _ -> Unit }.collect { draft.sync() }
+    }
 
     // Sheet 完全展开后再抢 IME：此时 sheet 的 window 已建立，IME 可无缝 handoff，
     // 避免先隐藏再重新弹出造成的闪动。
@@ -115,6 +126,7 @@ fun FullScreenChatInputSheet(
     // 统一的关闭入口：先让 sheet 播完自身的下滑动画，再从父级移除组合，
     // 这样关闭时能看到明显的滑下 + 内容淡出效果。
     val dismiss: () -> Unit = {
+        draft.sync()
         scope.launch {
             sheetState.hide()
             chatInputComponent.toggleExpand(false)
@@ -122,7 +134,10 @@ fun FullScreenChatInputSheet(
     }
 
     ModalBottomSheet(
-        onDismissRequest = { chatInputComponent.toggleExpand(false) },
+        onDismissRequest = {
+            draft.sync()
+            chatInputComponent.toggleExpand(false)
+        },
         sheetState = sheetState,
         contentWindowInsets = { WindowInsets(0, 0, 0, 0) },
         dragHandle = null,
@@ -131,6 +146,7 @@ fun FullScreenChatInputSheet(
     ) {
         FullScreenContent(
             chatInputComponent = chatInputComponent,
+            fieldState = draft.fieldState,
             chatUIState = chatUIState,
             eventHandler = eventHandler,
             focusRequester = focusRequester,
@@ -138,6 +154,7 @@ fun FullScreenChatInputSheet(
             // 保证关闭时键盘不会先闪一下。
             onClose = dismiss,
             onSendAndClose = {
+                draft.sync()
                 eventHandler.sendMessage()
                 dismiss()
             }
@@ -145,9 +162,42 @@ fun FullScreenChatInputSheet(
     }
 }
 
+private data class DraftSelection(val text: String, val selection: TextRange)
+
+private fun ChatInputState.draftSelection() = DraftSelection(
+    inputText,
+    TextRange(cursorStart.coerceIn(0, inputText.length), cursorEnd.coerceIn(0, inputText.length)),
+)
+
+private class ExpandedChatDraft(private val component: ChatInputComponent) {
+    private var synced = component.chatInputState.value.draftSelection()
+    val fieldState = TextFieldState(synced.text, synced.selection)
+
+    fun editorDraft() = DraftSelection(fieldState.text.toString(), fieldState.selection)
+
+    fun sync() {
+        val componentDraft = component.chatInputState.value.draftSelection()
+        val current = editorDraft()
+        // 只把真正来自组件的变化写回编辑器，不回放自己的更新，以免打断输入法组词。
+        if (componentDraft != synced) {
+            synced = componentDraft
+            if (current != componentDraft) {
+                fieldState.edit {
+                    if (current.text != componentDraft.text) replace(0, length, componentDraft.text)
+                    selection = componentDraft.selection
+                }
+            }
+        } else if (current != synced) {
+            synced = current
+            component.onInputValueChange(current.text, current.selection.start, current.selection.end)
+        }
+    }
+}
+
 @Composable
 private fun FullScreenContent(
     chatInputComponent: ChatInputComponent,
+    fieldState: TextFieldState,
     chatUIState: ChatUIState,
     eventHandler: ChatInputEventHandler,
     focusRequester: FocusRequester,
@@ -155,24 +205,8 @@ private fun FullScreenContent(
     onSendAndClose: () -> Unit,
 ) {
     val inputState = chatInputComponent.chatInputState.collectAsState()
-    val text = inputState.value.inputText
-    val charCount = text.length
+    val charCount = fieldState.text.length
     val isLoading = chatUIState.chatActive
-
-    // 与 inline 输入框共享光标位置：进入时即沿用 component 中保留的 selection；
-    // 用户在全屏中移动光标也会回写到 component，下次切回 inline 时位置一致。
-    val externalSelection = TextRange(
-        inputState.value.cursorStart.coerceIn(0, text.length),
-        inputState.value.cursorEnd.coerceIn(0, text.length),
-    )
-    var fieldValue by remember {
-        mutableStateOf(TextFieldValue(text = text, selection = externalSelection))
-    }
-    LaunchedEffect(text, externalSelection) {
-        if (text != fieldValue.text || externalSelection != fieldValue.selection) {
-            fieldValue = TextFieldValue(text = text, selection = externalSelection)
-        }
-    }
 
     // 内容延迟淡入：让 sheet 先滑到位再显示文字与按钮，
     // 避免「输入框被放大」的视觉错觉
@@ -228,25 +262,18 @@ private fun FullScreenContent(
                 .weight(1f)
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
-                .verticalScroll(scrollState)
         ) {
             BasicTextField(
-                value = fieldValue,
-                onValueChange = { newValue ->
-                    fieldValue = newValue
-                    chatInputComponent.onInputValueChange(
-                        newValue.text,
-                        newValue.selection.start,
-                        newValue.selection.end,
-                    )
-                },
+                state = fieldState,
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(focusRequester),
+                lineLimits = TextFieldLineLimits.MultiLine(),
+                scrollState = scrollState,
                 textStyle = textStyle,
                 cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
-                decorationBox = { innerTextField ->
-                    if (fieldValue.text.isEmpty()) {
+                decorator = { innerTextField ->
+                    if (fieldState.text.isEmpty()) {
                         Text(
                             text = stringResource(R.string.create_ai_agent_expand),
                             style = textStyle,
@@ -293,7 +320,7 @@ private fun FullScreenContent(
                 }
                 FullScreenSendButton(
                     isLoading = isLoading,
-                    textEmpty = text.isEmpty()
+                    textEmpty = charCount == 0
                             && inputState.value.attachedMedia.isEmpty(),
                     onSend = onSendAndClose,
                     onCancel = eventHandler.cancelFetch,
@@ -353,7 +380,6 @@ private fun FullScreenSendButton(
 }
 
 internal const val MIN_CHARS_FOR_CLEAR = 20
-
 
 
 

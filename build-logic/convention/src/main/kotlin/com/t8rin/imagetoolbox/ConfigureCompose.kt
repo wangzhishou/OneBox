@@ -46,7 +46,6 @@ internal fun Project.configureCompose(
                 "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
                 "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
                 "-opt-in=androidx.compose.ui.unit.ExperimentalUnitApi",
-                "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
                 "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
                 "-opt-in=androidx.compose.ui.text.ExperimentalTextApi"
             )
@@ -61,7 +60,6 @@ internal fun Project.configureCompose(
         dependencies {
             implementation(libs.androidx.material3)
             implementation(libs.window.sizeclass)
-            implementation(libs.androidx.material)
             implementation(libs.icons.extended)
             implementation(libs.compose.runtime)
             implementation(libs.androidx.ui.tooling.preview.android)

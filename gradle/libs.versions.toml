@@ -340,7 +340,6 @@ detekt-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "det
 compose-material-icons-core = { module = "androidx.compose.material:material-icons-core", version.ref = "materialIconsExtended" }
 window-sizeclass = { module = "androidx.compose.material3:material3-window-size-class", version.ref = "material3" }
 icons-extended= { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
-androidx-material = { module = "androidx.compose.material:material", version.ref = "composeVersion" }
 androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 
 desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugaring-version" }

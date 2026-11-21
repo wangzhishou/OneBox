@@ -26,7 +26,7 @@
 package com.wanbaohe.core.ui.utils.helper
 
 import androidx.compose.foundation.Indication
-import androidx.compose.material.LocalContentColor
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember

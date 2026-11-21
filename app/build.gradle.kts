@@ -580,7 +580,6 @@ dependencies {
     api(libs.androidx.material3)
     api(libs.window.sizeclass)
     api(libs.icons.extended)
-    api(libs.androidx.material)
     implementation(libs.org.greenrebot.eventbus)
     implementation(projects.core.ui)
     implementation(projects.core.data)

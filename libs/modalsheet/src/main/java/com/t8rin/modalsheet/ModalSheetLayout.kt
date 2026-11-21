@@ -44,9 +44,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Surface
-import androidx.compose.material.contentColorFor
+import androidx.compose.material3.Surface
+import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
@@ -120,7 +119,6 @@ enum class ModalBottomSheetValue {
  * @param confirmValueChange Optional callback invoked to confirm or veto a pending state change.
  */
 @ExperimentalMaterial3Api
-@OptIn(ExperimentalMaterialApi::class)
 class ModalSheetState(
     initialValue: ModalBottomSheetValue,
     animationSpec: AnimationSpec<Float> = SwipeableV2Defaults.AnimationSpec,
@@ -271,7 +269,6 @@ class ModalSheetState(
  * If supplied with [ModalBottomSheetValue.HalfExpanded] for the [initialValue], an
  * [IllegalArgumentException] will be thrown.
  */
-@OptIn(ExperimentalMaterialApi::class)
 @ExperimentalMaterial3Api
 @Composable
 fun rememberModalBottomSheetState(
@@ -329,7 +326,6 @@ fun rememberModalBottomSheetState(
  * when visible.
  * @param content The content of rest of the screen.
  */
-@OptIn(ExperimentalMaterialApi::class)
 @ExperimentalMaterial3Api
 @Composable
 fun ModalSheetLayout(
@@ -452,7 +448,7 @@ fun ModalSheetLayout(
                 }
                 .then(sheetModifier),
             shape = sheetShape,
-            elevation = sheetElevation,
+            shadowElevation = sheetElevation,
             color = sheetContainerColor,
             contentColor = sheetContentColor
         ) {
@@ -497,7 +493,6 @@ private fun Scrim(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 private fun ConsumeSwipeWithinBottomSheetBoundsNestedScrollConnection(
     state: SwipeableV2State<*>,
     orientation: Orientation
@@ -553,7 +548,6 @@ private fun ConsumeSwipeWithinBottomSheetBoundsNestedScrollConnection(
 }
 
 @ExperimentalMaterial3Api
-@OptIn(ExperimentalMaterialApi::class)
 private fun ModalBottomSheetAnchorChangeHandler(
     state: ModalSheetState,
     animateTo: (target: ModalBottomSheetValue, velocity: Float) -> Unit,

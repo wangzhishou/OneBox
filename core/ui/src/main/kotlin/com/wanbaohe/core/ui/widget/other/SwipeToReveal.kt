@@ -23,12 +23,15 @@
  * along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
  */
 
-@file:Suppress("TYPEALIAS_EXPANSION_DEPRECATION", "DEPRECATION")
-
 package com.wanbaohe.core.ui.widget.other
 
 import androidx.compose.animation.core.Easing
+import androidx.compose.foundation.gestures.AnchoredDraggableDefaults
+import androidx.compose.foundation.gestures.AnchoredDraggableState
+import androidx.compose.foundation.gestures.DraggableAnchors
 import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.anchoredDraggable
+import androidx.compose.foundation.gestures.animateTo
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,18 +40,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
-import androidx.compose.material.FractionalThreshold
-import androidx.compose.material.ResistanceConfig
-import androidx.compose.material.SwipeableDefaults
-import androidx.compose.material.SwipeableState
-import androidx.compose.material.rememberSwipeableState
-import androidx.compose.material.swipeable
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
-import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Dp
@@ -59,7 +58,7 @@ import com.wanbaohe.core.ui.utils.animation.AlphaEasing
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
-typealias RevealState = SwipeableState<RevealValue>
+typealias RevealState = AnchoredDraggableState<RevealValue>
 
 @Composable
 fun SwipeToReveal(
@@ -67,7 +66,6 @@ fun SwipeToReveal(
     enableSwipe: Boolean = true,
     alphaEasing: Easing = AlphaEasing,
     maxRevealDp: Dp = 75.dp,
-    maxAmountOfOverflow: Dp = 250.dp,
     directions: Set<RevealDirection> = setOf(
         RevealDirection.StartToEnd,
     ),
@@ -82,10 +80,12 @@ fun SwipeToReveal(
 ) {
     Box(modifier) {
         val maxRevealPx = with(LocalDensity.current) { maxRevealDp.toPx() }
-        val draggedRatio =
-            (state.offset.value.absoluteValue / maxRevealPx.absoluteValue).coerceIn(0f, 1f)
-
-        val alpha = if (alphaTransformEnabled) alphaEasing.transform(draggedRatio) else 1f
+        val alphaModifier = if (alphaTransformEnabled && maxRevealPx > 0f) {
+            Modifier.graphicsLayer {
+                val ratio = (state.offset.offsetOrZero().absoluteValue / maxRevealPx).coerceIn(0f, 1f)
+                alpha = alphaEasing.transform(ratio)
+            }
+        } else Modifier
 
         // non swipable with hidden content
         Box(
@@ -94,7 +94,7 @@ fun SwipeToReveal(
             Row(
                 modifier = Modifier
                     .fillMaxSize()
-                    .alpha(alpha),
+                    .then(alphaModifier),
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -122,14 +122,13 @@ fun SwipeToReveal(
                         Modifier
                             .offset {
                                 IntOffset(
-                                    state.offset.value.roundToInt(),
+                                    state.offset.offsetOrZero().roundToInt(),
                                     0
                                 )
                             }
                             .revealSwipeable(
                                 state = state,
                                 maxRevealPx = maxRevealPx,
-                                maxAmountOfOverflow = maxAmountOfOverflow,
                                 directions = directions,
                                 interactionSource = interactionSource
                             )
@@ -142,48 +141,43 @@ fun SwipeToReveal(
 }
 
 
-fun Modifier.revealSwipeable(
+private fun Modifier.revealSwipeable(
     maxRevealPx: Float,
-    maxAmountOfOverflow: Dp,
     directions: Set<RevealDirection>,
     state: RevealState,
-    enabled: Boolean = true,
     interactionSource: MutableInteractionSource
 ) = this.composed {
-
-    val maxAmountOfOverflowPx = with(LocalDensity.current) { maxAmountOfOverflow.toPx() }
-
     val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
 
-    val anchors = mutableMapOf(0f to RevealValue.Default)
-
-    if (RevealDirection.StartToEnd in directions) anchors += maxRevealPx to RevealValue.FullyRevealedEnd
-    if (RevealDirection.EndToStart in directions) anchors += -maxRevealPx to RevealValue.FullyRevealedStart
-
-    val thresholds = { _: RevealValue, _: RevealValue ->
-        FractionalThreshold(0.5f)
+    val anchors = remember(maxRevealPx, directions) {
+        DraggableAnchors {
+            RevealValue.Default at 0f
+            if (maxRevealPx > 0f && RevealDirection.StartToEnd in directions) {
+                RevealValue.FullyRevealedEnd at maxRevealPx
+            }
+            if (maxRevealPx > 0f && RevealDirection.EndToStart in directions) {
+                RevealValue.FullyRevealedStart at -maxRevealPx
+            }
+        }
     }
-
-    val minFactor =
-        if (RevealDirection.EndToStart in directions) SwipeableDefaults.StandardResistanceFactor else SwipeableDefaults.StiffResistanceFactor
-    val maxFactor =
-        if (RevealDirection.StartToEnd in directions) SwipeableDefaults.StandardResistanceFactor else SwipeableDefaults.StiffResistanceFactor
-
-    Modifier.swipeable(
+    SideEffect {
+        val target = state.targetValue.takeUnless { anchors.positionOf(it).isNaN() }
+            ?: RevealValue.Default
+        state.updateAnchors(anchors, target)
+    }
+    Modifier.anchoredDraggable(
         state = state,
-        anchors = anchors,
-        thresholds = thresholds,
         orientation = Orientation.Horizontal,
-        enabled = enabled, // state.value == RevealValue.System,
         reverseDirection = isRtl,
-        resistance = ResistanceConfig(
-            basis = maxAmountOfOverflowPx,
-            factorAtMin = minFactor,
-            factorAtMax = maxFactor
+        flingBehavior = AnchoredDraggableDefaults.flingBehavior(
+            state = state,
+            positionalThreshold = { it * 0.5f },
         ),
         interactionSource = interactionSource
     )
 }
+
+private fun Float.offsetOrZero(): Float = if (isNaN()) 0f else this
 
 enum class RevealDirection {
     /**
@@ -221,17 +215,14 @@ enum class RevealValue {
  * Create and [remember] a [RevealState] with the default animation clock.
  *
  * @param initialValue The initial value of the state.
- * @param confirmStateChange Optional callback invoked to confirm or veto a pending state change.
  */
 @Composable
 fun rememberRevealState(
     initialValue: RevealValue = RevealValue.Default,
-    confirmStateChange: (RevealValue) -> Boolean = { true },
 ): RevealState {
-    return rememberSwipeableState(
-        initialValue = initialValue,
-        confirmStateChange = confirmStateChange
-    )
+    return rememberSaveable(saver = AnchoredDraggableState.Saver()) {
+        AnchoredDraggableState(initialValue)
+    }
 }
 
 /**

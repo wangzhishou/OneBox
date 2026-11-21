@@ -27,6 +27,7 @@ package com.wanbaohe.core.ui.widget.controls.selection
 
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.gestures.animateTo
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
