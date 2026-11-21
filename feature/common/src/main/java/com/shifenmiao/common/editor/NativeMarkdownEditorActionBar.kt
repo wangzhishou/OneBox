@@ -73,6 +73,8 @@ private fun NativeMarkdownEditorModeToggle(
         EnhancedDropdownMenu(
             expanded = menuExpanded,
             onDismissRequest = { menuExpanded = false },
+            // 锚点跟随芯片尺寸，避免菜单默认的 48.dp 锚点撑大工具坞。
+            modifier = Modifier.matchParentSize(),
             // 入口在屏幕底部，气泡只能向上展开；箭头必须朝下指向这个芯片。
             expandUp = true,
         ) {
