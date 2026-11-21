@@ -34,6 +34,7 @@ android.namespace = "com.shifenmiao.app.watermarking"
 
 dependencies {
     implementation(projects.feature.common)
+    implementation(projects.core.filters)
     implementation(projects.feature.watermarkTemplate)
     implementation(projects.feature.privacyRedaction)
     implementation(projects.core.weather)

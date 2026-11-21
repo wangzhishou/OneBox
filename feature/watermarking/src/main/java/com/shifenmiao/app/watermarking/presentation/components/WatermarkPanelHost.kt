@@ -32,6 +32,7 @@ fun WatermarkPanelHost(
 ) {
     when (panel) {
         WatermarkPanel.TOOLS -> Unit
+        WatermarkPanel.FILTER -> Unit
         WatermarkPanel.PRESETS -> PresetPanel(
             presets = component.presets,
             hasLayers = component.document.elements.isNotEmpty(),

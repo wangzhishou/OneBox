@@ -242,6 +242,7 @@
     <string name="saturation">饱和度</string>
     <string name="add_filter">添加滤镜</string>
     <string name="filter">滤镜</string>
+    <string name="filter_more">更多</string>
     <string name="filter_sub">对指定图片应用滤镜组</string>
     <string name="filters">滤镜</string>
     <string name="light_aka_illumination">光照</string>
@@ -2185,6 +2186,18 @@
     <string name="watermark_strip_location">移除位置元数据</string>
     <string name="watermark_strip_location_sub">保留其他 EXIF 信息，但移除 GPS 标签</string>
     <string name="watermark_choose_location">选择目录</string>
+    <string name="watermark_start_title">先选一个模板</string>
+    <string name="watermark_start_subtitle">选好起点再挑照片，之后仍然可以自由添加、删除和调整水印图层。</string>
+    <string name="watermark_template_blank">空白</string>
+    <string name="watermark_template_blank_desc">空画布，文字、标志和时间都由你自己加。</string>
+    <string name="watermark_template_repeat">重复</string>
+    <string name="watermark_template_repeat_desc">版权文字平铺整张照片。</string>
+    <string name="watermark_template_leica">徕卡</string>
+    <string name="watermark_template_leica_desc">底部白带，放机型参数、时间和定位。</string>
+    <string name="watermark_start_pick_photo">选择照片</string>
+    <string name="watermark_start_selected">已选中</string>
+    <string name="watermark_filter_target">给照片加滤镜</string>
+    <string name="watermark_filter_unsupported">这个滤镜无法应用到照片上</string>
     <string name="watermark_preset_copyright">全屏文字</string>
     <string name="watermark_preset_logo">品牌 Logo</string>
     <string name="watermark_preset_stamp">简约印章</string>

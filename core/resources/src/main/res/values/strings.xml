@@ -242,6 +242,7 @@
     <string name="saturation">Saturation</string>
     <string name="add_filter">Add filter</string>
     <string name="filter">Filter</string>
+    <string name="filter_more">More</string>
     <string name="filter_sub">Apply a filter group to the given image</string>
     <string name="filters">Filters</string>
     <string name="light_aka_illumination">Light</string>
@@ -2185,6 +2186,18 @@
     <string name="watermark_strip_location">Remove location metadata</string>
     <string name="watermark_strip_location_sub">Keep other EXIF data but remove GPS tags</string>
     <string name="watermark_choose_location">Choose folder</string>
+    <string name="watermark_start_title">Start with a template</string>
+    <string name="watermark_start_subtitle">Pick a starting point, then choose your photos. You can still add, remove and edit layers afterwards.</string>
+    <string name="watermark_template_blank">Blank</string>
+    <string name="watermark_template_blank_desc">An empty canvas. Add your own text, logo or timestamp.</string>
+    <string name="watermark_template_repeat">Tiled</string>
+    <string name="watermark_template_repeat_desc">Copyright text repeated across the whole photo.</string>
+    <string name="watermark_template_leica">Leica classic</string>
+    <string name="watermark_template_leica_desc">A white info band with camera data, time and location.</string>
+    <string name="watermark_start_pick_photo">Choose photos</string>
+    <string name="watermark_start_selected">Selected</string>
+    <string name="watermark_filter_target">Filter the photo</string>
+    <string name="watermark_filter_unsupported">This filter cannot be applied to the photo</string>
     <string name="watermark_preset_copyright">Full-screen text</string>
     <string name="watermark_preset_logo">Brand logo</string>
     <string name="watermark_preset_stamp">Minimal stamp</string>

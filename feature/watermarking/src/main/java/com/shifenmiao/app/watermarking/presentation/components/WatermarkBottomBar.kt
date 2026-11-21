@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineImage
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineFilters
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAutoAwesomeMosaic
 import com.shifenmiao.app.watermarking.presentation.WatermarkPanel
 import com.shifenmiao.app.watermarking.presentation.title
@@ -54,6 +55,7 @@ fun WatermarkBottomBar(
     activePanel: WatermarkPanel?,
     isPrivacyActive: Boolean,
     isToolRailVisible: Boolean,
+    isFilterPanelVisible: Boolean,
     onPanelClick: (WatermarkPanel) -> Unit,
     onExportClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -78,24 +80,25 @@ fun WatermarkBottomBar(
                     panel != WatermarkPanel.PRIVACY
                 }
             }.forEach { panel ->
-                val selected = if (panel == WatermarkPanel.TOOLS) {
-                    isToolRailVisible
-                } else {
-                    panel == activePanel
+                val selected = when (panel) {
+                    WatermarkPanel.TOOLS -> isToolRailVisible
+                    WatermarkPanel.FILTER -> isFilterPanelVisible
+                    else -> panel == activePanel
                 }
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier
-                        .size(width = 62.dp, height = 52.dp)
+                        .size(width = 56.dp, height = 52.dp)
                         .clip(ShapeDefaults.default)
                         .background(if (selected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent)
                         .clickable { onPanelClick(panel) }
-                        .padding(4.dp),
+                        .padding(2.dp),
                 ) {
                     Icon(
                         imageVector = when (panel) {
                             WatermarkPanel.PRESETS -> MaterialIcons.Outlined.Star
+                            WatermarkPanel.FILTER -> Icons.Outlined.LineFilters
                             WatermarkPanel.TOOLS -> MaterialIcons.Outlined.Build
                             WatermarkPanel.PROPERTIES -> MaterialIcons.Outlined.Tune
                             WatermarkPanel.LAYERS -> MaterialIcons.Outlined.Layers
@@ -104,7 +107,7 @@ fun WatermarkBottomBar(
                         },
                         contentDescription = panel.title(),
                         tint = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(22.dp),
+                        modifier = Modifier.size(20.dp),
                     )
                     EditorToolLabel(
                         text = panel.title(),
@@ -113,7 +116,7 @@ fun WatermarkBottomBar(
                 }
             }
         }
-        Spacer(Modifier.width(8.dp))
+        Spacer(Modifier.width(4.dp))
         ConfirmButton(text = stringResource(R.string.export), onClick = onExportClick)
     }
 }

@@ -135,7 +135,7 @@ object BuiltinWatermarkPresets {
                     fields = listOf(ExifFieldKey.CAMERA_MAKE, ExifFieldKey.CAMERA_MODEL),
                     separator = " ",
                 ),
-                centerX = 0.04f,
+                centerX = 0.02f,
                 centerY = 0.4f,
                 sizeRatio = 0.35f,
                 horizontalAlignment = WatermarkHorizontalAlignment.START,
@@ -143,7 +143,7 @@ object BuiltinWatermarkPresets {
             ),
             bandElement(
                 content = WatermarkContent.Timestamp(format = "yyyy.MM.dd HH:mm:ss"),
-                centerX = 0.04f,
+                centerX = 0.02f,
                 centerY = 0.75f,
                 sizeRatio = 0.22f,
                 color = -0x99999a,

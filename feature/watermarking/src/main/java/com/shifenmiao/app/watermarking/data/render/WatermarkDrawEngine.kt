@@ -81,26 +81,32 @@ object WatermarkDrawEngine {
         canvas: Canvas,
         visual: WatermarkVisual<Bitmap>,
         element: WatermarkElement,
+        rect: RectF? = null,
     ) {
         val transform = element.transform
+        val left = rect?.left ?: 0f
+        val top = rect?.top ?: 0f
+        val width = rect?.width() ?: canvas.width.toFloat()
+        val height = rect?.height() ?: canvas.height.toFloat()
         val spacing = element.layout.repeatSpacing.coerceIn(1.1f, 6f)
-        val stepX = (visual.width * spacing).coerceAtLeast(canvas.width / 20f)
-        val stepY = (visual.height * spacing).coerceAtLeast(canvas.height / 20f)
+        val stepX = (visual.width * spacing).coerceAtLeast(width / 20f)
+        val stepY = (visual.height * spacing).coerceAtLeast(height / 20f)
         if (stepX <= 0f || stepY <= 0f) return
-        val centerX = transform.centerX * canvas.width
-        val centerY = transform.centerY * canvas.height
+        val centerX = left + transform.centerX * width
+        val centerY = top + transform.centerY * height
         val paint = paint(element)
         canvas.save()
+        rect?.let(canvas::clipRect)
         canvas.rotate(transform.rotation, centerX, centerY)
         canvas.scale(transform.scale, transform.scale, centerX, centerY)
         val offsetX = centerX % stepX - stepX
         val offsetY = centerY % stepY - stepY
         var row = 0
-        var y = offsetY - canvas.height / 2f
-        while (y < canvas.height * 1.5f + stepY) {
+        var y = offsetY - height / 2f
+        while (y < top + height * 1.5f + stepY) {
             val rowOffset = if (row % 2 == 0) 0f else stepX / 2f
-            var x = offsetX - canvas.width / 2f - stepX + rowOffset
-            while (x < canvas.width * 1.5f + stepX) {
+            var x = offsetX - width / 2f - stepX + rowOffset
+            while (x < left + width * 1.5f + stepX) {
                 canvas.drawBitmap(visual.image, x, y, paint)
                 x += stepX
             }

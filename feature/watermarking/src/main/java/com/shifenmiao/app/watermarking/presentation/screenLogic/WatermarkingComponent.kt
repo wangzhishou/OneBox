@@ -18,6 +18,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.net.toUri
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.childContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.image.ImageCompressor
 import com.t8rin.imagetoolbox.core.domain.image.ImageGetter
@@ -29,6 +30,14 @@ import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageInfo
 import com.t8rin.imagetoolbox.core.domain.image.model.MetadataTag
 import com.t8rin.imagetoolbox.core.domain.image.model.Quality
+import com.t8rin.imagetoolbox.core.domain.model.IntegerSize
+import com.t8rin.imagetoolbox.core.domain.transformation.EmptyTransformation
+import com.t8rin.imagetoolbox.core.domain.transformation.Transformation
+import com.t8rin.imagetoolbox.core.filters.domain.FilterProvider
+import com.t8rin.imagetoolbox.core.filters.presentation.model.UiFilter
+import com.t8rin.imagetoolbox.core.filters.presentation.widget.FilterTemplateCreationSheetComponent
+import com.t8rin.imagetoolbox.core.filters.presentation.widget.addFilters.AddFiltersSheetComponent
+import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.domain.saving.FileController
 import com.t8rin.imagetoolbox.core.domain.saving.model.ImageSaveTarget
 import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
@@ -63,6 +72,7 @@ import com.shifenmiao.app.watermarking.domain.render.WatermarkRenderer
 import com.shifenmiao.app.watermarking.domain.render.WatermarkVisual
 import com.shifenmiao.app.watermarking.domain.render.WatermarkVisualFactory
 import com.wanbaohe.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.utils.state.update
 import com.wanbaohe.core.weather.domain.repository.CurrentLocationProvider
@@ -91,6 +101,7 @@ class WatermarkingComponent @AssistedInject internal constructor(
     private val shareProvider: ImageShareProvider<Bitmap>,
     private val imageGetter: ImageGetter<Bitmap>,
     private val imageScaler: ImageScaler<Bitmap>,
+    private val filterProvider: FilterProvider<Bitmap>,
     private val contentResolver: WatermarkContentResolver,
     private val visualFactory: WatermarkVisualFactory<Bitmap>,
     private val watermarkRenderer: WatermarkRenderer<Bitmap>,
@@ -100,10 +111,28 @@ class WatermarkingComponent @AssistedInject internal constructor(
     private val metadataWriter: WatermarkMetadataWriter,
     privacyAnalyzer: PrivacyAnalyzer,
     privacyRenderer: PrivacyRedactionRenderer<Bitmap>,
+    addFiltersSheetComponentFactory: AddFiltersSheetComponent.Factory,
+    filterTemplateCreationSheetComponentFactory: FilterTemplateCreationSheetComponent.Factory,
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
     private val editSession = WatermarkEditSession()
     private val contentDrafts = mutableMapOf<WatermarkKind, WatermarkContent>()
+
+    // 滤镜目录子组件与图片创作共用同一套实现，避免水印侧再维护一份筛选/收藏/预览逻辑。
+    val addFiltersSheetComponent: AddFiltersSheetComponent =
+        addFiltersSheetComponentFactory(componentContext.childContext(key = "watermarkAddFiltersSheet"))
+    val filterTemplateCreationSheetComponent: FilterTemplateCreationSheetComponent =
+        filterTemplateCreationSheetComponentFactory(
+            componentContext.childContext(key = "watermarkFilterTemplateCreationSheet")
+        )
+
+    private val _baseFilters = mutableStateOf<List<UiFilter<*>>>(emptyList())
+    val baseFilters: List<UiFilter<*>> by _baseFilters
+    private val _filteredBitmap = mutableStateOf<Bitmap?>(null)
+    /** 画布与导出预览用的底图：应用滤镜后是过滤结果，未应用时就是原图。 */
+    val displayBitmap: Bitmap? get() = _filteredBitmap.value ?: internalBitmap
+    private var filterJob: Job? = null
+
     private var resolutionJob: Job? = null
     private var deviceLocation: LocationSnapshot? = null
     val privacy = PrivacyRedactionController(
@@ -321,6 +350,104 @@ class WatermarkingComponent @AssistedInject internal constructor(
         _selectedElementId.update { document.elements.lastOrNull()?.id }
     }
 
+    /** 引导页「空白」模板：清掉预设关联，后续重置回到空画布而不是上一个预设。 */
+    fun applyBlankDocument() {
+        activePresetDocument = null
+        _activePresetId.update { null }
+        applyPresetDocument(WatermarkDocument(elements = emptyList()))
+    }
+
+    /** 快捷滤镜栏：选中一项即替换当前滤镜；「更多」目录可继续叠加。 */
+    fun selectFilter(filter: UiFilter<*>?) {
+        setBaseFilters(filter?.let(::listOf).orEmpty())
+    }
+
+    fun addFilter(filter: UiFilter<*>) {
+        setBaseFilters(baseFilters + filter)
+    }
+
+    fun filterTransformation(filter: UiFilter<*>): Transformation<Bitmap> =
+        filterProvider.filterToTransformation(filter)
+
+    private fun setBaseFilters(filters: List<UiFilter<*>>) {
+        if (_baseFilters.value == filters) return
+        _baseFilters.value = filters
+        registerChanges()
+        refreshFilteredPreview()
+    }
+
+    private fun refreshFilteredPreview() {
+        filterJob?.cancel()
+        val base = internalBitmap
+        if (base == null || baseFilters.isEmpty()) {
+            // 预览位图可能仍被画布持有，交给 GC 回收，不能在这里 recycle。
+            _filteredBitmap.value = null
+            return
+        }
+        val requestedFilters = baseFilters
+        filterJob = componentScope.launch {
+            val result = try {
+                applyFiltersTo(base, requestedFilters)
+            } catch (cancellation: CancellationException) {
+                throw cancellation
+            } catch (error: Exception) {
+                AppToastHost.showFailureToast(R.string.watermark_filter_unsupported)
+                null
+            }
+            ensureActive()
+            val stale = _internalBitmap.value !== base || _baseFilters.value != requestedFilters
+            if (result == null || stale || result === base) {
+                if (stale && result !== base) result?.recycle()
+                if (result === base) _filteredBitmap.value = null
+                return@launch
+            }
+            _filteredBitmap.value = result
+        }
+    }
+
+    /**
+     * 滤镜按顺序作用到底图，每一步都基于副本，避免变换改写原图；
+     * 几何尺寸变化的滤镜在这里拒绝，否则水印坐标与导出尺寸会错位。
+     */
+    private suspend fun applyFiltersTo(
+        image: Bitmap,
+        filters: List<UiFilter<*>>,
+    ): Bitmap = withContext(defaultDispatcher) {
+        var current = image
+        var currentOwned = false
+        try {
+            for (filter in filters) {
+                ensureActive()
+                val transformation = filterProvider.filterToTransformation(filter)
+                check(transformation !is EmptyTransformation<*> || !filter.isVisible) {
+                    "Unsupported watermark filter: ${filter::class.simpleName}"
+                }
+                val input = current.copy(Bitmap.Config.ARGB_8888, true)
+                var output: Bitmap? = null
+                try {
+                    output = transformation.transform(input, IntegerSize(input.width, input.height))
+                    check(!output.isRecycled) { "Filter returned a recycled bitmap" }
+                    check(output.width == image.width && output.height == image.height) {
+                        "Watermark filters must preserve image dimensions"
+                    }
+                } catch (failure: Exception) {
+                    if (output !== input) output?.recycle()
+                    input.recycle()
+                    throw failure
+                }
+                val returnedInput = output === input
+                if (currentOwned) current.recycle()
+                current = output
+                currentOwned = true
+                if (!returnedInput) input.recycle()
+            }
+            current
+        } catch (failure: Exception) {
+            if (currentOwned && current !== image) current.recycle()
+            throw failure
+        }
+    }
+
     fun saveCurrentAsPreset(name: String, onResult: (Boolean) -> Unit = {}) {
         if (name.isBlank()) {
             onResult(false)
@@ -361,15 +488,14 @@ class WatermarkingComponent @AssistedInject internal constructor(
     }
 
     fun resetDocument() {
+        setBaseFilters(emptyList())
         val initialPreset = activePresetDocument
         if (initialPreset != null && !privacy.isActive) {
             applyPresetDocument(initialPreset)
             return
         }
         privacy.clearCurrent()
-        applyPresetDocument(
-            if (privacy.isActive) WatermarkDocument(elements = emptyList()) else WatermarkDocument()
-        )
+        applyPresetDocument(WatermarkDocument(elements = emptyList()))
     }
 
     fun updateHiddenWatermark(params: HiddenWatermarkParams) {
@@ -527,6 +653,8 @@ class WatermarkingComponent @AssistedInject internal constructor(
         if (uris.isEmpty()) {
             _selectedUri.update { Uri.EMPTY }
             _internalBitmap.update { null }
+            filterJob?.cancel()
+            _filteredBitmap.value = null
             _resolvedElements.update { emptyList() }
             privacy.selectImage("", null)
         } else {
@@ -556,6 +684,7 @@ class WatermarkingComponent @AssistedInject internal constructor(
                 return@launch
             }
             _internalBitmap.update { imageScaler.scaleUntilCanShow(imageData.image) }
+            refreshFilteredPreview()
             privacy.selectImage(uri.toString(), internalBitmap)
             _imageFormat.update { imageData.imageInfo.imageFormat }
             _currentHiddenWatermark.update { hiddenWatermarkDetector.detect(imageData.image) }
@@ -607,7 +736,15 @@ class WatermarkingComponent @AssistedInject internal constructor(
     private suspend fun renderUri(uri: Uri): RenderedImage? {
         val imageData = imageGetter.getImage(uri.toString(), originalSize = true) ?: return null
         val resolution = contentResolver.resolve(uri.toString(), documentFromSession(), deviceLocation)
-        val redacted = privacy.render(imageData.image, uri.toString())
+        val filtered = try {
+            applyFiltersTo(imageData.image, baseFilters)
+        } catch (cancellation: CancellationException) {
+            throw cancellation
+        } catch (error: Exception) {
+            // 预览已在选滤镜时提示过；导出不因单个滤镜失败而整批中断。
+            imageData.image
+        }
+        val redacted = privacy.render(filtered, uri.toString())
         val bitmap = try {
             watermarkRenderer.render(
                 image = redacted,
@@ -615,7 +752,8 @@ class WatermarkingComponent @AssistedInject internal constructor(
                 hiddenWatermark = documentFromSession().hiddenWatermark,
             )
         } finally {
-            if (redacted !== imageData.image) redacted.recycle()
+            if (redacted !== filtered) redacted.recycle()
+            if (filtered !== imageData.image) filtered.recycle()
         } ?: return null
         val metadata = imageData.metadata?.let { metadata ->
             if (keepExif) {

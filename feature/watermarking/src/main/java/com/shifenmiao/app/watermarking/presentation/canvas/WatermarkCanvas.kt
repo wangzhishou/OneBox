@@ -12,6 +12,7 @@ package com.shifenmiao.app.watermarking.presentation.canvas
 
 import android.graphics.Bitmap
 import android.graphics.RectF
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -25,7 +26,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.outlined.ChevronLeft
 import androidx.compose.material.icons.outlined.ChevronRight
-import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.FitScreen
 import androidx.compose.material.icons.outlined.ZoomOutMap
 import androidx.compose.material3.CircularProgressIndicator
@@ -71,6 +71,7 @@ import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCompare
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineRestartAlt
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineZoomIn
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineZoomOut
@@ -114,6 +115,9 @@ fun WatermarkCanvas(
     isToolRailVisible: Boolean,
     canUndo: Boolean,
     canRedo: Boolean,
+    resetEnabled: Boolean,
+    @StringRes resetDescriptionRes: Int,
+    onReset: () -> Unit,
     immersiveModeState: ImmersiveModeState,
     onCompareChange: (Boolean) -> Unit,
     onUndo: () -> Unit,
@@ -149,11 +153,13 @@ fun WatermarkCanvas(
         // BottomBand 的输出画布 = 原图 + 下方白带。预览必须按「整张输出画布」做 fit，
         // 否则白带会被挤出视口，PHOTO / BAND 两套归一化坐标也无法与导出对齐。
         val bandColor = (frame as? WatermarkFrame.BottomBand)?.color ?: -1
+        // 护栏按源图宽度算，再随 fit 一起缩放；预览与导出因此保持同一比例。
+        // 提到外层，photoHeight 与 canvasSize 共用同一个值。
+        val sourceBandHeight = bitmap?.width?.let { width ->
+            (frame as? WatermarkFrame.BottomBand)?.bandHeightFor(width) ?: 0
+        } ?: 0
         val canvasSize = bitmap?.let {
             val outputWidth = it.width
-            // 护栏按源图宽度算，再随 fit 一起缩放；预览与导出因此保持同一比例。
-            val sourceBandHeight = (frame as? WatermarkFrame.BottomBand)
-                ?.bandHeightFor(outputWidth) ?: 0
             val outputHeight = (it.height + sourceBandHeight).coerceAtLeast(1)
             val fit = min(
                 (constraints.maxWidth - paddingPx).coerceAtLeast(1) / outputWidth.toFloat(),
@@ -167,8 +173,14 @@ fun WatermarkCanvas(
         // 白带高度取差值，保证 photoHeight + bandHeight 精确等于 canvasSize.height，
         // 不因两次取整在照片与白带之间漏出一条缝。
         val photoHeight = bitmap?.let {
-            (it.height * (canvasSize.width / it.width.toFloat())).roundToInt()
-                .coerceIn(1, canvasSize.height)
+            // 没有白带时必须让照片区吃满整个画布高度，否则两处独立取整
+            // 会差出 1~2px，底部漏出一条假白带/棋盘格，看着像没对齐。
+            if (sourceBandHeight == 0) {
+                canvasSize.height
+            } else {
+                (it.height * (canvasSize.width / it.width.toFloat())).roundToInt()
+                    .coerceIn(1, canvasSize.height)
+            }
         } ?: 0
         val bandHeight = (canvasSize.height - photoHeight).coerceAtLeast(0)
         val fittedSourceScale = bitmap?.let { canvasSize.width / it.width.toFloat() }
@@ -268,6 +280,9 @@ fun WatermarkCanvas(
                 }
                 val displayedBitmap = if (isComparing) source else privacyPreview ?: source
                 val displayedImage = remember(displayedBitmap) { displayedBitmap.asImageBitmap() }
+                // 无 alpha 的图不该透出棋盘格：drawImage 的边缘亚像素外扩后，
+                // 容器棋盘底仍会从右侧/底部漏出一条，看着像画布没对齐。
+                val showTransparency = remember(displayedBitmap) { displayedBitmap.hasAlpha() }
                 val originalDescription = stringResource(R.string.original)
                 val canvasWidthDp = with(density) { canvasSize.width.toDp() }
                 val canvasHeightDp = with(density) { canvasSize.height.toDp() }
@@ -288,7 +303,13 @@ fun WatermarkCanvas(
                             .zIndex(
                                 if (photoElements.any { it.element.id == selectedElementId }) 1f else 0f
                             )
-                            .transparencyChecker(),
+                            .then(
+                                if (showTransparency) {
+                                    Modifier.transparencyChecker()
+                                } else {
+                                    Modifier.background(MaterialTheme.colorScheme.surface)
+                                }
+                            ),
                     ) {
                         Canvas(
                             modifier = Modifier
@@ -392,6 +413,7 @@ fun WatermarkCanvas(
                 CanvasControl(Icons.Outlined.LineZoomIn, R.string.watermark_zoom_in, viewport.scale < viewport.maxScale) {
                     viewport.zoomTo(viewport.scale + 0.5f)
                 }
+                CanvasControl(Icons.Outlined.LineRestartAlt, resetDescriptionRes, resetEnabled) { onReset() }
                 CanvasControl(Icons.Outlined.LineUndo, R.string.undo, canUndo) { onUndo() }
                 CanvasControl(Icons.Outlined.LineRedo, R.string.redo, canRedo) { onRedo() }
                 HoldCanvasControl(
@@ -424,23 +446,10 @@ fun WatermarkCanvas(
             }
         }
         if (isLoading) CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-        if (!immersiveModeState.isUiVisible) {
-            EnhancedIconButton(
-                onClick = { immersiveModeState.exitImmersive() },
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(12.dp)
-                    .glassBackground(GlassStyle.None, ShapeDefaults.circle, MaterialTheme.colorScheme.surfaceContainer),
-            ) {
-                Icon(
-                    MaterialIcons.Outlined.Close,
-                    contentDescription = stringResource(R.string.watermark_exit_immersive),
-                )
-            }
-        } else if (bitmap != null && !isLoading && !isComparing) {
+        // 沉浸模式点空白处即可退出（见外层 pointerInput），不再放关闭按钮。
+        if (immersiveModeState.isUiVisible && bitmap != null && !isLoading && !isComparing) {
             val hint = when {
                 privacyDocument != null -> null
-                !hasElements -> R.string.watermark_empty_canvas
                 hiddenOnly -> R.string.watermark_hidden_only
                 else -> null
             }
@@ -504,16 +513,12 @@ private fun BoxWithConstraintsScope.WatermarkElementLayers(
         if (!element.transform.visible) return@forEach
         val visual = visuals[element.id] ?: return@forEach
         Canvas(modifier = Modifier.fillMaxSize()) {
+            val bounds = RectF(0f, 0f, size.width, size.height)
             drawIntoCanvas { canvas ->
                 if (element.layout.isRepeated) {
-                    WatermarkDrawEngine.drawRepeated(canvas.nativeCanvas, visual, element)
+                    WatermarkDrawEngine.drawRepeated(canvas.nativeCanvas, visual, element, bounds)
                 } else {
-                    WatermarkDrawEngine.drawSingle(
-                        canvas = canvas.nativeCanvas,
-                        visual = visual,
-                        element = element,
-                        rect = RectF(0f, 0f, size.width, size.height),
-                    )
+                    WatermarkDrawEngine.drawSingle(canvas.nativeCanvas, visual, element, bounds)
                 }
             }
         }

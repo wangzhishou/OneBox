@@ -41,6 +41,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
@@ -48,17 +49,22 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.rememberImmersiveModeState
 import com.shifenmiao.model.event.PermissionRequest
-import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.resources.icons.ImageReset
 import com.shifenmiao.app.watermarking.domain.model.WatermarkContent
 import com.shifenmiao.app.watermarking.domain.model.WatermarkKind
+import com.shifenmiao.app.watermarking.domain.model.usesDeviceLocation
+import com.shifenmiao.app.watermarking.domain.preset.BuiltinWatermarkPresets
 import com.shifenmiao.app.watermarking.domain.preset.WatermarkPreset
 import com.shifenmiao.app.watermarking.presentation.components.WatermarkBottomBar
 import com.shifenmiao.app.watermarking.presentation.components.WatermarkPanelHost
 import com.shifenmiao.app.watermarking.presentation.canvas.WatermarkCanvas
 import com.shifenmiao.app.watermarking.presentation.panels.WatermarkExportAdvancedOptions
+import com.shifenmiao.app.watermarking.presentation.start.WatermarkStartScreen
+import com.shifenmiao.app.watermarking.presentation.start.WatermarkStartTemplate
 import com.shifenmiao.app.watermarking.presentation.screenLogic.WatermarkingComponent
+import com.t8rin.imagetoolbox.core.filters.presentation.model.UiFilter
+import com.t8rin.imagetoolbox.core.filters.presentation.widget.addFilters.AddFiltersSheet
+import com.t8rin.imagetoolbox.core.filters.presentation.widget.filterStrip.FilterStrip
 import com.t8rin.imagetoolbox.core.domain.image.export.ImageExportCapabilities
 import com.t8rin.imagetoolbox.core.domain.image.export.ImageExportConfig
 import com.t8rin.imagetoolbox.core.domain.image.export.ImageExportMetadataPolicy
@@ -119,6 +125,11 @@ fun WatermarkingContent(
     var saveLocationUri by rememberSaveable { mutableStateOf<String?>(null) }
     var isComparing by rememberSaveable { mutableStateOf(false) }
     var editSheetData by remember { mutableStateOf(listOf<Uri>()) }
+    var showFilterPanel by rememberSaveable { mutableStateOf(false) }
+    var showFullFilterSheet by rememberSaveable { mutableStateOf(false) }
+    var selectedStartTemplate by rememberSaveable {
+        mutableStateOf(WatermarkStartTemplate.fromPresetId(component.activePresetId))
+    }
     val saveLocationLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.OpenDocumentTree()
     ) { uri ->
@@ -127,6 +138,9 @@ fun WatermarkingContent(
     val settingsState = LocalSettingsState.current
     val settingsInteractor = LocalSimpleSettingsInteractor.current
     val settingsScope = rememberCoroutineScope()
+    val showGuide = component.uris.isEmpty()
+    val displayBitmap = component.displayBitmap
+    val quickFilters = remember { UiFilter.sortedGroupedEntries.firstOrNull().orEmpty() }
     val exportConfig = ImageExportConfig(
         format = component.imageFormat,
         quality = component.quality.qualityValue,
@@ -137,7 +151,7 @@ fun WatermarkingContent(
         },
     )
     val exportItemCount = if (onlyCurrent || component.privacy.isActive) 1 else component.uris.size
-    val exportBitmap = component.internalBitmap
+    val exportBitmap = displayBitmap
     val hiddenWatermarkBlocked = component.document.hiddenWatermark.enabled &&
         !component.imageFormat.keepsHiddenWatermark()
     val defaultText = stringResource(R.string.watermark_default_text)
@@ -169,6 +183,16 @@ fun WatermarkingContent(
             onFailed = { AppToastHost.showFailureToast(R.string.watermark_location_permission_required) },
         )
     }
+    val applyStartTemplate: (WatermarkStartTemplate) -> Unit = { template ->
+        val preset = template.presetId?.let(BuiltinWatermarkPresets::findById)
+        if (preset != null) component.applyPreset(preset) else component.applyBlankDocument()
+        if (preset?.document?.usesDeviceLocation() == true) requestLocation()
+        if (preset != null) onPresetApplied(preset) else activePanel = null
+    }
+    val startFromTemplate: (WatermarkStartTemplate) -> Unit = { template ->
+        applyStartTemplate(template)
+        imagePicker.pickImage()
+    }
     LaunchedEffect(component.selectedUri) { isComparing = false }
     LaunchedEffect(component.privacy.isActive) {
         if (!component.privacy.isActive && activePanel == WatermarkPanel.PRIVACY) {
@@ -198,47 +222,47 @@ fun WatermarkingContent(
         supportGlassEffect = false,
         showNavigationBarsPadding = false,
         immersiveModeState = immersiveModeState,
-        actions = {
-            ShareButton(
-                enabled = component.internalBitmap != null,
-                onShare = {
-                    warnIfHiddenWillBeLost()
-                    component.shareBitmaps(AppToastHost::showConfetti)
-                },
-                onCopy = {
-                    warnIfHiddenWillBeLost()
-                    component.cacheCurrentImage(Clipboard::copy)
-                },
-                onEdit = { component.cacheImages { editSheetData = it } },
-            )
-            EnhancedIconButton(
-                enabled = component.internalBitmap != null,
-                onClick = { showResetDialog = true },
-            ) {
-                Icon(
-                    Icons.Rounded.ImageReset,
-                    contentDescription = stringResource(
-                        if (component.activePresetId == null) R.string.reset_image
-                        else R.string.watermark_restore_preset
-                    ),
+        // 传 null 才会让 BaseScreen 走默认的 TopAppBarEmoji（主题切换按钮），
+        // 传空 lambda 同样会顶掉默认按钮，所以引导页必须显式传 null。
+        actions = if (showGuide) {
+            null
+        } else {
+            {
+                ShareButton(
+                    enabled = component.internalBitmap != null,
+                    onShare = {
+                        warnIfHiddenWillBeLost()
+                        component.shareBitmaps(AppToastHost::showConfetti)
+                    },
+                    onCopy = {
+                        warnIfHiddenWillBeLost()
+                        component.cacheCurrentImage(Clipboard::copy)
+                    },
+                    onEdit = { component.cacheImages { editSheetData = it } },
                 )
-            }
-            EnhancedIconButton(onClick = { immersiveModeState.enterImmersive() }) {
-                Icon(
-                    MaterialIcons.Outlined.Fullscreen,
-                    contentDescription = stringResource(R.string.watermark_immersive),
-                )
+                EnhancedIconButton(onClick = { immersiveModeState.enterImmersive() }) {
+                    Icon(
+                        MaterialIcons.Outlined.Fullscreen,
+                        contentDescription = stringResource(R.string.watermark_immersive),
+                    )
+                }
             }
         },
         content = {
-            if (component.uris.isEmpty()) {
-                Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = androidx.compose.ui.Alignment.Center) {
-                    ImageNotPickedWidget(onPickImage = imagePicker::pickImage)
+            if (showGuide) {
+                Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
+                    WatermarkStartScreen(
+                        selected = selectedStartTemplate,
+                        onSelect = { selectedStartTemplate = it },
+                        onStart = { startFromTemplate(selectedStartTemplate) },
+                    )
                 }
             } else {
-                Row(modifier = Modifier.weight(1f).fillMaxWidth()) {
+                Column(modifier = Modifier.weight(1f).fillMaxWidth()) {
+                    Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
+                Row(modifier = Modifier.fillMaxWidth()) {
                     WatermarkCanvas(
-                        bitmap = component.internalBitmap,
+                        bitmap = displayBitmap,
                         frame = component.document.frame,
                         resolvedElements = component.resolvedElements,
                         selectedElementId = component.selectedElementId,
@@ -249,6 +273,13 @@ fun WatermarkingContent(
                         isToolRailVisible = isToolRailVisible,
                         canUndo = component.canUndo,
                         canRedo = component.canRedo,
+                        resetEnabled = component.internalBitmap != null,
+                        resetDescriptionRes = if (component.activePresetId == null) {
+                            R.string.reset_image
+                        } else {
+                            R.string.watermark_restore_preset
+                        },
+                        onReset = { showResetDialog = true },
                         immersiveModeState = immersiveModeState,
                         onCompareChange = { isComparing = it },
                         onUndo = component::undo,
@@ -317,20 +348,39 @@ fun WatermarkingContent(
                         }
                     }
                 }
+                    if (immersiveModeState.isUiVisible && showFilterPanel && !isComparing) {
+                        FilterStrip(
+                            filters = quickFilters,
+                            selectedFilter = component.baseFilters.singleOrNull(),
+                            activeFilterCount = component.baseFilters.size,
+                            transformation = component::filterTransformation,
+                            onFilterSelected = component::selectFilter,
+                            onClearFilters = { component.selectFilter(null) },
+                            onOpenFullCatalog = { showFullFilterSheet = true },
+                            title = stringResource(R.string.watermark_filter_target),
+                            modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 8.dp),
+                        )
+                    }
+                    }
                 AnimatedVisibility(visible = immersiveModeState.isUiVisible) {
                     WatermarkBottomBar(
                         activePanel = activePanel,
                         isPrivacyActive = component.privacy.isActive,
                         isToolRailVisible = isToolRailVisible,
+                        isFilterPanelVisible = showFilterPanel,
                         onPanelClick = { panel ->
-                            if (panel == WatermarkPanel.TOOLS) {
-                                isToolRailVisible = !isToolRailVisible
-                            } else {
-                                activePanel = if (activePanel == panel) null else panel
+                            when (panel) {
+                                WatermarkPanel.TOOLS -> isToolRailVisible = !isToolRailVisible
+                                WatermarkPanel.FILTER -> {
+                                    showFilterPanel = !showFilterPanel
+                                    if (showFilterPanel) activePanel = null
+                                }
+                                else -> activePanel = if (activePanel == panel) null else panel
                             }
                         },
                         onExportClick = { showExport = true },
                     )
+                }
                 }
             }
         },
@@ -359,6 +409,20 @@ fun WatermarkingContent(
         }
     }
 
+    val onFullFilterPicked: (UiFilter<*>) -> Unit = { filter ->
+        component.addFilter(filter)
+        showFullFilterSheet = false
+    }
+    AddFiltersSheet(
+        component = component.addFiltersSheetComponent,
+        filterTemplateCreationSheetComponent = component.filterTemplateCreationSheetComponent,
+        visible = showFullFilterSheet,
+        onDismiss = { showFullFilterSheet = false },
+        previewBitmap = displayBitmap,
+        onFilterPicked = onFullFilterPicked,
+        onFilterPickedWithParams = onFullFilterPicked,
+        canAddTemplates = false,
+    )
     ImageExportSheet(
         visible = showExport,
         config = exportConfig,

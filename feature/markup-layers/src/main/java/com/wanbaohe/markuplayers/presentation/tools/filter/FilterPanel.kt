@@ -12,73 +12,28 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * You should have received a copy of the Apache License
- * along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
  */
 
 package com.wanbaohe.markuplayers.presentation.tools.filter
 
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil3.compose.rememberAsyncImagePainter
-import coil3.request.ImageRequest
-import coil3.request.error
-import coil3.request.transformations
-import coil3.transform.Transformation
 import com.t8rin.imagetoolbox.core.filters.presentation.model.UiFilter
-import com.t8rin.imagetoolbox.core.resources.Icons
-import com.t8rin.imagetoolbox.core.resources.icons.Dots
-import com.wanbaohe.core.ui.utils.helper.LocalFilterPreviewModelProvider
-import com.wanbaohe.core.ui.utils.helper.toCoil
-import com.wanbaohe.core.ui.widget.glass.GlassStyle
-import com.wanbaohe.core.ui.widget.glass.glassBackground
-import com.wanbaohe.core.ui.widget.image.Picture
-import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
+import com.t8rin.imagetoolbox.core.filters.presentation.widget.filterStrip.FilterStrip
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.presentation.components.layerDisplayName
 import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
-import com.t8rin.imagetoolbox.core.resources.R as CoreR
 
 /**
- * 滤镜横滚面板(半浮动层):实底卡片浮在画布底部、底部 Tab 栏上方,不遮挡画布主体;
- * 底色与图层面板/画笔浮条一致用不透明实底,避免内容透上来让缩略图和文案看不清。
- * 顶部目标指示行显示当前作用目标(选中图层名 / 背景图);首项「原图」= 清除当前目标
- * 滤镜;中间为「简单效果」分组([UiFilter.sortedGroupedEntries] 首组)的滤镜缩略图
- * (与 AddFiltersSheet 目录同源的默认静态预览图 + coil transformation,面板打开一次渲染、
- * 不随画布变化,选中项高亮描边);末尾「更多」打开完整 AddFiltersSheet 目录。
- * 选中文字/形状图层时点滤镜不直接应用,经 [onRequestRasterize] 由宿主弹光栅化确认。
+ * 图片创作的滤镜条：公共 [FilterStrip] 的图片创作适配层。
+ * 这里只负责把组件状态（作用目标、图层效果、光栅化确认）翻译成回调，
+ * 缩略图渲染、选中态与「更多」入口都复用公共实现。
  */
 @Composable
 fun FilterPanel(
@@ -88,209 +43,35 @@ fun FilterPanel(
     onRequestRasterize: (layerId: String, filter: UiFilter<*>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    // 默认展示「简单效果」分组,避免全量 400+ 滤镜都渲染缩略图
     val filters = remember { UiFilter.sortedGroupedEntries.firstOrNull().orEmpty() }
-    // 缩略图源图:滤镜体系的默认静态预览图(「预览图片」机制,默认 filter_preview_source),
-    // 与「更多」目录里的缩略图观感一致;静态图源 + 稳定 cacheKey,coil 只渲染一次
-    val previewData = LocalFilterPreviewModelProvider.current.preview.data
-    val sourceHash = previewData.hashCode()
-    // 当前作用目标:选中图层 → 该图层;未选中 → 背景图
     val targetLayer = component.selectedLayer
-    val targetFilter = component.targetFilter
-    val vectorTarget = component.rasterizeRequiredLayer
+    val target = if (targetLayer != null) {
+        stringResource(R.string.markup_target_current_layer, layerDisplayName(targetLayer, component.layers))
+    } else {
+        stringResource(R.string.markup_target_background)
+    }
 
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 12.dp)
-            // 不透明底:面板浮在画布/内容之上,缩略图与「作用目标」文案必须清晰可读。
-            // 与图层面板、画笔浮条、缩放胶囊同一套做法(GlassStyle.None = 实底,不吃背景)。
-            .glassBackground(
-                style = GlassStyle.None,
-                shape = ShapeDefaults.extraLarge,
-                color = MaterialTheme.colorScheme.surfaceContainerLow
-            )
-            // 吞掉落在卡片空白处的点按,避免穿透成画布的「点空白取消选择」
-            .pointerInput(Unit) { detectTapGestures { } }
-            .padding(vertical = 10.dp)
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(horizontal = 12.dp)
-        ) {
-            Text(
-                text = if (targetLayer != null) {
-                    stringResource(
-                        R.string.markup_target_current_layer,
-                        layerDisplayName(targetLayer, component.layers)
-                    )
-                } else {
-                    stringResource(R.string.markup_target_background)
-                },
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.weight(1f)
-            )
+    FilterStrip(
+        filters = filters,
+        selectedFilter = component.targetFilter,
+        activeFilterCount = component.targetEffects.size,
+        transformation = { filter -> component.filterTransformation(filter) },
+        onFilterSelected = { filter ->
+            val vector = component.rasterizeRequiredLayer
+            if (vector != null) onRequestRasterize(vector.id, filter)
+            else component.selectFilter(filter)
+        },
+        onClearFilters = { component.selectFilter(null) },
+        onOpenFullCatalog = onOpenFullCatalog,
+        modifier = modifier,
+        title = target,
+        action = {
             TextButton(
                 onClick = onOpenEffects,
                 modifier = Modifier.heightIn(min = 48.dp)
             ) {
                 Text(stringResource(R.string.studio_effects_edit, component.targetEffects.size))
             }
-        }
-        Spacer(Modifier.height(6.dp))
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(horizontal = 12.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            item(key = "original") {
-                FilterThumbnail(
-                    source = previewData,
-                    transformation = null,
-                    cacheKey = "original@$sourceHash",
-                    label = stringResource(R.string.markup_filter_original),
-                    selected = component.targetEffects.isEmpty(),
-                    onClick = { component.selectFilter(null) }
-                )
-            }
-            items(
-                items = filters,
-                key = { it::class.simpleName ?: it.title.toString() }
-            ) { filter ->
-                FilterThumbnail(
-                    source = previewData,
-                    transformation = remember(filter) {
-                        component.filterTransformation(filter).toCoil()
-                    },
-                    cacheKey = "${filter::class.simpleName}@$sourceHash",
-                    label = stringResource(filter.title),
-                    selected = component.targetEffects.size == 1 &&
-                        targetFilter?.let { it::class == filter::class } == true,
-                    onClick = {
-                        val vector = vectorTarget
-                        if (vector != null) {
-                            onRequestRasterize(vector.id, filter)
-                        } else {
-                            component.selectFilter(filter)
-                        }
-                    }
-                )
-            }
-            item(key = "more") {
-                MoreFiltersItem(onClick = onOpenFullCatalog)
-            }
-        }
-    }
+        },
+    )
 }
-
-/** 单个滤镜缩略图:圆角小图 + 名称,选中项描边高亮;[transformation] 为空时即原图 */
-@Composable
-private fun FilterThumbnail(
-    source: Any?,
-    transformation: Transformation?,
-    cacheKey: String,
-    label: String,
-    selected: Boolean,
-    onClick: () -> Unit,
-) {
-    val context = LocalContext.current
-    val request = remember(source, transformation) {
-        ImageRequest.Builder(context)
-            .data(source)
-            .error(CoreR.drawable.filter_preview_source)
-            .apply { transformation?.let { transformations(it) } }
-            .diskCacheKey(cacheKey)
-            .memoryCacheKey(cacheKey)
-            .size(THUMBNAIL_PX, THUMBNAIL_PX)
-            .build()
-    }
-    val painter = rememberAsyncImagePainter(model = request)
-    val contentColor = if (selected) {
-        MaterialTheme.colorScheme.onPrimaryContainer
-    } else MaterialTheme.colorScheme.onSurfaceVariant
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .width(THUMBNAIL_ITEM_WIDTH)
-            .clip(ShapeDefaults.default)
-            .clickable(onClick = onClick)
-            .padding(2.dp)
-    ) {
-        Picture(
-            model = painter,
-            contentDescription = label,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(THUMBNAIL_SIZE)
-                .clip(ShapeDefaults.small)
-                .border(
-                    width = if (selected) 2.dp else 1.dp,
-                    color = if (selected) {
-                        MaterialTheme.colorScheme.onPrimaryContainer
-                    } else MaterialTheme.colorScheme.outlineVariant,
-                    shape = ShapeDefaults.small
-                )
-        )
-        Spacer(Modifier.height(4.dp))
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelSmall,
-            color = contentColor,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-    }
-}
-
-/** 末尾「更多」入口:打开完整滤镜目录 Sheet */
-@Composable
-private fun MoreFiltersItem(onClick: () -> Unit) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .width(THUMBNAIL_ITEM_WIDTH)
-            .clip(ShapeDefaults.default)
-            .clickable(onClick = onClick)
-            .padding(2.dp)
-    ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .size(THUMBNAIL_SIZE)
-                .clip(ShapeDefaults.small)
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.outlineVariant,
-                    shape = ShapeDefaults.small
-                )
-        ) {
-            Icon(
-                imageVector = Icons.Rounded.Dots,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.fillMaxSize(0.4f)
-            )
-        }
-        Spacer(Modifier.height(4.dp))
-        Text(
-            text = stringResource(R.string.markup_filter_more),
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-    }
-}
-
-/** 滤镜缩略图边长 */
-private val THUMBNAIL_SIZE = 56.dp
-
-/** 缩略图项宽度(略宽于图,容纳名称) */
-private val THUMBNAIL_ITEM_WIDTH = 64.dp
-
-/** coil 缩略图请求像素尺寸 */
-private const val THUMBNAIL_PX = 240
