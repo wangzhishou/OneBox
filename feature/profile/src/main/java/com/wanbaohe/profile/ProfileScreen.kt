@@ -26,9 +26,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -55,6 +57,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -79,6 +83,7 @@ import com.shifenmiao.core.BuildConfig
 import com.shifenmiao.core.R
 import com.shifenmiao.login.viewModel.LoginComponent
 import com.shifenmiao.model.channel.FlavorType
+import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.data.utils.SafUriUtils
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
@@ -214,15 +219,7 @@ fun ProfileContent(
 
         // 2. Stats cards
         item {
-            ProfileStatsRow(showPointsDetails = showDonateSetting, onNavigate = onNavigate)
-            OneSecondaryButton(
-                text = stringResource(R.string.profile_stats_points_play_hint),
-                onClick = {
-                    ActionUtils.showLogin(source = "points_card_game") {
-                        onNavigate(Screen.Survive30s)
-                    }
-                },
-            )
+            ProfileStatsRow(onNavigate = onNavigate)
         }
 
         // 3. Setting groups with section headers
@@ -438,7 +435,6 @@ private fun MessageCenterAction(compact: Boolean = false) {
 
 @Composable
 private fun ProfileStatsRow(
-    showPointsDetails: Boolean,
     onNavigate: (Screen) -> Unit
 ) {
     val loginState = LocalLoginState.current
@@ -471,122 +467,104 @@ private fun ProfileStatsRow(
         }
     }
 
+    val colors = MaterialTheme.colorScheme
+
     Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min),
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.contentGap)
     ) {
         GlassCard(
-            onClick = if (showPointsDetails) {
-                {
-                    ActionUtils.showLogin(source = "points_card_details") {
-                        onNavigate(Screen.BuyCoffee())
-                    }
+            onClick = {
+                ActionUtils.showLogin(source = "points_card_game") {
+                    onNavigate(Screen.Survive30s)
                 }
-            } else null,
-            modifier = Modifier
-                .weight(1f)
-                .height(128.dp),
-            colors = tintedGlassCardColors(MaterialTheme.colorScheme.secondaryContainer)
+            },
+            modifier = Modifier.weight(1f).fillMaxHeight(),
+            colors = tintedGlassCardColors(colors.secondaryContainer)
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp, vertical = 14.dp),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMedal,
-                        contentDescription = null,
-                        modifier = Modifier.size(22.dp),
-                        tint = MaterialTheme.colorScheme.onSecondaryContainer
-                    )
-                    if (showPointsDetails) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
-                            contentDescription = null,
-                            modifier = Modifier.size(18.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.55f)
-                        )
-                    }
-                }
-                Column {
-                    Text(
-                        text = StringUtils.formatNumber(loginState.points),
-                        style = MaterialTheme.typography.headlineSmall.copy(
-                            fontWeight = FontWeight.Bold
-                        ),
-                        color = MaterialTheme.colorScheme.onSurface,
-                        maxLines = 1
-                    )
-                    Text(
-                        text = stringResource(R.string.profile_stats_points)
-                            .uppercase(java.util.Locale.getDefault()),
-                        style = MaterialTheme.typography.labelSmall.copy(
-                            letterSpacing = 1.sp
-                        ),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
+            ProfileStatSummary(
+                value = StringUtils.formatNumber(loginState.points),
+                label = stringResource(R.string.profile_stats_points),
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMedal,
+                iconTint = colors.onSecondaryContainer,
+                hint = if (loginState.points < 100) {
+                    stringResource(R.string.profile_stats_points_play_hint)
+                } else null,
+            )
         }
 
-        // Files card — same hierarchy as points card
         GlassCard(
-            onClick = {
-                onNavigate(Screen.FileBrowser(folderUri))
-            },
-            modifier = Modifier
-                .weight(1f)
-                .height(128.dp),
-            colors = tintedGlassCardColors(MaterialTheme.colorScheme.tertiaryContainer)
+            onClick = { onNavigate(Screen.FileBrowser(folderUri)) },
+            modifier = Modifier.weight(1f).fillMaxHeight(),
+            colors = tintedGlassCardColors(colors.tertiaryContainer)
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp, vertical = 14.dp),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFolder,
-                        contentDescription = null,
-                        modifier = Modifier.size(22.dp),
-                        tint = MaterialTheme.colorScheme.onTertiaryContainer
-                    )
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.55f)
-                    )
-                }
-                Column {
-                    Text(
-                        text = StringUtils.formatNumber(fileCount),
-                        style = MaterialTheme.typography.headlineSmall.copy(
-                            fontWeight = FontWeight.Bold
-                        ),
-                        color = MaterialTheme.colorScheme.onSurface,
-                        maxLines = 1
-                    )
-                    Text(
-                        text = stringResource(R.string.profile_stats_files)
-                            .uppercase(java.util.Locale.getDefault()),
-                        style = MaterialTheme.typography.labelSmall.copy(
-                            letterSpacing = 1.sp
-                        ),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
+            ProfileStatSummary(
+                value = StringUtils.formatNumber(fileCount),
+                label = stringResource(R.string.profile_stats_files),
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFolder,
+                iconTint = colors.onTertiaryContainer,
+            )
+        }
+    }
+}
+
+@Composable
+private fun ProfileStatSummary(
+    value: String,
+    label: String,
+    icon: ImageVector,
+    iconTint: Color,
+    hint: String? = null,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = AppTheme.dimens.cardContentPadding, vertical = 12.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                modifier = Modifier.size(24.dp),
+                tint = iconTint,
+            )
+            Icon(
+                imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
+                contentDescription = null,
+                modifier = Modifier.size(18.dp),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        Spacer(Modifier.height(8.dp))
+        Text(
+            text = value,
+            style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Text(
+                text = label.uppercase(java.util.Locale.getDefault()),
+                modifier = Modifier.alignByBaseline(),
+                style = MaterialTheme.typography.labelSmall.copy(letterSpacing = 1.sp),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            if (hint != null) {
+                Text(
+                    text = hint,
+                    modifier = Modifier.weight(1f).alignByBaseline(),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
+                    textAlign = TextAlign.End,
+                )
             }
         }
     }
