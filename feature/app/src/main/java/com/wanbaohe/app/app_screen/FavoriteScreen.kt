@@ -629,12 +629,12 @@ private fun MineListItemCard(
                 modifier = Modifier
                     .weight(1f)
                     .padding(start = 12.dp),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceExtraSmall)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingSmall)
             ) {
                 // 标题给两行:本地草稿/对话标题普遍偏长,单行截断会把「这条是什么」直接切掉
                 Text(
                     text = entity.title.orEmpty(),
-                    style = MaterialTheme.typography.bodyLarge.copy(lineHeight = 24.sp),
+                    style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
@@ -931,7 +931,10 @@ private fun ActivityLogCardContent(
                     tint = iconTint
                 )
             }
-            Column(modifier = Modifier.weight(1f)) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingSmall)
+            ) {
                 if (rowTitle.isNotEmpty()) {
                     // 和「我的」一致:记录标题给两行,长标题不再一刀切
                     Text(
@@ -941,7 +944,6 @@ private fun ActivityLogCardContent(
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
-                    Spacer(modifier = Modifier.height(2.dp))
                 }
                 if (entry.description.isNotBlank()) {
                     HtmlText(

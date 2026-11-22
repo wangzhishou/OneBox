@@ -73,7 +73,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -143,7 +142,6 @@ fun PlaceHolderMessageCard(
     conversation: Conversation,
     onSuggestionClick: (String) -> Unit = {},
     onPushToRemote: () -> Unit = {},
-    onContentHeightDelta: (Int) -> Unit = {},
     appComponent: AppComponent,
     aiChatComponent: AIChatComponent,
     chatInputComponent: ChatInputComponent
@@ -195,7 +193,6 @@ fun PlaceHolderMessageCard(
                 isEditable = !promptCardState.isSystemPrompt &&
                         (promptCardState.source != Source.REMOTE || LoginUtils.isAdmin()),
                 onPushToRemote = onPushToRemote,
-                onContentHeightDelta = onContentHeightDelta,
                 emptyStateText = if (conversation.promptId != null) {
                     stringResource(R.string.ai_prompt_placeholder_loading_desc)
                 } else {
@@ -275,7 +272,6 @@ private fun PromptWorkCard(
     updatedAtMillis: Long?,
     isEditable: Boolean,
     onPushToRemote: () -> Unit = {},
-    onContentHeightDelta: (Int) -> Unit = {},
     emptyStateText: String,
 ) {
     val onNavigate = LocalOnNavigate.current
@@ -289,7 +285,6 @@ private fun PromptWorkCard(
     }
     val updatedAtText = updatedAtMillis?.takeIf { it > 0L }?.let(::formatPromptUpdatedAt)
     val collapsedMaxHeight = LocalWindowInfo.current.containerDpSize.height / 2
-    var lastContentHeight by remember(promptId) { mutableIntStateOf(-1) }
 
     CustomChatCard(
         isHuman = false,
@@ -299,15 +294,7 @@ private fun PromptWorkCard(
         Column(
             modifier = Modifier
                 .padding(AppTheme.dimens.paddingNormal)
-                .animateContentSize()
-                .onGloballyPositioned { coordinates ->
-                    val newHeight = coordinates.size.height
-                    val previousHeight = lastContentHeight
-                    lastContentHeight = newHeight
-                    if (previousHeight >= 0 && newHeight != previousHeight) {
-                        onContentHeightDelta(newHeight - previousHeight)
-                    }
-                },
+                .animateContentSize(),
             verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceSmall)
         ) {
             Row(
