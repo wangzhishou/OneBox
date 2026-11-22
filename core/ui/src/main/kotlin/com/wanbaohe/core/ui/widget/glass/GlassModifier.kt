@@ -111,6 +111,7 @@ internal fun Modifier.glassSimpleStyle(
         backgroundAlpha = backgroundAlpha,
         borderWidth = borderWidth,
         isLiquid = isLiquidGlass,
+        blurRadius = blurRadius,
         showTopEdge = showTopEdgeEffects,
         showBottomEdge = showBottomEdgeEffects,
     )
@@ -134,6 +135,7 @@ internal fun Modifier.glassControlStyle(
         backgroundAlpha = backgroundAlpha,
         borderWidth = if (showInnerHighlight) borderWidth.coerceAtLeast(1.1.dp) else borderWidth,
         isLiquid = LocalSettingsState.current.isLiquidGlassEnabled,
+        blurRadius = 16.dp,
         isControl = true,
         enabled = enabled,
         showTopEdge = showTopEdge,

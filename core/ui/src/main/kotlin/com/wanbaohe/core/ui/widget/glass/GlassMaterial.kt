@@ -19,28 +19,44 @@
 
 package com.wanbaohe.core.ui.widget.glass
 
+import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.blur.BlurRadiusSpec
 import androidx.compose.ui.graphics.drawOutline
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.luminance
-import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.kyant.backdrop.backdrops.LayerBackdrop
+import com.kyant.backdrop.backdrops.layerBackdrop
+import com.kyant.backdrop.backdrops.rememberLayerBackdrop
+import com.kyant.backdrop.drawPlainBackdrop
+import com.kyant.backdrop.effects.colorControls
+import com.kyant.backdrop.effects.effect
+import com.kyant.backdrop.effects.lens
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import kotlin.math.abs
+
+internal val LocalGlassBackdrop = staticCompositionLocalOf<LayerBackdrop?> { null }
 
 private fun Color.chroma(): Float {
     if (this == Color.Unspecified || this == Color.Transparent) return 0f
@@ -85,6 +101,7 @@ private fun styleWeight(style: GlassStyle): Float = when (style) {
 
 @Immutable
 internal data class GlassVeil(
+    val scrim: Color,
     val frost: Color,
     val tint: Color,
     val rimWidth: Dp,
@@ -125,7 +142,7 @@ internal fun glassVeil(
     // 再铺一层最多 86% 的白霜，渐变页上每张卡片都变成同一块白，嵌套层次也没了。
     // 色相跟当前主题的 surfaceTint 走，日夜和换主题都会跟着变。
     // 角色离页面 surface 越远，色相和明度差越大，外层浅、内层深。
-    // 只是两次纯色填充，不采样背景，也不做离屏模糊。
+    // 普通玻璃只是两次纯色填充；液态玻璃会在共享背景副本上叠加渐进模糊。
     val base = if (color == Color.Unspecified) scheme.surfaceContainer else color
     val hueRoom = ((0.10f - base.chroma()) / 0.10f).coerceIn(0f, 1f)
     val lift = abs(base.luminance() - scheme.surface.luminance())
@@ -203,7 +220,14 @@ internal fun glassVeil(
     val rim = Color.White.copy(alpha = if (isLight) 0.42f else 0.10f)
     val frost = (if (isLight) Color.White else Color.Black).copy(alpha = frostAlpha)
 
+    val scrimAlpha = when {
+        !isLiquid -> 0f
+        !enabled -> 0.05f
+        isLight -> 0.08f
+        else -> 0.16f
+    } * glassBaseAlpha
     return GlassVeil(
+        scrim = (if (isLight) Color.White else Color.Black).copy(alpha = scrimAlpha),
         frost = frost,
         tint = if (tintAlpha > 0f) separated.copy(alpha = tintAlpha) else Color.Transparent,
         // borderWidth <= 0 表示调用方不要描边。Switch 的关闭/禁用态走这条，避免再被抬成 1dp 边框。
@@ -223,6 +247,7 @@ internal fun Modifier.glassMaterial(
     backgroundAlpha: Float,
     borderWidth: Dp,
     isLiquid: Boolean,
+    blurRadius: Dp = 24.dp,
     isControl: Boolean = false,
     enabled: Boolean = true,
     showTopEdge: Boolean = true,
@@ -255,17 +280,79 @@ internal fun Modifier.glassMaterial(
         contour = contour,
         borderWidth = borderWidth,
     )
-    // 不按卡片各自采样、模糊背景。那条路径每张卡片一块离屏缓冲，列表一滑就卡。
-    // 半透明霜直接叠在已经画好的内容上，后面的壁纸和文字都能透出来。
-    return veilGlass(shape, veil)
+    val backdrop = LocalGlassBackdrop.current
+    if (isLiquid && blurRadius > 0.dp && backdrop != null) {
+        return liquidGlassBackdrop(
+            backdrop = backdrop,
+            shape = shape,
+            blurRadius = blurRadius,
+            veil = veil,
+        )
+    }
+    return veilGlass(shape, veil.copy(scrim = Color.Transparent))
+}
+
+@Composable
+private fun Modifier.liquidGlassBackdrop(
+    backdrop: LayerBackdrop,
+    shape: Shape,
+    blurRadius: Dp,
+    veil: GlassVeil,
+): Modifier {
+    val isLight = MaterialTheme.colorScheme.surface.luminance() > 0.5f
+    val blurRadiusSpec = remember(blurRadius) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            BlurRadiusSpec.radialGradient(
+                startRadius = blurRadius * 0.45f,
+                endRadius = blurRadius * 0.55f,
+            )
+        } else {
+            BlurRadiusSpec.uniform(blurRadius * 0.5f)
+        }
+    }
+    return drawPlainBackdrop(
+        backdrop = backdrop,
+        shape = { shape },
+        effects = {
+            if (size != Size.Unspecified && size.minDimension > 0f) {
+                colorControls(
+                    brightness = if (isLight) 0.02f else -0.04f,
+                    contrast = 0.96f,
+                    saturation = if (isLight) 0.86f else 0.78f,
+                )
+                effect(
+                    blurRadiusSpec.createRenderEffect(
+                        size = size,
+                        density = this,
+                    )
+                )
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                    shape is CornerBasedShape
+                ) {
+                    val refractionHeight = 6.dp.toPx().coerceAtMost(size.minDimension / 4f)
+                    val refractionAmount = 12.dp.toPx().coerceAtMost(size.minDimension / 2f)
+                    if (refractionHeight > 0f && refractionAmount > 0f) {
+                        lens(
+                            refractionHeight = refractionHeight,
+                            refractionAmount = refractionAmount,
+                            depthEffect = true,
+                            chromaticAberration = false,
+                        )
+                    }
+                }
+            }
+        },
+    ).veilGlass(shape = shape, veil = veil, clipToShape = false)
 }
 
 private fun Modifier.veilGlass(
     shape: Shape,
     veil: GlassVeil,
-): Modifier = clip(shape).drawWithCache {
+    clipToShape: Boolean = true,
+): Modifier = (if (clipToShape) clip(shape) else this).drawWithCache {
     val outline = shape.createOutline(size, layoutDirection, this)
     onDrawWithContent {
+        if (veil.scrim.alpha > 0f) drawOutline(outline, veil.scrim)
         if (veil.frost.alpha > 0f) drawOutline(outline, veil.frost)
         if (veil.tint.alpha > 0f) drawOutline(outline, veil.tint)
         drawContent()
@@ -291,7 +378,7 @@ private fun DrawScope.drawGlassRim(shape: Shape, veil: GlassVeil) {
 }
 
 /**
- * 背景和内容叠在同一层。玻璃是半透明霜，不再把整屏录进离屏缓冲。
+ * 液态玻璃开启时仅记录共享背景，前景组件内容不进入采样层，避免递归模糊文字与图标。
  */
 @Composable
 internal fun GlassBackdropFrame(
@@ -299,8 +386,25 @@ internal fun GlassBackdropFrame(
     backdrop: @Composable BoxScope.() -> Unit,
     content: @Composable BoxScope.() -> Unit,
 ) {
-    Box(modifier) {
-        Box(Modifier.matchParentSize(), content = backdrop)
-        Box(Modifier.matchParentSize(), content = content)
+    val settings = LocalSettingsState.current
+    val canRecordBackdrop = settings.isGlassAlphaEnabled &&
+        settings.isLiquidGlassEnabled &&
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+        LocalView.current.isHardwareAccelerated
+    val glassBackdrop = if (canRecordBackdrop) rememberLayerBackdrop() else null
+    CompositionLocalProvider(LocalGlassBackdrop provides glassBackdrop) {
+        Box(modifier) {
+            Box(
+                modifier = Modifier.matchParentSize().then(
+                    if (glassBackdrop != null) {
+                        Modifier.layerBackdrop(glassBackdrop)
+                    } else {
+                        Modifier
+                    }
+                ),
+                content = backdrop,
+            )
+            Box(Modifier.matchParentSize(), content = content)
+        }
     }
 }

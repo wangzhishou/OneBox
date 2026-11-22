@@ -37,8 +37,7 @@ import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsS
  * 普通透明彩色玻璃。
  *
  * 设计目标：轻薄、清透、低干扰，适合卡片、标签、工具栏等大面积 UI。
- * 与全局液态玻璃开关解耦，始终使用普通玻璃质感。
- * 采页面背景做磨砂，不折射。液态玻璃开关不影响这条路径。
+ * 液态玻璃开启时采页面背景做渐进模糊与边缘折射，关闭时保留普通半透明玻璃。
  */
 @Composable
 fun Modifier.coloredGlass(
@@ -62,7 +61,6 @@ fun Modifier.coloredGlass(
         color = color,
         borderWidth = borderWidth,
         blurRadius = blurRadius,
-        liquidOverride = false,
     )
 }
 

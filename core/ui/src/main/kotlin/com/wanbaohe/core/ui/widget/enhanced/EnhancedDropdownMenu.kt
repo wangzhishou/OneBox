@@ -25,6 +25,14 @@
 
 package com.wanbaohe.core.ui.widget.enhanced
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
@@ -45,6 +53,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -57,6 +66,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.layout.positionInWindow
@@ -164,7 +174,7 @@ private fun arrowOffsetFor(
  * 全 App 统一的浮层菜单。
  *
  * 视觉与「主题快捷设置」弹窗一致:圆角气泡 + 指向点击位置的小箭头 +
- * `surface` 底色 + 2dp 阴影(开启玻璃主题时自动带磨砂;描边跟随外观设置)。
+ * `surfaceContainerLowest` 实色底 + 2dp 阴影;开启玻璃时模糊后方页面,菜单自身保持清晰。
  * 箭尖落在气泡主体边缘,而气泡主体边缘对齐入口按钮中心,所以箭头始终正对入口图标。
  *
  * 用法与 Material3 的 `DropdownMenu` 基本一致:
@@ -203,7 +213,7 @@ fun EnhancedDropdownMenu(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     arrowAlignment: Alignment.Horizontal = Alignment.CenterHorizontally,
-    containerColor: Color = MaterialTheme.colorScheme.surface,
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLowest,
     offset: Dp = MENU_ANCHOR_GAP,
     scrollState: ScrollState = rememberScrollState(),
     properties: PopupProperties = PopupProperties(focusable = true),
@@ -215,10 +225,20 @@ fun EnhancedDropdownMenu(
     contentPadding: PaddingValues = PaddingValues(vertical = MENU_CONTENT_PADDING),
     content: @Composable ColumnScope.() -> Unit
 ) {
-    if (!expanded) return
+    val transition = remember { MutableTransitionState(false) }
+    transition.targetState = expanded
+    if (!expanded && !transition.currentState && transition.isIdle) return
 
     val settings = LocalSettingsState.current
-    val glass = overlayBackdrop() != null
+    val backdrop = overlayBackdrop()
+    val backdropProgress = remember { Animatable(0f) }
+    LaunchedEffect(expanded) {
+        backdropProgress.animateTo(
+            targetValue = if (expanded) 1f else 0f,
+            animationSpec = tween(if (expanded) 180 else 140)
+        )
+    }
+    HoldOverlayBlur(backdrop) { backdropProgress.value }
     val density = LocalDensity.current
     val windowSize = LocalWindowInfo.current.containerSize
 
@@ -311,6 +331,15 @@ fun EnhancedDropdownMenu(
                 cornerRadius = BUBBLE_CORNER_RADIUS
             )
         }
+        val arrowFraction = if (bubbleWidthPx > 0) {
+            (with(density) { arrowOffset.toPx() } / bubbleWidthPx).coerceIn(0f, 1f)
+        } else {
+            0f
+        }
+        val menuTransformOrigin = TransformOrigin(
+            pivotFractionX = if (isStartAligned) arrowFraction else 1f - arrowFraction,
+            pivotFractionY = if (expandUp) 1f else 0f
+        )
         Popup(
             popupPositionProvider = remember(
                 containerBounds,
@@ -336,41 +365,54 @@ fun EnhancedDropdownMenu(
             onDismissRequest = onDismissRequest,
             properties = properties
         ) {
-            // 外层 Box 只限制最大宽度,气泡主体按内容自适应宽度
-            Box(
-                modifier = Modifier
-                    .widthIn(max = maxWidth)
-                    .onSizeChanged { bubbleWidthPx = it.width }
+            AnimatedVisibility(
+                visibleState = transition,
+                enter = fadeIn(tween(180)) + scaleIn(
+                    animationSpec = tween(180),
+                    initialScale = .96f,
+                    transformOrigin = menuTransformOrigin
+                ),
+                exit = fadeOut(tween(140)) + scaleOut(
+                    animationSpec = tween(140),
+                    targetScale = .98f,
+                    transformOrigin = menuTransformOrigin
+                )
             ) {
-                Surface(
-                    modifier = if (glass) Modifier.overlayTint(shape, containerColor, OverlaySurface.Menu) else Modifier,
-                    shape = shape,
-                    color = if (glass) Color.Transparent else containerColor,
-                    contentColor = contentColorFor(containerColor),
-                    tonalElevation = 0.dp,
-                    // 与主题快捷设置弹窗一致:2dp 阴影把气泡托起来;
-                    // 描边跟随外观设置,默认不画(截图那种干净样式)
-                    shadowElevation = 2.dp,
-                    border = if (settings.borderWidth > 0.dp) {
-                        BorderStroke(
-                            width = settings.borderWidth,
-                            color = MaterialTheme.colorScheme.outlineVariant()
-                        )
-                    } else null
+                // 外层 Box 只限制最大宽度,气泡主体按内容自适应宽度
+                Box(
+                    modifier = Modifier
+                        .widthIn(max = maxWidth)
+                        .onSizeChanged { bubbleWidthPx = it.width }
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .heightIn(max = maxMenuHeight)
-                            .width(IntrinsicSize.Max)
-                            .verticalScroll(scrollState)
-                            .padding(
-                                start = startPadding,
-                                end = endPadding,
-                                top = topPadding,
-                                bottom = bottomPadding
-                            ),
-                        content = content
-                    )
+                    Surface(
+                        shape = shape,
+                        color = containerColor,
+                        contentColor = contentColorFor(containerColor),
+                        tonalElevation = 0.dp,
+                        // 与主题快捷设置弹窗一致:2dp 阴影把气泡托起来;
+                        // 描边跟随外观设置,默认不画(截图那种干净样式)
+                        shadowElevation = 2.dp,
+                        border = if (settings.borderWidth > 0.dp) {
+                            BorderStroke(
+                                width = settings.borderWidth,
+                                color = MaterialTheme.colorScheme.outlineVariant()
+                            )
+                        } else null
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .heightIn(max = maxMenuHeight)
+                                .width(IntrinsicSize.Max)
+                                .verticalScroll(scrollState)
+                                .padding(
+                                    start = startPadding,
+                                    end = endPadding,
+                                    top = topPadding,
+                                    bottom = bottomPadding
+                                ),
+                            content = content
+                        )
+                    }
                 }
             }
         }

@@ -59,6 +59,8 @@ import com.wanbaohe.core.ui.utils.helper.ProvidesValue
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.color_picker.ColorTuplePicker
+import com.wanbaohe.core.ui.widget.enhanced.floatingPanelTint
+import com.wanbaohe.core.ui.widget.enhanced.isOverlayGlassAvailable
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.theme.ThemePresetSelector
 import com.wanbaohe.profile.components.InvitationCodeAction
@@ -81,16 +83,21 @@ fun DrawerContentWrapper(
     loginComponent: LoginComponent
 ) {
     LocalLayoutDirection.ProvidesValue(LayoutDirection.Ltr) {
+        val shape = RoundedCornerShape(
+            topStart = 16.dp,
+            bottomStart = 16.dp,
+            bottomEnd = 0.dp,
+            topEnd = 0.dp
+        )
+        val containerColor = MaterialTheme.colorScheme.surface
         Column(
             modifier = Modifier
-                .background(
-                    color = MaterialTheme.colorScheme.surface,
-                    shape = RoundedCornerShape(
-                        topStart = 16.dp,
-                        bottomStart = 16.dp,
-                        bottomEnd = 0.dp,
-                        topEnd = 0.dp
-                    )
+                .then(
+                    if (isOverlayGlassAvailable()) {
+                        Modifier.floatingPanelTint(shape, containerColor)
+                    } else {
+                        Modifier.background(containerColor, shape)
+                    }
                 )
                 .navigationBarsPadding()
                 .statusBarsPadding()

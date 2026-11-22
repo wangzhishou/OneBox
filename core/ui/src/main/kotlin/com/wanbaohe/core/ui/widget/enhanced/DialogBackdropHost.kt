@@ -65,7 +65,7 @@ internal fun HoldOverlayBlur(backdrop: DialogBackdrop?, progress: () -> Float = 
 }
 
 internal enum class OverlaySurface(val opacity: Float) {
-    Dialog(.88f), Sheet(.94f), Menu(.96f)
+    Dialog(.88f), Sheet(.94f)
 }
 
 internal fun Modifier.overlayTint(shape: Shape, color: Color, surface: OverlaySurface) =
@@ -74,7 +74,7 @@ internal fun Modifier.overlayTint(shape: Shape, color: Color, surface: OverlaySu
         onDrawBehind { drawOutline(outline, color, alpha = surface.opacity) }
     }
 
-internal const val OverlayScrimAlpha = .28f
+const val OverlayScrimAlpha = .28f
 
 /** 只处理页面像素；挂在 decorView 上的弹窗不在这个绘制层里。 */
 @Composable

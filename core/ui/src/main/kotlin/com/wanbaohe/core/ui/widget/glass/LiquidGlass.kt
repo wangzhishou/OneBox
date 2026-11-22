@@ -55,7 +55,7 @@ import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsS
  *
  * @param style       效果浓度等级，见 [GlassStyle]
  * @param shape       形状，默认 16 dp 圆角
- * @param blurRadius  高斯模糊半径（仅 API 31+ 生效），默认 24 dp
+ * @param blurRadius  渐进模糊基准半径（API 33+；API 31–32 使用均匀模糊），默认 24 dp
  * @param color        叠加色调（传入不透明原色，alpha 由 style 控制）；
  *                    传入 [Color.Unspecified] 时不叠加
  * @param borderWidth 高光边框宽度，默认 0.75 dp
@@ -164,7 +164,7 @@ fun Modifier.liquidGlassThick(
  * @param modifier    外部修饰符
  * @param style       效果浓度，见 [GlassStyle]
  * @param shape       容器形状
- * @param blurRadius  高斯模糊半径（API 31+）
+ * @param blurRadius  渐进模糊基准半径（API 33+；API 31–32 使用均匀模糊）
  * @param color        叠加色调
  * @param borderWidth 高光边框宽度
  * @param content     内容插槽

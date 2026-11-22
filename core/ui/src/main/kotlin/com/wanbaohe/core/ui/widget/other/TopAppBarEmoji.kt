@@ -26,21 +26,30 @@
 package com.wanbaohe.core.ui.widget.other
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -65,8 +74,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -84,10 +98,15 @@ import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsS
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
+import com.wanbaohe.core.ui.widget.enhanced.HoldOverlayBlur
+import com.wanbaohe.core.ui.widget.enhanced.OverlayScrimAlpha
+import com.wanbaohe.core.ui.widget.enhanced.overlayBackdrop
 import com.wanbaohe.core.ui.widget.glass.GlassSegmentedButtonRow
 import com.wanbaohe.core.ui.widget.glass.GlassSwitch
 import com.wanbaohe.core.ui.widget.glass.GlassCustomSlider
+import com.wanbaohe.core.ui.widget.modifier.tappable
 import com.wanbaohe.core.ui.widget.theme.ThemePresetSelector
+import kotlin.math.roundToInt
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTheme
 import com.t8rin.imagetoolbox.core.resources.icons.Check
@@ -142,8 +161,17 @@ fun ThemeQuickSettingsButton(
 
     val settingsManager = LocalSettingsManager.current
     val onNavigate = LocalOnNavigate.current
+    val backdrop = overlayBackdrop()
+    val transition = remember { MutableTransitionState(false) }
+    transition.targetState = expanded
+    val backdropProgress by animateFloatAsState(
+        targetValue = if (expanded) 1f else 0f,
+        animationSpec = tween(if (expanded) 180 else 140)
+    )
+    HoldOverlayBlur(backdrop) { backdropProgress }
 
-    Box(modifier = modifier) {
+    var anchorBounds by remember { mutableStateOf<Rect?>(null) }
+    Box(modifier = modifier.onGloballyPositioned { anchorBounds = it.boundsInWindow() }) {
         IconButton(onClick = { expanded = true }) {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTheme,
@@ -152,55 +180,105 @@ fun ThemeQuickSettingsButton(
             )
         }
 
-        if (expanded) {
-            val density = LocalDensity.current
-            val bubbleShape = BubbleShape(
-                arrowSize = 10.dp,
-                arrowDirection = BubbleShape.ArrowDirection.Top,
-                arrowAlignment = BubbleShape.ArrowAlignment.End,
-                arrowOffset = 24.dp,
-                cornerRadius = 16.dp
-            )
-            Popup(
-                alignment = Alignment.TopEnd,
-                offset = IntOffset(
-                    x = with(density) { 16.dp.roundToPx() },
-                    y = with(density) { 40.dp.roundToPx() }
-                ),
-                onDismissRequest = { expanded = false },
-                properties = PopupProperties(focusable = true)
-            ) {
-                Surface(
-                    shape = bubbleShape,
-                    color = MaterialTheme.colorScheme.surface,
-                    shadowElevation = 2.dp,
-                    modifier = Modifier.width(320.dp)
+        if (expanded || transition.currentState || !transition.isIdle) {
+            anchorBounds?.let { anchor ->
+                val density = LocalDensity.current
+                val windowWidth = LocalWindowInfo.current.containerSize.width
+                val statusBarHeight = WindowInsets.statusBars.getTop(density)
+                val topMargin = with(density) {
+                    (anchor.top - statusBarHeight).toDp() + 40.dp
+                }.coerceAtLeast(0.dp)
+                val endMargin = with(density) {
+                    (windowWidth - anchor.right).toDp() - 16.dp
+                }.coerceAtLeast(0.dp)
+                val bubbleShape = BubbleShape(
+                    arrowSize = 10.dp,
+                    arrowDirection = BubbleShape.ArrowDirection.Top,
+                    arrowAlignment = BubbleShape.ArrowAlignment.End,
+                    arrowOffset = 24.dp,
+                    cornerRadius = 16.dp
+                )
+                Popup(
+                    alignment = Alignment.TopStart,
+                    offset = IntOffset(
+                        x = -anchor.left.roundToInt(),
+                        y = -anchor.top.roundToInt()
+                    ),
+                    onDismissRequest = { expanded = false },
+                    properties = PopupProperties(focusable = true)
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .verticalScroll(rememberScrollState())
-                            .padding(
-                                start = 16.dp, end = 16.dp,
-                                top = 18.dp, bottom = 16.dp
+                    Box(Modifier.fillMaxSize()) {
+                        AnimatedVisibility(
+                            visibleState = transition,
+                            enter = fadeIn(tween(180)),
+                            exit = fadeOut(tween(140)),
+                            modifier = Modifier.matchParentSize()
+                        ) {
+                            Box(
+                                Modifier
+                                    .fillMaxSize()
+                                    .then(
+                                        if (backdrop != null) {
+                                            Modifier.background(
+                                                MaterialTheme.colorScheme.scrim.copy(alpha = OverlayScrimAlpha)
+                                            )
+                                        } else {
+                                            Modifier
+                                        }
+                                    )
+                                    .tappable { expanded = false }
                             )
-                    ) {
-                        // ── 横向滚动主题预设选择器（复用组件）──
-                        ThemePresetSelector(
-                            onNavigateToThemeSettings = {
-                                expanded = false
-                                onNavigate(Screen.ThemeSettings)
+                        }
+                        AnimatedVisibility(
+                            visibleState = transition,
+                            enter = fadeIn(tween(180)) + scaleIn(
+                                animationSpec = tween(180),
+                                initialScale = .96f,
+                                transformOrigin = TransformOrigin(1f, 0f)
+                            ),
+                            exit = fadeOut(tween(140)) + scaleOut(
+                                animationSpec = tween(140),
+                                targetScale = .98f,
+                                transformOrigin = TransformOrigin(1f, 0f)
+                            ),
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(top = topMargin, end = endMargin)
+                        ) {
+                            Surface(
+                                shape = bubbleShape,
+                                color = MaterialTheme.colorScheme.surfaceContainerLowest,
+                                shadowElevation = 2.dp,
+                                modifier = Modifier.width(320.dp)
+                            ) {
+                                Column(
+                                    modifier = Modifier
+                                        .verticalScroll(rememberScrollState())
+                                        .padding(
+                                            start = 16.dp, end = 16.dp,
+                                            top = 18.dp, bottom = 16.dp
+                                        )
+                                ) {
+                                    // ── 横向滚动主题预设选择器（复用组件）──
+                                    ThemePresetSelector(
+                                        onNavigateToThemeSettings = {
+                                            expanded = false
+                                            onNavigate(Screen.ThemeSettings)
+                                        }
+                                    )
+
+                                    Spacer(modifier = Modifier.height(16.dp))
+
+                                    // ── 深色/浅色/跟随系统 ──
+                                    ThemeMenuThemeModeItem(settingsManager = settingsManager)
+
+                                    Spacer(modifier = Modifier.height(12.dp))
+
+                                    // ── 字体大小 ──
+                                    ThemeMenuFontSizeItem(settingsManager = settingsManager)
+                                }
                             }
-                        )
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        // ── 深色/浅色/跟随系统 ──
-                        ThemeMenuThemeModeItem(settingsManager = settingsManager)
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        // ── 字体大小 ──
-                        ThemeMenuFontSizeItem(settingsManager = settingsManager)
+                        }
                     }
                 }
             }

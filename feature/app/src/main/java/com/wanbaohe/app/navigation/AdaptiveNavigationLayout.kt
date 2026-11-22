@@ -36,6 +36,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.DrawerDefaults
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
@@ -58,7 +59,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.wanbaohe.core.ui.widget.enhanced.OverlayScrimAlpha
 import com.wanbaohe.core.ui.widget.enhanced.behindCreatePanel
+import com.wanbaohe.core.ui.widget.enhanced.isOverlayGlassAvailable
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalWindowInfo
@@ -218,15 +221,22 @@ private fun DrawerNavigationContainer(
                     onCloseDrawer = onCloseDrawer
                 )
             },
-            gesturesEnabled = uiState.showDrawer
+            gesturesEnabled = uiState.showDrawer,
+            scrimColor = if (isOverlayGlassAvailable()) {
+                MaterialTheme.colorScheme.scrim.copy(alpha = OverlayScrimAlpha)
+            } else {
+                DrawerDefaults.scrimColor
+            }
         ) {
-            LocalLayoutDirection.ProvidesValue(contentLayoutDirection) {
-                content()
-                MainBackHandler(
-                    drawerState = drawerState,
-                    rootComponent = rootComponent,
-                    currentScreen = currentScreen
-                )
+            Box(Modifier.fillMaxSize().behindCreatePanel(uiState.showDrawer)) {
+                LocalLayoutDirection.ProvidesValue(contentLayoutDirection) {
+                    content()
+                    MainBackHandler(
+                        drawerState = drawerState,
+                        rootComponent = rootComponent,
+                        currentScreen = currentScreen
+                    )
+                }
             }
         }
     }

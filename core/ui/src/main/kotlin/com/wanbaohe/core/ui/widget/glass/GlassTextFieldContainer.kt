@@ -60,7 +60,7 @@ import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsS
  * @param shape                 容器形状，默认全圆角胶囊
  * @param color                 叠加色调
  * @param borderWidth           描边宽度
- * @param blurRadius            Liquid Glass 模式下的高斯模糊半径
+ * @param blurRadius            Liquid Glass 模式下的渐进模糊基准半径
  * @param contentPadding        内容区域内边距
  * @param horizontalArrangement Row 水平排列方式
  * @param verticalAlignment     Row 垂直对齐方式
