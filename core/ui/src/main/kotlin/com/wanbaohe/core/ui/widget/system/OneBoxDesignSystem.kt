@@ -57,6 +57,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
@@ -66,7 +67,9 @@ import com.wanbaohe.core.ui.widget.glass.glassMedium
 
 @Immutable
 object OneBoxDesignSystem {
-    val screenPadding: Dp = 16.dp
+    val screenPadding: Dp
+        @Composable
+        get() = AppTheme.dimens.pageHorizontal
     val screenTopSpacing: Dp = 12.dp
     val sectionSpacing: Dp = 20.dp
     val blockSpacing: Dp = 16.dp
@@ -76,7 +79,9 @@ object OneBoxDesignSystem {
     val compactSpacing: Dp = 8.dp
     val microSpacing: Dp = 4.dp
 
-    val cardPadding: Dp = 16.dp
+    val cardPadding: Dp
+        @Composable
+        get() = AppTheme.dimens.cardContentPadding
     val listItemHorizontalPadding: Dp = 12.dp
     val listItemVerticalPadding: Dp = 16.dp
 
