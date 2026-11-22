@@ -63,23 +63,29 @@ import com.shifenmiao.core.R
 import com.shifenmiao.model.StrapiImage
 import com.shifenmiao.model.blog.BlogItem
 import com.shifenmiao.theme.AppTheme
+import com.wanbaohe.base.ui.card.TonalCardPaletteDefaults
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors
 
 @Composable
-fun PlaygroundCard(
+internal fun PlaygroundCard(
     blog: BlogItem,
     onClick: () -> Unit,
+    index: Int,
     modifier: Modifier = Modifier,
 ) {
     val shape = MaterialTheme.shapes.large
     val coverImage = blog.picture?.firstOrNull()
+    val palette = TonalCardPaletteDefaults.forIndex(index)
 
     GlassCard(
         onClick = onClick,
         modifier = modifier.fillMaxWidth(),
         shape = shape,
+        style = TonalCardPaletteDefaults.containerStyle,
+        colors = tintedGlassCardColors(palette.containerColor),
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             if (coverImage != null) {
@@ -131,7 +137,7 @@ fun PlaygroundCard(
                     style = MaterialTheme.typography.titleMedium.copy(
                         fontWeight = FontWeight.SemiBold
                     ),
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = palette.titleColor,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -140,7 +146,7 @@ fun PlaygroundCard(
                     Text(
                         text = summary,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = palette.descriptionColor,
                         maxLines = 3,
                         overflow = TextOverflow.Ellipsis
                     )

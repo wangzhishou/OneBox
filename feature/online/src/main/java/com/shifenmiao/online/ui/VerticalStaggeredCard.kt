@@ -29,7 +29,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -74,13 +73,6 @@ fun VerticalStaggeredCard(
     onLongClick: (() -> Unit)? = null,
     onDeleteRequest: ((itemId: Int, itemTitle: String) -> Unit)? = null,
     onCategoryClick: ((categoryId: Int?) -> Unit)? = null,
-    themeColor: Color? = MaterialTheme.colorScheme.primaryContainer,
-    iconContentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
-    iconContainerColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    tagBackgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    tagTextColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
-    actionContainerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
-    actionContentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     shape: Shape = MaterialTheme.shapes.large,
     index: Int = 0,
     maxTitleLines: Int = 1,
@@ -88,6 +80,7 @@ fun VerticalStaggeredCard(
     onCommentClick: (() -> Unit)? = null,
     // 搜索结果场景传入搜索词, 对标题/描述做高亮; 默认 null 时渲染与列表页完全一致
     highlightKeyword: String? = null,
+    useHomeColorCycle: Boolean = false,
 ) {
     val item = itemWithStats.item
     val title = remember(item.title) { item.title }
@@ -112,17 +105,11 @@ fun VerticalStaggeredCard(
             else -> TonalCardVisualVariant.Default
         }
     }
-    val resolvedPalette = TonalCardPaletteDefaults.palette(
-        variant = visualVariant,
-        defaultContainerColor = themeColor
-            ?: MaterialTheme.colorScheme.primaryContainer,
-        defaultIconContentColor = iconContentColor,
-        defaultIconContainerColor = iconContainerColor,
-        defaultTagBackgroundColor = tagBackgroundColor,
-        defaultTagTextColor = tagTextColor,
-        defaultActionContainerColor = actionContainerColor,
-        defaultActionContentColor = actionContentColor,
-    )
+    val resolvedPalette = if (useHomeColorCycle) {
+        TonalCardPaletteDefaults.forIndex(index)
+    } else {
+        TonalCardPaletteDefaults.palette(variant = visualVariant)
+    }
 
     val favoriteLabel = stringResource(R.string.favorite)
     val unpinLabel = stringResource(R.string.unpin)

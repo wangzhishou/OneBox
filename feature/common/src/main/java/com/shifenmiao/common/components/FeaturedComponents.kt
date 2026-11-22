@@ -52,13 +52,13 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.wanbaohe.base.ui.card.TonalCardPaletteDefaults
 import com.wanbaohe.base.ui.icon.IconAvatar
 import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.database.item.entity.ItemWithCategoriesAndStats
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
-import com.wanbaohe.core.ui.widget.glass.tintedGlassContentColor
 import com.wanbaohe.com.string.TimeFormatter
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
@@ -73,7 +73,6 @@ fun FeaturedGrid(
     onItemClick: (ItemWithCategoriesAndStats) -> Unit,
     modifier: Modifier = Modifier,
     clickInfo: ClickInfoType = ClickInfoType.NONE,
-    reverseTheme: Boolean = false
 ) {
     LazyRow(
         modifier = modifier,
@@ -85,7 +84,6 @@ fun FeaturedGrid(
                 item = items[rowIndex],
                 themeIndex = rowIndex,
                 clickInfo = clickInfo,
-                reverseTheme = reverseTheme,
                 onClick = { onItemClick(items[rowIndex]) }
             )
         }
@@ -98,26 +96,21 @@ fun FeaturedCard(
     themeIndex: Int,
     modifier: Modifier = Modifier,
     clickInfo: ClickInfoType = ClickInfoType.NONE,
-    reverseTheme: Boolean = false,
     onClick: () -> Unit
 ) {
-    val effectiveIndex = if (reverseTheme) 3 - (themeIndex % 4) else themeIndex
-    val theme = sectionThemeForIndex(effectiveIndex)
-    val containerColor = sectionGradient(theme)
-    val iconTint = sectionIconColor(theme)
-    // 玻璃管线会把 container 以低 alpha 混合页面底色(并叠高光),onPrimaryContainer 等
-    // 成对 onColor 只保证与不透明 container 的对比度,在部分主题/暗色/低对比度设置下会失效;
-    // 内容色改按混合后的有效底色自动选深/浅,保证任意主题切换下可读
-    val contentColor = tintedGlassContentColor(containerColor)
-    val iconBgColor = sectionIconContainerColor(theme)
+    val palette = TonalCardPaletteDefaults.forIndex(themeIndex)
 
     GlassCard(
         modifier = modifier
             .width(160.dp)
             .wrapContentHeight(),
         onClick = onClick,
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = containerColor)
+        shape = MaterialTheme.shapes.large,
+        style = TonalCardPaletteDefaults.containerStyle,
+        colors = CardDefaults.cardColors(
+            containerColor = palette.containerColor,
+            contentColor = palette.titleColor,
+        ),
     ) {
         Column(
             modifier = Modifier
@@ -126,10 +119,10 @@ fun FeaturedCard(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             IconAvatar(
-                iconName = item.item.iconName?.ifEmpty { item.item.title },
-                containerColor = iconBgColor,
-                tint = iconTint,
-                glassStyle = GlassStyle.Thick,
+                iconName = item.item.iconName?.takeIf { it.isNotEmpty() } ?: item.item.title,
+                containerColor = palette.iconContainerColor,
+                tint = palette.iconContentColor,
+                glassStyle = TonalCardPaletteDefaults.accentStyle,
             )
             Column(
                 verticalArrangement = Arrangement.spacedBy(6.dp)
@@ -138,7 +131,7 @@ fun FeaturedCard(
                 Text(
                     text = item.item.title.orEmpty(),
                     style = MaterialTheme.typography.titleMedium,
-                    color = contentColor,
+                    color = palette.titleColor,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -147,7 +140,7 @@ fun FeaturedCard(
                     Text(
                         text = item.item.description.orEmpty(),
                         style = MaterialTheme.typography.labelSmall,
-                        color = contentColor.copy(alpha = 0.7f),
+                        color = palette.descriptionColor,
                         maxLines = 2,
                         minLines = 2,
                         overflow = TextOverflow.Ellipsis
@@ -174,8 +167,8 @@ fun FeaturedCard(
                         Text(
                             modifier = Modifier
                                 .glassBackground(
-                                    style = GlassStyle.Thick,
-                                    color = iconBgColor,
+                                    style = TonalCardPaletteDefaults.accentStyle,
+                                    color = palette.tagBackgroundColor,
                                     shape = RoundedCornerShape(50)
                                 )
                                 .padding(
@@ -184,14 +177,14 @@ fun FeaturedCard(
                                 ),
                             text = infoText,
                             style = MaterialTheme.typography.labelSmall,
-                            color = iconTint
+                            color = palette.tagTextColor
                         )
                     }
                 } else {
                     Text(
                         text = item.item.description.orEmpty(),
                         style = MaterialTheme.typography.labelSmall,
-                        color = contentColor.copy(alpha = 0.7f),
+                        color = palette.descriptionColor,
                         minLines = 2,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis

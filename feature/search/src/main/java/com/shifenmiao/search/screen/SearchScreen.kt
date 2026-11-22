@@ -192,7 +192,6 @@ private fun RecentVisitsSection(
             FeaturedGrid(
                 items = recentItems,
                 clickInfo = ClickInfoType.TIME,
-                reverseTheme = true,
                 onItemClick = { item ->
                     scope.launch {
                         val resource = ItemResourceResolver.resolve(

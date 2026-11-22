@@ -80,7 +80,6 @@ import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsS
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.core.ui.widget.glass.glassDense
-import com.wanbaohe.core.ui.widget.glass.glassMedium
 
 /**
  * 底栏是否该有自己的底色。
@@ -295,7 +294,6 @@ private fun BottomNavigationTabItem(
     onClick: () -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    val backdropState = currentBackdropState()
     val defaultSelectedBg = MaterialTheme.colorScheme.primaryContainer
     val defaultSelectedContent = MaterialTheme.colorScheme.onPrimaryContainer
     val selectedBgColor = item.selectedContainerColor ?: defaultSelectedBg
@@ -326,18 +324,12 @@ private fun BottomNavigationTabItem(
                 .indication(interactionSource, ripple(bounded = true))
                 .then(
                     if (isSelected) {
-                        if (backdropState == BackdropState.Glass) {
-                            Modifier.glassBackground(
-                                style = style.selectedItemGlassStyle,
-                                color = selectedBgColor,
-                                shape = style.tabItemShape,
-                            )
-                        } else {
-                            Modifier.background(
-                                color = selectedBgColor,
-                                shape = style.tabItemShape,
-                            )
-                        }
+                        Modifier.glassBackground(
+                            style = style.selectedItemGlassStyle,
+                            color = selectedBgColor,
+                            shape = style.tabItemShape,
+                            blurRadius = 32.dp,
+                        )
                     } else {
                         Modifier
                     }

@@ -24,6 +24,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.tintedGlassContentColor
 
 @Immutable
 enum class TonalCardVisualVariant {
@@ -48,20 +50,50 @@ data class TonalCardPalette(
 )
 
 object TonalCardPaletteDefaults {
+    val containerStyle = GlassStyle.Regular
+    val accentStyle = GlassStyle.Medium
+
+    /** 横排和网格共用同一个四色顺序，底色、图标和标签取自同一组主题角色。 */
+    @Composable
+    fun forIndex(index: Int): TonalCardPalette {
+        val colors = MaterialTheme.colorScheme
+        val (container, content) = when (Math.floorMod(index, 4)) {
+            0 -> colors.secondaryContainer to colors.onSecondaryContainer
+            1 -> colors.tertiaryContainer to colors.onTertiaryContainer
+            2 -> colors.primaryContainer to colors.onPrimaryContainer
+            else -> colors.surfaceContainer to colors.onSurfaceVariant
+        }
+        val titleColor = tintedGlassContentColor(container)
+        return remember(colors, container, content, titleColor) {
+            TonalCardPalette(
+                containerColor = container,
+                iconContentColor = content,
+                iconContainerColor = container,
+                actionContainerColor = colors.surfaceContainer,
+                actionContentColor = colors.onSurfaceVariant,
+                tagBackgroundColor = container,
+                tagTextColor = content,
+                titleColor = titleColor,
+                descriptionColor = colors.onSurfaceVariant,
+                supportingContentColor = colors.onSurfaceVariant,
+                accentColor = content,
+            )
+        }
+    }
 
     /**
      * 调色板颜色只负责色调, 不携带透明度 —— 这些颜色全部经玻璃管线
      * (glassBackground/GlassCard)渲染, 颜色自身 alpha 会被覆盖率公式丢弃,
-     * 层次由 GlassStyle 阶梯表达。
+     * 层次由 GlassStyle 阶梯表达。常规内容卡沿用小工具的次级主题色。
      */
     @Composable
     fun palette(
         variant: TonalCardVisualVariant,
-        defaultContainerColor: Color = MaterialTheme.colorScheme.primaryContainer,
-        defaultIconContentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
-        defaultIconContainerColor: Color = MaterialTheme.colorScheme.primaryContainer,
-        defaultTagBackgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
-        defaultTagTextColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+        defaultContainerColor: Color = MaterialTheme.colorScheme.secondaryContainer,
+        defaultIconContentColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
+        defaultIconContainerColor: Color = MaterialTheme.colorScheme.secondaryContainer,
+        defaultTagBackgroundColor: Color = MaterialTheme.colorScheme.secondaryContainer,
+        defaultTagTextColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
         defaultActionContainerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
         defaultActionContentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     ): TonalCardPalette {

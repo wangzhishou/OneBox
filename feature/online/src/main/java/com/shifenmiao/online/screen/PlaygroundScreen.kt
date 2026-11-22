@@ -198,6 +198,7 @@ private fun PlaygroundGrid(
                 PlaygroundCard(
                     blog = blog,
                     onClick = { onBlogClick(blog) },
+                    index = index,
                     modifier = Modifier.animateItem()
                 )
             }

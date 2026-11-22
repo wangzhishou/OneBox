@@ -239,7 +239,6 @@ private fun ContentListSection(
                 FeaturedGrid(
                     items = recentItems,
                     clickInfo = ClickInfoType.TIME,
-                    reverseTheme = true,
                     onItemClick = { item ->
                         favoriteComponent.handleItemClick(item, onNavigate)
                     }

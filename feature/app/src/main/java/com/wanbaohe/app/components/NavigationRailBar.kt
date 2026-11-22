@@ -22,7 +22,6 @@ package com.wanbaohe.app.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.layout.Arrangement
@@ -65,11 +64,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.core.ui.utils.navigation.Screen
-import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
-import com.wanbaohe.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.widget.glass.glassDense
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
-import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.feature.root.presentation.screenLogic.RootComponent
 import com.wanbaohe.app.update.rememberUpdateAvailable
 
@@ -128,9 +125,7 @@ fun NavigationRailBar(
 }
 
 /**
- * 竖屏底栏(AppBottomNavigationBar)的选中态是 primaryContainer 胶囊 + 12dp 圆角 + Dense 玻璃;
- * rail 原来用 M3 NavigationRailItem 默认的 secondaryContainer 指示器, 底色和形状都对不上,
- * 这里按底栏的规格自绘, 保证横竖屏选中样式一致。
+ * 与首页 Tab 和竖屏底栏共用 primaryContainer + Dense 玻璃选中态。
  */
 @Composable
 private fun RailNavigationItem(
@@ -172,15 +167,7 @@ private fun RailNavigationItem(
                 .indication(interactionSource, ripple(bounded = true))
                 .then(
                     if (selected) {
-                        if (currentBackdropState() == BackdropState.Glass) {
-                            Modifier.glassBackground(
-                                style = GlassStyle.Dense,
-                                color = selectedContainerColor,
-                                shape = shape,
-                            )
-                        } else {
-                            Modifier.background(color = selectedContainerColor, shape = shape)
-                        }
+                        Modifier.glassDense(shape = shape, color = selectedContainerColor)
                     } else {
                         Modifier
                     }
@@ -218,15 +205,4 @@ private fun RailNavigationItem(
             )
         }
     }
-}
-
-/** 与底栏一致的背景判定: 有渐变/自定义背景图才走玻璃, 纯色页面直接铺 primaryContainer。 */
-private enum class BackdropState { None, Glass }
-
-@Composable
-private fun currentBackdropState(): BackdropState {
-    val settingsState = LocalSettingsState.current
-    val hasBackdrop = settingsState.isMeshGradientBackgroundEnabled ||
-        settingsState.customBackgroundImageUri != null
-    return if (hasBackdrop) BackdropState.Glass else BackdropState.None
 }

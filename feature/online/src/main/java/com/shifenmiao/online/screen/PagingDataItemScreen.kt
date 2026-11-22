@@ -605,6 +605,7 @@ private fun ItemGrid(
                 val item = pagingItems[index] ?: return@items
                 VerticalStaggeredCard(
                     index = index,
+                    useHomeColorCycle = true,
                     modifier = Modifier.onSizeChanged { size ->
                         if (size.height > 0) {
                             siblingCardHeight = with(density) { size.height.toDp() }

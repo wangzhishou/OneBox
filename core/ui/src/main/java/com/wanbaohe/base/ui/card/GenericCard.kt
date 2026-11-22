@@ -346,8 +346,9 @@ fun GenericTonalCard(
         modifier
             .clip(shape)
             .glassBackground(
-                style = GlassStyle.Regular,
+                style = TonalCardPaletteDefaults.containerStyle,
                 shape = shape,
+                borderWidth = 0.5.dp,
                 color = resolvedPalette.containerColor
             )
             .combinedClickable(
@@ -366,8 +367,9 @@ fun GenericTonalCard(
         modifier
             .clip(shape)
             .glassBackground(
-                style = GlassStyle.Regular,
+                style = TonalCardPaletteDefaults.containerStyle,
                 shape = shape,
+                borderWidth = 0.5.dp,
                 color = resolvedPalette.containerColor,
             )
     }
@@ -411,6 +413,7 @@ fun GenericTonalCard(
                                 shape = RoundedCornerShape(16.dp),
                                 containerColor = iconBg,
                                 tint = contentTint,
+                                glassStyle = TonalCardPaletteDefaults.accentStyle,
                                 iconSizeRatio = 0.6f,
                             )
 
