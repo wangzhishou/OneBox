@@ -1058,4 +1058,3 @@ private fun EmptyHistoryPlaceholder() {
         }
     }
 }
-

@@ -20,6 +20,7 @@
 package com.wanbaohe.app.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.offset
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
@@ -65,7 +66,9 @@ fun AppLargeTopAppBar(
             .background(Color.Transparent),
         scrollBehavior = scrollBehavior,
         actions = {
-            TopActions(appComponent)
+            Row(modifier = Modifier.offset(x = -titleOffset)) {
+                TopActions(appComponent)
+            }
         }
     )
 }
