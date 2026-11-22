@@ -51,7 +51,7 @@ import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBarType
-import com.wanbaohe.icons.SolidEditorIcons
+import com.wanbaohe.icons.LineEditorIcons
 import kotlinx.coroutines.launch
 
 @Composable
@@ -73,6 +73,12 @@ fun EditPromptScreen(
     var selectedCategoryIds by rememberSaveable { mutableStateOf<IntArray?>(null) }
 
     val editorState = rememberNativeMarkdownEditorState(uiState.data)
+    val autoFocusBody = !uiState.isLoading &&
+        !uiState.isEditing &&
+        !uiState.isDirty &&
+        uiState.title.isBlank() &&
+        uiState.data.isBlank() &&
+        editorState.isEmpty
 
     val onBack = {
         if (uiState.isSaving || isPreparing) {
@@ -121,7 +127,7 @@ fun EditPromptScreen(
                 enabled = !uiState.isLoading && !uiState.isSaving && !isPreparing,
             ) {
                 Icon(
-                    imageVector = SolidEditorIcons.Save,
+                    imageVector = LineEditorIcons.Save,
                     contentDescription = stringResource(com.shifenmiao.common.R.string.common_save),
                     tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
@@ -132,6 +138,7 @@ fun EditPromptScreen(
         NativeMarkdownEditor(
             state = editorState,
             modifier = Modifier.fillMaxWidth().weight(1f),
+            autoFocus = autoFocusBody,
             useVectorDockIcons = true,
             onContentChanged = editPromptComponent::markAsDirty,
         )
@@ -146,7 +153,7 @@ fun EditPromptScreen(
         ContentSaveConfirmDialog(
             visible = true,
             dialogTitle = stringResource(OnlineR.string.prompt_save_confirm_title),
-            dialogIcon = SolidEditorIcons.Save,
+            dialogIcon = LineEditorIcons.Save,
             title = title,
             description = description,
             categories = categories,

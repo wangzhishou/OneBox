@@ -21,7 +21,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Mic
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
-import com.wanbaohe.icons.SolidEditorIcons
+import com.wanbaohe.icons.LineEditorIcons
 import com.wanbaohe.richtext.editor.command.applyBlockStyle
 import com.wanbaohe.richtext.editor.command.currentBlockStyle
 import com.wanbaohe.richtext.editor.command.isInlineStyleActive
@@ -47,7 +47,7 @@ internal fun NativeMarkdownEditorDock(
     NativeEditorDock(
         modifier = modifier,
         spacious = useVectorIcons,
-        collapseIcon = if (useVectorIcons) SolidEditorIcons.ChevronDown else null,
+        collapseIcon = if (useVectorIcons) LineEditorIcons.ChevronDown else null,
         actions = markdownDockActions(
             state = state,
             extraActions = extraActions,
@@ -72,7 +72,7 @@ private fun NativeMarkdownEditorModeToggle(
     Box {
         NativeEditorDockChip(
             label = modeLabel,
-            icon = state.mode.icon(solid = spacious),
+            icon = state.mode.icon(customIcons = spacious),
             expanded = expanded,
             spacious = spacious,
             onClick = { menuExpanded = true },
@@ -88,11 +88,11 @@ private fun NativeMarkdownEditorModeToggle(
             NativeMarkdownEditorMode.entries.forEach { mode ->
                 DropdownMenuItem(
                     text = { Text(stringResource(mode.labelRes())) },
-                    leadingIcon = { Icon(mode.icon(solid = spacious), contentDescription = null) },
+                    leadingIcon = { Icon(mode.icon(customIcons = spacious), contentDescription = null) },
                     trailingIcon = {
                         if (mode == state.mode) {
                             Icon(
-                                if (spacious) SolidEditorIcons.Check else Icons.Filled.Check,
+                                if (spacious) LineEditorIcons.Check else Icons.Filled.Check,
                                 contentDescription = null,
                             )
                         }
@@ -118,7 +118,7 @@ private fun markdownDockActions(
     historyActions(state = state, onVoiceInput = onVoiceInput, useVectorIcons = useVectorIcons) +
         inlineStyleActions(state = state, useVectorIcons = useVectorIcons) +
         blockStyleActions(state = state, useVectorIcons = useVectorIcons) +
-        insertActions(state = state, onInsert = onInsert, solid = useVectorIcons) +
+        insertActions(state = state, onInsert = onInsert, customIcons = useVectorIcons) +
         extraActions.mapIndexed { index, action ->
             NativeEditorDockAction(
                 id = "extra_$index",
@@ -140,7 +140,7 @@ private fun historyActions(
             NativeEditorDockAction(
                 id = "voice",
                 label = stringResource(com.shifenmiao.core.R.string.ai_input_voice),
-                icon = if (useVectorIcons) SolidEditorIcons.Voice else OneBoxIcons.Outlined.Mic,
+                icon = if (useVectorIcons) LineEditorIcons.Voice else OneBoxIcons.Outlined.Mic,
                 onClick = onVoiceInput,
             )
         )
@@ -149,7 +149,7 @@ private fun historyActions(
         NativeEditorDockAction(
             id = "undo",
             label = stringResource(com.t8rin.imagetoolbox.core.resources.R.string.undo),
-            icon = if (useVectorIcons) SolidEditorIcons.Undo else OneBoxIcons.Outlined.LineUndo,
+            icon = if (useVectorIcons) LineEditorIcons.Undo else OneBoxIcons.Outlined.LineUndo,
             enabled = state.canUndo(),
             onClick = state::undo,
         )
@@ -158,7 +158,7 @@ private fun historyActions(
         NativeEditorDockAction(
             id = "redo",
             label = stringResource(com.t8rin.imagetoolbox.core.resources.R.string.redo),
-            icon = if (useVectorIcons) SolidEditorIcons.Redo else OneBoxIcons.Outlined.LineRedo,
+            icon = if (useVectorIcons) LineEditorIcons.Redo else OneBoxIcons.Outlined.LineRedo,
             enabled = state.canRedo(),
             onClick = state::redo,
         )
@@ -202,7 +202,7 @@ private fun blockStyleActions(
             NativeEditorDockAction(
                 id = "block_body",
                 label = bodyStyle.label,
-                icon = if (useVectorIcons) SolidEditorIcons.Paragraph else null,
+                icon = if (useVectorIcons) LineEditorIcons.Paragraph else null,
                 glyph = "T",
                 selected = activeBlockStyleId == bodyStyle.id,
                 enabled = editor != null && state.mode == NativeMarkdownEditorMode.Edit,
@@ -218,7 +218,7 @@ private fun blockStyleActions(
                             style = style,
                             glyph = spec.glyph,
                             label = stringResource(spec.labelRes),
-                            icon = if (useVectorIcons) SolidEditorIcons.Headings[index] else null,
+                            icon = if (useVectorIcons) LineEditorIcons.Headings[index] else null,
                         ),
                         activeBlockStyleId = activeBlockStyleId,
                         enabled = editor != null && state.mode == NativeMarkdownEditorMode.Edit,
@@ -234,7 +234,7 @@ private fun blockStyleActions(
                         style = style,
                         glyph = "❝",
                         label = style.label,
-                        icon = if (useVectorIcons) SolidEditorIcons.Quote else null,
+                        icon = if (useVectorIcons) LineEditorIcons.Quote else null,
                     ),
                     activeBlockStyleId = activeBlockStyleId,
                     enabled = editor != null && state.mode == NativeMarkdownEditorMode.Edit,

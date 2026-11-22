@@ -31,7 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import com.shifenmiao.common.R
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
-import com.wanbaohe.icons.SolidEditorIcons
+import com.wanbaohe.icons.LineEditorIcons
 import com.wanbaohe.richtext.editor.style.RichTextInlineStyle
 import androidx.compose.material.icons.Icons as MaterialIcons
 import com.t8rin.imagetoolbox.core.resources.Icons as OneBoxIcons
@@ -49,12 +49,12 @@ internal fun inlineGlyphStyle(id: String): TextStyle {
 }
 
 internal fun inlineStyleIcon(id: String): ImageVector? = when (id) {
-    RichTextInlineStyle.BoldId -> SolidEditorIcons.Bold
-    RichTextInlineStyle.ItalicId -> SolidEditorIcons.Italic
-    RichTextInlineStyle.UnderlineId -> SolidEditorIcons.Underline
-    RichTextInlineStyle.StrikethroughId -> SolidEditorIcons.Strike
-    RichTextInlineStyle.InlineCodeId -> SolidEditorIcons.Code
-    "highlight" -> SolidEditorIcons.Highlight
+    RichTextInlineStyle.BoldId -> LineEditorIcons.Bold
+    RichTextInlineStyle.ItalicId -> LineEditorIcons.Italic
+    RichTextInlineStyle.UnderlineId -> LineEditorIcons.Underline
+    RichTextInlineStyle.StrikethroughId -> LineEditorIcons.Strike
+    RichTextInlineStyle.InlineCodeId -> LineEditorIcons.Code
+    "highlight" -> LineEditorIcons.Highlight
     else -> null
 }
 
@@ -64,8 +64,8 @@ internal fun NativeMarkdownEditorMode.labelRes(): Int = when (this) {
     NativeMarkdownEditorMode.Source -> R.string.native_editor_mode_source
 }
 
-internal fun NativeMarkdownEditorMode.icon(solid: Boolean = false): ImageVector = when (this) {
-    NativeMarkdownEditorMode.Edit -> if (solid) SolidEditorIcons.Edit else OneBoxIcons.Outlined.Edit
-    NativeMarkdownEditorMode.Preview -> if (solid) SolidEditorIcons.Preview else MaterialIcons.Outlined.Visibility
-    NativeMarkdownEditorMode.Source -> if (solid) SolidEditorIcons.Code else MaterialIcons.Outlined.Code
+internal fun NativeMarkdownEditorMode.icon(customIcons: Boolean = false): ImageVector = when (this) {
+    NativeMarkdownEditorMode.Edit -> if (customIcons) LineEditorIcons.Edit else OneBoxIcons.Outlined.Edit
+    NativeMarkdownEditorMode.Preview -> if (customIcons) LineEditorIcons.Preview else MaterialIcons.Outlined.Visibility
+    NativeMarkdownEditorMode.Source -> if (customIcons) LineEditorIcons.Code else MaterialIcons.Outlined.Code
 }

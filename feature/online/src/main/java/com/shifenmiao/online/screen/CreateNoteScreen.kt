@@ -71,7 +71,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSettings
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.wanbaohe.com.string.MarkdownSummary
-import com.wanbaohe.icons.SolidEditorIcons
+import com.wanbaohe.icons.LineEditorIcons
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
@@ -287,7 +287,7 @@ fun CreateNoteScreen(
                 enabled = !uiState.isSaving,
             ) {
                 Icon(
-                    imageVector = SolidEditorIcons.Save,
+                    imageVector = LineEditorIcons.Save,
                     contentDescription = stringResource(CommonR.string.common_save),
                     tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
@@ -295,7 +295,7 @@ fun CreateNoteScreen(
             Box {
                 IconButton(onClick = { showMoreMenu = true }) {
                     Icon(
-                        imageVector = SolidEditorIcons.More,
+                        imageVector = LineEditorIcons.More,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onSurface,
                     )

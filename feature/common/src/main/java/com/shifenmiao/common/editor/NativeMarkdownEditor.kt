@@ -206,7 +206,7 @@ fun NativeMarkdownEditor(
     }
 
     val keyboardController = LocalSoftwareKeyboardController.current
-    // 进入编辑页即写入（新建笔记）：把光标放进正文并拉起输入法，省掉「先点一下占位文字」这一步。
+    // 新建空白内容时，把光标放进正文并拉起输入法。
     // 只在 autoFocus 变 true 时触发一次；正文块要等布局完成才有可用的焦点节点，所以按帧重试。
     LaunchedEffect(autoFocus) {
         if (!autoFocus || state.mode != NativeMarkdownEditorMode.Edit) return@LaunchedEffect
@@ -610,7 +610,7 @@ private fun NativeRawBlockHeader(
 private suspend fun FocusRequester.requestFocusWhenReady(): Boolean {
     repeat(FOCUS_REQUEST_ATTEMPTS) {
         withFrameNanos { }
-        if (runCatching { requestFocus() }.isSuccess) return true
+        if (runCatching { requestFocus() }.getOrDefault(false)) return true
     }
     return false
 }
