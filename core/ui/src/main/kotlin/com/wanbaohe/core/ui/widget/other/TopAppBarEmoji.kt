@@ -25,6 +25,7 @@
 
 package com.wanbaohe.core.ui.widget.other
 
+import android.view.WindowManager
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
@@ -41,7 +42,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -49,7 +49,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -184,10 +183,7 @@ fun ThemeQuickSettingsButton(
             anchorBounds?.let { anchor ->
                 val density = LocalDensity.current
                 val windowWidth = LocalWindowInfo.current.containerSize.width
-                val statusBarHeight = WindowInsets.statusBars.getTop(density)
-                val topMargin = with(density) {
-                    (anchor.top - statusBarHeight).toDp() + 40.dp
-                }.coerceAtLeast(0.dp)
+                val topMargin = with(density) { anchor.top.toDp() + 40.dp }
                 val endMargin = with(density) {
                     (windowWidth - anchor.right).toDp() - 16.dp
                 }.coerceAtLeast(0.dp)
@@ -205,7 +201,11 @@ fun ThemeQuickSettingsButton(
                         y = -anchor.top.roundToInt()
                     ),
                     onDismissRequest = { expanded = false },
-                    properties = PopupProperties(focusable = true)
+                    properties = PopupProperties(
+                        flags = WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH or
+                            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+                    )
                 ) {
                     Box(Modifier.fillMaxSize()) {
                         AnimatedVisibility(
