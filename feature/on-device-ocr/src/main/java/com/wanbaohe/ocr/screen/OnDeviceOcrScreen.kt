@@ -81,6 +81,7 @@ import com.wanbaohe.core.ui.widget.glass.GlassLinearProgressIndicator
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
 import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBar
+import com.wanbaohe.core.ui.widget.other.TopAppBarEmoji
 import com.wanbaohe.ocr.R
 import com.wanbaohe.ocr.component.OcrTab
 import com.wanbaohe.ocr.component.OnDeviceOcrComponent
@@ -162,6 +163,8 @@ fun OnDeviceOcrScreen(component: OnDeviceOcrComponent) {
                     )
                 }
             }
+            // 主题快捷设置（BaseScreen 的默认右上角动作）：本页自定义 actions 后需显式补上
+            TopAppBarEmoji()
         },
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
