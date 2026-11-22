@@ -164,14 +164,22 @@ class ChatInputComponent @AssistedInject internal constructor(
         _recognizedFinished.value = false
     }
 
-    fun clearInputText() {
+    /**
+     * 清空输入文本与光标。
+     *
+     * [keepExpanded] 为 true 时保留全屏写作态：全屏底栏的清除按钮只应清空文本，
+     * 不应顺带把全屏 sheet 关掉（关闭由它自己的 X 负责）。
+     */
+    fun clearInputText(keepExpanded: Boolean = false) {
         inputStateHolder.inputText = ""
-        inputStateHolder.isExpanded = false
+        if (!keepExpanded) {
+            inputStateHolder.isExpanded = false
+        }
         _inputChatInputState.value = _inputChatInputState.value.copy(
             inputText = "",
             cursorStart = 0,
             cursorEnd = 0,
-            isExpanded = false,
+            isExpanded = if (keepExpanded) _inputChatInputState.value.isExpanded else false,
             selectedSystemPromptTitle = null,
             selectedSystemPromptText = null,
         )

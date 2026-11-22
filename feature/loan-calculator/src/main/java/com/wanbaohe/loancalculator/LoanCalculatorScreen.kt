@@ -20,6 +20,7 @@
 package com.wanbaohe.loancalculator
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -60,6 +61,7 @@ private fun LoanCalculatorContent(
     androidx.compose.foundation.layout.Column(
         modifier = Modifier
             .fillMaxSize()
+            .imePadding()
             .verticalScroll(scrollState)
             .padding(horizontal = 20.dp, vertical = 20.dp),
     ) {

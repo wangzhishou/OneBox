@@ -63,6 +63,9 @@ import androidx.core.net.toUri
 import coil3.compose.AsyncImage
 import com.wanbaohe.base.ui.picker.ChineseDatePickerDialog
 import com.shifenmiao.common.ui.BaseScreen
+import com.shifenmiao.theme.AppFontMode
+import com.shifenmiao.theme.AppTheme
+import com.shifenmiao.theme.AppWidthMode
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.Close
@@ -257,7 +260,10 @@ private fun CategoryField(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         FlowRow(
-            maxItemsInEachRow = 4,
+            maxItemsInEachRow = if (
+                AppTheme.uiProfile.widthMode == AppWidthMode.Narrow ||
+                AppTheme.uiProfile.fontMode != AppFontMode.Regular
+            ) 2 else 4,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
@@ -299,8 +305,6 @@ private fun CategoryField(
                             } else {
                                 MaterialTheme.colorScheme.onSurfaceVariant
                             },
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 }
@@ -353,8 +357,6 @@ private fun LocationField(
                     modifier = Modifier
                         .weight(1f)
                         .padding(start = 12.dp),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
                 )
                 if (selectedLocationId != null) {
                     IconButton(onClick = onClear) {

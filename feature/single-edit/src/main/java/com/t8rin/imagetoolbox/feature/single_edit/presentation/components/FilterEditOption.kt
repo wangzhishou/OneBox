@@ -287,7 +287,7 @@ fun FilterEditOption(
                             ) {
                                 Icon(
                                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check,
-                                    contentDescription = "Done"
+                                    contentDescription = stringResource(R.string.apply)
                                 )
                             }
                         }

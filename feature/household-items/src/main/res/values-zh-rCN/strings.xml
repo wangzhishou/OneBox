@@ -216,4 +216,5 @@
     <string name="agent_tool_household_open_link">打开物品管理</string>
     <string name="agent_tool_household_edit_link">查看物品</string>
     <string name="agent_tool_household_unknown_error">未知错误</string>
+    <string name="household_item_actions">物品操作</string>
 </resources>

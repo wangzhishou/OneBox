@@ -88,7 +88,7 @@ fun BrowserHomePage(
                     modifier = Modifier.padding(bottom = 20.dp)
                 )
                 LazyVerticalGrid(
-                    columns = GridCells.Fixed(4),
+                    columns = GridCells.Adaptive(64.dp),
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)

@@ -1607,8 +1607,7 @@ private fun EditorCanvas(
                 if (component.editSessionLayerId != null && !textStyleSheetVisible) {
                     Spacer(Modifier.width(4.dp))
                     EnhancedIconButton(
-                        onClick = onReopenTextStyle,
-                        modifier = Modifier.size(36.dp)
+                        onClick = onReopenTextStyle
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.LineText,

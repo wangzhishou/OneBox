@@ -45,6 +45,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineLock
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFolder
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineError
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFolderCustom
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineSearchOff
 
 /**
  * Empty state when folder has no files
@@ -119,6 +120,31 @@ fun EmptyFolderState(
                 Text(text = stringResource(R.string.open_folder))
             }
         }
+    }
+}
+
+@Composable
+fun SearchEmptyState(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Icon(
+            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSearchOff,
+            contentDescription = null,
+            modifier = Modifier.size(80.dp),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = stringResource(com.t8rin.imagetoolbox.core.resources.R.string.nothing_found_by_search),
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onSurface,
+            textAlign = TextAlign.Center
+        )
     }
 }
 

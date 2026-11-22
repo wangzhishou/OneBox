@@ -216,4 +216,5 @@
     <string name="agent_tool_household_open_link">Open Item Manager</string>
     <string name="agent_tool_household_edit_link">View item</string>
     <string name="agent_tool_household_unknown_error">Unknown error</string>
+    <string name="household_item_actions">Item actions</string>
 </resources>

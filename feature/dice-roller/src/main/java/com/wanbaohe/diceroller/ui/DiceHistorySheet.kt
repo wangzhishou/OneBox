@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import com.wanbaohe.base.ui.ClearHistoryConfirmDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.diceroller.R
 import com.wanbaohe.diceroller.component.RollRecord
 import java.text.SimpleDateFormat
@@ -167,9 +168,9 @@ private val dateFmt = SimpleDateFormat("MM-dd", Locale.getDefault())
 private fun HistoryRecordItem(record: RollRecord) {
     GlassCard(
         colors = androidx.compose.material3.CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+            containerColor = MaterialTheme.colorScheme.surfaceContainer
         ),
-        containerAlpha = 0.3f,
+        style = GlassStyle.Regular,
         borderWidth = 0.dp,
         shape = RoundedCornerShape(12.dp),
         modifier = Modifier.fillMaxWidth()

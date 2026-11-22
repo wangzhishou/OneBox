@@ -58,6 +58,7 @@ import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.chess.R
+import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.chess.data.ChessTTSTemplate
 import com.wanbaohe.chess.data.ChessTTSTemplates
 import com.wanbaohe.chess.application.port.outbound.EngineSlot
@@ -121,7 +122,7 @@ fun ChessSettingsScreen(
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
-            .padding(16.dp),
+            .padding(horizontal = AppTheme.dimens.pageHorizontal, vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         // 声音:总开关 + 三个试听

@@ -217,7 +217,7 @@ private fun ColumnScope.InstrumentTab(
             .weight(1f)
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = AppTheme.dimens.pageHorizontal, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // ── 可截图区域（卡片 + 观测时间，不含按钮）──────────
@@ -298,8 +298,8 @@ private fun ColumnScope.HistoryTab(
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(
-                start = 16.dp,
-                end = 16.dp,
+                start = AppTheme.dimens.pageHorizontal,
+                end = AppTheme.dimens.pageHorizontal,
                 bottom = 16.dp
             )
         ) {
@@ -324,7 +324,7 @@ private fun HistoryTitleBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 4.dp),
+            .padding(horizontal = AppTheme.dimens.pageHorizontal, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(

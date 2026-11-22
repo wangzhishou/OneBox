@@ -304,7 +304,7 @@ private fun PoemDetailPage(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = AppTheme.dimens.pageHorizontal),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         PoemCard(poem = poem)
@@ -341,7 +341,7 @@ private fun PoemDetailPage(
                 IconButton(
                     onClick = onGeneratePinyin,
                     enabled = isCurrent && !uiState.isGeneratingPinyin,
-                    modifier = Modifier.size(32.dp),
+                    modifier = Modifier.size(48.dp),
                 ) {
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRestartAlt,

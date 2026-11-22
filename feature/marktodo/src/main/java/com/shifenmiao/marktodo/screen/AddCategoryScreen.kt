@@ -122,7 +122,7 @@ fun AddCategoryScreen(
                     leadingIcon = {
                         Box(
                             modifier = Modifier
-                                .size(36.dp)
+                                .size(48.dp)
                                 .clip(RoundedCornerShape(OneBoxDesignSystem.smallRadius))
                                 .background(MaterialTheme.colorScheme.primaryContainer)
                                 .clickable { showIconPicker = true },

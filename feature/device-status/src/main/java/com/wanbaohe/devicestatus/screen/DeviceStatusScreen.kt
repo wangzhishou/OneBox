@@ -51,6 +51,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
+import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineQuickTiles
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSync
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineViewList
@@ -145,7 +146,12 @@ private fun StatusList(
 ) {
     LazyColumn(
         modifier = modifier,
-        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 24.dp),
+        contentPadding = PaddingValues(
+            start = AppTheme.dimens.pageHorizontal,
+            end = AppTheme.dimens.pageHorizontal,
+            top = 4.dp,
+            bottom = 24.dp,
+        ),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         if (formatted.addresses.isEmpty()) {
@@ -174,9 +180,15 @@ private fun StatusGrid(
     modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
+        // 列数按内容区真实宽度决定,而不是按设备类型写死两列(320dp 会回落到一列)。
+        columns = GridCells.Adaptive(minSize = 150.dp),
         modifier = modifier,
-        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 24.dp),
+        contentPadding = PaddingValues(
+            start = AppTheme.dimens.pageHorizontal,
+            end = AppTheme.dimens.pageHorizontal,
+            top = 4.dp,
+            bottom = 24.dp,
+        ),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {

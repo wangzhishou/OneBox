@@ -90,7 +90,7 @@ fun BrowserTopBar(
                 enter = fadeIn() + expandHorizontally(),
                 exit = fadeOut() + shrinkHorizontally()
             ) {
-                IconButton(onClick = onGoBack, modifier = Modifier.size(36.dp)) {
+                IconButton(onClick = onGoBack, modifier = Modifier.size(48.dp)) {
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack,
                         contentDescription = stringResource(R.string.browser_back),
@@ -126,7 +126,7 @@ fun BrowserTopBar(
                     if (isSearchFocused && addressText.isNotBlank() && addressText != "about:blank") {
                         IconButton(
                             onClick = { onAddressTextChange("") },
-                            modifier = Modifier.size(32.dp)
+                            modifier = Modifier.size(48.dp)
                         ) {
                             Icon(
                                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineClear,
@@ -151,7 +151,7 @@ fun BrowserTopBar(
             ) {
                 IconButton(
                     onClick = if (isLoading) onStop else onReload,
-                    modifier = Modifier.size(36.dp)
+                    modifier = Modifier.size(48.dp)
                 ) {
                     Icon(
                         imageVector = if (isLoading) Icons.Outlined.Stop else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,

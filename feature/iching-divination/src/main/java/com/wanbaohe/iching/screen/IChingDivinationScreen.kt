@@ -38,6 +38,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -70,6 +71,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.base.ui.StreamingMarkdownContent
 import com.shifenmiao.common.ui.BaseScreen
+import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.VolumeOff
 import com.t8rin.imagetoolbox.core.resources.icons.VolumeUp
@@ -192,7 +194,12 @@ private fun CoinImage(icon: ImageVector, modifier: Modifier = Modifier, size: Dp
 @Composable
 private fun CastForm(question: String, onQuestionChange: (String) -> Unit, onCast: () -> Unit) {
     Column(
-        modifier = Modifier.fillMaxSize().imePadding().navigationBarsPadding().padding(24.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .imePadding()
+            .navigationBarsPadding()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = AppTheme.dimens.pageHorizontal, vertical = 24.dp),
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
         CoinTripleRow(
@@ -412,7 +419,7 @@ private fun LineExplanationCard(line: HexagramLine, position: Int) {
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
         borderWidth = 0.6.dp,
     ) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -450,7 +457,7 @@ private fun KnowledgeTipCard(tipIndex: Int) {
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
         borderWidth = 0.6.dp,
     ) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -498,7 +505,11 @@ private fun ResultContent(
 ) {
     val primaryText = remember(result.primary.number) { hexagramText(result.primary.number) }
     Column(
-        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).navigationBarsPadding().padding(24.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .navigationBarsPadding()
+            .padding(horizontal = AppTheme.dimens.pageHorizontal, vertical = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(20.dp),
     ) {
@@ -531,7 +542,7 @@ private fun ResultContent(
         AIInterpretationSection(state = state, onGenerate = onGenerateAI)
         GlassTonalButton(
             onClick = onReset,
-            modifier = Modifier.fillMaxWidth().height(52.dp),
+            modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp),
             shape = RoundedCornerShape(18.dp),
         ) {
             Icon(
@@ -552,7 +563,7 @@ private fun JudgmentCard(primaryText: HexagramText, changingLineNumbers: List<In
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
         borderWidth = 0.7.dp,
     ) {
         Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -594,7 +605,7 @@ private fun QuestionCard(question: String) {
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
         borderWidth = 0.7.dp,
     ) {
         Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -616,7 +627,7 @@ private fun AIInterpretationSection(state: IChingUiState, onGenerate: () -> Unit
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(22.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
         borderWidth = 0.7.dp,
     ) {
         Column(
@@ -707,7 +718,7 @@ private fun HexagramCard(
 ) {
     GlassCard(
         shape = RoundedCornerShape(28.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
         borderWidth = 0.9.dp,
         modifier = Modifier.fillMaxWidth(),
     ) {
@@ -786,11 +797,10 @@ private fun PrimaryButton(
     GlassButton(
         onClick = onClick,
         enabled = enabled,
-        modifier = Modifier.fillMaxWidth().height(54.dp),
+        modifier = Modifier.fillMaxWidth().heightIn(min = 54.dp),
         shape = RoundedCornerShape(18.dp),
         color = MaterialTheme.colorScheme.primaryContainer,
         contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        containerAlpha = 0.58f,
         borderWidth = 0.8.dp,
     ) {
         if (icon != null) {

@@ -27,7 +27,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DropdownMenu
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -122,7 +122,7 @@ fun LoanInputPanel(
                         .padding(start = 4.dp)
                         .clickable { showRateDropdown = true },
                 )
-                DropdownMenu(
+                EnhancedDropdownMenu(
                     expanded = showRateDropdown,
                     onDismissRequest = { showRateDropdown = false },
                 ) {

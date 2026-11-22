@@ -118,6 +118,7 @@ import com.wanbaohe.file.browser.ui.FileList
 import com.wanbaohe.file.browser.ui.LoadingState
 import com.wanbaohe.file.browser.ui.NoPermissionState
 import com.wanbaohe.file.browser.ui.RecentAccessList
+import com.wanbaohe.file.browser.ui.SearchEmptyState
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.Search
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
@@ -1025,13 +1026,17 @@ private fun ColumnScope.FileBrowserContent(
                 if ((hiddenDocuments || state.files.any { !it.isAccessible }) && onPickFolder != null) {
                     RestrictedStorageHint(onPickFolder = onPickFolder)
                 }
-                FileList(
-                    files = filteredFiles,
-                    onItemClick = onItemClick,
-                    onItemLongClick = onItemLongClick,
-                    contentPadding = contentPadding,
-                    viewMode = viewMode
-                )
+                if (filteredFiles.isEmpty() && searchQuery.isNotBlank()) {
+                    SearchEmptyState(modifier = Modifier.fillMaxSize())
+                } else {
+                    FileList(
+                        files = filteredFiles,
+                        onItemClick = onItemClick,
+                        onItemLongClick = onItemLongClick,
+                        contentPadding = contentPadding,
+                        viewMode = viewMode
+                    )
+                }
             }
         }
 

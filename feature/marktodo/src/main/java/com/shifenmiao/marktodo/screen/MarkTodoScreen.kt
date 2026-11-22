@@ -40,7 +40,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -90,6 +89,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineFilterAlt
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineInbox
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineQuickTiles
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineViewList
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
 import com.wanbaohe.core.ui.widget.glass.GlassSearchTextField
@@ -335,7 +335,8 @@ fun MarkTodoScreen(
     }
 
     when (val state = dialogState) {
-        is DialogState.DeleteCategoryConfirm -> AlertDialog(
+        is DialogState.DeleteCategoryConfirm -> EnhancedAlertDialog(
+            visible = true,
             containerColor = AppTheme.colors.getContainerSurfaceColor(),
             onDismissRequest = {
                 markTodoComponent.handleEvent(MarkTodoUiEvent.DismissDialog)
@@ -586,7 +587,7 @@ private fun QueryShortcutBar(
                 )
             }
         }
-        IconButton(onClick = onShowFilterSort, modifier = Modifier.size(36.dp)) {
+        IconButton(onClick = onShowFilterSort, modifier = Modifier.size(48.dp)) {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFilterAlt,
                 contentDescription = stringResource(R.string.p1_filter_sort),

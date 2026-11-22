@@ -25,6 +25,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -63,6 +64,9 @@ import androidx.compose.ui.unit.sp
 import com.wanbaohe.base.ui.empty.EmptyStateGuide
 import com.wanbaohe.base.ui.empty.EmptyStateGuideAction
 import com.shifenmiao.common.ui.BaseScreen
+import com.shifenmiao.theme.AppFontMode
+import com.shifenmiao.theme.AppTheme
+import com.shifenmiao.theme.AppWidthMode
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAiChat
@@ -76,6 +80,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineKeyboardArrowDown
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineKeyboardArrowUp
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWaterDrop
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWoman
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedChip
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedButton
 import com.wanbaohe.core.ui.widget.glass.GlassSearchTextField
@@ -541,6 +546,8 @@ private fun PeriodStatsContent(
     range: PeriodStatsRange,
     onRangeChange: (PeriodStatsRange) -> Unit,
 ) {
+    val stackLabels = AppTheme.uiProfile.widthMode == AppWidthMode.Narrow ||
+        AppTheme.uiProfile.fontMode != AppFontMode.Regular
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
@@ -554,37 +561,59 @@ private fun PeriodStatsContent(
                 PeriodStatsRange.MONTH to stringResource(R.string.period_stats_range_month),
             )
             val rangeLabelStyle = MaterialTheme.typography.labelLarge
-            GlassSegmentedButtonRow(
-                options = rangeOptions,
-                selectedOption = rangeOptions.first { it.first == range },
-                onOptionSelected = { onRangeChange(it.first) },
-                modifier = Modifier.fillMaxWidth(),
-                label = { option ->
-                    // 四段等宽,长文案折行会把整行撑高且左对齐。单行居中,放不下再缩小字号。
-                    Text(
-                        text = option.second,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 4.dp),
-                        style = rangeLabelStyle,
-                        maxLines = 1,
-                        textAlign = TextAlign.Center,
-                        overflow = TextOverflow.Ellipsis,
-                        autoSize = TextAutoSize.StepBased(
-                            minFontSize = 11.sp,
-                            maxFontSize = rangeLabelStyle.fontSize,
-                            stepSize = 0.5.sp,
-                        ),
-                    )
-                },
-                selectedColor = colors.accent,
-                selectedContentColor = colors.onAccent,
-            )
+            if (stackLabels) {
+                FlowRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    rangeOptions.forEach { option ->
+                        EnhancedChip(
+                            selected = option.first == range,
+                            onClick = { onRangeChange(option.first) },
+                            selectedColor = colors.accent,
+                            selectedContentColor = colors.onAccent,
+                            defaultMinSize = 48.dp,
+                            contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp),
+                        ) {
+                            Text(option.second)
+                        }
+                    }
+                }
+            } else {
+                GlassSegmentedButtonRow(
+                    options = rangeOptions,
+                    selectedOption = rangeOptions.first { it.first == range },
+                    onOptionSelected = { onRangeChange(it.first) },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { option ->
+                        Text(
+                            text = option.second,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 4.dp),
+                            style = rangeLabelStyle,
+                            maxLines = 1,
+                            textAlign = TextAlign.Center,
+                            overflow = TextOverflow.Ellipsis,
+                            autoSize = TextAutoSize.StepBased(
+                                minFontSize = 11.sp,
+                                maxFontSize = rangeLabelStyle.fontSize,
+                                stepSize = 0.5.sp,
+                            ),
+                        )
+                    },
+                    selectedColor = colors.accent,
+                    selectedContentColor = colors.onAccent,
+                )
+            }
         }
         item {
-            Row(
+            FlowRow(
                 modifier = Modifier.fillMaxWidth(),
+                maxItemsInEachRow = if (stackLabels) 1 else 3,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 PeriodStatCard(
                     icon = Icons.Outlined.LineCalendar,

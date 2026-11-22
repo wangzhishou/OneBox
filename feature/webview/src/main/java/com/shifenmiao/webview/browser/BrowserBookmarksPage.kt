@@ -300,7 +300,7 @@ private fun BookmarkItemRow(
                     overflow = TextOverflow.Ellipsis
                 )
             }
-            IconButton(onClick = onDelete, modifier = Modifier.size(32.dp)) {
+            IconButton(onClick = onDelete, modifier = Modifier.size(48.dp)) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
                     contentDescription = stringResource(R.string.browser_delete),
@@ -349,7 +349,7 @@ private fun HistoryItemRow(
                 overflow = TextOverflow.Ellipsis
             )
         }
-        IconButton(onClick = onDelete, modifier = Modifier.size(28.dp)) {
+        IconButton(onClick = onDelete, modifier = Modifier.size(48.dp)) {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
                 contentDescription = stringResource(R.string.browser_delete),

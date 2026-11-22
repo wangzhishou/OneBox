@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -100,6 +101,7 @@ fun PasswordVaultListScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .imePadding()
                     .padding(horizontal = OneBoxDesignSystem.screenPadding),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
@@ -208,8 +210,6 @@ private fun PasswordEntryListItem(
                     text = entry.title,
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
                 )
             },
             subtitle = entry.account?.takeIf { it.isNotBlank() }?.let { account ->

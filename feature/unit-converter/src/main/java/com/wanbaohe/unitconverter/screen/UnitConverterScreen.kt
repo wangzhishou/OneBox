@@ -129,7 +129,7 @@ fun UnitConverterScreen(component: UnitConverterComponent) {
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            val modifier = Modifier.weight(1f).padding(horizontal = 16.dp)
+            val modifier = Modifier.weight(1f).padding(horizontal = AppTheme.dimens.pageHorizontal)
             when (state.selectedTab) {
                 UnitConverterTab.Calculator -> CalculatorTab(
                     modifier = modifier,
@@ -274,7 +274,7 @@ private fun CalculatorTab(
                     style = MaterialTheme.typography.displaySmall.copy(
                         fontWeight = FontWeight.ExtraBold
                     ),
-                    maxLines = 1,
+                    maxLines = 2,
                     textAlign = TextAlign.End,
                     overflow = TextOverflow.Ellipsis,
                     color = if (state.previewResult.isNotEmpty()) {
@@ -853,7 +853,7 @@ private fun ConverterDisplayCards(
                         style = MaterialTheme.typography.displaySmall.copy(
                             fontWeight = FontWeight.Bold
                         ),
-                        maxLines = 1,
+                        maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
@@ -895,7 +895,7 @@ private fun ConverterDisplayCards(
                         style = MaterialTheme.typography.displaySmall.copy(
                             fontWeight = FontWeight.Bold
                         ),
-                        maxLines = 1,
+                        maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                         color = MaterialTheme.colorScheme.onSurface,
                     )

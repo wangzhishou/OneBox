@@ -98,6 +98,7 @@ import com.shifenmiao.model.channel.FlavorType
 import com.shifenmiao.model.state.ChatUIState
 import com.shifenmiao.model.state.PageState
 import com.shifenmiao.storage.AIChatStorage
+import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
@@ -186,7 +187,7 @@ fun NewChatInput(
     ) {
         Column(
             modifier = modifier
-                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .padding(horizontal = AppTheme.dimens.pageHorizontal, vertical = 8.dp)
                 .fillMaxWidth(),
         ) {
             // 附件预览条

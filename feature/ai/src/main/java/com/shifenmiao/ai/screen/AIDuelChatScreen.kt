@@ -32,15 +32,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -1336,8 +1339,8 @@ private fun DuelPersonaExpandEditorDialog(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(AppTheme.dimens.paddingNormal)
-                .navigationBarsPadding()
-                .imePadding(),
+                // 同聊天输入：IME 与导航栏取并集，避免键盘打开时多出导航栏高度
+                .windowInsetsPadding(WindowInsets.ime.union(WindowInsets.navigationBars)),
             shape = MaterialTheme.shapes.large,
             color = MaterialTheme.colorScheme.surface
         ) {
@@ -1542,7 +1545,8 @@ private fun DuelStatusBar(
     GlassSurface(
         modifier = Modifier
             .fillMaxWidth()
-            .imePadding(),
+            // 底边只消费一次:键盘打开取 IME,关闭取导航栏,避免两层叠加
+            .windowInsetsPadding(WindowInsets.ime.union(WindowInsets.navigationBars)),
         style = GlassStyle.Thin,
         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp, bottomEnd = 0.dp, bottomStart = 0.dp),
         borderWidth = 0.5.dp,
@@ -1550,7 +1554,6 @@ private fun DuelStatusBar(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .navigationBarsPadding()
                 .padding(
                     horizontal = AppTheme.dimens.paddingNormal,
                     vertical = AppTheme.dimens.paddingSmall

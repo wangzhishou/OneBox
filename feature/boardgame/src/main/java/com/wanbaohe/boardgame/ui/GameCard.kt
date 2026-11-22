@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -217,7 +218,9 @@ fun GameCard(
 
                 // Right: analysis link
                 Row(
-                    modifier = Modifier.clickable { onAnalysis() },
+                    modifier = Modifier
+                        .heightIn(min = 48.dp)
+                        .clickable { onAnalysis() },
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {

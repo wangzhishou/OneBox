@@ -26,11 +26,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberModalBottomSheetState
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,47 +54,46 @@ fun RepaymentMethodSheet(
 ) {
     if (!visible) return
 
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
-    ModalBottomSheet(
-        onDismissRequest = onDismiss,
-        sheetState = sheetState,
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .navigationBarsPadding()
-                .padding(bottom = 8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            // 四种还款方式条目
-            RepaymentMethod.entries.forEach { method ->
-                MethodItem(
-                    method = method,
-                    onClick = {
-                        onSelect(method)
-                        onDismiss()
-                    },
-                )
-            }
-
-            Spacer(Modifier.height(8.dp))
-
-            // 取消按钮
-            TextButton(
-                onClick = onDismiss,
+    EnhancedModalBottomSheet(
+        visible = true,
+        onDismiss = { onDismiss() },
+        title = stringResource(R.string.loan_calc_method_label),
+        sheetContent = {
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                    .verticalScroll(rememberScrollState())
+                    .navigationBarsPadding()
+                    .padding(bottom = 8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Text(
-                    text = stringResource(R.string.loan_calc_cancel),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
+                RepaymentMethod.entries.forEach { method ->
+                    MethodItem(
+                        method = method,
+                        onClick = {
+                            onSelect(method)
+                            onDismiss()
+                        },
+                    )
+                }
+
+                Spacer(Modifier.height(8.dp))
+
+                TextButton(
+                    onClick = onDismiss,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                ) {
+                    Text(
+                        text = stringResource(R.string.loan_calc_cancel),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
             }
-        }
-    }
+        },
+    )
 }
 
 @Composable

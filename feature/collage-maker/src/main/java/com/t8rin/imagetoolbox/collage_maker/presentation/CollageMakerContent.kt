@@ -427,7 +427,7 @@ fun CollageMakerContent(
                         ) {
                             Icon(
                                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
-                                contentDescription = "Add"
+                                contentDescription = stringResource(R.string.add)
                             )
                         }
                         EnhancedIconButton(
@@ -439,7 +439,7 @@ fun CollageMakerContent(
                         ) {
                             Icon(
                                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
-                                contentDescription = "Delete"
+                                contentDescription = stringResource(R.string.delete)
                             )
                         }
                     }

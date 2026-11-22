@@ -28,6 +28,8 @@ package com.t8rin.imagetoolbox.feature.draw.presentation.components.controls
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import com.t8rin.imagetoolbox.core.resources.R
 import com.wanbaohe.core.ui.widget.buttons.EraseModeButton
 import com.wanbaohe.core.ui.widget.buttons.PanModeButton
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
@@ -53,7 +55,7 @@ internal fun DrawContentSecondaryControls(
     ) {
         Icon(
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUndo,
-            contentDescription = "Undo"
+            contentDescription = stringResource(R.string.undo)
         )
     }
     EnhancedIconButton(
@@ -62,7 +64,7 @@ internal fun DrawContentSecondaryControls(
     ) {
         Icon(
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRedo,
-            contentDescription = "Redo"
+            contentDescription = stringResource(R.string.redo)
         )
     }
     EraseModeButton(

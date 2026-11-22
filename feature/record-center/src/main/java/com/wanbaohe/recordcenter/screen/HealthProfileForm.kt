@@ -197,6 +197,9 @@ private fun GenderOption(
         contentAlignment = Alignment.Center,
     ) {
         Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
@@ -211,6 +214,7 @@ private fun GenderOption(
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Bold,
                 color = contentColor,
+                modifier = Modifier.weight(1f),
             )
         }
     }

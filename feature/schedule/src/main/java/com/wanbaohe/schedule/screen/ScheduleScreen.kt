@@ -32,6 +32,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -46,6 +47,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
+import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
@@ -107,18 +109,20 @@ fun ScheduleScreen(component: ScheduleComponent) {
             state = listState,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = AppTheme.dimens.pageHorizontal),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             item(key = "top-spacer") {
                 Spacer(modifier = Modifier.height(8.dp))
             }
-            if (!state.isLoading && rows.isEmpty()) {
-                item(key = "empty") {
+            when {
+                state.isLoading -> item(key = "loading") {
+                    LoadingAgendaCard()
+                }
+                rows.isEmpty() -> item(key = "empty") {
                     EmptyAgendaCard()
                 }
-            } else {
-                agendaItems(
+                else -> agendaItems(
                     rows = rows,
                     zoneId = zoneId,
                     onAddToSystemCalendar = { event ->
@@ -183,6 +187,28 @@ private fun DayHeader(date: LocalDate, isEmpty: Boolean) {
         if (isEmpty) {
             Text(
                 text = stringResource(R.string.schedule_day_empty),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
+}
+
+@Composable
+private fun LoadingAgendaCard() {
+    GlassCard(
+        modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.medium,
+        borderWidth = 0.dp,
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            CircularProgressIndicator()
+            Text(
+                text = stringResource(R.string.schedule_loading),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

@@ -193,7 +193,7 @@ fun DrawEditOption(
                 ) {
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUndo,
-                        contentDescription = "Undo"
+                        contentDescription = stringResource(R.string.undo)
                     )
                 }
                 EnhancedIconButton(
@@ -206,7 +206,7 @@ fun DrawEditOption(
                 ) {
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRedo,
-                        contentDescription = "Redo"
+                        contentDescription = stringResource(R.string.redo)
                     )
                 }
                 EraseModeButton(
@@ -406,7 +406,7 @@ fun DrawEditOption(
                             ) {
                                 Icon(
                                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check,
-                                    contentDescription = "Done"
+                                    contentDescription = stringResource(R.string.apply)
                                 )
                             }
                         }

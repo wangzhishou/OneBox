@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,13 +44,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.shifenmiao.theme.AppFontMode
+import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.base.ui.icon.IconAvatar
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import java.time.LocalDate
 import java.util.Locale
 
-/** 纪念日卡与倒数日卡共用同一套尺寸，列表里两排卡片才能对齐。 */
+/** 纪念日卡与倒数日卡常规字号共用比例，大字体下允许按内容增高。 */
 internal val LifeCardAspectRatio: Float = 3f / 4f
 
 internal const val LifeCardIconSize = 36
@@ -77,8 +80,12 @@ internal fun LifeEntryCard(
     modifier: Modifier = Modifier,
     badge: (@Composable () -> Unit)? = null,
 ) {
+    val isLargeFont = AppTheme.uiProfile.fontMode != AppFontMode.Regular
     GlassCard(
-        modifier = modifier.aspectRatio(LifeCardAspectRatio),
+        modifier = modifier.then(
+            if (isLargeFont) Modifier.heightIn(min = 240.dp)
+            else Modifier.aspectRatio(LifeCardAspectRatio)
+        ),
         shape = OneBoxDesignSystem.sectionCardShape,
         colors = CardDefaults.cardColors(containerColor = containerColor),
         onClick = onClick,
@@ -113,8 +120,6 @@ internal fun LifeEntryCard(
                     fontWeight = FontWeight.Bold
                 ),
                 color = contentColor,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
             )
             Spacer(modifier = Modifier.height(6.dp))
             Text(
@@ -124,15 +129,15 @@ internal fun LifeEntryCard(
                     fontWeight = FontWeight.ExtraBold,
                     letterSpacing = (-0.5).sp,
                 ),
-                // 词形值（明天 / Tomorrow / Послезавтра）长度差很大，自动降到放得下为止
-                autoSize = TextAutoSize.StepBased(
+                // 常规字号保留有限档 autoSize，大字体改为换行并允许卡片增高
+                autoSize = if (isLargeFont) null else TextAutoSize.StepBased(
                     minFontSize = 16.sp,
                     maxFontSize = 30.sp,
                     stepSize = 1.sp,
                 ),
                 color = accent,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
+                maxLines = if (isLargeFont) Int.MAX_VALUE else 1,
+                overflow = if (isLargeFont) TextOverflow.Clip else TextOverflow.Ellipsis,
             )
             if (!unit.isNullOrBlank()) {
                 Text(
@@ -141,26 +146,30 @@ internal fun LifeEntryCard(
                         fontWeight = FontWeight.Medium
                     ),
                     color = contentColor.copy(alpha = 0.7f),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+                    maxLines = if (isLargeFont) Int.MAX_VALUE else 1,
+                    overflow = if (isLargeFont) TextOverflow.Clip else TextOverflow.Ellipsis,
                 )
             }
 
-            Spacer(modifier = Modifier.weight(1f))
-            // 日期不再套灰色胶囊：宽度随卡片自适应，长语种靠自动降字号兜底
+            if (isLargeFont) {
+                Spacer(modifier = Modifier.height(12.dp))
+            } else {
+                Spacer(modifier = Modifier.weight(1f))
+            }
+            // 常规字号保留有限档 autoSize，大字体允许日期换行
             Text(
                 text = dateLabel,
                 style = MaterialTheme.typography.labelMedium.copy(
                     fontWeight = FontWeight.Medium
                 ),
                 color = contentColor.copy(alpha = 0.62f),
-                maxLines = 1,
-                autoSize = TextAutoSize.StepBased(
+                maxLines = if (isLargeFont) Int.MAX_VALUE else 1,
+                autoSize = if (isLargeFont) null else TextAutoSize.StepBased(
                     minFontSize = 8.sp,
                     maxFontSize = 11.sp,
                     stepSize = 0.5.sp,
                 ),
-                overflow = TextOverflow.Ellipsis,
+                overflow = if (isLargeFont) TextOverflow.Clip else TextOverflow.Ellipsis,
             )
         }
     }

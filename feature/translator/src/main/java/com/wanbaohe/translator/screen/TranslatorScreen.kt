@@ -22,6 +22,7 @@ package com.wanbaohe.translator.screen
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -46,6 +47,7 @@ import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
 import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.base.ui.ClearHistoryConfirmDialog
 import com.wanbaohe.core.ui.widget.other.TopAppBarEmoji
+import com.wanbaohe.core.ui.widget.text.isKeyboardVisibleAsState
 import com.wanbaohe.translator.R
 import com.wanbaohe.translator.component.HistoryFilter
 import com.wanbaohe.translator.component.TranslatorComponent
@@ -65,6 +67,9 @@ fun TranslatorScreen(component: TranslatorComponent) {
     val camera = rememberImagePicker(mode = ImagePickerMode.CameraCapture) { uris ->
         uris.firstOrNull()?.let(component::recognizeImage)
     }
+    // 键盘安全区由页面自己消费:BaseScreen 只负责顶栏,页内底栏只消费导航栏底距,
+    // 修复前无人处理 IME,键盘会直接盖住译文卡与操作条。
+    val isKeyboardOpen by isKeyboardVisibleAsState()
 
     BaseScreen(
         title = stringResource(
@@ -87,7 +92,11 @@ fun TranslatorScreen(component: TranslatorComponent) {
             }
         },
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .imePadding()
+        ) {
             when (state.currentTab) {
                 TranslatorTab.TRANSLATE -> TranslationPane(
                     state = state,
@@ -133,6 +142,9 @@ fun TranslatorScreen(component: TranslatorComponent) {
                 onItemClick = { item ->
                     runCatching { TranslatorTab.valueOf(item.id) }.getOrNull()?.let(component::selectTab)
                 },
+                // 键盘打开时让出底栏高度:与横屏壳隐藏主底栏、FileTransferScreen 的
+                // showBar = !isImeVisible 同一规则,把空间还给输入卡与译文卡。
+                showBar = !isKeyboardOpen,
                 modifier = Modifier.fillMaxWidth(),
             )
         }

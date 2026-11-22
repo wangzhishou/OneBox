@@ -327,7 +327,10 @@ fun ChatContent(
         ) {
             if (!currentAIEngine.hasAvailableChatRoute()) {
                 UnavailableEngineBanner(
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                    modifier = Modifier.padding(
+                        horizontal = AppTheme.dimens.pageHorizontal,
+                        vertical = 8.dp
+                    ),
                     onClick = { appComponent.showAIChatSettings() }
                 )
             }
@@ -541,7 +544,7 @@ fun ChatMessagesList(
                 state = lazyListState,
                 reverseLayout = true,
                 contentPadding = PaddingValues(
-                    horizontal = AppTheme.dimens.paddingNormal,
+                    horizontal = AppTheme.dimens.pageHorizontal,
                     vertical = AppTheme.dimens.paddingSmall
                 ),
                 verticalArrangement = Arrangement.spacedBy(0.dp)

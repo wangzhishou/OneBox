@@ -49,6 +49,13 @@ import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
  *
  * 玻璃关闭时：
  * - 直接回退为标准 Material3 [FilterChip]
+ *
+ * 触达（验收口径，勿按视觉大小直接放大）：
+ * - 本组件主动关掉 M3 的 48dp 交互下限（`LocalMinimumInteractiveComponentSize`），
+ *   布局尺寸 = 视觉尺寸（M3 FilterChip 默认高 32dp），Compose 的 clickable 不做触摸外扩，
+ *   所以**实际命中区就是这颗 chip 本身**。密集分类 chip 行是有意保持这个密度。
+ * - 单页确实需要 48dp 触达时，由调用方传 `Modifier.heightIn(min = 48.dp)`（视觉一起变高），
+ *   或改用 `EnhancedButton` / 列表行；不要在共享层统一放大或统一关/开下限。
  */
 @Composable
 fun GlassFilterChip(

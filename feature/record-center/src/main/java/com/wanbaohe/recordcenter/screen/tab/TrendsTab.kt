@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -49,7 +50,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.components.sectionGradient
 import com.shifenmiao.common.components.sectionIconColor
@@ -83,7 +83,7 @@ fun TrendsTab(
     onTypeClick: (String) -> Unit,
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
+        columns = GridCells.Adaptive(minSize = 160.dp),
         state = gridState,
         modifier = Modifier
             .fillMaxSize()
@@ -135,16 +135,16 @@ private fun TrendCard(
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .height(TREND_CARD_HEIGHT),
+            .heightIn(min = TREND_CARD_HEIGHT),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = containerColor),
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(12.dp),
         ) {
-            // 头部:图标 + 名称/单位 | 最新值 + 较上周
+            // 头部:图标 + 名称/单位；长名称允许换行并撑高卡片
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Top,
@@ -163,14 +163,12 @@ private fun TrendCard(
                         modifier = Modifier.size(20.dp),
                     )
                 }
-                Column(modifier = Modifier.padding(start = 8.dp)) {
+                Column(modifier = Modifier.weight(1f).padding(start = 8.dp)) {
                     Text(
                         text = stringResource(definition.titleRes),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold,
                         color = contentColor,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
                     )
                     if (chartUnit != null) {
                         Text(
@@ -189,15 +187,13 @@ private fun TrendCard(
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     color = contentColor,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
                 )
                 WeekDeltaRow(
                     summary = summary,
                     contentColor = contentColor,
                 )
             }
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(8.dp))
             if (summary.hasRecentData) {
                 TrendCardChart(
                     summary = summary,
@@ -208,7 +204,7 @@ private fun TrendCard(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(TREND_CHART_HEIGHT),
+                        .heightIn(min = TREND_CHART_HEIGHT),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                 ) {

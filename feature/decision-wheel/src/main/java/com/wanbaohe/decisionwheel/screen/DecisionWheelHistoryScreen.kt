@@ -31,6 +31,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -115,7 +116,7 @@ fun DecisionWheelHistoryScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .horizontalScroll(rememberScrollState())
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                        .padding(horizontal = OneBoxDesignSystem.screenPadding, vertical = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     FilterChip(
@@ -147,7 +148,10 @@ fun DecisionWheelHistoryScreen(
             } else {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(16.dp),
+                    contentPadding = PaddingValues(
+                        horizontal = OneBoxDesignSystem.screenPadding,
+                        vertical = 16.dp,
+                    ),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(visible, key = { it.id }) { record ->
@@ -181,7 +185,9 @@ private fun FilterChip(
         else MaterialTheme.colorScheme.surfaceContainer,
         tonalElevation = 0.dp,
         shadowElevation = 0.dp,
-        modifier = Modifier.clickable(onClick = onClick)
+        modifier = Modifier
+            .heightIn(min = 48.dp)
+            .clickable(onClick = onClick)
     ) {
         Text(
             text = label,
@@ -261,7 +267,7 @@ private fun HistoryRow(record: WheelHistoryEntity) {
         style = OneBoxDesignSystem.sectionGlassStyle,
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+            containerColor = MaterialTheme.colorScheme.surfaceContainer
         )
     ) {
         Row(
@@ -277,7 +283,7 @@ private fun HistoryRow(record: WheelHistoryEntity) {
                     .clip(CircleShape)
                     .glassMedium(
                         shape = CircleShape,
-                        color = MaterialTheme.colorScheme.surfaceContainerLow
+                        color = MaterialTheme.colorScheme.surfaceContainer
                     ),
                 contentAlignment = Alignment.Center
             ) {

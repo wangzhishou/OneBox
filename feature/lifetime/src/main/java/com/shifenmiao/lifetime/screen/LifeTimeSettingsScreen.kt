@@ -171,7 +171,8 @@ private fun TargetAgeSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             OneBoxSectionHeader(
-                title = stringResource(R.string.lifetime_target_age)
+                title = stringResource(R.string.lifetime_target_age),
+                modifier = Modifier.weight(1f)
             )
             Row(verticalAlignment = Alignment.Bottom) {
                 Text(

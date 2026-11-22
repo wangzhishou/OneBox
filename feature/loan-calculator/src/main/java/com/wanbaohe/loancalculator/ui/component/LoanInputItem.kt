@@ -19,7 +19,6 @@
 
 package com.wanbaohe.loancalculator.ui.component
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,6 +30,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.glassBackground
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -65,14 +66,18 @@ fun LoanInputItem(
     leadingContent: @Composable (() -> Unit)? = null,
     keyboardType: KeyboardType = KeyboardType.Number,
 ) {
-    val containerColor = MaterialTheme.colorScheme.surfaceContainerLowest
+    val containerColor = MaterialTheme.colorScheme.surfaceContainer
     val shape = RoundedCornerShape(12.dp)
 
     Row(
         modifier = modifier
             .fillMaxWidth()
             .clip(shape)
-            .background(containerColor)
+            .glassBackground(
+                style = GlassStyle.Regular,
+                shape = shape,
+                color = containerColor,
+            )
             .then(
                 if (isSelector && onClick != null)
                     Modifier.clickable(onClick = onClick)
@@ -90,6 +95,7 @@ fun LoanInputItem(
                 text = label,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.weight(1f),
             )
             leadingContent?.invoke()
         }

@@ -135,14 +135,14 @@ fun StackImageItem(
                                 .glassBackground(
                                     style = GlassStyle.Thin,
                                     shape = RectangleShape,
-                                    color = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.3f),
+                                    color = MaterialTheme.colorScheme.surfaceContainer,
                                     borderWidth = 0.dp,
                                 ),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
                                 text = "${index + 1}",
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold
                             )

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="swap_images">交换图片</string>
+    <string name="rotate_images">旋转图片</string>
+    <string name="toggle_image_labels">切换图片标签</string>
+</resources>

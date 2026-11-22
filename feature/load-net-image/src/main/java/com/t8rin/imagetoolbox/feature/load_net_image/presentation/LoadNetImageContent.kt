@@ -91,7 +91,7 @@ fun LoadNetImageContent(
                         text = stringResource(R.string.type_image_link),
                         containerColor = MaterialTheme
                             .colorScheme
-                            .surfaceContainerLowest
+                            .surfaceContainer
                             .takeUnless(isPortrait)
                     )
                 } else {

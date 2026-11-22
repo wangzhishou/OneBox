@@ -311,6 +311,7 @@ private fun DaySectionCard(
                 text = section.date.inlineDayHeader(),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
+                modifier = Modifier.weight(1f),
             )
 
             val summary = section.items.firstOrNull() as? DetailSectionUi.SummaryChip
@@ -547,7 +548,7 @@ private fun RecordItemRow(
                     )
                     IconButton(
                         onClick = onEdit,
-                        modifier = Modifier.size(32.dp),
+                        modifier = Modifier.size(48.dp),
                     ) {
                         Icon(
                             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,

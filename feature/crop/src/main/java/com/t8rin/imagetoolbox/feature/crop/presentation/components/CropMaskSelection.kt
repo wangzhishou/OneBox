@@ -151,7 +151,7 @@ fun CropMaskSelection(
                             color = animateColorAsState(
                                 targetValue = if (selected) {
                                     MaterialTheme.colorScheme.primaryContainer
-                                } else MaterialTheme.colorScheme.surfaceContainerLowest,
+                                } else MaterialTheme.colorScheme.surfaceContainer,
                             ).value,
                             borderColor = if (selected) MaterialTheme.colorScheme.onPrimaryContainer.copy(
                                 0.7f

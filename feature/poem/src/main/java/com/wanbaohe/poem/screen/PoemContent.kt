@@ -255,7 +255,7 @@ internal fun PoemAiSection(
     onGenerate: () -> Unit,
     modifier: Modifier = Modifier,
     reasoning: String? = null,
-    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
     contentColor: Color = tintedGlassContentColor(containerColor),
 ) {
     GlassCard(

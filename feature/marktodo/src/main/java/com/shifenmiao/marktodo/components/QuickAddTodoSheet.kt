@@ -158,7 +158,7 @@ fun QuickAddTodoSheet(
                         IconButton(
                             onClick = startVoiceInput,
                             enabled = !uiState.isSaving,
-                            modifier = Modifier.size(40.dp),
+                            modifier = Modifier.size(48.dp),
                         ) {
                             Icon(
                                 imageVector = Icons.Outlined.Mic,

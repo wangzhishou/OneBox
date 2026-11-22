@@ -295,14 +295,12 @@ internal fun EditPaletteControls(
                                 )
                             )
                         },
-                        modifier = Modifier.size(28.dp, 40.dp),
-                        forceMinimumInteractiveComponentSize = false,
                         contentColor = MaterialTheme.colorScheme.onErrorContainer,
                         containerColor = MaterialTheme.colorScheme.errorContainer.copy(0.5f)
                     ) {
                         Icon(
                             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
-                            contentDescription = null,
+                            contentDescription = stringResource(R.string.delete),
                             modifier = Modifier.size(20.dp)
                         )
                     }

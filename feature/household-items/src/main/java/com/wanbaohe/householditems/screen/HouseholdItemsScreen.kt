@@ -470,7 +470,7 @@ private fun ItemGridContent(
     onLocationTagClick: (String) -> Unit,
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
+        columns = GridCells.Adaptive(minSize = 160.dp),
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -595,8 +595,6 @@ internal fun ItemRow(
                     text = item.name,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
                 )
                 LocationTag(item = item, onClick = onLocationTagClick)
                 if (item.note.isNotBlank()) {
@@ -615,7 +613,7 @@ internal fun ItemRow(
     }
 }
 
-/** 卡片/行右下 ⋯ 菜单:编辑 / 删除。自定义小尺寸(热区 32dp),不用 IconButton(强制 48dp) */
+/** 卡片/行右下 ⋯ 菜单:编辑 / 删除。图标保持小巧，点击区域为 48dp。 */
 @Composable
 private fun ItemOverflowMenu(
     onEdit: () -> Unit,
@@ -625,14 +623,14 @@ private fun ItemOverflowMenu(
     Box {
         Box(
             modifier = Modifier
-                .size(32.dp)
+                .size(48.dp)
                 .clip(CircleShape)
                 .clickable { expanded = true },
             contentAlignment = Alignment.Center,
         ) {
             Icon(
                 imageVector = MaterialIcons.Filled.MoreVert,
-                contentDescription = null,
+                contentDescription = stringResource(R.string.household_item_actions),
                 modifier = Modifier.size(18.dp),
                 // 浅淡色,只做入口不做视觉焦点
                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
@@ -761,8 +759,6 @@ private fun ItemCard(
                     text = item.name,
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
                 )
                 LocationTag(
                     item = item,

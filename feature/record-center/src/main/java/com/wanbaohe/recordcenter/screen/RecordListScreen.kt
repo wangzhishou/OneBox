@@ -23,6 +23,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -37,7 +38,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -65,7 +65,9 @@ import com.wanbaohe.base.ui.empty.EmptyStateGuideAction
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.base.utils.aiHealthInsightPointsCost
 import com.shifenmiao.database.recordcenter.entity.HealthRecordEntity
+import com.shifenmiao.theme.AppFontMode
 import com.shifenmiao.theme.AppTheme
+import com.shifenmiao.theme.AppWidthMode
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
@@ -75,9 +77,9 @@ import com.wanbaohe.core.ui.widget.charts.LineTrendChart
 import com.wanbaohe.core.ui.widget.charts.TrendSeries
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedButton
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
-import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.recordcenter.R
 import com.wanbaohe.recordcenter.component.RecordFieldStats
 import com.wanbaohe.recordcenter.component.RecordInsightState
@@ -246,8 +248,15 @@ private fun RecordListContent(
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         when (hasAnyRecords) {
-            // 首次查询未返回:先留白,避免"空态 → 内容"闪一下
-            null -> Unit
+            // 首次查询未返回时显示明确进度，不提前误报空态
+            null -> item {
+                Box(
+                    modifier = Modifier.fillParentMaxSize(),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
 
             // 一条记录都没有:不显示时间范围筛选与 AI 解读,直接给空态引导
             false -> item {
@@ -340,17 +349,17 @@ private fun RangeFilterRow(
     selected: RecordRangeFilter,
     onSelect: (RecordRangeFilter) -> Unit,
 ) {
-    Row(
+    FlowRow(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         listOf(
             RecordRangeFilter.DAYS_7 to stringResource(R.string.record_center_range_7d),
             RecordRangeFilter.DAYS_30 to stringResource(R.string.record_center_range_30d),
             RecordRangeFilter.ALL to stringResource(R.string.record_center_range_all),
         ).forEach { (filter, label) ->
-            FilterChip(
-                shape = OneBoxDesignSystem.chipShape,
+            GlassFilterChip(
                 selected = selected == filter,
                 onClick = { onSelect(filter) },
                 label = { Text(text = label) },
@@ -576,27 +585,28 @@ private fun StatRow(field: RecordField, stat: RecordFieldStats) {
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        Row(modifier = Modifier.fillMaxWidth()) {
-            StatCell(
-                label = stringResource(R.string.record_center_stats_latest),
-                value = stat.latest,
-                modifier = Modifier.weight(1f),
-            )
-            StatCell(
-                label = stringResource(R.string.record_center_stats_average),
-                value = stat.average,
-                modifier = Modifier.weight(1f),
-            )
-            StatCell(
-                label = stringResource(R.string.record_center_stats_max),
-                value = stat.max,
-                modifier = Modifier.weight(1f),
-            )
-            StatCell(
-                label = stringResource(R.string.record_center_stats_min),
-                value = stat.min,
-                modifier = Modifier.weight(1f),
-            )
+        val columns = if (
+            AppTheme.uiProfile.widthMode == AppWidthMode.Narrow ||
+            AppTheme.uiProfile.fontMode != AppFontMode.Regular
+        ) 2 else 4
+        FlowRow(
+            modifier = Modifier.fillMaxWidth(),
+            maxItemsInEachRow = columns,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            listOf(
+                R.string.record_center_stats_latest to stat.latest,
+                R.string.record_center_stats_average to stat.average,
+                R.string.record_center_stats_max to stat.max,
+                R.string.record_center_stats_min to stat.min,
+            ).forEach { (label, value) ->
+                StatCell(
+                    label = stringResource(label),
+                    value = value,
+                    modifier = Modifier.weight(1f),
+                )
+            }
         }
     }
 }

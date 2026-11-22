@@ -71,7 +71,7 @@ fun PoemSearchScreen(component: PoemSearchComponent) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = AppTheme.dimens.pageHorizontal),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             GlassSearchTextField(

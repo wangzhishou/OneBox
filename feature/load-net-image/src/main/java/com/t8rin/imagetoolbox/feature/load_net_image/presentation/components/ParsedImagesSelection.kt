@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.widget.image.ImagesPreviewWithSelection
 import com.t8rin.imagetoolbox.feature.load_net_image.presentation.screenLogic.LoadNetImageComponent
 
@@ -47,6 +48,7 @@ internal fun ParsedImagesSelection(
             modifier = Modifier.fillMaxWidth()
         ) {
             val screenWidth = this.maxWidth
+            val pageHorizontal = AppTheme.dimens.pageHorizontal
 
             ImagesPreviewWithSelection(
                 imageUris = component.parsedImages,
@@ -55,7 +57,7 @@ internal fun ParsedImagesSelection(
                 isPortrait = true,
                 isLoadingImages = component.isImageLoading,
                 contentScale = ContentScale.Fit,
-                contentPadding = PaddingValues(20.dp),
+                contentPadding = PaddingValues(horizontal = pageHorizontal),
                 modifier = Modifier
                     .height(
                         (130.dp * component.parsedImages.size).coerceAtMost(420.dp)
@@ -64,7 +66,7 @@ internal fun ParsedImagesSelection(
                         val result =
                             measurable.measure(
                                 constraints.copy(
-                                    maxWidth = (screenWidth + 40.dp).roundToPx()
+                                    maxWidth = (screenWidth + pageHorizontal * 2).roundToPx()
                                 )
                             )
                         layout(result.measuredWidth, result.measuredHeight) {

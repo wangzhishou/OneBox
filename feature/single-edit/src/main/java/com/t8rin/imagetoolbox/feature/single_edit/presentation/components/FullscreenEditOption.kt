@@ -299,7 +299,7 @@ fun FullscreenEditOption(
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 ProvideContainerDefaults(
-                                    color = MaterialTheme.colorScheme.surfaceContainerLowest
+                                    color = MaterialTheme.colorScheme.surfaceContainer
                                 ) {
                                     controls(null)
                                 }

@@ -21,6 +21,7 @@ package com.shifenmiao.online.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -38,8 +39,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.shifenmiao.base.components.ErrorBox
@@ -54,12 +55,11 @@ import com.shifenmiao.model.ScreenParams
 import com.shifenmiao.model.blog.BlogItem
 import com.shifenmiao.online.component.PlaygroundComponent
 import com.shifenmiao.online.ui.PlaygroundCard
+import com.shifenmiao.theme.AppFontMode
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
-import com.wanbaohe.core.ui.utils.helper.isPortraitOrCompactWidthLayoutAsState
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
-import com.wanbaohe.core.ui.utils.provider.LocalWindowSizeClass
 
 @Composable
 fun PlaygroundScreen(
@@ -148,7 +148,7 @@ private fun EmptyPlaceholder(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(AppTheme.dimens.pageHorizontal),
         contentAlignment = Alignment.Center
     ) {
         Box(
@@ -172,59 +172,72 @@ private fun PlaygroundGrid(
     onBlogClick: (BlogItem) -> Unit,
     onCreateFeedback: () -> Unit,
 ) {
-    LazyVerticalStaggeredGrid(
-        state = gridState,
-        modifier = Modifier.fillMaxHeight(),
-        columns = playgroundGridColumns(isGrid),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalItemSpacing = 16.dp,
-        contentPadding = PaddingValues(
-            start = AppTheme.dimens.paddingNormal,
-            end = AppTheme.dimens.paddingNormal,
-            top = 4.dp,
-            bottom = AppTheme.dimens.paddingLarge,
-        )
-    ) {
-        items(
-            count = pagingItems.itemCount,
-            key = { index ->
-                pagingItems[index]?.id?.let { "playground_blog_$it" }
-                    ?: "playground_placeholder_$index"
-            }
-        ) { index ->
-            val blog = pagingItems[index] ?: return@items
-            PlaygroundCard(
-                blog = blog,
-                onClick = { onBlogClick(blog) },
-                modifier = Modifier.animateItem()
+    // 玩法页首页格与工具网格同口径：列数只按内容区真实宽度和字号决定。
+    BoxWithConstraints(modifier = Modifier.fillMaxHeight()) {
+        LazyVerticalStaggeredGrid(
+            state = gridState,
+            modifier = Modifier.fillMaxSize(),
+            columns = playgroundGridColumns(isGrid, maxWidth),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.contentGap),
+            verticalItemSpacing = AppTheme.dimens.contentGap,
+            contentPadding = PaddingValues(
+                start = AppTheme.dimens.pageHorizontal,
+                end = AppTheme.dimens.pageHorizontal,
+                top = 4.dp,
+                bottom = AppTheme.dimens.pageHorizontal,
             )
-        }
-
-        if (pagingItems.loadState.append is LoadState.Loading) {
-            item(key = "playground_append_loading") {
-                LoadingNextPageItem(modifier = Modifier)
+        ) {
+            items(
+                count = pagingItems.itemCount,
+                key = { index ->
+                    pagingItems[index]?.id?.let { "playground_blog_$it" }
+                        ?: "playground_placeholder_$index"
+                }
+            ) { index ->
+                val blog = pagingItems[index] ?: return@items
+                PlaygroundCard(
+                    blog = blog,
+                    onClick = { onBlogClick(blog) },
+                    modifier = Modifier.animateItem()
+                )
             }
-        }
 
-        item(key = "playground_footer_placeholder") {
-            PlaceholderCard(
-                onClick = onCreateFeedback,
-                title = stringResource(R.string.playground_footer_title),
-                description = stringResource(R.string.playground_footer_description),
-            )
+            if (pagingItems.loadState.append is LoadState.Loading) {
+                item(key = "playground_append_loading") {
+                    LoadingNextPageItem(modifier = Modifier)
+                }
+            }
+
+            item(key = "playground_footer_placeholder") {
+                PlaceholderCard(
+                    onClick = onCreateFeedback,
+                    title = stringResource(R.string.playground_footer_title),
+                    description = stringResource(R.string.playground_footer_description),
+                )
+            }
         }
     }
 }
 
+/** 与首页工具网格同口径：先看内容容器真实宽度，再看字号，大字主动减列。 */
 @Composable
-private fun playgroundGridColumns(isGrid: Boolean): StaggeredGridCells {
-    val isPortraitOrCompact by isPortraitOrCompactWidthLayoutAsState()
-    val isCompact = LocalWindowSizeClass.current.widthSizeClass == WindowWidthSizeClass.Compact
-
+private fun playgroundGridColumns(isGrid: Boolean, availableWidth: Dp): StaggeredGridCells {
+    val fontMode = AppTheme.uiProfile.fontMode
     return when {
-        !isGrid -> StaggeredGridCells.Adaptive(minSize = 300.dp)
-        isCompact -> StaggeredGridCells.Fixed(count = 2)
-        isPortraitOrCompact -> StaggeredGridCells.Adaptive(minSize = 300.dp)
-        else -> StaggeredGridCells.Adaptive(minSize = 260.dp)
+        !isGrid -> StaggeredGridCells.Adaptive(
+            minSize = if (fontMode == AppFontMode.ExtraLarge) 320.dp else 300.dp
+        )
+
+        availableWidth < 360.dp -> StaggeredGridCells.Fixed(1)
+        fontMode == AppFontMode.ExtraLarge && availableWidth < 480.dp ->
+            StaggeredGridCells.Fixed(1)
+
+        availableWidth < 600.dp -> StaggeredGridCells.Fixed(2)
+        fontMode == AppFontMode.ExtraLarge && availableWidth < 720.dp ->
+            StaggeredGridCells.Fixed(2)
+
+        else -> StaggeredGridCells.Adaptive(
+            minSize = if (fontMode == AppFontMode.ExtraLarge) 300.dp else 260.dp
+        )
     }
 }

@@ -91,7 +91,7 @@ fun <T> SelectorField(
                     .fillMaxWidth(),
                 style = OneBoxDesignSystem.rowGlassStyle,
                 shape = OneBoxDesignSystem.listRowShape,
-                color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                color = MaterialTheme.colorScheme.surfaceContainer,
                 borderWidth = 0.dp,
             ) {
                 Row(

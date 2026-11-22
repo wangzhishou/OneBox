@@ -34,14 +34,18 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -377,7 +381,9 @@ fun CreateAIAgentScreen(
         InputSection(
             modifier = Modifier
                 .fillMaxWidth()
-                .imePadding(),
+                // 底边由输入区负责:BaseScreen 已关闭导航栏底距,
+                // 这里取 IME 与系统导航栏的并集,键盘关闭时不压在导航条下,打开时不重复叠加。
+                .windowInsetsPadding(WindowInsets.ime.union(WindowInsets.navigationBars)),
             inputText = uiState.inputText,
             isGenerating = uiState.status == GenerationStatus.STREAMING,
             isMultiTurn = uiState.isMultiTurn,
@@ -494,7 +500,7 @@ private fun PlaceholderSection(contentCardHeight: androidx.compose.ui.unit.Dp) {
         modifier = Modifier
             .fillMaxWidth()
             .height(contentCardHeight)
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = AppTheme.dimens.pageHorizontal),
     ) {
         Column(
             modifier = Modifier
@@ -677,7 +683,7 @@ private fun StreamingSection(
         modifier = Modifier
             .fillMaxWidth()
             .height(contentCardHeight)
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = AppTheme.dimens.pageHorizontal),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             // 标题行：阶段化文案
@@ -852,7 +858,7 @@ private fun AgentPreviewSection(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = contentCardHeight)
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = AppTheme.dimens.pageHorizontal),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             // 标题行：仅保留标题和多轮标记
@@ -1100,7 +1106,7 @@ private fun ErrorSection(
         modifier = Modifier
             .fillMaxWidth()
             .height(contentCardHeight)
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = AppTheme.dimens.pageHorizontal),
     ) {
         Column(
             modifier = Modifier

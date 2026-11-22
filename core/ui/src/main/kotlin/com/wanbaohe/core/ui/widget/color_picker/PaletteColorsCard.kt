@@ -358,7 +358,7 @@ private fun AddColorCell(
         modifier = Modifier
             .size(44.dp)
             .clip(shape)
-            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+            .background(MaterialTheme.colorScheme.surfaceContainer)
             .hapticsClickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {

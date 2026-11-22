@@ -38,7 +38,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -120,7 +119,7 @@ fun ImageScaleSelector(
                                 .weight(1f)
                                 .flatGlassContainer(
                                     autoShadowElevation = 0.2.dp,
-                                    color = MaterialTheme.colorScheme.surfaceContainerLow
+                                    color = MaterialTheme.colorScheme.surfaceContainer
                                 )
                                 .padding(4.dp),
                             verticalArrangement = Arrangement.Center,
@@ -132,7 +131,7 @@ fun ImageScaleSelector(
                                 text = scaledSize!!.width.toString(),
                                 fontSize = 16.sp,
                                 textAlign = TextAlign.Center,
-                                color = LocalContentColor.current.copy(0.5f),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
                         Spacer(Modifier.width(8.dp))
@@ -141,7 +140,7 @@ fun ImageScaleSelector(
                                 .weight(1f)
                                 .flatGlassContainer(
                                     autoShadowElevation = 0.2.dp,
-                                    color = MaterialTheme.colorScheme.surfaceContainerLow
+                                    color = MaterialTheme.colorScheme.surfaceContainer
                                 )
                                 .padding(4.dp),
                             verticalArrangement = Arrangement.Center,
@@ -153,7 +152,7 @@ fun ImageScaleSelector(
                                 text = scaledSize!!.height.toString(),
                                 fontSize = 16.sp,
                                 textAlign = TextAlign.Center,
-                                color = LocalContentColor.current.copy(0.5f),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
                     }
@@ -170,7 +169,7 @@ fun ImageScaleSelector(
                             color = MaterialTheme.colorScheme.surface
                         )
                         .padding(6.dp),
-                    color = LocalContentColor.current.copy(0.5f),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center
                 )
             }

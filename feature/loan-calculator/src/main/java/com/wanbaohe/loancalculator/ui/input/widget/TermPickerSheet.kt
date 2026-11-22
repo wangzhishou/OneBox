@@ -30,10 +30,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberModalBottomSheetState
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,8 +56,6 @@ fun TermPickerSheet(
 ) {
     if (!visible) return
 
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
     // 快捷选项：年维度（以月计）+ 常用短期月份
     val termOptions = buildList {
         // 月（短期）
@@ -74,53 +71,48 @@ fun TermPickerSheet(
         }
     }
 
-    ModalBottomSheet(
-        onDismissRequest = onDismiss,
-        sheetState = sheetState,
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .navigationBarsPadding()
-                .padding(bottom = 8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(
-                text = stringResource(R.string.loan_term_picker_title),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(vertical = 12.dp),
-            )
+    EnhancedModalBottomSheet(
+        visible = true,
+        onDismiss = { onDismiss() },
+        title = stringResource(R.string.loan_term_picker_title),
+        sheetContent = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .navigationBarsPadding()
+                    .padding(bottom = 8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                LazyColumn(modifier = Modifier.fillMaxWidth().weight(1f, fill = false)) {
+                    items(termOptions) { (months, label) ->
+                        TermItem(
+                            label = label,
+                            isSelected = months == selectedMonths,
+                            onClick = {
+                                onSelect(months)
+                                onDismiss()
+                            },
+                        )
+                    }
+                }
 
-            LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                items(termOptions) { (months, label) ->
-                    TermItem(
-                        label = label,
-                        isSelected = months == selectedMonths,
-                        onClick = {
-                            onSelect(months)
-                            onDismiss()
-                        },
+                Spacer(Modifier.height(8.dp))
+
+                TextButton(
+                    onClick = onDismiss,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                ) {
+                    Text(
+                        text = stringResource(R.string.loan_calc_cancel),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
-
-            Spacer(Modifier.height(8.dp))
-
-            TextButton(
-                onClick = onDismiss,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-            ) {
-                Text(
-                    text = stringResource(R.string.loan_calc_cancel),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        }
-    }
+        },
+    )
 }
 
 @Composable

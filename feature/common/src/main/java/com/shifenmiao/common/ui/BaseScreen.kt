@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -88,6 +89,7 @@ fun BaseScreen(
     scrollBehavior: TopAppBarScrollBehavior? = null,
     // 传入后，点击标题栏会把内容滚动区一次性送回首条；不传则标题栏无任何点击行为
     onTitleClick: (() -> Unit)? = null,
+    consumeImeInsets: Boolean = false,
     content: @Composable (ColumnScope.() -> Unit)? = null,
 ) {
     BaseScreen(
@@ -118,10 +120,22 @@ fun BaseScreen(
         immersiveModeState = immersiveModeState,
         scrollBehavior = scrollBehavior,
         onTitleClick = onTitleClick,
+        consumeImeInsets = consumeImeInsets,
         content = content
     )
 }
 
+/**
+ * 共享页面外壳：顶栏 + 内容列。
+ *
+ * 边距与 inset 归属（规范 §3「每段留白只能有一个负责方」）：
+ * - 水平边距：本壳不加，由页面容器或根列表/网格用 `AppTheme.dimens.pageHorizontal` 负责；
+ * - 导航栏：`showNavigationBarsPadding` 打开时由本壳消费一次，页面底栏不再重复加；
+ * - 键盘（IME）：默认不消费（`consumeImeInsets = false`），由页面自己决定加在滚动容器还是底栏上。
+ *   表单页需要「整页收在键盘上方」时打开它，并**不要再**在内容里加 `imePadding`，
+ *   否则同一段 inset 会被消费两次。图片工具页由 `AdaptiveLayoutScreen` 在底部 contentPadding 里
+ *   消费 nav+IME，不走这个开关。
+ */
 @Composable
 fun BaseScreen(
     modifier: Modifier = Modifier,
@@ -156,6 +170,7 @@ fun BaseScreen(
     scrollBehavior: TopAppBarScrollBehavior? = null,
     // 传入后，点击标题栏会把内容滚动区一次性送回首条；不传则标题栏无任何点击行为
     onTitleClick: (() -> Unit)? = null,
+    consumeImeInsets: Boolean = false,
     content: @Composable (ColumnScope.() -> Unit)? = null
 ) {
     // 判断玻璃效果是否真正激活：需要参数开启 + 全局设置启用
@@ -187,6 +202,7 @@ fun BaseScreen(
         modifier = modifier
             .fillMaxSize()
             .let { if (showNavigationBarsPadding) it.navigationBarsPadding() else it }
+            .let { if (consumeImeInsets) it.imePadding() else it }
             .let { if(containerColor != null) it.then(Modifier.background(containerColor)) else it }
     ) {
         if (backgroundImage != null) {

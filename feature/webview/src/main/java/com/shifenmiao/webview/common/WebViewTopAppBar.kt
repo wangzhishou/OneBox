@@ -55,6 +55,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LinePrint
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineOpenInBrowser
 import androidx.compose.foundation.layout.Box
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.t8rin.imagetoolbox.core.resources.R as CoreR
 
 /**
  * 通用 WebView 顶部栏
@@ -133,7 +134,7 @@ fun WebViewTopAppBarWithExport(
                 IconButton(onClick = { showMenu = true }) {
                     Icon(
                         imageVector = MaterialIcons.Filled.MoreVert,
-                        contentDescription = "Export options"
+                        contentDescription = stringResource(R.string.open_menu)
                     )
                 }
 
@@ -141,89 +142,89 @@ fun WebViewTopAppBarWithExport(
                     expanded = showMenu,
                     onDismissRequest = { showMenu = false }
                 ) {
-            }
-                DropdownMenuItem(
-                    text = { Text("复制内容") },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
-                            contentDescription = null
-                        )
-                    },
-                    onClick = {
-                        onCopyContent()
-                        showMenu = false
-                    }
-                )
-                DropdownMenuItem(
-                    text = { Text("在浏览器中打开") },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineOpenInBrowser,
-                            contentDescription = null
-                        )
-                    },
-                    onClick = {
-                        onOpenInBrowser()
-                        showMenu = false
-                    }
-                )
-                if (showExportOptions) {
                     DropdownMenuItem(
-                        text = {
-                            Text(stringResource(R.string.share_image))
-                        },
+                        text = { Text(stringResource(CoreR.string.copy_content)) },
                         leadingIcon = {
                             Icon(
-                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineShare,
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
                                 contentDescription = null
                             )
                         },
                         onClick = {
-                            onShareImage()
+                            onCopyContent()
                             showMenu = false
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text(stringResource(id = R.string.button_export_image)) },
+                        text = { Text(stringResource(CoreR.string.open_in_browser)) },
                         leadingIcon = {
                             Icon(
-                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImage,
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineOpenInBrowser,
                                 contentDescription = null
                             )
                         },
                         onClick = {
-                            onExportPng()
+                            onOpenInBrowser()
                             showMenu = false
                         }
                     )
+                    if (showExportOptions) {
+                        DropdownMenuItem(
+                            text = {
+                                Text(stringResource(R.string.share_image))
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineShare,
+                                    contentDescription = null
+                                )
+                            },
+                            onClick = {
+                                onShareImage()
+                                showMenu = false
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(id = R.string.button_export_image)) },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImage,
+                                    contentDescription = null
+                                )
+                            },
+                            onClick = {
+                                onExportPng()
+                                showMenu = false
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(id = R.string.button_export_image_pdf)) },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePdf,
+                                    contentDescription = null
+                                )
+                            },
+                            onClick = {
+                                onExportImagePdf()
+                                showMenu = false
+                            }
+                        )
+                    }
                     DropdownMenuItem(
-                        text = { Text(stringResource(id = R.string.button_export_image_pdf)) },
+                        text = { Text(stringResource(id = R.string.button_export_pdf)) },
                         leadingIcon = {
                             Icon(
-                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePdf,
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePrint,
                                 contentDescription = null
                             )
                         },
                         onClick = {
-                            onExportImagePdf()
+                            onPrintPdf()
                             showMenu = false
                         }
                     )
                 }
-                DropdownMenuItem(
-                    text = { Text(stringResource(id = R.string.button_export_pdf)) },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePrint,
-                            contentDescription = null
-                        )
-                    },
-                    onClick = {
-                        onPrintPdf()
-                        showMenu = false
-                    }
-                )
             }
         }
     )

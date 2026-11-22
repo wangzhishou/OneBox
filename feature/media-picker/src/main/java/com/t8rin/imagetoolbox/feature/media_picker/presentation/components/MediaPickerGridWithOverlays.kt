@@ -437,7 +437,7 @@ internal fun ColumnScope.MediaPickerGridWithOverlays(
                         ) {
                             Icon(
                                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Search,
-                                contentDescription = null
+                                contentDescription = stringResource(R.string.search_here)
                             )
                         }
                     }

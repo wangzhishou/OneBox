@@ -121,7 +121,7 @@ fun AIHistoryCenterScreen(
                 placeholder = stringResource(R.string.ai_history_search_hint),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .padding(horizontal = AppTheme.dimens.pageHorizontal, vertical = 8.dp)
             )
             HistoryFilterRow(
                 selected = selectedFilter,
@@ -148,7 +148,10 @@ fun AIHistoryCenterScreen(
                         LazyColumn(
                             modifier = Modifier.fillMaxSize(),
                             verticalArrangement = Arrangement.spacedBy(12.dp),
-                            contentPadding = PaddingValues(16.dp)
+                            contentPadding = PaddingValues(
+                                horizontal = AppTheme.dimens.pageHorizontal,
+                                vertical = 16.dp
+                            )
                         ) {
                             items(items, key = { it.conversationId }) { item ->
                                 HistoryConversationCard(
@@ -241,7 +244,7 @@ private fun HistoryFilterRow(
         modifier = Modifier
             .fillMaxWidth()
             .horizontalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = AppTheme.dimens.pageHorizontal),
         horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceSmall)
     ) {
         EngineFilterChip(

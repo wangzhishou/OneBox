@@ -198,7 +198,7 @@ private fun SuggestionItemRow(
         }
         IconButton(
             onClick = { Clipboard.copy(subtitle) },
-            modifier = Modifier.size(36.dp)
+            modifier = Modifier.size(48.dp)
         ) {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,

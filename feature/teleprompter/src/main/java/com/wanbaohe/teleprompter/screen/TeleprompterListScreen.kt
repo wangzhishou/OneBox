@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.dp
 import com.wanbaohe.base.ui.empty.EmptyStateGuide
 import com.wanbaohe.base.ui.empty.EmptyStateGuideAction
 import com.shifenmiao.common.ui.BaseScreen
+import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.teleprompter.R
 import com.wanbaohe.teleprompter.component.TeleprompterComponent
 import com.wanbaohe.teleprompter.ui.ScriptCard
@@ -120,7 +121,7 @@ fun TeleprompterListScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 12.dp)
+                    .padding(horizontal = AppTheme.dimens.pageHorizontal, vertical = 12.dp)
             ) {
                 Text(
                     text = stringResource(R.string.teleprompter_recent_scripts),
@@ -140,7 +141,7 @@ fun TeleprompterListScreen(
             }
 
             LazyColumn(
-                contentPadding = PaddingValues(horizontal = 20.dp, vertical = 6.dp),
+                contentPadding = PaddingValues(horizontal = AppTheme.dimens.pageHorizontal, vertical = 6.dp),
                 verticalArrangement = Arrangement.spacedBy(14.dp),
                 modifier = Modifier
                     .fillMaxSize()

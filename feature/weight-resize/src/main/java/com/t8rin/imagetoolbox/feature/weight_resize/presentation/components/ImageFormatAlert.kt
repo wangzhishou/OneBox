@@ -56,9 +56,7 @@ internal fun ImageFormatAlert(
                     borderColor = MaterialTheme.colorScheme.onErrorContainer.copy(
                         0.4f
                     ),
-                    color = MaterialTheme.colorScheme.errorContainer.copy(
-                        alpha = 0.7f
-                    )
+                    color = MaterialTheme.colorScheme.errorContainer
                 ),
             contentAlignment = Alignment.Center
         ) {
@@ -69,7 +67,7 @@ internal fun ImageFormatAlert(
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.SemiBold,
                 lineHeight = 14.sp,
-                color = MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.5f)
+                color = MaterialTheme.colorScheme.onErrorContainer
             )
         }
     }

@@ -21,7 +21,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -73,7 +72,6 @@ fun PrivacyRedactionPanel(
             EnhancedIconButton(
                 onClick = onRescan,
                 enabled = !analysisState.isRunning,
-                modifier = Modifier.size(40.dp),
             ) {
                 Icon(
                     Icons.Outlined.Refresh,
@@ -167,7 +165,6 @@ fun PrivacyRedactionPanel(
                     )
                     EnhancedIconButton(
                         onClick = { onDeleteRegion(region.id) },
-                        modifier = Modifier.size(40.dp),
                     ) {
                         Icon(
                             Icons.Outlined.Close,
@@ -188,7 +185,7 @@ fun PrivacyRedactionPanel(
 
 @Composable
 private fun AnalysisProgress(state: PrivacyAnalysisState) {
-    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         val progress = state.progress
         if (state.stage == PrivacyAnalysisStage.PREPARING_MODEL && progress != null) {
             GlassLinearProgressIndicator(
@@ -196,7 +193,7 @@ private fun AnalysisProgress(state: PrivacyAnalysisState) {
                 modifier = Modifier.fillMaxWidth(),
             )
         } else {
-            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+            GlassLinearProgressIndicator(modifier = Modifier.fillMaxWidth())
         }
         Text(
             text = when {

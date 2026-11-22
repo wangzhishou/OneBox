@@ -54,6 +54,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
+import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineClear
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
@@ -103,7 +104,10 @@ fun IChingHistoryScreen(component: IChingHistoryComponent) {
         } else {
             LazyColumn(
                 modifier = Modifier.fillMaxSize().navigationBarsPadding(),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
+                contentPadding = PaddingValues(
+                    horizontal = AppTheme.dimens.pageHorizontal,
+                    vertical = 12.dp,
+                ),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 items(state.records, key = IChingHistoryRecord::id) { record ->
@@ -153,7 +157,7 @@ private fun HistoryRecordCard(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
         borderWidth = 0.6.dp,
     ) {
         Row(
@@ -190,7 +194,7 @@ private fun HistoryRecordCard(
                 onClick = onDelete,
                 containerColor = Color.Transparent,
                 enableAutoShadowAndBorder = false,
-                modifier = Modifier.size(40.dp),
+                modifier = Modifier.size(48.dp),
             ) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,

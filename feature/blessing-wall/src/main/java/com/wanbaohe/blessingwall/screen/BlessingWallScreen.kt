@@ -41,6 +41,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
@@ -88,6 +89,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.common.ui.BaseScreen
+import com.shifenmiao.theme.AppFontMode
 import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.enhanced.longPress
@@ -478,7 +480,7 @@ private fun BlessingBottomTabBar(
         state = listState,
         modifier = Modifier
             .fillMaxWidth()
-            .height(72.dp),
+            .heightIn(min = 72.dp),
         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(18.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -486,10 +488,11 @@ private fun BlessingBottomTabBar(
         items(pageConfigs.size) { index ->
             val isSelected = index == selectedIndex
             val title = tabTitle(index)
+            val isLargeFont = AppTheme.uiProfile.fontMode != AppFontMode.Regular
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .width(72.dp)
+                    .width(if (isLargeFont) 112.dp else 72.dp)
                     .clip(RoundedCornerShape(10.dp))
                     .clickable { onTabSelected(index) }
                     .padding(horizontal = 2.dp, vertical = 4.dp),
@@ -525,17 +528,18 @@ private fun BlessingBottomTabBar(
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = title,
+                    style = MaterialTheme.typography.labelSmall,
                     color = if (isSelected) {
                         palette.accent
                     } else {
                         MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.72f)
                     },
                     fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
-                    maxLines = 1,
-                    softWrap = false,
+                    maxLines = if (isLargeFont) Int.MAX_VALUE else 1,
+                    softWrap = isLargeFont,
                     textAlign = TextAlign.Center,
-                    overflow = TextOverflow.Ellipsis,
-                    autoSize = TextAutoSize.StepBased(
+                    overflow = if (isLargeFont) TextOverflow.Clip else TextOverflow.Ellipsis,
+                    autoSize = if (isLargeFont) null else TextAutoSize.StepBased(
                         minFontSize = 8.sp,
                         maxFontSize = 12.sp,
                         stepSize = 0.5.sp,

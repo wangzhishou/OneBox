@@ -78,7 +78,7 @@ fun CompareSelectionButtons(
     val scrollState = rememberScrollState()
     val internalModifier = modifier
         .flatGlassContainer(
-            color = MaterialTheme.colorScheme.surfaceContainerLowest,
+            color = MaterialTheme.colorScheme.surfaceContainer,
             shape = CircleShape,
             resultPadding = 0.dp
         )

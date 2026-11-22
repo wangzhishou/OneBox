@@ -75,6 +75,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineMusicNote
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineStop
 import com.wanbaohe.boardgame.ui.accentTextButtonColors
 import com.wanbaohe.boardgame.ui.dangerTextButtonColors
+import com.shifenmiao.theme.AppTheme
 
 @Composable
 fun XiangqiSettingsScreen(
@@ -152,7 +153,7 @@ fun XiangqiSettingsScreen(
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
-            .padding(16.dp),
+            .padding(horizontal = AppTheme.dimens.pageHorizontal, vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         // TTS 音效生成

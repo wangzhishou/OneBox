@@ -33,6 +33,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -124,7 +126,8 @@ fun DecisionWheelEditorScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
+                .imePadding()
+                .padding(horizontal = AppTheme.dimens.pageHorizontal, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             GlassOutlinedTextField(
@@ -155,7 +158,7 @@ fun DecisionWheelEditorScreen(
                 if (removedCount > 0) {
                     GlassTextButton(
                         onClick = component::restoreAllOptions,
-                        modifier = Modifier.height(32.dp)
+                        modifier = Modifier.heightIn(min = 48.dp)
                     ) {
                         Text(
                             text = stringResource(R.string.restore_all_action),
@@ -170,7 +173,7 @@ fun DecisionWheelEditorScreen(
                     onClick = { showPaletteSheet = true },
                     colors = AppTheme.colors.getSurfaceContainerButtonColors(),
                     shape = RoundedCornerShape(12.dp),
-                    modifier = Modifier.height(36.dp)
+                    modifier = Modifier.heightIn(min = 48.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.LineTheme,
@@ -232,7 +235,7 @@ fun DecisionWheelEditorScreen(
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier
                         .weight(1f)
-                        .height(44.dp)
+                        .heightIn(min = 48.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Add,
@@ -249,7 +252,7 @@ fun DecisionWheelEditorScreen(
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier
                         .weight(1f)
-                        .height(44.dp)
+                        .heightIn(min = 48.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.LineAutoFix,
@@ -267,7 +270,7 @@ fun DecisionWheelEditorScreen(
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier
                         .weight(1f)
-                        .height(44.dp)
+                        .heightIn(min = 48.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.LineAssistant,
@@ -348,7 +351,7 @@ private fun OptionEditRow(
         style = OneBoxDesignSystem.sectionGlassStyle,
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+            containerColor = MaterialTheme.colorScheme.surfaceContainer
         )
     ) {
         Column(modifier = Modifier.padding(12.dp)) {

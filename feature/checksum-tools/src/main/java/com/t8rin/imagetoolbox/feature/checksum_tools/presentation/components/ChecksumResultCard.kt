@@ -37,8 +37,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.R
-import com.wanbaohe.core.ui.theme.Green
-import com.wanbaohe.core.ui.theme.Red
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.preferences.PreferenceRow
 import com.t8rin.imagetoolbox.core.resources.icons.CheckCircle
@@ -48,13 +46,18 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineWarning
 internal fun ChecksumResultCard(
     isCorrect: Boolean
 ) {
+    // 容器色只取主题角色，不把 alpha 烘进色值；前景配对应 on* 角色。
     val contentColor by animateColorAsState(
         when {
-            isCorrect -> Green
-            else -> Red
+            isCorrect -> MaterialTheme.colorScheme.onPrimaryContainer
+            else -> MaterialTheme.colorScheme.onErrorContainer
         }
     )
-    val containerColor = contentColor.copy(0.3f)
+    val containerColor = if (isCorrect) {
+        MaterialTheme.colorScheme.primaryContainer
+    } else {
+        MaterialTheme.colorScheme.errorContainer
+    }
 
     GlassCard(
         modifier = Modifier

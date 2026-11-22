@@ -33,6 +33,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
@@ -50,9 +51,12 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.shifenmiao.theme.AppFontMode
+import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.base.ui.icon.IconAvatar
 import com.shifenmiao.common.components.sectionGradient
 import com.shifenmiao.common.components.sectionIconColor
@@ -64,7 +68,7 @@ import com.wanbaohe.core.ui.widget.glass.tintedGlassContentColor
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 
 /**
- * 频率事件卡片（点击翻转显示「已完成 / 待完成」）—— 竖屏比例 (2:3 高宽比)。
+ * 频率事件卡片（点击翻转显示「已完成 / 待完成」）；常规字号保持原比例，大字体允许增高。
  *
  * 主题色：按 [themeIndex] 在 PRIMARY / SECONDARY / TERTIARY / SURFACE 中轮转。
  * 容器使用 [sectionGradient]（低 alpha），文字经 [tintedGlassContentColor] 按混合后的有效底色
@@ -101,7 +105,13 @@ fun FrequencyEventCard(
 
     Box(
         modifier = modifier
-            .aspectRatio(CARD_ASPECT_RATIO)
+            .then(
+                if (AppTheme.uiProfile.fontMode != AppFontMode.Regular) {
+                    Modifier.heightIn(min = 240.dp)
+                } else {
+                    Modifier.aspectRatio(CARD_ASPECT_RATIO)
+                }
+            )
             .clip(OneBoxDesignSystem.sectionCardShape)
             .graphicsLayer {
                 rotationY = rotation
@@ -196,7 +206,9 @@ private fun FrequencyCardFace(
                         fontWeight = FontWeight.SemiBold,
                         letterSpacing = 0.3.sp
                     ),
-                    color = onContainerColor.copy(alpha = 0.7f)
+                    color = onContainerColor.copy(alpha = 0.7f),
+                    modifier = Modifier.weight(1f),
+                    textAlign = TextAlign.End,
                 )
             }
 
@@ -210,8 +222,6 @@ private fun FrequencyCardFace(
                         fontWeight = FontWeight.Bold
                     ),
                     color = onContainerColor,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
                 )
 
                 Text(
@@ -221,8 +231,12 @@ private fun FrequencyCardFace(
                         letterSpacing = (-0.5).sp
                     ),
                     color = onContainerColor,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    maxLines = if (AppTheme.uiProfile.fontMode != AppFontMode.Regular) {
+                        Int.MAX_VALUE
+                    } else 1,
+                    overflow = if (AppTheme.uiProfile.fontMode != AppFontMode.Regular) {
+                        TextOverflow.Clip
+                    } else TextOverflow.Ellipsis
                 )
 
                 Text(

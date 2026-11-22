@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="swap_images">Swap images</string>
+    <string name="rotate_images">Rotate images</string>
+    <string name="toggle_image_labels">Toggle image labels</string>
+</resources>

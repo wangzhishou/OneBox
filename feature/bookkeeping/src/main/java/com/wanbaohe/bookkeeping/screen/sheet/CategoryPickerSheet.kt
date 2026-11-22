@@ -48,7 +48,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
@@ -61,7 +60,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Close
  * 分类筛选底部弹出表单。
  *
  * 视觉风格：
- * - 4 列色块布局（极致扁平、无 divider、无 border）
+ * - 色块按可用宽度自适应列数（无 divider、无 border）
  * - 支出 / 入账 / 不计入 三色系区分（secondary / primary / tertiary container）
  * - Section header 轻量化：仅文字 + 上下留白，无背景条
  */
@@ -109,7 +108,7 @@ internal fun CategoryPickerSheet(
         sheetContent = {
             Column(modifier = Modifier.fillMaxWidth()) {
                 LazyVerticalGrid(
-                    columns = GridCells.Fixed(4),
+                    columns = GridCells.Adaptive(minSize = 96.dp),
                     modifier = Modifier
                         .fillMaxWidth()
                         .navigationBarsPadding(),
@@ -238,8 +237,6 @@ private fun CategoryCell(
             fontWeight = FontWeight.SemiBold,
             color = contentColor,
             textAlign = TextAlign.Center,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
         )
     }
 }

@@ -33,6 +33,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -815,6 +816,7 @@ private fun IdleOverlay(onStart: () -> Unit) {
         contentAlignment = Alignment.Center,
     ) {
         Column(
+            modifier = Modifier.verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
@@ -845,7 +847,7 @@ private fun IdleOverlay(onStart: () -> Unit) {
                 borderWidth = 0.dp,
                 modifier = Modifier
                     .fillMaxWidth(0.6f)
-                    .height(52.dp),
+                    .heightIn(min = 52.dp),
             ) {
                 Text(
                     text = stringResource(R.string.survive_30s_start),
@@ -870,6 +872,7 @@ private fun PausedOverlay(
         contentAlignment = Alignment.Center,
     ) {
         Column(
+            modifier = Modifier.verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
@@ -898,7 +901,7 @@ private fun PausedOverlay(
                 borderWidth = 0.dp,
                 modifier = Modifier
                     .fillMaxWidth(0.6f)
-                    .height(52.dp),
+                    .heightIn(min = 52.dp),
             ) {
                 Text(
                     text = stringResource(R.string.survive_30s_resume),
@@ -936,7 +939,7 @@ private fun ResultActions(
             borderWidth = 0.dp,
             modifier = Modifier
                 .weight(1f)
-                .height(52.dp),
+                .heightIn(min = 52.dp),
         ) {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack,
@@ -958,7 +961,7 @@ private fun ResultActions(
             borderWidth = 0.dp,
             modifier = Modifier
                 .weight(1f)
-                .height(52.dp),
+                .heightIn(min = 52.dp),
         ) {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
@@ -1039,7 +1042,7 @@ private fun GameOverOverlay(
                     borderWidth = 0.dp,
                     modifier = Modifier
                         .fillMaxWidth(0.86f)
-                        .height(52.dp),
+                        .heightIn(min = 52.dp),
                 ) {
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle,
@@ -1072,6 +1075,7 @@ private fun WinOverlay(
         contentAlignment = Alignment.Center,
     ) {
         Column(
+            modifier = Modifier.verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {

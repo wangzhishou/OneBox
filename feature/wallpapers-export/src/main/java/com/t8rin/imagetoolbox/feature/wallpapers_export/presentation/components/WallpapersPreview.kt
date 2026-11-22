@@ -169,7 +169,7 @@ private fun RowScope.WallpaperItem(
                     }
                     AsyncImage(
                         model = wallpaper.imageUri,
-                        contentDescription = null,
+                        contentDescription = stringResource(wallpaper.nameRes),
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(padding)
@@ -197,7 +197,7 @@ private fun RowScope.WallpaperItem(
                                 .clip(CircleShape)
                                 .background(
                                     animateColorAsState(
-                                        if (isSelected) MaterialTheme.colorScheme.surfaceContainerLow
+                                        if (isSelected) MaterialTheme.colorScheme.surfaceContainer
                                         else Color.Transparent
                                     ).value
                                 )

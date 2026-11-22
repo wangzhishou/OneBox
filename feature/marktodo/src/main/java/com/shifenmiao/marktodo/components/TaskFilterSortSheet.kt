@@ -585,7 +585,7 @@ private fun DueRangeField(
                 IconButton(
                     onClick = onClear,
                     enabled = value != null,
-                    modifier = Modifier.size(40.dp),
+                    modifier = Modifier.size(48.dp),
                 ) {
                     if (value != null) {
                         Icon(

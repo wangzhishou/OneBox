@@ -31,6 +31,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -49,6 +50,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
+import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDescription
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineImageSearch
@@ -132,7 +134,13 @@ private fun AiDetectMainContent(component: AiDetectComponent) {
             }
         },
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        // 键盘安全区由页面消费:BaseScreen 只负责顶栏,检测按钮在页内底栏,
+        // 不处理 IME 时键盘会把它和输入框下半部一起盖住。
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .imePadding()
+        ) {
             Box(
                 modifier = Modifier
                     .weight(1f)
@@ -185,7 +193,10 @@ private fun AiDetectBottomDetectBar(component: AiDetectComponent) {
         modifier = Modifier
             .fillMaxWidth()
             .navigationBarsPadding()
-            .padding(16.dp),
+            .padding(
+                horizontal = AppTheme.dimens.pageHorizontal,
+                vertical = 16.dp
+            ),
         enabled = state.input.isNotBlank() && !state.isDetecting,
     ) {
         Icon(

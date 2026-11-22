@@ -34,6 +34,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -59,7 +61,6 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.wanbaohe.base.ui.picker.ChineseDatePickerDialog
@@ -151,14 +152,14 @@ fun AddRecordScreen(component: BookkeepingComponent) {
         },
         supportGlassEffect = true,
         content = {
-            Box(modifier = Modifier.fillMaxSize()) {
+            Box(modifier = Modifier.fillMaxSize().imePadding()) {
                 // 内容区底部留出动态 padding：折叠时仅留 96dp（窄 bar），展开时 340dp
                 val contentBottomPadding = if (keypadExpanded) 340.dp else 96.dp
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState())
-                        .padding(horizontal = 24.dp)
+                        .padding(horizontal = AppTheme.dimens.pageHorizontal)
                         .padding(top = 16.dp, bottom = contentBottomPadding),
                     verticalArrangement = Arrangement.spacedBy(24.dp)
                 ) {
@@ -228,7 +229,8 @@ fun AddRecordScreen(component: BookkeepingComponent) {
                                         text = uiState.amountInput.ifEmpty { if (uiState.currency.fractionDigits == 0) "0" else "0.00" },
                                         fontSize = 48.sp,
                                         fontWeight = FontWeight.ExtraBold,
-                                        color = MaterialTheme.colorScheme.onSurface
+                                        color = MaterialTheme.colorScheme.onSurface,
+                                        modifier = Modifier.weight(1f),
                                     )
                                 }
                                 Row(
@@ -494,7 +496,7 @@ private fun KeypadCollapseBar(
             .fillMaxWidth()
             .clickable(onClick = onToggle)
             .padding(horizontal = 24.dp)
-            .height(44.dp),
+            .heightIn(min = 48.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
@@ -551,8 +553,6 @@ private fun InfoPill(
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurface,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
         )
     }
 }
@@ -571,6 +571,7 @@ private fun TypeButton(
             .clip(RoundedCornerShape(50))
             .background(if (selected) selectedContainerColor else Color.Transparent)
             .clickable(onClick = onClick)
+            .heightIn(min = 48.dp)
             .padding(vertical = 10.dp),
         contentAlignment = Alignment.Center
     ) {

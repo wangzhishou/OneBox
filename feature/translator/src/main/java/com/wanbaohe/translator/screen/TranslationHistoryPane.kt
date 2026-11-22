@@ -48,6 +48,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.content.getSystemService
 import com.shifenmiao.common.ui.ai.EngineFilterChip
+import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.translator.component.HistoryFilter
 import com.wanbaohe.translator.component.TranslatorUiState
 import com.wanbaohe.translator.domain.TranslationRecord
@@ -82,7 +83,7 @@ internal fun TranslationHistoryPane(
             style = GlassStyle.Thin,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = AppTheme.dimens.pageHorizontal),
         ) {
             Row(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
@@ -117,7 +118,10 @@ internal fun TranslationHistoryPane(
         }
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp),
+            contentPadding = androidx.compose.foundation.layout.PaddingValues(
+                horizontal = AppTheme.dimens.pageHorizontal,
+                vertical = 16.dp
+            ),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             items(HistoryFilter.entries) { filter ->
@@ -140,7 +144,9 @@ internal fun TranslationHistoryPane(
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = androidx.compose.foundation.layout.PaddingValues(
-                start = 16.dp, end = 16.dp, bottom = 16.dp,
+                start = AppTheme.dimens.pageHorizontal,
+                end = AppTheme.dimens.pageHorizontal,
+                bottom = 16.dp,
             ),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {

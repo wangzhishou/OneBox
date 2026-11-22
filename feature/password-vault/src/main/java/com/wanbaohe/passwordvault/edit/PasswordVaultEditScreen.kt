@@ -246,7 +246,7 @@ private fun EditFormContent(
             )
             GlassIconButton(
                 onClick = { showNewFieldForm = !showNewFieldForm },
-                modifier = Modifier.size(36.dp),
+                modifier = Modifier.size(48.dp),
             ) {
                 Icon(
                     imageVector = if (showNewFieldForm) {

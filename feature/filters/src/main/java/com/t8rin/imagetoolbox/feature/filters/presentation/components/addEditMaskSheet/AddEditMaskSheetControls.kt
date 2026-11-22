@@ -151,7 +151,7 @@ internal fun AddEditMaskSheetControls(
         ) {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUndo,
-                contentDescription = "Undo"
+                contentDescription = stringResource(R.string.undo)
             )
         }
         EnhancedIconButton(
@@ -164,7 +164,7 @@ internal fun AddEditMaskSheetControls(
         ) {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRedo,
-                contentDescription = "Redo"
+                contentDescription = stringResource(R.string.redo)
             )
         }
         EraseModeButton(

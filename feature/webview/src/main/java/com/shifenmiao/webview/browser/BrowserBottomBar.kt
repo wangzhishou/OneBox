@@ -20,7 +20,7 @@
 package com.shifenmiao.webview.browser
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -33,7 +33,6 @@ import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
-import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -42,13 +41,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Popup
-import androidx.compose.ui.window.PopupProperties
 import com.shifenmiao.webview.R
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSettings
@@ -155,18 +151,13 @@ fun BrowserMoreMenu(
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val density = LocalDensity.current
-    Popup(
-        alignment = Alignment.BottomEnd,
-        onDismissRequest = onDismiss,
-        offset = with(density) { IntOffset(x = (-8).dp.roundToPx(), y = (-64).dp.roundToPx()) },
-        properties = PopupProperties(focusable = true)
-    ) {
-        Card(
-            modifier = modifier.width(220.dp),
-            shape = RoundedCornerShape(16.dp)
+    Box(modifier = modifier) {
+        EnhancedDropdownMenu(
+            expanded = true,
+            onDismissRequest = onDismiss,
+            modifier = Modifier.width(220.dp),
+            expandUp = true,
         ) {
-            Column {
                 if (isBookmarkViewer && canToggleSnapshot) {
                     // 只对「带快照的收藏」有意义：离线快照 ⇄ 线上原页
                     DropdownMenuItem(
@@ -236,7 +227,6 @@ fun BrowserMoreMenu(
                     leadingIcon = { Icon(imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSettings, contentDescription = null) },
                     onClick = onSettings
                 )
-            }
         }
     }
 }
@@ -256,7 +246,7 @@ private fun BottomIconButton(
         else -> MaterialTheme.colorScheme.onSurfaceVariant
     }
 
-    IconButton(onClick = onClick, enabled = enabled, modifier = Modifier.size(44.dp)) {
+    IconButton(onClick = onClick, enabled = enabled, modifier = Modifier.size(48.dp)) {
         if (badgeCount > 0) {
             BadgedBox(
                 badge = {

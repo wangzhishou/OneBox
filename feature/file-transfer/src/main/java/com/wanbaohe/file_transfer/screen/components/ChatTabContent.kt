@@ -21,6 +21,7 @@ package com.wanbaohe.file_transfer.screen.components
 
 import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -55,7 +56,6 @@ import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.utils.content_pickers.FileType
 import com.wanbaohe.core.ui.utils.content_pickers.rememberFilePicker
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
-import com.wanbaohe.core.ui.utils.helper.isPortraitOrientationAsState
 import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.file_transfer.R
@@ -80,95 +80,94 @@ fun ChatTabContent(
     serverPort: Int? = null,
     isServerRunning: Boolean = false
 ) {
-    val isPortrait by isPortraitOrientationAsState()
+    BoxWithConstraints(modifier = modifier.fillMaxSize()) {
+        val useSplitLayout = maxWidth >= 600.dp
 
-    if (isPortrait) {
-        // Phone portrait: sessions as a top horizontal row; messages/composer below.
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-        ) {
-            if(sessions.size > 1) {
-                Text(
-                    text = stringResource(R.string.file_transfer_tab_chat),
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(bottom = AppTheme.dimens.spaceSmall)
-                )
+        if (!useSplitLayout) {
+            // Compact layout: sessions as a top horizontal row; messages/composer below.
+            Column(modifier = Modifier.fillMaxSize()) {
+                if (sessions.size > 1) {
+                    Text(
+                        text = stringResource(R.string.file_transfer_tab_chat),
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(bottom = AppTheme.dimens.spaceSmall)
+                    )
 
-                ChatSessionRow(
-                    sessions = sessions,
+                    ChatSessionRow(
+                        sessions = sessions,
+                        selectedChannelId = selectedChannelId,
+                        onSelect = onSelectSession,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    Spacer(modifier = Modifier.height(AppTheme.dimens.spaceSmall))
+                }
+                ChatMessagesPane(
+                    sessionsCount = sessions.size,
                     selectedChannelId = selectedChannelId,
-                    onSelect = onSelectSession,
-                    modifier = Modifier.fillMaxWidth()
+                    webSocketConnections = webSocketConnections,
+                    connectedClients = connectedClients,
+                    unreadCount = unreadCount,
+                    messages = messages,
+                    onSendMessage = onSendMessage,
+                    onSendFileFromUri = onSendFileFromUri,
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    enabled = selectedChannelId != null || sessions.isNotEmpty(),
+                    serverBaseUrl = serverBaseUrl,
+                    rootPath = rootPath,
+                    serverPort = serverPort,
+                    isServerRunning = isServerRunning
                 )
-
-                Spacer(modifier = Modifier.height(AppTheme.dimens.spaceSmall))
             }
-            ChatMessagesPane(
-                sessionsCount = sessions.size,
-                selectedChannelId = selectedChannelId,
-                webSocketConnections = webSocketConnections,
-                connectedClients = connectedClients,
-                unreadCount = unreadCount,
-                messages = messages,
-                onSendMessage = onSendMessage,
-                onSendFileFromUri = onSendFileFromUri,
+        } else {
+            // Wide layout: use the available content width for the split panes.
+            Row(
                 modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-                enabled = selectedChannelId != null || sessions.isNotEmpty(),
-                serverBaseUrl = serverBaseUrl,
-                rootPath = rootPath,
-                serverPort = serverPort,
-                isServerRunning = isServerRunning
-            )
-        }
-    } else {
-        // Landscape / tablet: keep current split layout.
-        Row(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(AppTheme.dimens.paddingNormal)
-        ) {
-            Column(
-                modifier = Modifier
-                    .width(160.dp)
                     .fillMaxSize()
+                    .padding(AppTheme.dimens.paddingNormal)
             ) {
-                Text(
-                    text = stringResource(R.string.file_transfer_tab_chat),
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(bottom = AppTheme.dimens.spaceSmall)
-                )
+                Column(
+                    modifier = Modifier
+                        .width(160.dp)
+                        .fillMaxSize()
+                ) {
+                    Text(
+                        text = stringResource(R.string.file_transfer_tab_chat),
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(bottom = AppTheme.dimens.spaceSmall)
+                    )
 
-                ChatSessionList(
-                    sessions = sessions,
+                    ChatSessionList(
+                        sessions = sessions,
+                        selectedChannelId = selectedChannelId,
+                        onSelect = onSelectSession,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(AppTheme.dimens.spaceNormal))
+
+                ChatMessagesPane(
+                    sessionsCount = sessions.size,
                     selectedChannelId = selectedChannelId,
-                    onSelect = onSelectSession,
-                    modifier = Modifier.fillMaxSize()
+                    webSocketConnections = webSocketConnections,
+                    connectedClients = connectedClients,
+                    unreadCount = unreadCount,
+                    messages = messages,
+                    onSendMessage = onSendMessage,
+                    onSendFileFromUri = onSendFileFromUri,
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxSize(),
+                    enabled = selectedChannelId != null || sessions.isNotEmpty(),
+                    serverBaseUrl = serverBaseUrl,
+                    rootPath = rootPath,
+                    serverPort = serverPort,
+                    isServerRunning = isServerRunning
                 )
             }
-
-            Spacer(modifier = Modifier.width(AppTheme.dimens.spaceNormal))
-
-            ChatMessagesPane(
-                sessionsCount = sessions.size,
-                selectedChannelId = selectedChannelId,
-                webSocketConnections = webSocketConnections,
-                connectedClients = connectedClients,
-                unreadCount = unreadCount,
-                messages = messages,
-                onSendMessage = onSendMessage,
-                onSendFileFromUri = onSendFileFromUri,
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxSize(),
-                enabled = selectedChannelId != null || sessions.isNotEmpty(),
-                serverBaseUrl = serverBaseUrl,
-                rootPath = rootPath,
-                serverPort = serverPort,
-                isServerRunning = isServerRunning
-            )
         }
     }
 }

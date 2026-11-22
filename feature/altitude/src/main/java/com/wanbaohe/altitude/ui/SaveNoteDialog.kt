@@ -76,7 +76,8 @@ internal fun SaveNoteDialog(
                 Text(
                     text = "$currentDisplay $unit",
                     style = MaterialTheme.typography.displaySmall.copy(
-                        color = MaterialTheme.colorScheme.primaryContainer
+                        // 强调前景用 onPrimaryContainer；primaryContainer 是容器色，作文字色在浅色弹窗上对比度不足
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
                     ),
                     modifier = Modifier.fillMaxWidth()
                 )

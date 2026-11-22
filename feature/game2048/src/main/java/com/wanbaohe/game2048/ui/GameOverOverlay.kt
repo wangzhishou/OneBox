@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -135,7 +136,7 @@ fun GameOverOverlay(
                         contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier
                             .fillMaxWidth(0.7f)
-                            .height(48.dp),
+                            .heightIn(min = 48.dp),
                     ) {
                         Text(
                             text = stringResource(R.string.game_2048_new_game),
@@ -154,7 +155,7 @@ fun GameOverOverlay(
                             borderWidth = 0.dp,
                             modifier = Modifier
                                 .fillMaxWidth(0.7f)
-                                .height(48.dp),
+                                .heightIn(min = 48.dp),
                         ) {
                             Text(
                                 text = stringResource(R.string.game_2048_continue),

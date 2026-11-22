@@ -171,7 +171,7 @@ private fun TabCardItem(
                     )
                 }
             }
-            IconButton(onClick = onClose, modifier = Modifier.size(32.dp)) {
+            IconButton(onClick = onClose, modifier = Modifier.size(48.dp)) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
                     contentDescription = stringResource(R.string.browser_close),

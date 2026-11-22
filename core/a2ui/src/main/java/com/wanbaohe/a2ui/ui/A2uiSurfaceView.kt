@@ -30,6 +30,13 @@ import com.wanbaohe.core.ui.widget.glass.GlassCircularProgressIndicator
 
 private val scrollableRootTypes = setOf("Column", "Card", "Row")
 
+/**
+ * 渲染一个 A2UI surface（根组件 + 子树）。
+ *
+ * 本组件**不加任何外层边距**：整页宿主（如 `feature/a2ui` 工作台、[com.wanbaohe.a2ui.A2uiScreen]）
+ * 负责页面级 `pageHorizontal` / 顶部 insets；嵌入宿主（AI 聊天的 `A2uiMarkdownCard` 等）已经自带
+ * 卡片内边距。共享层不再一刀切加边距，否则整页与嵌入两种形态会各自多一层留白。
+ */
 @Composable
 fun A2uiSurfaceView(
     surfaceId: String,

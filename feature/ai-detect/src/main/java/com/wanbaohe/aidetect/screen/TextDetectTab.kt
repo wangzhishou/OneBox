@@ -38,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.widget.glass.GlassButton
 import com.wanbaohe.core.ui.widget.glass.GlassCircularProgressIndicator
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
@@ -56,7 +57,10 @@ fun TextDetectTab(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(16.dp),
+            .padding(
+                horizontal = AppTheme.dimens.pageHorizontal,
+                vertical = 16.dp
+            ),
     ) {
         val result = state.result
         if (result == null) {

@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -48,7 +49,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.components.sectionGradient
 import com.shifenmiao.common.components.sectionIconColor
@@ -75,7 +75,7 @@ fun RecordsTab(
     onTypeClick: (String) -> Unit,
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
+        columns = GridCells.Adaptive(minSize = 160.dp),
         state = gridState,
         modifier = Modifier
             .fillMaxSize()
@@ -124,15 +124,15 @@ private fun RecordTypeGridCard(
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .height(RECORD_CARD_HEIGHT),
+            .heightIn(min = RECORD_CARD_HEIGHT),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = containerColor),
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.fillMaxWidth()) {
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, top = 16.dp, end = 40.dp, bottom = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 // 软色圆角图标容器
@@ -155,10 +155,8 @@ private fun RecordTypeGridCard(
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = contentColor,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
                 )
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.height(8.dp))
                 if (valueParts != null && valueParts.first.isNotEmpty()) {
                     Row(
                         verticalAlignment = Alignment.Bottom,
@@ -169,8 +167,7 @@ private fun RecordTypeGridCard(
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Bold,
                             color = contentColor,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f),
                         )
                         valueParts.second?.let { unit ->
                             Text(
@@ -215,5 +212,5 @@ private fun RecordTypeGridCard(
     }
 }
 
-/** 宫格卡片固定高度:图标 + 标题 + 大数字 + 日期标签,保证同行卡片上下对齐 */
+/** 宫格卡片最小高度:保留常规对齐，长标题与大字体可继续撑高 */
 private val RECORD_CARD_HEIGHT = 176.dp

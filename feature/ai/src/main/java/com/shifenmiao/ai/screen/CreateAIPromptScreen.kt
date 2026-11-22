@@ -35,14 +35,18 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -366,7 +370,9 @@ fun CreateAIPromptScreen(
         PromptInputSection(
             modifier = Modifier
                 .fillMaxWidth()
-                .imePadding(),
+                // 底边由输入区负责:BaseScreen 已关闭导航栏底距,
+                // 这里取 IME 与系统导航栏的并集,键盘关闭时不压在导航条下,打开时不重复叠加。
+                .windowInsetsPadding(WindowInsets.ime.union(WindowInsets.navigationBars)),
             inputText = uiState.inputText,
             isGenerating = uiState.status == GenerationStatus.STREAMING,
             isMultiTurn = uiState.isMultiTurn,
@@ -480,7 +486,7 @@ private fun PromptPlaceholderSection(contentCardHeight: androidx.compose.ui.unit
         modifier = Modifier
             .fillMaxWidth()
             .height(contentCardHeight)
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = AppTheme.dimens.pageHorizontal),
     ) {
         Column(
             modifier = Modifier
@@ -646,7 +652,7 @@ private fun PromptStreamingSection(
         modifier = Modifier
             .fillMaxWidth()
             .height(contentCardHeight)
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = AppTheme.dimens.pageHorizontal),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -811,7 +817,7 @@ private fun PromptPreviewSection(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = contentCardHeight)
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = AppTheme.dimens.pageHorizontal),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1094,7 +1100,7 @@ private fun PromptErrorSection(
         modifier = Modifier
             .fillMaxWidth()
             .height(contentCardHeight)
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = AppTheme.dimens.pageHorizontal),
     ) {
         Column(
             modifier = Modifier

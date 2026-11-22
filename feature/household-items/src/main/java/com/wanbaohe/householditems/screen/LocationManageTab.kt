@@ -27,7 +27,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -51,7 +51,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.base.ui.icon.IconPickerSheet
 import com.t8rin.imagetoolbox.core.resources.Icons
@@ -327,7 +326,7 @@ private fun LocationTreeRow(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(ROW_HEIGHT)
+                .heightIn(min = ROW_HEIGHT)
                 .padding(start = 4.dp, end = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -335,7 +334,7 @@ private fun LocationTreeRow(
             if (node.children.isNotEmpty()) {
                 Box(
                     modifier = Modifier
-                        .size(28.dp)
+                        .size(48.dp)
                         .clip(CircleShape)
                         .clickable(onClick = onToggleCollapse),
                     contentAlignment = Alignment.Center,
@@ -355,7 +354,7 @@ private fun LocationTreeRow(
                     )
                 }
             } else {
-                Box(modifier = Modifier.size(28.dp))
+                Box(modifier = Modifier.size(48.dp))
             }
             Icon(
                 imageVector = locationIcon(node.location.iconKey, node.location.id),
@@ -374,11 +373,9 @@ private fun LocationTreeRow(
                 modifier = Modifier
                     .weight(1f)
                     .padding(start = 10.dp),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
             )
-            // 紧凑操作按钮:图标 18dp,触摸区域 36dp
-            IconButton(onClick = onAddChild, modifier = Modifier.size(36.dp)) {
+            // 操作图标保持 18dp，触摸区域为 48dp；长标题换行时行高随内容增加
+            IconButton(onClick = onAddChild, modifier = Modifier.size(48.dp)) {
                 Icon(
                     imageVector = Icons.Outlined.LineAddCircleOutline,
                     contentDescription = stringResource(R.string.household_location_add_child),
@@ -386,7 +383,7 @@ private fun LocationTreeRow(
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            IconButton(onClick = onRename, modifier = Modifier.size(36.dp)) {
+            IconButton(onClick = onRename, modifier = Modifier.size(48.dp)) {
                 Icon(
                     imageVector = Icons.Outlined.Edit,
                     contentDescription = stringResource(R.string.household_location_rename),
@@ -394,7 +391,7 @@ private fun LocationTreeRow(
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            IconButton(onClick = onDelete, modifier = Modifier.size(36.dp)) {
+            IconButton(onClick = onDelete, modifier = Modifier.size(48.dp)) {
                 Icon(
                     imageVector = Icons.Outlined.Delete,
                     contentDescription = stringResource(R.string.household_location_delete),

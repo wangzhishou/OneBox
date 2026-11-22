@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -100,7 +101,7 @@ fun PeriodEditorScreen(
             }
         },
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize().imePadding()) {
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -179,9 +180,10 @@ fun PeriodEditorScreen(
                 }
 
                 PeriodFormSection(title = stringResource(R.string.period_field_mood)) {
-                    Row(
+                    FlowRow(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         PeriodMood.entries.forEach { mood ->
                             MoodItem(
@@ -358,6 +360,7 @@ private fun StatusPill(
             text = label,
             color = if (selected) colors.onAccent else colors.onSurface,
             fontWeight = FontWeight.Medium,
+            modifier = Modifier.weight(1f),
         )
     }
 }

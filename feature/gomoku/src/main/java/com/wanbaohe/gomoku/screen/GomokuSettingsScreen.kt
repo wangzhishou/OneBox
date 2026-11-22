@@ -58,6 +58,7 @@ import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.gomoku.R
+import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.gomoku.data.GomokuTTSTemplate
 import com.wanbaohe.gomoku.data.GomokuTTSTemplates
 import com.wanbaohe.gomoku.application.port.outbound.EngineSlot
@@ -120,7 +121,7 @@ fun GomokuSettingsScreen(
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
-            .padding(16.dp),
+            .padding(horizontal = AppTheme.dimens.pageHorizontal, vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         // 声音:总开关 + 三个试听

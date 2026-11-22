@@ -38,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.t8rin.imagetoolbox.core.resources.R
+import com.t8rin.imagetoolbox.feature.compare.R as CompareR
 import com.wanbaohe.core.ui.widget.buttons.ShareButton
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBar
@@ -110,7 +111,7 @@ fun CompareScreenTopAppBar(
                 ) {
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSwapHoriz,
-                        contentDescription = "Swap"
+                        contentDescription = stringResource(CompareR.string.swap_images)
                     )
                 }
                 EnhancedIconButton(
@@ -120,7 +121,7 @@ fun CompareScreenTopAppBar(
                         Icon(
                             imageVector = if (rotated) com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRotateLeft
                             else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRotateRight,
-                            contentDescription = "Rotate"
+                            contentDescription = stringResource(CompareR.string.rotate_images)
                         )
                     }
                 }
@@ -136,7 +137,7 @@ fun CompareScreenTopAppBar(
                     ) {
                         Icon(
                             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineLabel,
-                            contentDescription = "Label"
+                            contentDescription = stringResource(CompareR.string.toggle_image_labels)
                         )
                     }
                 }

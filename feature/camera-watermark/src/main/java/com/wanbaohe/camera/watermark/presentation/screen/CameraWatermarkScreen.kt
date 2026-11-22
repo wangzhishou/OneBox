@@ -393,8 +393,8 @@ private fun CollapsibleTabSection(
                         MaterialTheme.shapes.medium
                     }
                 )
+                // 与上方 Tab 标题栏共享外层 paddingNormal,不再额外内缩(对齐 id-photo 同类实现)
                 .fillMaxWidth()
-                .padding(horizontal = AppTheme.dimens.spaceNormal)
                 .height(80.dp)
         ) { page ->
             when (page) {

@@ -29,9 +29,11 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -65,6 +67,7 @@ fun DiceTypeSelector(
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .horizontalScroll(rememberScrollState())
             .padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically,
@@ -112,7 +115,7 @@ private fun DiceTypeChip(
     ) {
         Box(
             modifier = Modifier
-                .size(width = 44.dp, height = 36.dp)
+                .size(width = 48.dp, height = 48.dp)
                 .glassThin(
                     shape = RoundedCornerShape(12.dp),
                     color = containerColor,
@@ -146,6 +149,7 @@ fun DiceCountSelector(
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .horizontalScroll(rememberScrollState())
             .padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically
@@ -169,7 +173,7 @@ fun DiceCountSelector(
 
             Box(
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(48.dp)
                     .glassThin(
                         shape = RoundedCornerShape(50),
                         color = containerColor,

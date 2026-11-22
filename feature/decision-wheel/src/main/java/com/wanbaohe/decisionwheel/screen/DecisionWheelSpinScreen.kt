@@ -41,6 +41,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.PaddingValues
@@ -239,7 +240,7 @@ fun DecisionWheelSpinScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = AppTheme.dimens.pageHorizontal)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -328,7 +329,7 @@ fun DecisionWheelSpinScreen(
             ) {
                 GlassTonalButton(
                     onClick = component::openEditor,
-                    modifier = Modifier.height(48.dp),
+                    modifier = Modifier.heightIn(min = 48.dp),
                     shape = RoundedCornerShape(12.dp),
                     colors = AppTheme.colors.getSurfaceContainerButtonColors()
                 ) {
@@ -623,7 +624,7 @@ private fun OptionChip(
 
     Surface(
         modifier = Modifier
-            .height(40.dp)
+            .heightIn(min = 48.dp)
             .padding(horizontal = 0.dp)
             .clickable(
                 onClick = onClick,

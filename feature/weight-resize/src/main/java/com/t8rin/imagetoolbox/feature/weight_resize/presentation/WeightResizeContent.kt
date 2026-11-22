@@ -420,7 +420,7 @@ private fun FileSizeChip(
         modifier = modifier,
         shape = MaterialTheme.shapes.small,
         style = GlassStyle.Thin,
-        color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.88f),
+        color = MaterialTheme.colorScheme.secondaryContainer,
         borderWidth = 0.dp,
     ) {
         Row(

@@ -136,8 +136,8 @@ fun MarqueeScreen(
                 .weight(1f)
                 .imePadding()
                 .padding(
-                    AppTheme.dimens.paddingNormal,
-                    4.dp
+                    horizontal = AppTheme.dimens.pageHorizontal,
+                    vertical = 4.dp
                 )
         ) {
             item {
@@ -183,7 +183,8 @@ fun MarqueeScreen(
                                 Icon(
                                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
                                     contentDescription = stringResource(id = R.string.settings_close),
-                                    tint = MaterialTheme.colorScheme.surfaceContainer
+                                    // 前景图标不能用容器色（surfaceContainer 在浅色输入框上几乎不可见）
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }

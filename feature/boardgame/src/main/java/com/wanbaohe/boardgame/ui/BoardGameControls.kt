@@ -36,7 +36,6 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -54,7 +53,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.boardgame.model.BoardGameSideOption
@@ -72,12 +70,19 @@ fun BoardGamePillButton(
     Button(
         onClick = onClick,
         enabled = enabled,
-        modifier = modifier.heightIn(min = if (compact) 44.dp else 48.dp),
+        modifier = modifier.heightIn(min = 48.dp),
         shape = RoundedCornerShape(50),
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (primary) MaterialTheme.colorScheme.primaryContainer
-                else MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.45f),
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            containerColor = if (primary) {
+                MaterialTheme.colorScheme.primaryContainer
+            } else {
+                MaterialTheme.colorScheme.secondaryContainer
+            },
+            contentColor = if (primary) {
+                MaterialTheme.colorScheme.onPrimaryContainer
+            } else {
+                MaterialTheme.colorScheme.onSecondaryContainer
+            },
         ),
         contentPadding = PaddingValues(
             horizontal = if (compact) 4.dp else 12.dp,
@@ -94,19 +99,10 @@ fun BoardGamePillButton(
             Text(
                 text = label,
                 modifier = Modifier.weight(1f, fill = false),
-                maxLines = 1,
+                maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
                 style = if (compact) MaterialTheme.typography.labelMedium else MaterialTheme.typography.labelLarge,
-                autoSize = if (compact) {
-                    TextAutoSize.StepBased(
-                        minFontSize = 7.5.sp,
-                        maxFontSize = MaterialTheme.typography.labelMedium.fontSize,
-                        stepSize = 0.25.sp,
-                    )
-                } else {
-                    null
-                },
             )
         }
     }
@@ -133,7 +129,7 @@ fun BoardGameToolButton(
         modifier = modifier.heightIn(min = 52.dp),
         shape = RoundedCornerShape(20.dp),
         color = when {
-            selected && enabled -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.65f)
+            selected && enabled -> MaterialTheme.colorScheme.primaryContainer
             else -> Color.Transparent
         },
         contentColor = contentColor,
@@ -148,7 +144,7 @@ fun BoardGameToolButton(
                 Text(
                     text = label,
                     style = MaterialTheme.typography.labelSmall,
-                    maxLines = 1,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     textAlign = TextAlign.Center,
                 )
@@ -186,7 +182,7 @@ fun BoardGameSetupHeader(
                             selected = side.selected, enabled = enabled,
                             role = Role.RadioButton, onClick = side.onClick,
                         )
-                        .heightIn(min = 40.dp)
+                        .heightIn(min = 48.dp)
                         .padding(horizontal = 6.dp, vertical = 6.dp),
                     horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
                     verticalAlignment = Alignment.CenterVertically,
@@ -224,14 +220,14 @@ fun BoardGamePaletteItem(
         selected = selected,
         onClick = onClick,
         enabled = enabled,
-        modifier = modifier.heightIn(min = 44.dp),
+        modifier = modifier.heightIn(min = 48.dp),
         shape = shape,
-        color = if (selected) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.55f)
-            else MaterialTheme.colorScheme.surface.copy(alpha = 0.45f),
+        color = if (selected) MaterialTheme.colorScheme.primaryContainer
+            else MaterialTheme.colorScheme.surfaceContainer,
         border = BorderStroke(
             1.dp,
             if (selected) MaterialTheme.colorScheme.onPrimaryContainer
-            else MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
+            else MaterialTheme.colorScheme.outlineVariant,
         ),
     ) {
         Box(contentAlignment = Alignment.Center, content = content)

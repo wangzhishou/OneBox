@@ -149,12 +149,12 @@ internal fun CompareScreenContent(
                             openTuneMenu = true
                         },
                         contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                        containerColor = MaterialTheme.colorScheme.primaryContainer.copy(0.85f),
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
                         modifier = Modifier.padding(8.dp)
                     ) {
                         Icon(
                             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTune,
-                            contentDescription = null
+                            contentDescription = stringResource(R.string.settings)
                         )
                     }
 
@@ -255,7 +255,7 @@ internal fun CompareScreenContent(
                                     top = true
                                 )
                                 .flatGlassContainer(
-                                    color = MaterialTheme.colorScheme.surfaceContainerLow,
+                                    color = MaterialTheme.colorScheme.surfaceContainer,
                                     shape = RectangleShape,
                                     borderColor = Color.Transparent
                                 )

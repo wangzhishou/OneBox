@@ -23,6 +23,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -192,6 +193,7 @@ fun HabitEditScreen(component: HabitEditComponent) {
                                 selected = false,
                                 onClick = component::onRemindClear,
                                 selectedColor = MaterialTheme.colorScheme.primaryContainer,
+                                defaultMinSize = 48.dp,
                             ) {
                                 Text(stringResource(R.string.habit_edit_reminder_clear))
                             }
@@ -357,7 +359,10 @@ private fun RepeatSection(
     onWeekdayToggle: (Int) -> Unit,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
             listOf(
                 HabitRepeat.DAILY to R.string.habit_repeat_daily,
                 HabitRepeat.WEEKLY_TIMES to R.string.habit_repeat_weekly,
@@ -368,6 +373,7 @@ private fun RepeatSection(
                     selected = repeatType == type,
                     onClick = { onRepeatTypeChange(type) },
                     selectedColor = MaterialTheme.colorScheme.primaryContainer,
+                    defaultMinSize = 48.dp,
                     contentPadding = androidx.compose.foundation.layout.PaddingValues(
                         horizontal = 14.dp,
                         vertical = 8.dp,
@@ -407,6 +413,7 @@ private fun RepeatSection(
                         text = stringResource(labelRes),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.weight(1f),
                     )
                 }
             }
@@ -414,12 +421,16 @@ private fun RepeatSection(
             HabitRepeat.CUSTOM_WEEKDAYS -> {
                 // 7 个星期 chip 多选
                 val labels = stringArrayResource(R.array.habit_weekdays_short)
-                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
                     (1..7).forEach { dayOfWeek ->
                         EnhancedChip(
                             selected = HabitRepeat.isWeekdaySet(weekdaysMask, dayOfWeek),
                             onClick = { onWeekdayToggle(dayOfWeek) },
                             selectedColor = MaterialTheme.colorScheme.primaryContainer,
+                            defaultMinSize = 48.dp,
                         ) {
                             Text(labels[dayOfWeek - 1])
                         }
@@ -437,7 +448,7 @@ private fun StepperButton(
 ) {
     Box(
         modifier = Modifier
-            .size(32.dp)
+            .size(48.dp)
             // 小控件同样走玻璃管线, 跟旁边的图标钮保持一致
             .glassBackground(
                 shape = CircleShape,

@@ -53,6 +53,7 @@ import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.poem.R
+import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.poem.model.Poem
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -82,7 +83,7 @@ fun PoemHistorySheet(
                 .fillMaxWidth()
                 .heightIn(max = 520.dp)
                 .navigationBarsPadding()
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = AppTheme.dimens.pageHorizontal),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),

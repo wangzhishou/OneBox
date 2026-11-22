@@ -31,6 +31,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -55,6 +56,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.theme.AppFontMode
+import com.shifenmiao.theme.AppTheme
+import com.shifenmiao.theme.AppWidthMode
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
@@ -138,7 +142,7 @@ internal fun CheckInTab(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(160.dp),
+                        .heightIn(min = 160.dp),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
@@ -169,7 +173,7 @@ internal fun CheckInTab(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 今日汇总卡(左圆环完成率 + 右侧三列统计)
+// 今日汇总卡(圆环完成率 + 三项统计；窄屏与大字下改为上下排列)
 // ─────────────────────────────────────────────────────────────────────────────
 
 @Composable
@@ -194,39 +198,78 @@ private fun SummaryCard(
         )
     }
 
+    val stacked = AppTheme.uiProfile.widthMode == AppWidthMode.Narrow ||
+        AppTheme.uiProfile.fontMode == AppFontMode.ExtraLarge
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 18.dp, vertical = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            DonutExpenseChart(
-                slices = slices,
-                centerText = percentText,
-                chartSize = 92.dp,
-                strokeWidth = 12.dp,
-            )
-            Spacer(modifier = Modifier.width(18.dp))
-            SummaryStatColumn(
-                modifier = Modifier.weight(1f),
-                value = "$doneCount / $dueCount",
-                label = stringResource(R.string.habit_summary_rate),
-            )
-            SummaryStatColumn(
-                modifier = Modifier.weight(1f),
-                value = doneCount.toString(),
-                label = stringResource(R.string.habit_summary_done),
-            )
-            SummaryStatColumn(
-                modifier = Modifier.weight(1f),
-                value = (dueCount - doneCount).toString(),
-                label = stringResource(R.string.habit_summary_missed),
-            )
+        if (stacked) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 18.dp, vertical = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                DonutExpenseChart(
+                    slices = slices,
+                    centerText = percentText,
+                    chartSize = 92.dp,
+                    strokeWidth = 12.dp,
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                SummaryStats(
+                    doneCount = doneCount,
+                    dueCount = dueCount,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+        } else {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 18.dp, vertical = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                DonutExpenseChart(
+                    slices = slices,
+                    centerText = percentText,
+                    chartSize = 92.dp,
+                    strokeWidth = 12.dp,
+                )
+                Spacer(modifier = Modifier.width(18.dp))
+                SummaryStats(
+                    doneCount = doneCount,
+                    dueCount = dueCount,
+                    modifier = Modifier.weight(1f),
+                )
+            }
         }
+    }
+}
+
+@Composable
+private fun SummaryStats(
+    doneCount: Int,
+    dueCount: Int,
+    modifier: Modifier = Modifier,
+) {
+    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+        SummaryStatColumn(
+            modifier = Modifier.weight(1f),
+            value = "$doneCount / $dueCount",
+            label = stringResource(R.string.habit_summary_rate),
+        )
+        SummaryStatColumn(
+            modifier = Modifier.weight(1f),
+            value = doneCount.toString(),
+            label = stringResource(R.string.habit_summary_done),
+        )
+        SummaryStatColumn(
+            modifier = Modifier.weight(1f),
+            value = (dueCount - doneCount).toString(),
+            label = stringResource(R.string.habit_summary_missed),
+        )
     }
 }
 

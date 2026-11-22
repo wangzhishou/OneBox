@@ -90,10 +90,12 @@ fun LoanSummaryCard(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             SummaryMetric(
+                modifier = Modifier.weight(1f),
                 label = stringResource(R.string.loan_result_total_interest),
                 value = result.totalInterest.fenToMoneyString(currency),
             )
             SummaryMetric(
+                modifier = Modifier.weight(1f),
                 label = stringResource(R.string.loan_result_total_repayment),
                 value = result.totalRepayment.fenToMoneyString(currency),
                 alignEnd = true,
@@ -106,9 +108,11 @@ fun LoanSummaryCard(
 private fun SummaryMetric(
     label: String,
     value: String,
+    modifier: Modifier = Modifier,
     alignEnd: Boolean = false,
 ) {
     Column(
+        modifier = modifier,
         horizontalAlignment = if (alignEnd) Alignment.End else Alignment.Start,
     ) {
         Text(

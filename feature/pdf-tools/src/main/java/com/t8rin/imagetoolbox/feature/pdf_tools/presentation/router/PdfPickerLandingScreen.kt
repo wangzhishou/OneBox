@@ -284,13 +284,13 @@ internal fun PdfPickerLandingScreen(
         onGoBack = onGoBack,
     ) {
         LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
+            columns = GridCells.Adaptive(minSize = 140.dp),
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(horizontal = 20.dp, vertical = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            item(span = { GridItemSpan(2) }) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
                 ImportDocumentCard(
                     onClick = pdfPreviewPicker::pickFile,
                     recentPdfs = recentPdfs,
@@ -302,7 +302,7 @@ internal fun PdfPickerLandingScreen(
             }
 
             if (recentDocs.isNotEmpty()) {
-                item(span = { GridItemSpan(2) }) {
+                item(span = { GridItemSpan(maxLineSpan) }) {
                     RecentDocumentsSection(
                         recentDocs = recentDocs,
                         onDocumentClick = { uri ->

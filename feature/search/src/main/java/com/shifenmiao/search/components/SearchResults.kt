@@ -20,10 +20,12 @@
 package com.shifenmiao.search.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -48,6 +50,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.wanbaohe.base.ui.DeleteConfirmDialog
@@ -65,6 +68,7 @@ import com.shifenmiao.online.component.ItemListComponent
 import com.shifenmiao.online.ui.VerticalStaggeredCard
 import com.shifenmiao.search.logic.SearchComponent
 import com.shifenmiao.storage.SearchHistoryStore
+import com.shifenmiao.theme.AppFontMode
 import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import kotlinx.coroutines.launch
@@ -98,129 +102,133 @@ fun SearchResults(
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(
-                horizontal = AppTheme.dimens.paddingNormal
+                horizontal = AppTheme.dimens.pageHorizontal
             )
         )
         if (isGlobalSearching.value) {
             LinearProgressIndicator(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AppTheme.dimens.paddingNormal)
+                    .padding(horizontal = AppTheme.dimens.pageHorizontal)
             )
         }
-        LazyVerticalStaggeredGrid(
-            state = lazyStaggeredGridState,
-            modifier = Modifier.fillMaxHeight(),
-            columns = StaggeredGridCells.Fixed(2),
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingNormal),
-            verticalItemSpacing = AppTheme.dimens.paddingNormal,
-            contentPadding = PaddingValues(
-                start = AppTheme.dimens.paddingNormal,
-                end = AppTheme.dimens.paddingNormal,
-                top = AppTheme.dimens.spaceNormal,
-                bottom = AppTheme.dimens.paddingNormal
-            )
-        ) {
-            searchItemList.value.forEachIndexed { index, itemWithRelation ->
-                item {
-                    if (BaseUtils.isShowByIdString(itemWithRelation.item.miniProgramId)
-                        && !BaseUtils.isHiddenId(itemWithRelation.item.id)
-                    ) {
-                        Animation.StaggeredAnimatedItem(index, content = {
-                            VerticalStaggeredCard(
-                                index = index,
-                                itemListComponent = itemListComponent,
-                                itemWithStats = itemWithRelation,
-                                highlightKeyword = queryValue,
-                                commentCount = itemWithRelation.item.commentCount,
-                                onCommentClick = itemWithRelation.item.documentId
-                                    ?.takeIf { it.isNotBlank() }
-                                    ?.let { documentId ->
-                                        {
-                                            itemListComponent.showComments(
-                                                documentId = documentId,
-                                                itemTitle = itemWithRelation.item.title,
-                                                uid = uidFor(ListItemType.fromId(itemWithRelation.item.listType)),
-                                                localItemId = itemWithRelation.item.id,
+        // 横屏有导航轨和助手侧栏时，结果区的真实宽度远小于窗口宽度；
+        // 列数只按这一层的 maxWidth 决定，大字下主动减列，不缩用户字号。
+        BoxWithConstraints(modifier = Modifier.fillMaxHeight()) {
+            LazyVerticalStaggeredGrid(
+                state = lazyStaggeredGridState,
+                modifier = Modifier.fillMaxSize(),
+                columns = searchGridColumns(maxWidth),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.contentGap),
+                verticalItemSpacing = AppTheme.dimens.contentGap,
+                contentPadding = PaddingValues(
+                    start = AppTheme.dimens.pageHorizontal,
+                    end = AppTheme.dimens.pageHorizontal,
+                    top = 4.dp,
+                    bottom = AppTheme.dimens.pageHorizontal
+                )
+            ) {
+                searchItemList.value.forEachIndexed { index, itemWithRelation ->
+                    item {
+                        if (BaseUtils.isShowByIdString(itemWithRelation.item.miniProgramId)
+                            && !BaseUtils.isHiddenId(itemWithRelation.item.id)
+                        ) {
+                            Animation.StaggeredAnimatedItem(index, content = {
+                                VerticalStaggeredCard(
+                                    index = index,
+                                    itemListComponent = itemListComponent,
+                                    itemWithStats = itemWithRelation,
+                                    highlightKeyword = queryValue,
+                                    commentCount = itemWithRelation.item.commentCount,
+                                    onCommentClick = itemWithRelation.item.documentId
+                                        ?.takeIf { it.isNotBlank() }
+                                        ?.let { documentId ->
+                                            {
+                                                itemListComponent.showComments(
+                                                    documentId = documentId,
+                                                    itemTitle = itemWithRelation.item.title,
+                                                    uid = uidFor(ListItemType.fromId(itemWithRelation.item.listType)),
+                                                    localItemId = itemWithRelation.item.id,
+                                                )
+                                            }
+                                        },
+                                    onDeleteRequest = deleteState::request,
+                                    onClick = {
+                                        SearchHistoryStore.addHistoryItem(
+                                            SuggestionModel(queryValue)
+                                        )
+                                        searchComponent.recordClick(itemWithRelation.item.id)
+                                        scope.launch {
+                                            val resource = com.shifenmiao.common.handle.ItemResourceResolver.resolve(
+                                                appDatabase = searchComponent.appDatabase,
+                                                itemId = itemWithRelation.item.id,
+                                                listType = itemWithRelation.item.listType,
+                                            )
+                                            HandleEvent.handleCardClick(
+                                                context = context,
+                                                onNavigate = onNavigate,
+                                                itemWithRelation = itemWithRelation.toItemWithCategories(),
+                                                resource = resource,
                                             )
                                         }
-                                    },
-                                onDeleteRequest = deleteState::request,
-                                onClick = {
-                                    SearchHistoryStore.addHistoryItem(
-                                        SuggestionModel(queryValue)
-                                    )
-                                    searchComponent.recordClick(itemWithRelation.item.id)
-                                    scope.launch {
-                                        val resource = com.shifenmiao.common.handle.ItemResourceResolver.resolve(
-                                            appDatabase = searchComponent.appDatabase,
-                                            itemId = itemWithRelation.item.id,
-                                            listType = itemWithRelation.item.listType,
-                                        )
-                                        HandleEvent.handleCardClick(
-                                            context = context,
-                                            onNavigate = onNavigate,
-                                            itemWithRelation = itemWithRelation.toItemWithCategories(),
-                                            resource = resource,
-                                        )
                                     }
-                                }
-                            )
-                        })
-                    }
-                }
-            }
-            searchMessageEntity.value.forEachIndexed { index, messageEntity ->
-                item {
-                    Animation.StaggeredAnimatedItem(index) {
-                        SearchMessageCard(
-                            id = messageEntity.id,
-                            title = messageEntity.title,
-                            description = messageEntity.answer + messageEntity.question,
-                            queryValue = queryValue,
-                            tag = stringResource(R.string.message_card_tag)
-                        ) {
-                            SearchHistoryStore.addHistoryItem(
-                                SuggestionModel(queryValue)
-                            )
-                            HandleEvent.onNavigateMessageEntity(
-                                onNavigate = onNavigate,
-                                messageEntity = messageEntity
-                            )
+                                )
+                            })
                         }
                     }
                 }
-            }
-            globalSearchResults.value.forEachIndexed { index, result ->
-                item(key = "${result.sourceId}:${result.id}") {
-                    Animation.StaggeredAnimatedItem(index) {
-                        SearchMessageCard(
-                            id = result.id.hashCode(),
-                            title = result.title,
-                            description = result.description,
-                            queryValue = queryValue,
-                            tag = stringResource(result.labelRes),
-                            iconName = result.iconName,
-                        ) {
-                            SearchHistoryStore.addHistoryItem(
-                                SuggestionModel(queryValue)
-                            )
-                            searchComponent.openGlobalSearchResult(
-                                result = result,
-                                context = context,
-                                onNavigate = onNavigate,
-                            )
+                searchMessageEntity.value.forEachIndexed { index, messageEntity ->
+                    item {
+                        Animation.StaggeredAnimatedItem(index) {
+                            SearchMessageCard(
+                                id = messageEntity.id,
+                                title = messageEntity.title,
+                                description = messageEntity.answer + messageEntity.question,
+                                queryValue = queryValue,
+                                tag = stringResource(R.string.message_card_tag)
+                            ) {
+                                SearchHistoryStore.addHistoryItem(
+                                    SuggestionModel(queryValue)
+                                )
+                                HandleEvent.onNavigateMessageEntity(
+                                    onNavigate = onNavigate,
+                                    messageEntity = messageEntity
+                                )
+                            }
                         }
                     }
                 }
-            }
-            if (isGlobalSearchTruncated.value) {
-                item(span = StaggeredGridItemSpan.FullLine) {
-                    Text(
-                        text = stringResource(R.string.search_results_truncated),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
+                globalSearchResults.value.forEachIndexed { index, result ->
+                    item(key = "${result.sourceId}:${result.id}") {
+                        Animation.StaggeredAnimatedItem(index) {
+                            SearchMessageCard(
+                                id = result.id.hashCode(),
+                                title = result.title,
+                                description = result.description,
+                                queryValue = queryValue,
+                                tag = stringResource(result.labelRes),
+                                iconName = result.iconName,
+                            ) {
+                                SearchHistoryStore.addHistoryItem(
+                                    SuggestionModel(queryValue)
+                                )
+                                searchComponent.openGlobalSearchResult(
+                                    result = result,
+                                    context = context,
+                                    onNavigate = onNavigate,
+                                )
+                            }
+                        }
+                    }
+                }
+                if (isGlobalSearchTruncated.value) {
+                    item(span = StaggeredGridItemSpan.FullLine) {
+                        Text(
+                            text = stringResource(R.string.search_results_truncated),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
                 }
             }
         }
@@ -257,6 +265,25 @@ fun SearchResults(
         CommentsHost(
             component = child.component,
             onDismissed = itemListComponent::dismissComments,
+        )
+    }
+}
+
+/** 与首页工具网格同口径：先看内容容器真实宽度，再看字号，大字主动减列。 */
+@Composable
+private fun searchGridColumns(availableWidth: Dp): StaggeredGridCells {
+    val fontMode = AppTheme.uiProfile.fontMode
+    return when {
+        availableWidth < 360.dp -> StaggeredGridCells.Fixed(1)
+        fontMode == AppFontMode.ExtraLarge && availableWidth < 480.dp ->
+            StaggeredGridCells.Fixed(1)
+
+        availableWidth < 600.dp -> StaggeredGridCells.Fixed(2)
+        fontMode == AppFontMode.ExtraLarge && availableWidth < 720.dp ->
+            StaggeredGridCells.Fixed(2)
+
+        else -> StaggeredGridCells.Adaptive(
+            minSize = if (fontMode == AppFontMode.ExtraLarge) 280.dp else 240.dp
         )
     }
 }

@@ -94,7 +94,10 @@ internal fun CodeEditorMoreMenu(
     var expanded by remember { mutableStateOf(false) }
     Box {
         IconButton(onClick = { expanded = true }) {
-            Icon(imageVector = MaterialIcons.Filled.MoreVert, contentDescription = null)
+            Icon(
+                imageVector = MaterialIcons.Filled.MoreVert,
+                contentDescription = stringResource(R.string.open_menu),
+            )
         }
         EnhancedDropdownMenu(
             expanded = expanded,

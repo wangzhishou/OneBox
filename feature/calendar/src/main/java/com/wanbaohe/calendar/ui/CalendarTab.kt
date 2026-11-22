@@ -35,6 +35,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -1266,7 +1267,7 @@ private fun MonthNavigator(
                 )
             }
         }
-        Box {
+        Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.clickable { showYearMenu = true }
@@ -1409,14 +1410,14 @@ private fun MiniInfoItem(label: String, value: String) {
 }
 
 @Composable
-private fun DirectionChip(
+private fun RowScope.DirectionChip(
     label: String,
     direction: String,
     icon: ImageVector,
     containerColor: Color,
     iconColor: Color
 ) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.width(100.dp)) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.weight(1f)) {
         Box(
             modifier = Modifier
                 .size(48.dp)

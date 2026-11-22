@@ -35,12 +35,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
@@ -217,7 +219,8 @@ private fun FullScreenContent(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
-            .imePadding()
+            // 底边只消费一次:键盘打开时取 IME,关闭时取系统导航栏,避免导航栏 + IME 叠加。
+            .windowInsetsPadding(WindowInsets.ime.union(WindowInsets.navigationBars))
     ) {
         AnimatedVisibility(
             visible = contentVisible,
@@ -298,7 +301,6 @@ private fun FullScreenContent(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .navigationBarsPadding()
                     .padding(horizontal = 16.dp, vertical = 10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -309,7 +311,8 @@ private fun FullScreenContent(
                     modifier = Modifier.weight(1f)
                 )
                 if (charCount >= MIN_CHARS_FOR_CLEAR && !isLoading) {
-                    IconButton(onClick = { chatInputComponent.clearInputText() }) {
+                    // 只清空文本，保留全屏写作态（关闭由 X 负责）
+                    IconButton(onClick = { chatInputComponent.clearInputText(keepExpanded = true) }) {
                         Icon(
                             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.DeleteSweep,
                             contentDescription = stringResource(R.string.clear),

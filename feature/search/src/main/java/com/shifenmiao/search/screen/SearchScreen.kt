@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -79,6 +80,8 @@ fun SearchScreen(
             .fillMaxSize()
             .navigationBarsPadding()
             .statusBarsPadding()
+            // 搜索框自动聚焦；键盘弹出时收缩整页内容，结果网格与空态都留在键盘上方。
+            .imePadding()
     ) {
         TopSearchBar(
             isShowBack = true,
@@ -98,7 +101,7 @@ fun SearchScreen(
             Column(
                 modifier = Modifier
                     .padding(
-                        horizontal = AppTheme.dimens.paddingNormal
+                        horizontal = AppTheme.dimens.pageHorizontal
                     )
                     .verticalScroll(rememberScrollState())
             ) {
