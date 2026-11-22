@@ -128,6 +128,10 @@ fun OnDeviceOcrScreen(component: OnDeviceOcrComponent) {
             showResultSheet = true
         }
     }
+    // 顶栏动作：历史页有记录时显示「清空」，结果态显示「结果面板切换」。
+    // 主题入口只在顶栏一个图标都没有时补位（BaseScreen 的默认动作）。
+    val hasClearHistoryAction = state.currentTab == OcrTab.HISTORY && state.history.isNotEmpty()
+    val hasResultToggleAction = state.currentTab != OcrTab.HISTORY && state.preview != null
     BaseScreen(
         title = stringResource(
             if (state.currentTab == OcrTab.HISTORY) R.string.ocr_history_title
@@ -137,17 +141,15 @@ fun OnDeviceOcrScreen(component: OnDeviceOcrComponent) {
         showNavigationBarsPadding = false,
         supportGlassEffect = true,
         actions = {
-            if (state.currentTab == OcrTab.HISTORY) {
-                if (state.history.isNotEmpty()) {
-                    IconButton(onClick = { showClearHistory = true }) {
-                        Icon(
-                            Icons.Outlined.Delete,
-                            contentDescription = stringResource(R.string.ocr_clear_history),
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                        )
-                    }
+            if (hasClearHistoryAction) {
+                IconButton(onClick = { showClearHistory = true }) {
+                    Icon(
+                        Icons.Outlined.Delete,
+                        contentDescription = stringResource(R.string.ocr_clear_history),
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                    )
                 }
-            } else if (state.preview != null) {
+            } else if (hasResultToggleAction) {
                 IconButton(onClick = { showResultSheet = !showResultSheet }) {
                     Icon(
                         imageVector = if (showResultSheet) {
@@ -163,8 +165,9 @@ fun OnDeviceOcrScreen(component: OnDeviceOcrComponent) {
                     )
                 }
             }
-            // 主题快捷设置（BaseScreen 的默认右上角动作）：本页自定义 actions 后需显式补上
-            TopAppBarEmoji()
+            if (!hasClearHistoryAction && !hasResultToggleAction) {
+                TopAppBarEmoji()
+            }
         },
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
