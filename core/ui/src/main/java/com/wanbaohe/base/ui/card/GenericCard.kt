@@ -471,6 +471,7 @@ fun GenericTonalCard(
                         modifier = Modifier.fillMaxWidth(),
                         text = titleText,
                         maxLines = maxTitleLines,
+                        minLines = maxTitleLines,
                         style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.Medium,
                             lineHeight = 20.sp,
