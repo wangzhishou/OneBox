@@ -53,7 +53,7 @@ internal fun inlineStyleIcon(id: String): ImageVector? = when (id) {
     RichTextInlineStyle.ItalicId -> LineEditorIcons.Italic
     RichTextInlineStyle.UnderlineId -> LineEditorIcons.Underline
     RichTextInlineStyle.StrikethroughId -> LineEditorIcons.Strike
-    RichTextInlineStyle.InlineCodeId -> LineEditorIcons.Code
+    RichTextInlineStyle.InlineCodeId -> LineEditorIcons.InlineCode
     "highlight" -> LineEditorIcons.Highlight
     else -> null
 }

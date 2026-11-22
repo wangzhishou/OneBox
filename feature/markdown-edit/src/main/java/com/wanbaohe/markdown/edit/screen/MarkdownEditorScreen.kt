@@ -427,6 +427,7 @@ fun MarkdownEditorScreen(
             NativeMarkdownEditor(
                 state = editorState,
                 modifier = Modifier.fillMaxSize(),
+                useVectorDockIcons = true,
                 onContentChanged = component::markAsDirty,
             )
 
