@@ -28,11 +28,9 @@ package com.wanbaohe.core.ui.theme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.settings.presentation.model.UiFontFamily
 
@@ -41,129 +39,15 @@ fun rememberTypography(
     fontRes: UiFontFamily
 ): Typography {
     val language = LocalConfiguration.current.locales[0].language
-    val typography = rememberBaseTypography(fontRes)
 
-    return remember(typography, language) {
-        typography.withDenseScriptLineHeight(language)
+    return remember(fontRes, language) {
+        Typography(
+            fontFamily = fontRes.fontFamily
+        ).withLocalizedLineHeight(language)
     }
 }
 
-@Composable
-private fun rememberBaseTypography(
-    fontRes: UiFontFamily
-): Typography = remember(fontRes) {
-    derivedStateOf {
-        Typography(
-            displayLarge = TextStyle(
-                fontFamily = fontRes.fontFamily,
-                fontWeight = FontWeight.Normal,
-                fontSize = 57.sp,
-                lineHeight = 64.sp,
-                letterSpacing = (-0.25).sp,
-            ),
-            displayMedium = TextStyle(
-                fontFamily = fontRes.fontFamily,
-                fontWeight = FontWeight.Normal,
-                fontSize = 45.sp,
-                lineHeight = 52.sp,
-                letterSpacing = 0.sp,
-            ),
-            displaySmall = TextStyle(
-                fontFamily = fontRes.fontFamily,
-                fontWeight = FontWeight.Normal,
-                fontSize = 36.sp,
-                lineHeight = 44.sp,
-                letterSpacing = 0.sp,
-            ),
-            headlineLarge = TextStyle(
-                fontFamily = fontRes.fontFamily,
-                fontWeight = FontWeight.Normal,
-                fontSize = 32.sp,
-                lineHeight = 40.sp,
-                letterSpacing = 0.sp
-            ),
-            headlineMedium = TextStyle(
-                fontFamily = fontRes.fontFamily,
-                fontWeight = FontWeight.Normal,
-                fontSize = 28.sp,
-                lineHeight = 36.sp,
-                letterSpacing = 0.sp
-            ),
-            headlineSmall = TextStyle(
-                fontFamily = fontRes.fontFamily,
-                fontWeight = FontWeight.Normal,
-                fontSize = 24.sp,
-                lineHeight = 32.sp,
-                letterSpacing = 0.sp
-            ),
-            titleLarge = TextStyle(
-                fontFamily = fontRes.fontFamily,
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
-                lineHeight = 28.sp,
-                letterSpacing = 0.sp
-            ),
-            titleMedium = TextStyle(
-                fontFamily = fontRes.fontFamily,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                lineHeight = 32.sp,
-                letterSpacing = 0.sp
-            ),
-            titleSmall = TextStyle(
-                fontFamily = fontRes.fontFamily,
-                fontWeight = FontWeight.Bold,
-                fontSize = 14.sp,
-                lineHeight = 20.sp,
-                letterSpacing = 0.sp
-            ),
-            bodyLarge = TextStyle(
-                fontFamily = fontRes.fontFamily,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp,
-                lineHeight = 32.sp,
-                letterSpacing = 0.sp
-            ),
-            bodyMedium = TextStyle(
-                fontFamily = fontRes.fontFamily,
-                fontWeight = FontWeight.Normal,
-                fontSize = 14.sp,
-                lineHeight = 28.sp,
-                letterSpacing = 0.sp,
-            ),
-            bodySmall = TextStyle(
-                fontFamily = fontRes.fontFamily,
-                fontWeight = FontWeight.Normal,
-                fontSize = 12.sp,
-                lineHeight = 18.sp,
-                letterSpacing = 0.sp,
-            ),
-            labelLarge = TextStyle(
-                fontFamily = fontRes.fontFamily,
-                fontWeight = FontWeight.Medium,
-                fontSize = 14.sp,
-                lineHeight = 20.sp,
-                letterSpacing = 0.sp,
-            ),
-            labelMedium = TextStyle(
-                fontFamily = fontRes.fontFamily,
-                fontWeight = FontWeight.Medium,
-                fontSize = 12.sp,
-                lineHeight = 16.sp,
-                letterSpacing = 0.sp,
-            ),
-            labelSmall = TextStyle(
-                fontFamily = fontRes.fontFamily,
-                fontWeight = FontWeight.Medium,
-                fontSize = 11.sp,
-                lineHeight = 16.sp,
-                letterSpacing = 0.sp,
-            ),
-        )
-    }
-}.value
-
-private fun Typography.withDenseScriptLineHeight(language: String): Typography {
+private fun Typography.withLocalizedLineHeight(language: String): Typography {
     if (language !in DenseScriptLanguages) return this
 
     return copy(
@@ -181,7 +65,22 @@ private fun Typography.withDenseScriptLineHeight(language: String): Typography {
         bodySmall = bodySmall.withDenseScriptLineHeight(),
         labelLarge = labelLarge.withDenseScriptLineHeight(),
         labelMedium = labelMedium.withDenseScriptLineHeight(),
-        labelSmall = labelSmall.withDenseScriptLineHeight()
+        labelSmall = labelSmall.withDenseScriptLineHeight(),
+        displayLargeEmphasized = displayLargeEmphasized.withDenseScriptLineHeight(),
+        displayMediumEmphasized = displayMediumEmphasized.withDenseScriptLineHeight(),
+        displaySmallEmphasized = displaySmallEmphasized.withDenseScriptLineHeight(),
+        headlineLargeEmphasized = headlineLargeEmphasized.withDenseScriptLineHeight(),
+        headlineMediumEmphasized = headlineMediumEmphasized.withDenseScriptLineHeight(),
+        headlineSmallEmphasized = headlineSmallEmphasized.withDenseScriptLineHeight(),
+        titleLargeEmphasized = titleLargeEmphasized.withDenseScriptLineHeight(),
+        titleMediumEmphasized = titleMediumEmphasized.withDenseScriptLineHeight(),
+        titleSmallEmphasized = titleSmallEmphasized.withDenseScriptLineHeight(),
+        bodyLargeEmphasized = bodyLargeEmphasized.withDenseScriptLineHeight(),
+        bodyMediumEmphasized = bodyMediumEmphasized.withDenseScriptLineHeight(),
+        bodySmallEmphasized = bodySmallEmphasized.withDenseScriptLineHeight(),
+        labelLargeEmphasized = labelLargeEmphasized.withDenseScriptLineHeight(),
+        labelMediumEmphasized = labelMediumEmphasized.withDenseScriptLineHeight(),
+        labelSmallEmphasized = labelSmallEmphasized.withDenseScriptLineHeight()
     )
 }
 
