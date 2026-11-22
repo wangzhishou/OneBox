@@ -40,7 +40,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenuItem
@@ -135,7 +134,6 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineTeleprompter
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineViewList
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineXiangqi
 import com.t8rin.imagetoolbox.core.resources.icons.Language
-import com.t8rin.imagetoolbox.core.resources.icons.OpenInNew
 import com.t8rin.imagetoolbox.core.resources.icons.DeleteSweep
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.t8rin.imagetoolbox.core.resources.Icons
@@ -286,7 +284,6 @@ private fun ContentListSection(
                     onClick = {
                         favoriteComponent.handleItemClick(item, onNavigate)
                     },
-                    showMenu = true,
                     onEdit = {
                         favoriteComponent.handleItemClick(item, onNavigate)
                     },
@@ -295,7 +292,7 @@ private fun ContentListSection(
                         showDeleteMineDialog.value = true
                     }
                 )
-                Spacer(modifier = Modifier.height(AppTheme.dimens.spaceExtraSmall))
+                Spacer(modifier = Modifier.height(AppTheme.dimens.paddingSmall - timelineItemGap))
             }
             item(key = "${KEY_MINE}_spacer") {
                 Spacer(modifier = Modifier.height(AppTheme.dimens.paddingNormal))
@@ -578,9 +575,8 @@ private fun MineListItemCard(
     itemWithCategories: ItemWithCategoriesAndStats,
     themeIndex: Int,
     onClick: () -> Unit,
-    showMenu: Boolean = false,
-    onEdit: () -> Unit = {},
-    onDelete: () -> Unit = {}
+    onEdit: () -> Unit,
+    onDelete: () -> Unit
 ) {
     val entity = itemWithCategories.item
     val theme = when (themeIndex % 4) {
@@ -597,18 +593,22 @@ private fun MineListItemCard(
         modifier = Modifier.fillMaxWidth(),
         onClick = onClick,
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(
+                    start = AppTheme.dimens.cardContentPadding,
+                    top = 12.dp,
+                    end = AppTheme.dimens.paddingExtraSmall,
+                    bottom = 12.dp
+                ),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(AppTheme.dimens.cardIconSize)
                     .glassMedium(
                         shape = RoundedCornerShape(12.dp),
                         color = iconBgColor,
@@ -622,25 +622,31 @@ private fun MineListItemCard(
                     tint = iconTint
                 )
             }
-            Column(modifier = Modifier.weight(1f)) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceExtraSmall)
+            ) {
                 // 标题给两行:本地草稿/对话标题普遍偏长,单行截断会把「这条是什么」直接切掉
                 Text(
                     text = entity.title.orEmpty(),
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = MaterialTheme.typography.bodyLarge.copy(lineHeight = 24.sp),
                     color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
-                Spacer(modifier = Modifier.height(6.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingSmall)
                 ) {
                     Text(
+                        modifier = Modifier.weight(1f, fill = false),
                         text = TimeFormatter.formatRelativeTime(itemWithCategories.clickTime),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 1
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     if (itemWithCategories.clickCount > 0) {
                         // 使用次数收成胶囊,和上方「精选」卡片里的次数标签同一套观感
@@ -651,7 +657,10 @@ private fun MineListItemCard(
                                     color = iconBgColor,
                                     shape = RoundedCornerShape(50)
                                 )
-                                .padding(horizontal = 8.dp, vertical = 3.dp),
+                                .padding(
+                                    horizontal = AppTheme.dimens.paddingSmall,
+                                    vertical = AppTheme.dimens.paddingTooSmall
+                                ),
                             text = pluralStringResource(
                                 R.plurals.favorite_usage_count,
                                 itemWithCategories.clickCount,
@@ -664,43 +673,36 @@ private fun MineListItemCard(
                     }
                 }
             }
-            if (showMenu) {
-                Box {
-                    IconButton(onClick = { expanded = true }) {
-                        Icon(
-                            imageVector = MaterialIcons.Filled.MoreVert,
-                            contentDescription = "More",
-                            modifier = Modifier.size(16.dp),
-                            tint = MaterialTheme.colorScheme.outlineVariant
-                        )
-                    }
-                    EnhancedDropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false }
-                    ) {
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.edit)) },
-                            onClick = {
-                                expanded = false
-                                onEdit()
-                            }
-                        )
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.delete)) },
-                            onClick = {
-                                expanded = false
-                                onDelete()
-                            }
-                        )
-                    }
+            Box(
+                modifier = Modifier.padding(start = AppTheme.dimens.paddingExtraSmall)
+            ) {
+                IconButton(onClick = { expanded = true }) {
+                    Icon(
+                        imageVector = MaterialIcons.Filled.MoreVert,
+                        contentDescription = stringResource(R.string.card_more_actions),
+                        modifier = Modifier.size(AppTheme.dimens.iconSmallSize),
+                        tint = MaterialTheme.colorScheme.outline
+                    )
                 }
-            } else {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.OpenInNew,
-                    contentDescription = null,
-                    modifier = Modifier.size(16.dp),
-                    tint = MaterialTheme.colorScheme.outlineVariant
-                )
+                EnhancedDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.edit)) },
+                        onClick = {
+                            expanded = false
+                            onEdit()
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.delete)) },
+                        onClick = {
+                            expanded = false
+                            onDelete()
+                        }
+                    )
+                }
             }
         }
     }
