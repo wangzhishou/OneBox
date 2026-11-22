@@ -79,7 +79,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.wanbaohe.base.ui.icon.IconAvatar
+import com.wanbaohe.base.ui.icon.BuildCustomIcon
 import com.shifenmiao.theme.AppFontMode
 import com.shifenmiao.theme.AppTheme
 import com.shifenmiao.theme.AppWidthMode
@@ -260,7 +260,6 @@ private data class GenericTonalCardSpec(
     val contentPadding: Dp,
     val height: Dp,
     val iconAreaHeight: Dp,
-    val iconSize: Dp,
     val contentSpacing: Dp,
     val descriptionLines: Int,
     val isHeightAdaptive: Boolean,
@@ -269,9 +268,9 @@ private data class GenericTonalCardSpec(
 @Composable
 private fun genericTonalCardSpec(maxTitleLines: Int): GenericTonalCardSpec {
     val profile = AppTheme.uiProfile
-    val dimensions = AppTheme.dimens
+    val contentPadding = TonalCardPaletteDefaults.contentPadding
 
-    return remember(profile, dimensions, maxTitleLines) {
+    return remember(profile, contentPadding, maxTitleLines) {
         val narrow = profile.widthMode == AppWidthMode.Narrow
         val baseHeight = when (profile.widthMode) {
             AppWidthMode.Narrow -> if (maxTitleLines > 1) 188.dp else 172.dp
@@ -280,11 +279,10 @@ private fun genericTonalCardSpec(maxTitleLines: Int): GenericTonalCardSpec {
             AppWidthMode.Expanded -> 200.dp
         }
         GenericTonalCardSpec(
-            contentPadding = dimensions.cardContentPadding,
+            contentPadding = contentPadding,
             height = baseHeight,
             iconAreaHeight = 48.dp,
-            iconSize = 40.dp,
-            contentSpacing = 8.dp,
+            contentSpacing = TonalCardPaletteDefaults.contentSpacing,
             descriptionLines = if (narrow) 2 else 3,
             isHeightAdaptive = profile.fontMode != AppFontMode.Regular,
         )
@@ -302,7 +300,7 @@ fun GenericTonalCard(
     title: String,
     description: String,
     modifier: Modifier = Modifier,
-    shape: Shape = MaterialTheme.shapes.large,
+    shape: Shape = TonalCardPaletteDefaults.shape,
     iconName: String? = null,
     maxTitleLines: Int = 1,
     onClick: (() -> Unit)? = null,
@@ -395,8 +393,6 @@ fun GenericTonalCard(
                 contentAlignment = Alignment.CenterStart
             ) {
                 if (iconName != null) {
-                    val iconBg = resolvedPalette.iconContainerColor
-                    val contentTint = resolvedPalette.iconContentColor
                     androidx.compose.animation.AnimatedVisibility(
                         visible = !showActions,
                         enter = fadeIn(animationSpec = tween(200)),
@@ -407,15 +403,9 @@ fun GenericTonalCard(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween,
                         ) {
-                            IconAvatar(
-                                iconName = iconName,
-                                size = spec.iconSize,
-                                shape = RoundedCornerShape(16.dp),
-                                containerColor = iconBg,
-                                tint = contentTint,
-                                glassStyle = TonalCardPaletteDefaults.accentStyle,
-                                iconSizeRatio = 0.6f,
-                            )
+                            TonalCardIcon(resolvedPalette) { iconModifier, tint ->
+                                BuildCustomIcon(iconName = iconName, modifier = iconModifier, tint = tint)
+                            }
 
                             IconButton(
                                 onClick = { showActions = true },

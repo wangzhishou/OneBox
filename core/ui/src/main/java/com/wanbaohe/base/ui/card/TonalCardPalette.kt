@@ -19,12 +19,21 @@
 
 package com.wanbaohe.base.ui.card
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.core.ui.widget.glass.tintedGlassContentColor
 
 @Immutable
@@ -52,6 +61,13 @@ data class TonalCardPalette(
 object TonalCardPaletteDefaults {
     val containerStyle = GlassStyle.Regular
     val accentStyle = GlassStyle.Medium
+    val contentSpacing = 8.dp
+
+    val shape: Shape
+        @Composable get() = MaterialTheme.shapes.large
+
+    val contentPadding: Dp
+        @Composable get() = AppTheme.dimens.cardContentPadding
 
     /** 横排和网格共用同一个四色顺序，底色、图标和标签取自同一组主题角色。 */
     @Composable
@@ -160,5 +176,25 @@ object TonalCardPaletteDefaults {
                 }
             }
         }
+    }
+}
+
+/** 内容卡共用的图标底座；插槽支持图标注册表和页面直接传入的 ImageVector。 */
+@Composable
+fun TonalCardIcon(
+    palette: TonalCardPalette,
+    content: @Composable (Modifier, Color) -> Unit,
+) {
+    Box(
+        modifier = Modifier
+            .size(40.dp)
+            .glassBackground(
+                style = TonalCardPaletteDefaults.accentStyle,
+                shape = TonalCardPaletteDefaults.shape,
+                color = palette.iconContainerColor,
+            ),
+        contentAlignment = Alignment.Center,
+    ) {
+        content(Modifier.size(24.dp), palette.iconContentColor)
     }
 }

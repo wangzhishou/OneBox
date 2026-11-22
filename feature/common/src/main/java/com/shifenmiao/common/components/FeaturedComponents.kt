@@ -53,6 +53,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.base.ui.card.TonalCardPaletteDefaults
+import com.wanbaohe.base.ui.card.TonalCardIcon
+import com.wanbaohe.base.ui.icon.BuildCustomIcon
 import com.wanbaohe.base.ui.icon.IconAvatar
 import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.database.item.entity.ItemWithCategoriesAndStats
@@ -105,7 +107,7 @@ fun FeaturedCard(
             .width(160.dp)
             .wrapContentHeight(),
         onClick = onClick,
-        shape = MaterialTheme.shapes.large,
+        shape = TonalCardPaletteDefaults.shape,
         style = TonalCardPaletteDefaults.containerStyle,
         colors = CardDefaults.cardColors(
             containerColor = palette.containerColor,
@@ -115,19 +117,19 @@ fun FeaturedCard(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp, 12.dp),
-            verticalArrangement = Arrangement.SpaceBetween
+                .padding(TonalCardPaletteDefaults.contentPadding),
+            verticalArrangement = Arrangement.spacedBy(TonalCardPaletteDefaults.contentSpacing)
         ) {
-            IconAvatar(
-                iconName = item.item.iconName?.takeIf { it.isNotEmpty() } ?: item.item.title,
-                containerColor = palette.iconContainerColor,
-                tint = palette.iconContentColor,
-                glassStyle = TonalCardPaletteDefaults.accentStyle,
-            )
+            TonalCardIcon(palette) { iconModifier, tint ->
+                BuildCustomIcon(
+                    iconName = item.item.iconName?.takeIf { it.isNotEmpty() } ?: item.item.title,
+                    modifier = iconModifier,
+                    tint = tint,
+                )
+            }
             Column(
-                verticalArrangement = Arrangement.spacedBy(6.dp)
+                verticalArrangement = Arrangement.spacedBy(TonalCardPaletteDefaults.contentSpacing)
             ) {
-                Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = item.item.title.orEmpty(),
                     style = MaterialTheme.typography.titleMedium,
@@ -135,7 +137,6 @@ fun FeaturedCard(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                Spacer(modifier = Modifier.height(8.dp))
                 if (clickInfo != ClickInfoType.NONE) {
                     Text(
                         text = item.item.description.orEmpty(),
@@ -145,7 +146,6 @@ fun FeaturedCard(
                         minLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
                     val infoText: String? = when (clickInfo) {
                         ClickInfoType.TIME -> {
                             val t = item.clickTime

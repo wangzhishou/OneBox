@@ -86,12 +86,11 @@ import com.shifenmiao.ai.component.AIChatComponent
 import com.shifenmiao.ai.logic.ChatInputComponent
 import com.shifenmiao.base.provider.LocalDataDraftHelper
 import com.wanbaohe.base.ui.CustomChatCard
+import com.wanbaohe.base.ui.card.TonalCardIcon
+import com.wanbaohe.base.ui.card.TonalCardPaletteDefaults
 import com.shifenmiao.base.utils.LoginUtils
 import com.shifenmiao.common.components.SectionTheme
 import com.shifenmiao.common.components.sectionGradient
-import com.shifenmiao.common.components.sectionIconColor
-import com.shifenmiao.common.components.sectionIconContainerColor
-import com.shifenmiao.common.components.sectionThemeForIndex
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.core.R
 import com.shifenmiao.database.data_draft.DataDraftHelper
@@ -108,6 +107,7 @@ import com.shifenmiao.model.remote.defaultChatQuickStartPrompts
 import com.shifenmiao.storage.AppSharedStorage
 import com.shifenmiao.storage.RemoteConfigStorage
 import com.shifenmiao.theme.AppTheme
+import com.shifenmiao.theme.AppFontMode
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
@@ -124,7 +124,6 @@ import com.wanbaohe.core.ui.utils.navigation.screenIconByModule
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
-import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.core.ui.widget.glass.tintedGlassContentColor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -211,8 +210,7 @@ fun PlaceHolderMessageCard(
                 modifier = Modifier.padding(vertical = AppTheme.dimens.paddingNormal),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceSmall)
             ) {
-                // 与下方 ChatQuickStartCard 同一套彩色玻璃管线: PRIMARY 染色 + GlassCard,
-                // 内容色按玻璃混合后的有效底色自动选深浅(与快捷卡片一致)
+                // 欢迎语保留中性底，与下方轮换配色的快捷卡片区分。
                 val greetingTint = sectionGradient(SectionTheme.SURFACE)
                 val greetingContentColor = tintedGlassContentColor(greetingTint)
                 GlassCard(
@@ -493,12 +491,14 @@ fun ChatQuickStartSection(
         label = "ChatQuickStartRefreshRotation"
     )
     val showRefreshButton = starters.size > CHAT_QUICK_START_REFRESH_THRESHOLD
+    val cardGap = AppTheme.dimens.contentGap
+    val columns = if (AppTheme.uiProfile.fontMode == AppFontMode.ExtraLarge) 1 else 2
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .padding(top = TonalCardPaletteDefaults.contentSpacing),
+        verticalArrangement = Arrangement.spacedBy(TonalCardPaletteDefaults.contentSpacing)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -545,18 +545,18 @@ fun ChatQuickStartSection(
                 visibleStarters
             }
             Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(cardGap)
             ) {
-                displayedStarters.chunked(2).forEachIndexed { rowIndex, rowItems ->
+                displayedStarters.chunked(columns).forEachIndexed { rowIndex, rowItems ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(IntrinsicSize.Max),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(cardGap)
                     ) {
                         rowItems.forEachIndexed { columnIndex, item ->
                             key(refreshRound, item.text) {
-                                val itemIndex = rowIndex * 2 + columnIndex
+                                val itemIndex = rowIndex * columns + columnIndex
                                 val entranceProgress = remember { Animatable(0f) }
                                 LaunchedEffect(Unit) {
                                     delay((QUICK_START_STAGGER_DELAY_MILLIS * itemIndex).milliseconds)
@@ -586,7 +586,7 @@ fun ChatQuickStartSection(
                                 )
                             }
                         }
-                        if (rowItems.size == 1) {
+                        if (rowItems.size < columns) {
                             Spacer(modifier = Modifier.weight(1f))
                         }
                     }
@@ -604,49 +604,36 @@ private fun ChatQuickStartCard(
     onClick: () -> Unit
 ) {
     val moduleIcon = remember(item.module) { screenIconByModule(item.module) }
-    // 复用精选卡片的轮换配色: 容器/图标按位置轮换 PRIMARY/SECONDARY/TERTIARY/SURFACE,
-    // 内容色按玻璃混合后的有效底色自动选深浅,保证任意主题下可读
-    val theme = sectionThemeForIndex(themeIndex)
-    val containerColor = sectionGradient(theme)
-    val contentColor = tintedGlassContentColor(containerColor)
-    // 必须用 GlassCard 而不是 GlassSurface: 玻璃关闭时 GlassCard 走 glassFlatSurface,
-    // 按玻璃管线同一套覆盖率把彩色压成平涂(与精选卡片一致); GlassSurface 的降级分支
-    // 只是把颜色自身 alpha 乘 glassBaseAlpha 直接平涂,彩色会深好几倍
+    val palette = TonalCardPaletteDefaults.forIndex(themeIndex)
     GlassCard(
         onClick = onClick,
         modifier = modifier,
-        shape = MaterialTheme.shapes.large,
-        colors = CardDefaults.cardColors(containerColor = containerColor)
+        shape = TonalCardPaletteDefaults.shape,
+        style = TonalCardPaletteDefaults.containerStyle,
+        colors = CardDefaults.cardColors(
+            containerColor = palette.containerColor,
+            contentColor = palette.titleColor,
+        ),
     ) {
         // 图标独占一行置顶: 文案拿满卡片宽度,长文案少折行;
         // 同行图标不再随文案长度上下漂移,网格阅读起点对齐
         Column(
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier.padding(TonalCardPaletteDefaults.contentPadding),
+            verticalArrangement = Arrangement.spacedBy(TonalCardPaletteDefaults.contentSpacing)
         ) {
-            Box(
-                modifier = Modifier
-                    .size(32.dp)
-                    .glassBackground(
-                        style = GlassStyle.Thick,
-                        // 卡片图标底统一用 medium 圆角（默认 12dp），和工具卡/收藏卡/调色板色块一致
-                        shape = MaterialTheme.shapes.medium,
-                        color = sectionIconContainerColor(theme)
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
+            TonalCardIcon(palette) { iconModifier, tint ->
                 Icon(
                     imageVector = moduleIcon
                         ?: com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic,
                     contentDescription = null,
-                    tint = sectionIconColor(theme),
-                    modifier = Modifier.size(18.dp)
+                    tint = tint,
+                    modifier = iconModifier,
                 )
             }
             Text(
                 text = item.text,
-                style = MaterialTheme.typography.bodyMedium,
-                color = contentColor
+                style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 20.sp),
+                color = palette.titleColor
             )
         }
     }
