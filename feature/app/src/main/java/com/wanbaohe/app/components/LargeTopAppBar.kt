@@ -20,6 +20,7 @@
 package com.wanbaohe.app.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.offset
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBarDefaults
@@ -27,8 +28,14 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.TopActions
+import com.shifenmiao.theme.AppTheme
+
+private val MaterialTopAppBarTitleInset = 16.dp
 
 @Composable
 fun AppLargeTopAppBar(
@@ -36,9 +43,16 @@ fun AppLargeTopAppBar(
     scrollBehavior: TopAppBarScrollBehavior,
     appComponent: AppComponent,
 ) {
+    val insetDelta = AppTheme.dimens.pageHorizontal - MaterialTopAppBarTitleInset
+    val titleOffset = if (LocalLayoutDirection.current == LayoutDirection.Ltr) {
+        insetDelta
+    } else {
+        -insetDelta
+    }
+
     LargeTopAppBar(
         title = {
-            TextLogo()
+            TextLogo(modifier = Modifier.offset(x = titleOffset))
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.Transparent,

@@ -22,17 +22,25 @@ package com.shifenmiao.theme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.runtime.compositionLocalOf
 
 
-private val LocalAppDimens = staticCompositionLocalOf {
+internal val LocalAppDimens = compositionLocalOf {
     normalDimensions
+}
+
+internal val LocalAppUiProfile = compositionLocalOf {
+    AppUiProfile.Default
 }
 
 object AppTheme {
     val dimens: Dimensions
         @Composable
         get() = LocalAppDimens.current
+
+    val uiProfile: AppUiProfile
+        @Composable
+        get() = LocalAppUiProfile.current
 
     val colors: AppColors
         @Composable

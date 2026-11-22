@@ -142,7 +142,7 @@ fun EditPromptScreen(
         ) {
             // Category chips
             PromptCategorySelection(
-                modifier = Modifier.padding(horizontal = AppTheme.dimens.paddingNormal, vertical = 4.dp),
+                modifier = Modifier.padding(horizontal = AppTheme.dimens.pageHorizontal, vertical = 4.dp),
                 editPromptComponent = editPromptComponent,
                 uiState = uiState
             )

@@ -51,11 +51,13 @@ import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.modifier.scaleOnTap
 
 @Composable
-fun TextLogo() {
+fun TextLogo(
+    modifier: Modifier = Modifier,
+) {
     val layoutDirection = LocalLayoutDirection.current
     val localUrlNavigator = LocalUrlNavigator.current
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-        Column {
+        Column(modifier = modifier) {
             val titleText = remember {
                 BuildConfig.VERSION_NAME
             }

@@ -230,7 +230,7 @@ private fun ContentListSection(
     LazyColumn(
         state = lazyListState,
         modifier = modifier
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = AppTheme.dimens.pageHorizontal)
             .fillMaxSize(),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(timelineItemGap, Alignment.Top)

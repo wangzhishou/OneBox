@@ -501,7 +501,7 @@ fun ImageSaveBar(
         modifier = modifier
             .fillMaxWidth()
             .padding(
-                horizontal = AppTheme.dimens.paddingNormal,
+                horizontal = AppTheme.dimens.pageHorizontal,
                 vertical = AppTheme.dimens.spaceSmall
             ),
         horizontalArrangement = Arrangement.SpaceBetween,

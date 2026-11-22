@@ -29,9 +29,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -49,7 +51,6 @@ import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
@@ -99,14 +100,13 @@ import com.shifenmiao.online.ui.CreateChoiceCard
 import com.shifenmiao.online.ui.HomeEmptyState
 import com.shifenmiao.online.ui.VerticalStaggeredCard
 import com.shifenmiao.online.ui.aiCreateActionFor
+import com.shifenmiao.theme.AppFontMode
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.domain.performance.StartupTrace
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
-import com.wanbaohe.core.ui.utils.helper.isPortraitOrCompactWidthLayoutAsState
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
-import com.wanbaohe.core.ui.utils.provider.LocalWindowSizeClass
 import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import kotlinx.coroutines.launch
@@ -330,13 +330,13 @@ private fun ChipFilterRow(
             .padding(
                 start = AppTheme.dimens.paddingNormal,
                 end = AppTheme.dimens.paddingNormal,
-                top = 2.dp,
+                top = 4.dp,
                 bottom = 8.dp,
             ),
         // 容器级左右留白，与一级 tab 行、下方卡片网格的 16dp 对齐。
         // 用 contentPadding 只在内容首尾留白，横向滚动时 chip 仍会顶到屏幕边缘，
         // 看起来就像整行没有边界、比上下多出一截。
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         item(key = "chip_all") {
@@ -369,7 +369,7 @@ private fun ChipFilterRow(
 }
 
 /**
- * 二级分类 chip：28dp 高、labelMedium 单行文字、尾部关闭图标。
+ * 二级分类 chip：32dp 高、labelMedium 单行文字、尾部关闭图标。
  * 玻璃浓度与文字对比都压低一档，作为一级 tab 与内容之间的辅助层，不抢注意力。
  *
  * 关闭图标有自己的点击区，命中时不会冒泡到 chip 主体，因此「取消筛选并收起整条 chip 栏」
@@ -407,7 +407,7 @@ private fun CategoryFilterChip(
             selectedLabelColor = selectedContent,
             selectedLeadingIconColor = selectedContent,
         ),
-        modifier = Modifier.height(28.dp),
+        modifier = Modifier.height(32.dp),
         border = null,
         glassBorderWidth = 0.dp,
         label = {
@@ -422,7 +422,7 @@ private fun CategoryFilterChip(
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
-                    modifier = Modifier.size(14.dp),
+                    modifier = Modifier.size(FilterChipDefaults.IconSize),
                     tint = unselectedContent,
                 )
             }
@@ -431,7 +431,7 @@ private fun CategoryFilterChip(
             {
                 Box(
                     modifier = Modifier
-                        .size(28.dp)
+                        .size(32.dp)
                         .clip(CircleShape)
                         .clickable(
                             interactionSource = closeInteractionSource,
@@ -444,7 +444,7 @@ private fun CategoryFilterChip(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
                         contentDescription = closeLabel,
                         tint = selectedContent,
-                        modifier = Modifier.size(14.dp),
+                        modifier = Modifier.size(16.dp),
                     )
                 }
             }
@@ -500,24 +500,25 @@ private fun EmptyOrErrorState(
 
 @Composable
 private fun SkeletonItemGrid(isGrid: Boolean) {
-    LazyVerticalStaggeredGrid(
-        modifier = Modifier
-            .fillMaxWidth(),
-        columns = gridColumns(isGrid),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalItemSpacing = 16.dp,
-        contentPadding = gridContentPadding(),
-        userScrollEnabled = false,
-    ) {
-        items(count = 6, key = { "skeleton_$it" }) { index ->
-            SkeletonCard(seed = index)
+    BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+        LazyVerticalStaggeredGrid(
+            modifier = Modifier.fillMaxWidth(),
+            columns = gridColumns(isGrid, maxWidth),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.contentGap),
+            verticalItemSpacing = AppTheme.dimens.contentGap,
+            contentPadding = gridContentPadding(),
+            userScrollEnabled = false,
+        ) {
+            items(count = 6, key = { "skeleton_$it" }) { index ->
+                SkeletonCard(seed = index)
+            }
         }
     }
 }
 
 @Composable
 private fun SkeletonCard(seed: Int) {
-    val heights = listOf(140.dp, 200.dp, 170.dp, 220.dp, 150.dp, 190.dp)
+    val heights = listOf(140.dp, 200.dp, 168.dp, 220.dp, 152.dp, 188.dp)
     val shape = MaterialTheme.shapes.medium
     Box(
         modifier = Modifier
@@ -582,78 +583,80 @@ private fun ItemGrid(
         message = stringResource(R.string.delete_item_confirm_message, deleteState.title),
     )
 
-    LazyVerticalStaggeredGrid(
-        state = gridState,
-        modifier = Modifier
-            .fillMaxHeight()
-            .nestedScroll(headFollow),
-        columns = gridColumns(isGrid),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalItemSpacing = 16.dp,
-        contentPadding = gridContentPadding(),
-    ) {
-        items(
-            count = pagingItems.itemCount,
-            key = { index -> pagingItemKey(pagingItems, index) },
-        ) { index ->
-            val item = pagingItems[index] ?: return@items
-            VerticalStaggeredCard(
-                index = index,
-                modifier = Modifier.onSizeChanged { size ->
-                    if (size.height > 0) {
-                        siblingCardHeight = with(density) { size.height.toDp() }
-                    }
-                },
-                itemListComponent = itemListComponent,
-                itemWithStats = item,
-                maxTitleLines = cardMaxTitleLines,
-                commentCount = item.item.commentCount,
-                onCommentClick = item.item.documentId?.takeIf { it.isNotBlank() }?.let { documentId ->
-                    {
-                        itemListComponent.showComments(
-                            documentId = documentId,
-                            itemTitle = item.item.title,
-                            uid = uidFor(listType),
-                            localItemId = item.item.id,
-                        )
-                    }
-                },
-                onClick = {
-                    itemListComponent.recordItemClick(item.item.id)
-                    scope.launch {
-                        val resource = com.shifenmiao.common.handle.ItemResourceResolver.resolve(
-                            appDatabase = itemListComponent.appDatabase,
-                            itemId = item.item.id,
-                            listType = item.item.listType,
-                        )
-                        HandleEvent.handleCardClick(
-                            context = context,
-                            onNavigate = onNavigator,
-                            itemWithStats = item,
-                            resource = resource,
-                        )
-                    }
-                },
-                onDeleteRequest = deleteState::request,
-                onCategoryClick = onCategoryBadgeTap
-            )
-        }
-        // 加载/错误状态都不提示用户：有本地数据兜底且更新不频繁。
-        // 保留 Loading 指示器，仅用于告知还有下一页在加载。
-        if (pagingItems.loadState.append is LoadState.Loading) {
-            item(key = "append_loading") {
-                LoadingNextPageItem(modifier = Modifier)
-            }
-        }
-        // 应用(tab)列表不需要"创建新应用"卡片，其它 tab 保留。
-        if (listType != ListItemType.NORMAL) {
-            item(key = "append_create_choice_card") {
-                CreateChoiceCard(
-                    onManualCreate = onManualCreate,
-                    onAiCreate = onAiCreate,
-                    siblingHeight = siblingCardHeight,
-                    showAiCreate = showAiCreate,
+    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+        LazyVerticalStaggeredGrid(
+            state = gridState,
+            modifier = Modifier
+                .fillMaxHeight()
+                .nestedScroll(headFollow),
+            columns = gridColumns(isGrid, maxWidth),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.contentGap),
+            verticalItemSpacing = AppTheme.dimens.contentGap,
+            contentPadding = gridContentPadding(),
+        ) {
+            items(
+                count = pagingItems.itemCount,
+                key = { index -> pagingItemKey(pagingItems, index) },
+            ) { index ->
+                val item = pagingItems[index] ?: return@items
+                VerticalStaggeredCard(
+                    index = index,
+                    modifier = Modifier.onSizeChanged { size ->
+                        if (size.height > 0) {
+                            siblingCardHeight = with(density) { size.height.toDp() }
+                        }
+                    },
+                    itemListComponent = itemListComponent,
+                    itemWithStats = item,
+                    maxTitleLines = cardMaxTitleLines,
+                    commentCount = item.item.commentCount,
+                    onCommentClick = item.item.documentId?.takeIf { it.isNotBlank() }?.let { documentId ->
+                        {
+                            itemListComponent.showComments(
+                                documentId = documentId,
+                                itemTitle = item.item.title,
+                                uid = uidFor(listType),
+                                localItemId = item.item.id,
+                            )
+                        }
+                    },
+                    onClick = {
+                        itemListComponent.recordItemClick(item.item.id)
+                        scope.launch {
+                            val resource = com.shifenmiao.common.handle.ItemResourceResolver.resolve(
+                                appDatabase = itemListComponent.appDatabase,
+                                itemId = item.item.id,
+                                listType = item.item.listType,
+                            )
+                            HandleEvent.handleCardClick(
+                                context = context,
+                                onNavigate = onNavigator,
+                                itemWithStats = item,
+                                resource = resource,
+                            )
+                        }
+                    },
+                    onDeleteRequest = deleteState::request,
+                    onCategoryClick = onCategoryBadgeTap
                 )
+            }
+            // 加载/错误状态都不提示用户：有本地数据兜底且更新不频繁。
+            // 保留 Loading 指示器，仅用于告知还有下一页在加载。
+            if (pagingItems.loadState.append is LoadState.Loading) {
+                item(key = "append_loading") {
+                    LoadingNextPageItem(modifier = Modifier)
+                }
+            }
+            // 应用(tab)列表不需要"创建新应用"卡片，其它 tab 保留。
+            if (listType != ListItemType.NORMAL) {
+                item(key = "append_create_choice_card") {
+                    CreateChoiceCard(
+                        onManualCreate = onManualCreate,
+                        onAiCreate = onAiCreate,
+                        siblingHeight = siblingCardHeight,
+                        showAiCreate = showAiCreate,
+                    )
+                }
             }
         }
     }
@@ -754,25 +757,35 @@ private class HeadFollowConnection(
 private fun uidFor(listType: ListItemType): String = commentUidForListType(listType.id)
 
 @Composable
-private fun gridColumns(isGrid: Boolean): StaggeredGridCells {
-    val isPortraitOrCompact by isPortraitOrCompactWidthLayoutAsState()
-    val isCompact = LocalWindowSizeClass.current.widthSizeClass == WindowWidthSizeClass.Compact
+private fun gridColumns(
+    isGrid: Boolean,
+    availableWidth: Dp,
+): StaggeredGridCells {
+    val fontMode = AppTheme.uiProfile.fontMode
 
     return when {
         !isGrid -> StaggeredGridCells.Adaptive(minSize = 280.dp)
-        isCompact -> StaggeredGridCells.Fixed(count = 2)
-        isPortraitOrCompact -> StaggeredGridCells.Adaptive(minSize = 280.dp)
-        else -> StaggeredGridCells.Adaptive(minSize = 240.dp)
+        availableWidth < 360.dp -> StaggeredGridCells.Fixed(count = 1)
+        fontMode == AppFontMode.ExtraLarge && availableWidth < 480.dp ->
+            StaggeredGridCells.Fixed(count = 1)
+
+        availableWidth < 600.dp -> StaggeredGridCells.Fixed(count = 2)
+        fontMode == AppFontMode.ExtraLarge && availableWidth < 720.dp ->
+            StaggeredGridCells.Fixed(count = 2)
+
+        else -> StaggeredGridCells.Adaptive(
+            minSize = if (fontMode == AppFontMode.ExtraLarge) 280.dp else 240.dp
+        )
     }
 }
 
 
 @Composable
 private fun gridContentPadding() = PaddingValues(
-    start = AppTheme.dimens.paddingNormal,
-    end = AppTheme.dimens.paddingNormal,
+    start = AppTheme.dimens.pageHorizontal,
+    end = AppTheme.dimens.pageHorizontal,
     top = 4.dp,
-    bottom = AppTheme.dimens.paddingNormal,
+    bottom = AppTheme.dimens.pageHorizontal,
 )
 
 private fun pagingItemKey(

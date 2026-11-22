@@ -500,7 +500,7 @@ fun ImageWorkspace(
                                         shape = RoundedCornerShape(16.dp),
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .padding(horizontal = AppTheme.dimens.paddingNormal)
+                                            .padding(horizontal = AppTheme.dimens.pageHorizontal)
                                             .wrapContentHeight()
                                             .heightIn(max = panelTabHeight),
                                     ) {
@@ -533,7 +533,7 @@ fun ImageWorkspace(
                                     shape = RoundedCornerShape(20.dp),
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(horizontal = AppTheme.dimens.paddingNormal),
+                                        .padding(horizontal = AppTheme.dimens.pageHorizontal),
                                 ) {
                                     Column(
                                         modifier = Modifier
@@ -670,7 +670,7 @@ fun ImageWorkspace(
                                     shape = RoundedCornerShape(20.dp),
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(horizontal = AppTheme.dimens.paddingNormal),
+                                        .padding(horizontal = AppTheme.dimens.pageHorizontal),
                                 ) {
                                     ImageSaveBar(
                                         hasSelectedImages = hasSelectedImages,

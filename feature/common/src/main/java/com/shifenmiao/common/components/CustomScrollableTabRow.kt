@@ -74,10 +74,10 @@ fun <T> GenericScrollableTabRow(
     indicatorHeight: Dp = 40.dp,
     trailingContent: (@Composable () -> Unit)? = null,
     modifier: Modifier = Modifier,
-    edgePadding: Dp = AppTheme.dimens.paddingNormal,
+    edgePadding: Dp = AppTheme.dimens.pageHorizontal,
     indicatorShape: Shape,
-    iconSpacing: Dp = 5.dp,
-    iconSize: Dp = 12.dp,
+    iconSpacing: Dp = 4.dp,
+    iconSize: Dp = 16.dp,
     getTitle: @Composable (T) -> String?,
     getIcon: @Composable (T) -> ImageVector? = { null },
     /** 再次点击已选中的 tab 时回调；为 null 时保持原来的 scrollToPage 行为。 */
@@ -102,7 +102,7 @@ fun <T> GenericScrollableTabRow(
 
     val horizontalPadding = 16.dp
     val verticalPadding = 2.dp
-    val tabSpacing = 7.dp
+    val tabSpacing = 8.dp
 
     val unselectedBg = MaterialTheme.colorScheme.surfaceContainerLow
     val selectedBg = MaterialTheme.colorScheme.primaryContainer
@@ -186,7 +186,7 @@ fun <T> GenericScrollableTabRow(
             } else {
                 0.dp
             }
-            val trailingIconSpacerWidth = lerp(0.dp, 3.dp, iconProgress)
+            val trailingIconSpacerWidth = lerp(0.dp, 4.dp, iconProgress)
 
             Box(
                 modifier = Modifier

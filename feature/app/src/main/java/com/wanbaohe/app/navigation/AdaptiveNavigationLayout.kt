@@ -344,15 +344,7 @@ private fun NavigationRailLayout(
             )
         }
         Box(
-            modifier = Modifier
-                .weight(1f)
-                .padding(
-                    horizontal = if (isContentOnly) {
-                        0.dp
-                    } else {
-                        OneBoxDesignSystem.compactSpacing
-                    }
-                )
+            modifier = Modifier.weight(1f)
         ) {
             NavigationContent(
                 childStack = childStack,

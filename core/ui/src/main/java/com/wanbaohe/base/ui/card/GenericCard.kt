@@ -76,10 +76,13 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.wanbaohe.base.ui.icon.IconAvatar
+import com.shifenmiao.theme.AppFontMode
 import com.shifenmiao.theme.AppTheme
+import com.shifenmiao.theme.AppWidthMode
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.core.ui.widget.glass.glassThin
@@ -207,13 +210,13 @@ private fun ActionGridOverlay(
                                             color = buttonContainerColor,
                                         )
                                         .clickable { handleActionClick(index, action) }
-                                        .padding(horizontal = 4.dp, vertical = 10.dp)
+                                        .padding(horizontal = 4.dp, vertical = 8.dp)
                                 ) {
                                     Icon(
                                         imageVector = action.icon,
                                         contentDescription = action.contentDescription,
                                         tint = buttonContentColor,
-                                        modifier = Modifier.size(22.dp)
+                                        modifier = Modifier.size(24.dp)
                                     )
                                     Spacer(modifier = Modifier.height(4.dp))
                                     Text(
@@ -240,16 +243,51 @@ private fun ActionGridOverlay(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .padding(4.dp)
-                    .size(32.dp)
+                    .size(40.dp)
             ) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
                     contentDescription = stringResource(com.shifenmiao.core.R.string.close),
                     tint = buttonContentColor.copy(alpha = CARD_CHROME_ICON_ALPHA),
-                    modifier = Modifier.size(22.dp)
+                    modifier = Modifier.size(24.dp)
                 )
             }
         }
+    }
+}
+
+private data class GenericTonalCardSpec(
+    val contentPadding: Dp,
+    val height: Dp,
+    val iconAreaHeight: Dp,
+    val iconSize: Dp,
+    val contentSpacing: Dp,
+    val descriptionLines: Int,
+    val isHeightAdaptive: Boolean,
+)
+
+@Composable
+private fun genericTonalCardSpec(maxTitleLines: Int): GenericTonalCardSpec {
+    val profile = AppTheme.uiProfile
+    val dimensions = AppTheme.dimens
+
+    return remember(profile, dimensions, maxTitleLines) {
+        val narrow = profile.widthMode == AppWidthMode.Narrow
+        val baseHeight = when (profile.widthMode) {
+            AppWidthMode.Narrow -> if (maxTitleLines > 1) 188.dp else 172.dp
+            AppWidthMode.Standard -> 188.dp
+            AppWidthMode.Medium,
+            AppWidthMode.Expanded -> 200.dp
+        }
+        GenericTonalCardSpec(
+            contentPadding = dimensions.cardContentPadding,
+            height = baseHeight,
+            iconAreaHeight = 48.dp,
+            iconSize = 40.dp,
+            contentSpacing = 8.dp,
+            descriptionLines = if (narrow) 2 else 3,
+            isHeightAdaptive = profile.fontMode != AppFontMode.Regular,
+        )
     }
 }
 
@@ -278,6 +316,7 @@ fun GenericTonalCard(
     highlightedDescription: AnnotatedString? = null,
 ) {
     var showActions by remember { mutableStateOf(false) }
+    val spec = genericTonalCardSpec(maxTitleLines)
     val colorScheme = MaterialTheme.colorScheme
     val resolvedPalette = remember(
         palette,
@@ -337,16 +376,20 @@ fun GenericTonalCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(AppTheme.dimens.paddingNormal)
-                // 高度锁死, 描述固定三行也落在这 188dp 里, 双列才能对齐。
-                // 底部 stateBar 由 weight 优先占位, 见中间段的说明
-                .height(188.dp),
+                .padding(spec.contentPadding)
+                .then(
+                    if (spec.isHeightAdaptive) {
+                        Modifier.heightIn(min = spec.height)
+                    } else {
+                        Modifier.height(spec.height)
+                    }
+                ),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             // 左上角功能图标, 右上角「更多」打开整卡操作面板。
             // 不用外链箭头: 这些入口都在应用内打开, ↗ 会被读成「离开本应用」。
             Box(
-                modifier = Modifier.fillMaxWidth().height(50.dp),
+                modifier = Modifier.fillMaxWidth().height(spec.iconAreaHeight),
                 contentAlignment = Alignment.CenterStart
             ) {
                 if (iconName != null) {
@@ -364,7 +407,7 @@ fun GenericTonalCard(
                         ) {
                             IconAvatar(
                                 iconName = iconName,
-                                size = 40.dp,
+                                size = spec.iconSize,
                                 shape = RoundedCornerShape(16.dp),
                                 containerColor = iconBg,
                                 tint = contentTint,
@@ -373,10 +416,10 @@ fun GenericTonalCard(
 
                             IconButton(
                                 onClick = { showActions = true },
-                                modifier = Modifier.size(32.dp)
+                                modifier = Modifier.size(40.dp)
                             ) {
                                 Icon(
-                                    modifier = Modifier.size(18.dp),
+                                    modifier = Modifier.size(24.dp),
                                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                                     contentDescription = stringResource(
                                         com.shifenmiao.core.R.string.card_more_actions
@@ -391,21 +434,25 @@ fun GenericTonalCard(
                 }
             }
 
-            // Middle section: title + description。
-            // weight 让 Column 先量完顶部图标区和底部 stateBar, 剩余高度才给中间段:
-            // 笔记 tab 的两行标题 + 三行描述在系统大字体下会超过 188dp 预算, 此前
-            // SpaceBetween 出现负间距, 把底部分类 tag 挤出卡片并被外层 clip 裁掉。
-            // 现在中间段最多只占剩余空间, 内容超出时由 clipToBounds 就地裁切,
-            // 分类 tag 始终拿得到自己的位置。weight 必须 fill = true(默认值):
-            // fill = false 时 Column 不约束该子项的测量高度, 长文本照样把 tag 顶出去。
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f)
-                    .clipToBounds()
+                    .then(
+                        if (spec.isHeightAdaptive) {
+                            Modifier
+                        } else {
+                            Modifier
+                                .weight(1f)
+                                .clipToBounds()
+                        }
+                    )
             ) {
                 val titleText = highlightedTitle ?: AnnotatedString(title)
                 if (maxTitleLines == 1) {
+                    val titleStyle = MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.Medium,
+                        lineHeight = 24.sp,
+                    )
                     Text(
                         // fillMaxWidth 先把宽度钉在卡片内;超长标题自动降字号,仍放不下才省略号,
                         // 不再用 marquee —— 长语种(德语等)会永远滚动、静止帧只剩残词
@@ -413,11 +460,11 @@ fun GenericTonalCard(
                         text = titleText,
                         maxLines = 1,
                         autoSize = TextAutoSize.StepBased(
-                            minFontSize = 13.sp,
-                            maxFontSize = MaterialTheme.typography.titleMedium.fontSize,
-                            stepSize = 0.5.sp,
+                            minFontSize = 14.sp,
+                            maxFontSize = titleStyle.fontSize,
+                            stepSize = 1.sp,
                         ),
-                        style = MaterialTheme.typography.titleMedium,
+                        style = titleStyle,
                         overflow = TextOverflow.Ellipsis,
                         color = resolvedPalette.titleColor,
                     )
@@ -426,19 +473,22 @@ fun GenericTonalCard(
                         modifier = Modifier.fillMaxWidth(),
                         text = titleText,
                         maxLines = maxTitleLines,
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            lineHeight = MaterialTheme.typography.titleMedium.fontSize * 1.2
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Medium,
+                            lineHeight = 20.sp,
                         ),
                         overflow = TextOverflow.Ellipsis,
                         color = resolvedPalette.titleColor,
                     )
                 }
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(spec.contentSpacing))
                 CardDescription(
                     text = highlightedDescription ?: AnnotatedString(description),
                     color = resolvedPalette.descriptionColor,
+                    maxLines = spec.descriptionLines,
+                    fadeOverflow = !spec.isHeightAdaptive,
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(spec.contentSpacing))
             }
 
             // Bottom section: stateBar
@@ -466,29 +516,33 @@ fun GenericTonalCard(
     }
 }
 
-/**
- * 描述固定三行高。短文留白, 超出从最后一行渐隐。
- * 行高写死, 避免和卡片的 188dp 互相把网格撑开。
- */
 @Composable
 private fun CardDescription(
     text: AnnotatedString,
     color: Color,
+    maxLines: Int,
+    fadeOverflow: Boolean,
     modifier: Modifier = Modifier,
 ) {
     var overflows by remember(text) { mutableStateOf(false) }
-    val descriptionStyle = MaterialTheme.typography.labelSmall.copy(lineHeight = 16.sp)
+    val descriptionStyle = MaterialTheme.typography.bodySmall.copy(lineHeight = 16.sp)
     Text(
         text = text,
         modifier = modifier
             .fillMaxWidth()
-            .then(if (overflows) Modifier.fadedBottomEdge() else Modifier),
+            .then(
+                if (fadeOverflow && overflows) {
+                    Modifier.fadedBottomEdge()
+                } else {
+                    Modifier
+                }
+            ),
         textAlign = TextAlign.Start,
         style = descriptionStyle,
         color = color,
-        minLines = 3,
-        maxLines = 3,
-        overflow = TextOverflow.Clip,
+        minLines = maxLines,
+        maxLines = maxLines,
+        overflow = if (fadeOverflow) TextOverflow.Clip else TextOverflow.Ellipsis,
         onTextLayout = { overflows = it.hasVisualOverflow },
     )
 }

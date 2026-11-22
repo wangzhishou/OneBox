@@ -23,6 +23,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 interface Dimensions {
+    val pageHorizontal: Dp
+    val contentGap: Dp
+    val cardContentPadding: Dp
+    val contentMaxWidth: Dp
+
     val navigationHeight: Dp
     val cardIconSize: Dp
 
@@ -67,6 +72,15 @@ interface Dimensions {
 }
 
 val normalDimensions: Dimensions = object : Dimensions {
+    override val pageHorizontal: Dp
+        get() = 16.dp
+    override val contentGap: Dp
+        get() = 16.dp
+    override val cardContentPadding: Dp
+        get() = 16.dp
+    override val contentMaxWidth: Dp
+        get() = 840.dp
+
     override val navigationHeight: Dp
         get() = 72.dp
     override val cardIconSize: Dp

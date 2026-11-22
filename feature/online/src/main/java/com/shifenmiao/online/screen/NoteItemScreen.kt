@@ -152,9 +152,9 @@ OneBoxMarkdownContent(
     // 阅读态不再展示分类 chip：分类只在保存/设置弹窗里维护，正文直接从标题下方开始。
     // 页面级已由 BaseScreen 补 navigationBarsPadding；正文末尾再留一段可滚动留白
     paddingValues = PaddingValues(
-        start = AppTheme.dimens.paddingNormal,
+        start = AppTheme.dimens.pageHorizontal,
         top = 0.dp,
-        end = AppTheme.dimens.paddingNormal,
+        end = AppTheme.dimens.pageHorizontal,
         bottom = 8.dp
     ),
 )

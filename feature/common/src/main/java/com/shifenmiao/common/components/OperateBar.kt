@@ -28,7 +28,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -43,7 +42,6 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.wanbaohe.base.ui.card.TonalCardPalette
 import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.database.item.entity.ItemEntity
@@ -91,7 +89,7 @@ fun OperateBar(
             text = resolvedTagText,
             textColor = resolvedTagTextColor,
             onClick = onTagClick,
-            // 占满剩余空间但不强制撑满:短分类贴合文字,长分类截断后由徽章内文字跑马灯滚动
+            // 短分类贴合文字，长分类截断，避免挤压右侧评论入口
             modifier = Modifier.weight(1f, fill = false),
         )
         if (showComment) {
@@ -126,7 +124,7 @@ private fun CommentCountChip(
             if (onClick != null) mod.clickable(onClick = onClick) else mod
         }
         .clearAndSetSemantics { this.contentDescription = contentDescription }
-        .padding(horizontal = 6.dp, vertical = 2.dp)
+        .padding(horizontal = 8.dp, vertical = 4.dp)
 
     Row(
         modifier = baseModifier,
@@ -135,15 +133,14 @@ private fun CommentCountChip(
         Icon(
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineChatBubble,
             contentDescription = null,
-            modifier = Modifier.size(14.dp),
+            modifier = Modifier.size(16.dp),
             tint = iconTint,
         )
         if (count != null) {
-            Spacer(modifier = Modifier.width(3.dp))
+            Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = if (count > 99) "99+" else count.toString(),
                 style = MaterialTheme.typography.labelSmall.copy(
-                    fontSize = 11.sp,
                     fontWeight = FontWeight.Medium,
                 ),
                 color = textColor,
@@ -165,18 +162,11 @@ private fun CategoryTagBadge(
         text = text,
         modifier = modifier
             .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
-            .padding(vertical = 2.dp)
+            .padding(vertical = 4.dp)
             .widthIn(max = 140.dp),
         style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
         color = textColor,
-        // 分类名先在单行里从 labelSmall 往下缩到 9sp,仍放不下才省略号。
-        // 宽度上限避免挤压右侧评论入口。
         maxLines = 1,
-        autoSize = TextAutoSize.StepBased(
-            minFontSize = 9.sp,
-            maxFontSize = MaterialTheme.typography.labelSmall.fontSize,
-            stepSize = 0.5.sp,
-        ),
         overflow = TextOverflow.Ellipsis,
     )
 }

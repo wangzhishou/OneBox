@@ -39,6 +39,7 @@ import com.t8rin.dynamic.theme.DynamicTheme
 import com.t8rin.dynamic.theme.rememberDynamicThemeState
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.rememberAppColorTuple
+import com.shifenmiao.theme.AppAdaptiveProvider
 import com.wanbaohe.core.ui.widget.glass.MeshGradientBackground
 import com.wanbaohe.core.ui.widget.modifier.AutoCornersShape
 
@@ -61,21 +62,23 @@ fun ImageToolboxTheme(
         specVersion = settingsState.themeColorSpec,
         isInvertColors = settingsState.isInvertThemeColors,
         content = {
-            val colorScheme = modifiedColorScheme()
-            if (settingsState.isExpressiveTheme) {
-                // Material 3 Expressive: 2025 色彩规范 + 表达性(弹簧)动效 + 表达性形状
-                MaterialExpressiveTheme(
-                    colorScheme = colorScheme,
-                    motionScheme = MotionScheme.expressive(),
-                    shapes = modifiedShapes(),
-                    content = content
-                )
-            } else {
-                MaterialTheme(
-                    motionScheme = CustomMotionScheme,
-                    colorScheme = colorScheme,
-                    content = content
-                )
+            AppAdaptiveProvider {
+                val colorScheme = modifiedColorScheme()
+                if (settingsState.isExpressiveTheme) {
+                    // Material 3 Expressive: 2025 色彩规范 + 表达性(弹簧)动效 + 表达性形状
+                    MaterialExpressiveTheme(
+                        colorScheme = colorScheme,
+                        motionScheme = MotionScheme.expressive(),
+                        shapes = modifiedShapes(),
+                        content = content
+                    )
+                } else {
+                    MaterialTheme(
+                        motionScheme = CustomMotionScheme,
+                        colorScheme = colorScheme,
+                        content = content
+                    )
+                }
             }
         }
     )
