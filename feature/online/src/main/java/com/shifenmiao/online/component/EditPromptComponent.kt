@@ -20,12 +20,11 @@
 package com.shifenmiao.online.component
 
 import androidx.compose.runtime.Immutable
+import androidx.room.withTransaction
 import com.arkivanov.decompose.ComponentContext
 import com.shifenmiao.core.R
 import com.shifenmiao.database.AppDatabase
-import com.shifenmiao.database.activity.ActivityLogRecorder
 import com.shifenmiao.database.data_draft.DataDraftHelper
-import com.shifenmiao.database.data_draft.dao.DataDraftDao
 import com.shifenmiao.database.data_draft.entity.DataDraftEntity
 import com.shifenmiao.database.item.entity.Category
 import com.shifenmiao.database.item.entity.ItemCategoryCrossRef
@@ -45,12 +44,12 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 
@@ -62,8 +61,8 @@ data class EditPromptUiState(
     val description: String = "",
     val data: String = "",
     val placeholder: String = "",
-    val allCategories: List<Category> = emptyList(),
     val selectedCategories: Set<Category> = emptySet(),
+    val isLoading: Boolean = true,
     val isSaving: Boolean = false,
     val isDirty: Boolean = false,
     val isEditing: Boolean = false
@@ -75,10 +74,8 @@ class EditPromptComponent @AssistedInject internal constructor(
     @Assisted val onGoBack: () -> Unit,
     @Assisted val onResult: ScreenCallback? = null,
     dispatchersHolder: DispatchersHolder,
-    appDatabase: AppDatabase,
+    private val appDatabase: AppDatabase,
     private val dataDraftHelper: DataDraftHelper,
-    private val dataDraftDao: DataDraftDao,
-    private val activityLogRecorder: ActivityLogRecorder
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
     private val itemDao = appDatabase.itemEntityDao()
@@ -96,7 +93,13 @@ class EditPromptComponent @AssistedInject internal constructor(
     init {
         componentScope.launch(ioDispatcher) {
             coroutineScope {
-                launch { loadDraft() }
+                launch {
+                    try {
+                        loadDraft()
+                    } finally {
+                        _uiState.update { it.copy(isLoading = false) }
+                    }
+                }
                 launch { observeCategories() }
             }
             onResult?.invoke(
@@ -111,6 +114,10 @@ class EditPromptComponent @AssistedInject internal constructor(
     private suspend fun loadDraft() {
         val draft = dataDraftHelper.getById(draftId) ?: return
         val draftCategoryIds = DataDraftHelper.decodeCategoryIds(draft.selectedCategoryIds)
+        val draftCategories = if (draftCategoryIds.isEmpty()) emptySet() else {
+            categoryDao.getAllCategories().firstOrNull().orEmpty()
+                .filter { it.id in draftCategoryIds }.toSet()
+        }
         val draftPromptId = draft.relatedEntityId?.takeIf { it > 0 }
 
         val draftItemId = draft.itemId
@@ -123,7 +130,7 @@ class EditPromptComponent @AssistedInject internal constructor(
                 val promptContent = promptEntity?.prompt ?: ""
                 val placeholder = promptEntity?.placeholder ?: ""
                 val selectedCategories = if (draftCategoryIds.isNotEmpty()) {
-                    itemWithRelation.categories.filter { it.id in draftCategoryIds }.toSet()
+                    draftCategories
                 } else {
                     itemWithRelation.categories.toSet()
                 }
@@ -153,7 +160,7 @@ class EditPromptComponent @AssistedInject internal constructor(
             }
             if (itemWithRelation != null || promptEntity != null) {
                 val selectedCategories = if (draftCategoryIds.isNotEmpty()) {
-                    itemWithRelation?.categories?.filter { it.id in draftCategoryIds }?.toSet().orEmpty()
+                    draftCategories
                 } else {
                     itemWithRelation?.categories?.toSet().orEmpty()
                 }
@@ -184,39 +191,13 @@ class EditPromptComponent @AssistedInject internal constructor(
                 title = draft.title,
                 description = draft.description,
                 data = draft.data,
+                selectedCategories = draftCategories,
             )
         }
     }
 
     private suspend fun observeCategories() {
-        categoryDao.getAllCategories()
-            .onEach { categories ->
-                _categories.value = categories
-                _uiState.update { state ->
-                    val draft = dataDraftHelper.getById(draftId)
-                    val draftCategoryIds = draft?.let {
-                        DataDraftHelper.decodeCategoryIds(it.selectedCategoryIds)
-                    } ?: emptySet()
-                    val existingById = categories.associateBy { it.id }
-
-                    val selected: Set<Category> = when {
-                        state.selectedCategories.isNotEmpty() ->
-                            state.selectedCategories.mapNotNull { existingById[it.id] }.toSet()
-                        draftCategoryIds.isNotEmpty() ->
-                            draftCategoryIds.mapNotNull { existingById[it] }.toSet()
-                        else -> emptySet()
-                    }
-                    state.copy(
-                        allCategories = categories,
-                        selectedCategories = selected
-                    )
-                }
-            }
-            .collect { }
-    }
-
-    fun onTitleChange(title: String) {
-        _uiState.update { it.copy(title = title, isDirty = true) }
+        categoryDao.getAllCategories().collect { _categories.value = it }
     }
 
     fun markAsDirty() {
@@ -225,18 +206,15 @@ class EditPromptComponent @AssistedInject internal constructor(
 
     fun savePromptData(
         markdown: String,
+        title: String,
+        description: String,
+        selectedCategoryIds: Set<Int>,
         onSuccess: () -> Unit,
         onFailure: (String) -> Unit
     ) {
-        _uiState.update { it.copy(data = markdown, isDirty = true) }
-        saveItem(onSuccess, onFailure)
-    }
-
-    private fun saveItem(
-        onSuccess: () -> Unit,
-        onFailure: (String) -> Unit
-    ) {
-        val currentState = _uiState.value
+        val state = _uiState.value
+        if (state.isLoading || state.isSaving) return
+        val currentState = state.copy(data = markdown, title = title, description = description)
         if (currentState.title.isBlank()) {
             onFailure(AppContext.getString(R.string.error_title_empty))
             return
@@ -245,10 +223,39 @@ class EditPromptComponent @AssistedInject internal constructor(
             onFailure(AppContext.getString(R.string.error_data_empty))
             return
         }
-        val now = System.currentTimeMillis()
         _uiState.update { it.copy(isSaving = true) }
 
         componentScope.launch(ioDispatcher) {
+            val itemId = try {
+                appDatabase.withTransaction { persistPrompt(currentState, selectedCategoryIds) }
+            } catch (error: CancellationException) {
+                throw error
+            } catch (_: Exception) {
+                withContext(Dispatchers.Main) {
+                    onFailure(AppContext.getString(R.string.prompt_save_failed))
+                }
+                return@launch
+            } finally {
+                _uiState.update { it.copy(isSaving = false) }
+            }
+            _uiState.update { it.copy(isDirty = false) }
+            onResult?.invoke(
+                ScreenCallbackResult.saved(
+                    id = itemId,
+                    message = "Prompt 已保存",
+                    extra = mapOf("promptId" to itemId)
+                )
+            )
+            withContext(Dispatchers.Main) { onSuccess() }
+        }
+    }
+
+    private suspend fun persistPrompt(
+        currentState: EditPromptUiState,
+        selectedCategoryIds: Set<Int>,
+    ): Int {
+        val now = System.currentTimeMillis()
+        return run {
             val draft = dataDraftHelper.getById(draftId)
             val targetItemId = draft?.itemId
                 ?: currentState.itemId.takeIf { it != 0 }
@@ -293,10 +300,10 @@ class EditPromptComponent @AssistedInject internal constructor(
             chatPromptDao.insertPromptLink(ItemPromptLink(itemId = itemId, promptId = promptId))
 
             categoryDao.deleteCategoriesByItemId(itemId)
-            val selectedCategories = if (currentState.selectedCategories.isEmpty()) {
+            val existingCategories = categoryDao.getAllCategories().firstOrNull().orEmpty()
+                .filter { it.id in selectedCategoryIds }
+            val selectedCategories = existingCategories.ifEmpty {
                 listOf(ensureCategoryByName(AppContext.getString(R.string.create_ai_chat_prompt_default_category)))
-            } else {
-                currentState.selectedCategories.toList()
             }
             selectedCategories.forEach { category ->
                 itemDao.insertItemCategoryCrossRef(
@@ -304,48 +311,23 @@ class EditPromptComponent @AssistedInject internal constructor(
                 )
             }
 
-            _uiState.update { it.copy(isSaving = false, isDirty = false) }
-
             dataDraftHelper.updateDraft(
                 draftId = draftId,
                 title = currentState.title,
                 description = currentState.description,
                 data = currentState.data,
+                selectedCategoryIds = selectedCategories.map { it.id }.toSet(),
                 status = DataDraftEntity.STATUS_SUCCESS,
             )
-
-            onResult?.invoke(
-                ScreenCallbackResult.saved(
-                    id = itemId,
-                    message = "Prompt 已保存",
-                    extra = mapOf("promptId" to itemId)
-                )
-            )
-
-            withContext(Dispatchers.Main) {
-                onSuccess()
-            }
+            itemId
         }
     }
 
-    fun saveCategories(it: List<Category>) {
-        componentScope.launch(ioDispatcher) {
-            _uiState.update { state ->
-                state.copy(selectedCategories = it.toMutableSet(), isDirty = true)
-            }
-        }
-    }
-
-    fun insertCategoryByName(name: String) {
+    fun addCategory(name: String, onAdded: (Int) -> Unit) {
         if (name.isBlank()) return
         componentScope.launch(ioDispatcher) {
             val category = ensureCategoryByName(name)
-            _uiState.update { state ->
-                state.copy(
-                    selectedCategories = state.selectedCategories + category,
-                    isDirty = true
-                )
-            }
+            withContext(Dispatchers.Main) { onAdded(category.id) }
         }
     }
 

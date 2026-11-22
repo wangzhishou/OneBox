@@ -66,4 +66,5 @@
     <string name="note_ai_prompt_checklist">Extract the actionable to-dos from this note and output a Markdown task list (- [ ]), one action per line, with dates or owners when present. Start with a "## To-dos" heading and output only that list.</string>
     <string name="note_ai_prompt_summary">Write a 2-4 sentence summary of this note starting with a "## Summary" heading. Output only the summary section.</string>
 
+    <string name="prompt_save_confirm_title">Save prompt</string>
 </resources>

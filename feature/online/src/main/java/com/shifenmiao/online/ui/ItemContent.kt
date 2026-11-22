@@ -47,8 +47,6 @@ import com.shifenmiao.model.reorderable.ReorderableType
 import com.shifenmiao.online.component.CreateHtmlComponent
 import com.shifenmiao.online.component.CreateHtmlUiState
 import com.shifenmiao.online.component.CreateNoteComponent
-import com.shifenmiao.online.component.EditPromptComponent
-import com.shifenmiao.online.component.EditPromptUiState
 import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
@@ -159,23 +157,6 @@ fun HtmlCategorySelection(
         selectedCategories = uiState.selectedCategories,
         reorderableType = createHtmlComponent.reorderableType,
         onSaveCategories = { createHtmlComponent.saveCategories(it) },
-    )
-}
-
-// ===================== CategorySelection for EditPromptComponent =====================
-
-@Composable
-fun PromptCategorySelection(
-    modifier: Modifier = Modifier,
-    editPromptComponent: EditPromptComponent,
-    uiState: EditPromptUiState
-) {
-    DraftCategorySelection(
-        modifier = modifier,
-        categories = editPromptComponent.categories,
-        selectedCategories = uiState.selectedCategories,
-        reorderableType = editPromptComponent.reorderableType,
-        onSaveCategories = { editPromptComponent.saveCategories(it) },
     )
 }
 

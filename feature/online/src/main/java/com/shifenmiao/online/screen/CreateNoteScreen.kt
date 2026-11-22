@@ -64,7 +64,7 @@ import com.shifenmiao.online.component.NoteAiAction
 import com.shifenmiao.online.component.NoteAiApplyMode
 import com.shifenmiao.online.R as OnlineR
 import com.shifenmiao.online.ui.NoteAiRewriteSheet
-import com.shifenmiao.online.ui.NoteSaveConfirmDialog
+import com.shifenmiao.online.ui.ContentSaveConfirmDialog
 import com.t8rin.imagetoolbox.core.resources.Icons as OneBoxIcons
 import com.t8rin.imagetoolbox.core.resources.icons.NoteAdd
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
@@ -421,8 +421,10 @@ fun CreateNoteScreen(
         },
     )
 
-    NoteSaveConfirmDialog(
+    ContentSaveConfirmDialog(
         visible = showSaveConfirm,
+        dialogTitle = stringResource(CommonR.string.note_save_confirm_title),
+        dialogIcon = OneBoxIcons.Outlined.NoteAdd,
         title = draftTitle,
         description = draftDescription,
         categories = categories,

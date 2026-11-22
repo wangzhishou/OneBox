@@ -42,6 +42,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.R as CommonR
@@ -49,7 +50,6 @@ import com.shifenmiao.common.components.category.AddCategoryDialog
 import com.shifenmiao.core.R as CoreR
 import com.shifenmiao.database.item.entity.Category
 import com.t8rin.imagetoolbox.core.resources.Icons
-import com.t8rin.imagetoolbox.core.resources.icons.NoteAdd
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRobot
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSettings
@@ -62,28 +62,27 @@ import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
 import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
 
 /**
- * 保存笔记前的确认弹窗。
- *
- * 这里把「标题 / 简介 / 分类」三个业务字段集中展示并可当场修改，
- * 用户不需要先退出正文去补信息；右上角提供 AI 一键生成，失败时保留本地摘要。
+ * 笔记和提示词共用的保存确认表单；AI 生成由调用方按需接入。
  */
 @Composable
-fun NoteSaveConfirmDialog(
+internal fun ContentSaveConfirmDialog(
     visible: Boolean,
+    dialogTitle: String,
+    dialogIcon: ImageVector,
     title: String,
     description: String,
     categories: List<Category>,
     selectedCategoryIds: Set<Int>,
     isSaving: Boolean,
-    isGenerating: Boolean,
     onTitleChange: (String) -> Unit,
     onDescriptionChange: (String) -> Unit,
     onToggleCategory: (Category) -> Unit,
-    onGenerate: () -> Unit,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
     onCreateCategory: ((String) -> Unit)? = null,
     onManageCategories: (() -> Unit)? = null,
+    isGenerating: Boolean = false,
+    onGenerate: (() -> Unit)? = null,
 ) {
     var showAddCategoryDialog by remember(visible) { mutableStateOf(false) }
 
@@ -94,12 +93,12 @@ fun NoteSaveConfirmDialog(
         },
         icon = {
             Icon(
-                imageVector = Icons.Outlined.NoteAdd,
+                imageVector = dialogIcon,
                 contentDescription = null,
             )
         },
         title = {
-            Text(text = stringResource(CommonR.string.note_save_confirm_title))
+            Text(text = dialogTitle)
         },
         text = {
             Column(
@@ -119,8 +118,7 @@ fun NoteSaveConfirmDialog(
                     onValueChange = onTitleChange,
                     modifier = Modifier.fillMaxWidth(),
                     enabled = !isSaving,
-                    // 用笔记自己的「标题」文案；CoreR.string.title 的中文是「职位」，曾被误用到笔记上。
-                    label = { Text(stringResource(CoreR.string.note_edit_title)) },
+                    label = { Text(stringResource(CoreR.string.create_ai_common_title_label)) },
                     singleLine = true,
                     maxLines = 1,
                     style = GlassStyle.Medium,
@@ -137,7 +135,7 @@ fun NoteSaveConfirmDialog(
                     maxLines = 5,
                     style = GlassStyle.Medium,
                 )
-                Row(
+                if (onGenerate != null) Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End,
                 ) {
@@ -199,6 +197,7 @@ fun NoteSaveConfirmDialog(
                         // 分类管理从 ⋮ 菜单移到分类标题右侧，和「新增分类」一起都在这个弹窗里。
                         GlassTextButton(
                             onClick = onManageCategories,
+                            enabled = !isSaving,
                             style = GlassStyle.Thin,
                             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
                         ) {
@@ -216,34 +215,30 @@ fun NoteSaveConfirmDialog(
                         }
                     }
                 }
-                if (categories.isEmpty()) {
+                if (categories.isEmpty() && onCreateCategory == null) {
                     Text(
                         text = stringResource(CommonR.string.note_category_empty_hint),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
-                } else {
-                    FlowRow(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(6.dp),
-                    ) {
-                        if (onCreateCategory != null) {
-                            NoteAddCategoryChip(onClick = { showAddCategoryDialog = true })
-                        }
-                        // 最新更新的分类排最前，与展示/编辑页的分类栏顺序一致。
-                        categories
-                            .sortedWith(
-                                compareByDescending<Category> { it.updatedAt }
-                                    .thenBy { it.name }
-                            )
-                            .forEach { category ->
-                                NoteCategoryChip(
-                                    name = category.name,
-                                    selected = category.id in selectedCategoryIds,
-                                    onClick = { onToggleCategory(category) },
-                                )
-                            }
+                }
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(6.dp),
+                ) {
+                    if (onCreateCategory != null) {
+                        NoteAddCategoryChip(onClick = { if (!isSaving) showAddCategoryDialog = true })
                     }
+                    // 最新更新的分类排最前，与展示/编辑页的分类栏顺序一致。
+                    categories
+                        .sortedWith(compareByDescending<Category> { it.updatedAt }.thenBy { it.name })
+                        .forEach { category ->
+                            NoteCategoryChip(
+                                name = category.name,
+                                selected = category.id in selectedCategoryIds,
+                                onClick = { if (!isSaving) onToggleCategory(category) },
+                            )
+                        }
                 }
             }
         },

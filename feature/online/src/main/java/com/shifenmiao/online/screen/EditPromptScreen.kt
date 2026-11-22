@@ -19,30 +19,22 @@
 
 package com.shifenmiao.online.screen
 
-import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.editor.NativeMarkdownEditor
 import com.shifenmiao.common.editor.rememberNativeMarkdownEditorState
 import com.shifenmiao.common.logic.AppComponent
@@ -50,15 +42,17 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.online.component.EditPromptComponent
-import com.shifenmiao.online.ui.PromptCategorySelection
-import com.shifenmiao.theme.AppTheme
+import com.shifenmiao.online.R as OnlineR
+import com.shifenmiao.online.ui.ContentSaveConfirmDialog
+import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
+import com.wanbaohe.com.string.MarkdownSummary
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
+import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBarType
-import com.wanbaohe.core.ui.widget.text.EditorTitleField
-import kotlinx.coroutines.Dispatchers
+import com.wanbaohe.icons.SolidEditorIcons
 import kotlinx.coroutines.launch
-import com.t8rin.imagetoolbox.core.resources.icons.Check
 
 @Composable
 fun EditPromptScreen(
@@ -66,14 +60,27 @@ fun EditPromptScreen(
     appComponent: AppComponent
 ) {
     val uiState by editPromptComponent.uiState.collectAsState()
+    val categories by editPromptComponent.categories.collectAsState()
+    val settings = LocalSettingsState.current
     val showExitDialog = rememberSaveable { mutableStateOf(false) }
-
     val scope = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
+    val onNavigate = LocalOnNavigate.current
+    var pendingMarkdown by remember { mutableStateOf<String?>(null) }
+    var isPreparing by remember { mutableStateOf(false) }
+    var draftTitle by rememberSaveable { mutableStateOf<String?>(null) }
+    var draftDescription by rememberSaveable { mutableStateOf<String?>(null) }
+    var selectedCategoryIds by rememberSaveable { mutableStateOf<IntArray?>(null) }
 
     val editorState = rememberNativeMarkdownEditorState(uiState.data)
 
     val onBack = {
-        if (uiState.isDirty) {
+        if (uiState.isSaving || isPreparing) {
+            Unit
+        } else if (
+            settings.enableToolExitConfirmation &&
+            (uiState.isDirty || draftTitle != null || draftDescription != null || selectedCategoryIds != null)
+        ) {
             showExitDialog.value = true
         } else {
             appComponent.onGoBack()
@@ -86,83 +93,98 @@ fun EditPromptScreen(
             editorState.load(uiState.data)
         }
     }
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-    val titlePlaceholder = if (uiState.isEditing) {
-        stringResource(R.string.edit_prompt)
-    } else {
-        stringResource(R.string.new_prompt)
-    }
-    BaseScreen(
-        modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-        title = {
-            EditorTitleField(
-                value = uiState.title,
-                onValueChange = editPromptComponent::onTitleChange,
-                placeholder = titlePlaceholder,
-                modifier = Modifier.fillMaxWidth()
-            )
-        },
-        scrollBehavior = scrollBehavior,
-        type = EnhancedTopAppBarType.Medium,
-        onGoBack = onBack,
-        actions = {
-            IconButton(
-                onClick = {
-                    scope.launch {
-                        val markdown = editorState.exportMarkdown()
-                        editPromptComponent.savePromptData(
-                            markdown = markdown,
-                            onSuccess = {
-                                scope.launch(Dispatchers.Main) {
-                                    AppToastHost.showToast(
-                                        AppContext.getString(R.string.save_success)
-                                    )
-                                    appComponent.onGoBack()
-                                }
-                            },
-                            onFailure = { errorMsg ->
-                                AppToastHost.showToast(errorMsg)
-                            }
-                        )
-                    }
+    fun openSaveConfirm() {
+        if (isPreparing || uiState.isLoading || uiState.isSaving) return
+        focusManager.clearFocus(force = true)
+        isPreparing = true
+        scope.launch {
+            try {
+                val markdown = editorState.exportMarkdown()
+                if (markdown.isBlank()) {
+                    AppToastHost.showToast(AppContext.getString(R.string.error_data_empty))
+                    return@launch
                 }
-            ) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check,
-                    contentDescription = stringResource(R.string.done_button),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                pendingMarkdown = markdown
+            } finally {
+                isPreparing = false
             }
-        },
-        supportGlassEffect = false,
-        showNavigationBarsPadding = true
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            // Category chips
-            PromptCategorySelection(
-                modifier = Modifier.padding(horizontal = AppTheme.dimens.pageHorizontal, vertical = 4.dp),
-                editPromptComponent = editPromptComponent,
-                uiState = uiState
-            )
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            // Markdown 编辑器（纯 Kotlin/Compose）
-            NativeMarkdownEditor(
-                state = editorState,
-                modifier = Modifier
-                    .nestedScroll(scrollBehavior.nestedScrollConnection)
-                    .weight(1f),
-                onContentChanged = {
-                    editPromptComponent.markAsDirty()
-                }
-            )
         }
     }
 
-    BackHandler(onBack = onBack)
+    BaseScreen(
+        title = {},
+        type = EnhancedTopAppBarType.Normal,
+        onGoBack = onBack,
+        actions = {
+            IconButton(
+                onClick = ::openSaveConfirm,
+                enabled = !uiState.isLoading && !uiState.isSaving && !isPreparing,
+            ) {
+                Icon(
+                    imageVector = SolidEditorIcons.Save,
+                    contentDescription = stringResource(com.shifenmiao.common.R.string.common_save),
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
+            }
+        },
+        showNavigationBarsPadding = false,
+    ) {
+        NativeMarkdownEditor(
+            state = editorState,
+            modifier = Modifier.fillMaxWidth().weight(1f),
+            useVectorDockIcons = true,
+            onContentChanged = editPromptComponent::markAsDirty,
+        )
+    }
+
+    val markdown = pendingMarkdown
+    if (markdown != null) {
+        val suggested = remember(markdown) { MarkdownSummary.derive(markdown) }
+        val title = draftTitle ?: uiState.title.ifBlank { suggested.title }
+        val description = draftDescription ?: uiState.description.ifBlank { suggested.description }
+        val selected = selectedCategoryIds?.toSet() ?: uiState.selectedCategories.map { it.id }.toSet()
+        ContentSaveConfirmDialog(
+            visible = true,
+            dialogTitle = stringResource(OnlineR.string.prompt_save_confirm_title),
+            dialogIcon = SolidEditorIcons.Save,
+            title = title,
+            description = description,
+            categories = categories,
+            selectedCategoryIds = selected,
+            isSaving = uiState.isSaving,
+            onTitleChange = { draftTitle = it },
+            onDescriptionChange = { draftDescription = it },
+            onToggleCategory = { category ->
+                selectedCategoryIds = (if (category.id in selected) selected - category.id else selected + category.id)
+                    .toIntArray()
+            },
+            onConfirm = {
+                editPromptComponent.savePromptData(
+                    markdown = markdown,
+                    title = title.trim(),
+                    description = description.trim(),
+                    selectedCategoryIds = selected,
+                    onSuccess = {
+                        pendingMarkdown = null
+                        AppToastHost.showToast(AppContext.getString(R.string.save_success))
+                        appComponent.onGoBack()
+                    },
+                    onFailure = { AppToastHost.showToast(it) },
+                )
+            },
+            onDismiss = { pendingMarkdown = null },
+            onCreateCategory = { name ->
+                editPromptComponent.addCategory(name) { id ->
+                    val ids = selectedCategoryIds?.toSet() ?: uiState.selectedCategories.map { it.id }.toSet()
+                    selectedCategoryIds = (ids + id).toIntArray()
+                }
+            },
+            onManageCategories = {
+                pendingMarkdown = null
+                onNavigate(Screen.Reorderable(type = editPromptComponent.reorderableType))
+            },
+        )
+    }
 
     ExitWithoutSavingDialog(
         onExit = {
