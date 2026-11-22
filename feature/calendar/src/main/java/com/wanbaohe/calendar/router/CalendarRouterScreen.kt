@@ -74,7 +74,7 @@ fun CalendarRouterScreen(component: CalendarRouterComponent) {
         title = {
             Text(
                 text = titleText,
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.titleMedium
             )
         },
         onGoBack = component.onGoBack,

@@ -102,8 +102,7 @@ fun AddRecordScreen(component: RecordEditorComponent) {
                     if (component.isEditing) R.string.record_center_edit_record
                     else R.string.record_center_add_record
                 ) + definition?.let { " · ${stringResource(it.titleRes)}" }.orEmpty(),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleMedium,
             )
         },
         onGoBack = component.onGoBack,

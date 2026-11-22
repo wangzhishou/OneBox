@@ -80,7 +80,7 @@ fun WebViewTopAppBar(
                 text = title,
                 maxLines = 1,
                 overflow = TextOverflow.Clip,
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.titleMedium
             )
         },
         navigationIcon = {

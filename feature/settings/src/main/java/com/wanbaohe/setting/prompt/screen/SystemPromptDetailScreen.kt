@@ -179,9 +179,8 @@ fun SystemPromptDetailScreen(
             title = {
                 Text(
                     text = prompt?.title ?: "",
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontWeight = FontWeight.Bold
                 )
             },
             onGoBack = component.onGoBack,

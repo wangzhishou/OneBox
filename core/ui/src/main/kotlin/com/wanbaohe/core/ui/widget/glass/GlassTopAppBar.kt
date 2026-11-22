@@ -28,6 +28,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
@@ -75,7 +76,7 @@ fun GlassTopAppBar(
 
     if (!settingsState.isGlassAlphaEnabled) {
         TopAppBar(
-            title = title,
+            title = { ProvideTextStyle(MaterialTheme.typography.titleMedium) { title() } },
             modifier = modifier,
             navigationIcon = navigationIcon,
             actions = actions,
@@ -108,7 +109,7 @@ fun GlassTopAppBar(
     ) {
         CompositionLocalProvider(LocalContentColor provides contentColor) {
             TopAppBar(
-                title = title,
+                title = { ProvideTextStyle(MaterialTheme.typography.titleMedium) { title() } },
                 modifier = Modifier.fillMaxWidth(),
                 navigationIcon = navigationIcon,
                 actions = actions,

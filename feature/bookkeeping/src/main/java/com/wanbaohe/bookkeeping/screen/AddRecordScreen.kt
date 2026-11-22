@@ -134,8 +134,7 @@ fun AddRecordScreen(component: BookkeepingComponent) {
                     if (isEditing) R.string.bookkeeping_edit_record_title
                     else R.string.bookkeeping_add_record_title
                 ),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleMedium,
             )
         },
         onGoBack = component.onGoBack,

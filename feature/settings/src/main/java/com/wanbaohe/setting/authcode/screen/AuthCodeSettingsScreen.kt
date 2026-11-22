@@ -159,7 +159,7 @@ fun AuthCodeSettingsScreen(component: AuthCodeSettingsComponent) {
         title = {
             Text(
                 text = stringResource(SettingsR.string.auth_code_settings_title),
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleMedium,
             )
         },
         onGoBack = component.onGoBack,

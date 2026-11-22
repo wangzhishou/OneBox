@@ -62,7 +62,7 @@ internal fun CameraTopBar(
         borderWidth = 0.dp
     ) {
         CenterAlignedTopAppBar(
-            title = { Text(title) },
+            title = { Text(title, style = MaterialTheme.typography.titleMedium) },
             navigationIcon = {
                 GlassIconButton(
                     onClick = onBack,

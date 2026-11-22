@@ -115,7 +115,7 @@ fun TodoDetailScreen(
         title = {
             Text(
                 text = uiState.categoryTitle.ifEmpty { stringResource(R.string.marktodo) },
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.titleMedium
             )
         },
         navigationIcon = {

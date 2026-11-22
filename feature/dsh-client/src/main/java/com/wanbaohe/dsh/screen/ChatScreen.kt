@@ -309,8 +309,7 @@ fun ChatScreen(component: DshRootComponent) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = hostTitle,
-                        fontSize = 17.sp,
-                        fontWeight = FontWeight.SemiBold,
+                        style = MaterialTheme.typography.titleMedium,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )

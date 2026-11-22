@@ -242,7 +242,7 @@ fun ThemeSettingsScreen(
         title = {
             Text(
                 text = stringResource(R.string.theme_settings_title),
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleMedium,
             )
         },
         onGoBack = {

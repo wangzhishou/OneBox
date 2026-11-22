@@ -250,7 +250,7 @@ fun CalendarShareScreen(component: CalendarShareComponent) {
             title = {
                 Text(
                     text = stringResource(R.string.calendar_share_page_title),
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleMedium
                 )
             },
             navigationIcon = {

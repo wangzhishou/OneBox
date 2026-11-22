@@ -39,6 +39,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
@@ -92,7 +93,7 @@ fun EnhancedTopAppBar(
         when (it) {
             EnhancedTopAppBarType.Center -> {
                 CenterAlignedTopAppBar(
-                    title = title,
+                    title = { TopAppBarTitle(title) },
                     modifier = topBarGlassModifier.drawHorizontalStroke(
                         enabled = resolvedDrawHorizontalStroke
                     ),
@@ -106,7 +107,7 @@ fun EnhancedTopAppBar(
 
             EnhancedTopAppBarType.Normal -> {
                 TopAppBar(
-                    title = title,
+                    title = { TopAppBarTitle(title) },
                     modifier = topBarGlassModifier.drawHorizontalStroke(
                         enabled = resolvedDrawHorizontalStroke
                     ),
@@ -120,7 +121,7 @@ fun EnhancedTopAppBar(
 
             EnhancedTopAppBarType.Medium -> {
                 MediumTopAppBar(
-                    title = title,
+                    title = { TopAppBarTitle(title) },
                     modifier = topBarGlassModifier.drawHorizontalStroke(
                         enabled = resolvedDrawHorizontalStroke
                     ),
@@ -134,7 +135,7 @@ fun EnhancedTopAppBar(
 
             EnhancedTopAppBarType.Large -> {
                 LargeTopAppBar(
-                    title = title,
+                    title = { TopAppBarTitle(title) },
                     modifier = topBarGlassModifier.drawHorizontalStroke(
                         enabled = resolvedDrawHorizontalStroke
                     ),
@@ -146,6 +147,13 @@ fun EnhancedTopAppBar(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun TopAppBarTitle(title: @Composable () -> Unit) {
+    ProvideTextStyle(MaterialTheme.typography.titleMedium) {
+        title()
     }
 }
 

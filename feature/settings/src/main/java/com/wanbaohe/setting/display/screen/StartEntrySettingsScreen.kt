@@ -75,7 +75,7 @@ fun StartEntrySettingsScreen(onGoBack: () -> Unit) {
         title = {
             Text(
                 text = stringResource(R.string.profile_start_entry),
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleMedium,
             )
         },
         onGoBack = onGoBack,

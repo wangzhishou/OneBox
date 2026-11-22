@@ -92,8 +92,8 @@ fun NoteItemScreen(
         title = {
             Text(
                 text = noteUIState.title,
-                style = MaterialTheme.typography.titleLarge.copy(
-                    lineHeight = MaterialTheme.typography.titleLarge.fontSize * 1.2f
+                style = MaterialTheme.typography.titleMedium.copy(
+                    lineHeight = MaterialTheme.typography.titleMedium.fontSize * 1.2f
                 ),
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 2,

@@ -126,8 +126,7 @@ fun RecordListScreen(component: RecordListComponent) {
             Text(
                 text = definition?.let { stringResource(it.titleRes) }
                     ?: stringResource(R.string.record_center_title),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleMedium,
             )
         },
         onGoBack = component.onGoBack,

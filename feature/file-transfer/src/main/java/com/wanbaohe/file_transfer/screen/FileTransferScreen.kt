@@ -206,7 +206,7 @@ fun FileTransferScreen(
         title = {
             Text(
                 text = stringResource(R.string.file_transfer_title),
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleMedium,
             )
         },
         onGoBack = appComponent.onGoBack

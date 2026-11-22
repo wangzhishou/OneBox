@@ -188,7 +188,7 @@ fun CloudStorageScreen(
                         text = conn.displayName.ifBlank {
                             stringResource(conn.protocol.titleRes)
                         },
-                        style = MaterialTheme.typography.titleLarge,
+                        style = MaterialTheme.typography.titleMedium,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
@@ -202,7 +202,7 @@ fun CloudStorageScreen(
             } else {
                 Text(
                     text = stringResource(R.string.cloud_storage_screen_title),
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleMedium,
                 )
             }
         },

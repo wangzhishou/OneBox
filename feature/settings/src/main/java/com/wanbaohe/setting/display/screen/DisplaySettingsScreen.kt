@@ -118,7 +118,7 @@ fun DisplaySettingsScreen(component: DisplaySettingsComponent) {
         title = {
             Text(
                 text = stringResource(R.string.profile_item_dispaly),
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleMedium,
             )
         },
         onGoBack = component.onGoBack,

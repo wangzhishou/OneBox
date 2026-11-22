@@ -103,7 +103,7 @@ fun BaseScreen(
                     repeatDelayMillis = 1000
                 ),
                 text = title,
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Center,
             )
         },

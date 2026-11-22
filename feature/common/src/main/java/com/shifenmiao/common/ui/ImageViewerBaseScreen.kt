@@ -32,6 +32,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -121,7 +122,11 @@ fun ImageViewerBaseScreen(
                 modifier = Modifier
                     .systemBarsPadding()
                     .background(Color.Transparent),
-                title = title,
+                title = {
+                    ProvideTextStyle(MaterialTheme.typography.titleMedium) {
+                        title()
+                    }
+                },
                 navigationIcon = {
                     ViewerBackButton(onClick = onDismiss)
                 },

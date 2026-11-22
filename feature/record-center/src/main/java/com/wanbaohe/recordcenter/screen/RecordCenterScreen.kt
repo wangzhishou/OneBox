@@ -32,7 +32,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAvatarDefault
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineNote
@@ -62,8 +61,7 @@ fun RecordCenterScreen(component: RecordCenterComponent) {
         title = {
             Text(
                 text = stringResource(R.string.record_center_title),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleMedium,
             )
         },
         onGoBack = component.onGoBack,

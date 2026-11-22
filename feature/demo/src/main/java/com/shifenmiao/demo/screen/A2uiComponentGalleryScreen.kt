@@ -102,6 +102,7 @@ fun A2uiComponentGalleryScreen(
                         text = selectedSample?.title ?: "A2UI 组件画廊",
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.titleMedium,
                     )
                 },
                 navigationIcon = {
