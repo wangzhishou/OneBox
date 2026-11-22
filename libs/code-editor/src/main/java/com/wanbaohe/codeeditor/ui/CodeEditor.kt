@@ -148,7 +148,7 @@ fun CodeEditor(
     }
     val gutterStyle = rememberCodeEditorGutterStyle(theme)
     val foldColumn = if (folds.isEmpty()) 0.dp else FOLD_COLUMN_WIDTH
-    val gutterWidth = rememberCodeEditorGutterWidth(lineStarts.size, gutterStyle.numberStyle) + foldColumn
+    val gutterWidth = rememberCodeEditorGutterWidth(lineStarts.size, gutterStyle.activeNumberStyle) + foldColumn
     val verticalScroll = rememberScrollState()
     val horizontalScroll = rememberScrollState()
     val shortcutsModifier = Modifier.codeEditorKeyboardShortcuts(state)
@@ -411,7 +411,7 @@ private fun rememberHighlightedCode(
 private fun rememberCodeEditorGutterStyle(theme: CodeEditorTheme): CodeEditorGutterStyle {
     return remember(theme) {
         val numberStyle = theme.textStyle.copy(
-            color = theme.colors.lineNumber,
+            color = theme.colors.lineNumber.let { it.copy(alpha = it.alpha * GUTTER_NUMBER_OPACITY) },
             fontSize = (theme.textStyle.fontSize.value * GUTTER_FONT_SCALE).sp,
             fontWeight = FontWeight.Normal,
             lineHeight = theme.textStyle.lineHeight,
@@ -480,10 +480,11 @@ private fun DrawScope.drawActiveLine(
 
 private const val FALLBACK_LINE_HEIGHT_RATIO = 1.4f
 private const val REVEAL_TOP_DIVISOR = 3f
-private const val GUTTER_FONT_SCALE = 0.86f
+private const val GUTTER_FONT_SCALE = 0.75f
+private const val GUTTER_NUMBER_OPACITY = 0.78f
 private const val ASYNC_HIGHLIGHT_CHARS = 8_000
 private const val MAX_HIGHLIGHT_CHARS = 200_000
 private const val MAX_FOLD_CHARS = 1_000_000
-private val FOLD_COLUMN_WIDTH = 32.dp
+private val FOLD_COLUMN_WIDTH = 20.dp
 private val CONTENT_HORIZONTAL_PADDING = 8.dp
 private val CONTENT_VERTICAL_PADDING = 8.dp

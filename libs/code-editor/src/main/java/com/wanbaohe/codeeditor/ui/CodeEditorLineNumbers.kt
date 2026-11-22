@@ -30,12 +30,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalViewConfiguration
+import androidx.compose.ui.platform.ViewConfiguration
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -44,6 +47,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.codeeditor.CodeFold
 
@@ -86,6 +90,13 @@ internal fun CodeEditorLineNumbers(
     }
     val activeNumber = lines.getOrNull(lines.binarySearch { it.offset.compareTo(activeOffset) }
         .let { if (it >= 0) it else -it - 2 })?.number
+    val viewConfiguration = LocalViewConfiguration.current
+    val gutterConfiguration = remember(viewConfiguration) {
+        // 相邻按钮按实际行高分隔；默认扩大的触控区域会让读屏边界跨到上一行。
+        object : ViewConfiguration by viewConfiguration {
+            override val minimumTouchTargetSize = DpSize.Zero
+        }
+    }
     BoxWithConstraints(modifier = modifier.clipToBounds()) {
         val scroll = scrollState.value
         val viewportHeight = with(density) { maxHeight.toPx() }
@@ -93,7 +104,7 @@ internal fun CodeEditorLineNumbers(
         val lastVisible = layout.getLineForVerticalPosition(scroll + viewportHeight)
         val visible = visualLines.lowerBound(firstVisible) until visualLines.lowerBound(lastVisible + 1)
         Canvas(modifier = Modifier.fillMaxSize()) {
-            val paddingPx = (foldColumn + 6.dp).toPx()
+            val paddingPx = (foldColumn + NUMBER_PADDING).toPx()
             for (index in visible) {
                 val number = lines[index].number
                 val row = visualLines[index]
@@ -124,19 +135,24 @@ internal fun CodeEditorLineNumbers(
                     (layout.getLineBottom(row) - layout.getLineTop(row)).toDp()
             }
             val label = foldActionLabel?.invoke(line.number, folded)
-            Box(
-                Modifier.align(Alignment.TopEnd)
-                    .offset(y = top)
-                    .size(foldColumn, height)
-                    .semantics { if (label != null) contentDescription = label }
-                    .clickable(role = Role.Button, onClick = { onToggleFold(fold) }),
-                contentAlignment = Alignment.Center,
-            ) {
-                Canvas(modifier = Modifier.size(12.dp)) {
-                    val color = style.activeNumberStyle.color
-                    drawLine(color, Offset(0f, center.y), Offset(size.width, center.y), 1.5.dp.toPx())
-                    if (folded) {
-                        drawLine(color, Offset(center.x, 0f), Offset(center.x, size.height), 1.5.dp.toPx())
+            CompositionLocalProvider(LocalViewConfiguration provides gutterConfiguration) {
+                Box(
+                    modifier = Modifier.align(Alignment.TopEnd)
+                        .offset(y = top)
+                        .size(maxWidth, height)
+                        .semantics { if (label != null) contentDescription = label }
+                        .clickable(role = Role.Button, onClick = { onToggleFold(fold) }),
+                    contentAlignment = Alignment.CenterEnd,
+                ) {
+                    Box(Modifier.size(foldColumn, height), contentAlignment = Alignment.Center) {
+                        Canvas(modifier = Modifier.size(8.dp)) {
+                            val color = style.activeNumberStyle.color
+                            val strokeWidth = 1.dp.toPx()
+                            drawLine(color, Offset(0f, center.y), Offset(size.width, center.y), strokeWidth)
+                            if (folded) {
+                                drawLine(color, Offset(center.x, 0f), Offset(center.x, size.height), strokeWidth)
+                            }
+                        }
                     }
                 }
             }
@@ -169,5 +185,7 @@ fun rememberCodeEditorGutterWidth(
     val measured = remember(sample, numberStyle) {
         textMeasurer.measure(text = sample, style = numberStyle)
     }
-    return with(density) { (measured.size.width + 16.dp.toPx() + 2.dp.toPx()).toDp() }
+    return with(density) { measured.size.width.toDp() + NUMBER_PADDING * 2 }
 }
+
+private val NUMBER_PADDING = 4.dp
