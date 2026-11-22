@@ -43,4 +43,11 @@
     <string name="code_editor_draft_restored">저장하지 않은 초안을 복원했습니다</string>
 
     <string name="code_editor_symbols">기호</string>
+    <string name="code_editor_format_json">JSON 정리</string>
+    <string name="code_editor_json_formatted">JSON을 정리했습니다</string>
+    <string name="code_editor_json_invalid">%1$d번째 줄에 JSON 구문 오류가 있습니다. 원본은 변경되지 않았습니다.</string>
+    <string name="code_editor_json_too_large">JSON이 너무 크거나 중첩이 너무 깊어 정리할 수 없습니다.</string>
+    <string name="code_editor_expand_all">모든 코드 블록 펼치기</string>
+    <string name="code_editor_expand_line">%1$d번째 줄의 코드 블록 펼치기</string>
+    <string name="code_editor_fold_line">%1$d번째 줄의 코드 블록 접기</string>
 </resources>

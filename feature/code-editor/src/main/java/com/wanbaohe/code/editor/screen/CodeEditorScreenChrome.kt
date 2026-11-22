@@ -44,6 +44,8 @@ import com.shifenmiao.core.R
 import com.shifenmiao.database.recent_access.entity.RecentAccessEntity
 import com.t8rin.imagetoolbox.core.resources.icons.DeleteSweep
 import com.t8rin.imagetoolbox.core.resources.icons.NoteAdd
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineDataObject
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFileOpen
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
@@ -56,6 +58,7 @@ import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import androidx.compose.material.icons.Icons as MaterialIcons
 import com.t8rin.imagetoolbox.core.resources.Icons as OneBoxIcons
+import com.wanbaohe.code.editor.R as EditorR
 
 /** 顶栏保存按钮：有未保存改动时用强调色提示。 */
 @Composable
@@ -83,6 +86,8 @@ internal data class CodeEditorMenuActions(
     val onSaveAs: () -> Unit,
     val onOpenRecent: (String) -> Unit,
     val onClearHistory: () -> Unit,
+    val onFormatJson: () -> Unit,
+    val onExpandAll: () -> Unit,
 )
 
 @Composable
@@ -90,6 +95,8 @@ internal fun CodeEditorMoreMenu(
     uiState: CodeEditorUiState,
     isEditMode: Boolean,
     actions: CodeEditorMenuActions,
+    canFormatJson: Boolean,
+    hasFoldedBlocks: Boolean,
 ) {
     var expanded by remember { mutableStateOf(false) }
     Box {
@@ -106,6 +113,25 @@ internal fun CodeEditorMoreMenu(
         ) {
             if (!isEditMode) {
                 MenuFileActions(actions = actions, onDismiss = { expanded = false })
+            }
+            DropdownMenuItem(
+                text = { Text(stringResource(EditorR.string.code_editor_format_json)) },
+                leadingIcon = { Icon(OneBoxIcons.Outlined.LineDataObject, contentDescription = null) },
+                enabled = canFormatJson,
+                onClick = {
+                    expanded = false
+                    actions.onFormatJson()
+                },
+            )
+            if (hasFoldedBlocks) {
+                DropdownMenuItem(
+                    text = { Text(stringResource(EditorR.string.code_editor_expand_all)) },
+                    leadingIcon = { Icon(OneBoxIcons.Outlined.LineExpandMore, contentDescription = null) },
+                    onClick = {
+                        expanded = false
+                        actions.onExpandAll()
+                    },
+                )
             }
             if (uiState.historyList.isNotEmpty()) {
                 MenuHistorySection(

@@ -43,4 +43,11 @@
     <string name="code_editor_draft_restored">تمت استعادة المسودة غير المحفوظة</string>
 
     <string name="code_editor_symbols">الرمز</string>
+    <string name="code_editor_format_json">تنسيق JSON</string>
+    <string name="code_editor_json_formatted">تم تنسيق JSON</string>
+    <string name="code_editor_json_invalid">JSON غير صالح في السطر %1$d. لم يتغير النص.</string>
+    <string name="code_editor_json_too_large">بيانات JSON كبيرة جدًا أو متداخلة بعمق يمنع تنسيقها.</string>
+    <string name="code_editor_expand_all">توسيع كل كتل الشيفرة</string>
+    <string name="code_editor_expand_line">توسيع كتلة الشيفرة في السطر %1$d</string>
+    <string name="code_editor_fold_line">طي كتلة الشيفرة في السطر %1$d</string>
 </resources>

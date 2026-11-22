@@ -43,4 +43,11 @@
     <string name="code_editor_draft_restored">Naibalik ang hindi na-save na draft</string>
 
     <string name="code_editor_symbols">Simbolo</string>
+    <string name="code_editor_format_json">I-format ang JSON</string>
+    <string name="code_editor_json_formatted">Na-format na ang JSON</string>
+    <string name="code_editor_json_invalid">Hindi wastong JSON sa linya %1$d. Hindi binago ang teksto.</string>
+    <string name="code_editor_json_too_large">Masyadong malaki o maraming antas ang JSON na ito para ma-format.</string>
+    <string name="code_editor_expand_all">Palawakin ang lahat ng bloke ng code</string>
+    <string name="code_editor_expand_line">Palawakin ang bloke ng code sa linya %1$d</string>
+    <string name="code_editor_fold_line">I-collapse ang bloke ng code sa linya %1$d</string>
 </resources>

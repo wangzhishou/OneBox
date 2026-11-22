@@ -50,6 +50,9 @@ import com.wanbaohe.base.ui.ClearHistoryConfirmDialog
 import com.wanbaohe.code.editor.component.CodeEditorComponent
 import com.wanbaohe.code.editor.component.CodeEditorUiState
 import com.wanbaohe.code.editor.ui.NativeCodeEditor
+import com.wanbaohe.codeeditor.CodeLanguage
+import com.wanbaohe.codeeditor.JsonCodeFormatter
+import com.wanbaohe.codeeditor.JsonFormatResult
 import com.wanbaohe.codeeditor.rememberCodeEditorState
 import com.wanbaohe.core.ui.utils.content.FileAccessGuidance
 import com.wanbaohe.core.ui.utils.content.rememberFileAccessController
@@ -58,10 +61,13 @@ import com.wanbaohe.core.ui.utils.content_pickers.rememberFilePicker
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.helper.SaveSuccessNotifier
 import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import com.wanbaohe.code.editor.R as EditorR
 
 /**
  * 原生代码编辑器页面（纯 Kotlin / Compose）。
@@ -86,6 +92,7 @@ fun CodeEditorScreen(
 
     var showExitConfirmDialog by remember { mutableStateOf(false) }
     var pendingAction by remember { mutableStateOf<(() -> Unit)?>(null) }
+    var isFormatting by remember { mutableStateOf(false) }
     val showClearHistoryDialog = remember { mutableStateOf(false) }
     // 每个草稿桶只尝试恢复一次：换文件/新建才重新尝试，另存为不会触发
     var restoredDraftKey by remember { mutableStateOf<String?>(null) }
@@ -246,7 +253,48 @@ fun CodeEditorScreen(
                         }
                     },
                     onClearHistory = { showClearHistoryDialog.value = true },
+                    onFormatJson = {
+                        scope.launch {
+                            isFormatting = true
+                            try {
+                                val source = editorState.text
+                                val version = editorState.contentVersion
+                                val tabWidth = editorState.tabWidth
+                                val result = withContext(Dispatchers.Default) {
+                                    JsonCodeFormatter.format(source, tabWidth)
+                                }
+                                if (version != editorState.contentVersion ||
+                                    component.uiState.value.isLoading ||
+                                    uiState.fileUri != component.uiState.value.fileUri
+                                ) return@launch
+                                when (result) {
+                                    is JsonFormatResult.Formatted -> {
+                                        editorState.updateLanguage(CodeLanguage.Json)
+                                        component.updateLanguage(CodeLanguage.Json)
+                                        editorState.replaceDocumentText(result.text)
+                                        AppToastHost.showToast(context.getString(EditorR.string.code_editor_json_formatted))
+                                    }
+                                    is JsonFormatResult.Invalid -> {
+                                        val line = source.take(result.offset).count { it == '\n' } + 1
+                                        editorState.requestReveal(result.offset)
+                                        AppToastHost.showToast(
+                                            context.getString(EditorR.string.code_editor_json_invalid, line)
+                                        )
+                                    }
+                                    JsonFormatResult.TooLarge -> AppToastHost.showToast(
+                                        context.getString(EditorR.string.code_editor_json_too_large)
+                                    )
+                                }
+                            } finally {
+                                isFormatting = false
+                            }
+                        }
+                    },
+                    onExpandAll = editorState::expandAllBlocks,
                 ),
+                canFormatJson = !isFormatting && !uiState.isLoading && !uiState.loadFailed &&
+                    editorState.text.isNotBlank(),
+                hasFoldedBlocks = editorState.hasFoldedBlocks,
             )
         },
     ) {

@@ -43,4 +43,11 @@
     <string name="code_editor_draft_restored">Несохранённый черновик восстановлен</string>
 
     <string name="code_editor_symbols">Символ</string>
+    <string name="code_editor_format_json">Форматировать JSON</string>
+    <string name="code_editor_json_formatted">JSON отформатирован</string>
+    <string name="code_editor_json_invalid">Ошибка в JSON на строке %1$d. Текст не изменён.</string>
+    <string name="code_editor_json_too_large">JSON слишком большой или содержит слишком много уровней вложенности для форматирования.</string>
+    <string name="code_editor_expand_all">Развернуть все блоки кода</string>
+    <string name="code_editor_expand_line">Развернуть блок кода на строке %1$d</string>
+    <string name="code_editor_fold_line">Свернуть блок кода на строке %1$d</string>
 </resources>

@@ -102,6 +102,11 @@ class CodeEditorState internal constructor(
     var reveal by mutableStateOf<CodeEditorReveal?>(null)
         private set
 
+    internal var foldedRanges by mutableStateOf<Set<CodeFold>>(emptySet())
+        private set
+
+    val hasFoldedBlocks: Boolean get() = foldedRanges.isNotEmpty()
+
     val text: String
         get() = value.text
 
@@ -129,6 +134,12 @@ class CodeEditorState internal constructor(
     fun onValueChange(next: TextFieldValue) {
         val previous = value
         if (next == previous) return
+        if (next.text != previous.text && hasFoldedBlocks) {
+            val overlapsFold = editTouchesFold(previous, next)
+            expandAllBlocks()
+            // 从省略号旁退格或选中省略号替换时，先展开，避免误删隐藏正文。
+            if (overlapsFold) return
+        }
         val adjusted = withAutoIndent(previous, next)
         value = adjusted
         if (adjusted.text == previous.text) return
@@ -141,11 +152,13 @@ class CodeEditorState internal constructor(
 
     fun load(text: String, language: CodeLanguage = this.language): Boolean {
         val normalized = text.normalizeLineEndings()
+        if (language != this.language) expandAllBlocks()
         this.language = language
         if (normalized == value.text) {
             // 同一个文件重进编辑页时不要清掉撤销栈和光标
             return false
         }
+        expandAllBlocks()
         value = TextFieldValue(text = normalized, selection = TextRange(0))
         isDirty = false
         contentVersion++
@@ -160,6 +173,7 @@ class CodeEditorState internal constructor(
 
     fun updateLanguage(language: CodeLanguage) {
         if (language == this.language) return
+        expandAllBlocks()
         this.language = language
         contentVersion++
     }
@@ -170,6 +184,43 @@ class CodeEditorState internal constructor(
 
     fun updateTabWidth(width: Int) {
         tabWidth = width.coerceIn(MIN_TAB_WIDTH, MAX_TAB_WIDTH)
+    }
+
+    fun replaceDocumentText(text: String): Boolean {
+        val cursor = selection.end.coerceAtMost(text.length)
+        return applyEdit(this.text.indices, text, TextRange(cursor))
+    }
+
+    fun expandAllBlocks() {
+        foldedRanges = emptySet()
+    }
+
+    internal fun toggleFold(fold: CodeFold) {
+        if (fold in foldedRanges) {
+            foldedRanges = foldedRanges - fold
+        } else {
+            if (selection.min < fold.end && selection.max > fold.start) {
+                setSelection(TextRange(fold.start))
+            }
+            value = value.copy(composition = null)
+            foldedRanges = foldedRanges + fold
+        }
+    }
+
+    private fun editTouchesFold(previous: TextFieldValue, next: TextFieldValue): Boolean {
+        val before = previous.text
+        val after = next.text
+        val start = before.commonPrefixWith(after).length
+        var end = before.length
+        var afterEnd = after.length
+        while (end > start && afterEnd > start && before[end - 1] == after[afterEnd - 1]) {
+            end--
+            afterEnd--
+        }
+        return foldedRanges.any { fold ->
+            start < fold.end && end > fold.start ||
+                previous.selection.min < fold.end && previous.selection.max > fold.start
+        }
     }
 
     // ── 撤销 / 重做 ──────────────────────────────────────
@@ -191,6 +242,8 @@ class CodeEditorState internal constructor(
     }
 
     fun requestReveal(offset: Int) {
+        val end = activeMatch?.takeIf { it.first == offset }?.let { it.last + 1 } ?: offset + 1
+        foldedRanges = foldedRanges.filterNot { offset < it.end && end > it.start }.toSet()
         reveal = CodeEditorReveal(
             offset = offset.coerceIn(0, value.text.length),
             requestId = (reveal?.requestId ?: 0L) + 1L,
@@ -288,6 +341,7 @@ class CodeEditorState internal constructor(
         val endExclusive = (endInclusive + 1).coerceIn(start, currentText.length)
         val nextText = currentText.replaceRange(start, endExclusive, replacement)
         if (nextText == currentText) return false
+        expandAllBlocks()
         history.commit()
         val next = TextFieldValue(
             text = nextText,
@@ -304,6 +358,7 @@ class CodeEditorState internal constructor(
     }
 
     private fun applySnapshot(snapshot: CodeEditorSnapshot) {
+        expandAllBlocks()
         value = TextFieldValue(
             text = snapshot.text,
             selection = snapshot.selection.coerceInText(snapshot.text.length),

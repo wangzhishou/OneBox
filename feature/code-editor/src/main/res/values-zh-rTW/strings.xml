@@ -43,4 +43,11 @@
     <string name="code_editor_draft_restored">已還原上次未儲存的草稿</string>
 
     <string name="code_editor_symbols">符號</string>
+    <string name="code_editor_format_json">格式化 JSON</string>
+    <string name="code_editor_json_formatted">已格式化 JSON</string>
+    <string name="code_editor_json_invalid">第 %1$d 行的 JSON 語法有誤，原文未變更。</string>
+    <string name="code_editor_json_too_large">JSON 太大或巢狀層級太深，無法格式化。</string>
+    <string name="code_editor_expand_all">展開所有程式碼區塊</string>
+    <string name="code_editor_expand_line">展開第 %1$d 行的程式碼區塊</string>
+    <string name="code_editor_fold_line">摺疊第 %1$d 行的程式碼區塊</string>
 </resources>

@@ -39,6 +39,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.shifenmiao.common.components.text.SuppressSystemTextSelectionMenu
 import com.shifenmiao.common.editor.NativeEditorDock
@@ -130,6 +131,17 @@ private fun CodeEditorPane(
     callbacks: CodeEditorCallbacks,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+    val editorCallbacks = remember(callbacks, context.resources.configuration) {
+        callbacks.copy(
+            foldActionLabel = { line, folded ->
+                context.getString(
+                    if (folded) R.string.code_editor_expand_line else R.string.code_editor_fold_line,
+                    line,
+                )
+            },
+        )
+    }
     Box(modifier = modifier.fillMaxSize()) {
         SuppressSystemTextSelectionMenu {
             CodeEditor(
@@ -144,7 +156,7 @@ private fun CodeEditorPane(
                         ),
                     )
                 },
-                callbacks = callbacks,
+                callbacks = editorCallbacks,
             )
         }
     }

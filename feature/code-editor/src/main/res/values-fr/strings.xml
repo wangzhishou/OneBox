@@ -43,4 +43,11 @@
     <string name="code_editor_draft_restored">Brouillon non enregistré restauré</string>
 
     <string name="code_editor_symbols">Symbole</string>
+    <string name="code_editor_format_json">Formater le JSON</string>
+    <string name="code_editor_json_formatted">JSON formaté</string>
+    <string name="code_editor_json_invalid">JSON non valide à la ligne %1$d. Le texte n’a pas été modifié.</string>
+    <string name="code_editor_json_too_large">Le JSON est trop volumineux ou trop imbriqué pour être formaté.</string>
+    <string name="code_editor_expand_all">Déplier tous les blocs de code</string>
+    <string name="code_editor_expand_line">Déplier le bloc de code à la ligne %1$d</string>
+    <string name="code_editor_fold_line">Replier le bloc de code à la ligne %1$d</string>
 </resources>

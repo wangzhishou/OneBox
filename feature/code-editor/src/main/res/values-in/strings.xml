@@ -43,4 +43,11 @@
     <string name="code_editor_draft_restored">Draf yang belum disimpan dipulihkan</string>
 
     <string name="code_editor_symbols">Simbol</string>
+    <string name="code_editor_format_json">Format JSON</string>
+    <string name="code_editor_json_formatted">JSON telah diformat</string>
+    <string name="code_editor_json_invalid">JSON tidak valid pada baris %1$d. Teks tidak diubah.</string>
+    <string name="code_editor_json_too_large">JSON ini terlalu besar atau memiliki terlalu banyak tingkat penyarangan untuk diformat.</string>
+    <string name="code_editor_expand_all">Luaskan semua blok kode</string>
+    <string name="code_editor_expand_line">Luaskan blok kode di baris %1$d</string>
+    <string name="code_editor_fold_line">Ciutkan blok kode di baris %1$d</string>
 </resources>

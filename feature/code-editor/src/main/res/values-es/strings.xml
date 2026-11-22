@@ -43,4 +43,11 @@
     <string name="code_editor_draft_restored">Se restauró el borrador no guardado</string>
 
     <string name="code_editor_symbols">Símbolo</string>
+    <string name="code_editor_format_json">Formatear JSON</string>
+    <string name="code_editor_json_formatted">JSON formateado</string>
+    <string name="code_editor_json_invalid">JSON no válido en la línea %1$d. El texto no se ha modificado.</string>
+    <string name="code_editor_json_too_large">El JSON es demasiado grande o tiene demasiados niveles de anidación para formatearlo.</string>
+    <string name="code_editor_expand_all">Expandir todos los bloques de código</string>
+    <string name="code_editor_expand_line">Expandir el bloque de código de la línea %1$d</string>
+    <string name="code_editor_fold_line">Contraer el bloque de código de la línea %1$d</string>
 </resources>

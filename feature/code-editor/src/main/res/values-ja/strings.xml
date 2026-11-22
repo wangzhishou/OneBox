@@ -43,4 +43,11 @@
     <string name="code_editor_draft_restored">未保存の下書きを復元しました</string>
 
     <string name="code_editor_symbols">記号</string>
+    <string name="code_editor_format_json">JSONを整形</string>
+    <string name="code_editor_json_formatted">JSONを整形しました</string>
+    <string name="code_editor_json_invalid">%1$d行目にJSONの構文エラーがあります。元のテキストは変更されていません。</string>
+    <string name="code_editor_json_too_large">JSONが大きすぎるか、入れ子が深すぎるため、整形できません。</string>
+    <string name="code_editor_expand_all">すべてのコードブロックを展開</string>
+    <string name="code_editor_expand_line">%1$d行目のコードブロックを展開</string>
+    <string name="code_editor_fold_line">%1$d行目のコードブロックを折りたたむ</string>
 </resources>

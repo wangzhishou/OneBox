@@ -159,7 +159,7 @@ class CodeEditorComponent @AssistedInject internal constructor(
                 val content = context.contentResolver.openInputStream(uri)?.use { inputStream ->
                     inputStream.bufferedReader().readText()
                 } ?: ""
-                val displayName = uri.lastPathSegment ?: "untitled"
+                val displayName = resolveFileName(uri)
                 val language = CodeLanguage.fromFileName(displayName)
                 withContext(Dispatchers.Main) {
                     _uiState.update {
@@ -215,7 +215,7 @@ class CodeEditorComponent @AssistedInject internal constructor(
                 context.contentResolver.openOutputStream(uri, "wt")?.use { outputStream ->
                     outputStream.write(content.toByteArray(Charsets.UTF_8))
                 }
-                val displayName = uri.lastPathSegment ?: "untitled"
+                val displayName = resolveFileName(uri)
                 withContext(Dispatchers.Main) {
                     // 内容已落盘：同步 content，后续草稿校验的「原始正文」才是磁盘上的最新版本
                     _uiState.update { it.copy(isDirty = false, content = content) }
@@ -247,7 +247,7 @@ class CodeEditorComponent @AssistedInject internal constructor(
                 context.contentResolver.openOutputStream(uri, "wt")?.use { outputStream ->
                     outputStream.write(content.toByteArray(Charsets.UTF_8))
                 }
-                val displayName = uri.lastPathSegment ?: "untitled"
+                val displayName = resolveFileName(uri)
                 val language = CodeLanguage.fromFileName(displayName)
                 withContext(Dispatchers.Main) {
                     _uiState.update {
@@ -291,6 +291,10 @@ class CodeEditorComponent @AssistedInject internal constructor(
             filenameCreator.constructRandomFilename(extension)
         }
     }
+
+    private fun resolveFileName(uri: Uri): String =
+        runCatching { filenameCreator.getFilename(uri.toString()) }.getOrNull()
+            ?.takeIf { it.isNotBlank() } ?: uri.lastPathSegment?.substringAfterLast('/') ?: "untitled"
 
     // ── 新建 / 状态 ──────────────────────────────────────
 

@@ -72,15 +72,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TransformedText
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hrm.codehigh.renderer.CodeColors
 import com.wanbaohe.codeeditor.CodeEditorSearchStyle
+import com.wanbaohe.codeeditor.CodeFold
 import com.wanbaohe.codeeditor.CodeEditorState
 import com.wanbaohe.codeeditor.CodeEditorVisualTransformation
 import com.wanbaohe.codeeditor.CodeHighlighter
 import com.wanbaohe.codeeditor.CodeText
+import com.wanbaohe.codeeditor.FoldProjection
+import com.wanbaohe.codeeditor.findCodeFolds
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
@@ -101,6 +106,7 @@ data class CodeEditorTheme(
 data class CodeEditorCallbacks(
     val onSelectionAnchorChange: (Rect) -> Unit = {},
     val onLongPress: ((Rect) -> Unit)? = null,
+    val foldActionLabel: ((line: Int, folded: Boolean) -> String)? = null,
 )
 
 /**
@@ -121,17 +127,28 @@ fun CodeEditor(
     callbacks: CodeEditorCallbacks = CodeEditorCallbacks(),
 ) {
     val highlighted = rememberHighlightedCode(state = state, theme = theme)
-    val transformation = remember(highlighted) {
-        CodeEditorVisualTransformation { highlighted }
+    val projection = remember(state.foldedRanges) { FoldProjection(state.foldedRanges) }
+    val transformation = remember(highlighted, projection) {
+        val highlighter = CodeEditorVisualTransformation { highlighted }
+        VisualTransformation { text ->
+            val styled = highlighter.filter(text)
+            if (projection.isEmpty) styled
+            else TransformedText(projection.project(styled.text), projection)
+        }
     }
     var layoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
     var fieldCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
     val lineStarts = remember(state.contentVersion) { CodeText.lineStarts(state.text) }
-    val activeLine = remember(state.contentVersion, state.selection) {
-        CodeText.lineIndexOf(state.text, state.selection.max)
+    val folds = rememberCodeFolds(state, lineStarts)
+    val gutterLines = remember(lineStarts, projection, folds) {
+        lineStarts.mapIndexedNotNull { index, offset ->
+            if (projection.hidesLineStart(offset)) null
+            else CodeEditorGutterLine(index + 1, projection.originalToTransformed(offset), folds[index])
+        }
     }
     val gutterStyle = rememberCodeEditorGutterStyle(theme)
-    val gutterWidth = rememberCodeEditorGutterWidth(lineStarts.size, gutterStyle.numberStyle)
+    val foldColumn = if (folds.isEmpty()) 0.dp else FOLD_COLUMN_WIDTH
+    val gutterWidth = rememberCodeEditorGutterWidth(lineStarts.size, gutterStyle.numberStyle) + foldColumn
     val verticalScroll = rememberScrollState()
     val horizontalScroll = rememberScrollState()
     val shortcutsModifier = Modifier.codeEditorKeyboardShortcuts(state)
@@ -147,11 +164,15 @@ fun CodeEditor(
         )
         Row(modifier = Modifier.fillMaxSize().padding(vertical = CONTENT_VERTICAL_PADDING)) {
             CodeEditorLineNumbers(
-                lineStarts = lineStarts,
+                lines = gutterLines,
                 layoutResult = layoutResult,
-                activeLine = activeLine,
+                activeOffset = projection.originalToTransformed(state.selection.max),
                 scrollState = verticalScroll,
                 style = gutterStyle,
+                foldColumn = foldColumn,
+                foldedRanges = state.foldedRanges,
+                onToggleFold = state::toggleFold,
+                foldActionLabel = callbacks.foldActionLabel,
                 modifier = Modifier
                     .width(gutterWidth)
                     .fillMaxHeight(),
@@ -175,7 +196,11 @@ fun CodeEditor(
                     }
                     Box(
                         modifier = scrollModifier.drawBehind {
-                            drawActiveLine(layoutResult, state.selection, theme.activeLineHighlight)
+                            drawActiveLine(
+                                layoutResult,
+                                projection.originalToTransformed(state.selection.max),
+                                theme.activeLineHighlight,
+                            )
                         },
                     ) {
                         BasicTextField(
@@ -222,11 +247,25 @@ fun CodeEditor(
             state = state,
             theme = theme,
             viewport = viewport,
+            projection = projection,
             layoutResult = layoutResult,
             fieldCoordinates = fieldCoordinates,
             onSelectionAnchorChange = callbacks.onSelectionAnchorChange,
         )
     }
+}
+
+@Composable
+private fun rememberCodeFolds(state: CodeEditorState, lineStarts: List<Int>): Map<Int, CodeFold> {
+    val text = state.text
+    val language = state.language
+    var folds by remember(text, language) { mutableStateOf(emptyMap<Int, CodeFold>()) }
+    LaunchedEffect(text, language) {
+        if (text.length <= MAX_FOLD_CHARS && lineStarts.size > 1) {
+            folds = withContext(Dispatchers.Default) { findCodeFolds(text, language, lineStarts) }
+        }
+    }
+    return folds
 }
 
 /** 视口的滚动状态与尺寸，供光标跟随/查找定位复用。 */
@@ -247,6 +286,7 @@ private fun CodeEditorScrollEffects(
     state: CodeEditorState,
     theme: CodeEditorTheme,
     viewport: CodeEditorViewport,
+    projection: FoldProjection,
     layoutResult: TextLayoutResult?,
     fieldCoordinates: LayoutCoordinates?,
     onSelectionAnchorChange: (Rect) -> Unit,
@@ -262,7 +302,7 @@ private fun CodeEditorScrollEffects(
     LaunchedEffect(state.selection, layoutResult, state.wrapLines) {
         val layout = layoutResult ?: return@LaunchedEffect
         val textLength = layout.layoutInput.text.length
-        val caret = layout.getCursorRect(state.selection.max.coerceIn(0, textLength))
+        val caret = layout.getCursorRect(projection.originalToTransformed(state.selection.max).coerceIn(0, textLength))
         val viewportHeightPx = with(density) { viewport.viewportHeight.toPx() }
         val lineHeightPx = with(density) { lineHeightSp.toPx() }
         when {
@@ -291,8 +331,9 @@ private fun CodeEditorScrollEffects(
         val request = state.reveal ?: return@LaunchedEffect
         if (request.requestId <= handledReveal) return@LaunchedEffect
         val layout = layoutResult ?: return@LaunchedEffect
+        val offset = projection.originalToTransformed(request.offset)
+        if (offset > layout.layoutInput.text.length) return@LaunchedEffect
         handledReveal = request.requestId
-        val offset = request.offset.coerceIn(0, layout.layoutInput.text.length)
         val line = layout.getLineForOffset(offset)
         val viewportHeightPx = with(density) { viewport.viewportHeight.toPx() }
         val target = layout.getLineTop(line) - viewportHeightPx / REVEAL_TOP_DIVISOR
@@ -303,13 +344,17 @@ private fun CodeEditorScrollEffects(
     LaunchedEffect(
         state.selection,
         state.contentVersion,
+        projection,
         layoutResult,
         verticalScroll.value,
         horizontalScroll.value,
     ) {
         val layout = layoutResult ?: return@LaunchedEffect
         val coordinates = fieldCoordinates?.takeIf { it.isAttached } ?: return@LaunchedEffect
-        val selection = state.selection
+        val selection = TextRange(
+            projection.originalToTransformed(state.selection.min),
+            projection.originalToTransformed(state.selection.max),
+        )
         val textLength = layout.layoutInput.text.length
         if (selection.collapsed || selection.max > textLength) {
             onSelectionAnchorChange(Rect.Zero)
@@ -416,12 +461,12 @@ private fun rememberLongPressModifier(
 
 private fun DrawScope.drawActiveLine(
     layoutResult: TextLayoutResult?,
-    selection: TextRange,
+    activeOffset: Int,
     color: Color,
 ) {
     if (color == Color.Unspecified || layoutResult == null) return
     val textLength = layoutResult.layoutInput.text.length
-    val line = layoutResult.getLineForOffset(selection.max.coerceIn(0, textLength))
+    val line = layoutResult.getLineForOffset(activeOffset.coerceIn(0, textLength))
     val top = layoutResult.getLineTop(line)
     val bottom = layoutResult.getLineBottom(line)
     if (bottom > top) {
@@ -438,5 +483,7 @@ private const val REVEAL_TOP_DIVISOR = 3f
 private const val GUTTER_FONT_SCALE = 0.86f
 private const val ASYNC_HIGHLIGHT_CHARS = 8_000
 private const val MAX_HIGHLIGHT_CHARS = 200_000
+private const val MAX_FOLD_CHARS = 1_000_000
+private val FOLD_COLUMN_WIDTH = 32.dp
 private val CONTENT_HORIZONTAL_PADDING = 8.dp
 private val CONTENT_VERTICAL_PADDING = 8.dp

@@ -42,4 +42,11 @@
     <string name="code_editor_find_empty">无匹配</string>
     <string name="code_editor_find_position">%1$d/%2$d</string>
     <string name="code_editor_draft_restored">已恢复上次未保存的草稿</string>
+    <string name="code_editor_format_json">格式化 JSON</string>
+    <string name="code_editor_json_formatted">JSON 已格式化</string>
+    <string name="code_editor_json_invalid">第 %1$d 行 JSON 语法有误，原文未改动。</string>
+    <string name="code_editor_json_too_large">JSON 太大或嵌套太深，无法格式化。</string>
+    <string name="code_editor_expand_all">展开所有代码块</string>
+    <string name="code_editor_expand_line">展开第 %1$d 行的代码块</string>
+    <string name="code_editor_fold_line">折叠第 %1$d 行的代码块</string>
 </resources>

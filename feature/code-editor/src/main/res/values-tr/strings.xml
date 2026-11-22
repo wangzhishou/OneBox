@@ -43,4 +43,11 @@
     <string name="code_editor_draft_restored">Kaydedilmemiş taslak geri yüklendi</string>
 
     <string name="code_editor_symbols">Sembol</string>
+    <string name="code_editor_format_json">JSON’u biçimlendir</string>
+    <string name="code_editor_json_formatted">JSON biçimlendirildi</string>
+    <string name="code_editor_json_invalid">%1$d. satırda geçersiz JSON var. Metin değiştirilmedi.</string>
+    <string name="code_editor_json_too_large">Bu JSON çok büyük veya çok fazla iç içe düzey içerdiği için biçimlendirilemiyor.</string>
+    <string name="code_editor_expand_all">Tüm kod bloklarını genişlet</string>
+    <string name="code_editor_expand_line">%1$d. satırdaki kod bloğunu genişlet</string>
+    <string name="code_editor_fold_line">%1$d. satırdaki kod bloğunu daralt</string>
 </resources>

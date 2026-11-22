@@ -43,4 +43,11 @@
     <string name="code_editor_draft_restored">Nicht gespeicherter Entwurf wiederhergestellt</string>
 
     <string name="code_editor_symbols">Symbole</string>
+    <string name="code_editor_format_json">JSON formatieren</string>
+    <string name="code_editor_json_formatted">JSON formatiert</string>
+    <string name="code_editor_json_invalid">Ungültiges JSON in Zeile %1$d. Der Text wurde nicht geändert.</string>
+    <string name="code_editor_json_too_large">Dieses JSON ist zu groß oder zu tief verschachtelt und kann nicht formatiert werden.</string>
+    <string name="code_editor_expand_all">Alle Codeblöcke ausklappen</string>
+    <string name="code_editor_expand_line">Codeblock in Zeile %1$d ausklappen</string>
+    <string name="code_editor_fold_line">Codeblock in Zeile %1$d einklappen</string>
 </resources>

@@ -43,4 +43,11 @@
     <string name="code_editor_draft_restored">Đã khôi phục bản nháp chưa lưu</string>
 
     <string name="code_editor_symbols">Ký hiệu</string>
+    <string name="code_editor_format_json">Định dạng JSON</string>
+    <string name="code_editor_json_formatted">Đã định dạng JSON</string>
+    <string name="code_editor_json_invalid">JSON không hợp lệ ở dòng %1$d. Văn bản không thay đổi.</string>
+    <string name="code_editor_json_too_large">JSON này quá lớn hoặc có quá nhiều cấp lồng nhau nên không thể định dạng.</string>
+    <string name="code_editor_expand_all">Mở rộng tất cả khối mã</string>
+    <string name="code_editor_expand_line">Mở rộng khối mã ở dòng %1$d</string>
+    <string name="code_editor_fold_line">Thu gọn khối mã ở dòng %1$d</string>
 </resources>

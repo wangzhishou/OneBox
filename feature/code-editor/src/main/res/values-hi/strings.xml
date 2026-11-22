@@ -43,4 +43,11 @@
     <string name="code_editor_draft_restored">असहेजा गया ड्राफ़्ट पुनर्स्थापित किया गया</string>
 
     <string name="code_editor_symbols">प्रतीक</string>
+    <string name="code_editor_format_json">JSON फ़ॉर्मैट करें</string>
+    <string name="code_editor_json_formatted">JSON फ़ॉर्मैट हो गया</string>
+    <string name="code_editor_json_invalid">लाइन %1$d पर JSON अमान्य है। टेक्स्ट में कोई बदलाव नहीं किया गया।</string>
+    <string name="code_editor_json_too_large">यह JSON बहुत बड़ा है या इसमें नेस्टिंग के बहुत ज़्यादा स्तर हैं, इसलिए इसे फ़ॉर्मैट नहीं किया जा सकता।</string>
+    <string name="code_editor_expand_all">सभी कोड ब्लॉक खोलें</string>
+    <string name="code_editor_expand_line">लाइन %1$d का कोड ब्लॉक खोलें</string>
+    <string name="code_editor_fold_line">लाइन %1$d का कोड ब्लॉक समेटें</string>
 </resources>

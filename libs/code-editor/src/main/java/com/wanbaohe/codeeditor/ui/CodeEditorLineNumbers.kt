@@ -23,17 +23,35 @@ package com.wanbaohe.codeeditor.ui
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.wanbaohe.codeeditor.CodeFold
+
+internal data class CodeEditorGutterLine(
+    val number: Int,
+    val offset: Int,
+    val fold: CodeFold?,
+)
 
 /**
  * 行号槽。
@@ -47,54 +65,93 @@ import androidx.compose.ui.unit.dp
  */
 @Composable
 @Suppress("LongParameterList") // Compose 数据参数，全部带默认值
-fun CodeEditorLineNumbers(
-    lineStarts: List<Int>,
+internal fun CodeEditorLineNumbers(
+    lines: List<CodeEditorGutterLine>,
     layoutResult: TextLayoutResult?,
-    activeLine: Int,
+    activeOffset: Int,
     scrollState: ScrollState,
     style: CodeEditorGutterStyle,
+    foldColumn: Dp,
+    foldedRanges: Set<CodeFold>,
+    onToggleFold: (CodeFold) -> Unit,
+    foldActionLabel: ((Int, Boolean) -> String)?,
     modifier: Modifier = Modifier,
 ) {
+    val layout = layoutResult ?: return
     val textMeasurer = rememberTextMeasurer(cacheSize = 128)
     val density = LocalDensity.current
-    val gutterPadding = 6.dp
-    val visualLines = remember(layoutResult, lineStarts) {
-        layoutResult?.let { layout ->
-            val textLength = layout.layoutInput.text.length
-            lineStarts.map { start -> layout.getLineForOffset(start.coerceIn(0, textLength)) }
-        }
+    val visualLines = remember(layout, lines) {
+        val length = layout.layoutInput.text.length
+        lines.map { layout.getLineForOffset(it.offset.coerceAtMost(length)) }
     }
-    Canvas(modifier = modifier) {
-        val layout = layoutResult ?: return@Canvas
-        val lines = visualLines ?: return@Canvas
-        if (lines.isEmpty()) return@Canvas
+    val activeNumber = lines.getOrNull(lines.binarySearch { it.offset.compareTo(activeOffset) }
+        .let { if (it >= 0) it else -it - 2 })?.number
+    BoxWithConstraints(modifier = modifier.clipToBounds()) {
         val scroll = scrollState.value
-        val viewportHeight = size.height
-        if (viewportHeight <= 0f) return@Canvas
-        val paddingPx = with(density) { gutterPadding.toPx() }
+        val viewportHeight = with(density) { maxHeight.toPx() }
         val firstVisible = layout.getLineForVerticalPosition(scroll.toFloat())
         val lastVisible = layout.getLineForVerticalPosition(scroll + viewportHeight)
-        // 只画视口内的行号：先算出可见区间，循环体里不再 continue/break
-        val startIndex = lines.indexOfFirst { it >= firstVisible }.let { if (it < 0) lines.size else it }
-        val endIndex = lines.indexOfLast { it <= lastVisible }
-        for (index in startIndex..endIndex) {
-            val visualLine = lines[index]
-            val isActive = index == activeLine
-            val measure = textMeasurer.measure(
-                text = (index + 1).toString(),
-                style = if (isActive) style.activeNumberStyle else style.numberStyle,
-            )
-            val lineTop = layout.getLineTop(visualLine) - scroll
-            val lineBottom = layout.getLineBottom(visualLine) - scroll
-            drawText(
-                textLayoutResult = measure,
-                topLeft = Offset(
-                    x = size.width - paddingPx - measure.size.width,
-                    y = lineTop + (lineBottom - lineTop - measure.size.height) / 2f,
-                ),
-            )
+        val visible = visualLines.lowerBound(firstVisible) until visualLines.lowerBound(lastVisible + 1)
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val paddingPx = (foldColumn + 6.dp).toPx()
+            for (index in visible) {
+                val number = lines[index].number
+                val row = visualLines[index]
+                val measure = textMeasurer.measure(
+                    text = number.toString(),
+                    style = if (number == activeNumber) style.activeNumberStyle else style.numberStyle,
+                )
+                drawText(
+                    textLayoutResult = measure,
+                    topLeft = Offset(
+                        x = if (layoutDirection == androidx.compose.ui.unit.LayoutDirection.Ltr) {
+                            size.width - paddingPx - measure.size.width
+                        } else {
+                            paddingPx
+                        },
+                        y = (layout.getLineTop(row) + layout.getLineBottom(row) - measure.size.height) / 2f - scroll,
+                    ),
+                )
+            }
+        }
+        for (index in visible) {
+            val line = lines[index]
+            val fold = line.fold ?: continue
+            val row = visualLines[index]
+            val folded = fold in foldedRanges
+            val (top, height) = with(density) {
+                (layout.getLineTop(row) - scroll).toDp() to
+                    (layout.getLineBottom(row) - layout.getLineTop(row)).toDp()
+            }
+            val label = foldActionLabel?.invoke(line.number, folded)
+            Box(
+                Modifier.align(Alignment.TopEnd)
+                    .offset(y = top)
+                    .size(foldColumn, height)
+                    .semantics { if (label != null) contentDescription = label }
+                    .clickable(role = Role.Button, onClick = { onToggleFold(fold) }),
+                contentAlignment = Alignment.Center,
+            ) {
+                Canvas(modifier = Modifier.size(12.dp)) {
+                    val color = style.activeNumberStyle.color
+                    drawLine(color, Offset(0f, center.y), Offset(size.width, center.y), 1.5.dp.toPx())
+                    if (folded) {
+                        drawLine(color, Offset(center.x, 0f), Offset(center.x, size.height), 1.5.dp.toPx())
+                    }
+                }
+            }
         }
     }
+}
+
+private fun List<Int>.lowerBound(target: Int): Int {
+    var low = 0
+    var high = size
+    while (low < high) {
+        val mid = (low + high) ushr 1
+        if (this[mid] < target) low = mid + 1 else high = mid
+    }
+    return low
 }
 
 /**

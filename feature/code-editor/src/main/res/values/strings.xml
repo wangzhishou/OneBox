@@ -42,4 +42,11 @@
     <string name="code_editor_find_empty">No matches</string>
     <string name="code_editor_find_position">%1$d/%2$d</string>
     <string name="code_editor_draft_restored">Restored the unsaved draft from last time</string>
+    <string name="code_editor_format_json">Format JSON</string>
+    <string name="code_editor_json_formatted">JSON formatted</string>
+    <string name="code_editor_json_invalid">Invalid JSON on line %1$d. Text unchanged.</string>
+    <string name="code_editor_json_too_large">This JSON is too large or too deeply nested to format.</string>
+    <string name="code_editor_expand_all">Expand all blocks</string>
+    <string name="code_editor_expand_line">Expand block on line %1$d</string>
+    <string name="code_editor_fold_line">Collapse block on line %1$d</string>
 </resources>
