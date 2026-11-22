@@ -31,7 +31,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -88,7 +87,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Check
  * 与标准 SegmentedButtonRow 的区别：
  * - **外层容器**使用毛玻璃背景（[GlassSurface]），带半透明底色 + 描边
  * - **每个按钮独立圆角** —— 中间按钮也拥有完整圆角，不再是传统的平边拼接
- * - **选中 / 未选中态**分别使用不同浓度的玻璃样式，选中态有色调叠加 + 描边
+ * - **选中 / 未选中态**共用选择控件的玻璃覆盖率，选中态有色调叠加 + 描边
  * - 支持选中时显示动画图标（缩放 + 淡入淡出）
  *
  * 遵循全局设置自动切换：
@@ -161,7 +160,7 @@ fun <T> GlassSegmentedButtonRow(
     hugContent: Boolean = false,
     rowStyle: GlassStyle = GlassStyle.Regular,
     rowColor: Color = Color.Unspecified,
-    selectedStyle: GlassStyle = GlassStyle.Dense,
+    selectedStyle: GlassStyle = GlassStyle.Regular,
     selectedColor: Color = MaterialTheme.colorScheme.primaryContainer,
     selectedColorForOption: ((T) -> Color)? = null,
     selectedContentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -227,7 +226,7 @@ fun <T> GlassSegmentedButtonRow(
     hugContent: Boolean = false,
     rowStyle: GlassStyle = GlassStyle.Regular,
     rowColor: Color = Color.Unspecified,
-    selectedStyle: GlassStyle = GlassStyle.Dense,
+    selectedStyle: GlassStyle = GlassStyle.Regular,
     selectedColor: Color = MaterialTheme.colorScheme.primaryContainer,
     selectedContentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     unselectedContentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -298,7 +297,7 @@ private fun <T> GlassSegmentedButtonRowImpl(
     buttonBorderWidth: Dp,
 ) {
     val bgColor = if (rowColor != Color.Unspecified) rowColor
-    else MaterialTheme.colorScheme.surfaceContainer
+    else MaterialTheme.colorScheme.surfaceContainerLow
     if (options.isEmpty()) return
 
     val isMultiSelect = selectedIndices.size > 1
@@ -308,7 +307,8 @@ private fun <T> GlassSegmentedButtonRowImpl(
     Box(
         modifier = modifier
             .clip(rowShape)
-            .glassBackground(
+            .glassSelectionBackground(
+                selected = false,
                 color = bgColor,
                 shape = rowShape,
                 borderWidth = rowBorderWidth,
@@ -392,11 +392,9 @@ private fun <T> GlassSegmentedButtonRowImpl(
                                 scaleY = 0.985f + (indicatorScale.value - 0.965f) / 0.035f * 0.015f
                             }
                             .clip(buttonShape)
-                            .glassControlStyle(
+                            .glassSelectionBackground(
+                                selected = true,
                                 style = selectedStyle,
-                                backgroundAlpha = (selectedStyle.backgroundAlpha + 0.06f).coerceAtMost(
-                                    1f
-                                ),
                                 shape = buttonShape,
                                 color = indicatorColor,
                                 borderWidth = buttonBorderWidth,
@@ -487,7 +485,7 @@ fun <T> SingleChoiceGlassSegmentedButtonRow(
     hugContent: Boolean = false,
     rowStyle: GlassStyle = GlassStyle.Regular,
     rowColor: Color = Color.Unspecified,
-    selectedStyle: GlassStyle = GlassStyle.Dense,
+    selectedStyle: GlassStyle = GlassStyle.Regular,
     selectedColor: Color = MaterialTheme.colorScheme.primaryContainer,
     selectedColorForOption: ((T) -> Color)? = null,
     selectedContentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -550,9 +548,9 @@ private fun MultiSelectIndicator(
             modifier = Modifier
                 .fillMaxSize()
                 .clip(shape)
-                .glassControlStyle(
+                .glassSelectionBackground(
+                    selected = true,
                     style = style,
-                    backgroundAlpha = (style.backgroundAlpha + 0.06f).coerceAtMost(1f),
                     shape = shape,
                     color = color,
                     borderWidth = borderWidth,
@@ -616,7 +614,13 @@ private fun GlassSegmentedButton(
                         scaleY = pressedScale
                     }
                     // 关闭玻璃只是不画模糊/高光/描边,底色浓淡与玻璃态一致
-                    .background(flatGlassContainerColor(color = unselectedColor), shape)
+                    .glassSelectionBackground(
+                        selected = false,
+                        style = GlassStyle.Regular,
+                        color = unselectedColor,
+                        shape = shape,
+                        borderWidth = 0.dp,
+                    )
                     .clickable(
                         onClick = onClick,
                         indication = null, // 取消默认点击效果，使用玻璃样式自带的高亮
@@ -645,7 +649,13 @@ private fun GlassSegmentedButton(
                 scaleX = pressedScale
                 scaleY = pressedScale
             }
-            .background(flatGlassContainerColor(color = unselectedColor), shape)
+            .glassSelectionBackground(
+                selected = false,
+                style = GlassStyle.Regular,
+                color = unselectedColor,
+                shape = shape,
+                borderWidth = 0.dp,
+            )
             .clickable(
                 onClick = onClick,
                 indication = null,

@@ -44,7 +44,7 @@ import com.wanbaohe.core.ui.utils.helper.ProvidesValue
  * 毛玻璃风格 Switch —— 两模式自动适配：
  *
  * 1. **Glassmorphism 开启** → Track 透明 + 统一玻璃背景（支持 Liquid Glass 增强）
- * 2. **Glassmorphism 关闭** → 退化为标准 M3 [Switch]
+ * 2. **Glassmorphism 关闭** → 退化为 M3 [Switch] + 同覆盖率平涂轨道
  *
  * 玻璃开启时：
  * - Track / Border 颜色强制置为透明
@@ -72,7 +72,7 @@ fun GlassSwitch(
     style: GlassStyle = GlassStyle.Regular,
     shape: Shape = RoundedCornerShape(50),
     checkedGlassColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    uncheckedGlassColor: Color = MaterialTheme.colorScheme.surfaceContainer,
+    uncheckedGlassColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     glassBorderWidth: Dp = 0.9.dp,
 ) {
     val settingsState = LocalSettingsState.current
@@ -89,15 +89,35 @@ fun GlassSwitch(
     }
     // 关闭、禁用都是实心轨道。描边只留给开启且可用，避免淡轨道上多一圈框。
     val resolvedBorderWidth = if (enabled && checked) glassBorderWidth else 0.dp
+    val usesDefaultTrackColors = colors.checkedTrackColor == MaterialTheme.colorScheme.primaryContainer &&
+        colors.uncheckedTrackColor == MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.75f)
+    val checkedTrackColor = if (usesDefaultTrackColors) {
+        flatGlassContainerColor(
+            color = checkedGlassColor,
+            style = style,
+            backgroundAlpha = glassSelectionBackgroundAlpha(style, selected = true),
+        )
+    } else {
+        colors.checkedTrackColor
+    }
+    val uncheckedTrackColor = if (usesDefaultTrackColors) {
+        flatGlassContainerColor(
+            color = uncheckedGlassColor,
+            style = style,
+            backgroundAlpha = glassSelectionBackgroundAlpha(style, selected = false),
+        )
+    } else {
+        colors.uncheckedTrackColor
+    }
 
-    // 调用方若没覆盖禁用色，Material 默认会给关闭/禁用态画一圈描边。这里统一抹掉。
+    // 默认轨道在关玻璃时也使用统一选择态覆盖率；自定义轨道色保持原样。
     val borderlessColors = SwitchColors(
         checkedThumbColor = colors.checkedThumbColor,
-        checkedTrackColor = colors.checkedTrackColor,
+        checkedTrackColor = checkedTrackColor,
         checkedBorderColor = Color.Transparent,
         checkedIconColor = colors.checkedIconColor,
         uncheckedThumbColor = colors.uncheckedThumbColor,
-        uncheckedTrackColor = colors.uncheckedTrackColor,
+        uncheckedTrackColor = uncheckedTrackColor,
         uncheckedBorderColor = Color.Transparent,
         uncheckedIconColor = colors.uncheckedIconColor,
         disabledCheckedThumbColor = colors.disabledCheckedThumbColor,
@@ -150,16 +170,9 @@ fun GlassSwitch(
         Switch(
             checked = checked,
             onCheckedChange = onCheckedChange,
-            modifier = modifier.glassControlStyle(
+            modifier = modifier.glassSelectionBackground(
+                selected = checked,
                 style = style,
-                // 轨道底色按状态加厚，与 GlassCheckbox/GlassRadioButton 对齐。
-                // 原先直接传裸的 style.backgroundAlpha(Regular 仅 0.12f)，玻璃开启时
-                // 轨道淡到几乎看不见，开关只剩一个悬空的 thumb，边界与状态都分不清。
-                backgroundAlpha = if (checked) {
-                    (style.backgroundAlpha + 0.12f).coerceAtMost(1f)
-                } else {
-                    (style.backgroundAlpha + 0.05f).coerceAtMost(1f)
-                },
                 shape = shape,
                 color = glassColor,
                 borderWidth = resolvedBorderWidth,

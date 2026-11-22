@@ -88,6 +88,14 @@ fun GlassFilterChip(
     val settingsState = LocalSettingsState.current
     // 指定选中表面层级时，使用和 GlassCard 相同的玻璃与平涂底色。
     val usesSurfaceStyle = enabled && selectedSurfaceStyle != null
+    val materialColors = FilterChipDefaults.filterChipColors()
+    val usesDefaultContainerColors = (
+        colors.containerColor == materialColors.containerColor &&
+            colors.selectedContainerColor == materialColors.selectedContainerColor
+        ) || (
+        colors.containerColor == MaterialTheme.colorScheme.surfaceContainerLow &&
+            colors.selectedContainerColor == MaterialTheme.colorScheme.primaryContainer
+        )
 
     LocalMinimumInteractiveComponentSize.ProvidesValue(Dp.Unspecified) {
         if (!settingsState.isGlassAlphaEnabled && !usesSurfaceStyle) {
@@ -101,13 +109,25 @@ fun GlassFilterChip(
                 trailingIcon = trailingIcon,
                 shape = shape,
                 colors = colors.copy(
-                    containerColor = flatGlassContainerColor(
-                        color = colors.containerColor,
-                        style = style,
-                    ),
-                    // 实底（GlassStyle.None）时选中态也铺容器色，不再留 M3 默认的描边空底。
-                    // 其它浓度保持原选中色，避免把全站 chip 的选中底一起洗淡。
-                    selectedContainerColor = if (style == GlassStyle.None) {
+                    containerColor = if (usesDefaultContainerColors) {
+                        flatGlassContainerColor(
+                            color = glassContainerColor,
+                            style = style,
+                            backgroundAlpha = glassSelectionBackgroundAlpha(style, selected = false),
+                        )
+                    } else {
+                        flatGlassContainerColor(
+                            color = colors.containerColor,
+                            style = style,
+                        )
+                    },
+                    selectedContainerColor = if (usesDefaultContainerColors) {
+                        flatGlassContainerColor(
+                            color = glassSelectedContainerColor,
+                            style = style,
+                            backgroundAlpha = glassSelectionBackgroundAlpha(style, selected = true),
+                        )
+                    } else if (style == GlassStyle.None) {
                         flatGlassContainerColor(
                             color = colors.selectedContainerColor,
                             style = style,
@@ -149,13 +169,9 @@ fun GlassFilterChip(
                     borderWidth = glassBorderWidth,
                 )
             } else {
-                modifier.glassControlStyle(
+                modifier.glassSelectionBackground(
+                    selected = selected,
                     style = style,
-                    backgroundAlpha = if (selected) {
-                        (style.backgroundAlpha + 0.02f).coerceAtMost(1f)
-                    } else {
-                        style.backgroundAlpha
-                    },
                     shape = shape,
                     color = containerColor,
                     borderWidth = glassBorderWidth,

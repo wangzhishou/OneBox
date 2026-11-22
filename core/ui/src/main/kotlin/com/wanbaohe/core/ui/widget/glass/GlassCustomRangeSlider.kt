@@ -51,7 +51,7 @@ fun GlassCustomRangeSlider(
     onValueChangeFinished: (() -> Unit)? = null,
     colors: CustomSliderColors = CustomSliderDefaults.colors(),
     trackStyle: GlassStyle = GlassStyle.Regular,
-    activeTrackStyle: GlassStyle = GlassStyle.Medium,
+    activeTrackStyle: GlassStyle = GlassStyle.Regular,
     thumbStyle: GlassStyle = GlassStyle.Medium,
     trackGlassColor: Color = Color.Unspecified,
     activeTrackGlassColor: Color = Color.Unspecified,

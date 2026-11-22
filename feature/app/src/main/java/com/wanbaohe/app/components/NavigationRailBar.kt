@@ -64,8 +64,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
-import com.wanbaohe.core.ui.widget.glass.glassDense
+import com.wanbaohe.core.ui.widget.glass.glassSelectionBackground
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.feature.root.presentation.screenLogic.RootComponent
 import com.wanbaohe.app.update.rememberUpdateAvailable
@@ -125,7 +126,7 @@ fun NavigationRailBar(
 }
 
 /**
- * 与首页 Tab 和竖屏底栏共用 primaryContainer + Dense 玻璃选中态。
+ * 与首页 Tab 和竖屏底栏共用统一选择态背景。
  */
 @Composable
 private fun RailNavigationItem(
@@ -167,7 +168,12 @@ private fun RailNavigationItem(
                 .indication(interactionSource, ripple(bounded = true))
                 .then(
                     if (selected) {
-                        Modifier.glassDense(shape = shape, color = selectedContainerColor)
+                        Modifier.glassSelectionBackground(
+                            selected = true,
+                            style = GlassStyle.Regular,
+                            shape = shape,
+                            color = selectedContainerColor,
+                        )
                     } else {
                         Modifier
                     }

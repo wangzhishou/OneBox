@@ -1465,7 +1465,6 @@ private fun NightModeCard(
                         )
                     }
                 },
-                rowStyle = GlassStyle.None,
                 rowColor = MaterialTheme.colorScheme.surfaceContainerLow,
             )
         }

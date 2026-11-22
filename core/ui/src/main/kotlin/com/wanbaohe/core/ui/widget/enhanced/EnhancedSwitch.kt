@@ -54,6 +54,9 @@ import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.settings.domain.model.SwitchType
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.wanbaohe.core.ui.utils.helper.ProvidesValue
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.flatGlassContainerColor
+import com.wanbaohe.core.ui.widget.glass.glassSelectionBackgroundAlpha
 import com.wanbaohe.core.ui.widget.modifier.container
 import com.wanbaohe.core.ui.widget.switches.CupertinoSwitch
 import com.wanbaohe.core.ui.widget.switches.CupertinoSwitchDefaults
@@ -191,7 +194,22 @@ fun EnhancedSwitch(
                     HyperOSSwitch(
                         modifier = switchModifier,
                         colors = switchColors.copy(
-                            uncheckedTrackColor = MaterialTheme.colorScheme.surfaceContainer
+                            checkedTrackColor = flatGlassContainerColor(
+                                color = MaterialTheme.colorScheme.primaryContainer,
+                                style = GlassStyle.Regular,
+                                backgroundAlpha = glassSelectionBackgroundAlpha(
+                                    style = GlassStyle.Regular,
+                                    selected = true,
+                                ),
+                            ),
+                            uncheckedTrackColor = flatGlassContainerColor(
+                                color = MaterialTheme.colorScheme.surfaceContainerLow,
+                                style = GlassStyle.Regular,
+                                backgroundAlpha = glassSelectionBackgroundAlpha(
+                                    style = GlassStyle.Regular,
+                                    selected = false,
+                                ),
+                            ),
                         ),
                         checked = checked,
                         enabled = enabled,

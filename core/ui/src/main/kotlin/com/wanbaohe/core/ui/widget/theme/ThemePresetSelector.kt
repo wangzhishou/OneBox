@@ -76,7 +76,9 @@ import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsM
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalThemeRepository
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.widget.glass.glassSelectionBackground
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.Add
@@ -284,7 +286,9 @@ fun ThemePresetCard(
             .width(CARD_WIDTH)
             .height(CARD_FIXED_HEIGHT)
             .clip(shape)
-            .glassBackground(
+            .glassSelectionBackground(
+                selected = isSelected,
+                style = GlassStyle.Regular,
                 color = containerColor,
                 shape = shape
             )
@@ -458,7 +462,9 @@ fun CreateThemeCard(onClick: () -> Unit) {
             .height(CARD_FIXED_HEIGHT)
             .clip(shape)
             .clickable { onClick() }
-            .glassBackground(
+            .glassSelectionBackground(
+                selected = false,
+                style = GlassStyle.Regular,
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
                 shape = shape
             )

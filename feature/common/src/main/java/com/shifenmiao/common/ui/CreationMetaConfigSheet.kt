@@ -389,7 +389,6 @@ private fun CreationConfigTabRow(
                 maxLines = 1,
             )
         },
-        rowStyle = GlassStyle.None,
         rowColor = MaterialTheme.colorScheme.surfaceContainerLow,
         selectedColor = MaterialTheme.colorScheme.primaryContainer,
         selectedContentColor = MaterialTheme.colorScheme.onPrimaryContainer,

@@ -85,7 +85,7 @@ fun GlassCustomSlider(
     colors: CustomSliderColors = CustomSliderDefaults.colors(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     trackStyle: GlassStyle = GlassStyle.Regular,
-    activeTrackStyle: GlassStyle = GlassStyle.Medium,
+    activeTrackStyle: GlassStyle = GlassStyle.Regular,
     thumbStyle: GlassStyle = GlassStyle.Medium,
     trackGlassColor: Color = Color.Unspecified,
     activeTrackGlassColor: Color = Color.Unspecified,
@@ -313,7 +313,7 @@ object GlassCustomSliderDefaults {
         colors: CustomSliderColors = CustomSliderDefaults.colors(),
         enabled: Boolean = true,
         trackStyle: GlassStyle = GlassStyle.Regular,
-        activeTrackStyle: GlassStyle = GlassStyle.Medium,
+        activeTrackStyle: GlassStyle = GlassStyle.Regular,
         trackGlassColor: Color = Color.Unspecified,
         activeTrackGlassColor: Color = Color.Unspecified,
         glassBorderWidth: Dp = 0.5.dp,
@@ -331,6 +331,7 @@ object GlassCustomSliderDefaults {
         val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
         TrackLayout(
             modifier = modifier,
+            enabled = enabled,
             height = trackHeight,
             shape = shape,
             inactiveGlass = inactiveGlass,
@@ -365,7 +366,7 @@ object GlassCustomSliderDefaults {
         colors: CustomSliderColors = CustomSliderDefaults.colors(),
         enabled: Boolean = true,
         trackStyle: GlassStyle = GlassStyle.Regular,
-        activeTrackStyle: GlassStyle = GlassStyle.Medium,
+        activeTrackStyle: GlassStyle = GlassStyle.Regular,
         trackGlassColor: Color = Color.Unspecified,
         activeTrackGlassColor: Color = Color.Unspecified,
         glassBorderWidth: Dp = 0.5.dp,
@@ -384,6 +385,7 @@ object GlassCustomSliderDefaults {
 
         TrackLayout(
             modifier = modifier,
+            enabled = enabled,
             height = trackHeight,
             shape = shape,
             inactiveGlass = inactiveGlass,
@@ -417,6 +419,7 @@ object GlassCustomSliderDefaults {
     @Composable
     private fun TrackLayout(
         modifier: Modifier,
+        enabled: Boolean,
         height: Dp,
         shape: Shape,
         inactiveGlass: Color,
@@ -468,11 +471,13 @@ object GlassCustomSliderDefaults {
                 modifier = Modifier
                     .fillMaxSize()
                     .clip(shape)
-                    .glassBackground(
+                    .glassSelectionBackground(
+                        selected = false,
                         style = trackStyle,
                         shape = shape,
                         color = inactiveGlass,
                         borderWidth = glassBorderWidth,
+                        enabled = enabled,
                     )
             )
 
@@ -498,10 +503,13 @@ object GlassCustomSliderDefaults {
                         .requiredWidth(activeWidth)
                         .fillMaxHeight()
                         .clip(shape)
-                        .glassBackground(
+                        .glassSelectionBackground(
+                            selected = true,
                             style = activeTrackStyle,
                             shape = shape,
-                            color = activeGlass
+                            color = activeGlass,
+                            borderWidth = glassBorderWidth,
+                            enabled = enabled,
                         )
                 )
             }

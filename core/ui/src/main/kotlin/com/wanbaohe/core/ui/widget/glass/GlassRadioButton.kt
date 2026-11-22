@@ -37,7 +37,7 @@ import com.wanbaohe.core.ui.utils.helper.ProvidesValue
  * 毛玻璃风格 [RadioButton] —— 参数与 M3 [RadioButton] 对齐。
  *
  * - **Glassmorphism 开启** → 外圈用玻璃描边/底色 ([selectedGlassColor] / [unselectedGlassColor])
- * - **Glassmorphism 关闭** → 退化为标准 M3 [RadioButton]
+ * - **Glassmorphism 关闭** → 退化为 M3 [RadioButton] + 同覆盖率平涂底色
  */
 @Composable
 fun GlassRadioButton(
@@ -49,16 +49,25 @@ fun GlassRadioButton(
     interactionSource: MutableInteractionSource? = null,
     style: GlassStyle = GlassStyle.Regular,
     selectedGlassColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    unselectedGlassColor: Color = MaterialTheme.colorScheme.surfaceContainer,
+    unselectedGlassColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     glassBorderWidth: Dp = 0.9.dp,
 ) {
     val settingsState = LocalSettingsState.current
+    val glassColor = if (selected) selectedGlassColor else unselectedGlassColor
+    val selectionModifier = modifier.glassSelectionBackground(
+        selected = selected,
+        style = style,
+        shape = androidx.compose.foundation.shape.CircleShape,
+        color = glassColor,
+        borderWidth = glassBorderWidth,
+        enabled = enabled,
+    )
 
     if (!settingsState.isGlassAlphaEnabled) {
         RadioButton(
             selected = selected,
             onClick = onClick,
-            modifier = modifier,
+            modifier = selectionModifier,
             enabled = enabled,
             colors = colors,
             interactionSource = interactionSource,
@@ -66,7 +75,6 @@ fun GlassRadioButton(
         return
     }
 
-    val glassColor = if (selected) selectedGlassColor else unselectedGlassColor
     val transparentColors = colors.copy(
         selectedColor = Color.Transparent,
         unselectedColor = Color.Transparent,
@@ -78,18 +86,7 @@ fun GlassRadioButton(
         RadioButton(
             selected = selected,
             onClick = onClick,
-            modifier = modifier.glassControlStyle(
-                style = style,
-                backgroundAlpha = if (selected) {
-                    (style.backgroundAlpha + 0.10f).coerceAtMost(1f)
-                } else {
-                    (style.backgroundAlpha + 0.04f).coerceAtMost(1f)
-                },
-                shape = androidx.compose.foundation.shape.CircleShape,
-                color = glassColor,
-                borderWidth = glassBorderWidth,
-                enabled = enabled,
-            ),
+            modifier = selectionModifier,
             enabled = enabled,
             colors = transparentColors,
             interactionSource = interactionSource,

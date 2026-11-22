@@ -53,7 +53,7 @@ fun GlassCheckbox(
     interactionSource: MutableInteractionSource? = null,
     style: GlassStyle = GlassStyle.Regular,
     checkedGlassColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    uncheckedGlassColor: Color = MaterialTheme.colorScheme.surfaceContainer,
+    uncheckedGlassColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     glassBorderWidth: Dp = 0.9.dp,
 ) {
     val glassColor = if (checked) checkedGlassColor else uncheckedGlassColor
@@ -68,13 +68,9 @@ fun GlassCheckbox(
         Checkbox(
             checked = checked,
             onCheckedChange = onCheckedChange,
-            modifier = modifier.glassControlStyle(
+            modifier = modifier.glassSelectionBackground(
+                selected = checked,
                 style = style,
-                backgroundAlpha = if (checked) {
-                    (style.backgroundAlpha + 0.12f).coerceAtMost(1f)
-                } else {
-                    (style.backgroundAlpha + 0.05f).coerceAtMost(1f)
-                },
                 shape = androidx.compose.foundation.shape.RoundedCornerShape(6.dp),
                 color = glassColor,
                 borderWidth = glassBorderWidth,

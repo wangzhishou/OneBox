@@ -78,7 +78,6 @@ import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
 import com.wanbaohe.core.ui.widget.glass.GlassSegmentedButtonRow
-import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSwitch
 import com.wanbaohe.core.ui.widget.glass.GlassCustomSlider
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
@@ -249,7 +248,6 @@ fun StartEntrySettingItem(onBeforeNavigate: (() -> Unit)? = null) {
                     modifier = Modifier.size(14.dp)
                 )
             },
-            rowStyle = GlassStyle.None,
             rowColor = MaterialTheme.colorScheme.surfaceContainerLow,
         )
     }
@@ -328,7 +326,6 @@ fun ThemeSettingItem() {
                     )
                 }
             },
-            rowStyle = GlassStyle.None,
             rowColor = MaterialTheme.colorScheme.surfaceContainerLow,
         )
     }
@@ -397,7 +394,6 @@ fun LayoutSettingItem() {
                     )
                 }
             },
-            rowStyle = GlassStyle.None,
             rowColor = MaterialTheme.colorScheme.surfaceContainerLow,
         )
     }
@@ -631,7 +627,6 @@ fun DisableRobotSettingItem(appComponent: AppComponent) {
                     modifier = Modifier.size(14.dp)
                 )
             },
-            rowStyle = GlassStyle.None,
             rowColor = MaterialTheme.colorScheme.surfaceContainerLow,
         )
     }

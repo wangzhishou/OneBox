@@ -80,6 +80,7 @@ import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsS
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.core.ui.widget.glass.glassDense
+import com.wanbaohe.core.ui.widget.glass.glassSelectionBackground
 
 /**
  * 底栏是否该有自己的底色。
@@ -139,7 +140,7 @@ data class BottomNavigationBarStyle(
     val innerHorizontalPadding: Dp = 10.dp,
     val outerTopPadding: Dp = 2.dp,
     val innerTopPadding: Dp = 4.dp,
-    val selectedItemGlassStyle: GlassStyle = GlassStyle.Dense,
+    val selectedItemGlassStyle: GlassStyle = GlassStyle.Regular,
     /** 选中胶囊(图标+文字)的圆角,与底栏容器顶角保持同一个 16dp */
     val tabItemShape: Shape = RoundedCornerShape(16.dp),
     /** 选中胶囊的最大宽度:文字短时胶囊贴合文字,超长不突破该上限,内部跑马灯滚动 */
@@ -324,11 +325,11 @@ private fun BottomNavigationTabItem(
                 .indication(interactionSource, ripple(bounded = true))
                 .then(
                     if (isSelected) {
-                        Modifier.glassBackground(
+                        Modifier.glassSelectionBackground(
+                            selected = true,
                             style = style.selectedItemGlassStyle,
                             color = selectedBgColor,
                             shape = style.tabItemShape,
-                            blurRadius = 32.dp,
                         )
                     } else {
                         Modifier
