@@ -79,6 +79,7 @@ import com.wanbaohe.base.ui.ClearHistoryConfirmDialog
 import com.wanbaohe.base.ui.button.SmallFixedHeightButton
 import com.wanbaohe.base.ui.icon.BuildCustomIcon
 import com.shifenmiao.common.components.ClickInfoType
+import com.shifenmiao.common.components.FeaturedCardLayout
 import com.shifenmiao.common.components.FeaturedGrid
 import com.shifenmiao.common.components.SectionTheme
 import com.shifenmiao.common.components.sectionGradient
@@ -224,6 +225,7 @@ private fun ContentListSection(
     val selectedMineItem = remember { mutableStateOf<ItemWithCategoriesAndStats?>(null) }
     val showClearHistoryDialog = remember { mutableStateOf(false) }
     val onNavigate = LocalOnNavigate.current
+    val carouselCardLayout = FeaturedCardLayout.spacious()
 
     LazyColumn(
         state = lazyListState,
@@ -239,6 +241,7 @@ private fun ContentListSection(
                 FeaturedGrid(
                     items = recentItems,
                     clickInfo = ClickInfoType.TIME,
+                    cardLayout = carouselCardLayout,
                     onItemClick = { item ->
                         favoriteComponent.handleItemClick(item, onNavigate)
                     }
@@ -258,6 +261,7 @@ private fun ContentListSection(
                 FeaturedGrid(
                     items = recommended,
                     clickInfo = ClickInfoType.COUNT,
+                    cardLayout = carouselCardLayout,
                     onItemClick = { item ->
                         favoriteComponent.handleItemClick(item, onNavigate)
                     }

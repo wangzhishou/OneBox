@@ -136,6 +136,7 @@ import kotlin.time.Duration.Companion.milliseconds
 private const val CHAT_QUICK_START_VISIBLE_COUNT = 4
 private const val CHAT_QUICK_START_REFRESH_THRESHOLD = 8
 private const val QUICK_START_STAGGER_DELAY_MILLIS = 45L
+private val QuickStartCardIconTextGap = 12.dp
 
 @Composable
 fun PlaceHolderMessageCard(
@@ -619,7 +620,7 @@ private fun ChatQuickStartCard(
         // 同行图标不再随文案长度上下漂移,网格阅读起点对齐
         Column(
             modifier = Modifier.padding(TonalCardPaletteDefaults.contentPadding),
-            verticalArrangement = Arrangement.spacedBy(TonalCardPaletteDefaults.contentSpacing)
+            verticalArrangement = Arrangement.spacedBy(QuickStartCardIconTextGap)
         ) {
             TonalCardIcon(palette) { iconModifier, tint ->
                 Icon(

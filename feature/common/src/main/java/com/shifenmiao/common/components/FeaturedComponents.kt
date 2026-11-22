@@ -26,13 +26,11 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
@@ -45,19 +43,25 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.wanbaohe.base.ui.card.TonalCardPaletteDefaults
 import com.wanbaohe.base.ui.card.TonalCardIcon
 import com.wanbaohe.base.ui.icon.BuildCustomIcon
 import com.wanbaohe.base.ui.icon.IconAvatar
 import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.database.item.entity.ItemWithCategoriesAndStats
+import com.shifenmiao.theme.AppFontMode
+import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
@@ -69,13 +73,53 @@ import com.t8rin.imagetoolbox.core.resources.icons.Delete
 //  精选 — 横向大卡片
 // ══════════════════════════════════════════════════════════════
 
+/** 横滑卡片的布局独立于配色，页面可以选择预设或用 copy 微调。 */
+@Immutable
+data class FeaturedCardLayout(
+    val horizontalPadding: Dp,
+    val verticalPadding: Dp,
+    val width: Dp = 160.dp,
+    val iconTitleGap: Dp = 8.dp,
+    val titleDescriptionGap: Dp = 8.dp,
+    val descriptionLabelGap: Dp = 8.dp,
+    val titleLineHeight: TextUnit? = null,
+    val labelVerticalPadding: Dp = 4.dp,
+) {
+    companion object {
+        @Composable
+        fun standard(): FeaturedCardLayout {
+            val padding = TonalCardPaletteDefaults.contentPadding
+            val spacing = TonalCardPaletteDefaults.contentSpacing
+            return FeaturedCardLayout(
+                horizontalPadding = padding,
+                verticalPadding = padding,
+                iconTitleGap = spacing,
+                titleDescriptionGap = spacing,
+                descriptionLabelGap = spacing,
+            )
+        }
+
+        @Composable
+        fun spacious(): FeaturedCardLayout = FeaturedCardLayout(
+            horizontalPadding = minOf(AppTheme.dimens.cardContentPadding, 16.dp),
+            verticalPadding = 16.dp,
+            iconTitleGap = 20.dp,
+            titleDescriptionGap = 20.dp,
+            descriptionLabelGap = 16.dp,
+            titleLineHeight = 24.sp,
+        )
+    }
+}
+
 @Composable
 fun FeaturedGrid(
     items: List<ItemWithCategoriesAndStats>,
     onItemClick: (ItemWithCategoriesAndStats) -> Unit,
     modifier: Modifier = Modifier,
     clickInfo: ClickInfoType = ClickInfoType.NONE,
+    cardLayout: FeaturedCardLayout = FeaturedCardLayout.standard(),
 ) {
+    val titleLines = if (AppTheme.uiProfile.fontMode == AppFontMode.Regular) 1 else 2
     LazyRow(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -85,7 +129,10 @@ fun FeaturedGrid(
             FeaturedCard(
                 item = items[rowIndex],
                 themeIndex = rowIndex,
+                modifier = Modifier.width(cardLayout.width),
                 clickInfo = clickInfo,
+                layout = cardLayout,
+                titleLines = titleLines,
                 onClick = { onItemClick(items[rowIndex]) }
             )
         }
@@ -93,19 +140,36 @@ fun FeaturedGrid(
 }
 
 @Composable
-fun FeaturedCard(
+private fun FeaturedCard(
     item: ItemWithCategoriesAndStats,
     themeIndex: Int,
-    modifier: Modifier = Modifier,
-    clickInfo: ClickInfoType = ClickInfoType.NONE,
+    modifier: Modifier,
+    clickInfo: ClickInfoType,
+    layout: FeaturedCardLayout,
+    titleLines: Int,
     onClick: () -> Unit
 ) {
     val palette = TonalCardPaletteDefaults.forIndex(themeIndex)
+    val titleStyle = MaterialTheme.typography.titleMedium
+    val infoText = when (clickInfo) {
+        ClickInfoType.TIME -> {
+            val time = item.clickTime
+            if (time.time > 0) TimeFormatter.formatRelativeTime(time)
+            else BaseUtils.getNameByType(item.item.listType ?: 0)
+        }
+
+        ClickInfoType.COUNT -> {
+            val count = item.clickCount
+            if (count > 0) pluralStringResource(
+                com.shifenmiao.core.R.plurals.favorite_usage_count, count, count
+            ) else BaseUtils.getNameByType(item.item.listType ?: 0)
+        }
+
+        ClickInfoType.NONE -> null
+    }
 
     GlassCard(
-        modifier = modifier
-            .width(160.dp)
-            .wrapContentHeight(),
+        modifier = modifier,
         onClick = onClick,
         shape = TonalCardPaletteDefaults.shape,
         style = TonalCardPaletteDefaults.containerStyle,
@@ -116,9 +180,8 @@ fun FeaturedCard(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(TonalCardPaletteDefaults.contentPadding),
-            verticalArrangement = Arrangement.spacedBy(TonalCardPaletteDefaults.contentSpacing)
+                .fillMaxWidth()
+                .padding(horizontal = layout.horizontalPadding, vertical = layout.verticalPadding)
         ) {
             TonalCardIcon(palette) { iconModifier, tint ->
                 BuildCustomIcon(
@@ -127,69 +190,38 @@ fun FeaturedCard(
                     tint = tint,
                 )
             }
-            Column(
-                verticalArrangement = Arrangement.spacedBy(TonalCardPaletteDefaults.contentSpacing)
-            ) {
+            Spacer(modifier = Modifier.height(layout.iconTitleGap))
+            Text(
+                text = item.item.title.orEmpty(),
+                style = layout.titleLineHeight?.let { titleStyle.copy(lineHeight = it) } ?: titleStyle,
+                color = palette.titleColor,
+                minLines = titleLines,
+                maxLines = titleLines,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(modifier = Modifier.height(layout.titleDescriptionGap))
+            Text(
+                text = item.item.description.orEmpty(),
+                style = MaterialTheme.typography.labelSmall,
+                color = palette.descriptionColor,
+                minLines = 2,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+            if (infoText != null) {
+                Spacer(modifier = Modifier.height(layout.descriptionLabelGap))
                 Text(
-                    text = item.item.title.orEmpty(),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = palette.titleColor,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                if (clickInfo != ClickInfoType.NONE) {
-                    Text(
-                        text = item.item.description.orEmpty(),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = palette.descriptionColor,
-                        maxLines = 2,
-                        minLines = 2,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    val infoText: String? = when (clickInfo) {
-                        ClickInfoType.TIME -> {
-                            val t = item.clickTime
-                            if (t.time > 0) TimeFormatter.formatRelativeTime(t) else BaseUtils.getNameByType(
-                                item.item.listType ?: 0
-                            )
-                        }
-
-                        ClickInfoType.COUNT -> {
-                            val c = item.clickCount
-                            if (c > 0) pluralStringResource(
-                                com.shifenmiao.core.R.plurals.favorite_usage_count, c, c
-                            ) else BaseUtils.getNameByType(item.item.listType ?: 0)
-                        }
-
-                        ClickInfoType.NONE -> null
-                    }
-                    if (infoText != null) {
-                        Text(
-                            modifier = Modifier
-                                .glassBackground(
-                                    style = TonalCardPaletteDefaults.accentStyle,
-                                    color = palette.tagBackgroundColor,
-                                    shape = RoundedCornerShape(50)
-                                )
-                                .padding(
-                                    horizontal = 8.dp,
-                                    vertical = 4.dp
-                                ),
-                            text = infoText,
-                            style = MaterialTheme.typography.labelSmall,
-                            color = palette.tagTextColor
+                    modifier = Modifier
+                        .glassBackground(
+                            style = TonalCardPaletteDefaults.accentStyle,
+                            color = palette.tagBackgroundColor,
+                            shape = RoundedCornerShape(50)
                         )
-                    }
-                } else {
-                    Text(
-                        text = item.item.description.orEmpty(),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = palette.descriptionColor,
-                        minLines = 2,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
+                        .padding(horizontal = 8.dp, vertical = layout.labelVerticalPadding),
+                    text = infoText,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = palette.tagTextColor
+                )
             }
         }
     }

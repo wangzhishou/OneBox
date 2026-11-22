@@ -260,6 +260,7 @@ private data class GenericTonalCardSpec(
     val contentPadding: Dp,
     val height: Dp,
     val iconAreaHeight: Dp,
+    val iconTitleGap: Dp,
     val contentSpacing: Dp,
     val descriptionLines: Int,
     val isHeightAdaptive: Boolean,
@@ -278,10 +279,12 @@ private fun genericTonalCardSpec(maxTitleLines: Int): GenericTonalCardSpec {
             AppWidthMode.Medium,
             AppWidthMode.Expanded -> 200.dp
         }
+        val iconTitleGap = 12.dp
         GenericTonalCardSpec(
             contentPadding = contentPadding,
-            height = baseHeight,
+            height = baseHeight + iconTitleGap,
             iconAreaHeight = 48.dp,
+            iconTitleGap = iconTitleGap,
             contentSpacing = TonalCardPaletteDefaults.contentSpacing,
             descriptionLines = if (narrow) 2 else 3,
             isHeightAdaptive = profile.fontMode != AppFontMode.Regular,
@@ -427,6 +430,7 @@ fun GenericTonalCard(
                 }
             }
 
+            Spacer(modifier = Modifier.height(spec.iconTitleGap))
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
