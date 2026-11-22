@@ -79,7 +79,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.wanbaohe.markdown.OneBoxMarkdown
 import com.shifenmiao.ai.component.AIChatComponent
 import com.shifenmiao.ai.logic.ChatInputComponent
@@ -229,12 +228,12 @@ fun PlaceHolderMessageCard(
                         )
                         Text(
                             text = stringResource(id = R.string.ai_chat_placeholder_title),
-                            style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp),
+                            style = MaterialTheme.typography.titleSmall,
                             color = greetingContentColor
                         )
                         Text(
                             text = stringResource(id = R.string.ai_chat_placeholder_content),
-                            style = MaterialTheme.typography.bodyLarge,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = greetingContentColor
                         )
                     }
@@ -620,7 +619,7 @@ private fun ChatQuickStartCard(
             }
             Text(
                 text = item.text,
-                style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 20.sp),
+                style = MaterialTheme.typography.bodySmall,
                 color = palette.titleColor
             )
         }

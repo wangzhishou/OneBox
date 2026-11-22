@@ -77,7 +77,6 @@ import com.shifenmiao.ai.screen.AIChatBody
 import com.shifenmiao.base.utils.Navigation
 import com.shifenmiao.common.components.ImportProgressDialog
 import com.shifenmiao.common.logic.AppComponent
-import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.domain.performance.StartupTrace
 import com.t8rin.imagetoolbox.core.resources.icons.Add
@@ -663,7 +662,6 @@ private fun AIAssistantPaneContent(
     modifier: Modifier = Modifier,
 ) {
     val chatUIState by aiChatComponent.chatUIState.collectAsState()
-    val conversation by aiChatComponent.conversation.collectAsState()
 
     Column(
         modifier = modifier
@@ -695,30 +693,15 @@ private fun AIAssistantPaneContent(
                 )
             }
 
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
-                Text(
-                    text = stringResource(id = com.shifenmiao.core.R.string.ai_tab_chat_title),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Text(
-                    text = when (conversation.entryType) {
-                        AIConversationEntryType.ASSISTANT -> stringResource(id = com.shifenmiao.core.R.string.ai_chat_description)
-                        AIConversationEntryType.CHAT -> stringResource(id = com.shifenmiao.core.R.string.ai_chat_title)
-                        else -> conversation.title.ifBlank {
-                            stringResource(id = com.shifenmiao.core.R.string.ai_stream_answer_title)
-                        }
-                    },
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
+            Text(
+                text = stringResource(id = com.shifenmiao.core.R.string.ai_tab_chat_title),
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+            )
 
             IconButton(
                 onClick = {
