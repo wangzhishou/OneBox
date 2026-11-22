@@ -136,7 +136,7 @@ import kotlin.time.Duration.Companion.milliseconds
 private const val CHAT_QUICK_START_VISIBLE_COUNT = 4
 private const val CHAT_QUICK_START_REFRESH_THRESHOLD = 8
 private const val QUICK_START_STAGGER_DELAY_MILLIS = 45L
-private val QuickStartCardIconTextGap = 12.dp
+private val QuickStartCardIconTextGap = 8.dp
 
 @Composable
 fun PlaceHolderMessageCard(
