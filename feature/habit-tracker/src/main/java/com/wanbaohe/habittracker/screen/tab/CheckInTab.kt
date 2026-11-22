@@ -313,8 +313,6 @@ private fun HabitListItem(
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
                 )
                 // 副标题:频率文案,备注非空时追加 " · 备注"(备注可能多行,先压成单行)
                 val frequencyText = HabitRepeat.frequencySubtitle(item.habit)

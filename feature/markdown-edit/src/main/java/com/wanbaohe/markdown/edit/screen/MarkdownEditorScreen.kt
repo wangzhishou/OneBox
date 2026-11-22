@@ -251,7 +251,7 @@ fun MarkdownEditorScreen(
                 IconButton(onClick = { showMenu = true }) {
                     Icon(
                         imageVector = Icons.Filled.MoreVert,
-                        contentDescription = null
+                        contentDescription = stringResource(R.string.open_menu)
                     )
                 }
 

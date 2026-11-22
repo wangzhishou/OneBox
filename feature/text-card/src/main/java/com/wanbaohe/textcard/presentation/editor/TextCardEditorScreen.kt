@@ -56,7 +56,6 @@ import androidx.compose.material.icons.outlined.TextFields
 import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -91,6 +90,7 @@ import com.wanbaohe.base.ui.button.PrimaryButton
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.dialogs.LoadingDialog
 import com.wanbaohe.core.ui.widget.editor.EditorToolLabel
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedLoadingIndicator
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.glass.glassDense
@@ -390,7 +390,7 @@ fun TextCardEditorScreen(component: TextCardComponent) {
             component.activePanel == null &&
             !component.annotationEditor.isActive,
         actions = {
-            IconButton(
+            EnhancedIconButton(
                 onClick = {
                     val drawSession = component.annotationEditor.drawSession
                     if (drawSession != null) {
@@ -409,7 +409,7 @@ fun TextCardEditorScreen(component: TextCardComponent) {
                     contentDescription = stringResource(R.string.textcard_undo)
                 )
             }
-            IconButton(
+            EnhancedIconButton(
                 onClick = {
                     val drawSession = component.annotationEditor.drawSession
                     if (drawSession != null) {
@@ -431,7 +431,7 @@ fun TextCardEditorScreen(component: TextCardComponent) {
             if (component.projectSaveStatus == TextCardProjectSaveStatus.Failed &&
                 component.document.hasContent
             ) {
-                IconButton(
+                EnhancedIconButton(
                     onClick = {
                         val source = component.document.textBlocks
                             .map { it.content }
@@ -447,7 +447,7 @@ fun TextCardEditorScreen(component: TextCardComponent) {
                     )
                 }
             }
-            IconButton(
+            EnhancedIconButton(
                 onClick = {
                     finishCanvasEditing()
                     component.saveProject()
@@ -742,7 +742,7 @@ fun TextCardEditorScreen(component: TextCardComponent) {
             if (component.activePanel == EditorPanel.Layout &&
                 pagePanelSection == PagePanelSection.Background
             ) {
-                IconButton(
+                EnhancedIconButton(
                     onClick = component::refreshRemotePapers,
                     enabled = !component.remotePapersRefreshing
                 ) {

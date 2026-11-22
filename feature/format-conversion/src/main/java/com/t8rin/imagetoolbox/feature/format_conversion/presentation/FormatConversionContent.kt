@@ -218,7 +218,6 @@ fun FormatConversionContent(
                     Spacer(Modifier.size(AppTheme.dimens.spaceSmall))
                 }
             }
-            Spacer(Modifier.height(AppTheme.dimens.spaceSmall))
             ImageFormatSelector(
                 value = imageInfo.imageFormat,
                 onValueChange = component::setImageFormat

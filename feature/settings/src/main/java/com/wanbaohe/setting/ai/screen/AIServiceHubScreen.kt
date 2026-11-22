@@ -56,6 +56,7 @@ import com.shifenmiao.model.channel.FlavorType
 import com.shifenmiao.model.channel.OnDeviceAiCapabilities
 import com.shifenmiao.model.tts.TTSConfig
 import com.shifenmiao.tts.service.TTSService
+import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.widget.navigation.BottomNavItem
 import com.wanbaohe.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.setting.ai.component.AIEngineSettingsComponent
@@ -258,7 +259,7 @@ private fun MultimodalSettingsContent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 4.dp),
+                .padding(horizontal = AppTheme.dimens.pageHorizontal, vertical = 4.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             EngineFilterChip(

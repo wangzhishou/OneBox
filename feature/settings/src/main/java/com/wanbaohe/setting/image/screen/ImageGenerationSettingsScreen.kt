@@ -54,6 +54,7 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.imagegeneration.model.ImageProviderConfig
 import com.shifenmiao.imagegeneration.model.ImageProviderDescriptor
 import com.shifenmiao.imagegeneration.service.ImageGenerationManager
+import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineVisibility
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineVisibilityOff
@@ -108,7 +109,7 @@ fun ImageGenerationSettingsContent(
             // 放在 scroll 之后只会给内容加底部 padding,视口仍被键盘遮挡
             .imePadding()
             .verticalScroll(rememberScrollState())
-            .padding(16.dp),
+            .padding(AppTheme.dimens.pageHorizontal),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         SettingsSection(stringResource(R.string.image_settings_configs_section)) {
@@ -185,7 +186,7 @@ fun ImageGenerationSettingsContent(
                     TextButton(onClick = { manager.deleteConfig(selected.id) }) {
                         Text(
                             text = stringResource(R.string.image_settings_delete_action),
-                            color = MaterialTheme.colorScheme.onErrorContainer,
+                            color = MaterialTheme.colorScheme.error,
                         )
                     }
                 }
@@ -217,7 +218,7 @@ private fun ConfigEditor(
                 if (descriptor.supportsEditing) add(stringResource(R.string.image_settings_capability_editing))
             }.joinToString(" · "),
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         GlassOutlinedTextField(
             value = draft.displayName,
@@ -334,7 +335,7 @@ private fun ConfigEditor(
             TextButton(onClick = onDelete) {
                 Text(
                     text = stringResource(R.string.image_settings_delete_action),
-                    color = MaterialTheme.colorScheme.onErrorContainer,
+                    color = MaterialTheme.colorScheme.error,
                 )
             }
         }
@@ -351,7 +352,7 @@ private fun SettingsSection(
         style = GlassStyle.Medium,
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(AppTheme.dimens.cardContentPadding),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Text(

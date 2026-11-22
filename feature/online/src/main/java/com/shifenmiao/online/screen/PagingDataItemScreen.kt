@@ -36,6 +36,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
@@ -328,12 +329,13 @@ private fun ChipFilterRow(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                start = AppTheme.dimens.paddingNormal,
-                end = AppTheme.dimens.paddingNormal,
+                start = AppTheme.dimens.pageHorizontal,
+                end = AppTheme.dimens.pageHorizontal,
                 top = 4.dp,
                 bottom = 8.dp,
             ),
-        // 容器级左右留白，与一级 tab 行、下方卡片网格的 16dp 对齐。
+        // 起止边距与一级 Tab 的 edgePadding、网格的 contentPadding 共用 pageHorizontal：
+        // 窄屏 12dp、标准 16dp、大屏 24dp 自动跟随，不再用固定 16dp 让 chip 行错位。
         // 用 contentPadding 只在内容首尾留白，横向滚动时 chip 仍会顶到屏幕边缘，
         // 看起来就像整行没有边界、比上下多出一截。
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -369,7 +371,7 @@ private fun ChipFilterRow(
 }
 
 /**
- * 二级分类 chip：32dp 高、labelMedium 单行文字、尾部关闭图标。
+ * 二级分类 chip：最小 32dp 高、labelMedium 文字、尾部关闭图标。
  * 玻璃浓度与文字对比都压低一档，作为一级 tab 与内容之间的辅助层，不抢注意力。
  *
  * 关闭图标有自己的点击区，命中时不会冒泡到 chip 主体，因此「取消筛选并收起整条 chip 栏」
@@ -407,14 +409,16 @@ private fun CategoryFilterChip(
             selectedLabelColor = selectedContent,
             selectedLeadingIconColor = selectedContent,
         ),
-        modifier = Modifier.height(32.dp),
+        modifier = Modifier.heightIn(min = 32.dp),
         border = null,
         glassBorderWidth = 0.dp,
         label = {
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelMedium,
-                maxLines = 1,
+                // 常规字号保持单行；Large/ExtraLarge 允许分类名换行并把 chip 撑高，
+                // 不用缩小用户字号，也不裁掉筛选维度。
+                maxLines = if (AppTheme.uiProfile.fontMode == AppFontMode.Regular) 1 else 2,
             )
         },
         leadingIcon = leadingIcon?.let { icon ->
