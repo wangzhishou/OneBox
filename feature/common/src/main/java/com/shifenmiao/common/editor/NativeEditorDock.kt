@@ -145,6 +145,7 @@ fun NativeEditorDock(
     leading: (@Composable (expanded: Boolean) -> Unit)? = null,
     initiallyExpanded: Boolean = false,
     spacious: Boolean = false,
+    collapseIcon: ImageVector? = null,
 ) {
     var expanded by rememberSaveable { mutableStateOf(initiallyExpanded) }
 
@@ -186,6 +187,7 @@ fun NativeEditorDock(
         NativeEditorDockCollapseButton(
             expanded = expanded,
             spacious = spacious,
+            icon = collapseIcon ?: MaterialIcons.Filled.KeyboardArrowDown,
             onToggleExpanded = { expanded = !expanded },
         )
     }
@@ -252,6 +254,7 @@ private fun NativeEditorDockActionButton(
 private fun NativeEditorDockCollapseButton(
     expanded: Boolean,
     spacious: Boolean,
+    icon: ImageVector,
     onToggleExpanded: () -> Unit,
 ) {
     val chevronRotation by animateFloatAsState(
@@ -267,7 +270,7 @@ private fun NativeEditorDockCollapseButton(
                 R.string.native_editor_toolbar_expand
             },
         ),
-        icon = MaterialIcons.Filled.KeyboardArrowDown,
+        icon = icon,
         expanded = expanded,
         onClick = onToggleExpanded,
         iconModifier = Modifier.rotate(chevronRotation),

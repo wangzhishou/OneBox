@@ -21,10 +21,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.FormatAlignLeft
@@ -45,19 +43,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.R as CommonR
 import com.shifenmiao.common.editor.NativeMarkdownEditor
-import com.shifenmiao.common.editor.NativeMarkdownEditorMode
 import com.shifenmiao.common.editor.rememberNativeMarkdownEditorState
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
@@ -77,6 +71,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSettings
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.wanbaohe.com.string.MarkdownSummary
+import com.wanbaohe.icons.SolidEditorIcons
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
@@ -274,14 +269,7 @@ fun CreateNoteScreen(
 
     BaseScreen(
         modifier = Modifier,
-        title = {
-            if (editorState.mode != NativeMarkdownEditorMode.Preview) {
-                NoteTitleField(
-                    title = uiState.title,
-                    onTitleChange = createNoteComponent::onTitleChange,
-                )
-            }
-        },
+        title = {},
         type = EnhancedTopAppBarType.Normal,
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.Transparent,
@@ -294,13 +282,12 @@ fun CreateNoteScreen(
         supportGlassEffect = true,
         showNavigationBarsPadding = false,
         actions = {
-            // 保存图标与 Markdown 编辑器统一（LineSave），不再用对勾。
             IconButton(
                 onClick = ::openSaveConfirm,
                 enabled = !uiState.isSaving,
             ) {
                 Icon(
-                    imageVector = OneBoxIcons.Outlined.LineSave,
+                    imageVector = SolidEditorIcons.Save,
                     contentDescription = stringResource(CommonR.string.common_save),
                     tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
@@ -308,7 +295,7 @@ fun CreateNoteScreen(
             Box {
                 IconButton(onClick = { showMoreMenu = true }) {
                     Icon(
-                        imageVector = MaterialIcons.Filled.MoreVert,
+                        imageVector = SolidEditorIcons.More,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onSurface,
                     )
@@ -494,42 +481,7 @@ fun CreateNoteScreen(
     )
 }
 
-@Composable
-private fun NoteTitleField(
-    title: String,
-    onTitleChange: (String) -> Unit,
-) {
-    BasicTextField(
-        value = title,
-        onValueChange = {
-            if (it.length <= NOTE_TITLE_MAX_LENGTH) onTitleChange(it)
-        },
-        modifier = Modifier.fillMaxWidth(),
-        textStyle = MaterialTheme.typography.titleMedium.copy(
-            color = MaterialTheme.colorScheme.onSurface,
-        ),
-        cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
-        singleLine = true,
-        decorationBox = { innerTextField ->
-            Box(contentAlignment = Alignment.CenterStart) {
-                if (title.isBlank()) {
-                    Text(
-                        text = stringResource(CommonR.string.note_untitled),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
-                innerTextField()
-            }
-        },
-    )
-}
-
 private fun joinNoteParts(first: String, second: String): String =
     listOf(first.trim(), second.trim())
         .filter { it.isNotBlank() }
         .joinToString("\n\n")
-
-private const val NOTE_TITLE_MAX_LENGTH = 120

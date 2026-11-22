@@ -39,6 +39,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineTableChart
 import com.wanbaohe.richtext.editor.command.isListActive
 import com.wanbaohe.richtext.editor.command.toggleList
 import com.wanbaohe.richtext.editor.markdown.MarkdownRawBlockKind
+import com.wanbaohe.icons.SolidEditorIcons
 import androidx.compose.material.icons.Icons as MaterialIcons
 import com.t8rin.imagetoolbox.core.resources.Icons as OneBoxIcons
 
@@ -51,22 +52,23 @@ import com.t8rin.imagetoolbox.core.resources.Icons as OneBoxIcons
 internal fun insertActions(
     state: NativeMarkdownEditorState,
     onInsert: (NativeEditorInsertKind) -> Unit,
+    solid: Boolean,
 ): List<NativeEditorDockAction> =
-    insertContentActions(state = state) +
-        insertTextAction(state = state) +
-        insertRawBlockActions(state = state) +
-        insertMediaActions(onInsert = onInsert)
+    insertContentActions(state = state, solid = solid) +
+        insertTextAction(state = state, solid = solid) +
+        insertRawBlockActions(state = state, solid = solid) +
+        insertMediaActions(onInsert = onInsert, solid = solid)
 
 @Composable
-private fun insertTextAction(state: NativeMarkdownEditorState): NativeEditorDockAction = NativeEditorDockAction(
+private fun insertTextAction(state: NativeMarkdownEditorState, solid: Boolean): NativeEditorDockAction = NativeEditorDockAction(
     id = "insert_text",
     label = stringResource(R.string.native_editor_insert_text),
-    icon = MaterialIcons.Outlined.TextFields,
+    icon = if (solid) SolidEditorIcons.InsertText else MaterialIcons.Outlined.TextFields,
     onClick = { state.insertTextBlock() },
 )
 
 @Composable
-private fun insertContentActions(state: NativeMarkdownEditorState): List<NativeEditorDockAction> {
+private fun insertContentActions(state: NativeMarkdownEditorState, solid: Boolean): List<NativeEditorDockAction> {
     val scheme = rememberNativeMarkdownStyleScheme()
     val editor = state.richTextState()
     return listOf(
@@ -75,7 +77,7 @@ private fun insertContentActions(state: NativeMarkdownEditorState): List<NativeE
             label = stringResource(com.wanbaohe.richtext.editor.R.string.rich_text_bullet_list),
             // "•" 在 19dp 的图标行里只有一个点，和两侧矢量图标完全不是一个量级；
             // 换成带缩进刻度的列表图标，尺寸才跟其它按钮一致。
-            icon = MaterialIcons.AutoMirrored.Outlined.FormatListBulleted,
+            icon = if (solid) SolidEditorIcons.ListBulleted else MaterialIcons.AutoMirrored.Outlined.FormatListBulleted,
             selected = editor?.isListActive(scheme) == true,
             enabled = editor != null && state.mode == NativeMarkdownEditorMode.Edit,
             dividerBefore = true,
@@ -85,7 +87,7 @@ private fun insertContentActions(state: NativeMarkdownEditorState): List<NativeE
 }
 
 @Composable
-private fun insertRawBlockActions(state: NativeMarkdownEditorState): List<NativeEditorDockAction> {
+private fun insertRawBlockActions(state: NativeMarkdownEditorState, solid: Boolean): List<NativeEditorDockAction> {
     val codeTemplate = stringResource(R.string.native_editor_template_code)
     val diagramTemplate = stringResource(R.string.native_editor_template_diagram)
     val tableTemplate = stringResource(R.string.native_editor_template_table)
@@ -94,7 +96,7 @@ private fun insertRawBlockActions(state: NativeMarkdownEditorState): List<Native
         rawBlockAction(
             id = "insert_code",
             label = stringResource(R.string.native_editor_insert_code),
-            icon = MaterialIcons.Outlined.Code,
+            icon = if (solid) SolidEditorIcons.CodeBlock else MaterialIcons.Outlined.Code,
             kind = MarkdownRawBlockKind.Code,
             template = codeTemplate,
             state = state,
@@ -102,7 +104,7 @@ private fun insertRawBlockActions(state: NativeMarkdownEditorState): List<Native
         rawBlockAction(
             id = "insert_diagram",
             label = stringResource(R.string.native_editor_insert_diagram),
-            icon = MaterialIcons.Outlined.AccountTree,
+            icon = if (solid) SolidEditorIcons.Diagram else MaterialIcons.Outlined.AccountTree,
             kind = MarkdownRawBlockKind.Diagram,
             template = diagramTemplate,
             state = state,
@@ -110,7 +112,7 @@ private fun insertRawBlockActions(state: NativeMarkdownEditorState): List<Native
         rawBlockAction(
             id = "insert_table",
             label = stringResource(R.string.native_editor_insert_table),
-            icon = OneBoxIcons.Outlined.LineTableChart,
+            icon = if (solid) SolidEditorIcons.Table else OneBoxIcons.Outlined.LineTableChart,
             kind = MarkdownRawBlockKind.Table,
             template = tableTemplate,
             state = state,
@@ -118,7 +120,7 @@ private fun insertRawBlockActions(state: NativeMarkdownEditorState): List<Native
         rawBlockAction(
             id = "insert_task_list",
             label = stringResource(R.string.native_editor_insert_task_list),
-            icon = OneBoxIcons.Outlined.LineCheckBoxBlank,
+            icon = if (solid) SolidEditorIcons.Tasks else OneBoxIcons.Outlined.LineCheckBoxBlank,
             kind = MarkdownRawBlockKind.TaskList,
             template = taskListTemplate,
             state = state,
@@ -129,30 +131,31 @@ private fun insertRawBlockActions(state: NativeMarkdownEditorState): List<Native
 @Composable
 private fun insertMediaActions(
     onInsert: (NativeEditorInsertKind) -> Unit,
+    solid: Boolean,
 ): List<NativeEditorDockAction> = listOf(
     NativeEditorDockAction(
         id = "insert_link",
         label = stringResource(R.string.native_editor_insert_link),
-        icon = OneBoxIcons.Outlined.LineLink,
+        icon = if (solid) SolidEditorIcons.Link else OneBoxIcons.Outlined.LineLink,
         dividerBefore = true,
         onClick = { onInsert(NativeEditorInsertKind.Link) },
     ),
     NativeEditorDockAction(
         id = "insert_image",
         label = stringResource(R.string.native_editor_insert_image),
-        icon = MaterialIcons.Outlined.Image,
+        icon = if (solid) SolidEditorIcons.Image else MaterialIcons.Outlined.Image,
         onClick = { onInsert(NativeEditorInsertKind.Image) },
     ),
     NativeEditorDockAction(
         id = "insert_audio",
         label = stringResource(R.string.native_editor_insert_audio),
-        icon = OneBoxIcons.Outlined.LineAudioFile,
+        icon = if (solid) SolidEditorIcons.Audio else OneBoxIcons.Outlined.LineAudioFile,
         onClick = { onInsert(NativeEditorInsertKind.Audio) },
     ),
     NativeEditorDockAction(
         id = "insert_video",
         label = stringResource(R.string.native_editor_insert_video),
-        icon = MaterialIcons.Outlined.PlayCircle,
+        icon = if (solid) SolidEditorIcons.Video else MaterialIcons.Outlined.PlayCircle,
         onClick = { onInsert(NativeEditorInsertKind.Video) },
     ),
 )

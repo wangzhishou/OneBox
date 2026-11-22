@@ -24,24 +24,14 @@ import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.addPathNodes
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.R
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
-import com.t8rin.imagetoolbox.core.resources.icons.Highlighter
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineFormatBold
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineFormatItalic
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineFormatStrikethrough
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineFormatUnderlined
+import com.wanbaohe.icons.SolidEditorIcons
 import com.wanbaohe.richtext.editor.style.RichTextInlineStyle
 import androidx.compose.material.icons.Icons as MaterialIcons
 import com.t8rin.imagetoolbox.core.resources.Icons as OneBoxIcons
@@ -59,37 +49,13 @@ internal fun inlineGlyphStyle(id: String): TextStyle {
 }
 
 internal fun inlineStyleIcon(id: String): ImageVector? = when (id) {
-    RichTextInlineStyle.BoldId -> OneBoxIcons.Outlined.LineFormatBold
-    RichTextInlineStyle.ItalicId -> OneBoxIcons.Outlined.LineFormatItalic
-    RichTextInlineStyle.UnderlineId -> OneBoxIcons.Outlined.LineFormatUnderlined
-    RichTextInlineStyle.StrikethroughId -> OneBoxIcons.Outlined.LineFormatStrikethrough
-    RichTextInlineStyle.InlineCodeId -> MaterialIcons.Outlined.Code
-    "highlight" -> OneBoxIcons.Outlined.Highlighter
+    RichTextInlineStyle.BoldId -> SolidEditorIcons.Bold
+    RichTextInlineStyle.ItalicId -> SolidEditorIcons.Italic
+    RichTextInlineStyle.UnderlineId -> SolidEditorIcons.Underline
+    RichTextInlineStyle.StrikethroughId -> SolidEditorIcons.Strike
+    RichTextInlineStyle.InlineCodeId -> SolidEditorIcons.Code
+    "highlight" -> SolidEditorIcons.Highlight
     else -> null
-}
-
-// H1–H4 的数字也是矢量路径，不随系统字号放大而被工具栏裁切。
-internal val markdownHeadingIcons: List<ImageVector> by lazy {
-    listOf(
-        "M16 12 L18 10 V19",
-        "M15 11 Q17 9 19 11 Q21 13 18 15 L15 19 H20",
-        "M15 11 Q19 8 20 12 Q20 14 17 14 Q20 14 20 17 Q19 21 15 18",
-        "M19 19 V10 L15 16 H21",
-    ).mapIndexed { index, numeral ->
-        ImageVector.Builder(
-            name = "MarkdownHeading${index + 1}",
-            defaultWidth = 24.dp,
-            defaultHeight = 24.dp,
-            viewportWidth = 24f,
-            viewportHeight = 24f,
-        ).addPath(
-            pathData = addPathNodes("M3 5 V19 M12 5 V19 M3 12 H12 $numeral"),
-            stroke = SolidColor(Color.Black),
-            strokeLineWidth = 2f,
-            strokeLineCap = StrokeCap.Round,
-            strokeLineJoin = StrokeJoin.Round,
-        ).build()
-    }
 }
 
 internal fun NativeMarkdownEditorMode.labelRes(): Int = when (this) {
@@ -98,8 +64,8 @@ internal fun NativeMarkdownEditorMode.labelRes(): Int = when (this) {
     NativeMarkdownEditorMode.Source -> R.string.native_editor_mode_source
 }
 
-internal fun NativeMarkdownEditorMode.icon(): ImageVector = when (this) {
-    NativeMarkdownEditorMode.Edit -> OneBoxIcons.Outlined.Edit
-    NativeMarkdownEditorMode.Preview -> MaterialIcons.Outlined.Visibility
-    NativeMarkdownEditorMode.Source -> MaterialIcons.Outlined.Code
+internal fun NativeMarkdownEditorMode.icon(solid: Boolean = false): ImageVector = when (this) {
+    NativeMarkdownEditorMode.Edit -> if (solid) SolidEditorIcons.Edit else OneBoxIcons.Outlined.Edit
+    NativeMarkdownEditorMode.Preview -> if (solid) SolidEditorIcons.Preview else MaterialIcons.Outlined.Visibility
+    NativeMarkdownEditorMode.Source -> if (solid) SolidEditorIcons.Code else MaterialIcons.Outlined.Code
 }

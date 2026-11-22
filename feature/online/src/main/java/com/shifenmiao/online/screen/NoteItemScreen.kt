@@ -58,7 +58,7 @@ import com.wanbaohe.core.ui.widget.enhanced.EnhancedFloatingActionButton
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedFloatingActionButtonType
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBarType
 import kotlinx.coroutines.launch
-import com.t8rin.imagetoolbox.core.resources.icons.Edit
+import com.wanbaohe.icons.SolidEditorIcons
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLock
 
 private val NoteEditFabSize = 56.dp
@@ -109,7 +109,7 @@ fun NoteItemScreen(
                     },
                 ) {
                     Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
+                        imageVector = SolidEditorIcons.Edit,
                         contentDescription = stringResource(R.string.edit),
                     )
                 }
@@ -138,7 +138,7 @@ fun NoteItemScreen(
                 start = AppTheme.dimens.pageHorizontal,
                 top = 0.dp,
                 end = AppTheme.dimens.pageHorizontal,
-                bottom = if (canEdit) NoteEditFabSize + NoteEditFabBottomMargin + 8.dp else 8.dp
+                bottom = 8.dp
             ),
         )
     }
