@@ -43,6 +43,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.common.components.ClickInfoType
+import com.shifenmiao.common.components.FeaturedCardLayout
 import com.shifenmiao.common.components.FeaturedGrid
 import com.shifenmiao.common.components.TopSearchBar
 import com.shifenmiao.common.handle.HandleEvent
@@ -149,6 +150,7 @@ private fun FeaturedSection(
             FeaturedGrid(
                 items = recommended,
                 clickInfo = ClickInfoType.COUNT,
+                cardLayout = FeaturedCardLayout.spacious(),
                 onItemClick = { item ->
                     scope.launch {
                         val resource = com.shifenmiao.common.handle.ItemResourceResolver.resolve(
@@ -192,6 +194,7 @@ private fun RecentVisitsSection(
             FeaturedGrid(
                 items = recentItems,
                 clickInfo = ClickInfoType.TIME,
+                cardLayout = FeaturedCardLayout.spacious(),
                 onItemClick = { item ->
                     scope.launch {
                         val resource = ItemResourceResolver.resolve(

@@ -279,10 +279,11 @@ private fun genericTonalCardSpec(maxTitleLines: Int): GenericTonalCardSpec {
             AppWidthMode.Medium,
             AppWidthMode.Expanded -> 200.dp
         }
-        val iconTitleGap = 12.dp
+        val iconTitleGap = 20.dp
+        val descriptionBottomTrim = 8.dp
         GenericTonalCardSpec(
             contentPadding = contentPadding,
-            height = baseHeight + iconTitleGap,
+            height = baseHeight + iconTitleGap - descriptionBottomTrim,
             iconAreaHeight = 48.dp,
             iconTitleGap = iconTitleGap,
             contentSpacing = TonalCardPaletteDefaults.contentSpacing,
