@@ -470,13 +470,14 @@ object CalendarShareCardRenderer {
         )
 
         val year = textMeasurer.oneLine(
-            text = "${data.solarYear}${labels.yearSuffix}",
+            text = if (labels.locale.language == "zh") "${data.solarYear}${labels.yearSuffix}" else data.solarYear.toString(),
             style = style
         )
         drawLeft(year, x = 88f, baselineY = 252f)
 
         val month = textMeasurer.oneLine(
-            text = "${data.solarMonth}${labels.monthSuffix}",
+            text = if (labels.locale.language == "zh") "${data.solarMonth}${labels.monthSuffix}"
+                else java.time.Month.of(data.solarMonth).getDisplayName(java.time.format.TextStyle.SHORT, labels.locale),
             style = style
         )
         drawRight(month, right = WIDTH - 88f, baselineY = 252f)
@@ -576,7 +577,7 @@ object CalendarShareCardRenderer {
             weight = FontWeight.Bold
         )
         drawVerticalChars(
-            text = data.ganZhiYear + data.labels.yearSuffix,
+            text = data.ganZhiYear + if (data.labels.locale.language == "zh") data.labels.yearSuffix else "",
             centerX = 150f,
             firstBaseline = 398f,
             step = 64f,
@@ -584,7 +585,7 @@ object CalendarShareCardRenderer {
             style = verticalStyle
         )
         drawVerticalChars(
-            text = data.zodiac + data.labels.yearSuffix,
+            text = data.zodiac + if (data.labels.locale.language == "zh") data.labels.yearSuffix else "",
             centerX = 150f,
             firstBaseline = 642f,
             step = 64f,
@@ -611,7 +612,7 @@ object CalendarShareCardRenderer {
             )
         }
 
-        drawVerticalChars(
+        if (data.labels.locale.language == "zh") drawVerticalChars(
             text = data.weekday,
             centerX = 930f,
             firstBaseline = 398f,
@@ -629,7 +630,7 @@ object CalendarShareCardRenderer {
                 letterSpacing = 10.sp
             )
         )
-        drawCentered(weekdayEn, centerX = 930f, baselineY = 636f)
+        drawCentered(weekdayEn, centerX = 930f, baselineY = if (data.labels.locale.language == "zh") 636f else 490f)
         val rightKnotSize = 82f
         drawVectorAsset(
             vector = Icons.Filled.OrnamentChineseKnot,
@@ -689,10 +690,7 @@ object CalendarShareCardRenderer {
             .take(3)
             .joinToString(" · ") { it.name }
         val text = buildString {
-            append(data.solarMonth)
-            append(labels.monthSuffix)
-            append(data.solarDay)
-            append(labels.daySuffix)
+            append(formatCalendarMonthDay(data.solarMonth, data.solarDay, labels.locale))
             append(" · ")
             append(festivalNames)
         }
@@ -855,14 +853,15 @@ object CalendarShareCardRenderer {
         val text = textMeasurer.oneLine(
             text = buildString {
                 append(data.labels.lunarPrefix)
+                if (data.labels.locale.language != "zh") append(" · ")
                 append(data.lunarMonthName)
                 append(data.lunarDayName)
             },
             style = serif(
-                size = 62f,
+                size = if (data.labels.locale.language == "zh") 62f else 42f,
                 color = accent,
                 weight = FontWeight.Bold,
-                letterSpacing = 8f
+                letterSpacing = if (data.labels.locale.language == "zh") 8f else 1f
             )
         )
         drawCloudOrnament(
@@ -1079,16 +1078,16 @@ object CalendarShareCardRenderer {
 
         val ganZhi = buildString {
             append(data.ganZhiYear)
-            append(labels.yearSuffix)
+            if (labels.locale.language == "zh") append(labels.yearSuffix)
             if (data.ganZhiMonth.isNotBlank()) {
                 append(" ")
                 append(data.ganZhiMonth)
-                append(labels.monthSuffix)
+                if (labels.locale.language == "zh") append(labels.monthSuffix)
             }
             if (data.ganZhiDay.isNotBlank()) {
                 append(" ")
                 append(data.ganZhiDay)
-                append(labels.daySuffix)
+                if (labels.locale.language == "zh") append(labels.daySuffix)
             }
         }
         drawCentered(
@@ -1236,7 +1235,7 @@ object CalendarShareCardRenderer {
 
         val glyphLayout = textMeasurer.oneLine(
             text = glyph,
-            style = serif(size = 35f, color = onFill)
+            style = serif(size = if (glyph.length > 2) 20f else 35f, color = onFill)
         )
         drawCenteredInBox(glyphLayout, center)
     }
@@ -1522,7 +1521,9 @@ object CalendarShareCardRenderer {
         val upcomingText = data.upcomingFestivals
             .filter { it.daysUntil > 0 }
             .take(2)
-            .joinToString(" · ") { "${it.name} ${it.dateText}" }
+            .joinToString(" · ") {
+                "${it.name} ${formatCalendarMonthDay(it.date.monthValue, it.date.dayOfMonth, data.labels.locale)}"
+            }
             .takeIf { options.showUpcomingFestivals && it.isNotBlank() }
 
         val both = todayText != null && upcomingText != null
@@ -1718,7 +1719,11 @@ object CalendarShareCardRenderer {
         val accent = palette.accent
         val blessing = textMeasurer.oneLine(
             text = data.labels.blessing,
-            style = serif(size = 41f, color = accent, letterSpacing = 9f)
+            style = if (data.labels.locale.language == "zh") {
+                serif(size = 41f, color = accent, letterSpacing = 9f)
+            } else {
+                serif(size = 29f, color = accent, letterSpacing = 1f)
+            }
         )
         val halfWidth = blessing.size.width / 2f
         val lineY = layout.footerLineY

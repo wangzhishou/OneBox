@@ -20,6 +20,7 @@
 package com.wanbaohe.calendar.data
 
 import androidx.compose.runtime.Immutable
+import java.time.LocalDate
 import java.util.Calendar
 
 /**
@@ -89,10 +90,10 @@ object CalendarFestivalResolver {
             val m = cal.get(Calendar.MONTH) + 1
             val d = cal.get(Calendar.DAY_OF_MONTH)
             val lunarDay = LunarCalendarCalculator.solarToLunar(y, m, d)
-            val dateText = "${m}月${d}日"
+            val date = LocalDate.of(y, m, d)
 
             lunarDay.solarTerm?.takeIf { it.isNotBlank() }?.let { name ->
-                result += UpcomingFestivalItem(name, dateText, offset, FestivalType.SolarTerm)
+                result += UpcomingFestivalItem(name, date, offset, FestivalType.SolarTerm)
             }
             val lunarFestivals = if (lunarDay.lunarFestivals.isNotEmpty()) {
                 lunarDay.lunarFestivals
@@ -100,7 +101,7 @@ object CalendarFestivalResolver {
                 listOfNotNull(lunarDay.lunarFestival)
             }
             lunarFestivals.filter { it.isNotBlank() }.forEach { name ->
-                result += UpcomingFestivalItem(name, dateText, offset, FestivalType.LunarFestival)
+                result += UpcomingFestivalItem(name, date, offset, FestivalType.LunarFestival)
             }
 
             val solarFestivals = if (lunarDay.solarFestivals.isNotEmpty()) {
@@ -109,13 +110,13 @@ object CalendarFestivalResolver {
                 listOfNotNull(lunarDay.solarFestival)
             }
             solarFestivals.filter { it.isNotBlank() }.forEach { name ->
-                result += UpcomingFestivalItem(name, dateText, offset, FestivalType.SolarFestival)
+                result += UpcomingFestivalItem(name, date, offset, FestivalType.SolarFestival)
             }
 
             if (lunarDay.isLegalHoliday && !lunarDay.legalHolidayName.isNullOrBlank()) {
                 result += UpcomingFestivalItem(
                     lunarDay.legalHolidayName,
-                    dateText,
+                    date,
                     offset,
                     FestivalType.LegalHoliday
                 )

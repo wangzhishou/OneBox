@@ -20,6 +20,7 @@
 package com.wanbaohe.calendar.data
 
 import androidx.compose.runtime.Immutable
+import java.time.LocalDate
 
 /**
  * 农历日期数据
@@ -108,7 +109,7 @@ data class SolarDate(
 @Immutable
 data class UpcomingFestivalItem(
     val name: String,
-    val dateText: String,
+    val date: LocalDate,
     val daysUntil: Int,
     val type: FestivalType
 )
@@ -421,4 +422,3 @@ data class CalendarUiState(
     /** 核心日历数据是否已就绪（首屏加载完成） */
     val isDataReady: Boolean = false,
 )
-

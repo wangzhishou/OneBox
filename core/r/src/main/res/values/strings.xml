@@ -490,7 +490,7 @@
     <string name="webview_title_feedback">Feedback</string>
     <string name="ai_chat_description">Supports LLM APIs from Baidu, Alibaba Qwen, Moonshot, and more.</string>
     <string name="ai_chat_menu_new_conversation">New Chat</string>
-    <string name="search_hint">Search for functions, e.g. AI, Marquee, Calendar…</string>
+    <string name="search_hint">Search OneBox</string>
     <string name="no_search_result">No results found!</string>
     <string name="privacy_title">Privacy Policy</string>
     <string name="privacy_item_1">Storage Permission</string>
@@ -582,7 +582,7 @@
     <string name="pay_fail">Payment error: %s</string>
     <string name="google_pay_product_unavailable">Product unavailable, please try again later.</string>
     <string name="google_pay_already_owned">You already own this item. Points will be credited shortly.</string>
-    <string name="google_play_products_load_failed">Failed to load products, please try again later.</string>
+    <string name="google_play_products_load_failed">Couldn’t load point packs. Check your connection and try again.</string>
     <string name="google_pay_billing_unavailable">Google Play billing is not supported on this device. Please install the app from Google Play on a device with Google Play services.</string>
     <string name="google_pay_service_unavailable">Unable to connect to Google Play services, please try again later.</string>
     <string name="google_pay_network_error">Network error, please check your connection and try again.</string>

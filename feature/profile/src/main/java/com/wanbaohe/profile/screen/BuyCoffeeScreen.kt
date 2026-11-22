@@ -283,6 +283,7 @@ fun ColumnScope.BuyCoffeeBody(
                     pageSize = pageWidth,
                     products = playProducts,
                     loadError = playProductsError,
+                    onRetry = payComponent::retryPlayProducts,
                     onProductSelected = { product ->
                         selectedPlayProduct.value = product
                     },

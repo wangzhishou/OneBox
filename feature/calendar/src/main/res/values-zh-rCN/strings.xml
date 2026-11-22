@@ -65,6 +65,21 @@
     <string name="calendar_share_blessing">万事如意 平安顺遂</string>
     <string name="calendar_share_brand">万宝盒 · 万年历</string>
     <string name="calendar_share_year_suffix">年</string>
+    <string-array name="calendar_zodiac_names">
+        <item>鼠</item><item>牛</item><item>虎</item><item>兔</item>
+        <item>龙</item><item>蛇</item><item>马</item><item>羊</item>
+        <item>猴</item><item>鸡</item><item>狗</item><item>猪</item>
+    </string-array>
+    <string-array name="calendar_constellation_names">
+        <item>白羊</item><item>金牛</item><item>双子</item><item>巨蟹</item>
+        <item>狮子</item><item>处女</item><item>天秤</item><item>天蝎</item>
+        <item>射手</item><item>摩羯</item><item>水瓶</item><item>双鱼</item>
+    </string-array>
+    <string-array name="calendar_solar_festival_names">
+        <item>元旦</item><item>情人节</item><item>愚人节</item><item>万圣节</item>
+        <item>感恩节</item><item>平安夜</item><item>圣诞节</item>
+        <item>母亲节</item><item>父亲节</item><item>地球日</item>
+    </string-array>
     <string name="calendar_share_month_suffix">月</string>
     <string name="calendar_share_day_suffix">日</string>
     <string name="calendar_share_auspicious_title">吉时</string>
@@ -278,4 +293,3 @@
     <string name="dayun_year_range">%1$d–%2$d</string>
     <string name="dayun_current">当前</string>
 </resources>
-

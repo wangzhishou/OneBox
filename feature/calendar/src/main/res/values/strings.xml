@@ -44,7 +44,7 @@
     <string name="calendar_share_toggle_weather">Weather</string>
     <string name="calendar_share_toggle_note">Note</string>
     <string name="calendar_share_weather_loading">Weather…</string>
-    <string name="calendar_share_weather_title">天气</string>
+    <string name="calendar_share_weather_title">Weather</string>
     <string name="calendar_share_weather_unavailable">Weather unavailable</string>
     <string name="calendar_share_weather_today_only">Weather is only available for today.</string>
     <string name="calendar_share_note_title_section">A line for today</string>
@@ -61,21 +61,36 @@
     <string name="calendar_share_save_failed">Save failed</string>
     <string name="calendar_share_render_failed">Couldn\'t render the card</string>
     <string name="calendar_share_retry">Retry</string>
-    <string name="calendar_share_lunar_prefix">农历</string>
-    <string name="calendar_share_yi_seal">宜</string>
-    <string name="calendar_share_ji_seal">忌</string>
-    <string name="calendar_share_blessing">万事如意 平安顺遂</string>
-    <string name="calendar_share_brand">万宝盒 · 万年历</string>
-    <string name="calendar_share_year_suffix">年</string>
-    <string name="calendar_share_month_suffix">月</string>
-    <string name="calendar_share_day_suffix">日</string>
-    <string name="calendar_share_auspicious_title">吉时</string>
+    <string name="calendar_share_lunar_prefix">Lunar calendar</string>
+    <string name="calendar_share_yi_seal">Do</string>
+    <string name="calendar_share_ji_seal">Avoid</string>
+    <string name="calendar_share_blessing">Wishing you peace and good fortune</string>
+    <string name="calendar_share_brand">OneBox · Calendar</string>
+    <string name="calendar_share_year_suffix">Year</string>
+    <string name="calendar_share_month_suffix">Month</string>
+    <string name="calendar_share_day_suffix">Day</string>
+    <string name="calendar_share_auspicious_title">Lucky hours</string>
     <string name="calendar_share_transparent_background">Transparent background</string>
-    <string name="calendar_share_today_prefix">今日</string>
-    <string name="calendar_share_selected_day_prefix">当日</string>
-    <string name="calendar_share_upcoming_prefix">未来</string>
-    <string name="calendar_share_note_title">今日心语</string>
-    <string name="calendar_share_air_prefix">空气</string>
+    <string name="calendar_share_today_prefix">Today</string>
+    <string name="calendar_share_selected_day_prefix">Selected day</string>
+    <string name="calendar_share_upcoming_prefix">Upcoming</string>
+    <string name="calendar_share_note_title">Today’s note</string>
+    <string name="calendar_share_air_prefix">Air quality:</string>
+    <string-array name="calendar_zodiac_names">
+        <item>Rat</item><item>Ox</item><item>Tiger</item><item>Rabbit</item>
+        <item>Dragon</item><item>Snake</item><item>Horse</item><item>Goat</item>
+        <item>Monkey</item><item>Rooster</item><item>Dog</item><item>Pig</item>
+    </string-array>
+    <string-array name="calendar_constellation_names">
+        <item>Aries</item><item>Taurus</item><item>Gemini</item><item>Cancer</item>
+        <item>Leo</item><item>Virgo</item><item>Libra</item><item>Scorpio</item>
+        <item>Sagittarius</item><item>Capricorn</item><item>Aquarius</item><item>Pisces</item>
+    </string-array>
+    <string-array name="calendar_solar_festival_names">
+        <item>New Year’s Day</item><item>Valentine’s Day</item><item>April Fools’ Day</item>
+        <item>Halloween</item><item>Thanksgiving</item><item>Christmas Eve</item>
+        <item>Christmas</item><item>Mother’s Day</item><item>Father’s Day</item><item>Earth Day</item>
+    </string-array>
     <string name="solar_term_label">Solar Term</string>
     <string name="today">Today</string>
     <string name="natal_chart">Birth Chart (BaZi)</string>

@@ -34,8 +34,13 @@ import com.wanbaohe.calendar.data.UpcomingFestivalItem
 import com.wanbaohe.calendar.data.YiJi
 import com.wanbaohe.calendar.data.getChineseHourSlot
 import java.time.LocalDate
+import java.time.Month
 import java.time.format.TextStyle
 import java.util.Locale
+
+internal fun formatCalendarMonthDay(month: Int, day: Int, locale: Locale): String =
+    if (locale.language == "zh") "${month}月${day}日"
+    else "${Month.of(month).getDisplayName(TextStyle.SHORT, locale)} $day"
 
 /**
  * 日历分享卡的完整内容。
@@ -70,12 +75,11 @@ data class CalendarShareCardData(
 /**
  * 卡面上的固定文案。
  *
- * 农历月日、宜忌条目、生肖由 lunar-java 返回中文，因此这张卡整体是一张「中式黄历」，
- * 卡面汉字（农历 / 宜 / 忌 / 今日 / 未来 / 心语 / 祝福 / 品牌）在英文下也保留，
- * 属于版式元素；分享页的操作按钮才跟随应用语言。
+ * 通用标签跟随应用语言，农历月日与宜忌条目保留黄历原文。
  */
 @Immutable
 data class CalendarShareLabels(
+    val locale: Locale,
     val lunarPrefix: String,
     val yiSeal: String,
     val jiSeal: String,
@@ -327,8 +331,8 @@ fun buildCalendarShareCardData(
         zodiac = lunar.zodiac,
         weekday = LunarCalendarCalculator.getWeekDayName(year, month, day),
         weekdayEn = date.dayOfWeek
-            .getDisplayName(TextStyle.SHORT, Locale.ENGLISH)
-            .uppercase(Locale.ENGLISH),
+            .getDisplayName(TextStyle.SHORT, labels.locale.takeUnless { it.language == "zh" } ?: Locale.ENGLISH)
+            .uppercase(labels.locale),
         yi = yiJi.yi.filter { it.isNotBlank() }.take(MAX_YI_JI_ITEMS),
         ji = yiJi.ji.filter { it.isNotBlank() }.take(MAX_YI_JI_ITEMS),
         luckyHours = luckyHours.take(3),

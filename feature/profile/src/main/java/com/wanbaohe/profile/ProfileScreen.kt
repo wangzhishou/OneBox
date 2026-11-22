@@ -59,7 +59,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
@@ -215,7 +214,15 @@ fun ProfileContent(
 
         // 2. Stats cards
         item {
-            ProfileStatsRow(onNavigate = onNavigate)
+            ProfileStatsRow(showPointsDetails = showDonateSetting, onNavigate = onNavigate)
+            OneSecondaryButton(
+                text = stringResource(R.string.profile_stats_points_play_hint),
+                onClick = {
+                    ActionUtils.showLogin(source = "points_card_game") {
+                        onNavigate(Screen.Survive30s)
+                    }
+                },
+            )
         }
 
         // 3. Setting groups with section headers
@@ -431,6 +438,7 @@ private fun MessageCenterAction(compact: Boolean = false) {
 
 @Composable
 private fun ProfileStatsRow(
+    showPointsDetails: Boolean,
     onNavigate: (Screen) -> Unit
 ) {
     val loginState = LocalLoginState.current
@@ -467,13 +475,14 @@ private fun ProfileStatsRow(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        // 积分卡进的是赚积分的小游戏,卡片上写明,避免看起来像账本入口。
         GlassCard(
-            onClick = {
-                ActionUtils.showLogin(source = "points_card_game") {
-                    onNavigate(Screen.Survive30s)
+            onClick = if (showPointsDetails) {
+                {
+                    ActionUtils.showLogin(source = "points_card_details") {
+                        onNavigate(Screen.BuyCoffee())
+                    }
                 }
-            },
+            } else null,
             modifier = Modifier
                 .weight(1f)
                 .height(128.dp),
@@ -496,12 +505,14 @@ private fun ProfileStatsRow(
                         modifier = Modifier.size(22.dp),
                         tint = MaterialTheme.colorScheme.onSecondaryContainer
                     )
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.55f)
-                    )
+                    if (showPointsDetails) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.55f)
+                        )
+                    }
                 }
                 Column {
                     Text(
@@ -519,13 +530,6 @@ private fun ProfileStatsRow(
                             letterSpacing = 1.sp
                         ),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Text(
-                        text = stringResource(R.string.profile_stats_points_play_hint),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
                     )
                 }
             }

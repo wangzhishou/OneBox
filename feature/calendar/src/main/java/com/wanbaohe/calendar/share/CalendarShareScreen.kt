@@ -73,6 +73,9 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalConfiguration
+import com.wanbaohe.calendar.data.FestivalType
+import com.wanbaohe.calendar.ui.localizedSolarFestival
 import androidx.compose.ui.platform.LocalFontFamilyResolver
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextMeasurer
@@ -128,6 +131,7 @@ fun CalendarShareScreen(component: CalendarShareComponent) {
     }
 
     val labels = CalendarShareLabels(
+        locale = LocalConfiguration.current.locales[0],
         lunarPrefix = stringResource(R.string.calendar_share_lunar_prefix),
         yiSeal = stringResource(R.string.calendar_share_yi_seal),
         jiSeal = stringResource(R.string.calendar_share_ji_seal),
@@ -163,6 +167,12 @@ fun CalendarShareScreen(component: CalendarShareComponent) {
         )
     }
 
+    val todayFestivals = state.todayFestivals.map {
+        if (it.type == FestivalType.SolarFestival) it.copy(name = localizedSolarFestival(it.name)) else it
+    }
+    val upcomingFestivals = state.upcomingFestivals.map {
+        if (it.type == FestivalType.SolarFestival) it.copy(name = localizedSolarFestival(it.name)) else it
+    }
     val shareData = remember(
         state.year,
         state.month,
@@ -170,8 +180,8 @@ fun CalendarShareScreen(component: CalendarShareComponent) {
         state.lunarDate,
         state.yiJi,
         state.luckyHours,
-        state.todayFestivals,
-        state.upcomingFestivals,
+        todayFestivals,
+        upcomingFestivals,
         state.weather,
         state.note,
         labels,
@@ -185,8 +195,8 @@ fun CalendarShareScreen(component: CalendarShareComponent) {
                 lunar = lunar,
                 yiJi = state.yiJi,
                 luckyHours = state.luckyHours,
-                todayFestivals = state.todayFestivals,
-                upcomingFestivals = state.upcomingFestivals,
+                todayFestivals = todayFestivals,
+                upcomingFestivals = upcomingFestivals,
                 weather = state.weather,
                 note = state.note,
                 labels = labels,

@@ -101,6 +101,7 @@ class PayComponent @AssistedInject internal constructor(
     /** Play 商品加载失败原因(非空表示加载已结束且失败, UI 据此展示失败占位而非一直转圈) */
     private val _playProductsError = MutableStateFlow<String?>(null)
     val playProductsError: StateFlow<String?> = _playProductsError
+    private var playProductsJob: kotlinx.coroutines.Job? = null
 
     private var currentTradeNo: String = ""
 
@@ -126,27 +127,41 @@ class PayComponent @AssistedInject internal constructor(
             }
         }
         if (channelConfig.enablePlayBilling) {
-            componentScope.launch(defaultDispatcher) {
-                loadPlayProducts()
-                recoverOwnedPurchases()
-            }
+            requestPlayProducts(recoverPurchases = true)
         }
         setPayUIState(PayState.DEFAULT)
     }
 
+    fun retryPlayProducts() {
+        if (playBillingEnabled && _playProductsError.value != null) requestPlayProducts()
+    }
+
+    private fun requestPlayProducts(recoverPurchases: Boolean = false) {
+        if (playProductsJob?.isActive == true) return
+        _playProductsError.value = null
+        playProductsJob = componentScope.launch(defaultDispatcher) {
+            if (recoverPurchases) recoverOwnedPurchases()
+            loadPlayProducts()
+        }
+    }
+
     /** 拉取后端商品目录(productId+points), 再查询 Play 本地化价格合并为 UI 模型 */
     private suspend fun loadPlayProducts() {
-        val billing = googlePlayBilling ?: return
+        val failure = resourceProvider.getString(R.string.google_play_products_load_failed)
+        val billing = googlePlayBilling ?: run {
+            _playProductsError.value = failure
+            return
+        }
         val response = NetworkUtils.safeApiCall { apiService.googlePlayProducts() }
         val catalog = response?.body().orEmpty()
         if (response?.isSuccessful != true || catalog.isEmpty()) {
-            onPlayProductsLoadFailed(resourceProvider.getString(R.string.google_play_products_load_failed))
+            _playProductsError.value = failure
             return
         }
         val detailsList = billing.queryPlayProducts(catalog.map { it.productId })
         if (detailsList.isEmpty()) {
             // Play 侧价格查询失败是"加载失败"而非"支付失败",不复用 pay_error 文案
-            onPlayProductsLoadFailed(resourceProvider.getString(R.string.google_play_products_load_failed))
+            _playProductsError.value = failure
             return
         }
         val detailsById = detailsList.associateBy { it.productId }
@@ -160,11 +175,7 @@ class PayComponent @AssistedInject internal constructor(
                 formattedPrice = details.formattedPrice,
             )
         }
-    }
-
-    private fun onPlayProductsLoadFailed(message: String) {
-        _playProductsError.value = message
-        addError(message)
+        if (_playProducts.value.isEmpty()) _playProductsError.value = failure
     }
 
     /**
@@ -504,4 +515,3 @@ class PayComponent @AssistedInject internal constructor(
         ): PayComponent
     }
 }
-

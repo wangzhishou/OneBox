@@ -64,6 +64,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.glassRegular
 import com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors
+import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
 import com.wanbaohe.profile.components.modifier.pagerAnimation
 import kotlinx.coroutines.launch
 
@@ -77,14 +78,15 @@ internal fun PlayProductSlider(
     pageSize: Dp,
     products: List<PlayProduct>,
     loadError: String? = null,
+    onRetry: () -> Unit,
     onProductSelected: (PlayProduct) -> Unit,
 ) {
     if (products.isEmpty()) {
         // 加载中给转圈占位; 加载失败(含设备不支持结算)展示失败原因, 避免一直转圈
-        Row(
+        Column(
             modifier = modifier.height(200.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
+            verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             if (loadError != null) {
                 Text(
@@ -94,6 +96,7 @@ internal fun PlayProductSlider(
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(horizontal = AppTheme.dimens.paddingNormal),
                 )
+                OneSecondaryButton(text = stringResource(R.string.button_retry), onClick = onRetry)
             } else {
                 CircularProgressIndicator(modifier = Modifier.size(24.dp))
             }

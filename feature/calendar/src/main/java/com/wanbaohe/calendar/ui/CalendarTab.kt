@@ -137,6 +137,10 @@ import com.wanbaohe.icons.Winter
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import androidx.compose.ui.platform.LocalConfiguration
+import com.wanbaohe.calendar.share.formatCalendarMonthDay
 import java.util.Calendar
 import java.util.GregorianCalendar
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
@@ -225,9 +229,6 @@ fun CalendarTab(
                     solarYear = state.currentYear,
                     solarMonth = state.currentMonth,
                     solarDay = state.selectedDay,
-                    weekDay = LunarCalendarCalculator.getWeekDayName(
-                        state.currentYear, state.currentMonth, state.selectedDay
-                    ),
                     lunarMonthName = LunarCalendarCalculator.normalizeLunarMonthName(
                         lunar.monthName,
                         lunar.isLeapMonth
@@ -1548,7 +1549,9 @@ private fun CalendarDayCell(
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
-                text = dayInfo.lunarDayName,
+                text = if (dayInfo.lunarDayName == dayInfo.solarFestival) {
+                    localizedSolarFestival(dayInfo.lunarDayName)
+                } else dayInfo.lunarDayName,
                 style = MaterialTheme.typography.bodySmall,
                 color = subTextColor,
                 textAlign = TextAlign.Center,
@@ -1587,7 +1590,6 @@ private fun SelectedDayCard(
     solarYear: Int,
     solarMonth: Int,
     solarDay: Int,
-    weekDay: String,
     lunarMonthName: String,
     lunarDayName: String,
     ganZhiMonth: String,
@@ -1598,6 +1600,8 @@ private fun SelectedDayCard(
     onReset: () -> Unit,
 ) {
     val darkTheme = isSystemInDarkTheme()
+    val locale = LocalConfiguration.current.locales[0]
+    val solarDate = LocalDate.of(solarYear, solarMonth, solarDay)
     val iconWatermarkAlpha = if (darkTheme) 0.08f else 0.04f
     val today = Calendar.getInstance()
     val isToday = solarYear == today.get(Calendar.YEAR) &&
@@ -1617,10 +1621,7 @@ private fun SelectedDayCard(
                 // 公历 + 月日·星期
                 Column {
                     Text(
-                        text = stringResource(
-                            R.string.full_solar_date_format,
-                            solarYear, solarMonth, solarDay, weekDay
-                        ),
+                        text = solarDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -1742,7 +1743,7 @@ private fun SelectedDayCard(
                             )
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
-                                text = fest,
+                                text = if (type == FestivalType.SolarFestival) localizedSolarFestival(fest) else fest,
                                 style = MaterialTheme.typography.titleSmall,
                                 color = MaterialTheme.colorScheme.onPrimaryContainer
                             )
@@ -1750,10 +1751,10 @@ private fun SelectedDayCard(
                     }
                 }
 
-                InfoChip(icon = zodiacIconFor(zodiac), label = stringResource(R.string.zodiac_chip, zodiac))
+                InfoChip(icon = zodiacIconFor(zodiac), label = stringResource(R.string.zodiac_chip, localizedZodiac(zodiac)))
                 InfoChip(
                     icon = constellationIconFor(lunar.constellation),
-                    label = stringResource(R.string.constellation_chip, lunar.constellation.removeSuffix("座"))
+                    label = stringResource(R.string.constellation_chip, localizedConstellation(lunar.constellation))
                 )
             }
         }
@@ -1896,7 +1897,8 @@ private fun UpcomingFestivalItemCard(item: UpcomingFestivalItem) {
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "${item.name}（${item.dateText}）",
+                    text = "${if (item.type == FestivalType.SolarFestival) localizedSolarFestival(item.name) else item.name} · " +
+                        formatCalendarMonthDay(item.date.monthValue, item.date.dayOfMonth, LocalConfiguration.current.locales[0]),
                     color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.bodySmall
                 )
