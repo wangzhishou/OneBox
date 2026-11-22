@@ -30,6 +30,7 @@ import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -37,6 +38,18 @@ import com.t8rin.imagetoolbox.core.settings.presentation.model.UiFontFamily
 
 @Composable
 fun rememberTypography(
+    fontRes: UiFontFamily
+): Typography {
+    val language = LocalConfiguration.current.locales[0].language
+    val typography = rememberBaseTypography(fontRes)
+
+    return remember(typography, language) {
+        typography.withDenseScriptLineHeight(language)
+    }
+}
+
+@Composable
+private fun rememberBaseTypography(
     fontRes: UiFontFamily
 ): Typography = remember(fontRes) {
     derivedStateOf {
@@ -149,6 +162,35 @@ fun rememberTypography(
         )
     }
 }.value
+
+private fun Typography.withDenseScriptLineHeight(language: String): Typography {
+    if (language !in DenseScriptLanguages) return this
+
+    return copy(
+        displayLarge = displayLarge.withDenseScriptLineHeight(),
+        displayMedium = displayMedium.withDenseScriptLineHeight(),
+        displaySmall = displaySmall.withDenseScriptLineHeight(),
+        headlineLarge = headlineLarge.withDenseScriptLineHeight(),
+        headlineMedium = headlineMedium.withDenseScriptLineHeight(),
+        headlineSmall = headlineSmall.withDenseScriptLineHeight(),
+        titleLarge = titleLarge.withDenseScriptLineHeight(),
+        titleMedium = titleMedium.withDenseScriptLineHeight(),
+        titleSmall = titleSmall.withDenseScriptLineHeight(),
+        bodyLarge = bodyLarge.withDenseScriptLineHeight(),
+        bodyMedium = bodyMedium.withDenseScriptLineHeight(),
+        bodySmall = bodySmall.withDenseScriptLineHeight(),
+        labelLarge = labelLarge.withDenseScriptLineHeight(),
+        labelMedium = labelMedium.withDenseScriptLineHeight(),
+        labelSmall = labelSmall.withDenseScriptLineHeight()
+    )
+}
+
+private fun TextStyle.withDenseScriptLineHeight(): TextStyle = copy(
+    lineHeight = (lineHeight.value + fontSize.value * DenseScriptLineHeightRatio).sp
+)
+
+private val DenseScriptLanguages = setOf("zh", "ja", "ko")
+private const val DenseScriptLineHeightRatio = 0.1f
 
 @Composable
 fun ProvideTypography(
