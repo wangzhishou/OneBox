@@ -35,15 +35,21 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.mandatorySystemGestures
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -138,21 +144,31 @@ fun NativeEditorDock(
     modifier: Modifier = Modifier,
     leading: (@Composable (expanded: Boolean) -> Unit)? = null,
     initiallyExpanded: Boolean = false,
+    spacious: Boolean = false,
 ) {
     var expanded by rememberSaveable { mutableStateOf(initiallyExpanded) }
 
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .navigationBarsPadding()
+            .imePadding()
+            .then(
+                if (spacious) {
+                    Modifier.windowInsetsPadding(
+                        WindowInsets.mandatorySystemGestures.only(WindowInsetsSides.Bottom)
+                    )
+                } else {
+                    Modifier
+                }
+            )
             .animateContentSize(
                 animationSpec = spring(
                     dampingRatio = 0.86f,
                     stiffness = 420f,
                 ),
             )
-            .navigationBarsPadding()
-            .imePadding()
-            .padding(horizontal = 4.dp, vertical = 3.dp),
+            .padding(horizontal = 4.dp, vertical = if (spacious) 4.dp else 3.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(1.dp),
     ) {
@@ -163,11 +179,13 @@ fun NativeEditorDock(
         NativeEditorDockActionRow(
             actions = actions,
             expanded = expanded,
+            spacious = spacious,
             modifier = Modifier.weight(1f),
         )
         Spacer(modifier = Modifier.width(1.dp))
         NativeEditorDockCollapseButton(
             expanded = expanded,
+            spacious = spacious,
             onToggleExpanded = { expanded = !expanded },
         )
     }
@@ -177,6 +195,7 @@ fun NativeEditorDock(
 private fun NativeEditorDockActionRow(
     actions: List<NativeEditorDockAction>,
     expanded: Boolean,
+    spacious: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val actionScrollState = rememberScrollState()
@@ -194,7 +213,7 @@ private fun NativeEditorDockActionRow(
             if (action.dividerBefore) {
                 NativeEditorDockDivider()
             }
-            NativeEditorDockActionButton(action = action, expanded = expanded)
+            NativeEditorDockActionButton(action = action, expanded = expanded, spacious = spacious)
         }
     }
 }
@@ -203,12 +222,14 @@ private fun NativeEditorDockActionRow(
 private fun NativeEditorDockActionButton(
     action: NativeEditorDockAction,
     expanded: Boolean,
+    spacious: Boolean,
 ) {
     if (action.icon != null) {
-        NativeEditorDockIconButton(
+        NativeEditorDockChip(
             label = action.label,
             icon = action.icon,
             expanded = expanded,
+            spacious = spacious,
             enabled = action.enabled,
             selected = action.selected,
             onClick = action.onClick,
@@ -221,6 +242,7 @@ private fun NativeEditorDockActionButton(
             selected = action.selected,
             enabled = action.enabled,
             glyphStyle = action.glyphStyle ?: MaterialTheme.typography.labelMedium,
+            spacious = spacious,
             onClick = action.onClick,
         )
     }
@@ -229,6 +251,7 @@ private fun NativeEditorDockActionButton(
 @Composable
 private fun NativeEditorDockCollapseButton(
     expanded: Boolean,
+    spacious: Boolean,
     onToggleExpanded: () -> Unit,
 ) {
     val chevronRotation by animateFloatAsState(
@@ -249,6 +272,7 @@ private fun NativeEditorDockCollapseButton(
         onClick = onToggleExpanded,
         iconModifier = Modifier.rotate(chevronRotation),
         showLabel = false,
+        spacious = spacious,
     )
 }
 
@@ -268,6 +292,7 @@ fun NativeEditorDockChip(
     glyph: String? = null,
     iconModifier: Modifier = Modifier,
     showLabel: Boolean = true,
+    spacious: Boolean = false,
 ) {
     NativeEditorDockButtonSurface(
         label = label,
@@ -277,6 +302,7 @@ fun NativeEditorDockChip(
         onClick = onClick,
         modifier = modifier,
         showLabel = showLabel,
+        spacious = spacious,
     ) {
         when {
             icon != null -> Icon(
@@ -306,33 +332,6 @@ private fun NativeEditorDockDivider() {
 
 @Suppress("LongParameterList")
 @Composable
-private fun NativeEditorDockIconButton(
-    label: String,
-    icon: ImageVector,
-    expanded: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-    selected: Boolean = false,
-) {
-    NativeEditorDockButtonSurface(
-        label = label,
-        expanded = expanded,
-        selected = selected,
-        enabled = enabled,
-        onClick = onClick,
-        modifier = modifier,
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            modifier = Modifier.size(DOCK_CONTENT_ICON_SIZE),
-        )
-    }
-}
-
-@Suppress("LongParameterList")
-@Composable
 private fun NativeEditorDockTextButton(
     label: String,
     displayLabel: String,
@@ -342,6 +341,7 @@ private fun NativeEditorDockTextButton(
     glyphStyle: TextStyle,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    spacious: Boolean = false,
 ) {
     NativeEditorDockButtonSurface(
         label = label,
@@ -350,6 +350,7 @@ private fun NativeEditorDockTextButton(
         enabled = enabled,
         onClick = onClick,
         modifier = modifier,
+        spacious = spacious,
     ) {
         Text(
             text = displayLabel,
@@ -400,6 +401,7 @@ private fun NativeEditorDockButtonSurface(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     showLabel: Boolean = true,
+    spacious: Boolean = false,
     content: @Composable () -> Unit,
 ) {
     val colorScheme = MaterialTheme.colorScheme
@@ -413,16 +415,20 @@ private fun NativeEditorDockButtonSurface(
         onClick = onClick,
         enabled = enabled,
         modifier = modifier
-            .height(
-                if (expanded) DOCK_EXPANDED_HEIGHT.dp else DOCK_COLLAPSED_HEIGHT.dp,
-            )
-            .widthIn(
-                min = if (expanded) DOCK_MIN_WIDTH_EXPANDED else DOCK_MIN_WIDTH_COLLAPSED,
+            .then(
+                if (spacious) {
+                    Modifier.heightIn(min = 48.dp).widthIn(min = 48.dp)
+                } else {
+                    Modifier
+                        .height(if (expanded) DOCK_EXPANDED_HEIGHT.dp else DOCK_COLLAPSED_HEIGHT.dp)
+                        .widthIn(min = if (expanded) DOCK_MIN_WIDTH_EXPANDED else DOCK_MIN_WIDTH_COLLAPSED)
+                }
             )
             .animateContentSize(tween(DOCK_SIZE_ANIMATION_MS))
             .semantics(mergeDescendants = true) {
                 contentDescription = label
                 role = Role.Button
+                if (spacious && selected) this.selected = true
             },
         shape = DockButtonShape,
         color = when {
@@ -435,7 +441,7 @@ private fun NativeEditorDockButtonSurface(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxHeight()
+                .then(if (spacious) Modifier.heightIn(min = 48.dp) else Modifier.fillMaxHeight())
                 .padding(
                     horizontal = if (expanded) DOCK_CONTENT_HORIZONTAL_PADDING else 0.dp,
                     vertical = DOCK_CONTENT_VERTICAL_PADDING,

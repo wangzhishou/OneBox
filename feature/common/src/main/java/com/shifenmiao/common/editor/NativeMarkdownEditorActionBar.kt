@@ -5,6 +5,8 @@ package com.shifenmiao.common.editor
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.outlined.FormatQuote
+import androidx.compose.material.icons.outlined.ShortText
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -39,18 +41,23 @@ internal fun NativeMarkdownEditorDock(
     state: NativeMarkdownEditorState,
     extraActions: List<NativeEditorExtraAction>,
     modifier: Modifier = Modifier,
+    useVectorIcons: Boolean = false,
     onInsert: (NativeEditorInsertKind) -> Unit = {},
     onVoiceInput: (() -> Unit)? = null,
 ) {
     NativeEditorDock(
         modifier = modifier,
+        spacious = useVectorIcons,
         actions = markdownDockActions(
             state = state,
             extraActions = extraActions,
+            useVectorIcons = useVectorIcons,
             onInsert = onInsert,
             onVoiceInput = onVoiceInput,
         ),
-        leading = { expanded -> NativeMarkdownEditorModeToggle(state = state, expanded = expanded) },
+        leading = { expanded ->
+            NativeMarkdownEditorModeToggle(state = state, expanded = expanded, spacious = useVectorIcons)
+        },
     )
 }
 
@@ -58,16 +65,16 @@ internal fun NativeMarkdownEditorDock(
 private fun NativeMarkdownEditorModeToggle(
     state: NativeMarkdownEditorState,
     expanded: Boolean,
+    spacious: Boolean,
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
     val modeLabel = stringResource(state.mode.labelRes())
     Box {
         NativeEditorDockChip(
             label = modeLabel,
-            // 始终显示当前模式自己的图标（编辑=笔 / 预览=眼睛 / 源码=尖括号），
-            // 展开时在后面补文字标签；收起时也一眼能看出现在处在哪个模式。
             icon = state.mode.icon(),
             expanded = expanded,
+            spacious = spacious,
             onClick = { menuExpanded = true },
         )
         EnhancedDropdownMenu(
@@ -101,12 +108,13 @@ private fun NativeMarkdownEditorModeToggle(
 private fun markdownDockActions(
     state: NativeMarkdownEditorState,
     extraActions: List<NativeEditorExtraAction>,
+    useVectorIcons: Boolean,
     onInsert: (NativeEditorInsertKind) -> Unit,
     onVoiceInput: (() -> Unit)?,
 ): List<NativeEditorDockAction> =
     historyActions(state = state, onVoiceInput = onVoiceInput) +
-        inlineStyleActions(state = state) +
-        blockStyleActions(state = state) +
+        inlineStyleActions(state = state, useVectorIcons = useVectorIcons) +
+        blockStyleActions(state = state, useVectorIcons = useVectorIcons) +
         insertActions(state = state, onInsert = onInsert) +
         extraActions.mapIndexed { index, action ->
             NativeEditorDockAction(
@@ -154,13 +162,17 @@ private fun historyActions(
 }
 
 @Composable
-private fun inlineStyleActions(state: NativeMarkdownEditorState): List<NativeEditorDockAction> {
+private fun inlineStyleActions(
+    state: NativeMarkdownEditorState,
+    useVectorIcons: Boolean,
+): List<NativeEditorDockAction> {
     val scheme = rememberNativeMarkdownStyleScheme()
     val editor = state.richTextState()
     return scheme.inlineStyles.mapIndexed { index, definition ->
         NativeEditorDockAction(
             id = "inline_${definition.id}",
             label = definition.label,
+            icon = if (useVectorIcons) inlineStyleIcon(definition.id) else null,
             glyph = definition.glyph,
             glyphStyle = inlineGlyphStyle(definition.id),
             selected = editor?.isInlineStyleActive(definition.id, scheme) == true,
@@ -172,7 +184,10 @@ private fun inlineStyleActions(state: NativeMarkdownEditorState): List<NativeEdi
 }
 
 @Composable
-private fun blockStyleActions(state: NativeMarkdownEditorState): List<NativeEditorDockAction> {
+private fun blockStyleActions(
+    state: NativeMarkdownEditorState,
+    useVectorIcons: Boolean,
+): List<NativeEditorDockAction> {
     val scheme = rememberNativeMarkdownStyleScheme()
     val editor = state.richTextState()
     val activeBlockStyleId = editor?.currentBlockStyle(scheme)?.id
@@ -183,6 +198,7 @@ private fun blockStyleActions(state: NativeMarkdownEditorState): List<NativeEdit
             NativeEditorDockAction(
                 id = "block_body",
                 label = bodyStyle.label,
+                icon = if (useVectorIcons) Icons.Outlined.ShortText else null,
                 glyph = "T",
                 selected = activeBlockStyleId == bodyStyle.id,
                 enabled = editor != null && state.mode == NativeMarkdownEditorMode.Edit,
@@ -190,7 +206,7 @@ private fun blockStyleActions(state: NativeMarkdownEditorState): List<NativeEdit
                 onClick = { onApply(bodyStyle.id) },
             )
         )
-        headingSpecs().forEach { spec ->
+        headingSpecs().forEachIndexed { index, spec ->
             scheme.blockStyle(spec.styleId)?.let { style ->
                 add(
                     blockStyleAction(
@@ -198,6 +214,7 @@ private fun blockStyleActions(state: NativeMarkdownEditorState): List<NativeEdit
                             style = style,
                             glyph = spec.glyph,
                             label = stringResource(spec.labelRes),
+                            icon = if (useVectorIcons) markdownHeadingIcons[index] else null,
                         ),
                         activeBlockStyleId = activeBlockStyleId,
                         enabled = editor != null && state.mode == NativeMarkdownEditorMode.Edit,
@@ -209,7 +226,12 @@ private fun blockStyleActions(state: NativeMarkdownEditorState): List<NativeEdit
         scheme.blockStyle(NATIVE_EDITOR_QUOTE_ID)?.let { style ->
             add(
                 blockStyleAction(
-                    spec = BlockStyleSpec(style = style, glyph = "❝", label = style.label),
+                    spec = BlockStyleSpec(
+                        style = style,
+                        glyph = "❝",
+                        label = style.label,
+                        icon = if (useVectorIcons) Icons.Outlined.FormatQuote else null,
+                    ),
                     activeBlockStyleId = activeBlockStyleId,
                     enabled = editor != null && state.mode == NativeMarkdownEditorMode.Edit,
                     onApply = onApply,
@@ -223,6 +245,7 @@ private data class BlockStyleSpec(
     val style: RichTextBlockStyle,
     val glyph: String,
     val label: String,
+    val icon: ImageVector?,
 )
 
 private fun blockStyleAction(
@@ -233,6 +256,7 @@ private fun blockStyleAction(
 ): NativeEditorDockAction = NativeEditorDockAction(
     id = "block_${spec.style.id}",
     label = spec.label,
+    icon = spec.icon,
     glyph = spec.glyph,
     selected = activeBlockStyleId == spec.style.id,
     enabled = enabled,

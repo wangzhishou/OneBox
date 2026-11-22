@@ -53,11 +53,11 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.R as CommonR
 import com.shifenmiao.common.editor.NativeMarkdownEditor
+import com.shifenmiao.common.editor.NativeMarkdownEditorMode
 import com.shifenmiao.common.editor.rememberNativeMarkdownEditorState
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
@@ -275,10 +275,12 @@ fun CreateNoteScreen(
     BaseScreen(
         modifier = Modifier,
         title = {
-            NoteTitleField(
-                title = uiState.title,
-                onTitleChange = createNoteComponent::onTitleChange,
-            )
+            if (editorState.mode != NativeMarkdownEditorMode.Preview) {
+                NoteTitleField(
+                    title = uiState.title,
+                    onTitleChange = createNoteComponent::onTitleChange,
+                )
+            }
         },
         type = EnhancedTopAppBarType.Normal,
         colors = TopAppBarDefaults.topAppBarColors(
@@ -385,6 +387,7 @@ fun CreateNoteScreen(
                 .fillMaxWidth()
                 .weight(1f),
             autoFocus = autoFocusBody,
+            useVectorDockIcons = true,
             onContentChanged = createNoteComponent::markAsDirty,
         )
     }
@@ -502,9 +505,8 @@ private fun NoteTitleField(
             if (it.length <= NOTE_TITLE_MAX_LENGTH) onTitleChange(it)
         },
         modifier = Modifier.fillMaxWidth(),
-        textStyle = MaterialTheme.typography.titleLarge.copy(
+        textStyle = MaterialTheme.typography.titleMedium.copy(
             color = MaterialTheme.colorScheme.onSurface,
-            fontWeight = FontWeight.Bold,
         ),
         cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
         singleLine = true,
@@ -513,7 +515,7 @@ private fun NoteTitleField(
                 if (title.isBlank()) {
                     Text(
                         text = stringResource(CommonR.string.note_untitled),
-                        style = MaterialTheme.typography.titleLarge,
+                        style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,

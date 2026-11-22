@@ -19,7 +19,6 @@
 
 package com.shifenmiao.online.screen
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,11 +26,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -39,10 +37,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.provider.LocalDataDraftHelper
 import com.shifenmiao.common.components.text.defaultTextSelectionMenuItems
@@ -50,7 +46,6 @@ import com.shifenmiao.common.handle.LocalUrlNavigator
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.markdown.OneBoxMarkdownContent
 import com.shifenmiao.common.markdown.rememberInAppLinkHandler
-import com.shifenmiao.common.markdown.rememberOneBoxMarkdownContentState
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.rememberMarkdownCodeActions
 import com.shifenmiao.core.R
@@ -59,10 +54,15 @@ import com.shifenmiao.online.component.NoteItemComponent
 import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedButton
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedFloatingActionButton
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedFloatingActionButtonType
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBarType
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLock
+
+private val NoteEditFabSize = 56.dp
+private val NoteEditFabBottomMargin = 16.dp
 
 @Composable
 fun NoteItemScreen(
@@ -78,7 +78,6 @@ fun NoteItemScreen(
         onNavigate = { screen -> navigator.navigate(screen) },
     )
     val scope = rememberCoroutineScope()
-    val markdownState = rememberOneBoxMarkdownContentState()
 
     // 页面显示时刷新数据，确保显示最新的编辑内容
     LaunchedEffect(Unit) {
@@ -86,26 +85,19 @@ fun NoteItemScreen(
     }
 
     val codeActions = rememberMarkdownCodeActions(appComponent = appComponent)
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-    BackHandler { appComponent.onGoBack() }
+    val canEdit = !noteUIState.isLocked && !noteUIState.isLoading &&
+        noteUIState.errorMessage == null && noteUIState.itemId > 0
     BaseScreen(
-        title = {
-            Text(
-                text = noteUIState.title,
-                style = MaterialTheme.typography.titleMedium.copy(
-                    lineHeight = MaterialTheme.typography.titleMedium.fontSize * 1.2f
-                ),
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
-            )
-        },
+        title = {},
         onGoBack = { appComponent.onGoBack() },
-        type = EnhancedTopAppBarType.Medium,
-        scrollBehavior = scrollBehavior,
-        actions = {
-            if (!noteUIState.isLocked) {
-                IconButton(
+        type = EnhancedTopAppBarType.Normal,
+        foreground = {
+            if (canEdit) {
+                EnhancedFloatingActionButton(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(end = AppTheme.dimens.pageHorizontal, bottom = NoteEditFabBottomMargin),
+                    type = EnhancedFloatingActionButtonType.Custom(NoteEditFabSize, CircleShape),
                     onClick = {
                         scope.launch {
                             val draftId = dataDraftHelper.createDraft(
@@ -114,20 +106,14 @@ fun NoteItemScreen(
                             )
                             navigator.navigate(Screen.CreateNote(draftId = draftId))
                         }
-                    }
+                    },
                 ) {
                     Icon(
-                        modifier = Modifier
-                            .padding(end = AppTheme.dimens.paddingNormal),
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        contentDescription = stringResource(R.string.edit),
                     )
                 }
             }
-        },
-        onTitleClick = {
-            scope.launch { markdownState.scrollToContentStart() }
         },
         showNavigationBarsPadding = true
     ) {
@@ -138,26 +124,23 @@ fun NoteItemScreen(
             )
             return@BaseScreen
         }
-OneBoxMarkdownContent(
-    modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
-    state = markdownState,
-    codeActions = codeActions,
-    selectionItems = selectionMenuItems,
-    message = noteUIState.data,
-    isLoading = noteUIState.isLoading,
-    errorMessage = noteUIState.errorMessage,
-    onRetry = { noteItemComponent.refreshData() },
-    onGoBack = { appComponent.onGoBack() },
-    onLinkClick = onLinkClick,
-    // 阅读态不再展示分类 chip：分类只在保存/设置弹窗里维护，正文直接从标题下方开始。
-    // 页面级已由 BaseScreen 补 navigationBarsPadding；正文末尾再留一段可滚动留白
-    paddingValues = PaddingValues(
-        start = AppTheme.dimens.pageHorizontal,
-        top = 0.dp,
-        end = AppTheme.dimens.pageHorizontal,
-        bottom = 8.dp
-    ),
-)
+        OneBoxMarkdownContent(
+            modifier = Modifier.fillMaxSize(),
+            codeActions = codeActions,
+            selectionItems = selectionMenuItems,
+            message = noteUIState.data,
+            isLoading = noteUIState.isLoading,
+            errorMessage = noteUIState.errorMessage,
+            onRetry = { noteItemComponent.refreshData() },
+            onGoBack = { appComponent.onGoBack() },
+            onLinkClick = onLinkClick,
+            paddingValues = PaddingValues(
+                start = AppTheme.dimens.pageHorizontal,
+                top = 0.dp,
+                end = AppTheme.dimens.pageHorizontal,
+                bottom = if (canEdit) NoteEditFabSize + NoteEditFabBottomMargin + 8.dp else 8.dp
+            ),
+        )
     }
 }
 

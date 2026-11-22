@@ -85,6 +85,7 @@ fun NativeMarkdownEditor(
     modifier: Modifier = Modifier,
     extraActions: List<NativeEditorExtraAction> = emptyList(),
     autoFocus: Boolean = false,
+    useVectorDockIcons: Boolean = false,
     onContentChanged: () -> Unit = {},
 ) {
     val scheme = rememberNativeMarkdownStyleScheme()
@@ -309,6 +310,7 @@ fun NativeMarkdownEditor(
         NativeMarkdownEditorDock(
             state = state,
             extraActions = extraActions,
+            useVectorIcons = useVectorDockIcons,
             onInsert = { insertKind = it },
             onVoiceInput = startVoiceInput,
         )
