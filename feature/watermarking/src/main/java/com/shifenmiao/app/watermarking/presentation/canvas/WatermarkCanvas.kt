@@ -39,6 +39,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
@@ -311,7 +312,10 @@ fun WatermarkCanvas(
                     },
                 ) {
                 Column(
-                    modifier = Modifier.absoluteOffset { IntOffset(left, top) }.width(photoWidthDp),
+                    // 像素坐标从画布左上角计，与导出一致，不随界面语言镜像。
+                    modifier = Modifier.align(AbsoluteAlignment.TopLeft)
+                        .absoluteOffset { IntOffset(left, top) }
+                        .width(photoWidthDp),
                 ) {
                     // PHOTO 区：容器 constraints 恰好等于导出的 photoRect，
                     // centerX/centerY 只在该 rect 内归一化，与 drawSingle 的换算一致。

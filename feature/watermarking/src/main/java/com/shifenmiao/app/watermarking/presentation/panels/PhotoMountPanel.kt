@@ -8,6 +8,7 @@ import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -162,7 +163,7 @@ internal fun PhotoMountThumbnail(mount: PhotoMount, height: androidx.compose.ui.
                 painterResource(R.drawable.filter_preview_source),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.absoluteOffset {
+                modifier = Modifier.align(AbsoluteAlignment.TopLeft).absoluteOffset {
                     androidx.compose.ui.unit.IntOffset(
                         (layout.contentLeft * scale).roundToInt(), (layout.contentTop * scale).roundToInt(),
                     )
