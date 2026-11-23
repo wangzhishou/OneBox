@@ -775,7 +775,7 @@ private fun demoNavigationEntries(): List<DemoNavigationEntry> = listOf(
     DemoNavigationEntry("提词器", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTeleprompter) { Screen.Teleprompter() },
     DemoNavigationEntry(getString(R.string.ai_detect_title), com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineManageSearch) { Screen.AiDetect() },
     DemoNavigationEntry("创建智能体", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic) { Screen.CreateAIAgent() },
-    DemoNavigationEntry("创建提示词", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineNote) { Screen.CreateAIChatPrompt() },
+    DemoNavigationEntry("创建提示词", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineNote) { Screen.EditPromptItem() },
     DemoNavigationEntry("创建代办", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic) { Screen.MarkTodoRouter(Screen.MarkTodoRouter.MarkTodoType.AddTodo()) },
     DemoNavigationEntry("数据同步", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImportExport) { Screen.DataSync },
     DemoNavigationEntry("时光里程碑", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic) { Screen.LifeTime },

@@ -1,0 +1,15 @@
+<resources>
+    <string name="editor_history_chat">Диалоги</string>
+    <string name="editor_history_tools">Помощник по редактированию</string>
+    <string name="editor_history_note_metadata">Заметка · Заголовок и краткое описание</string>
+    <string name="editor_history_note_rewrite">Заметка · Переписывание</string>
+    <string name="editor_history_prompt_create">Промпт · Создать с ИИ</string>
+    <string name="editor_history_prompt_enhance">Промпт · Улучшить с ИИ</string>
+    <string name="editor_history_prompt_format">Промпт · Упорядочить оформление</string>
+    <string name="editor_history_prompt_condense">Промпт · Сократить инструкции</string>
+    <string name="editor_history_success">Готово</string>
+    <string name="editor_history_stopped">Остановлено</string>
+    <string name="editor_history_failed">Ошибка</string>
+    <string name="editor_history_tokens">Токены: %1$d</string>
+    <string name="editor_history_unknown">Нет данных об использовании токенов</string>
+</resources>

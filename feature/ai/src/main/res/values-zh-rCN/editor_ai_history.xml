@@ -1,0 +1,15 @@
+<resources>
+    <string name="editor_history_chat">对话</string>
+    <string name="editor_history_tools">编辑助手</string>
+    <string name="editor_history_note_metadata">笔记 · 标题和简介</string>
+    <string name="editor_history_note_rewrite">笔记 · 正文改写</string>
+    <string name="editor_history_prompt_create">提示词 · 智能创建</string>
+    <string name="editor_history_prompt_enhance">提示词 · 智能增强</string>
+    <string name="editor_history_prompt_format">提示词 · 整理格式</string>
+    <string name="editor_history_prompt_condense">提示词 · 精简指令</string>
+    <string name="editor_history_success">已完成</string>
+    <string name="editor_history_stopped">已停止</string>
+    <string name="editor_history_failed">失败</string>
+    <string name="editor_history_tokens">%1$d Token</string>
+    <string name="editor_history_unknown">未报告 Token 用量</string>
+</resources>

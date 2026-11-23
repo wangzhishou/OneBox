@@ -272,6 +272,7 @@ class CreateNoteComponent @AssistedInject internal constructor(
                     input = input,
                     systemPrompt = AppContext.getString(OnlineR.string.note_ai_system_prompt),
                     billingDesc = AppContext.getString(OnlineR.string.note_ai_billing_desc),
+                    editorCall = AIPromptExecutor.EditorCall("note", state.action.name),
                     onDelta = { full ->
                         _aiState.update { it.copy(result = cleanAiMarkdown(full)) }
                     },
@@ -425,6 +426,7 @@ class CreateNoteComponent @AssistedInject internal constructor(
             input = input,
             systemPrompt = systemPrompt,
             billingDesc = AppContext.getString(com.shifenmiao.common.R.string.note_ai_generate),
+            editorCall = AIPromptExecutor.EditorCall("note", "Metadata"),
         )
         if (!result.isSuccess) {
             return@withContext NoteMetadata(

@@ -1,0 +1,12 @@
+<resources>
+    <string name="prompt_ai_menu">AI 編集</string>
+    <string name="prompt_ai_create">AI で作成</string>
+    <string name="prompt_ai_enhance">AI で改善</string>
+    <string name="prompt_ai_format">書式を整える</string>
+    <string name="prompt_ai_condense">指示を短くする</string>
+    <string name="prompt_ai_goal">AI に何をしてほしいですか？</string>
+    <string name="prompt_ai_apply">提案を採用</string>
+    <string name="prompt_ai_failed">提案を生成できませんでした。再試行してください。</string>
+    <string name="prompt_ai_protected">提案で変数またはコードブロックが変更されたため、原文を保持しました。</string>
+    <string name="prompt_ai_stale">原文が変更されました。新しい提案を生成してください。</string>
+</resources>

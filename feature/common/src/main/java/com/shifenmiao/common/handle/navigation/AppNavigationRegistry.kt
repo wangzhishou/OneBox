@@ -675,8 +675,8 @@ object AppNavigationRegistry {
                 aliases = listOf("create_ai_agent", "新建智能体")
             ),
             staticScreen(
-                screen = Screen.CreateAIChatPrompt(),
-                aliases = listOf("create_ai_chat_prompt", "新建提示词")
+                screen = Screen.EditPromptItem(),
+                aliases = listOf("CreateAIChatPrompt", "create_ai_chat_prompt", "新建提示词")
             ),
             AppNavigationTarget(
                 targetType = AppNavigationTargetType.SCREEN,

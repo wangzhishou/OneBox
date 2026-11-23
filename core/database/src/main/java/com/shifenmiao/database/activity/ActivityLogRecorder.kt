@@ -396,7 +396,29 @@ class ActivityLogRecorder @Inject constructor(
         )
     }
 
-    // ── HTML 文章 ────────────────────────────────────
+// ── HTML 文章 ────────────────────────────────────────
+
+    suspend fun recordPrompt(itemId: Int, title: String, appTitle: String, screenRoute: String) {
+        if (itemId <= 0) return
+        try {
+            repository.record(
+                ActivityLogEntry(
+                    category = ActivityCategory.PROMPT_EDIT,
+                    title = title,
+                    appTitle = appTitle,
+                    description = appTitle,
+                    screenRoute = screenRoute,
+                    payload = JSONObject().put("itemId", itemId).toString(),
+                    dedupKey = "prompt_$itemId",
+                    createdAt = Date(),
+                )
+            )
+        } catch (cancelled: kotlinx.coroutines.CancellationException) {
+            throw cancelled
+        } catch (error: Exception) {
+            android.util.Log.w("ActivityLogRecorder", "Could not record prompt save", error)
+        }
+    }
 
     suspend fun recordHtml(
         itemId: Int,
@@ -891,6 +913,7 @@ class ActivityLogRecorder @Inject constructor(
         val type = ListItemType.fromId(item.listType)
         when (type) {
             ListItemType.NOTE -> deleteNoteLog(item.id)
+            ListItemType.PROMPT -> repository.deleteByDedupKey("prompt_${item.id}")
             ListItemType.HTML -> deleteHtmlLog(item.id)
             ListItemType.AGENT -> item.id.takeIf { it > 0 }?.let { deleteAiAgentLogsByAgentId(it) }
             else -> Unit

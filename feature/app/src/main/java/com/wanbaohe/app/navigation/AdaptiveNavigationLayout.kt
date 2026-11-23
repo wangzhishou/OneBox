@@ -515,10 +515,6 @@ private fun QuickCreateFloatingPanel(
             onDismiss()
             rootComponent.navigateToNew(Screen.CreateAIAgent())
         },
-        onNavigateToCreateAIPrompt = {
-            onDismiss()
-            rootComponent.navigateToNew(Screen.CreateAIChatPrompt())
-        },
         onNavigateToHabitTracker = {
             onDismiss()
             rootComponent.navigateToNew(Screen.HabitTracker())

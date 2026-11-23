@@ -1,0 +1,12 @@
+<resources>
+    <string name="prompt_ai_menu">AI संपादन</string>
+    <string name="prompt_ai_create">AI से बनाएँ</string>
+    <string name="prompt_ai_enhance">AI से बेहतर बनाएँ</string>
+    <string name="prompt_ai_format">फ़ॉर्मैट व्यवस्थित करें</string>
+    <string name="prompt_ai_condense">निर्देश छोटे करें</string>
+    <string name="prompt_ai_goal">आप AI से क्या करवाना चाहते हैं?</string>
+    <string name="prompt_ai_apply">सुझाव अपनाएँ</string>
+    <string name="prompt_ai_failed">सुझाव नहीं बन सका। फिर कोशिश करें।</string>
+    <string name="prompt_ai_protected">सुझाव में कोई वैरिएबल या कोड ब्लॉक बदल गया। मूल टेक्स्ट रखा गया है।</string>
+    <string name="prompt_ai_stale">मूल टेक्स्ट बदल गया है। नया सुझाव बनाएँ।</string>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="prompt_ai_menu">AI 编辑</string>
+    <string name="prompt_ai_create">智能创建</string>
+    <string name="prompt_ai_enhance">智能增强</string>
+    <string name="prompt_ai_format">整理格式</string>
+    <string name="prompt_ai_condense">精简指令</string>
+    <string name="prompt_ai_goal">你想让 AI 做什么？</string>
+    <string name="prompt_ai_apply">采用建议</string>
+    <string name="prompt_ai_failed">未能生成建议，请重试。</string>
+    <string name="prompt_ai_protected">建议改动了变量或代码块，已保留原文。</string>
+    <string name="prompt_ai_stale">原文已改动，请重新生成建议。</string>
+</resources>

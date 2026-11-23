@@ -1,0 +1,12 @@
+<resources>
+    <string name="prompt_ai_menu">AI 編輯</string>
+    <string name="prompt_ai_create">智慧建立</string>
+    <string name="prompt_ai_enhance">智慧增強</string>
+    <string name="prompt_ai_format">整理格式</string>
+    <string name="prompt_ai_condense">精簡指令</string>
+    <string name="prompt_ai_goal">你想讓 AI 做什麼？</string>
+    <string name="prompt_ai_apply">採用建議</string>
+    <string name="prompt_ai_failed">無法產生建議，請重試。</string>
+    <string name="prompt_ai_protected">建議改動了變數或程式碼區塊，已保留原文。</string>
+    <string name="prompt_ai_stale">原文已變更，請重新產生建議。</string>
+</resources>

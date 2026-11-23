@@ -1,0 +1,12 @@
+<resources>
+    <string name="prompt_ai_menu">Редактирование с ИИ</string>
+    <string name="prompt_ai_create">Создать с ИИ</string>
+    <string name="prompt_ai_enhance">Улучшить с ИИ</string>
+    <string name="prompt_ai_format">Упорядочить оформление</string>
+    <string name="prompt_ai_condense">Сократить инструкции</string>
+    <string name="prompt_ai_goal">Что должен сделать ИИ?</string>
+    <string name="prompt_ai_apply">Применить предложение</string>
+    <string name="prompt_ai_failed">Не удалось создать вариант. Повторите попытку.</string>
+    <string name="prompt_ai_protected">Вариант изменил переменную или блок кода. Исходный текст сохранён.</string>
+    <string name="prompt_ai_stale">Исходный текст изменился. Создайте новый вариант.</string>
+</resources>

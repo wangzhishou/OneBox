@@ -117,6 +117,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTune
 import com.wanbaohe.core.ui.utils.helper.Clipboard
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
+import com.wanbaohe.core.ui.utils.navigation.ScreenCallbackStatus
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.utils.navigation.screenIconByModule
 import com.wanbaohe.core.ui.widget.glass.GlassCard
@@ -192,6 +193,7 @@ fun PlaceHolderMessageCard(
                 isEditable = !promptCardState.isSystemPrompt &&
                         (promptCardState.source != Source.REMOTE || LoginUtils.isAdmin()),
                 onPushToRemote = onPushToRemote,
+                onPromptSaved = aiChatComponent::reloadEditedPrompt,
                 emptyStateText = if (conversation.promptId != null) {
                     stringResource(R.string.ai_prompt_placeholder_loading_desc)
                 } else {
@@ -270,6 +272,7 @@ private fun PromptWorkCard(
     promptBadgeLabel: String?,
     updatedAtMillis: Long?,
     isEditable: Boolean,
+    onPromptSaved: (previousPromptId: Int, savedPromptId: Int) -> Unit,
     onPushToRemote: () -> Unit = {},
     emptyStateText: String,
 ) {
@@ -322,17 +325,17 @@ private fun PromptWorkCard(
                         contentDescription = stringResource(R.string.edit),
                         onClick = {
                             coroutineScope.launch {
-                                val draftId = dataDraftHelper
-                                    .getLatestByTypeAndRelatedEntityId(
-                                        draftType = ListItemType.PROMPT.id,
-                                        relatedEntityId = promptId
-                                    )
-                                    ?.id
-                                    ?: dataDraftHelper.createDraft(
-                                        draftType = ListItemType.PROMPT.id,
-                                        relatedEntityId = promptId
-                                    )
-                                onNavigate(Screen.CreateAIChatPrompt(draftId = draftId))
+                                // 旧生成页的草稿正文是结构化 JSON，编辑已保存提示词时直接按 ID 加载。
+                                val draftId = dataDraftHelper.createDraft(
+                                    draftType = ListItemType.PROMPT.id,
+                                    relatedEntityId = promptId,
+                                )
+                                onNavigate(Screen.EditPromptItem(draftId = draftId, onResult = { result ->
+                                    if (result.status == ScreenCallbackStatus.SAVED) {
+                                        val savedPromptId = result.extra?.get("promptId") as? Int ?: promptId
+                                        onPromptSaved(promptId, savedPromptId)
+                                    }
+                                }))
                             }
                         }
                     )

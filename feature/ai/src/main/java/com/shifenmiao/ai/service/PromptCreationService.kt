@@ -19,6 +19,9 @@
 
 package com.shifenmiao.ai.service
 
+import com.shifenmiao.database.activity.ActivityLogRecorder
+import com.wanbaohe.core.ui.utils.navigation.Screen
+
 import android.content.Context
 import com.shifenmiao.model.ModelProvider.AppJson
 import kotlinx.serialization.encodeToString
@@ -81,6 +84,7 @@ class PromptCreationService @Inject constructor(
     private val toolBindingRepository: ToolBindingRepository,
     private val agentToolRegistry: AgentToolRegistry,
     private val aiPromptExecutor: AIPromptExecutor,
+    private val activityLog: ActivityLogRecorder,
     private val longTaskCenter: LongTaskCenter,
 ) {
 
@@ -290,6 +294,12 @@ class PromptCreationService @Inject constructor(
             }
         }
 
+        if (source == Source.LOCAL) {
+            activityLog.recordPrompt(
+                itemId, finalPrompt.title.orEmpty(), context.getString(R.string.prompt_create),
+                Screen.EditPromptItem().id.toString(),
+            )
+        }
         return PromptSavedResult(
             prompt = finalPrompt.copy(id = promptResourceId),
             itemId = itemId,

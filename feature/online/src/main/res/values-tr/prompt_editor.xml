@@ -1,0 +1,12 @@
+<resources>
+    <string name="prompt_ai_menu">Yapay zekâyla düzenleme</string>
+    <string name="prompt_ai_create">Yapay zekâyla oluştur</string>
+    <string name="prompt_ai_enhance">Yapay zekâyla iyileştir</string>
+    <string name="prompt_ai_format">Biçimi düzenle</string>
+    <string name="prompt_ai_condense">Talimatları kısalt</string>
+    <string name="prompt_ai_goal">Yapay zekânın ne yapmasını istiyorsunuz?</string>
+    <string name="prompt_ai_apply">Öneriyi uygula</string>
+    <string name="prompt_ai_failed">Öneri oluşturulamadı. Tekrar deneyin.</string>
+    <string name="prompt_ai_protected">Öneri bir değişkeni veya kod bloğunu değiştirdi. Özgün metin korundu.</string>
+    <string name="prompt_ai_stale">Özgün metin değişti. Yeni bir öneri oluşturun.</string>
+</resources>

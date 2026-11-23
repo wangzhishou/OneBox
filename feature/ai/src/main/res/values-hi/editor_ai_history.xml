@@ -1,0 +1,15 @@
+<resources>
+    <string name="editor_history_chat">बातचीत</string>
+    <string name="editor_history_tools">संपादन सहायक</string>
+    <string name="editor_history_note_metadata">नोट · शीर्षक और सारांश</string>
+    <string name="editor_history_note_rewrite">नोट · फिर से लिखना</string>
+    <string name="editor_history_prompt_create">प्रॉम्प्ट · AI से बनाएँ</string>
+    <string name="editor_history_prompt_enhance">प्रॉम्प्ट · AI से बेहतर बनाएँ</string>
+    <string name="editor_history_prompt_format">प्रॉम्प्ट · फ़ॉर्मैट व्यवस्थित करें</string>
+    <string name="editor_history_prompt_condense">प्रॉम्प्ट · निर्देश छोटे करें</string>
+    <string name="editor_history_success">पूरा हुआ</string>
+    <string name="editor_history_stopped">रोका गया</string>
+    <string name="editor_history_failed">विफल</string>
+    <string name="editor_history_tokens">%1$d टोकन</string>
+    <string name="editor_history_unknown">टोकन उपयोग की जानकारी नहीं</string>
+</resources>

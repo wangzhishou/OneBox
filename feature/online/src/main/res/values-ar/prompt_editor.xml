@@ -1,0 +1,12 @@
+<resources>
+    <string name="prompt_ai_menu">تحرير بالذكاء الاصطناعي</string>
+    <string name="prompt_ai_create">إنشاء ذكي</string>
+    <string name="prompt_ai_enhance">تحسين ذكي</string>
+    <string name="prompt_ai_format">تنظيم التنسيق</string>
+    <string name="prompt_ai_condense">اختصار التعليمات</string>
+    <string name="prompt_ai_goal">ماذا تريد من الذكاء الاصطناعي أن يفعل؟</string>
+    <string name="prompt_ai_apply">اعتماد الاقتراح</string>
+    <string name="prompt_ai_failed">تعذّر إنشاء اقتراح. حاول مجددًا.</string>
+    <string name="prompt_ai_protected">غيّر الاقتراح متغيرًا أو كتلة رمز. احتُفظ بالنص الأصلي.</string>
+    <string name="prompt_ai_stale">تغيّر النص الأصلي. أنشئ اقتراحًا جديدًا.</string>
+</resources>

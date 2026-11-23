@@ -75,6 +75,9 @@ class PromptManager @Inject constructor(
         return fetchAndPersistRemotePrompt(remoteId, localPromptId)
     }
 
+    suspend fun loadLocalPrompt(promptId: Int): PromptLoadResult? =
+        promptRepository.getPromptRecordById(promptId)?.toLoadResult()
+
     private fun PromptRecord.resolveRefreshRemotePromptId(): RemoteId? {
         if (source != Source.REMOTE) return null
         val remoteId = RemoteId.of(documentId, remoteId) ?: return null
@@ -132,4 +135,3 @@ data class PromptInitializationPlan(
     val initialPrompt: PromptLoadResult? = null,
     val refreshRemotePromptId: RemoteId? = null,
 )
-

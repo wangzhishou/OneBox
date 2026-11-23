@@ -214,7 +214,7 @@ fun CreateNoteScreen(
                 .map { it.toModel() },
             onSuccess = {
                 showSaveConfirm = false
-                AppToastHost.showToast(AppContext.getString(R.string.save_success))
+                AppToastHost.showSaveSuccessToast(R.string.save_success)
                 if (uiState.isEditing) {
                     // 编辑已有笔记：保存后回到笔记详情，而不是把用户甩回首页。
                     appComponent.onGoBack()

@@ -385,7 +385,7 @@ fun ChatContent(
             },
             onCreatePrompt = {
                 chatInputComponent.hidePromptPicker()
-                onNavigate(Screen.CreateAIChatPrompt())
+                onNavigate(Screen.EditPromptItem())
             },
             onDismiss = {
                 chatInputComponent.hidePromptPicker()

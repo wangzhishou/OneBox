@@ -50,6 +50,8 @@ enum class ActivityCategory {
     /** 笔记编辑 */
     NOTE_EDIT,
 
+    PROMPT_EDIT,
+
     /** HTML 文章编辑 */
     HTML_EDIT,
 
@@ -98,4 +100,3 @@ enum class ActivityCategory {
         }
     }
 }
-

@@ -1,0 +1,15 @@
+<resources>
+    <string name="editor_history_chat">Conversations</string>
+    <string name="editor_history_tools">Assistant de rédaction</string>
+    <string name="editor_history_note_metadata">Note · Titre et résumé</string>
+    <string name="editor_history_note_rewrite">Note · Réécriture</string>
+    <string name="editor_history_prompt_create">Prompt · Créer avec l’IA</string>
+    <string name="editor_history_prompt_enhance">Prompt · Améliorer avec l’IA</string>
+    <string name="editor_history_prompt_format">Prompt · Organiser la mise en forme</string>
+    <string name="editor_history_prompt_condense">Prompt · Raccourcir les consignes</string>
+    <string name="editor_history_success">Terminé</string>
+    <string name="editor_history_stopped">Arrêté</string>
+    <string name="editor_history_failed">Échec</string>
+    <string name="editor_history_tokens">%1$d jetons</string>
+    <string name="editor_history_unknown">Utilisation de jetons non communiquée</string>
+</resources>

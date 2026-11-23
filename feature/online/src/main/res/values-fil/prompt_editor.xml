@@ -1,0 +1,12 @@
+<resources>
+    <string name="prompt_ai_menu">Pag-edit gamit ang AI</string>
+    <string name="prompt_ai_create">Gumawa gamit ang AI</string>
+    <string name="prompt_ai_enhance">Pagandahin gamit ang AI</string>
+    <string name="prompt_ai_format">Ayusin ang format</string>
+    <string name="prompt_ai_condense">Paikliin ang mga tagubilin</string>
+    <string name="prompt_ai_goal">Ano ang gusto mong gawin ng AI?</string>
+    <string name="prompt_ai_apply">Gamitin ang mungkahi</string>
+    <string name="prompt_ai_failed">Hindi nakagawa ng mungkahi. Subukan muli.</string>
+    <string name="prompt_ai_protected">Binago ng mungkahi ang variable o code block. Pinanatili ang orihinal.</string>
+    <string name="prompt_ai_stale">Nagbago ang orihinal. Gumawa ng bagong mungkahi.</string>
+</resources>

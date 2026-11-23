@@ -326,8 +326,8 @@ fun CreateAIPromptScreen(
                                     ActionUtils.showLogin(source = "create_ai_prompt_save") {
                                         component.savePrompt(
                                             onSuccess = { savedResult ->
-                                                AppToastHost.showToast(
-                                                    getString(R.string.create_ai_chat_prompt_save_success)
+                                                AppToastHost.showSaveSuccessToast(
+                                                    R.string.create_ai_chat_prompt_save_success
                                                 )
                                                 component.onNavigateReplacingCurrent(
                                                     Screen.NewApp(initialTab = HomeTabKey.PROMPT)
@@ -1189,4 +1189,3 @@ private fun PromptErrorSection(
         }
     }
 }
-

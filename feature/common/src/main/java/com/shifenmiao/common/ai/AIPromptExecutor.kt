@@ -26,6 +26,8 @@ import com.shifenmiao.common.manager.AIEngineManager
 import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.base.utils.StringUtils
 import com.shifenmiao.core.R
+import com.shifenmiao.database.ai.EditorAiUsage
+import com.shifenmiao.database.ai.EditorAiUsageRepository
 import com.shifenmiao.storage.TokenStorage
 import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.model.ai.AiRequestProtocol
@@ -33,6 +35,8 @@ import com.shifenmiao.model.ai.ChatCompletionChunk
 import com.shifenmiao.model.ai.ChatCompletionRequest
 import com.shifenmiao.model.ai.RequestMessage
 import com.shifenmiao.model.ai.RoleType
+import com.shifenmiao.model.ai.StreamOptions
+import com.shifenmiao.model.ai.Usage
 import com.shifenmiao.network.AiRequestUrlResolver
 import com.shifenmiao.network.api.OpenAICompatibleService
 import com.shifenmiao.network.api.OwnProxyAIService
@@ -40,10 +44,13 @@ import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.utils.getString
 import com.t8rin.logger.makeLog
 import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
+import java.util.UUID
 
 /**
  * 全局 AI 提示词执行器，输入系统提示词和用户内容即可同步获取当前工作引擎大模型的生成内容。
@@ -70,6 +77,7 @@ class AIPromptExecutor @Inject constructor(
     private val openAICompatibleService: OpenAICompatibleService,
     private val ownProxyAIService: OwnProxyAIService,
     private val promptClient: AIPromptClient,
+    private val editorUsage: EditorAiUsageRepository,
     dispatchersHolder: DispatchersHolder,
 ) : DispatchersHolder by dispatchersHolder {
 
@@ -91,6 +99,28 @@ class AIPromptExecutor @Inject constructor(
      */
     enum class PromptBilling { MANAGED, EXTERNAL }
 
+    data class EditorCall(val source: String, val action: String)
+
+    private class EditorAttempt(val call: EditorCall, val engine: AiEngine) {
+        val id = UUID.randomUUID().toString()
+        val timestamp = System.currentTimeMillis()
+        var usage: Usage? = null
+        var dispatched = false
+        var success = false
+    }
+
+    private suspend fun EditorAttempt.finish() {
+        if (!dispatched) return
+        val status = if (!currentCoroutineContext().isActive) "stopped" else if (success) "success" else "failed"
+        withContext(NonCancellable) {
+            editorUsage.record(EditorAiUsage(
+                id, call.source, call.action, engine.name, engine.model.name, timestamp, status,
+                usage?.totalTokens?.takeIf { it > 0 }, usage?.promptTokens?.takeIf { it > 0 },
+                usage?.completionTokens?.takeIf { it > 0 },
+            ))
+        }
+    }
+
     suspend fun execute(
         input: String,
         systemPrompt: String = "",
@@ -98,6 +128,7 @@ class AIPromptExecutor @Inject constructor(
         billing: PromptBilling = PromptBilling.MANAGED,
         billingDesc: String = "",
         engineOverride: AiEngine? = null,
+        editorCall: EditorCall? = null,
     ): AIPromptResult {
         val engine = engineOverride ?: resolveEngine(engineMode) ?: return onDeviceEngineError()
         if (engine.requestProtocol == AiRequestProtocol.LOCAL_ON_DEVICE) return onDeviceEngineError()
@@ -112,9 +143,11 @@ class AIPromptExecutor @Inject constructor(
 
         billingGate(engine, input, billing)?.let { return it }
 
+        val attempt = editorCall?.let { EditorAttempt(it, engine) }
         return try {
             val isProxyRoute = AiRequestUrlResolver.shouldUseProxyRequest(engine)
             val response = withContext(ioDispatcher) {
+                attempt?.dispatched = true
                 promptClient.execute(engine, input, systemPrompt)
             }
 
@@ -154,6 +187,7 @@ class AIPromptExecutor @Inject constructor(
                 )
             }
 
+            attempt?.usage = chunk.usage
             if (chunk.errorCode != 0 || chunk.errorMsg.isNotBlank()) {
                 return AIPromptResult(
                     content = "",
@@ -165,6 +199,7 @@ class AIPromptExecutor @Inject constructor(
             }
 
             val content = chunk.choices.firstOrNull()?.message?.content.orEmpty()
+            attempt?.success = content.isNotBlank()
             AIPromptResult(
                 content = content,
                 isSuccess = true,
@@ -183,6 +218,8 @@ class AIPromptExecutor @Inject constructor(
                 engineName = engine.name,
                 modelName = engine.model.name,
             )
+        } finally {
+            attempt?.finish()
         }
     }
 
@@ -235,6 +272,7 @@ class AIPromptExecutor @Inject constructor(
         onReasoningDelta: (String) -> Unit = {},
         billing: PromptBilling = PromptBilling.MANAGED,
         billingDesc: String = "",
+        editorCall: EditorCall? = null,
     ): AIPromptResult {
         val engine = resolveEngine(engineMode) ?: return onDeviceEngineError()
 
@@ -248,6 +286,7 @@ class AIPromptExecutor @Inject constructor(
 
         billingGate(engine, input, billing)?.let { return it }
 
+        val attempt = editorCall?.let { EditorAttempt(it, engine) }
         val messages = buildList {
             if (systemPrompt.isNotBlank()) {
                 add(
@@ -269,6 +308,7 @@ class AIPromptExecutor @Inject constructor(
             model = engine.model.name,
             messages = messages,
             stream = true,
+            streamOptions = editorCall?.let { StreamOptions(includeUsage = true) },
         )
 
         return try {
@@ -294,6 +334,7 @@ class AIPromptExecutor @Inject constructor(
                 var totalTokens = 0
                 var errorMessage: String? = null
                 try {
+                    attempt?.dispatched = true
                     val response = call.execute()
                     if (!response.isSuccessful) {
                         val errorBody = response.errorBody()?.string().orEmpty()
@@ -320,6 +361,7 @@ class AIPromptExecutor @Inject constructor(
                                         makeLog { "AIPromptExecutor: drop malformed SSE line: ${e.message}" }
                                         continue
                                     }
+                                    chunk.usage?.takeIf { it.totalTokens > 0 }?.let { attempt?.usage = it }
                                     if (chunk.errorCode != 0 || chunk.errorMsg.isNotBlank()) {
                                         errorMessage =
                                             chunk.errorMsg.ifBlank { "API error code: ${chunk.errorCode}" }
@@ -359,6 +401,7 @@ class AIPromptExecutor @Inject constructor(
                         modelName = engine.model.name,
                     )
                 } else {
+                    attempt?.success = content.isNotBlank()
                     AIPromptResult(
                         content = content.toString(),
                         isSuccess = true,
@@ -378,6 +421,8 @@ class AIPromptExecutor @Inject constructor(
                 engineName = engine.name,
                 modelName = engine.model.name,
             )
+        } finally {
+            attempt?.finish()
         }
     }
 

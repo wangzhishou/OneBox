@@ -246,7 +246,7 @@ fun NoteAiRewriteSheet(
 
                 // 引擎切换紧跟主操作:胶囊本身就是「当前模型 + 可切换」的入口,
                 // 不再单独占一行写「引擎」标签; 点开仍是全局模型选择弹窗。
-                NoteAiEngineSwitcher(
+                AiEditorEngineSwitcher(
                     engine = currentEngine,
                     enabled = !state.isGenerating,
                     onClick = onSwitchEngine,
@@ -305,10 +305,12 @@ private fun NoteAiActionChips(
  * 点击仍走全局模型选择弹窗（[onClick]），模型级选择逻辑不变。
  */
 @Composable
-private fun NoteAiEngineSwitcher(
+internal fun AiEditorEngineSwitcher(
     engine: AiEngine?,
     enabled: Boolean,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    compact: Boolean = false,
 ) {
     val label = engine?.model?.name?.takeIf { it.isNotBlank() }
         ?: engine?.title?.takeIf { it.isNotBlank() }
@@ -317,17 +319,17 @@ private fun NoteAiEngineSwitcher(
 
     GlassSurface(
         onClick = onClick,
-        modifier = Modifier.alpha(if (enabled) 1f else 0.5f),
+        modifier = modifier.alpha(if (enabled) 1f else 0.5f),
         enabled = enabled,
         shape = OneBoxDesignSystem.pillShape,
-        color = MaterialTheme.colorScheme.surfaceContainerLow,
+        color = MaterialTheme.colorScheme.surfaceContainer,
         style = GlassStyle.Medium,
         borderWidth = 0.95.dp,
     ) {
         Row(
             modifier = Modifier
                 .widthIn(max = 200.dp)
-                .padding(start = 12.dp, end = 8.dp, top = 8.dp, bottom = 8.dp),
+                .padding(horizontal = 12.dp, vertical = if (compact) 4.dp else 8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(6.dp),
         ) {
@@ -339,7 +341,7 @@ private fun NoteAiEngineSwitcher(
             )
             Text(
                 text = label,
-                style = MaterialTheme.typography.bodyLarge,
+                style = if (compact) MaterialTheme.typography.labelLarge else MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -495,4 +497,3 @@ private fun NoteAiCopyIcon(
         )
     }
 }
-

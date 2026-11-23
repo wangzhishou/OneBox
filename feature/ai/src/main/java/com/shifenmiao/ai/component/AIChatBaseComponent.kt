@@ -204,6 +204,19 @@ open class AIChatBaseComponent @AssistedInject internal constructor(
         }
     }
 
+    fun reloadEditedPrompt(previousPromptId: Int, savedPromptId: Int) {
+        val conversationId = _conversation.value.id
+        componentScope.launch(ioDispatcher) {
+            val result = promptManager.loadLocalPrompt(savedPromptId) ?: return@launch
+            withContext(Dispatchers.Main) {
+                val current = _conversation.value
+                if (current.id == conversationId && current.promptId == previousPromptId) {
+                    applyPromptLoadResult(result)
+                }
+            }
+        }
+    }
+
     private fun applyPromptLoadResult(result: PromptLoadResult) {
         val currentConversation = _conversation.value
         val localPromptId = result.localPromptId

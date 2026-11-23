@@ -987,6 +987,7 @@ private fun recordCategoryIcon(category: ActivityCategory): ImageVector = when (
     ActivityCategory.FILE_CONVERT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineResizeConvert
     ActivityCategory.ARCHIVE -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineArchive
     ActivityCategory.NOTE_EDIT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineNote
+    ActivityCategory.PROMPT_EDIT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineNote
     ActivityCategory.HTML_EDIT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMarkdownEdit
     ActivityCategory.AUDIO_EDIT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAudioFile
     ActivityCategory.BLOG_POST -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBlog

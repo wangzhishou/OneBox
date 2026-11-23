@@ -19,6 +19,9 @@
 
 package com.shifenmiao.database
 
+import com.shifenmiao.database.ai.EditorAiUsage
+import com.shifenmiao.database.ai.EditorAiUsageDao
+
 import android.content.Context
 import android.util.Log
 import androidx.room.Database
@@ -129,11 +132,14 @@ import java.io.InputStreamReader
         MemoryEntryEntity::class,
         SkillEntity::class,
         ConversationMemoryPolicyEntity::class,
+        EditorAiUsage::class,
     ],
-    version = Release142Migrations.VERSION
+    version = 143
 )
 @TypeConverters(Converters::class, SourceTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
+
+    abstract fun editorAiUsageDao(): EditorAiUsageDao
 
     abstract fun blogArticleDao(): BlogArticleDao
 
@@ -332,6 +338,17 @@ abstract class AppDatabase : RoomDatabase() {
                         *Release140Migrations.app,
                         *Release141Migrations.app,
                         *Release142Migrations.app,
+                        object : Migration(142, 143) {
+                            override fun migrate(db: SupportSQLiteDatabase) {
+                                db.execSQL("""
+                                    CREATE TABLE IF NOT EXISTS editor_ai_usage (
+                                        id TEXT NOT NULL PRIMARY KEY, source TEXT NOT NULL, action TEXT NOT NULL,
+                                        engine TEXT NOT NULL, model TEXT NOT NULL, createdAt INTEGER NOT NULL,
+                                        status TEXT NOT NULL, totalTokens INTEGER, inputTokens INTEGER, outputTokens INTEGER
+                                    )
+                                """.trimIndent())
+                            }
+                        },
                     )
                     .fallbackToDestructiveMigration(true)
                     .addCallback(object : Callback() {

@@ -1,0 +1,12 @@
+<resources>
+    <string name="prompt_ai_menu">Edit dengan AI</string>
+    <string name="prompt_ai_create">Buat dengan AI</string>
+    <string name="prompt_ai_enhance">Perbaiki dengan AI</string>
+    <string name="prompt_ai_format">Rapikan format</string>
+    <string name="prompt_ai_condense">Ringkas instruksi</string>
+    <string name="prompt_ai_goal">Apa yang ingin Anda minta dari AI?</string>
+    <string name="prompt_ai_apply">Gunakan saran</string>
+    <string name="prompt_ai_failed">Saran tidak dapat dibuat. Coba lagi.</string>
+    <string name="prompt_ai_protected">Saran mengubah variabel atau blok kode. Teks asli dipertahankan.</string>
+    <string name="prompt_ai_stale">Teks asli berubah. Buat saran baru.</string>
+</resources>

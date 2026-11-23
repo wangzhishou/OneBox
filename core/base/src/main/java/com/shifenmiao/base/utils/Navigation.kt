@@ -58,20 +58,20 @@ object Navigation {
         )
 
     fun getTopLevelDestinationIndex(currentScreen: Screen?, tabEntries: List<Screen>): Int {
-        return if (currentScreen != null) {
-            tabEntries.indexOfFirst {
-                it.id == currentScreen.id
-            }
-        } else {
-            0
+        val destinationId = when (currentScreen) {
+            // 旧提示词路由仍保留在导航栈，但实际承载的是首页的提示词 Tab。
+            is Screen.Prompt, is Screen.EditPrompt -> homeScreenId
+            null -> return 0
+            else -> currentScreen.id
         }
+        return tabEntries.indexOfFirst { it.id == destinationId }
     }
 
     fun isShowBottomBar(currentScreen: Screen?, tabEntries: List<Screen>): Boolean {
-        return tabEntries.any {
-            it.id == currentScreen?.id
-        }
+        return currentScreen != null && getTopLevelDestinationIndex(currentScreen, tabEntries) >= 0
     }
+
+    private val homeScreenId = Screen.NewApp().id
 
     fun topLevelEntries(isPortrait: Boolean): List<Screen> {
         return if (isPortrait) portraitTopLevelEntries else landscapeTopLevelEntries
@@ -149,4 +149,3 @@ object Navigation {
     }
 
 }
-

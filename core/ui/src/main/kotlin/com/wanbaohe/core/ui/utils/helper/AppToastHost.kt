@@ -102,6 +102,13 @@ data object AppToastHost {
         }
     }
 
+    fun showSaveSuccessToast(message: Int) {
+        scope.launch {
+            state.showToast(message = getString(message), duration = ToastDuration.Short)
+            ReviewPromptHost.notifySuccess(ReviewPromptTrigger.SAVE_SUCCESS)
+        }
+    }
+
     fun showFailureToast(message: String) {
         scope.launch {
             state.showFailureToast(

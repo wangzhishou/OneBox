@@ -228,7 +228,7 @@ fun PagingDataItemScreen(
         onNavigator = onNavigator,
         fallback = onAiCreate,
     )
-    val showAiCreate = listType != ListItemType.AGENT
+    val showAiCreate = listType != ListItemType.AGENT && listType != ListItemType.PROMPT
 
     Column(modifier = modifier) {
         AnimatedVisibility(
@@ -468,7 +468,7 @@ private fun CategoryFilterChip(
 
 private fun createScreenForListType(listType: ListItemType): Screen = when (listType) {
     ListItemType.AGENT -> Screen.CreateAIAgent()
-    ListItemType.PROMPT -> Screen.CreateAIChatPrompt()
+    ListItemType.PROMPT -> Screen.EditPromptItem()
     ListItemType.HTML -> Screen.CreateHtml()
     else -> Screen.CreateNote()
 }

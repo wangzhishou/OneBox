@@ -23,7 +23,9 @@ import androidx.compose.runtime.Immutable
 import androidx.room.withTransaction
 import com.arkivanov.decompose.ComponentContext
 import com.shifenmiao.core.R
+import com.shifenmiao.common.manager.AIEngineManager
 import com.shifenmiao.database.AppDatabase
+import com.shifenmiao.database.activity.ActivityLogRecorder
 import com.shifenmiao.database.data_draft.DataDraftHelper
 import com.shifenmiao.database.data_draft.entity.DataDraftEntity
 import com.shifenmiao.database.item.entity.Category
@@ -36,15 +38,21 @@ import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.model.ListItemType
 import com.shifenmiao.model.Source
 import com.shifenmiao.model.reorderable.ReorderableType
+import com.shifenmiao.online.service.PromptRewriteService
+import com.shifenmiao.online.service.PromptRewriteAction
+import com.shifenmiao.online.R as OnlineR
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.core.ui.utils.navigation.ScreenCallback
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.utils.navigation.ScreenCallbackResult
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -76,6 +84,9 @@ class EditPromptComponent @AssistedInject internal constructor(
     dispatchersHolder: DispatchersHolder,
     private val appDatabase: AppDatabase,
     private val dataDraftHelper: DataDraftHelper,
+    private val rewriteService: PromptRewriteService,
+    private val activityLog: ActivityLogRecorder,
+    aiEngineManager: AIEngineManager,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
     private val itemDao = appDatabase.itemEntityDao()
@@ -84,6 +95,55 @@ class EditPromptComponent @AssistedInject internal constructor(
 
     private val _uiState = MutableStateFlow(EditPromptUiState())
     val uiState = _uiState.asStateFlow()
+
+    private val _rewrite = MutableStateFlow<PromptRewriteState?>(null)
+    val rewrite = _rewrite.asStateFlow()
+    val rewriteEngine = aiEngineManager.currentAIEngine
+    private var rewriteJob: Job? = null
+
+    fun effectiveRewriteEngine() = rewriteService.effectiveEngine()
+
+    fun openRewrite(action: PromptRewriteAction, original: String) {
+        closeRewrite()
+        _rewrite.value = PromptRewriteState(action, original)
+    }
+
+    fun updateRequirement(text: String) {
+        _rewrite.update { it?.copy(requirement = text, candidate = "", error = null) }
+    }
+
+    fun generateRewrite() {
+        val state = _rewrite.value ?: return
+        val input = state.input
+        if (state.running || input.isBlank()) return
+        rewriteService.withAccess {
+            if (_rewrite.value !== state || rewriteJob?.isActive == true) return@withAccess
+            _rewrite.value = state.copy(running = true, candidate = "", error = null)
+            rewriteJob = componentScope.launch {
+                val outcome = rewriteService.rewrite(state.action, input, AppContext.getString(state.action.label))
+                ensureActive()
+                val candidate = outcome.content.trim()
+                val error = when {
+                    !outcome.isSuccess || candidate.isBlank() -> OnlineR.string.prompt_ai_failed
+                    state.action != PromptRewriteAction.Create &&
+                        !rewriteService.preservesProtectedText(state.original, candidate) -> OnlineR.string.prompt_ai_protected
+                    else -> null
+                }
+                _rewrite.value = state.copy(candidate = candidate.takeIf { error == null }.orEmpty(), error = error)
+            }
+        }
+    }
+
+    fun stopRewrite() {
+        rewriteJob?.cancel()
+        rewriteJob = null
+        _rewrite.update { it?.copy(running = false) }
+    }
+
+    fun closeRewrite() {
+        stopRewrite()
+        _rewrite.value = null
+    }
 
     private val _categories = MutableStateFlow<List<Category>>(emptyList())
     val categories: StateFlow<List<Category>> = _categories.asStateFlow()
@@ -226,7 +286,7 @@ class EditPromptComponent @AssistedInject internal constructor(
         _uiState.update { it.copy(isSaving = true) }
 
         componentScope.launch(ioDispatcher) {
-            val itemId = try {
+            val (itemId, promptId) = try {
                 appDatabase.withTransaction { persistPrompt(currentState, selectedCategoryIds) }
             } catch (error: CancellationException) {
                 throw error
@@ -238,22 +298,28 @@ class EditPromptComponent @AssistedInject internal constructor(
             } finally {
                 _uiState.update { it.copy(isSaving = false) }
             }
-            _uiState.update { it.copy(isDirty = false) }
-            onResult?.invoke(
-                ScreenCallbackResult.saved(
-                    id = itemId,
-                    message = "Prompt 已保存",
-                    extra = mapOf("promptId" to itemId)
-                )
+            activityLog.recordPrompt(
+                itemId, currentState.title, AppContext.getString(R.string.prompt_create),
+                Screen.EditPromptItem().id.toString(),
             )
-            withContext(Dispatchers.Main) { onSuccess() }
+            _uiState.update { it.copy(isDirty = false) }
+            withContext(Dispatchers.Main) {
+                onResult?.invoke(
+                    ScreenCallbackResult.saved(
+                        id = itemId,
+                        message = "Prompt 已保存",
+                        extra = mapOf("promptId" to promptId)
+                    )
+                )
+                onSuccess()
+            }
         }
     }
 
     private suspend fun persistPrompt(
         currentState: EditPromptUiState,
         selectedCategoryIds: Set<Int>,
-    ): Int {
+    ): Pair<Int, Int> {
         val now = System.currentTimeMillis()
         return run {
             val draft = dataDraftHelper.getById(draftId)
@@ -288,12 +354,14 @@ class EditPromptComponent @AssistedInject internal constructor(
 
             // 资源行 + 关联
             val existingPromptId = chatPromptDao.getPromptLinkByItemId(itemId)
+            val existingPrompt = existingPromptId?.let { chatPromptDao.getPromptById(it) }
             val promptEntity = PromptEntity(
                 id = existingPromptId ?: 0,
                 title = currentState.title,
                 description = currentState.description,
                 prompt = currentState.data,
                 placeholder = currentState.placeholder,
+                templates = existingPrompt?.templates,
                 source = Source.LOCAL,
             )
             val promptId = chatPromptDao.upsertLocalPrompt(promptEntity)
@@ -319,7 +387,7 @@ class EditPromptComponent @AssistedInject internal constructor(
                 selectedCategoryIds = selectedCategories.map { it.id }.toSet(),
                 status = DataDraftEntity.STATUS_SUCCESS,
             )
-            itemId
+            itemId to promptId
         }
     }
 
@@ -355,4 +423,15 @@ class EditPromptComponent @AssistedInject internal constructor(
             onResult: ScreenCallback?,
         ): EditPromptComponent
     }
+}
+
+data class PromptRewriteState(
+    val action: PromptRewriteAction,
+    val original: String,
+    val requirement: String = "",
+    val candidate: String = "",
+    val running: Boolean = false,
+    val error: Int? = null,
+) {
+    val input: String get() = if (action == PromptRewriteAction.Create) requirement.trim() else original
 }

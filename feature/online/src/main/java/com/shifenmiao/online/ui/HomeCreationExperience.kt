@@ -275,7 +275,7 @@ fun aiCreateActionFor(
         }
 
         ListItemType.PROMPT -> {
-            { onNavigator(Screen.CreateAIChatPrompt()) }
+            { onNavigator(Screen.EditPromptItem()) }
         }
 
         else -> fallback
@@ -286,5 +286,4 @@ fun aiCreateActionFor(
 // 16=笔记「AI 创建」预填词,17=网址「AI 创建」预填词
 private const val QUICK_START_INDEX_NOTE_FILL_IN = 16
 private const val QUICK_START_INDEX_WEB_FILL_IN = 17
-
 

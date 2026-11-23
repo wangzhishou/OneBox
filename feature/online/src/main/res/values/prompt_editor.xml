@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="prompt_ai_menu">AI editing</string>
+    <string name="prompt_ai_create">Create with AI</string>
+    <string name="prompt_ai_enhance">Enhance with AI</string>
+    <string name="prompt_ai_format">Organize formatting</string>
+    <string name="prompt_ai_condense">Shorten instructions</string>
+    <string name="prompt_ai_goal">What do you want AI to do?</string>
+    <string name="prompt_ai_apply">Use suggestion</string>
+    <string name="prompt_ai_failed">Could not generate a suggestion. Try again.</string>
+    <string name="prompt_ai_protected">The suggestion changed a variable or code block. Your text was kept.</string>
+    <string name="prompt_ai_stale">The original text changed. Generate a new suggestion.</string>
+</resources>

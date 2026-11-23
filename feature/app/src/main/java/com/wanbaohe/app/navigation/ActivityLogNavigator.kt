@@ -55,6 +55,11 @@ object ActivityLogNavigator {
             ActivityCategory.AI_AGENT -> resolveAiAgent(payload)
             ActivityCategory.IMAGE_EDIT -> resolveImageEdit(entry, payload)
             ActivityCategory.NOTE_EDIT -> resolveNote(payload, dataDraftHelper)
+            ActivityCategory.PROMPT_EDIT -> {
+                val itemId = payload?.optInt("itemId")?.takeIf { it > 0 } ?: return null
+                val drafts = dataDraftHelper ?: return null
+                Screen.EditPromptItem(draftId = drafts.createDraft(ListItemType.PROMPT.id, itemId = itemId))
+            }
             ActivityCategory.HTML_EDIT -> resolveHtml(entry, payload)
             ActivityCategory.BOOKKEEPING -> Screen.Bookkeeping()
             ActivityCategory.RECORD_CENTER -> Screen.RecordCenter()

@@ -20,6 +20,7 @@
 package com.shifenmiao.ai.usecase
 
 import com.shifenmiao.database.ai.dao.MessageDao
+import com.shifenmiao.database.ai.EditorAiUsageRepository
 import com.shifenmiao.database.ai.dao.ModelUsageStat
 import com.shifenmiao.database.ai.dao.TopQueryStat
 import com.shifenmiao.database.ai.dao.TokenUsageSummary
@@ -32,16 +33,28 @@ import javax.inject.Inject
  * 统计口径：排除 expired 和 zero-token 记录，按 completionId 去重（取 assistant 侧）。
  */
 class TokenUsageUseCase @Inject constructor(
-    private val messageDao: MessageDao
+    private val messageDao: MessageDao,
+    private val editorUsage: EditorAiUsageRepository,
 ) {
 
     suspend fun getSummary(): TokenUsageSummary {
-        return messageDao.getTokenUsageSummary()
-            ?: TokenUsageSummary()
+        val chat = messageDao.getTokenUsageSummary() ?: TokenUsageSummary()
+        val editor = editorUsage.summarize()
+        return TokenUsageSummary(
+            chat.totalTokens + editor.totalTokens, chat.promptTokens + editor.promptTokens,
+            chat.completionTokens + editor.completionTokens, chat.requestCount + editor.requestCount,
+        )
     }
 
     suspend fun getModelDistribution(): List<ModelUsageStat> {
-        return messageDao.getTokenUsageByModel()
+        return (messageDao.getTokenUsageByModel() + editorUsage.byModel())
+            .groupBy { it.engine to it.model }
+            .values.map { entries ->
+                entries.first().copy(
+                    totalTokens = entries.sumOf { it.totalTokens },
+                    requestCount = entries.sumOf { it.requestCount },
+                )
+            }.sortedByDescending { it.totalTokens }
     }
 
     suspend fun getTopQueries(limit: Int = 10): List<TopQueryStat> {

@@ -1,0 +1,15 @@
+<resources>
+    <string name="editor_history_chat">Cuộc trò chuyện</string>
+    <string name="editor_history_tools">Trợ lý chỉnh sửa</string>
+    <string name="editor_history_note_metadata">Ghi chú · Tiêu đề và tóm tắt</string>
+    <string name="editor_history_note_rewrite">Ghi chú · Viết lại</string>
+    <string name="editor_history_prompt_create">Câu lệnh · Tạo bằng AI</string>
+    <string name="editor_history_prompt_enhance">Câu lệnh · Cải thiện bằng AI</string>
+    <string name="editor_history_prompt_format">Câu lệnh · Sắp xếp định dạng</string>
+    <string name="editor_history_prompt_condense">Câu lệnh · Rút gọn chỉ dẫn</string>
+    <string name="editor_history_success">Đã hoàn thành</string>
+    <string name="editor_history_stopped">Đã dừng</string>
+    <string name="editor_history_failed">Thất bại</string>
+    <string name="editor_history_tokens">%1$d token</string>
+    <string name="editor_history_unknown">Không có báo cáo về lượng token sử dụng</string>
+</resources>

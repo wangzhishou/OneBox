@@ -235,6 +235,8 @@ class ChildProvider @Inject constructor(
 
             is Screen.Prompt, is Screen.EditPrompt -> Screen.NewApp(HomeTabKey.PROMPT)
 
+            is Screen.CreateAIChatPrompt -> if (config.draftId == 0L) Screen.EditPromptItem() else config
+
             is Screen.Settings -> Screen.Profile()
 
             Screen.Main, Screen.App -> Screen.NewApp()

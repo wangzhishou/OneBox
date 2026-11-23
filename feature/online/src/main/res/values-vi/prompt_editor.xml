@@ -1,0 +1,12 @@
+<resources>
+    <string name="prompt_ai_menu">Chỉnh sửa bằng AI</string>
+    <string name="prompt_ai_create">Tạo bằng AI</string>
+    <string name="prompt_ai_enhance">Cải thiện bằng AI</string>
+    <string name="prompt_ai_format">Sắp xếp định dạng</string>
+    <string name="prompt_ai_condense">Rút gọn chỉ dẫn</string>
+    <string name="prompt_ai_goal">Bạn muốn AI làm gì?</string>
+    <string name="prompt_ai_apply">Dùng đề xuất</string>
+    <string name="prompt_ai_failed">Không tạo được đề xuất. Hãy thử lại.</string>
+    <string name="prompt_ai_protected">Đề xuất đã đổi biến hoặc khối mã. Văn bản gốc được giữ nguyên.</string>
+    <string name="prompt_ai_stale">Văn bản gốc đã thay đổi. Hãy tạo đề xuất mới.</string>
+</resources>

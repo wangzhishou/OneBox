@@ -1,0 +1,15 @@
+<resources>
+    <string name="editor_history_chat">المحادثات</string>
+    <string name="editor_history_tools">مساعد التحرير</string>
+    <string name="editor_history_note_metadata">ملاحظة · العنوان والملخص</string>
+    <string name="editor_history_note_rewrite">ملاحظة · إعادة صياغة</string>
+    <string name="editor_history_prompt_create">موجّه · إنشاء ذكي</string>
+    <string name="editor_history_prompt_enhance">موجّه · تحسين ذكي</string>
+    <string name="editor_history_prompt_format">موجّه · تنظيم التنسيق</string>
+    <string name="editor_history_prompt_condense">موجّه · اختصار التعليمات</string>
+    <string name="editor_history_success">اكتمل</string>
+    <string name="editor_history_stopped">توقف</string>
+    <string name="editor_history_failed">فشل</string>
+    <string name="editor_history_tokens">%1$d رمزًا</string>
+    <string name="editor_history_unknown">لم يُبلّغ عن استخدام الرموز</string>
+</resources>

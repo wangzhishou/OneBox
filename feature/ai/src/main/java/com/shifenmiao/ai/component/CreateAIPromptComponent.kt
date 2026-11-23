@@ -19,6 +19,12 @@
 
 package com.shifenmiao.ai.component
 
+import com.shifenmiao.database.ai.EditorAiUsage
+import com.shifenmiao.database.ai.EditorAiUsageRepository
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.isActive
+import com.shifenmiao.model.ai.Usage
+
 import com.arkivanov.decompose.ComponentContext
 import com.shifenmiao.model.ModelProvider.AppJson
 import kotlinx.serialization.decodeFromString
@@ -82,6 +88,7 @@ import java.util.Date
  * 4. 成功后可保存为 ChatPromptEntity（AppDatabase.prompt）+ ItemEntity
  */
 class CreateAIPromptComponent @AssistedInject internal constructor(
+    private val editorUsage: EditorAiUsageRepository,
     @Assisted componentContext: ComponentContext,
     @Assisted val initialDraftId: Long,
     @Assisted val onGoBack: () -> Unit,
@@ -508,6 +515,8 @@ class CreateAIPromptComponent @AssistedInject internal constructor(
         }
 
         generateJob = componentScope.launch(Dispatchers.IO) {
+            var attempt: EditorAiUsage? = null
+            var reportedUsage: Usage? = null
             try {
                 val systemPrompt = buildSystemPrompt()
                 val conversation = buildConversation(systemPrompt)
@@ -526,6 +535,12 @@ class CreateAIPromptComponent @AssistedInject internal constructor(
                     add(currentUserMessage)
                 }
 
+                attempt = EditorAiUsage(
+                    id = java.util.UUID.randomUUID().toString(), source = "prompt", action = "Create",
+                    engine = conversation.engine.name, model = conversation.engine.model.name,
+                    createdAt = System.currentTimeMillis(), status = "failed",
+                    totalTokens = null, inputTokens = null, outputTokens = null,
+                )
                 val resultFlow: Flow<LlmStreamEvent> =
                     messageRemoteMediator.fetchAndSaveMessages(
                         conversation, allMessages, false
@@ -580,6 +595,12 @@ class CreateAIPromptComponent @AssistedInject internal constructor(
 
                         is LlmStreamEvent.UsageUpdated -> {
                             totalUsageTokens += event.usage.totalTokens
+                            val prior = reportedUsage
+                            reportedUsage = Usage(
+                                totalTokens = totalUsageTokens,
+                                promptTokens = (prior?.promptTokens ?: 0) + event.usage.promptTokens,
+                                completionTokens = (prior?.completionTokens ?: 0) + event.usage.completionTokens,
+                            )
                         }
 
                         is LlmStreamEvent.ResponseStarted,
@@ -614,6 +635,22 @@ class CreateAIPromptComponent @AssistedInject internal constructor(
                         status = GenerationStatus.FAILED,
                         errorMessage = getString(R.string.create_ai_chat_prompt_error_network)
                     )
+                }
+            } finally {
+                val status = when {
+                    !isActive -> "stopped"
+                    _uiState.value.status == GenerationStatus.SUCCESS -> "success"
+                    else -> "failed"
+                }
+                attempt?.let { entry ->
+                    kotlinx.coroutines.withContext(NonCancellable) {
+                        editorUsage.record(entry.copy(
+                            status = status,
+                            totalTokens = reportedUsage?.totalTokens?.takeIf { it > 0 },
+                            inputTokens = reportedUsage?.promptTokens?.takeIf { it > 0 },
+                            outputTokens = reportedUsage?.completionTokens?.takeIf { it > 0 },
+                        ))
+                    }
                 }
             }
         }

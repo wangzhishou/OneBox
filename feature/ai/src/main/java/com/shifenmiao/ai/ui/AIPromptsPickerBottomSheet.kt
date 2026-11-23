@@ -71,7 +71,6 @@ import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
  * 数据源从 Category + ChatPromptEntity (item 联表查询) 获取，
  * 替换原来的 Group + Prompt。
  *
- * @param onManualCreatePrompt 手动创建提示词入口回调（跳转手动编辑页），为 null 时隐藏手动创建入口
  */
 @Composable
 fun AIPromptsPickerBottomSheet(
@@ -83,7 +82,6 @@ fun AIPromptsPickerBottomSheet(
     onPromptSelected: (PromptEntity) -> Unit,
     onCreatePrompt: () -> Unit,
     onDismiss: (Boolean) -> Unit,
-    onManualCreatePrompt: (() -> Unit)? = null,
 ) {
     EnhancedModalBottomSheet(
         visible = visible,
@@ -177,28 +175,13 @@ fun AIPromptsPickerBottomSheet(
                 }
             }
 
-            // ── 底部创建入口：手动创建 + AI 自动创建 ──
+            // 统一入口，智能创建在编辑器内按需开启。
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = AppTheme.dimens.paddingSmall),
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                if (onManualCreatePrompt != null) {
-                    PromptCreateEntryCard(
-                        modifier = Modifier.weight(1f),
-                        icon = {
-                            Icon(
-                                imageVector = Icons.Outlined.Edit,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onPrimaryContainer
-                            )
-                        },
-                        title = stringResource(R.string.ai_prompt_picker_create_manual),
-                        subtitle = stringResource(R.string.ai_prompt_picker_create_manual_sub),
-                        onClick = onManualCreatePrompt
-                    )
-                }
                 PromptCreateEntryCard(
                     modifier = Modifier.weight(1f),
                     icon = {
@@ -208,8 +191,8 @@ fun AIPromptsPickerBottomSheet(
                             tint = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                     },
-                    title = stringResource(R.string.ai_prompt_picker_create_ai),
-                    subtitle = stringResource(R.string.ai_prompt_picker_create_ai_sub),
+                    title = stringResource(R.string.ai_prompt_picker_create),
+                    subtitle = stringResource(R.string.ai_prompt_picker_create_manual_sub),
                     onClick = onCreatePrompt
                 )
             }

@@ -1,0 +1,15 @@
+<resources>
+    <string name="editor_history_chat">Conversaciones</string>
+    <string name="editor_history_tools">Asistente de edición</string>
+    <string name="editor_history_note_metadata">Nota · Título y resumen</string>
+    <string name="editor_history_note_rewrite">Nota · Reescritura</string>
+    <string name="editor_history_prompt_create">Prompt · Crear con IA</string>
+    <string name="editor_history_prompt_enhance">Prompt · Mejorar con IA</string>
+    <string name="editor_history_prompt_format">Prompt · Ordenar el formato</string>
+    <string name="editor_history_prompt_condense">Prompt · Acortar instrucciones</string>
+    <string name="editor_history_success">Completado</string>
+    <string name="editor_history_stopped">Detenido</string>
+    <string name="editor_history_failed">Error</string>
+    <string name="editor_history_tokens">%1$d tokens</string>
+    <string name="editor_history_unknown">Uso de tokens no informado</string>
+</resources>

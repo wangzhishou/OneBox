@@ -19,10 +19,13 @@
 
 package com.shifenmiao.online.screen
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -41,9 +44,19 @@ import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
 import com.shifenmiao.interfaces.singleton.AppContext
+import com.shifenmiao.model.ai.AIConversationEntryType
+import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.online.component.EditPromptComponent
 import com.shifenmiao.online.R as OnlineR
 import com.shifenmiao.online.ui.ContentSaveConfirmDialog
+import com.shifenmiao.online.ui.PromptRewriteSheet
+import com.shifenmiao.online.service.PromptRewriteAction
+import com.t8rin.imagetoolbox.core.resources.Icons as BoxIcons
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineAddAiChat
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineFormatLineSpacing
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineShortText
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineVisibility
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.wanbaohe.com.string.MarkdownSummary
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
@@ -51,6 +64,7 @@ import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBarType
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.wanbaohe.icons.LineEditorIcons
 import kotlinx.coroutines.launch
 
@@ -60,6 +74,8 @@ fun EditPromptScreen(
     appComponent: AppComponent
 ) {
     val uiState by editPromptComponent.uiState.collectAsState()
+    val rewrite by editPromptComponent.rewrite.collectAsState()
+    val engine by editPromptComponent.rewriteEngine.collectAsState()
     val categories by editPromptComponent.categories.collectAsState()
     val settings = LocalSettingsState.current
     val showExitDialog = rememberSaveable { mutableStateOf(false) }
@@ -73,6 +89,7 @@ fun EditPromptScreen(
     var selectedCategoryIds by rememberSaveable { mutableStateOf<IntArray?>(null) }
 
     val editorState = rememberNativeMarkdownEditorState(uiState.data)
+    var showMoreMenu by remember { mutableStateOf(false) }
     val autoFocusBody = !uiState.isLoading &&
         !uiState.isEditing &&
         !uiState.isDirty &&
@@ -117,6 +134,21 @@ fun EditPromptScreen(
         }
     }
 
+    fun tryPrompt() {
+        focusManager.clearFocus()
+        scope.launch {
+            val body = editorState.exportMarkdown()
+            if (body.isBlank()) return@launch
+            onNavigate(Screen.AiChatScreen(Conversation(
+                entryType = AIConversationEntryType.PROMPT,
+                appTitle = draftTitle?.takeIf { it.isNotBlank() }
+                    ?: uiState.title.ifBlank { AppContext.getString(R.string.create_ai_chat_prompt_preview_default_title) },
+                prompt = body,
+                placeholder = uiState.placeholder,
+            )))
+        }
+    }
+
     BaseScreen(
         title = {},
         type = EnhancedTopAppBarType.Normal,
@@ -132,6 +164,60 @@ fun EditPromptScreen(
                     tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
             }
+            Box {
+                IconButton(
+                    enabled = !uiState.isLoading && !uiState.isSaving && !isPreparing,
+                    onClick = { showMoreMenu = true },
+                ) {
+                    Icon(
+                        imageVector = LineEditorIcons.More,
+                        contentDescription = stringResource(R.string.card_more_actions),
+                    )
+                }
+                EnhancedDropdownMenu(
+                    expanded = showMoreMenu,
+                    onDismissRequest = { showMoreMenu = false },
+                ) {
+                    if (!editorState.isEmpty) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.create_ai_chat_prompt_preview)) },
+                            leadingIcon = { Icon(BoxIcons.Outlined.LineVisibility, contentDescription = null) },
+                            onClick = {
+                                showMoreMenu = false
+                                tryPrompt()
+                            },
+                        )
+                    }
+                    PromptRewriteAction.entries.filter { action ->
+                        (action == PromptRewriteAction.Create) == editorState.isEmpty
+                    }.forEach { action ->
+                        DropdownMenuItem(
+                            text = { Text(stringResource(action.label)) },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = when (action) {
+                                        PromptRewriteAction.Create -> BoxIcons.Outlined.LineAddAiChat
+                                        PromptRewriteAction.Enhance -> BoxIcons.Outlined.LineMagic
+                                        PromptRewriteAction.Format -> BoxIcons.Outlined.LineFormatLineSpacing
+                                        PromptRewriteAction.Condense -> BoxIcons.Outlined.LineShortText
+                                    },
+                                    contentDescription = null,
+                                )
+                            },
+                            onClick = {
+                                showMoreMenu = false
+                                focusManager.clearFocus()
+                                scope.launch {
+                                    val original = editorState.exportMarkdown()
+                                    if ((action == PromptRewriteAction.Create) == original.isBlank()) {
+                                        editPromptComponent.openRewrite(action, original)
+                                    }
+                                }
+                            },
+                        )
+                    }
+                }
+            }
         },
         showNavigationBarsPadding = false,
     ) {
@@ -141,6 +227,31 @@ fun EditPromptScreen(
             autoFocus = autoFocusBody,
             useVectorDockIcons = true,
             onContentChanged = editPromptComponent::markAsDirty,
+        )
+    }
+
+    rewrite?.let { state ->
+        PromptRewriteSheet(
+            state = state,
+            engine = editPromptComponent.effectiveRewriteEngine() ?: engine,
+            onRequirementChange = editPromptComponent::updateRequirement,
+            onSwitchEngine = appComponent::showAIModelsModalSheet,
+            onGenerate = editPromptComponent::generateRewrite,
+            onStop = editPromptComponent::stopRewrite,
+            onDismiss = editPromptComponent::closeRewrite,
+            onApply = {
+                scope.launch {
+                    if (!state.running && editorState.exportMarkdown() == state.original &&
+                        editPromptComponent.rewrite.value === state && state.candidate.isNotBlank()
+                    ) {
+                        editorState.load(state.candidate, keepHistory = true)
+                        editPromptComponent.markAsDirty()
+                        editPromptComponent.closeRewrite()
+                    } else {
+                        AppToastHost.showToast(OnlineR.string.prompt_ai_stale)
+                    }
+                }
+            },
         )
     }
 
@@ -173,7 +284,7 @@ fun EditPromptScreen(
                     selectedCategoryIds = selected,
                     onSuccess = {
                         pendingMarkdown = null
-                        AppToastHost.showToast(AppContext.getString(R.string.save_success))
+                        AppToastHost.showSaveSuccessToast(R.string.save_success)
                         appComponent.onGoBack()
                     },
                     onFailure = { AppToastHost.showToast(it) },

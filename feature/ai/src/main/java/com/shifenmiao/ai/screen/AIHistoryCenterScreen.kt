@@ -64,6 +64,7 @@ import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.ai.EngineFilterChip
 import com.shifenmiao.core.R
+import com.shifenmiao.ai.R as AiR
 import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.state.PageState
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
@@ -92,6 +93,8 @@ fun AIHistoryCenterScreen(
     val query by component.query.collectAsState()
     val selectedFilter by component.selectedFilter.collectAsState()
     val items by component.items.collectAsState()
+    val editorCalls by component.editorCalls.collectAsState(initial = emptyList())
+    var showEditorCalls by rememberSaveable { mutableStateOf(false) }
     val onNavigate = LocalOnNavigate.current
     var renameTarget by remember { mutableStateOf<AIHistoryItem?>(null) }
     var renameValue by rememberSaveable { mutableStateOf("") }
@@ -115,57 +118,77 @@ fun AIHistoryCenterScreen(
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            AiBottomSheetSearchField(
-                value = query,
-                onValueChange = component::onQueryChange,
-                placeholder = stringResource(R.string.ai_history_search_hint),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = AppTheme.dimens.pageHorizontal, vertical = 8.dp)
-            )
-            HistoryFilterRow(
-                selected = selectedFilter,
-                onSelected = component::onFilterChange
-            )
-            when (pageState) {
-                PageState.INITIALIZING -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator()
+            Row(
+                Modifier.padding(horizontal = AppTheme.dimens.pageHorizontal),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                EngineFilterChip(stringResource(AiR.string.editor_history_chat), !showEditorCalls, onClick = { showEditorCalls = false })
+                EngineFilterChip(stringResource(AiR.string.editor_history_tools), showEditorCalls, onClick = { showEditorCalls = true })
+            }
+            if (showEditorCalls) {
+                if (editorCalls.isEmpty()) EmptyBox(Modifier.fillMaxWidth().padding(top = 48.dp))
+                else LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.contentGap),
+                    contentPadding = PaddingValues(AppTheme.dimens.pageHorizontal),
+                ) {
+                    items(editorCalls, key = { it.id }) { call ->
+                        EditorAiHistoryCard(call)
                     }
                 }
-
-                else -> {
-                    if (items.isEmpty()) {
-                        EmptyBox(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 48.dp)
-                        )
-                    } else {
-                        LazyColumn(
+            } else {
+                AiBottomSheetSearchField(
+                    value = query,
+                    onValueChange = component::onQueryChange,
+                    placeholder = stringResource(R.string.ai_history_search_hint),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = AppTheme.dimens.pageHorizontal, vertical = 8.dp)
+                )
+                HistoryFilterRow(
+                    selected = selectedFilter,
+                    onSelected = component::onFilterChange
+                )
+                when (pageState) {
+                    PageState.INITIALIZING -> {
+                        Box(
                             modifier = Modifier.fillMaxSize(),
-                            verticalArrangement = Arrangement.spacedBy(12.dp),
-                            contentPadding = PaddingValues(
-                                horizontal = AppTheme.dimens.pageHorizontal,
-                                vertical = 16.dp
-                            )
+                            contentAlignment = Alignment.Center
                         ) {
-                            items(items, key = { it.conversationId }) { item ->
-                                HistoryConversationCard(
-                                    item = item,
-                                    onClick = { component.openConversation(item, onNavigate) },
-                                    onRename = {
-                                        renameTarget = item
-                                        renameValue = item.title
-                                    },
-                                    onDelete = {
-                                        deleteTarget = item
-                                        showDeleteDialog.value = true
-                                    }
+                            CircularProgressIndicator()
+                        }
+                    }
+
+                    else -> {
+                        if (items.isEmpty()) {
+                            EmptyBox(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 48.dp)
+                            )
+                        } else {
+                            LazyColumn(
+                                modifier = Modifier.fillMaxSize(),
+                                verticalArrangement = Arrangement.spacedBy(12.dp),
+                                contentPadding = PaddingValues(
+                                    horizontal = AppTheme.dimens.pageHorizontal,
+                                    vertical = 16.dp
                                 )
+                            ) {
+                                items(items, key = { it.conversationId }) { item ->
+                                    HistoryConversationCard(
+                                        item = item,
+                                        onClick = { component.openConversation(item, onNavigate) },
+                                        onRename = {
+                                            renameTarget = item
+                                            renameValue = item.title
+                                        },
+                                        onDelete = {
+                                            deleteTarget = item
+                                            showDeleteDialog.value = true
+                                        }
+                                    )
+                                }
                             }
                         }
                     }
@@ -400,4 +423,3 @@ private fun AIHistoryItem.primaryTitle(): String = when {
     entryType == AIConversationEntryType.DUEL -> stringResource(R.string.ai_duel_chat_title)
     else -> appTitle.ifBlank { entryType.label() }
 }
-

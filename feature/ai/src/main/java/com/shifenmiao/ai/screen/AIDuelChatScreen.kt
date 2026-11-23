@@ -1757,18 +1757,12 @@ private fun DuelPickerBottomSheets(
         onCreatePrompt = {
             showPromptPicker.value = false
             pickingPromptRole.value = null
-            onNavigate(Screen.CreateAIChatPrompt())
+            onNavigate(Screen.EditPromptItem())
         },
         onDismiss = {
             showPromptPicker.value = false
             pickingPromptRole.value = null
         },
-        onManualCreatePrompt = {
-            // 手动创建：跳转提示词编辑页（同首页 + 面板的提示词入口）
-            showPromptPicker.value = false
-            pickingPromptRole.value = null
-            onNavigate(Screen.EditPromptItem())
-        }
     )
 
     val roleNameHistoryRoleText =

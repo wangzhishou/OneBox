@@ -1,0 +1,12 @@
+<resources>
+    <string name="prompt_ai_menu">Édition par IA</string>
+    <string name="prompt_ai_create">Créer avec l’IA</string>
+    <string name="prompt_ai_enhance">Améliorer avec l’IA</string>
+    <string name="prompt_ai_format">Organiser la mise en forme</string>
+    <string name="prompt_ai_condense">Raccourcir les consignes</string>
+    <string name="prompt_ai_goal">Que voulez-vous que l’IA fasse ?</string>
+    <string name="prompt_ai_apply">Utiliser la suggestion</string>
+    <string name="prompt_ai_failed">Impossible de générer une suggestion. Réessayez.</string>
+    <string name="prompt_ai_protected">La suggestion a modifié une variable ou un bloc de code. Le texte d’origine a été conservé.</string>
+    <string name="prompt_ai_stale">Le texte d’origine a changé. Générez une nouvelle suggestion.</string>
+</resources>

@@ -165,7 +165,6 @@ fun AddMenuFloatingPanel(
     onNavigateToTodoList: () -> Unit,
     onNavigateToAiApp: () -> Unit,
     onNavigateToCreateAIAgent: () -> Unit,
-    onNavigateToCreateAIPrompt: () -> Unit,
     onNavigateToHabitTracker: () -> Unit,
     onNavigateToDocumentScanner: () -> Unit,
     onNavigateToOnDeviceOcr: () -> Unit,
@@ -329,14 +328,6 @@ fun AddMenuFloatingPanel(
                     onClick = {
                         onDismiss()
                         onNavigateToCreateAIAgent()
-                    }
-                ),
-                AddMenuItem(
-                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ChatPlus,
-                    label = CoreR.string.create_ai_chat_prompt_title,
-                    onClick = {
-                        onDismiss()
-                        onNavigateToCreateAIPrompt()
                     }
                 ),
                 AddMenuItem(
