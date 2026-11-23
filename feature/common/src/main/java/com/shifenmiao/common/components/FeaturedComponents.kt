@@ -21,6 +21,7 @@ package com.shifenmiao.common.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
@@ -47,6 +48,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -69,6 +71,9 @@ import com.wanbaohe.com.string.TimeFormatter
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 
+private val FeaturedCardMaxViewportWidth = 280.dp
+private const val FeaturedCardViewportFraction = 0.36f
+
 // ══════════════════════════════════════════════════════════════
 //  精选 — 横向大卡片
 // ══════════════════════════════════════════════════════════════
@@ -78,7 +83,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Delete
 data class FeaturedCardLayout(
     val horizontalPadding: Dp,
     val verticalPadding: Dp,
-    val width: Dp = 160.dp,
+    val minWidth: Dp = 172.dp,
     val iconTitleGap: Dp = 8.dp,
     val titleDescriptionGap: Dp = 8.dp,
     val descriptionLabelGap: Dp = 8.dp,
@@ -120,21 +125,28 @@ fun FeaturedGrid(
     cardLayout: FeaturedCardLayout = FeaturedCardLayout.standard(),
 ) {
     val titleLines = if (AppTheme.uiProfile.fontMode == AppFontMode.Regular) 1 else 2
-    LazyRow(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        contentPadding = PaddingValues(horizontal = 4.dp)
-    ) {
-        items(count = items.size, key = { index -> "featured_row_$index" }) { rowIndex ->
-            FeaturedCard(
-                item = items[rowIndex],
-                themeIndex = rowIndex,
-                modifier = Modifier.width(cardLayout.width),
-                clickInfo = clickInfo,
-                layout = cardLayout,
-                titleLines = titleLines,
-                onClick = { onItemClick(items[rowIndex]) }
-            )
+    val fontScale = LocalDensity.current.fontScale.coerceAtLeast(1f)
+    BoxWithConstraints(modifier = modifier.fillMaxWidth()) {
+        val readableWidth = cardLayout.minWidth * fontScale
+        val viewportWidth = (maxWidth * FeaturedCardViewportFraction)
+            .coerceAtMost(FeaturedCardMaxViewportWidth)
+        val cardWidth = maxOf(readableWidth, viewportWidth).coerceAtMost(maxWidth)
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            contentPadding = PaddingValues(horizontal = 4.dp)
+        ) {
+            items(count = items.size, key = { index -> "featured_row_$index" }) { rowIndex ->
+                FeaturedCard(
+                    item = items[rowIndex],
+                    themeIndex = rowIndex,
+                    modifier = Modifier.width(cardWidth),
+                    clickInfo = clickInfo,
+                    layout = cardLayout,
+                    titleLines = titleLines,
+                    onClick = { onItemClick(items[rowIndex]) }
+                )
+            }
         }
     }
 }
