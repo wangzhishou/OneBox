@@ -27,7 +27,6 @@ import android.os.LocaleList
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -95,101 +94,102 @@ fun ChangeLanguageSheet(
             // 每行标题已经是该语言的自称（不随应用语言翻译）；
             // 只有「跟随系统」行需要副标题，显示系统当前语言自己的写法
             val systemLanguageName = remember { context.getSystemLocaleNativeName() }
-            Box(modifier = Modifier.fillMaxWidth().padding(bottom = 64.dp)) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                    modifier = Modifier
-                        .enhancedVerticalScroll(rememberScrollState())
-                        .padding(12.dp)
-                ) {
-                    // 重启提醒横幅：切换语言会冷重启进程（数据源按语言隔离），
-                    // 进 sheet 即提醒；点关闭按钮后永久不再提示
-                    if (!noticeDismissed) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .coloredGlass(
-                                    color = MaterialTheme.colorScheme.secondaryContainer,
-                                    shape = MaterialTheme.shapes.large
-                                )
-                                .padding(start = 16.dp, top = 6.dp, bottom = 6.dp, end = 6.dp)
+            // 列表直接铺到操作栏上沿：操作栏自带 16dp 内边距，滚动内容自带 12dp 内边距，
+            // 滚动区不再预留额外空白（此前 64dp 会在列表与 Close 按钮之间留出一大条空档）。
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .enhancedVerticalScroll(rememberScrollState())
+                    .padding(12.dp)
+            ) {
+                // 重启提醒横幅：切换语言会冷重启进程（数据源按语言隔离），
+                // 进 sheet 即提醒；点关闭按钮后永久不再提示
+                if (!noticeDismissed) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .coloredGlass(
+                                color = MaterialTheme.colorScheme.secondaryContainer,
+                                shape = MaterialTheme.shapes.large
+                            )
+                            .padding(start = 16.dp, top = 6.dp, bottom = 6.dp, end = 6.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Info,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                            modifier = Modifier.padding(end = 8.dp)
+                        )
+                        Text(
+                            text = stringResource(R.string.language_switch_restart_message),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            modifier = Modifier.weight(1f)
+                        )
+                        EnhancedIconButton(
+                            onClick = {
+                                AppSharedStorage.saveLanguageSwitchNoticeDismissed(true)
+                                noticeDismissed = true
+                            },
+                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                         ) {
                             Icon(
-                                imageVector = Icons.Outlined.Info,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                                modifier = Modifier.padding(end = 8.dp)
+                                imageVector = Icons.Rounded.Close,
+                                contentDescription = stringResource(R.string.close)
                             )
-                            Text(
-                                text = stringResource(R.string.language_switch_restart_message),
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                                modifier = Modifier.weight(1f)
-                            )
-                            EnhancedIconButton(
-                                onClick = {
-                                    AppSharedStorage.saveLanguageSwitchNoticeDismissed(true)
-                                    noticeDismissed = true
-                                },
-                                contentColor = MaterialTheme.colorScheme.onSecondaryContainer
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Rounded.Close,
-                                    contentDescription = stringResource(R.string.close)
-                                )
-                            }
                         }
                     }
-                    entries.entries.forEachIndexed { index, locale ->
-                        val isSelected =
-                            selected == locale.value || (selected.isEmpty() && index == 0)
-                        PreferenceItemOverload(
-                            modifier = Modifier.fillMaxWidth(),
-                            onClick = {
-                                // 切换语言后由 LocaleSwitchWatcher 冷重启进程；
-                                // 点当前已选中的语言不处理
-                                if (!isSelected) {
-                                    context.setGlobalLocale(
-                                        locale.key.takeIf { it.isNotBlank() }
-                                            ?.let(Locale::forLanguageTag)
-                                    )
-                                }
-                            },
-                            resultModifier = Modifier.padding(
-                                start = 16.dp,
-                                end = 8.dp,
-                                top = 8.dp,
-                                bottom = 8.dp
-                            ),
-                            color = animateColorAsState(
-                                if (isSelected) MaterialTheme
-                                    .colorScheme
-                                    .secondaryContainer
-                                else EnhancedBottomSheetDefaults.contentContainerColor
-                            ).value,
-                            shape = ShapeDefaults.byIndex(
-                                index = index,
-                                size = entries.size
-                            ),
-                            endIcon = {
-                                EnhancedRadioButton(
-                                    selected = isSelected,
-                                    onClick = {
-                                        if (!isSelected) {
-                                            context.setGlobalLocale(
-                                                locale.key.takeIf { it.isNotBlank() }
-                                                    ?.let(Locale::forLanguageTag)
-                                            )
-                                        }
-                                    }
+                }
+                entries.entries.forEachIndexed { index, locale ->
+                    val isSelected =
+                        selected == locale.value || (selected.isEmpty() && index == 0)
+                    PreferenceItemOverload(
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = {
+                            // 切换语言后由 LocaleSwitchWatcher 冷重启进程；
+                            // 点当前已选中的语言不处理
+                            if (!isSelected) {
+                                context.setGlobalLocale(
+                                    locale.key.takeIf { it.isNotBlank() }
+                                        ?.let(Locale::forLanguageTag)
                                 )
-                            },
-                            title = locale.value,
-                            subtitle = systemLanguageName.takeIf { locale.key.isEmpty() }
-                        )
-                    }
+                            }
+                        },
+                        resultModifier = Modifier.padding(
+                            start = 16.dp,
+                            end = 8.dp,
+                            top = 8.dp,
+                            bottom = 8.dp
+                        ),
+                        color = animateColorAsState(
+                            if (isSelected) MaterialTheme
+                                .colorScheme
+                                .secondaryContainer
+                            else EnhancedBottomSheetDefaults.contentContainerColor
+                        ).value,
+                        shape = ShapeDefaults.byIndex(
+                            index = index,
+                            size = entries.size
+                        ),
+                        endIcon = {
+                            EnhancedRadioButton(
+                                selected = isSelected,
+                                onClick = {
+                                    if (!isSelected) {
+                                        context.setGlobalLocale(
+                                            locale.key.takeIf { it.isNotBlank() }
+                                                ?.let(Locale::forLanguageTag)
+                                        )
+                                    }
+                                }
+                            )
+                        },
+                        title = locale.value,
+                        subtitle = systemLanguageName.takeIf { locale.key.isEmpty() }
+                    )
                 }
             }
         },
