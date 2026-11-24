@@ -29,9 +29,14 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,11 +45,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.wanbaohe.base.ui.empty.EmptyStateGuide
 import com.wanbaohe.base.ui.empty.EmptyStateGuideAction
 import com.shifenmiao.core.R
@@ -60,8 +70,10 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineCodeEditor
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineNote
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePrompt
 import com.wanbaohe.core.ui.utils.navigation.Screen
+import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
-import com.wanbaohe.core.ui.widget.glass.glassThin
+import com.wanbaohe.core.ui.widget.glass.GlassTonalIconButton
+import com.wanbaohe.core.ui.widget.glass.glassBackground
 
 @Composable
 fun HomeEmptyState(
@@ -121,6 +133,14 @@ fun HomeEmptyState(
     )
 }
 
+/**
+ * 列表末尾的「创建」引导卡。
+ *
+ * 上半区是一个居中的玻璃 ＋ 底片(与「新建」同一动作),底部是按内容宽度排布、带最大宽度的
+ * 两枚玻璃胶囊;只有一个创建入口的 tab(智能体 / 提示词)只保留「新建」,＋ 仍居中。
+ *
+ * 高度优先跟随相邻普通卡的实测高度,＋ 底片会随可用高度收缩,最矮 184dp 也不会压扁按钮。
+ */
 @Composable
 fun CreateChoiceCard(
     onManualCreate: () -> Unit,
@@ -130,41 +150,145 @@ fun CreateChoiceCard(
     siblingHeight: Dp? = null,
     showAiCreate: Boolean = true,
 ) {
-    val shape = MaterialTheme.shapes.extraLarge
-    val fixedHeight = siblingHeight?.let { maxOf(it, 180.dp) }
+    val shape = MaterialTheme.shapes.large
+    val fixedHeight = siblingHeight?.let { maxOf(it, CREATION_CARD_MIN_HEIGHT) }
+    val manualLabel = stringResource(R.string.home_create_manual)
+    val aiLabel = stringResource(R.string.home_create_with_ai)
+    // 两枚按钮取同一个宽度:等于较宽那枚文字所需宽度,封顶 140dp,左右自然留白
+    val actionWidth = creationActionWidth(manualLabel, aiLabel, showAiCreate)
+    // ＋ 与按钮之间的间距固定,不随卡片高度伸缩:只剩一枚按钮时中间不会空出一大块
+    val plateSize = creationPlateSize(availableHeight = fixedHeight, showAiCreate = showAiCreate)
+
     Column(
         modifier = modifier
             .fillMaxWidth()
             .then(
                 if (fixedHeight != null) Modifier.height(fixedHeight)
-                else Modifier.heightIn(min = 180.dp)
+                else Modifier.heightIn(min = CREATION_CARD_MIN_HEIGHT)
             )
-            .glassThin(
+            .glassBackground(
+                style = GlassStyle.Regular,
                 shape = shape,
+                borderWidth = 0.5.dp,
                 color = MaterialTheme.colorScheme.surfaceContainer,
             )
             .clip(shape)
-            .padding(16.dp),
-        horizontalAlignment = Alignment.End,
-        verticalArrangement = Arrangement.Bottom,
+            .padding(CREATION_CARD_PADDING),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        // ＋ 和按钮当成一整组居中;高度确定时用上下两段弹性留白把这一组压到正中
+        verticalArrangement = Arrangement.Center,
     ) {
-        CreationActionButton(
-            icon = Icons.Outlined.Edit,
-            title = stringResource(R.string.home_create_manual),
-            onClick = onManualCreate,
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-        )
-        if (showAiCreate) {
-            Spacer(Modifier.height(12.dp))
-            CreationActionButton(
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiChat,
-                title = stringResource(R.string.home_create_with_ai),
-                onClick = onAiCreate,
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-            )
+        // 高度无界(拿不到相邻卡高度)时 weight 会塌成 0,那两帧就靠 Center 兜住
+        if (fixedHeight != null) {
+            Spacer(Modifier.weight(1f))
         }
+        CreationPlusPlate(size = plateSize, onClick = onManualCreate)
+        Spacer(Modifier.height(CREATION_PLATE_GAP))
+
+        Column(
+            modifier = Modifier.width(actionWidth),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(CREATION_BUTTON_SPACING),
+        ) {
+            CreationActionButton(
+                icon = Icons.Outlined.Edit,
+                title = manualLabel,
+                onClick = onManualCreate,
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+            )
+            if (showAiCreate) {
+                CreationActionButton(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiChat,
+                    title = aiLabel,
+                    onClick = onAiCreate,
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                )
+            }
+        }
+        if (fixedHeight != null) {
+            Spacer(Modifier.weight(1f))
+        }
+    }
+}
+
+/**
+ * ＋ 底片直径。
+ *
+ * 由卡片可用高度反推:先扣掉内边距、按钮和固定间距,剩下的就是 ＋ 能占的空间,再夹在
+ * [CREATION_PLATE_MIN_SIZE]–[CREATION_PLATE_MAX_SIZE] 之间。这样 184dp 的矮卡片也塞得下,
+ * 高的卡片上 ＋ 也不会跟着无限放大。
+ */
+private fun creationPlateSize(
+    availableHeight: Dp?,
+    showAiCreate: Boolean,
+): Dp {
+    val buttonCount = if (showAiCreate) 2 else 1
+    val buttonsHeight = CREATION_BUTTON_HEIGHT * buttonCount +
+        CREATION_BUTTON_SPACING * (buttonCount - 1)
+    val innerHeight = (availableHeight ?: CREATION_CARD_MIN_HEIGHT) - CREATION_CARD_PADDING * 2
+    return (innerHeight - buttonsHeight - CREATION_PLATE_GAP)
+        .coerceIn(CREATION_PLATE_MIN_SIZE, CREATION_PLATE_MAX_SIZE)
+}
+
+/** 居中的 ＋:玻璃圆片 + 与「新建」胶囊同一个动作,点了不会没反应。 */
+@Composable
+private fun CreationPlusPlate(
+    size: Dp,
+    onClick: () -> Unit,
+) {
+    GlassTonalIconButton(
+        onClick = onClick,
+        // ＋ 和下方「新建」是同一个动作:对读屏隐藏,否则会读出两个同名按钮,
+        // 带文字的胶囊才是可读入口。
+        modifier = Modifier
+            .size(size)
+            .clearAndSetSemantics { },
+        shape = CircleShape,
+        colors = IconButtonDefaults.filledTonalIconButtonColors(
+            // 卡片自身是 surfaceContainer:底片要再抬一档才有「一片玻璃」的重量,
+            // 落在 surfaceContainerHigh 时和卡面几乎同色,只剩一圈描边
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        ),
+        style = GlassStyle.Thick,
+        glassBorderWidth = 1.dp,
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.Add,
+            contentDescription = null,
+            modifier = Modifier.size(size * CREATION_PLATE_ICON_RATIO),
+        )
+    }
+}
+
+/**
+ * 两枚创建按钮的共用宽度。
+ *
+ * 按最长的那条文案实测,加上图标 + 间距 + 内边距,再夹在 [CREATION_BUTTON_MIN_WIDTH] 和
+ * [CREATION_BUTTON_MAX_WIDTH] 之间:短文案(中文)贴合内容,长文案(俄语/菲律宾语)顶到上限、
+ * 交给按钮内 [TextAutoSize] 缩字号,不会把胶囊撑到整张卡宽。
+ */
+@Composable
+private fun creationActionWidth(
+    manualLabel: String,
+    aiLabel: String,
+    showAiCreate: Boolean,
+): Dp {
+    val measurer = rememberTextMeasurer()
+    val labelStyle = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold)
+    val labels = if (showAiCreate) listOf(manualLabel, aiLabel) else listOf(manualLabel)
+    val widestLabelPx = labels.maxOf { label ->
+        measurer.measure(
+            text = AnnotatedString(label),
+            style = labelStyle,
+            maxLines = 1,
+        ).size.width
+    }
+    return with(LocalDensity.current) {
+        (widestLabelPx.toDp() + CREATION_BUTTON_CHROME_WIDTH)
+            .coerceIn(CREATION_BUTTON_MIN_WIDTH, CREATION_BUTTON_MAX_WIDTH)
     }
 }
 
@@ -178,26 +302,53 @@ private fun CreationActionButton(
 ) {
     GlassTonalButton(
         onClick = onClick,
-        shape = MaterialTheme.shapes.large,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(CREATION_BUTTON_HEIGHT),
+        shape = RoundedCornerShape(percent = 50),
         color = containerColor,
         contentColor = contentColor,
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
+        contentPadding = PaddingValues(horizontal = CREATION_BUTTON_HORIZONTAL_PADDING),
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            modifier = Modifier.size(20.dp),
+            modifier = Modifier.size(CREATION_BUTTON_ICON_SIZE),
         )
-        Spacer(Modifier.width(8.dp))
+        Spacer(Modifier.width(CREATION_BUTTON_ICON_GAP))
         Text(
             text = title,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.SemiBold,
             maxLines = 1,
+            // 按钮有宽度上限:长语种在这里缩字号,而不是换行或溢出
+            autoSize = TextAutoSize.StepBased(
+                minFontSize = 10.sp,
+                maxFontSize = MaterialTheme.typography.labelLarge.fontSize,
+                stepSize = 0.5.sp,
+            ),
             overflow = TextOverflow.Ellipsis,
         )
     }
 }
+
+private val CREATION_CARD_PADDING = 16.dp
+private val CREATION_CARD_MIN_HEIGHT = 180.dp
+private val CREATION_PLATE_MAX_SIZE = 58.dp
+private val CREATION_PLATE_MIN_SIZE = 40.dp
+/** ＋ 底片与上方胶囊之间的固定间距 */
+private val CREATION_PLATE_GAP = 12.dp
+private const val CREATION_PLATE_ICON_RATIO = 0.44f
+
+private val CREATION_BUTTON_HEIGHT = 44.dp
+private val CREATION_BUTTON_SPACING = 8.dp
+private val CREATION_BUTTON_ICON_SIZE = 16.dp
+private val CREATION_BUTTON_ICON_GAP = 8.dp
+private val CREATION_BUTTON_HORIZONTAL_PADDING = 20.dp
+private val CREATION_BUTTON_MIN_WIDTH = 112.dp
+private val CREATION_BUTTON_MAX_WIDTH = 140.dp
+private val CREATION_BUTTON_CHROME_WIDTH =
+    CREATION_BUTTON_ICON_SIZE + CREATION_BUTTON_ICON_GAP + CREATION_BUTTON_HORIZONTAL_PADDING * 2
 
 @Composable
 private fun listTypeDisplayName(listType: ListItemType): String = stringResource(
