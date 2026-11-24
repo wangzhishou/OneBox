@@ -27,6 +27,8 @@ import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.shifenmiao.base.longtask.LongTaskCenter
 import com.shifenmiao.base.longtask.LongTaskKind
 import com.shifenmiao.common.ai.AIPromptExecutor
+import com.shifenmiao.common.ai.EditorAiPromptKey
+import com.shifenmiao.common.ai.EditorAiPrompts
 import com.shifenmiao.common.manager.AIEngineManager
 import com.shifenmiao.core.R
 import com.shifenmiao.database.AppDatabase
@@ -79,6 +81,7 @@ class CreateNoteComponent @AssistedInject internal constructor(
     private val editorHistory: EditorConversationRepository,
     private val dataDraftHelper: DataDraftHelper,
     private val aiPromptExecutor: AIPromptExecutor,
+    private val editorAiPrompts: EditorAiPrompts,
     private val aiEngineManager: AIEngineManager,
     private val longTaskCenter: LongTaskCenter,
 ) : BaseComponent(dispatchersHolder, componentContext) {
@@ -190,7 +193,7 @@ class CreateNoteComponent @AssistedInject internal constructor(
             it.copy(
                 visible = true,
                 action = action,
-                prompt = AppContext.getString(action.promptRes),
+                prompt = "",
                 originalMarkdown = markdown,
                 result = "",
                 isGenerating = false,
@@ -198,6 +201,7 @@ class CreateNoteComponent @AssistedInject internal constructor(
                 tokens = 0,
             )
         }
+        loadAiActionPrompt(action)
     }
 
     fun changeAiAction(action: NoteAiAction) {
@@ -207,12 +211,26 @@ class CreateNoteComponent @AssistedInject internal constructor(
         _aiState.update {
             it.copy(
                 action = action,
-                prompt = AppContext.getString(action.promptRes),
+                prompt = "",
                 result = "",
                 isGenerating = false,
                 error = null,
                 tokens = 0,
             )
+        }
+        loadAiActionPrompt(action)
+    }
+
+    private fun loadAiActionPrompt(action: NoteAiAction) {
+        componentScope.launch(ioDispatcher) {
+            val prompt = editorAiPrompts.get(action.promptKey)
+            _aiState.update { current ->
+                if (current.visible && current.action == action && current.prompt.isBlank()) {
+                    current.copy(prompt = prompt)
+                } else {
+                    current
+                }
+            }
         }
     }
 
@@ -281,7 +299,7 @@ class CreateNoteComponent @AssistedInject internal constructor(
                 )
                 val result = aiPromptExecutor.executeStreaming(
                     input = input,
-                    systemPrompt = AppContext.getString(OnlineR.string.note_ai_system_prompt),
+                    systemPrompt = editorAiPrompts.get(EditorAiPromptKey.NOTE_SYSTEM),
                     billingDesc = AppContext.getString(OnlineR.string.note_ai_billing_desc),
                     editorCall = AIPromptExecutor.EditorCall(
                         AIConversationEntryType.NOTE_EDIT, state.action.name, AppContext.getString(state.action.labelRes),
@@ -423,16 +441,13 @@ class CreateNoteComponent @AssistedInject internal constructor(
         val categories = _categories.value
         val categoryNames = categories
             .joinToString(separator = "、") { it.name }
-            .ifBlank { "（暂无）" }
-        val systemPrompt = """
-            你是笔记整理助手。请阅读用户给出的 Markdown 笔记正文，输出：
-            1. title：简洁标题，不超过 30 个字；
-            2. summary：一句话简介，不超过 80 个字；
-            3. category：从给定分类列表中选择最贴切的一个；没有合适分类时输出空字符串。
-            使用与正文相同的语言。只输出一个 JSON 对象，不要 Markdown 代码块或解释：
-            {"title":"...","summary":"...","category":"..."}
-        """.trimIndent()
-        val input = "可选分类：$categoryNames\n\n笔记正文：\n${markdown.take(6000)}"
+            .ifBlank { AppContext.getString(OnlineR.string.note_ai_no_categories) }
+        val systemPrompt = editorAiPrompts.get(EditorAiPromptKey.NOTE_METADATA)
+        val input = AppContext.getContext().getString(
+            OnlineR.string.note_ai_metadata_input_template,
+            categoryNames,
+            markdown.take(6000),
+        )
 
         val result = aiPromptExecutor.execute(
             input = input,

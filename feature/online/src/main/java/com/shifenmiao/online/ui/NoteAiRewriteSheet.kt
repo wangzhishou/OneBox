@@ -26,19 +26,18 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -52,14 +51,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.common.markdown.OneBoxMarkdownContent
+import com.shifenmiao.common.markdown.rememberInAppLinkHandler
 import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.online.R
 import com.shifenmiao.online.component.NoteAiAction
@@ -68,16 +67,12 @@ import com.shifenmiao.online.component.NoteAiUiState
 import com.t8rin.imagetoolbox.core.resources.Icons as OneBoxIcons
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineArrowDropDown
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineRobot
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
-import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
 import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
 import kotlinx.coroutines.delay
@@ -107,6 +102,7 @@ fun NoteAiRewriteSheet(
 ) {
     val clipboard = LocalClipboardManager.current
     val focusManager = LocalFocusManager.current
+    val scrollState = rememberScrollState()
     var copied by remember(state.result) { mutableStateOf(false) }
     val generate = {
         focusManager.clearFocus()
@@ -132,6 +128,7 @@ fun NoteAiRewriteSheet(
         title = stringResource(state.action.labelRes),
         modifier = Modifier.imePadding(),
         nestedScrollEnabled = true,
+        dragToDismissEnabled = false,
         endConfirmButtonPadding = 0.dp,
         confirmButton = {
             EditorAiActionBar(
@@ -149,7 +146,7 @@ fun NoteAiRewriteSheet(
                 if (!state.isGenerating && state.error == null && state.result.isNotBlank()) {
                     OnePrimaryButton(
                         text = stringResource(state.action.applyMode.labelRes),
-                        leadingIcon = OneBoxIcons.Outlined.LineMagic,
+                        leadingIcon = OneBoxIcons.Outlined.Check,
                         onClick = { onApply(state.result) },
                     )
                 }
@@ -159,7 +156,7 @@ fun NoteAiRewriteSheet(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
                 .padding(start = 20.dp, end = 20.dp, bottom = 24.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp),
         ) {
@@ -192,6 +189,7 @@ fun NoteAiRewriteSheet(
                 engine = currentEngine,
                 copied = copied,
                 onCopy = copyResult,
+                scrollState = scrollState,
             )
 
             if (canUndo) {
@@ -265,65 +263,6 @@ private fun NoteAiActionChips(
     }
 }
 
-/**
- * 引擎切换按钮：一枚「当前模型 + 切换箭头」的胶囊，和「生成」同排对齐。
- *
- * 刻意不写「引擎」标签 —— 胶囊显示的就是正在跑的模型，右下箭头表示可切换；
- * 点击仍走全局模型选择弹窗（[onClick]），模型级选择逻辑不变。
- */
-@Composable
-internal fun AiEditorEngineSwitcher(
-    engine: AiEngine?,
-    enabled: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val label = engine?.model?.name?.takeIf { it.isNotBlank() }
-        ?: engine?.title?.takeIf { it.isNotBlank() }
-        ?: stringResource(R.string.note_ai_no_engine)
-    val accent = MaterialTheme.colorScheme.onPrimaryContainer
-
-    GlassSurface(
-        onClick = onClick,
-        modifier = modifier.alpha(if (enabled) 1f else 0.5f),
-        enabled = enabled,
-        shape = OneBoxDesignSystem.pillShape,
-        color = MaterialTheme.colorScheme.surfaceContainer,
-        style = GlassStyle.Medium,
-        borderWidth = 0.95.dp,
-    ) {
-        Row(
-            modifier = Modifier
-                .widthIn(max = 200.dp)
-                .fillMaxHeight()
-                .padding(horizontal = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
-        ) {
-            Icon(
-                imageVector = OneBoxIcons.Outlined.LineRobot,
-                contentDescription = null,
-                tint = accent,
-                modifier = Modifier.size(16.dp),
-            )
-            Text(
-                text = label,
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.weight(1f, fill = false),
-            )
-            Icon(
-                imageVector = OneBoxIcons.Outlined.LineArrowDropDown,
-                contentDescription = null,
-                tint = accent,
-                modifier = Modifier.size(18.dp),
-            )
-        }
-    }
-}
-
 @Composable
 private fun NoteAiOriginalPreview(markdown: String) {
     Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -344,19 +283,12 @@ private fun NoteAiOriginalPreview(markdown: String) {
             )
         }
         GlassSurface(style = GlassStyle.Thin, shape = RoundedCornerShape(12.dp)) {
-            SelectionContainer {
-                Text(
-                    text = markdown.ifBlank { "—" },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(max = 96.dp)
-                        .padding(12.dp),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 6,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
+            OneBoxMarkdownContent(
+                message = markdown.ifBlank { "—" },
+                modifier = Modifier.fillMaxWidth().heightIn(max = 120.dp),
+                paddingValues = PaddingValues(12.dp),
+                onLinkClick = rememberInAppLinkHandler(),
+            )
         }
     }
 }
@@ -367,6 +299,7 @@ private fun NoteAiResultSection(
     engine: AiEngine?,
     copied: Boolean,
     onCopy: () -> Unit,
+    scrollState: ScrollState,
 ) {
     Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Row(
@@ -413,19 +346,17 @@ private fun NoteAiResultSection(
 
             state.isGenerating || state.result.isNotBlank() -> {
                 GlassSurface(style = GlassStyle.Thin, shape = RoundedCornerShape(12.dp)) {
-                    Column(modifier = Modifier.fillMaxWidth().padding(12.dp)) {
-                        SelectionContainer {
-                            Text(
-                                text = state.result.ifBlank {
-                                    stringResource(R.string.note_ai_panel_generating)
-                                },
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurface,
-                                maxLines = 12,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                        }
-                    }
+                    OneBoxMarkdownContent(
+                        message = state.result.ifBlank {
+                            stringResource(R.string.note_ai_panel_generating)
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        isStreaming = state.isGenerating,
+                        paddingValues = PaddingValues(12.dp),
+                        enableScroll = false,
+                        externalScrollState = scrollState,
+                        onLinkClick = rememberInAppLinkHandler(),
+                    )
                 }
             }
 

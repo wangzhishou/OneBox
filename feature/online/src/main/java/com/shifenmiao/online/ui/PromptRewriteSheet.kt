@@ -1,14 +1,15 @@
 package com.shifenmiao.online.ui
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -19,6 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.common.markdown.OneBoxMarkdownContent
+import com.shifenmiao.common.markdown.rememberInAppLinkHandler
 import com.shifenmiao.core.R as CoreR
 import com.shifenmiao.database.ai.EditorHistoryResult
 import com.shifenmiao.model.ai.AiEngine
@@ -26,6 +29,8 @@ import com.shifenmiao.online.R
 import com.shifenmiao.online.component.PromptRewriteState
 import com.shifenmiao.online.service.PromptRewriteAction
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.resources.Icons
+import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
@@ -47,12 +52,14 @@ internal fun PromptRewriteSheet(
     onHistorySelected: (String) -> Unit,
 ) {
     val focus = LocalFocusManager.current
+    val scrollState = rememberScrollState()
     EnhancedModalBottomSheet(
         visible = true,
         onDismiss = { if (!it) onDismiss() },
         title = stringResource(state.action.label),
         modifier = Modifier.imePadding(),
         nestedScrollEnabled = true,
+        dragToDismissEnabled = false,
         endConfirmButtonPadding = 0.dp,
         confirmButton = {
             EditorAiActionBar(
@@ -71,13 +78,17 @@ internal fun PromptRewriteSheet(
                 onHistorySelected = onHistorySelected,
             ) {
                 if (!state.running && state.candidate.isNotBlank()) {
-                    OnePrimaryButton(stringResource(R.string.prompt_ai_apply), onClick = onApply)
+                    OnePrimaryButton(
+                        text = stringResource(R.string.prompt_ai_apply),
+                        leadingIcon = Icons.Outlined.Check,
+                        onClick = onApply,
+                    )
                 }
             }
         },
     ) {
         Column(
-            Modifier.fillMaxWidth().verticalScroll(rememberScrollState())
+            Modifier.fillMaxWidth().verticalScroll(scrollState)
                 .padding(horizontal = AppTheme.dimens.pageHorizontal),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
@@ -109,41 +120,55 @@ internal fun PromptRewriteSheet(
                     }
                 }
             }
-            RewriteComparison(state.original, state.candidate)
+            RewriteComparison(state.original, state.candidate, scrollState)
         }
     }
 }
 
 @Composable
-internal fun RewriteComparison(original: String, suggestion: String) {
+internal fun RewriteComparison(original: String, suggestion: String, scrollState: ScrollState) {
     if (original.isBlank() && suggestion.isBlank()) return
     BoxWithConstraints(Modifier.fillMaxWidth()) {
         if (maxWidth >= 600.dp && original.isNotBlank() && suggestion.isNotBlank()) {
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                RewritePreview(stringResource(R.string.note_ai_original_label), original, Modifier.weight(1f))
-                RewritePreview(stringResource(R.string.note_ai_result_label), suggestion, Modifier.weight(1f))
+                RewritePreview(
+                    stringResource(R.string.note_ai_original_label), original, scrollState, Modifier.weight(1f)
+                )
+                RewritePreview(
+                    stringResource(R.string.note_ai_result_label), suggestion, scrollState, Modifier.weight(1f)
+                )
             }
         } else {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                if (original.isNotBlank()) RewritePreview(stringResource(R.string.note_ai_original_label), original)
-                if (suggestion.isNotBlank()) RewritePreview(stringResource(R.string.note_ai_result_label), suggestion)
+                if (original.isNotBlank()) {
+                    RewritePreview(stringResource(R.string.note_ai_original_label), original, scrollState)
+                }
+                if (suggestion.isNotBlank()) {
+                    RewritePreview(stringResource(R.string.note_ai_result_label), suggestion, scrollState)
+                }
             }
         }
     }
 }
 
 @Composable
-private fun RewritePreview(title: String, body: String, modifier: Modifier = Modifier) {
+private fun RewritePreview(
+    title: String,
+    body: String,
+    scrollState: ScrollState,
+    modifier: Modifier = Modifier,
+) {
     Column(modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(title, style = MaterialTheme.typography.labelMedium)
         GlassSurface(style = GlassStyle.Thin) {
-            SelectionContainer {
-                Text(
-                    body,
-                    Modifier.fillMaxWidth().padding(AppTheme.dimens.cardContentPadding),
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            }
+            OneBoxMarkdownContent(
+                message = body,
+                modifier = Modifier.fillMaxWidth(),
+                paddingValues = PaddingValues(AppTheme.dimens.cardContentPadding),
+                enableScroll = false,
+                externalScrollState = scrollState,
+                onLinkClick = rememberInAppLinkHandler(),
+            )
         }
     }
 }

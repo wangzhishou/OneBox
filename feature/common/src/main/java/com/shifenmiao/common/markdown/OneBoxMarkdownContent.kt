@@ -1,5 +1,6 @@
 package com.shifenmiao.common.markdown
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,6 +27,10 @@ fun OneBoxMarkdownContent(
     message: String,
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
+    isStreaming: Boolean = false,
+    enableScroll: Boolean = true,
+    externalScrollState: ScrollState? = null,
+    enableSelection: Boolean = true,
     errorMessage: String? = null,
     onRetry: () -> Unit = {},
     onGoBack: () -> Unit = {},
@@ -59,6 +64,10 @@ fun OneBoxMarkdownContent(
             markdown = resolvedMessage,
             modifier = modifier.padding(paddingValues),
             state = state.modernState,
+            isStreaming = isStreaming,
+            enableScroll = enableScroll,
+            externalScrollState = externalScrollState,
+            enableSelection = enableSelection,
             onLinkClick = onLinkClick,
             components = oneBoxMarkdownComponents(
                 header = headerContent,

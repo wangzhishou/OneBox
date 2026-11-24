@@ -2,6 +2,7 @@ package com.shifenmiao.online.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -23,6 +24,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.common.markdown.OneBoxMarkdownContent
+import com.shifenmiao.common.markdown.rememberInAppLinkHandler
 import com.shifenmiao.core.R
 import com.shifenmiao.database.ai.EditorHistoryResult
 import com.shifenmiao.theme.AppTheme
@@ -111,8 +114,14 @@ private fun EditorHistoryResults(
                         Modifier.padding(AppTheme.dimens.cardContentPadding),
                         verticalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
-                        Text(item.answer.take(600), maxLines = 3, overflow = TextOverflow.Ellipsis,
-                            style = MaterialTheme.typography.bodyMedium)
+                        OneBoxMarkdownContent(
+                            message = item.answer,
+                            modifier = Modifier.fillMaxWidth(),
+                            paddingValues = PaddingValues(0.dp),
+                            enableScroll = false,
+                            enableSelection = false,
+                            onLinkClick = rememberInAppLinkHandler(),
+                        )
                         Text(
                             listOf(dateFormat.format(item.createdAt), item.model).filter { it.isNotBlank() }.joinToString(" · "),
                             maxLines = 1,

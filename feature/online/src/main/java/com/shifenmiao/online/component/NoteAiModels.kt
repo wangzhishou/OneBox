@@ -20,6 +20,7 @@
 package com.shifenmiao.online.component
 
 import androidx.annotation.StringRes
+import com.shifenmiao.common.ai.EditorAiPromptKey
 import com.shifenmiao.online.R
 
 /** AI 结果写回笔记的方式：整篇替换 / 追加到末尾 / 插入到开头。 */
@@ -32,37 +33,37 @@ enum class NoteAiApplyMode {
 /** 笔记 AI 写作的预设动作：菜单、面板 chips 与提示词共用一套定义。 */
 enum class NoteAiAction(
     @StringRes val labelRes: Int,
-    @StringRes val promptRes: Int,
+    val promptKey: EditorAiPromptKey,
     val applyMode: NoteAiApplyMode,
 ) {
     Format(
         labelRes = R.string.note_ai_action_format,
-        promptRes = R.string.note_ai_prompt_format,
+        promptKey = EditorAiPromptKey.NOTE_FORMAT,
         applyMode = NoteAiApplyMode.Replace,
     ),
     Expand(
         labelRes = R.string.note_ai_action_expand,
-        promptRes = R.string.note_ai_prompt_expand,
+        promptKey = EditorAiPromptKey.NOTE_EXPAND,
         applyMode = NoteAiApplyMode.Replace,
     ),
     Polish(
         labelRes = R.string.note_ai_action_polish,
-        promptRes = R.string.note_ai_prompt_polish,
+        promptKey = EditorAiPromptKey.NOTE_POLISH,
         applyMode = NoteAiApplyMode.Replace,
     ),
     Condense(
         labelRes = R.string.note_ai_action_condense,
-        promptRes = R.string.note_ai_prompt_condense,
+        promptKey = EditorAiPromptKey.NOTE_CONDENSE,
         applyMode = NoteAiApplyMode.Replace,
     ),
     Checklist(
         labelRes = R.string.note_ai_action_checklist,
-        promptRes = R.string.note_ai_prompt_checklist,
+        promptKey = EditorAiPromptKey.NOTE_CHECKLIST,
         applyMode = NoteAiApplyMode.Append,
     ),
     Summary(
         labelRes = R.string.note_ai_action_summary,
-        promptRes = R.string.note_ai_prompt_summary,
+        promptKey = EditorAiPromptKey.NOTE_SUMMARY,
         applyMode = NoteAiApplyMode.Prepend,
     ),
 }

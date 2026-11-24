@@ -108,6 +108,7 @@ fun EnhancedModalBottomSheet(
     endConfirmButtonPadding: Dp = 16.dp,
     nestedScrollEnabled: Boolean = false,
     cancelable: Boolean = true,
+    dragToDismissEnabled: Boolean = true,
     enableBackHandler: Boolean = true,
     enableGlass: Boolean = true,
     sheetContent: @Composable ColumnScope.() -> Unit,
@@ -117,6 +118,7 @@ fun EnhancedModalBottomSheet(
     EnhancedModalSheetImpl(
         enableGlass = enableGlass,
         cancelable = cancelable,
+        dragToDismissEnabled = dragToDismissEnabled,
         nestedScrollEnabled = nestedScrollEnabled,
         dragHandle = {},
         visible = visible,
@@ -339,6 +341,7 @@ private fun EnhancedModalSheetImpl(
     animationSpec: AnimationSpec<Float> = EnhancedBottomSheetDefaults.animationSpec,
     sheetModifier: Modifier = Modifier,
     cancelable: Boolean = true,
+    dragToDismissEnabled: Boolean = true,
     skipHalfExpanded: Boolean = true,
     shape: Shape = ShapeDefaults.extremeLarge.only(CornerSides.Top),
     elevation: Dp = 0.dp,
@@ -382,8 +385,8 @@ private fun EnhancedModalSheetImpl(
     )
     var isAnimating by remember { mutableStateOf(false) }
 
-    LaunchedEffect(visible, cancelable) {
-        internalCancelable.value = !visible || cancelable
+    LaunchedEffect(visible, cancelable, dragToDismissEnabled) {
+        internalCancelable.value = !visible || (cancelable && dragToDismissEnabled)
         isAnimating = true
         try {
             if (visible) sheetState.show() else sheetState.hide()

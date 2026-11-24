@@ -1,4 +1,5 @@
 <resources>
     <string name="editor_history_empty">この操作の生成履歴はまだありません</string>
     <string name="editor_history_load_failed">履歴を読み込めませんでした</string>
+    <string name="editor_ai_switch_engine">AI エンジンを切り替え</string>
 </resources>

@@ -19,11 +19,13 @@
 
 package com.shifenmiao.online.di
 
+import com.shifenmiao.common.ai.EditorAiPrompts
 import com.shifenmiao.model.note.NoteService
 import com.shifenmiao.model.datasource.DataItemRemoteDataSource
 import com.shifenmiao.network.api.ApiService
 import com.shifenmiao.online.datasource.DataItemRemoteDataSourceImpl
 import com.shifenmiao.online.service.NoteServiceImpl
+import com.shifenmiao.online.service.OnlineEditorAiPrompts
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -48,4 +50,10 @@ object OnlineModule {
     ): NoteService {
         return noteServiceImpl
     }
+
+    @Singleton
+    @Provides
+    fun provideEditorAiPrompts(
+        prompts: OnlineEditorAiPrompts,
+    ): EditorAiPrompts = prompts
 }

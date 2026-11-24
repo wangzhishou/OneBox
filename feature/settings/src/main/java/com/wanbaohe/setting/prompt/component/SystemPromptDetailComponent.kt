@@ -20,7 +20,7 @@
 package com.wanbaohe.setting.prompt.component
 
 import com.arkivanov.decompose.ComponentContext
-import com.shifenmiao.database.AppDatabase
+import com.shifenmiao.database.chat_prompt.SystemPromptRepository
 import com.shifenmiao.database.chat_prompt.entity.PromptEntity
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.wanbaohe.core.ui.utils.BaseComponent
@@ -35,7 +35,7 @@ class SystemPromptDetailComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted val promptId: Int,
     @Assisted val onGoBack: () -> Unit,
-    private val appDatabase: AppDatabase,
+    private val systemPromptRepository: SystemPromptRepository,
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
@@ -44,7 +44,7 @@ class SystemPromptDetailComponent @AssistedInject internal constructor(
 
     init {
         componentScope.launch(ioDispatcher) {
-            val entity = appDatabase.chatPromptDao().getPromptById(promptId)
+            val entity = systemPromptRepository.getById(promptId)
             _prompt.value = entity
         }
     }
@@ -60,11 +60,7 @@ class SystemPromptDetailComponent @AssistedInject internal constructor(
         }
         componentScope.launch(ioDispatcher) {
             try {
-                val updated = current.copy(
-                    prompt = content,
-                    updatedAt = System.currentTimeMillis()
-                )
-                appDatabase.chatPromptDao().upsertLocalPrompt(updated)
+                val updated = systemPromptRepository.updateContent(promptId, content)
                 _prompt.value = updated
                 onSuccess()
             } catch (e: Exception) {

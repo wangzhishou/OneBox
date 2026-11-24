@@ -20,9 +20,9 @@
 package com.wanbaohe.setting.prompt.component
 
 import com.arkivanov.decompose.ComponentContext
-import com.shifenmiao.database.AppDatabase
+import com.shifenmiao.common.ai.EditorAiPrompts
+import com.shifenmiao.database.chat_prompt.SystemPromptRepository
 import com.shifenmiao.database.chat_prompt.entity.PromptEntity
-import com.shifenmiao.model.Source
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.core.ui.utils.navigation.Screen
@@ -32,18 +32,25 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 class SystemPromptManagementComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted val onGoBack: () -> Unit,
     @Assisted val onNavigate: (Screen) -> Unit,
-    appDatabase: AppDatabase,
+    private val editorAiPrompts: EditorAiPrompts,
+    systemPromptRepository: SystemPromptRepository,
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
+    init {
+        componentScope.launch(ioDispatcher) {
+            editorAiPrompts.ensureDefaults()
+        }
+    }
+
     val systemPrompts: StateFlow<List<PromptEntity>> =
-        appDatabase.chatPromptDao()
-            .getPromptsBySourceFlow(Source.SYSTEM)
+        systemPromptRepository.observeSystemPrompts()
             .stateIn(componentScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     @AssistedFactory
