@@ -25,6 +25,7 @@ package com.wanbaohe.code.editor.screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
@@ -240,18 +241,29 @@ internal fun CodeEditorExitDialog(
         title = { Text(stringResource(R.string.unsaved_changes)) },
         text = { Text(stringResource(R.string.unsaved_changes_message)) },
         confirmButton = {
-            ConfirmButton(stringResource(R.string.save_file), onClick = onSaveAndExit)
+            // 主操作「保存」整行,「放弃 / 继续编辑」平分下一行(理由同笔记编辑器)
+            ConfirmButton(
+                text = stringResource(R.string.save_file),
+                modifier = Modifier.fillMaxWidth(),
+                onClick = onSaveAndExit,
+            )
         },
         dismissButton = {
             // 三个动作统一走胶囊按钮：TextButton 在弹窗里没有按钮外框，
             // 又自带 48dp 最小触控高度，夹在两个胶囊中间会整体下沉，看着像漏排版的链接。
             Row(
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                CancelButton(stringResource(R.string.discard), onClick = onDiscard)
+                CancelButton(
+                    text = stringResource(R.string.discard),
+                    modifier = Modifier.weight(1f),
+                    onClick = onDiscard,
+                )
                 SecondaryButton(
                     text = stringResource(com.shifenmiao.common.R.string.note_keep_editing),
+                    modifier = Modifier.weight(1f),
                     icon = {
                         Icon(
                             imageVector = com.wanbaohe.icons.LineEditorIcons.Edit,

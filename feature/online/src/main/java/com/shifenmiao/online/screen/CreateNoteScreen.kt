@@ -393,11 +393,14 @@ fun CreateNoteScreen(
         },
         title = { Text(text = stringResource(CommonR.string.note_unsaved_title)) },
         text = { Text(text = stringResource(CommonR.string.note_unsaved_message)) },
+        // 三个动作改成两行:「放弃 / 继续编辑」平分一行,「保存」整行压底。
+        // 三个胶囊挤一行在长语种(德语/俄语)下必然换行, 主按钮被挤到右下角很难看;
+        // 与 Markdown / 代码编辑器的同款弹窗保持一致(次要在上、主操作在下)。
         confirmButton = {
-            // 对话框按钮统一走共用胶囊按钮，不再用纯文字按钮。
             OnePrimaryButton(
                 text = stringResource(CommonR.string.common_save),
                 leadingIcon = OneBoxIcons.Outlined.LineSave,
+                modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     showExitDialog.value = false
                     openSaveConfirm()
@@ -405,10 +408,14 @@ fun CreateNoteScreen(
             )
         },
         dismissButton = {
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
                 OneBoxDangerButton(
                     text = stringResource(CommonR.string.note_discard_and_exit),
                     leadingIcon = MaterialIcons.Filled.Close,
+                    modifier = Modifier.weight(1f),
                     onClick = {
                         showExitDialog.value = false
                         appComponent.onGoBack()
@@ -417,6 +424,7 @@ fun CreateNoteScreen(
                 OneSecondaryButton(
                     text = stringResource(CommonR.string.note_keep_editing),
                     leadingIcon = LineEditorIcons.Edit,
+                    modifier = Modifier.weight(1f),
                     onClick = { showExitDialog.value = false },
                 )
             }

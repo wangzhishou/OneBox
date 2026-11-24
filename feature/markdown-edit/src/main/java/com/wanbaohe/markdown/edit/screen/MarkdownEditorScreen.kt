@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -475,8 +476,11 @@ fun MarkdownEditorScreen(
         title = { Text(stringResource(R.string.unsaved_changes)) },
         text = { Text(stringResource(R.string.unsaved_changes_message)) },
         confirmButton = {
+            // 主操作「保存」整行,「放弃 / 继续编辑」平分下一行:
+            // 三个胶囊挤一行在长语种下会换行, 主按钮被挤到右下角很难看。
             ConfirmButton(
-                stringResource(R.string.save_file)
+                text = stringResource(R.string.save_file),
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 showExitConfirmDialog = false
                 // 保存后执行待处理操作
@@ -513,11 +517,13 @@ fun MarkdownEditorScreen(
             // 又自带 48dp 最小触控高度，夹在两个胶囊中间会整体下沉，
             // 看起来像一行漏排版的蓝色链接。
             Row(
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 CancelButton(
-                    stringResource(R.string.discard)
+                    text = stringResource(R.string.discard),
+                    modifier = Modifier.weight(1f),
                 ) {
                     showExitConfirmDialog = false
                     component.discardDraft()
@@ -530,6 +536,7 @@ fun MarkdownEditorScreen(
                 }
                 SecondaryButton(
                     text = stringResource(com.shifenmiao.common.R.string.note_keep_editing),
+                    modifier = Modifier.weight(1f),
                     icon = {
                         Icon(
                             imageVector = com.wanbaohe.icons.LineEditorIcons.Edit,
