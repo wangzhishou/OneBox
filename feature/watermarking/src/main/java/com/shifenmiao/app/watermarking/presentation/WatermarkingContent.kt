@@ -26,7 +26,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons as MaterialIcons
@@ -43,7 +42,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
@@ -117,7 +115,6 @@ fun WatermarkingContent(
     )
     val immersiveModeState = rememberImmersiveModeState()
     val activity = LocalComponentActivity.current
-    val wideLayout = LocalConfiguration.current.screenWidthDp >= 840
     var activePanel by rememberSaveable { mutableStateOf<WatermarkPanel?>(null) }
     var isToolRailVisible by rememberSaveable { mutableStateOf(false) }
     var showExport by rememberSaveable { mutableStateOf(false) }
@@ -129,8 +126,8 @@ fun WatermarkingContent(
     var editSheetData by remember { mutableStateOf(listOf<Uri>()) }
     var showFilterPanel by rememberSaveable { mutableStateOf(false) }
     var showFullFilterSheet by rememberSaveable { mutableStateOf(false) }
-    var selectedStartTemplate by rememberSaveable {
-        mutableStateOf(WatermarkStartTemplate.fromPresetId(component.activePresetId))
+    var selectedStartPresetId by rememberSaveable {
+        mutableStateOf(WatermarkStartTemplate.fromPresetId(component.activePresetId).presetId)
     }
     var editTextAfterPick by rememberSaveable { mutableStateOf(false) }
     val saveLocationLauncher = rememberLauncherForActivityResult(
@@ -264,8 +261,9 @@ fun WatermarkingContent(
             if (showGuide) {
                 Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
                     WatermarkStartScreen(
-                        selected = selectedStartTemplate,
-                        onSelect = { selectedStartTemplate = it },
+                        selectedPresetId = selectedStartPresetId,
+                        onSelect = { selectedStartPresetId = it },
+                        customPresets = component.customPresets,
                         lastSignature = component.lastSignature,
                         onStart = startFromTemplate,
                     )
@@ -344,23 +342,6 @@ fun WatermarkingContent(
                         },
                         modifier = Modifier.weight(1f).fillMaxHeight(),
                     )
-                    if (wideLayout && activePanel != null) {
-                        Column(
-                            modifier = Modifier
-                                .width(360.dp)
-                                .fillMaxHeight()
-                                .verticalScroll(rememberScrollState())
-                                .padding(16.dp),
-                        ) {
-                            WatermarkPanelHost(
-                                panel = activePanel!!,
-                                component = component,
-                                onPresetApplied = onPresetApplied,
-                                onRequestLocation = requestLocation,
-                                onPickImages = imagePicker::pickImage,
-                            )
-                        }
-                    }
                 }
                     if (immersiveModeState.isUiVisible && showFilterPanel && !isComparing) {
                         FilterStrip(
@@ -400,7 +381,7 @@ fun WatermarkingContent(
         },
     )
 
-    if (!wideLayout && activePanel != null && displayBitmap != null) EditorPreviewBlurScope {
+    if (activePanel != null && displayBitmap != null) EditorPreviewBlurScope {
         EnhancedModalBottomSheet(
             visible = true,
             onDismiss = { activePanel = null },

@@ -100,6 +100,7 @@ fun ContentPanel(
                 content = content,
                 resolvedValue = resolvedValue,
                 isLoading = isResolvingPhoto,
+                usesFileTime = resolvedElement?.isFileTime == true,
                 onContentChange = onContentChange,
             )
             is WatermarkContent.CameraParams -> {
@@ -136,6 +137,7 @@ private fun TimestampContent(
     content: WatermarkContent.Timestamp,
     resolvedValue: String?,
     isLoading: Boolean,
+    usesFileTime: Boolean,
     onContentChange: (WatermarkContent, Boolean) -> Unit,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -153,7 +155,13 @@ private fun TimestampContent(
             drawContainer = false,
         )
         if (content.usePhotoTime) {
-            if (!isLoading && resolvedValue == null) {
+            if (usesFileTime) {
+                Text(
+                    text = stringResource(R.string.watermark_file_time_notice),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            } else if (!isLoading && resolvedValue == null) {
                 EmptySelectionHint(R.string.watermark_no_photo_time)
             }
             WatermarkTextField(

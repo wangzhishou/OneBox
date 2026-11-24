@@ -2215,6 +2215,8 @@
     <string name="watermark_template_leica_desc">A white info band with camera data, time and location.</string>
     <string name="watermark_start_pick_photo">Choose photos</string>
     <string name="watermark_start_selected">Selected</string>
+    <string name="watermark_my_templates">My templates</string>
+    <string name="watermark_file_time_notice">Using the file modification time because this photo has no capture time. This is not the capture time.</string>
     <string name="watermark_filter_target">Filter the photo</string>
     <string name="watermark_filter_unsupported">This filter cannot be applied to the photo</string>
     <string name="watermark_preset_copyright">Full-screen text</string>

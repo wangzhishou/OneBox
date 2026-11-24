@@ -160,8 +160,9 @@ class WatermarkingComponent @AssistedInject internal constructor(
     private val _customPresets = mutableStateOf<List<WatermarkPreset>>(emptyList())
     private val _lastSignature = mutableStateOf("")
     val lastSignature: String get() = _lastSignature.value
+    val customPresets: List<WatermarkPreset> get() = _customPresets.value
     val presets: List<WatermarkPreset>
-        get() = BuiltinWatermarkPresets.featuredEntries + _customPresets.value
+        get() = BuiltinWatermarkPresets.featuredEntries + customPresets
 
     private val _activePresetId = mutableStateOf<String?>(null)
     val activePresetId: String? by _activePresetId

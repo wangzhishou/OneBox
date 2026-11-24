@@ -80,6 +80,7 @@ data class ResolvedWatermarkElement(
      * 属性面板据此继续保留「获取」卡片，让用户能看到已经取到的值。
      */
     val fromPhoto: Boolean = true,
+    val isFileTime: Boolean = false,
 )
 
 /**

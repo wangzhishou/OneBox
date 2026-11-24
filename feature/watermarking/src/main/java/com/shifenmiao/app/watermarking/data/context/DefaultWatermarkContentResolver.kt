@@ -10,8 +10,12 @@
 
 package com.shifenmiao.app.watermarking.data.context
 
+import android.content.ContentResolver
 import android.content.Context
+import android.database.Cursor
 import android.net.Uri
+import android.provider.DocumentsContract
+import android.provider.MediaStore
 import androidx.exifinterface.media.ExifInterface
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.image.model.MetadataTag
@@ -32,6 +36,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -73,7 +78,13 @@ class DefaultWatermarkContentResolver @Inject constructor(
                         hasData = !data.isNullOrBlank(),
                     )
                 }
-                is WatermarkContent.Timestamp -> element.text(formatTimestamp(content, photo))
+                is WatermarkContent.Timestamp -> {
+                    val timestamp = resolveTimestamp(content, photo)
+                    element.text(
+                        value = timestamp.text,
+                        fromPhoto = timestamp.fromPhoto,
+                    ).copy(isFileTime = timestamp.isFileTime)
+                }
                 is WatermarkContent.Altitude -> {
                     val photoValue = photo.altitudeMeters?.formatAltitude(content.useFeet)
                     val deviceValue = deviceLocation?.altitudeMeters?.formatAltitude(content.useFeet)
@@ -144,20 +155,28 @@ class DefaultWatermarkContentResolver @Inject constructor(
 
     private suspend fun photoContext(uri: String): PhotoWatermarkContext {
         photoMutex.withLock { photoCache[uri]?.let { return it } }
+        val sourceUri = Uri.parse(uri)
         val exif = withContext(ioDispatcher) {
             runCatching {
-                context.contentResolver.openInputStream(Uri.parse(uri))?.use { input ->
+                context.contentResolver.openInputStream(sourceUri)?.use { input ->
                     ExifInterface(input)
                 }
             }.getOrNull()
         }
+        val dateTime = sequenceOf(
+            MetadataTag.DatetimeOriginal,
+            MetadataTag.DatetimeDigitized,
+            MetadataTag.Datetime,
+        ).mapNotNull { exif?.getAttribute(it.key)?.trim() }
+            .firstOrNull { parseExifDate(it) != null }
+        val fileDateTime = if (dateTime == null) {
+            withContext(ioDispatcher) { readFileDate(sourceUri) }?.let(::formatExifDate)
+        } else {
+            null
+        }
         val context = PhotoWatermarkContext(
-            dateTime = sequenceOf(
-                MetadataTag.DatetimeOriginal,
-                MetadataTag.DatetimeDigitized,
-                MetadataTag.Datetime,
-            ).mapNotNull { exif?.getAttribute(it.key)?.trim() }
-                .firstOrNull { parseExifDate(it) != null },
+            dateTime = dateTime,
+            fileDateTime = fileDateTime,
             coordinates = parseCoordinates(
                 latitude = exif?.getAttribute(MetadataTag.GpsLatitude.key),
                 latitudeRef = exif?.getAttribute(MetadataTag.GpsLatitudeRef.key),
@@ -217,27 +236,72 @@ class DefaultWatermarkContentResolver @Inject constructor(
     }
 
     /**
-     * 拍摄模式优先用照片的 EXIF 时间，缺失时才用手填值，不用当前时间冒充。
+     * 拍摄模式按 EXIF、文件时间、手填值依次兜底，不用当前时间冒充。
      * usePhotoTime=false 是「当前时间」语义，now() 合法。
      */
-    private fun formatTimestamp(
+    private fun resolveTimestamp(
         content: WatermarkContent.Timestamp,
         photo: PhotoWatermarkContext,
-    ): String {
-        if (!content.usePhotoTime) return formatDate(Date(), content.format)
-        val date = photo.dateTime?.let(::parseExifDate)
-            ?: return content.fallbackText.trim().lineSequence().firstOrNull().orEmpty()
-        return formatDate(date, content.format)
+    ): TimestampValue {
+        if (!content.usePhotoTime) {
+            return TimestampValue(formatDate(Date(), content.format), fromPhoto = false)
+        }
+        photo.dateTime?.let(::parseExifDate)?.let { date ->
+            return TimestampValue(formatDate(date, content.format), fromPhoto = true)
+        }
+        photo.fileDateTime?.let(::parseExifDate)?.let { date ->
+            return TimestampValue(
+                text = formatDate(date, content.format),
+                fromPhoto = false,
+                isFileTime = true,
+            )
+        }
+        return TimestampValue(
+            text = content.fallbackText.trim().lineSequence().firstOrNull().orEmpty(),
+            fromPhoto = false,
+        )
     }
+
+    private data class TimestampValue(
+        val text: String,
+        val fromPhoto: Boolean,
+        val isFileTime: Boolean = false,
+    )
 
     private fun formatDate(date: Date, pattern: String): String =
         runCatching { SimpleDateFormat(pattern.ifBlank { "yyyy-MM-dd HH:mm" }, Locale.US).format(date) }
             .getOrElse { SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(date) }
 
+    private fun formatExifDate(date: Date): String = formatDate(date, "yyyy:MM:dd HH:mm:ss")
+
     private fun parseExifDate(value: String): Date? {
         val position = ParsePosition(0)
         val parser = SimpleDateFormat("yyyy:MM:dd HH:mm:ss", Locale.US).apply { isLenient = false }
         return parser.parse(value, position)?.takeIf { position.index == value.length }
+    }
+
+    private fun readFileDate(uri: Uri): Date? {
+        val providerDate = listOf(
+            DocumentsContract.Document.COLUMN_LAST_MODIFIED to false,
+            MediaStore.MediaColumns.DATE_MODIFIED to true,
+        ).firstNotNullOfOrNull { (column, inSeconds) ->
+            runCatching {
+                context.contentResolver.query(uri, arrayOf(column), null, null, null)?.use { cursor ->
+                    if (cursor.moveToFirst()) cursor.dateColumn(column, inSeconds) else null
+                }
+            }.getOrNull()
+        }
+        if (providerDate != null) return providerDate
+        if (uri.scheme != ContentResolver.SCHEME_FILE) return null
+        return uri.path?.let(::File)?.lastModified()?.takeIf { it > 0L }?.let(::Date)
+    }
+
+    private fun Cursor.dateColumn(name: String, inSeconds: Boolean = false): Date? {
+        val index = getColumnIndex(name)
+        if (index < 0 || isNull(index)) return null
+        val value = getLong(index)
+        if (value <= 0L) return null
+        return Date(if (inSeconds) value * 1000L else value)
     }
 
     private fun formatCameraParams(
