@@ -44,7 +44,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -100,6 +99,8 @@ import com.shifenmiao.online.component.ItemListComponent
 import com.shifenmiao.online.ui.CreateChoiceCard
 import com.shifenmiao.online.ui.HomeEmptyState
 import com.shifenmiao.online.ui.VerticalStaggeredCard
+import com.shifenmiao.online.ui.itemGridContentPadding
+import com.shifenmiao.online.ui.itemGridSpec
 import com.shifenmiao.online.ui.aiCreateActionFor
 import com.shifenmiao.theme.AppFontMode
 import com.shifenmiao.theme.AppTheme
@@ -507,10 +508,10 @@ private fun SkeletonItemGrid(isGrid: Boolean) {
     BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
         LazyVerticalStaggeredGrid(
             modifier = Modifier.fillMaxWidth(),
-            columns = gridColumns(isGrid, maxWidth),
+            columns = itemGridSpec(isGrid, maxWidth).cells,
             horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.contentGap),
             verticalItemSpacing = AppTheme.dimens.contentGap,
-            contentPadding = gridContentPadding(),
+            contentPadding = itemGridContentPadding(),
             userScrollEnabled = false,
         ) {
             items(count = 6, key = { "skeleton_$it" }) { index ->
@@ -593,10 +594,10 @@ private fun ItemGrid(
             modifier = Modifier
                 .fillMaxHeight()
                 .nestedScroll(headFollow),
-            columns = gridColumns(isGrid, maxWidth),
+            columns = itemGridSpec(isGrid, maxWidth).cells,
             horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.contentGap),
             verticalItemSpacing = AppTheme.dimens.contentGap,
-            contentPadding = gridContentPadding(),
+            contentPadding = itemGridContentPadding(),
         ) {
             items(
                 count = pagingItems.itemCount,
@@ -760,38 +761,6 @@ private class HeadFollowConnection(
 }
 
 private fun uidFor(listType: ListItemType): String = commentUidForListType(listType.id)
-
-@Composable
-private fun gridColumns(
-    isGrid: Boolean,
-    availableWidth: Dp,
-): StaggeredGridCells {
-    val fontMode = AppTheme.uiProfile.fontMode
-
-    return when {
-        !isGrid -> StaggeredGridCells.Adaptive(minSize = 280.dp)
-        availableWidth < 360.dp -> StaggeredGridCells.Fixed(count = 1)
-        fontMode == AppFontMode.ExtraLarge && availableWidth < 480.dp ->
-            StaggeredGridCells.Fixed(count = 1)
-
-        availableWidth < 600.dp -> StaggeredGridCells.Fixed(count = 2)
-        fontMode == AppFontMode.ExtraLarge && availableWidth < 720.dp ->
-            StaggeredGridCells.Fixed(count = 2)
-
-        else -> StaggeredGridCells.Adaptive(
-            minSize = if (fontMode == AppFontMode.ExtraLarge) 280.dp else 240.dp
-        )
-    }
-}
-
-
-@Composable
-private fun gridContentPadding() = PaddingValues(
-    start = AppTheme.dimens.pageHorizontal,
-    end = AppTheme.dimens.pageHorizontal,
-    top = 4.dp,
-    bottom = AppTheme.dimens.pageHorizontal,
-)
 
 private fun pagingItemKey(
     pagingItems: LazyPagingItems<ItemWithCategoriesAndStats>,

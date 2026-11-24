@@ -20,6 +20,7 @@
 package com.shifenmiao.search.screen
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -41,6 +42,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.common.components.ClickInfoType
 import com.shifenmiao.common.components.FeaturedCardLayout
@@ -51,6 +53,7 @@ import com.shifenmiao.common.handle.ItemResourceResolver
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.core.R
 import com.shifenmiao.online.component.ItemListComponent
+import com.shifenmiao.online.ui.itemGridSpec
 import com.shifenmiao.search.components.SearchResults
 import com.shifenmiao.search.components.SearchSuggest
 import com.shifenmiao.search.logic.SearchComponent
@@ -76,47 +79,53 @@ fun SearchScreen(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .navigationBarsPadding()
-            .statusBarsPadding()
-            // 搜索框自动聚焦；键盘弹出时收缩整页内容，结果网格与空态都留在键盘上方。
-            .imePadding()
-    ) {
-        TopSearchBar(
-            isShowBack = true,
-            appComponent = appComponent,
-            queryValue = queryValue,
-            onQueryChange = searchComponent::onSearchQueryChange,
-            autoFocus = autoFocus,
-        )
-
-        if (queryValue.isNotEmpty()) {
-            SearchResults(
-                searchComponent = searchComponent,
-                itemListComponent = itemListComponent,
-                queryValue = queryValue
+    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+        val gridSpec = itemGridSpec(isGrid = true, availableWidth = maxWidth)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .navigationBarsPadding()
+                .statusBarsPadding()
+                // 搜索框自动聚焦；键盘弹出时收缩整页内容，结果网格与空态都留在键盘上方。
+                .imePadding()
+        ) {
+            TopSearchBar(
+                isShowBack = true,
+                appComponent = appComponent,
+                queryValue = queryValue,
+                onQueryChange = searchComponent::onSearchQueryChange,
+                autoFocus = autoFocus,
             )
-        } else {
-            Column(
-                modifier = Modifier
-                    .padding(
-                        horizontal = AppTheme.dimens.pageHorizontal
+
+            if (queryValue.isNotEmpty()) {
+                SearchResults(
+                    searchComponent = searchComponent,
+                    itemListComponent = itemListComponent,
+                    gridSpec = gridSpec,
+                    queryValue = queryValue
+                )
+            } else {
+                Column(
+                    modifier = Modifier
+                        .padding(
+                            horizontal = AppTheme.dimens.pageHorizontal
+                        )
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    SearchSuggest(
+                        onSuggestionClick = onSuggestionClick,
                     )
-                    .verticalScroll(rememberScrollState())
-            ) {
-                SearchSuggest(
-                    onSuggestionClick = onSuggestionClick,
-                )
 
-                RecentVisitsSection(
-                    searchComponent = searchComponent,
-                )
+                    RecentVisitsSection(
+                        searchComponent = searchComponent,
+                        cardWidth = gridSpec.columnWidth,
+                    )
 
-                FeaturedSection(
-                    searchComponent = searchComponent,
-                )
+                    FeaturedSection(
+                        searchComponent = searchComponent,
+                        cardWidth = gridSpec.columnWidth,
+                    )
+                }
             }
         }
     }
@@ -129,6 +138,7 @@ fun SearchScreen(
 @Composable
 private fun FeaturedSection(
     searchComponent: SearchComponent,
+    cardWidth: Dp,
 ) {
     val recommended by searchComponent.recommendedFlow.collectAsState()
     val onNavigate = LocalOnNavigate.current
@@ -150,6 +160,7 @@ private fun FeaturedSection(
                 items = recommended,
                 clickInfo = ClickInfoType.COUNT,
                 cardLayout = FeaturedCardLayout.spacious(),
+                cardWidth = cardWidth,
                 onItemClick = { item ->
                     scope.launch {
                         val resource = com.shifenmiao.common.handle.ItemResourceResolver.resolve(
@@ -173,6 +184,7 @@ private fun FeaturedSection(
 @Composable
 private fun RecentVisitsSection(
     searchComponent: SearchComponent,
+    cardWidth: Dp,
 ) {
     val recentItems by searchComponent.recentClickedFlow.collectAsState()
     val onNavigate = LocalOnNavigate.current
@@ -193,6 +205,7 @@ private fun RecentVisitsSection(
                 items = recentItems,
                 clickInfo = ClickInfoType.TIME,
                 cardLayout = FeaturedCardLayout.spacious(),
+                cardWidth = cardWidth,
                 onItemClick = { item ->
                     scope.launch {
                         val resource = ItemResourceResolver.resolve(

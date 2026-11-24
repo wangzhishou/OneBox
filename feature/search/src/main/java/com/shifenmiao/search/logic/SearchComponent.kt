@@ -68,9 +68,6 @@ class SearchComponent @AssistedInject internal constructor(
     private val _globalSearchResults = MutableStateFlow<List<GlobalSearchResult>>(emptyList())
     val globalSearchResults: StateFlow<List<GlobalSearchResult>> = _globalSearchResults
 
-    private val _isGlobalSearching = MutableStateFlow(false)
-    val isGlobalSearching: StateFlow<Boolean> = _isGlobalSearching
-
     private val _isGlobalSearchTruncated = MutableStateFlow(false)
     val isGlobalSearchTruncated: StateFlow<Boolean> = _isGlobalSearchTruncated
 
@@ -116,14 +113,9 @@ class SearchComponent @AssistedInject internal constructor(
         val generation = ++searchGeneration
         searchJob = null
         clearSearchResults()
-        if (query.isEmpty()) {
-            _isGlobalSearching.value = false
-            return
-        }
+        if (query.isEmpty()) return
 
-        _isGlobalSearching.value = true
         searchJob = componentScope.launch(ioDispatcher) {
-            delay(SEARCH_DEBOUNCE_MS)
             supervisorScope {
                 launch { collectItemResults(query, generation) }
                 launch { collectMessageResults(query, generation) }
@@ -192,7 +184,6 @@ class SearchComponent @AssistedInject internal constructor(
                 _isGlobalSearchTruncated.value = false
             }
         }
-        if (generation == searchGeneration) _isGlobalSearching.value = false
     }
 
     fun openGlobalSearchResult(
@@ -280,7 +271,6 @@ class SearchComponent @AssistedInject internal constructor(
 
     private companion object {
         const val SEARCH_REPORT_DELAY_MS = 1500L
-        const val SEARCH_DEBOUNCE_MS = 300L
         const val GLOBAL_SEARCH_LIMIT = 20
     }
 }

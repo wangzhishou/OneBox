@@ -63,7 +63,6 @@ fun SearchSuggest(
                 letterSpacing = 1.sp
             ),
             color = textColor,
-            modifier = Modifier.padding(horizontal = AppTheme.dimens.paddingSmall)
         )
         Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
         Column(

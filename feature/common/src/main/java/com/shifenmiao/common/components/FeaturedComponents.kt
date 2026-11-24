@@ -123,6 +123,7 @@ fun FeaturedGrid(
     modifier: Modifier = Modifier,
     clickInfo: ClickInfoType = ClickInfoType.NONE,
     cardLayout: FeaturedCardLayout = FeaturedCardLayout.standard(),
+    cardWidth: Dp? = null,
 ) {
     val titleLines = if (AppTheme.uiProfile.fontMode == AppFontMode.Regular) 1 else 2
     val fontScale = LocalDensity.current.fontScale.coerceAtLeast(1f)
@@ -130,7 +131,8 @@ fun FeaturedGrid(
         val readableWidth = cardLayout.minWidth * fontScale
         val viewportWidth = (maxWidth * FeaturedCardViewportFraction)
             .coerceAtMost(FeaturedCardMaxViewportWidth)
-        val cardWidth = maxOf(readableWidth, viewportWidth).coerceAtMost(maxWidth)
+        val resolvedCardWidth = cardWidth
+            ?: maxOf(readableWidth, viewportWidth).coerceAtMost(maxWidth)
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.contentGap),
@@ -139,7 +141,7 @@ fun FeaturedGrid(
                 FeaturedCard(
                     item = items[rowIndex],
                     themeIndex = rowIndex,
-                    modifier = Modifier.width(cardWidth),
+                    modifier = Modifier.width(resolvedCardWidth),
                     clickInfo = clickInfo,
                     layout = cardLayout,
                     titleLines = titleLines,
