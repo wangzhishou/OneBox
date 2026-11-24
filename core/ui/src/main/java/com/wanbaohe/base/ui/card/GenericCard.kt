@@ -423,7 +423,11 @@ fun GenericTonalCard(
                                     contentDescription = stringResource(
                                         com.shifenmiao.core.R.string.card_more_actions
                                     ),
-                                    tint = resolvedPalette.iconContentColor.copy(
+                                    // 不能用 iconContentColor: 那是给图标底座(浅色玻璃片)上的
+                                    // 图标用的, 深色主题下它和卡片底色几乎同色, 半透明后直接看不见。
+                                    // 跟下面的评论气泡一样用 supportingContentColor(onSurfaceVariant),
+                                    // 深浅色主题都能保证卡片底色上的对比度。
+                                    tint = resolvedPalette.supportingContentColor.copy(
                                         alpha = CARD_CHROME_ICON_ALPHA
                                     )
                                 )
