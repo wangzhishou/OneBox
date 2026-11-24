@@ -68,6 +68,7 @@ import com.shifenmiao.marktodo.theme.categoryPaletteWithThemeColors
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAccessTime
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineExitToApp
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFlag
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLabel
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
@@ -388,6 +389,7 @@ fun AddTodoScreen(
                 OneBoxDangerButton(
                     text = stringResource(com.shifenmiao.core.R.string.theme_discard_title),
                     onClick = onGoBack,
+                    leadingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineExitToApp,
                 )
             },
             dismissButton = {

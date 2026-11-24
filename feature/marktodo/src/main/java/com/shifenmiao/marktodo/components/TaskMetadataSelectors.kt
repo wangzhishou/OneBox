@@ -19,6 +19,7 @@
 
 package com.shifenmiao.marktodo.components
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -44,6 +45,7 @@ import com.shifenmiao.marktodo.model.TodoTask
 import com.shifenmiao.marktodo.theme.priorityColor
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Add
+import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAccessTime
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineClear
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFlag
@@ -117,6 +119,7 @@ fun TagSelector(
     FlowRow(
         horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
         verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
+        modifier = Modifier.animateContentSize(),
     ) {
         tags.forEachIndexed { index, tag ->
             val selected = tag.name in selectedTagNames
@@ -131,6 +134,19 @@ fun TagSelector(
                 ),
                 selected = selected,
                 onClick = { onToggle(tag.name) },
+                modifier = Modifier.animateContentSize(),
+                leadingIcon = if (selected) {
+                    {
+                        Icon(
+                            imageVector = Icons.Outlined.Check,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                            modifier = Modifier.size(14.dp),
+                        )
+                    }
+                } else {
+                    null
+                },
                 label = {
                     Text(
                         text = tag.name,
@@ -154,6 +170,15 @@ fun TagSelector(
                 ),
                 selected = true,
                 onClick = { onToggle(name) },
+                modifier = Modifier.animateContentSize(),
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Outlined.Check,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.size(14.dp),
+                    )
+                },
                 label = { Text(text = name) },
             )
         }
