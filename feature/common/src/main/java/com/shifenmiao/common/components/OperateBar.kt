@@ -65,15 +65,15 @@ fun OperateBar(
     val resolvedTagText = tagText?.takeIf { it.isNotBlank() }
         ?: BaseUtils.getNameByType(dataItem.listType)
 
-    // 只要业务层提供了点击回调就展示评论入口。数量未知按 0 显示,
-    // 避免「有的卡片只有气泡、有的气泡旁边有数字」被读成未读提醒。
+    // 只要业务层提供了点击回调就展示评论入口(气泡常显);数字只在 >0 时显示,
+    // 不给每张卡挂一个「0」当噪点。
     val showComment = onCommentClick != null
     val resolvedCommentCount = if (showComment) commentCount ?: 0 else null
-    val commentDescription = if (resolvedCommentCount != null) {
+    val commentDescription = if ((resolvedCommentCount ?: 0) > 0) {
         pluralStringResource(
             com.shifenmiao.core.R.plurals.comments_count_format,
-            resolvedCommentCount,
-            resolvedCommentCount,
+            resolvedCommentCount ?: 0,
+            resolvedCommentCount ?: 0,
         )
     } else {
         stringResource(com.shifenmiao.core.R.string.comment)
@@ -113,7 +113,7 @@ private val CommentIconSize = 14.dp
 /**
  * 评论入口: 气泡 + 数量。
  *
- * 数量始终显示(含 0), 读作「评论数」而不是未读红点或会话数。
+ * 气泡常显;数量仅在 >0 时出现(0 不显示,别在卡片上留一个「0」)。
  * 超过 99 显示 "99+"。整行都是点击热区。
  */
 @Composable
@@ -141,7 +141,7 @@ private fun CommentCountChip(
             modifier = Modifier.size(CommentIconSize),
             tint = iconTint.copy(alpha = COMMENT_CHROME_ALPHA),
         )
-        if (count != null) {
+        if (count != null && count > 0) {
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = if (count > 99) "99+" else count.toString(),
