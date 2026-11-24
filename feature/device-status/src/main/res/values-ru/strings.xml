@@ -157,6 +157,7 @@
     <string name="status_footnote">Для имени Wi-Fi, адреса роутера и другой SIM-карты требуются разрешения на геолокацию или телефон. Эта страница не запрашивает эти разрешения.</string>
     <string name="status_loading">Чтение…</string>
     <string name="status_no_ip">Нет доступного IP-адреса</string>
+    <string name="section_address">Локальный адрес</string>
     <string name="status_refresh">Обновить</string>
     <string name="transport_bluetooth">Bluetooth</string>
     <string name="transport_cellular">Мобильные данные</string>

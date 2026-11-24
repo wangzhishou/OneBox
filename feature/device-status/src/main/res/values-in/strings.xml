@@ -157,6 +157,7 @@
     <string name="status_footnote">Nama Wi-Fi, alamat router, dan kartu SIM lain memerlukan izin lokasi atau telepon. Halaman ini tidak meminta izin tersebut.</string>
     <string name="status_loading">Membaca…</string>
     <string name="status_no_ip">Tidak ada alamat IP yang tersedia</string>
+    <string name="section_address">Alamat lokal</string>
     <string name="status_refresh">Segarkan</string>
     <string name="transport_bluetooth">Bluetooth</string>
     <string name="transport_cellular">Data seluler</string>

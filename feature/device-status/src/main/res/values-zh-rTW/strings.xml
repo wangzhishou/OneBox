@@ -157,6 +157,7 @@
     <string name="status_footnote">Wi-Fi 名稱、路由器位址和另一張 SIM 卡需要定位或電話權限。這個頁面不申請這些權限。</string>
     <string name="status_loading">正在讀取…</string>
     <string name="status_no_ip">沒有可用的 IP 位址</string>
+    <string name="section_address">本機位址</string>
     <string name="status_refresh">重新整理</string>
     <string name="transport_bluetooth">藍牙</string>
     <string name="transport_cellular">行動數據</string>

@@ -157,6 +157,7 @@
     <string name="status_footnote">Ang pangalan ng Wi-Fi, address ng router, at isa pang SIM card ay nangangailangan ng permission sa lokasyon o telepono. Hindi humihingi ng mga permission na ito ang page na ito.</string>
     <string name="status_loading">Nagbabasa…</string>
     <string name="status_no_ip">Walang available na IP address</string>
+    <string name="section_address">Lokal na address</string>
     <string name="status_refresh">I-refresh</string>
     <string name="transport_bluetooth">Bluetooth</string>
     <string name="transport_cellular">Mobile data</string>

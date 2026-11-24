@@ -69,8 +69,10 @@ object PhoneStatusFormatter {
         status: PhoneStatus,
         networkNode: CloudflareNetworkInfo?,
     ): FormattedPhoneStatus {
+        val addresses = heroAddresses(context, status.networks)
+        val shownAddresses = addresses.mapTo(mutableSetOf()) { it.value }
         val sections = buildList {
-            addAll(networkSections(context, status.networks))
+            addAll(networkSections(context, status.networks, shownAddresses))
             networkNodeSection(context, networkNode)?.let(::add)
             carrierSection(context, status.carrier)?.let(::add)
             deviceSection(context, status.device)?.let(::add)
@@ -82,15 +84,19 @@ object PhoneStatusFormatter {
             appSection(context, status.app)?.let(::add)
         }
         return FormattedPhoneStatus(
-            addresses = heroAddresses(context, status.networks),
+            addresses = addresses,
             sections = sections,
             footnote = context.getString(R.string.status_footnote),
         )
     }
 
-    private fun networkSections(context: Context, networks: List<NetworkSlice>): List<FormattedSection> =
+    private fun networkSections(
+        context: Context,
+        networks: List<NetworkSlice>,
+        shownAddresses: Set<String>,
+    ): List<FormattedSection> =
         networks.mapNotNull { slice ->
-            val rows = networkRows(context, slice)
+            val rows = networkRows(context, slice, shownAddresses)
             if (rows.isEmpty()) null else FormattedSection(networkTitle(context, slice), rows)
         }
 
@@ -164,10 +170,14 @@ object PhoneStatusFormatter {
         return if (slice.isActive) context.getString(R.string.network_active_title, name) else name
     }
 
-    private fun networkRows(context: Context, slice: NetworkSlice): List<FormattedRow> {
+    private fun networkRows(
+        context: Context,
+        slice: NetworkSlice,
+        shownAddresses: Set<String>,
+    ): List<FormattedRow> {
         val rows = RowBuilder(context)
-        rows.addJoined(R.string.label_ipv4, slice.ipv4)
-        rows.addJoined(R.string.label_ipv6, slice.ipv6)
+        rows.addJoinedExcept(R.string.label_ipv4, slice.ipv4, shownAddresses)
+        rows.addJoinedExcept(R.string.label_ipv6, slice.ipv6, shownAddresses)
         rows.addJoined(R.string.label_gateway, slice.gateways)
         rows.addJoined(R.string.label_dns, slice.dns)
         rows.add(R.string.label_interface, slice.interfaceName)
@@ -564,6 +574,13 @@ private class RowBuilder(private val context: Context) {
     fun addJoined(labelRes: Int, values: List<String>) {
         if (values.isEmpty()) return
         add(labelRes, values.joinToString(", "))
+    }
+
+    /** 顶部地址卡已经展示过的地址不再在分节里重复一行。 */
+    fun addJoinedExcept(labelRes: Int, values: List<String>, shown: Set<String>) {
+        val remaining = values.filterNot { it in shown }
+        if (remaining.isEmpty()) return
+        add(labelRes, remaining.joinToString(", "))
     }
 
     fun build(): List<FormattedRow> = rows.toList()

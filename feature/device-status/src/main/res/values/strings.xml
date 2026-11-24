@@ -22,6 +22,7 @@
     <string name="status_loading">Reading this phone…</string>
     <string name="status_refresh">Refresh</string>
     <string name="status_no_ip">No IP address</string>
+    <string name="section_address">Local address</string>
     <string name="section_network_node">Network node</string>
     <string name="label_public_ip">Public IP</string>
     <string name="label_public_location">Network location</string>

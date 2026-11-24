@@ -157,6 +157,7 @@
     <string name="status_footnote">Le nom Wi-Fi, l\'adresse du routeur et l\'autre carte SIM nécessitent l\'autorisation de localisation ou de téléphone. Cette page ne demande pas ces autorisations.</string>
     <string name="status_loading">Lecture…</string>
     <string name="status_no_ip">Aucune adresse IP disponible</string>
+    <string name="section_address">Adresse locale</string>
     <string name="status_refresh">Actualiser</string>
     <string name="transport_bluetooth">Bluetooth</string>
     <string name="transport_cellular">Données mobiles</string>

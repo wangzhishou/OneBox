@@ -157,6 +157,7 @@
     <string name="status_footnote">Wi-Fi नाम, राउटर पता और दूसरे SIM कार्ड के लिए स्थान या फ़ोन अनुमति आवश्यक है। यह पेज इन अनुमतियों का अनुरोध नहीं करता।</string>
     <string name="status_loading">पढ़ा जा रहा है…</string>
     <string name="status_no_ip">कोई उपलब्ध IP पता नहीं</string>
+    <string name="section_address">स्थानीय पता</string>
     <string name="status_refresh">रीफ़्रेश करें</string>
     <string name="transport_bluetooth">ब्लूटूथ</string>
     <string name="transport_cellular">मोबाइल डेटा</string>

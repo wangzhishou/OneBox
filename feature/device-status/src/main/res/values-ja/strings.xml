@@ -157,6 +157,7 @@
     <string name="status_footnote">Wi-Fi名、ルーターアドレス、もう1枚のSIMカードには位置情報または電話の権限が必要です。このページではこれらの権限を要求しません。</string>
     <string name="status_loading">読み取り中…</string>
     <string name="status_no_ip">利用可能なIPアドレスがありません</string>
+    <string name="section_address">ローカルアドレス</string>
     <string name="status_refresh">更新</string>
     <string name="transport_bluetooth">Bluetooth</string>
     <string name="transport_cellular">モバイルデータ</string>

@@ -57,9 +57,12 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineSync
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineViewList
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsManager
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
+import com.wanbaohe.base.ui.card.TonalCardPalette
+import com.wanbaohe.base.ui.card.TonalCardPaletteDefaults
 import com.wanbaohe.core.ui.utils.helper.Clipboard
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
+import com.wanbaohe.core.ui.widget.glass.tintedGlassCardColors
 import com.wanbaohe.devicestatus.R
 import com.wanbaohe.devicestatus.component.DeviceStatusComponent
 import kotlinx.coroutines.launch
@@ -144,6 +147,7 @@ private fun StatusList(
     formatted: FormattedPhoneStatus,
     modifier: Modifier = Modifier,
 ) {
+    val sectionThemeOffset = formatted.addresses.size.coerceAtLeast(1)
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(
@@ -154,21 +158,30 @@ private fun StatusList(
         ),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
+        item(key = "address_title") {
+            SectionTitle(
+                text = stringResource(R.string.section_address),
+                modifier = Modifier.padding(top = 4.dp),
+            )
+        }
         if (formatted.addresses.isEmpty()) {
-            item { EmptyAddressCard() }
+            item { EmptyAddressCard(themeIndex = 0) }
         } else {
             itemsIndexed(
                 formatted.addresses,
                 key = { index, row -> "addr:$index:${row.label}:${row.value}" },
-            ) { _, row ->
-                AddressCard(row)
+            ) { index, row ->
+                AddressCard(row = row, themeIndex = index)
             }
         }
         itemsIndexed(
             formatted.sections,
             key = { index, section -> "section:$index:${section.title}" },
-        ) { _, section ->
-            SectionCard(section)
+        ) { index, section ->
+            SectionCard(
+                section = section,
+                themeIndex = sectionThemeOffset + index,
+            )
         }
         item { Footnote(formatted.footnote) }
     }
@@ -179,6 +192,15 @@ private fun StatusGrid(
     formatted: FormattedPhoneStatus,
     modifier: Modifier = Modifier,
 ) {
+    val sectionStartIndices = remember(formatted.sections) {
+        var next = 0
+        formatted.sections.map { section ->
+            val start = next
+            next += section.rows.size
+            start
+        }
+    }
+    val sectionThemeOffset = formatted.addresses.size.coerceAtLeast(1)
     LazyVerticalGrid(
         // 列数按内容区真实宽度决定,而不是按设备类型写死两列(320dp 会回落到一列)。
         columns = GridCells.Adaptive(minSize = 150.dp),
@@ -192,15 +214,25 @@ private fun StatusGrid(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
+        item(
+            key = "address_title",
+            span = { GridItemSpan(maxLineSpan) },
+        ) {
+            SectionTitle(
+                text = stringResource(R.string.section_address),
+                modifier = Modifier.padding(top = 4.dp),
+            )
+        }
         if (formatted.addresses.isEmpty()) {
-            item(span = { GridItemSpan(maxLineSpan) }) { EmptyAddressCard() }
+            item(span = { GridItemSpan(maxLineSpan) }) { EmptyAddressCard(themeIndex = 0) }
         } else {
             formatted.addresses.forEachIndexed { index, row ->
                 item(
                     key = "addr:$index:${row.label}:${row.value}",
-                    span = { GridItemSpan(if (spansFullWidth(row.value)) maxLineSpan else 1) },
+                    // 地址卡是整页的主信息,固定整行,避免短 IPv4 只占半格留下空洞。
+                    span = { GridItemSpan(maxLineSpan) },
                 ) {
-                    AddressCard(row, fillHeight = true)
+                    AddressCard(row = row, themeIndex = index)
                 }
             }
         }
@@ -209,11 +241,9 @@ private fun StatusGrid(
                 key = "title:$sectionIndex:${section.title}",
                 span = { GridItemSpan(maxLineSpan) },
             ) {
-                Text(
+                SectionTitle(
                     text = section.title,
                     modifier = Modifier.padding(top = if (sectionIndex == 0) 4.dp else 8.dp),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
             }
             section.rows.forEachIndexed { rowIndex, row ->
@@ -221,7 +251,12 @@ private fun StatusGrid(
                     key = "row:$sectionIndex:$rowIndex:${row.label}",
                     span = { GridItemSpan(if (spansFullWidth(row.value)) maxLineSpan else 1) },
                 ) {
-                    GridFactCard(row)
+                    GridFactCard(
+                        row = row,
+                        themeIndex = sectionThemeOffset +
+                            sectionStartIndices[sectionIndex] +
+                            rowIndex,
+                    )
                 }
             }
         }
@@ -232,13 +267,30 @@ private fun StatusGrid(
 private fun spansFullWidth(value: String): Boolean = value.length > 22 || value.contains('\n')
 
 @Composable
-private fun AddressCard(row: FormattedRow, fillHeight: Boolean = false) {
+private fun SectionTitle(
+    text: String,
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        text = text,
+        modifier = modifier,
+        style = MaterialTheme.typography.titleMedium,
+        color = MaterialTheme.colorScheme.onPrimaryContainer,
+    )
+}
+
+@Composable
+private fun AddressCard(
+    row: FormattedRow,
+    themeIndex: Int,
+) {
+    val palette = TonalCardPaletteDefaults.forIndex(themeIndex)
     GlassCard(
         onClick = { Clipboard.copy(row.copyText) },
-        modifier = Modifier
-            .fillMaxWidth()
-            .then(if (fillHeight) Modifier.fillMaxHeight() else Modifier),
-        style = GlassStyle.Thick,
+        modifier = Modifier.fillMaxWidth(),
+        shape = TonalCardPaletteDefaults.shape,
+        style = GlassStyle.Medium,
+        colors = tintedGlassCardColors(palette.containerColor),
     ) {
         Column(
             modifier = Modifier
@@ -248,7 +300,7 @@ private fun AddressCard(row: FormattedRow, fillHeight: Boolean = false) {
             Text(
                 text = row.label,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = palette.descriptionColor,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -256,20 +308,23 @@ private fun AddressCard(row: FormattedRow, fillHeight: Boolean = false) {
             Text(
                 text = row.value,
                 style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = palette.titleColor,
             )
         }
     }
 }
 
 @Composable
-private fun GridFactCard(row: FormattedRow) {
+private fun GridFactCard(row: FormattedRow, themeIndex: Int) {
+    val palette = TonalCardPaletteDefaults.forIndex(themeIndex)
     GlassCard(
         onClick = { Clipboard.copy(row.copyText) },
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
             .defaultMinSize(minHeight = 76.dp),
+        shape = TonalCardPaletteDefaults.shape,
+        colors = tintedGlassCardColors(palette.containerColor),
     ) {
         Column(
             modifier = Modifier
@@ -279,7 +334,7 @@ private fun GridFactCard(row: FormattedRow) {
             Text(
                 text = row.label,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = palette.descriptionColor,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -287,15 +342,20 @@ private fun GridFactCard(row: FormattedRow) {
             Text(
                 text = row.value,
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = palette.titleColor,
             )
         }
     }
 }
 
 @Composable
-private fun SectionCard(section: FormattedSection) {
-    GlassCard(modifier = Modifier.fillMaxWidth()) {
+private fun SectionCard(section: FormattedSection, themeIndex: Int) {
+    val palette = TonalCardPaletteDefaults.forIndex(themeIndex)
+    GlassCard(
+        modifier = Modifier.fillMaxWidth(),
+        shape = TonalCardPaletteDefaults.shape,
+        colors = tintedGlassCardColors(palette.containerColor),
+    ) {
         Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
             Text(
                 text = section.title,
@@ -304,14 +364,14 @@ private fun SectionCard(section: FormattedSection) {
             )
             Spacer(modifier = Modifier.height(4.dp))
             section.rows.forEach { row ->
-                StatusRow(row)
+                StatusRow(row = row, palette = palette)
             }
         }
     }
 }
 
 @Composable
-private fun StatusRow(row: FormattedRow) {
+private fun StatusRow(row: FormattedRow, palette: TonalCardPalette) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -321,24 +381,29 @@ private fun StatusRow(row: FormattedRow) {
         Text(
             text = row.label,
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = palette.descriptionColor,
         )
         Text(
             text = row.value,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = palette.titleColor,
         )
     }
 }
 
 @Composable
-private fun EmptyAddressCard() {
-    GlassCard(modifier = Modifier.fillMaxWidth(), style = GlassStyle.Thick) {
+private fun EmptyAddressCard(themeIndex: Int) {
+    val palette = TonalCardPaletteDefaults.forIndex(themeIndex)
+    GlassCard(
+        modifier = Modifier.fillMaxWidth(),
+        shape = TonalCardPaletteDefaults.shape,
+        colors = tintedGlassCardColors(palette.containerColor),
+    ) {
         Text(
             text = stringResource(R.string.status_no_ip),
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 18.dp),
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = palette.titleColor,
         )
     }
 }

@@ -157,6 +157,7 @@
     <string name="status_footnote">Wi-Fi adı, yönlendirici adresi ve diğer SIM kart için konum veya telefon izinleri gerekir. Bu sayfa bu izinleri istemez.</string>
     <string name="status_loading">Okunuyor…</string>
     <string name="status_no_ip">Kullanılabilir IP adresi yok</string>
+    <string name="section_address">Yerel adres</string>
     <string name="status_refresh">Yenile</string>
     <string name="transport_bluetooth">Bluetooth</string>
     <string name="transport_cellular">Mobil veri</string>

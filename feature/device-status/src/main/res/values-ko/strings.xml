@@ -157,6 +157,7 @@
     <string name="status_footnote">Wi-Fi 이름, 라우터 주소 및 다른 SIM 카드에는 위치 또는 전화 권한이 필요합니다. 이 페이지에서는 이러한 권한을 요청하지 않습니다.</string>
     <string name="status_loading">읽는 중…</string>
     <string name="status_no_ip">사용 가능한 IP 주소 없음</string>
+    <string name="section_address">로컬 주소</string>
     <string name="status_refresh">새로고침</string>
     <string name="transport_bluetooth">블루투스</string>
     <string name="transport_cellular">모바일 데이터</string>

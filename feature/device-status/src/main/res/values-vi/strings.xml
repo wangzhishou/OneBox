@@ -157,6 +157,7 @@
     <string name="status_footnote">Tên Wi-Fi, địa chỉ bộ định tuyến và SIM khác cần quyền vị trí hoặc điện thoại. Trang này không yêu cầu các quyền đó.</string>
     <string name="status_loading">Đang đọc…</string>
     <string name="status_no_ip">Không có địa chỉ IP khả dụng</string>
+    <string name="section_address">Địa chỉ cục bộ</string>
     <string name="status_refresh">Làm mới</string>
     <string name="transport_bluetooth">Bluetooth</string>
     <string name="transport_cellular">Dữ liệu di động</string>

@@ -22,6 +22,7 @@
     <string name="status_loading">正在读取…</string>
     <string name="status_refresh">刷新</string>
     <string name="status_no_ip">没有可用的 IP 地址</string>
+    <string name="section_address">本机地址</string>
     <string name="section_network_node">网络节点</string>
     <string name="label_public_ip">公网 IP</string>
     <string name="label_public_location">网络归属</string>

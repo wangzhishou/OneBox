@@ -157,6 +157,7 @@
     <string name="status_footnote">اسم Wi-Fi وعنوان الموجّه وبطاقة SIM أخرى تتطلب إذن الموقع أو الهاتف. هذه الصفحة لا تطلب هذه الأذونات.</string>
     <string name="status_loading">جارٍ القراءة…</string>
     <string name="status_no_ip">لا يوجد عنوان IP متاح</string>
+    <string name="section_address">العنوان المحلي</string>
     <string name="status_refresh">تحديث</string>
     <string name="transport_bluetooth">Bluetooth</string>
     <string name="transport_cellular">بيانات الجوال</string>
