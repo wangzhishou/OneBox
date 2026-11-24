@@ -1,0 +1,4 @@
+<resources>
+    <string name="editor_history_empty">Bu işlem için henüz sonuç yok</string>
+    <string name="editor_history_load_failed">Geçmiş yüklenemedi</string>
+</resources>

@@ -10,4 +10,9 @@
     <string name="prompt_ai_failed">未能生成建议，请重试。</string>
     <string name="prompt_ai_protected">建议改动了变量或代码块，已保留原文。</string>
     <string name="prompt_ai_stale">原文已改动，请重新生成建议。</string>
+    <string name="prompt_input_settings">输入设置</string>
+    <string name="prompt_templates_label">模板变量（JSON，可选）</string>
+    <string name="prompt_manual_hint">直接编写系统提示词，需要时也可让 AI 起草。</string>
+    <string name="prompt_ai_requirement_optional">修改要求（可选）</string>
+    <string name="prompt_ai_applied_undo">已采用建议，可撤销恢复原文。</string>
 </resources>

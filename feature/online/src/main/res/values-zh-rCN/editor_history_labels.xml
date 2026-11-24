@@ -1,0 +1,4 @@
+<resources>
+    <string name="editor_history_empty">此操作还没有生成记录</string>
+    <string name="editor_history_load_failed">无法加载历史记录</string>
+</resources>

@@ -59,7 +59,7 @@ fun AIUsageBar(
     // 图标/计数的前景色由容器色系决定：中性卡片传 onSurfaceVariant，
     // 彩色卡片（AI 互聊里 primaryContainer 那一侧）传 onPrimaryContainer，否则图标会糊在底上
     contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-    onDelete: (String) -> Unit = {},
+    onDelete: ((String) -> Unit)? = {},
     reGenerate: () -> Unit = {},
     onShare: (String) -> Unit = {},
     onNoteAdd: () -> Unit = {},
@@ -104,15 +104,15 @@ fun AIUsageBar(
             contentColor = contentColor,
             onClick = onCreateCard
         )
-        Spacer(modifier = Modifier.width(AppTheme.dimens.spaceSmall))
-        ActionButton(
-            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
-            contentDescription = "",
-            contentColor = contentColor,
-            onClick = {
-                showDeleteDialog.value = true
-            }
-        )
+        if (onDelete != null) {
+            Spacer(modifier = Modifier.width(AppTheme.dimens.spaceSmall))
+            ActionButton(
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
+                contentDescription = "",
+                contentColor = contentColor,
+                onClick = { showDeleteDialog.value = true },
+            )
+        }
         onReport?.let { report ->
             Spacer(modifier = Modifier.width(AppTheme.dimens.spaceSmall))
             ActionButton(
@@ -154,7 +154,7 @@ fun AIUsageBar(
             }
         )
     }
-    if (showDeleteDialog.value) {
+    if (showDeleteDialog.value && onDelete != null) {
         DeleteConfirmDialog(
             showDeleteDialogState = showDeleteDialog,
             onDelete = {

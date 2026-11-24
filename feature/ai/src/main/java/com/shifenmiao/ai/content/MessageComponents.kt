@@ -453,11 +453,11 @@ fun RobotMessageFooter(
             ),
             message = robotContainerFooter.messageEntity,
             showTokens = chatUIState.showTokens && robotContainerFooter.showTokens,
-            onDelete = aiChatComponent::deleteMessage,
+            onDelete = if (messageEntity.entryType.isEditor) null else aiChatComponent::deleteMessage,
             reGenerate = {
                 aiChatComponent.reGenerateMessage(robotContainerFooter.messageEntity.completionId)
             },
-            isShowReGenerate = !robotContainerFooter.messageEntity.expired,
+            isShowReGenerate = !messageEntity.entryType.isEditor && !messageEntity.expired,
             onShare = {
                 // 显示导出加载对话框
                 isExporting = true

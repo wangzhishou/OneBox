@@ -34,7 +34,6 @@ import com.shifenmiao.ai.component.AgentComponent
 import com.shifenmiao.ai.component.AgentDetailComponent
 import com.shifenmiao.ai.component.AgentJsonEditorComponent
 import com.shifenmiao.ai.component.CreateAIAgentComponent
-import com.shifenmiao.ai.component.CreateAIPromptComponent
 import com.shifenmiao.ai.component.TokenUsageComponent
 import com.shifenmiao.ai.image.controllers.AIImageComponent
 import com.shifenmiao.common.components.category.ReorderableComponent
@@ -235,7 +234,7 @@ class ChildProvider @Inject constructor(
 
             is Screen.Prompt, is Screen.EditPrompt -> Screen.NewApp(HomeTabKey.PROMPT)
 
-            is Screen.CreateAIChatPrompt -> if (config.draftId == 0L) Screen.EditPromptItem() else config
+            is Screen.CreateAIChatPrompt -> Screen.EditPromptItem(draftId = config.draftId)
 
             is Screen.Settings -> Screen.Profile()
 
@@ -1415,16 +1414,6 @@ class ChildProvider @Inject constructor(
                 ::navigateBack,
                 ::navigateTo,
                 ::navigateReplacingCurrent,
-            )
-        )
-
-        is Screen.CreateAIChatPrompt -> NavigationChild.CreateAIChatPrompt(
-            createAIPromptComponent = aiFactories.get().createAIPromptComponentFactory(
-                componentContext = componentContext,
-                initialDraftId = config.draftId,
-                onGoBack = ::navigateBack,
-                onNavigate = ::navigateTo,
-                onNavigateReplacingCurrent = ::navigateReplacingCurrent,
             )
         )
 

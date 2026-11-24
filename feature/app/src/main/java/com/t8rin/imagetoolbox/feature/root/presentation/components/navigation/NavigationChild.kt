@@ -35,7 +35,6 @@ import com.shifenmiao.ai.component.AgentComponent
 import com.shifenmiao.ai.component.AgentDetailComponent
 import com.shifenmiao.ai.component.AgentJsonEditorComponent
 import com.shifenmiao.ai.component.CreateAIAgentComponent
-import com.shifenmiao.ai.component.CreateAIPromptComponent
 import com.shifenmiao.ai.component.TokenUsageComponent
 import com.shifenmiao.ai.image.controllers.AIImageComponent
 import com.shifenmiao.ai.image.screen.AIGCImageScreen
@@ -45,7 +44,6 @@ import com.shifenmiao.ai.screen.AgentDetailScreen
 import com.shifenmiao.ai.screen.AgentScreen
 import com.shifenmiao.ai.screen.AgentJsonEditorScreen
 import com.shifenmiao.ai.screen.CreateAIAgentScreen
-import com.shifenmiao.ai.screen.CreateAIPromptScreen
 import com.shifenmiao.ai.screen.TokenUsageScreen
 import com.shifenmiao.common.components.category.ReorderableComponent
 import com.shifenmiao.common.components.category.ReorderableScreen
@@ -1471,15 +1469,6 @@ sealed interface NavigationChild {
         @Composable
         override fun Content() {
             CreateAIAgentScreen(component = createAIAgentComponent)
-        }
-    }
-
-    class CreateAIChatPrompt(
-        val createAIPromptComponent: CreateAIPromptComponent
-    ) : NavigationChild {
-        @Composable
-        override fun Content() {
-            CreateAIPromptScreen(component = createAIPromptComponent)
         }
     }
 

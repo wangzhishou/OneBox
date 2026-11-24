@@ -19,6 +19,9 @@
 
 package com.shifenmiao.online.component
 
+import com.shifenmiao.database.ai.EditorConversationRepository
+import com.shifenmiao.model.ai.AIConversationEntryType
+
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.shifenmiao.base.longtask.LongTaskCenter
@@ -73,6 +76,7 @@ class CreateNoteComponent @AssistedInject internal constructor(
     dispatchersHolder: DispatchersHolder,
     appDatabase: AppDatabase,
     private val noteService: NoteService,
+    private val editorHistory: EditorConversationRepository,
     private val dataDraftHelper: DataDraftHelper,
     private val aiPromptExecutor: AIPromptExecutor,
     private val aiEngineManager: AIEngineManager,
@@ -232,6 +236,13 @@ class CreateNoteComponent @AssistedInject internal constructor(
      * 执行一次 AI 写作。请求包在 [LongTaskCenter] 里跑，退后台时进程仍有前台服务兜底，
      * 流式结果会持续写进 [aiState]，回到前台能直接看到。
      */
+    suspend fun recentAiResults(action: NoteAiAction) =
+        editorHistory.recent(AIConversationEntryType.NOTE_EDIT, action.name)
+
+    fun selectAiResult(result: String) {
+        _aiState.update { if (it.isGenerating) it else it.copy(result = cleanAiMarkdown(result), error = null, tokens = 0) }
+    }
+
     fun runAiGeneration() {
         val state = _aiState.value
         if (state.isGenerating) return
@@ -272,12 +283,13 @@ class CreateNoteComponent @AssistedInject internal constructor(
                     input = input,
                     systemPrompt = AppContext.getString(OnlineR.string.note_ai_system_prompt),
                     billingDesc = AppContext.getString(OnlineR.string.note_ai_billing_desc),
-                    editorCall = AIPromptExecutor.EditorCall("note", state.action.name),
+                    editorCall = AIPromptExecutor.EditorCall(
+                        AIConversationEntryType.NOTE_EDIT, state.action.name, AppContext.getString(state.action.labelRes),
+                    ),
                     onDelta = { full ->
                         _aiState.update { it.copy(result = cleanAiMarkdown(full)) }
                     },
                 )
-                // 用户点「停止」时 executeStreaming 会吞掉取消异常并返回失败结果，这里直接丢弃。
                 if (!isActive) return@launch
                 if (result.isSuccess) {
                     val cleaned = cleanAiMarkdown(result.content)
@@ -426,7 +438,10 @@ class CreateNoteComponent @AssistedInject internal constructor(
             input = input,
             systemPrompt = systemPrompt,
             billingDesc = AppContext.getString(com.shifenmiao.common.R.string.note_ai_generate),
-            editorCall = AIPromptExecutor.EditorCall("note", "Metadata"),
+            editorCall = AIPromptExecutor.EditorCall(
+                AIConversationEntryType.NOTE_EDIT, "Metadata",
+                AppContext.getString(com.shifenmiao.common.R.string.note_ai_generate),
+            ),
         )
         if (!result.isSuccess) {
             return@withContext NoteMetadata(

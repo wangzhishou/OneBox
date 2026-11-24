@@ -9,4 +9,9 @@
     <string name="prompt_ai_failed">सुझाव नहीं बन सका। फिर कोशिश करें।</string>
     <string name="prompt_ai_protected">सुझाव में कोई वैरिएबल या कोड ब्लॉक बदल गया। मूल टेक्स्ट रखा गया है।</string>
     <string name="prompt_ai_stale">मूल टेक्स्ट बदल गया है। नया सुझाव बनाएँ।</string>
+    <string name="prompt_input_settings">इनपुट सेटिंग</string>
+    <string name="prompt_templates_label">टेम्पलेट वेरिएबल (JSON, वैकल्पिक)</string>
+    <string name="prompt_manual_hint">सिस्टम प्रॉम्प्ट सीधे लिखें, या ज़रूरत होने पर AI से मसौदा तैयार करवाएँ।</string>
+    <string name="prompt_ai_requirement_optional">संपादन अनुरोध (वैकल्पिक)</string>
+    <string name="prompt_ai_applied_undo">सुझाव लागू किया गया। पिछला टेक्स्ट बहाल करने के लिए पूर्ववत करें।</string>
 </resources>

@@ -6,15 +6,15 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * You should have received a copy of the Apache License
- * along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
  */
 
 package com.shifenmiao.online.screen
@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -42,20 +41,26 @@ import com.shifenmiao.common.editor.NativeMarkdownEditor
 import com.shifenmiao.common.editor.rememberNativeMarkdownEditorState
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
+import com.shifenmiao.common.ui.CreationMetaConfigSheet
 import com.shifenmiao.core.R
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.ai.Conversation
-import com.shifenmiao.online.component.EditPromptComponent
+import com.shifenmiao.model.ai.event.MainClickEvent
+import com.shifenmiao.model.ai.event.MainClickEventFrom
+import com.shifenmiao.model.ai.event.MainShowType
+import com.shifenmiao.model.event.AppEventBus
 import com.shifenmiao.online.R as OnlineR
+import com.shifenmiao.online.component.EditPromptComponent
+import com.shifenmiao.online.service.PromptRewriteAction
 import com.shifenmiao.online.ui.ContentSaveConfirmDialog
 import com.shifenmiao.online.ui.PromptRewriteSheet
-import com.shifenmiao.online.service.PromptRewriteAction
 import com.t8rin.imagetoolbox.core.resources.Icons as BoxIcons
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAddAiChat
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFormatLineSpacing
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineShortText
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineTune
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineVisibility
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.wanbaohe.com.string.MarkdownSummary
@@ -63,20 +68,21 @@ import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.dialogs.ExitWithoutSavingDialog
-import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBarType
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBarType
 import com.wanbaohe.icons.LineEditorIcons
 import kotlinx.coroutines.launch
 
 @Composable
 fun EditPromptScreen(
     editPromptComponent: EditPromptComponent,
-    appComponent: AppComponent
+    appComponent: AppComponent,
 ) {
     val uiState by editPromptComponent.uiState.collectAsState()
     val rewrite by editPromptComponent.rewrite.collectAsState()
     val engine by editPromptComponent.rewriteEngine.collectAsState()
     val categories by editPromptComponent.categories.collectAsState()
+    val availableTools by editPromptComponent.availableTools.collectAsState()
     val settings = LocalSettingsState.current
     val showExitDialog = rememberSaveable { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
@@ -84,12 +90,10 @@ fun EditPromptScreen(
     val onNavigate = LocalOnNavigate.current
     var pendingMarkdown by remember { mutableStateOf<String?>(null) }
     var isPreparing by remember { mutableStateOf(false) }
-    var draftTitle by rememberSaveable { mutableStateOf<String?>(null) }
-    var draftDescription by rememberSaveable { mutableStateOf<String?>(null) }
-    var selectedCategoryIds by rememberSaveable { mutableStateOf<IntArray?>(null) }
+    var showMoreMenu by remember { mutableStateOf(false) }
+    var showConfigSheet by rememberSaveable { mutableStateOf(false) }
 
     val editorState = rememberNativeMarkdownEditorState(uiState.data)
-    var showMoreMenu by remember { mutableStateOf(false) }
     val autoFocusBody = !uiState.isLoading &&
         !uiState.isEditing &&
         !uiState.isDirty &&
@@ -100,22 +104,19 @@ fun EditPromptScreen(
     val onBack = {
         if (uiState.isSaving || isPreparing) {
             Unit
-        } else if (
-            settings.enableToolExitConfirmation &&
-            (uiState.isDirty || draftTitle != null || draftDescription != null || selectedCategoryIds != null)
-        ) {
+        } else if (settings.enableToolExitConfirmation && uiState.isDirty) {
             showExitDialog.value = true
         } else {
             appComponent.onGoBack()
         }
     }
 
-    // 当数据加载完成时，设置初始内容（内容没变时 load 不会重置撤销栈与光标）
     LaunchedEffect(uiState.data) {
         if (uiState.data.isNotEmpty()) {
             editorState.load(uiState.data)
         }
     }
+
     fun openSaveConfirm() {
         if (isPreparing || uiState.isLoading || uiState.isSaving) return
         focusManager.clearFocus(force = true)
@@ -127,10 +128,25 @@ fun EditPromptScreen(
                     AppToastHost.showToast(AppContext.getString(R.string.error_data_empty))
                     return@launch
                 }
+                val suggested = MarkdownSummary.derive(markdown)
+                if (uiState.title.isBlank()) editPromptComponent.updateTitle(suggested.title)
+                if (uiState.description.isBlank()) {
+                    editPromptComponent.updateDescription(suggested.description)
+                }
                 pendingMarkdown = markdown
             } finally {
                 isPreparing = false
             }
+        }
+    }
+
+    fun openAiAction(action: PromptRewriteAction) {
+        focusManager.clearFocus()
+        scope.launch {
+            val original = editorState.exportMarkdown()
+            val effectiveAction = if (original.isBlank()) PromptRewriteAction.Create else action
+            if (effectiveAction == PromptRewriteAction.Create && original.isNotBlank()) return@launch
+            editPromptComponent.openRewrite(effectiveAction, original)
         }
     }
 
@@ -139,18 +155,27 @@ fun EditPromptScreen(
         scope.launch {
             val body = editorState.exportMarkdown()
             if (body.isBlank()) return@launch
-            onNavigate(Screen.AiChatScreen(Conversation(
-                entryType = AIConversationEntryType.PROMPT,
-                appTitle = draftTitle?.takeIf { it.isNotBlank() }
-                    ?: uiState.title.ifBlank { AppContext.getString(R.string.create_ai_chat_prompt_preview_default_title) },
-                prompt = body,
-                placeholder = uiState.placeholder,
-            )))
+            onNavigate(
+                Screen.AiChatScreen(
+                    Conversation(
+                        entryType = AIConversationEntryType.PROMPT,
+                        appTitle = uiState.title.ifBlank { AppContext.getString(R.string.prompt_create) },
+                        prompt = body,
+                        placeholder = uiState.placeholder,
+                    )
+                )
+            )
         }
     }
 
     BaseScreen(
-        title = {},
+        title = {
+            Text(
+                stringResource(
+                    if (uiState.isEditing) R.string.edit_prompt else R.string.ai_prompt_picker_create
+                )
+            )
+        },
         type = EnhancedTopAppBarType.Normal,
         onGoBack = onBack,
         actions = {
@@ -161,7 +186,6 @@ fun EditPromptScreen(
                 Icon(
                     imageVector = LineEditorIcons.Save,
                     contentDescription = stringResource(com.shifenmiao.common.R.string.common_save),
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
             }
             Box {
@@ -188,6 +212,14 @@ fun EditPromptScreen(
                             },
                         )
                     }
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.create_ai_chat_prompt_config_title)) },
+                        leadingIcon = { Icon(BoxIcons.Outlined.LineTune, contentDescription = null) },
+                        onClick = {
+                            showMoreMenu = false
+                            showConfigSheet = true
+                        },
+                    )
                     PromptRewriteAction.entries.filter { action ->
                         (action == PromptRewriteAction.Create) == editorState.isEmpty
                     }.forEach { action ->
@@ -206,13 +238,7 @@ fun EditPromptScreen(
                             },
                             onClick = {
                                 showMoreMenu = false
-                                focusManager.clearFocus()
-                                scope.launch {
-                                    val original = editorState.exportMarkdown()
-                                    if ((action == PromptRewriteAction.Create) == original.isBlank()) {
-                                        editPromptComponent.openRewrite(action, original)
-                                    }
-                                }
+                                openAiAction(action)
                             },
                         )
                     }
@@ -239,6 +265,16 @@ fun EditPromptScreen(
             onGenerate = editPromptComponent::generateRewrite,
             onStop = editPromptComponent::stopRewrite,
             onDismiss = editPromptComponent::closeRewrite,
+            onGetPoints = {
+                AppEventBus.emit(
+                    MainClickEvent(
+                        from = MainClickEventFrom.AI_PROMPT_CREATE,
+                        type = MainShowType.BUY_COFFEE,
+                    )
+                )
+            },
+            loadHistory = { editPromptComponent.recentRewriteResults(state.action) },
+            onHistorySelected = editPromptComponent::selectRewriteResult,
             onApply = {
                 scope.launch {
                     if (!state.running && editorState.exportMarkdown() == state.original &&
@@ -247,6 +283,7 @@ fun EditPromptScreen(
                         editorState.load(state.candidate, keepHistory = true)
                         editPromptComponent.markAsDirty()
                         editPromptComponent.closeRewrite()
+                        AppToastHost.showToast(OnlineR.string.prompt_ai_applied_undo)
                     } else {
                         AppToastHost.showToast(OnlineR.string.prompt_ai_stale)
                     }
@@ -255,32 +292,57 @@ fun EditPromptScreen(
         )
     }
 
+    if (showConfigSheet) {
+        CreationMetaConfigSheet(
+            title = stringResource(R.string.create_ai_chat_prompt_config_title),
+            categories = categories,
+            selectedCategoryIds = uiState.selectedCategoryIds,
+            availableTools = availableTools,
+            selectedToolNames = uiState.selectedToolNames,
+            categoryHint = "",
+            toolTitle = stringResource(R.string.create_ai_chat_prompt_select_tool),
+            toolEmptyHint = stringResource(R.string.create_ai_common_tools_empty),
+            toolSelectedHint = {
+                AppContext.getContext().getString(R.string.creation_meta_selected_tool_count, it)
+            },
+            confirmText = stringResource(R.string.create_ai_chat_prompt_apply_config),
+            onDismiss = { showConfigSheet = false },
+            onAddCategory = { name ->
+                editPromptComponent.addCategory(name) { id ->
+                    editPromptComponent.updateSelectedCategoryIds(uiState.selectedCategoryIds + id)
+                }
+            },
+            onConfirm = { selectedCategoryIds, selectedToolNames ->
+                editPromptComponent.updateAdvancedConfiguration(selectedCategoryIds, selectedToolNames)
+                showConfigSheet = false
+            },
+        )
+    }
+
     val markdown = pendingMarkdown
     if (markdown != null) {
-        val suggested = remember(markdown) { MarkdownSummary.derive(markdown) }
-        val title = draftTitle ?: uiState.title.ifBlank { suggested.title }
-        val description = draftDescription ?: uiState.description.ifBlank { suggested.description }
-        val selected = selectedCategoryIds?.toSet() ?: uiState.selectedCategories.map { it.id }.toSet()
+        val selected = uiState.selectedCategoryIds
         ContentSaveConfirmDialog(
             visible = true,
             dialogTitle = stringResource(OnlineR.string.prompt_save_confirm_title),
             dialogIcon = LineEditorIcons.Save,
-            title = title,
-            description = description,
+            title = uiState.title,
+            description = uiState.description,
             categories = categories,
             selectedCategoryIds = selected,
             isSaving = uiState.isSaving,
-            onTitleChange = { draftTitle = it },
-            onDescriptionChange = { draftDescription = it },
+            onTitleChange = editPromptComponent::updateTitle,
+            onDescriptionChange = editPromptComponent::updateDescription,
             onToggleCategory = { category ->
-                selectedCategoryIds = (if (category.id in selected) selected - category.id else selected + category.id)
-                    .toIntArray()
+                editPromptComponent.updateSelectedCategoryIds(
+                    if (category.id in selected) selected - category.id else selected + category.id
+                )
             },
             onConfirm = {
                 editPromptComponent.savePromptData(
                     markdown = markdown,
-                    title = title.trim(),
-                    description = description.trim(),
+                    title = uiState.title.trim(),
+                    description = uiState.description.trim(),
                     selectedCategoryIds = selected,
                     onSuccess = {
                         pendingMarkdown = null
@@ -293,8 +355,7 @@ fun EditPromptScreen(
             onDismiss = { pendingMarkdown = null },
             onCreateCategory = { name ->
                 editPromptComponent.addCategory(name) { id ->
-                    val ids = selectedCategoryIds?.toSet() ?: uiState.selectedCategories.map { it.id }.toSet()
-                    selectedCategoryIds = (ids + id).toIntArray()
+                    editPromptComponent.updateSelectedCategoryIds(uiState.selectedCategoryIds + id)
                 }
             },
             onManageCategories = {
@@ -305,10 +366,8 @@ fun EditPromptScreen(
     }
 
     ExitWithoutSavingDialog(
-        onExit = {
-            appComponent.onGoBack()
-        },
+        onExit = appComponent.onGoBack,
         onDismiss = { showExitDialog.value = false },
-        visible = showExitDialog.value
+        visible = showExitDialog.value,
     )
 }

@@ -37,7 +37,7 @@ import javax.inject.Inject
 /**
  * 提示词创建工具 — 根据需求描述用 AI 生成并保存一条本地提示词
  *
- * 复用创建提示词页的底层服务 [PromptCreationService.createAndSaveFromRequirement]:
+ * 复用提示词生成服务 [PromptCreationService.createAndSaveFromRequirement]:
  * 一次性 AI 调用生成完整提示词模板（标题/说明/系统提示词/占位提示）→ 写入本地 Room
  * （item + prompt + 分类关联，自动置顶），与人工创建页面保存的数据结构完全一致。
  */

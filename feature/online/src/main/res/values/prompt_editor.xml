@@ -10,4 +10,9 @@
     <string name="prompt_ai_failed">Could not generate a suggestion. Try again.</string>
     <string name="prompt_ai_protected">The suggestion changed a variable or code block. Your text was kept.</string>
     <string name="prompt_ai_stale">The original text changed. Generate a new suggestion.</string>
+    <string name="prompt_input_settings">Input settings</string>
+    <string name="prompt_templates_label">Template variables (JSON, optional)</string>
+    <string name="prompt_manual_hint">Write the system prompt directly, or let AI draft it when needed.</string>
+    <string name="prompt_ai_requirement_optional">Editing request (optional)</string>
+    <string name="prompt_ai_applied_undo">Suggestion applied. Undo to restore the previous text.</string>
 </resources>

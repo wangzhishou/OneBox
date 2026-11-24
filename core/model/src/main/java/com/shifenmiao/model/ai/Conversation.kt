@@ -35,7 +35,12 @@ enum class AIConversationEntryType {
     AGENT,
     STREAM_QA,
     QA,
-    DUEL
+    DUEL,
+    NOTE_EDIT,
+    PROMPT_EDIT;
+
+    val isEditor: Boolean
+        get() = this == NOTE_EDIT || this == PROMPT_EDIT
 }
 
 @Serializable
@@ -87,6 +92,8 @@ data class Conversation(
     fun miniAppTitle(): String {
         return when (entryType) {
             AIConversationEntryType.PROMPT,
+            AIConversationEntryType.NOTE_EDIT,
+            AIConversationEntryType.PROMPT_EDIT,
             AIConversationEntryType.AGENT -> appTitle.ifBlank { title }
 
             AIConversationEntryType.DUEL -> appTitle.ifBlank {
@@ -104,4 +111,3 @@ data class Conversation(
         }
     }
 }
-

@@ -9,4 +9,9 @@
     <string name="prompt_ai_failed">제안을 만들지 못했습니다. 다시 시도해 주세요.</string>
     <string name="prompt_ai_protected">제안이 변수나 코드 블록을 변경해 원문을 유지했습니다.</string>
     <string name="prompt_ai_stale">원문이 변경되었습니다. 새 제안을 생성해 주세요.</string>
+    <string name="prompt_input_settings">입력 설정</string>
+    <string name="prompt_templates_label">템플릿 변수(JSON, 선택 사항)</string>
+    <string name="prompt_manual_hint">시스템 프롬프트를 직접 작성하거나 필요할 때 AI에 초안 작성을 맡기세요.</string>
+    <string name="prompt_ai_requirement_optional">수정 요청(선택 사항)</string>
+    <string name="prompt_ai_applied_undo">제안을 적용했습니다. 실행 취소하면 이전 텍스트로 복원됩니다.</string>
 </resources>

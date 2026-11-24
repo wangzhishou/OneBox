@@ -480,6 +480,8 @@ fun CreateNoteScreen(
         onApply = ::applyAiResult,
         canUndo = aiUndoMarkdown != null,
         onUndo = ::undoAiApply,
+        loadHistory = { createNoteComponent.recentAiResults(aiState.action) },
+        onHistorySelected = createNoteComponent::selectAiResult,
     )
 }
 

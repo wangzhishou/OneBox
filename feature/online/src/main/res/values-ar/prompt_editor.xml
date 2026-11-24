@@ -9,4 +9,9 @@
     <string name="prompt_ai_failed">تعذّر إنشاء اقتراح. حاول مجددًا.</string>
     <string name="prompt_ai_protected">غيّر الاقتراح متغيرًا أو كتلة رمز. احتُفظ بالنص الأصلي.</string>
     <string name="prompt_ai_stale">تغيّر النص الأصلي. أنشئ اقتراحًا جديدًا.</string>
+    <string name="prompt_input_settings">إعدادات الإدخال</string>
+    <string name="prompt_templates_label">متغيرات القالب (JSON، اختيارية)</string>
+    <string name="prompt_manual_hint">اكتب موجه النظام مباشرة، أو دع الذكاء الاصطناعي يعد مسودته عند الحاجة.</string>
+    <string name="prompt_ai_requirement_optional">طلب التعديل (اختياري)</string>
+    <string name="prompt_ai_applied_undo">تم تطبيق الاقتراح. يمكنك التراجع لاستعادة النص السابق.</string>
 </resources>

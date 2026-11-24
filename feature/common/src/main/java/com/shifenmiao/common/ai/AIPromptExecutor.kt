@@ -28,6 +28,8 @@ import com.shifenmiao.base.utils.StringUtils
 import com.shifenmiao.core.R
 import com.shifenmiao.database.ai.EditorAiUsage
 import com.shifenmiao.database.ai.EditorAiUsageRepository
+import com.shifenmiao.database.ai.EditorConversationRepository
+import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.storage.TokenStorage
 import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.model.ai.AiRequestProtocol
@@ -78,6 +80,7 @@ class AIPromptExecutor @Inject constructor(
     private val ownProxyAIService: OwnProxyAIService,
     private val promptClient: AIPromptClient,
     private val editorUsage: EditorAiUsageRepository,
+    private val editorHistory: EditorConversationRepository,
     dispatchersHolder: DispatchersHolder,
 ) : DispatchersHolder by dispatchersHolder {
 
@@ -99,25 +102,35 @@ class AIPromptExecutor @Inject constructor(
      */
     enum class PromptBilling { MANAGED, EXTERNAL }
 
-    data class EditorCall(val source: String, val action: String)
+    data class EditorCall(val type: AIConversationEntryType, val action: String, val title: String)
 
     private class EditorAttempt(val call: EditorCall, val engine: AiEngine) {
         val id = UUID.randomUUID().toString()
         val timestamp = System.currentTimeMillis()
         var usage: Usage? = null
         var dispatched = false
-        var success = false
+        var output = ""
     }
 
-    private suspend fun EditorAttempt.finish() {
+    private suspend fun EditorAttempt.finish(input: String) {
         if (!dispatched) return
-        val status = if (!currentCoroutineContext().isActive) "stopped" else if (success) "success" else "failed"
-        withContext(NonCancellable) {
-            editorUsage.record(EditorAiUsage(
-                id, call.source, call.action, engine.name, engine.model.name, timestamp, status,
+        val status = if (!currentCoroutineContext().isActive) "stopped" else if (output.isNotBlank()) "success" else "failed"
+        withContext(NonCancellable + ioDispatcher) {
+            val entry = EditorAiUsage(
+                id, if (call.type == AIConversationEntryType.NOTE_EDIT) "note" else "prompt",
+                call.action, engine.name, engine.model.name, timestamp, status,
                 usage?.totalTokens?.takeIf { it > 0 }, usage?.promptTokens?.takeIf { it > 0 },
                 usage?.completionTokens?.takeIf { it > 0 },
-            ))
+            )
+            if (status == "success") {
+                try {
+                    editorHistory.save(call.type, call.title, engine, entry, input, output)
+                    return@withContext
+                } catch (e: Exception) {
+                    makeLog { "AIPromptExecutor: editor history save failed: ${e.javaClass.simpleName}" }
+                }
+            }
+            editorUsage.record(entry)
         }
     }
 
@@ -199,7 +212,16 @@ class AIPromptExecutor @Inject constructor(
             }
 
             val content = chunk.choices.firstOrNull()?.message?.content.orEmpty()
-            attempt?.success = content.isNotBlank()
+            if (content.isBlank()) {
+                return AIPromptResult(
+                    content = "",
+                    isSuccess = false,
+                    errorMessage = getString(R.string.create_ai_chat_prompt_error_no_response),
+                    engineName = engine.name,
+                    modelName = engine.model.name,
+                )
+            }
+            attempt?.output = content
             AIPromptResult(
                 content = content,
                 isSuccess = true,
@@ -219,7 +241,7 @@ class AIPromptExecutor @Inject constructor(
                 modelName = engine.model.name,
             )
         } finally {
-            attempt?.finish()
+            attempt?.finish(input)
         }
     }
 
@@ -333,6 +355,7 @@ class AIPromptExecutor @Inject constructor(
                 val reasoning = StringBuilder()
                 var totalTokens = 0
                 var errorMessage: String? = null
+                var reachedTerminal = false
                 try {
                     attempt?.dispatched = true
                     val response = call.execute()
@@ -353,7 +376,10 @@ class AIPromptExecutor @Inject constructor(
                                     if (!trimmed.startsWith("data:")) continue
                                     val payload = trimmed.substring("data:".length).trim()
                                     if (payload.isEmpty()) continue
-                                    if (payload.equals("[DONE]", ignoreCase = true)) break
+                                    if (payload.equals("[DONE]", ignoreCase = true)) {
+                                        reachedTerminal = true
+                                        break
+                                    }
                                     val chunk = try {
                                         AppJson.decodeFromString<ChatCompletionChunk>(payload)
                                     } catch (e: Exception) {
@@ -370,6 +396,9 @@ class AIPromptExecutor @Inject constructor(
                                     chunk.usage?.takeIf { it.totalTokens > 0 }
                                         ?.let { totalTokens = it.totalTokens }
                                     val choice = chunk.choices.firstOrNull()
+                                    if (chunk.isEnd || !choice?.finishReason.isNullOrBlank()) {
+                                        reachedTerminal = true
+                                    }
                                     val reasoningDelta = choice?.delta?.reasoningContent?.takeIf { it.isNotEmpty() }
                                         ?: choice?.message?.reasoningContent
                                             ?.takeIf { choice.delta == null && it.isNotEmpty() }
@@ -392,6 +421,13 @@ class AIPromptExecutor @Inject constructor(
                     runCatching { call.cancel() }
                 }
 
+                if (errorMessage == null) {
+                    errorMessage = when {
+                        content.isBlank() -> getString(R.string.create_ai_chat_prompt_error_no_response)
+                        !reachedTerminal -> getString(R.string.create_ai_chat_prompt_error_incomplete)
+                        else -> null
+                    }
+                }
                 if (errorMessage != null) {
                     AIPromptResult(
                         content = "",
@@ -401,7 +437,7 @@ class AIPromptExecutor @Inject constructor(
                         modelName = engine.model.name,
                     )
                 } else {
-                    attempt?.success = content.isNotBlank()
+                    attempt?.output = content.toString()
                     AIPromptResult(
                         content = content.toString(),
                         isSuccess = true,
@@ -413,6 +449,7 @@ class AIPromptExecutor @Inject constructor(
                 }
             }
         } catch (t: Throwable) {
+            currentCoroutineContext().ensureActive()
             makeLog { "AIPromptExecutor: Stream request failed: ${t.message}" }
             AIPromptResult(
                 content = "",
@@ -422,7 +459,7 @@ class AIPromptExecutor @Inject constructor(
                 modelName = engine.model.name,
             )
         } finally {
-            attempt?.finish()
+            attempt?.finish(input)
         }
     }
 
@@ -460,7 +497,7 @@ class AIPromptExecutor @Inject constructor(
         desc: String,
     ) {
         if (billing == PromptBilling.EXTERNAL) return
-        if (!result.isSuccess) return
+        if (!result.isSuccess || result.content.isBlank()) return
         if (!AiRequestUrlResolver.shouldUseProxyRequest(engine)) return
         val tokens = result.totalTokens.takeIf { it > 0 }
             ?: (StringUtils.calculateTokens(input) + StringUtils.calculateTokens(result.content))

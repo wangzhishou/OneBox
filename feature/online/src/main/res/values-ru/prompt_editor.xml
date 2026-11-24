@@ -9,4 +9,9 @@
     <string name="prompt_ai_failed">Не удалось создать вариант. Повторите попытку.</string>
     <string name="prompt_ai_protected">Вариант изменил переменную или блок кода. Исходный текст сохранён.</string>
     <string name="prompt_ai_stale">Исходный текст изменился. Создайте новый вариант.</string>
+    <string name="prompt_input_settings">Настройки ввода</string>
+    <string name="prompt_templates_label">Переменные шаблона (JSON, необязательно)</string>
+    <string name="prompt_manual_hint">Напишите системный промпт самостоятельно или при необходимости позвольте ИИ подготовить черновик.</string>
+    <string name="prompt_ai_requirement_optional">Запрос на изменение (необязательно)</string>
+    <string name="prompt_ai_applied_undo">Предложение применено. Отмените действие, чтобы восстановить прежний текст.</string>
 </resources>

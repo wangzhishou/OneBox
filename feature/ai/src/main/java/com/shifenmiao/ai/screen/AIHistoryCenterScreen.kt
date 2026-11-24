@@ -20,7 +20,6 @@
 package com.shifenmiao.ai.screen
 
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,16 +29,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -59,7 +59,6 @@ import com.shifenmiao.ai.component.AIHistoryCenterComponent
 import com.shifenmiao.ai.model.AIHistoryItem
 import com.shifenmiao.ai.ui.AiBottomSheetSearchField
 import com.wanbaohe.base.ui.ConfirmDialog
-import com.wanbaohe.base.ui.loading.EmptyBox
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.ai.EngineFilterChip
@@ -78,11 +77,15 @@ import java.util.Date
 import java.util.Locale
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineInsights
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRename
 
 private val historyCenterDateFormat by lazy {
     SimpleDateFormat("MM-dd HH:mm", Locale.CHINA)
 }
+
+private val historyFilters = listOf(null) +
+    AIConversationEntryType.entries.filterNot { it == AIConversationEntryType.QA }
 
 @Composable
 fun AIHistoryCenterScreen(
@@ -93,8 +96,6 @@ fun AIHistoryCenterScreen(
     val query by component.query.collectAsState()
     val selectedFilter by component.selectedFilter.collectAsState()
     val items by component.items.collectAsState()
-    val editorCalls by component.editorCalls.collectAsState(initial = emptyList())
-    var showEditorCalls by rememberSaveable { mutableStateOf(false) }
     val onNavigate = LocalOnNavigate.current
     var renameTarget by remember { mutableStateOf<AIHistoryItem?>(null) }
     var renameValue by rememberSaveable { mutableStateOf("") }
@@ -115,28 +116,8 @@ fun AIHistoryCenterScreen(
             }
         }
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Row(
-                Modifier.padding(horizontal = AppTheme.dimens.pageHorizontal),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                EngineFilterChip(stringResource(AiR.string.editor_history_chat), !showEditorCalls, onClick = { showEditorCalls = false })
-                EngineFilterChip(stringResource(AiR.string.editor_history_tools), showEditorCalls, onClick = { showEditorCalls = true })
-            }
-            if (showEditorCalls) {
-                if (editorCalls.isEmpty()) EmptyBox(Modifier.fillMaxWidth().padding(top = 48.dp))
-                else LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.contentGap),
-                    contentPadding = PaddingValues(AppTheme.dimens.pageHorizontal),
-                ) {
-                    items(editorCalls, key = { it.id }) { call ->
-                        EditorAiHistoryCard(call)
-                    }
-                }
-            } else {
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
+            Column(Modifier.widthIn(max = 880.dp).fillMaxSize()) {
                 AiBottomSheetSearchField(
                     value = query,
                     onValueChange = component::onQueryChange,
@@ -161,11 +142,23 @@ fun AIHistoryCenterScreen(
 
                     else -> {
                         if (items.isEmpty()) {
-                            EmptyBox(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 48.dp)
-                            )
+                            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                                ) {
+                                    Icon(
+                                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(32.dp),
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    )
+                                    Text(
+                                        text = stringResource(R.string.load_empty_toast),
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    )
+                                }
+                            }
                         } else {
                             LazyColumn(
                                 modifier = Modifier.fillMaxSize(),
@@ -263,22 +256,20 @@ private fun HistoryFilterRow(
     selected: AIConversationEntryType?,
     onSelected: (AIConversationEntryType?) -> Unit,
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .horizontalScroll(rememberScrollState())
-            .padding(horizontal = AppTheme.dimens.pageHorizontal),
-        horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceSmall)
+    val activeFilter = if (selected == AIConversationEntryType.QA) AIConversationEntryType.STREAM_QA else selected
+    val listState = rememberLazyListState(
+        initialFirstVisibleItemIndex = historyFilters.indexOf(activeFilter).coerceAtLeast(0),
+    )
+    LazyRow(
+        state = listState,
+        modifier = Modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(horizontal = AppTheme.dimens.pageHorizontal),
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceSmall),
     ) {
-        EngineFilterChip(
-            text = stringResource(R.string.ai_history_filter_all),
-            isSelected = selected == null,
-            onClick = { onSelected(null) },
-        )
-        AIConversationEntryType.entries.forEach { type ->
+        items(historyFilters, key = { it?.name ?: "all" }) { type ->
             EngineFilterChip(
-                text = type.label(),
-                isSelected = selected == type,
+                text = type?.label() ?: stringResource(R.string.ai_history_filter_all),
+                isSelected = activeFilter == type,
                 onClick = { onSelected(type) },
             )
         }
@@ -411,6 +402,8 @@ private fun AIConversationEntryType.label(): String = when (this) {
     AIConversationEntryType.AGENT -> stringResource(R.string.type_agent)
     AIConversationEntryType.DUEL -> stringResource(R.string.ai_history_filter_duel)
     AIConversationEntryType.ASSISTANT -> stringResource(R.string.ai_history_filter_assistant)
+    AIConversationEntryType.NOTE_EDIT -> stringResource(AiR.string.editor_history_note_edit)
+    AIConversationEntryType.PROMPT_EDIT -> stringResource(AiR.string.editor_history_prompt_edit)
     else -> {
         stringResource(R.string.ai_stream_answer_title)
     }

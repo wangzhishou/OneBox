@@ -144,7 +144,6 @@ private fun FeaturedSection(
                     letterSpacing = 1.sp
                 ),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = AppTheme.dimens.paddingSmall)
             )
             Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
             FeaturedGrid(
@@ -188,7 +187,6 @@ private fun RecentVisitsSection(
                     letterSpacing = 1.sp
                 ),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = AppTheme.dimens.paddingSmall)
             )
             Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
             FeaturedGrid(

@@ -65,6 +65,8 @@ object AIConversationNavigation {
                 conversation = conversation
             )
             AIConversationEntryType.QA,
+            AIConversationEntryType.NOTE_EDIT,
+            AIConversationEntryType.PROMPT_EDIT,
             AIConversationEntryType.STREAM_QA,
             AIConversationEntryType.CHAT,
             AIConversationEntryType.PROMPT,

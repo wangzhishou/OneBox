@@ -133,8 +133,7 @@ fun FeaturedGrid(
         val cardWidth = maxOf(readableWidth, viewportWidth).coerceAtMost(maxWidth)
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = PaddingValues(horizontal = 4.dp)
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.contentGap),
         ) {
             items(count = items.size, key = { index -> "featured_row_$index" }) { rowIndex ->
                 FeaturedCard(

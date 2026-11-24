@@ -9,4 +9,9 @@
     <string name="prompt_ai_failed">Kein Vorschlag erstellt. Versuche es erneut.</string>
     <string name="prompt_ai_protected">Der Vorschlag hat eine Variable oder einen Codeblock geändert. Der Originaltext bleibt erhalten.</string>
     <string name="prompt_ai_stale">Der Originaltext hat sich geändert. Erstelle einen neuen Vorschlag.</string>
+    <string name="prompt_input_settings">Eingabeeinstellungen</string>
+    <string name="prompt_templates_label">Vorlagenvariablen (JSON, optional)</string>
+    <string name="prompt_manual_hint">Schreibe den System-Prompt direkt oder lass ihn bei Bedarf von KI entwerfen.</string>
+    <string name="prompt_ai_requirement_optional">Bearbeitungswunsch (optional)</string>
+    <string name="prompt_ai_applied_undo">Vorschlag übernommen. Mit Rückgängig stellst du den vorherigen Text wieder her.</string>
 </resources>

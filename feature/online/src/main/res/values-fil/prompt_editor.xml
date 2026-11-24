@@ -9,4 +9,9 @@
     <string name="prompt_ai_failed">Hindi nakagawa ng mungkahi. Subukan muli.</string>
     <string name="prompt_ai_protected">Binago ng mungkahi ang variable o code block. Pinanatili ang orihinal.</string>
     <string name="prompt_ai_stale">Nagbago ang orihinal. Gumawa ng bagong mungkahi.</string>
+    <string name="prompt_input_settings">Mga setting ng input</string>
+    <string name="prompt_templates_label">Mga variable ng template (JSON, opsyonal)</string>
+    <string name="prompt_manual_hint">Isulat nang diretso ang system prompt, o hayaang mag-draft ang AI kapag kailangan.</string>
+    <string name="prompt_ai_requirement_optional">Kahilingan sa pag-edit (opsyonal)</string>
+    <string name="prompt_ai_applied_undo">Na-apply ang mungkahi. I-undo para maibalik ang nakaraang text.</string>
 </resources>

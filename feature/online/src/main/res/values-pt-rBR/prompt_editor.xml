@@ -9,4 +9,9 @@
     <string name="prompt_ai_failed">Não foi possível gerar uma sugestão. Tente novamente.</string>
     <string name="prompt_ai_protected">A sugestão alterou uma variável ou um bloco de código. O texto original foi mantido.</string>
     <string name="prompt_ai_stale">O texto original mudou. Gere uma nova sugestão.</string>
+    <string name="prompt_input_settings">Configurações de entrada</string>
+    <string name="prompt_templates_label">Variáveis do modelo (JSON, opcional)</string>
+    <string name="prompt_manual_hint">Escreva o prompt do sistema diretamente ou deixe a IA criar um rascunho quando necessário.</string>
+    <string name="prompt_ai_requirement_optional">Pedido de edição (opcional)</string>
+    <string name="prompt_ai_applied_undo">Sugestão aplicada. Desfaça para restaurar o texto anterior.</string>
 </resources>

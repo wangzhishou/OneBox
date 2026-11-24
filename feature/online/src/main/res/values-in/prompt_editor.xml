@@ -9,4 +9,9 @@
     <string name="prompt_ai_failed">Saran tidak dapat dibuat. Coba lagi.</string>
     <string name="prompt_ai_protected">Saran mengubah variabel atau blok kode. Teks asli dipertahankan.</string>
     <string name="prompt_ai_stale">Teks asli berubah. Buat saran baru.</string>
+    <string name="prompt_input_settings">Setelan input</string>
+    <string name="prompt_templates_label">Variabel templat (JSON, opsional)</string>
+    <string name="prompt_manual_hint">Tulis prompt sistem secara langsung, atau biarkan AI membuat draf saat diperlukan.</string>
+    <string name="prompt_ai_requirement_optional">Permintaan pengeditan (opsional)</string>
+    <string name="prompt_ai_applied_undo">Saran diterapkan. Urungkan untuk memulihkan teks sebelumnya.</string>
 </resources>

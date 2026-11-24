@@ -224,7 +224,7 @@ private fun listTypeIcon(listType: ListItemType): ImageVector = when (listType) 
  * - 笔记/网址：跳助手 Tab 开新会话，并预填输入框；预填词与助手页快捷开始区
  *   共用 chatQuickStartPrompts(下标约定见 [QUICK_START_INDEX_NOTE_FILL_IN])，远程可配；
  * - 应用：跳助手 Tab 开新会话(无专属预填词)；
- * - 提示词：跳「创建提示词」页（本身就是 AI 生成）；
+ * - 提示词：跳手动编辑器，AI 起草在编辑器内按需开启；
  * - 其余类型走 [fallback]。
  */
 @Composable

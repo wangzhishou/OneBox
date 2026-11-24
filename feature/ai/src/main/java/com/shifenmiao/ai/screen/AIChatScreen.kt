@@ -89,6 +89,7 @@ import com.shifenmiao.common.ui.rememberMarkdownCodeActions
 import com.shifenmiao.core.R
 import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.ai.Conversation
+import com.shifenmiao.database.chat_prompt.entity.PromptEntity
 import com.shifenmiao.model.ai.resolveChatMode
 import com.shifenmiao.model.channel.FlavorType
 import com.shifenmiao.model.image.ImageViewerInfo
@@ -154,7 +155,7 @@ fun AIChatScreen(
         BaseScreen(
             title = conversation.miniAppTitle(),
             actions = {
-                DisableContainer(
+                if (!conversation.entryType.isEditor) DisableContainer(
                     enabled = chatUIState.pageState != PageState.INITIALIZING
                 ) {
                     Row(
@@ -279,6 +280,7 @@ fun ChatContent(
     isPromptOnly: Boolean = false,
 ) {
     val conversation = aiChatComponent.conversation.collectAsState()
+    val isEditorHistory = conversation.value.entryType.isEditor
     val chatInputComponent = aiChatComponent.chatInputComponent
     val inputState by chatInputComponent.chatInputState.collectAsState()
 
@@ -302,7 +304,7 @@ fun ChatContent(
     LaunchedEffect(isChatMode) {
         if (isChatMode) {
             showToolCenter = false
-        } else {
+        } else if (!isEditorHistory) {
             aiChatComponent.refreshToolCenter()
         }
     }
@@ -319,7 +321,7 @@ fun ChatContent(
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            if (!currentAIEngine.hasAvailableChatRoute()) {
+            if (!isEditorHistory && !currentAIEngine.hasAvailableChatRoute()) {
                 UnavailableEngineBanner(
                     modifier = Modifier.padding(
                         horizontal = AppTheme.dimens.pageHorizontal,
@@ -343,7 +345,7 @@ fun ChatContent(
                     chatInputComponent.onInputTextChange(suggestion)
                 }
             )
-            NewChatInput(
+            if (!isEditorHistory) NewChatInput(
                 chatUIState = chatUIState,
                 conversation = conversation,
                 aiChatComponent = aiChatComponent,
@@ -385,7 +387,19 @@ fun ChatContent(
             },
             onCreatePrompt = {
                 chatInputComponent.hidePromptPicker()
-                onNavigate(Screen.EditPromptItem())
+                onNavigate(
+                    Screen.EditPromptItem(
+                        onResult = { result ->
+                            val prompt = result.extra?.get("promptEntity") as? PromptEntity
+                            if (prompt != null) {
+                                chatInputComponent.selectSystemPrompt(
+                                    title = prompt.title,
+                                    promptText = prompt.prompt,
+                                )
+                            }
+                        }
+                    )
+                )
             },
             onDismiss = {
                 chatInputComponent.hidePromptPicker()
@@ -480,8 +494,10 @@ fun ChatMessagesList(
     CompositionLocalProvider(
         LocalA2uiRenderProvider provides aiChatComponent.a2uiRenderProvider,
         LocalA2uiSubmitHandler provides { formData ->
-            selectionState.clear()
-            aiChatComponent.startChatWithStreaming(formData)
+            if (!conversation.entryType.isEditor) {
+                selectionState.clear()
+                aiChatComponent.startChatWithStreaming(formData)
+            }
         },
         LocalAiMarkdownSelectionItems provides selectionItems,
         LocalMarkdownSelectionGroup provides markdownSelectionGroup,
@@ -563,7 +579,7 @@ fun ChatMessagesList(
                     }
                 }
                 // 历史消息未加载完时，「暂时没有消息」不等于空会话。
-                if (displayMessageUiModels.isEmpty() &&
+                if (!conversation.entryType.isEditor && displayMessageUiModels.isEmpty() &&
                     (!isPromptOnly || chatUIState.pageState != PageState.INITIALIZING)
                 ) {
                     item(key = "${fixedKeyPrefix}placeholder_message") {

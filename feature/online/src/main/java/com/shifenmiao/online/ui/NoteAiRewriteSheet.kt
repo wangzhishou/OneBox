@@ -17,17 +17,16 @@
  * limitations under the License.
  */
 
-@file:OptIn(ExperimentalLayoutApi::class)
-
 package com.shifenmiao.online.ui
+
+import com.shifenmiao.database.ai.EditorHistoryResult
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
@@ -72,14 +71,12 @@ import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineArrowDropDown
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRobot
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineStop
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
-import com.wanbaohe.core.ui.widget.system.OneBoxDangerButton
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
 import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
@@ -105,6 +102,8 @@ fun NoteAiRewriteSheet(
     onApply: (String) -> Unit,
     canUndo: Boolean,
     onUndo: () -> Unit,
+    loadHistory: suspend () -> List<EditorHistoryResult>,
+    onHistorySelected: (String) -> Unit,
 ) {
     val clipboard = LocalClipboardManager.current
     val focusManager = LocalFocusManager.current
@@ -131,12 +130,35 @@ fun NoteAiRewriteSheet(
         visible = state.visible,
         onDismiss = { visible -> if (!visible) onDismiss() },
         title = stringResource(state.action.labelRes),
+        modifier = Modifier.imePadding(),
         nestedScrollEnabled = true,
+        endConfirmButtonPadding = 0.dp,
+        confirmButton = {
+            EditorAiActionBar(
+                actionKey = state.action,
+                engine = currentEngine,
+                isGenerating = state.isGenerating,
+                canGenerate = state.prompt.isNotBlank(),
+                hasResult = state.result.isNotBlank() || state.error != null,
+                onSwitchEngine = onSwitchEngine,
+                onGenerate = generate,
+                onStop = onStop,
+                loadHistory = loadHistory,
+                onHistorySelected = onHistorySelected,
+            ) {
+                if (!state.isGenerating && state.error == null && state.result.isNotBlank()) {
+                    OnePrimaryButton(
+                        text = stringResource(state.action.applyMode.labelRes),
+                        leadingIcon = OneBoxIcons.Outlined.LineMagic,
+                        onClick = { onApply(state.result) },
+                    )
+                }
+            }
+        },
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .imePadding()
                 .verticalScroll(rememberScrollState())
                 .padding(start = 20.dp, end = 20.dp, bottom = 24.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp),
@@ -197,61 +219,6 @@ fun NoteAiRewriteSheet(
                 }
             }
 
-            FlowRow(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                // 引擎胶囊和主按钮同一行, 垂直居中对齐
-                itemVerticalAlignment = Alignment.CenterVertically,
-            ) {
-                when {
-                    state.isGenerating -> {
-                        OneBoxDangerButton(
-                            text = stringResource(R.string.note_ai_stop),
-                            leadingIcon = OneBoxIcons.Outlined.LineStop,
-                            onClick = onStop,
-                        )
-                    }
-
-                    state.error != null -> {
-                        OnePrimaryButton(
-                            text = stringResource(R.string.note_ai_regenerate),
-                            leadingIcon = OneBoxIcons.Outlined.LineMagic,
-                            enabled = currentEngine?.name?.isNotBlank() == true && state.prompt.isNotBlank(),
-                            onClick = generate,
-                        )
-                    }
-
-                    state.result.isNotBlank() -> {
-                        OnePrimaryButton(
-                            text = stringResource(state.action.applyMode.labelRes),
-                            leadingIcon = OneBoxIcons.Outlined.LineMagic,
-                            onClick = { onApply(state.result) },
-                        )
-                        OneSecondaryButton(
-                            text = stringResource(R.string.note_ai_regenerate),
-                            onClick = generate,
-                        )
-                    }
-
-                    else -> {
-                        OnePrimaryButton(
-                            text = stringResource(R.string.note_ai_panel_generate),
-                            leadingIcon = OneBoxIcons.Outlined.LineMagic,
-                            enabled = currentEngine?.name?.isNotBlank() == true && state.prompt.isNotBlank(),
-                            onClick = generate,
-                        )
-                    }
-                }
-
-                // 引擎切换紧跟主操作:胶囊本身就是「当前模型 + 可切换」的入口,
-                // 不再单独占一行写「引擎」标签; 点开仍是全局模型选择弹窗。
-                AiEditorEngineSwitcher(
-                    engine = currentEngine,
-                    enabled = !state.isGenerating,
-                    onClick = onSwitchEngine,
-                )
-            }
         }
     }
 }
@@ -310,7 +277,6 @@ internal fun AiEditorEngineSwitcher(
     enabled: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    compact: Boolean = false,
 ) {
     val label = engine?.model?.name?.takeIf { it.isNotBlank() }
         ?: engine?.title?.takeIf { it.isNotBlank() }
@@ -329,7 +295,8 @@ internal fun AiEditorEngineSwitcher(
         Row(
             modifier = Modifier
                 .widthIn(max = 200.dp)
-                .padding(horizontal = 12.dp, vertical = if (compact) 4.dp else 8.dp),
+                .fillMaxHeight()
+                .padding(horizontal = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(6.dp),
         ) {
@@ -341,7 +308,7 @@ internal fun AiEditorEngineSwitcher(
             )
             Text(
                 text = label,
-                style = if (compact) MaterialTheme.typography.labelLarge else MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,

@@ -29,6 +29,7 @@ import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.model.ai.ToolDefinition
 import com.shifenmiao.model.ai.ToolFunctionDef
 import com.shifenmiao.model.event.PermissionRequest
+import com.shifenmiao.model.ai.tool.PromptToolCatalog
 import com.shifenmiao.model.ai.tool.ToolCatalogItem
 import com.shifenmiao.model.ai.tool.ToolCategory
 import com.shifenmiao.storage.RemoteConfigStorage
@@ -67,7 +68,7 @@ class AgentToolRegistry @Inject constructor(
     private val expressionValidator: AgentToolExpressionValidator,
     private val conversationMemoryPolicyRepository: ConversationMemoryPolicyRepository,
     private val textProvider: AgentToolTextProvider,
-) {
+) : PromptToolCatalog {
     companion object {
         /**
          * 默认工具返回结果最大字符数。
@@ -261,7 +262,7 @@ class AgentToolRegistry @Inject constructor(
     // 因此下面的查询全部走 in-memory, 不再依赖 DB.
 
     /** 工具中心可见工具 (visibleToUser = true). */
-    fun getVisibleTools(): List<ToolCatalogItem> =
+    override fun getVisibleTools(): List<ToolCatalogItem> =
         getToolCatalogItems().filter { it.visibleToUser }
 
     /** 发现/路由类工具名称集合 (工具自声明 [ToolCatalogItem.isDiscoveryTool]). */

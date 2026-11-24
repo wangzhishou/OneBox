@@ -9,4 +9,9 @@
     <string name="prompt_ai_failed">提案を生成できませんでした。再試行してください。</string>
     <string name="prompt_ai_protected">提案で変数またはコードブロックが変更されたため、原文を保持しました。</string>
     <string name="prompt_ai_stale">原文が変更されました。新しい提案を生成してください。</string>
+    <string name="prompt_input_settings">入力設定</string>
+    <string name="prompt_templates_label">テンプレート変数（JSON、省略可）</string>
+    <string name="prompt_manual_hint">システムプロンプトを直接入力するか、必要に応じて AI に下書きさせます。</string>
+    <string name="prompt_ai_requirement_optional">編集リクエスト（省略可）</string>
+    <string name="prompt_ai_applied_undo">提案を適用しました。元に戻すと前のテキストに復元できます。</string>
 </resources>

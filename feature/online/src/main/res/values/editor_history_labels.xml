@@ -1,0 +1,4 @@
+<resources>
+    <string name="editor_history_empty">No results for this action yet</string>
+    <string name="editor_history_load_failed">Could not load history</string>
+</resources>

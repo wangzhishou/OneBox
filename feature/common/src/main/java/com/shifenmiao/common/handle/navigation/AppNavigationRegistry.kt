@@ -677,7 +677,22 @@ object AppNavigationRegistry {
             staticScreen(
                 screen = Screen.EditPromptItem(),
                 aliases = listOf("CreateAIChatPrompt", "create_ai_chat_prompt", "新建提示词")
-            ),
+            ).let { target ->
+                target.copy(
+                    supportsResultCallback = true,
+                    screenBuilder = { params ->
+                        Screen.EditPromptItem(
+                            draftId = params["draftId"]?.toLongOrNull() ?: 0L,
+                        )
+                    },
+                    callbackScreenBuilder = { params, onResult ->
+                        Screen.EditPromptItem(
+                            draftId = params["draftId"]?.toLongOrNull() ?: 0L,
+                            onResult = onResult,
+                        )
+                    },
+                )
+            },
             AppNavigationTarget(
                 targetType = AppNavigationTargetType.SCREEN,
                 routeKey = "poem_search",

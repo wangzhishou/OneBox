@@ -319,4 +319,13 @@ interface MessageDao {
         """
     )
     suspend fun getTopTokenQueries(limit: Int = 20): List<TopQueryStat>
+
+    @Query("""
+        SELECT m.id, m.answer, m.model, m.created_at AS createdAt
+        FROM message m JOIN conversations c ON c.conversation_id = m.conversation_id
+        WHERE c.history_visible = 1 AND m.entry_type = :type AND m.entry_ref_id = :action
+          AND m.role = 'assistant' AND m.expired = 0 AND m.answer != ''
+        ORDER BY m.created_at DESC, m.id DESC LIMIT 50
+    """)
+    suspend fun getEditorResults(type: String, action: String): List<com.shifenmiao.database.ai.EditorHistoryResult>
 }

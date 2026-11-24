@@ -58,9 +58,8 @@ import com.shifenmiao.database.chat_prompt.entity.PromptEntity
 import com.shifenmiao.database.item.entity.Category
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.Icons
-import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePrompt
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
@@ -186,7 +185,7 @@ fun AIPromptsPickerBottomSheet(
                     modifier = Modifier.weight(1f),
                     icon = {
                         Icon(
-                            imageVector = Icons.Outlined.LineMagic,
+                            imageVector = Icons.Outlined.LinePrompt,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onPrimaryContainer
                         )

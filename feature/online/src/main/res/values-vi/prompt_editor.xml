@@ -9,4 +9,9 @@
     <string name="prompt_ai_failed">Không tạo được đề xuất. Hãy thử lại.</string>
     <string name="prompt_ai_protected">Đề xuất đã đổi biến hoặc khối mã. Văn bản gốc được giữ nguyên.</string>
     <string name="prompt_ai_stale">Văn bản gốc đã thay đổi. Hãy tạo đề xuất mới.</string>
+    <string name="prompt_input_settings">Cài đặt đầu vào</string>
+    <string name="prompt_templates_label">Biến mẫu (JSON, không bắt buộc)</string>
+    <string name="prompt_manual_hint">Viết trực tiếp prompt hệ thống hoặc để AI tạo bản nháp khi cần.</string>
+    <string name="prompt_ai_requirement_optional">Yêu cầu chỉnh sửa (không bắt buộc)</string>
+    <string name="prompt_ai_applied_undo">Đã áp dụng đề xuất. Hoàn tác để khôi phục văn bản trước đó.</string>
 </resources>

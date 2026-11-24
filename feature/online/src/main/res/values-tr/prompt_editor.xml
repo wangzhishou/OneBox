@@ -9,4 +9,9 @@
     <string name="prompt_ai_failed">Öneri oluşturulamadı. Tekrar deneyin.</string>
     <string name="prompt_ai_protected">Öneri bir değişkeni veya kod bloğunu değiştirdi. Özgün metin korundu.</string>
     <string name="prompt_ai_stale">Özgün metin değişti. Yeni bir öneri oluşturun.</string>
+    <string name="prompt_input_settings">Giriş ayarları</string>
+    <string name="prompt_templates_label">Şablon değişkenleri (JSON, isteğe bağlı)</string>
+    <string name="prompt_manual_hint">Sistem istemini doğrudan yazın veya gerektiğinde yapay zekânın taslak oluşturmasını sağlayın.</string>
+    <string name="prompt_ai_requirement_optional">Düzenleme isteği (isteğe bağlı)</string>
+    <string name="prompt_ai_applied_undo">Öneri uygulandı. Önceki metni geri yüklemek için geri alın.</string>
 </resources>

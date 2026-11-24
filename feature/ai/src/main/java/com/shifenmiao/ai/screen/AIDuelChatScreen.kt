@@ -121,6 +121,7 @@ import com.shifenmiao.model.webview.WebViewParams
 import com.shifenmiao.model.ListItemType
 import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.ai.Conversation
+import com.shifenmiao.database.chat_prompt.entity.PromptEntity
 import com.shifenmiao.model.state.PageState
 import com.shifenmiao.model.state.LocalChatUIState
 import com.shifenmiao.theme.AppTheme
@@ -1755,9 +1756,19 @@ private fun DuelPickerBottomSheets(
             pickingPromptRole.value = null
         },
         onCreatePrompt = {
+            val targetRole = pickingPromptRole.value ?: DuelSpeaker.A
             showPromptPicker.value = false
             pickingPromptRole.value = null
-            onNavigate(Screen.EditPromptItem())
+            onNavigate(
+                Screen.EditPromptItem(
+                    onResult = { result ->
+                        val prompt = result.extra?.get("promptEntity") as? PromptEntity
+                        if (prompt != null) {
+                            duelChatComponent.applyPromptToRole(targetRole, prompt)
+                        }
+                    }
+                )
+            )
         },
         onDismiss = {
             showPromptPicker.value = false

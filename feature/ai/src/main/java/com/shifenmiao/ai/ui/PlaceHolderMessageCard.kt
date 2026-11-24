@@ -37,6 +37,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -73,6 +74,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -105,7 +107,6 @@ import com.shifenmiao.model.remote.defaultChatQuickStartPrompts
 import com.shifenmiao.storage.AppSharedStorage
 import com.shifenmiao.storage.RemoteConfigStorage
 import com.shifenmiao.theme.AppTheme
-import com.shifenmiao.theme.AppFontMode
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
@@ -136,6 +137,7 @@ private const val CHAT_QUICK_START_VISIBLE_COUNT = 4
 private const val CHAT_QUICK_START_REFRESH_THRESHOLD = 8
 private const val QUICK_START_STAGGER_DELAY_MILLIS = 45L
 private val QuickStartCardIconTextGap = 8.dp
+private val QuickStartCardMinWidth = 152.dp
 
 @Composable
 fun PlaceHolderMessageCard(
@@ -325,7 +327,7 @@ private fun PromptWorkCard(
                         contentDescription = stringResource(R.string.edit),
                         onClick = {
                             coroutineScope.launch {
-                                // 旧生成页的草稿正文是结构化 JSON，编辑已保存提示词时直接按 ID 加载。
+                                // 历史 AI 草稿可能是结构化 JSON，编辑已保存提示词时直接按 ID 加载。
                                 val draftId = dataDraftHelper.createDraft(
                                     draftType = ListItemType.PROMPT.id,
                                     relatedEntityId = promptId,
@@ -482,7 +484,7 @@ fun ChatQuickStartSection(
     )
     val showRefreshButton = starters.size > CHAT_QUICK_START_REFRESH_THRESHOLD
     val cardGap = AppTheme.dimens.contentGap
-    val columns = if (AppTheme.uiProfile.fontMode == AppFontMode.ExtraLarge) 1 else 2
+    val minCardWidth = QuickStartCardMinWidth * LocalDensity.current.fontScale.coerceAtLeast(1f)
 
     Column(
         modifier = Modifier
@@ -534,50 +536,51 @@ fun ChatQuickStartSection(
             val displayedStarters = remember(refreshRound, visibleStarters) {
                 visibleStarters
             }
-            Column(
-                verticalArrangement = Arrangement.spacedBy(cardGap)
-            ) {
-                displayedStarters.chunked(columns).forEachIndexed { rowIndex, rowItems ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(IntrinsicSize.Max),
-                        horizontalArrangement = Arrangement.spacedBy(cardGap)
-                    ) {
-                        rowItems.forEachIndexed { columnIndex, item ->
-                            key(refreshRound, item.text) {
-                                val itemIndex = rowIndex * columns + columnIndex
-                                val entranceProgress = remember { Animatable(0f) }
-                                LaunchedEffect(Unit) {
-                                    delay((QUICK_START_STAGGER_DELAY_MILLIS * itemIndex).milliseconds)
-                                    entranceProgress.animateTo(
-                                        targetValue = 1f,
-                                        animationSpec = tween(
-                                            durationMillis = 280,
-                                            easing = FastOutSlowInEasing
+            BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+                val columns = if (maxWidth >= minCardWidth * 2 + cardGap) 2 else 1
+                Column(verticalArrangement = Arrangement.spacedBy(cardGap)) {
+                    displayedStarters.chunked(columns).forEachIndexed { rowIndex, rowItems ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(IntrinsicSize.Max),
+                            horizontalArrangement = Arrangement.spacedBy(cardGap)
+                        ) {
+                            rowItems.forEachIndexed { columnIndex, item ->
+                                key(refreshRound, item.text) {
+                                    val itemIndex = rowIndex * columns + columnIndex
+                                    val entranceProgress = remember { Animatable(0f) }
+                                    LaunchedEffect(Unit) {
+                                        delay((QUICK_START_STAGGER_DELAY_MILLIS * itemIndex).milliseconds)
+                                        entranceProgress.animateTo(
+                                            targetValue = 1f,
+                                            animationSpec = tween(
+                                                durationMillis = 280,
+                                                easing = FastOutSlowInEasing
+                                            )
                                         )
+                                    }
+                                    ChatQuickStartCard(
+                                        item = item,
+                                        themeIndex = itemIndex,
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .fillMaxHeight()
+                                            .graphicsLayer {
+                                                alpha = entranceProgress.value
+                                                val scale = 0.92f + 0.08f * entranceProgress.value
+                                                scaleX = scale
+                                                scaleY = scale
+                                                translationY =
+                                                    (1f - entranceProgress.value) * 12.dp.toPx()
+                                            },
+                                        onClick = { onSuggestionClick(item.text) }
                                     )
                                 }
-                                ChatQuickStartCard(
-                                    item = item,
-                                    themeIndex = itemIndex,
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .fillMaxHeight()
-                                        .graphicsLayer {
-                                            alpha = entranceProgress.value
-                                            val scale = 0.92f + 0.08f * entranceProgress.value
-                                            scaleX = scale
-                                            scaleY = scale
-                                            translationY =
-                                                (1f - entranceProgress.value) * 12.dp.toPx()
-                                        },
-                                    onClick = { onSuggestionClick(item.text) }
-                                )
                             }
-                        }
-                        if (rowItems.size < columns) {
-                            Spacer(modifier = Modifier.weight(1f))
+                            if (rowItems.size < columns) {
+                                Spacer(modifier = Modifier.weight(1f))
+                            }
                         }
                     }
                 }

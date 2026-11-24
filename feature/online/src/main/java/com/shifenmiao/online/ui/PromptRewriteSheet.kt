@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -14,25 +13,24 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.core.R as CoreR
+import com.shifenmiao.database.ai.EditorHistoryResult
 import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.online.R
 import com.shifenmiao.online.component.PromptRewriteState
 import com.shifenmiao.online.service.PromptRewriteAction
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.resources.Icons as OneBoxIcons
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
-import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
 
 @Composable
 internal fun PromptRewriteSheet(
@@ -43,7 +41,10 @@ internal fun PromptRewriteSheet(
     onGenerate: () -> Unit,
     onStop: () -> Unit,
     onDismiss: () -> Unit,
+    onGetPoints: () -> Unit,
     onApply: () -> Unit,
+    loadHistory: suspend () -> List<EditorHistoryResult>,
+    onHistorySelected: (String) -> Unit,
 ) {
     val focus = LocalFocusManager.current
     EnhancedModalBottomSheet(
@@ -54,44 +55,23 @@ internal fun PromptRewriteSheet(
         nestedScrollEnabled = true,
         endConfirmButtonPadding = 0.dp,
         confirmButton = {
-            Column(
-                Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+            EditorAiActionBar(
+                actionKey = state.action,
+                engine = engine,
+                isGenerating = state.running,
+                canGenerate = state.canGenerate,
+                hasResult = state.candidate.isNotBlank(),
+                onSwitchEngine = onSwitchEngine,
+                onGenerate = {
+                    focus.clearFocus()
+                    onGenerate()
+                },
+                onStop = onStop,
+                loadHistory = loadHistory,
+                onHistorySelected = onHistorySelected,
             ) {
                 if (!state.running && state.candidate.isNotBlank()) {
                     OnePrimaryButton(stringResource(R.string.prompt_ai_apply), onClick = onApply)
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    AiEditorEngineSwitcher(
-                        engine = engine,
-                        enabled = !state.running,
-                        onClick = onSwitchEngine,
-                        modifier = Modifier.weight(1f, fill = false),
-                        compact = true,
-                    )
-                    when {
-                        state.running -> OneSecondaryButton(stringResource(R.string.note_ai_stop), onClick = onStop)
-                        state.candidate.isNotBlank() -> OneSecondaryButton(
-                            text = stringResource(R.string.note_ai_regenerate),
-                            leadingIcon = OneBoxIcons.Outlined.LineMagic,
-                            onClick = onGenerate,
-                        )
-                        else -> OnePrimaryButton(
-                            text = stringResource(R.string.note_ai_panel_generate),
-                            modifier = Modifier.heightIn(min = 44.dp),
-                            leadingIcon = OneBoxIcons.Outlined.LineMagic,
-                            enabled = state.input.isNotBlank() && engine?.name?.isNotBlank() == true,
-                            onClick = {
-                                focus.clearFocus()
-                                onGenerate()
-                            },
-                        )
-                    }
                 }
             }
         },
@@ -101,19 +81,34 @@ internal fun PromptRewriteSheet(
                 .padding(horizontal = AppTheme.dimens.pageHorizontal),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            if (state.action == PromptRewriteAction.Create) {
-                GlassOutlinedTextField(
-                    value = state.requirement,
-                    onValueChange = onRequirementChange,
-                    modifier = Modifier.fillMaxWidth(),
-                    enabled = !state.running,
-                    label = { Text(stringResource(R.string.prompt_ai_goal)) },
-                    minLines = 3,
-                    maxLines = 6,
-                )
-            }
+            GlassOutlinedTextField(
+                value = state.requirement,
+                onValueChange = onRequirementChange,
+                modifier = Modifier.fillMaxWidth(),
+                enabled = !state.running,
+                label = {
+                    Text(
+                        stringResource(
+                            if (state.action == PromptRewriteAction.Create) {
+                                R.string.prompt_ai_goal
+                            } else {
+                                R.string.prompt_ai_requirement_optional
+                            }
+                        )
+                    )
+                },
+                minLines = 3,
+                maxLines = 6,
+            )
             if (state.running) LinearProgressIndicator(Modifier.fillMaxWidth())
-            state.error?.let { Text(stringResource(it), color = MaterialTheme.colorScheme.error) }
+            state.error?.let { error ->
+                Text(error.message, color = MaterialTheme.colorScheme.error)
+                if (error.isBlocked) {
+                    TextButton(onClick = onGetPoints) {
+                        Text(stringResource(CoreR.string.ai_chat_error_action_get_points))
+                    }
+                }
+            }
             RewriteComparison(state.original, state.candidate)
         }
     }
@@ -143,8 +138,11 @@ private fun RewritePreview(title: String, body: String, modifier: Modifier = Mod
         Text(title, style = MaterialTheme.typography.labelMedium)
         GlassSurface(style = GlassStyle.Thin) {
             SelectionContainer {
-                Text(body, Modifier.fillMaxWidth().padding(AppTheme.dimens.cardContentPadding),
-                    style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    body,
+                    Modifier.fillMaxWidth().padding(AppTheme.dimens.cardContentPadding),
+                    style = MaterialTheme.typography.bodyMedium,
+                )
             }
         }
     }

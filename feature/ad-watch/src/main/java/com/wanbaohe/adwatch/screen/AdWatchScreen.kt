@@ -44,6 +44,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -84,6 +85,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
+import com.t8rin.imagetoolbox.core.resources.Icons as OneBoxIcons
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedButton
 import com.wanbaohe.core.ui.widget.glass.glassRegular
 import com.wanbaohe.adwatch.R
@@ -413,7 +416,7 @@ private fun RemainingCard(
     }
 }
 
-/** 底部 CTA: 加载中转圈 / 失败重试 / 次数用完置灰 / 正常橙色大按钮 */
+/** 底部操作随内容定宽，由外层 Column 居中。 */
 @Composable
 private fun WatchCta(
     rewardPoints: Int,
@@ -424,6 +427,7 @@ private fun WatchCta(
     onWatch: () -> Unit,
     onRetry: () -> Unit,
 ) {
+    val buttonModifier = Modifier.heightIn(min = 56.dp)
     val ctaColors = ButtonDefaults.buttonColors(
         containerColor = MaterialTheme.colorScheme.primaryContainer,
         contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -434,9 +438,7 @@ private fun WatchCta(
         remainingToday <= 0 && unclaimedPoints > 0 -> {
             Button(
                 onClick = onWatch,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
+                modifier = buttonModifier,
                 colors = ctaColors,
                 shape = RoundedCornerShape(28.dp),
             ) {
@@ -445,7 +447,6 @@ private fun WatchCta(
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-                    maxLines = 2,
                 )
             }
         }
@@ -453,15 +454,14 @@ private fun WatchCta(
         remainingToday <= 0 -> {
             EnhancedButton(
                 onClick = {},
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
+                modifier = buttonModifier,
                 enabled = false,
                 shape = RoundedCornerShape(28.dp),
             ) {
                 Text(
                     text = stringResource(R.string.ad_watch_daily_limit_reached),
                     style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center,
                 )
             }
         }
@@ -476,9 +476,7 @@ private fun WatchCta(
                 Spacer(modifier = Modifier.height(12.dp))
                 Button(
                     onClick = onRetry,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
+                    modifier = buttonModifier,
                     colors = ctaColors,
                     shape = RoundedCornerShape(28.dp),
                 ) {
@@ -495,9 +493,7 @@ private fun WatchCta(
             val isBusy = adStatus == RewardedAdStatus.LOADING || isShowing
             Button(
                 onClick = onWatch,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
+                modifier = buttonModifier,
                 enabled = adStatus == RewardedAdStatus.READY && !isShowing,
                 colors = ctaColors,
                 shape = RoundedCornerShape(28.dp),
@@ -508,29 +504,18 @@ private fun WatchCta(
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                         strokeWidth = 2.dp,
                     )
-                    Spacer(modifier = Modifier.width(10.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = stringResource(R.string.ad_watch_loading),
                         style = MaterialTheme.typography.titleMedium,
                     )
                 } else {
-                    Box(
-                        modifier = Modifier
-                            .size(26.dp)
-                            .background(
-                                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                shape = CircleShape,
-                            ),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.PlayArrow,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                            modifier = Modifier.size(18.dp),
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(10.dp))
+                    Icon(
+                        imageVector = OneBoxIcons.Outlined.LinePlay,
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp),
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = stringResource(R.string.ad_watch_cta, rewardPoints),
                         style = MaterialTheme.typography.titleMedium,

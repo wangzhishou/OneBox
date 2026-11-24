@@ -1,0 +1,4 @@
+<resources>
+    <string name="editor_history_note_edit">Chỉnh sửa ghi chú</string>
+    <string name="editor_history_prompt_edit">Chỉnh sửa câu lệnh</string>
+</resources>

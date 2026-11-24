@@ -6,55 +6,45 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * You should have received a copy of the Apache License
- * along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
  */
 
 package com.shifenmiao.ai.service
 
-import com.shifenmiao.database.activity.ActivityLogRecorder
-import com.wanbaohe.core.ui.utils.navigation.Screen
-
 import android.content.Context
-import com.shifenmiao.model.ModelProvider.AppJson
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.encodeToJsonElement
-import kotlinx.serialization.json.jsonObject
 import com.shifenmiao.ai.agent.tool.AgentToolRegistry
-import com.shifenmiao.ai.agent.tool.ToolBindingRepository
 import com.shifenmiao.base.longtask.LongTaskCenter
 import com.shifenmiao.base.longtask.LongTaskKind
 import com.shifenmiao.common.ai.AIPromptExecutor
 import com.shifenmiao.common.ai.AiLanguagePrompt
 import com.shifenmiao.core.R
 import com.shifenmiao.database.AppDatabase
+import com.shifenmiao.database.activity.ActivityLogRecorder
+import com.shifenmiao.database.chat_prompt.LocalPromptRepository
+import com.shifenmiao.database.chat_prompt.PromptSaveInput
 import com.shifenmiao.database.chat_prompt.entity.PromptEntity
-import com.shifenmiao.database.data_draft.DataDraftHelper
-import com.shifenmiao.database.data_draft.entity.DataDraftEntity
-import com.shifenmiao.database.item.entity.ItemCategoryCrossRef
-import com.shifenmiao.database.item.entity.ItemEntity
-import com.shifenmiao.database.item.entity.ItemPromptLink
-import com.shifenmiao.database.item.entity.ItemUserState
 import com.shifenmiao.database.utils.DataBaseUtils
-import com.shifenmiao.model.ListItemType
-import com.shifenmiao.model.Source
+import com.shifenmiao.model.ModelProvider.AppJson
 import com.shifenmiao.model.ai.ChatPrompt
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.jsonObject
 import javax.inject.Inject
 import javax.inject.Singleton
 
 data class PromptGenerationPayload(
     val prompt: ChatPrompt? = null,
     val suggestedCategoryNames: List<String> = emptyList(),
-    val suggestedToolNames: List<String> = emptyList()
+    val suggestedToolNames: List<String> = emptyList(),
 )
 
 data class PromptGenerationResult(
@@ -63,7 +53,7 @@ data class PromptGenerationResult(
     val errorMessage: String? = null,
     val rawContent: String = "",
     val engineName: String = "",
-    val modelName: String = ""
+    val modelName: String = "",
 )
 
 data class PromptSavedResult(
@@ -72,20 +62,19 @@ data class PromptSavedResult(
     val selectedCategoryIds: Set<Int>,
     val selectedCategoryNames: List<String>,
     val selectedToolNames: Set<String>,
-    val selectedToolSummaries: List<CreatedToolSummary>
+    val selectedToolSummaries: List<CreatedToolSummary>,
 )
 
 @Singleton
 class PromptCreationService @Inject constructor(
     @ApplicationContext private val context: Context,
     private val appDatabase: AppDatabase,
-    private val dataDraftHelper: DataDraftHelper,
     private val creationMetaService: CreationMetaService,
-    private val toolBindingRepository: ToolBindingRepository,
     private val agentToolRegistry: AgentToolRegistry,
     private val aiPromptExecutor: AIPromptExecutor,
     private val activityLog: ActivityLogRecorder,
     private val longTaskCenter: LongTaskCenter,
+    private val promptRepository: LocalPromptRepository,
 ) {
 
     suspend fun buildSystemPrompt(): String {
@@ -97,9 +86,6 @@ class PromptCreationService @Inject constructor(
             appendLine()
             appendLine(PROMPT_OUTPUT_CONTRACT)
             appendLine()
-            // 生成的标题/说明/提示词与分类名都要跟用户语言:
-            // 分类名会经 resolveSuggestedCategoryIds 直接落库, 写死中文会在外语库里
-            // 凭空建出一批中文分类, 也对不上本地已有的本地化分类。
             appendLine(
                 AiLanguagePrompt.outputInCurrentLanguage(
                     "the title, description, placeholder, prompt text and suggested category names"
@@ -108,7 +94,6 @@ class PromptCreationService @Inject constructor(
         }
     }
 
-    /** 与 AgentCreationService 一致: 预设缺失时读 raw(默认英文, zh 有中文变体)。 */
     private fun loadRawPrompt(): String {
         return context.resources
             .openRawResource(com.shifenmiao.database.R.raw.prompt_prompt_create)
@@ -141,7 +126,7 @@ class PromptCreationService @Inject constructor(
             payload = payload,
             cleanedJson = cleanedJson,
             errorMessage = errorMessage,
-            rawContent = rawJson
+            rawContent = rawJson,
         )
     }
 
@@ -149,221 +134,73 @@ class PromptCreationService @Inject constructor(
         inputText: String,
         prompt: ChatPrompt?,
         aiSuggestedCategoryNames: List<String>,
-        aiSuggestedToolNames: List<String>
+        aiSuggestedToolNames: List<String>,
     ): CreationMetaSuggestion {
         val heuristicSuggestion = creationMetaService.suggest(
             inputText = inputText,
             title = prompt?.title,
-            description = prompt?.description
+            description = prompt?.description,
         )
         val aiCategoryIds = creationMetaService.resolveSuggestedCategoryIds(aiSuggestedCategoryNames)
         val aiToolNames = creationMetaService.resolveSuggestedToolNames(aiSuggestedToolNames)
         return CreationMetaSuggestion(
             categoryIds = aiCategoryIds + heuristicSuggestion.categoryIds,
-            toolNames = aiToolNames + heuristicSuggestion.toolNames
+            toolNames = aiToolNames + heuristicSuggestion.toolNames,
         )
     }
 
-    suspend fun saveDraft(
-        draftId: Long?,
-        description: String,
-        rawJson: String,
-        isSuccess: Boolean,
-        generatedTitle: String?,
-        selectedCategoryIds: Set<Int> = emptySet(),
-        selectedToolNames: Set<String> = emptySet(),
-        itemId: Int? = null,
-        relatedEntityId: Int? = null,
-    ): Long {
-        val title = generatedTitle?.takeIf { it.isNotBlank() } ?: description.take(30)
-        return dataDraftHelper.upsertDraft(
-            draftId = draftId ?: 0L,
-            draftType = ListItemType.PROMPT.id,
-            title = title,
-            description = description,
-            url = AppJson.encodeToString(selectedToolNames.toList()),
-            data = rawJson,
-            selectedCategoryIds = selectedCategoryIds,
-            status = if (isSuccess) {
-                DataDraftEntity.STATUS_SUCCESS
-            } else {
-                DataDraftEntity.STATUS_FAILED
-            },
-            itemId = itemId,
-            relatedEntityId = relatedEntityId,
-        )
-    }
-
-    suspend fun savePrompt(
+    private suspend fun savePrompt(
         parsedPrompt: ChatPrompt,
         fallbackInputText: String,
         selectedCategoryIds: Set<Int>,
         selectedToolNames: Set<String>,
-        draftId: Long? = null,
-        source: Source = Source.LOCAL
     ): PromptSavedResult {
         val finalPrompt = parsedPrompt.copy(
             id = 0,
             title = parsedPrompt.title?.takeIf { it.isNotBlank() } ?: fallbackInputText.trim().take(30),
-            description = parsedPrompt.description?.takeIf { it.isNotBlank() } ?: fallbackInputText
+            description = parsedPrompt.description?.takeIf { it.isNotBlank() } ?: fallbackInputText,
         )
-
-        val selectedCategories = creationMetaService.ensureCategories(
-            selectedCategoryIds = selectedCategoryIds,
-            fallbackCategoryName = context.getString(R.string.create_ai_chat_prompt_default_category)
-        )
-
-        val draft = draftId?.let { dataDraftHelper.getById(it) }
-        val existingItemId = draft?.itemId?.takeIf { it > 0 }
-        val promptDao = appDatabase.chatPromptDao()
-        val itemDao = appDatabase.itemEntityDao()
-        val categoryDao = appDatabase.categoryDao()
-
-        var itemId = 0
-        var promptResourceId = 0
-        if (source == Source.LOCAL) {
-            itemId = itemDao.upsertItem(
-                buildItemEntity(
-                    itemId = existingItemId ?: 0,
-                    title = finalPrompt.title,
-                    description = finalPrompt.description
-                )
-            )
-            val now = System.currentTimeMillis()
-            itemDao.upsertUserState(
-                ItemUserState(
-                    itemId = itemId,
-                    isPinned = true,
-                    pinnedAt = now,
-                    canEdit = true,
-                    updatedAt = now,
-                )
-            )
-            val existingPromptId = promptDao.getPromptLinkByItemId(itemId)
-            val promptEntity = DataBaseUtils.promptToPromptEntity(
-                finalPrompt.copy(id = existingPromptId ?: 0),
-                source = source
-            )
-            promptResourceId = promptDao.upsertLocalPrompt(promptEntity)
-            promptDao.insertPromptLink(ItemPromptLink(itemId = itemId, promptId = promptResourceId))
-            categoryDao.deleteCategoriesByItemId(itemId)
-            selectedCategories.forEach { category ->
-                itemDao.insertItemCategoryCrossRef(
-                    ItemCategoryCrossRef(itemId = itemId, categoryId = category.id)
-                )
-            }
-        } else {
-            // 非 LOCAL（如纯远端推送）：item 与 prompt 资源解耦，
-            // 必须先建/更新 item，再用返回的 itemId 建 link。
-            // 不能直接把 promptResourceId 当作 itemId。
-            itemId = itemDao.upsertItem(
-                buildItemEntity(
-                    itemId = existingItemId ?: 0,
-                    title = finalPrompt.title,
-                    description = finalPrompt.description,
-                )
-            )
-            promptResourceId = promptDao.upsertLocalPrompt(
-                DataBaseUtils.promptToPromptEntity(finalPrompt, source = source)
-            )
-            promptDao.insertPromptLink(ItemPromptLink(itemId = itemId, promptId = promptResourceId))
-        }
-
-        toolBindingRepository.replacePromptBindings(
-            promptId = promptResourceId,
-            toolNames = selectedToolNames.toList()
-        )
-
-        draftId?.let {
-            dataDraftHelper.updateDraft(
-                draftId = it,
-                url = AppJson.encodeToString(selectedToolNames.toList()),
+        val saved = promptRepository.save(
+            PromptSaveInput(
+                title = finalPrompt.title.orEmpty(),
+                description = finalPrompt.description.orEmpty(),
+                prompt = finalPrompt.prompt.orEmpty(),
+                placeholder = finalPrompt.placeholder.orEmpty(),
+                templates = finalPrompt.templates,
                 selectedCategoryIds = selectedCategoryIds,
-                itemId = itemId.takeIf { savedItemId -> savedItemId > 0 },
-                relatedEntityId = promptResourceId.takeIf { it > 0 }
+                selectedToolNames = selectedToolNames,
+                defaultCategoryName = context.getString(R.string.create_ai_chat_prompt_default_category),
             )
-        }
-
-        val toolSummaries = selectedToolNames.mapNotNull { toolName ->
+        )
+        val toolSummaries = saved.selectedToolNames.mapNotNull { toolName ->
             agentToolRegistry.getToolByName(toolName)?.let { tool ->
                 CreatedToolSummary(
                     name = tool.name,
                     title = tool.title,
-                    summary = tool.summary
+                    summary = tool.summary,
                 )
             }
         }
-
-        if (source == Source.LOCAL) {
-            activityLog.recordPrompt(
-                itemId, finalPrompt.title.orEmpty(), context.getString(R.string.prompt_create),
-                Screen.EditPromptItem().id.toString(),
-            )
-        }
+        activityLog.recordPrompt(
+            saved.itemId,
+            finalPrompt.title.orEmpty(),
+            context.getString(R.string.prompt_create),
+            Screen.EditPromptItem().id.toString(),
+        )
         return PromptSavedResult(
-            prompt = finalPrompt.copy(id = promptResourceId),
-            itemId = itemId,
-            selectedCategoryIds = selectedCategories.map { it.id }.toSet(),
-            selectedCategoryNames = selectedCategories.map { it.name },
-            selectedToolNames = selectedToolNames,
-            selectedToolSummaries = toolSummaries
+            prompt = DataBaseUtils.promptEntityToPrompt(saved.prompt),
+            itemId = saved.itemId,
+            selectedCategoryIds = saved.selectedCategories.mapTo(linkedSetOf()) { it.id },
+            selectedCategoryNames = saved.selectedCategories.map { it.name },
+            selectedToolNames = saved.selectedToolNames,
+            selectedToolSummaries = toolSummaries,
         )
-    }
-
-    /**
-     * 预览：写到本地 prompt（之前用 Source.PREVIEW 区分，现统一用 LOCAL）。
-     * 复用现有 LOCAL 行，保证每次预览覆盖前次结果，不留垃圾行。
-     */
-    suspend fun savePreviewPrompt(
-        parsedPrompt: ChatPrompt,
-        fallbackInputText: String,
-        selectedToolNames: Set<String>
-    ): ChatPrompt {
-        val finalPrompt = parsedPrompt.copy(
-            title = parsedPrompt.title?.takeIf { it.isNotBlank() } ?: fallbackInputText.trim().take(30),
-            description = parsedPrompt.description?.takeIf { it.isNotBlank() } ?: fallbackInputText
-        )
-        val promptDao = appDatabase.chatPromptDao()
-        val existingPreview = promptDao.getPromptBySource(Source.LOCAL)
-        val previewId = existingPreview?.id ?: 0
-        val insertedId = if (previewId > 0) {
-            promptDao.upsertLocalPrompt(
-                DataBaseUtils.promptToPromptEntity(
-                    finalPrompt.copy(id = previewId),
-                    source = Source.LOCAL
-                )
-            )
-            previewId
-        } else {
-            promptDao.upsertLocalPrompt(
-                DataBaseUtils.promptToPromptEntity(finalPrompt, source = Source.LOCAL)
-            )
-        }
-        toolBindingRepository.replacePromptBindings(
-            promptId = insertedId,
-            toolNames = selectedToolNames.toList()
-        )
-        return finalPrompt.copy(id = insertedId)
-    }
-
-    fun serializePromptPayload(
-        prompt: ChatPrompt,
-        suggestedCategoryNames: List<String> = emptyList(),
-        suggestedToolNames: List<String> = emptyList()
-    ): String {
-        return JsonObject(
-            mapOf(
-                "prompt_template" to AppJson.encodeToJsonElement(ChatPrompt.serializer(), prompt),
-                "suggested_categories" to AppJson.encodeToJsonElement(suggestedCategoryNames),
-                "suggested_tools" to AppJson.encodeToJsonElement(suggestedToolNames)
-            )
-        ).toString()
     }
 
     suspend fun createAndSaveFromRequirement(
         userGoal: String,
         categoryHints: List<String> = emptyList(),
-        toolHints: List<String> = emptyList()
+        toolHints: List<String> = emptyList(),
     ): PromptSavedResult = longTaskCenter.withTask(
         id = TASK_ID_GENERATION,
         kind = LongTaskKind.AI_GENERATION,
@@ -384,13 +221,13 @@ class PromptCreationService @Inject constructor(
             inputText = userGoal,
             prompt = prompt,
             aiSuggestedCategoryNames = parsed.payload.suggestedCategoryNames,
-            aiSuggestedToolNames = parsed.payload.suggestedToolNames + toolHints
+            aiSuggestedToolNames = parsed.payload.suggestedToolNames + toolHints,
         )
         savePrompt(
             parsedPrompt = prompt,
             fallbackInputText = userGoal,
             selectedCategoryIds = meta.categoryIds,
-            selectedToolNames = meta.toolNames
+            selectedToolNames = meta.toolNames,
         )
     }
 
@@ -406,13 +243,13 @@ class PromptCreationService @Inject constructor(
             inputText = fallbackText,
             prompt = prompt,
             aiSuggestedCategoryNames = parsed.payload.suggestedCategoryNames,
-            aiSuggestedToolNames = parsed.payload.suggestedToolNames
+            aiSuggestedToolNames = parsed.payload.suggestedToolNames,
         )
         return savePrompt(
             parsedPrompt = prompt,
             fallbackInputText = fallbackText,
             selectedCategoryIds = meta.categoryIds,
-            selectedToolNames = meta.toolNames
+            selectedToolNames = meta.toolNames,
         )
     }
 
@@ -425,7 +262,7 @@ class PromptCreationService @Inject constructor(
             PromptGenerationPayload(
                 prompt = chatPrompt.takeIf { !it.prompt.isNullOrBlank() },
                 suggestedCategoryNames = extractStringList(root, "suggested_categories"),
-                suggestedToolNames = extractStringList(root, "suggested_tools")
+                suggestedToolNames = extractStringList(root, "suggested_tools"),
             )
         } catch (_: kotlinx.serialization.SerializationException) {
             PromptGenerationPayload()
@@ -456,7 +293,7 @@ class PromptCreationService @Inject constructor(
     private fun buildRequirement(
         userGoal: String,
         categoryHints: List<String>,
-        toolHints: List<String>
+        toolHints: List<String>,
     ): String {
         return buildString {
             appendLine(userGoal)
@@ -467,28 +304,6 @@ class PromptCreationService @Inject constructor(
                 appendLine("Tool hints: ${toolHints.joinToString()}")
             }
         }
-    }
-
-    private fun buildItemEntity(
-        itemId: Int,
-        title: String?,
-        description: String?
-    ): ItemEntity {
-        val now = System.currentTimeMillis()
-        return ItemEntity(
-            id = itemId,
-            remoteId = null,
-            source = Source.LOCAL,
-            listType = ListItemType.PROMPT.id,
-            title = title.orEmpty(),
-            description = description.orEmpty(),
-            url = "",
-            iconName = title?.firstOrNull()?.toString(),
-            recommend = true,
-            createdAt = now,
-            updatedAt = now,
-            publishedAt = now,
-        )
     }
 
     companion object {

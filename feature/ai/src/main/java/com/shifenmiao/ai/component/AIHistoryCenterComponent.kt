@@ -19,8 +19,6 @@
 
 package com.shifenmiao.ai.component
 
-import com.shifenmiao.database.ai.EditorAiUsageRepository
-
 import android.content.Context
 import com.arkivanov.decompose.ComponentContext
 import com.shifenmiao.ai.history.AIDuelConversationTitle
@@ -53,11 +51,8 @@ class AIHistoryCenterComponent @AssistedInject internal constructor(
     @Assisted private val initialFilter: AIConversationEntryType?,
     @ApplicationContext private val applicationContext: Context,
     private val appDatabase: AppDatabase,
-    editorAiUsage: EditorAiUsageRepository,
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
-
-    val editorCalls = editorAiUsage.observeRecent()
 
     private val _pageState = MutableStateFlow(PageState.INITIALIZING)
     val pageState: StateFlow<PageState> = _pageState.asStateFlow()
@@ -169,7 +164,9 @@ class AIHistoryCenterComponent @AssistedInject internal constructor(
                         )
                     }
                     .filter { item ->
-                        (filter == null || item.entryType == filter) &&
+                        (filter == null || item.entryType == filter ||
+                            (filter == AIConversationEntryType.STREAM_QA && item.entryType == AIConversationEntryType.QA) ||
+                            (filter == AIConversationEntryType.QA && item.entryType == AIConversationEntryType.STREAM_QA)) &&
                             (keyword.isBlank() ||
                                 item.title.contains(keyword, ignoreCase = true) ||
                                 item.appTitle.contains(keyword, ignoreCase = true) ||

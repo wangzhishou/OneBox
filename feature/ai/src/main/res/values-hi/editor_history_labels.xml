@@ -1,0 +1,4 @@
+<resources>
+    <string name="editor_history_note_edit">नोट संपादन</string>
+    <string name="editor_history_prompt_edit">प्रॉम्प्ट संपादन</string>
+</resources>
