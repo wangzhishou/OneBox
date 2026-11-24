@@ -36,7 +36,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ContentCopy
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -156,7 +155,7 @@ internal fun CompareShareSheet(
                             onCopy(imageFormat)
                         },
                         containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                        endIcon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy
+                        endIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy
                     )
                     Spacer(Modifier.height(4.dp))
                     PreferenceItem(

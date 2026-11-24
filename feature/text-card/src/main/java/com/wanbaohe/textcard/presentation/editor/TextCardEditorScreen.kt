@@ -48,7 +48,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.CropSquare
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Refresh
@@ -81,6 +80,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.components.text.clearSelectionStyles
 import com.shifenmiao.common.ui.BaseScreen
+import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMarkupLayers
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
@@ -442,7 +442,7 @@ fun TextCardEditorScreen(component: TextCardComponent) {
                     }
                 ) {
                     Icon(
-                        imageVector = Icons.Outlined.ContentCopy,
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                         contentDescription = stringResource(R.string.textcard_backup_source)
                     )
                 }

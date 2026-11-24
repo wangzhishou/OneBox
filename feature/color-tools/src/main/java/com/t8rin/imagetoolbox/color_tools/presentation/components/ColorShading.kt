@@ -38,7 +38,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ContentCopy
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -145,7 +144,7 @@ internal fun ColorShading(
                                 }
                         ) {
                             Icon(
-                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                                 contentDescription = stringResource(R.string.copy),
                                 tint = contentColor,
                                 modifier = Modifier

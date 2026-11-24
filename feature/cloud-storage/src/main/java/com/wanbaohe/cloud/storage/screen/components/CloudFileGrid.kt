@@ -38,7 +38,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CheckCircle
-import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -532,7 +531,7 @@ private fun CloudFileListRow(
                         modifier = Modifier.size(40.dp)
                     ) {
                         Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                             contentDescription = stringResource(R.string.cloud_storage_copy_link_action),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(20.dp)

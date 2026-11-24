@@ -32,7 +32,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ContentCopy
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -91,7 +90,7 @@ internal fun HiddenWatermarkInfo(
                     when (hidden) {
                         is HiddenWatermark.Text -> {
                             Icon(
-                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                                 contentDescription = null
                             )
                         }

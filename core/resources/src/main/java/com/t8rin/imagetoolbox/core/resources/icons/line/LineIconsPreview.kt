@@ -155,6 +155,7 @@ private fun LineIconsPreview() {
         "ContentPaste" to Icons.Outlined.LineContentPaste,
         "ContentPasteGo" to Icons.Outlined.LineContentPasteGo,
         "Contrast" to Icons.Outlined.LineContrast,
+        "Copy" to Icons.Outlined.LineCopy,
         "CreateNewFolder" to Icons.Outlined.LineCreateNewFolder,
         "CreditCard" to Icons.Outlined.LineCreditCard,
         "Crop" to Icons.Outlined.LineCrop,

@@ -3,7 +3,7 @@
  * This file is part of OneBox, a derivative work based on
  * ImageToolbox (https://github.com/T8RIN/ImageToolbox) by T8RIN.
  *
- * Copyright (c) 2026 T8RIN (Malik Mukhametzyanov)
+ * Copyright (c) 2024 T8RIN (Malik Mukhametzyanov)
  * Copyright (c) 2026 zhishouwang(网址兽)
  *
  * This file has been modified from the original ImageToolbox source.
@@ -25,146 +25,18 @@
 
 package com.t8rin.imagetoolbox.core.resources.icons
 
-import com.t8rin.imagetoolbox.core.resources.Icons
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.path
-import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
 
-val com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Share: ImageVector by lazy(LazyThreadSafetyMode.NONE) {
-    ImageVector.Builder(
-        name = "Outlined.Share",
-        defaultWidth = 24.dp,
-        defaultHeight = 24.dp,
-        viewportWidth = 960f,
-        viewportHeight = 960f
-    ).apply {
-        path(fill = SolidColor(Color.Black)) {
-            moveTo(680f, 880f)
-            quadToRelative(-50f, 0f, -85f, -35f)
-            reflectiveQuadToRelative(-35f, -85f)
-            quadToRelative(0f, -6f, 3f, -28f)
-            lineTo(282f, 568f)
-            quadToRelative(-16f, 15f, -37f, 23.5f)
-            reflectiveQuadToRelative(-45f, 8.5f)
-            quadToRelative(-50f, 0f, -85f, -35f)
-            reflectiveQuadToRelative(-35f, -85f)
-            quadToRelative(0f, -50f, 35f, -85f)
-            reflectiveQuadToRelative(85f, -35f)
-            quadToRelative(24f, 0f, 45f, 8.5f)
-            reflectiveQuadToRelative(37f, 23.5f)
-            lineToRelative(281f, -164f)
-            quadToRelative(-2f, -7f, -2.5f, -13.5f)
-            reflectiveQuadTo(560f, 200f)
-            quadToRelative(0f, -50f, 35f, -85f)
-            reflectiveQuadToRelative(85f, -35f)
-            quadToRelative(50f, 0f, 85f, 35f)
-            reflectiveQuadToRelative(35f, 85f)
-            quadToRelative(0f, 50f, -35f, 85f)
-            reflectiveQuadToRelative(-85f, 35f)
-            quadToRelative(-24f, 0f, -45f, -8.5f)
-            reflectiveQuadTo(598f, 288f)
-            lineTo(317f, 452f)
-            quadToRelative(2f, 7f, 2.5f, 13.5f)
-            reflectiveQuadToRelative(0.5f, 14.5f)
-            quadToRelative(0f, 8f, -0.5f, 14.5f)
-            reflectiveQuadTo(317f, 508f)
-            lineToRelative(281f, 164f)
-            quadToRelative(16f, -15f, 37f, -23.5f)
-            reflectiveQuadToRelative(45f, -8.5f)
-            quadToRelative(50f, 0f, 85f, 35f)
-            reflectiveQuadToRelative(35f, 85f)
-            quadToRelative(0f, 50f, -35f, 85f)
-            reflectiveQuadToRelative(-85f, 35f)
-            close()
-            moveTo(680f, 800f)
-            quadToRelative(17f, 0f, 28.5f, -11.5f)
-            reflectiveQuadTo(720f, 760f)
-            quadToRelative(0f, -17f, -11.5f, -28.5f)
-            reflectiveQuadTo(680f, 720f)
-            quadToRelative(-17f, 0f, -28.5f, 11.5f)
-            reflectiveQuadTo(640f, 760f)
-            quadToRelative(0f, 17f, 11.5f, 28.5f)
-            reflectiveQuadTo(680f, 800f)
-            close()
-            moveTo(200f, 520f)
-            quadToRelative(17f, 0f, 28.5f, -11.5f)
-            reflectiveQuadTo(240f, 480f)
-            quadToRelative(0f, -17f, -11.5f, -28.5f)
-            reflectiveQuadTo(200f, 440f)
-            quadToRelative(-17f, 0f, -28.5f, 11.5f)
-            reflectiveQuadTo(160f, 480f)
-            quadToRelative(0f, 17f, 11.5f, 28.5f)
-            reflectiveQuadTo(200f, 520f)
-            close()
-            moveTo(708.5f, 228.5f)
-            quadTo(720f, 217f, 720f, 200f)
-            reflectiveQuadToRelative(-11.5f, -28.5f)
-            quadTo(697f, 160f, 680f, 160f)
-            reflectiveQuadToRelative(-28.5f, 11.5f)
-            quadTo(640f, 183f, 640f, 200f)
-            reflectiveQuadToRelative(11.5f, 28.5f)
-            quadTo(663f, 240f, 680f, 240f)
-            reflectiveQuadToRelative(28.5f, -11.5f)
-            close()
-            moveTo(680f, 760f)
-            close()
-            moveTo(200f, 480f)
-            close()
-            moveTo(680f, 200f)
-            close()
-        }
-    }.build()
-}
+/**
+ * 分享图标收口到 `Icons.Outlined.LineShare`（用户提供的 share-2 形状）。
+ *
+ * 历史上有 `Icons.Outlined.Share` 与 `Icons.Rounded.Share` 两份描摹的材质图标，
+ * 全项目还有一堆地方直接引它们；这里让两个名字都指向同一个线框图标，
+ * 调用点零改动就能统一外观，新代码请直接用 `Icons.Outlined.LineShare`。
+ */
+val com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Share: ImageVector
+    get() = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineShare
 
-val com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Share: ImageVector by lazy(LazyThreadSafetyMode.NONE) {
-    ImageVector.Builder(
-        name = "Rounded.Share",
-        defaultWidth = 24.dp,
-        defaultHeight = 24.dp,
-        viewportWidth = 960f,
-        viewportHeight = 960f
-    ).apply {
-        path(fill = SolidColor(Color.Black)) {
-            moveTo(680f, 880f)
-            quadToRelative(-50f, 0f, -85f, -35f)
-            reflectiveQuadToRelative(-35f, -85f)
-            quadToRelative(0f, -6f, 3f, -28f)
-            lineTo(282f, 568f)
-            quadToRelative(-16f, 15f, -37f, 23.5f)
-            reflectiveQuadToRelative(-45f, 8.5f)
-            quadToRelative(-50f, 0f, -85f, -35f)
-            reflectiveQuadToRelative(-35f, -85f)
-            quadToRelative(0f, -50f, 35f, -85f)
-            reflectiveQuadToRelative(85f, -35f)
-            quadToRelative(24f, 0f, 45f, 8.5f)
-            reflectiveQuadToRelative(37f, 23.5f)
-            lineToRelative(281f, -164f)
-            quadToRelative(-2f, -7f, -2.5f, -13.5f)
-            reflectiveQuadTo(560f, 200f)
-            quadToRelative(0f, -50f, 35f, -85f)
-            reflectiveQuadToRelative(85f, -35f)
-            quadToRelative(50f, 0f, 85f, 35f)
-            reflectiveQuadToRelative(35f, 85f)
-            quadToRelative(0f, 50f, -35f, 85f)
-            reflectiveQuadToRelative(-85f, 35f)
-            quadToRelative(-24f, 0f, -45f, -8.5f)
-            reflectiveQuadTo(598f, 288f)
-            lineTo(317f, 452f)
-            quadToRelative(2f, 7f, 2.5f, 13.5f)
-            reflectiveQuadToRelative(0.5f, 14.5f)
-            quadToRelative(0f, 8f, -0.5f, 14.5f)
-            reflectiveQuadTo(317f, 508f)
-            lineToRelative(281f, 164f)
-            quadToRelative(16f, -15f, 37f, -23.5f)
-            reflectiveQuadToRelative(45f, -8.5f)
-            quadToRelative(50f, 0f, 85f, 35f)
-            reflectiveQuadToRelative(35f, 85f)
-            quadToRelative(0f, 50f, -35f, 85f)
-            reflectiveQuadToRelative(-85f, 35f)
-            close()
-        }
-    }.build()
-}
+val com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Share: ImageVector
+    get() = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineShare

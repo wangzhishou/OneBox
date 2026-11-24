@@ -35,7 +35,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -435,7 +434,7 @@ private fun SecretFieldRow(
                 Row {
                     IconButton(onClick = { clipboard.setText(AnnotatedString(field.value)) }) {
                         Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                             contentDescription = stringResource(R.string.password_vault_copy_password)
                         )
                     }

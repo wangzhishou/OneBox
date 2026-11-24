@@ -45,7 +45,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -73,6 +72,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import kotlin.math.roundToInt
 import com.wanbaohe.base.ui.ClearTextFieldTrailingIcon
 import com.wanbaohe.base.ui.PasswordTextField
@@ -518,7 +518,7 @@ fun AIEngineSettingsDetailScreen(
                     Box {
                         IconButton(onClick = { showExportMenu = true }) {
                             Icon(
-                                imageVector = Icons.Outlined.ContentCopy,
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                                 contentDescription = stringResource(R.string.ai_engine_export_action),
                                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
                             )

@@ -45,7 +45,6 @@ import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material.icons.outlined.FolderOpen
 import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.Save
-import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -82,6 +81,7 @@ import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormatGroup
 import com.t8rin.imagetoolbox.core.domain.image.model.alphaContainedEntries
 import com.t8rin.imagetoolbox.core.domain.utils.humanFileSize
 import com.t8rin.imagetoolbox.core.resources.R
+import com.t8rin.imagetoolbox.core.resources.icons.Share
 import com.wanbaohe.base.ui.button.PrimaryButton
 import com.wanbaohe.base.ui.button.SecondaryButton
 import com.wanbaohe.core.ui.widget.controls.selection.ColorRowSelector
@@ -149,7 +149,7 @@ fun ImageExportSheet(
                         enable = shareEnabled && blockingMessage == null,
                         icon = {
                             Icon(
-                                imageVector = Icons.Outlined.Share,
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Share,
                                 contentDescription = null,
                                 modifier = Modifier.size(18.dp),
                             )

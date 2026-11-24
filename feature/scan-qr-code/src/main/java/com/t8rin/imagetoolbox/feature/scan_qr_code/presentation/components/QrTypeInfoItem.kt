@@ -44,7 +44,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.OpenInNew
-import androidx.compose.material.icons.rounded.ContentCopy
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -187,7 +186,7 @@ private fun QrInfoItem(
                             if (canCopy) {
                                 Spacer(Modifier.width(16.dp))
                                 Icon(
-                                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                                     contentDescription = null,
                                     tint = MaterialTheme.colorScheme.outline,
                                     modifier = Modifier.size(18.dp)

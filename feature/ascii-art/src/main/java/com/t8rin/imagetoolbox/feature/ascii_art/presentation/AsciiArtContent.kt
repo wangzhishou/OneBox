@@ -29,7 +29,6 @@ import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ContentCopy
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -176,7 +175,7 @@ fun AsciiArtContent(
                 onSecondaryButtonLongClick = {
                     showOneTimeImagePickingDialog = true
                 },
-                primaryButtonIcon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                primaryButtonIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                 onPrimaryButtonClick = {
                     component.convertToAsciiString(Clipboard::copy)
                 },

@@ -29,7 +29,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -136,7 +135,7 @@ fun ContactUsScreen(
                         AboutGlassListItem(
                             headlineText = stringResource(R.string.profile_item_wechat),
                             trailingText = Strings.WECHAT_ACCOUNT,
-                            trailingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                            trailingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                             onClick = {
                                 showWechatTipsDialog.value = true
                             },
@@ -144,7 +143,7 @@ fun ContactUsScreen(
                             AboutGlassListItem(
                             headlineText = stringResource(R.string.my_wechat),
                             trailingText = Strings.WECHAT_ACCOUNT_ID,
-                            trailingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                            trailingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                             onClick = {
                                 showWechatAccountTipsDialog.value = true
                             },
@@ -167,7 +166,7 @@ fun ContactUsScreen(
                     AboutGlassListItem(
                         headlineText = stringResource(R.string.email),
                         trailingText = UrlConstants.EMAIL,
-                        trailingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                        trailingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                         onClick = {
                             Clipboard.copy(UrlConstants.EMAIL)
                         },

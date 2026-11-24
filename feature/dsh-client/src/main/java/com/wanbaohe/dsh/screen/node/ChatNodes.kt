@@ -41,7 +41,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.outlined.CheckCircle
-import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.DoneAll
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Image
@@ -71,6 +70,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.dsh.R
@@ -404,7 +404,7 @@ private fun ToolCard(node: ChatNode.Tool) {
                             modifier = Modifier.size(32.dp)
                         ) {
                             Icon(
-                                imageVector = Icons.Outlined.ContentCopy,
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                                 contentDescription = stringResource(R.string.dsh_copy),
                                 modifier = Modifier.size(15.dp),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant

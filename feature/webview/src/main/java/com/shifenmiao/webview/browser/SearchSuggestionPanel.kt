@@ -33,7 +33,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -201,7 +200,7 @@ private fun SuggestionItemRow(
             modifier = Modifier.size(48.dp)
         ) {
             Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                 contentDescription = stringResource(R.string.browser_copy_link),
                 modifier = Modifier.size(18.dp),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant

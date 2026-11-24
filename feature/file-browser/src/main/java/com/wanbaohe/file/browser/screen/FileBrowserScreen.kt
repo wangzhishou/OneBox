@@ -55,7 +55,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Search
@@ -1266,7 +1265,7 @@ private fun SelectionActionBar(
             item {
                 ActionChip(
                     label = stringResource(R.string.action_copy),
-                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                     enabled = selectedCount > 0,
                     onClick = onCopy
                 )

@@ -52,7 +52,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.WifiOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -640,7 +639,7 @@ fun ServerStatusCard(
                     }
                     IconButton(onClick = onCopyAddress) {
                         Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                             contentDescription = stringResource(R.string.copy_address),
                             tint = MaterialTheme.colorScheme.onSecondaryContainer
                         )

@@ -49,7 +49,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ContentCopy
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Icon
@@ -100,7 +99,7 @@ internal fun CrashRootContent(component: CrashComponent) {
         val copyCrashInfo: () -> Unit = {
             Clipboard.copy(crashInfo.textToSend)
             AppToastHost.showToast(
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                 message = context.getString(R.string.copied),
             )
         }
@@ -290,7 +289,7 @@ internal fun CrashRootContent(component: CrashComponent) {
                 ) {
                     Spacer(Modifier.width(16.dp))
                     Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                         contentDescription = stringResource(com.shifenmiao.core.R.string.copy_errors)
                     )
                     Spacer(Modifier.width(8.dp))

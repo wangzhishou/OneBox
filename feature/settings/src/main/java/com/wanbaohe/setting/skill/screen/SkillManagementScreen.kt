@@ -38,11 +38,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import com.t8rin.imagetoolbox.core.resources.icons.Share
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.wanbaohe.core.ui.widget.glass.GlassSwitch
 import androidx.compose.material3.Text
@@ -317,7 +317,7 @@ fun SkillManagementContent(
                         onClick = { context.shareText(skill.body) }
                     ) {
                         Icon(
-                            imageVector = Icons.Outlined.Share,
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Share,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         )

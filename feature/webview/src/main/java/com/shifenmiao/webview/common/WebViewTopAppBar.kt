@@ -23,7 +23,6 @@ import androidx.compose.foundation.MarqueeSpacing
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -144,7 +143,7 @@ fun WebViewTopAppBarWithExport(
                         text = { Text(stringResource(CoreR.string.copy_content)) },
                         leadingIcon = {
                             Icon(
-                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                                 contentDescription = null
                             )
                         },

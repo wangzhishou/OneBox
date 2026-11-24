@@ -35,7 +35,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ContentCopy
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -265,7 +264,7 @@ private fun ColorEditableField(
             onClick = { onCopy(value) }
         ) {
             Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                 contentDescription = stringResource(R.string.copy)
             )
         }

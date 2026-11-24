@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.AutoAwesome
-import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.FormatAlignLeft
 import androidx.compose.material.icons.outlined.OpenInFull
 import androidx.compose.material3.DropdownMenuItem
@@ -66,6 +65,7 @@ import com.shifenmiao.online.R as OnlineR
 import com.shifenmiao.online.ui.NoteAiRewriteSheet
 import com.shifenmiao.online.ui.ContentSaveConfirmDialog
 import com.t8rin.imagetoolbox.core.resources.Icons as OneBoxIcons
+import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.NoteAdd
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
@@ -320,7 +320,7 @@ fun CreateNoteScreen(
                         },
                         leadingIcon = {
                             Icon(
-                                imageVector = MaterialIcons.Outlined.ContentCopy,
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                                 contentDescription = null,
                             )
                         },

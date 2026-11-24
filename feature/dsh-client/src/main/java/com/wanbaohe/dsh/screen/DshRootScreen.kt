@@ -46,7 +46,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.Cloud
 import androidx.compose.material.icons.outlined.CloudQueue
 import androidx.compose.material.icons.outlined.Computer
-import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.ContentPaste
 import androidx.compose.material.icons.outlined.QrCodeScanner
 import androidx.compose.material3.Button
@@ -88,6 +87,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
@@ -882,7 +882,7 @@ private fun CloudRelaySection(
                 )
                 IconButton(onClick = { clipboard.setText(AnnotatedString(cloud.code)) }) {
                     Icon(
-                        imageVector = Icons.Outlined.ContentCopy,
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                         contentDescription = stringResource(R.string.dsh_cloud_copy),
                         modifier = Modifier.size(18.dp)
                     )

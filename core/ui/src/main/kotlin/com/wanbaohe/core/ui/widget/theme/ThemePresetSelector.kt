@@ -40,7 +40,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -386,7 +385,7 @@ fun ThemePresetCard(
                 if (onCopy != null) {
                     if (isSelected) Spacer(modifier = Modifier.width(4.dp))
                     Icon(
-                        com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                        com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                         stringResource(R.string.theme_preset_copy),
                         Modifier
                             .size(14.dp)

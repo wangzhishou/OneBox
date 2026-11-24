@@ -38,7 +38,6 @@ import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.outlined.BookmarkAdd
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Notes
 import androidx.compose.material.icons.outlined.ThumbDown
 import androidx.compose.material.icons.outlined.ThumbUp
@@ -48,6 +47,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -222,7 +222,7 @@ fun FeedbackRow(
         Row(verticalAlignment = Alignment.CenterVertically) {
             // 复制消息文本(成功短暂变对勾)
             FeedbackAction(
-                icon = if (copied) Icons.Outlined.Check else Icons.Outlined.ContentCopy,
+                icon = if (copied) Icons.Outlined.Check else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                 contentDescription = stringResource(R.string.dsh_copy),
                 tint = if (copied) {
                     AppTheme.colors.getPrimaryColor()

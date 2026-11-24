@@ -46,7 +46,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Link
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -584,7 +583,7 @@ private fun ToolCallDetailBlock(
             )
             val copyDescription = stringResource(R.string.copy)
             Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                 contentDescription = copyDescription,
                 tint = color.copy(alpha = 0.55f),
                 modifier = Modifier

@@ -34,7 +34,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -299,7 +298,7 @@ private fun ScanHistoryItemCard(
 
                 OutlinedButton(onClick = onCopy) {
                     Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
                         contentDescription = null,
                         modifier = Modifier.size(18.dp)
                     )
