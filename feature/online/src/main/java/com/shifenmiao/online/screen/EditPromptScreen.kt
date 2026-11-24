@@ -59,6 +59,7 @@ import com.t8rin.imagetoolbox.core.resources.Icons as BoxIcons
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAddAiChat
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFormatLineSpacing
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineShortText
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTune
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineVisibility
@@ -194,7 +195,7 @@ fun EditPromptScreen(
                     onClick = { showMoreMenu = true },
                 ) {
                     Icon(
-                        imageVector = LineEditorIcons.More,
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                         contentDescription = stringResource(R.string.card_more_actions),
                     )
                 }

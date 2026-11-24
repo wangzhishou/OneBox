@@ -67,6 +67,7 @@ import com.shifenmiao.online.ui.NoteAiRewriteSheet
 import com.shifenmiao.online.ui.ContentSaveConfirmDialog
 import com.t8rin.imagetoolbox.core.resources.Icons as OneBoxIcons
 import com.t8rin.imagetoolbox.core.resources.icons.NoteAdd
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSettings
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
@@ -295,7 +296,7 @@ fun CreateNoteScreen(
             Box {
                 IconButton(onClick = { showMoreMenu = true }) {
                     Icon(
-                        imageVector = LineEditorIcons.More,
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onSurface,
                     )
