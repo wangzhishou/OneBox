@@ -192,6 +192,7 @@ private fun LineIconsPreview() {
         "DragonBoat" to Icons.Outlined.LineDragonBoat,
         "Draw" to Icons.Outlined.LineDraw,
         "Drawer" to Icons.Outlined.LineDrawer,
+        "DrawerClose" to Icons.Outlined.LineDrawerClose,
         "DrawerOpen" to Icons.Outlined.LineDrawerOpen,
         "EditExif" to Icons.Outlined.LineEditExif,
         "Email" to Icons.Outlined.LineEmail,

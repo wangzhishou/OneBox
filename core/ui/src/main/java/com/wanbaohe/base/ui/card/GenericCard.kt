@@ -411,12 +411,14 @@ fun GenericTonalCard(
                                 BuildCustomIcon(iconName = iconName, modifier = iconModifier, tint = tint)
                             }
 
+                            // 「更多」按钮做小一号:三圈比原来的实心三点视觉重量大,
+                            // 40dp/24dp 在卡片右上角会顶到标题,收到 36dp/20dp。
                             IconButton(
                                 onClick = { showActions = true },
-                                modifier = Modifier.size(40.dp)
+                                modifier = Modifier.size(36.dp)
                             ) {
                                 Icon(
-                                    modifier = Modifier.size(24.dp),
+                                    modifier = Modifier.size(20.dp),
                                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                                     contentDescription = stringResource(
                                         com.shifenmiao.core.R.string.card_more_actions

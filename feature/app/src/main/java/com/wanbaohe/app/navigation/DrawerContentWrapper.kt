@@ -22,16 +22,21 @@ package com.wanbaohe.app.navigation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -53,6 +58,7 @@ import com.shifenmiao.core.BuildConfig
 import com.shifenmiao.core.R
 import com.shifenmiao.core.constants.Constants.DRAWER_WIDTH
 import com.shifenmiao.login.viewModel.LoginComponent
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineDrawerClose
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsManager
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.wanbaohe.core.ui.utils.helper.ProvidesValue
@@ -128,80 +134,106 @@ fun DrawerMenu(
 
     var showColorPicker by rememberSaveable { mutableStateOf(false) }
 
-    LazyColumn(
-        state = listState,
-        modifier = modifier.padding(OneBoxDesignSystem.screenPadding),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing)
-    ) {
-        item {
-            ProfileLogin(
-                onClick = {
-                    onCloseDrawer()
-                }
+    Column(modifier = modifier) {
+        // 抽屉里的关闭入口固定在右上角,不随列表滚动:顶栏的抽屉按钮会被 scrim
+        // 盖住,关闭只能从抽屉内部走,所以不能让它被列表滚走。
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = OneBoxDesignSystem.screenPadding)
+                .padding(top = OneBoxDesignSystem.screenPadding),
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            IconButton(
+                onClick = { onCloseDrawer() },
+                modifier = Modifier.size(36.dp),
             ) {
-                InvitationCodeAction(
-                    loginComponent = loginComponent
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDrawerClose,
+                    contentDescription = stringResource(id = R.string.close),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(22.dp),
                 )
             }
         }
-        item {
-            Text(
-                text = stringResource(id = R.string.settings),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-        item {
-            // 横向滚动主题预设选择器（复用组件）
-            ThemePresetSelector(
-                onNavigateToThemeSettings = {
-                    onCloseDrawer()
-                    onNavigate(Screen.ThemeSettings)
+        LazyColumn(
+            state = listState,
+            modifier = Modifier
+                .weight(1f)
+                .padding(OneBoxDesignSystem.screenPadding),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing)
+        ) {
+            item {
+                ProfileLogin(
+                    onClick = {
+                        onCloseDrawer()
+                    }
+                ) {
+                    InvitationCodeAction(
+                        loginComponent = loginComponent
+                    )
                 }
-            )
-        }
-        item {
-            if (BuildConfig.DEBUG) {
-                DebugEnvironmentSettingItem(appComponent)
             }
-        }
-        item {
-            StartEntrySettingItem(onBeforeNavigate = { onCloseDrawer() })
-        }
-        item {
-            QuickSettingItem(appComponent, isMe = true)
-        }
-        item {
-            DisableRobotSettingItem(appComponent)
-        }
-        item {
-            PointsSettingItem()
-        }
-        item {
-            ThemeSettingItem()
-        }
-        item {
-            LayoutSettingItem()
-        }
-        item {
-            Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
-            FontSizeQuickSettingItem()
-        }
-        item {
-            Text(
-                text = stringResource(id = R.string.data_database),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-        item {
-            DatabaseBackupRestoreSection(
-                onOpen = {
-                    onCloseDrawer()
-                    onNavigate(Screen.BackupCenter)
+            item {
+                Text(
+                    text = stringResource(id = R.string.settings),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            item {
+                // 横向滚动主题预设选择器（复用组件）
+                ThemePresetSelector(
+                    onNavigateToThemeSettings = {
+                        onCloseDrawer()
+                        onNavigate(Screen.ThemeSettings)
+                    }
+                )
+            }
+            item {
+                if (BuildConfig.DEBUG) {
+                    DebugEnvironmentSettingItem(appComponent)
                 }
-            )
+            }
+            item {
+                StartEntrySettingItem(onBeforeNavigate = { onCloseDrawer() })
+            }
+            item {
+                QuickSettingItem(appComponent, isMe = true)
+            }
+            item {
+                DisableRobotSettingItem(appComponent)
+            }
+            item {
+                PointsSettingItem()
+            }
+            item {
+                ThemeSettingItem()
+            }
+            item {
+                LayoutSettingItem()
+            }
+            item {
+                Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
+                FontSizeQuickSettingItem()
+            }
+            item {
+                Text(
+                    text = stringResource(id = R.string.data_database),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            item {
+                DatabaseBackupRestoreSection(
+                    onOpen = {
+                        onCloseDrawer()
+                        onNavigate(Screen.BackupCenter)
+                    }
+                )
+            }
         }
     }
 

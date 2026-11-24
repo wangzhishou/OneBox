@@ -26,6 +26,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
@@ -36,13 +38,16 @@ import com.shifenmiao.common.robot.RobotController
 import com.shifenmiao.core.R
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.resources.icons.Search
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineDrawer
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineDrawerClose
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineDrawerOpen
 
 
 @Composable
 fun QuickOperations(
     appComponent: AppComponent
 ) {
+    val uiState by appComponent.uiState.collectAsState()
+
     DisposableEffect(Unit) {
         onDispose { RobotController.clearSearchAnchor() }
     }
@@ -66,13 +71,21 @@ fun QuickOperations(
             tint = MaterialTheme.colorScheme.onSurface
         )
     }
+    // 抽屉开/关走同一套图标：关闭态显示「打开抽屉」(LineDrawerOpen),打开态显示
+    // 「关闭抽屉」(LineDrawerClose)。抽屉打开后会被 scrim 盖住,所以抽屉内部
+    // 右上角另有一个关闭按钮(DrawerContentWrapper),这里的状态切换是为了
+    // 无遮罩/平板布局下仍然对得上。
     IconButton(onClick = {
         if (!RateLimiter.isFastClick()) {
             appComponent.toggleDrawer()
         }
     }) {
         Icon(
-            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDrawer,
+            imageVector = if (uiState.showDrawer) {
+                com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDrawerClose
+            } else {
+                com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDrawerOpen
+            },
             contentDescription = stringResource(R.string.open_menu),
             tint = MaterialTheme.colorScheme.onSurface
         )
