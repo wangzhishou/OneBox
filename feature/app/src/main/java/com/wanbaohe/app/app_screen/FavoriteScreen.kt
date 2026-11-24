@@ -99,6 +99,7 @@ import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedTopAppBarType
 import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassScrollEffectScope
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.core.ui.widget.glass.glassMedium
@@ -194,11 +195,13 @@ fun FavoriteScreen(
         supportGlassEffect = true,
         showNavigationBarsPadding = false
     ) {
-        ContentListSection(
-            lazyListState = lazyListState,
-            activityLogComponent = activityLogComponent,
-            favoriteComponent = favoriteComponent
-        )
+        GlassScrollEffectScope(isScrolling = lazyListState.isScrollInProgress) {
+            ContentListSection(
+                lazyListState = lazyListState,
+                activityLogComponent = activityLogComponent,
+                favoriteComponent = favoriteComponent
+            )
+        }
     }
 }
 

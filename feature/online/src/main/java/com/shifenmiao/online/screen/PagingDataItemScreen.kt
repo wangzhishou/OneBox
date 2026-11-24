@@ -110,6 +110,7 @@ import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
+import com.wanbaohe.core.ui.widget.glass.GlassScrollEffectScope
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.Close
@@ -589,79 +590,81 @@ private fun ItemGrid(
     )
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
-        LazyVerticalStaggeredGrid(
-            state = gridState,
-            modifier = Modifier
-                .fillMaxHeight()
-                .nestedScroll(headFollow),
-            columns = itemGridSpec(isGrid, maxWidth).cells,
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.contentGap),
-            verticalItemSpacing = AppTheme.dimens.contentGap,
-            contentPadding = itemGridContentPadding(),
-        ) {
-            items(
-                count = pagingItems.itemCount,
-                key = { index -> pagingItemKey(pagingItems, index) },
-            ) { index ->
-                val item = pagingItems[index] ?: return@items
-                VerticalStaggeredCard(
-                    index = index,
-                    useHomeColorCycle = true,
-                    modifier = Modifier.onSizeChanged { size ->
-                        if (size.height > 0) {
-                            siblingCardHeight = with(density) { size.height.toDp() }
-                        }
-                    },
-                    itemListComponent = itemListComponent,
-                    itemWithStats = item,
-                    maxTitleLines = cardMaxTitleLines,
-                    commentCount = item.item.commentCount,
-                    onCommentClick = item.item.documentId?.takeIf { it.isNotBlank() }?.let { documentId ->
-                        {
-                            itemListComponent.showComments(
-                                documentId = documentId,
-                                itemTitle = item.item.title,
-                                uid = uidFor(listType),
-                                localItemId = item.item.id,
-                            )
-                        }
-                    },
-                    onClick = {
-                        itemListComponent.recordItemClick(item.item.id)
-                        scope.launch {
-                            val resource = com.shifenmiao.common.handle.ItemResourceResolver.resolve(
-                                appDatabase = itemListComponent.appDatabase,
-                                itemId = item.item.id,
-                                listType = item.item.listType,
-                            )
-                            HandleEvent.handleCardClick(
-                                context = context,
-                                onNavigate = onNavigator,
-                                itemWithStats = item,
-                                resource = resource,
-                            )
-                        }
-                    },
-                    onDeleteRequest = deleteState::request,
-                    onCategoryClick = onCategoryBadgeTap
-                )
-            }
-            // 加载/错误状态都不提示用户：有本地数据兜底且更新不频繁。
-            // 保留 Loading 指示器，仅用于告知还有下一页在加载。
-            if (pagingItems.loadState.append is LoadState.Loading) {
-                item(key = "append_loading") {
-                    LoadingNextPageItem(modifier = Modifier)
-                }
-            }
-            // 应用(tab)列表不需要"创建新应用"卡片，其它 tab 保留。
-            if (listType != ListItemType.NORMAL) {
-                item(key = "append_create_choice_card") {
-                    CreateChoiceCard(
-                        onManualCreate = onManualCreate,
-                        onAiCreate = onAiCreate,
-                        siblingHeight = siblingCardHeight,
-                        showAiCreate = showAiCreate,
+        GlassScrollEffectScope(isScrolling = gridState.isScrollInProgress) {
+            LazyVerticalStaggeredGrid(
+                state = gridState,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .nestedScroll(headFollow),
+                columns = itemGridSpec(isGrid, maxWidth).cells,
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.contentGap),
+                verticalItemSpacing = AppTheme.dimens.contentGap,
+                contentPadding = itemGridContentPadding(),
+            ) {
+                items(
+                    count = pagingItems.itemCount,
+                    key = { index -> pagingItemKey(pagingItems, index) },
+                ) { index ->
+                    val item = pagingItems[index] ?: return@items
+                    VerticalStaggeredCard(
+                        index = index,
+                        useHomeColorCycle = true,
+                        modifier = Modifier.onSizeChanged { size ->
+                            if (size.height > 0) {
+                                siblingCardHeight = with(density) { size.height.toDp() }
+                            }
+                        },
+                        itemListComponent = itemListComponent,
+                        itemWithStats = item,
+                        maxTitleLines = cardMaxTitleLines,
+                        commentCount = item.item.commentCount,
+                        onCommentClick = item.item.documentId?.takeIf { it.isNotBlank() }?.let { documentId ->
+                            {
+                                itemListComponent.showComments(
+                                    documentId = documentId,
+                                    itemTitle = item.item.title,
+                                    uid = uidFor(listType),
+                                    localItemId = item.item.id,
+                                )
+                            }
+                        },
+                        onClick = {
+                            itemListComponent.recordItemClick(item.item.id)
+                            scope.launch {
+                                val resource = com.shifenmiao.common.handle.ItemResourceResolver.resolve(
+                                    appDatabase = itemListComponent.appDatabase,
+                                    itemId = item.item.id,
+                                    listType = item.item.listType,
+                                )
+                                HandleEvent.handleCardClick(
+                                    context = context,
+                                    onNavigate = onNavigator,
+                                    itemWithStats = item,
+                                    resource = resource,
+                                )
+                            }
+                        },
+                        onDeleteRequest = deleteState::request,
+                        onCategoryClick = onCategoryBadgeTap
                     )
+                }
+                // 加载/错误状态都不提示用户：有本地数据兜底且更新不频繁。
+                // 保留 Loading 指示器，仅用于告知还有下一页在加载。
+                if (pagingItems.loadState.append is LoadState.Loading) {
+                    item(key = "append_loading") {
+                        LoadingNextPageItem(modifier = Modifier)
+                    }
+                }
+                // 应用(tab)列表不需要"创建新应用"卡片，其它 tab 保留。
+                if (listType != ListItemType.NORMAL) {
+                    item(key = "append_create_choice_card") {
+                        CreateChoiceCard(
+                            onManualCreate = onManualCreate,
+                            onAiCreate = onAiCreate,
+                            siblingHeight = siblingCardHeight,
+                            showAiCreate = showAiCreate,
+                        )
+                    }
                 }
             }
         }

@@ -57,6 +57,7 @@ import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsS
 import kotlin.math.abs
 
 internal val LocalGlassBackdrop = staticCompositionLocalOf<LayerBackdrop?> { null }
+private val LocalGlassScrolling = staticCompositionLocalOf { false }
 
 private fun Color.chroma(): Float {
     if (this == Color.Unspecified || this == Color.Transparent) return 0f
@@ -261,7 +262,8 @@ internal fun Modifier.glassMaterial(
         return clip(shape).background(solid, shape)
     }
     // 关玻璃：只铺平涂底，不画高光边。分段选中条、滑杆、按钮都从这里走。
-    if (!LocalSettingsState.current.isGlassAlphaEnabled) {
+    val settings = LocalSettingsState.current
+    if (!settings.isGlassAlphaEnabled) {
         return glassFlatSurface(
             shape = shape,
             color = color,
@@ -269,19 +271,20 @@ internal fun Modifier.glassMaterial(
             backgroundAlpha = backgroundAlpha,
         )
     }
+    val isLiquidEnabled = isLiquid && settings.isLiquidGlassEnabled
     val contour = showTopEdge && showBottomEdge
     val veil = glassVeil(
         color = color,
         style = style,
         backgroundAlpha = backgroundAlpha,
-        isLiquid = isLiquid,
+        isLiquid = isLiquidEnabled,
         isControl = isControl,
         enabled = enabled,
         contour = contour,
         borderWidth = borderWidth,
     )
     val backdrop = LocalGlassBackdrop.current
-    if (isLiquid && blurRadius > 0.dp && backdrop != null) {
+    if (isLiquidEnabled && !LocalGlassScrolling.current && blurRadius > 0.dp && backdrop != null) {
         return liquidGlassBackdrop(
             backdrop = backdrop,
             shape = shape,
@@ -375,6 +378,19 @@ private fun DrawScope.drawGlassRim(shape: Shape, veil: GlassVeil) {
             style = Stroke(width = stroke),
         )
     }
+}
+
+/** 滚动期间将子树液态玻璃降级为透明材质，停止后恢复背景模糊与折射。 */
+@Composable
+fun GlassScrollEffectScope(
+    isScrolling: Boolean,
+    content: @Composable () -> Unit,
+) {
+    val isParentScrolling = LocalGlassScrolling.current
+    CompositionLocalProvider(
+        LocalGlassScrolling provides (isParentScrolling || isScrolling),
+        content = content,
+    )
 }
 
 /**

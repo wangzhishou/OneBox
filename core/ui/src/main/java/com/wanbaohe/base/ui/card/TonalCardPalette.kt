@@ -29,8 +29,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.ColorUtils
 import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
@@ -58,6 +61,27 @@ data class TonalCardPalette(
     val accentColor: Color,
 )
 
+private const val LIGHT_CARD_SATURATION = 0.30f
+private const val LIGHT_CARD_LIGHTNESS = 0.84f
+private const val DARK_CARD_SATURATION = 0.36f
+private const val DARK_CARD_LIGHTNESS = 0.30f
+
+@Composable
+private fun uniformCardTint(color: Color, isNeutral: Boolean): Color {
+    val isLight = MaterialTheme.colorScheme.surface.luminance() > 0.5f
+    return remember(color, isNeutral, isLight) {
+        val hsl = FloatArray(3)
+        ColorUtils.colorToHSL(color.toArgb(), hsl)
+        hsl[1] = when {
+            isNeutral || hsl[1] < 0.08f -> 0f
+            isLight -> LIGHT_CARD_SATURATION
+            else -> DARK_CARD_SATURATION
+        }
+        hsl[2] = if (isLight) LIGHT_CARD_LIGHTNESS else DARK_CARD_LIGHTNESS
+        Color(ColorUtils.HSLToColor(hsl))
+    }
+}
+
 object TonalCardPaletteDefaults {
     val containerStyle = GlassStyle.Regular
     val accentStyle = GlassStyle.Medium
@@ -69,25 +93,27 @@ object TonalCardPaletteDefaults {
     val contentPadding: Dp
         @Composable get() = AppTheme.dimens.cardContentPadding
 
-    /** 横排和网格共用同一个四色顺序，底色、图标和标签取自同一组主题角色。 */
+    /** 横排和网格共用同一个四色顺序，只保留主题色相，浓淡由统一色阶和 GlassStyle 控制。 */
     @Composable
     fun forIndex(index: Int): TonalCardPalette {
         val colors = MaterialTheme.colorScheme
-        val (container, content) = when (Math.floorMod(index, 4)) {
+        val colorIndex = Math.floorMod(index, 4)
+        val (container, content) = when (colorIndex) {
             0 -> colors.secondaryContainer to colors.onSecondaryContainer
             1 -> colors.tertiaryContainer to colors.onTertiaryContainer
             2 -> colors.primaryContainer to colors.onPrimaryContainer
             else -> colors.surfaceContainer to colors.onSurfaceVariant
         }
-        val titleColor = tintedGlassContentColor(container)
-        return remember(colors, container, content, titleColor) {
+        val containerColor = uniformCardTint(container, isNeutral = colorIndex == 3)
+        val titleColor = tintedGlassContentColor(containerColor)
+        return remember(colors, container, content, containerColor, titleColor) {
             TonalCardPalette(
-                containerColor = container,
+                containerColor = containerColor,
                 iconContentColor = content,
-                iconContainerColor = container,
+                iconContainerColor = containerColor,
                 actionContainerColor = colors.surfaceContainer,
                 actionContentColor = colors.onSurfaceVariant,
-                tagBackgroundColor = container,
+                tagBackgroundColor = containerColor,
                 tagTextColor = content,
                 titleColor = titleColor,
                 descriptionColor = colors.onSurfaceVariant,

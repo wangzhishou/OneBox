@@ -35,6 +35,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -66,6 +67,7 @@ import com.shifenmiao.database.item.entity.ItemWithCategoriesAndStats
 import com.shifenmiao.theme.AppFontMode
 import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassScrollEffectScope
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.com.string.TimeFormatter
@@ -134,20 +136,24 @@ fun FeaturedGrid(
             .coerceAtMost(FeaturedCardMaxViewportWidth)
         val resolvedCardWidth = cardWidth
             ?: maxOf(readableWidth, viewportWidth).coerceAtMost(maxWidth)
-        LazyRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.contentGap),
-        ) {
-            items(count = items.size, key = { index -> "featured_row_$index" }) { rowIndex ->
-                FeaturedCard(
-                    item = items[rowIndex],
-                    themeIndex = rowIndex,
-                    modifier = Modifier.width(resolvedCardWidth),
-                    clickInfo = clickInfo,
-                    layout = cardLayout,
-                    titleLines = titleLines,
-                    onClick = { onItemClick(items[rowIndex]) }
-                )
+        val listState = rememberLazyListState()
+        GlassScrollEffectScope(isScrolling = listState.isScrollInProgress) {
+            LazyRow(
+                state = listState,
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.contentGap),
+            ) {
+                items(count = items.size, key = { index -> "featured_row_$index" }) { rowIndex ->
+                    FeaturedCard(
+                        item = items[rowIndex],
+                        themeIndex = rowIndex,
+                        modifier = Modifier.width(resolvedCardWidth),
+                        clickInfo = clickInfo,
+                        layout = cardLayout,
+                        titleLines = titleLines,
+                        onClick = { onItemClick(items[rowIndex]) }
+                    )
+                }
             }
         }
     }
