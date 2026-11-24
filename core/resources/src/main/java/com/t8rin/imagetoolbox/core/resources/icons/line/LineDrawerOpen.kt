@@ -38,12 +38,10 @@ import com.t8rin.imagetoolbox.core.resources.Icons
 /**
  * 「打开抽屉」图标（来源：用户提供的设计稿，按 24dp 视口重建）。
  *
- * 圆角外框 + 竖向分隔线（45% 处）+ 左栏三条短横线 + 右栏右指箭头（`>`）。
- * 首页顶栏的抽屉按钮在抽屉关闭态显示它；点击后由 QuickOperations 切到
- * `LineDrawerClose`，抽屉内部的关闭按钮也用同一套图标。
+ * 圆角外框 + 靠左的竖向分隔线 + 右侧左指箭头（`<`）：抽屉从右侧滑出，
+ * 箭头朝左 = 把面板拉进来，所以关闭态顶栏用它。
  *
- * 笔画 1.1（设计稿本身更细，24dp 下会糊成灰线，这里按项目线框图标的
- * 常见粗细补齐），用 stroke 渲染保证任何尺寸都干净。
+ * 描边 1.1（设计稿更细，24dp 下会糊成灰线），stroke 渲染保证任何尺寸都干净。
  */
 
 val Icons.Outlined.LineDrawerOpen: ImageVector by lazy(LazyThreadSafetyMode.NONE) {
@@ -55,7 +53,7 @@ val Icons.Outlined.LineDrawerOpen: ImageVector by lazy(LazyThreadSafetyMode.NONE
         viewportHeight = 24f
     ).addPath(
         pathData = addPathNodes(
-            "M 4.4 1.8 L 19.6 1.8 C 21.04 1.8 22.2 2.96 22.2 4.4 L 22.2 19.6 C 22.2 21.04 21.04 22.2 19.6 22.2 L 4.4 22.2 C 2.96 22.2 1.8 21.04 1.8 19.6 L 1.8 4.4 C 1.8 2.96 2.96 1.8 4.4 1.8 Z M 11.1 2.9 L 11.1 21.2 M 3.9 7.45 L 9.3 7.45 M 3.9 11.65 L 9.3 11.65 M 3.9 15.85 L 9.3 15.85 M 14.8 8.2 L 18.3 11.9 L 14.8 15.6"
+            "M 4.4 1.8 L 19.6 1.8 C 21.04 1.8 22.2 2.96 22.2 4.4 L 22.2 19.6 C 22.2 21.04 21.04 22.2 19.6 22.2 L 4.4 22.2 C 2.96 22.2 1.8 21.04 1.8 19.6 L 1.8 4.4 C 1.8 2.96 2.96 1.8 4.4 1.8 Z M 7.3 2.9 L 7.3 21.2 M 16.4 8.4 L 12.6 12 L 16.4 15.6"
         ),
         stroke = SolidColor(Color.Black),
         strokeLineWidth = 1.1f,

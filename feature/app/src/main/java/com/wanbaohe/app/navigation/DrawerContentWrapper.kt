@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -57,7 +56,6 @@ import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.core.BuildConfig
 import com.shifenmiao.core.R
 import com.shifenmiao.core.constants.Constants.DRAWER_WIDTH
-import com.shifenmiao.login.viewModel.LoginComponent
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDrawerClose
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsManager
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
@@ -69,7 +67,6 @@ import com.wanbaohe.core.ui.widget.enhanced.floatingPanelTint
 import com.wanbaohe.core.ui.widget.enhanced.isOverlayGlassAvailable
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 import com.wanbaohe.core.ui.widget.theme.ThemePresetSelector
-import com.wanbaohe.profile.components.InvitationCodeAction
 import com.wanbaohe.profile.components.ProfileLogin
 import com.wanbaohe.setting.display.screen.DebugEnvironmentSettingItem
 import com.wanbaohe.setting.display.screen.DisableRobotSettingItem
@@ -86,7 +83,6 @@ import kotlinx.coroutines.launch
 fun DrawerContentWrapper(
     appComponent: AppComponent,
     onCloseDrawer: () -> Job,
-    loginComponent: LoginComponent
 ) {
     LocalLayoutDirection.ProvidesValue(LayoutDirection.Ltr) {
         val shape = RoundedCornerShape(
@@ -114,7 +110,6 @@ fun DrawerContentWrapper(
                 modifier = Modifier.weight(1f),
                 onCloseDrawer = onCloseDrawer,
                 appComponent = appComponent,
-                loginComponent = loginComponent
             )
         }
     }
@@ -125,7 +120,6 @@ fun DrawerMenu(
     modifier: Modifier = Modifier,
     appComponent: AppComponent,
     onCloseDrawer: () -> Job = { Job() },
-    loginComponent: LoginComponent,
 ) {
     val onNavigate = LocalOnNavigate.current
     val listState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -134,108 +128,91 @@ fun DrawerMenu(
 
     var showColorPicker by rememberSaveable { mutableStateOf(false) }
 
-    Column(modifier = modifier) {
-        // 抽屉里的关闭入口固定在右上角,不随列表滚动:顶栏的抽屉按钮会被 scrim
-        // 盖住,关闭只能从抽屉内部走,所以不能让它被列表滚走。
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = OneBoxDesignSystem.screenPadding)
-                .padding(top = OneBoxDesignSystem.screenPadding),
-            horizontalArrangement = Arrangement.End,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            IconButton(
-                onClick = { onCloseDrawer() },
-                modifier = Modifier.size(36.dp),
+    LazyColumn(
+        state = listState,
+        modifier = modifier.padding(OneBoxDesignSystem.screenPadding),
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing)
+    ) {
+        item {
+            ProfileLogin(
+                onClick = {
+                    onCloseDrawer()
+                }
             ) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDrawerClose,
-                    contentDescription = stringResource(id = R.string.close),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(22.dp),
-                )
-            }
-        }
-        LazyColumn(
-            state = listState,
-            modifier = Modifier
-                .weight(1f)
-                .padding(OneBoxDesignSystem.screenPadding),
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing)
-        ) {
-            item {
-                ProfileLogin(
-                    onClick = {
-                        onCloseDrawer()
-                    }
+                // 抽屉的关闭入口:抽屉打开后顶栏被 scrim 盖住,关闭只能这里走。
+                // 放在登录行右侧(原「邀请码」位置),图标与顶栏打开图标同为 24dp。
+                IconButton(
+                    onClick = { onCloseDrawer() },
+                    modifier = Modifier.size(40.dp),
                 ) {
-                    InvitationCodeAction(
-                        loginComponent = loginComponent
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDrawerClose,
+                        contentDescription = stringResource(id = R.string.close),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
-            item {
-                Text(
-                    text = stringResource(id = R.string.settings),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-            item {
-                // 横向滚动主题预设选择器（复用组件）
-                ThemePresetSelector(
-                    onNavigateToThemeSettings = {
-                        onCloseDrawer()
-                        onNavigate(Screen.ThemeSettings)
-                    }
-                )
-            }
-            item {
-                if (BuildConfig.DEBUG) {
-                    DebugEnvironmentSettingItem(appComponent)
+        }
+        item {
+            Text(
+                text = stringResource(id = R.string.settings),
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+        item {
+            // 横向滚动主题预设选择器（复用组件）
+            ThemePresetSelector(
+                onNavigateToThemeSettings = {
+                    onCloseDrawer()
+                    onNavigate(Screen.ThemeSettings)
                 }
-            }
-            item {
-                StartEntrySettingItem(onBeforeNavigate = { onCloseDrawer() })
-            }
-            item {
-                QuickSettingItem(appComponent, isMe = true)
-            }
-            item {
-                DisableRobotSettingItem(appComponent)
-            }
-            item {
-                PointsSettingItem()
-            }
-            item {
-                ThemeSettingItem()
-            }
-            item {
-                LayoutSettingItem()
-            }
-            item {
-                Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
-                FontSizeQuickSettingItem()
-            }
-            item {
-                Text(
-                    text = stringResource(id = R.string.data_database),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-            item {
-                DatabaseBackupRestoreSection(
-                    onOpen = {
-                        onCloseDrawer()
-                        onNavigate(Screen.BackupCenter)
-                    }
-                )
+            )
+        }
+        item {
+            if (BuildConfig.DEBUG) {
+                DebugEnvironmentSettingItem(appComponent)
             }
         }
-    }
+        item {
+            StartEntrySettingItem(onBeforeNavigate = { onCloseDrawer() })
+        }
+        item {
+            QuickSettingItem(appComponent, isMe = true)
+        }
+        item {
+            DisableRobotSettingItem(appComponent)
+        }
+        item {
+            PointsSettingItem()
+        }
+        item {
+            ThemeSettingItem()
+        }
+        item {
+            LayoutSettingItem()
+        }
+        item {
+            Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
+            FontSizeQuickSettingItem()
+        }
+        item {
+            Text(
+                text = stringResource(id = R.string.data_database),
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+        item {
+            DatabaseBackupRestoreSection(
+                onOpen = {
+                    onCloseDrawer()
+                    onNavigate(Screen.BackupCenter)
+                }
+            )
+        }
+        }
 
     if (showColorPicker) {
         val settingsUIState = LocalSettingsState.current

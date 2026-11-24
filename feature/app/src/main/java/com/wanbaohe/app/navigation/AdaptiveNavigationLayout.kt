@@ -216,7 +216,6 @@ private fun DrawerNavigationContainer(
             drawerContent = {
                 DrawerContentWrapper(
                     appComponent = appComponent,
-                    loginComponent = rootComponent.loginComponent,
                     onCloseDrawer = onCloseDrawer
                 )
             },
