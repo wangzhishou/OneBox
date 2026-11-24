@@ -31,7 +31,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.PlayCircle
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -39,11 +38,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.wanbaohe.core.ui.theme.White
 import com.wanbaohe.core.ui.widget.modifier.advancedShadow
 import com.t8rin.imagetoolbox.feature.media_picker.data.utils.formatMinSec
 import com.t8rin.imagetoolbox.feature.media_picker.domain.model.Media
-import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 
 @Composable
 fun MediaVideoDurationHeader(
@@ -77,7 +76,7 @@ fun MediaVideoDurationHeader(
                     alpha = 0.1f,
                     offsetY = (-2).dp
                 ),
-            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle,
+            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
             tint = White,
             contentDescription = "Video"
         )

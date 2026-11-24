@@ -25,7 +25,6 @@ package com.wanbaohe.code.editor.screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -48,6 +47,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineDataObject
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFileOpen
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSaveAs
 import com.wanbaohe.base.ui.button.CancelButton
@@ -56,7 +56,6 @@ import com.wanbaohe.base.ui.button.SecondaryButton
 import com.wanbaohe.code.editor.component.CodeEditorUiState
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
-import androidx.compose.material.icons.Icons as MaterialIcons
 import com.t8rin.imagetoolbox.core.resources.Icons as OneBoxIcons
 import com.wanbaohe.code.editor.R as EditorR
 
@@ -102,7 +101,7 @@ internal fun CodeEditorMoreMenu(
     Box {
         IconButton(onClick = { expanded = true }) {
             Icon(
-                imageVector = MaterialIcons.Filled.MoreVert,
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                 contentDescription = stringResource(R.string.open_menu),
             )
         }

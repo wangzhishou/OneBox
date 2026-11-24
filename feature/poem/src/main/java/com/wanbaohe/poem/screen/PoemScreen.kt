@@ -71,7 +71,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LinePoem
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRecordVoiceOver
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRestartAlt
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSearch
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineStopCircle
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineStop
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTextCard
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.poem.R
@@ -106,7 +106,7 @@ fun PoemScreen(component: PoemComponent) {
                     )
 
                     uiState.isReciting -> Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStopCircle,
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStop,
                         contentDescription = stringResource(R.string.poem_recite_stop),
                     )
 

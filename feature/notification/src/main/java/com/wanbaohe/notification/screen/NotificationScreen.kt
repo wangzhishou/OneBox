@@ -67,6 +67,7 @@ import coil3.request.ImageRequest
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.shifenmiao.base.pullrefresh.PullToRefreshLayout
 import com.shifenmiao.base.pullrefresh.rememberPullToRefreshStateOnTime
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.wanbaohe.base.ui.loading.EmptyBox
 import com.shifenmiao.base.utils.DateUtils
 import com.shifenmiao.common.components.Avatar
@@ -86,8 +87,6 @@ import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.notification.R
 import com.wanbaohe.notification.component.NotificationComponent
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
-import androidx.compose.material.icons.Icons as MaterialIcons
-import androidx.compose.material.icons.filled.MoreVert
 
 @Composable
 fun NotificationScreen(component: NotificationComponent) {
@@ -102,7 +101,7 @@ fun NotificationScreen(component: NotificationComponent) {
             Box {
                 IconButton(onClick = { showMenu = true }) {
                     Icon(
-                        imageVector = MaterialIcons.Filled.MoreVert,
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                         contentDescription = null,
                     )
                 }

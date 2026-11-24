@@ -32,7 +32,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FullscreenExit
 import androidx.compose.material.icons.outlined.GridOn
-import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -55,6 +54,7 @@ import com.shifenmiao.common.utils.BaseUtils
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageInfo
 import com.t8rin.imagetoolbox.core.resources.icons.Fullscreen
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
 import com.wanbaohe.core.ui.utils.capturable.CaptureController
@@ -432,7 +432,7 @@ private fun GameControls(component: GomokuGameComponent, onExport: () -> Unit, o
     ) {
         Box(Modifier.weight(1f)) {
             BoardGameToolButton(
-                icon = Icons.Outlined.MoreVert,
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                 label = stringResource(BoardGameR.string.boardgame_more),
                 onClick = { more = true },
                 enabled = enabled,

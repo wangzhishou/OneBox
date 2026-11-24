@@ -34,7 +34,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DeleteOutline
-import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.OpenWith
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
@@ -52,6 +51,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
@@ -204,7 +204,7 @@ fun XiangqiSetupScreen(
         ) {
             Box(Modifier.weight(1f)) {
                 BoardGameToolButton(
-                    icon = Icons.Outlined.MoreVert, label = stringResource(BoardGameR.string.boardgame_more),
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore, label = stringResource(BoardGameR.string.boardgame_more),
                     onClick = { more = true }, enabled = !busy, modifier = Modifier.fillMaxWidth(),
                 )
                 // 底部工具栏入口:向上展开;锚定整个 weight 单元格,箭头对准按钮中心

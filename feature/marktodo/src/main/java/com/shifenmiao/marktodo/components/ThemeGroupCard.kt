@@ -30,7 +30,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -57,6 +56,7 @@ import com.shifenmiao.marktodo.theme.categoryAccentColor
 import com.shifenmiao.marktodo.theme.categoryAccentContainerColor
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineReorder
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.wanbaohe.core.ui.widget.glass.GlassCard
@@ -406,7 +406,7 @@ private fun ThemeMenuAnchor(
         if (showMenuButton) {
             IconButton(onClick = { onExpandedChange(true) }, modifier = Modifier.size(48.dp)) {
                 Icon(
-                    imageVector = Icons.Outlined.MoreVert,
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                     contentDescription = stringResource(R.string.action_menu),
                     tint = contentColor,
                     modifier = Modifier.size(18.dp)

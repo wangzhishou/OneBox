@@ -39,7 +39,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.GridOff
 import androidx.compose.material.icons.outlined.Fullscreen
-import androidx.compose.material.icons.outlined.Stop
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -47,6 +46,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineStop
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -64,7 +65,6 @@ import com.wanbaohe.deadpixeltest.ui.ColorDotRow
 import com.wanbaohe.deadpixeltest.ui.ColorPanel
 import com.wanbaohe.deadpixeltest.ui.GridOverlay
 import com.t8rin.imagetoolbox.core.resources.icons.Fullscreen
-import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineGridOn
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCompress
 
@@ -125,7 +125,7 @@ fun DeadPixelTestScreen(component: DeadPixelTestComponent) {
                     colors = AppTheme.colors.iconButtonColors()
                 ) {
                     Icon(
-                        imageVector = if (state.isAutoPlaying) Icons.Outlined.Stop else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle,
+                        imageVector = if (state.isAutoPlaying) com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStop else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
                         contentDescription = stringResource(
                             if (state.isAutoPlaying) R.string.dead_pixel_auto_stop else R.string.dead_pixel_auto_play
                         )
@@ -290,7 +290,7 @@ private fun FullScreenTestView(
             Spacer(modifier = Modifier.width(2.dp))
             IconButton(onClick = onToggleAutoPlay, colors = AppTheme.colors.iconButtonColors()) {
                 Icon(
-                    imageVector = if (state.isAutoPlaying) Icons.Outlined.Stop else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle,
+                    imageVector = if (state.isAutoPlaying) com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStop else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
                     contentDescription = null,
                     tint = Color.White.copy(alpha = 0.8f)
                 )

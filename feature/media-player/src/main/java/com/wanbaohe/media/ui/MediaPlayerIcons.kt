@@ -25,13 +25,19 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.PathParser
 import androidx.compose.ui.unit.dp
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePauseBars
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 
 /**
- * 媒体页自己的 Material 图标集（24dp 网格）。
+ * 媒体页自己的图标集（24dp 网格）。
  *
- * 全站默认的 `Line*` 图标是字体批量生成的，播放/暂停、上一首/下一首、分享、收藏
- * 这些高频控件在小尺寸下笔画粗细和视觉重心都不太对。这里按 Material 官方 24dp
- * 网格手写/收录常用路径，只在本模块使用；`Icon(tint=...)` 依然负责着色。
+ * 上一首/下一首、全屏、分享、收藏这些控件在小尺寸下笔画粗细和视觉重心不太对，
+ * 这里按 Material 官方 24dp 网格手写/收录常用路径，只在本模块使用。
+ *
+ * 播放/暂停不再走 Material 的实心三角/双竖条，改为全站收口的
+ * `Icons.Outlined.LinePlay` / `Icons.Outlined.LinePauseBars`（线框图集里的播放
+ * 三角与暂停条），跟聊天、提示词、短视频卡片的播放键保持同一套笔画。
+ * `Icon(tint=...)` 依然负责着色。
  */
 private fun materialIcon(
     name: String,
@@ -51,13 +57,11 @@ private fun materialIcon(
 
 // ── 播放控制 ─────────────────────────────────────────────────────────────
 
-internal val MediaPlayIcon: ImageVector by lazy(LazyThreadSafetyMode.NONE) {
-    materialIcon("MediaPlay", "M8 5v14l11-7z")
-}
+internal val MediaPlayIcon: ImageVector
+    get() = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay
 
-internal val MediaPauseIcon: ImageVector by lazy(LazyThreadSafetyMode.NONE) {
-    materialIcon("MediaPause", "M6 19h4V5H6v14zm8-14v14h4V5h-4z")
-}
+internal val MediaPauseIcon: ImageVector
+    get() = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePauseBars
 
 internal val MediaSkipPreviousIcon: ImageVector by lazy(LazyThreadSafetyMode.NONE) {
     materialIcon("MediaSkipPrevious", "M6 6h2v12H6zm3.5 6l8.5 6V6z")

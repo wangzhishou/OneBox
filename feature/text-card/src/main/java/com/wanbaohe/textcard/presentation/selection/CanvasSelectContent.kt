@@ -46,7 +46,6 @@ import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.ContentPaste
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.UploadFile
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -74,6 +73,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.wanbaohe.base.ui.button.CancelButton
 import com.wanbaohe.base.ui.button.ConfirmButton
 import com.wanbaohe.base.ui.button.PrimaryButton
@@ -376,7 +376,7 @@ private fun RecentProjects(
                             Box {
                                 IconButton(onClick = { menuExpanded = true }) {
                                     Icon(
-                                        imageVector = Icons.Outlined.MoreVert,
+                                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                                         contentDescription = stringResource(R.string.textcard_more_actions),
                                         modifier = Modifier.size(18.dp)
                                     )

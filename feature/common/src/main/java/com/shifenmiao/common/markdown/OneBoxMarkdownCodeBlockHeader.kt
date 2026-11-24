@@ -23,7 +23,7 @@ import com.shifenmiao.common.R
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
-import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 import com.wanbaohe.core.ui.utils.helper.Clipboard
 import com.wanbaohe.core.ui.widget.glass.GlassButton
@@ -54,7 +54,7 @@ internal fun OneBoxMarkdownCodeBlockHeader(
             )
             CodeActionButton(
                 label = stringResource(R.string.markdown_run_code),
-                icon = Icons.Outlined.PlayCircle,
+                icon = Icons.Outlined.LinePlay,
                 containerColor = colorScheme.tertiaryContainer,
                 contentColor = colorScheme.onTertiaryContainer,
                 onClick = { actions.run(info.language, info.code) },

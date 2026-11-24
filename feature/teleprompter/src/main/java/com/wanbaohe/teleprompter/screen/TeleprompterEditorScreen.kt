@@ -53,8 +53,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
-import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
@@ -137,7 +137,7 @@ fun TeleprompterEditorScreen(
                 colors = AppTheme.colors.iconButtonColors()
             ) {
                 Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle,
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
                     contentDescription = stringResource(R.string.teleprompter_play),
                 )
             }

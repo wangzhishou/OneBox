@@ -60,10 +60,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.core.R
 import com.shifenmiao.model.marquee.MarqueePresentationMode
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.core.ui.widget.glass.glassBackground
-import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineText
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAccessTime
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHourglass
@@ -114,7 +114,7 @@ fun rememberPresentationModes(): List<PresentationModeInfo> {
             PresentationModeInfo(
                 mode = MarqueePresentationMode.ClassicMarquee,
                 label = classicLabel,
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle,
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
                 description = classicDesc
             ),
             PresentationModeInfo(

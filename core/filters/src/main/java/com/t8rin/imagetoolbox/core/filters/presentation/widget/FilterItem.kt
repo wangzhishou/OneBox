@@ -44,7 +44,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -70,6 +69,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.filters.presentation.model.UiFilter
 import com.t8rin.imagetoolbox.core.resources.R
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.wanbaohe.core.ui.theme.outlineVariant
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedButton
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
@@ -166,7 +166,7 @@ fun <T : Any> FilterItem(
                                     }
                                 ) {
                                     Icon(
-                                        imageVector = Icons.Filled.MoreVert,
+                                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                                         contentDescription = "more"
                                     )
                                 }

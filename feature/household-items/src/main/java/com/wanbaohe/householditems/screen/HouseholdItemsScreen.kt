@@ -75,6 +75,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineCalendarAlert
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCatBulky
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLocationOn
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePieChart
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineQuickTiles
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineViewList
@@ -102,8 +103,6 @@ import com.wanbaohe.householditems.model.locationIcon
 import com.wanbaohe.householditems.model.locationPathOf
 import com.wanbaohe.householditems.model.subtreeLocationIds
 import java.io.File
-import androidx.compose.material.icons.Icons as MaterialIcons
-import androidx.compose.material.icons.filled.MoreVert
 
 /** 物品少于此数时不显示搜索框。 */
 private const val SearchFieldMinItemCount = 8
@@ -629,7 +628,7 @@ private fun ItemOverflowMenu(
             contentAlignment = Alignment.Center,
         ) {
             Icon(
-                imageVector = MaterialIcons.Filled.MoreVert,
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                 contentDescription = stringResource(R.string.household_item_actions),
                 modifier = Modifier.size(18.dp),
                 // 浅淡色,只做入口不做视觉焦点

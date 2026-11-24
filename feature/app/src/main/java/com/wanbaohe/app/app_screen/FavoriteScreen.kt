@@ -74,6 +74,7 @@ import androidx.compose.ui.unit.sp
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.shifenmiao.base.manager.DeleteConfirmationManager
 import com.shifenmiao.base.provider.LocalDataDraftHelper
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.wanbaohe.base.ui.AdvancedDeleteConfirmDialog
 import com.wanbaohe.base.ui.ClearHistoryConfirmDialog
 import com.wanbaohe.base.ui.button.SmallFixedHeightButton
@@ -138,8 +139,6 @@ import com.t8rin.imagetoolbox.core.resources.icons.Language
 import com.t8rin.imagetoolbox.core.resources.icons.DeleteSweep
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.t8rin.imagetoolbox.core.resources.Icons
-import androidx.compose.material.icons.Icons as MaterialIcons
-import androidx.compose.material.icons.filled.MoreVert
 
 // ══════════════════════════════════════════════════════════════
 //  分区 Key 前缀（用于顶部标题跟随）
@@ -681,7 +680,7 @@ private fun MineListItemCard(
             ) {
                 IconButton(onClick = { expanded = true }) {
                     Icon(
-                        imageVector = MaterialIcons.Filled.MoreVert,
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                         contentDescription = stringResource(R.string.card_more_actions),
                         modifier = Modifier.size(AppTheme.dimens.iconSmallSize),
                         tint = MaterialTheme.colorScheme.outline

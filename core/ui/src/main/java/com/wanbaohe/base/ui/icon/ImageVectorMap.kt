@@ -21,6 +21,7 @@ package com.wanbaohe.base.ui.icon
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.wanbaohe.base.ui.icon.IconRegistry.appIcons
 import com.wanbaohe.base.ui.icon.IconRegistry.materialIcons
 import com.wanbaohe.base.ui.icon.IconRegistry.resolve
@@ -41,7 +42,6 @@ import com.t8rin.imagetoolbox.core.resources.icons.ImageText
 import com.t8rin.imagetoolbox.core.resources.icons.Language
 import com.t8rin.imagetoolbox.core.resources.icons.Lightbulb
 import com.t8rin.imagetoolbox.core.resources.icons.OpenInNew
-import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
 import com.t8rin.imagetoolbox.core.resources.icons.RobotHappy
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAgent
@@ -550,8 +550,8 @@ object IconRegistry {
         "Photo" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImage },
         "PhotoAlbum" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImagePreview },
         "PhotoLibrary" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImagePreview },
-        "PlayArrow" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle },
-        "PlayCircleOutline" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle },
+        "PlayArrow" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay },
+        "PlayCircleOutline" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay },
         "QrCode2" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineQrCode },
         "Refresh" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh },
         "Remove" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMinus },

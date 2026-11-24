@@ -78,6 +78,7 @@ import androidx.core.graphics.ColorUtils
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import java.util.Locale
 import com.shifenmiao.common.ui.BaseScreen
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
@@ -92,9 +93,8 @@ import com.wanbaohe.survive30s.component.SurvivalPhase
 import com.wanbaohe.survive30s.component.Survive30sUiState
 import com.wanbaohe.survive30s.engine.Survive30sEngine
 // 下面这几个图标导入不能删：Icons.Rounded.ArrowBack / Icons.Outlined.Refresh /
-// Icons.Outlined.PlayCircle 是这些文件提供的扩展属性，删掉后全限定名调用会解析失败
+// Icons.Outlined.LinePlay 是这些文件提供的扩展属性，删掉后全限定名调用会解析失败
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
-import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
 
 /**
@@ -1045,7 +1045,7 @@ private fun GameOverOverlay(
                         .heightIn(min = 52.dp),
                 ) {
                     Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle,
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
                         contentDescription = null,
                         modifier = Modifier.size(20.dp),
                     )

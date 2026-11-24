@@ -54,9 +54,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.core.R
 import com.shifenmiao.model.state.PlayState
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.wanbaohe.core.ui.widget.enhanced.hapticsCombinedClickable
 import com.wanbaohe.core.ui.widget.glass.glassBackground
-import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 import com.t8rin.imagetoolbox.core.resources.icons.VolumeOff
 import com.t8rin.imagetoolbox.core.resources.icons.VolumeUp
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePause
@@ -186,7 +186,7 @@ fun PlayButton(
 
             PlayState.PAUSED -> {
                 ActionButton(
-                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle,
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
                     contentDescription = "Pause",
                 ) {
                     pausedClick()

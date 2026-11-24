@@ -27,7 +27,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.outlined.GridOn
 import androidx.compose.material.icons.outlined.MoreHoriz
 import androidx.compose.material3.CircularProgressIndicator
@@ -48,6 +47,7 @@ import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.storage.RemoteConfigStorage
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUploadFile
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
@@ -111,7 +111,7 @@ fun ChessPlayHomeScreen(component: ChessRouterComponent, modifier: Modifier = Mo
                             label = stringResource(
                                 if (state.isUpdating) R.string.chess_setup_starting else R.string.chess_start_action,
                             ),
-                            icon = Icons.Filled.PlayArrow,
+                            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
                             onClick = component::startPreparation,
                             enabled = state.isLoaded && !state.isUpdating && issue == null,
                             primary = true,

@@ -25,8 +25,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material.icons.Icons as MaterialIcons
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -133,7 +131,7 @@ fun WebViewTopAppBarWithExport(
             Box {
                 IconButton(onClick = { showMenu = true }) {
                     Icon(
-                        imageVector = MaterialIcons.Filled.MoreVert,
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                         contentDescription = stringResource(R.string.open_menu)
                     )
                 }

@@ -99,11 +99,13 @@ import com.shifenmiao.model.state.ChatUIState
 import com.shifenmiao.model.state.PageState
 import com.shifenmiao.storage.AIChatStorage
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineStop
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
 import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
+import com.wanbaohe.icons.LineEditorIcons
 import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.Add
@@ -111,8 +113,6 @@ import com.t8rin.imagetoolbox.core.resources.icons.ArrowUpward
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.Fullscreen
 import com.t8rin.imagetoolbox.core.resources.icons.DeleteSweep
-import com.t8rin.imagetoolbox.core.resources.icons.Mic
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineStopCircle
 
 
 @Composable
@@ -423,7 +423,7 @@ private fun StandardInputSection(
                 // 用户可分段续说,识别结果换行追加到输入框末尾
                 if (voiceInputEnabled && !showVoice && !isLoading) {
                     SmallIconBtn(
-                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Mic,
+                        icon = LineEditorIcons.Voice,
                         contentDescription = stringResource(R.string.ai_input_voice),
                         onClick = startVoiceInput
                     )
@@ -777,7 +777,7 @@ private fun ActionButton(
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStopCircle,
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStop,
                 contentDescription = stringResource(R.string.ai_duel_stop),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(iconSize)
@@ -799,7 +799,7 @@ private fun ActionButton(
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Mic,
+                imageVector = LineEditorIcons.Voice,
                 contentDescription = stringResource(R.string.ai_input_voice),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(iconSize)

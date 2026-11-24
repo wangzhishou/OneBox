@@ -38,12 +38,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.wanbaohe.core.ui.widget.glass.GlassSwitch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -222,7 +222,7 @@ fun SkillManagementContent(
             Box {
                 IconButton(onClick = { showImportMenu = true }) {
                     Icon(
-                        imageVector = Icons.Outlined.MoreVert,
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                         contentDescription = stringResource(SettingsR.string.skill_import_clipboard),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     )

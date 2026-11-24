@@ -63,6 +63,7 @@ import com.shifenmiao.model.tts.TTSConfig
 import com.shifenmiao.model.tts.TTSProviderDescriptor
 import com.shifenmiao.model.tts.TTSProviderType
 import com.shifenmiao.tts.service.TTSService
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassFilterChip
@@ -79,7 +80,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.shifenmiao.core.R as CoreR
-import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineVisibility
@@ -511,7 +511,7 @@ private fun PreviewActionButton(
         enabled = enabled,
         modifier = modifier,
     ) {
-        Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle, contentDescription = null)
+        Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay, contentDescription = null)
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             stringResource(

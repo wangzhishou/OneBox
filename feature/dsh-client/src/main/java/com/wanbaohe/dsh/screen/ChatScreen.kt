@@ -55,8 +55,6 @@ import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material.icons.outlined.AccountTree
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.Flag
@@ -107,6 +105,8 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineStop
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
@@ -610,7 +610,7 @@ fun ChatScreen(component: DshRootComponent) {
                         if (selected?.running == true) {
                             IconButton(onClick = component::cancelCurrentTurn) {
                                 Icon(
-                                    imageVector = Icons.Default.Stop,
+                                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStop,
                                     contentDescription = stringResource(R.string.dsh_stop_turn),
                                     tint = MaterialTheme.colorScheme.onErrorContainer
                                 )
@@ -1327,7 +1327,7 @@ private fun WorkspaceHeader(
         Box {
             IconButton(onClick = { menuOpen = true }, modifier = Modifier.size(32.dp)) {
                 Icon(
-                    imageVector = Icons.Default.MoreVert,
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                     contentDescription = stringResource(R.string.dsh_workspace_actions),
                     modifier = Modifier.size(16.dp),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant

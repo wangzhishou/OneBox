@@ -43,7 +43,6 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -70,6 +69,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.wanbaohe.speedtest.R
 import com.wanbaohe.speedtest.component.SpeedTestStatus
 import kotlin.math.cos
@@ -266,7 +266,7 @@ fun SpeedGauge(
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
-                                Icons.Filled.PlayArrow,
+                                com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
                                 stringResource(R.string.speed_test_start),
                                 Modifier.size(36.dp),
                                 tint = onActionColor

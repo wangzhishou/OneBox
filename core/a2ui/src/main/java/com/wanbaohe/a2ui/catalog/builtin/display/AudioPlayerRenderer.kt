@@ -30,12 +30,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.a2ui.catalog.A2uiComponentRenderer
 import com.wanbaohe.a2ui.catalog.A2uiRenderContext
 import com.wanbaohe.a2ui.domain.model.A2uiComponent
 import javax.inject.Inject
-import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 
 class AudioPlayerRenderer @Inject constructor() : A2uiComponentRenderer {
 
@@ -58,7 +58,7 @@ class AudioPlayerRenderer @Inject constructor() : A2uiComponentRenderer {
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Icon(imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle, contentDescription = "Play")
+                Icon(imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay, contentDescription = "Play")
                 Text(text = if (src.isNullOrEmpty()) label else "$label: $src")
             }
         }

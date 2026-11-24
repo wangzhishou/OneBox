@@ -60,13 +60,13 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.R
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.wanbaohe.com.color.ColorGenerator
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
 import kotlin.math.sqrt
 import kotlin.random.Random
-import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 
 /** 按像素宽度截断文案,超长补省略号,避免扇区标签互相压字。 */
 private fun ellipsizeToWidth(label: String, paint: android.graphics.Paint, maxWidth: Float): String {
@@ -281,7 +281,7 @@ fun DecisionWheelSpinButton(
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle,
+            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
             contentDescription = stringResource(R.string.start),
             tint = contentColor,
             modifier = Modifier.size(40.dp)

@@ -39,7 +39,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -73,6 +72,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAccessTime
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCheckBoxBlank
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFlag
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineStar
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.wanbaohe.core.ui.widget.glass.GlassCard
@@ -374,7 +374,7 @@ fun TaskOverflowMenu(
                 modifier = Modifier.size(TaskOverflowButtonSize),
             ) {
                 Icon(
-                    imageVector = Icons.Outlined.MoreVert,
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                     contentDescription = stringResource(R.string.action_menu),
                     tint = contentColor,
                     modifier = Modifier.size(19.dp),

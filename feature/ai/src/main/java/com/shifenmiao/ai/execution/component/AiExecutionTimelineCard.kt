@@ -77,6 +77,7 @@ import com.shifenmiao.ai.execution.model.DeepLinkItemUiModel
 import com.shifenmiao.ai.execution.model.ExecutionStepStatus
 import com.shifenmiao.ai.execution.model.ExecutionStepUiModel
 import com.shifenmiao.common.handle.LocalUrlNavigator
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.wanbaohe.core.ui.widget.glass.GlassCardSegment
 import com.wanbaohe.core.ui.widget.glass.flatGlassCardSegment
 import com.shifenmiao.core.R
@@ -87,7 +88,6 @@ import com.t8rin.imagetoolbox.core.resources.icons.CheckCircle
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.OpenInNew
-import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandLess
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWarning
@@ -217,7 +217,7 @@ fun AiExecutionTimelineCard(
                                 contentPadding = ButtonDefaults.TextButtonContentPadding
                             ) {
                                 Icon(
-                                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle,
+                                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
                                     contentDescription = null,
                                     modifier = Modifier.size(16.dp)
                                 )

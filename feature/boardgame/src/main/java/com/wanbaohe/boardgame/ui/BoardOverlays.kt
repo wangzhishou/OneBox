@@ -29,7 +29,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -47,7 +46,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.material.icons.Icons as MaterialIcons
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 
 /**
  * 棋盘遮罩的统一底色:[androidx.compose.material3.ColorScheme.surfaceContainerLow] 半透明平涂。
@@ -95,7 +94,7 @@ fun BoxScope.BoardStartOverlay(
     BoardCover(modifier) {
         BoardGamePillButton(
             label = startLabel,
-            icon = MaterialIcons.Filled.PlayArrow,
+            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
             onClick = onStart,
             primary = true,
         )

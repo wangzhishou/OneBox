@@ -27,7 +27,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.outlined.GridOn
 import androidx.compose.material.icons.outlined.MoreHoriz
 import androidx.compose.material3.CircularProgressIndicator
@@ -48,6 +47,7 @@ import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.storage.RemoteConfigStorage
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUploadFile
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
@@ -109,7 +109,7 @@ fun GomokuPlayHomeScreen(component: GomokuRouterComponent, modifier: Modifier = 
                             label = stringResource(
                                 if (state.isUpdating) R.string.gomoku_starting else R.string.gomoku_start_play,
                             ),
-                            icon = Icons.Filled.PlayArrow,
+                            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
                             onClick = component::startPreparation,
                             enabled = state.isLoaded && !state.isUpdating && issue == null,
                             primary = true,

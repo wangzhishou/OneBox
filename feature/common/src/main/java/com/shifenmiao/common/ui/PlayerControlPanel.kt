@@ -37,7 +37,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
@@ -46,6 +45,8 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderState
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePauseBars
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.wanbaohe.core.ui.widget.glass.GlassSwitch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -67,7 +68,6 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.R
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
-import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineKeyboardArrowDown
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineText
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDashboard
@@ -216,7 +216,7 @@ fun PlayerControlPanel(
                         ),
                     ) {
                         Icon(
-                            imageVector = if (state.isPlaying) Icons.Filled.Pause else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle,
+                            imageVector = if (state.isPlaying) com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePauseBars else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
                             contentDescription = if (state.isPlaying)
                                 stringResource(R.string.common_player_pause)
                             else

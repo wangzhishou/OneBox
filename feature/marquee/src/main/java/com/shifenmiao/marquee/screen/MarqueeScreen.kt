@@ -67,6 +67,7 @@ import com.shifenmiao.marquee.screen.components.ModeSettingsPanel
 import com.shifenmiao.marquee.screen.components.PresentationModeSelector
 import com.shifenmiao.marquee.screenLogic.MarqueeComponent
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.wanbaohe.core.ui.widget.color_picker.ColorSelectionRow
 import com.wanbaohe.core.ui.widget.color_picker.ColorSelectionRowDefaults
 import com.wanbaohe.core.ui.widget.glass.GlassCard
@@ -77,7 +78,6 @@ import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.core.ui.widget.glass.GlassCustomSlider
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.Close
-import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 
 @Composable
 fun MarqueeScreen(
@@ -123,7 +123,7 @@ fun MarqueeScreen(
                 onClick = { launchPreview() }
             ) {
                 Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle,
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
                     contentDescription = stringResource(id = R.string.marquee_preview),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -633,7 +633,7 @@ fun MarqueeScreen(
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
             ) {
                 Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle,
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
                     contentDescription = stringResource(id = R.string.marquee_preview),
                     modifier = Modifier.size(18.dp),
                     tint = MaterialTheme.colorScheme.onSecondaryContainer

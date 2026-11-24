@@ -19,7 +19,6 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material.icons.Icons as MaterialIcons
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.Delete
@@ -46,6 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.R
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
@@ -115,7 +115,7 @@ internal object NativeTableBlockEditor : MarkdownBlockEditor {
                     Box {
                         IconButton(onClick = { showMenu = true }) {
                             Icon(
-                                imageVector = MaterialIcons.Filled.MoreVert,
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.size(20.dp),

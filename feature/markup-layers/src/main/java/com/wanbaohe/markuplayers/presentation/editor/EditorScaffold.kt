@@ -98,6 +98,7 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.wanbaohe.base.ui.button.CancelButton
 import com.wanbaohe.base.ui.button.ConfirmButton
 import com.shifenmiao.base.utils.ActionUtils
@@ -202,7 +203,6 @@ import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
 import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.outlined.FitScreen
 import androidx.compose.material.icons.outlined.Gradient
-import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material.icons.outlined.ZoomOutMap
 
@@ -973,7 +973,7 @@ private fun EditorTopBarActions(
     Box {
         EnhancedIconButton(onClick = { menuExpanded = true }) {
             Icon(
-                imageVector = MaterialIcons.Outlined.MoreVert,
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                 contentDescription = stringResource(R.string.markup_more_options)
             )
         }

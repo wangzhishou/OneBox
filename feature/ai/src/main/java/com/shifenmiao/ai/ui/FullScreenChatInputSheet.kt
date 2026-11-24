@@ -84,12 +84,12 @@ import com.shifenmiao.core.R
 import com.shifenmiao.model.ai.ChatInputEventHandler
 import com.shifenmiao.model.ai.ChatInputState
 import com.shifenmiao.model.state.ChatUIState
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineStop
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowUpward
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.DeleteSweep
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineStopCircle
 
 /**
  * 全屏写作态：用 ModalBottomSheet 占满屏幕，提供更舒适的长文撰写体验。
@@ -353,7 +353,7 @@ private fun FullScreenSendButton(
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStopCircle,
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStop,
                 contentDescription = stringResource(R.string.ai_duel_stop),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(iconSize)

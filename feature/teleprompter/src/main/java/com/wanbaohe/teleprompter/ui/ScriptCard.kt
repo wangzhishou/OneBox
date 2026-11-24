@@ -30,8 +30,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons as MaterialIcons
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -50,6 +48,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.database.teleprompter.entity.TeleprompterScriptEntity
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.wanbaohe.com.string.TimeFormatter
 import com.wanbaohe.teleprompter.R
 import com.wanbaohe.teleprompter.util.ScriptCountUnit
@@ -59,7 +59,6 @@ import java.util.Date
 
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedButton
 import com.wanbaohe.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
@@ -104,7 +103,7 @@ fun ScriptCard(
                 Box {
                     IconButton(onClick = { showMenu = true }) {
                         Icon(
-                            imageVector = MaterialIcons.Filled.MoreVert,
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                             contentDescription = stringResource(R.string.teleprompter_more_actions),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -191,7 +190,7 @@ fun ScriptCard(
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
                 ) {
                     Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle,
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
                         contentDescription = null,
                         modifier = Modifier.size(18.dp),
                     )

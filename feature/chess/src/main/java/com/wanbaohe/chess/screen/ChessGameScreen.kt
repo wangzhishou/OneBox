@@ -34,7 +34,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Fullscreen
 import androidx.compose.material.icons.outlined.FullscreenExit
 import androidx.compose.material.icons.outlined.GridOn
-import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
@@ -58,6 +57,7 @@ import androidx.compose.ui.unit.sp
 import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageInfo
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
 import com.wanbaohe.core.ui.utils.capturable.CaptureController
@@ -454,7 +454,7 @@ private fun GameActions(component: ChessGameComponent, onExport: () -> Unit) {
     ) {
         Box(Modifier.weight(1f)) {
             BoardGameToolButton(
-                icon = Icons.Outlined.MoreVert,
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                 label = stringResource(BoardGameR.string.boardgame_more),
                 onClick = { more = true },
                 enabled = state.isLoaded && !state.isUpdating,

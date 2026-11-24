@@ -43,7 +43,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Fullscreen
 import androidx.compose.material.icons.outlined.FullscreenExit
 import androidx.compose.material.icons.outlined.GridOn
-import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -71,6 +70,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.ImmersiveModeState
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.xiangqi.ui.XiangqiOpponentPicker
 import com.shifenmiao.common.utils.BaseUtils
@@ -1069,7 +1069,7 @@ private fun ActionBar(
     ) {
         Box(Modifier.weight(1f)) {
             BoardGameToolButton(
-                icon = Icons.Outlined.MoreVert,
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                 label = stringResource(BoardGameR.string.boardgame_more),
                 onClick = { more = true },
                 enabled = enabled,

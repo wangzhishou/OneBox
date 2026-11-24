@@ -33,7 +33,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DeleteOutline
-import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.OpenWith
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
@@ -50,6 +49,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
 import com.wanbaohe.core.ui.utils.helper.Clipboard
@@ -195,7 +195,7 @@ fun GomokuSetupScreen(
         ) {
             Box(Modifier.weight(1f)) {
                 BoardGameToolButton(
-                    icon = Icons.Outlined.MoreVert,
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                     label = stringResource(BoardGameR.string.boardgame_more),
                     onClick = { more = true },
                     enabled = !busy,

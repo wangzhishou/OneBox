@@ -63,6 +63,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Lightbulb
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBackspace
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBarChart
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineGrid4x4
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePause
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTimer
@@ -77,8 +78,6 @@ import com.wanbaohe.sudoku.component.SudokuComponent
 import com.wanbaohe.sudoku.component.SudokuUiState
 import com.wanbaohe.sudoku.data.SudokuTimerMode
 import com.wanbaohe.sudoku.logic.SudokuEngine
-import androidx.compose.material.icons.Icons as MaterialIcons
-import androidx.compose.material.icons.filled.MoreVert
 
 /**
  * 核心层: 对局页。顶栏右侧 = 提示/撤销/溢出菜单;
@@ -154,7 +153,7 @@ private fun GameOverflowMenu(component: SudokuComponent) {
     Box {
         IconButton(onClick = { showMenu = true }) {
             Icon(
-                imageVector = MaterialIcons.Filled.MoreVert,
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                 contentDescription = stringResource(R.string.sudoku_more)
             )
         }
