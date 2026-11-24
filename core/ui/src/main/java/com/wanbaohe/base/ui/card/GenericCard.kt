@@ -103,11 +103,8 @@ data class CardAction(
 // 动作面板每行列数
 private const val ACTION_GRID_COLUMNS = 3
 
-/** 动作面板右上角的关闭: 用卡片主题的文字色, 比正文再透一点。 */
+/** 卡片 chrome 图标(右上角「更多」、动作面板右上角关闭): 比正文再透一点。 */
 private const val CARD_CHROME_ICON_ALPHA = 0.7f
-
-/** 卡片右上角的「更多」: 只是装饰性入口, 比关闭按钮再淡一档。 */
-private const val CARD_MORE_ICON_ALPHA = 0.5f
 
 /**
  * 铺满整张卡片的动作面板。底是 surfaceContainerLow。
@@ -427,7 +424,7 @@ fun GenericTonalCard(
                                         com.shifenmiao.core.R.string.card_more_actions
                                     ),
                                     tint = resolvedPalette.iconContentColor.copy(
-                                        alpha = CARD_MORE_ICON_ALPHA
+                                        alpha = CARD_CHROME_ICON_ALPHA
                                     )
                                 )
                             }
