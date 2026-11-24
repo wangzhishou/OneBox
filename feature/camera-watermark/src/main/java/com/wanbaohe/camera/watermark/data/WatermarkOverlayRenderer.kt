@@ -188,16 +188,20 @@ class WatermarkOverlayRenderer @Inject constructor(
     ) {
         val width = bounds.width()
         val height = bounds.height()
-        val margin = 12f * appContext.resources.displayMetrics.density
+        val margin = 16f * appContext.resources.displayMetrics.density
         val textReference = if (isPreview) width else minOf(width, height)
         val textSize = (textReference * 0.031f).coerceAtLeast(12f)
         val secondarySize = textSize * 0.84f
         val topBaseline = if (isPreview) {
             bounds.top + height * 0.14f
         } else {
-            bounds.top + margin + textSize
+            bounds.top + margin + textSize * 1.5f
         }
-        val bottomBaseline = if (isPreview) bounds.bottom - height * 0.29f else bounds.bottom - margin
+        val bottomBaseline = if (isPreview) {
+            bounds.bottom - height * 0.29f
+        } else {
+            bounds.bottom - margin - textSize
+        }
         val topRightWidth = width * if (isPreview) 0.3f else 0.32f
         val bottomRightWidth = width * if (isPreview) 0.36f else 0.38f
         val topTone = WatermarkTone.forLuminance(topLuminance)
@@ -321,7 +325,11 @@ class WatermarkOverlayRenderer @Inject constructor(
             val iconWidth = if (icon == null) 0f else size * 1.35f
             textPaint(Color.WHITE, size, false).measureText(text) + iconWidth
         }.coerceAtMost(maxWidth)
-        val startX = if (alignEnd) x - blockWidth else x
+        val horizontalPadding = textSize * 0.65f
+        val verticalPadding = textSize * 0.5f
+        val backgroundWidth = blockWidth + horizontalPadding * 2f
+        val backgroundLeft = if (alignEnd) x - backgroundWidth else x
+        val startX = backgroundLeft + horizontalPadding
         val firstBaseline = if (bottomAligned) {
             baseline - (lines.size - 1) * lineHeight - lines.last().second * 0.25f
         } else {
@@ -329,24 +337,25 @@ class WatermarkOverlayRenderer @Inject constructor(
         }
         val top = firstBaseline - textSize
         val bottom = firstBaseline + (lines.size - 1) * lineHeight + textSize * 0.35f
+        val background = RectF(
+            backgroundLeft,
+            top - verticalPadding,
+            backgroundLeft + backgroundWidth,
+            bottom + verticalPadding,
+        )
         val scrim = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             shader = LinearGradient(
-                startX - textSize,
+                background.left,
                 0f,
-                startX + blockWidth + textSize * 2f,
+                background.right,
                 0f,
                 tone.scrimColor,
                 Color.TRANSPARENT,
                 Shader.TileMode.CLAMP,
             )
         }
-        canvas.drawRect(
-            startX - textSize,
-            top - textSize * 0.5f,
-            startX + blockWidth + textSize * 2f,
-            bottom + textSize * 0.5f,
-            scrim,
-        )
+        val cornerRadius = textSize * 0.6f
+        canvas.drawRoundRect(background, cornerRadius, cornerRadius, scrim)
         lines.forEachIndexed { index, (text, size, icon) ->
             val y = firstBaseline + index * lineHeight
             val iconWidth = if (icon == null) 0f else size * 1.35f

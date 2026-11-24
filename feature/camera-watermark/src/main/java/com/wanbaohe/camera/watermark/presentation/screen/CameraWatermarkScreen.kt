@@ -88,7 +88,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.CameraAlt
 import com.t8rin.imagetoolbox.core.resources.icons.FlashAuto
 import com.t8rin.imagetoolbox.core.resources.icons.FlashOff
 import com.t8rin.imagetoolbox.core.resources.icons.FlashOn
-import com.t8rin.imagetoolbox.core.resources.icons.PhotoLibrary
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineImage
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLocationOn
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMic
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePause
@@ -105,6 +105,8 @@ import com.wanbaohe.camera.watermark.domain.CreativeScene
 import com.wanbaohe.camera.watermark.presentation.components.CameraSettingsSheet
 import com.wanbaohe.camera.watermark.presentation.components.CameraSettingsTab
 import com.wanbaohe.camera.watermark.presentation.screenLogic.CameraWatermarkComponent
+import com.wanbaohe.base.ui.button.CancelButton
+import com.wanbaohe.base.ui.button.ConfirmButton
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
@@ -592,7 +594,7 @@ private fun CameraBottomControls(
                         )
                     } else {
                         Icon(
-                            CoreIcons.Outlined.PhotoLibrary,
+                            CoreIcons.Outlined.LineImage,
                             null,
                             modifier = Modifier.padding(16.dp),
                         )
@@ -1263,36 +1265,23 @@ private fun CapturedPhotoContent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.Black)
+                .background(MaterialTheme.colorScheme.surfaceContainer)
                 .navigationBarsPadding()
                 .padding(horizontal = 24.dp, vertical = 16.dp),
-            horizontalArrangement = Arrangement.Center,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            GlassOutlinedButton(
+            CancelButton(
+                text = stringResource(R.string.camera_retake),
+                modifier = Modifier.weight(1f),
+                enabled = !isSaving,
                 onClick = onRetake,
+            )
+            ConfirmButton(
+                text = stringResource(R.string.camera_save_to_gallery),
+                modifier = Modifier.weight(1f),
                 enabled = !isSaving,
-                shape = RoundedCornerShape(16.dp),
-                color = Color.Black,
-                contentColor = Color.White,
-            ) {
-                Text(
-                    text = stringResource(R.string.camera_retake),
-                    style = MaterialTheme.typography.labelLarge,
-                )
-            }
-            Spacer(Modifier.width(12.dp))
-            GlassTonalButton(
                 onClick = onSave,
-                enabled = !isSaving,
-                shape = RoundedCornerShape(16.dp),
-                color = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            ) {
-                Text(
-                    text = stringResource(R.string.camera_save_to_gallery),
-                    style = MaterialTheme.typography.labelLarge,
-                )
-            }
+            )
         }
     }
 }
