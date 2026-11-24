@@ -2,147 +2,152 @@
 <!--
   ~ OneBox is a free AI agent and toolbox for Android
   ~ Copyright (c) 2026 zhishouwang(网址兽)
-  ~
   ~ Origin: OneBox original work, not derived from ImageToolbox
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  ~
-  ~ You should have received a copy of the Apache License
-  ~ along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+  ~ Licensed under the Apache License, Version 2.0
   -->
-
 <resources>
-    <!-- 页面标题 -->
-    <string name="camera_watermark_title">相机水印</string>
+    <string name="camera_watermark_title">水印相机</string>
+    <string name="camera_back">返回</string>
+    <string name="camera_mode_photo">拍照</string>
+    <string name="camera_mode_video">录像</string>
+    <string name="camera_settings">拍摄设置</string>
+    <string name="camera_flash">闪光灯模式</string>
+    <string name="camera_torch">常亮补光</string>
+    <string name="camera_switch">切换前后摄像头</string>
+    <string name="camera_mute">录像静音或恢复声音</string>
+    <string name="camera_pause">暂停或继续录像</string>
+    <string name="camera_last_capture">最近拍摄</string>
+    <string name="camera_grid_off_short">网格关</string>
+    <string name="camera_grid_on_short">网格开</string>
+    <string name="camera_permission_title">需要相机权限</string>
+    <string name="camera_permission_message">允许使用相机后，即可实时预览、拍摄水印照片和录制视频。麦克风与定位只在你使用对应功能时申请。</string>
+    <string name="camera_permission_grant">允许使用相机</string>
+    <string name="camera_captured_photo">已拍照片</string>
+    <string name="camera_confirm_photo">确认照片</string>
+    <string name="camera_retake">重拍</string>
+    <string name="camera_save_to_gallery">保存到相册</string>
+    <string name="camera_effect_baked_hint">所选水印和相机滤镜已经合成到这张照片中。</string>
+    <string name="camera_photo_saved">照片已保存到相册</string>
+    <string name="camera_video_saved">视频已保存到相册</string>
+    <string name="camera_save_failed">保存拍摄结果失败</string>
+    <string name="camera_capture_failed">拍照失败</string>
+    <string name="camera_recording_failed">录像失败</string>
+    <string name="camera_initialization_failed">当前设备不支持这套相机配置</string>
+    <string name="camera_effect_failed">当前相机无法使用实时水印效果</string>
+    <string name="camera_location_failed">无法获取当前位置</string>
+    <string name="camera_gallery_open_failed">无法打开相册</string>
+    <string name="camera_location_not_available">定位不可用</string>
 
-    <!-- Tab 标题 -->
-    <string name="camera_watermark_tab_selected_images">已选图片 (%d)</string>
-    <string name="camera_watermark_tab_select_style">选择样式</string>
+    <string name="camera_section_capture">拍摄</string>
+    <string name="camera_section_professional">专业控制</string>
+    <string name="camera_section_video">视频</string>
+    <string name="camera_section_watermark">水印与信息</string>
+    <string name="camera_ratio">画面比例</string>
+    <string name="camera_ratio_full">全画面</string>
+    <string name="camera_auto">自动</string>
+    <string name="camera_shutter">快门</string>
+    <string name="camera_timer">倒计时</string>
+    <string name="camera_grid">构图网格</string>
+    <string name="camera_grid_off">关闭</string>
+    <string name="camera_grid_thirds">三分法</string>
+    <string name="camera_grid_golden">黄金比例</string>
+    <string name="camera_grid_diagonal">对角线与圆</string>
+    <string name="camera_photo_quality">拍照优先级</string>
+    <string name="camera_photo_quality_fast">快速拍摄</string>
+    <string name="camera_photo_quality_high">高画质</string>
+    <string name="camera_exposure_value">曝光补偿 · %1$.1f EV</string>
+    <string name="camera_zoom_value">变焦 · %1$.1fx</string>
+    <string name="camera_scene">场景模式</string>
+    <string name="camera_white_balance">白平衡</string>
+    <string name="camera_low_light_boost">低光增强</string>
+    <string name="camera_video_quality">视频分辨率</string>
+    <string name="camera_frame_rate">帧率</string>
+    <string name="camera_record_audio">录制声音</string>
+    <string name="camera_video_stabilization">视频防抖</string>
+    <string name="camera_hdr_video">10-bit HDR 视频</string>
+    <string name="camera_embed_location">写入定位并显示坐标</string>
+    <string name="camera_mirror_front">镜像前置摄像头照片</string>
+    <string name="camera_histogram">实时亮度直方图</string>
+    <string name="camera_watermark_style">水印模板</string>
+    <string name="camera_watermark_output_hint">模板与信息会实时合成到取景画面、拍摄照片和录制视频中。</string>
+    <string name="camera_watermark_info_hint">开启后，拍摄时自动将对应信息写入水印</string>
+    <string name="camera_tab_watermark">水印</string>
+    <string name="camera_tab_capture">拍摄</string>
+    <string name="camera_tab_professional">专业</string>
+    <string name="camera_tab_video">视频</string>
+    <string name="camera_filter">画面滤镜</string>
+    <string name="camera_info_location">定位与地址</string>
+    <string name="camera_info_location_summary">地点名称 · 经纬度</string>
+    <string name="camera_info_altitude">海拔高度</string>
+    <string name="camera_info_altitude_summary">依赖定位服务</string>
+    <string name="camera_info_weather">天气与风力</string>
+    <string name="camera_info_weather_summary">需联网获取实时数据</string>
+    <string name="camera_info_timestamp">拍摄时间</string>
+    <string name="camera_info_timestamp_summary">日期 · 星期 · 24小时制</string>
+    <string name="camera_info_camera">相机参数</string>
+    <string name="camera_info_camera_summary">光圈 · 焦段 · ISO · 快门</string>
+    <string name="camera_missing_info">未获取到信息时</string>
+    <string name="camera_missing_placeholder">显示为 --</string>
+    <string name="camera_missing_hide">整行隐藏</string>
+    <string name="camera_location_guide_title">开启定位，让照片记住此刻的位置</string>
+    <string name="camera_location_guide_message">自动写入拍摄地点与经纬度\n记录实时海拔、天气与风力\n可在设置中随时关闭</string>
+    <string name="camera_allow_location">允许定位</string>
+    <string name="camera_not_now">暂不开启</string>
+    <string name="camera_exposure_short">%1$.1f EV</string>
+    <string name="camera_adjust_exposure">调整曝光补偿</string>
+    <string name="camera_altitude_value">海拔 %1$d m</string>
+    <string name="camera_altitude_unavailable">海拔 -- m</string>
+    <string name="camera_weather_value">%1$s %2$s°C</string>
+    <string name="camera_weather_unavailable">--°C</string>
+    <string name="camera_weather_details">%1$s %2$s级 · 湿度 %3$s%%</string>
+    <string name="camera_weather_details_unavailable" formatted="false">--风 --级 · 湿度 --%</string>
 
-    <!-- 导出设置 -->
-    <string name="camera_watermark_export_settings">导出设置</string>
-    <string name="camera_watermark_export_format">导出格式</string>
-    <string name="camera_watermark_quality">质量</string>
-    <string name="camera_watermark_keep_exif">保留原始 EXIF</string>
-    <string name="camera_watermark_keep_exif_tip">保留相机、拍摄参数等信息</string>
-    <string name="camera_watermark_author_signature">作者签名</string>
-    <string name="camera_watermark_author_signature_hint">写入 EXIF 的 Artist 字段</string>
+    <string name="camera_watermark_none">无水印</string>
+    <string name="camera_watermark_leica">经典</string>
+    <string name="camera_watermark_timestamp">时间地点</string>
+    <string name="camera_watermark_minimal">极简·落日</string>
+    <string name="camera_watermark_coordinates">旅行</string>
+    <string name="camera_watermark_signature">署名</string>
+    <string name="camera_watermark_none_description">保留纯净画面，不合成任何信息。</string>
+    <string name="camera_watermark_leica_description">经典白色底带，突出设备、时间与镜头参数。</string>
+    <string name="camera_watermark_timestamp_description">轻量时间与地点卡片，适合日常记录。</string>
+    <string name="camera_watermark_minimal_description">上下分布的极简信息版式，随背景亮度自动反色。</string>
+    <string name="camera_watermark_coordinates_description">用坐标与时间标记每一次旅行。</string>
+    <string name="camera_watermark_signature_description">只留下克制的 OneBox 署名与日期。</string>
 
-    <!-- 模板管理 -->
-    <string name="camera_watermark_template">水印模板</string>
-    <string name="camera_watermark_edit_template">编辑模板</string>
-    <string name="camera_watermark_add_template">新增模板</string>
-    <string name="camera_watermark_manage_template">管理模板</string>
-    <string name="camera_watermark_edit">编辑</string>
-    <string name="camera_watermark_add">新增</string>
-    <string name="camera_watermark_delete">删除</string>
-    <string name="camera_watermark_cancel">取消</string>
-    <string name="camera_watermark_confirm">确认</string>
-    <string name="camera_watermark_reset_presets">恢复默认</string>
-    <string name="camera_watermark_custom">自定义</string>
+    <string name="camera_filter_original">原图</string>
+    <string name="camera_filter_mono">黑白</string>
+    <string name="camera_filter_sepia">复古棕</string>
+    <string name="camera_filter_negative">负片</string>
+    <string name="camera_filter_solarize">曝光反相</string>
+    <string name="camera_filter_posterize">色调分离</string>
+    <string name="camera_filter_aqua">青蓝</string>
+    <string name="camera_filter_blackboard">黑板</string>
+    <string name="camera_filter_whiteboard">白板</string>
 
-    <!-- 模板编辑 -->
-    <string name="camera_watermark_logo">Logo</string>
-    <string name="camera_watermark_custom_content">自定义内容（留空使用 EXIF）</string>
-    <string name="camera_watermark_show_divider">显示分隔线</string>
-    <string name="camera_watermark_color_settings">颜色设置</string>
-    <string name="camera_watermark_size_settings">尺寸设置</string>
-    <string name="camera_watermark_font_settings">字体设置</string>
-    <string name="camera_watermark_watermark_height">水印高度</string>
-    <string name="camera_watermark_font_size">字体大小</string>
-    <string name="camera_watermark_text_color">文字颜色</string>
-    <string name="camera_watermark_background_color">背景颜色</string>
-    <string name="camera_watermark_template_name">模板名称</string>
-    <string name="camera_watermark_template_name_hint">请输入模板名称</string>
-    <string name="camera_watermark_model_name">设备型号</string>
-    <string name="camera_watermark_lens_info">镜头信息</string>
-    <string name="camera_watermark_datetime">拍摄时间</string>
-    <string name="camera_watermark_location">位置信息</string>
-    <string name="camera_watermark_padding_horizontal">水平内边距</string>
-    <string name="camera_watermark_padding_vertical">垂直内边距</string>
-    <string name="camera_watermark_primary_font_size">主文字大小</string>
-    <string name="camera_watermark_secondary_font_size">次要文字大小</string>
+    <string name="camera_scene_auto">自动</string>
+    <string name="camera_scene_portrait">人像</string>
+    <string name="camera_scene_landscape">风景</string>
+    <string name="camera_scene_night">夜景</string>
+    <string name="camera_scene_night_portrait">夜景人像</string>
+    <string name="camera_scene_sports">运动</string>
+    <string name="camera_scene_party">聚会</string>
+    <string name="camera_scene_beach">海滩</string>
+    <string name="camera_scene_snow">雪景</string>
+    <string name="camera_scene_sunset">日落</string>
+    <string name="camera_scene_candlelight">烛光</string>
+    <string name="camera_scene_fireworks">烟花</string>
+    <string name="camera_scene_theatre">剧院</string>
+    <string name="camera_scene_steady_photo">稳定拍摄</string>
+    <string name="camera_scene_action">动态</string>
+    <string name="camera_scene_barcode">条码</string>
 
-    <!-- 操作 -->
-    <string name="camera_watermark_select_image">选择图片</string>
-    <string name="camera_watermark_add_image">添加图片</string>
-    <string name="camera_watermark_save">保存</string>
-    <string name="camera_watermark_batch_save">批量保存</string>
-    <string name="camera_watermark_settings">设置</string>
-
-    <!-- 结果提示 -->
-    <string name="camera_watermark_export_success">保存成功</string>
-    <string name="camera_watermark_export_failed">保存失败</string>
-    <string name="camera_watermark_batch_save_result">成功保存 %1$d/%2$d 张图片</string>
-
-    <!-- 占位符 -->
-    <string name="camera_watermark_select_image_hint">请选择图片</string>
-    <string name="camera_watermark_empty_placeholder">选择照片添加相机水印</string>
-
-    <!-- 预置样式名称 -->
-    <string name="camera_watermark_style_leica">徕卡经典</string>
-    <string name="camera_watermark_style_wanbaohe">万宝盒</string>
-    <string name="camera_watermark_style_xiaomi">小米</string>
-    <string name="camera_watermark_style_oneplus">一加</string>
-    <string name="camera_watermark_style_vivo">vivo</string>
-    <string name="camera_watermark_style_oppo">OPPO</string>
-    <string name="camera_watermark_style_huawei">华为</string>
-    <string name="camera_watermark_style_google">Google Pixel</string>
-    <string name="camera_watermark_style_apple">Apple</string>
-    <string name="camera_watermark_style_classic">经典白</string>
-    <string name="camera_watermark_style_dark">暗黑</string>
-    <string name="camera_watermark_style_minimal">简约</string>
-    <string name="camera_watermark_style_hasselblad">哈苏</string>
-    <string name="camera_watermark_style_fujifilm">富士</string>
-
-    <!-- 新增常量 -->
-    <string name="camera_watermark_delete_count">删除(%d)</string>
-    <string name="camera_watermark_new_template_default_name">新模板</string>
-
-    <string name="camera_watermark_logo_leica">徕卡 Logo</string>
-    <string name="camera_watermark_logo_wanbaohe">万宝盒 Logo</string>
-    <string name="camera_watermark_logo_apple">Apple Logo</string>
-    <string name="camera_watermark_logo_google">Google Logo</string>
-    <string name="camera_watermark_logo_huawei">华为 Logo</string>
-    <string name="camera_watermark_logo_oppo">OPPO Logo</string>
-    <string name="camera_watermark_logo_vivo">vivo Logo</string>
-    <string name="camera_watermark_logo_xiaomi">小米 Logo</string>
-    <string name="camera_watermark_logo_oneplus">一加 Logo</string>
-    <string name="camera_watermark_logo_custom">自定义 Logo</string>
-    <string name="camera_watermark_logo_none">无 Logo</string>
-
-    <string name="camera_watermark_brand_leica">徕卡</string>
-    <string name="camera_watermark_brand_wanbaohe">万宝盒</string>
-    <string name="camera_watermark_brand_apple">Apple</string>
-    <string name="camera_watermark_brand_google">Google</string>
-    <string name="camera_watermark_brand_huawei">华为</string>
-    <string name="camera_watermark_brand_oppo">OPPO</string>
-    <string name="camera_watermark_brand_vivo">vivo</string>
-    <string name="camera_watermark_brand_xiaomi">小米</string>
-    <string name="camera_watermark_brand_none">无</string>
-
-    <string name="camera_watermark_camera_info_tl">相机信息（左上）</string>
-    <string name="camera_watermark_camera_info_hint">如: LEICA MP</string>
-    <string name="camera_watermark_params_info_tr">拍摄参数（右上）</string>
-    <string name="camera_watermark_params_info_hint">如: 50mm f/1.8</string>
-    <string name="camera_watermark_time_sign_bl">时间/签名（左下）</string>
-    <string name="camera_watermark_time_sign_hint">如: 2026-01-01</string>
-    <string name="camera_watermark_location_br">位置（右下）</string>
-    <string name="camera_watermark_location_hint">如: 北京市</string>
-
-    <string name="camera_watermark_bg_color">背景色</string>
-    <string name="camera_watermark_primary_text_color">主文字颜色</string>
-    <string name="camera_watermark_secondary_text_color">次要文字颜色</string>
-    <string name="camera_watermark_divider_color">分隔线颜色</string>
-
-    <string name="camera_watermark_reset_style">恢复默认样式</string>
-    <string name="camera_watermark_create">创建</string>
+    <string name="camera_wb_auto">自动</string>
+    <string name="camera_wb_incandescent">白炽灯</string>
+    <string name="camera_wb_fluorescent">荧光灯</string>
+    <string name="camera_wb_warm_fluorescent">暖色荧光灯</string>
+    <string name="camera_wb_daylight">日光</string>
+    <string name="camera_wb_cloudy">阴天</string>
+    <string name="camera_wb_twilight">黄昏</string>
+    <string name="camera_wb_shade">阴影</string>
 </resources>
-

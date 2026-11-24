@@ -543,6 +543,10 @@ private fun QuickCreateFloatingPanel(
             onDismiss()
             rootComponent.navigateToNew(Screen.MarkupLayers())
         },
+        onNavigateToCameraWatermark = {
+            onDismiss()
+            rootComponent.navigateToNew(Screen.CameraWatermark())
+        },
         onNavigateToTextCard = {
             onDismiss()
             rootComponent.navigateToNew(Screen.TextCard())

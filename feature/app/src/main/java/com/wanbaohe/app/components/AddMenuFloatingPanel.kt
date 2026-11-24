@@ -66,6 +66,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineAiChat
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBlessingWall
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDocumentScanner
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePdfTools
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineCameraWatermark
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCheckCircleOutline
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCodeEditor
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDrawerCabinet
@@ -148,6 +149,7 @@ private fun addMenuItemContentColor(theme: AddMenuItemTheme): Color = when (them
  * @param onNavigateToPdfTools 导航到 PDF 工具
  * @param onNavigateToBlessingWall  导航到祈福墙
  * @param onNavigateToImageCreation 导航到图片创作
+ * @param onNavigateToCameraWatermark 导航到水印相机
  * @param onNavigateToTextCard 导航到文字卡片
  * @param onNavigateToHouseholdItems 导航到家庭物品
  * @param onNavigateToRecordCenter 导航到健康记录
@@ -172,6 +174,7 @@ fun AddMenuFloatingPanel(
     onNavigateToPdfTools: () -> Unit,
     onNavigateToBlessingWall: () -> Unit,
     onNavigateToImageCreation: () -> Unit,
+    onNavigateToCameraWatermark: () -> Unit,
     onNavigateToTextCard: () -> Unit,
     onNavigateToHouseholdItems: () -> Unit,
     onNavigateToRecordCenter: () -> Unit,
@@ -344,6 +347,14 @@ fun AddMenuFloatingPanel(
                     onClick = {
                         onDismiss()
                         onNavigateToImageCreation()
+                    }
+                ),
+                AddMenuItem(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCameraWatermark,
+                    label = CoreR.string.camera_watermark,
+                    onClick = {
+                        onDismiss()
+                        onNavigateToCameraWatermark()
                     }
                 ),
                 AddMenuItem(

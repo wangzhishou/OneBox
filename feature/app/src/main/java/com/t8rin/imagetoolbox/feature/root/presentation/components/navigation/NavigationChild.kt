@@ -1211,15 +1211,11 @@ sealed interface NavigationChild {
 
     class CameraWatermark(
         val cameraWatermarkComponent: CameraWatermarkComponent,
-        val appComponent: AppComponent
     ) : NavigationChild {
         @Composable
         override fun Content() {
             EditorPreviewBlurScope {
-                CameraWatermarkScreen(
-                    component = cameraWatermarkComponent,
-                    appComponent = appComponent
-                )
+                CameraWatermarkScreen(component = cameraWatermarkComponent)
             }
         }
     }

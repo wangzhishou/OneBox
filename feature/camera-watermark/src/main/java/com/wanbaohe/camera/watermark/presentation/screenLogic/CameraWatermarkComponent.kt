@@ -6,517 +6,476 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * You should have received a copy of the Apache License
- * along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
  */
 
 package com.wanbaohe.camera.watermark.presentation.screenLogic
 
-import android.graphics.Bitmap
-import android.net.Uri
-import androidx.compose.runtime.MutableState
+import android.location.Location
+import androidx.camera.view.PreviewView
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LifecycleOwner
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
-import com.t8rin.imagetoolbox.core.domain.image.ImageCompressor
-import com.t8rin.imagetoolbox.core.domain.image.ImageGetter
-import com.t8rin.imagetoolbox.core.domain.image.Metadata
-import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
-import com.t8rin.imagetoolbox.core.domain.image.model.ImageInfo
-import com.t8rin.imagetoolbox.core.domain.image.model.MetadataTag
-import com.t8rin.imagetoolbox.core.domain.image.set
-import com.t8rin.imagetoolbox.core.domain.saving.FileController
-import com.t8rin.imagetoolbox.core.domain.saving.model.ImageSaveTarget
-import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
-import com.wanbaohe.core.ui.utils.ImageBaseComponent
+import com.wanbaohe.camera.watermark.R
+import com.wanbaohe.camera.watermark.data.CameraXEngine
+import com.wanbaohe.camera.watermark.domain.CameraCaptureMode
+import com.wanbaohe.camera.watermark.domain.CameraFlashMode
+import com.wanbaohe.camera.watermark.domain.CameraGrid
+import com.wanbaohe.camera.watermark.domain.CameraLens
+import com.wanbaohe.camera.watermark.domain.CameraRatio
+import com.wanbaohe.camera.watermark.domain.CameraTimer
+import com.wanbaohe.camera.watermark.domain.CameraWatermarkMetadata
+import com.wanbaohe.camera.watermark.domain.CameraWatermarkPreferences
+import com.wanbaohe.camera.watermark.domain.CameraWatermarkSavedState
+import com.wanbaohe.camera.watermark.domain.CreativeCameraSettings
+import com.wanbaohe.camera.watermark.domain.CreativeCameraUiState
+import com.wanbaohe.camera.watermark.domain.CreativeFilter
+import com.wanbaohe.camera.watermark.domain.CreativeScene
+import com.wanbaohe.camera.watermark.domain.GalleryLauncher
+import com.wanbaohe.core.ui.utils.BaseComponent
 import com.wanbaohe.core.ui.utils.state.update
-import com.t8rin.logger.makeLog
-import com.wanbaohe.camera.watermark.data.ExifMetadataParser
-import com.wanbaohe.camera.watermark.data.WatermarkRenderer
-import com.wanbaohe.camera.watermark.data.WatermarkTemplateRepository
-import com.wanbaohe.camera.watermark.domain.ExportConfig
-import com.wanbaohe.camera.watermark.domain.WatermarkMetadata
-import com.wanbaohe.camera.watermark.domain.WatermarkStyle
+import com.wanbaohe.core.weather.domain.repository.CurrentLocationProvider
+import com.wanbaohe.core.weather.domain.repository.WeatherRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-/**
- * 相机水印 Component
- * 基于 Decompose 架构的导航组件
- * 继承 ImageBaseComponent 复用通用的图片处理逻辑
- */
 class CameraWatermarkComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted val initialUris: List<Uri>?,
-    private val exifParser: ExifMetadataParser,
-    private val renderer: WatermarkRenderer,
-    private val templateRepository: WatermarkTemplateRepository,
-    private val fileController: FileController,
-    private val imageCompressor: ImageCompressor<Bitmap>,
-    private val imageGetter: ImageGetter<Bitmap>,
-    dispatchersHolder: DispatchersHolder
-) : ImageBaseComponent(dispatchersHolder, componentContext) {
+    @Assisted val onGoBack: () -> Unit,
+    val cameraEngine: CameraXEngine,
+    private val currentLocationProvider: CurrentLocationProvider,
+    private val weatherRepository: WeatherRepository,
+    private val preferences: CameraWatermarkPreferences,
+    private val galleryLauncher: GalleryLauncher,
+    dispatchersHolder: DispatchersHolder,
+) : BaseComponent(dispatchersHolder, componentContext), CameraXEngine.Listener {
+    private val _state = mutableStateOf(CreativeCameraUiState())
+    val state: CreativeCameraUiState by _state
+    private var shutterJob: Job? = null
+    private var locationJob: Job? = null
+    private var persistJob: Job? = null
+    private var preferencesLoaded = false
 
     init {
-        debounce {
-            // 初始化并加载模板（包括预置模板）
-            initAndLoadTemplates()
-            // 如果有初始 Uri，则加载
-            initialUris?.takeIf { it.isNotEmpty() }?.let { setSelectedUris(it) }
+        cameraEngine.listener = this
+        componentScope.launch {
+            val saved = withContext(ioDispatcher) { preferences.load() }
+            _state.update {
+                it.copy(
+                    settings = saved.settings,
+                    exposureIndex = saved.exposureIndex,
+                    zoomRatio = saved.zoomRatio,
+                    lastCaptureUri = saved.lastCaptureUri.takeIf(String::isNotBlank)?.let(android.net.Uri::parse),
+                    settingsTabName = saved.settingsTabName,
+                )
+            }
+            preferencesLoaded = true
+            cameraEngine.updateSettings(saved.settings)
         }
-
-        // 监听组件生命周期，在销毁时记录使用时间
         componentContext.lifecycle.doOnDestroy {
-            // 记录当前选中模板的使用时间（下次进入时排在前面）
-            if (currentStyle.id > 0) {
-                // 使用独立的协程作用域，确保在组件销毁后仍能执行
-                // componentScope 在 doOnDestroy 时可能已被取消
-                kotlinx.coroutines.GlobalScope.launch(dispatchersHolder.ioDispatcher) {
-                    templateRepository.recordTemplateUsage(currentStyle.id)
-                }
-            }
+            shutterJob?.cancel()
+            locationJob?.cancel()
+            cameraEngine.release()
         }
     }
 
-    // ========== 水印特有状态 ==========
-
-    /** 当前图片的元数据 */
-    private val _metadata: MutableState<WatermarkMetadata> = mutableStateOf(WatermarkMetadata.EMPTY)
-    val metadata: WatermarkMetadata by _metadata
-
-    /** 当前选择的水印样式 */
-    private val _currentStyle: MutableState<WatermarkStyle> = mutableStateOf(WatermarkStyle.DEFAULT)
-    val currentStyle: WatermarkStyle by _currentStyle
-
-    /** 是否正在导出 */
-    private val _isExporting: MutableState<Boolean> = mutableStateOf(false)
-    val isExporting: Boolean by _isExporting
-
-    /** 所有模板列表（从数据库获取，包括预置模板） */
-    private val _allTemplates = MutableStateFlow<List<WatermarkStyle>>(emptyList())
-    val allTemplates: StateFlow<List<WatermarkStyle>> = _allTemplates.asStateFlow()
-
-    /** 导出配置 */
-    private val _exportConfig: MutableState<ExportConfig> = mutableStateOf(ExportConfig())
-    val exportConfig: ExportConfig by _exportConfig
-
-    /** 原始图片的 Metadata（用于保存时写回 EXIF） */
-    private val _originalMetadata: MutableState<Metadata?> = mutableStateOf(null)
-
-    /** 作者签名（保存到 EXIF 的 Artist 字段） */
-    private val _authorSignature: MutableState<String> = mutableStateOf("万宝盒")
-    val authorSignature: String by _authorSignature
-
-    /** 是否保留原始 EXIF */
-    private val _keepOriginalExif: MutableState<Boolean> = mutableStateOf(true)
-    val keepOriginalExif: Boolean by _keepOriginalExif
-
-    /** 是否有未保存的更改 */
-    override val haveChanges: Boolean
-        get() = previewBitmap != null
-
-    // ========== ImageBaseComponent 抽象方法实现 ==========
-
-    /**
-     * 当选中新的 URI 时调用
-     */
-    override fun onUriSelected(uri: Uri) {
-        loadMetadata(uri)
+    fun bindCamera(lifecycleOwner: LifecycleOwner, previewView: PreviewView) {
+        _state.update { it.copy(isCameraReady = false) }
+        cameraEngine.bind(lifecycleOwner, previewView, state.settings)
     }
 
-    /**
-     * 当所有 URI 被清空时调用
-     */
-    override fun onAllUrisCleared() {
-        super.onAllUrisCleared()
-        _metadata.update { WatermarkMetadata.EMPTY }
+    fun unbindCamera() {
+        cameraEngine.unbind()
+        _state.update { it.copy(isCameraReady = false) }
     }
 
-    // ========== 配置方法 ==========
-
-    /**
-     * 设置作者签名
-     */
-    fun setAuthorSignature(signature: String) {
-        _authorSignature.update { signature }
+    fun updateSettings(transform: (CreativeCameraSettings) -> CreativeCameraSettings) {
+        val updated = transform(state.settings)
+        _state.update { it.copy(settings = updated, messageRes = null) }
+        cameraEngine.updateSettings(updated)
+        persistState()
     }
 
-    /**
-     * 设置是否保留原始 EXIF
-     */
-    fun setKeepOriginalExif(keep: Boolean) {
-        _keepOriginalExif.update { keep }
+    fun selectSettingsTab(name: String) {
+        _state.update { it.copy(settingsTabName = name) }
+        persistState()
     }
 
-    // ========== 模板管理 ==========
-
-    /**
-     * 初始化并加载模板
-     */
-    private fun initAndLoadTemplates() {
-        componentScope.launch {
-            // 确保预置模板已初始化
-            templateRepository.initPresetsIfNeeded()
-            // 监听模板列表变化
-            templateRepository.getRecentTemplates(50).collect { templates ->
-                _allTemplates.value = templates
-                // 如果当前样式不在列表中，选择第一个
-                if (templates.isNotEmpty() && templates.none { it.id == currentStyle.id }) {
-                    _currentStyle.update { templates.first() }
-                }
-            }
+    fun openGallery() {
+        if (!galleryLauncher.open(state.lastCaptureUri)) {
+            _state.update { it.copy(messageRes = R.string.camera_gallery_open_failed) }
         }
     }
 
-    // ========== 图片管理扩展 ==========
-
-    /**
-     * 添加图片（批量选择时追加）
-     */
-    override fun addUris(uris: List<Uri>) {
-        val isFirstAdd = _selectedUris.value.isEmpty()
-        super.addUris(uris)
-        if (isFirstAdd && uris.isNotEmpty()) {
-            loadMetadata(uris.first())
-        }
-    }
-
-    /**
-     * 移除图片
-     */
-    override fun removeUri(uri: Uri) {
-        super.removeUri(uri)
-        if (_selectedUris.value.isEmpty()) {
-            _metadata.update { WatermarkMetadata.EMPTY }
-        }
-    }
-
-    /**
-     * 清空所有图片
-     */
-    fun clearAll() {
-        clearAllUris()
-        _metadata.update { WatermarkMetadata.EMPTY }
-    }
-
-    // ========== 元数据 ==========
-
-    /**
-     * 加载图片的 EXIF 元数据
-     */
-    private fun loadMetadata(uri: Uri) {
-        debouncedImageCalculation(
-            delay = 100L,
-            action = {
-                // 解析自定义的 WatermarkMetadata（用于水印显示）
-                _metadata.update { exifParser.parseFromUri(uri) }
-                // 获取原始 Metadata（用于保存时写回 EXIF）
-                val imageData = imageGetter.getImage(uri.toString(), originalSize = false)
-                _originalMetadata.update { imageData?.metadata }
-            },
-            onFinish = {
-                updatePreview()
-            }
+    private fun persistState() {
+        if (!preferencesLoaded) return
+        val current = state
+        val saved = CameraWatermarkSavedState(
+            settings = current.settings,
+            exposureIndex = current.exposureIndex,
+            zoomRatio = current.zoomRatio,
+            lastCaptureUri = current.lastCaptureUri?.toString().orEmpty(),
+            settingsTabName = current.settingsTabName,
         )
-    }
-
-    // ========== 样式 ==========
-
-    /**
-     * 设置水印样式
-     */
-    fun setStyle(style: WatermarkStyle) {
-        _currentStyle.update { style }
-        updatePreview()
-        registerChanges()
-    }
-
-    /**
-     * 选择预设样式
-     */
-    fun selectPreset(preset: WatermarkStyle) {
-        _currentStyle.update { preset }
-        updatePreview()
-        registerChanges()
-    }
-
-    /**
-     * 从历史记录选择样式（不立即更新使用时间，避免列表闪烁）
-     */
-    fun selectFromHistory(style: WatermarkStyle) {
-        _currentStyle.update { style }
-        // 注意：不在这里更新使用时间，改为在保存成功后更新
-        // 这样可以避免列表因重新排序而闪烁
-        updatePreview()
-        registerChanges()
-    }
-
-    /**
-     * 保存或更新模板
-     */
-    fun saveOrUpdateTemplate(style: WatermarkStyle) {
-        componentScope.launch {
-            val savedStyle = templateRepository.saveOrUpdate(style)
-            // 更新当前样式
-            _currentStyle.update { savedStyle }
-            // 更新预览
-            updatePreview()
+        persistJob?.cancel()
+        persistJob = componentScope.launch {
+            delay(150)
+            withContext(ioDispatcher) { preferences.save(saved) }
         }
     }
 
-    /**
-     * 删除模板
-     */
-    fun deleteTemplate(id: Long) {
-        componentScope.launch {
-            templateRepository.deleteTemplate(id)
-            // 如果删除的是当前选中的模板，选择第一个
-            if (currentStyle.id == id) {
-                _allTemplates.value.firstOrNull()?.let {
-                    _currentStyle.update { it }
-                }
-            }
-        }
+    fun selectMode(mode: CameraCaptureMode) {
+        if (state.isRecording) return
+        updateSettings { it.copy(mode = mode, torchEnabled = false, hdrEnabled = false) }
     }
 
-    /**
-     * 批量删除模板
-     */
-    fun batchDeleteTemplates(ids: List<Long>) {
-        componentScope.launch {
-            templateRepository.deleteTemplates(ids)
-            // 如果删除的包含当前选中的模板，选择第一个
-            if (ids.contains(currentStyle.id)) {
-                _allTemplates.value.firstOrNull()?.let {
-                    _currentStyle.update { it }
-                }
-            }
-        }
-    }
-
-    /**
-     * 恢复预置模板为默认值（不删除用户新增的模板）
-     */
-    fun resetPresetsToDefaults() {
-        componentScope.launch {
-            templateRepository.resetPresetsOnly()
-            // 选择第一个模板
-            _allTemplates.value.firstOrNull()?.let {
-                _currentStyle.update { it }
-            }
-        }
-    }
-
-    // ========== 预览 ==========
-
-    /**
-     * 更新预览图
-     */
-    private fun updatePreview() {
-        val uri = _selectedUris.value.getOrNull(currentIndex) ?: return
-        componentScope.launch(defaultDispatcher) {
-            updatePreviewBitmap(renderer.render(uri, metadata, currentStyle))
-        }
-    }
-
-    // ========== 导出配置 ==========
-
-    /**
-     * 更新导出配置
-     */
-    fun updateExportConfig(config: ExportConfig) {
-        _exportConfig.update { config }
-    }
-
-    /**
-     * 设置导出格式
-     */
-    fun setExportFormat(format: ImageFormat) {
-        _exportConfig.update { exportConfig.copy(format = format) }
-    }
-
-    /**
-     * 设置导出质量
-     */
-    fun setExportQuality(quality: Int) {
-        _exportConfig.update { exportConfig.copy(quality = quality.coerceIn(1, 100)) }
-    }
-
-    /**
-     * 准备带作者签名的 Metadata
-     */
-    private fun prepareMetadataWithSignature(): Metadata? {
-        return _originalMetadata.value?.let { metadata ->
-            // 设置作者签名
-            if (authorSignature.isNotEmpty()) {
-                metadata[MetadataTag.Artist] = authorSignature
-                metadata[MetadataTag.Copyright] = "© $authorSignature"
-                metadata[MetadataTag.Software] = "万宝盒"
-            }
-            metadata
-        }
-    }
-
-    // ========== 保存实现 ==========
-
-    /**
-     * 导出当前图片
-     */
-    override fun saveBitmap(
-        oneTimeSaveLocationUri: String?,
-        onComplete: (SaveResult) -> Unit,
-    ) {
-        val bitmap = previewBitmap ?: return
-        val uri = _selectedUris.value.getOrNull(currentIndex) ?: return
-
-        savingJob = componentScope.launch {
-            startSaving()
-
-            val imageInfo = ImageInfo(
-                imageFormat = exportConfig.format,
-                width = bitmap.width,
-                height = bitmap.height,
-                quality = exportConfig.quality.toQuality()
+    fun switchCamera() {
+        if (!state.capabilities.hasFrontCamera || state.isRecording) return
+        updateSettings {
+            it.copy(
+                lens = if (it.lens == CameraLens.BACK) CameraLens.FRONT else CameraLens.BACK,
+                flashMode = CameraFlashMode.OFF,
+                torchEnabled = false,
             )
+        }
+        _state.update { it.copy(zoomRatio = 1f, exposureIndex = 0) }
+        persistState()
+    }
 
-            // 准备带作者签名的 Metadata
-            val metadataWithSignature = if (keepOriginalExif) {
-                prepareMetadataWithSignature()
-            } else {
-                null
-            }
-
-            val result = fileController.save(
-                saveTarget = ImageSaveTarget(
-                    imageInfo = imageInfo,
-                    originalUri = uri.toString(),
-                    sequenceNumber = null,
-                    metadata = metadataWithSignature,
-                    data = imageCompressor.compressAndTransform(
-                        image = bitmap,
-                        imageInfo = imageInfo
-                    )
-                ),
-                keepOriginalMetadata = keepOriginalExif,
-                oneTimeSaveLocationUri = oneTimeSaveLocationUri
-            ).onSuccess(::registerSave)
-
-            finishSaving()
-            onComplete(result)
-
-            // 注意：不在这里记录使用时间，改为在组件销毁时统一记录
-            // 避免保存过程中列表因重新排序而闪烁
+    fun cycleFlashMode() {
+        if (!state.capabilities.hasFlashUnit) return
+        updateSettings {
+            it.copy(
+                flashMode = when (it.flashMode) {
+                    CameraFlashMode.OFF -> CameraFlashMode.AUTO
+                    CameraFlashMode.AUTO -> CameraFlashMode.ON
+                    CameraFlashMode.ON -> CameraFlashMode.OFF
+                },
+            )
         }
     }
 
-    /**
-     * 批量导出所有图片
-     */
-    override fun saveAllBitmaps(
-        onProgress: (Int, Int) -> Unit,
-        onComplete: (List<SaveResult>) -> Unit
-    ) {
-        savingJob = componentScope.launch {
-            val results = mutableListOf<SaveResult>()
-            val total = _selectedUris.value.size
+    fun cycleRatio() {
+        val values = CameraRatio.entries
+        updateSettings { it.copy(ratio = values[(values.indexOf(it.ratio) + 1) % values.size]) }
+    }
 
-            // 使用批量保存开始方法
-            startBatchSaving(total)
+    fun cycleTimer() {
+        val values = CameraTimer.entries
+        updateSettings { it.copy(timer = values[(values.indexOf(it.timer) + 1) % values.size]) }
+    }
 
-            _selectedUris.value.forEachIndexed { index, uri ->
-                // 使用新的批量进度更新方法
-                updateBatchProgress(index, total)
-                onProgress(index + 1, total)
+    fun cycleGrid() {
+        val values = CameraGrid.entries
+        updateSettings { it.copy(grid = values[(values.indexOf(it.grid) + 1) % values.size]) }
+    }
 
-                // 获取当前图片的 metadata
-                val imageData = imageGetter.getImage(uri.toString(), originalSize = false)
-                val currentMetadata = if (keepOriginalExif) {
-                    imageData?.metadata?.let { meta ->
-                        if (authorSignature.isNotEmpty()) {
-                            meta[MetadataTag.Artist] = authorSignature
-                            meta[MetadataTag.Copyright] = "© $authorSignature"
-                            meta[MetadataTag.Software] = "万宝盒"
-                        }
-                        meta
-                    }
-                } else null
+    fun selectFilter(filter: CreativeFilter) {
+        updateSettings { it.copy(filter = filter, scene = CreativeScene.AUTO) }
+    }
 
-                val watermarkMetadata = withContext(ioDispatcher) { exifParser.parseFromUri(uri) }
-                val bitmap = renderer.render(uri, watermarkMetadata, currentStyle)
-                if (bitmap != null) {
-                    val imageInfo = ImageInfo(
-                        imageFormat = exportConfig.format,
-                        width = bitmap.width,
-                        height = bitmap.height,
-                        quality = exportConfig.quality.toQuality()
-                    )
+    fun selectScene(scene: CreativeScene) {
+        updateSettings { it.copy(scene = scene, filter = CreativeFilter.ORIGINAL) }
+    }
 
-                    val result = fileController.save(
-                        saveTarget = ImageSaveTarget(
-                            imageInfo = imageInfo,
-                            originalUri = uri.toString(),
-                            sequenceNumber = index,
-                            metadata = currentMetadata,
-                            data = imageCompressor.compressAndTransform(
-                                image = bitmap,
-                                imageInfo = imageInfo
-                            )
-                        ),
-                        keepOriginalMetadata = keepOriginalExif,
-                        oneTimeSaveLocationUri = null
-                    )
-                    results.add(result)
-                    bitmap.recycle()
+    fun setExposureCompensation(index: Int) {
+        val value = index.coerceIn(
+            state.capabilities.minExposureIndex,
+            state.capabilities.maxExposureIndex,
+        )
+        _state.update { it.copy(exposureIndex = value) }
+        cameraEngine.setExposureCompensation(value)
+        persistState()
+    }
+
+    fun setZoomRatio(ratio: Float) {
+        _state.update { it.copy(zoomRatio = ratio) }
+        cameraEngine.setZoomRatio(ratio)
+        persistState()
+    }
+
+    fun toggleLocation(enabled: Boolean) {
+        updateSettings { it.copy(locationEnabled = enabled) }
+        when {
+            enabled -> refreshLocation()
+            !state.settings.altitudeEnabled && !state.settings.weatherEnabled -> {
+                locationJob?.cancel()
+                cameraEngine.updateLocation(null)
+                cameraEngine.updateWatermarkMetadata(CameraWatermarkMetadata())
+            }
+        }
+    }
+
+    fun refreshLocation() {
+        locationJob?.cancel()
+        locationJob = componentScope.launch {
+            val snapshot = withContext(ioDispatcher) {
+                runCatching { currentLocationProvider.currentLocation() }.getOrNull()
+            }
+            val location = snapshot?.let { value ->
+                Location("OneBox").apply {
+                    latitude = value.latitude
+                    longitude = value.longitude
+                    value.altitudeMeters?.let(::setAltitude)
+                    accuracy = value.accuracyMeters ?: 0f
+                    time = System.currentTimeMillis()
                 }
             }
-
-            finishSaving()
-            onComplete(results)
-
-            // 注意：不在这里记录使用时间，改为在组件销毁时统一记录
-            registerSave()
+            cameraEngine.updateLocation(location)
+            if (location == null) {
+                if (state.settings.locationEnabled) {
+                    _state.update { it.copy(messageRes = R.string.camera_location_failed) }
+                }
+                return@launch
+            }
+            val metadata = withContext(ioDispatcher) {
+                val weather = if (state.settings.weatherEnabled) {
+                    weatherRepository.getPlaceWeather(location.latitude, location.longitude)
+                        .getOrNull()?.current
+                } else {
+                    null
+                }
+                val city = if (state.settings.locationEnabled) {
+                    weatherRepository.getCityAtLocation(location.latitude, location.longitude).getOrNull()
+                } else {
+                    null
+                }
+                CameraWatermarkMetadata(
+                    placeLabel = city?.let { place ->
+                        listOf(place.adm1, place.adm2, place.name)
+                            .filter(String::isNotBlank)
+                            .distinct()
+                            .joinToString(" · ")
+                    }.orEmpty(),
+                    weatherText = weather?.text.orEmpty(),
+                    temperatureCelsius = weather?.temp.orEmpty(),
+                    windDirection = weather?.windDir.orEmpty(),
+                    windScale = weather?.windScale.orEmpty(),
+                    humidity = weather?.humidity.orEmpty(),
+                )
+            }
+            cameraEngine.updateWatermarkMetadata(metadata)
         }
     }
 
-    /**
-     * Int 转换为 Quality
-     */
-    private fun Int.toQuality(): com.t8rin.imagetoolbox.core.domain.image.model.Quality {
-        return com.t8rin.imagetoolbox.core.domain.image.model.Quality.Base(this)
+    fun onShutter(audioPermissionGranted: Boolean) {
+        if (state.isRecording) {
+            cameraEngine.stopRecording()
+            return
+        }
+        if (state.countdownSeconds != null) {
+            cancelCountdown()
+            return
+        }
+        if (state.isCapturing) return
+        val seconds = state.settings.timer.seconds
+        if (seconds > 0) {
+            shutterJob = componentScope.launch {
+                for (second in seconds downTo 1) {
+                    _state.update { it.copy(countdownSeconds = second) }
+                    delay(1000L)
+                }
+                _state.update { it.copy(countdownSeconds = null) }
+                performShutter(audioPermissionGranted)
+            }
+        } else {
+            performShutter(audioPermissionGranted)
+        }
     }
 
-    /**
-     * 获取用于文件名选择的格式（重写以使用 exportConfig）
-     */
-    override fun getFormatForFilenameSelection(): ImageFormat = exportConfig.format
+    private fun performShutter(audioPermissionGranted: Boolean) {
+        _state.update { it.copy(isCapturing = true) }
+        when (state.settings.mode) {
+            CameraCaptureMode.PHOTO -> cameraEngine.capturePhoto()
+            CameraCaptureMode.VIDEO -> cameraEngine.startRecording(audioPermissionGranted)
+        }
+    }
 
-    override fun resetState() {
-        super.resetState()
-        _metadata.update { WatermarkMetadata.EMPTY }
-        _currentStyle.update { WatermarkStyle.CLASSIC_WHITE }
-        _isExporting.update { false }
-        _exportConfig.update { ExportConfig() }
+    fun toggleRecordingPause() {
+        if (!state.isRecording) return
+        if (state.isRecordingPaused) cameraEngine.resumeRecording() else cameraEngine.pauseRecording()
+    }
+
+    fun toggleRecordingMute() {
+        if (!state.isRecording) return
+        val muted = !state.isRecordingMuted
+        cameraEngine.muteRecording(muted)
+        _state.update { it.copy(isRecordingMuted = muted) }
+    }
+
+    fun savePendingPhoto() {
+        val photo = state.pendingPhoto ?: return
+        _state.update { it.copy(isSaving = true) }
+        cameraEngine.savePhoto(photo) { savedUri ->
+            _state.update { current ->
+                current.copy(
+                    pendingPhoto = null,
+                    lastCaptureUri = savedUri,
+                    isSaving = false,
+                    messageRes = R.string.camera_photo_saved,
+                )
+            }
+            persistState()
+        }
+    }
+
+    fun retake() {
+        state.pendingPhoto?.let(cameraEngine::discardPhoto)
+        _state.update { it.copy(pendingPhoto = null, isSaving = false) }
+    }
+
+    fun cancelCountdown() {
+        shutterJob?.cancel()
+        shutterJob = null
+        _state.update { it.copy(countdownSeconds = null) }
+    }
+
+    fun consumeMessage() {
+        _state.update { it.copy(messageRes = null) }
+    }
+
+    fun handleBack(): Boolean = when {
+        state.isRecording -> {
+            cameraEngine.stopRecording()
+            true
+        }
+        state.countdownSeconds != null -> {
+            cancelCountdown()
+            true
+        }
+        state.pendingPhoto != null -> {
+            retake()
+            true
+        }
+        else -> false
+    }
+
+    override fun onReady(capabilities: com.wanbaohe.camera.watermark.domain.CreativeCameraCapabilities) {
+        _state.update { current ->
+            val settings = current.settings
+            val updatedSettings = settings.copy(
+                filter = if (settings.filter in capabilities.supportedFilters) settings.filter else CreativeFilter.ORIGINAL,
+                scene = if (settings.scene in capabilities.supportedScenes) settings.scene else CreativeScene.AUTO,
+                whiteBalance = if (settings.whiteBalance in capabilities.supportedWhiteBalances) {
+                    settings.whiteBalance
+                } else {
+                    com.wanbaohe.camera.watermark.domain.CameraWhiteBalance.AUTO
+                },
+                videoQuality = if (settings.videoQuality in capabilities.supportedVideoQualities) {
+                    settings.videoQuality
+                } else {
+                    capabilities.supportedVideoQualities.first()
+                },
+                frameRate = if (settings.frameRate in capabilities.supportedFrameRates) {
+                    settings.frameRate
+                } else {
+                    com.wanbaohe.camera.watermark.domain.CameraFrameRate.AUTO
+                },
+                videoStabilization = settings.videoStabilization && capabilities.supportsVideoStabilization,
+            )
+            current.copy(
+                capabilities = capabilities,
+                settings = updatedSettings,
+                isCameraReady = true,
+                isCapturing = false,
+                zoomRatio = current.zoomRatio.coerceIn(capabilities.minZoomRatio, capabilities.maxZoomRatio),
+            )
+        }
+        cameraEngine.updateSettings(state.settings)
+        cameraEngine.setExposureCompensation(state.exposureIndex)
+        cameraEngine.setZoomRatio(state.zoomRatio)
+    }
+
+    override fun onZoomChanged(ratio: Float) {
+        _state.update { it.copy(zoomRatio = ratio) }
+        persistState()
+    }
+
+    override fun onFailure(failure: CameraXEngine.Failure) {
+        val message = when (failure) {
+            CameraXEngine.Failure.INITIALIZATION -> R.string.camera_initialization_failed
+            CameraXEngine.Failure.CAPTURE -> R.string.camera_capture_failed
+            CameraXEngine.Failure.RECORDING -> R.string.camera_recording_failed
+            CameraXEngine.Failure.EFFECT -> R.string.camera_effect_failed
+            CameraXEngine.Failure.SAVE -> R.string.camera_save_failed
+        }
+        _state.update { current ->
+            current.copy(
+                messageRes = message,
+                isCapturing = false,
+                isSaving = false,
+                isRecording = false,
+                isRecordingPaused = false,
+                countdownSeconds = null,
+            )
+        }
+    }
+
+    override fun onPhotoCaptured(uri: android.net.Uri) {
+        _state.update { current ->
+            current.copy(
+                pendingPhoto = uri,
+                lastCaptureUri = uri,
+                isCapturing = false,
+            )
+        }
+    }
+
+    override fun onRecordingStarted() {
+        _state.update { current ->
+            current.copy(
+                isCapturing = false,
+                isRecording = true,
+                isRecordingPaused = false,
+                isRecordingMuted = false,
+                recordingDurationMs = 0L,
+            )
+        }
+    }
+
+    override fun onRecordingPaused() {
+        _state.update { it.copy(isRecordingPaused = true) }
+    }
+
+    override fun onRecordingResumed() {
+        _state.update { it.copy(isRecordingPaused = false) }
+    }
+
+    override fun onRecordingProgress(durationMs: Long) {
+        _state.update { it.copy(recordingDurationMs = durationMs) }
+    }
+
+    override fun onVideoSaved(uri: android.net.Uri) {
+        _state.update { current ->
+            current.copy(
+                lastCaptureUri = uri,
+                isCapturing = false,
+                isRecording = false,
+                isRecordingPaused = false,
+                isRecordingMuted = false,
+                recordingDurationMs = 0L,
+                messageRes = R.string.camera_video_saved,
+            )
+        }
+        persistState()
+    }
+
+    override fun onHistogram(values: List<Int>) {
+        _state.update { it.copy(histogram = values) }
     }
 
     @AssistedFactory
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            initialUris: List<Uri>?,
+            onGoBack: () -> Unit,
         ): CameraWatermarkComponent
     }
 }

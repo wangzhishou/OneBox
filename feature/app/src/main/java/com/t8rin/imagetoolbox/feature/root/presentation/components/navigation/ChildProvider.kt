@@ -1200,9 +1200,8 @@ class ChildProvider @Inject constructor(
         is Screen.CameraWatermark -> NavigationChild.CameraWatermark(
             cameraWatermarkComponent = lifeFactories.get().cameraWatermarkComponentFactory(
                 componentContext = componentContext,
-                initialUris = config.uris,
+                onGoBack = { appComponent.onGoBack() },
             ),
-            appComponent = appComponent
         )
 
         is Screen.IdPhoto -> NavigationChild.IdPhoto(

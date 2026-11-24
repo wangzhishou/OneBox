@@ -2,145 +2,152 @@
 <!--
   ~ OneBox is a free AI agent and toolbox for Android
   ~ Copyright (c) 2026 zhishouwang(网址兽)
-  ~
   ~ Origin: OneBox original work, not derived from ImageToolbox
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  ~
-  ~ You should have received a copy of the Apache License
-  ~ along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+  ~ Licensed under the Apache License, Version 2.0
   -->
+<resources>
+    <string name="camera_watermark_title">Watermark camera</string>
+    <string name="camera_back">Back</string>
+    <string name="camera_mode_photo">Photo</string>
+    <string name="camera_mode_video">Video</string>
+    <string name="camera_settings">Camera settings</string>
+    <string name="camera_flash">Flash mode</string>
+    <string name="camera_torch">Torch</string>
+    <string name="camera_switch">Switch camera</string>
+    <string name="camera_mute">Mute or unmute recording</string>
+    <string name="camera_pause">Pause or resume recording</string>
+    <string name="camera_last_capture">Last capture</string>
+    <string name="camera_grid_off_short">Grid off</string>
+    <string name="camera_grid_on_short">Grid on</string>
+    <string name="camera_permission_title">Camera access needed</string>
+    <string name="camera_permission_message">Allow camera access to preview, take watermarked photos and record videos. Audio and location are requested only when you use them.</string>
+    <string name="camera_permission_grant">Allow camera access</string>
+    <string name="camera_captured_photo">Captured photo</string>
+    <string name="camera_confirm_photo">Confirm photo</string>
+    <string name="camera_retake">Retake</string>
+    <string name="camera_save_to_gallery">Save to gallery</string>
+    <string name="camera_effect_baked_hint">The selected watermark and camera filter are already included in this photo.</string>
+    <string name="camera_photo_saved">Photo saved to gallery</string>
+    <string name="camera_video_saved">Video saved to gallery</string>
+    <string name="camera_save_failed">Couldn\'t save the capture</string>
+    <string name="camera_capture_failed">Couldn\'t take the photo</string>
+    <string name="camera_recording_failed">Video recording failed</string>
+    <string name="camera_initialization_failed">This camera configuration isn\'t available on the device</string>
+    <string name="camera_effect_failed">The live watermark effect isn\'t available for this camera</string>
+    <string name="camera_location_failed">Couldn\'t get the current location</string>
+    <string name="camera_gallery_open_failed">Couldn\'t open the gallery</string>
+    <string name="camera_location_not_available">Location unavailable</string>
 
-<resources><!-- 页面标题 -->
-    <string name="camera_watermark_title">Camera Watermark</string>
+    <string name="camera_section_capture">Capture</string>
+    <string name="camera_section_professional">Professional controls</string>
+    <string name="camera_section_video">Video</string>
+    <string name="camera_section_watermark">Watermark and metadata</string>
+    <string name="camera_ratio">Aspect ratio</string>
+    <string name="camera_ratio_full">Full frame</string>
+    <string name="camera_auto">Auto</string>
+    <string name="camera_shutter">Shutter</string>
+    <string name="camera_timer">Timer</string>
+    <string name="camera_grid">Composition grid</string>
+    <string name="camera_grid_off">Off</string>
+    <string name="camera_grid_thirds">Rule of thirds</string>
+    <string name="camera_grid_golden">Golden ratio</string>
+    <string name="camera_grid_diagonal">Diagonal and circle</string>
+    <string name="camera_photo_quality">Photo capture priority</string>
+    <string name="camera_photo_quality_fast">Faster capture</string>
+    <string name="camera_photo_quality_high">Higher quality</string>
+    <string name="camera_exposure_value">Exposure compensation · %1$.1f EV</string>
+    <string name="camera_zoom_value">Zoom · %1$.1fx</string>
+    <string name="camera_scene">Scene mode</string>
+    <string name="camera_white_balance">White balance</string>
+    <string name="camera_low_light_boost">Low-light boost</string>
+    <string name="camera_video_quality">Video resolution</string>
+    <string name="camera_frame_rate">Frame rate</string>
+    <string name="camera_record_audio">Record audio</string>
+    <string name="camera_video_stabilization">Video stabilization</string>
+    <string name="camera_hdr_video">10-bit HDR video</string>
+    <string name="camera_embed_location">Embed location and show coordinates</string>
+    <string name="camera_mirror_front">Mirror front-camera photos</string>
+    <string name="camera_histogram">Live luminance histogram</string>
+    <string name="camera_watermark_style">Watermark template</string>
+    <string name="camera_watermark_output_hint">The template and its information are rendered into the live preview, captured photos and recorded videos.</string>
+    <string name="camera_watermark_info_hint">Enabled details are automatically written into the watermark when you shoot</string>
+    <string name="camera_tab_watermark">Watermark</string>
+    <string name="camera_tab_capture">Capture</string>
+    <string name="camera_tab_professional">Pro</string>
+    <string name="camera_tab_video">Video</string>
+    <string name="camera_filter">Color filter</string>
+    <string name="camera_info_location">Location and address</string>
+    <string name="camera_info_location_summary">Place name · Coordinates</string>
+    <string name="camera_info_altitude">Altitude</string>
+    <string name="camera_info_altitude_summary">Uses location services</string>
+    <string name="camera_info_weather">Weather and wind</string>
+    <string name="camera_info_weather_summary">Live data requires a network connection</string>
+    <string name="camera_info_timestamp">Capture time</string>
+    <string name="camera_info_timestamp_summary">Date · Weekday · 24-hour time</string>
+    <string name="camera_info_camera">Camera parameters</string>
+    <string name="camera_info_camera_summary">Aperture · Focal length · ISO · Shutter</string>
+    <string name="camera_missing_info">When information is unavailable</string>
+    <string name="camera_missing_placeholder">Show --</string>
+    <string name="camera_missing_hide">Hide the line</string>
+    <string name="camera_location_guide_title">Turn on location to remember where this moment happened</string>
+    <string name="camera_location_guide_message">Add the shooting place and coordinates\nRecord live altitude, weather and wind\nYou can turn these off in settings at any time</string>
+    <string name="camera_allow_location">Allow location</string>
+    <string name="camera_not_now">Not now</string>
+    <string name="camera_exposure_short">%1$.1f EV</string>
+    <string name="camera_adjust_exposure">Adjust exposure compensation</string>
+    <string name="camera_altitude_value">Altitude %1$d m</string>
+    <string name="camera_altitude_unavailable">Altitude -- m</string>
+    <string name="camera_weather_value">%1$s %2$s°C</string>
+    <string name="camera_weather_unavailable">--°C</string>
+    <string name="camera_weather_details">%1$s %2$s · Humidity %3$s%%</string>
+    <string name="camera_weather_details_unavailable" formatted="false">-- wind · Humidity --%</string>
 
-    <!-- Tab 标题 -->
-    <string name="camera_watermark_tab_selected_images">Selected (%d)</string>
-    <string name="camera_watermark_tab_select_style">Select Style</string>
+    <string name="camera_watermark_none">No watermark</string>
+    <string name="camera_watermark_leica">Classic</string>
+    <string name="camera_watermark_timestamp">Time &amp; place</string>
+    <string name="camera_watermark_minimal">Minimal sunset</string>
+    <string name="camera_watermark_coordinates">Travel</string>
+    <string name="camera_watermark_signature">Signature</string>
+    <string name="camera_watermark_none_description">Keep the image clean without adding any information.</string>
+    <string name="camera_watermark_leica_description">A classic white band for the device, time and lens parameters.</string>
+    <string name="camera_watermark_timestamp_description">A lightweight time and place caption for everyday moments.</string>
+    <string name="camera_watermark_minimal_description">Minimal details at the top and bottom, with adaptive contrast.</string>
+    <string name="camera_watermark_coordinates_description">Mark every journey with coordinates and time.</string>
+    <string name="camera_watermark_signature_description">A restrained OneBox signature and date.</string>
 
-    <!-- 导出设置 -->
-    <string name="camera_watermark_export_settings">Export Settings</string>
-    <string name="camera_watermark_export_format">Export Format</string>
-    <string name="camera_watermark_quality">Quality</string>
-    <string name="camera_watermark_keep_exif">Keep Original EXIF</string>
-    <string name="camera_watermark_keep_exif_tip">Keep camera and shooting parameters</string>
-    <string name="camera_watermark_author_signature">Author Signature</string>
-    <string name="camera_watermark_author_signature_hint">Writes to the EXIF Artist field</string>
+    <string name="camera_filter_original">Original</string>
+    <string name="camera_filter_mono">Mono</string>
+    <string name="camera_filter_sepia">Sepia</string>
+    <string name="camera_filter_negative">Negative</string>
+    <string name="camera_filter_solarize">Solarize</string>
+    <string name="camera_filter_posterize">Posterize</string>
+    <string name="camera_filter_aqua">Aqua</string>
+    <string name="camera_filter_blackboard">Blackboard</string>
+    <string name="camera_filter_whiteboard">Whiteboard</string>
 
-    <!-- 模板管理 -->
-    <string name="camera_watermark_template">Watermark Template</string>
-    <string name="camera_watermark_edit_template">Edit Template</string>
-    <string name="camera_watermark_add_template">Add Template</string>
-    <string name="camera_watermark_manage_template">Manage Templates</string>
-    <string name="camera_watermark_edit">Edit</string>
-    <string name="camera_watermark_add">Add</string>
-    <string name="camera_watermark_delete">Delete</string>
-    <string name="camera_watermark_cancel">Cancel</string>
-    <string name="camera_watermark_confirm">Confirm</string>
-    <string name="camera_watermark_reset_presets">Reset to Default</string>
-    <string name="camera_watermark_custom">Custom</string>
+    <string name="camera_scene_auto">Auto</string>
+    <string name="camera_scene_portrait">Portrait</string>
+    <string name="camera_scene_landscape">Landscape</string>
+    <string name="camera_scene_night">Night</string>
+    <string name="camera_scene_night_portrait">Night portrait</string>
+    <string name="camera_scene_sports">Sports</string>
+    <string name="camera_scene_party">Party</string>
+    <string name="camera_scene_beach">Beach</string>
+    <string name="camera_scene_snow">Snow</string>
+    <string name="camera_scene_sunset">Sunset</string>
+    <string name="camera_scene_candlelight">Candlelight</string>
+    <string name="camera_scene_fireworks">Fireworks</string>
+    <string name="camera_scene_theatre">Theatre</string>
+    <string name="camera_scene_steady_photo">Steady photo</string>
+    <string name="camera_scene_action">Action</string>
+    <string name="camera_scene_barcode">Barcode</string>
 
-    <!-- 模板编辑 -->
-    <string name="camera_watermark_logo">Logo</string>
-    <string name="camera_watermark_custom_content">Custom content (leave blank to use EXIF)</string>
-    <string name="camera_watermark_show_divider">Show Divider</string>
-    <string name="camera_watermark_color_settings">Color Settings</string>
-    <string name="camera_watermark_size_settings">Size Settings</string>
-    <string name="camera_watermark_font_settings">Font Settings</string>
-    <string name="camera_watermark_watermark_height">Watermark Height</string>
-    <string name="camera_watermark_font_size">Font Size</string>
-    <string name="camera_watermark_text_color">Text Color</string>
-    <string name="camera_watermark_background_color">Background Color</string>
-    <string name="camera_watermark_template_name">Template Name</string>
-    <string name="camera_watermark_template_name_hint">Enter template name</string>
-    <string name="camera_watermark_model_name">Device Model</string>
-    <string name="camera_watermark_lens_info">Lens Info</string>
-    <string name="camera_watermark_datetime">Shooting Time</string>
-    <string name="camera_watermark_location">Location</string>
-    <string name="camera_watermark_padding_horizontal">Horizontal Padding</string>
-    <string name="camera_watermark_padding_vertical">Vertical Padding</string>
-    <string name="camera_watermark_primary_font_size">Primary Text Size</string>
-    <string name="camera_watermark_secondary_font_size">Secondary Text Size</string>
-
-    <!-- 操作 -->
-    <string name="camera_watermark_select_image">Select Image</string>
-    <string name="camera_watermark_add_image">Add Image</string>
-    <string name="camera_watermark_save">Save</string>
-    <string name="camera_watermark_batch_save">Batch Save</string>
-    <string name="camera_watermark_settings">Settings</string>
-
-    <!-- 结果提示 -->
-    <string name="camera_watermark_export_success">Saved successfully</string>
-    <string name="camera_watermark_export_failed">Save failed</string>
-    <string name="camera_watermark_batch_save_result">Successfully saved %1$d/%2$d images</string>
-
-    <!-- 占位符 -->
-    <string name="camera_watermark_select_image_hint">Please select an image</string>
-    <string name="camera_watermark_empty_placeholder">Select a photo to add a camera watermark</string>
-
-    <!-- 预置样式名称 -->
-    <string name="camera_watermark_style_leica">Leica Classic</string>
-    <string name="camera_watermark_style_wanbaohe">OneBox</string>
-    <string name="camera_watermark_style_xiaomi">Xiaomi</string>
-    <string name="camera_watermark_style_oneplus">OnePlus</string>
-    <string name="camera_watermark_style_vivo">vivo</string>
-    <string name="camera_watermark_style_oppo">OPPO</string>
-    <string name="camera_watermark_style_huawei">Huawei</string>
-    <string name="camera_watermark_style_google">Google Pixel</string>
-    <string name="camera_watermark_style_apple">Apple</string>
-    <string name="camera_watermark_style_classic">Classic White</string>
-    <string name="camera_watermark_style_dark">Dark</string>
-    <string name="camera_watermark_style_minimal">Minimal</string>
-    <string name="camera_watermark_style_hasselblad">Hasselblad</string>
-    <string name="camera_watermark_style_fujifilm">Fujifilm</string>
-
-    <!-- 新增常量 -->
-    <string name="camera_watermark_delete_count">Delete (%d)</string>
-    <string name="camera_watermark_new_template_default_name">New Template</string>
-
-    <string name="camera_watermark_logo_leica">Leica Logo</string>
-    <string name="camera_watermark_logo_wanbaohe">OneBox Logo</string>
-    <string name="camera_watermark_logo_apple">Apple Logo</string>
-    <string name="camera_watermark_logo_google">Google Logo</string>
-    <string name="camera_watermark_logo_huawei">Huawei Logo</string>
-    <string name="camera_watermark_logo_oppo">OPPO Logo</string>
-    <string name="camera_watermark_logo_vivo">vivo Logo</string>
-    <string name="camera_watermark_logo_xiaomi">Xiaomi Logo</string>
-    <string name="camera_watermark_logo_oneplus">OnePlus Logo</string>
-    <string name="camera_watermark_logo_custom">Custom Logo</string>
-    <string name="camera_watermark_logo_none">No Logo</string>
-
-    <string name="camera_watermark_brand_leica">Leica</string>
-    <string name="camera_watermark_brand_wanbaohe">OneBox</string>
-    <string name="camera_watermark_brand_apple">Apple</string>
-    <string name="camera_watermark_brand_google">Google</string>
-    <string name="camera_watermark_brand_huawei">Huawei</string>
-    <string name="camera_watermark_brand_oppo">OPPO</string>
-    <string name="camera_watermark_brand_vivo">vivo</string>
-    <string name="camera_watermark_brand_xiaomi">Xiaomi</string>
-    <string name="camera_watermark_brand_none">None</string>
-
-    <string name="camera_watermark_camera_info_tl">Camera Info (Top Left)</string>
-    <string name="camera_watermark_camera_info_hint">e.g., LEICA MP</string>
-    <string name="camera_watermark_params_info_tr">Shooting Parameters (Top Right)</string>
-    <string name="camera_watermark_params_info_hint">e.g., 50mm f/1.8</string>
-    <string name="camera_watermark_time_sign_bl">Time/Signature (Bottom Left)</string>
-    <string name="camera_watermark_time_sign_hint">e.g., 2026-01-01</string>
-    <string name="camera_watermark_location_br">Location (Bottom Right)</string>
-    <string name="camera_watermark_location_hint">e.g., Beijing</string>
-
-    <string name="camera_watermark_bg_color">Background Color</string>
-    <string name="camera_watermark_primary_text_color">Primary Text Color</string>
-    <string name="camera_watermark_secondary_text_color">Secondary Text Color</string>
-    <string name="camera_watermark_divider_color">Divider Color</string>
-
-    <string name="camera_watermark_reset_style">Reset to Default Style</string>
-    <string name="camera_watermark_create">Create</string>
+    <string name="camera_wb_auto">Auto</string>
+    <string name="camera_wb_incandescent">Incandescent</string>
+    <string name="camera_wb_fluorescent">Fluorescent</string>
+    <string name="camera_wb_warm_fluorescent">Warm fluorescent</string>
+    <string name="camera_wb_daylight">Daylight</string>
+    <string name="camera_wb_cloudy">Cloudy</string>
+    <string name="camera_wb_twilight">Twilight</string>
+    <string name="camera_wb_shade">Shade</string>
 </resources>

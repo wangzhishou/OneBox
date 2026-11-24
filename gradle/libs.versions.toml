@@ -277,6 +277,8 @@ camera-core = { module = "androidx.camera:camera-core", version.ref = "camerax" 
 camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "camerax" }
 camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "camerax" }
 camera-view = { module = "androidx.camera:camera-view", version.ref = "camerax" }
+camera-video = { module = "androidx.camera:camera-video", version.ref = "camerax" }
+camera-effects = { module = "androidx.camera:camera-effects", version.ref = "camerax" }
 scrollbar = { module = "com.github.nanihadesuka.LazyColumnScrollbar:lazycolumnscrollbar-android", version.ref = "scrollbar" }
 reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reorderable" }
 splashScreen = { module = "androidx.core:core-splashscreen", version.ref = "splashScreen" }
