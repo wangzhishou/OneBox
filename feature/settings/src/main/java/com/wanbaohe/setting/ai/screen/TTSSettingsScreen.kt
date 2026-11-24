@@ -22,7 +22,8 @@ package com.wanbaohe.setting.ai.screen
 import android.text.format.Formatter
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -554,9 +555,12 @@ private fun VoicePresetPicker(
             )
             action?.invoke()
         }
-        FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+        FlexBox(
+            config = {
+                wrap(FlexWrap.Wrap)
+                columnGap(8.dp)
+                rowGap(8.dp)
+            },
         ) {
             voices.forEach { id ->
                 val isSelected = selectedVoice == id

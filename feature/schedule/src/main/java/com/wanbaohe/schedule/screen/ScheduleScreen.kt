@@ -21,8 +21,9 @@ package com.wanbaohe.schedule.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexJustifyContent
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -293,17 +294,19 @@ private fun EventCard(
         }
     }
 }
-
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun EventActions(
     onAddToSystemCalendar: () -> Unit,
     onOpenTask: (() -> Unit)?,
 ) {
-    FlowRow(
+    FlexBox(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        config = {
+            wrap(FlexWrap.Wrap)
+            columnGap(8.dp)
+            justifyContent(FlexJustifyContent.End)
+            rowGap(8.dp)
+        },
     ) {
         OneSecondaryButton(
             text = stringResource(R.string.schedule_export_to_system_calendar),

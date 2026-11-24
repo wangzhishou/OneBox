@@ -19,7 +19,8 @@ package com.shifenmiao.online.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -222,9 +223,12 @@ internal fun ContentSaveConfirmDialog(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(6.dp),
+                FlexBox(
+                    config = {
+                        wrap(FlexWrap.Wrap)
+                        columnGap(8.dp)
+                        rowGap(6.dp)
+                    },
                 ) {
                     if (onCreateCategory != null) {
                         NoteAddCategoryChip(onClick = { if (!isSaving) showAddCategoryDialog = true })

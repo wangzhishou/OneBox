@@ -27,7 +27,9 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexJustifyContent
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -564,9 +566,12 @@ private fun OcrTaskItem(
             }
             Spacer(modifier = Modifier.weight(1f))
             Spacer(modifier = Modifier.height(AppTheme.dimens.spaceSmall))
-            FlowRow(
+            FlexBox(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                config = {
+                    wrap(FlexWrap.Wrap)
+                    justifyContent(FlexJustifyContent.SpaceBetween)
+                },
             ) {
                 val pollInSeconds = if (task.status == OcrTaskStatus.PENDING.value) {
                     nextPollInSeconds(task.updatedAt, nowMillis)

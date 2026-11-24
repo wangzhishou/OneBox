@@ -23,7 +23,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -348,10 +349,13 @@ private fun RangeFilterRow(
     selected: RecordRangeFilter,
     onSelect: (RecordRangeFilter) -> Unit,
 ) {
-    FlowRow(
+    FlexBox(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        config = {
+            wrap(FlexWrap.Wrap)
+            columnGap(8.dp)
+            rowGap(8.dp)
+        },
     ) {
         listOf(
             RecordRangeFilter.DAYS_7 to stringResource(R.string.record_center_range_7d),
@@ -588,11 +592,14 @@ private fun StatRow(field: RecordField, stat: RecordFieldStats) {
             AppTheme.uiProfile.widthMode == AppWidthMode.Narrow ||
             AppTheme.uiProfile.fontMode != AppFontMode.Regular
         ) 2 else 4
-        FlowRow(
+        FlexBox(
             modifier = Modifier.fillMaxWidth(),
-            maxItemsInEachRow = columns,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            config = {
+                wrap(FlexWrap.Wrap)
+                maxItemsInEachLine(columns)
+                columnGap(8.dp)
+                rowGap(8.dp)
+            },
         ) {
             listOf(
                 R.string.record_center_stats_latest to stat.latest,
@@ -603,7 +610,10 @@ private fun StatRow(field: RecordField, stat: RecordFieldStats) {
                 StatCell(
                     label = stringResource(label),
                     value = value,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.flex {
+                        grow(1f)
+                        basis(0f)
+                    },
                 )
             }
         }

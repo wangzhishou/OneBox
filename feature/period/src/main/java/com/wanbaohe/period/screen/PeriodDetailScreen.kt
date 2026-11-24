@@ -23,7 +23,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -129,9 +130,12 @@ fun PeriodDetailScreen(
                         icon = { PeriodInfoIcon(icon = Icons.Outlined.LineHealing, colors = colors) },
                         title = stringResource(R.string.period_field_symptoms),
                     ) {
-                        FlowRow(
-                            horizontalArrangement = Arrangement.spacedBy(6.dp),
-                            verticalArrangement = Arrangement.spacedBy(6.dp),
+                        FlexBox(
+                            config = {
+                                wrap(FlexWrap.Wrap)
+                                columnGap(6.dp)
+                                rowGap(6.dp)
+                            },
                         ) {
                             state.symptoms.forEach { symptom ->
                                 Text(

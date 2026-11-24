@@ -26,7 +26,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -683,9 +684,12 @@ private fun AdvancedFormatSelector(
             )
             Spacer(Modifier.height(8.dp))
         }
-        FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+        FlexBox(
+            config = {
+                wrap(FlexWrap.Wrap)
+                columnGap(8.dp)
+                rowGap(8.dp)
+            },
         ) {
             formats.forEach { format ->
                 EnhancedChip(

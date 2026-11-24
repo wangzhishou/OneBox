@@ -14,7 +14,8 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -191,7 +192,7 @@ private fun WatermarkSettings(
         }
     }
     SettingsSection(titleRes = R.string.camera_missing_info) {
-        OptionFlowRow(
+        OptionFlexBox(
             options = listOf(false, true),
             selected = state.settings.hideUnavailableWatermarkInfo,
             label = { hide ->
@@ -234,7 +235,7 @@ private fun CaptureSettings(
     onModeChange: (CameraCaptureMode) -> Unit,
 ) {
     SettingsSection(titleRes = R.string.camera_section_capture) {
-        OptionFlowRow(
+        OptionFlexBox(
             options = CameraCaptureMode.entries,
             selected = state.settings.mode,
             label = {
@@ -245,7 +246,7 @@ private fun CaptureSettings(
             onSelected = onModeChange,
         )
         OptionLabel(stringResource(R.string.camera_ratio))
-        OptionFlowRow(
+        OptionFlexBox(
             options = CameraRatio.entries,
             selected = state.settings.ratio,
             label = {
@@ -259,14 +260,14 @@ private fun CaptureSettings(
             onSelected = { ratio -> onSettingsChange { it.copy(ratio = ratio) } },
         )
         OptionLabel(stringResource(R.string.camera_timer))
-        OptionFlowRow(
+        OptionFlexBox(
             options = CameraTimer.entries,
             selected = state.settings.timer,
             label = { "${it.seconds}s" },
             onSelected = { timer -> onSettingsChange { it.copy(timer = timer) } },
         )
         OptionLabel(stringResource(R.string.camera_grid))
-        OptionFlowRow(
+        OptionFlexBox(
             options = CameraGrid.entries,
             selected = state.settings.grid,
             label = { grid ->
@@ -283,7 +284,7 @@ private fun CaptureSettings(
         )
         if (state.settings.mode == CameraCaptureMode.PHOTO) {
             OptionLabel(stringResource(R.string.camera_photo_quality))
-            OptionFlowRow(
+            OptionFlexBox(
                 options = PhotoQuality.entries,
                 selected = state.settings.photoQuality,
                 label = { stringResource(it.labelRes) },
@@ -359,7 +360,7 @@ private fun ProfessionalSettings(
         val sceneOptions = state.capabilities.supportedScenes.sortedBy { it.ordinal }
         if (sceneOptions.size > 1) {
             OptionLabel(stringResource(R.string.camera_scene))
-            OptionFlowRow(
+            OptionFlexBox(
                 options = sceneOptions,
                 selected = state.settings.scene,
                 label = { stringResource(it.labelRes) },
@@ -369,7 +370,7 @@ private fun ProfessionalSettings(
         val whiteBalanceOptions = state.capabilities.supportedWhiteBalances.sortedBy { it.ordinal }
         if (whiteBalanceOptions.size > 1) {
             OptionLabel(stringResource(R.string.camera_white_balance))
-            OptionFlowRow(
+            OptionFlexBox(
                 options = whiteBalanceOptions,
                 selected = state.settings.whiteBalance,
                 label = { stringResource(it.labelRes) },
@@ -485,14 +486,14 @@ private fun VideoSettings(
 ) {
     SettingsSection(titleRes = R.string.camera_section_video) {
         OptionLabel(stringResource(R.string.camera_video_quality))
-        OptionFlowRow(
+        OptionFlexBox(
             options = state.capabilities.supportedVideoQualities.sortedByDescending { it.ordinal },
             selected = state.settings.videoQuality,
             label = { it.shortLabel },
             onSelected = { quality -> onSettingsChange { it.copy(videoQuality = quality) } },
         )
         OptionLabel(stringResource(R.string.camera_frame_rate))
-        OptionFlowRow(
+        OptionFlexBox(
             options = state.capabilities.supportedFrameRates.sortedBy { it.fps },
             selected = state.settings.frameRate,
             label = { if (it.fps == 0) stringResource(R.string.camera_auto) else "${it.fps} fps" },
@@ -587,17 +588,20 @@ private fun WatermarkTemplateOptions(
 }
 
 @Composable
-private fun <T> OptionFlowRow(
+private fun <T> OptionFlexBox(
     options: List<T>,
     selected: T,
     modifier: Modifier = Modifier,
     label: @Composable (T) -> String,
     onSelected: (T) -> Unit,
 ) {
-    FlowRow(
+    FlexBox(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        config = {
+            wrap(FlexWrap.Wrap)
+            columnGap(8.dp)
+            rowGap(8.dp)
+        },
     ) {
         options.forEach { option ->
             key(option) {

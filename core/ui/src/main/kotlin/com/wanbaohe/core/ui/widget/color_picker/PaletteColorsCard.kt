@@ -23,7 +23,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -250,10 +251,13 @@ fun PaletteColorsCard(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-            FlowRow(
+            FlexBox(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                config = {
+                    wrap(FlexWrap.Wrap)
+                    columnGap(8.dp)
+                    rowGap(8.dp)
+                },
             ) {
                 palette.colors.forEach { argb ->
                     PaletteColorCell(

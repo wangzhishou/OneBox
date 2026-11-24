@@ -21,8 +21,8 @@ package com.shifenmiao.marktodo.components
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -104,8 +104,6 @@ fun PrioritySelector(
         }
     }
 }
-
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun TagSelector(
     tags: List<TodoTag>,
@@ -116,10 +114,13 @@ fun TagSelector(
     val poolNames = tags.map { it.name }.toSet()
     val extraNames = selectedTagNames.filter { it !in poolNames }
 
-    FlowRow(
-        horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
-        verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
+    FlexBox(
         modifier = Modifier.animateContentSize(),
+        config = {
+            wrap(FlexWrap.Wrap)
+            columnGap(OneBoxDesignSystem.compactSpacing)
+            rowGap(OneBoxDesignSystem.compactSpacing)
+        },
     ) {
         tags.forEachIndexed { index, tag ->
             val selected = tag.name in selectedTagNames

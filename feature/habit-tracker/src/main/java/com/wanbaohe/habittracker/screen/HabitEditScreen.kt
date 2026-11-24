@@ -23,7 +23,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -359,9 +360,12 @@ private fun RepeatSection(
     onWeekdayToggle: (Int) -> Unit,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+        FlexBox(
+            config = {
+                wrap(FlexWrap.Wrap)
+                columnGap(8.dp)
+                rowGap(8.dp)
+            },
         ) {
             listOf(
                 HabitRepeat.DAILY to R.string.habit_repeat_daily,
@@ -421,9 +425,12 @@ private fun RepeatSection(
             HabitRepeat.CUSTOM_WEEKDAYS -> {
                 // 7 个星期 chip 多选
                 val labels = stringArrayResource(R.array.habit_weekdays_short)
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                FlexBox(
+                    config = {
+                        wrap(FlexWrap.Wrap)
+                        columnGap(6.dp)
+                        rowGap(8.dp)
+                    },
                 ) {
                     (1..7).forEach { dayOfWeek ->
                         EnhancedChip(

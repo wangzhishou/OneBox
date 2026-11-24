@@ -32,7 +32,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexAlignContent
+import androidx.compose.foundation.layout.FlexAlignItems
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexJustifyContent
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -303,21 +307,16 @@ private fun EnhancedDatePickerDialogContainer(
                             .align(Alignment.End)
                             .padding(DialogButtonsPadding)
                     ) {
-                        FlowRow(
+                        FlexBox(
                             modifier = Modifier.weight(1f),
-                            horizontalArrangement = Arrangement.spacedBy(
-                                space = ButtonsHorizontalSpacing,
-                                alignment = if (isCenterAlignButtons) {
-                                    Alignment.CenterHorizontally
-                                } else Alignment.End
-                            ),
-                            verticalArrangement = Arrangement.spacedBy(
-                                space = ButtonsVerticalSpacing,
-                                alignment = if (isCenterAlignButtons) {
-                                    Alignment.CenterVertically
-                                } else Alignment.Bottom
-                            ),
-                            itemVerticalAlignment = Alignment.CenterVertically
+                            config = {
+                                wrap(FlexWrap.Wrap)
+                                columnGap(ButtonsHorizontalSpacing)
+                                justifyContent(if (isCenterAlignButtons) FlexJustifyContent.Center else FlexJustifyContent.End)
+                                rowGap(ButtonsVerticalSpacing)
+                                alignContent(if (isCenterAlignButtons) FlexAlignContent.Center else FlexAlignContent.End)
+                                alignItems(FlexAlignItems.Center)
+                            },
                         ) {
                             EnhancedButton(
                                 onClick = onDismissRequest,

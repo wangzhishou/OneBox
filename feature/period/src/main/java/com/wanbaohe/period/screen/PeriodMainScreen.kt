@@ -25,7 +25,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -562,10 +563,13 @@ private fun PeriodStatsContent(
             )
             val rangeLabelStyle = MaterialTheme.typography.labelLarge
             if (stackLabels) {
-                FlowRow(
+                FlexBox(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    config = {
+                        wrap(FlexWrap.Wrap)
+                        columnGap(8.dp)
+                        rowGap(8.dp)
+                    },
                 ) {
                     rangeOptions.forEach { option ->
                         EnhancedChip(
@@ -609,11 +613,14 @@ private fun PeriodStatsContent(
             }
         }
         item {
-            FlowRow(
+            FlexBox(
                 modifier = Modifier.fillMaxWidth(),
-                maxItemsInEachRow = if (stackLabels) 1 else 3,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                config = {
+                    wrap(FlexWrap.Wrap)
+                    maxItemsInEachLine(if (stackLabels) 1 else 3)
+                    columnGap(8.dp)
+                    rowGap(8.dp)
+                },
             ) {
                 PeriodStatCard(
                     icon = Icons.Outlined.LineCalendar,
@@ -624,7 +631,10 @@ private fun PeriodStatsContent(
                         stringResource(R.string.period_stats_vs_prev, it)
                     } ?: stringResource(R.string.period_stats_vs_prev_na),
                     colors = colors,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.flex {
+                        grow(1f)
+                        basis(0f)
+                    },
                 )
                 PeriodStatCard(
                     icon = Icons.Outlined.LineWaterDrop,
@@ -635,7 +645,10 @@ private fun PeriodStatsContent(
                         stringResource(R.string.period_stats_vs_prev, it)
                     } ?: stringResource(R.string.period_stats_vs_prev_na),
                     colors = colors,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.flex {
+                        grow(1f)
+                        basis(0f)
+                    },
                 )
                 PeriodStatCard(
                     icon = Icons.Outlined.LineGpsFixed,
@@ -646,7 +659,10 @@ private fun PeriodStatsContent(
                     subtitle = stats.nextPeriodStart?.periodWeekday(TextStyle.FULL)
                         ?: stringResource(R.string.period_stats_vs_prev_na),
                     colors = colors,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.flex {
+                        grow(1f)
+                        basis(0f)
+                    },
                 )
             }
         }

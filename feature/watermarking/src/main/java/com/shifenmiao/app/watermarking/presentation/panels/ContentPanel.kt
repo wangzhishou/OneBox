@@ -12,7 +12,8 @@ package com.shifenmiao.app.watermarking.presentation.panels
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -184,10 +185,13 @@ private fun TimestampFormats(
         stringResource(R.string.watermark_time_local),
         stringResource(R.string.watermark_time_clock),
     )
-    FlowRow(
+    FlexBox(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        config = {
+            wrap(FlexWrap.Wrap)
+            columnGap(8.dp)
+            rowGap(8.dp)
+        },
     ) {
         patterns.forEach { pattern ->
             EnhancedChip(

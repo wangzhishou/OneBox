@@ -25,8 +25,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -88,8 +88,6 @@ private enum class CreationConfigTab {
     Categories,
     Tools,
 }
-
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CreationMetaConfigSheet(
     title: String,
@@ -395,8 +393,6 @@ private fun CreationConfigTabRow(
         unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
     )
 }
-
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ConfigSelectionOverviewCard(
     showCategorySection: Boolean,
@@ -433,9 +429,12 @@ private fun ConfigSelectionOverviewCard(
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     } else {
-                        FlowRow(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                        FlexBox(
+                            config = {
+                                wrap(FlexWrap.Wrap)
+                                columnGap(8.dp)
+                                rowGap(8.dp)
+                            },
                         ) {
                             selectedCategories.take(6).forEach { category ->
                                 CategorySelectionTag(text = category.name)
@@ -519,8 +518,6 @@ private fun CategorySelectionTag(text: String) {
         )
     }
 }
-
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun CreationCategorySelectionSection(
     categoryHint: String,
@@ -539,10 +536,13 @@ private fun CreationCategorySelectionSection(
             Spacer(modifier = Modifier.height(12.dp))
         }
 
-        FlowRow(
+        FlexBox(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            config = {
+                wrap(FlexWrap.Wrap)
+                columnGap(8.dp)
+                rowGap(8.dp)
+            },
         ) {
             categories.forEach { category ->
                 val isSelected = category.id in selectedCategoryIds
@@ -846,8 +846,6 @@ private fun ToolEmptyStateHint(text: String) {
         color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
 }
-
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SelectedToolSummary(
     tools: List<ToolCatalogItem>,
@@ -866,10 +864,13 @@ fun SelectedToolSummary(
     }
 
     val previewTools = tools.take(maxPreviewCount)
-    FlowRow(
+    FlexBox(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        config = {
+            wrap(FlexWrap.Wrap)
+            columnGap(8.dp)
+            rowGap(8.dp)
+        },
     ) {
         previewTools.forEach { tool ->
             val backgroundColor = if (tool.riskLevel == ToolRiskLevel.DANGEROUS) {

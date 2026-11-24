@@ -23,9 +23,9 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -77,10 +77,14 @@ fun SearchSuggest(
                     .fillMaxWidth(),
                 label = "SearchSuggestAnimation"
             ) { suggestions ->
-                FlowRow(
+                val gap = AppTheme.dimens.spaceNormal
+                FlexBox(
                     Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceNormal),
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceNormal)
+                    config = {
+                        wrap(FlexWrap.Wrap)
+                        columnGap(gap)
+                        rowGap(gap)
+                    },
                 ) {
                     suggestions.value.forEach { suggestionModel ->
                         CancelableChip(

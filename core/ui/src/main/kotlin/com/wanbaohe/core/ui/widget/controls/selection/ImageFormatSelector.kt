@@ -32,7 +32,10 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexAlignContent
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexJustifyContent
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -179,15 +182,7 @@ fun ImageFormatSelector(
                     targetState = entries,
                     modifier = Modifier.fillMaxWidth()
                 ) { items ->
-                    FlowRow(
-                        verticalArrangement = Arrangement.spacedBy(
-                            space = 8.dp,
-                            alignment = Alignment.CenterVertically
-                        ),
-                        horizontalArrangement = Arrangement.spacedBy(
-                            space = 8.dp,
-                            alignment = Alignment.CenterHorizontally
-                        ),
+                    FlexBox(
                         modifier = Modifier
                             .fillMaxWidth()
                             .then(
@@ -200,7 +195,14 @@ fun ImageFormatSelector(
                                         )
                                         .padding(horizontal = 8.dp, vertical = 12.dp)
                                 } else Modifier.padding(8.dp)
-                            )
+                            ),
+                        config = {
+                            wrap(FlexWrap.Wrap)
+                            rowGap(8.dp)
+                            alignContent(FlexAlignContent.Center)
+                            columnGap(8.dp)
+                            justifyContent(FlexJustifyContent.Center)
+                        },
                     ) {
                         onAutoClick?.let {
                             EnhancedChip(
@@ -282,16 +284,15 @@ fun ImageFormatSelector(
                     targetState = filteredFormats,
                     modifier = Modifier.fillMaxWidth()
                 ) { items ->
-                    FlowRow(
-                        verticalArrangement = Arrangement.spacedBy(
-                            space = 8.dp,
-                            alignment = Alignment.CenterVertically
-                        ),
-                        horizontalArrangement = Arrangement.spacedBy(
-                            space = 8.dp,
-                            alignment = Alignment.CenterHorizontally
-                        ),
-                        modifier = Modifier.fillMaxWidth()
+                    FlexBox(
+                        modifier = Modifier.fillMaxWidth(),
+                        config = {
+                            wrap(FlexWrap.Wrap)
+                            rowGap(8.dp)
+                            alignContent(FlexAlignContent.Center)
+                            columnGap(8.dp)
+                            justifyContent(FlexJustifyContent.Center)
+                        },
                     ) {
                         items.forEach {
                             EnhancedChip(

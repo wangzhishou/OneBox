@@ -30,7 +30,9 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexAlignContent
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -234,16 +236,14 @@ fun <T : Any> DataSelector(
                 }
             }
         } else {
-            FlowRow(
-                verticalArrangement = Arrangement.spacedBy(
-                    space = 8.dp,
-                    alignment = Alignment.CenterVertically
-                ),
-                horizontalArrangement = Arrangement.spacedBy(
-                    space = 8.dp,
-                    alignment = Alignment.Start
-                ),
-                modifier = Modifier.padding(contentPadding)
+            FlexBox(
+                modifier = Modifier.padding(contentPadding),
+                config = {
+                    wrap(FlexWrap.Wrap)
+                    rowGap(8.dp)
+                    alignContent(FlexAlignContent.Center)
+                    columnGap(8.dp)
+                },
             ) {
                 entries.forEach { item ->
                     ChipItem(

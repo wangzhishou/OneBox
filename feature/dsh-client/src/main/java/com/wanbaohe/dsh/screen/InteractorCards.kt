@@ -21,7 +21,8 @@ package com.wanbaohe.dsh.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -388,9 +389,12 @@ private fun QuestionBlock(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
-        FlowRow(
+        FlexBox(
             modifier = Modifier.padding(top = 4.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            config = {
+                wrap(FlexWrap.Wrap)
+                columnGap(8.dp)
+            },
         ) {
             for (option in question.options.orEmpty()) {
                 FilterChip(

@@ -25,7 +25,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexJustifyContent
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -101,12 +103,17 @@ internal fun AddTaskCard(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Spacer(modifier = Modifier.height(16.dp))
-            FlowRow(
-                horizontalArrangement = Arrangement.SpaceBetween,
+            FlexBox(
+                config = {
+                    wrap(FlexWrap.Wrap)
+                    justifyContent(FlexJustifyContent.SpaceBetween)
+                },
             ) {
                 Box(
-                    modifier = Modifier
-                        .weight(1f),
+                    modifier = Modifier.flex {
+                        grow(1f)
+                        basis(0f)
+                    },
                     contentAlignment = Alignment.Center
                 ) {
                     Box(
@@ -149,8 +156,10 @@ internal fun AddTaskCard(
                 }
 
                 Box(
-                    modifier = Modifier
-                        .weight(1f),
+                    modifier = Modifier.flex {
+                        grow(1f)
+                        basis(0f)
+                    },
                     contentAlignment = Alignment.Center
                 ) {
                     Column(

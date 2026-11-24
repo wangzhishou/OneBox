@@ -29,11 +29,11 @@ import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -112,10 +112,13 @@ fun UrisPreview(
 
         val width = this.maxWidth / count - 4.dp * (count - 1)
 
-        FlowRow(
+        FlexBox(
             modifier = modifier,
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
+            config = {
+                wrap(FlexWrap.Wrap)
+                columnGap(4.dp)
+                rowGap(4.dp)
+            },
         ) {
             uris.forEachIndexed { index, uri ->
                 if (uri != Uri.EMPTY) {

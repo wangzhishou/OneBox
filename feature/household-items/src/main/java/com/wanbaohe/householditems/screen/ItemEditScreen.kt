@@ -24,8 +24,8 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -242,8 +242,6 @@ fun ItemEditScreen(
 // ─────────────────────────────────────────────────────────────────────────────
 // 表单字段
 // ─────────────────────────────────────────────────────────────────────────────
-
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun CategoryField(
     category: String,
@@ -252,6 +250,10 @@ private fun CategoryField(
     // 16 个默认分类(名称按当前 locale 解析),宫格选择 + 自定义输入
     val presets = defaultHouseholdCategories.map { it to stringResource(it.nameResId) }
     val isCustom = category.isNotBlank() && presets.none { it.second == category }
+    val maxItemsPerLine = if (
+        AppTheme.uiProfile.widthMode == AppWidthMode.Narrow ||
+        AppTheme.uiProfile.fontMode != AppFontMode.Regular
+    ) 2 else 4
 
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(
@@ -259,19 +261,22 @@ private fun CategoryField(
             style = MaterialTheme.typography.labelLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        FlowRow(
-            maxItemsInEachRow = if (
-                AppTheme.uiProfile.widthMode == AppWidthMode.Narrow ||
-                AppTheme.uiProfile.fontMode != AppFontMode.Regular
-            ) 2 else 4,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+        FlexBox(
+            config = {
+                wrap(FlexWrap.Wrap)
+                maxItemsInEachLine(maxItemsPerLine)
+                columnGap(8.dp)
+                rowGap(8.dp)
+            },
         ) {
             presets.forEach { (def, name) ->
                 val selected = category == name
                 GlassCard(
                     onClick = { onCategoryChange(if (selected) "" else name) },
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.flex {
+                        grow(1f)
+                        basis(0f)
+                    },
                     shape = RoundedCornerShape(12.dp),
                     style = GlassStyle.Medium,
                     border = if (selected) {

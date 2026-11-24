@@ -22,7 +22,8 @@ package com.wanbaohe.passwordvault.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -46,7 +47,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Tune
 /**
  * 分类选择器：
  * - 顶部一行：标签 + "管理" 图标按钮（点击打开 [com.shifenmiao.common.components.category.CategoryManagementDialog]）
- * - 主体：FlowRow chip 列表(GlassFilterChip,选中态高亮由玻璃组件内部处理)
+ * - 主体：FlexBox chip 列表(GlassFilterChip,选中态高亮由玻璃组件内部处理)
  */
 @Composable
 fun CategoryPickerField(
@@ -97,10 +98,13 @@ fun CategoryPickerField(
                 )
             }
         } else {
-            FlowRow(
+            FlexBox(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
-                verticalArrangement = Arrangement.spacedBy(6.dp),
+                config = {
+                    wrap(FlexWrap.Wrap)
+                    columnGap(6.dp)
+                    rowGap(6.dp)
+                },
             ) {
                 categories.forEach { category ->
                     val selected = category.id == selectedCategoryId

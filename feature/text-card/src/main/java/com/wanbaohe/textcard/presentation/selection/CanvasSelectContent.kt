@@ -24,7 +24,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -161,12 +162,15 @@ fun CanvasSelectContent(component: TextCardComponent) {
                             maxLines = 8,
                             modifier = Modifier.fillMaxWidth()
                         )
-                        FlowRow(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                        FlexBox(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(top = 12.dp)
+                                .padding(top = 12.dp),
+                            config = {
+                                wrap(FlexWrap.Wrap)
+                                columnGap(8.dp)
+                                rowGap(8.dp)
+                            },
                         ) {
                             HomeActionButton(
                                 text = stringResource(R.string.textcard_try_sample),

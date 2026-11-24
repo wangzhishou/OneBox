@@ -14,9 +14,9 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -100,7 +100,7 @@ private fun BlendingMode.labelRes(): Int? = when (this) {
  * 原来的 DataSelector 把 29 个 PorterDuff 名字平铺成一行会横向溢出、还全是英文，
  * 这里改成「标题行显示当前模式 + 展开后按常用模式换行排列」：
  * - 折叠时不挤占横向空间，当前值一眼可见；
- * - 展开用 FlowRow 自动换行，永远不会被容器裁掉；
+ * - 展开用 FlexBox 自动换行，永远不会被容器裁掉；
  * - 文案全部本地化，老预设里存在的非常用模式仍会追加在末尾。
  */
 @Composable
@@ -164,12 +164,15 @@ fun OverlayModeSelector(
             )
         }
         AnimatedVisibility(visible = expanded) {
-            FlowRow(
+            FlexBox(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 14.dp, end = 14.dp, bottom = 14.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                config = {
+                    wrap(FlexWrap.Wrap)
+                    columnGap(8.dp)
+                    rowGap(8.dp)
+                },
             ) {
                 modes.forEach { mode ->
                     val selected = mode == value

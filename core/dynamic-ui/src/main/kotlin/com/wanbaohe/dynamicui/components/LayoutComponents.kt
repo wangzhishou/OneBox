@@ -37,7 +37,10 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexAlignContent
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexJustifyContent
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -69,7 +72,7 @@ import com.wanbaohe.dynamicui.state.rememberResolvedBool
 import com.wanbaohe.dynamicui.state.rememberResolvedString
 
 /**
- * Layout component renderers: Column, Row, FlowRow, Box, LazyColumn, LazyRow,
+ * Layout component renderers: Column, Row, FlexBox, Box, LazyColumn, LazyRow,
  * LazyVerticalGrid, Spacer, Divider, ForEach.
  *
  * All renderers are registered in [registerLayoutComponents].
@@ -80,7 +83,8 @@ import com.wanbaohe.dynamicui.state.rememberResolvedString
 fun ComponentRegistry.registerLayoutComponents() {
     register("Column") { node, scope, ctx, itemCtx -> ColumnRenderer(node, scope, ctx, itemCtx) }
     register("Row") { node, scope, ctx, itemCtx -> RowRenderer(node, scope, ctx, itemCtx) }
-    register("FlowRow") { node, scope, ctx, itemCtx -> FlowRowRenderer(node, scope, ctx, itemCtx) }
+    register("FlexBox") { node, scope, ctx, itemCtx -> FlexBoxRenderer(node, scope, ctx, itemCtx) }
+    register("FlowRow") { node, scope, ctx, itemCtx -> FlexBoxRenderer(node, scope, ctx, itemCtx) }
     register("Box") { node, scope, ctx, itemCtx -> BoxRenderer(node, scope, ctx, itemCtx) }
     register("LazyColumn") { node, scope, ctx, itemCtx -> LazyColumnRenderer(node, scope, ctx, itemCtx) }
     register("LazyRow") { node, scope, ctx, itemCtx -> LazyRowRenderer(node, scope, ctx, itemCtx) }
@@ -124,16 +128,24 @@ private fun RowRenderer(node: UiNode, scope: UiStateScope, ctx: RenderContext, i
     }
 }
 
-// ─── FlowRow ─────────────────────────────────────────────────────────────────
+// ─── FlexBox ─────────────────────────────────────────────────────────────────
 
 @Composable
-private fun FlowRowRenderer(node: UiNode, scope: UiStateScope, ctx: RenderContext, itemContext: Map<String, Any?> = emptyMap()) {
-    val maxItems = node.propInt("maxItemsInEachRow", 0).takeIf { it > 0 }
-    FlowRow(
+private fun FlexBoxRenderer(node: UiNode, scope: UiStateScope, ctx: RenderContext, itemContext: Map<String, Any?> = emptyMap()) {
+    val horizontalArrangement = node.propString("horizontalArrangement")
+    val verticalArrangement = node.propString("verticalArrangement")
+    val maxItems = node.propInt("maxItemsInEachLine", 0).takeIf { it > 0 }
+        ?: node.propInt("maxItemsInEachRow", 0).takeIf { it > 0 }
+    FlexBox(
         modifier = ctx.modifierPipeline.build(node.modifier),
-        horizontalArrangement = parseHorizontalArrangement(node.propString("horizontalArrangement")),
-        verticalArrangement = parseVerticalArrangement(node.propString("verticalArrangement")),
-        maxItemsInEachRow = maxItems ?: Int.MAX_VALUE,
+        config = {
+            wrap(FlexWrap.Wrap)
+            justifyContent(parseFlexJustifyContent(horizontalArrangement))
+            alignContent(parseFlexAlignContent(verticalArrangement))
+            columnGap(parseHorizontalArrangement(horizontalArrangement).spacing)
+            rowGap(parseVerticalArrangement(verticalArrangement).spacing)
+            maxItemsInEachLine(maxItems ?: Int.MAX_VALUE)
+        },
     ) {
         node.children.forEach { child ->
             UiNodeRenderer.Render(child, scope, ctx, itemContext)
@@ -399,6 +411,23 @@ private fun parseExitTransition(raw: String?, durationMillis: Int): ExitTransiti
 }
 
 // ─── Arrangement / Alignment parsers ─────────────────────────────────────────
+
+private fun parseFlexJustifyContent(raw: String?): FlexJustifyContent = when (raw) {
+    "Center" -> FlexJustifyContent.Center
+    "End" -> FlexJustifyContent.End
+    "SpaceBetween" -> FlexJustifyContent.SpaceBetween
+    "SpaceAround" -> FlexJustifyContent.SpaceAround
+    "SpaceEvenly" -> FlexJustifyContent.SpaceEvenly
+    else -> FlexJustifyContent.Start
+}
+
+private fun parseFlexAlignContent(raw: String?): FlexAlignContent = when (raw) {
+    "Center" -> FlexAlignContent.Center
+    "Bottom" -> FlexAlignContent.End
+    "SpaceBetween" -> FlexAlignContent.SpaceBetween
+    "SpaceAround" -> FlexAlignContent.SpaceAround
+    else -> FlexAlignContent.Start
+}
 
 private fun parseVerticalArrangement(raw: String?): Arrangement.Vertical = when (raw) {
     "Center" -> Arrangement.Center

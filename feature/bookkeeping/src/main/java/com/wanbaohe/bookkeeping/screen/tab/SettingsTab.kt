@@ -32,7 +32,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -109,7 +110,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineUploadFile
 /**
  * 设置 Tab：美化后的分类管理页面。
  * - 三个分类区块（支出/入账/不计入收支），每块用卡片展示
- * - FlowRow chip 展示所有分类，分类多时自动换行
+ * - FlexBox chip 展示所有分类，分类多时自动换行
  * - 卡片内置"快速新增"输入框
  * - "管理"按钮打开 CategoryManagementDialog，支持拖拽排序/重命名/删除
  */
@@ -537,9 +538,12 @@ private fun CategorySectionCard(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             } else {
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    verticalArrangement = Arrangement.spacedBy(6.dp),
+                FlexBox(
+                    config = {
+                        wrap(FlexWrap.Wrap)
+                        columnGap(6.dp)
+                        rowGap(6.dp)
+                    },
                 ) {
                     categories.forEach { cat ->
                         SuggestionChip(

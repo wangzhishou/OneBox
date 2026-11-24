@@ -23,6 +23,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -67,8 +69,6 @@ import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
 import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineArrowDropDown
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedDropdownMenu
-
-@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
 @Composable
 fun LifeTimeAddEventScreen(
     component: LifeTimeAddEventComponent
@@ -211,9 +211,12 @@ private fun EventForm(
                     OneBoxSectionHeader(
                         title = stringResource(R.string.lifetime_frequency_label)
                     )
-                    androidx.compose.foundation.layout.FlowRow(
-                        horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
-                        verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing)
+                    FlexBox(
+                        config = {
+                            wrap(FlexWrap.Wrap)
+                            columnGap(OneBoxDesignSystem.compactSpacing)
+                            rowGap(OneBoxDesignSystem.compactSpacing)
+                        },
                     ) {
                         listOf(FrequencyType.ONE_TIME, FrequencyType.DAILY, FrequencyType.WEEKLY, FrequencyType.MONTHLY, FrequencyType.YEARLY).forEach { type ->
                             val isSelected = frequencyType == type

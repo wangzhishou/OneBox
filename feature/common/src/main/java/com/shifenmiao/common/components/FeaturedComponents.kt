@@ -23,7 +23,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -402,10 +403,13 @@ fun LocalArticleCard(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 if (hasCategoryTag) {
-                    FlowRow(
+                    FlexBox(
                         modifier = Modifier.weight(1f, fill = false),
-                        horizontalArrangement = Arrangement.spacedBy(6.dp),
-                        verticalArrangement = Arrangement.spacedBy(6.dp),
+                        config = {
+                            wrap(FlexWrap.Wrap)
+                            columnGap(6.dp)
+                            rowGap(6.dp)
+                        },
                     ) {
                         categoryTags.forEachIndexed { index, name ->
                             val categoryTheme = sectionThemeForIndex(index)

@@ -21,8 +21,8 @@ package com.wanbaohe.dynamicui.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -1232,7 +1232,6 @@ private data class RowSelectorItem(
     val kind: String = "text",
 )
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun RowSelectorRenderer(
     node: UiNode,
@@ -1254,7 +1253,10 @@ private fun RowSelectorRenderer(
     val maxSelected = node.propInt("maxSelected", 0).coerceAtLeast(0)
     val selectIndex = node.propInt("selectIndex", -1)
     val maxLines = node.propInt("maxLines", Int.MAX_VALUE)
-    val maxItemsInEachRow = node.propInt("maxItemsInEachRow", Int.MAX_VALUE)
+    val maxItemsInEachLine = node.propInt(
+        "maxItemsInEachLine",
+        node.propInt("maxItemsInEachRow", Int.MAX_VALUE),
+    )
     val selectedMap = remember(node.id) { mutableStateMapOf<Int, String>() }
     val showCustomInput = remember(node.id) { mutableStateOf(false) }
 
@@ -1311,12 +1313,19 @@ private fun RowSelectorRenderer(
         selectedContainerColor
     }
 
-    FlowRow(
+    val visibleItems = if (maxLines == Int.MAX_VALUE || maxItemsInEachLine == Int.MAX_VALUE) {
+        items
+    } else {
+        items.take(maxLines * maxItemsInEachLine)
+    }
+    FlexBox(
         modifier = ctx.modifierPipeline.build(node.modifier),
-        maxLines = maxLines,
-        maxItemsInEachRow = maxItemsInEachRow,
+        config = {
+            wrap(FlexWrap.Wrap)
+            maxItemsInEachLine(maxItemsInEachLine)
+        },
     ) {
-        items.forEachIndexed { index, item ->
+        visibleItems.forEachIndexed { index, item ->
             val isSelected = selectedMap.containsKey(index)
             GlassFilterChip(
                 selected = isSelected,

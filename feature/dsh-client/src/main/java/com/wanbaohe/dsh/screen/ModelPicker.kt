@@ -22,7 +22,8 @@ package com.wanbaohe.dsh.screen
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -201,8 +202,11 @@ private fun ModelCatalogContent(
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
-                    FlowRow(
-                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    FlexBox(
+                        config = {
+                            wrap(FlexWrap.Wrap)
+                            columnGap(6.dp)
+                        },
                     ) {
                         for (option in efforts) {
                             FilterChip(

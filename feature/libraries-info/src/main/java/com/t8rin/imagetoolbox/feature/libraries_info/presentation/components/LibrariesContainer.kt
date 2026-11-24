@@ -31,9 +31,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.FlowRowScope
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexBoxScope
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -129,7 +129,7 @@ internal fun LibrariesContainer(
     description: (@Composable BoxScope.(description: String) -> Unit)? = { description ->
         if (showDescription) DefaultLibraryDescription(description, textStyles, colors, typography)
     },
-    license: (@Composable FlowRowScope.(license: License) -> Unit)? = { license ->
+    license: (@Composable FlexBoxScope.(license: License) -> Unit)? = { license ->
         if (showLicenseBadges) DefaultLibraryLicense(
             license,
             textStyles,
@@ -139,7 +139,7 @@ internal fun LibrariesContainer(
             shapes
         )
     },
-    funding: (@Composable FlowRowScope.(funding: Funding) -> Unit)? = { funding ->
+    funding: (@Composable FlexBoxScope.(funding: Funding) -> Unit)? = { funding ->
         if (showFundingBadges) DefaultLibraryFunding(
             funding,
             textStyles,
@@ -150,7 +150,7 @@ internal fun LibrariesContainer(
             onFundingClick
         )
     },
-    actions: (@Composable FlowRowScope.(library: Library) -> Unit)? = null,
+    actions: (@Composable FlexBoxScope.(library: Library) -> Unit)? = null,
     header: (LazyListScope.() -> Unit)? = null,
     divider: (@Composable LazyItemScope.() -> Unit)? = null,
     footer: (LazyListScope.() -> Unit)? = null,
@@ -245,7 +245,7 @@ private val DefaultLibraryDescription: @Composable BoxScope.(description: String
         )
     }
 
-private val DefaultLibraryLicense: @Composable FlowRowScope.(license: License, textStyles: LibraryTextStyles, colors: LibraryColors, padding: LibraryPadding, dimensions: LibraryDimensions, shapes: LibraryShapes) -> Unit =
+private val DefaultLibraryLicense: @Composable FlexBoxScope.(license: License, textStyles: LibraryTextStyles, colors: LibraryColors, padding: LibraryPadding, dimensions: LibraryDimensions, shapes: LibraryShapes) -> Unit =
     { license, textStyles, colors, padding, dimensions, shapes ->
         LibraryChip(
             modifier = Modifier.padding(padding.licensePadding.containerPadding),
@@ -265,7 +265,7 @@ private val DefaultLibraryLicense: @Composable FlowRowScope.(license: License, t
         }
     }
 
-private val DefaultLibraryFunding: @Composable FlowRowScope.(funding: Funding, textStyles: LibraryTextStyles, colors: LibraryColors, padding: LibraryPadding, dimensions: LibraryDimensions, shapes: LibraryShapes, onFundingClick: ((Funding) -> Unit)?) -> Unit =
+private val DefaultLibraryFunding: @Composable FlexBoxScope.(funding: Funding, textStyles: LibraryTextStyles, colors: LibraryColors, padding: LibraryPadding, dimensions: LibraryDimensions, shapes: LibraryShapes, onFundingClick: ((Funding) -> Unit)?) -> Unit =
     { funding, textStyles, colors, padding, dimensions, shapes, onFundingClick ->
         val uriHandler = LocalUriHandler.current
         LibraryChip(
@@ -312,9 +312,9 @@ private fun LibrariesScaffold(
     version: (@Composable BoxScope.(version: String) -> Unit)? = null,
     author: (@Composable BoxScope.(authors: String) -> Unit)? = null,
     description: (@Composable BoxScope.(description: String) -> Unit)? = null,
-    license: (@Composable FlowRowScope.(license: License) -> Unit)? = null,
-    funding: (@Composable FlowRowScope.(funding: Funding) -> Unit)? = null,
-    actions: (@Composable FlowRowScope.(library: Library) -> Unit)? = null,
+    license: (@Composable FlexBoxScope.(license: License) -> Unit)? = null,
+    funding: (@Composable FlexBoxScope.(funding: Funding) -> Unit)? = null,
+    actions: (@Composable FlexBoxScope.(library: Library) -> Unit)? = null,
     header: (LazyListScope.() -> Unit)? = null,
     divider: (@Composable LazyItemScope.() -> Unit)? = null,
     footer: (LazyListScope.() -> Unit)? = null,
@@ -397,16 +397,14 @@ private fun LibrariesScaffold(
         footer?.invoke(this)
     }
 }
-
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun LibraryScaffoldLayout(
     name: @Composable BoxScope.() -> Unit,
     version: @Composable BoxScope.() -> Unit,
     author: @Composable BoxScope.() -> Unit,
     description: @Composable BoxScope.() -> Unit,
-    licenses: @Composable FlowRowScope.() -> Unit,
-    actions: @Composable FlowRowScope.() -> Unit,
+    licenses: @Composable FlexBoxScope.() -> Unit,
+    actions: @Composable FlexBoxScope.() -> Unit,
     modifier: Modifier = Modifier,
     libraryPadding: LibraryPadding = LibraryDefaults.libraryPadding(),
 ) {
@@ -430,10 +428,13 @@ private fun LibraryScaffoldLayout(
         Row(
             verticalAlignment = Alignment.Bottom
         ) {
-            FlowRow(
+            FlexBox(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(end = 8.dp)
+                    .padding(end = 8.dp),
+                config = {
+                    wrap(FlexWrap.Wrap)
+                },
             ) {
                 licenses()
                 actions()

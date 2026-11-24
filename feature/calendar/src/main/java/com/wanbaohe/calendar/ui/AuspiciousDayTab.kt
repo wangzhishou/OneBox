@@ -29,8 +29,8 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -403,8 +403,6 @@ private fun EmptyGuide(isAvoidMode: Boolean) {
 }
 
 // ── 搜索结果卡片 ──────────────────────────────────────────
-
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun AuspiciousDayCard(
     result: AuspiciousDayResult,
@@ -507,10 +505,13 @@ private fun AuspiciousDayCard(
                         .padding(top = 2.dp)
                 )
                 Spacer(modifier = Modifier.width(6.dp))
-                FlowRow(
+                FlexBox(
                     modifier = Modifier.weight(1f),
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    verticalArrangement = Arrangement.spacedBy(6.dp)
+                    config = {
+                        wrap(FlexWrap.Wrap)
+                        columnGap(6.dp)
+                        rowGap(6.dp)
+                    },
                 ) {
                     result.allYi.forEach { item ->
                         val isMatched = !isAvoidMode && item in result.matchedItems
@@ -554,10 +555,13 @@ private fun AuspiciousDayCard(
                             .padding(top = 2.dp)
                     )
                     Spacer(modifier = Modifier.width(6.dp))
-                    FlowRow(
+                    FlexBox(
                         modifier = Modifier.weight(1f),
-                        horizontalArrangement = Arrangement.spacedBy(6.dp),
-                        verticalArrangement = Arrangement.spacedBy(6.dp)
+                        config = {
+                            wrap(FlexWrap.Wrap)
+                            columnGap(6.dp)
+                            rowGap(6.dp)
+                        },
                     ) {
                         result.allJi.forEach { item ->
                             val isMatched = isAvoidMode && item in result.matchedItems

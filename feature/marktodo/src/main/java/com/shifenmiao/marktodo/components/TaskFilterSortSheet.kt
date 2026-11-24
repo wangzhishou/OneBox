@@ -23,9 +23,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.FlowRowScope
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexBoxScope
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -96,9 +96,8 @@ import java.util.Date
  * 交互口径（与「快速添加」面板保持一致）：
  * - 分组是单选下拉选择器（分组可能有几十个，不再铺一排 chip）
  * - 其它条件是 chip：默认浮起一层实底，选中换成主色容器
- * - chip / 按钮一律按内容撑开，靠 FlowRow 换行，不拉等宽、不锁死高度
+ * - chip / 按钮一律按内容撑开，靠 FlexBox 换行，不拉等宽、不锁死高度
  */
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun TaskFilterSortSheet(
     visible: Boolean,
@@ -429,7 +428,7 @@ private fun FilterSection(
 /**
  * 条件 chip：默认是浮起来的一层实底，选中切到主色容器。
  *
- * 尺寸交给内容（M3 chip 自身 32dp 高、宽由 label 决定），外层 FlowRow 负责换行，
+ * 尺寸交给内容（M3 chip 自身 32dp 高、宽由 label 决定），外层 FlexBox 负责换行，
  * 不再用 `weight(1f)` 把 chip 拉成等宽格子。
  */
 @Composable
@@ -474,15 +473,16 @@ private fun FilterOptionChip(
         },
     )
 }
-
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun FilterChipFlow(content: @Composable FlowRowScope.() -> Unit) {
-    FlowRow(
+private fun FilterChipFlow(content: @Composable FlexBoxScope.() -> Unit) {
+    FlexBox(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
-        verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
         content = content,
+        config = {
+            wrap(FlexWrap.Wrap)
+            columnGap(OneBoxDesignSystem.compactSpacing)
+            rowGap(OneBoxDesignSystem.compactSpacing)
+        },
     )
 }
 

@@ -27,10 +27,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -244,7 +245,7 @@ fun EasterEggScreen(component: EasterEggComponent) {
             val icons = remember {
                 Screen.entries.mapNotNull { it.icon }
             }
-            FlowRow {
+            FlexBox(config = { wrap(FlexWrap.Wrap) }) {
                 repeat(width * height / (24 * 24)) {
                     val icon = remember(it) {
                         icons.shuffled()[it % icons.size]

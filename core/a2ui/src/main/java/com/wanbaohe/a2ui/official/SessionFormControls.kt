@@ -7,7 +7,8 @@ import androidx.a2ui.compose.ui.catalog.A2uiBasicCatalogV1.AccessibilityAttribut
 import androidx.a2ui.compose.ui.catalog.A2uiBasicCatalogV1.CheckRule
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.selection.toggleable
@@ -195,7 +196,12 @@ internal object SessionChoicePicker : A2uiBasicCatalogV1.ChoicePicker {
         val failure = checks.firstOrNull { !it.condition }
         Column(modifier.a2uiControlSemantics(accessibility, failure)) {
             if (!label.isNullOrBlank()) Text(label, style = MaterialTheme.typography.labelLarge)
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FlexBox(
+                config = {
+                    wrap(FlexWrap.Wrap)
+                    columnGap(8.dp)
+                },
+            ) {
                 options.forEach { option ->
                     val selected = option.value in value
                     GlassFilterChip(

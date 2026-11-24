@@ -37,9 +37,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexJustifyContent
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -611,8 +613,6 @@ private fun EmptyCountdownCard(onClick: () -> Unit) {
         }
     }
 }
-
-@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
 @Composable
 private fun FrequencyEventsSection(
     eventStats: List<com.shifenmiao.lifetime.domain.model.FrequencyEventStats>,
@@ -644,14 +644,14 @@ private fun FrequencyEventsSection(
             EmptyEventsCard(onAddEvent)
         } else {
             // 固定卡宽 + 自动换行：平板上不会把频率卡撑成倒数日卡的两倍大
-            FlowRow(
+            FlexBox(
                 modifier = Modifier.fillMaxWidth(),
-                // 每行居中，避免右侧空一大块
-                horizontalArrangement = Arrangement.spacedBy(
-                    OneBoxDesignSystem.itemSpacing,
-                    Alignment.CenterHorizontally
-                ),
-                verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
+                config = {
+                    wrap(FlexWrap.Wrap)
+                    columnGap(OneBoxDesignSystem.itemSpacing)
+                    justifyContent(FlexJustifyContent.Center)
+                    rowGap(OneBoxDesignSystem.itemSpacing)
+                },
             ) {
                 eventStats.forEachIndexed { themeIndex, stats ->
                     val totalCount = stats.completedCount + stats.remainingCount

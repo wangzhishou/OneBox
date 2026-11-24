@@ -59,6 +59,7 @@ internal fun Project.configureCompose(
 
         dependencies {
             implementation(libs.androidx.material3)
+            implementation(libs.compose.foundation)
             implementation(libs.window.sizeclass)
             implementation(libs.icons.extended)
             implementation(libs.compose.runtime)

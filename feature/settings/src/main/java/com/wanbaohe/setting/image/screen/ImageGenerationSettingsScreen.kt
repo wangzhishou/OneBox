@@ -22,7 +22,8 @@ package com.wanbaohe.setting.image.screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -286,9 +287,12 @@ private fun ConfigEditor(
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
         )
-        FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+        FlexBox(
+            config = {
+                wrap(FlexWrap.Wrap)
+                columnGap(8.dp)
+                rowGap(8.dp)
+            },
         ) {
             descriptor.availableModels.forEach { model ->
                 GlassFilterChip(

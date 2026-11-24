@@ -182,7 +182,7 @@ fun PoemSearchScreen(component: PoemSearchComponent) {
     }
 }
 
-/** 筛选组:label + 固定两行 chip 流,放不下时横向滚动(比 FlowRow 省纵向空间) */
+/** 筛选组:label + 固定两行 chip 流,放不下时横向滚动(比 FlexBox 省纵向空间) */
 @Composable
 private fun PoemFilterGroup(
     label: String,

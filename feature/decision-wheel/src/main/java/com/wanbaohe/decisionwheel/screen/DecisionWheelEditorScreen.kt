@@ -26,8 +26,8 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -564,7 +564,6 @@ private fun AddOptionDialog(
  * 输入框里预填了一句能直接用的描述（见 [R.string.ai_create_filler]），
  * 生成结果先摊开给用户看过再决定要不要加 —— AI 会一本正经地胡说，直接落盘是不负责任的。
  */
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun AiCreateDialog(
     initialPrompt: String,
@@ -625,9 +624,12 @@ private fun AiCreateDialog(
                 }
 
                 if (suggestions.isNotEmpty()) {
-                    FlowRow(
-                        horizontalArrangement = Arrangement.spacedBy(6.dp),
-                        verticalArrangement = Arrangement.spacedBy(6.dp)
+                    FlexBox(
+                        config = {
+                            wrap(FlexWrap.Wrap)
+                            columnGap(6.dp)
+                            rowGap(6.dp)
+                        },
                     ) {
                         suggestions.forEach { name ->
                             Surface(

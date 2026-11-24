@@ -34,7 +34,10 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexJustifyContent
+import androidx.compose.foundation.layout.FlexWrap
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -44,7 +47,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -588,10 +590,14 @@ private fun OptionsPreview(
     selectedIndex: Int?,
     onOptionClick: (Int) -> Unit
 ) {
-    FlowRow(
-        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.fillMaxWidth(0.85f)
+    FlexBox(
+        modifier = Modifier.fillMaxWidth(0.85f),
+        config = {
+            wrap(FlexWrap.Wrap)
+            columnGap(8.dp)
+            justifyContent(FlexJustifyContent.Center)
+            rowGap(8.dp)
+        },
     ) {
         options.forEachIndexed { index, option ->
             OptionChip(

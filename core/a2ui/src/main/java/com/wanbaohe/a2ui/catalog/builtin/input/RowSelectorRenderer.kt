@@ -19,9 +19,8 @@
 
 package com.wanbaohe.a2ui.catalog.builtin.input
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -39,8 +38,6 @@ import javax.inject.Inject
 class RowSelectorRenderer @Inject constructor() : A2uiComponentRenderer {
 
     override val componentType = "RowSelector"
-
-    @OptIn(ExperimentalLayoutApi::class)
     @Composable
     override fun Render(
         component: A2uiComponent,
@@ -76,11 +73,14 @@ class RowSelectorRenderer @Inject constructor() : A2uiComponentRenderer {
             )
         }
 
-        FlowRow(
+        FlexBox(
             modifier = Modifier
                 .padding(padding),
-            horizontalArrangement = Arrangement.spacedBy(spacing),
-            verticalArrangement = Arrangement.spacedBy(spacing),
+            config = {
+                wrap(FlexWrap.Wrap)
+                columnGap(spacing)
+                rowGap(spacing)
+            },
         ) {
             options.forEach { option ->
                 A2uiSelectorChip(

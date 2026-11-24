@@ -1,7 +1,8 @@
 package com.wanbaohe.a2ui.workbench
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -65,7 +66,7 @@ internal fun WorkbenchHistoryDialog(
                 if (snapshots.isEmpty()) Text(stringResource(R.string.a2wb_empty_history))
                 snapshots.forEach { snapshot ->
                     val title = snapshot.title.ifBlank { DateFormat.getDateTimeInstance().format(Date(snapshot.id)) }
-                    FlowRow {
+                    FlexBox(config = { wrap(FlexWrap.Wrap) }) {
                         GlassTextButton(onClick = { onOpen(snapshot) }) { Text(title) }
                         GlassTextButton(onClick = { renaming = snapshot }) { Text(stringResource(R.string.a2wb_rename)) }
                         GlassTextButton(onClick = { deleting = { component.delete(snapshot.id) } }) {

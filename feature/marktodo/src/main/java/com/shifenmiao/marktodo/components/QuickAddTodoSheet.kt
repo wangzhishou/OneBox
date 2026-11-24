@@ -21,8 +21,8 @@ package com.shifenmiao.marktodo.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -290,8 +290,6 @@ fun QuickAddTodoSheet(
     )
 
 }
-
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun RecognizedTokenChips(
     tokens: List<com.shifenmiao.marktodo.model.QuickAddToken>,
@@ -304,9 +302,12 @@ private fun RecognizedTokenChips(
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
-            verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
+        FlexBox(
+            config = {
+                wrap(FlexWrap.Wrap)
+                columnGap(OneBoxDesignSystem.compactSpacing)
+                rowGap(OneBoxDesignSystem.compactSpacing)
+            },
         ) {
             tokens.forEach { token ->
                 EnhancedChip(

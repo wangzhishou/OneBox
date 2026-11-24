@@ -5,7 +5,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -142,7 +143,12 @@ private fun WorkbenchControls(
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+        FlexBox(
+            config = {
+                wrap(FlexWrap.Wrap)
+                columnGap(6.dp)
+            },
+        ) {
             val canRun = state.ready && state.source.isNotBlank()
             GlassButton(onClick = { component.runAll(); onPreview() }, enabled = canRun) {
                 Text(stringResource(R.string.a2wb_run))
@@ -171,7 +177,12 @@ private fun WorkbenchEditor(
     modifier: Modifier,
 ) {
     WorkbenchPanel(modifier) {
-        FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+        FlexBox(
+            config = {
+                wrap(FlexWrap.Wrap)
+                columnGap(6.dp)
+            },
+        ) {
             val hasSource = state.ready && state.source.isNotBlank()
             GlassTextButton(onClick = onFormat, enabled = hasSource) { Text(stringResource(R.string.a2wb_format)) }
             GlassTextButton(onClick = onCopy, enabled = hasSource) { Text(stringResource(R.string.a2wb_copy)) }
@@ -222,7 +233,7 @@ private fun WorkbenchPreview(state: WorkbenchState, modifier: Modifier) {
             } else {
                 val ids by session.surfaceIds.collectAsState()
                 var selected by rememberSaveable { mutableStateOf<String?>(null) }
-                if (ids.size > 1) FlowRow {
+                if (ids.size > 1) FlexBox(config = { wrap(FlexWrap.Wrap) }) {
                     ids.forEach { id ->
                         GlassFilterChip(id == (selected ?: ids.first()), { selected = id }, { Text(id) })
                     }

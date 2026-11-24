@@ -24,8 +24,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -306,12 +306,14 @@ fun GradientBackgroundStyleSettingItem(
             }
         }
 
-        // 渐变风格选择 —— FlowRow 自动换行，适配 9 种风格
-        @OptIn(ExperimentalLayoutApi::class)
-        FlowRow(
+        // 渐变风格选择 —— FlexBox 自动换行，适配 9 种风格
+        FlexBox(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
+            config = {
+                wrap(FlexWrap.Wrap)
+                columnGap(6.dp)
+                rowGap(4.dp)
+            },
         ) {
             options.forEachIndexed { index, (style, label) ->
                 FilterChip(

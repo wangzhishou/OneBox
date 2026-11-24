@@ -15,7 +15,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -123,11 +124,14 @@ fun WatermarkStartScreen(
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState()),
             ) {
-                FlowRow(
+                FlexBox(
                     modifier = Modifier.fillMaxWidth(),
-                    maxItemsInEachRow = columns,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    config = {
+                        wrap(FlexWrap.Wrap)
+                        maxItemsInEachLine(columns)
+                        columnGap(12.dp)
+                        rowGap(12.dp)
+                    },
                 ) {
                     WatermarkStartTemplate.entries.forEach { item ->
                         val example = stringResource(item.descriptionRes)
@@ -161,11 +165,14 @@ fun WatermarkStartScreen(
                         fontWeight = FontWeight.SemiBold,
                         modifier = Modifier.padding(top = 24.dp, bottom = 12.dp),
                     )
-                    FlowRow(
+                    FlexBox(
                         modifier = Modifier.fillMaxWidth(),
-                        maxItemsInEachRow = columns,
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        config = {
+                            wrap(FlexWrap.Wrap)
+                            maxItemsInEachLine(columns)
+                            columnGap(12.dp)
+                            rowGap(12.dp)
+                        },
                     ) {
                         customPresets.forEach { preset ->
                             WatermarkStartCard(

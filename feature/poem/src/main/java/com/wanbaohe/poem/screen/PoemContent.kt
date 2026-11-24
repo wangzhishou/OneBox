@@ -23,8 +23,9 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexJustifyContent
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -104,7 +105,6 @@ internal fun PoemCard(
  * AI 常按「句」(逗号/句号)分行返回拼音,与 API 的行(可能一行两句)不一致,
  * 因此按**全诗总字数**对齐:拼音 token 总数等于全诗汉字数时顺序分配,否则整首回退纯文本(容错)。
  */
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun PoemVerseGrid(poem: Poem) {
     val cellsPerLine = poem.content.map { splitVerseCells(it) }
@@ -138,9 +138,12 @@ private fun PoemVerseGrid(poem: Poem) {
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
         segments.forEach { (segment, segmentTokens) ->
-            FlowRow(
-                horizontalArrangement = Arrangement.Center,
-                verticalArrangement = Arrangement.spacedBy(10.dp),
+            FlexBox(
+                config = {
+                    wrap(FlexWrap.Wrap)
+                    justifyContent(FlexJustifyContent.Center)
+                    rowGap(10.dp)
+                },
             ) {
                 segment.forEachIndexed { cellIndex, cell ->
                     VerseCellView(

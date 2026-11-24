@@ -31,8 +31,8 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -997,12 +997,13 @@ private fun GradientBackgroundCard(
                     verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
                 ) {
                     Spacer(modifier = Modifier.height(OneBoxDesignSystem.microSpacing))
-
-                    @OptIn(ExperimentalLayoutApi::class)
-                    FlowRow(
+                    FlexBox(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.microSpacing),
-                        verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.microSpacing),
+                        config = {
+                            wrap(FlexWrap.Wrap)
+                            columnGap(OneBoxDesignSystem.microSpacing)
+                            rowGap(OneBoxDesignSystem.microSpacing)
+                        },
                     ) {
                         options.forEach { (style, label) ->
                             GlassFilterChip(
@@ -1537,12 +1538,13 @@ private fun ColorSystemCard(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight.Medium,
             )
-
-            @OptIn(ExperimentalLayoutApi::class)
-            FlowRow(
+            FlexBox(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.microSpacing),
-                verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.microSpacing),
+                config = {
+                    wrap(FlexWrap.Wrap)
+                    columnGap(OneBoxDesignSystem.microSpacing)
+                    rowGap(OneBoxDesignSystem.microSpacing)
+                },
             ) {
                 PaletteStyle.entries.forEach { style ->
                     GlassFilterChip(

@@ -23,12 +23,11 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -40,6 +39,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -112,7 +112,6 @@ import kotlinx.coroutines.withContext
  * 主题一变，卡片配色（跟随主题时）会自动重新渲染。页面本身只负责预览、配色/显示内容、
  * 心语与保存/分享。
  */
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CalendarShareScreen(component: CalendarShareComponent) {
     val state by component.uiState.collectAsState()
@@ -341,9 +340,12 @@ fun CalendarShareScreen(component: CalendarShareComponent) {
                 }
 
                 SectionTitle(stringResource(R.string.calendar_share_content_title))
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                FlexBox(
+                    config = {
+                        wrap(FlexWrap.Wrap)
+                        columnGap(8.dp)
+                        rowGap(8.dp)
+                    },
                 ) {
                     FilterChip(
                         shape = OneBoxDesignSystem.chipShape,

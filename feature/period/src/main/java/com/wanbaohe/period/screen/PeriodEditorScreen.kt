@@ -23,7 +23,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -163,10 +164,13 @@ fun PeriodEditorScreen(
                     title = stringResource(R.string.period_field_symptoms) +
                         stringResource(R.string.period_symptoms_multi_hint),
                 ) {
-                    FlowRow(
+                    FlexBox(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        config = {
+                            wrap(FlexWrap.Wrap)
+                            columnGap(8.dp)
+                            rowGap(8.dp)
+                        },
                     ) {
                         PeriodSymptom.entries.forEach { symptom ->
                             PeriodSymptomChip(
@@ -180,10 +184,13 @@ fun PeriodEditorScreen(
                 }
 
                 PeriodFormSection(title = stringResource(R.string.period_field_mood)) {
-                    FlowRow(
+                    FlexBox(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        config = {
+                            wrap(FlexWrap.Wrap)
+                            columnGap(8.dp)
+                            rowGap(8.dp)
+                        },
                     ) {
                         PeriodMood.entries.forEach { mood ->
                             MoodItem(

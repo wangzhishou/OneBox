@@ -38,16 +38,20 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexAlignContent
+import androidx.compose.foundation.layout.FlexAlignItems
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexJustifyContent
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
@@ -150,21 +154,16 @@ fun EnhancedAlertDialog(
 
             EnhancedAlertDialogContent(
                 buttons = {
-                    FlowRow(
+                    FlexBox(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(
-                            space = ButtonsHorizontalSpacing,
-                            alignment = if (dismissButton != null && isCenterAlignButtons) {
-                                Alignment.CenterHorizontally
-                            } else Alignment.End
-                        ),
-                        verticalArrangement = Arrangement.spacedBy(
-                            space = ButtonsVerticalSpacing,
-                            alignment = if (dismissButton != null && isCenterAlignButtons) {
-                                Alignment.CenterVertically
-                            } else Alignment.Bottom
-                        ),
-                        itemVerticalAlignment = Alignment.CenterVertically
+                        config = {
+                            wrap(FlexWrap.Wrap)
+                            columnGap(ButtonsHorizontalSpacing)
+                            justifyContent(if (dismissButton != null && isCenterAlignButtons) FlexJustifyContent.Center else FlexJustifyContent.End)
+                            rowGap(ButtonsVerticalSpacing)
+                            alignContent(if (dismissButton != null && isCenterAlignButtons) FlexAlignContent.Center else FlexAlignContent.End)
+                            alignItems(FlexAlignItems.Center)
+                        },
                     ) {
                         dismissButton?.invoke()
                         confirmButton()

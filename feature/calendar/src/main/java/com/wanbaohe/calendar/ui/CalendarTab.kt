@@ -31,8 +31,9 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexJustifyContent
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -693,8 +694,6 @@ private fun FotoCard(foto: FotoData, solarYear: Int) {
         }
     }
 }
-
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun TaoCard(tao: TaoData, solarYear: Int) {
     val coolContainer = MaterialTheme.colorScheme.primaryContainer
@@ -920,7 +919,7 @@ private fun FotoTaoDetailItem(
     }
 }
 
-/** 标题 + FlowRow 彩色标签 */
+/** 标题 + FlexBox 彩色标签 */
 @Composable
 private fun FotoTaoTagSection(
     title: String,
@@ -935,9 +934,12 @@ private fun FotoTaoTagSection(
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(modifier = Modifier.height(10.dp))
-        FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+        FlexBox(
+            config = {
+                wrap(FlexWrap.Wrap)
+                columnGap(8.dp)
+                rowGap(8.dp)
+            },
         ) {
             tags.forEach { tag ->
                 Box(
@@ -1102,8 +1104,6 @@ private fun DetailInfoCard(lunar: LunarDate) {
         }
     }
 }
-
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun InfoColumnSection(
     title: String,
@@ -1123,10 +1123,13 @@ private fun InfoColumnSection(
         )
         Spacer(modifier = Modifier.height(12.dp))
 
-        FlowRow(
+        FlexBox(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
-            verticalArrangement = Arrangement.spacedBy(6.dp)
+            config = {
+                wrap(FlexWrap.Wrap)
+                columnGap(6.dp)
+                rowGap(6.dp)
+            },
         ) {
             items.forEach { item ->
                 Box(
@@ -1763,8 +1766,6 @@ private fun SelectedDayCard(
 }
 
 // ── 宜忌小卡片 ──────────────────────────────────────────
-
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun YiJiCard(
     title: String,
@@ -1804,10 +1805,14 @@ private fun YiJiCard(
             )
             Spacer(modifier = Modifier.height(12.dp))
 
-            FlowRow(
+            FlexBox(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
-                verticalArrangement = Arrangement.spacedBy(6.dp)
+                config = {
+                    wrap(FlexWrap.Wrap)
+                    columnGap(6.dp)
+                    justifyContent(FlexJustifyContent.Center)
+                    rowGap(6.dp)
+                },
             ) {
                 items.forEach { item ->
                     Box(
