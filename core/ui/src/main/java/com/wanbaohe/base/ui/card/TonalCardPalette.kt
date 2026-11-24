@@ -37,7 +37,6 @@ import androidx.core.graphics.ColorUtils
 import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
-import com.wanbaohe.core.ui.widget.glass.tintedGlassContentColor
 
 @Immutable
 enum class TonalCardVisualVariant {
@@ -61,29 +60,60 @@ data class TonalCardPalette(
     val accentColor: Color,
 )
 
-private const val LIGHT_CARD_SATURATION = 0.30f
-private const val LIGHT_CARD_LIGHTNESS = 0.84f
+private const val LIGHT_CARD_SATURATION = 0.60f
+private const val LIGHT_CARD_LUMINANCE = 0.56f
 private const val DARK_CARD_SATURATION = 0.36f
 private const val DARK_CARD_LIGHTNESS = 0.30f
+private const val DARK_CARD_CONTENT_SATURATION = 0.32f
+private const val DARK_CARD_CONTENT_LUMINANCE = 0.72f
 
 @Composable
-private fun uniformCardTint(color: Color, isNeutral: Boolean): Color {
+private fun uniformCardTint(color: Color): Color {
     val isLight = MaterialTheme.colorScheme.surface.luminance() > 0.5f
-    return remember(color, isNeutral, isLight) {
+    return remember(color, isLight) {
         val hsl = FloatArray(3)
         ColorUtils.colorToHSL(color.toArgb(), hsl)
         hsl[1] = when {
-            isNeutral || hsl[1] < 0.08f -> 0f
+            hsl[1] < 0.08f -> 0f
             isLight -> LIGHT_CARD_SATURATION
             else -> DARK_CARD_SATURATION
         }
-        hsl[2] = if (isLight) LIGHT_CARD_LIGHTNESS else DARK_CARD_LIGHTNESS
+        hsl[2] = if (isLight) {
+            lightnessForLuminance(hsl, LIGHT_CARD_LUMINANCE)
+        } else {
+            DARK_CARD_LIGHTNESS
+        }
         Color(ColorUtils.HSLToColor(hsl))
     }
 }
 
+@Composable
+private fun uniformCardContentColor(color: Color, isNeutral: Boolean): Color {
+    val isLight = MaterialTheme.colorScheme.surface.luminance() > 0.5f
+    return remember(color, isNeutral, isLight) {
+        if (isLight) return@remember color
+        val hsl = FloatArray(3)
+        ColorUtils.colorToHSL(color.toArgb(), hsl)
+        hsl[1] = if (isNeutral || hsl[1] < 0.08f) 0f else DARK_CARD_CONTENT_SATURATION
+        hsl[2] = lightnessForLuminance(hsl, DARK_CARD_CONTENT_LUMINANCE)
+        Color(ColorUtils.HSLToColor(hsl))
+    }
+}
+
+private fun lightnessForLuminance(hsl: FloatArray, targetLuminance: Float): Float {
+    var low = 0f
+    var high = 1f
+    repeat(12) {
+        val middle = (low + high) / 2f
+        hsl[2] = middle
+        val luminance = Color(ColorUtils.HSLToColor(hsl)).luminance()
+        if (luminance < targetLuminance) low = middle else high = middle
+    }
+    return (low + high) / 2f
+}
+
 object TonalCardPaletteDefaults {
-    val containerStyle = GlassStyle.Regular
+    val containerStyle = GlassStyle.Thin
     val accentStyle = GlassStyle.Medium
     val contentSpacing = 8.dp
 
@@ -104,21 +134,21 @@ object TonalCardPaletteDefaults {
             2 -> colors.primaryContainer to colors.onPrimaryContainer
             else -> colors.surfaceContainer to colors.onSurfaceVariant
         }
-        val containerColor = uniformCardTint(container, isNeutral = colorIndex == 3)
-        val titleColor = tintedGlassContentColor(containerColor)
-        return remember(colors, container, content, containerColor, titleColor) {
+        val containerColor = if (colorIndex == 3) container else uniformCardTint(container)
+        val contentColor = uniformCardContentColor(content, isNeutral = colorIndex == 3)
+        return remember(colors, container, content, containerColor, contentColor) {
             TonalCardPalette(
                 containerColor = containerColor,
-                iconContentColor = content,
+                iconContentColor = contentColor,
                 iconContainerColor = containerColor,
                 actionContainerColor = colors.surfaceContainer,
-                actionContentColor = colors.onSurfaceVariant,
+                actionContentColor = contentColor,
                 tagBackgroundColor = containerColor,
-                tagTextColor = content,
-                titleColor = titleColor,
-                descriptionColor = colors.onSurfaceVariant,
-                supportingContentColor = colors.onSurfaceVariant,
-                accentColor = content,
+                tagTextColor = contentColor,
+                titleColor = contentColor,
+                descriptionColor = contentColor,
+                supportingContentColor = contentColor,
+                accentColor = contentColor,
             )
         }
     }
