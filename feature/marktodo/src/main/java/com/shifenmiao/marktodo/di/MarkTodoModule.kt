@@ -20,7 +20,9 @@
 package com.shifenmiao.marktodo.di
 
 import com.shifenmiao.common.search.GlobalSearchProvider
+import com.shifenmiao.marktodo.data.MmkvMarkTodoSelectionStore
 import com.shifenmiao.marktodo.search.MarkTodoSearchProvider
+import com.shifenmiao.marktodo.service.MarkTodoSelectionStore
 import com.shifenmiao.marktodo.service.MarkTodoServiceImpl
 import com.shifenmiao.model.todo.MarkTodoServiceInterface
 import dagger.Module
@@ -37,6 +39,10 @@ object MarkTodoModule {
     @Singleton
     @Provides
     fun provideMarkTodoService(impl: MarkTodoServiceImpl): MarkTodoServiceInterface = impl
+
+    @Singleton
+    @Provides
+    fun provideMarkTodoSelectionStore(impl: MmkvMarkTodoSelectionStore): MarkTodoSelectionStore = impl
 
     @Provides
     @IntoSet

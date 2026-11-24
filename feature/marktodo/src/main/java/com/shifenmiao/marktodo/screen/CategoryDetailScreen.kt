@@ -20,7 +20,6 @@
 package com.shifenmiao.marktodo.screen
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,7 +32,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
@@ -49,7 +47,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.stringResource
@@ -70,7 +67,6 @@ import com.shifenmiao.marktodo.model.TaskFilterMode
 import com.shifenmiao.marktodo.model.TodoCategory
 import com.shifenmiao.marktodo.screenLogic.CategoryDetailComponent
 import com.shifenmiao.marktodo.theme.categoryAccentColor
-import com.shifenmiao.marktodo.theme.categoryAccentContainerColor
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
@@ -154,7 +150,6 @@ fun CategoryDetailScreen(
                 category != null -> Column(modifier = Modifier.fillMaxSize()) {
                     CategoryHeaderCard(
                         category = category,
-                        themeIndex = uiState.themeIndex,
                         accentColor = categoryAccentColor(category, uiState.themeIndex),
                         onSort = {
                             component.handleEvent(CategoryDetailUiEvent.ShowSortSheet)
@@ -282,7 +277,6 @@ fun CategoryDetailScreen(
 @Composable
 private fun CategoryHeaderCard(
     category: TodoCategory,
-    themeIndex: Int,
     accentColor: Color,
     onSort: () -> Unit,
     onEditCategory: () -> Unit,
@@ -307,20 +301,12 @@ private fun CategoryHeaderCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clip(RoundedCornerShape(OneBoxDesignSystem.smallRadius))
-                        .background(categoryAccentContainerColor(category, themeIndex)),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Icon(
-                        imageVector = category.icon,
-                        contentDescription = null,
-                        tint = accentColor,
-                        modifier = Modifier.size(26.dp),
-                    )
-                }
+                Icon(
+                    imageVector = category.icon,
+                    contentDescription = null,
+                    tint = accentColor,
+                    modifier = Modifier.size(24.dp),
+                )
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = category.title,

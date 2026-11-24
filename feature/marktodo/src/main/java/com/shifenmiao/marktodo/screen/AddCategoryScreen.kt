@@ -59,8 +59,10 @@ import com.shifenmiao.marktodo.R
 import com.shifenmiao.marktodo.data.iconFromKey
 import com.shifenmiao.marktodo.screenLogic.AddCategoryComponent
 import com.shifenmiao.marktodo.screenLogic.AddCategoryUiEvent
+import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineNote
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePinEnd
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSingleEdit
 import com.wanbaohe.core.ui.widget.preferences.PreferenceRowSwitch
@@ -184,6 +186,11 @@ fun AddCategoryScreen(
                         if (isEditMode) R.string.action_save else R.string.action_create_category
                     ),
                     onClick = { component.handleEvent(AddCategoryUiEvent.Submit) },
+                    leadingIcon = if (isEditMode) {
+                        com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSave
+                    } else {
+                        com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add
+                    },
                 )
             }
 

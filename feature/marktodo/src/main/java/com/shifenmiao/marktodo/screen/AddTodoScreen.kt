@@ -66,9 +66,11 @@ import com.shifenmiao.marktodo.screenLogic.AddTodoComponent
 import com.shifenmiao.marktodo.theme.CategoryColorPalette
 import com.shifenmiao.marktodo.theme.categoryPaletteWithThemeColors
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAccessTime
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFlag
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLabel
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSingleEdit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineStickyNote
 import com.wanbaohe.base.ui.picker.ChineseDatePickerDialog
@@ -293,6 +295,7 @@ fun AddTodoScreen(
                     OnePrimaryButton(
                         text = stringResource(R.string.action_save),
                         onClick = { addTodoComponent.handleEvent(AddTodoUiEvent.SubmitTask) },
+                        leadingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSave,
                     )
                 }
             }
@@ -301,8 +304,10 @@ fun AddTodoScreen(
                 OneBoxBottomActionBar(
                     primaryText = stringResource(R.string.action_save),
                     onPrimaryClick = { addTodoComponent.handleEvent(AddTodoUiEvent.SubmitTask) },
+                    primaryIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSave,
                     dangerText = stringResource(R.string.action_delete),
                     onDangerClick = { addTodoComponent.handleEvent(AddTodoUiEvent.DeleteTask) },
+                    dangerIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .onSizeChanged { size ->
@@ -469,7 +474,8 @@ private fun AddTagDialog(
             OnePrimaryButton(
                 text = stringResource(R.string.action_save),
                 onClick = { onConfirm(tagName, selectedColor.toArgb()) },
-                enabled = tagName.isNotBlank()
+                enabled = tagName.isNotBlank(),
+                leadingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSave,
             )
         },
         dismissButton = {

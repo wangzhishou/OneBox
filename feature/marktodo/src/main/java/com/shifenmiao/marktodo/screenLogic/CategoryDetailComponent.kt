@@ -156,7 +156,8 @@ class CategoryDetailComponent @AssistedInject internal constructor(
             is CategoryDetailUiEvent.TaskClicked -> navigateToEditTodo(event.task)
             CategoryDetailUiEvent.AddTaskClicked -> {
                 quickAddTodoComponent.open(
-                    initialCategoryId = categoryId.takeUnless { isInbox }
+                    initialCategoryId = categoryId.takeUnless { isInbox },
+                    useInitialCategory = true,
                 )
             }
             is CategoryDetailUiEvent.ToggleTaskComplete -> toggleTaskComplete(event.task)

@@ -69,8 +69,10 @@ import com.shifenmiao.marktodo.model.TodoTask
 import com.shifenmiao.marktodo.theme.priorityColor
 import com.shifenmiao.marktodo.theme.tagAccentColor
 import com.t8rin.imagetoolbox.core.resources.Icons
+import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCalendar
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineClear
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFlag
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFolder
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLabel
@@ -126,12 +128,14 @@ fun TaskFilterSortSheet(
                     text = stringResource(R.string.p1_clear_filters),
                     onClick = { draftFilter = TaskFilter() },
                     enabled = draftFilter != TaskFilter(),
+                    leadingIcon = Icons.Outlined.LineClear,
                 )
                 Spacer(modifier = Modifier.width(OneBoxDesignSystem.compactSpacing))
             }
             OnePrimaryButton(
                 text = stringResource(R.string.p1_apply),
                 onClick = { onApply(draftFilter, draftSort) },
+                leadingIcon = Icons.Outlined.Check,
             )
         },
     ) {

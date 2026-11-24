@@ -312,7 +312,7 @@ private fun TaskMetadata(
 }
 
 /** 任务行勾选框的尺寸；[TodoTaskRow] 拿它把勾选框中线对到标题第一行 */
-internal val CompletionCheckSize: Dp = 20.dp
+internal val CompletionCheckSize: Dp = 18.dp
 
 /** 任务行「更多」按钮的触控尺寸；[TodoTaskRow] 拿它算图标和第一行对齐的偏移 */
 internal val TaskOverflowButtonSize: Dp = 48.dp

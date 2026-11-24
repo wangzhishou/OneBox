@@ -61,8 +61,12 @@ import com.shifenmiao.marktodo.R
 import com.shifenmiao.marktodo.model.QuickAddTodoUiEvent
 import com.shifenmiao.marktodo.screenLogic.QuickAddTodoComponent
 import com.t8rin.imagetoolbox.core.resources.Icons
+import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Mic
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineClear
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandLess
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandMore
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineRobot
 import com.wanbaohe.base.ui.picker.ChineseDatePickerDialog
 import com.wanbaohe.base.ui.picker.ChineseTimePickerDialog
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedChip
@@ -122,6 +126,7 @@ fun QuickAddTodoSheet(
                 text = stringResource(R.string.quick_add_ai_action),
                 onClick = { component.handleEvent(QuickAddTodoUiEvent.ShowAiCreate) },
                 enabled = !uiState.isSaving,
+                leadingIcon = Icons.Outlined.LineRobot,
             )
             Spacer(modifier = Modifier.width(OneBoxDesignSystem.compactSpacing))
             OnePrimaryButton(
@@ -130,6 +135,7 @@ fun QuickAddTodoSheet(
                 ),
                 onClick = { component.handleEvent(QuickAddTodoUiEvent.Submit) },
                 enabled = !uiState.isSaving,
+                leadingIcon = Icons.Outlined.Add,
             )
         },
     ) {
@@ -188,6 +194,7 @@ fun QuickAddTodoSheet(
                     OneSecondaryButton(
                         text = stringResource(R.string.quick_add_show_details),
                         onClick = { component.handleEvent(QuickAddTodoUiEvent.ToggleDetails) },
+                        leadingIcon = Icons.Outlined.LineExpandMore,
                     )
                 }
             } else {
@@ -195,6 +202,7 @@ fun QuickAddTodoSheet(
                     OneSecondaryButton(
                         text = stringResource(R.string.quick_add_hide_details),
                         onClick = { component.handleEvent(QuickAddTodoUiEvent.ToggleDetails) },
+                        leadingIcon = Icons.Outlined.LineExpandLess,
                     )
                 }
 

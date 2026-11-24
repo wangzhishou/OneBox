@@ -32,7 +32,9 @@ import com.shifenmiao.marktodo.model.QuickAddTodoUiEvent
 import com.shifenmiao.marktodo.model.QuickAddTodoUiState
 import com.shifenmiao.marktodo.model.QuickAddToken
 import com.shifenmiao.marktodo.model.QuickAddTokenType
+import com.shifenmiao.marktodo.model.TodoCategory
 import com.shifenmiao.marktodo.model.TodoTask
+import com.shifenmiao.marktodo.service.MarkTodoSelectionStore
 import com.shifenmiao.marktodo.service.MarkTodoServiceImpl
 import com.shifenmiao.model.todo.TaskInput
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
@@ -53,6 +55,7 @@ class QuickAddTodoComponent @AssistedInject internal constructor(
     @ApplicationContext private val context: Context,
     private val repository: MarkTodoRepository,
     private val service: MarkTodoServiceImpl,
+    private val selectionStore: MarkTodoSelectionStore,
 ) {
     private val _uiState = MutableStateFlow(QuickAddTodoUiState())
     val uiState: StateFlow<QuickAddTodoUiState> = _uiState.asStateFlow()
@@ -67,12 +70,16 @@ class QuickAddTodoComponent @AssistedInject internal constructor(
                     )
                 }
                 val current = _uiState.value
-                val selectedCategory = current.selectedCategory?.let { selected ->
-                    categories.firstOrNull { it.id == selected.id }
-                } ?: categories.firstOrNull { it.id == current.initialCategoryId }
+                val selectedCategoryId = when {
+                    QuickAddMetadataType.CATEGORY in current.manuallyEditedMetadata ||
+                        current.recognizedTokens.any { it.type == QuickAddTokenType.CATEGORY } -> {
+                        current.selectedCategory?.id ?: TodoCategory.INBOX_ID
+                    }
+                    else -> current.initialCategoryId
+                }
                 _uiState.value = current.copy(
                     categories = categories,
-                    selectedCategory = selectedCategory,
+                    selectedCategory = categories.firstOrNull { it.id == selectedCategoryId },
                 )
                 reparseTitle()
             }
@@ -85,14 +92,22 @@ class QuickAddTodoComponent @AssistedInject internal constructor(
         }
     }
 
-    fun open(initialCategoryId: String? = null) {
+    fun open(
+        initialCategoryId: String? = null,
+        useInitialCategory: Boolean = initialCategoryId != null,
+    ) {
         val current = _uiState.value
+        val preferredCategoryId = if (useInitialCategory) {
+            initialCategoryId ?: TodoCategory.INBOX_ID
+        } else {
+            selectionStore.getLastCategoryId()
+        }
         _uiState.value = QuickAddTodoUiState(
             isVisible = true,
             categories = current.categories,
             tags = current.tags,
-            initialCategoryId = initialCategoryId,
-            selectedCategory = current.categories.firstOrNull { it.id == initialCategoryId },
+            initialCategoryId = preferredCategoryId,
+            selectedCategory = current.categories.firstOrNull { it.id == preferredCategoryId },
             titleFocusRequestId = current.titleFocusRequestId + 1,
         )
     }
@@ -120,6 +135,7 @@ class QuickAddTodoComponent @AssistedInject internal constructor(
         }
 
         is QuickAddTodoUiEvent.SelectCategory -> {
+            selectionStore.setLastCategoryId(event.category?.id)
             _uiState.value = _uiState.value.copy(
                 selectedCategory = event.category,
                 manuallyEditedMetadata = _uiState.value.manuallyEditedMetadata + QuickAddMetadataType.CATEGORY,
@@ -259,6 +275,7 @@ class QuickAddTodoComponent @AssistedInject internal constructor(
         componentScope.launch {
             service.createTask(input = input, source = "UI:QuickAddTodoSheet")
                 .onSuccess {
+                    selectionStore.setLastCategoryId(input.categoryId)
                     AppToastHost.showToast(context.getString(R.string.snackbar_task_added))
                     val latest = _uiState.value
                     _uiState.value = if (closeAfterSave) {

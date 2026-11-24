@@ -27,6 +27,8 @@ import com.shifenmiao.marktodo.data.iconFromKey
 import com.shifenmiao.marktodo.data.toModel
 import com.shifenmiao.marktodo.model.AddTodoUiEvent
 import com.shifenmiao.marktodo.model.AddTodoUiState
+import com.shifenmiao.marktodo.model.TodoCategory
+import com.shifenmiao.marktodo.service.MarkTodoSelectionStore
 import com.shifenmiao.marktodo.service.MarkTodoServiceImpl
 import com.shifenmiao.model.todo.TaskInput
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
@@ -58,11 +60,16 @@ class AddTodoComponent @AssistedInject internal constructor(
     dispatchersHolder: DispatchersHolder,
     private val repository: MarkTodoRepository,
     private val service: MarkTodoServiceImpl,
+    private val selectionStore: MarkTodoSelectionStore,
     private val scheduleService: ScheduleService,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
     private val _uiState = MutableStateFlow(AddTodoUiState(editingTaskId = editingTaskId))
     val uiState: StateFlow<AddTodoUiState> = _uiState.asStateFlow()
+
+    private var isCategoryManuallySelected = false
+    private var isEditingCategoryLoaded = false
+    private var editingCategoryId: String? = null
 
     init {
         // 分类列表
@@ -76,20 +83,20 @@ class AddTodoComponent @AssistedInject internal constructor(
                     )
                 }
 
-                val currentSelected = _uiState.value.selectedCategory
-                val newSelected = if (currentSelected != null && categories.any { it.id == currentSelected.id }) {
-                    categories.first { it.id == currentSelected.id }
-                } else if (initialCategoryId != null && categories.any { it.id == initialCategoryId }) {
-                    categories.first { it.id == initialCategoryId }
-                } else if (editingTaskId != null) {
-                    null
-                } else {
-                    categories.firstOrNull()
+                val current = _uiState.value
+                val selectedCategoryId = when {
+                    isCategoryManuallySelected -> current.selectedCategory?.id ?: TodoCategory.INBOX_ID
+                    editingTaskId != null && isEditingCategoryLoaded -> {
+                        editingCategoryId ?: TodoCategory.INBOX_ID
+                    }
+                    initialCategoryId != null -> initialCategoryId
+                    editingTaskId != null -> TodoCategory.INBOX_ID
+                    else -> selectionStore.getLastCategoryId() ?: categories.firstOrNull()?.id
                 }
 
-                _uiState.value = _uiState.value.copy(
+                _uiState.value = current.copy(
                     categories = categories,
-                    selectedCategory = newSelected
+                    selectedCategory = categories.firstOrNull { it.id == selectedCategoryId },
                 )
             }
         }
@@ -106,10 +113,18 @@ class AddTodoComponent @AssistedInject internal constructor(
             componentScope.launch {
                 val task = runCatching { service.getTask(editingTaskId) }.getOrNull()
                 if (task != null) {
-                    _uiState.value = _uiState.value.copy(
+                    editingCategoryId = task.categoryId
+                    isEditingCategoryLoaded = true
+                    val current = _uiState.value
+                    _uiState.value = current.copy(
                         editingTaskLoaded = true,
                         taskTitle = task.title,
                         taskNote = task.note.orEmpty(),
+                        selectedCategory = if (isCategoryManuallySelected) {
+                            current.selectedCategory
+                        } else {
+                            current.categories.firstOrNull { it.id == task.categoryId }
+                        },
                         selectedTagNames = task.tags.toSet(),
                         priority = task.priority,
                         dueDateMillis = task.dueDate,
@@ -145,6 +160,8 @@ class AddTodoComponent @AssistedInject internal constructor(
         }
         return when (event) {
             is AddTodoUiEvent.SelectCategory -> {
+                isCategoryManuallySelected = true
+                selectionStore.setLastCategoryId(event.category?.id)
                 _uiState.value = _uiState.value.copy(selectedCategory = event.category)
                 true
             }
@@ -347,6 +364,7 @@ class AddTodoComponent @AssistedInject internal constructor(
                     input = input,
                     source = "UI:AddTodoScreen",
                 ).onSuccess { newTaskId ->
+                    selectionStore.setLastCategoryId(input.categoryId)
                     val dueAt = input.dueDateMillis
                     if (_uiState.value.joinScheduleOnSave && dueAt != null) {
                         val joined = scheduleService.createTaskDeadlineEvent(
