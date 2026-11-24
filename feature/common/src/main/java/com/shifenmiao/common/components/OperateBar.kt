@@ -105,6 +105,11 @@ fun OperateBar(
     }
 }
 
+/** 评论入口是卡片的次要信息: 比分类文字再淡一档, 图标也小一号。 */
+private const val COMMENT_CHROME_ALPHA = 0.7f
+
+private val CommentIconSize = 14.dp
+
 /**
  * 评论入口: 气泡 + 数量。
  *
@@ -133,8 +138,8 @@ private fun CommentCountChip(
         Icon(
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineChatBubble,
             contentDescription = null,
-            modifier = Modifier.size(16.dp),
-            tint = iconTint,
+            modifier = Modifier.size(CommentIconSize),
+            tint = iconTint.copy(alpha = COMMENT_CHROME_ALPHA),
         )
         if (count != null) {
             Spacer(modifier = Modifier.width(4.dp))
@@ -143,7 +148,7 @@ private fun CommentCountChip(
                 style = MaterialTheme.typography.labelSmall.copy(
                     fontWeight = FontWeight.Medium,
                 ),
-                color = textColor,
+                color = textColor.copy(alpha = COMMENT_CHROME_ALPHA),
                 maxLines = 1,
             )
         }

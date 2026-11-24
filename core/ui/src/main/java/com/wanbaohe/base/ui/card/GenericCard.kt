@@ -103,8 +103,11 @@ data class CardAction(
 // 动作面板每行列数
 private const val ACTION_GRID_COLUMNS = 3
 
-/** 「更多」和关闭: 用卡片主题的文字色, 比正文再透一点。 */
+/** 动作面板右上角的关闭: 用卡片主题的文字色, 比正文再透一点。 */
 private const val CARD_CHROME_ICON_ALPHA = 0.7f
+
+/** 卡片右上角的「更多」: 只是装饰性入口, 比关闭按钮再淡一档。 */
+private const val CARD_MORE_ICON_ALPHA = 0.5f
 
 /**
  * 铺满整张卡片的动作面板。底是 surfaceContainerLow。
@@ -412,19 +415,19 @@ fun GenericTonalCard(
                             }
 
                             // 「更多」按钮做小一号:三圈比原来的实心三点视觉重量大,
-                            // 40dp/24dp 顶到标题,收到 32dp/18dp 当卡片右上角的轻量装饰。
+                            // 40dp/24dp 顶到标题,收到 32dp/16dp 当卡片右上角的轻量装饰。
                             IconButton(
                                 onClick = { showActions = true },
                                 modifier = Modifier.size(32.dp)
                             ) {
                                 Icon(
-                                    modifier = Modifier.size(18.dp),
+                                    modifier = Modifier.size(16.dp),
                                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
                                     contentDescription = stringResource(
                                         com.shifenmiao.core.R.string.card_more_actions
                                     ),
                                     tint = resolvedPalette.iconContentColor.copy(
-                                        alpha = CARD_CHROME_ICON_ALPHA
+                                        alpha = CARD_MORE_ICON_ALPHA
                                     )
                                 )
                             }
