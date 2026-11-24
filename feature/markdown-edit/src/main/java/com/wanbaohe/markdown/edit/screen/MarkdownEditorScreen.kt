@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
@@ -529,6 +530,14 @@ fun MarkdownEditorScreen(
                 }
                 SecondaryButton(
                     text = stringResource(com.shifenmiao.common.R.string.note_keep_editing),
+                    icon = {
+                        Icon(
+                            imageVector = com.wanbaohe.icons.LineEditorIcons.Edit,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp),
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                        )
+                    },
                     onClick = {
                         showExitConfirmDialog = false
                         pendingAction = null

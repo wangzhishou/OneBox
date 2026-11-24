@@ -25,6 +25,7 @@ package com.wanbaohe.code.editor.screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -37,6 +38,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.core.R
@@ -250,6 +252,14 @@ internal fun CodeEditorExitDialog(
                 CancelButton(stringResource(R.string.discard), onClick = onDiscard)
                 SecondaryButton(
                     text = stringResource(com.shifenmiao.common.R.string.note_keep_editing),
+                    icon = {
+                        Icon(
+                            imageVector = com.wanbaohe.icons.LineEditorIcons.Edit,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp),
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                        )
+                    },
                     onClick = onDismiss,
                 )
             }

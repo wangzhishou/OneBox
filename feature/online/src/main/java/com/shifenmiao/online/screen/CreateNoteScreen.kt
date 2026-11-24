@@ -416,6 +416,7 @@ fun CreateNoteScreen(
                 )
                 OneSecondaryButton(
                     text = stringResource(CommonR.string.note_keep_editing),
+                    leadingIcon = LineEditorIcons.Edit,
                     onClick = { showExitDialog.value = false },
                 )
             }
