@@ -2148,14 +2148,6 @@ sealed class Screen(
     )
 
     @Serializable
-    @SerialName("Mahjong")
-    data object Mahjong : Screen(
-        id = 1122,
-        title = com.shifenmiao.core.R.string.mahjong_title,
-        subtitle = com.shifenmiao.core.R.string.mahjong_description,
-    )
-
-    @Serializable
     @SerialName("Notification")
     data object Notification : Screen(
         id = 1105,

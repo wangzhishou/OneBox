@@ -2121,8 +2121,6 @@
     <string name="ai_test_failure_unknown">لم ينجح الاختبار، راجع تفاصيل الخطأ أدناه</string>
     <string name="on_device_ocr">التقاط النص</string>
     <string name="on_device_ocr_description">اقرأ النص من صورة على هذا الهاتف دون اتصال.</string>
-    <string name="mahjong_title">ماهجونغ</string>
-    <string name="mahjong_description">مباراة ماهجونغ محلية لأربعة لاعبين ضد ثلاثة خصوم محليين.</string>
     <string name="translator">الترجمة</string>
     <string name="translator_description">ترجمة النصوص بالذكاء الاصطناعي السحابي أو على الجهاز، مع الإدخال الصوتي والتعرف الضوئي بالكاميرا</string>
     <string name="open_menu">فتح القائمة</string>

@@ -168,10 +168,6 @@ object AppNavigationRegistry {
                 aliases = listOf("textcard", "text_card", "文字卡片", "图文卡片")
             ),
             staticScreen(
-                screen = Screen.Mahjong,
-                aliases = listOf("mahjong", "majiang", "麻将", "单机麻将", "离线麻将")
-            ),
-            staticScreen(
                 screen = Screen.Watermarking(),
                 aliases = listOf("image_watermark", "图片水印", "加水印")
             ).copy(
