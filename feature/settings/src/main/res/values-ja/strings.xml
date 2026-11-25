@@ -476,4 +476,5 @@
     <string name="ai_engine_import_success_renamed">サービス識別子が既に使用されているため、「%1$s」に自動変更しました。確認して保存してください</string>
     <string name="local_model_hy_mt2_name">Tencent Hy-MT2 1.8B</string>
     <string name="local_model_hy_mt2_desc">Tencent の 33 言語対応オープン翻訳モデル。ダウンロード後、翻訳機能でオフライン利用できます。</string>
+    <string name="ai_engine_protocol_badge_openai">互換</string>
 </resources>

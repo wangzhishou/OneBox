@@ -489,7 +489,7 @@ fun CreateThemeCard(onClick: () -> Unit) {
             text = stringResource(R.string.theme_preset_create),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onPrimaryContainer,
-            maxLines = 1, overflow = TextOverflow.Ellipsis,
+            maxLines = 2, overflow = TextOverflow.Ellipsis,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )

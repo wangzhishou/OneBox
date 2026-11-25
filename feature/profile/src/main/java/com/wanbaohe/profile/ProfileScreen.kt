@@ -489,9 +489,7 @@ private fun ProfileStatsRow(
                 label = stringResource(R.string.profile_stats_points),
                 icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMedal,
                 iconTint = colors.onSecondaryContainer,
-                hint = if (loginState.points < 100) {
-                    stringResource(R.string.profile_stats_points_play_hint)
-                } else null,
+                hint = stringResource(R.string.profile_stats_points_play_hint),
             )
         }
 

@@ -379,10 +379,10 @@
     <string name="community_youtube_subtitle">@OneBoxAndroid</string>
     <string name="profile_item_donate">Support the Developer / Donate Points</string>
     <string name="profile_item_auth_code">Password Protection</string>
-    <string name="profile_item_clear">Clear Cache</string>
+    <string name="profile_item_clear">Clear Local Data &amp; Cache</string>
     <string name="profile_item_analytics">Usage &amp; Crash Reporting</string>
     <string name="profile_item_analytics_sub">Share anonymous usage stats and crash reports to help improve the app</string>
-    <string name="profile_item_found_cache">%1$s cache cleared successfully</string>
+    <string name="profile_item_found_cache">Local data and %1$s cache cleared</string>
 
     <string name="profile_item_folder">Output Directory</string>
     <string name="profile_item_font_size">Font Size</string>
@@ -468,8 +468,8 @@
     <string name="profile_item_theme_light">Light</string>
     <string name="profile_item_dislay_list">Single Column</string>
     <string name="profile_item_dislay_gird">Double Column</string>
-    <string name="profile_item_clear_cache_message">Clearing cache can improve app performance. Note that some downloaded or cached content will be removed, along with local data such as chat history, favorites, search history, and visit history. Continue?</string>
-    <string name="profile_item_clear_cache_title">Clear Cache</string>
+    <string name="profile_item_clear_cache_message">This deletes cached content and local data, including chat history, favorites, search history, and visit history. This cannot be undone. Continue?</string>
+    <string name="profile_item_clear_cache_title">Clear Local Data &amp; Cache?</string>
     <string name="profile_item_robot">Model Settings</string>
     <string name="ai_chat_menu_history">History</string>
     <string name="export_pdf">Export as PDF</string>

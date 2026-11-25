@@ -52,13 +52,13 @@ import com.wanbaohe.core.ui.utils.helper.ProvidesValue
  * - 背景颜色根据 [checked] 状态自动选择 [checkedGlassColor] / [uncheckedGlassColor]
  * - 取消最小交互尺寸限制，使玻璃背景与 Switch 实际 track 区域（52×32 dp）对齐
  *
- * 开启时滑块里放对勾。关闭和禁用不画轨道描边，避免空心边框。
+ * 开启时滑块里放对勾。关闭态保留轨道描边，禁用时不画描边。
  *
  * @param style              毛玻璃浓度等级，默认 [GlassStyle.Regular]
  * @param shape              玻璃背景形状，默认全圆角胶囊
  * @param checkedGlassColor  选中时的玻璃底色
  * @param uncheckedGlassColor 未选中时的玻璃底色
- * @param glassBorderWidth   开启且可用时的玻璃描边宽度；关闭和禁用固定为 0
+ * @param glassBorderWidth   启用时的玻璃描边宽度；禁用时固定为 0
  */
 @Composable
 fun GlassSwitch(
@@ -87,8 +87,8 @@ fun GlassSwitch(
             )
         }
     }
-    // 关闭、禁用都是实心轨道。描边只留给开启且可用，避免淡轨道上多一圈框。
-    val resolvedBorderWidth = if (enabled && checked) glassBorderWidth else 0.dp
+    // 关闭态保留轨道边界，避免滑块在浅色或深色背景上显得孤立。
+    val resolvedBorderWidth = if (enabled) glassBorderWidth else 0.dp
     val usesDefaultTrackColors = colors.checkedTrackColor == MaterialTheme.colorScheme.primaryContainer &&
         colors.uncheckedTrackColor == MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.75f)
     val checkedTrackColor = if (usesDefaultTrackColors) {
@@ -118,7 +118,7 @@ fun GlassSwitch(
         checkedIconColor = colors.checkedIconColor,
         uncheckedThumbColor = colors.uncheckedThumbColor,
         uncheckedTrackColor = uncheckedTrackColor,
-        uncheckedBorderColor = Color.Transparent,
+        uncheckedBorderColor = colors.uncheckedBorderColor,
         uncheckedIconColor = colors.uncheckedIconColor,
         disabledCheckedThumbColor = colors.disabledCheckedThumbColor,
         disabledCheckedTrackColor = colors.disabledCheckedTrackColor,

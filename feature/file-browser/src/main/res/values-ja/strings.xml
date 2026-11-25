@@ -28,9 +28,9 @@
     <string name="action_back">戻る</string>
     <string name="action_sort">並べ替え</string>
     <string name="action_refresh">更新</string>
-    <string name="nav_home">ルートディレクトリ</string>
+    <string name="nav_home">ルート</string>
     <string name="nav_recents">最近開いた</string>
-    <string name="nav_workspace">作業ディレクトリ</string>
+    <string name="nav_workspace">作業フォルダ</string>
     <string name="cd_nav_home">ルートディレクトリに切り替え</string>
     <string name="cd_nav_recents">最近開いた項目に切り替え</string>
     <string name="cd_nav_workspace">作業ディレクトリに切り替え</string>

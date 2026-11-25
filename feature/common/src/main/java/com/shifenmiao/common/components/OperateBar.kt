@@ -171,7 +171,7 @@ private fun CategoryTagBadge(
             .widthIn(max = 140.dp),
         style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
         color = textColor,
-        maxLines = 1,
+        maxLines = 2,
         overflow = TextOverflow.Ellipsis,
     )
 }
