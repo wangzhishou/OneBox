@@ -60,7 +60,7 @@ private fun sectionContainerColor(theme: MarkTodoSectionTheme): Color = when (th
     MarkTodoSectionTheme.PRIMARY -> MaterialTheme.colorScheme.primaryContainer
     MarkTodoSectionTheme.SECONDARY -> MaterialTheme.colorScheme.secondaryContainer
     MarkTodoSectionTheme.TERTIARY -> MaterialTheme.colorScheme.tertiaryContainer
-    MarkTodoSectionTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainer
+    MarkTodoSectionTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainerHigh
 }
 
 @Composable

@@ -88,13 +88,13 @@ private fun uniformCardTint(color: Color): Color {
 }
 
 @Composable
-private fun uniformCardContentColor(color: Color, isNeutral: Boolean): Color {
+private fun uniformCardContentColor(color: Color): Color {
     val isLight = MaterialTheme.colorScheme.surface.luminance() > 0.5f
-    return remember(color, isNeutral, isLight) {
+    return remember(color, isLight) {
         if (isLight) return@remember color
         val hsl = FloatArray(3)
         ColorUtils.colorToHSL(color.toArgb(), hsl)
-        hsl[1] = if (isNeutral || hsl[1] < 0.08f) 0f else DARK_CARD_CONTENT_SATURATION
+        hsl[1] = if (hsl[1] < 0.08f) 0f else DARK_CARD_CONTENT_SATURATION
         hsl[2] = lightnessForLuminance(hsl, DARK_CARD_CONTENT_LUMINANCE)
         Color(ColorUtils.HSLToColor(hsl))
     }
@@ -132,10 +132,10 @@ object TonalCardPaletteDefaults {
             0 -> colors.secondaryContainer to colors.onSecondaryContainer
             1 -> colors.tertiaryContainer to colors.onTertiaryContainer
             2 -> colors.primaryContainer to colors.onPrimaryContainer
-            else -> colors.surfaceContainer to colors.onSurfaceVariant
+            else -> colors.surfaceContainerHigh to colors.onSurfaceVariant
         }
-        val containerColor = if (colorIndex == 3) container else uniformCardTint(container)
-        val contentColor = uniformCardContentColor(content, isNeutral = colorIndex == 3)
+        val containerColor = uniformCardTint(container)
+        val contentColor = uniformCardContentColor(content)
         return remember(colors, container, content, containerColor, contentColor) {
             TonalCardPalette(
                 containerColor = containerColor,

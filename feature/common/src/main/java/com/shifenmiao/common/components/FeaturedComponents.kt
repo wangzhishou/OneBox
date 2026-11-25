@@ -496,7 +496,7 @@ fun sectionGradient(theme: SectionTheme): Color = when (theme) {
     SectionTheme.PRIMARY -> MaterialTheme.colorScheme.primaryContainer
     SectionTheme.SECONDARY -> MaterialTheme.colorScheme.secondaryContainer
     SectionTheme.TERTIARY -> MaterialTheme.colorScheme.tertiaryContainer
-    SectionTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainerLow
+    SectionTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainerHigh
 }
 
 @Composable
@@ -520,5 +520,5 @@ fun sectionIconContainerColor(theme: SectionTheme): Color = when (theme) {
     SectionTheme.PRIMARY -> MaterialTheme.colorScheme.primaryContainer
     SectionTheme.SECONDARY -> MaterialTheme.colorScheme.secondaryContainer
     SectionTheme.TERTIARY -> MaterialTheme.colorScheme.tertiaryContainer
-    SectionTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainerLow
+    SectionTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainerHigh
 }

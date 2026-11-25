@@ -106,7 +106,7 @@ fun preferenceItemContainerColor(theme: PreferenceItemTheme): Color = when (them
     PreferenceItemTheme.PRIMARY -> MaterialTheme.colorScheme.primaryContainer
     PreferenceItemTheme.SECONDARY -> MaterialTheme.colorScheme.secondaryContainer
     PreferenceItemTheme.TERTIARY -> MaterialTheme.colorScheme.tertiaryContainer
-    PreferenceItemTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainer
+    PreferenceItemTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainerHigh
 }
 
 @Composable
@@ -176,7 +176,7 @@ fun TypeSelectionCard(
         PreferenceItemTheme.PRIMARY -> MaterialTheme.colorScheme.primaryContainer
         PreferenceItemTheme.SECONDARY -> MaterialTheme.colorScheme.secondaryContainer
         PreferenceItemTheme.TERTIARY -> MaterialTheme.colorScheme.tertiaryContainer
-        PreferenceItemTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainerLow
+        PreferenceItemTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainerHigh
     }
 
     GlassCard(
