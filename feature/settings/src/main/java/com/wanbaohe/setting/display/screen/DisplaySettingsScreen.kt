@@ -81,7 +81,6 @@ import com.wanbaohe.core.ui.widget.glass.GlassSegmentedButtonRow
 import com.wanbaohe.core.ui.widget.glass.GlassSwitch
 import com.wanbaohe.core.ui.widget.glass.GlassCustomSlider
 import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
-import com.wanbaohe.core.ui.widget.system.OneBoxSectionCard
 import com.wanbaohe.core.ui.widget.theme.ThemePresetSelector
 import com.wanbaohe.core.ui.widget.controls.selection.PickFontFamilySheet
 import com.t8rin.imagetoolbox.feature.settings.presentation.screenLogic.SettingsComponent
@@ -132,39 +131,37 @@ fun DisplaySettingsScreen(component: DisplaySettingsComponent) {
             item { Spacer(modifier = Modifier.height(OneBoxDesignSystem.screenTopSpacing)) }
 
             item {
-                OneBoxSectionCard(
+                Column(
                     modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(OneBoxDesignSystem.cardPadding)
+                    verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing)
                 ) {
-                    Column(verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing)) {
-                        StartEntrySettingItem()
-                        Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
-                        ThemePresetSelector(
-                            onNavigateToThemeSettings = {
-                                onNavigate(Screen.ThemeSettings)
-                            }
-                        )
-                        Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
-                        ThemeSettingItem()
-                        Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
-                        LayoutSettingItem()
-                        Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
-                        PointsSettingItem()
-                        Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
-                        QuickSettingItem(component.appComponentProxy)
-                        Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
-                        // 微信小程序开关仅国内渠道有意义, 海外(google/foss)隐藏
-                        if (!FlavorType.fromName().isOverseas) {
-                            MiniProgramSettingItem()
-                            Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
+                    StartEntrySettingItem()
+                    Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
+                    ThemePresetSelector(
+                        onNavigateToThemeSettings = {
+                            onNavigate(Screen.ThemeSettings)
                         }
-                        FontFamilySettingSection(settingsComponent)
-                        Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
-                        FontSizeSettingSection(settingsComponent)
-                        Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
-                        ConfettiSettingItem(component)
+                    )
+                    Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
+                    ThemeSettingItem()
+                    Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
+                    LayoutSettingItem()
+                    Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
+                    PointsSettingItem()
+                    Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
+                    QuickSettingItem(component.appComponentProxy)
+                    Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
+                    // 微信小程序开关仅国内渠道有意义, 海外(google/foss)隐藏
+                    if (!FlavorType.fromName().isOverseas) {
+                        MiniProgramSettingItem()
                         Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
                     }
+                    FontFamilySettingSection(settingsComponent)
+                    Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
+                    FontSizeSettingSection(settingsComponent)
+                    Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
+                    ConfettiSettingItem(component)
+                    Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
                 }
             }
 
