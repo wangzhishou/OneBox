@@ -26,7 +26,7 @@ Code is not the only useful contribution:
 
 ### Requirements
 
-- **JDK 17**
+- **JDK 21** (build-logic bytecode still targets JDK 17)
 - Android SDK with **compileSdk 37**, available through `ANDROID_HOME` or `local.properties`
 - Around 10 GB of free disk and some patience: the first build compiles 127 modules
 - **No API keys, keystores or backend access are required**

@@ -315,7 +315,7 @@ Package paths beginning with `com.t8rin.*` are kept for compatibility with the u
 ### Requirements
 
 - Use the bundled **Gradle Wrapper 9.8.2**
-- **JDK 17** (build-logic and CI target it)
+- **JDK 21** (CI and the Gradle daemon use it; build-logic bytecode still targets JDK 17)
 - Android targets: **Compile SDK 37.2 / Target SDK 37 / Min SDK 26**
 - Toolchain: **Kotlin 2.4.21 / AGP 9.4.1**
 - When in doubt, `gradle/libs.versions.toml` and `gradle/wrapper/gradle-wrapper.properties` are the source of truth
@@ -383,7 +383,7 @@ A real `keystore.properties` is required for release packaging (the script exits
 
 ### CI Releases
 
-`.github/workflows/android.yml` defines the tag-based release pipeline: Ubuntu runner, JDK 17, `assembleRelease`, then APK signing and release upload.
+`.github/workflows/android.yml` defines the tag-based release pipeline: Ubuntu runner, JDK 21, `assembleRelease`, then APK signing and release upload.
 
 ### Update reminders & domestic distribution
 
