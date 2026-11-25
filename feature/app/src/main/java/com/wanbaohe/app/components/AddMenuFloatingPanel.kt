@@ -459,7 +459,8 @@ private fun AddMenuGridItem(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
                 onClick = item.onClick
-            ),
+            )
+            .padding(horizontal = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // 圆形玻璃图标背景
@@ -496,6 +497,7 @@ private fun AddMenuGridItem(
             ),
             overflow = TextOverflow.Ellipsis,
             textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }

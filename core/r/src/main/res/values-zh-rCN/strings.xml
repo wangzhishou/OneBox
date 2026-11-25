@@ -405,10 +405,10 @@
     <string name="community_youtube_subtitle">@OneBoxAndroid</string>
     <string name="profile_item_donate">支持作者/打赏积分</string>
     <string name="profile_item_auth_code">密码保护</string>
-    <string name="profile_item_clear">清理缓存</string>
+    <string name="profile_item_clear">清理本地数据与缓存</string>
     <string name="profile_item_analytics">统计与崩溃上报</string>
     <string name="profile_item_analytics_sub">匿名分享使用统计与崩溃信息,帮助改进产品</string>
-    <string name="profile_item_found_cache"> %1$s 缓存清理成功</string>
+    <string name="profile_item_found_cache">本地数据与 %1$s 缓存已清理</string>
 
     <string name="profile_item_folder">输出目录</string>
     <string name="profile_item_font_size">文字大小</string>
@@ -495,8 +495,8 @@
     <string name="profile_item_theme_light">日间</string>
     <string name="profile_item_dislay_list">单列</string>
     <string name="profile_item_dislay_gird">双列</string>
-    <string name="profile_item_clear_cache_message">为了提升应用的运行速度和性能，我们建议你定期清理缓存。\n请注意，清理缓存后，部分已下载或已缓存的内容可能将被删除。本地相关的操作记录会被删除，\n包含：机器人聊天记录、本地收藏、搜索记录、访问记录等。\n你确定要继续清理缓存吗？</string>
-    <string name="profile_item_clear_cache_title">删除缓存</string>
+    <string name="profile_item_clear_cache_message">将删除缓存内容以及本地数据，包括机器人聊天记录、本地收藏、搜索记录、访问记录等。此操作不可撤销。确定要继续吗？</string>
+    <string name="profile_item_clear_cache_title">清理本地数据与缓存？</string>
     <string name="profile_item_robot">模型设置</string>
     <string name="ai_chat_menu_history">历史记录</string>
     <string name="export_pdf">导出为PDF</string>

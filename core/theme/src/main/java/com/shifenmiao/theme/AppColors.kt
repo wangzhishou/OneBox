@@ -65,11 +65,11 @@ class AppColors {
         checkedIconColor = MaterialTheme.colorScheme.surfaceContainerLowest,
         checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
         checkedBorderColor = Color.Transparent,
-        uncheckedThumbColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+        uncheckedThumbColor = MaterialTheme.colorScheme.outline,
         uncheckedTrackColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.75f),
-        uncheckedBorderColor = Color.Transparent,
+        uncheckedBorderColor = MaterialTheme.colorScheme.outline,
         uncheckedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-        // 关闭和禁用都是实心轨道，不画 Material 默认描边。
+        // 关闭态使用 outline 保留可辨边界；禁用态不画描边。
         disabledCheckedThumbColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.38f),
         disabledCheckedTrackColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.38f),
         disabledCheckedBorderColor = Color.Transparent,

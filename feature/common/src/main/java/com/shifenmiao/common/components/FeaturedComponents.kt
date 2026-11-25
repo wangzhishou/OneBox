@@ -64,7 +64,6 @@ import com.wanbaohe.base.ui.icon.BuildCustomIcon
 import com.wanbaohe.base.ui.icon.IconAvatar
 import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.database.item.entity.ItemWithCategoriesAndStats
-import com.shifenmiao.theme.AppFontMode
 import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassScrollEffectScope
@@ -128,7 +127,7 @@ fun FeaturedGrid(
     cardLayout: FeaturedCardLayout = FeaturedCardLayout.standard(),
     cardWidth: Dp? = null,
 ) {
-    val titleLines = if (AppTheme.uiProfile.fontMode == AppFontMode.Regular) 1 else 2
+    val titleLines = 2
     val fontScale = LocalDensity.current.fontScale.coerceAtLeast(1f)
     BoxWithConstraints(modifier = modifier.fillMaxWidth()) {
         val readableWidth = cardLayout.minWidth * fontScale

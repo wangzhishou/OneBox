@@ -299,8 +299,9 @@
     <string name="community_youtube_subtitle">@OneBoxAndroid</string>
     <string name="profile_item_donate">開発者を支援 / ポイントを寄付</string>
     <string name="profile_item_auth_code">パスワード保護</string>
-    <string name="profile_item_clear">キャッシュをクリア</string>
-    <string name="profile_item_found_cache">%1$sのキャッシュが正常にクリアされました</string>
+    <string name="profile_item_clear">ローカルデータとキャッシュを削除</string>
+    <string name="profile_item_found_cache">ローカルデータと %1$s のキャッシュを削除しました</string>
+    <string name="deeplink_not_found">このページは存在しません</string>
     <string name="profile_item_folder">出力ディレクトリ</string>
     <string name="profile_item_font_size">フォントサイズ</string>
     <string name="profile_item_font_family">フォント</string>
@@ -380,8 +381,8 @@
     <string name="profile_item_theme_light">ライト</string>
     <string name="profile_item_dislay_list">シングルカラム</string>
     <string name="profile_item_dislay_gird">ダブルカラム</string>
-    <string name="profile_item_clear_cache_message">キャッシュをクリアするとアプリのパフォーマンスが向上します。ダウンロードまたはキャッシュされた一部のコンテンツが削除され、チャット履歴、お気に入り、検索履歴、訪問履歴などのローカルデータも削除されます。続行しますか？</string>
-    <string name="profile_item_clear_cache_title">キャッシュをクリア</string>
+    <string name="profile_item_clear_cache_message">キャッシュに加え、チャット履歴、お気に入り、検索履歴、訪問履歴などのローカルデータも削除されます。この操作は元に戻せません。続行しますか？</string>
+    <string name="profile_item_clear_cache_title">ローカルデータとキャッシュを削除しますか？</string>
     <string name="profile_item_robot">モデル設定</string>
     <string name="ai_chat_menu_history">履歴</string>
     <string name="export_pdf">PDFとしてエクスポート</string>
@@ -1138,8 +1139,8 @@
     <string name="custom_background_clear">クリア</string>
     <string name="custom_background_overlay_alpha">オーバーレイの不透明度</string>
     <string name="theme_preset_section">テーマを選択</string>
-    <string name="theme_preset_create">新しいテーマ</string>
-    <string name="theme_preset_create_title">新しいテーマ</string>
+    <string name="theme_preset_create">新規テーマ</string>
+    <string name="theme_preset_create_title">新規テーマ</string>
     <string name="theme_preset_name_hint">テーマ名</string>
     <string name="theme_preset_save">保存</string>
     <string name="theme_preset_cancel">キャンセル</string>
@@ -1151,7 +1152,7 @@
     <string name="theme_preset_bg_section">背景スタイル</string>
     <string name="theme_preset_dynamic_colors">壁紙の色</string>
     <string name="theme_preset_more_settings">その他の設定</string>
-    <string name="theme_preset_name_dynamic">ダイナミック</string>
+    <string name="theme_preset_name_dynamic">壁紙</string>
     <string name="theme_preset_name_logo">ブランド</string>
     <string name="theme_preset_name_sakura_pink">桜ピンク</string>
     <string name="theme_preset_name_mint_fresh">ミントソーダ</string>
@@ -1539,8 +1540,11 @@
     <string name="ai_chat_engine_unavailable_dialog_title">メッセージを送信できません</string>
     <string name="ai_chat_engine_unavailable_dialog_message">利用可能なAIエンジンがありません。送信する前に、エンジン設定で動作する直接接続をテストするか、利用可能なプロキシがあるエンジンに切り替えてください。</string>
     <string name="ai_chat_engine_unavailable_banner_title">利用可能なAIエンジンがありません</string>
-    <string name="ai_chat_engine_unavailable_banner_desc">現在の作業エンジンにはテスト済みの直接接続がなく、利用可能なプロキシもありません。タップして設定を開きます。</string>
-    <string name="ai_chat_engine_unavailable_banner_desc_overseas">現在のエンジンにはAPIトークンが設定されておらず、利用可能なプロキシもありません。タップして設定を開きます。</string>
+    <string name="ai_chat_engine_unavailable_banner_desc">%1$s · 接続を設定するか、別のモデルに切り替えてください</string>
+    <string name="ai_chat_engine_unavailable_banner_desc_overseas">%1$s · APIトークンを設定するか、別のモデルに切り替えてください</string>
+    <string name="ai_chat_engine_unavailable_switch_model">モデルを切り替え</string>
+    <string name="ai_chat_engine_unavailable_configure_token">APIトークンを設定</string>
+    <string name="ai_chat_engine_unavailable_configure_connection">接続を設定</string>
     <string name="ai_chat_engine_unavailable_dialog_message_overseas">利用可能なAIエンジンがありません。送信する前に、エンジン設定でAPIトークンを設定するか、利用可能なプロキシがあるエンジンに切り替えてください。</string>
     <string name="ai_chat_engine_unavailable_banner_action">設定を開く</string>
     <string name="ai_chat_empty_response_error">モデルが表示する内容を返しませんでした。もう一度お試しください。それでも失敗する場合は、エンジンを切り替えるか、プロトコルの互換性を確認してください。</string>
@@ -1657,7 +1661,7 @@
     <string name="measurement_tools">測定ツール</string>
     <string name="measurement_tools_description">水準器・画面定規・分度器——すばやく手軽に測定できます。</string>
     <string name="ruler">画面定規</string>
-    <string name="playground">游乐场</string>
+    <string name="playground">プレイグラウンド</string>
     <string name="playground_description">アイデアと文章</string>
     <string name="playground_empty">遊び場の記事はまだありません</string>
     <string name="profile_item_ai_feature_settings">機能トグル</string>
@@ -1890,7 +1894,7 @@
     <string name="ai_chat_error_details_hide">詳細を閉じる</string>
     <string name="ai_chat_error_copy">コピー</string>
     <string name="ai_chat_error_copied">コピーしました</string>
-    <string name="ai_chat_usage_tokens">%1$s Tokens</string>
+    <string name="ai_chat_usage_tokens">%1$s トークン</string>
     <string name="altitude_daily">7日間予報</string>
     <string name="altitude_air_quality">空気質</string>
     <string name="altitude_primary_pollutant">主要汚染物質：%1$s</string>
@@ -1906,7 +1910,7 @@
         <item quantity="other">深く考え中（%d秒）</item>
     </plurals>
     <plurals name="ai_chat_token_count">
-        <item quantity="other">%1$s Tokens</item>
+        <item quantity="other">%1$s トークン</item>
     </plurals>
     <plurals name="play_points_count">
         <item quantity="other">%s ポイントを獲得</item>

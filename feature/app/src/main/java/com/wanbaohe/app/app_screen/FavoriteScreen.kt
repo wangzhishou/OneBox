@@ -647,7 +647,10 @@ private fun MineListItemCard(
                 ) {
                     Text(
                         modifier = Modifier.weight(1f, fill = false),
-                        text = TimeFormatter.formatRelativeTime(itemWithCategories.clickTime),
+                        text = TimeFormatter.formatRelativeTime(
+                            itemWithCategories.clickTime.takeIf { it.time > 0L }
+                                ?: Date(entity.updatedAt)
+                        ),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,

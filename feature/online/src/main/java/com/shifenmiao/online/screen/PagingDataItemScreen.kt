@@ -566,8 +566,7 @@ private fun ItemGrid(
     // 最近一张普通卡片的实测高度,用于"创建新xx"引导卡与旁边卡片对齐(双列瀑布流本身不保证行高一致)
     var siblingCardHeight by remember { mutableStateOf<Dp?>(null) }
 
-    val isNoteTab = listType == ListItemType.NOTE
-    val cardMaxTitleLines = if (isNoteTab) 2 else 1
+    val cardMaxTitleLines = 2
 
     val headPin = remember(listType.id, chipCategoryId) { HeadPin() }
     val headFollow = remember(listType.id, chipCategoryId) {

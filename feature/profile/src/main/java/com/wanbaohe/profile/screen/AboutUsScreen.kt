@@ -19,6 +19,7 @@
 
 package com.wanbaohe.profile.screen
 
+import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -61,7 +62,9 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.BuildConfig
 import com.shifenmiao.core.R
 import com.shifenmiao.core.constants.UrlConstants
+import com.shifenmiao.model.channel.FlavorType
 import com.shifenmiao.model.webview.WebViewParams
+import com.t8rin.imagetoolbox.core.utils.LocaleUtils
 import com.wanbaohe.core.ui.utils.helper.Clipboard
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
@@ -74,6 +77,14 @@ import com.wanbaohe.profile.ui.AboutGlassListItem
 import com.wanbaohe.profile.ui.AboutSectionTitle
 import com.t8rin.imagetoolbox.core.resources.icons.OpenInNew
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineArrowForwardIos
+
+private fun localizedLegalUrl(url: String): String {
+    if (!FlavorType.fromName().isOverseas) return url
+    return Uri.parse(url).buildUpon()
+        .appendQueryParameter("lang", LocaleUtils.getCurrentLocaleTag())
+        .build()
+        .toString()
+}
 
 @Composable
 fun AdditionalInfo(
@@ -235,7 +246,7 @@ fun AboutUsContainer(
                                 Screen.WebView(
                                     WebViewParams(
                                         title = context.getString(R.string.user_agreement),
-                                        url = channelConfig.userAgreementUrl,
+                                        url = localizedLegalUrl(channelConfig.userAgreementUrl),
                                     ),
                                 ),
                             )
@@ -250,7 +261,7 @@ fun AboutUsContainer(
                                 Screen.WebView(
                                     WebViewParams(
                                         title = context.getString(R.string.privacy_title),
-                                        url = channelConfig.privacyPolicyUrl,
+                                        url = localizedLegalUrl(channelConfig.privacyPolicyUrl),
                                     ),
                                 ),
                             )
