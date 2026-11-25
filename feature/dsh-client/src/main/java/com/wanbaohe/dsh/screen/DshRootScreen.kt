@@ -48,7 +48,6 @@ import androidx.compose.material.icons.outlined.CloudQueue
 import androidx.compose.material.icons.outlined.Computer
 import androidx.compose.material.icons.outlined.ContentPaste
 import androidx.compose.material.icons.outlined.QrCodeScanner
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
@@ -915,7 +914,7 @@ private fun CloudRelaySection(
                 }
             )
             Spacer(Modifier.height(12.dp))
-            Button(
+            GlassButton(
                 onClick = onConnect,
                 modifier = Modifier.fillMaxWidth()
             ) {

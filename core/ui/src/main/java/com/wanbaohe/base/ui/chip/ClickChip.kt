@@ -47,7 +47,10 @@ import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
 fun ClickChip(
     text: String,
     icon: ImageVector?,
-    colors: ButtonColors = ButtonDefaults.buttonColors(),
+    colors: ButtonColors = ButtonDefaults.buttonColors(
+        containerColor = MaterialTheme.colorScheme.primaryContainer,
+        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+    ),
     onClick: () -> Unit,
 ) {
     val shape = OneBoxDesignSystem.chipShape

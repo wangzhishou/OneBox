@@ -30,7 +30,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import com.wanbaohe.core.ui.widget.glass.GlassButton
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
@@ -131,9 +131,9 @@ fun ModelPickerDialog(
             }
         },
         confirmButton = {
-            Button(
+            GlassButton(
                 onClick = {
-                    val selection = picked ?: return@Button
+                    val selection = picked ?: return@GlassButton
                     component.applyModelSelection(
                         sessionId = sessionId,
                         provider = selection.provider,

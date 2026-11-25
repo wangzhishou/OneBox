@@ -36,7 +36,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material3.Button
+import com.wanbaohe.core.ui.widget.glass.GlassButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -268,7 +268,7 @@ fun InputWithButton(
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Button(
+        GlassButton(
             onClick = { onButtonClick(inputText.value) }, modifier = Modifier.align(Alignment.End)
         ) {
             Text("Submit")

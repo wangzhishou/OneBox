@@ -41,7 +41,7 @@ import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Notes
 import androidx.compose.material.icons.outlined.ThumbDown
 import androidx.compose.material.icons.outlined.ThumbUp
-import androidx.compose.material3.Button
+import com.wanbaohe.core.ui.widget.glass.GlassButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -410,7 +410,7 @@ private fun FeedbackNoteSheet(
                     Text(stringResource(R.string.dsh_cancel))
                 }
                 Spacer(Modifier.width(8.dp))
-                Button(
+                GlassButton(
                     onClick = {
                         if (note.length > FeedbackNoteMaxBytes) {
                             error = tooLargeText

@@ -36,7 +36,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material3.Button
+import com.wanbaohe.core.ui.widget.glass.GlassButton
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
@@ -212,7 +212,7 @@ private fun ApprovalCard(
                     Text(stringResource(R.string.dsh_approval_reject))
                 }
                 Spacer(Modifier.width(10.dp))
-                Button(onClick = { onRespond(approval, true) }) {
+                GlassButton(onClick = { onRespond(approval, true) }) {
                     Text(stringResource(R.string.dsh_approval_allow_once))
                 }
             }
@@ -310,10 +310,10 @@ private fun QuestionFormCard(
                     .padding(top = 8.dp),
                 horizontalArrangement = Arrangement.End
             ) {
-                Button(
+                GlassButton(
                     enabled = !submitting,
                     onClick = {
-                        if (submitting) return@Button
+                        if (submitting) return@GlassButton
                         scope.launch {
                             submitting = true
                             receiptError = null

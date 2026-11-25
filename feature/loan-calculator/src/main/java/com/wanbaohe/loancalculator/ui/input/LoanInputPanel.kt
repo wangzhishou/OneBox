@@ -162,6 +162,7 @@ fun LoanInputPanel(
             onClick = { viewModel.calculate() },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             ),
             shape = MaterialTheme.shapes.extraLarge,
         ) {

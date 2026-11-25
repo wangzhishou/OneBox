@@ -34,7 +34,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
-import androidx.compose.material3.Button
+import com.wanbaohe.core.ui.widget.glass.GlassButton
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -158,7 +158,7 @@ fun ScanCodeContent(
                         Text(text = stringResource(R.string.open_latest_result))
                     }
                 }
-                Button(
+                GlassButton(
                     onClick = {
                         scanner.scan(contextActivity = activity)
                     },

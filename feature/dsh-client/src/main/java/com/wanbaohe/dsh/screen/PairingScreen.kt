@@ -42,7 +42,7 @@ import androidx.compose.material.icons.outlined.QrCodeScanner
 import androidx.compose.material.icons.outlined.Smartphone
 import androidx.compose.material.icons.outlined.Verified
 import androidx.compose.material.icons.outlined.WarningAmber
-import androidx.compose.material3.Button
+import com.wanbaohe.core.ui.widget.glass.GlassButton
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -239,7 +239,7 @@ private fun UrlStep(
 
     PairingErrorText(state.error)
 
-    Button(
+    GlassButton(
         onClick = { manager.start() },
         enabled = !state.busy,
         modifier = Modifier.fillMaxWidth()

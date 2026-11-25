@@ -31,7 +31,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Flag
 import androidx.compose.material3.AssistChip
-import androidx.compose.material3.Button
+import com.wanbaohe.core.ui.widget.glass.GlassButton
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -238,7 +238,7 @@ private fun GoalEditorDialog(
             }
         },
         confirmButton = {
-            Button(
+            GlassButton(
                 onClick = { onSubmit(objective.trim(), maxRounds.toIntOrNull()) },
                 enabled = objective.isNotBlank()
             ) {

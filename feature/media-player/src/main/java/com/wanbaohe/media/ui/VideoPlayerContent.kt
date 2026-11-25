@@ -43,7 +43,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import com.wanbaohe.core.ui.widget.glass.GlassButton
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -379,7 +379,7 @@ private fun PlaybackErrorOverlay(onRetry: () -> Unit) {
             color = Color.White,
             textAlign = TextAlign.Center,
         )
-        Button(onClick = onRetry) {
+        GlassButton(onClick = onRetry) {
             Text(text = stringResource(R.string.media_retry))
         }
     }
@@ -405,7 +405,7 @@ private fun EmptyStage(onAddFile: (() -> Unit)? = null) {
         )
         if (onAddFile != null) {
             Spacer(modifier = Modifier.height(14.dp))
-            Button(onClick = onAddFile) {
+            GlassButton(onClick = onAddFile) {
                 Text(text = stringResource(R.string.media_add))
             }
         }

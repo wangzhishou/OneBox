@@ -30,7 +30,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
+import com.wanbaohe.core.ui.widget.glass.GlassButton
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -205,7 +205,7 @@ fun AiEngineTestDialog(
             }
         },
         confirmButton = {
-            Button(
+            GlassButton(
                 onClick = {
                     if (testResult?.success == true) {
                         onApiTestSuccess(aiEngine)

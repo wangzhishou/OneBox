@@ -38,7 +38,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import com.wanbaohe.core.ui.widget.glass.GlassButton
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -427,7 +427,7 @@ fun EmptyMediaState(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Button(
+        GlassButton(
             onClick = onAdd,
             enabled = !isLoading,
         ) {

@@ -30,7 +30,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import com.wanbaohe.core.ui.widget.glass.GlassButton
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -246,7 +246,7 @@ private fun InlineVideoError(
             color = Color.White,
             style = MaterialTheme.typography.bodyMedium,
         )
-        Button(
+        GlassButton(
             onClick = onRetry,
             modifier = Modifier.padding(top = 8.dp),
         ) {

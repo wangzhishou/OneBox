@@ -35,7 +35,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material3.Button
+import com.wanbaohe.core.ui.widget.glass.GlassButton
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -437,7 +437,7 @@ private fun TextInputDialog(
             )
         },
         confirmButton = {
-            Button(onClick = { onConfirm(value) }) {
+            GlassButton(onClick = { onConfirm(value) }) {
                 Text(stringResource(R.string.dsh_confirm))
             }
         },

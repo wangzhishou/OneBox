@@ -37,7 +37,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.Button
+import com.wanbaohe.core.ui.widget.glass.GlassButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -233,7 +233,7 @@ private fun ErrorStateView(
             Spacer(modifier = Modifier.height(32.dp))
 
             // 重试按钮
-            Button(
+            GlassButton(
                 onClick = onReload,
                 modifier = Modifier.padding(8.dp)
             ) {

@@ -64,7 +64,7 @@ import androidx.compose.material.icons.outlined.Timeline
 import androidx.compose.material.icons.outlined.WorkOutline
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
-import androidx.compose.material3.Button
+import com.wanbaohe.core.ui.widget.glass.GlassButton
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.DropdownMenuItem
@@ -860,7 +860,7 @@ private fun RenameSessionDialog(
             )
         },
         confirmButton = {
-            Button(
+            GlassButton(
                 onClick = { onConfirm(title.trim()) },
                 enabled = title.isNotBlank()
             ) {
@@ -1470,7 +1470,7 @@ private fun CreateWorkspaceDialog(
             )
         },
         confirmButton = {
-            Button(
+            GlassButton(
                 onClick = { onConfirm(path.trim()) },
                 enabled = path.isNotBlank()
             ) {
@@ -1507,7 +1507,7 @@ private fun RenameWorkspaceDialog(
             )
         },
         confirmButton = {
-            Button(
+            GlassButton(
                 onClick = { onConfirm(title.trim()) },
                 enabled = title.isNotBlank()
             ) {
@@ -1535,7 +1535,7 @@ private fun DeleteWorkspaceDialog(
         title = { Text(stringResource(R.string.dsh_workspace_delete_title, target.title)) },
         text = { Text(stringResource(R.string.dsh_workspace_delete_detail)) },
         confirmButton = {
-            Button(onClick = onConfirm) {
+            GlassButton(onClick = onConfirm) {
                 Text(stringResource(R.string.dsh_workspace_delete))
             }
         },

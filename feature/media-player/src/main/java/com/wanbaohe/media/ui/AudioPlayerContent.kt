@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.background
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.min
+import com.wanbaohe.core.ui.widget.glass.GlassButton
 import com.wanbaohe.media.R
 import com.wanbaohe.media.component.MediaPlayerComponent
 import com.wanbaohe.media.component.MediaPlayerUiState
@@ -272,7 +273,7 @@ private fun EmptyAudioPlayer(
             textAlign = TextAlign.Center,
         )
         Spacer(modifier = Modifier.height(16.dp))
-        androidx.compose.material3.Button(onClick = onAddFile) {
+        GlassButton(onClick = onAddFile) {
             Text(text = stringResource(R.string.media_add))
         }
     }

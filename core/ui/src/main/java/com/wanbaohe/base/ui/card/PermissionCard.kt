@@ -128,7 +128,8 @@ fun AllFilesAccessPermissionCard(
                             checkPermissionLauncher.launch(context.manageAppAllFilesIntent())
                         },
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primaryContainer
+                            containerColor = MaterialTheme.colorScheme.primaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                         )
                     ) {
                         Text(
