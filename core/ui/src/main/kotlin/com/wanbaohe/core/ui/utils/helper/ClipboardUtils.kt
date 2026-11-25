@@ -31,95 +31,25 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.net.Uri
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.ClipEntry
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.getSystemService
-import com.shifenmiao.model.channel.FlavorType
-import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.wanbaohe.core.ui.utils.helper.ContextUtils.isFromAppFileProvider
 import com.wanbaohe.core.ui.utils.helper.ContextUtils.moveToCache
 
 @Composable
-fun rememberClipboardData(): State<List<Uri>> {
-    val settingsState = LocalSettingsState.current
-    val allowPaste = settingsState.allowAutoClipboardPaste
-
+fun rememberClipboardImageReader(): () -> List<Uri> {
     val context = LocalContext.current
     val clipboardManager = remember(context) {
         context.getSystemService<ClipboardManager>()
     }
-
-    // 只在进入页面时读一次,之后靠剪贴板变化监听更新;
-    // 重组(滚动/动画等)不得重复读系统剪贴板,否则会被判定超频次收集。
-    // 国内渠道连"进页面读一次"也不做: 应用商店/隐私合规按"未见告知即采集剪贴板"判定,
-    // 只保留用户复制内容后的监听更新。海外渠道保留自动识别剪贴板图片的既有体验。
-    val readOnEnter = allowPaste && FlavorType.fromName().isOverseas
-    val clip = remember(readOnEnter) {
-        mutableStateOf(
-            if (readOnEnter) {
-                clipboardManager.clipList()
-            } else emptyList()
-        )
-    }
-
-    val callback = remember {
-        ClipboardManager.OnPrimaryClipChangedListener {
-            if (allowPaste) {
-                clip.value = clipboardManager.clipList()
-            }
+    return remember(clipboardManager) {
+        {
+            // 不进入页面读取、不监听变化,只在用户明确触发时读取一次。
+            clipboardManager.clipList()
         }
     }
-    DisposableEffect(clipboardManager, allowPaste) {
-        if (allowPaste) {
-            clipboardManager?.addPrimaryClipChangedListener(callback)
-        }
-        onDispose {
-            clipboardManager?.removePrimaryClipChangedListener(callback)
-        }
-    }
-    return clip
-}
-
-@Composable
-fun rememberClipboardText(): State<String> {
-    val settingsState = LocalSettingsState.current
-    val allowPaste = settingsState.allowAutoClipboardPaste
-
-    val context = LocalContext.current
-    val clipboardManager = remember(context) {
-        context.getSystemService<ClipboardManager>()
-    }
-
-    // 同 rememberClipboardData:国内渠道不自动读,海外进入页面读一次 + 监听更新
-    val readOnEnter = allowPaste && FlavorType.fromName().isOverseas
-    val clip = remember(readOnEnter) {
-        mutableStateOf(
-            if (readOnEnter) {
-                clipboardManager.clipText()
-            } else ""
-        )
-    }
-
-    val callback = remember {
-        ClipboardManager.OnPrimaryClipChangedListener {
-            if (allowPaste) {
-                clip.value = clipboardManager.clipText()
-            }
-        }
-    }
-    DisposableEffect(clipboardManager, allowPaste) {
-        if (allowPaste) {
-            clipboardManager?.addPrimaryClipChangedListener(callback)
-        }
-        onDispose {
-            clipboardManager?.removePrimaryClipChangedListener(callback)
-        }
-    }
-    return clip
 }
 
 fun ClipboardManager?.clipList(): List<Uri> = runCatching {

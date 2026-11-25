@@ -84,7 +84,8 @@ import com.wanbaohe.core.ui.utils.content_pickers.ImagePickerMode
 import com.wanbaohe.core.ui.utils.content_pickers.Picker
 import com.wanbaohe.core.ui.utils.content_pickers.rememberImagePicker
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
-import com.wanbaohe.core.ui.utils.helper.rememberClipboardData
+import com.t8rin.imagetoolbox.core.utils.getString
+import com.wanbaohe.core.ui.utils.helper.rememberClipboardImageReader
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedIconButton
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassCard
@@ -115,7 +116,7 @@ fun MarkupHomeContent(
         mode = ImagePickerMode.CameraCapture,
         onSuccess = { uris -> uris.firstOrNull()?.let(setImage) }
     )
-    val clipboardUris by rememberClipboardData()
+    val readClipboardImages = rememberClipboardImageReader()
     var showBlankCanvasSheet by rememberSaveable { mutableStateOf(false) }
     val canvasBudget = remember { ImageMemoryBudget() }
 
@@ -174,13 +175,23 @@ fun MarkupHomeContent(
                                     label = stringResource(R.string.markup_entry_camera),
                                     onClick = cameraPicker::pickImage
                                 )
-                                if (clipboardUris.isNotEmpty()) {
-                                    ImportEntry(
-                                        icon = Icons.Rounded.ContentPaste,
-                                        label = stringResource(R.string.markup_entry_paste),
-                                        onClick = { clipboardUris.firstOrNull()?.let(setImage) }
-                                    )
-                                }
+                                ImportEntry(
+                                    icon = Icons.Rounded.ContentPaste,
+                                    label = stringResource(R.string.markup_entry_paste),
+                                    onClick = {
+                                        val uri = readClipboardImages().firstOrNull()
+                                        if (uri != null) {
+                                            setImage(uri)
+                                        } else {
+                                            AppToastHost.showFailureToast(
+                                                getString(
+                                                    com.t8rin.imagetoolbox.core.resources.R.string
+                                                        .clipboard_paste_invalid_empty
+                                                )
+                                            )
+                                        }
+                                    }
+                                )
                                 ImportEntry(
                                     icon = Icons.Outlined.NoteAdd,
                                     label = stringResource(R.string.markup_entry_blank_canvas),

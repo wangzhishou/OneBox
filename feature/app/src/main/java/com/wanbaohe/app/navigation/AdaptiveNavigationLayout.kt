@@ -63,6 +63,7 @@ import com.wanbaohe.core.ui.widget.enhanced.OverlayScrimAlpha
 import com.wanbaohe.core.ui.widget.enhanced.behindCreatePanel
 import com.wanbaohe.core.ui.widget.enhanced.isOverlayGlassAvailable
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
@@ -451,7 +452,9 @@ private fun NavigationContent(
     // Hide robot when navigating away from NewApp screen.
     // Must be in LaunchedEffect — side effects are forbidden during Composition.
 
+    val focusManager = LocalFocusManager.current
     LaunchedEffect(currentScreen.simpleName) {
+        focusManager.clearFocus()
         if (currentScreen.simpleName != Screen.NewApp().simpleName) {
             appComponent.toggleRobotVisibility(false)
         }
