@@ -100,6 +100,7 @@ import com.shifenmiao.model.state.PageState
 import com.shifenmiao.storage.AIChatStorage
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineStop
+import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.glassBackground
@@ -254,6 +255,9 @@ fun NewChatInput(
     }
 
     if (showUnavailableEngineDialog) {
+        val engine = conversation.value.engine
+        val isOverseas = FlavorType.fromName().isOverseas
+        val modelName = engine.model.title.ifBlank { engine.model.name }
         EnhancedAlertDialog(
             visible = true,
             onDismissRequest = { showUnavailableEngineDialog = false },
@@ -263,27 +267,42 @@ fun NewChatInput(
             text = {
                 Text(
                     text = stringResource(
-                        if (FlavorType.fromName().isOverseas) {
+                        if (isOverseas) {
                             R.string.ai_chat_engine_unavailable_dialog_message_overseas
                         } else {
                             R.string.ai_chat_engine_unavailable_dialog_message
-                        }
+                        },
+                        modelName
                     )
                 )
             },
             confirmButton = {
                 OnePrimaryButton(
-                    text = stringResource(R.string.ai_chat_engine_unavailable_banner_action),
+                    text = stringResource(
+                        if (isOverseas) {
+                            R.string.ai_chat_engine_unavailable_configure_token
+                        } else {
+                            R.string.ai_chat_engine_unavailable_configure_connection
+                        }
+                    ),
                     onClick = {
                         showUnavailableEngineDialog = false
-                        appComponent.showAIChatSettings()
+                        appComponent.showAIChatSettings(
+                            Screen.AISettings.Type.EngineDetail(
+                                engineName = engine.name,
+                                requestProtocol = engine.requestProtocol.name,
+                            )
+                        )
                     }
                 )
             },
             dismissButton = {
                 OneSecondaryButton(
-                    text = stringResource(R.string.cancel),
-                    onClick = { showUnavailableEngineDialog = false }
+                    text = stringResource(R.string.ai_chat_engine_unavailable_switch_model),
+                    onClick = {
+                        showUnavailableEngineDialog = false
+                        chatInputComponent.showModelPicker()
+                    }
                 )
             }
         )

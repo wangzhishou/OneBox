@@ -58,6 +58,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.ai.a2ui.LocalA2uiRenderProvider
 import com.shifenmiao.ai.a2ui.LocalA2uiSubmitHandler
@@ -88,6 +89,7 @@ import com.shifenmiao.common.ui.ai.AIModelsPickerBottomSheet
 import com.shifenmiao.common.ui.rememberMarkdownCodeActions
 import com.shifenmiao.core.R
 import com.shifenmiao.model.ai.AIConversationEntryType
+import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.database.chat_prompt.entity.PromptEntity
 import com.shifenmiao.model.ai.resolveChatMode
@@ -104,13 +106,15 @@ import com.wanbaohe.core.ui.utils.helper.scrollToContentStart
 import com.wanbaohe.core.ui.utils.navigation.LocalOnNavigate
 import com.wanbaohe.core.ui.utils.navigation.Screen
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
+import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
 import com.wanbaohe.markdown.LocalMarkdownSelectionGroup
 import com.wanbaohe.markdown.MarkdownSelectionGroup
 import com.t8rin.imagetoolbox.core.utils.getString
 import kotlinx.coroutines.launch
 import java.util.Date
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineInfo
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineSettingsSuggest
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineKey
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRadioChecked
 
 @Composable
@@ -323,11 +327,20 @@ fun ChatContent(
         ) {
             if (!isEditorHistory && !currentAIEngine.hasAvailableChatRoute()) {
                 UnavailableEngineBanner(
+                    engine = currentAIEngine,
                     modifier = Modifier.padding(
                         horizontal = AppTheme.dimens.pageHorizontal,
                         vertical = 8.dp
                     ),
-                    onClick = { appComponent.showAIChatSettings() }
+                    onSwitchModel = chatInputComponent::showModelPicker,
+                    onConfigure = {
+                        appComponent.showAIChatSettings(
+                            Screen.AISettings.Type.EngineDetail(
+                                engineName = currentAIEngine.name,
+                                requestProtocol = currentAIEngine.requestProtocol.name,
+                            )
+                        )
+                    }
                 )
             }
             ChatMessagesList(
@@ -611,49 +624,72 @@ fun ChatMessagesList(
 
 @Composable
 private fun UnavailableEngineBanner(
+    engine: AiEngine,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit,
+    onSwitchModel: () -> Unit,
+    onConfigure: () -> Unit,
 ) {
+    val isOverseas = FlavorType.fromName().isOverseas
+    val modelName = engine.model.title.ifBlank { engine.model.name }
+    val providerName = engine.title.ifBlank { engine.name }
     GlassSurface(
-        onClick = onClick,
         modifier = modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.medium,
+        shape = MaterialTheme.shapes.large,
         color = MaterialTheme.colorScheme.errorContainer,
-        contentColor = MaterialTheme.colorScheme.onErrorContainer,
     ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
+        Column(
+            modifier = Modifier.padding(AppTheme.dimens.cardContentPadding),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSettingsSuggest,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onErrorContainer,
-            )
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = stringResource(R.string.ai_chat_engine_unavailable_banner_title),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.onErrorContainer,
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineKey,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onErrorContainer,
                 )
-                Text(
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = modelName,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    Text(
+                        text = stringResource(
+                            if (isOverseas) {
+                                R.string.ai_chat_engine_unavailable_banner_desc_overseas
+                            } else {
+                                R.string.ai_chat_engine_unavailable_banner_desc
+                            },
+                            providerName
+                        ),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
+                    )
+                }
+            }
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OneSecondaryButton(
+                    text = stringResource(R.string.ai_chat_engine_unavailable_switch_model),
+                    onClick = onSwitchModel,
+                    modifier = Modifier.weight(1f),
+                )
+                OnePrimaryButton(
                     text = stringResource(
-                        if (FlavorType.fromName().isOverseas) {
-                            R.string.ai_chat_engine_unavailable_banner_desc_overseas
+                        if (isOverseas) {
+                            R.string.ai_chat_engine_unavailable_configure_token
                         } else {
-                            R.string.ai_chat_engine_unavailable_banner_desc
+                            R.string.ai_chat_engine_unavailable_configure_connection
                         }
                     ),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.92f),
+                    onClick = onConfigure,
+                    modifier = Modifier.weight(1f),
                 )
             }
-            Text(
-                text = stringResource(R.string.ai_chat_engine_unavailable_banner_action),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onErrorContainer,
-            )
         }
     }
 }

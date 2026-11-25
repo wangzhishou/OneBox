@@ -489,12 +489,12 @@ class AppComponent @AssistedInject internal constructor(
         )
     }
 
-    fun showAIChatSettings() {
+    fun showAIChatSettings(type: Screen.AISettings.Type? = null) {
         _uiState.value = uiState.value.copy(
             initAIChatAndShow = false,
             showAIModelsModalSheet = false,
         )
-        onNavigate(Screen.AISettings())
+        onNavigate(Screen.AISettings(type))
     }
 
     fun getDeviceInfo(): DeviceInfo? {
