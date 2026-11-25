@@ -442,6 +442,7 @@ fun RobotMessageFooter(
     val noteScope = rememberCoroutineScope()
     AnimatedVisibility(
         visible = isShowBar,
+        modifier = Modifier.padding(bottom = if (isShowBar) 24.dp else 0.dp),
         enter = fadeIn(animationSpec = tween(200)),
         exit = fadeOut(animationSpec = tween(200))
     ) {
@@ -492,7 +493,6 @@ fun RobotMessageFooter(
                 null
             },
         )
-        Spacer(modifier = Modifier.height(4.dp))
     }
 
     if (showAiContentReport) {
