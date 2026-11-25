@@ -1,0 +1,2 @@
+• Kullanıcı deneyiminde sürekli iyileştirmeler.
+• Geliştirilmiş Markdown ve kod düzenleyiciler.
