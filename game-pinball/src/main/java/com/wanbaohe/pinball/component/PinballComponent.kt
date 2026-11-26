@@ -13,6 +13,8 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 
 class PinballComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
@@ -41,6 +43,9 @@ class PinballComponent @AssistedInject internal constructor(
                 level = snapshot.integers[5],
                 phase = phase,
                 comboProgress = snapshot.floats[0].coerceIn(0f, 1f),
+                ballCount = snapshot.integers[6].coerceAtLeast(1),
+                enlargedBallCount = snapshot.integers[7],
+                enlargeSeconds = snapshot.floats[1].coerceAtLeast(0f),
             )
             if (updated == current) current else updated
         }
@@ -54,6 +59,18 @@ class PinballComponent @AssistedInject internal constructor(
 
     fun restart() = engineController.dispatch(EngineCommands.RESET)
 
+    fun updateTheme(colors: PinballThemeColors) {
+        val payload = ByteBuffer.allocate(THEME_PAYLOAD_BYTES).order(ByteOrder.LITTLE_ENDIAN).apply {
+            putInt(colors.surface)
+            putInt(colors.primary)
+            putInt(colors.secondary)
+            putInt(colors.tertiary)
+            putInt(colors.outline)
+            putInt(colors.onSurface)
+        }
+        engineController.dispatch(GAME_COMMAND_THEME, payload.array())
+    }
+
     @AssistedFactory
     interface Factory {
         operator fun invoke(
@@ -64,5 +81,7 @@ class PinballComponent @AssistedInject internal constructor(
 
     private companion object {
         const val GAME_ID = "pinball"
+        const val GAME_COMMAND_THEME = 257
+        const val THEME_PAYLOAD_BYTES = 24
     }
 }

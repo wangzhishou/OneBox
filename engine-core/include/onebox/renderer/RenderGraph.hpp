@@ -22,7 +22,7 @@ struct SdfInstance {
 class RenderBackend {
 public:
     virtual ~RenderBackend() = default;
-    virtual void clear(const Vec2& cameraOffset) = 0;
+    virtual void clear(const Camera2D& camera) = 0;
     virtual void drawSdfBatch(const std::vector<SdfInstance>& instances) = 0;
     virtual void drawParticles(const std::vector<SdfInstance>& instances) = 0;
     virtual void postProcess(bool bloomEnabled) = 0;

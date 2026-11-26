@@ -15,7 +15,7 @@ public:
     bool initialize(int width, int height);
     void resize(int width, int height);
     void destroy();
-    void clear(const Vec2& cameraOffset) override;
+    void clear(const Camera2D& camera) override;
     void drawSdfBatch(const std::vector<SdfInstance>& instances) override;
     void drawParticles(const std::vector<SdfInstance>& instances) override;
     void postProcess(bool bloomEnabled) override;
@@ -49,6 +49,9 @@ private:
     GLuint instanceBuffer_ = 0;
     std::vector<float> instanceData_;
     Vec2 cameraOffset_{};
+    float toneMappingExposure_ = 1.12F;
+    float bloomStrength_ = 1.0F;
+    bool alignWorldToTop_ = false;
 };
 
 }  // namespace onebox::android
