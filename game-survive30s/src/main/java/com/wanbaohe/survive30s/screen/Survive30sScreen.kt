@@ -21,7 +21,6 @@ package com.wanbaohe.survive30s.screen
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -47,7 +46,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -56,15 +54,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.luminance
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
@@ -74,7 +65,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.core.graphics.ColorUtils
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -91,7 +81,10 @@ import com.wanbaohe.survive30s.component.GameState
 import com.wanbaohe.survive30s.component.Survive30sComponent
 import com.wanbaohe.survive30s.component.SurvivalPhase
 import com.wanbaohe.survive30s.component.Survive30sUiState
-import com.wanbaohe.survive30s.engine.Survive30sEngine
+import com.wanbaohe.survive30s.component.SURVIVE_GAME_DURATION
+import com.wanbaohe.engine.android.EngineController
+import com.wanbaohe.engine.android.EngineSnapshot
+import com.wanbaohe.engine.android.surface.GameSurface
 // 下面这几个图标导入不能删：Icons.Rounded.ArrowBack / Icons.Outlined.Refresh /
 // Icons.Outlined.LinePlay 是这些文件提供的扩展属性，删掉后全限定名调用会解析失败
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
@@ -143,10 +136,9 @@ fun Survive30sScreen(
     var dragTargetX by remember { mutableStateOf(Float.NaN) }
     var dragTargetY by remember { mutableStateOf(Float.NaN) }
 
-    // 退后台自动暂停：游戏主循环跑在 componentScope，不感知 Activity 生命周期，
+    // 退后台自动暂停：原生游戏线程不感知 Activity 生命周期，
     // 不拦的话后台计时照走，回来直接判胜（还能白嫖通关积分）。
-    // 监听 ON_PAUSE 而不是 ON_STOP：onPause→onStop 之间有几十毫秒窗口，
-    // 这期间主循环还会跑几十帧，玩家没操作就撞死了。游戏类 App 在 onPause 就暂停是惯例。
+    // 监听 ON_PAUSE 而不是 ON_STOP，尽早停掉物理更新和计时。
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
@@ -176,6 +168,8 @@ fun Survive30sScreen(
         backgroundImage = {
             GameStage(
                 state = state,
+                controller = component.engineController,
+                onSnapshot = component::updateSnapshot,
                 onCanvasSizeChanged = { w, h -> component.updateCanvasSize(w, h) },
                 modifier = Modifier
                     .fillMaxSize()
@@ -197,9 +191,9 @@ fun Survive30sScreen(
                         ) { change, dragAmount ->
                             change.consume()
                             val newX =
-                                (dragTargetX.takeIf { !it.isNaN() } ?: state.player.x) + dragAmount.x
+                                (dragTargetX.takeIf { !it.isNaN() } ?: 0f) + dragAmount.x
                             val newY =
-                                (dragTargetY.takeIf { !it.isNaN() } ?: state.player.y) + dragAmount.y
+                                (dragTargetY.takeIf { !it.isNaN() } ?: 0f) + dragAmount.y
                             dragTargetX = newX
                             dragTargetY = newY
                             component.movePlayerTo(newX, newY)
@@ -282,8 +276,8 @@ private fun GameStatusPanel(
     state: Survive30sUiState,
     modifier: Modifier = Modifier,
 ) {
-    val progress = (state.elapsedSec / Survive30sEngine.GAME_DURATION).coerceIn(0f, 1f)
-    val remaining = (Survive30sEngine.GAME_DURATION - state.elapsedSec).coerceAtLeast(0f)
+    val progress = (state.elapsedSec / SURVIVE_GAME_DURATION).coerceIn(0f, 1f)
+    val remaining = (SURVIVE_GAME_DURATION - state.elapsedSec).coerceAtLeast(0f)
     val timerColor = timerColorFor(progress)
 
     Column(
@@ -459,23 +453,21 @@ private val TOP_SCRIM_HEIGHT = 104.dp
 @Composable
 private fun GameStage(
     state: Survive30sUiState,
+    controller: EngineController,
+    onSnapshot: (EngineSnapshot) -> Unit,
     onCanvasSizeChanged: (Float, Float) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scrimColor = MaterialTheme.colorScheme.surface
 
-    // 不铺实色底：全局的 MeshGradientBackground(自定义背景图 / mesh 渐变 / surface 色)
-    // 在 BaseScreen 底下本来就有，这里再画一层不透明 background 色会把它整个盖掉，
-    // 导致用户设置了背景图或渐变主题时游戏页完全不生效。画布直接透明叠在上面。
-    Box(modifier = modifier) {
-        GameCanvas(
-            state = state,
-            onCanvasSizeChanged = onCanvasSizeChanged,
+    Box(modifier = modifier.onSizeChanged { size ->
+        onCanvasSizeChanged(size.width.toFloat(), size.height.toFloat())
+    }) {
+        GameSurface(
+            controller = controller,
             modifier = Modifier.fillMaxSize(),
+            onSnapshot = onSnapshot,
         )
-        // 顶部渐变遮罩：保证标题栏上的倒计时在杂乱画面上依然可读。
-        // 只在游戏进行时铺——准备好了页面不压背景，暂停/结算页有自己的整屏遮罩。
-        // 这里只有 background，没有 pointerInput，不拦截任何触摸。
         if (state.gameState == GameState.PLAYING) {
             Box(
                 modifier = Modifier
@@ -494,300 +486,6 @@ private fun GameStage(
             )
         }
     }
-}
-
-// ─── 游戏画布 ──────────────────────────────────────────────────────────────────
-
-@Composable
-private fun GameCanvas(
-    state: Survive30sUiState,
-    onCanvasSizeChanged: (Float, Float) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val playerPalette = rememberPlayerPalette()
-    val dangerColor = MaterialTheme.colorScheme.onErrorContainer
-
-    Canvas(
-        modifier = modifier
-            .onSizeChanged { size ->
-                onCanvasSizeChanged(size.width.toFloat(), size.height.toFloat())
-            }
-    ) {
-        val player = state.player
-
-        // ── 绘制背景网格（轻微视觉参考线） ──
-        drawGrid(size)
-        drawDangerOverlay(
-            size = size,
-            dangerLevel = state.dangerLevel,
-            color = dangerColor,
-        )
-
-        // ── 绘制障碍物 ──
-        state.obstacles.forEach { obs ->
-            drawObstacle(obs)
-        }
-
-        // ── 绘制玩家 ──
-        if (player.radius > 0f) {
-            drawPlayer(
-                player = player,
-                invincibleSec = state.invincibleSec,
-                elapsedSec = state.elapsedSec,
-                palette = playerPalette,
-            )
-        }
-    }
-}
-
-/** 绘制淡色参考网格 */
-private fun DrawScope.drawGrid(canvasSize: Size) {
-    val gridColor = Color.White.copy(alpha = 0.04f)
-    val gridSpacing = canvasSize.width / 10f
-    for (i in 1 until 10) {
-        val x = gridSpacing * i
-        drawLine(gridColor, Offset(x, 0f), Offset(x, canvasSize.height), strokeWidth = 1f)
-    }
-    for (i in 1 until 15) {
-        val y = gridSpacing * i
-        if (y < canvasSize.height) {
-            drawLine(gridColor, Offset(0f, y), Offset(canvasSize.width, y), strokeWidth = 1f)
-        }
-    }
-}
-
-/** 障碍物颜色方案 */
-private val OBSTACLE_COLORS = listOf(
-    Color(0xFFEF5350), // 红
-    Color(0xFFFF7043), // 橙
-    Color(0xFFEC407A), // 粉
-    Color(0xFFAB47BC), // 紫
-    Color(0xFFFFCA28), // 黄
-    Color(0xFF26C6DA), // 青
-)
-
-@Immutable
-private data class PlayerPalette(
-    val sweepColors: List<Color>,
-    val glowColor: Color,
-    val highlightColor: Color,
-    val rimColor: Color,
-    val shadowColor: Color,
-    val invincibleColors: List<Color>,
-)
-
-@Composable
-private fun rememberPlayerPalette(): PlayerPalette {
-    val colorScheme = MaterialTheme.colorScheme
-
-    return remember(
-        colorScheme.onPrimaryContainer,
-        colorScheme.onSecondaryContainer,
-        colorScheme.onTertiaryContainer,
-        colorScheme.primaryContainer,
-        colorScheme.secondaryContainer,
-        colorScheme.tertiaryContainer,
-        colorScheme.surface,
-        colorScheme.background,
-        colorScheme.onSurface,
-        colorScheme.onPrimaryContainer,
-        colorScheme.inversePrimary,
-    ) {
-        val isDarkTheme = colorScheme.background.luminance() < 0.5f
-        val anchors = listOf(
-            colorScheme.onPrimaryContainer,
-            colorScheme.onSecondaryContainer,
-            colorScheme.onTertiaryContainer,
-            colorScheme.primaryContainer,
-            colorScheme.tertiaryContainer,
-        )
-        val surfaceLink = if (isDarkTheme) {
-            blendColors(colorScheme.surface, colorScheme.onSurface, 0.08f)
-        } else {
-            blendColors(colorScheme.surface, colorScheme.background, 0.55f)
-        }
-        val themedSpectrum = anchors.mapIndexed { index, color ->
-            val linked = blendColors(
-                start = color,
-                end = anchors[(index + 1) % anchors.size],
-                ratio = 0.24f + index * 0.04f,
-            )
-            val surfaceBalanced = blendColors(
-                start = linked,
-                end = surfaceLink,
-                ratio = if (isDarkTheme) 0.18f else 0.12f,
-            )
-
-            if (isDarkTheme) {
-                blendColors(surfaceBalanced, Color.White, 0.10f)
-            } else {
-                blendColors(surfaceBalanced, Color.Black, 0.06f)
-            }
-        }
-        val seamColor = blendColors(themedSpectrum.first(), themedSpectrum.last(), 0.5f)
-
-        PlayerPalette(
-            sweepColors = themedSpectrum + seamColor,
-            glowColor = blendColors(themedSpectrum[0], themedSpectrum[2], 0.5f).copy(
-                alpha = if (isDarkTheme) 0.42f else 0.30f,
-            ),
-            highlightColor = blendColors(
-                colorScheme.onPrimaryContainer,
-                Color.White,
-                if (isDarkTheme) 0.35f else 0.58f,
-            ).copy(alpha = 0.96f),
-            rimColor = blendColors(
-                colorScheme.onSurface,
-                colorScheme.onPrimaryContainer,
-                if (isDarkTheme) 0.36f else 0.24f,
-            ).copy(alpha = 0.82f),
-            shadowColor = blendColors(
-                colorScheme.surface,
-                colorScheme.onSurface,
-                if (isDarkTheme) 0.18f else 0.10f,
-            ).copy(alpha = if (isDarkTheme) 0.24f else 0.16f),
-            invincibleColors = listOf(
-                blendColors(colorScheme.inversePrimary, colorScheme.onSecondaryContainer, 0.35f),
-                blendColors(colorScheme.onTertiaryContainer, colorScheme.primaryContainer, 0.42f),
-                blendColors(colorScheme.secondaryContainer, colorScheme.onPrimaryContainer, 0.36f),
-                blendColors(colorScheme.inversePrimary, colorScheme.onSecondaryContainer, 0.35f),
-            ),
-        )
-    }
-}
-
-private fun blendColors(
-    start: Color,
-    end: Color,
-    ratio: Float,
-): Color = Color(
-    ColorUtils.blendARGB(start.toArgb(), end.toArgb(), ratio.coerceIn(0f, 1f))
-)
-
-/** 绘制障碍物：渐变圆 + 外发光 */
-private fun DrawScope.drawObstacle(obs: com.wanbaohe.survive30s.engine.Obstacle) {
-    val baseColor = OBSTACLE_COLORS[obs.colorIndex % OBSTACLE_COLORS.size]
-
-    // 外发光
-    drawCircle(
-        brush = Brush.radialGradient(
-            colors = listOf(baseColor.copy(alpha = 0.3f), Color.Transparent),
-            center = Offset(obs.x, obs.y),
-            radius = obs.radius * 1.8f,
-        ),
-        radius = obs.radius * 1.8f,
-        center = Offset(obs.x, obs.y),
-    )
-
-    // 主体
-    drawCircle(
-        brush = Brush.radialGradient(
-            colors = listOf(baseColor.copy(alpha = 0.95f), baseColor.copy(alpha = 0.6f)),
-            center = Offset(obs.x - obs.radius * 0.3f, obs.y - obs.radius * 0.3f),
-            radius = obs.radius,
-        ),
-        radius = obs.radius,
-        center = Offset(obs.x, obs.y),
-    )
-}
-
-/** 绘制玩家：光晕 + 实心圆 + 边框 */
-private fun DrawScope.drawPlayer(
-    player: com.wanbaohe.survive30s.engine.Player,
-    invincibleSec: Float,
-    elapsedSec: Float,
-    palette: PlayerPalette,
-) {
-    val center = Offset(player.x, player.y)
-    val rotation = (elapsedSec * 54f) % 360f
-
-    // 光晕
-    drawCircle(
-        brush = Brush.radialGradient(
-            colors = listOf(palette.glowColor, Color.Transparent),
-            center = center,
-            radius = player.radius * 2.5f,
-        ),
-        radius = player.radius * 2.5f,
-        center = center,
-    )
-
-    rotate(degrees = rotation, pivot = center) {
-        drawCircle(
-            brush = Brush.sweepGradient(
-                colors = palette.sweepColors,
-                center = center,
-            ),
-            radius = player.radius,
-            center = center,
-        )
-    }
-
-    drawCircle(
-        brush = Brush.radialGradient(
-            colors = listOf(palette.highlightColor, Color.Transparent),
-            center = Offset(
-                x = player.x - player.radius * 0.42f,
-                y = player.y - player.radius * 0.48f,
-            ),
-            radius = player.radius * 1.05f,
-        ),
-        radius = player.radius * 0.96f,
-        center = center,
-    )
-
-    drawCircle(
-        brush = Brush.radialGradient(
-            colors = listOf(Color.Transparent, palette.shadowColor),
-            center = Offset(
-                x = player.x + player.radius * 0.58f,
-                y = player.y + player.radius * 0.65f,
-            ),
-            radius = player.radius * 1.35f,
-        ),
-        radius = player.radius,
-        center = center,
-    )
-
-    // 边框
-    drawCircle(
-        color = palette.rimColor,
-        radius = player.radius,
-        center = center,
-        style = Stroke(width = 2.dp.toPx()),
-    )
-
-    if (invincibleSec > 0f) {
-        rotate(degrees = -rotation * 0.75f, pivot = center) {
-            drawCircle(
-                brush = Brush.sweepGradient(
-                    colors = palette.invincibleColors,
-                    center = center,
-                ),
-                radius = player.radius * 1.55f,
-                center = center,
-                style = Stroke(width = 3.dp.toPx()),
-            )
-        }
-    }
-}
-
-private fun DrawScope.drawDangerOverlay(
-    size: Size,
-    dangerLevel: Float,
-    color: Color,
-) {
-    if (dangerLevel <= 0f) return
-
-    drawRect(
-        brush = Brush.verticalGradient(
-            colors = listOf(
-                Color.Transparent,
-                color.copy(alpha = 0.08f * dangerLevel),
-            )
-        ),
-        size = size,
-    )
 }
 
 // ─── 覆盖层组件 ────────────────────────────────────────────────────────────────
