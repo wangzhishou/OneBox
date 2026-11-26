@@ -138,7 +138,7 @@ dependencies {
     implementation(projects.feature.chess)
     implementation(projects.feature.teleprompter)
     implementation(projects.feature.aiDetect)
-    implementation(projects.feature.survive30s)
+    implementation(projects.gameSurvive30s)
     implementation(projects.feature.visualAutomation)
     implementation(projects.feature.passwordVault)
     implementation(projects.feature.blessingWall)

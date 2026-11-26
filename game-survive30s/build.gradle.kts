@@ -27,6 +27,7 @@ plugins {
 android.namespace = "com.wanbaohe.survive30s"
 
 dependencies {
+    api(projects.engineAndroid)
     implementation(libs.androidxCore)
     implementation(libs.appCompat)
 
