@@ -74,6 +74,7 @@ import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.core.ui.widget.glass.GlassTonalIconButton
 import com.wanbaohe.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.widget.glass.softTonalContainer
 
 @Composable
 fun HomeEmptyState(
@@ -194,7 +195,7 @@ fun CreateChoiceCard(
                 icon = Icons.Outlined.Edit,
                 title = manualLabel,
                 onClick = onManualCreate,
-                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                containerColor = softTonalContainer(MaterialTheme.colorScheme.tertiaryContainer),
                 contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
             )
             if (showAiCreate) {
@@ -202,7 +203,7 @@ fun CreateChoiceCard(
                     icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiChat,
                     title = aiLabel,
                     onClick = onAiCreate,
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    containerColor = softTonalContainer(MaterialTheme.colorScheme.secondaryContainer),
                     contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                 )
             }

@@ -48,6 +48,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.core.ui.widget.glass.glassThin
+import com.wanbaohe.core.ui.widget.glass.softTonalContainer
 
 data class EmptyStateGuideAction(
     val icon: ImageVector,
@@ -129,11 +130,14 @@ fun EmptyStateGuide(
                         val useTertiary = actionIndex % 2 == 0
                         EmptyStateActionButton(
                             action = action,
-                            containerColor = if (useTertiary) {
-                                MaterialTheme.colorScheme.tertiaryContainer
-                            } else {
-                                MaterialTheme.colorScheme.secondaryContainer
-                            },
+                            // 实色容器在浅色主题下会压成一块色板,摊薄后再交给玻璃管线
+                            containerColor = softTonalContainer(
+                                if (useTertiary) {
+                                    MaterialTheme.colorScheme.tertiaryContainer
+                                } else {
+                                    MaterialTheme.colorScheme.secondaryContainer
+                                }
+                            ),
                             contentColor = if (useTertiary) {
                                 MaterialTheme.colorScheme.onTertiaryContainer
                             } else {
