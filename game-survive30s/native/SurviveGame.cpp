@@ -19,6 +19,19 @@ float readFloat(const Command& command, std::size_t offset) {
     return value;
 }
 
+std::array<float, 4> readColor(const Command& command, std::size_t offset) {
+    std::uint32_t argb = 0;
+    if (command.payloadSize >= offset + sizeof(argb)) {
+        std::memcpy(&argb, command.payload.data() + offset, sizeof(argb));
+    }
+    return {
+        static_cast<float>((argb >> 16U) & 0xFFU) / 255.0F,
+        static_cast<float>((argb >> 8U) & 0xFFU) / 255.0F,
+        static_cast<float>(argb & 0xFFU) / 255.0F,
+        static_cast<float>((argb >> 24U) & 0xFFU) / 255.0F,
+    };
+}
+
 Entity addBox(
     EngineContext& context,
     Vec2 position,
@@ -66,6 +79,16 @@ void SurviveGame::onStart(EngineContext& context) {
 void SurviveGame::onCommand(EngineContext& context, const Command& command) {
     auto* gameState = state(context);
     if (!gameState) return;
+    if (command.type == kGameCommandTheme) {
+        gameState->palette.background = readColor(command, 0);
+        gameState->palette.primary = readColor(command, 4);
+        gameState->palette.secondary = readColor(command, 8);
+        gameState->palette.tertiary = readColor(command, 12);
+        gameState->palette.outline = readColor(command, 16);
+        gameState->palette.player = readColor(command, 20);
+        applyPalette(context);
+        return;
+    }
     const auto type = static_cast<CommonCommand>(command.type);
     if (type == CommonCommand::PointerDown || type == CommonCommand::PointerMove) {
         gameState->playerTarget = {
@@ -97,37 +120,45 @@ void SurviveGame::onDetach(EngineContext& context) {
 }
 
 void SurviveGame::buildWorld(EngineContext& context, GamePhase phase) {
+    SurvivePalette palette;
+    if (const auto* current = state(context)) palette = current->palette;
     auto& registry = context.registry();
     registry.clear();
     context.events().clear();
 
-    for (int index = 1; index < 10; ++index) {
-        addBox(context, {index * 72.0F, 640.0F}, {1.0F, 1280.0F}, {1.0F, 1.0F, 1.0F, 0.04F});
-    }
-    for (int index = 1; index < 18; ++index) {
-        addBox(context, {360.0F, index * 72.0F}, {720.0F, 1.0F}, {1.0F, 1.0F, 1.0F, 0.04F});
-    }
-
     const Entity stateEntity = registry.create();
     auto& gameState = registry.add<SurviveState>(stateEntity);
     gameState.phase = phase;
+    gameState.palette = palette;
+    registry.add<Camera2D>(stateEntity);
     std::random_device randomDevice;
     gameState.randomState = randomDevice() | 1U;
+
+    for (int index = 1; index < 10; ++index) {
+        const Entity line = addBox(context, {index * 72.0F, 640.0F}, {1.0F, 1280.0F}, palette.outline);
+        registry.add<GridLine>(line);
+    }
+    for (int index = 1; index < 18; ++index) {
+        const Entity line = addBox(context, {360.0F, index * 72.0F}, {720.0F, 1.0F}, palette.outline);
+        registry.add<GridLine>(line);
+    }
 
     const Entity danger = registry.create();
     registry.add<Transform>(danger).position = {360.0F, 640.0F};
     auto& dangerRender = registry.add<GlowRender>(danger);
     dangerRender.shape = SdfShape::RoundedBox;
     dangerRender.size = {720.0F, 1280.0F};
-    dangerRender.color = {1.0F, 0.12F, 0.16F, 0.0F};
+    dangerRender.color = palette.secondary;
+    dangerRender.color[3] = 0.0F;
     gameState.dangerOverlay = danger;
 
     const Entity ring = registry.create();
     registry.add<Transform>(ring).position = gameState.playerTarget;
     auto& ringRender = registry.add<GlowRender>(ring);
     ringRender.size = {kPlayerRadius * 3.1F, kPlayerRadius * 3.1F};
-    ringRender.color = {0.55F, 0.45F, 1.0F, 0.0F};
-    ringRender.emissive = 1.5F;
+    ringRender.color = palette.tertiary;
+    ringRender.color[3] = 0.0F;
+    ringRender.emissive = 0.12F;
     gameState.shieldRing = ring;
 
     const Entity player = registry.create();
@@ -144,9 +175,10 @@ void SurviveGame::buildWorld(EngineContext& context, GamePhase phase) {
     collider.sensor = true;
     auto& render = registry.add<GlowRender>(player);
     render.size = {kPlayerRadius * 2.0F, kPlayerRadius * 2.0F};
-    render.color = {0.35F, 0.9F, 1.0F, 1.0F};
-    render.emissive = 1.8F;
+    render.color = palette.player;
+    render.emissive = 0.12F;
     gameState.player = player;
+    applyPalette(context);
 }
 
 }  // namespace onebox::survive30s

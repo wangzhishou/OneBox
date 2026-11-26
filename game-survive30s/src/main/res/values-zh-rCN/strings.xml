@@ -45,7 +45,11 @@
     <string name="survive_30s_danger_medium">危险正在逼近，准备变向。</string>
     <string name="survive_30s_danger_high">高危！利用近身闪避抢能量，或立刻脱离包围。</string>
     <string name="survive_30s_back">返回</string>
+    <string name="survive_30s_remaining">剩余时间</string>
+    <string name="survive_30s_shield_count">护盾 ×%1$d</string>
+    <string name="survive_30s_invincible">护盾生效 · %.1fs</string>
+    <string name="survive_30s_pause">暂停</string>
     <string name="survive_30s_paused">已暂停</string>
-    <string name="survive_30s_pause_desc">切到后台已自动暂停，进度还在，随时继续。</string>
+    <string name="survive_30s_pause_desc">本局已冻结，进度保留，随时继续。</string>
     <string name="survive_30s_resume">继续</string>
 </resources>

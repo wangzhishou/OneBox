@@ -45,7 +45,11 @@
     <string name="survive_30s_danger_medium">Pressure is building. Be ready to cut across.</string>
     <string name="survive_30s_danger_high">Danger! Farm charge with close dodges or break out immediately.</string>
     <string name="survive_30s_back">Back</string>
+    <string name="survive_30s_remaining">Time left</string>
+    <string name="survive_30s_shield_count">Shield ×%1$d</string>
+    <string name="survive_30s_invincible">Shield active · %.1fs</string>
+    <string name="survive_30s_pause">Pause</string>
     <string name="survive_30s_paused">Paused</string>
-    <string name="survive_30s_pause_desc">Auto-paused in background. Your progress is safe.</string>
+    <string name="survive_30s_pause_desc">Your run is frozen. Your progress is safe.</string>
     <string name="survive_30s_resume">Resume</string>
 </resources>

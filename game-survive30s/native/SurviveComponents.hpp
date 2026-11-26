@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <cstdint>
 
 #include "onebox/ecs/Registry.hpp"
@@ -19,6 +20,15 @@ enum SoundCode : std::uint32_t {
     SoundShieldGain = 4,
     SoundPhaseChange = 5,
     SoundWin = 6,
+};
+
+struct SurvivePalette {
+    std::array<float, 4> background{0.035F, 0.12F, 0.14F, 1.0F};
+    std::array<float, 4> primary{0.05F, 0.65F, 0.72F, 0.96F};
+    std::array<float, 4> secondary{1.0F, 0.35F, 0.22F, 0.96F};
+    std::array<float, 4> tertiary{1.0F, 0.85F, 0.15F, 0.96F};
+    std::array<float, 4> outline{0.55F, 0.63F, 0.63F, 0.12F};
+    std::array<float, 4> player{0.95F, 0.98F, 1.0F, 1.0F};
 };
 
 struct SurviveState {
@@ -41,9 +51,11 @@ struct SurviveState {
     std::uint32_t hapticSequence = 0;
     float hapticStrength = 0.0F;
     std::uint32_t randomState = 1;
+    SurvivePalette palette{};
 };
 
 struct Player {};
+struct GridLine {};
 struct Obstacle {
     ObstacleType type = ObstacleType::TopFall;
     std::uint32_t colorIndex = 0;

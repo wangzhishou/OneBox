@@ -8,14 +8,13 @@
 namespace onebox::survive30s {
 namespace {
 
-constexpr std::array<std::array<float, 4>, 6> kObstacleColors{{
-    {0.94F, 0.33F, 0.31F, 0.95F},
-    {1.0F, 0.44F, 0.26F, 0.95F},
-    {0.93F, 0.25F, 0.48F, 0.95F},
-    {0.67F, 0.28F, 0.74F, 0.95F},
-    {1.0F, 0.79F, 0.16F, 0.95F},
-    {0.15F, 0.78F, 0.85F, 0.95F},
-}};
+std::array<float, 4> obstacleColor(const SurvivePalette& palette, std::uint32_t colorIndex) {
+    switch (colorIndex % 3U) {
+        case 0: return palette.primary;
+        case 1: return palette.secondary;
+        default: return palette.tertiary;
+    }
+}
 
 float difficultyFactor(const SurviveState& state) {
     return std::clamp(state.elapsedSeconds / kGameDuration, 0.0F, 1.0F);
@@ -71,8 +70,8 @@ Entity spawnObstacle(
     registry.add<Obstacle>(entity) = {type, colorIndex, false};
     auto& render = registry.add<GlowRender>(entity);
     render.size = {radius * 2.0F, radius * 2.0F};
-    render.color = kObstacleColors[colorIndex];
-    render.emissive = 0.85F;
+    render.color = obstacleColor(gameState.palette, colorIndex);
+    render.emissive = 0.12F;
     return entity;
 }
 
@@ -134,6 +133,47 @@ void clearNearbyObstacles(EngineContext& context) {
 SurviveState* state(EngineContext& context) {
     auto& states = context.registry().pool<SurviveState>();
     return states.empty() ? nullptr : &states.front();
+}
+
+void applyPalette(EngineContext& context) {
+    const auto* gameState = state(context);
+    if (!gameState) return;
+    auto& registry = context.registry();
+    const auto& palette = gameState->palette;
+    for (const Entity entity : registry.pool<GridLine>().entities()) {
+        if (auto* render = registry.get<GlowRender>(entity)) {
+            render->color = palette.outline;
+            render->color[3] = 0.08F;
+        }
+    }
+    for (const Entity entity : registry.pool<Obstacle>().entities()) {
+        const auto* obstacle = registry.get<Obstacle>(entity);
+        if (auto* render = registry.get<GlowRender>(entity); render && obstacle) {
+            render->color = obstacleColor(palette, obstacle->colorIndex);
+        }
+    }
+    if (auto* render = registry.get<GlowRender>(gameState->player)) {
+        render->color = palette.player;
+        render->emissive = 0.12F;
+    }
+    if (auto* render = registry.get<GlowRender>(gameState->shieldRing)) {
+        const float alpha = render->color[3];
+        render->color = palette.tertiary;
+        render->color[3] = alpha;
+        render->emissive = 0.12F;
+    }
+    if (auto* render = registry.get<GlowRender>(gameState->dangerOverlay)) {
+        const float alpha = render->color[3];
+        render->color = palette.secondary;
+        render->color[3] = alpha;
+    }
+    for (auto& camera : registry.pool<Camera2D>().values()) {
+        camera.clearColor = palette.background;
+        camera.toneMappingExposure = 0.0F;
+        camera.bloomStrength = 0.0F;
+        camera.additiveBlending = false;
+        camera.alignWorldToTop = true;
+    }
 }
 
 float random(SurviveState& state, float minimum, float maximum) {

@@ -38,3 +38,12 @@ enum class GameState {
     GAME_OVER,
     WIN,
 }
+
+data class SurviveThemeColors(
+    val surface: Int,
+    val primary: Int,
+    val secondary: Int,
+    val tertiary: Int,
+    val outline: Int,
+    val onSurface: Int,
+)

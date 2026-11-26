@@ -28,6 +28,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 
 class Survive30sComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
@@ -89,6 +91,18 @@ class Survive30sComponent @AssistedInject internal constructor(
             normalizedX = (x / state.canvasWidth).coerceIn(0f, 1f),
             normalizedY = (y / state.canvasHeight).coerceIn(0f, 1f),
         )
+    }
+
+    fun updateTheme(colors: SurviveThemeColors) {
+        val payload = ByteBuffer.allocate(THEME_PAYLOAD_BYTES).order(ByteOrder.LITTLE_ENDIAN).apply {
+            putInt(colors.surface)
+            putInt(colors.primary)
+            putInt(colors.secondary)
+            putInt(colors.tertiary)
+            putInt(colors.outline)
+            putInt(colors.onSurface)
+        }
+        engineController.dispatch(GAME_COMMAND_THEME, payload.array())
     }
 
     fun updateSnapshot(snapshot: EngineSnapshot) {
@@ -176,6 +190,8 @@ class Survive30sComponent @AssistedInject internal constructor(
 
     companion object {
         private const val GAME_ID = "survive30s"
+        private const val GAME_COMMAND_THEME = 257
+        private const val THEME_PAYLOAD_BYTES = 24
         private const val SOUND_BASE = "https://images.oneboxable.com/audio/survive30s"
         private const val SOUND_BGM = "$SOUND_BASE/bgm.ogg"
         private const val SOUND_GAME_OVER = "$SOUND_BASE/game_over.ogg"
