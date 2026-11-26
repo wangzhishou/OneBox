@@ -73,7 +73,7 @@ fun GlassSwitch(
     style: GlassStyle = GlassStyle.Regular,
     shape: Shape = RoundedCornerShape(50),
     checkedGlassColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    uncheckedGlassColor: Color = MaterialTheme.colorScheme.surfaceContainer,
+    uncheckedGlassColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
     glassBorderWidth: Dp = 0.9.dp,
 ) {
     val settingsState = LocalSettingsState.current
