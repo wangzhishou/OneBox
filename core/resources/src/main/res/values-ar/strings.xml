@@ -2097,7 +2097,9 @@
     <string name="image_palette">ألوان الصورة</string>
     <string name="image_palette_save_all">حفظ كلوحة ألوان</string>
     <string name="pick_color_recent_hint">ستظهر الألوان التي تختارها هنا</string>
+    <string name="palette_add_count_of_total">إضافة %1$d من %2$d لونًا</string>
     <string name="palette_added_count">تمت إضافة %1$d لونًا</string>
+    <string name="palette_added_count_of_total">تمت إضافة %1$d من %2$d لونًا</string>
     <string name="palette_already_contains">يحتوي هذه الألوان بالفعل</string>
     <string name="redo">إعادة التنفيذ</string>
     <string name="watermark_style">النمط</string>

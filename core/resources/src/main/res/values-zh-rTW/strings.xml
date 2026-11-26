@@ -2093,7 +2093,9 @@
     <string name="image_palette">圖片配色</string>
     <string name="image_palette_save_all">存為調色盤</string>
     <string name="pick_color_recent_hint">取過的顏色會出現在這裡</string>
+    <string name="palette_add_count_of_total">加入 %1$d/%2$d 個顏色</string>
     <string name="palette_added_count">已加入 %1$d 個顏色</string>
+    <string name="palette_added_count_of_total">已加入 %1$d/%2$d 個顏色</string>
     <string name="palette_already_contains">已包含這些顏色</string>
     <string name="default_palette">預設調色盤</string>
     <string name="redo">取消復原</string>

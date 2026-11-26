@@ -2096,7 +2096,9 @@
     <string name="image_palette">Görsel renkleri</string>
     <string name="image_palette_save_all">Palet olarak kaydet</string>
     <string name="pick_color_recent_hint">Seçtiğiniz renkler burada görünecek</string>
+    <string name="palette_add_count_of_total">%2$d renkten %1$d tanesini ekle</string>
     <string name="palette_added_count">%1$d renk eklendi</string>
+    <string name="palette_added_count_of_total">%2$d renkten %1$d tanesi eklendi</string>
     <string name="palette_already_contains">Bu renkler zaten var</string>
     <string name="redo">Yinele</string>
     <string name="watermark_style">Stil</string>

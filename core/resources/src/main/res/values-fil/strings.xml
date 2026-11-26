@@ -2097,7 +2097,9 @@
     <string name="image_palette">Mga kulay ng larawan</string>
     <string name="image_palette_save_all">I-save bilang palette</string>
     <string name="pick_color_recent_hint">Lalabas dito ang mga kulay na pipiliin mo</string>
+    <string name="palette_add_count_of_total">Magdagdag ng %1$d sa %2$d kulay</string>
     <string name="palette_added_count">Naidagdag ang %1$d kulay</string>
+    <string name="palette_added_count_of_total">Nagdagdag ng %1$d sa %2$d kulay</string>
     <string name="palette_already_contains">Nasa palette na ang mga kulay na ito</string>
     <string name="redo">I-redo</string>
     <string name="watermark_style">Estilo</string>

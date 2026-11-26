@@ -2097,7 +2097,9 @@
     <string name="image_palette">Warna gambar</string>
     <string name="image_palette_save_all">Simpan sebagai palet</string>
     <string name="pick_color_recent_hint">Warna yang Anda pilih akan muncul di sini</string>
+    <string name="palette_add_count_of_total">Tambahkan %1$d dari %2$d warna</string>
     <string name="palette_added_count">%1$d warna ditambahkan</string>
+    <string name="palette_added_count_of_total">%1$d dari %2$d warna ditambahkan</string>
     <string name="palette_already_contains">Sudah berisi warna ini</string>
     <string name="redo">Ulangi</string>
     <string name="watermark_style">Gaya</string>
