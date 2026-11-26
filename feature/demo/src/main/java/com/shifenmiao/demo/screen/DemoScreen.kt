@@ -69,6 +69,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineBookkeeping
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCalculate
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCalendar
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCasino
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePinball
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCheckCircleOutline
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCloudStorage
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDashboardCustomize
@@ -776,6 +777,7 @@ private fun demoNavigationEntries(): List<DemoNavigationEntry> = listOf(
     DemoNavigationEntry("时光里程碑", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic) { Screen.LifeTime },
     DemoNavigationEntry("主题设置", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTheme) { Screen.ThemeSettings },
     DemoNavigationEntry("撑30秒赚积分", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCasino) { Screen.Survive30s },
+    DemoNavigationEntry(getString(R.string.pinball_screen_title), com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePinball) { Screen.Pinball },
     DemoNavigationEntry("广告看看看", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCasino) { Screen.AdWatch },
     DemoNavigationEntry("浏览器", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTravelExplore) { Screen.WebBrowser() },
     DemoNavigationEntry("测量工具", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSquareFoot) { Screen.MeasurementTools },

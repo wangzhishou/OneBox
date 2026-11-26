@@ -73,6 +73,7 @@ import com.wanbaohe.speedtest.component.SpeedTestComponent
 import com.wanbaohe.fileviewer.component.FileViewerComponent
 import com.wanbaohe.media.component.MediaPlayerComponent
 import com.wanbaohe.survive30s.component.Survive30sComponent
+import com.wanbaohe.pinball.component.PinballComponent
 import com.wanbaohe.teleprompter.component.TeleprompterComponent
 import com.wanbaohe.aidetect.component.AiDetectComponent
 import com.wanbaohe.unitconverter.component.UnitConverterComponent
@@ -133,6 +134,7 @@ class LifeNavigationFactories @Inject constructor(
     val fileViewerComponentFactory: FileViewerComponent.Factory,
     val mediaPlayerComponentFactory: MediaPlayerComponent.Factory,
     val survive30sComponentFactory: Survive30sComponent.Factory,
+    val pinballComponentFactory: PinballComponent.Factory,
     val browserComponentFactory: BrowserComponent.Factory,
     val dataSyncComponentFactory: com.shifenmiao.common.export.DataSyncComponent.Factory,
     val backupCenterComponentFactory: com.shifenmiao.common.backup.BackupCenterComponent.Factory,

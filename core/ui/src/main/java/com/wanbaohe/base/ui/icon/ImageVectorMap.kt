@@ -127,6 +127,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineSingleEdit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSlideshow
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSpeedTest
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSurvive30s
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePinball
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSvgMaker
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTeleprompter
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTheme
@@ -400,6 +401,7 @@ object IconRegistry {
         "IChingDivination" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.TaijiBagua },
         "Game2048" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineGame2048 },
         "Survive30s" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSurvive30s },
+        "Pinball" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePinball },
         "WebBrowser" to { com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Language },
         "CodeEditor" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCodeEditor },
         "CloudStorage" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCloudStorage },

@@ -472,6 +472,7 @@ private fun LineIconsPreview() {
         "Summer" to Icons.Outlined.LineSummer,
         "Sunny" to Icons.Outlined.LineSunny,
         "Survive30s" to Icons.Outlined.LineSurvive30s,
+        "Pinball" to Icons.Outlined.LinePinball,
         "SvgMaker" to Icons.Outlined.LineSvgMaker,
         "SwapHoriz" to Icons.Outlined.LineSwapHoriz,
         "SwapVert" to Icons.Outlined.LineSwapVert,

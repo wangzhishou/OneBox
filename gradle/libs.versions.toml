@@ -6,6 +6,8 @@ androidCompileSdk = "37"
 androidCompileSdkMinor = "2"
 # NDK 版本单一来源:app 模块与 feature:xiangqi 的端侧引擎构建任务都引用它
 androidNdk = "30.0.16248370"
+oboe = "1.11.2"
+gamesFramePacing = "2.1.3"
 
 eddsa = "0.3.0"
 nanohttpd = "2.3.1"
@@ -127,6 +129,8 @@ hrmLatex = "1.8.0"
 hrmMarkdown = "1.7.3"
 hrmCodehigh = "1.3.0"
 [libraries]
+oboe = { module = "com.google.oboe:oboe", version.ref = "oboe" }
+games-frame-pacing = { module = "androidx.games:games-frame-pacing", version.ref = "gamesFramePacing" }
 hrm-markdown-parser = { module = "io.github.huarangmeng:markdown-parser", version.ref = "hrmMarkdown" }
 hrm-markdown-runtime = { module = "io.github.huarangmeng:markdown-runtime", version.ref = "hrmMarkdown" }
 hrm-diagram-core = { module = "io.github.huarangmeng:diagram-core", version.ref = "hrmDiagram" }
