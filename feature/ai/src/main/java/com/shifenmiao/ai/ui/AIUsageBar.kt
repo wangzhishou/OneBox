@@ -70,8 +70,11 @@ fun AIUsageBar(
 
     Row(
         modifier = modifier.padding(
-            horizontal = AppTheme.dimens.paddingNormal,
-            vertical = AppTheme.dimens.paddingSmall
+            start = AppTheme.dimens.paddingNormal,
+            end = AppTheme.dimens.paddingNormal,
+            // 图标行上下留出呼吸空间，底部比顶部再松一档，避免贴着卡片圆角
+            top = AppTheme.dimens.paddingSmall + AppTheme.dimens.paddingExtraSmall,
+            bottom = AppTheme.dimens.paddingNormal + AppTheme.dimens.paddingExtraSmall,
         ),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically

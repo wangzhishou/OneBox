@@ -52,13 +52,14 @@ import com.wanbaohe.core.ui.utils.helper.ProvidesValue
  * - 背景颜色根据 [checked] 状态自动选择 [checkedGlassColor] / [uncheckedGlassColor]
  * - 取消最小交互尺寸限制，使玻璃背景与 Switch 实际 track 区域（52×32 dp）对齐
  *
- * 开启时滑块里放对勾。关闭态保留轨道描边，禁用时不画描边。
+ * 开启时滑块里放对勾。只有打开的开关保留一圈玻璃描边；关闭态靠一层薄玻璃底托住 thumb，
+ * 不再画灰色硬边框，和分段按钮、玻璃卡片的未选中态口径一致。
  *
  * @param style              毛玻璃浓度等级，默认 [GlassStyle.Regular]
  * @param shape              玻璃背景形状，默认全圆角胶囊
  * @param checkedGlassColor  选中时的玻璃底色
  * @param uncheckedGlassColor 未选中时的玻璃底色
- * @param glassBorderWidth   启用时的玻璃描边宽度；禁用时固定为 0
+ * @param glassBorderWidth   打开且可用时的玻璃描边宽度；关闭和禁用时固定为 0
  */
 @Composable
 fun GlassSwitch(
@@ -72,7 +73,7 @@ fun GlassSwitch(
     style: GlassStyle = GlassStyle.Regular,
     shape: Shape = RoundedCornerShape(50),
     checkedGlassColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    uncheckedGlassColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
+    uncheckedGlassColor: Color = MaterialTheme.colorScheme.surfaceContainer,
     glassBorderWidth: Dp = 0.9.dp,
 ) {
     val settingsState = LocalSettingsState.current
@@ -87,15 +88,19 @@ fun GlassSwitch(
             )
         }
     }
-    // 关闭态保留轨道边界，避免滑块在浅色或深色背景上显得孤立。
-    val resolvedBorderWidth = if (enabled) glassBorderWidth else 0.dp
+    // 描边只留给打开的开关；关闭态用薄玻璃底代替硬边框，跟分段按钮/卡片一致。
+    val resolvedBorderWidth = if (enabled && checked) glassBorderWidth else 0.dp
+    val checkedTrackAlpha = glassSelectionBackgroundAlpha(style, selected = true)
+    // 没有边框后关闭态底色要略厚一点，否则 thumb 看着像悬空
+    val uncheckedTrackAlpha = (glassSelectionBackgroundAlpha(style, selected = false) + 0.05f)
+        .coerceAtMost(1f)
     val usesDefaultTrackColors = colors.checkedTrackColor == MaterialTheme.colorScheme.primaryContainer &&
         colors.uncheckedTrackColor == MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.75f)
     val checkedTrackColor = if (usesDefaultTrackColors) {
         flatGlassContainerColor(
             color = checkedGlassColor,
             style = style,
-            backgroundAlpha = glassSelectionBackgroundAlpha(style, selected = true),
+            backgroundAlpha = checkedTrackAlpha,
         )
     } else {
         colors.checkedTrackColor
@@ -104,7 +109,7 @@ fun GlassSwitch(
         flatGlassContainerColor(
             color = uncheckedGlassColor,
             style = style,
-            backgroundAlpha = glassSelectionBackgroundAlpha(style, selected = false),
+            backgroundAlpha = uncheckedTrackAlpha,
         )
     } else {
         colors.uncheckedTrackColor
@@ -118,7 +123,7 @@ fun GlassSwitch(
         checkedIconColor = colors.checkedIconColor,
         uncheckedThumbColor = colors.uncheckedThumbColor,
         uncheckedTrackColor = uncheckedTrackColor,
-        uncheckedBorderColor = colors.uncheckedBorderColor,
+        uncheckedBorderColor = Color.Transparent,
         uncheckedIconColor = colors.uncheckedIconColor,
         disabledCheckedThumbColor = colors.disabledCheckedThumbColor,
         disabledCheckedTrackColor = colors.disabledCheckedTrackColor,
@@ -170,9 +175,9 @@ fun GlassSwitch(
         Switch(
             checked = checked,
             onCheckedChange = onCheckedChange,
-            modifier = modifier.glassSelectionBackground(
-                selected = checked,
+            modifier = modifier.glassControlStyle(
                 style = style,
+                backgroundAlpha = if (checked) checkedTrackAlpha else uncheckedTrackAlpha,
                 shape = shape,
                 color = glassColor,
                 borderWidth = resolvedBorderWidth,
