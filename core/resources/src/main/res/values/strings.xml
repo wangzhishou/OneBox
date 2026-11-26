@@ -2114,7 +2114,9 @@
     <string name="image_palette">Image colors</string>
     <string name="image_palette_save_all">Save as palette</string>
     <string name="pick_color_recent_hint">Colors you pick will show up here</string>
+    <string name="palette_add_count_of_total">Add %1$d of %2$d colors</string>
     <string name="palette_added_count">Added %1$d colors</string>
+    <string name="palette_added_count_of_total">Added %1$d of %2$d colors</string>
     <string name="palette_already_contains">Already has these colors</string>
     <string name="default_palette">Default palette</string>
     <string name="redo">Redo</string>

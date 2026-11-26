@@ -2097,7 +2097,9 @@
     <string name="image_palette">Màu trong ảnh</string>
     <string name="image_palette_save_all">Lưu thành bảng màu</string>
     <string name="pick_color_recent_hint">Màu bạn chọn sẽ xuất hiện ở đây</string>
+    <string name="palette_add_count_of_total">Thêm %1$d trong %2$d màu</string>
     <string name="palette_added_count">Đã thêm %1$d màu</string>
+    <string name="palette_added_count_of_total">Đã thêm %1$d trong %2$d màu</string>
     <string name="palette_already_contains">Đã chứa các màu này</string>
     <string name="redo">Làm lại</string>
     <string name="watermark_style">Kiểu</string>

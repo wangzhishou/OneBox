@@ -21,12 +21,19 @@ package com.t8rin.imagetoolbox.feature.pick_color.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,16 +47,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.smarttoolfactory.colordetector.rememberImageColorPaletteState
+import com.t8rin.imagetoolbox.core.domain.model.ColorPalette
+import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.R
+import com.t8rin.imagetoolbox.core.resources.icons.PaletteSwatch
 import com.wanbaohe.core.ui.utils.helper.Clipboard
 import com.wanbaohe.core.ui.utils.helper.toHex
 import com.wanbaohe.core.ui.widget.color_picker.AddToPaletteSheet
 import com.wanbaohe.core.ui.widget.color_picker.LargeColorBlock
-import com.wanbaohe.core.ui.widget.enhanced.hapticsClickable
+import com.wanbaohe.core.ui.widget.glass.GlassButton
 import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 
@@ -60,7 +69,7 @@ import com.wanbaohe.core.ui.widget.glass.GlassStyle
  * - 长按色块：复制色值；
  * - 「整组存为调色板」：一次把这组颜色写进某组调色板。
  *
- * 量化用组件里预缩到 ~180px 的小图，主线程只做 25k 像素，不会卡。
+ * 量化用组件里预缩到 ~180px 的小图，完整配色结果通过横向列表展示。
  */
 @Composable
 internal fun PickColorImagePalette(
@@ -70,13 +79,12 @@ internal fun PickColorImagePalette(
 ) {
     val paletteState = rememberImageColorPaletteState(
         imageBitmap = paletteSource,
-        maximumColorCount = 6
+        maximumColorCount = ColorPalette.MAX_COLORS
     )
     val colors = remember(paletteState.paletteData) {
         paletteState.paletteData
             .map { it.colorData.color.toArgb() }
             .distinct()
-            .take(6)
     }
 
     if (colors.isEmpty()) return
@@ -109,23 +117,30 @@ internal fun PickColorImagePalette(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                Text(
-                    text = stringResource(R.string.image_palette_save_all),
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.primary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .hapticsClickable { showAddSheet = true }
-                        .padding(horizontal = 6.dp, vertical = 4.dp)
-                )
+                GlassButton(
+                    onClick = { showAddSheet = true },
+                    modifier = Modifier.height(48.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    contentPadding = PaddingValues(horizontal = 12.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.PaletteSwatch,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = stringResource(R.string.image_palette_save_all),
+                        style = MaterialTheme.typography.labelLarge,
+                        maxLines = 1
+                    )
+                }
             }
-            Row(
+            LazyRow(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                colors.forEach { argb ->
+                items(colors, key = { it }) { argb ->
                     val color = Color(argb)
                     LargeColorBlock(
                         color = color,
@@ -141,7 +156,7 @@ internal fun PickColorImagePalette(
                         contentPadding = 4.dp,
                         textStyle = MaterialTheme.typography.labelSmall,
                         modifier = Modifier
-                            .weight(1f)
+                            .width(72.dp)
                             .height(48.dp)
                     )
                 }

@@ -2114,7 +2114,9 @@
     <string name="image_palette">图片配色</string>
     <string name="image_palette_save_all">存为调色板</string>
     <string name="pick_color_recent_hint">取过的颜色会出现在这里</string>
+    <string name="palette_add_count_of_total">加入 %1$d/%2$d 个颜色</string>
     <string name="palette_added_count">已加入 %1$d 个颜色</string>
+    <string name="palette_added_count_of_total">已加入 %1$d/%2$d 个颜色</string>
     <string name="palette_already_contains">已包含这些颜色</string>
     <string name="default_palette">默认调色板</string>
     <string name="redo">重做</string>

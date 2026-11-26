@@ -43,6 +43,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -75,6 +76,7 @@ import com.wanbaohe.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.core.ui.widget.system.OneBoxListItem
 import com.wanbaohe.core.ui.widget.system.OnePrimaryButton
 import com.wanbaohe.core.ui.widget.system.OneSecondaryButton
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import java.util.UUID
 
@@ -114,6 +116,14 @@ fun AddToPaletteSheet(
     val effectivePaletteId = pendingPaletteId ?: settingsState.selectedPaletteId
     val selectedPalette = palettes.firstOrNull { it.id == effectivePaletteId }
         ?: palettes.firstOrNull()
+    val selectedMissingCount = selectedPalette?.let { palette ->
+        distinctColors.count { !palette.contains(it) }
+    } ?: 0
+    val selectedAddCount = minOf(
+        selectedMissingCount,
+        (ColorPalette.MAX_COLORS - (selectedPalette?.colors?.size ?: 0)).coerceAtLeast(0)
+    )
+    var isSaving by remember { mutableStateOf(false) }
 
     LaunchedEffect(settingsState.selectedPaletteId, pendingPaletteId) {
         if (pendingPaletteId == settingsState.selectedPaletteId) {
@@ -121,44 +131,85 @@ fun AddToPaletteSheet(
         }
     }
 
-    fun persist(updated: List<ColorPalette>) {
-        scope.launch {
-            interactor.setCustomPalettes(updated.take(ColorPalette.MAX_PALETTES))
-        }
-    }
-
     fun rememberSelection(id: String?) {
+        if (isSaving) return
         pendingPaletteId = id
         scope.launch {
             interactor.setSelectedPaletteId(id)
         }
     }
 
+    fun savePalette(
+        updated: List<ColorPalette>,
+        selectedPaletteId: String,
+        successMessage: String
+    ) {
+        if (isSaving) return
+        scope.launch {
+            isSaving = true
+            try {
+                interactor.setCustomPalettes(updated.take(ColorPalette.MAX_PALETTES))
+                pendingPaletteId = selectedPaletteId
+                interactor.setSelectedPaletteId(selectedPaletteId)
+                AppToastHost.showToast(successMessage)
+                onDismiss()
+            } catch (e: CancellationException) {
+                throw e
+            } catch (_: Exception) {
+                AppToastHost.showToast(R.string.something_went_wrong)
+            } finally {
+                isSaving = false
+            }
+        }
+    }
+
+    fun createPalette() {
+        if (palettes.size >= ColorPalette.MAX_PALETTES) {
+            AppToastHost.showToast(maxPalettesMessage)
+            return
+        }
+        val newPalette = ColorPalette(
+            id = UUID.randomUUID().toString(),
+            name = suggestedPaletteName,
+            colors = distinctColors,
+            updatedAtMillis = System.currentTimeMillis()
+        )
+        savePalette(
+            updated = palettes + newPalette,
+            selectedPaletteId = newPalette.id,
+            successMessage = context.getString(R.string.palette_created)
+        )
+    }
+
     fun addTo(palette: ColorPalette) {
         val missing = distinctColors.filterNot { palette.contains(it) }
+        val addCount = minOf(
+            missing.size,
+            (ColorPalette.MAX_COLORS - palette.colors.size).coerceAtLeast(0)
+        )
         when {
             missing.isEmpty() -> AppToastHost.showToast(R.string.palette_already_exists)
 
-            palette.colors.size >= ColorPalette.MAX_COLORS ->
-                AppToastHost.showToast(fullMessage)
+            addCount == 0 -> AppToastHost.showToast(fullMessage)
 
             else -> {
                 val updated = palette.prependingAll(missing)
-                persist(palettes.map { if (it.id == palette.id) updated else it })
-                rememberSelection(palette.id)
-                if (isGroup) {
-                    AppToastHost.showToast(
-                        context.getString(
-                            R.string.palette_added_count,
-                            updated.colors.size - palette.colors.size
-                        )
+                val successMessage = when {
+                    !isGroup -> context.getString(R.string.palette_added)
+                    addCount < missing.size -> context.getString(
+                        R.string.palette_added_count_of_total,
+                        addCount,
+                        missing.size
                     )
-                } else {
-                    AppToastHost.showToast(R.string.palette_added)
+                    else -> context.getString(R.string.palette_added_count, addCount)
                 }
+                savePalette(
+                    updated = palettes.map { if (it.id == palette.id) updated else it },
+                    selectedPaletteId = palette.id,
+                    successMessage = successMessage
+                )
             }
         }
-        onDismiss()
     }
 
     val confirmBar: (@Composable RowScope.() -> Unit)? = if (palettes.isEmpty()) {
@@ -170,12 +221,21 @@ fun AddToPaletteSheet(
                 onClick = {
                     onDismiss()
                     onNavigate(Screen.ColorTools(initialTab = Screen.ColorTools.TAB_PALETTE))
-                }
+                },
+                enabled = !isSaving
             )
             Spacer(Modifier.width(8.dp))
             OnePrimaryButton(
-                text = stringResource(R.string.ok),
-                enabled = selectedPalette != null,
+                text = if (selectedAddCount in 1 until selectedMissingCount) {
+                    stringResource(
+                        R.string.palette_add_count_of_total,
+                        selectedAddCount,
+                        selectedMissingCount
+                    )
+                } else {
+                    stringResource(R.string.ok)
+                },
+                enabled = !isSaving && selectedAddCount > 0,
                 onClick = { selectedPalette?.let(::addTo) }
             )
         }
@@ -221,29 +281,33 @@ fun AddToPaletteSheet(
                             contentDescription = null
                         )
                     },
-                    onClick = {
-                        val newPalette = ColorPalette(
-                            id = UUID.randomUUID().toString(),
-                            name = suggestedPaletteName,
-                            colors = distinctColors,
-                            updatedAtMillis = System.currentTimeMillis()
-                        )
-                        persist(palettes + newPalette)
-                        rememberSelection(newPalette.id)
-                        AppToastHost.showToast(R.string.palette_created)
-                        onDismiss()
-                    },
+                    onClick = if (isSaving) null else ::createPalette,
                     shape = ShapeDefaults.default
                 )
             } else {
                 palettes.forEach { palette ->
                     val isSelected = palette.id == selectedPalette?.id
                     val alreadyContains = palette.containsAll(distinctColors)
+                    val newColorCount = distinctColors.count { !palette.contains(it) }
+                    val addCount = minOf(
+                        newColorCount,
+                        (ColorPalette.MAX_COLORS - palette.colors.size).coerceAtLeast(0)
+                    )
                     val countText = pluralStringResource(
                         R.plurals.color_count,
                         palette.colors.size,
                         palette.colors.size
                     )
+                    val capacityText = when {
+                        alreadyContains -> stringResource(R.string.palette_already_contains)
+                        addCount == 0 -> fullMessage
+                        addCount < newColorCount -> stringResource(
+                            R.string.palette_add_count_of_total,
+                            addCount,
+                            newColorCount
+                        )
+                        else -> null
+                    }
                     OneBoxListItem(
                         contained = true,
                         selected = isSelected,
@@ -257,13 +321,7 @@ fun AddToPaletteSheet(
                         },
                         subtitle = {
                             Text(
-                                text = if (alreadyContains) {
-                                    "$countText · " + stringResource(
-                                        R.string.palette_already_contains
-                                    )
-                                } else {
-                                    countText
-                                }
+                                text = capacityText?.let { "$countText · $it" } ?: countText
                             )
                         },
                         leadingContent = {
@@ -284,7 +342,11 @@ fun AddToPaletteSheet(
                                 }
                             )
                         },
-                        onClick = { rememberSelection(palette.id) },
+                        onClick = if (isSaving) {
+                            null
+                        } else {
+                            { rememberSelection(palette.id) }
+                        },
                         shape = ShapeDefaults.default
                     )
                 }
@@ -302,21 +364,7 @@ fun AddToPaletteSheet(
                             contentDescription = null
                         )
                     },
-                    onClick = {
-                        if (palettes.size >= ColorPalette.MAX_PALETTES) {
-                            AppToastHost.showToast(maxPalettesMessage)
-                        } else {
-                            val newPalette = ColorPalette(
-                                id = UUID.randomUUID().toString(),
-                                name = suggestedPaletteName,
-                                colors = distinctColors,
-                                updatedAtMillis = System.currentTimeMillis()
-                            )
-                            persist(palettes + newPalette)
-                            AppToastHost.showToast(R.string.palette_created)
-                            onDismiss()
-                        }
-                    },
+                    onClick = if (isSaving) null else ::createPalette,
                     shape = ShapeDefaults.default
                 )
             }

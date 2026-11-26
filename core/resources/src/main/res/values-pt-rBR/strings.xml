@@ -2097,7 +2097,9 @@
     <string name="image_palette">Cores da imagem</string>
     <string name="image_palette_save_all">Salvar como paleta</string>
     <string name="pick_color_recent_hint">As cores que você escolher aparecerão aqui</string>
+    <string name="palette_add_count_of_total">Adicionar %1$d de %2$d cores</string>
     <string name="palette_added_count">%1$d cores adicionadas</string>
+    <string name="palette_added_count_of_total">%1$d de %2$d cores adicionadas</string>
     <string name="palette_already_contains">Já contém estas cores</string>
     <string name="redo">Refazer</string>
     <string name="watermark_style">Estilo</string>

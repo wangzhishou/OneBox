@@ -2097,7 +2097,9 @@
     <string name="image_palette">छवि के रंग</string>
     <string name="image_palette_save_all">पैलेट के रूप में सहेजें</string>
     <string name="pick_color_recent_hint">आपके चुने रंग यहाँ दिखाई देंगे</string>
+    <string name="palette_add_count_of_total">%2$d में से %1$d रंग जोड़ें</string>
     <string name="palette_added_count">%1$d रंग जोड़े गए</string>
+    <string name="palette_added_count_of_total">%2$d में से %1$d रंग जोड़े गए</string>
     <string name="palette_already_contains">ये रंग पहले से मौजूद हैं</string>
     <string name="redo">रीडू</string>
     <string name="watermark_style">शैली</string>
