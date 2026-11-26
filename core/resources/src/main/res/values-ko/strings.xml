@@ -2095,7 +2095,9 @@
     <string name="image_palette">이미지 색상</string>
     <string name="image_palette_save_all">팔레트로 저장</string>
     <string name="pick_color_recent_hint">선택한 색상이 여기에 표시됩니다</string>
+    <string name="palette_add_count_of_total">색상 %2$d개 중 %1$d개 추가</string>
     <string name="palette_added_count">색상 %1$d개를 추가했습니다</string>
+    <string name="palette_added_count_of_total">색상 %2$d개 중 %1$d개를 추가했습니다</string>
     <string name="palette_already_contains">이 색상이 이미 포함됨</string>
     <string name="redo">다시 실행</string>
     <string name="watermark_style">스타일</string>
