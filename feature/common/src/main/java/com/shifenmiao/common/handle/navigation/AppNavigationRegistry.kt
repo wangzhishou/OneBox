@@ -164,6 +164,10 @@ object AppNavigationRegistry {
     private val extraScreenTargets: List<AppNavigationTarget>
         get() = HomeTabKey.entries.map(::homeTabTarget) + listOf(
             staticScreen(
+                screen = Screen.Pinball,
+                aliases = listOf("pinball", "aurora_pinball", "弹球", "极光弹球"),
+            ),
+            staticScreen(
                 screen = Screen.TextCard(),
                 aliases = listOf("textcard", "text_card", "文字卡片", "图文卡片")
             ),

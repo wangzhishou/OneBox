@@ -191,6 +191,7 @@ import com.wanbaohe.setting.router.SettingsRoute
 import com.wanbaohe.setting.router.screenLogic.SettingRouterComponent
 import com.wanbaohe.speedtest.component.SpeedTestComponent
 import com.wanbaohe.survive30s.component.Survive30sComponent
+import com.wanbaohe.pinball.component.PinballComponent
 import com.wanbaohe.teleprompter.component.TeleprompterComponent
 import com.wanbaohe.unitconverter.component.UnitConverterComponent
 import javax.inject.Inject
@@ -1605,6 +1606,13 @@ class ChildProvider @Inject constructor(
                 } else {
                     { navigateTo(Screen.AdWatch) }
                 },
+            )
+        )
+
+        is Screen.Pinball -> NavigationChild.Pinball(
+            lifeFactories.get().pinballComponentFactory(
+                componentContext = componentContext,
+                onGoBack = ::navigateBack,
             )
         )
 

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pinball_title">极光弹球</string>
+    <string name="pinball_score">分数</string>
+    <string name="pinball_best">最佳</string>
+    <string name="pinball_lives">生命</string>
+    <string name="pinball_bricks">砖块</string>
+    <string name="pinball_level">关卡</string>
+    <string name="pinball_combo">连击 ×%1$d</string>
+    <string name="pinball_pause">暂停</string>
+    <string name="pinball_resume">继续</string>
+    <string name="pinball_restart">重新开始</string>
+    <string name="pinball_launch">发射弹球</string>
+    <string name="pinball_next_level">下一关</string>
+    <string name="pinball_ready">点亮极光</string>
+    <string name="pinball_ready_description">在任意位置拖动来控制挡板。发射弹球，连续命中累积连击，清空全部砖块。</string>
+    <string name="pinball_ball_ready">弹球就绪</string>
+    <string name="pinball_ball_ready_description">拖动瞄准，然后发射下一颗弹球。</string>
+    <string name="pinball_paused">已暂停</string>
+    <string name="pinball_paused_description">本局进度已冻结，准备好后继续。</string>
+    <string name="pinball_game_over">游戏结束</string>
+    <string name="pinball_level_complete">区域已清空</string>
+    <string name="pinball_level_complete_description">下一区域有更耐打的砖块和更快的球速。</string>
+    <string name="pinball_score_value">分数：%1$d</string>
+    <string name="pinball_best_value">最佳：%1$d</string>
+    <string name="pinball_back">返回</string>
+</resources>

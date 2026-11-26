@@ -142,6 +142,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineRobot
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSpeedTest
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineStorage
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSurvive30s
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePinball
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSvgMaker
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTeleprompter
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineManageSearch
@@ -381,6 +382,7 @@ internal fun Screen.simpleName(): String = when (this) {
     is Screen.Minesweeper -> "Minesweeper"
     is Screen.Sudoku -> "Sudoku"
     is Screen.Survive30s -> "Survive30s"
+    is Screen.Pinball -> "Pinball"
     is Screen.DisplaySettings -> "DisplaySettings"
     is Screen.StartEntrySettings -> "StartEntrySettings"
     is Screen.ThemeSettings -> "ThemeSettings"
@@ -530,6 +532,7 @@ internal fun Screen.icon(): ImageVector? = when (this) {
     is Screen.GomokuRouter -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineGomoku
     is Screen.ChessRouter -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineChess
     is Screen.Survive30s -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSurvive30s
+    is Screen.Pinball -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePinball
     is Screen.WebBrowser -> com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Language
     is Screen.CodeEditor -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCodeEditor
     is Screen.AIFeatureSettings -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.RobotHappy
@@ -849,6 +852,7 @@ internal object ScreenConstantsImpl : ScreenConstants {
                     Screen.IChingDivination(),
                     Screen.Game2048,
                     Screen.Survive30s,
+                    Screen.Pinball,
                     Screen.WebBrowser(),
                     Screen.CodeEditor(),
                     Screen.CloudStorage(),

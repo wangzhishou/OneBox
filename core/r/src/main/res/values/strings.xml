@@ -1676,6 +1676,8 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
 
     <string name="survive_30s_screen_title">Survive 30 Seconds</string>
     <string name="survive_30s_screen_description">Drag the ball to dodge obstacles. Survive 30 seconds to win!</string>
+    <string name="pinball_screen_title">Aurora Pinball</string>
+    <string name="pinball_screen_description">Launch the glowing ball, chain combos, and clear every brick.</string>
     <string name="web_browser_title">Browser</string>
     <string name="web_browser_description">Built-in web browser with tabs, bookmarks, and history.</string>
 

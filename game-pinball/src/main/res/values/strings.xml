@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pinball_title">Aurora Pinball</string>
+    <string name="pinball_score">Score</string>
+    <string name="pinball_best">Best</string>
+    <string name="pinball_lives">Lives</string>
+    <string name="pinball_bricks">Bricks</string>
+    <string name="pinball_level">Level</string>
+    <string name="pinball_combo">Combo ×%1$d</string>
+    <string name="pinball_pause">Pause</string>
+    <string name="pinball_resume">Resume</string>
+    <string name="pinball_restart">Restart</string>
+    <string name="pinball_launch">Launch ball</string>
+    <string name="pinball_next_level">Next level</string>
+    <string name="pinball_ready">Ready to glow</string>
+    <string name="pinball_ready_description">Drag anywhere to move the paddle. Launch the ball, chain hits for combos, and clear every brick.</string>
+    <string name="pinball_ball_ready">Ball ready</string>
+    <string name="pinball_ball_ready_description">Drag to aim, then launch your next ball.</string>
+    <string name="pinball_paused">Paused</string>
+    <string name="pinball_paused_description">Your run is frozen. Resume when you are ready.</string>
+    <string name="pinball_game_over">Game over</string>
+    <string name="pinball_level_complete">Sector cleared</string>
+    <string name="pinball_level_complete_description">The next sector brings tougher bricks and a faster ball.</string>
+    <string name="pinball_score_value">Score: %1$d</string>
+    <string name="pinball_best_value">Best: %1$d</string>
+    <string name="pinball_back">Back</string>
+</resources>

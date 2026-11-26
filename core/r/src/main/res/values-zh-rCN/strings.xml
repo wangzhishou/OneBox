@@ -1793,6 +1793,8 @@
 
     <string name="survive_30s_screen_title">撑30秒赚积分</string>
     <string name="survive_30s_screen_description">拖动小球躲避障碍，坚持30秒即为胜利！</string>
+    <string name="pinball_screen_title">极光弹球</string>
+    <string name="pinball_screen_description">发射极光弹球，累积连击并清空所有砖块。</string>
     <string name="web_browser_title">浏览器</string>
     <string name="web_browser_description">内置网页浏览器，支持标签页、书签和历史记录</string>
 

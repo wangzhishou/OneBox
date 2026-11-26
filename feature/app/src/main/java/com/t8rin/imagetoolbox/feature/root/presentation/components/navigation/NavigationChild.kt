@@ -260,6 +260,8 @@ import com.shifenmiao.webview.browser.BrowserComponent
 import com.shifenmiao.webview.browser.BrowserScreen
 import com.wanbaohe.survive30s.component.Survive30sComponent
 import com.wanbaohe.survive30s.screen.Survive30sScreen
+import com.wanbaohe.pinball.component.PinballComponent
+import com.wanbaohe.pinball.screen.PinballScreen
 import com.wanbaohe.idphoto.presentation.screen.IdPhotoScreen
 import com.wanbaohe.idphoto.presentation.screenLogic.IdPhotoComponent
 import com.wanbaohe.imageviewer.components.ImageViewerScreen
@@ -1521,6 +1523,15 @@ sealed interface NavigationChild {
         @Composable
         override fun Content() {
             Survive30sScreen(component = component)
+        }
+    }
+
+    class Pinball(
+        val component: PinballComponent
+    ) : NavigationChild {
+        @Composable
+        override fun Content() {
+            PinballScreen(component = component)
         }
     }
 

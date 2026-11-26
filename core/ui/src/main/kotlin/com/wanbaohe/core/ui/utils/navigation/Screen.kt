@@ -2269,6 +2269,14 @@ sealed class Screen(
     )
 
     @Serializable
+    @SerialName("Pinball")
+    data object Pinball : Screen(
+        id = 1100,
+        title = com.shifenmiao.core.R.string.pinball_screen_title,
+        subtitle = com.shifenmiao.core.R.string.pinball_screen_description,
+    )
+
+    @Serializable
     @SerialName("WebBrowser")
     data class WebBrowser(
         val url: String = "",
