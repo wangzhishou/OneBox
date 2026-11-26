@@ -6,61 +6,178 @@
 #include <vector>
 
 namespace onebox::pinball {
+namespace {
+
+void setBallSize(Registry& registry, Entity entity, float radius) {
+    if (auto* collider = registry.get<CircleCollider>(entity)) collider->radius = radius;
+    if (auto* render = registry.get<GlowRender>(entity)) render->size = {radius * 2.0F, radius * 2.0F};
+}
+
+Vec2 rotated(const Vec2& value, float angle) {
+    const float cosine = std::cos(angle);
+    const float sine = std::sin(angle);
+    return {value.x * cosine - value.y * sine, value.x * sine + value.y * cosine};
+}
+
+void splitBall(EngineContext& context, Entity source) {
+    auto& registry = context.registry();
+    const auto* velocity = registry.get<Velocity>(source);
+    const auto* transform = registry.get<Transform>(source);
+    const auto* ball = registry.get<Ball>(source);
+    if (!velocity || !transform || !ball || length(velocity->value) < 0.001F) return;
+
+    auto& balls = registry.pool<Ball>();
+    if (balls.entities().size() >= kMaxBalls) return;
+    const Vec2 position = transform->position;
+    const Vec2 sourceVelocity = velocity->value;
+    const float enlargeSeconds = ball->enlargeSeconds;
+    Vec2 leftVelocity = rotated(sourceVelocity, -0.42F);
+    Vec2 rightVelocity = rotated(sourceVelocity, 0.42F);
+    if (leftVelocity.y > 0.0F) leftVelocity.y = -leftVelocity.y;
+    if (rightVelocity.y > 0.0F) rightVelocity.y = -rightVelocity.y;
+    addBall(context, position, leftVelocity, enlargeSeconds);
+    if (balls.entities().size() < kMaxBalls) {
+        addBall(context, position, rightVelocity, enlargeSeconds);
+    }
+}
+
+void setAllBallsDynamic(Registry& registry, bool dynamic) {
+    for (const Entity entity : registry.pool<Ball>().entities()) {
+        if (auto* body = registry.get<RigidBody>(entity)) body->dynamic = dynamic;
+    }
+}
+
+}  // namespace
 
 PinballState* state(EngineContext& context) {
     auto& states = context.registry().pool<PinballState>();
     return states.empty() ? nullptr : &states.front();
 }
 
+Entity addBall(EngineContext& context, Vec2 position, Vec2 velocity, float enlargeSeconds) {
+    auto& registry = context.registry();
+    const auto* gameState = state(context);
+    const float radius = enlargeSeconds > 0.0F ? kEnlargedBallRadius : kDefaultBallRadius;
+    const Entity ball = registry.create();
+    registry.add<Transform>(ball).position = position;
+    auto& body = registry.add<RigidBody>(ball);
+    body.dynamic = length(velocity) > 0.001F;
+    body.gravityScale = 0.35F;
+    registry.add<Velocity>(ball).value = velocity;
+    auto& collider = registry.add<CircleCollider>(ball);
+    collider.radius = radius;
+    collider.restitution = 0.98F;
+    collider.layer = 1;
+    registry.add<Ball>(ball) = {!body.dynamic, enlargeSeconds};
+    auto& render = registry.add<GlowRender>(ball);
+    render.size = {radius * 2.0F, radius * 2.0F};
+    render.color = gameState ? gameState->palette.ball : PinballPalette{}.ball;
+    render.emissive = 0.2F;
+    return ball;
+}
+
+void applyPalette(EngineContext& context) {
+    auto* gameState = state(context);
+    if (!gameState) return;
+    auto& registry = context.registry();
+    const auto& palette = gameState->palette;
+    for (const Entity entity : registry.pool<Brick>().entities()) {
+        const auto* brick = registry.get<Brick>(entity);
+        auto* render = registry.get<GlowRender>(entity);
+        if (!brick || !render) continue;
+        switch (brick->effect) {
+            case BrickEffect::Normal: render->color = palette.normalBrick; break;
+            case BrickEffect::Split: render->color = palette.splitBrick; break;
+            case BrickEffect::Enlarge: render->color = palette.enlargeBrick; break;
+        }
+    }
+    for (const Entity entity : registry.pool<BorderTag>().entities()) {
+        if (auto* render = registry.get<GlowRender>(entity)) render->color = palette.border;
+    }
+    for (const Entity entity : registry.pool<Ball>().entities()) {
+        if (auto* render = registry.get<GlowRender>(entity)) render->color = palette.ball;
+    }
+    if (auto* render = registry.get<GlowRender>(gameState->paddle)) render->color = palette.splitBrick;
+    for (auto& camera : registry.pool<Camera2D>().values()) {
+        camera.clearColor = palette.background;
+        camera.toneMappingExposure = 0.0F;
+        camera.bloomStrength = 0.0F;
+        camera.additiveBlending = false;
+        camera.alignWorldToTop = true;
+    }
+}
+
 void resetBall(EngineContext& context) {
     auto* gameState = state(context);
     if (!gameState) return;
+    auto& registry = context.registry();
     gameState->phase = Phase::Ready;
     gameState->combo = 0;
     gameState->comboSeconds = 0.0F;
-    if (auto* transform = context.registry().get<Transform>(gameState->ball)) {
-        const auto* paddle = context.registry().get<Transform>(gameState->paddle);
-        transform->position = {paddle ? paddle->position.x : 360.0F, 1128.0F};
+    if (!registry.has<Ball>(gameState->ball)) {
+        gameState->ball = addBall(context, {360.0F, 1128.0F}, {});
     }
-    if (auto* velocity = context.registry().get<Velocity>(gameState->ball)) velocity->value = {};
-    if (auto* body = context.registry().get<RigidBody>(gameState->ball)) body->dynamic = false;
-    if (auto* ball = context.registry().get<Ball>(gameState->ball)) ball->attached = true;
+    std::vector<Entity> extraBalls;
+    for (const Entity entity : registry.pool<Ball>().entities()) {
+        if (entity != gameState->ball) extraBalls.push_back(entity);
+    }
+    for (const Entity entity : extraBalls) registry.destroy(entity);
+
+    const auto* paddle = registry.get<Transform>(gameState->paddle);
+    if (auto* transform = registry.get<Transform>(gameState->ball)) {
+        transform->position = {paddle ? paddle->position.x : 360.0F, paddle ? paddle->position.y - 32.0F : 1128.0F};
+    }
+    if (auto* velocity = registry.get<Velocity>(gameState->ball)) velocity->value = {};
+    if (auto* body = registry.get<RigidBody>(gameState->ball)) body->dynamic = false;
+    if (auto* ball = registry.get<Ball>(gameState->ball)) *ball = {};
+    setBallSize(registry, gameState->ball, kDefaultBallRadius);
 }
 
 void paddleControlSystem(EngineContext& context, float deltaSeconds) {
     auto* gameState = state(context);
     if (!gameState || gameState->phase == Phase::Paused) return;
-    auto* paddle = context.registry().get<Transform>(gameState->paddle);
-    auto* paddleVelocity = context.registry().get<Velocity>(gameState->paddle);
+    auto& registry = context.registry();
+    auto* paddle = registry.get<Transform>(gameState->paddle);
+    auto* paddleVelocity = registry.get<Velocity>(gameState->paddle);
     if (!paddle) return;
+    const auto* collider = registry.get<BoxCollider>(gameState->paddle);
+    const float margin = collider ? collider->halfSize.x + 12.0F : 76.0F;
     const float previousX = paddle->position.x;
     const float follow = 1.0F - std::exp(-26.0F * deltaSeconds);
     paddle->position.x = std::clamp(
         paddle->position.x + (gameState->paddleTargetX - paddle->position.x) * follow,
-        76.0F,
-        kWorldWidth - 76.0F
+        margin,
+        kWorldWidth - margin
     );
     if (paddleVelocity) paddleVelocity->value = {(paddle->position.x - previousX) / deltaSeconds, 0.0F};
-    const auto* ball = context.registry().get<Ball>(gameState->ball);
+    const auto* ball = registry.get<Ball>(gameState->ball);
     if (ball && ball->attached) {
-        if (auto* transform = context.registry().get<Transform>(gameState->ball)) {
+        if (auto* transform = registry.get<Transform>(gameState->ball)) {
             transform->position = {paddle->position.x, paddle->position.y - 32.0F};
         }
     }
 }
 
-void ballMotionSystem(EngineContext& context, float) {
+void ballMotionSystem(EngineContext& context, float deltaSeconds) {
     auto* gameState = state(context);
     if (!gameState || gameState->phase != Phase::Playing) return;
-    auto* velocity = context.registry().get<Velocity>(gameState->ball);
-    if (!velocity) return;
+    auto& registry = context.registry();
     const float targetSpeed = 570.0F + std::min(gameState->level, 8U) * 20.0F;
-    Vec2 value = normalized(velocity->value) * targetSpeed;
-    if (std::abs(value.y) < 170.0F) {
-        value.y = (value.y < 0.0F ? -170.0F : 170.0F);
-        value = normalized(value) * targetSpeed;
+    for (const Entity entity : registry.pool<Ball>().entities()) {
+        auto* ball = registry.get<Ball>(entity);
+        if (ball && ball->enlargeSeconds > 0.0F) {
+            ball->enlargeSeconds = std::max(0.0F, ball->enlargeSeconds - deltaSeconds);
+            if (ball->enlargeSeconds == 0.0F) setBallSize(registry, entity, kDefaultBallRadius);
+        }
+        auto* velocity = registry.get<Velocity>(entity);
+        if (!velocity || length(velocity->value) < 0.001F) continue;
+        Vec2 value = normalized(velocity->value) * targetSpeed;
+        if (std::abs(value.y) < 170.0F) {
+            value.y = (value.y < 0.0F ? -170.0F : 170.0F);
+            value = normalized(value) * targetSpeed;
+        }
+        velocity->value = value;
     }
-    velocity->value = value;
 }
 
 void brickDamageSystem(EngineContext& context, float) {
@@ -71,6 +188,26 @@ void brickDamageSystem(EngineContext& context, float) {
         if (auto* brick = context.registry().get<Brick>(event.entityB)) {
             if (brick->hitPoints > 0) --brick->hitPoints;
         }
+    }
+}
+
+void brickEffectSystem(EngineContext& context, float) {
+    auto& registry = context.registry();
+    auto& queue = context.events().subscribe<BrickEffectTag>();
+    CollisionEvent event{};
+    while (queue.pop(event)) {
+        if (!registry.has<Ball>(event.entityA)) continue;
+        auto* brick = registry.get<Brick>(event.entityB);
+        if (!brick || brick->hitPoints != -1) continue;
+        if (brick->effect == BrickEffect::Split) {
+            splitBall(context, event.entityA);
+        } else if (brick->effect == BrickEffect::Enlarge) {
+            if (auto* ball = registry.get<Ball>(event.entityA)) {
+                ball->enlargeSeconds = kEnlargeDurationSeconds;
+                setBallSize(registry, event.entityA, kEnlargedBallRadius);
+            }
+        }
+        brick->hitPoints = -2;
     }
 }
 
@@ -106,6 +243,7 @@ void brickCleanupSystem(EngineContext& context, float) {
 void roundSystem(EngineContext& context, float deltaSeconds) {
     auto* gameState = state(context);
     if (!gameState) return;
+    auto& registry = context.registry();
     gameState->audioCooldown = std::max(0.0F, gameState->audioCooldown - deltaSeconds);
     if (gameState->phase != Phase::Playing) return;
     if (gameState->comboSeconds > 0.0F) {
@@ -114,15 +252,37 @@ void roundSystem(EngineContext& context, float deltaSeconds) {
     }
     if (gameState->remainingBricks == 0) {
         gameState->phase = Phase::LevelComplete;
-        if (auto* body = context.registry().get<RigidBody>(gameState->ball)) body->dynamic = false;
+        setAllBallsDynamic(registry, false);
         return;
     }
-    const auto* ballTransform = context.registry().get<Transform>(gameState->ball);
-    if (!ballTransform || ballTransform->position.y < kWorldHeight + 40.0F) return;
+
+    std::vector<Entity> survivors;
+    std::vector<Entity> lost;
+    for (const Entity entity : registry.pool<Ball>().entities()) {
+        const auto* transform = registry.get<Transform>(entity);
+        if (transform && transform->position.y < kWorldHeight + 40.0F) {
+            survivors.push_back(entity);
+        } else {
+            lost.push_back(entity);
+        }
+    }
+    if (lost.empty()) return;
+    if (!survivors.empty()) {
+        const bool primaryLost = std::find(lost.begin(), lost.end(), gameState->ball) != lost.end();
+        for (const Entity entity : lost) registry.destroy(entity);
+        if (primaryLost) gameState->ball = survivors.front();
+        return;
+    }
+
+    const Entity keeper = lost.front();
+    for (const Entity entity : lost) {
+        if (entity != keeper) registry.destroy(entity);
+    }
+    gameState->ball = keeper;
     --gameState->lives;
     if (gameState->lives == 0) {
         gameState->phase = Phase::GameOver;
-        if (auto* body = context.registry().get<RigidBody>(gameState->ball)) body->dynamic = false;
+        if (auto* body = registry.get<RigidBody>(keeper)) body->dynamic = false;
     } else {
         resetBall(context);
     }
@@ -163,7 +323,7 @@ void cameraSystem(EngineContext& context, float deltaSeconds) {
     auto& camera = cameras.front();
     while (queue.pop(event)) camera.trauma = std::min(1.0F, camera.trauma + event.impulse * 0.00035F);
     camera.trauma = std::max(0.0F, camera.trauma - deltaSeconds * 2.8F);
-    const float magnitude = camera.trauma * camera.trauma * 4.0F;
+    const float magnitude = camera.trauma * camera.trauma * 2.0F;
     camera.offset = {
         std::sin(context.elapsedSeconds * 71.0F) * magnitude,
         std::cos(context.elapsedSeconds * 59.0F) * magnitude,
@@ -182,7 +342,17 @@ void snapshotSystem(EngineContext& context, float) {
     snapshot.integers[3] = gameState->remainingBricks;
     snapshot.integers[4] = static_cast<std::uint32_t>(gameState->phase);
     snapshot.integers[5] = gameState->level;
+    std::uint32_t enlargedBalls = 0;
+    float enlargeSeconds = 0.0F;
+    const auto& balls = context.registry().pool<Ball>();
+    for (const auto& ball : balls.values()) {
+        if (ball.enlargeSeconds > 0.0F) ++enlargedBalls;
+        enlargeSeconds = std::max(enlargeSeconds, ball.enlargeSeconds);
+    }
+    snapshot.integers[6] = static_cast<std::uint32_t>(balls.entities().size());
+    snapshot.integers[7] = enlargedBalls;
     snapshot.floats[0] = gameState->comboSeconds / 2.5F;
+    snapshot.floats[1] = enlargeSeconds;
     context.snapshots().publish(snapshot);
 }
 

@@ -20,10 +20,12 @@ SdfInstance makeInstance(Entity entity, const Registry& registry) {
 }  // namespace
 
 void ClearPass::execute(const Registry& registry, RenderBackend& backend) {
-    Vec2 cameraOffset{};
     const auto& cameras = registry.pool<Camera2D>();
-    if (!cameras.empty()) cameraOffset = cameras.front().offset;
-    backend.clear(cameraOffset);
+    if (cameras.empty()) {
+        backend.clear(Camera2D{});
+        return;
+    }
+    backend.clear(cameras.front());
 }
 
 void SDFBatchPass::execute(const Registry& registry, RenderBackend& backend) {

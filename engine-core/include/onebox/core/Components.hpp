@@ -56,6 +56,11 @@ struct Particle {
 struct Camera2D {
     Vec2 offset{};
     float trauma = 0.0F;
+    std::array<float, 4> clearColor{0.004F, 0.007F, 0.025F, 1.0F};
+    float toneMappingExposure = 1.12F;
+    float bloomStrength = 1.0F;
+    bool additiveBlending = true;
+    bool alignWorldToTop = false;
 };
 
 }  // namespace onebox

@@ -108,6 +108,7 @@ in vec2 vUv;
 uniform sampler2D uTexture;
 uniform sampler2D uBloom;
 uniform float uBloomStrength;
+uniform float uExposure;
 out vec4 fragColor;
 void main() {
     vec3 scene = texture(uTexture, vUv).rgb;
@@ -115,7 +116,7 @@ void main() {
     vec2 centered = vUv * 2.0 - 1.0;
     float vignette = 1.0 - dot(centered, centered) * 0.16;
     vec3 color = (scene + bloom * 0.8) * vignette;
-    color = vec3(1.0) - exp(-color * 1.12);
+    if (uExposure > 0.0) color = vec3(1.0) - exp(-color * uExposure);
     fragColor = vec4(color, 1.0);
 }
 )";
@@ -253,15 +254,18 @@ void GlRenderer::destroy() {
     width_ = height_ = 0;
 }
 
-void GlRenderer::clear(const Vec2& cameraOffset) {
-    cameraOffset_ = cameraOffset;
+void GlRenderer::clear(const Camera2D& camera) {
+    cameraOffset_ = camera.offset;
+    toneMappingExposure_ = camera.toneMappingExposure;
+    bloomStrength_ = camera.bloomStrength;
+    alignWorldToTop_ = camera.alignWorldToTop;
     glBindFramebuffer(GL_FRAMEBUFFER, scene_.framebuffer);
     glViewport(0, 0, width_, height_);
     glDisable(GL_DEPTH_TEST);
-    glClearColor(0.004F, 0.007F, 0.025F, 1.0F);
+    glClearColor(camera.clearColor[0], camera.clearColor[1], camera.clearColor[2], camera.clearColor[3]);
     glClear(GL_COLOR_BUFFER_BIT);
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    glBlendFunc(GL_SRC_ALPHA, camera.additiveBlending ? GL_ONE : GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void GlRenderer::drawSdfBatch(const std::vector<SdfInstance>& instances) {
@@ -288,7 +292,8 @@ void GlRenderer::drawInstances(const std::vector<SdfInstance>& instances) {
     const float scale = std::min(width_ / 720.0F, height_ / 1280.0F);
     const int viewportWidth = static_cast<int>(720.0F * scale);
     const int viewportHeight = static_cast<int>(1280.0F * scale);
-    glViewport((width_ - viewportWidth) / 2, (height_ - viewportHeight) / 2, viewportWidth, viewportHeight);
+    const int viewportY = alignWorldToTop_ ? height_ - viewportHeight : (height_ - viewportHeight) / 2;
+    glViewport((width_ - viewportWidth) / 2, viewportY, viewportWidth, viewportHeight);
     glUseProgram(sdfProgram_);
     glUniform2f(glGetUniformLocation(sdfProgram_, "uWorldSize"), 720.0F, 1280.0F);
     glUniform2f(glGetUniformLocation(sdfProgram_, "uCamera"), cameraOffset_.x, cameraOffset_.y);
@@ -329,7 +334,8 @@ void GlRenderer::postProcess(bool bloomEnabled) {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glViewport(0, 0, width_, height_);
     glUseProgram(compositeProgram_);
-    glUniform1f(glGetUniformLocation(compositeProgram_, "uBloomStrength"), bloomEnabled ? 1.0F : 0.0F);
+    glUniform1f(glGetUniformLocation(compositeProgram_, "uBloomStrength"), bloomEnabled ? bloomStrength_ : 0.0F);
+    glUniform1f(glGetUniformLocation(compositeProgram_, "uExposure"), toneMappingExposure_);
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, bloomA_.texture);
     glUniform1i(glGetUniformLocation(compositeProgram_, "uBloom"), 1);
