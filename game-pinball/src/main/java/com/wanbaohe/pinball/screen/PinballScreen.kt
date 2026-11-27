@@ -96,7 +96,7 @@ fun PinballScreen(component: PinballComponent) {
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
     LaunchedEffect(
-        colorScheme.surface,
+        colorScheme.surfaceContainer,
         colorScheme.primaryContainer,
         colorScheme.secondaryContainer,
         colorScheme.tertiaryContainer,
@@ -105,7 +105,7 @@ fun PinballScreen(component: PinballComponent) {
     ) {
         component.updateTheme(
             PinballThemeColors(
-                surface = colorScheme.surface.toArgb(),
+                border = colorScheme.surfaceContainer.toArgb(),
                 primary = colorScheme.primaryContainer.toArgb(),
                 secondary = colorScheme.secondaryContainer.toArgb(),
                 tertiary = colorScheme.tertiaryContainer.toArgb(),

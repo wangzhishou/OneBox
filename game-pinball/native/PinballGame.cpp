@@ -61,6 +61,23 @@ Entity addWall(EngineContext& context, Vec2 position, Vec2 halfSize) {
     return entity;
 }
 
+void addBorderBlock(EngineContext& context, Vec2 position, Vec2 size = {38.0F, 38.0F}) {
+    auto& registry = context.registry();
+    const Entity border = registry.create();
+    registry.add<Transform>(border).position = position;
+    registry.add<RigidBody>(border);
+    auto& collider = registry.add<BoxCollider>(border);
+    collider.halfSize = size * 0.5F;
+    collider.restitution = 0.98F;
+    collider.layer = 2;
+    registry.add<BorderTag>(border);
+    auto& render = registry.add<GlowRender>(border);
+    render.shape = SdfShape::RoundedBox;
+    render.size = size;
+    render.color = state(context)->palette.border;
+    render.emissive = 0.12F;
+}
+
 void addLabelBar(
     EngineContext& context,
     Entity brick,
@@ -138,20 +155,26 @@ void buildFirstLevel(EngineContext& context) {
     }
 }
 
-void buildSecondLevel(EngineContext& context) {
-    constexpr std::array<std::array<int, 2>, 14> splitPositions{{
+void buildEnclosedLevel(EngineContext& context, bool narrowEntrance) {
+    constexpr std::array<std::array<int, 2>, 15> splitPositions{{
         {{1, 4}}, {{1, 12}}, {{2, 2}}, {{2, 9}}, {{3, 6}}, {{3, 13}},
         {{6, 3}}, {{6, 11}}, {{7, 7}}, {{8, 1}}, {{8, 14}}, {{9, 5}},
-        {{12, 5}}, {{12, 11}},
+        {{12, 4}}, {{12, 5}}, {{12, 11}},
     }};
-    constexpr std::array<std::array<int, 2>, 4> extraEnlargePositions{{
-        {{2, 7}}, {{7, 4}}, {{9, 10}}, {{12, 4}},
+    constexpr std::array<std::array<int, 2>, 3> extraEnlargePositions{{
+        {{2, 7}}, {{7, 4}}, {{9, 10}},
     }};
     for (int row = 0; row < 16; ++row) {
         for (int column = 0; column < 16; ++column) {
             const Vec2 position{30.0F + column * 44.0F, 200.0F + row * 42.0F};
-            const bool isBottomBorder = row == 15 && (column <= 4 || column >= 11);
-            if (row == 0 || column == 0 || column == 15 || isBottomBorder) continue;
+            const bool isBottomBorder = row == 15 && (
+                column <= 4 || column >= 11 ||
+                (narrowEntrance && column >= 5 && column <= 10 && column != 7 && column != 8)
+            );
+            if (row == 0 || column == 0 || column == 15 || isBottomBorder) {
+                addBorderBlock(context, position);
+                continue;
+            }
             if (row == 15) continue;
             if (row == 12 && column >= 6 && column <= 9) continue;
             if (row == 13 && column >= 5 && column <= 10) continue;
@@ -170,8 +193,15 @@ void buildSecondLevel(EngineContext& context) {
             );
             if (isSplit) effect = BrickEffect::Split;
             if (isExtraEnlarge) effect = BrickEffect::Enlarge;
+            if (narrowEntrance && row == 11 && (column == 7 || column == 8)) {
+                effect = BrickEffect::Split;
+            }
             addBrick(context, position, effect, 1, 100);
         }
+    }
+    if (narrowEntrance) {
+        addBorderBlock(context, {329.5F, 830.0F}, {33.0F, 38.0F});
+        addBorderBlock(context, {390.5F, 830.0F}, {33.0F, 38.0F});
     }
 }
 
@@ -248,6 +278,7 @@ void PinballGame::onCommand(EngineContext& context, const Command& command) {
     auto* gameState = state(context);
     if (!gameState) return;
     if (command.type == kGameCommandTheme) {
+        gameState->palette.border = readColor(command, 0);
         gameState->palette.normalBrick = readColor(command, 4);
         gameState->palette.splitBrick = readColor(command, 8);
         gameState->palette.enlargeBrick = readColor(command, 12);
@@ -336,8 +367,8 @@ void PinballGame::buildWorld(
 
     if (level == 1) {
         buildFirstLevel(context);
-    } else if (level == 2) {
-        buildSecondLevel(context);
+    } else if (level == 2 || level == 3) {
+        buildEnclosedLevel(context, level == 3);
     } else {
         buildClassicLevel(context);
     }
@@ -374,7 +405,9 @@ void PinballGame::launch(EngineContext& context) {
     if (ball) ball->attached = false;
     if (body) body->dynamic = true;
     if (velocity) {
-        const float direction = gameState->paddleTargetX < kWorldWidth * 0.5F ? 0.32F : -0.32F;
+        const float direction = gameState->level == 3
+            ? 0.0F
+            : (gameState->paddleTargetX < kWorldWidth * 0.5F ? 0.32F : -0.32F);
         velocity->value = normalized(Vec2{direction, -1.0F}) * (570.0F + gameState->level * 20.0F);
     }
     context.audioEvents().push({392.0F, 0.18F, 0.16F});

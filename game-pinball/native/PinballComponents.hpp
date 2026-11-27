@@ -28,6 +28,7 @@ enum class BrickEffect : std::uint32_t {
 };
 
 struct PinballPalette {
+    std::array<float, 4> border{0.5F, 0.55F, 0.58F, 1.0F};
     std::array<float, 4> normalBrick{0.05F, 0.65F, 0.72F, 0.94F};
     std::array<float, 4> splitBrick{1.0F, 0.35F, 0.22F, 0.96F};
     std::array<float, 4> splitBrickContent{1.0F, 1.0F, 1.0F, 1.0F};
@@ -74,6 +75,7 @@ struct Bumper {
 
 struct PaddleControlTag {};
 struct PaddleTag {};
+struct BorderTag {};
 struct BallMotionTag {};
 struct BrickDamageTag {};
 struct BrickEffectTag {};

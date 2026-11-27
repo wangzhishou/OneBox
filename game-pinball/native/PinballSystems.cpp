@@ -92,6 +92,9 @@ void applyPalette(EngineContext& context) {
             case BrickEffect::Enlarge: render->color = palette.enlargeBrick; break;
         }
     }
+    for (const Entity entity : registry.pool<BorderTag>().entities()) {
+        if (auto* render = registry.get<GlowRender>(entity)) render->color = palette.border;
+    }
     for (const Entity entity : registry.pool<BrickLabel>().entities()) {
         if (auto* render = registry.get<GlowRender>(entity)) render->color = palette.splitBrickContent;
     }

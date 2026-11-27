@@ -25,7 +25,7 @@ data class PinballUiState(
 )
 
 data class PinballThemeColors(
-    val surface: Int,
+    val border: Int,
     val primary: Int,
     val secondary: Int,
     val tertiary: Int,

@@ -69,7 +69,7 @@ class PinballComponent @AssistedInject internal constructor(
 
     fun updateTheme(colors: PinballThemeColors) {
         val payload = ByteBuffer.allocate(THEME_PAYLOAD_BYTES).order(ByteOrder.LITTLE_ENDIAN).apply {
-            putInt(colors.surface)
+            putInt(colors.border)
             putInt(colors.primary)
             putInt(colors.secondary)
             putInt(colors.tertiary)
