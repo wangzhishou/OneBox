@@ -75,6 +75,7 @@ import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsS
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePauseBars
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineVisibility
 import com.wanbaohe.base.ui.button.PrimaryButton
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
@@ -629,6 +630,13 @@ private fun GameOverOverlay(
             modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
             containerColor = MaterialTheme.colorScheme.surfaceContainer,
             contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            icon = {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineVisibility,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp),
+                )
+            },
         )
         onWatchAds?.let { watchAds ->
             PrimaryButton(
