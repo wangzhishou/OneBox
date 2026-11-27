@@ -45,6 +45,8 @@
     <string name="survive_30s_danger_medium">الضغط يتزايد. كن مستعدًا للانطلاق عرضيًا.</string>
     <string name="survive_30s_danger_high">خطر! اجمع الشحنة بتفاديات قريبة أو انطلق فورًا.</string>
     <string name="survive_30s_back">رجوع</string>
+    <string name="survive_30s_back_to_scene">العودة إلى اللعبة</string>
+    <string name="survive_30s_show_result">عرض النتائج</string>
     <string name="survive_30s_paused">متوقفة مؤقتًا</string>
     <string name="survive_30s_pause_desc">توقف تلقائي في الخلفية. تقدمك محفوظ.</string>
     <string name="survive_30s_resume">استئناف</string>

@@ -45,6 +45,8 @@
     <string name="survive_30s_danger_medium">La presión aumenta. Prepárate para cruzar.</string>
     <string name="survive_30s_danger_high">¡Peligro! Acumula carga con esquivas cercanas o sal de inmediato.</string>
     <string name="survive_30s_back">Volver</string>
+    <string name="survive_30s_back_to_scene">Volver al juego</string>
+    <string name="survive_30s_show_result">Ver resultados</string>
     <string name="survive_30s_paused">Pausado</string>
     <string name="survive_30s_pause_desc">Pausado automáticamente en segundo plano. Tu progreso está a salvo.</string>
     <string name="survive_30s_resume">Continuar</string>

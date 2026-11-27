@@ -45,6 +45,8 @@
     <string name="survive_30s_danger_medium">危险正在逼近，准备变向。</string>
     <string name="survive_30s_danger_high">高危！利用近身闪避抢能量，或立刻脱离包围。</string>
     <string name="survive_30s_back">返回</string>
+    <string name="survive_30s_back_to_scene">返回界面</string>
+    <string name="survive_30s_show_result">查看结算</string>
     <string name="survive_30s_remaining">剩余时间</string>
     <string name="survive_30s_shield_count">护盾 ×%1$d</string>
     <string name="survive_30s_invincible">护盾生效 · %.1fs</string>

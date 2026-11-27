@@ -45,6 +45,8 @@
     <string name="survive_30s_danger_medium">Давление растёт. Будь готов к резкому манёвру.</string>
     <string name="survive_30s_danger_high">Опасность! Копи заряд близкими уклонениями или немедленно вырывайся.</string>
     <string name="survive_30s_back">Назад</string>
+    <string name="survive_30s_back_to_scene">Вернуться к игре</string>
+    <string name="survive_30s_show_result">Посмотреть результаты</string>
     <string name="survive_30s_paused">Пауза</string>
     <string name="survive_30s_pause_desc">Игра автоматически на паузе в фоне. Ваш прогресс сохранён.</string>
     <string name="survive_30s_resume">Продолжить</string>

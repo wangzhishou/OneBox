@@ -45,6 +45,8 @@
     <string name="survive_30s_danger_medium">Nguy hiểm đang đến gần, chuẩn bị đổi hướng.</string>
     <string name="survive_30s_danger_high">Nguy hiểm cao! Dùng né sát để giành năng lượng, hoặc lập tức thoát khỏi vòng vây.</string>
     <string name="survive_30s_back">Quay lại</string>
+    <string name="survive_30s_back_to_scene">Quay lại trò chơi</string>
+    <string name="survive_30s_show_result">Xem kết quả</string>
     <string name="survive_30s_paused">Đã tạm dừng</string>
     <string name="survive_30s_pause_desc">Chuyển sang nền đã tự động tạm dừng, tiến độ vẫn còn, tiếp tục bất cứ lúc nào.</string>
     <string name="survive_30s_resume">Tiếp tục</string>

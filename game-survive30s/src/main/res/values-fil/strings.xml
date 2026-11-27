@@ -45,6 +45,8 @@
     <string name="survive_30s_danger_medium">Tumataas ang presyon. Maging handa sa pagtawid.</string>
     <string name="survive_30s_danger_high">Panganib! Mag-ipon ng charge sa malalapit na pag-iwas o lumabas agad.</string>
     <string name="survive_30s_back">Bumalik</string>
+    <string name="survive_30s_back_to_scene">Bumalik sa laro</string>
+    <string name="survive_30s_show_result">Tingnan ang resulta</string>
     <string name="survive_30s_paused">Naka-pause</string>
     <string name="survive_30s_pause_desc">Awtomatikong na-pause sa background. Ligtas ang progress mo.</string>
     <string name="survive_30s_resume">Magpatuloy</string>

@@ -45,6 +45,8 @@
     <string name="survive_30s_danger_medium">압박이 커지고 있습니다. 가로지르기를 준비하세요.</string>
     <string name="survive_30s_danger_high">위험! 근접 회피로 차지를 모으거나 즉시 탈출하세요.</string>
     <string name="survive_30s_back">돌아가기</string>
+    <string name="survive_30s_back_to_scene">게임 화면으로 돌아가기</string>
+    <string name="survive_30s_show_result">결과 보기</string>
     <string name="survive_30s_paused">일시정지</string>
     <string name="survive_30s_pause_desc">백그라운드로 이동하여 자동으로 일시정지되었습니다.</string>
     <string name="survive_30s_resume">계속하기</string>

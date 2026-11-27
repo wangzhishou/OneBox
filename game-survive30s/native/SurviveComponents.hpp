@@ -31,7 +31,6 @@ struct SurvivePalette {
 
 struct SurviveState {
     Entity player = kInvalidEntity;
-    Entity dangerOverlay = kInvalidEntity;
     Entity shieldRing = kInvalidEntity;
     GamePhase phase = GamePhase::Idle;
     DifficultyPhase difficulty = DifficultyPhase::Warmup;
@@ -57,6 +56,7 @@ struct Obstacle {
     ObstacleType type = ObstacleType::TopFall;
     std::uint32_t colorIndex = 0;
     bool didNearMiss = false;
+    bool didCollide = false;
 };
 
 struct CollisionTag {};

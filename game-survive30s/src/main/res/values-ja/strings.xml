@@ -45,6 +45,8 @@
     <string name="survive_30s_danger_medium">圧力が高まっています。切り抜ける準備を。</string>
     <string name="survive_30s_danger_high">危険！近距離回避でチャージを稼ぐか、すぐに脱出しよう。</string>
     <string name="survive_30s_back">戻る</string>
+    <string name="survive_30s_back_to_scene">ゲーム画面に戻る</string>
+    <string name="survive_30s_show_result">結果を見る</string>
     <string name="survive_30s_paused">一時停止</string>
     <string name="survive_30s_pause_desc">バックグラウンドに移動したため自動で一時停止しました。進行状況はそのままです。</string>
     <string name="survive_30s_resume">続ける</string>

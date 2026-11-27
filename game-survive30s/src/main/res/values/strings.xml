@@ -45,6 +45,8 @@
     <string name="survive_30s_danger_medium">Pressure is building. Be ready to cut across.</string>
     <string name="survive_30s_danger_high">Danger! Farm charge with close dodges or break out immediately.</string>
     <string name="survive_30s_back">Back</string>
+    <string name="survive_30s_back_to_scene">Back to game</string>
+    <string name="survive_30s_show_result">View results</string>
     <string name="survive_30s_remaining">Time left</string>
     <string name="survive_30s_shield_count">Shield ×%1$d</string>
     <string name="survive_30s_invincible">Shield active · %.1fs</string>

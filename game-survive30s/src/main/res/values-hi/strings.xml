@@ -45,6 +45,8 @@
     <string name="survive_30s_danger_medium">दबाव बढ़ रहा है। पार करने के लिए तैयार रहें।</string>
     <string name="survive_30s_danger_high">खतरा! करीबी बचाव से चार्ज बनाएं या तुरंत बाहर निकलें।</string>
     <string name="survive_30s_back">वापस</string>
+    <string name="survive_30s_back_to_scene">खेल पर वापस जाएँ</string>
+    <string name="survive_30s_show_result">परिणाम देखें</string>
     <string name="survive_30s_paused">रुका हुआ</string>
     <string name="survive_30s_pause_desc">बैकग्राउंड में जाते ही अपने आप रुक गया। आपकी प्रगति सुरक्षित है।</string>
     <string name="survive_30s_resume">जारी रखें</string>

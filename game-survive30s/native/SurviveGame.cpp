@@ -115,15 +115,6 @@ void SurviveGame::buildWorld(EngineContext& context, GamePhase phase) {
     std::random_device randomDevice;
     gameState.randomState = randomDevice() | 1U;
 
-    const Entity danger = registry.create();
-    registry.add<Transform>(danger).position = {360.0F, 640.0F};
-    auto& dangerRender = registry.add<GlowRender>(danger);
-    dangerRender.shape = SdfShape::RoundedBox;
-    dangerRender.size = {720.0F, 1280.0F};
-    dangerRender.color = palette.secondary;
-    dangerRender.color[3] = 0.0F;
-    gameState.dangerOverlay = danger;
-
     const Entity ring = registry.create();
     registry.add<Transform>(ring).position = gameState.playerTarget;
     auto& ringRender = registry.add<GlowRender>(ring);

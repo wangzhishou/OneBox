@@ -45,6 +45,8 @@
     <string name="survive_30s_danger_medium">Le danger approche, prépare-toi à changer de direction.</string>
     <string name="survive_30s_danger_high">Danger élevé ! Esquive de près pour gagner de l\'énergie ou échappe-toi vite.</string>
     <string name="survive_30s_back">Retour</string>
+    <string name="survive_30s_back_to_scene">Retour au jeu</string>
+    <string name="survive_30s_show_result">Voir les résultats</string>
     <string name="survive_30s_paused">En pause</string>
     <string name="survive_30s_pause_desc">Mise en arrière-plan, pause automatique. Ta progression est conservée.</string>
     <string name="survive_30s_resume">Reprendre</string>

@@ -24,6 +24,15 @@ bool isVertical(ObstacleType type) {
     return type == ObstacleType::TopFall || type == ObstacleType::BottomRise;
 }
 
+float pointToSegmentDistanceSquared(Vec2 point, Vec2 start, Vec2 end) {
+    const Vec2 segment = end - start;
+    const float lengthSquared = dot(segment, segment);
+    if (lengthSquared <= 0.000001F) return dot(point - start, point - start);
+    const float progress = std::clamp(dot(point - start, segment) / lengthSquared, 0.0F, 1.0F);
+    const Vec2 closest = start + segment * progress;
+    return dot(point - closest, point - closest);
+}
+
 Entity spawnObstacle(
     EngineContext& context,
     ObstacleType type,
@@ -158,11 +167,6 @@ void applyPalette(EngineContext& context) {
         render->color[3] = alpha;
         render->emissive = 0.12F;
     }
-    if (auto* render = registry.get<GlowRender>(gameState->dangerOverlay)) {
-        const float alpha = render->color[3];
-        render->color = palette.secondary;
-        render->color[3] = alpha;
-    }
     for (auto& camera : registry.pool<Camera2D>().values()) {
         camera.clearColor = {0.0F, 0.0F, 0.0F, 0.0F};
         camera.toneMappingExposure = 0.0F;
@@ -215,15 +219,36 @@ void roundSystem(EngineContext& context, float deltaSeconds) {
 void playerControlSystem(EngineContext& context, float deltaSeconds) {
     auto* gameState = state(context);
     if (!gameState || gameState->phase != GamePhase::Playing) return;
-    auto* player = context.registry().get<Transform>(gameState->player);
+    auto& registry = context.registry();
+    auto* player = registry.get<Transform>(gameState->player);
     if (!player) return;
+    const Vec2 previousPosition = player->position;
     const Vec2 target{
         std::clamp(gameState->playerTarget.x, kPlayerRadius, kWorldWidth - kPlayerRadius),
         std::clamp(gameState->playerTarget.y, kPlayerRadius, kWorldHeight - kPlayerRadius),
     };
     const float follow = 1.0F - std::exp(-60.0F * deltaSeconds);
     player->position += (target - player->position) * follow;
-    if (auto* velocity = context.registry().get<Velocity>(gameState->player)) velocity->value = {};
+    if (auto* velocity = registry.get<Velocity>(gameState->player)) velocity->value = {};
+
+    for (const Entity entity : registry.pool<Obstacle>().entities()) {
+        auto* obstacle = registry.get<Obstacle>(entity);
+        const auto* obstacleTransform = registry.get<Transform>(entity);
+        const auto* collider = registry.get<CircleCollider>(entity);
+        if (!obstacle || !obstacleTransform || !collider) continue;
+        const float collisionRadius = kPlayerRadius + collider->radius;
+        const float distanceSquared = pointToSegmentDistanceSquared(
+            obstacleTransform->position,
+            previousPosition,
+            player->position
+        );
+        if (distanceSquared >= collisionRadius * collisionRadius) continue;
+        obstacle->didCollide = true;
+        CollisionEvent event{};
+        event.entityA = gameState->player;
+        event.entityB = entity;
+        context.events().publish(event);
+    }
 }
 
 void obstacleMotionSystem(EngineContext& context, float deltaSeconds) {
@@ -288,21 +313,23 @@ void nearMissSystem(EngineContext& context, float) {
         nearestGap = hasObstacle ? std::min(nearestGap, gap) : gap;
         hasObstacle = true;
         const float nearMissDistance = safeRadius * 1.35F;
-        if (!obstacle->didNearMiss && distanceSquared < nearMissDistance * nearMissDistance) {
-            obstacle->didNearMiss = true;
-            ++gameState->nearMissCount;
-            ++gameState->nearMissCharge;
-            if (gameState->nearMissSoundCooldown <= 0.0F) {
-                emitSound(context, SoundNearMiss);
-                gameState->nearMissSoundCooldown = 0.15F;
+        if (obstacle->didNearMiss || obstacle->didCollide || distanceSquared >= nearMissDistance * nearMissDistance) {
+            continue;
+        }
+        obstacle->didNearMiss = true;
+        if (gameState->invincibleSeconds > 0.0F || distanceSquared < safeRadius * safeRadius) continue;
+        ++gameState->nearMissCount;
+        ++gameState->nearMissCharge;
+        if (gameState->nearMissSoundCooldown <= 0.0F) {
+            emitSound(context, SoundNearMiss);
+            gameState->nearMissSoundCooldown = 0.15F;
+        }
+        if (gameState->nearMissCharge >= 3) {
+            if (gameState->shieldCount < 2) {
+                ++gameState->shieldCount;
+                emitSound(context, SoundShieldGain);
             }
-            if (gameState->nearMissCharge >= 3) {
-                if (gameState->shieldCount < 2) {
-                    ++gameState->shieldCount;
-                    emitSound(context, SoundShieldGain);
-                }
-                gameState->nearMissCharge = gameState->shieldCount >= 2 ? 0 : gameState->nearMissCharge - 3;
-            }
+            gameState->nearMissCharge = gameState->shieldCount >= 2 ? 0 : gameState->nearMissCharge - 3;
         }
     }
     gameState->dangerLevel = hasObstacle
@@ -316,8 +343,9 @@ void collisionSystem(EngineContext& context, float) {
     auto& queue = context.events().subscribe<CollisionTag>();
     CollisionEvent event{};
     while (queue.pop(event)) {
-        if (gameState->phase != GamePhase::Playing || gameState->invincibleSeconds > 0.0F) continue;
         if (!context.registry().has<Player>(event.entityA) || !context.registry().has<Obstacle>(event.entityB)) continue;
+        context.registry().get<Obstacle>(event.entityB)->didCollide = true;
+        if (gameState->phase != GamePhase::Playing || gameState->invincibleSeconds > 0.0F) continue;
         if (gameState->shieldCount > 0) {
             --gameState->shieldCount;
             gameState->invincibleSeconds = 1.1F;
@@ -340,9 +368,6 @@ void renderStateSystem(EngineContext& context, float) {
     const auto* gameState = state(context);
     if (!gameState) return;
     auto& registry = context.registry();
-    if (auto* render = registry.get<GlowRender>(gameState->dangerOverlay)) {
-        render->color[3] = gameState->dangerLevel * 0.08F;
-    }
     const auto* player = registry.get<Transform>(gameState->player);
     if (auto* ring = registry.get<Transform>(gameState->shieldRing); ring && player) {
         ring->position = player->position;

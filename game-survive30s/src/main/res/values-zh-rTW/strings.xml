@@ -45,6 +45,8 @@
     <string name="survive_30s_danger_medium">危險正在逼近，準備變向。</string>
     <string name="survive_30s_danger_high">高危！利用近身閃避搶能量，或立刻脫離包圍。</string>
     <string name="survive_30s_back">返回</string>
+    <string name="survive_30s_back_to_scene">返回介面</string>
+    <string name="survive_30s_show_result">查看結算</string>
     <string name="survive_30s_paused">已暫停</string>
     <string name="survive_30s_pause_desc">切到背景已自動暫停，進度還在，隨時繼續。</string>
     <string name="survive_30s_resume">繼續</string>

@@ -41,6 +41,7 @@ import com.wanbaohe.core.ui.utils.helper.ProvidesValue
 
 /**
  * 毛玻璃风格 [IconButton]（标准变体，无填充）—— 参数与 M3 对齐。
+ * [showBackground] 为 false 时始终使用透明背景。
  */
 @Composable
 fun GlassIconButton(
@@ -50,20 +51,28 @@ fun GlassIconButton(
     colors: IconButtonColors = IconButtonDefaults.iconButtonColors(),
     interactionSource: MutableInteractionSource? = null,
     style: GlassStyle = GlassStyle.Thin,
+    showBackground: Boolean = true,
     glassBorderWidth: Dp = 0.9.dp,
     content: @Composable () -> Unit,
 ) {
     val settingsState = LocalSettingsState.current
 
-    if (!settingsState.isGlassAlphaEnabled) {
+    if (!settingsState.isGlassAlphaEnabled || !showBackground) {
         IconButton(
             onClick = onClick,
             modifier = modifier,
             enabled = enabled,
             colors = colors.copy(
-                containerColor = flatGlassContainerColor(
-                    color = colors.containerColor(enabled = enabled)
-                )
+                containerColor = if (showBackground) {
+                    flatGlassContainerColor(color = colors.containerColor(enabled = enabled))
+                } else {
+                    Color.Transparent
+                },
+                disabledContainerColor = if (showBackground) {
+                    colors.disabledContainerColor
+                } else {
+                    Color.Transparent
+                },
             ),
             interactionSource = interactionSource,
             content = content,

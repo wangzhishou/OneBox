@@ -45,6 +45,8 @@
     <string name="survive_30s_danger_medium">Der Druck steigt. Sei bereit, quer zu schneiden.</string>
     <string name="survive_30s_danger_high">Gefahr! Sammle Ladung mit knappen Ausweichmanövern oder brich sofort aus.</string>
     <string name="survive_30s_back">Zurück</string>
+    <string name="survive_30s_back_to_scene">Zurück zum Spiel</string>
+    <string name="survive_30s_show_result">Ergebnisse ansehen</string>
     <string name="survive_30s_paused">Pausiert</string>
     <string name="survive_30s_pause_desc">Automatisch im Hintergrund pausiert. Dein Fortschritt ist sicher.</string>
     <string name="survive_30s_resume">Fortsetzen</string>

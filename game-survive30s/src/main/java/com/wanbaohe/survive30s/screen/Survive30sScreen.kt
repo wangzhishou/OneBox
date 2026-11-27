@@ -71,6 +71,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
+import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePauseBars
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
@@ -99,13 +100,24 @@ fun Survive30sScreen(
     val haptic = LocalHapticFeedback.current
     var previousGameState by remember { mutableStateOf(state.gameState) }
     var previousShieldCount by remember { mutableStateOf(state.shieldCount) }
+    var isGameOverPanelVisible by remember { mutableStateOf(true) }
     val colorScheme = MaterialTheme.colorScheme
+    val showTopBarIconBackground = LocalSettingsState.current.isGlassAlphaEnabled
+    val topBarIconColors = IconButtonDefaults.iconButtonColors(
+        containerColor = colorScheme.primaryContainer,
+        contentColor = if (showTopBarIconBackground) {
+            colorScheme.onPrimaryContainer
+        } else {
+            colorScheme.onSurface
+        },
+    )
 
     LaunchedEffect(state.gameState, state.shieldCount) {
         if (state.shieldCount > previousShieldCount) {
             haptic.performHapticFeedback(HapticFeedbackType.Confirm)
         }
         if (state.gameState != previousGameState) {
+            if (state.gameState == GameState.GAME_OVER) isGameOverPanelVisible = true
             when (state.gameState) {
                 GameState.GAME_OVER -> haptic.performHapticFeedback(HapticFeedbackType.Reject)
                 GameState.WIN -> {
@@ -187,6 +199,21 @@ fun Survive30sScreen(
         onGoBack = component.onGoBack,
         showNavigationBarsPadding = false,
         isBackHandler = false,
+        navigationIcon = {
+            GlassIconButton(
+                onClick = component.onGoBack,
+                modifier = Modifier.size(48.dp),
+                colors = topBarIconColors,
+                showBackground = showTopBarIconBackground,
+                glassBorderWidth = 0.dp,
+            ) {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack,
+                    contentDescription = stringResource(R.string.survive_30s_back),
+                    modifier = Modifier.size(24.dp),
+                )
+            }
+        },
         colors = topAppBarColors().copy(
             containerColor = Color.Transparent,
             scrolledContainerColor = Color.Transparent,
@@ -195,21 +222,37 @@ fun Survive30sScreen(
             actionIconContentColor = colorScheme.onSurface,
         ),
         actions = {
-            if (state.gameState == GameState.PLAYING) {
-                GlassIconButton(
-                    onClick = component::pauseGame,
-                    modifier = Modifier.size(48.dp),
-                    colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = colorScheme.primaryContainer,
-                        contentColor = colorScheme.onPrimaryContainer,
-                    ),
-                    glassBorderWidth = 0.dp,
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePauseBars,
-                        contentDescription = stringResource(R.string.survive_30s_pause),
-                        modifier = Modifier.size(24.dp),
-                    )
+            when {
+                state.gameState == GameState.PLAYING -> {
+                    GlassIconButton(
+                        onClick = component::pauseGame,
+                        modifier = Modifier.size(48.dp),
+                        colors = topBarIconColors,
+                        showBackground = showTopBarIconBackground,
+                        glassBorderWidth = 0.dp,
+                    ) {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePauseBars,
+                            contentDescription = stringResource(R.string.survive_30s_pause),
+                            modifier = Modifier.size(24.dp),
+                        )
+                    }
+                }
+
+                state.gameState == GameState.GAME_OVER && !isGameOverPanelVisible -> {
+                    GlassIconButton(
+                        onClick = { isGameOverPanelVisible = true },
+                        modifier = Modifier.size(48.dp),
+                        colors = topBarIconColors,
+                        showBackground = showTopBarIconBackground,
+                        glassBorderWidth = 0.dp,
+                    ) {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
+                            contentDescription = stringResource(R.string.survive_30s_show_result),
+                            modifier = Modifier.size(24.dp),
+                        )
+                    }
                 }
             }
         },
@@ -242,14 +285,17 @@ fun Survive30sScreen(
                     onRestart = component::startGame,
                     onBack = component.onGoBack,
                 )
-                GameState.GAME_OVER -> GameOverOverlay(
-                    elapsed = state.elapsedSec,
-                    bestTime = state.bestTime,
-                    nearMissCount = state.nearMissCount,
-                    onRestart = component::startGame,
-                    onBack = component.onGoBack,
-                    onWatchAds = component.onNavigateToAdWatch,
-                )
+                GameState.GAME_OVER -> if (isGameOverPanelVisible) {
+                    GameOverOverlay(
+                        elapsed = state.elapsedSec,
+                        bestTime = state.bestTime,
+                        nearMissCount = state.nearMissCount,
+                        onRestart = component::startGame,
+                        onBack = component.onGoBack,
+                        onShowStage = { isGameOverPanelVisible = false },
+                        onWatchAds = component.onNavigateToAdWatch,
+                    )
+                }
                 GameState.WIN -> WinOverlay(
                     nearMissCount = state.nearMissCount,
                     onRestart = component::startGame,
@@ -548,6 +594,7 @@ private fun GameOverOverlay(
     nearMissCount: Int,
     onRestart: () -> Unit,
     onBack: () -> Unit,
+    onShowStage: () -> Unit,
     onWatchAds: (() -> Unit)?,
 ) {
     GameDialog(
@@ -575,6 +622,13 @@ private fun GameOverOverlay(
         Text(
             text = stringResource(R.string.survive_30s_near_miss_count, nearMissCount),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        PrimaryButton(
+            text = stringResource(R.string.survive_30s_back_to_scene),
+            onClick = onShowStage,
+            modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         onWatchAds?.let { watchAds ->
             PrimaryButton(
