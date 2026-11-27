@@ -15,7 +15,7 @@ data class PinballUiState(
     val bestScore: Int = 0,
     val combo: Int = 0,
     val lives: Int = 3,
-    val remainingBricks: Int = 48,
+    val remainingBricks: Int = 256,
     val level: Int = 1,
     val phase: PinballPhase = PinballPhase.Ready,
     val comboProgress: Float = 0f,
@@ -29,6 +29,6 @@ data class PinballThemeColors(
     val primary: Int,
     val secondary: Int,
     val tertiary: Int,
-    val outline: Int,
-    val onSurface: Int,
+    val onSecondary: Int,
+    val error: Int,
 )

@@ -11,7 +11,7 @@
     <string name="pinball_combo">连击 ×%1$d</string>
     <string name="pinball_split_active">分裂 · %1$d 球</string>
     <string name="pinball_enlarge_active">变大 · %1$d 秒</string>
-    <string name="pinball_split_description">分裂色块 · 一球变三球</string>
+    <string name="pinball_split_description">+3 分裂色块 · 每次新增 3 颗弹球</string>
     <string name="pinball_enlarge_description">变大色块 · 弹球扩大 12 秒</string>
     <string name="pinball_pause">暂停</string>
     <string name="pinball_resume">继续</string>
@@ -29,8 +29,10 @@
     <string name="pinball_level_option">第 %1$d 关</string>
     <string name="pinball_game_over">游戏结束</string>
     <string name="pinball_level_complete">砖墙已清空</string>
-    <string name="pinball_level_complete_description">下一关保留经典布局，砖块更耐打、球速更快。</string>
+    <string name="pinball_level_complete_description">下一关将切换新的砖墙布局，砖块更耐打、球速更快。</string>
     <string name="pinball_score_value">分数：%1$d</string>
     <string name="pinball_best_value">最佳：%1$d</string>
     <string name="pinball_back">返回</string>
+    <string name="pinball_back_to_scene">返回游戏画面</string>
+    <string name="pinball_show_result">查看结果</string>
 </resources>

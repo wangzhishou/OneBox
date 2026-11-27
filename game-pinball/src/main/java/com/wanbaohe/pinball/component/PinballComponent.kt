@@ -73,8 +73,8 @@ class PinballComponent @AssistedInject internal constructor(
             putInt(colors.primary)
             putInt(colors.secondary)
             putInt(colors.tertiary)
-            putInt(colors.outline)
-            putInt(colors.onSurface)
+            putInt(colors.onSecondary)
+            putInt(colors.error)
         }
         engineController.dispatch(GAME_COMMAND_THEME, payload.array())
     }

@@ -10,7 +10,8 @@ namespace onebox::pinball {
 inline constexpr float kDefaultBallRadius = 11.0F;
 inline constexpr float kEnlargedBallRadius = 18.0F;
 inline constexpr float kEnlargeDurationSeconds = 12.0F;
-inline constexpr std::size_t kMaxBalls = 12;
+inline constexpr std::size_t kMaxBalls = 24;
+inline constexpr std::size_t kMaxFirstLevelBalls = 48;
 
 enum class Phase : std::uint32_t {
     Ready = 0,
@@ -27,11 +28,11 @@ enum class BrickEffect : std::uint32_t {
 };
 
 struct PinballPalette {
-    std::array<float, 4> background{0.035F, 0.12F, 0.14F, 1.0F};
     std::array<float, 4> normalBrick{0.05F, 0.65F, 0.72F, 0.94F};
     std::array<float, 4> splitBrick{1.0F, 0.35F, 0.22F, 0.96F};
+    std::array<float, 4> splitBrickContent{1.0F, 1.0F, 1.0F, 1.0F};
     std::array<float, 4> enlargeBrick{1.0F, 0.85F, 0.15F, 0.96F};
-    std::array<float, 4> ball{0.95F, 0.98F, 1.0F, 1.0F};
+    std::array<float, 4> ball{0.85F, 0.12F, 0.22F, 1.0F};
 };
 
 struct PinballState {
@@ -61,6 +62,10 @@ struct Brick {
     int hitPoints = 1;
     std::uint32_t score = 100;
     BrickEffect effect = BrickEffect::Normal;
+};
+
+struct BrickLabel {
+    Entity brick = kInvalidEntity;
 };
 
 struct Bumper {

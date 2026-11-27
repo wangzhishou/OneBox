@@ -27,17 +27,17 @@ void splitBall(EngineContext& context, Entity source) {
     if (!velocity || !transform || !ball || length(velocity->value) < 0.001F) return;
 
     auto& balls = registry.pool<Ball>();
-    if (balls.entities().size() >= kMaxBalls) return;
+    const std::size_t maxBalls = state(context)->level == 1 ? kMaxFirstLevelBalls : kMaxBalls;
+    if (balls.entities().size() >= maxBalls) return;
     const Vec2 position = transform->position;
     const Vec2 sourceVelocity = velocity->value;
     const float enlargeSeconds = ball->enlargeSeconds;
-    Vec2 leftVelocity = rotated(sourceVelocity, -0.42F);
-    Vec2 rightVelocity = rotated(sourceVelocity, 0.42F);
-    if (leftVelocity.y > 0.0F) leftVelocity.y = -leftVelocity.y;
-    if (rightVelocity.y > 0.0F) rightVelocity.y = -rightVelocity.y;
-    addBall(context, position, leftVelocity, enlargeSeconds);
-    if (balls.entities().size() < kMaxBalls) {
-        addBall(context, position, rightVelocity, enlargeSeconds);
+    constexpr std::array<float, 3> splitAngles{-0.55F, 0.0F, 0.55F};
+    for (const float angle : splitAngles) {
+        if (balls.entities().size() >= maxBalls) break;
+        Vec2 splitVelocity = rotated(sourceVelocity, angle);
+        if (splitVelocity.y > 0.0F) splitVelocity.y = -splitVelocity.y;
+        addBall(context, position, splitVelocity, enlargeSeconds);
     }
 }
 
@@ -72,7 +72,8 @@ Entity addBall(EngineContext& context, Vec2 position, Vec2 velocity, float enlar
     auto& render = registry.add<GlowRender>(ball);
     render.size = {radius * 2.0F, radius * 2.0F};
     render.color = gameState ? gameState->palette.ball : PinballPalette{}.ball;
-    render.emissive = 0.2F;
+    render.emissive = 0.12F;
+    render.sphericalShading = 1.0F;
     return ball;
 }
 
@@ -91,12 +92,18 @@ void applyPalette(EngineContext& context) {
             case BrickEffect::Enlarge: render->color = palette.enlargeBrick; break;
         }
     }
+    for (const Entity entity : registry.pool<BrickLabel>().entities()) {
+        if (auto* render = registry.get<GlowRender>(entity)) render->color = palette.splitBrickContent;
+    }
+    for (const Entity entity : registry.pool<Bumper>().entities()) {
+        if (auto* render = registry.get<GlowRender>(entity)) render->color = palette.enlargeBrick;
+    }
     for (const Entity entity : registry.pool<Ball>().entities()) {
         if (auto* render = registry.get<GlowRender>(entity)) render->color = palette.ball;
     }
-    if (auto* render = registry.get<GlowRender>(gameState->paddle)) render->color = palette.splitBrick;
+    if (auto* render = registry.get<GlowRender>(gameState->paddle)) render->color = palette.ball;
     for (auto& camera : registry.pool<Camera2D>().values()) {
-        camera.clearColor = palette.background;
+        camera.clearColor = {0.0F, 0.0F, 0.0F, 0.0F};
         camera.toneMappingExposure = 0.0F;
         camera.bloomStrength = 0.0F;
         camera.additiveBlending = false;
@@ -141,12 +148,7 @@ void paddleControlSystem(EngineContext& context, float deltaSeconds) {
     const auto* collider = registry.get<BoxCollider>(gameState->paddle);
     const float margin = collider ? collider->halfSize.x + 12.0F : 76.0F;
     const float previousX = paddle->position.x;
-    const float follow = 1.0F - std::exp(-26.0F * deltaSeconds);
-    paddle->position.x = std::clamp(
-        paddle->position.x + (gameState->paddleTargetX - paddle->position.x) * follow,
-        margin,
-        kWorldWidth - margin
-    );
+    paddle->position.x = std::clamp(gameState->paddleTargetX, margin, kWorldWidth - margin);
     if (paddleVelocity) paddleVelocity->value = {(paddle->position.x - previousX) / deltaSeconds, 0.0F};
     const auto* ball = registry.get<Ball>(gameState->ball);
     if (ball && ball->attached) {
@@ -235,6 +237,15 @@ void brickCleanupSystem(EngineContext& context, float) {
     for (const Entity entity : registry.pool<Brick>().entities()) {
         if (registry.get<Brick>(entity)->hitPoints < 0) destroyed.push_back(entity);
     }
+    if (destroyed.empty()) return;
+    std::vector<Entity> destroyedLabels;
+    for (const Entity entity : registry.pool<BrickLabel>().entities()) {
+        const auto* label = registry.get<BrickLabel>(entity);
+        if (label && std::find(destroyed.begin(), destroyed.end(), label->brick) != destroyed.end()) {
+            destroyedLabels.push_back(entity);
+        }
+    }
+    for (const Entity entity : destroyedLabels) registry.destroy(entity);
     for (const Entity entity : destroyed) registry.destroy(entity);
 }
 

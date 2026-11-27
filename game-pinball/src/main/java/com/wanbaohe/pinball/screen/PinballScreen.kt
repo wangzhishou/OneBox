@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.systemGestureExclusion
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
@@ -26,6 +27,9 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,9 +49,11 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
+import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePauseBars
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineVisibility
 import com.wanbaohe.base.ui.button.PrimaryButton
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassButton
@@ -67,8 +73,21 @@ private val LevelRows = (1..PINBALL_MAX_LEVEL).chunked(4)
 @Composable
 fun PinballScreen(component: PinballComponent) {
     val state by component.uiState.collectAsState()
+    var isGameOverPanelVisible by remember { mutableStateOf(true) }
     val lifecycleOwner = LocalLifecycleOwner.current
     val colorScheme = MaterialTheme.colorScheme
+    val showTopBarIconBackground = LocalSettingsState.current.isGlassAlphaEnabled
+    val topBarIconColors = IconButtonDefaults.iconButtonColors(
+        containerColor = colorScheme.primaryContainer,
+        contentColor = if (showTopBarIconBackground) {
+            colorScheme.onPrimaryContainer
+        } else {
+            colorScheme.onSurface
+        },
+    )
+    LaunchedEffect(state.phase) {
+        if (state.phase == PinballPhase.GameOver) isGameOverPanelVisible = true
+    }
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_PAUSE) component.pause()
@@ -78,28 +97,52 @@ fun PinballScreen(component: PinballComponent) {
     }
     LaunchedEffect(
         colorScheme.surface,
-        colorScheme.primary,
-        colorScheme.secondary,
-        colorScheme.tertiary,
-        colorScheme.outline,
-        colorScheme.onSurface,
+        colorScheme.primaryContainer,
+        colorScheme.secondaryContainer,
+        colorScheme.tertiaryContainer,
+        colorScheme.onSecondaryContainer,
+        colorScheme.error,
     ) {
         component.updateTheme(
             PinballThemeColors(
                 surface = colorScheme.surface.toArgb(),
-                primary = colorScheme.primary.toArgb(),
-                secondary = colorScheme.secondary.toArgb(),
-                tertiary = colorScheme.tertiary.toArgb(),
-                outline = colorScheme.outline.toArgb(),
-                onSurface = colorScheme.onSurface.toArgb(),
+                primary = colorScheme.primaryContainer.toArgb(),
+                secondary = colorScheme.secondaryContainer.toArgb(),
+                tertiary = colorScheme.tertiaryContainer.toArgb(),
+                onSecondary = colorScheme.onSecondaryContainer.toArgb(),
+                error = colorScheme.error.toArgb(),
             )
         )
     }
 
     BaseScreen(
+        modifier = Modifier
+            .fillMaxSize()
+            .then(
+                if (state.phase == PinballPhase.Playing) {
+                    Modifier.systemGestureExclusion()
+                } else {
+                    Modifier
+                }
+            ),
         title = stringResource(R.string.pinball_title),
         onGoBack = component.onGoBack,
         showNavigationBarsPadding = false,
+        navigationIcon = {
+            GlassIconButton(
+                onClick = component.onGoBack,
+                modifier = Modifier.size(48.dp),
+                colors = topBarIconColors,
+                showBackground = showTopBarIconBackground,
+                glassBorderWidth = 0.dp,
+            ) {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack,
+                    contentDescription = stringResource(R.string.pinball_back),
+                    modifier = Modifier.size(24.dp),
+                )
+            }
+        },
         colors = topAppBarColors().copy(
             containerColor = Color.Transparent,
             scrolledContainerColor = Color.Transparent,
@@ -108,21 +151,37 @@ fun PinballScreen(component: PinballComponent) {
             actionIconContentColor = colorScheme.onSurface,
         ),
         actions = {
-            if (state.phase == PinballPhase.Playing) {
-                GlassIconButton(
-                    onClick = component::pause,
-                    modifier = Modifier.size(48.dp),
-                    colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = colorScheme.primaryContainer,
-                        contentColor = colorScheme.onPrimaryContainer,
-                    ),
-                    glassBorderWidth = 0.dp,
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePauseBars,
-                        contentDescription = stringResource(R.string.pinball_pause),
-                        modifier = Modifier.size(24.dp),
-                    )
+            when {
+                state.phase == PinballPhase.Playing -> {
+                    GlassIconButton(
+                        onClick = component::pause,
+                        modifier = Modifier.size(48.dp),
+                        colors = topBarIconColors,
+                        showBackground = showTopBarIconBackground,
+                        glassBorderWidth = 0.dp,
+                    ) {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePauseBars,
+                            contentDescription = stringResource(R.string.pinball_pause),
+                            modifier = Modifier.size(24.dp),
+                        )
+                    }
+                }
+
+                state.phase == PinballPhase.GameOver && !isGameOverPanelVisible -> {
+                    GlassIconButton(
+                        onClick = { isGameOverPanelVisible = true },
+                        modifier = Modifier.size(48.dp),
+                        colors = topBarIconColors,
+                        showBackground = showTopBarIconBackground,
+                        glassBorderWidth = 0.dp,
+                    ) {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
+                            contentDescription = stringResource(R.string.pinball_show_result),
+                            modifier = Modifier.size(24.dp),
+                        )
+                    }
                 }
             }
         },
@@ -131,6 +190,7 @@ fun PinballScreen(component: PinballComponent) {
                 controller = component.engineController,
                 modifier = Modifier.fillMaxSize(),
                 onSnapshot = component::updateSnapshot,
+                translucent = true,
             )
         },
         foreground = {
@@ -144,7 +204,10 @@ fun PinballScreen(component: PinballComponent) {
                         vertical = 16.dp,
                     ),
             )
-            if (state.phase != PinballPhase.Playing) {
+            if (
+                state.phase != PinballPhase.Playing &&
+                (state.phase != PinballPhase.GameOver || isGameOverPanelVisible)
+            ) {
                 GameOverlay(
                     state = state,
                     onLaunch = component::launch,
@@ -152,6 +215,7 @@ fun PinballScreen(component: PinballComponent) {
                     onRestart = component::restart,
                     onBack = component.onGoBack,
                     onSelectLevel = component::selectLevel,
+                    onShowStage = { isGameOverPanelVisible = false },
                 )
             }
         },
@@ -164,40 +228,38 @@ private fun GameHud(state: PinballUiState, modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        if (state.ballCount > 1 || state.enlargedBallCount > 0 || state.combo > 1) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                if (state.ballCount > 1) {
-                    Text(
-                        text = stringResource(R.string.pinball_split_active, state.ballCount),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.secondary,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                }
-                if (state.enlargedBallCount > 0) {
-                    Text(
-                        text = stringResource(
-                            R.string.pinball_enlarge_active,
-                            ceil(state.enlargeSeconds).toInt(),
-                        ),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.tertiary,
-                        fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.padding(start = 16.dp),
-                    )
-                }
-                if (state.combo > 1) {
-                    Text(
-                        text = stringResource(R.string.pinball_combo, state.combo),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(start = 16.dp),
-                    )
-                }
+        Row(
+            modifier = Modifier.fillMaxWidth().heightIn(min = 20.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            if (state.ballCount > 1) {
+                Text(
+                    text = stringResource(R.string.pinball_split_active, state.ballCount),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    fontWeight = FontWeight.SemiBold,
+                )
+            }
+            if (state.enlargedBallCount > 0) {
+                Text(
+                    text = stringResource(
+                        R.string.pinball_enlarge_active,
+                        ceil(state.enlargeSeconds).toInt(),
+                    ),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.padding(start = 16.dp),
+                )
+            }
+            if (state.combo > 1) {
+                Text(
+                    text = stringResource(R.string.pinball_combo, state.combo),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(start = 16.dp),
+                )
             }
         }
         Row(
@@ -239,13 +301,11 @@ private fun GameHud(state: PinballUiState, modifier: Modifier = Modifier) {
                 }
             }
         }
-        if (state.combo > 1) {
-            GlassLinearProgressIndicator(
-                progress = { state.comboProgress },
-                modifier = Modifier.fillMaxWidth().height(3.dp),
-                color = MaterialTheme.colorScheme.secondary,
-            )
-        }
+        GlassLinearProgressIndicator(
+            progress = { if (state.combo > 1) state.comboProgress else 0f },
+            modifier = Modifier.fillMaxWidth().height(3.dp),
+            color = MaterialTheme.colorScheme.secondaryContainer,
+        )
     }
 }
 
@@ -253,11 +313,11 @@ private fun GameHud(state: PinballUiState, modifier: Modifier = Modifier) {
 private fun PowerUpLegend() {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         PowerUpLegendRow(
-            color = MaterialTheme.colorScheme.secondary,
+            color = MaterialTheme.colorScheme.secondaryContainer,
             text = stringResource(R.string.pinball_split_description),
         )
         PowerUpLegendRow(
-            color = MaterialTheme.colorScheme.tertiary,
+            color = MaterialTheme.colorScheme.tertiaryContainer,
             text = stringResource(R.string.pinball_enlarge_description),
         )
     }
@@ -345,6 +405,8 @@ private fun GameDialog(
     primaryIcon: ImageVector,
     onPrimary: () -> Unit,
     onBack: (() -> Unit)?,
+    primaryContainerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    primaryContentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     EnhancedAlertDialog(
@@ -371,6 +433,8 @@ private fun GameDialog(
                 text = primaryLabel,
                 onClick = onPrimary,
                 modifier = Modifier.heightIn(min = 48.dp),
+                containerColor = primaryContainerColor,
+                contentColor = primaryContentColor,
                 icon = {
                     Icon(
                         imageVector = primaryIcon,
@@ -409,6 +473,7 @@ private fun GameOverlay(
     onRestart: () -> Unit,
     onBack: () -> Unit,
     onSelectLevel: (Int) -> Unit,
+    onShowStage: () -> Unit,
 ) {
     val title = when (state.phase) {
         PinballPhase.Ready -> stringResource(
@@ -454,6 +519,16 @@ private fun GameOverlay(
         primaryIcon = primaryIcon,
         onPrimary = primaryAction,
         onBack = if (state.phase == PinballPhase.Ready) null else onBack,
+        primaryContainerColor = if (state.phase == PinballPhase.GameOver) {
+            MaterialTheme.colorScheme.errorContainer
+        } else {
+            MaterialTheme.colorScheme.primaryContainer
+        },
+        primaryContentColor = if (state.phase == PinballPhase.GameOver) {
+            MaterialTheme.colorScheme.onErrorContainer
+        } else {
+            MaterialTheme.colorScheme.onPrimaryContainer
+        },
     ) {
         if (description != null) {
             Text(
@@ -474,7 +549,37 @@ private fun GameOverlay(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
+        if (state.phase == PinballPhase.GameOver) {
+            PrimaryButton(
+                text = stringResource(R.string.pinball_back_to_scene),
+                onClick = onShowStage,
+                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
+                containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                icon = {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineVisibility,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                    )
+                },
+            )
+        }
         if (state.phase == PinballPhase.Paused) {
+            PrimaryButton(
+                text = stringResource(R.string.pinball_restart),
+                onClick = onRestart,
+                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
+                containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                icon = {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                    )
+                },
+            )
             LevelSelector(
                 currentLevel = state.level,
                 onSelectLevel = onSelectLevel,

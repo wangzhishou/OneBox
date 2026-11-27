@@ -65,7 +65,7 @@ void main() {
     if (alpha < 0.002) discard;
     float emission = 0.8 + vEmissive * 1.5;
     vec3 light = vColor.rgb * emission;
-    if (vSphericalShading > 0.0 && vShape < 0.5) {
+    if (vSphericalShading > 0.0) {
         vec3 normal = vec3(p, sqrt(max(0.0, 1.0 - dot(p, p))));
         vec3 lightDirection = normalize(vec3(-0.45, -0.65, 0.8));
         float diffuse = 0.62 + 0.48 * max(dot(normal, lightDirection), 0.0);

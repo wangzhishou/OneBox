@@ -50,27 +50,6 @@ std::array<float, 4> brickColor(const PinballPalette& palette, BrickEffect effec
     return palette.normalBrick;
 }
 
-Entity addDecoration(
-    EngineContext& context,
-    Vec2 position,
-    Vec2 size,
-    std::array<float, 4> color,
-    float emissive,
-    float rotation = 0.0F,
-    SdfShape shape = SdfShape::RoundedBox
-) {
-    const Entity entity = context.registry().create();
-    auto& transform = context.registry().add<Transform>(entity);
-    transform.position = position;
-    transform.rotation = rotation;
-    auto& render = context.registry().add<GlowRender>(entity);
-    render.shape = shape;
-    render.size = size;
-    render.color = color;
-    render.emissive = emissive;
-    return entity;
-}
-
 Entity addWall(EngineContext& context, Vec2 position, Vec2 halfSize) {
     const Entity entity = context.registry().create();
     context.registry().add<Transform>(entity).position = position;
@@ -80,6 +59,42 @@ Entity addWall(EngineContext& context, Vec2 position, Vec2 halfSize) {
     collider.restitution = 0.98F;
     collider.layer = 2;
     return entity;
+}
+
+void addLabelBar(
+    EngineContext& context,
+    Entity brick,
+    Vec2 position,
+    Vec2 offset,
+    Vec2 size,
+    float scale,
+    std::array<float, 4> color
+) {
+    auto& registry = context.registry();
+    const Entity label = registry.create();
+    registry.add<Transform>(label).position = position + offset * scale;
+    registry.add<BrickLabel>(label).brick = brick;
+    auto& render = registry.add<GlowRender>(label);
+    render.shape = SdfShape::RoundedBox;
+    render.size = size * scale;
+    render.color = color;
+}
+
+void addSplitLabel(
+    EngineContext& context,
+    Entity brick,
+    Vec2 position,
+    Vec2 brickSize,
+    std::array<float, 4> color
+) {
+    const float scale = std::clamp(std::min(brickSize.x / 40.0F, brickSize.y / 24.0F), 0.8F, 1.1F);
+    addLabelBar(context, brick, position, {-9.0F, 0.0F}, {8.0F, 2.4F}, scale, color);
+    addLabelBar(context, brick, position, {-9.0F, 0.0F}, {2.4F, 8.0F}, scale, color);
+    addLabelBar(context, brick, position, {7.0F, -7.0F}, {10.0F, 2.4F}, scale, color);
+    addLabelBar(context, brick, position, {7.0F, 0.0F}, {10.0F, 2.4F}, scale, color);
+    addLabelBar(context, brick, position, {7.0F, 7.0F}, {10.0F, 2.4F}, scale, color);
+    addLabelBar(context, brick, position, {12.0F, -3.5F}, {2.4F, 6.0F}, scale, color);
+    addLabelBar(context, brick, position, {12.0F, 3.5F}, {2.4F, 6.0F}, scale, color);
 }
 
 void addBrick(
@@ -105,10 +120,25 @@ void addBrick(
     render.size = size;
     render.color = brickColor(gameState->palette, effect);
     render.emissive = 0.12F;
+    if (effect == BrickEffect::Split) {
+        addSplitLabel(context, brick, position, size, gameState->palette.splitBrickContent);
+    }
     ++gameState->remainingBricks;
 }
 
 void buildFirstLevel(EngineContext& context) {
+    for (int row = 0; row < 16; ++row) {
+        for (int column = 0; column < 16; ++column) {
+            const Vec2 position{30.0F + column * 44.0F, 200.0F + row * 42.0F};
+            const BrickEffect effect = row == 5
+                ? BrickEffect::Enlarge
+                : ((row + column) % 4 != 0 ? BrickEffect::Split : BrickEffect::Normal);
+            addBrick(context, position, effect, 1, 100);
+        }
+    }
+}
+
+void buildSecondLevel(EngineContext& context) {
     constexpr std::array<std::array<int, 2>, 14> splitPositions{{
         {{1, 4}}, {{1, 12}}, {{2, 2}}, {{2, 9}}, {{3, 6}}, {{3, 13}},
         {{6, 3}}, {{6, 11}}, {{7, 7}}, {{8, 1}}, {{8, 14}}, {{9, 5}},
@@ -145,18 +175,10 @@ void buildFirstLevel(EngineContext& context) {
     }
 }
 
-void buildOriginalLevel(EngineContext& context, std::uint32_t level) {
-    constexpr std::array<std::array<float, 4>, 6> colors{{
-        {0.68F, 0.25F, 1.0F, 0.9F},
-        {0.9F, 0.22F, 0.65F, 0.9F},
-        {0.2F, 0.48F, 1.0F, 0.9F},
-        {0.05F, 0.85F, 0.8F, 0.9F},
-        {0.45F, 0.9F, 0.35F, 0.9F},
-        {1.0F, 0.65F, 0.18F, 0.9F},
-    }};
+void buildClassicLevel(EngineContext& context) {
     for (int row = 0; row < 6; ++row) {
         for (int column = 0; column < 8; ++column) {
-            const int hitPoints = row == 0 || (level > 1 && row == 1) ? 2 : 1;
+            const int hitPoints = row == 0 || row == 1 ? 2 : 1;
             addBrick(
                 context,
                 {80.0F + column * 80.0F, 180.0F + row * 48.0F},
@@ -180,7 +202,7 @@ void buildOriginalLevel(EngineContext& context, std::uint32_t level) {
         context.registry().add<Bumper>(bumper);
         auto& render = context.registry().add<GlowRender>(bumper);
         render.size = {68.0F, 68.0F};
-        render.color = colors[2];
+        render.color = state(context)->palette.enlargeBrick;
         render.emissive = 0.5F;
     }
 }
@@ -226,10 +248,10 @@ void PinballGame::onCommand(EngineContext& context, const Command& command) {
     auto* gameState = state(context);
     if (!gameState) return;
     if (command.type == kGameCommandTheme) {
-        gameState->palette.background = readColor(command, 0);
         gameState->palette.normalBrick = readColor(command, 4);
         gameState->palette.splitBrick = readColor(command, 8);
         gameState->palette.enlargeBrick = readColor(command, 12);
+        gameState->palette.splitBrickContent = readColor(command, 16);
         gameState->palette.ball = readColor(command, 20);
         applyPalette(context);
         return;
@@ -308,31 +330,19 @@ void PinballGame::buildWorld(
     gameState.palette = palette;
     registry.add<Camera2D>(stateEntity);
 
-    if (level > 1) {
-        addDecoration(context, {120, 220}, {330, 330}, {0.16F, 0.08F, 0.5F, 0.12F}, 0.8F, 0, SdfShape::Circle);
-        addDecoration(context, {640, 650}, {430, 430}, {0.0F, 0.45F, 0.55F, 0.1F}, 0.8F, 0, SdfShape::Circle);
-        addDecoration(context, {180, 1130}, {360, 360}, {0.35F, 0.04F, 0.4F, 0.09F}, 0.7F, 0, SdfShape::Circle);
-        addDecoration(context, {340, 760}, {620, 16}, {0.1F, 0.65F, 0.8F, 0.08F}, 0.4F, 0.5F);
-        addDecoration(context, {410, 900}, {560, 12}, {0.65F, 0.16F, 0.7F, 0.07F}, 0.4F, -0.65F);
-        for (int index = 0; index < 34; ++index) {
-            const float x = std::fmod(47.0F + index * 137.0F, kWorldWidth);
-            const float y = std::fmod(83.0F + index * 239.0F, kWorldHeight);
-            const float size = 1.5F + static_cast<float>(index % 3);
-            addDecoration(context, {x, y}, {size, size}, {0.55F, 0.8F, 1.0F, 0.35F}, 0.8F, 0, SdfShape::Circle);
-        }
-    }
-
     addWall(context, {-4.0F, 640.0F}, {8.0F, 648.0F});
     addWall(context, {724.0F, 640.0F}, {8.0F, 648.0F});
     addWall(context, {360.0F, -4.0F}, {368.0F, 8.0F});
 
     if (level == 1) {
         buildFirstLevel(context);
+    } else if (level == 2) {
+        buildSecondLevel(context);
     } else {
-        buildOriginalLevel(context, level);
+        buildClassicLevel(context);
     }
 
-    const float paddleWidth = level == 1 ? 200.0F : 144.0F;
+    const float paddleWidth = level == 1 ? 220.0F : (level == 2 ? 180.0F : 144.0F);
     const Entity paddle = registry.create();
     registry.add<Transform>(paddle).position = {360.0F, kPaddleY};
     registry.add<RigidBody>(paddle);
@@ -345,8 +355,9 @@ void PinballGame::buildWorld(
     auto& paddleRender = registry.add<GlowRender>(paddle);
     paddleRender.shape = SdfShape::RoundedBox;
     paddleRender.size = {paddleWidth, 20.0F};
-    paddleRender.color = gameState.palette.splitBrick;
+    paddleRender.color = gameState.palette.ball;
     paddleRender.emissive = 0.12F;
+    paddleRender.sphericalShading = 1.0F;
 
     gameState.paddle = paddle;
     gameState.ball = addBall(context, {360.0F, kPaddleY - 32.0F}, {});

@@ -11,7 +11,7 @@
     <string name="pinball_combo">Combo ×%1$d</string>
     <string name="pinball_split_active">Split · %1$d balls</string>
     <string name="pinball_enlarge_active">Big ball · %1$ds</string>
-    <string name="pinball_split_description">Split bricks · one ball becomes three</string>
+    <string name="pinball_split_description">+3 split bricks · adds three balls</string>
     <string name="pinball_enlarge_description">Grow bricks · bigger balls for 12 seconds</string>
     <string name="pinball_pause">Pause</string>
     <string name="pinball_resume">Resume</string>
@@ -29,8 +29,10 @@
     <string name="pinball_level_option">Level %1$d</string>
     <string name="pinball_game_over">Game over</string>
     <string name="pinball_level_complete">Wall cleared</string>
-    <string name="pinball_level_complete_description">The next sector keeps the original brick layout with tougher bricks and a faster ball.</string>
+    <string name="pinball_level_complete_description">The next level brings a new layout, tougher bricks, and a faster ball.</string>
     <string name="pinball_score_value">Score: %1$d</string>
     <string name="pinball_best_value">Best: %1$d</string>
     <string name="pinball_back">Back</string>
+    <string name="pinball_back_to_scene">Back to game</string>
+    <string name="pinball_show_result">Show result</string>
 </resources>
