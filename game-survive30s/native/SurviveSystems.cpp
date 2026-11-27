@@ -72,6 +72,7 @@ Entity spawnObstacle(
     render.size = {radius * 2.0F, radius * 2.0F};
     render.color = obstacleColor(gameState.palette, colorIndex);
     render.emissive = 0.12F;
+    render.sphericalShading = 1.0F;
     return entity;
 }
 
@@ -140,12 +141,7 @@ void applyPalette(EngineContext& context) {
     if (!gameState) return;
     auto& registry = context.registry();
     const auto& palette = gameState->palette;
-    for (const Entity entity : registry.pool<GridLine>().entities()) {
-        if (auto* render = registry.get<GlowRender>(entity)) {
-            render->color = palette.outline;
-            render->color[3] = 0.08F;
-        }
-    }
+
     for (const Entity entity : registry.pool<Obstacle>().entities()) {
         const auto* obstacle = registry.get<Obstacle>(entity);
         if (auto* render = registry.get<GlowRender>(entity); render && obstacle) {
@@ -168,11 +164,12 @@ void applyPalette(EngineContext& context) {
         render->color[3] = alpha;
     }
     for (auto& camera : registry.pool<Camera2D>().values()) {
-        camera.clearColor = palette.background;
+        camera.clearColor = {0.0F, 0.0F, 0.0F, 0.0F};
         camera.toneMappingExposure = 0.0F;
         camera.bloomStrength = 0.0F;
         camera.additiveBlending = false;
         camera.alignWorldToTop = true;
+        camera.fillViewport = true;
     }
 }
 

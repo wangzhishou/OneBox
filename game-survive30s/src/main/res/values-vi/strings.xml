@@ -21,7 +21,7 @@
 <resources>
     <string name="survive_30s_title">Trụ 30 giây nhận điểm</string>
     <string name="survive_30s_ready">Sẵn sàng chưa?</string>
-    <string name="survive_30s_instruction">Kéo quả cầu xanh né chướng ngại vật\nCó thể di chuyển tự do lên xuống trái phải, trụ được 30 giây là thắng!</string>
+    <string name="survive_30s_instruction">Kéo quả cầu né chướng ngại vật\nCó thể di chuyển tự do lên xuống trái phải, trụ được 30 giây là thắng!</string>
     <string name="survive_30s_instruction_bonus">Né sát sẽ tích năng lượng, 3 lần được 1 lớp khiên, khiên sẽ giúp bạn chặn một cú va chạm.</string>
     <string name="survive_30s_start">Bắt đầu thử thách</string>
     <string name="survive_30s_game_over">Thử thách thất bại!</string>

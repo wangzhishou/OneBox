@@ -21,7 +21,7 @@
 <resources>
     <string name="survive_30s_title">Survis 30 s pour gagner des points</string>
     <string name="survive_30s_ready">Prêt ?</string>
-    <string name="survive_30s_instruction">Fais glisser la bille bleue pour éviter les obstacles\nDéplace-toi librement dans toutes les directions, tiens 30 secondes pour gagner !</string>
+    <string name="survive_30s_instruction">Fais glisser la bille pour éviter les obstacles\nDéplace-toi librement dans toutes les directions, tiens 30 secondes pour gagner !</string>
     <string name="survive_30s_instruction_bonus">Les esquives rapprochées accumulent de l\'énergie. 3 esquives donnent 1 bouclier qui bloque un impact.</string>
     <string name="survive_30s_start">Commencer</string>
     <string name="survive_30s_game_over">Échec !</string>

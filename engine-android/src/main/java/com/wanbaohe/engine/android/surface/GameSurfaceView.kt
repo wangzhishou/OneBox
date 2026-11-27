@@ -5,13 +5,17 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.view.MotionEvent
+import android.view.View
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import com.wanbaohe.engine.android.EngineCommands
 import com.wanbaohe.engine.android.EngineController
 import com.wanbaohe.engine.android.haptics.GameHaptics
 
-class GameSurfaceView(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
+class GameSurfaceView(context: Context) : SurfaceView(context), SurfaceHolder.Callback, GameRenderView {
+    override val androidView: View
+        get() = this
+
     private var controller: EngineController? = null
     private val haptics = GameHaptics(context)
 
@@ -25,11 +29,11 @@ class GameSurfaceView(context: Context) : SurfaceView(context), SurfaceHolder.Ca
         this.controller = controller
     }
 
-    fun dispatchHaptics(eventSequence: Int, strength: Float) {
+    override fun dispatchHaptics(eventSequence: Int, strength: Float) {
         haptics.tick(strength)
     }
 
-    fun release() {
+    override fun release() {
         holder.removeCallback(this)
         haptics.cancel()
     }

@@ -21,7 +21,7 @@
 <resources>
     <string name="survive_30s_title">Survive 30s</string>
     <string name="survive_30s_ready">Ready?</string>
-    <string name="survive_30s_instruction">Drag the blue ball to dodge obstacles\nMove freely in all directions. Survive 30 seconds to win!</string>
+    <string name="survive_30s_instruction">Drag the ball to dodge obstacles\nMove freely in all directions. Survive 30 seconds to win!</string>
     <string name="survive_30s_instruction_bonus">Close dodges build charge. Every 3 close calls grants 1 shield, and a shield blocks one hit for you.</string>
     <string name="survive_30s_start">Start</string>
     <string name="survive_30s_game_over">Game Over!</string>

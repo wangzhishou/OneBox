@@ -32,23 +32,6 @@ std::array<float, 4> readColor(const Command& command, std::size_t offset) {
     };
 }
 
-Entity addBox(
-    EngineContext& context,
-    Vec2 position,
-    Vec2 size,
-    std::array<float, 4> color,
-    float emissive = 0.0F
-) {
-    const Entity entity = context.registry().create();
-    context.registry().add<Transform>(entity).position = position;
-    auto& render = context.registry().add<GlowRender>(entity);
-    render.shape = SdfShape::RoundedBox;
-    render.size = size;
-    render.color = color;
-    render.emissive = emissive;
-    return entity;
-}
-
 struct SurviveRegistrar {
     SurviveRegistrar() {
         GameRegistry::registerGame("survive30s", [] { return std::make_unique<SurviveGame>(); });
@@ -80,11 +63,9 @@ void SurviveGame::onCommand(EngineContext& context, const Command& command) {
     auto* gameState = state(context);
     if (!gameState) return;
     if (command.type == kGameCommandTheme) {
-        gameState->palette.background = readColor(command, 0);
         gameState->palette.primary = readColor(command, 4);
         gameState->palette.secondary = readColor(command, 8);
         gameState->palette.tertiary = readColor(command, 12);
-        gameState->palette.outline = readColor(command, 16);
         gameState->palette.player = readColor(command, 20);
         applyPalette(context);
         return;
@@ -134,15 +115,6 @@ void SurviveGame::buildWorld(EngineContext& context, GamePhase phase) {
     std::random_device randomDevice;
     gameState.randomState = randomDevice() | 1U;
 
-    for (int index = 1; index < 10; ++index) {
-        const Entity line = addBox(context, {index * 72.0F, 640.0F}, {1.0F, 1280.0F}, palette.outline);
-        registry.add<GridLine>(line);
-    }
-    for (int index = 1; index < 18; ++index) {
-        const Entity line = addBox(context, {360.0F, index * 72.0F}, {720.0F, 1.0F}, palette.outline);
-        registry.add<GridLine>(line);
-    }
-
     const Entity danger = registry.create();
     registry.add<Transform>(danger).position = {360.0F, 640.0F};
     auto& dangerRender = registry.add<GlowRender>(danger);
@@ -177,6 +149,7 @@ void SurviveGame::buildWorld(EngineContext& context, GamePhase phase) {
     render.size = {kPlayerRadius * 2.0F, kPlayerRadius * 2.0F};
     render.color = palette.player;
     render.emissive = 0.12F;
+    render.sphericalShading = 1.0F;
     gameState.player = player;
     applyPalette(context);
 }

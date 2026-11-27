@@ -21,7 +21,7 @@
 <resources>
     <string name="survive_30s_title">Sobrevive 30s</string>
     <string name="survive_30s_ready">¿Listo?</string>
-    <string name="survive_30s_instruction">Arrastra la bola azul para esquivar obstáculos\nMuévete libremente en todas las direcciones. ¡Sobrevive 30 segundos para ganar!</string>
+    <string name="survive_30s_instruction">Arrastra la bola para esquivar obstáculos\nMuévete libremente en todas las direcciones. ¡Sobrevive 30 segundos para ganar!</string>
     <string name="survive_30s_instruction_bonus">Las esquivas cercanas acumulan carga. Cada 3 roces cercanos otorgan 1 escudo, y un escudo bloquea un golpe por ti.</string>
     <string name="survive_30s_start">Iniciar</string>
     <string name="survive_30s_game_over">¡Juego Terminado!</string>

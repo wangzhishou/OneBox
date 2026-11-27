@@ -45,5 +45,5 @@ data class SurviveThemeColors(
     val secondary: Int,
     val tertiary: Int,
     val outline: Int,
-    val onSurface: Int,
+    val player: Int,
 )

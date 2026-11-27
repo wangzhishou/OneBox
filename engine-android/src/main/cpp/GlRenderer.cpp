@@ -24,6 +24,7 @@ out vec2 vLocal;
 out vec4 vColor;
 out float vShape;
 out float vEmissive;
+out float vSphericalShading;
 void main() {
     float angle = iMeta.x;
     float c = cos(angle);
@@ -38,6 +39,7 @@ void main() {
     vColor = iColor;
     vShape = iMeta.y;
     vEmissive = iMeta.z;
+    vSphericalShading = iMeta.w;
 }
 )";
 
@@ -47,6 +49,7 @@ in vec2 vLocal;
 in vec4 vColor;
 in float vShape;
 in float vEmissive;
+in float vSphericalShading;
 out vec4 fragColor;
 void main() {
     vec2 p = vLocal * 2.0;
@@ -60,7 +63,17 @@ void main() {
     float antialias = max(fwidth(distanceField), 0.006);
     float alpha = (1.0 - smoothstep(-antialias, antialias, distanceField)) * vColor.a;
     if (alpha < 0.002) discard;
-    vec3 light = vColor.rgb * (0.8 + vEmissive * 1.5);
+    float emission = 0.8 + vEmissive * 1.5;
+    vec3 light = vColor.rgb * emission;
+    if (vSphericalShading > 0.0 && vShape < 0.5) {
+        vec3 normal = vec3(p, sqrt(max(0.0, 1.0 - dot(p, p))));
+        vec3 lightDirection = normalize(vec3(-0.45, -0.65, 0.8));
+        float diffuse = 0.62 + 0.48 * max(dot(normal, lightDirection), 0.0);
+        vec3 halfDirection = normalize(lightDirection + vec3(0.0, 0.0, 1.0));
+        float highlight = pow(max(dot(normal, halfDirection), 0.0), 28.0) * 0.32;
+        vec3 spherical = clamp((vColor.rgb * diffuse + vec3(highlight)) * emission, 0.0, 1.0);
+        light = mix(light, spherical, clamp(vSphericalShading, 0.0, 1.0));
+    }
     fragColor = vec4(light, alpha);
 }
 )";
@@ -113,13 +126,13 @@ uniform float uBloomStrength;
 uniform float uExposure;
 out vec4 fragColor;
 void main() {
-    vec3 scene = texture(uTexture, vUv).rgb;
+    vec4 sceneSample = texture(uTexture, vUv);
     vec3 bloom = texture(uBloom, vUv).rgb * uBloomStrength;
     vec2 centered = vUv * 2.0 - 1.0;
     float vignette = 1.0 - dot(centered, centered) * 0.16;
-    vec3 color = (scene + bloom * 0.8) * vignette;
+    vec3 color = (sceneSample.rgb + bloom * 0.8) * vignette;
     if (uExposure > 0.0) color = vec3(1.0) - exp(-color * uExposure);
-    fragColor = vec4(color, 1.0);
+    fragColor = vec4(color, sceneSample.a);
 }
 )";
 
@@ -268,7 +281,11 @@ void GlRenderer::clear(const Camera2D& camera) {
     glClearColor(camera.clearColor[0], camera.clearColor[1], camera.clearColor[2], camera.clearColor[3]);
     glClear(GL_COLOR_BUFFER_BIT);
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, camera.additiveBlending ? GL_ONE : GL_ONE_MINUS_SRC_ALPHA);
+    if (camera.additiveBlending) {
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    } else {
+        glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    }
 }
 
 void GlRenderer::drawSdfBatch(const std::vector<SdfInstance>& instances) {
@@ -287,7 +304,7 @@ void GlRenderer::drawInstances(const std::vector<SdfInstance>& instances) {
         instanceData_.insert(instanceData_.end(), {
             instance.position.x, instance.position.y,
             instance.size.x, instance.size.y,
-            instance.rotation, static_cast<float>(instance.shape), instance.emissive, instance.softness,
+            instance.rotation, static_cast<float>(instance.shape), instance.emissive, instance.sphericalShading,
             instance.color[0], instance.color[1], instance.color[2], instance.color[3],
         });
     }

@@ -1,5 +1,6 @@
 package com.wanbaohe.engine.android.surface
 
+import android.view.View
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -13,19 +14,30 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.wanbaohe.engine.android.EngineController
 import com.wanbaohe.engine.android.EngineSnapshot
 
+interface GameRenderView {
+    val androidView: View
+    fun dispatchHaptics(eventSequence: Int, strength: Float)
+    fun release()
+}
+
 @Composable
 fun GameSurface(
     controller: EngineController,
     modifier: Modifier = Modifier,
     onSnapshot: (EngineSnapshot) -> Unit,
+    translucent: Boolean = false,
 ) {
     val context = LocalContext.current
     val currentOnSnapshot by rememberUpdatedState(onSnapshot)
-    val view = remember(controller) {
-        GameSurfaceView(context).apply { attach(controller) }
+    val view: GameRenderView = remember(controller, translucent) {
+        if (translucent) {
+            GameTextureView(context).apply { attach(controller) }
+        } else {
+            GameSurfaceView(context).apply { attach(controller) }
+        }
     }
     AndroidView(
-        factory = { view },
+        factory = { view.androidView },
         modifier = modifier,
     )
     LaunchedEffect(view) {

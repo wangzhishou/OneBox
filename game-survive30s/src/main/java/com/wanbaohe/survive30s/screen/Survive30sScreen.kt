@@ -19,9 +19,11 @@
 
 package com.wanbaohe.survive30s.screen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.systemGestureExclusion
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -118,20 +120,20 @@ fun Survive30sScreen(
     }
     LaunchedEffect(
         colorScheme.surface,
-        colorScheme.primary,
-        colorScheme.secondary,
-        colorScheme.tertiary,
+        colorScheme.primaryContainer,
+        colorScheme.secondaryContainer,
+        colorScheme.tertiaryContainer,
         colorScheme.outline,
-        colorScheme.onSurface,
+        colorScheme.error,
     ) {
         component.updateTheme(
             SurviveThemeColors(
                 surface = colorScheme.surface.toArgb(),
-                primary = colorScheme.primary.toArgb(),
-                secondary = colorScheme.secondary.toArgb(),
-                tertiary = colorScheme.tertiary.toArgb(),
+                primary = colorScheme.primaryContainer.toArgb(),
+                secondary = colorScheme.secondaryContainer.toArgb(),
+                tertiary = colorScheme.tertiaryContainer.toArgb(),
                 outline = colorScheme.outline.toArgb(),
-                onSurface = colorScheme.onSurface.toArgb(),
+                player = colorScheme.error.toArgb(),
             )
         )
     }
@@ -148,9 +150,43 @@ fun Survive30sScreen(
     }
 
     BaseScreen(
+        modifier = Modifier
+            .fillMaxSize()
+            .then(
+                if (state.gameState == GameState.PLAYING) {
+                    Modifier.systemGestureExclusion()
+                } else {
+                    Modifier
+                }
+            )
+            .pointerInput(Unit) {
+                detectDragGestures(
+                    onDragStart = { offset ->
+                        dragTargetX = offset.x
+                        dragTargetY = offset.y
+                        component.movePlayerTo(offset.x, offset.y)
+                    },
+                    onDragCancel = {
+                        dragTargetX = Float.NaN
+                        dragTargetY = Float.NaN
+                    },
+                    onDragEnd = {
+                        dragTargetX = Float.NaN
+                        dragTargetY = Float.NaN
+                    },
+                ) { change, dragAmount ->
+                    change.consume()
+                    val newX = (dragTargetX.takeIf { !it.isNaN() } ?: 0f) + dragAmount.x
+                    val newY = (dragTargetY.takeIf { !it.isNaN() } ?: 0f) + dragAmount.y
+                    dragTargetX = newX
+                    dragTargetY = newY
+                    component.movePlayerTo(newX, newY)
+                }
+            },
         title = stringResource(R.string.survive_30s_title),
         onGoBack = component.onGoBack,
         showNavigationBarsPadding = false,
+        isBackHandler = false,
         colors = topAppBarColors().copy(
             containerColor = Color.Transparent,
             scrolledContainerColor = Color.Transparent,
@@ -182,32 +218,7 @@ fun Survive30sScreen(
                 controller = component.engineController,
                 onSnapshot = component::updateSnapshot,
                 onCanvasSizeChanged = component::updateCanvasSize,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .pointerInput(Unit) {
-                        detectDragGestures(
-                            onDragStart = { offset ->
-                                dragTargetX = offset.x
-                                dragTargetY = offset.y
-                                component.movePlayerTo(offset.x, offset.y)
-                            },
-                            onDragCancel = {
-                                dragTargetX = Float.NaN
-                                dragTargetY = Float.NaN
-                            },
-                            onDragEnd = {
-                                dragTargetX = Float.NaN
-                                dragTargetY = Float.NaN
-                            },
-                        ) { change, dragAmount ->
-                            change.consume()
-                            val newX = (dragTargetX.takeIf { !it.isNaN() } ?: 0f) + dragAmount.x
-                            val newY = (dragTargetY.takeIf { !it.isNaN() } ?: 0f) + dragAmount.y
-                            dragTargetX = newX
-                            dragTargetY = newY
-                            component.movePlayerTo(newX, newY)
-                        }
-                    },
+                modifier = Modifier.fillMaxSize(),
             )
         },
         foreground = {
@@ -248,6 +259,7 @@ fun Survive30sScreen(
             }
         },
     )
+    BackHandler {}
 }
 
 @Composable
@@ -396,6 +408,7 @@ private fun GameStage(
             controller = controller,
             modifier = Modifier.fillMaxSize(),
             onSnapshot = onSnapshot,
+            translucent = true,
         )
     }
 }

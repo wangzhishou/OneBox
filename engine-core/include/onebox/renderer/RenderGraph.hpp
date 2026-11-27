@@ -15,7 +15,7 @@ struct SdfInstance {
     float rotation = 0.0F;
     SdfShape shape = SdfShape::Circle;
     float emissive = 0.0F;
-    float softness = 0.02F;
+    float sphericalShading = 0.0F;
     std::array<float, 4> color{};
 };
 

@@ -21,7 +21,7 @@
 <resources>
     <string name="survive_30s_title">Makaligtas ng 30s</string>
     <string name="survive_30s_ready">Handa na?</string>
-    <string name="survive_30s_instruction">I-drag ang asul na bola upang umiwas sa mga balakid\nMalayang gumalaw sa lahat ng direksyon. Makaligtas ng 30 segundo upang manalo!</string>
+    <string name="survive_30s_instruction">I-drag ang bola upang umiwas sa mga balakid\nMalayang gumalaw sa lahat ng direksyon. Makaligtas ng 30 segundo upang manalo!</string>
     <string name="survive_30s_instruction_bonus">Ang malalapit na pag-iwas ay nag-iipon ng charge. Bawat 3 malalapit na tawag ay nagbibigay ng 1 shield, at ang shield ay humaharang ng isang tamaan para sa iyo.</string>
     <string name="survive_30s_start">Simulan</string>
     <string name="survive_30s_game_over">Laro Tapos!</string>

@@ -21,7 +21,7 @@
 <resources>
     <string name="survive_30s_title">30초 생존하기</string>
     <string name="survive_30s_ready">준비됐나요?</string>
-    <string name="survive_30s_instruction">파란 공을 드래그해 장애물을 피하세요\n모든 방향으로 자유롭게 움직일 수 있습니다. 30초를 버티면 승리합니다!</string>
+    <string name="survive_30s_instruction">공을 드래그해 장애물을 피하세요\n모든 방향으로 자유롭게 움직일 수 있습니다. 30초를 버티면 승리합니다!</string>
     <string name="survive_30s_instruction_bonus">근접 회피가 차지를 쌓습니다. 근접 회피 3회마다 보호막 1개가 생기며, 보호막은 한 번의 피격을 막아줍니다.</string>
     <string name="survive_30s_start">시작</string>
     <string name="survive_30s_game_over">게임 오버!</string>

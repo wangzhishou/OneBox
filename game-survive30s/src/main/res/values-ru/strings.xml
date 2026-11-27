@@ -21,7 +21,7 @@
 <resources>
     <string name="survive_30s_title">Продержись 30 сек</string>
     <string name="survive_30s_ready">Готов?</string>
-    <string name="survive_30s_instruction">Перетаскивай синий шар, чтобы уклоняться от препятствий\nДвигайся свободно во всех направлениях. Продержись 30 секунд, чтобы победить!</string>
+    <string name="survive_30s_instruction">Перетаскивай шар, чтобы уклоняться от препятствий\nДвигайся свободно во всех направлениях. Продержись 30 секунд, чтобы победить!</string>
     <string name="survive_30s_instruction_bonus">Близкие уклонения накапливают заряд. Каждые 3 близких вызова дают 1 щит, а щит блокирует одно попадание.</string>
     <string name="survive_30s_start">Старт</string>
     <string name="survive_30s_game_over">Игра окончена!</string>

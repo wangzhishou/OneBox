@@ -21,7 +21,7 @@
 <resources>
     <string name="survive_30s_title">Bertahan 30 detik</string>
     <string name="survive_30s_ready">Siap?</string>
-    <string name="survive_30s_instruction">Seret bola biru untuk menghindari rintangan\nBergerak bebas ke segala arah. Bertahan 30 detik untuk menang!</string>
+    <string name="survive_30s_instruction">Seret bola untuk menghindari rintangan\nBergerak bebas ke segala arah. Bertahan 30 detik untuk menang!</string>
     <string name="survive_30s_instruction_bonus">Menghindar dekat membangun daya. Setiap 3 kali nyaris terkena memberi 1 perisai, dan perisai memblokir satu pukulan untukmu.</string>
     <string name="survive_30s_start">Mulai</string>
     <string name="survive_30s_game_over">Game Berakhir!</string>

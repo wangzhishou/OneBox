@@ -100,7 +100,7 @@ class Survive30sComponent @AssistedInject internal constructor(
             putInt(colors.secondary)
             putInt(colors.tertiary)
             putInt(colors.outline)
-            putInt(colors.onSurface)
+            putInt(colors.player)
         }
         engineController.dispatch(GAME_COMMAND_THEME, payload.array())
     }

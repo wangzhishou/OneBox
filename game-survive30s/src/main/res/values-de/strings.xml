@@ -21,7 +21,7 @@
 <resources>
     <string name="survive_30s_title">Überlebe 30s</string>
     <string name="survive_30s_ready">Bereit?</string>
-    <string name="survive_30s_instruction">Ziehe den blauen Ball, um Hindernissen auszuweichen\nBewege dich frei in alle Richtungen. Überlebe 30 Sekunden, um zu gewinnen!</string>
+    <string name="survive_30s_instruction">Ziehe den Ball, um Hindernissen auszuweichen\nBewege dich frei in alle Richtungen. Überlebe 30 Sekunden, um zu gewinnen!</string>
     <string name="survive_30s_instruction_bonus">Knappe Ausweichmanöver bauen Ladung auf. Alle 3 knappen Begegnungen gewähren 1 Schild, und ein Schild blockiert einen Treffer für dich.</string>
     <string name="survive_30s_start">Start</string>
     <string name="survive_30s_game_over">Spiel vorbei!</string>

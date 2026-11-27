@@ -21,7 +21,7 @@
 <resources>
     <string name="survive_30s_title">撐30秒賺積分</string>
     <string name="survive_30s_ready">準備好了嗎？</string>
-    <string name="survive_30s_instruction">拖動藍色圓球躲避障礙物\n可上下左右自由移動，堅持30秒即為勝利！</string>
+    <string name="survive_30s_instruction">拖動圓球躲避障礙物\n可上下左右自由移動，堅持30秒即為勝利！</string>
     <string name="survive_30s_instruction_bonus">近身閃避可積攢能量，3 次可獲得 1 層護盾，護盾會幫你擋下一次撞擊。</string>
     <string name="survive_30s_start">開始挑戰</string>
     <string name="survive_30s_game_over">挑戰失敗！</string>

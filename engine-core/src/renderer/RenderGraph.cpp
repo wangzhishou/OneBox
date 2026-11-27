@@ -12,7 +12,7 @@ SdfInstance makeInstance(Entity entity, const Registry& registry) {
         transform.rotation,
         render.shape,
         render.emissive,
-        0.02F,
+        render.sphericalShading,
         render.color,
     };
 }

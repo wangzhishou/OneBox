@@ -21,7 +21,7 @@
 <resources>
     <string name="survive_30s_title">30 सेकंड बचें</string>
     <string name="survive_30s_ready">तैयार?</string>
-    <string name="survive_30s_instruction">नीली गेंद को खींचकर बाधाओं से बचें\nसभी दिशाओं में स्वतंत्र रूप से चलें। जीतने के लिए 30 सेकंड तक बचे रहें!</string>
+    <string name="survive_30s_instruction">गेंद को खींचकर बाधाओं से बचें\nसभी दिशाओं में स्वतंत्र रूप से चलें। जीतने के लिए 30 सेकंड तक बचे रहें!</string>
     <string name="survive_30s_instruction_bonus">करीबी बचाव से चार्ज बनता है। हर 3 करीबी बचाव पर 1 शील्ड मिलती है, और शील्ड आपके लिए एक हिट रोकती है।</string>
     <string name="survive_30s_start">शुरू करें</string>
     <string name="survive_30s_game_over">खेल समाप्त!</string>

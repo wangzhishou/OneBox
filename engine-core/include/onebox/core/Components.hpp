@@ -46,6 +46,7 @@ struct GlowRender {
     Vec2 size{1.0F, 1.0F};
     std::array<float, 4> color{1.0F, 1.0F, 1.0F, 1.0F};
     float emissive = 0.0F;
+    float sphericalShading = 0.0F;
 };
 
 struct Particle {
