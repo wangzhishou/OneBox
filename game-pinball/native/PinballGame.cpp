@@ -169,7 +169,7 @@ void buildEnclosedLevel(EngineContext& context, bool narrowEntrance) {
             const Vec2 position{30.0F + column * 44.0F, 200.0F + row * 42.0F};
             const bool isBottomBorder = row == 15 && (
                 column <= 4 || column >= 11 ||
-                (narrowEntrance && column >= 5 && column <= 10 && column != 7 && column != 8)
+                (narrowEntrance && column >= 5 && column <= 10 && column != 9 && column != 10)
             );
             if (row == 0 || column == 0 || column == 15 || isBottomBorder) {
                 addBorderBlock(context, position);
@@ -193,15 +193,15 @@ void buildEnclosedLevel(EngineContext& context, bool narrowEntrance) {
             );
             if (isSplit) effect = BrickEffect::Split;
             if (isExtraEnlarge) effect = BrickEffect::Enlarge;
-            if (narrowEntrance && row == 11 && (column == 7 || column == 8)) {
+            if (narrowEntrance && row == 11 && (column == 9 || column == 10)) {
                 effect = BrickEffect::Split;
             }
             addBrick(context, position, effect, 1, 100);
         }
     }
     if (narrowEntrance) {
-        addBorderBlock(context, {329.5F, 830.0F}, {33.0F, 38.0F});
-        addBorderBlock(context, {390.5F, 830.0F}, {33.0F, 38.0F});
+        addBorderBlock(context, {417.5F, 830.0F}, {33.0F, 38.0F});
+        addBorderBlock(context, {478.5F, 830.0F}, {33.0F, 38.0F});
     }
 }
 

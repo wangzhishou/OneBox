@@ -1,5 +1,6 @@
 package com.wanbaohe.pinball.screen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -128,6 +129,7 @@ fun PinballScreen(component: PinballComponent) {
         title = stringResource(R.string.pinball_title),
         onGoBack = component.onGoBack,
         showNavigationBarsPadding = false,
+        isBackHandler = false,
         navigationIcon = {
             GlassIconButton(
                 onClick = component.onGoBack,
@@ -220,6 +222,7 @@ fun PinballScreen(component: PinballComponent) {
             }
         },
     )
+    BackHandler {}
 }
 
 @Composable
