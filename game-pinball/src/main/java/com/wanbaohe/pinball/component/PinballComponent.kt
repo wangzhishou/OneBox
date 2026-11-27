@@ -60,7 +60,7 @@ class PinballComponent @AssistedInject internal constructor(
     fun restart() = engineController.dispatch(EngineCommands.RESET)
 
     fun selectLevel(level: Int) {
-        if (_uiState.value.phase != PinballPhase.Paused) return
+        if (_uiState.value.phase == PinballPhase.Playing) return
         val payload = ByteBuffer.allocate(LEVEL_PAYLOAD_BYTES).order(ByteOrder.LITTLE_ENDIAN).apply {
             putInt(level.coerceIn(1, PINBALL_MAX_LEVEL))
         }

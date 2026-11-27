@@ -6,6 +6,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.FlexAlignContent
+import androidx.compose.foundation.layout.FlexAlignItems
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexJustifyContent
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -410,6 +415,7 @@ private fun GameDialog(
     onBack: (() -> Unit)?,
     primaryContainerColor: Color = MaterialTheme.colorScheme.primaryContainer,
     primaryContentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    secondaryActions: @Composable () -> Unit = {},
     content: @Composable ColumnScope.() -> Unit,
 ) {
     EnhancedAlertDialog(
@@ -432,32 +438,43 @@ private fun GameDialog(
             )
         },
         confirmButton = {
-            PrimaryButton(
-                text = primaryLabel,
-                onClick = onPrimary,
-                modifier = Modifier.heightIn(min = 48.dp),
-                containerColor = primaryContainerColor,
-                contentColor = primaryContentColor,
-                icon = {
-                    Icon(
-                        imageVector = primaryIcon,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                    )
+            FlexBox(
+                modifier = Modifier.fillMaxWidth(),
+                config = {
+                    wrap(FlexWrap.Wrap)
+                    columnGap(8.dp)
+                    rowGap(12.dp)
+                    justifyContent(FlexJustifyContent.End)
+                    alignContent(FlexAlignContent.End)
+                    alignItems(FlexAlignItems.Center)
                 },
-            )
-        },
-        dismissButton = if (onBack == null) null else {
-            {
+            ) {
+                secondaryActions()
+                if (onBack != null) {
+                    PrimaryButton(
+                        text = stringResource(R.string.pinball_back),
+                        onClick = onBack,
+                        modifier = Modifier.heightIn(min = 48.dp),
+                        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        icon = {
+                            Icon(
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp),
+                            )
+                        },
+                    )
+                }
                 PrimaryButton(
-                    text = stringResource(R.string.pinball_back),
-                    onClick = onBack,
+                    text = primaryLabel,
+                    onClick = onPrimary,
                     modifier = Modifier.heightIn(min = 48.dp),
-                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
-                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    containerColor = primaryContainerColor,
+                    contentColor = primaryContentColor,
                     icon = {
                         Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack,
+                            imageVector = primaryIcon,
                             contentDescription = null,
                             modifier = Modifier.size(18.dp),
                         )
@@ -522,6 +539,41 @@ private fun GameOverlay(
         primaryIcon = primaryIcon,
         onPrimary = primaryAction,
         onBack = if (state.phase == PinballPhase.Ready) null else onBack,
+        secondaryActions = {
+            when (state.phase) {
+                PinballPhase.GameOver -> PrimaryButton(
+                    text = stringResource(R.string.pinball_back_to_scene),
+                    onClick = onShowStage,
+                    modifier = Modifier.heightIn(min = 48.dp),
+                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    icon = {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineVisibility,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                        )
+                    },
+                )
+
+                PinballPhase.Paused -> PrimaryButton(
+                    text = stringResource(R.string.pinball_restart),
+                    onClick = onRestart,
+                    modifier = Modifier.heightIn(min = 48.dp),
+                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    icon = {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                        )
+                    },
+                )
+
+                else -> Unit
+            }
+        },
         primaryContainerColor = if (state.phase == PinballPhase.GameOver) {
             MaterialTheme.colorScheme.errorContainer
         } else {
@@ -552,41 +604,9 @@ private fun GameOverlay(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
-        if (state.phase == PinballPhase.GameOver) {
-            PrimaryButton(
-                text = stringResource(R.string.pinball_back_to_scene),
-                onClick = onShowStage,
-                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
-                containerColor = MaterialTheme.colorScheme.surfaceContainer,
-                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                icon = {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineVisibility,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                    )
-                },
-            )
-        }
-        if (state.phase == PinballPhase.Paused) {
-            PrimaryButton(
-                text = stringResource(R.string.pinball_restart),
-                onClick = onRestart,
-                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
-                containerColor = MaterialTheme.colorScheme.surfaceContainer,
-                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                icon = {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                    )
-                },
-            )
-            LevelSelector(
-                currentLevel = state.level,
-                onSelectLevel = onSelectLevel,
-            )
-        }
+        LevelSelector(
+            currentLevel = state.level,
+            onSelectLevel = onSelectLevel,
+        )
     }
 }

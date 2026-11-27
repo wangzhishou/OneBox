@@ -161,6 +161,26 @@ void paddleControlSystem(EngineContext& context, float deltaSeconds) {
     }
 }
 
+void paddleBounceSystem(EngineContext& context, float) {
+    auto* gameState = state(context);
+    if (!gameState) return;
+    auto& registry = context.registry();
+    const auto* paddleVelocity = registry.get<Velocity>(gameState->paddle);
+    const float paddleSpeed = paddleVelocity ? paddleVelocity->value.x : 0.0F;
+    const float horizontalBoost = std::clamp(paddleSpeed * 0.45F, -360.0F, 360.0F);
+    auto& queue = context.events().subscribe<PaddleControlTag>();
+    CollisionEvent event{};
+    while (queue.pop(event)) {
+        if (gameState->phase != Phase::Playing || event.entityB != gameState->paddle || event.impulse <= 0.0F) {
+            continue;
+        }
+        if (std::abs(horizontalBoost) < 0.001F || !registry.has<Ball>(event.entityA)) continue;
+        if (auto* velocity = registry.get<Velocity>(event.entityA)) {
+            velocity->value.x += horizontalBoost;
+        }
+    }
+}
+
 void ballMotionSystem(EngineContext& context, float deltaSeconds) {
     auto* gameState = state(context);
     if (!gameState || gameState->phase != Phase::Playing) return;

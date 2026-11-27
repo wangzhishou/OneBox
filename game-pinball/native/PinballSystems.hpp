@@ -18,6 +18,7 @@ Entity addBall(EngineContext& context, Vec2 position, Vec2 velocity, float enlar
 void applyPalette(EngineContext& context);
 void resetBall(EngineContext& context);
 void paddleControlSystem(EngineContext& context, float deltaSeconds);
+void paddleBounceSystem(EngineContext& context, float deltaSeconds);
 void ballMotionSystem(EngineContext& context, float deltaSeconds);
 void brickDamageSystem(EngineContext& context, float deltaSeconds);
 void brickEffectSystem(EngineContext& context, float deltaSeconds);

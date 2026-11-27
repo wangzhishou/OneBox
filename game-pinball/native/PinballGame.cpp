@@ -5,6 +5,7 @@
 #include <cmath>
 #include <cstring>
 #include <memory>
+#include <string_view>
 
 #include "game-pinball/native/PinballSystems.hpp"
 #include "onebox/core/EngineContext.hpp"
@@ -205,35 +206,117 @@ void buildEnclosedLevel(EngineContext& context, bool narrowEntrance) {
     }
 }
 
-void buildClassicLevel(EngineContext& context) {
-    for (int row = 0; row < 6; ++row) {
-        for (int column = 0; column < 8; ++column) {
-            const int hitPoints = row == 0 || row == 1 ? 2 : 1;
-            addBrick(
-                context,
-                {80.0F + column * 80.0F, 180.0F + row * 48.0F},
-                BrickEffect::Normal,
-                hitPoints,
-                100U + static_cast<std::uint32_t>((5 - row) * 20),
-                {68.0F, 30.0F}
-            );
-        }
-    }
+using LevelGrid = std::array<std::string_view, 16>;
 
-    constexpr std::array<Vec2, 3> bumperPositions{{{178, 520}, {542, 520}, {360, 680}}};
-    for (const Vec2 position : bumperPositions) {
-        const Entity bumper = context.registry().create();
-        context.registry().add<Transform>(bumper).position = position;
-        context.registry().add<RigidBody>(bumper);
-        auto& collider = context.registry().add<CircleCollider>(bumper);
-        collider.radius = 34.0F;
-        collider.restitution = 1.08F;
-        collider.layer = 8;
-        context.registry().add<Bumper>(bumper);
-        auto& render = context.registry().add<GlowRender>(bumper);
-        render.size = {68.0F, 68.0F};
-        render.color = state(context)->palette.enlargeBrick;
-        render.emissive = 0.5F;
+constexpr std::array<LevelGrid, 5> kDesignedLevels{{
+    {{
+        "################",
+        "#nnnnnnnnnnnnnn#",
+        "#nnnnnnssnnnnnn#",
+        "#nnnnnnssnnnnnn#",
+        "#nneennnnnneenn#",
+        "#nnnnnnnnnnnnnn#",
+        "#nnnnnnssnnnnnn#",
+        "#nnnnnn..nnnnnn#",
+        "#nnnnnn..nnnnnn#",
+        "#nnnnnn..nnnnnn#",
+        "#nnnnnn..nnnnnn#",
+        "#nnnnnn..nnnnnn#",
+        "#nnnnn....nnnnn#",
+        "#nnnnn....nnnnn#",
+        "#nnnnnn..nnnnnn#",
+        "#######..#######",
+    }},
+    {{
+        "################",
+        "#nnnnnnnnnnnnnn#",
+        "#nnneennnneennn#",
+        "#nnnnnnnnnnnnnn#",
+        "#nnnnnnssnnnnnn#",
+        "#nnnnnnnnnnnnnn#",
+        "#nnn..nnnn..nnn#",
+        "#nnn..nnnn..nnn#",
+        "#nnn..nnnn..nnn#",
+        "#nnn..nssn..nnn#",
+        "#nnnnnn..nnnnnn#",
+        "#nnnnnn..nnnnnn#",
+        "#nnnnnn..nnnnnn#",
+        "#nnnnnn..nnnnnn#",
+        "#nnnnnn..nnnnnn#",
+        "#######..#######",
+    }},
+    {{
+        "################",
+        "#nnnnnnnnnnnnnn#",
+        "#nnnnnnssnnnnnn#",
+        "#nnn........nnn#",
+        "#nnnnnn....nnnn#",
+        "#nnnnnen....enn#",
+        "#nnnnnnn....nnn#",
+        "#nnnnnn....nnnn#",
+        "#nnnnn....nnnnn#",
+        "#nnnn....nnnnnn#",
+        "#nne....ennnnnn#",
+        "#nnn....nnnnnnn#",
+        "#nnnn....nnnnnn#",
+        "#nnnnn....nnnnn#",
+        "#nnnnnnssnnnnnn#",
+        "#######..#######",
+    }},
+    {{
+        "################",
+        "#nnnnnnnnnnnnnn#",
+        "#nneennnnnneenn#",
+        "#nnnnnnnnnnnnnn#",
+        "#nnnnnnssnnnnnn#",
+        "#nnne......ennn#",
+        "#nns........snn#",
+        "#nnn........nnn#",
+        "#nne........enn#",
+        "#nns........snn#",
+        "#nnne......ennn#",
+        "#nnnnn....nnnnn#",
+        "#nnnnnn..nnnnnn#",
+        "#nnnnnn..nnnnnn#",
+        "#nnnnnn..nnnnnn#",
+        "#######..#######",
+    }},
+    {{
+        "################",
+        "#nneennnnnneenn#",
+        "#nnnnnnssnnnnnn#",
+        "#nnennn..nnnenn#",
+        "#nnnnnn..nnnnnn#",
+        "#nnnnen..nennnn#",
+        "#nnnnnn..nnnnnn#",
+        "#......ss......#",
+        "#..............#",
+        "#nnnnnn..nnnnnn#",
+        "#nnssnn..nnssnn#",
+        "#nnnnnn..nnnnnn#",
+        "#nneenn..nneenn#",
+        "#nnnnnn..nnnnnn#",
+        "#nnnnnn..nnnnnn#",
+        "#######..#######",
+    }},
+}};
+
+void buildDesignedLevel(EngineContext& context, std::uint32_t level) {
+    const auto& grid = kDesignedLevels[(level - 4U) % kDesignedLevels.size()];
+    for (std::size_t row = 0; row < grid.size(); ++row) {
+        for (std::size_t column = 0; column < grid[row].size(); ++column) {
+            const Vec2 position{
+                30.0F + static_cast<float>(column) * 44.0F,
+                200.0F + static_cast<float>(row) * 42.0F,
+            };
+            switch (grid[row][column]) {
+                case '#': addBorderBlock(context, position); break;
+                case 'n': addBrick(context, position, BrickEffect::Normal, 1, 100); break;
+                case 's': addBrick(context, position, BrickEffect::Split, 1, 100); break;
+                case 'e': addBrick(context, position, BrickEffect::Enlarge, 1, 100); break;
+                default: break;
+            }
+        }
     }
 }
 
@@ -259,6 +342,7 @@ void PinballGame::onAttach(EngineContext& context) {
     context.events().subscribe<CameraTag>();
     context.systems().addPrePhysics(paddleControlSystem);
     context.systems().addPrePhysics(ballMotionSystem);
+    context.systems().addPostPhysics(paddleBounceSystem);
     context.systems().addPostPhysics(brickDamageSystem);
     context.systems().addPostPhysics(comboScoreSystem);
     context.systems().addPostPhysics(brickEffectSystem);
@@ -288,7 +372,7 @@ void PinballGame::onCommand(EngineContext& context, const Command& command) {
         return;
     }
     if (command.type == kGameCommandSelectLevel) {
-        if (gameState->phase == Phase::Paused) {
+        if (gameState->phase != Phase::Playing) {
             const auto level = std::clamp(readUnsignedInt(command, 0), 1U, kMaxSelectableLevel);
             buildWorld(context, 0, 3, level);
         }
@@ -370,7 +454,7 @@ void PinballGame::buildWorld(
     } else if (level == 2 || level == 3) {
         buildEnclosedLevel(context, level == 3);
     } else {
-        buildClassicLevel(context);
+        buildDesignedLevel(context, level);
     }
 
     const float paddleWidth = level == 1 ? 220.0F : (level == 2 ? 180.0F : 144.0F);
@@ -405,7 +489,7 @@ void PinballGame::launch(EngineContext& context) {
     if (ball) ball->attached = false;
     if (body) body->dynamic = true;
     if (velocity) {
-        const float direction = gameState->level == 3
+        const float direction = gameState->level >= 3
             ? 0.0F
             : (gameState->paddleTargetX < kWorldWidth * 0.5F ? 0.32F : -0.32F);
         velocity->value = normalized(Vec2{direction, -1.0F}) * (570.0F + gameState->level * 20.0F);

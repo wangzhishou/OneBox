@@ -29,10 +29,10 @@
     <string name="pinball_level_option">Level %1$d</string>
     <string name="pinball_game_over">Game over</string>
     <string name="pinball_level_complete">Wall cleared</string>
-    <string name="pinball_level_complete_description">The next level brings a new layout, tougher bricks, and a faster ball.</string>
+    <string name="pinball_level_complete_description">The next level brings a new layout and a faster ball.</string>
     <string name="pinball_score_value">Score: %1$d</string>
     <string name="pinball_best_value">Best: %1$d</string>
     <string name="pinball_back">Back</string>
-    <string name="pinball_back_to_scene">Back to game</string>
+    <string name="pinball_back_to_scene">Review</string>
     <string name="pinball_show_result">Show result</string>
 </resources>

@@ -29,10 +29,10 @@
     <string name="pinball_level_option">第 %1$d 关</string>
     <string name="pinball_game_over">游戏结束</string>
     <string name="pinball_level_complete">砖墙已清空</string>
-    <string name="pinball_level_complete_description">下一关将切换新的砖墙布局，砖块更耐打、球速更快。</string>
+    <string name="pinball_level_complete_description">下一关将切换新的砖墙布局，球速更快。</string>
     <string name="pinball_score_value">分数：%1$d</string>
     <string name="pinball_best_value">最佳：%1$d</string>
     <string name="pinball_back">返回</string>
-    <string name="pinball_back_to_scene">返回游戏画面</string>
+    <string name="pinball_back_to_scene">回看</string>
     <string name="pinball_show_result">查看结果</string>
 </resources>
