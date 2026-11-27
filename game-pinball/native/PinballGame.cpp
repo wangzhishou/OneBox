@@ -20,6 +20,14 @@ float readFloat(const Command& command, std::size_t offset) {
     return value;
 }
 
+std::uint32_t readUnsignedInt(const Command& command, std::size_t offset) {
+    std::uint32_t value = 0;
+    if (command.payloadSize >= offset + sizeof(value)) {
+        std::memcpy(&value, command.payload.data() + offset, sizeof(value));
+    }
+    return value;
+}
+
 std::array<float, 4> readColor(const Command& command, std::size_t offset) {
     std::uint32_t argb = 0;
     if (command.payloadSize >= offset + sizeof(argb)) {
@@ -63,7 +71,7 @@ Entity addDecoration(
     return entity;
 }
 
-Entity addWall(EngineContext& context, Vec2 position, Vec2 halfSize, bool visible) {
+Entity addWall(EngineContext& context, Vec2 position, Vec2 halfSize) {
     const Entity entity = context.registry().create();
     context.registry().add<Transform>(entity).position = position;
     context.registry().add<RigidBody>(entity);
@@ -71,30 +79,7 @@ Entity addWall(EngineContext& context, Vec2 position, Vec2 halfSize, bool visibl
     collider.halfSize = halfSize;
     collider.restitution = 0.98F;
     collider.layer = 2;
-    if (visible) context.registry().add<BorderTag>(entity);
-    auto& render = context.registry().add<GlowRender>(entity);
-    render.shape = SdfShape::RoundedBox;
-    render.size = halfSize * 2.0F;
-    render.color = visible ? PinballPalette{}.border : std::array<float, 4>{};
-    render.emissive = 0.12F;
     return entity;
-}
-
-void addBorderBlock(EngineContext& context, Vec2 position) {
-    auto& registry = context.registry();
-    const Entity entity = registry.create();
-    registry.add<Transform>(entity).position = position;
-    registry.add<RigidBody>(entity);
-    auto& collider = registry.add<BoxCollider>(entity);
-    collider.halfSize = {19.0F, 19.0F};
-    collider.restitution = 0.98F;
-    collider.layer = 2;
-    registry.add<BorderTag>(entity);
-    auto& render = registry.add<GlowRender>(entity);
-    render.shape = SdfShape::RoundedBox;
-    render.size = {38.0F, 38.0F};
-    render.color = state(context)->palette.border;
-    render.emissive = 0.12F;
 }
 
 void addBrick(
@@ -136,10 +121,7 @@ void buildFirstLevel(EngineContext& context) {
         for (int column = 0; column < 16; ++column) {
             const Vec2 position{30.0F + column * 44.0F, 200.0F + row * 42.0F};
             const bool isBottomBorder = row == 15 && (column <= 4 || column >= 11);
-            if (row == 0 || column == 0 || column == 15 || isBottomBorder) {
-                addBorderBlock(context, position);
-                continue;
-            }
+            if (row == 0 || column == 0 || column == 15 || isBottomBorder) continue;
             if (row == 15) continue;
             if (row == 12 && column >= 6 && column <= 9) continue;
             if (row == 13 && column >= 5 && column <= 10) continue;
@@ -248,9 +230,15 @@ void PinballGame::onCommand(EngineContext& context, const Command& command) {
         gameState->palette.normalBrick = readColor(command, 4);
         gameState->palette.splitBrick = readColor(command, 8);
         gameState->palette.enlargeBrick = readColor(command, 12);
-        gameState->palette.border = readColor(command, 16);
         gameState->palette.ball = readColor(command, 20);
         applyPalette(context);
+        return;
+    }
+    if (command.type == kGameCommandSelectLevel) {
+        if (gameState->phase == Phase::Paused) {
+            const auto level = std::clamp(readUnsignedInt(command, 0), 1U, kMaxSelectableLevel);
+            buildWorld(context, 0, 3, level);
+        }
         return;
     }
 
@@ -334,9 +322,9 @@ void PinballGame::buildWorld(
         }
     }
 
-    addWall(context, {-4.0F, 640.0F}, {8.0F, 648.0F}, level > 1);
-    addWall(context, {724.0F, 640.0F}, {8.0F, 648.0F}, level > 1);
-    addWall(context, {360.0F, -4.0F}, {368.0F, 8.0F}, level > 1);
+    addWall(context, {-4.0F, 640.0F}, {8.0F, 648.0F});
+    addWall(context, {724.0F, 640.0F}, {8.0F, 648.0F});
+    addWall(context, {360.0F, -4.0F}, {368.0F, 8.0F});
 
     if (level == 1) {
         buildFirstLevel(context);
@@ -344,10 +332,9 @@ void PinballGame::buildWorld(
         buildOriginalLevel(context, level);
     }
 
-    const float paddleY = 1160.0F;
     const float paddleWidth = level == 1 ? 200.0F : 144.0F;
     const Entity paddle = registry.create();
-    registry.add<Transform>(paddle).position = {360.0F, paddleY};
+    registry.add<Transform>(paddle).position = {360.0F, kPaddleY};
     registry.add<RigidBody>(paddle);
     registry.add<Velocity>(paddle);
     auto& paddleCollider = registry.add<BoxCollider>(paddle);
@@ -362,7 +349,7 @@ void PinballGame::buildWorld(
     paddleRender.emissive = 0.12F;
 
     gameState.paddle = paddle;
-    gameState.ball = addBall(context, {360.0F, paddleY - 32.0F}, {});
+    gameState.ball = addBall(context, {360.0F, kPaddleY - 32.0F}, {});
     applyPalette(context);
 }
 

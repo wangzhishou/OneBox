@@ -59,6 +59,14 @@ class PinballComponent @AssistedInject internal constructor(
 
     fun restart() = engineController.dispatch(EngineCommands.RESET)
 
+    fun selectLevel(level: Int) {
+        if (_uiState.value.phase != PinballPhase.Paused) return
+        val payload = ByteBuffer.allocate(LEVEL_PAYLOAD_BYTES).order(ByteOrder.LITTLE_ENDIAN).apply {
+            putInt(level.coerceIn(1, PINBALL_MAX_LEVEL))
+        }
+        engineController.dispatch(GAME_COMMAND_SELECT_LEVEL, payload.array())
+    }
+
     fun updateTheme(colors: PinballThemeColors) {
         val payload = ByteBuffer.allocate(THEME_PAYLOAD_BYTES).order(ByteOrder.LITTLE_ENDIAN).apply {
             putInt(colors.surface)
@@ -82,6 +90,8 @@ class PinballComponent @AssistedInject internal constructor(
     private companion object {
         const val GAME_ID = "pinball"
         const val GAME_COMMAND_THEME = 257
+        const val GAME_COMMAND_SELECT_LEVEL = GAME_COMMAND_THEME + 1
         const val THEME_PAYLOAD_BYTES = 24
+        const val LEVEL_PAYLOAD_BYTES = 4
     }
 }

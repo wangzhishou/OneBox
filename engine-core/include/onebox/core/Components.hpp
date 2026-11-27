@@ -61,6 +61,7 @@ struct Camera2D {
     float bloomStrength = 1.0F;
     bool additiveBlending = true;
     bool alignWorldToTop = false;
+    bool fillViewport = false;
 };
 
 }  // namespace onebox

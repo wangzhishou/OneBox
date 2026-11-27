@@ -1,5 +1,7 @@
 package com.wanbaohe.pinball.component
 
+const val PINBALL_MAX_LEVEL = 8
+
 enum class PinballPhase {
     Ready,
     Playing,

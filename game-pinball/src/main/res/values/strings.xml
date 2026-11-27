@@ -24,6 +24,9 @@
     <string name="pinball_ball_ready_description">Drag to aim, then launch your next ball.</string>
     <string name="pinball_paused">Paused</string>
     <string name="pinball_paused_description">Your run is frozen. Resume when you are ready.</string>
+    <string name="pinball_select_level">Choose a level</string>
+    <string name="pinball_select_level_description">Selecting a level starts a new run there.</string>
+    <string name="pinball_level_option">Level %1$d</string>
     <string name="pinball_game_over">Game over</string>
     <string name="pinball_level_complete">Wall cleared</string>
     <string name="pinball_level_complete_description">The next sector keeps the original brick layout with tougher bricks and a faster ball.</string>

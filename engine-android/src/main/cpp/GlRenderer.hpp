@@ -52,6 +52,7 @@ private:
     float toneMappingExposure_ = 1.12F;
     float bloomStrength_ = 1.0F;
     bool alignWorldToTop_ = false;
+    bool fillViewport_ = false;
 };
 
 }  // namespace onebox::android

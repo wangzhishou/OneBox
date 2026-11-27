@@ -2271,7 +2271,7 @@ sealed class Screen(
     @Serializable
     @SerialName("Pinball")
     data object Pinball : Screen(
-        id = 1100,
+        id = 1126,
         title = com.shifenmiao.core.R.string.pinball_screen_title,
         subtitle = com.shifenmiao.core.R.string.pinball_screen_description,
     )

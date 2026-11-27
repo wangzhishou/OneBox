@@ -43,6 +43,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
@@ -74,10 +75,12 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePauseBars
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
 import com.wanbaohe.core.ui.widget.glass.GlassButton
 import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.glass.GlassIconButton
 import com.wanbaohe.core.ui.widget.glass.GlassLinearProgressIndicator
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.engine.android.EngineController
@@ -170,14 +173,20 @@ fun Survive30sScreen(
         ),
         actions = {
             if (state.gameState == GameState.PLAYING) {
-                GlassButton(
+                GlassIconButton(
                     onClick = component::pauseGame,
-                    color = colorScheme.primaryContainer,
-                    contentColor = colorScheme.onPrimaryContainer,
-                    borderWidth = 0.dp,
-                    modifier = Modifier.heightIn(min = 44.dp),
+                    modifier = Modifier.size(48.dp),
+                    colors = IconButtonDefaults.iconButtonColors(
+                        containerColor = colorScheme.primaryContainer,
+                        contentColor = colorScheme.onPrimaryContainer,
+                    ),
+                    glassBorderWidth = 0.dp,
                 ) {
-                    Text(stringResource(R.string.survive_30s_pause))
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePauseBars,
+                        contentDescription = stringResource(R.string.survive_30s_pause),
+                        modifier = Modifier.size(24.dp),
+                    )
                 }
             }
         },

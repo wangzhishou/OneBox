@@ -24,6 +24,9 @@
     <string name="pinball_ball_ready_description">拖动瞄准，然后发射下一颗弹球。</string>
     <string name="pinball_paused">已暂停</string>
     <string name="pinball_paused_description">本局进度已冻结，准备好后继续。</string>
+    <string name="pinball_select_level">选择关卡</string>
+    <string name="pinball_select_level_description">选关后将从该关开始新一局。</string>
+    <string name="pinball_level_option">第 %1$d 关</string>
     <string name="pinball_game_over">游戏结束</string>
     <string name="pinball_level_complete">砖墙已清空</string>
     <string name="pinball_level_complete_description">下一关保留经典布局，砖块更耐打、球速更快。</string>

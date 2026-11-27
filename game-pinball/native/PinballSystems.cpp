@@ -91,9 +91,6 @@ void applyPalette(EngineContext& context) {
             case BrickEffect::Enlarge: render->color = palette.enlargeBrick; break;
         }
     }
-    for (const Entity entity : registry.pool<BorderTag>().entities()) {
-        if (auto* render = registry.get<GlowRender>(entity)) render->color = palette.border;
-    }
     for (const Entity entity : registry.pool<Ball>().entities()) {
         if (auto* render = registry.get<GlowRender>(entity)) render->color = palette.ball;
     }
@@ -104,6 +101,7 @@ void applyPalette(EngineContext& context) {
         camera.bloomStrength = 0.0F;
         camera.additiveBlending = false;
         camera.alignWorldToTop = true;
+        camera.fillViewport = true;
     }
 }
 
@@ -115,7 +113,7 @@ void resetBall(EngineContext& context) {
     gameState->combo = 0;
     gameState->comboSeconds = 0.0F;
     if (!registry.has<Ball>(gameState->ball)) {
-        gameState->ball = addBall(context, {360.0F, 1128.0F}, {});
+        gameState->ball = addBall(context, {360.0F, (kPaddleY - 32.0F)}, {});
     }
     std::vector<Entity> extraBalls;
     for (const Entity entity : registry.pool<Ball>().entities()) {
@@ -125,7 +123,7 @@ void resetBall(EngineContext& context) {
 
     const auto* paddle = registry.get<Transform>(gameState->paddle);
     if (auto* transform = registry.get<Transform>(gameState->ball)) {
-        transform->position = {paddle ? paddle->position.x : 360.0F, paddle ? paddle->position.y - 32.0F : 1128.0F};
+        transform->position = {paddle ? paddle->position.x : 360.0F, paddle ? paddle->position.y - 32.0F : (kPaddleY - 32.0F)};
     }
     if (auto* velocity = registry.get<Velocity>(gameState->ball)) velocity->value = {};
     if (auto* body = registry.get<RigidBody>(gameState->ball)) body->dynamic = false;

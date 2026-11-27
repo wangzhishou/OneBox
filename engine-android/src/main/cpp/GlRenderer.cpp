@@ -19,6 +19,7 @@ layout(location=3) in vec4 iMeta;
 layout(location=4) in vec4 iColor;
 uniform vec2 uWorldSize;
 uniform vec2 uCamera;
+uniform vec2 uShapeClipScale;
 out vec2 vLocal;
 out vec4 vColor;
 out float vShape;
@@ -29,8 +30,9 @@ void main() {
     float s = sin(angle);
     vec2 local = aCorner * iSize;
     vec2 rotated = vec2(local.x*c-local.y*s, local.x*s+local.y*c);
-    vec2 world = rotated + iPosition - uCamera;
-    vec2 clip = vec2(world.x/uWorldSize.x*2.0-1.0, 1.0-world.y/uWorldSize.y*2.0);
+    vec2 center = iPosition - uCamera;
+    vec2 clip = vec2(center.x/uWorldSize.x*2.0-1.0, 1.0-center.y/uWorldSize.y*2.0);
+    clip += vec2(rotated.x*uShapeClipScale.x, -rotated.y*uShapeClipScale.y);
     gl_Position = vec4(clip, 0.0, 1.0);
     vLocal = aCorner;
     vColor = iColor;
@@ -259,6 +261,7 @@ void GlRenderer::clear(const Camera2D& camera) {
     toneMappingExposure_ = camera.toneMappingExposure;
     bloomStrength_ = camera.bloomStrength;
     alignWorldToTop_ = camera.alignWorldToTop;
+    fillViewport_ = camera.fillViewport;
     glBindFramebuffer(GL_FRAMEBUFFER, scene_.framebuffer);
     glViewport(0, 0, width_, height_);
     glDisable(GL_DEPTH_TEST);
@@ -290,13 +293,20 @@ void GlRenderer::drawInstances(const std::vector<SdfInstance>& instances) {
     }
     glBindFramebuffer(GL_FRAMEBUFFER, scene_.framebuffer);
     const float scale = std::min(width_ / 720.0F, height_ / 1280.0F);
-    const int viewportWidth = static_cast<int>(720.0F * scale);
-    const int viewportHeight = static_cast<int>(1280.0F * scale);
-    const int viewportY = alignWorldToTop_ ? height_ - viewportHeight : (height_ - viewportHeight) / 2;
-    glViewport((width_ - viewportWidth) / 2, viewportY, viewportWidth, viewportHeight);
+    if (fillViewport_) {
+        glViewport(0, 0, width_, height_);
+    } else {
+        const int viewportWidth = static_cast<int>(720.0F * scale);
+        const int viewportHeight = static_cast<int>(1280.0F * scale);
+        const int viewportY = alignWorldToTop_ ? height_ - viewportHeight : (height_ - viewportHeight) / 2;
+        glViewport((width_ - viewportWidth) / 2, viewportY, viewportWidth, viewportHeight);
+    }
     glUseProgram(sdfProgram_);
     glUniform2f(glGetUniformLocation(sdfProgram_, "uWorldSize"), 720.0F, 1280.0F);
     glUniform2f(glGetUniformLocation(sdfProgram_, "uCamera"), cameraOffset_.x, cameraOffset_.y);
+    const float shapeClipX = fillViewport_ ? 2.0F * scale / width_ : 2.0F / 720.0F;
+    const float shapeClipY = fillViewport_ ? 2.0F * scale / height_ : 2.0F / 1280.0F;
+    glUniform2f(glGetUniformLocation(sdfProgram_, "uShapeClipScale"), shapeClipX, shapeClipY);
     glBindVertexArray(vao_);
     glBindBuffer(GL_ARRAY_BUFFER, instanceBuffer_);
     glBufferData(GL_ARRAY_BUFFER, instanceData_.size() * sizeof(float), instanceData_.data(), GL_DYNAMIC_DRAW);
