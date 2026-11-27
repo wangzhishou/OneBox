@@ -190,8 +190,7 @@ private fun RichTextDocumentBlock(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            // 与 MarkdownLayout.listIndent 对齐：预览里的列表整体缩进 24dp，
-            // 编辑区没有这层缩进时，切换预览会看到项目符号整体左移。
+            // 与预览 listIndent（8dp）对齐。编辑区没有这层缩进时，切换预览会看到项目符号整体左移。
             .then(if (isListBlock) Modifier.padding(start = LIST_INDENT) else Modifier)
     ) {
         RichTextEditor(
@@ -242,8 +241,8 @@ private fun RawDocumentBlock(
     }
 }
 
-// 与 libs/markdown MarkdownLayout.listIndent 默认值一致。
-private val LIST_INDENT = 24.dp
+// 与 KmpMarkdownRenderer 里覆盖后的 listIndent 一致（库默认是 24dp，产品收到 8dp）。
+private val LIST_INDENT = 8.dp
 
 private const val PREVIEW_ENCODE_DEBOUNCE_MS = 300L
 private const val EDITOR_MODE_FADE_MS = 180

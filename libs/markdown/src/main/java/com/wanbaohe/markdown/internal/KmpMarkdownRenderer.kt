@@ -135,6 +135,8 @@ internal fun KmpMarkdownRenderer(
         defaultLayout.copy(
             blockSpacing = blockSpacing ?: defaultLayout.blockSpacing,
             blockCornerRadius = 12.dp,
+            // 库默认 24dp，手机正文里项目符号会离开正文左缘约一字半。收到 8dp，嵌套列表每层也跟着收。
+            listIndent = 8.dp,
         )
     }
     val diagramTheme = remember(colorScheme) { oneBoxDiagramTheme(colorScheme) }
