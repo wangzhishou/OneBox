@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,8 +13,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -31,23 +30,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
+import com.t8rin.imagetoolbox.core.resources.icons.Refresh
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePauseBars
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
+import com.wanbaohe.base.ui.button.PrimaryButton
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassButton
-import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassIconButton
 import com.wanbaohe.core.ui.widget.glass.GlassLinearProgressIndicator
-import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.engine.android.surface.GameSurface
 import com.wanbaohe.pinball.R
 import com.wanbaohe.pinball.component.PINBALL_MAX_LEVEL
@@ -92,14 +97,9 @@ fun PinballScreen(component: PinballComponent) {
     }
 
     BaseScreen(
-        title = {
-            Text(
-                text = stringResource(R.string.pinball_title),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.SemiBold,
-            )
-        },
+        title = stringResource(R.string.pinball_title),
         onGoBack = component.onGoBack,
+        showNavigationBarsPadding = false,
         colors = topAppBarColors().copy(
             containerColor = Color.Transparent,
             scrolledContainerColor = Color.Transparent,
@@ -126,7 +126,7 @@ fun PinballScreen(component: PinballComponent) {
                 }
             }
         },
-        backgroundImage = {
+        background = {
             GameSurface(
                 controller = component.engineController,
                 modifier = Modifier.fillMaxSize(),
@@ -339,6 +339,69 @@ private fun LevelSelector(
 }
 
 @Composable
+private fun GameDialog(
+    title: String,
+    primaryLabel: String,
+    primaryIcon: ImageVector,
+    onPrimary: () -> Unit,
+    onBack: (() -> Unit)?,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    EnhancedAlertDialog(
+        visible = true,
+        onDismissRequest = {},
+        properties = DialogProperties(
+            dismissOnBackPress = false,
+            dismissOnClickOutside = false,
+        ),
+        title = { Text(title) },
+        text = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 460.dp)
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                content = content,
+            )
+        },
+        confirmButton = {
+            PrimaryButton(
+                text = primaryLabel,
+                onClick = onPrimary,
+                modifier = Modifier.heightIn(min = 48.dp),
+                icon = {
+                    Icon(
+                        imageVector = primaryIcon,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                    )
+                },
+            )
+        },
+        dismissButton = if (onBack == null) null else {
+            {
+                PrimaryButton(
+                    text = stringResource(R.string.pinball_back),
+                    onClick = onBack,
+                    modifier = Modifier.heightIn(min = 48.dp),
+                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    icon = {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                        )
+                    },
+                )
+            }
+        },
+    )
+}
+
+@Composable
 private fun GameOverlay(
     state: PinballUiState,
     onLaunch: () -> Unit,
@@ -347,123 +410,75 @@ private fun GameOverlay(
     onBack: () -> Unit,
     onSelectLevel: (Int) -> Unit,
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .statusBarsPadding()
-            .padding(top = 64.dp)
-            .background(MaterialTheme.colorScheme.scrim.copy(alpha = 0.46f))
-            .padding(AppTheme.dimens.pageHorizontal),
-        contentAlignment = Alignment.Center,
-    ) {
-        val title = when (state.phase) {
-            PinballPhase.Ready -> stringResource(
-                if (state.score == 0 && state.lives == 3) R.string.pinball_ready else R.string.pinball_ball_ready
-            )
-            PinballPhase.Paused -> stringResource(R.string.pinball_paused)
-            PinballPhase.GameOver -> stringResource(R.string.pinball_game_over)
-            PinballPhase.LevelComplete -> stringResource(R.string.pinball_level_complete)
-            PinballPhase.Playing -> ""
-        }
-        val description = when (state.phase) {
-            PinballPhase.Ready -> stringResource(
-                if (state.score == 0 && state.lives == 3) {
-                    R.string.pinball_ready_description
-                } else {
-                    R.string.pinball_ball_ready_description
-                }
-            )
-            PinballPhase.Paused -> stringResource(R.string.pinball_paused_description)
-            PinballPhase.LevelComplete -> stringResource(R.string.pinball_level_complete_description)
-            else -> null
-        }
-        val primaryLabel = when (state.phase) {
-            PinballPhase.Ready -> stringResource(R.string.pinball_launch)
-            PinballPhase.Paused -> stringResource(R.string.pinball_resume)
-            PinballPhase.GameOver -> stringResource(R.string.pinball_restart)
-            PinballPhase.LevelComplete -> stringResource(R.string.pinball_next_level)
-            PinballPhase.Playing -> ""
-        }
-        val primaryAction = when (state.phase) {
-            PinballPhase.Paused -> onResume
-            PinballPhase.GameOver -> onRestart
-            else -> onLaunch
-        }
-        GlassCard(
-            modifier = Modifier
-                .widthIn(max = 480.dp)
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState()),
-            style = GlassStyle.Thick,
-        ) {
-            Column(
-                modifier = Modifier.padding(AppTheme.dimens.cardContentPadding),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = if (state.phase == PinballPhase.GameOver) {
-                        MaterialTheme.colorScheme.onErrorContainer
-                    } else {
-                        MaterialTheme.colorScheme.onPrimaryContainer
-                    },
-                    textAlign = TextAlign.Center,
-                )
-                if (description != null) {
-                    Text(
-                        text = description,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.Center,
-                    )
-                }
-                if (state.phase == PinballPhase.Ready) PowerUpLegend()
-                if (state.phase == PinballPhase.GameOver || state.phase == PinballPhase.LevelComplete) {
-                    Text(
-                        text = stringResource(R.string.pinball_score_value, state.score),
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    Text(
-                        text = stringResource(R.string.pinball_best_value, state.bestScore),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-                GlassButton(
-                    onClick = primaryAction,
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    borderWidth = 0.dp,
-                    modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp),
-                ) {
-                    Text(
-                        text = primaryLabel,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                    )
-                }
-                if (state.phase == PinballPhase.Paused) {
-                    LevelSelector(
-                        currentLevel = state.level,
-                        onSelectLevel = onSelectLevel,
-                    )
-                }
-                if (state.phase != PinballPhase.Ready) {
-                    GlassButton(
-                        onClick = onBack,
-                        color = MaterialTheme.colorScheme.surfaceContainer,
-                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        borderWidth = 0.dp,
-                        modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
-                    ) {
-                        Text(stringResource(R.string.pinball_back))
-                    }
-                }
+    val title = when (state.phase) {
+        PinballPhase.Ready -> stringResource(
+            if (state.score == 0 && state.lives == 3) R.string.pinball_ready else R.string.pinball_ball_ready
+        )
+        PinballPhase.Paused -> stringResource(R.string.pinball_paused)
+        PinballPhase.GameOver -> stringResource(R.string.pinball_game_over)
+        PinballPhase.LevelComplete -> stringResource(R.string.pinball_level_complete)
+        PinballPhase.Playing -> ""
+    }
+    val description = when (state.phase) {
+        PinballPhase.Ready -> stringResource(
+            if (state.score == 0 && state.lives == 3) {
+                R.string.pinball_ready_description
+            } else {
+                R.string.pinball_ball_ready_description
             }
+        )
+        PinballPhase.Paused -> stringResource(R.string.pinball_paused_description)
+        PinballPhase.LevelComplete -> stringResource(R.string.pinball_level_complete_description)
+        else -> null
+    }
+    val primaryLabel = when (state.phase) {
+        PinballPhase.Ready -> stringResource(R.string.pinball_launch)
+        PinballPhase.Paused -> stringResource(R.string.pinball_resume)
+        PinballPhase.GameOver -> stringResource(R.string.pinball_restart)
+        PinballPhase.LevelComplete -> stringResource(R.string.pinball_next_level)
+        PinballPhase.Playing -> ""
+    }
+    val primaryIcon = when (state.phase) {
+        PinballPhase.GameOver -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh
+        PinballPhase.LevelComplete -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineChevronRight
+        else -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay
+    }
+    val primaryAction = when (state.phase) {
+        PinballPhase.Paused -> onResume
+        PinballPhase.GameOver -> onRestart
+        else -> onLaunch
+    }
+    GameDialog(
+        title = title,
+        primaryLabel = primaryLabel,
+        primaryIcon = primaryIcon,
+        onPrimary = primaryAction,
+        onBack = if (state.phase == PinballPhase.Ready) null else onBack,
+    ) {
+        if (description != null) {
+            Text(
+                text = description,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+        if (state.phase == PinballPhase.Ready) PowerUpLegend()
+        if (state.phase == PinballPhase.GameOver || state.phase == PinballPhase.LevelComplete) {
+            Text(
+                text = stringResource(R.string.pinball_score_value, state.score),
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+            Text(
+                text = stringResource(R.string.pinball_best_value, state.bestScore),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        if (state.phase == PinballPhase.Paused) {
+            LevelSelector(
+                currentLevel = state.level,
+                onSelectLevel = onSelectLevel,
+            )
         }
     }
 }

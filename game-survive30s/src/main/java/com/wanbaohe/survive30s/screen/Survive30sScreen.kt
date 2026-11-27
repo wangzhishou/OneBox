@@ -21,15 +21,12 @@ package com.wanbaohe.survive30s.screen
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -37,9 +34,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
@@ -59,6 +53,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
@@ -66,8 +61,8 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -77,12 +72,11 @@ import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePauseBars
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
+import com.wanbaohe.base.ui.button.PrimaryButton
 import com.wanbaohe.core.ui.utils.helper.AppToastHost
-import com.wanbaohe.core.ui.widget.glass.GlassButton
-import com.wanbaohe.core.ui.widget.glass.GlassCard
+import com.wanbaohe.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.wanbaohe.core.ui.widget.glass.GlassIconButton
 import com.wanbaohe.core.ui.widget.glass.GlassLinearProgressIndicator
-import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.engine.android.EngineController
 import com.wanbaohe.engine.android.EngineSnapshot
 import com.wanbaohe.engine.android.surface.GameSurface
@@ -154,16 +148,9 @@ fun Survive30sScreen(
     }
 
     BaseScreen(
-        title = {
-            Text(
-                text = stringResource(R.string.survive_30s_title),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.SemiBold,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        },
+        title = stringResource(R.string.survive_30s_title),
         onGoBack = component.onGoBack,
+        showNavigationBarsPadding = false,
         colors = topAppBarColors().copy(
             containerColor = Color.Transparent,
             scrolledContainerColor = Color.Transparent,
@@ -190,7 +177,7 @@ fun Survive30sScreen(
                 }
             }
         },
-        backgroundImage = {
+        background = {
             GameStage(
                 controller = component.engineController,
                 onSnapshot = component::updateSnapshot,
@@ -414,76 +401,90 @@ private fun GameStage(
 }
 
 @Composable
-private fun OverlayCard(
-    onTap: (() -> Unit)? = null,
+private fun GameDialog(
+    title: String,
+    primaryLabel: String,
+    primaryIcon: ImageVector,
+    onPrimary: () -> Unit,
+    onBack: (() -> Unit)? = null,
+    primaryContainerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    primaryContentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .statusBarsPadding()
-            .padding(top = 64.dp)
-            .background(MaterialTheme.colorScheme.scrim.copy(alpha = 0.46f))
-            .padding(AppTheme.dimens.pageHorizontal)
-            .let { base ->
-                if (onTap == null) base else base.pointerInput(Unit) {
-                    detectTapGestures { onTap() }
-                }
-            },
-        contentAlignment = Alignment.Center,
-    ) {
-        GlassCard(
-            modifier = Modifier
-                .widthIn(max = 480.dp)
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState()),
-            style = GlassStyle.Thick,
-        ) {
+    EnhancedAlertDialog(
+        visible = true,
+        onDismissRequest = {},
+        properties = DialogProperties(
+            dismissOnBackPress = false,
+            dismissOnClickOutside = false,
+        ),
+        title = { Text(title) },
+        text = {
             Column(
-                modifier = Modifier.padding(AppTheme.dimens.cardContentPadding),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 460.dp)
+                    .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
                 content = content,
             )
-        }
-    }
+        },
+        confirmButton = {
+            PrimaryButton(
+                text = primaryLabel,
+                onClick = onPrimary,
+                modifier = Modifier.heightIn(min = 48.dp),
+                containerColor = primaryContainerColor,
+                contentColor = primaryContentColor,
+                icon = {
+                    Icon(
+                        imageVector = primaryIcon,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                    )
+                },
+            )
+        },
+        dismissButton = if (onBack == null) null else {
+            {
+                PrimaryButton(
+                    text = stringResource(R.string.survive_30s_back),
+                    onClick = onBack,
+                    modifier = Modifier.heightIn(min = 48.dp),
+                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    icon = {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                        )
+                    },
+                )
+            }
+        },
+    )
 }
 
 @Composable
 private fun IdleOverlay(onStart: () -> Unit) {
-    OverlayCard(onTap = onStart) {
-        Text(
-            text = stringResource(R.string.survive_30s_ready),
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
-        )
+    GameDialog(
+        title = stringResource(R.string.survive_30s_ready),
+        primaryLabel = stringResource(R.string.survive_30s_start),
+        primaryIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
+        onPrimary = onStart,
+    ) {
         Text(
             text = stringResource(R.string.survive_30s_instruction),
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
         )
         Text(
             text = stringResource(R.string.survive_30s_instruction_bonus),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Medium,
         )
-        GlassButton(
-            onClick = onStart,
-            color = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            borderWidth = 0.dp,
-            modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp),
-        ) {
-            Text(
-                text = stringResource(R.string.survive_30s_start),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-            )
-        }
     }
 }
 
@@ -494,13 +495,13 @@ private fun PausedOverlay(
     onRestart: () -> Unit,
     onBack: () -> Unit,
 ) {
-    OverlayCard {
-        Text(
-            text = stringResource(R.string.survive_30s_paused),
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
-        )
+    GameDialog(
+        title = stringResource(R.string.survive_30s_paused),
+        primaryLabel = stringResource(R.string.survive_30s_resume),
+        primaryIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
+        onPrimary = onResume,
+        onBack = onBack,
+    ) {
         Text(
             text = stringResource(R.string.survive_30s_survived_time, elapsed),
             style = MaterialTheme.typography.titleLarge,
@@ -508,84 +509,22 @@ private fun PausedOverlay(
         )
         Text(
             text = stringResource(R.string.survive_30s_pause_desc),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
         )
-        GlassButton(
-            onClick = onResume,
-            color = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            borderWidth = 0.dp,
-            modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp),
-        ) {
-            Text(
-                text = stringResource(R.string.survive_30s_resume),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-            )
-        }
-        ResultActions(
-            onBack = onBack,
-            onRestart = onRestart,
-            restartContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-            restartContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-    }
-}
-
-@Composable
-private fun ResultActions(
-    onBack: () -> Unit,
-    onRestart: () -> Unit,
-    restartContainerColor: Color,
-    restartContentColor: Color,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        GlassButton(
-            onClick = onBack,
-            color = MaterialTheme.colorScheme.surfaceContainer,
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            borderWidth = 0.dp,
-            modifier = Modifier.weight(1f).heightIn(min = 52.dp),
-        ) {
-            Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack,
-                contentDescription = null,
-                modifier = Modifier.size(20.dp),
-            )
-            Spacer(Modifier.width(6.dp))
-            Text(
-                text = stringResource(R.string.survive_30s_back),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                maxLines = 1,
-            )
-        }
-        GlassButton(
+        PrimaryButton(
+            text = stringResource(R.string.survive_30s_retry),
             onClick = onRestart,
-            color = restartContainerColor,
-            contentColor = restartContentColor,
-            borderWidth = 0.dp,
-            modifier = Modifier.weight(1f).heightIn(min = 52.dp),
-        ) {
-            Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
-                contentDescription = null,
-                modifier = Modifier.size(20.dp),
-            )
-            Spacer(Modifier.width(6.dp))
-            Text(
-                text = stringResource(R.string.survive_30s_retry),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                maxLines = 1,
-            )
-        }
+            modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            icon = {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp),
+                )
+            },
+        )
     }
 }
 
@@ -598,13 +537,15 @@ private fun GameOverOverlay(
     onBack: () -> Unit,
     onWatchAds: (() -> Unit)?,
 ) {
-    OverlayCard {
-        Text(
-            text = stringResource(R.string.survive_30s_game_over),
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onErrorContainer,
-        )
+    GameDialog(
+        title = stringResource(R.string.survive_30s_game_over),
+        primaryLabel = stringResource(R.string.survive_30s_retry),
+        primaryIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
+        onPrimary = onRestart,
+        onBack = onBack,
+        primaryContainerColor = MaterialTheme.colorScheme.errorContainer,
+        primaryContentColor = MaterialTheme.colorScheme.onErrorContainer,
+    ) {
         Text(
             text = stringResource(R.string.survive_30s_survived_time, elapsed),
             style = MaterialTheme.typography.titleLarge,
@@ -620,37 +561,21 @@ private fun GameOverOverlay(
         }
         Text(
             text = stringResource(R.string.survive_30s_near_miss_count, nearMissCount),
-            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        ResultActions(
-            onBack = onBack,
-            onRestart = onRestart,
-            restartContainerColor = MaterialTheme.colorScheme.errorContainer,
-            restartContentColor = MaterialTheme.colorScheme.onErrorContainer,
-        )
         onWatchAds?.let { watchAds ->
-            GlassButton(
+            PrimaryButton(
+                text = stringResource(R.string.survive_30s_watch_ads_for_points),
                 onClick = watchAds,
-                color = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                borderWidth = 0.dp,
-                modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp),
-            ) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp),
-                )
-                Spacer(Modifier.width(6.dp))
-                Text(
-                    text = stringResource(R.string.survive_30s_watch_ads_for_points),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
+                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
+                icon = {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                    )
+                },
+            )
         }
     }
 }
@@ -661,13 +586,13 @@ private fun WinOverlay(
     onRestart: () -> Unit,
     onBack: () -> Unit,
 ) {
-    OverlayCard {
-        Text(
-            text = stringResource(R.string.survive_30s_win),
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
-        )
+    GameDialog(
+        title = stringResource(R.string.survive_30s_win),
+        primaryLabel = stringResource(R.string.survive_30s_retry),
+        primaryIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
+        onPrimary = onRestart,
+        onBack = onBack,
+    ) {
         Text(
             text = stringResource(R.string.survive_30s_win_desc),
             style = MaterialTheme.typography.titleMedium,
@@ -676,14 +601,7 @@ private fun WinOverlay(
         )
         Text(
             text = stringResource(R.string.survive_30s_near_miss_count, nearMissCount),
-            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        ResultActions(
-            onBack = onBack,
-            onRestart = onRestart,
-            restartContainerColor = MaterialTheme.colorScheme.primaryContainer,
-            restartContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
         )
     }
 }
