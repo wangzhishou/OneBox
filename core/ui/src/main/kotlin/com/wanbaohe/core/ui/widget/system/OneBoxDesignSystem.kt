@@ -62,6 +62,7 @@ import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.widget.glass.bottomBarBackground
 import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.wanbaohe.core.ui.widget.glass.glassMedium
 
@@ -506,16 +507,10 @@ fun OneBoxBottomActionBar(
     /** false 表示外层（BaseScreen）已经加过导航栏内边距，避免叠两次 */
     applyNavigationBarsPadding: Boolean = true,
 ) {
-    GlassSurface(
+    Box(
         modifier = modifier
-            .fillMaxWidth(),
-        style = OneBoxDesignSystem.navigationGlassStyle,
-        shape = RoundedCornerShape(
-            topStart = OneBoxDesignSystem.largeRadius,
-            topEnd = OneBoxDesignSystem.largeRadius,
-        ),
-        color = MaterialTheme.colorScheme.surface,
-        borderWidth = 0.dp,
+            .fillMaxWidth()
+            .bottomBarBackground(),
     ) {
         Row(
             modifier = Modifier

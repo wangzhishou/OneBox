@@ -76,34 +76,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
-import com.wanbaohe.core.ui.widget.glass.glassBackground
+import com.wanbaohe.core.ui.widget.glass.bottomBarBackground
+import com.wanbaohe.core.ui.widget.glass.bottomBarHasBackdrop
 import com.wanbaohe.core.ui.widget.glass.glassDense
 import com.wanbaohe.core.ui.widget.glass.glassSelectionBackground
-
-/**
- * 底栏是否该有自己的底色。
- *
- * 渐变背景或自定义背景图铺着的时候,底栏要透出后面的颜色,不跟玻璃开关走。
- * 纯色页面下底栏不画任何底色,与页面连成一体。
- *
- * 判定与 [com.wanbaohe.core.ui.widget.glass.effectiveGlassBorderAlpha]
- * 的"没有背景层就不画描边"保持一致。
- *
- * - [BackdropState.None]:无背景层,不画底;
- * - [BackdropState.Glass]:有渐变或自定义背景,底栏透出背后的颜色。
- *   玻璃开着走毛玻璃;关着也留一层半透明,不铺实色。
- */
-@Composable
-private fun currentBackdropState(): BackdropState {
-    val settingsState = LocalSettingsState.current
-    val hasBackdrop = settingsState.isMeshGradientBackgroundEnabled ||
-        settingsState.customBackgroundImageUri != null
-    return if (hasBackdrop) BackdropState.Glass else BackdropState.None
-}
-
-private enum class BackdropState { None, Glass }
 
 @Immutable
 data class BottomNavItem(
@@ -176,7 +153,6 @@ fun BottomNavigationBar(
     val bottomBarHeight = remember(height, systemBarsBottom) {
         height + systemBarsBottom
     }
-    val backdropState = currentBackdropState()
     AnimatedVisibility(
         visible = showBar,
         enter = slideInVertically(initialOffsetY = { it }),
@@ -193,23 +169,7 @@ fun BottomNavigationBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(bottomBarHeight)
-                    .then(
-                        when (backdropState) {
-                            BackdropState.None -> Modifier
-                            BackdropState.Glass -> if (LocalSettingsState.current.isGlassAlphaEnabled) {
-                                Modifier.glassBackground(
-                                    style = GlassStyle.Thin,
-                                    shape = style.containerShape,
-                                    color = MaterialTheme.colorScheme.surface,
-                                )
-                            } else {
-                                Modifier.background(
-                                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.18f),
-                                    shape = style.containerShape,
-                                )
-                            }
-                        }
-                    )
+                    .bottomBarBackground(shape = style.containerShape)
                     .let { if (navigationBarsPadding) it.navigationBarsPadding() else it }
                     .let { if (imePadding) it.imePadding() else it }
                     .padding(top = style.innerTopPadding)
@@ -384,7 +344,7 @@ private fun CenterActionButton(
     style: BottomNavigationBarStyle,
     onClick: (() -> Unit)?,
 ) {
-    val backdropState = currentBackdropState()
+    val hasBackdrop = bottomBarHasBackdrop()
     val rotation by animateFloatAsState(
         targetValue = if (action.expanded) 45f else 0f,
         animationSpec = tween(300),
@@ -410,7 +370,7 @@ private fun CenterActionButton(
             modifier = Modifier
                 .size(style.centerButtonSize)
                 .then(
-                    if (backdropState == BackdropState.Glass) {
+                    if (hasBackdrop) {
                         Modifier.glassDense(
                             shape = CircleShape,
                             color = selectedBgColor,

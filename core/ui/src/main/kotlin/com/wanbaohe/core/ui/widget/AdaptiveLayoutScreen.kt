@@ -129,10 +129,9 @@ fun AdaptiveLayoutScreen(
     val isPortrait by isPortraitOrientationAsState()
     val settingsState = LocalSettingsState.current
 
-    // 底部操作栏（OneBoxBottomActionBar / BottomButtonsBlock）横跨屏幕底边、浮在内容之上，
-    // 本身自带 navigationBarsPadding()。这里实测它渲染出来的高度，再折算成列表底部留白，
-    // 让滚动内容停在操作栏上方，而不是从玻璃栏底下穿过去。
-    // 实测而非写死：多语言下"Select image / Save"会换行，栏高并不固定。
+    // 底部操作栏横跨屏幕底边。实测高度后把列表视口收到栏的上沿，
+    // 滚动内容停在栏外，不会从栏底下穿过去。
+    // 实测而非写死：多语言下按钮会换行，栏高并不固定。
     val density = LocalDensity.current
     var actionsBarHeightPx by rememberSaveable { mutableStateOf(0) }
     val actionsBarHeight = with(density) { actionsBarHeightPx.toDp() }
@@ -229,11 +228,28 @@ fun AdaptiveLayoutScreen(
                             }
                         }
 
+                        // 竖屏栏贴在屏幕底边：列表视口收到栏的上沿。键盘比栏更高时再收到键盘上沿。
+                        // 首帧还没测到高度时先按 100dp，避免内容闪到栏底下。
+                        val bottomOverlay = if (isPortrait || !canShowScreenData) {
+                            if (actionsBarHeight > 0.dp) actionsBarHeight else 100.dp
+                        } else {
+                            0.dp
+                        }
+                        val imeBottom = WindowInsets.ime.asPaddingValues().calculateBottomPadding()
+                        val navBottom = WindowInsets.navigationBars.asPaddingValues()
+                            .calculateBottomPadding()
+                        val bottomInset = if (isPortrait || !canShowScreenData) {
+                            maxOf(bottomOverlay, imeBottom)
+                        } else {
+                            maxOf(navBottom, imeBottom) + contentPadding
+                        }
+
                         if (placeControlsSeparately && controls != null && canShowScreenData) {
                             Column(
                                 modifier = Modifier
                                     .weight(1f)
                                     .fillMaxHeight()
+                                    .padding(bottom = bottomInset)
                                     .clipToBounds()
                             ) {
                                 controls(listState)
@@ -258,23 +274,10 @@ fun AdaptiveLayoutScreen(
                                 Dispatchers.Main.immediate
                             }
 
-                            // 底部操作栏占位：实测高度 + 8dp 呼吸位；横屏栏在右侧，竖屏才需要留白。
-                            // 首帧还没测到高度时退回旧值 100dp，避免留白跳变。
-                            val actionsBarInset = if (isPortrait || !canShowScreenData) {
-                                actionsBarHeight.coerceAtLeast(100.dp) + 8.dp
-                            } else {
-                                contentPadding
-                            }
-
                             LazyColumn(
                                 state = listState,
                                 contentPadding = PaddingValues(
-                                    // 留白 = 系统导航条 + 底部操作栏占位，滚到底时最后一屏控件完整露在操作栏上方
-                                    bottom = WindowInsets
-                                        .navigationBars
-                                        .union(WindowInsets.ime)
-                                        .asPaddingValues()
-                                        .calculateBottomPadding() + actionsBarInset,
+                                    bottom = 0.dp,
                                     top = if (!canShowScreenData || !isPortrait) contentPadding else portraitTopPadding,
                                     start = contentPadding + cutout,
                                     end = contentPadding
@@ -285,6 +288,7 @@ fun AdaptiveLayoutScreen(
                                         else 1f
                                     )
                                     .fillMaxHeight()
+                                    .padding(bottom = bottomInset)
                                     .clipToBounds(),
                                 flingBehavior = enhancedFlingBehavior()
                             ) {

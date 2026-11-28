@@ -59,9 +59,12 @@ import com.shifenmiao.base.utils.ActionUtils
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.DeleteSweep
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineCopy
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineImage
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLink
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineOpenInBrowser
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineOpenWith
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineQrCode
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineQrScanner
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineText
@@ -163,6 +166,7 @@ fun ScanCodeContent(
                 primaryIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineQrScanner,
                 secondaryText = if (canOpenLatest) stringResource(R.string.open_latest_result) else null,
                 onSecondaryClick = if (canOpenLatest) component::openLatest else null,
+                secondaryIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory,
             )
         },
         canShowScreenData = true,
@@ -284,6 +288,7 @@ private fun ScanHistoryItemCard(
                 if (canOpen) {
                     ScanGlassActionButton(
                         text = stringResource(R.string.open),
+                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineOpenWith,
                         paletteIndex = paletteIndex++,
                         onClick = { onOpen(item) },
                     )
@@ -291,12 +296,14 @@ private fun ScanHistoryItemCard(
                 if (canOpenInSystemBrowser) {
                     ScanGlassActionButton(
                         text = stringResource(com.shifenmiao.core.R.string.web_browser_title),
+                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineOpenInBrowser,
                         paletteIndex = paletteIndex++,
                         onClick = onOpenInBrowser,
                     )
                 }
                 ScanGlassActionButton(
                     text = stringResource(R.string.copy),
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCopy,
                     paletteIndex = paletteIndex,
                     onClick = onCopy,
                 )
@@ -373,6 +380,7 @@ private fun ScanHistoryDeleteButton(onClick: () -> Unit) {
 @Composable
 private fun ScanGlassActionButton(
     text: String,
+    icon: ImageVector,
     paletteIndex: Int,
     onClick: () -> Unit,
 ) {
@@ -385,6 +393,12 @@ private fun ScanGlassActionButton(
         borderWidth = 0.9.dp,
         contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp),
     ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            modifier = Modifier.size(16.dp),
+        )
+        Spacer(modifier = Modifier.width(6.dp))
         Text(
             text = text,
             style = MaterialTheme.typography.labelLarge,
