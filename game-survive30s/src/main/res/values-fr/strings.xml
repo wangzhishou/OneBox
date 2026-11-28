@@ -50,4 +50,8 @@
     <string name="survive_30s_paused">En pause</string>
     <string name="survive_30s_pause_desc">Mise en arrière-plan, pause automatique. Ta progression est conservée.</string>
     <string name="survive_30s_resume">Reprendre</string>
+    <string name="survive_30s_remaining">Temps restant</string>
+    <string name="survive_30s_shield_count">Bouclier ×%1$d</string>
+    <string name="survive_30s_invincible">Bouclier actif · %.1fs</string>
+    <string name="survive_30s_pause">Pause</string>
 </resources>

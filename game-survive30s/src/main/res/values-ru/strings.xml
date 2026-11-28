@@ -50,4 +50,8 @@
     <string name="survive_30s_paused">Пауза</string>
     <string name="survive_30s_pause_desc">Игра автоматически на паузе в фоне. Ваш прогресс сохранён.</string>
     <string name="survive_30s_resume">Продолжить</string>
+    <string name="survive_30s_remaining">Осталось</string>
+    <string name="survive_30s_shield_count">Щит ×%1$d</string>
+    <string name="survive_30s_invincible">Щит активен · %.1fs</string>
+    <string name="survive_30s_pause">Пауза</string>
 </resources>

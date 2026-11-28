@@ -50,4 +50,8 @@
     <string name="survive_30s_paused">일시정지</string>
     <string name="survive_30s_pause_desc">백그라운드로 이동하여 자동으로 일시정지되었습니다.</string>
     <string name="survive_30s_resume">계속하기</string>
+    <string name="survive_30s_remaining">남은 시간</string>
+    <string name="survive_30s_shield_count">보호막 ×%1$d</string>
+    <string name="survive_30s_invincible">보호막 적용 중 · %.1fs</string>
+    <string name="survive_30s_pause">일시정지</string>
 </resources>

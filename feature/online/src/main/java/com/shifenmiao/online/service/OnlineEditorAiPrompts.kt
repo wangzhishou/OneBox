@@ -1,11 +1,14 @@
 package com.shifenmiao.online.service
 
+import android.content.res.Configuration
 import androidx.annotation.StringRes
 import com.shifenmiao.common.ai.EditorAiPromptKey
 import com.shifenmiao.common.ai.EditorAiPrompts
 import com.shifenmiao.database.chat_prompt.SystemPromptRepository
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.online.R
+import java.util.Locale
+import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -16,14 +19,40 @@ class OnlineEditorAiPrompts @Inject constructor(
     override suspend fun get(key: EditorAiPromptKey): String {
         val definition = key.definition
         val fallback = AppContext.getString(definition.contentRes).trim()
+        val title = AppContext.getString(definition.titleRes)
+        val description = AppContext.getString(definition.descriptionRes)
         return runCatching {
-            repository.getOrCreate(
+            val entity = repository.getOrCreate(
                 key = key.storageKey,
-                title = AppContext.getString(definition.titleRes),
-                description = AppContext.getString(definition.descriptionRes),
+                title = title,
+                description = description,
                 defaultContent = fallback,
             )
-        }.getOrNull()?.prompt?.trim()?.takeIf { it.isNotBlank() } ?: fallback
+            val stored = entity.prompt?.trim().orEmpty()
+            // 预置文案按首次打开时的语言写入本地。译文补上后，未改过的原文要换成当前语言。
+            if (stored.isNotEmpty() && stored != fallback && stored in shippedCopies(definition.contentRes)) {
+                val nextTitle = if (entity.title.trim() in shippedCopies(definition.titleRes)) {
+                    title
+                } else {
+                    entity.title
+                }
+                val storedDescription = entity.description.orEmpty().trim()
+                val nextDescription = if (
+                    storedDescription.isEmpty() ||
+                    storedDescription in shippedCopies(definition.descriptionRes)
+                ) {
+                    description
+                } else {
+                    entity.description.orEmpty()
+                }
+                repository.updatePreset(entity.id, nextTitle, nextDescription, fallback)
+                    .prompt
+                    ?.trim()
+                    .orEmpty()
+            } else {
+                stored
+            }
+        }.getOrNull()?.takeIf { it.isNotBlank() } ?: fallback
     }
 
     override suspend fun ensureDefaults() {
@@ -99,4 +128,37 @@ class OnlineEditorAiPrompts @Inject constructor(
         descriptionRes = R.string.editor_prompt_prompt_action_description,
         contentRes = contentRes,
     )
+
+    private fun shippedCopies(@StringRes resId: Int): Set<String> =
+        shippedCopyCache.getOrPut(resId) {
+            val base = AppContext.getContext()
+            shippedLocales.map { locale ->
+                val config = Configuration(base.resources.configuration)
+                config.setLocale(locale)
+                base.createConfigurationContext(config).getString(resId).trim()
+            }.filter { it.isNotEmpty() }.toSet()
+        }
+
+    private companion object {
+        val shippedCopyCache = ConcurrentHashMap<Int, Set<String>>()
+        val shippedLocales = listOf(
+            Locale.ENGLISH,
+            Locale.US,
+            Locale.SIMPLIFIED_CHINESE,
+            Locale.TRADITIONAL_CHINESE,
+            Locale.FRENCH,
+            Locale.GERMAN,
+            Locale.JAPANESE,
+            Locale.KOREAN,
+            Locale("es"),
+            Locale("pt", "BR"),
+            Locale("vi"),
+            Locale("in"),
+            Locale("hi"),
+            Locale("ru"),
+            Locale("tr"),
+            Locale("fil"),
+            Locale("ar"),
+        )
+    }
 }

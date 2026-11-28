@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ OneBox is a free AI agent and toolbox for Android
+  ~ Copyright (c) 2026 zhishouwang(网址兽)
+  ~
+  ~ Origin: OneBox original work, not derived from ImageToolbox
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~ You should have received a copy of the Apache License
+  ~ along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+  -->
+
+<resources>
+    <string name="studio_project_untitled">Dự án chưa đặt tên</string>
+    <string name="studio_project_save_failed">Không lưu được dự án: %1$s</string>
+    <string name="studio_project_saved">Đã lưu dự án</string>
+    <string name="studio_project_load_failed">Không mở được dự án: %1$s</string>
+    <string name="studio_processing_limit">%1$d × %2$d vượt quá khả năng xử lý của thiết bị. Hãy chọn độ phân giải xuất nhỏ hơn.</string>
+    <string name="studio_image_read_failed">Không đọc được ảnh này</string>
+    <string name="studio_image_dimensions_failed">Không xác định được kích thước ảnh gốc</string>
+    <string name="studio_task_loading">Đang đọc ảnh</string>
+    <string name="studio_task_rendering">Đang ghép ảnh</string>
+    <string name="studio_task_transforming">Đang áp dụng cắt và xoay</string>
+    <string name="studio_task_ai">Đang xử lý ảnh bằng AI</string>
+    <string name="studio_task_ai_download">Đang lưu kết quả AI</string>
+    <string name="studio_task_mask">Đang chuẩn bị xem trước mặt nạ</string>
+    <string name="studio_processing_failed">Xử lý ảnh thất bại: %1$s</string>
+    <string name="studio_mask_target_required">Hãy chọn lớp ảnh, nhãn dán, nét vẽ hoặc ảnh nền</string>
+    <string name="studio_recipe_saved">Đã lưu công thức</string>
+    <string name="studio_recipe_failed">Thao tác công thức thất bại: %1$s</string>
+    <string name="studio_batch_finished">Đã lưu %1$d ảnh, thất bại %2$d ảnh</string>
+    <string name="studio_ai_image_target_required">Hãy chọn lớp ảnh hoặc ảnh nền</string>
+    <string name="studio_ai_edit_unsupported">Dịch vụ ảnh hiện tại không hỗ trợ sửa ảnh. Hãy chọn dịch vụ có hỗ trợ sửa trong phần cài đặt.</string>
+    <string name="studio_merge_locked">Hãy mở khóa lớp bên dưới trước khi gộp</string>
+    <string name="studio_merge_blended">Hãy giữ lớp chế độ hòa trộn ở trạng thái sửa được, hoặc xuất ảnh đã ghép.</string>
+</resources>

@@ -65,4 +65,24 @@ class SystemPromptRepository @Inject constructor(appDatabase: AppDatabase) {
         promptDao.upsertLocalPrompt(updated)
         return updated
     }
+
+    /**
+     * 只替换仍是内置原文的预置提示词。用户改过的正文、标题、说明由调用方原样传回。
+     */
+    suspend fun updatePreset(
+        id: Int,
+        title: String,
+        description: String,
+        content: String,
+    ): PromptEntity {
+        val current = getById(id) ?: throw IllegalArgumentException("Unknown system prompt: $id")
+        val updated = current.copy(
+            title = title,
+            description = description,
+            prompt = content,
+            updatedAt = System.currentTimeMillis(),
+        )
+        promptDao.upsertLocalPrompt(updated)
+        return updated
+    }
 }

@@ -50,4 +50,8 @@
     <string name="survive_30s_paused">Pausiert</string>
     <string name="survive_30s_pause_desc">Automatisch im Hintergrund pausiert. Dein Fortschritt ist sicher.</string>
     <string name="survive_30s_resume">Fortsetzen</string>
+    <string name="survive_30s_remaining">Restzeit</string>
+    <string name="survive_30s_shield_count">Schild ×%1$d</string>
+    <string name="survive_30s_invincible">Schild aktiv · %.1fs</string>
+    <string name="survive_30s_pause">Pause</string>
 </resources>

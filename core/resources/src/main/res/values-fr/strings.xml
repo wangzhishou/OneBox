@@ -485,8 +485,8 @@
     <string name="rearrange_pdf_sub">Appuyez longuement et faites glisser les pages pour les réorganiser</string>
     <string name="protect_pdf">Chiffrer le PDF</string>
     <string name="protect_pdf_sub">Verrouiller le fichier avec un mot de passe d\'ouverture</string>
-    <string name="unlock_pdf">Supprimer le mot de passe du PDF</string>
-    <string name="unlock_pdf_sub">Enregistrer une copie qui s\'ouvre sans mot de passe</string>
+    <string name="unlock_pdf">Déverrouiller le PDF</string>
+    <string name="unlock_pdf_sub">Copie sans mot de passe</string>
     <string name="page_numbers">Numéros de page</string>
     <string name="page_numbers_sub">Imprimer un numéro sur chaque page</string>
     <string name="page_number_format">Format du numéro</string>

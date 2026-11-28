@@ -50,4 +50,8 @@
     <string name="survive_30s_paused">Duraklatıldı</string>
     <string name="survive_30s_pause_desc">Arka plana geçildiği için otomatik duraklatıldı. İlerlemen güvende.</string>
     <string name="survive_30s_resume">Devam et</string>
+    <string name="survive_30s_remaining">Kalan süre</string>
+    <string name="survive_30s_shield_count">Kalkan ×%1$d</string>
+    <string name="survive_30s_invincible">Kalkan aktif · %.1fs</string>
+    <string name="survive_30s_pause">Duraklat</string>
 </resources>

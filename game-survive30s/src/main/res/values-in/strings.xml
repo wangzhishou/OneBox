@@ -50,4 +50,8 @@
     <string name="survive_30s_paused">Dijeda</string>
     <string name="survive_30s_pause_desc">Otomatis dijeda di latar belakang. Progresmu aman.</string>
     <string name="survive_30s_resume">Lanjutkan</string>
+    <string name="survive_30s_remaining">Sisa waktu</string>
+    <string name="survive_30s_shield_count">Perisai ×%1$d</string>
+    <string name="survive_30s_invincible">Perisai aktif · %.1fs</string>
+    <string name="survive_30s_pause">Jeda</string>
 </resources>

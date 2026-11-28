@@ -50,4 +50,8 @@
     <string name="survive_30s_paused">Đã tạm dừng</string>
     <string name="survive_30s_pause_desc">Chuyển sang nền đã tự động tạm dừng, tiến độ vẫn còn, tiếp tục bất cứ lúc nào.</string>
     <string name="survive_30s_resume">Tiếp tục</string>
+    <string name="survive_30s_remaining">Thời gian còn lại</string>
+    <string name="survive_30s_shield_count">Khiên ×%1$d</string>
+    <string name="survive_30s_invincible">Khiên đang bật · %.1fs</string>
+    <string name="survive_30s_pause">Tạm dừng</string>
 </resources>

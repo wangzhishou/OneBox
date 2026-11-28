@@ -151,7 +151,7 @@
     <string name="ai_engine_edit_action">Modifier</string>
     <string name="ai_engine_delete_action">Supprimer</string>
     <string name="ai_engine_local_badge">Direct</string>
-    <string name="ai_engine_remote_badge">Proxy</string>
+    <string name="ai_engine_remote_badge">Relais</string>
     <string name="ai_engine_delete_confirm_title">Supprimer le service local</string>
     <string name="ai_engine_delete_confirm_message">Voulez-vous vraiment supprimer le service de modèle « %1$s » ? Si aucun service du même nom n\'est conservé, ses modèles associés seront également supprimés.</string>
     <string name="ai_engine_delete_success">Service de modèle « %1$s » supprimé</string>
@@ -200,12 +200,12 @@
     <string name="ai_working_model_change">Appuyer pour changer</string>
     <string name="ai_working_model_picker_title">Sélectionner %1$s</string>
     <string name="ai_working_model_status_direct">Liaison actuelle : connexion directe testée</string>
-    <string name="ai_working_model_status_proxy">Liaison actuelle : proxy disponible</string>
+    <string name="ai_working_model_status_proxy">Liaison actuelle : relais disponible</string>
     <string name="ai_working_model_status_available">Liaison actuelle : disponible</string>
     <string name="ai_working_model_status_unavailable">Liaison actuelle : indisponible, veuillez d\'abord configurer</string>
     <string name="ai_engine_api_url">Adresse API</string>
     <string name="ai_engine_api_path">Chemin API</string>
-    <string name="ai_engine_api_url_hint">Complète automatiquement https:// et le / final en cas de perte de focus</string>
+    <string name="ai_engine_api_url_hint">En quittant le champ, complète automatiquement https:// et le / final</string>
     <string name="ai_engine_jev_proxy_hint">Saisissez votre code d\'autorisation du site officiel Jev et après un test de connectivité réussi, vous pourrez l\'utiliser en connexion directe ; laissez vide pour l\'utiliser directement.</string>
     <string name="ai_engine_auth_token">Code d\'autorisation</string>
     <string name="ai_engine_auth_type_label">Méthode d\'authentification</string>
@@ -215,7 +215,7 @@
     <string name="ai_engine_parameters_title">Paramètres et capacités</string>
     <string name="ai_engine_temperature">Température d\'échantillonnage</string>
     <string name="ai_engine_temperature_desc">Contrôle le caractère aléatoire du texte généré. Une valeur élevée est plus créative, mais peut réduire la stabilité.</string>
-    <string name="ai_engine_top_p">Échantillonnage nucléaire (Top-P)</string>
+    <string name="ai_engine_top_p">Échantillonnage nucleus (Top-P)</string>
     <string name="ai_engine_top_p_desc">Limite la plage de probabilité cumulée des tokens candidats, aidant à contrôler la distribution de sortie.</string>
     <string name="ai_engine_max_tokens">Tokens maximum</string>
     <string name="ai_engine_max_tokens_desc">Limite le nombre maximal de tokens pouvant être générés en une seule réponse.</string>
@@ -449,7 +449,7 @@
     <string name="ai_service_hub_tab_jev">Jev</string>
     <string name="ai_service_hub_tab_local">Local</string>
     <string name="ai_service_hub_tab_multimodal">Multimodal</string>
-    <string name="ai_personalization_tab_prompts">Invites</string>
+    <string name="ai_personalization_tab_prompts">Prompts</string>
     <string name="ai_engine_api_url_example">Exemple : %1$s</string>
     <string name="ai_engine_discard_message_engine">La configuration actuelle du service de modèle n\'a pas été enregistrée. Voulez-vous vraiment abandonner ces modifications ? Remarque : l\'état de validation du test de connexion ne prend effet qu\'après l\'enregistrement ; abandonner les modifications ne le conservera pas.</string>
     <string name="ai_engine_remote_models_found">%1$d modèles disponibles détectés</string>

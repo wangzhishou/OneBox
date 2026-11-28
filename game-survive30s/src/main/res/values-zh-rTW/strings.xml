@@ -50,4 +50,8 @@
     <string name="survive_30s_paused">已暫停</string>
     <string name="survive_30s_pause_desc">切到背景已自動暫停，進度還在，隨時繼續。</string>
     <string name="survive_30s_resume">繼續</string>
+    <string name="survive_30s_remaining">剩餘時間</string>
+    <string name="survive_30s_shield_count">護盾 ×%1$d</string>
+    <string name="survive_30s_invincible">護盾生效 · %.1fs</string>
+    <string name="survive_30s_pause">暫停</string>
 </resources>

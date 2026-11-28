@@ -279,7 +279,10 @@ fun Survive30sScreen(
                 )
             }
             when (state.gameState) {
-                GameState.IDLE -> IdleOverlay(onStart = component::startGame)
+                GameState.IDLE -> IdleOverlay(
+                    onStart = component::startGame,
+                    onBack = component.onGoBack,
+                )
                 GameState.PAUSED -> PausedOverlay(
                     elapsed = state.elapsedSec,
                     onResume = component::resumeGame,
@@ -306,7 +309,11 @@ fun Survive30sScreen(
             }
         },
     )
-    BackHandler {}
+    // 对局中边缘滑动和系统返回只暂停，不退出。球是跟手拖的，滑动退出会把这一局直接丢掉。
+    // 暂停面板上的「返回」才离开。未开局、暂停、结束时不拦截，准备弹窗自己处理返回。
+    BackHandler(enabled = state.gameState == GameState.PLAYING) {
+        component.pauseGame()
+    }
 }
 
 @Composable
@@ -473,9 +480,9 @@ private fun GameDialog(
 ) {
     EnhancedAlertDialog(
         visible = true,
-        onDismissRequest = {},
+        onDismissRequest = { onBack?.invoke() },
         properties = DialogProperties(
-            dismissOnBackPress = false,
+            dismissOnBackPress = onBack != null,
             dismissOnClickOutside = false,
         ),
         title = { Text(title) },
@@ -528,12 +535,13 @@ private fun GameDialog(
 }
 
 @Composable
-private fun IdleOverlay(onStart: () -> Unit) {
+private fun IdleOverlay(onStart: () -> Unit, onBack: () -> Unit) {
     GameDialog(
         title = stringResource(R.string.survive_30s_ready),
         primaryLabel = stringResource(R.string.survive_30s_start),
         primaryIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
         onPrimary = onStart,
+        onBack = onBack,
     ) {
         Text(
             text = stringResource(R.string.survive_30s_instruction),

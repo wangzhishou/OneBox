@@ -25,6 +25,7 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -357,6 +358,11 @@ private fun EngineListCard(
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
+                    FlowRow(
+                        modifier = Modifier.weight(1f),
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        verticalArrangement = Arrangement.spacedBy(6.dp),
+                    ) {
                     // 协议徽章:同名不同协议的引擎一眼能分开
                     EngineBadge(text = protocolBadgeLabel(engine.requestProtocol))
                     // 链路状态:可用 / 不可用(不可用红色警示);
@@ -394,7 +400,7 @@ private fun EngineListCard(
                     } else if (engine.canChatDirectly()) {
                         EngineBadge(text = stringResource(R.string.ai_engine_local_badge))
                     }
-                    Spacer(modifier = Modifier.weight(1f))
+                    }
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
                         contentDescription = null,
@@ -405,6 +411,8 @@ private fun EngineListCard(
                         text = stringResource(R.string.ai_engine_edit_action),
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        maxLines = 1,
+                        softWrap = false,
                     )
                 }
             }

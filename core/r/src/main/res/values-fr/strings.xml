@@ -24,7 +24,7 @@
     <string name="app_description">Une app, plus de 90 outils : traitement d\'images, chat IA, outils de productivité, mini-jeux — le tout dans une seule boîte.</string>
     <string name="app_description_download_des">\n\nTéléchargement : https://gitcode.com/wangzhishou/OneBox/releases\nOpen source : https://github.com/wangzhishou/OneBox</string>
     <string name="app_launcher_name">WanBaoHe</string>
-    <string name="app_slogan">WanBaoHe, tout peut être propulsé par l\'IA</string>
+    <string name="app_slogan">Tout peut se faire avec l\'IA</string>
     <string name="dialog_title">Astuce</string>
     <string name="button_close">Fermer</string>
     <string name="button_confirm">Confirmer</string>
@@ -85,7 +85,7 @@
     <string name="attachment_decode_failed">Impossible de lire l\'image</string>
     <string name="attachment_unsupported_type">Type de fichier non pris en charge : %1$s</string>
     <string name="cloud_storage_config_invalid">Configuration du stockage cloud incomplète</string>
-    <string name="ai_system_prompt_selected_label">Invite système :</string>
+    <string name="ai_system_prompt_selected_label">Prompt système :</string>
     <string name="ai_duel_chat_title">Chat IA-IA</string>
     <string name="ai_duel_chat_description">Deux IA discutent entre elles, arrêtez quand vous voulez, reprenez à tout moment.</string>
     <string name="ai_duel_placeholder_title">Salon de chat IA</string>
@@ -438,7 +438,7 @@
     <string name="webview_title_feedback">Signaler un problème</string>
     <string name="ai_chat_description">L\'API de grands modèles prend en charge les chats IA comme Baidu Cloud, Alibaba Qianwen, Kimi, etc.</string>
     <string name="ai_chat_menu_new_conversation">Nouvelle conversation</string>
-    <string name="search_hint">Saisissez un mot-clé de recherche, par ex. : IA, danmaku, calendrier perpétuel, etc.</string>
+    <string name="search_hint">Ex. : IA, barrage, calendrier</string>
     <string name="no_search_result">Aucun résultat trouvé !</string>
     <string name="privacy_title">Politique de confidentialité</string>
     <string name="privacy_item_1">Autorisation de lecture/modification du stockage du téléphone</string>
@@ -506,7 +506,7 @@
     <string name="type_web">Page web</string>
     <string name="type_wechat_miniprogram">Mini-programme</string>
     <string name="type_wechat_video">Vidéo</string>
-    <string name="type_prompt">Invite</string>
+    <string name="type_prompt">Prompts</string>
     <string name="profile_item_dynamic_colors">Thème multicolore</string>
     <string name="pay_success">Paiement réussi, les points seront crédités dans quelques minutes</string>
     <string name="pay_fail">Erreur de paiement : %s</string>
@@ -781,19 +781,19 @@
     <string name="ai_search_sources">%1$d sources</string>
     <string name="ai_reasoning_title">Processus de réflexion approfondie de l\'IA :</string>
     <string name="importing">Importation des données en cours</string>
-    <string name="prompt">Invite</string>
-    <string name="prompt_grid_title">Invite IA</string>
+    <string name="prompt">Prompts</string>
+    <string name="prompt_grid_title">Prompts IA</string>
     <string name="prompt_grid_subtitle">Explorez des modèles d\'invites de haute qualité</string>
     <string name="prompt_view_all">Voir tout</string>
     <string name="prompt_description">Brève introduction</string>
-    <string name="edit_prompt">Modifier l\'invite</string>
+    <string name="edit_prompt">Modifier le prompt</string>
     <string name="prompt_name_empty">Le nom ne peut pas être vide</string>
     <string name="prompt_name">Nom de l\'agent</string>
     <string name="preview">Aperçu</string>
     <string name="prompt_prompt">Instructions fonctionnelles</string>
     <string name="select_groups">Sélection de catégorie</string>
     <string name="title">Poste</string>
-    <string name="prompt_create">Invite</string>
+    <string name="prompt_create">Prompts</string>
     <string name="cancel">Annuler</string>
     <string name="settings">Paramètres</string>
     <string name="profile_group_ai_settings">Paramètres IA</string>
@@ -802,10 +802,10 @@
     <string name="profile_item_ai_workflow_models">Modèle de travail</string>
     <string name="profile_item_local_models">Modèle local</string>
     <string name="profile_item_ai_usage">Statistiques d\'utilisation</string>
-    <string name="profile_item_ai_reply_style">Invite système</string>
+    <string name="profile_item_ai_reply_style">Prompts système</string>
     <string name="profile_item_ai_memory">Mémoire IA</string>
     <string name="profile_item_ai_skill">Compétences IA</string>
-    <string name="profile_item_ai_personalization">Invites et personnalisation</string>
+    <string name="profile_item_ai_personalization">Prompts et personnalisation</string>
     <string name="profile_item_tts_settings">Synthèse vocale</string>
     <string name="profile_item_image_generation_settings">Génération et édition d\'images</string>
     <string name="exporting">Exportation des données en cours</string>
@@ -848,7 +848,7 @@
     <string name="feedback_title_placeholder">Décrivez brièvement le problème ou l\'idée</string>
     <string name="upload_failure">Échec du téléchargement, veuillez réessayer plus tard</string>
     <string name="upload_cancel">Choisir Annuler</string>
-    <string name="feedback_upload_image">Téléchargement d\'image</string>
+    <string name="feedback_upload_image">Téléverser une image</string>
     <string name="upload_max_files">Vous pouvez télécharger jusqu\'à %s images</string>
     <string name="onebox_ai">WanBaoHe AI</string>
     <string name="profile_item_disable_robot">Assistant intelligent</string>
@@ -920,7 +920,7 @@
     <string name="ai_input_tools_with_count">Outils (%1$d)</string>
     <string name="ai_input_share">Partager</string>
     <string name="ai_input_system">Système</string>
-    <string name="ai_input_prompts">Invite</string>
+    <string name="ai_input_prompts">Prompts</string>
     <string name="ai_tools_center_title">Centre d\'outils</string>
     <string name="ai_tools_mode_auto">Automatique</string>
     <string name="ai_tools_mode_hybrid">Recommandé</string>
@@ -1645,12 +1645,12 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="ai_xiaomi_description">Xiaomi MiMo</string>
     <string name="ai_tools_category_image">Image</string>
     <string name="ai_tools_category_media">Média</string>
-    <string name="ai_tools_category_prompt">Invite</string>
+    <string name="ai_tools_category_prompt">Prompts</string>
     <string name="ai_chat_quick_start_select">Sélectionner le modèle</string>
     <string name="system_prompt_save_success">Enregistré avec succès</string>
     <string name="system_prompt_save_failed">Échec de l\'enregistrement</string>
     <string name="system_prompt_friendly_reminder_title">Rappel amical</string>
-    <string name="system_prompt_friendly_reminder_message">Après avoir modifié l\'invite système, les fonctionnalités IA telles que le chat et l\'Agent peuvent être affectées. Si ce n\'est pas nécessaire, il est recommandé de sauvegarder le contenu original avant de le modifier.</string>
+    <string name="system_prompt_friendly_reminder_message">Après avoir modifié le prompt système, les fonctionnalités IA telles que le chat et l\'Agent peuvent être affectées. Si ce n\'est pas nécessaire, il est recommandé de sauvegarder le contenu original avant de le modifier.</string>
     <string name="system_prompt_read_only_hint">Niveau VIP insuffisant, consultation uniquement</string>
     <string name="system_prompt_edit_vip_required_title">Mise à niveau VIP requise</string>
     <string name="system_prompt_edit_vip_required_message">La fonction d\'édition de l\'invite système nécessite un niveau VIP 2 ou supérieur. Après la mise à niveau VIP, vous pourrez personnaliser l\'invite système de l\'IA et bénéficier d\'une expérience IA plus personnalisée.</string>
@@ -1711,7 +1711,7 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="ai_execution_paused_friendly_summary">L\'IA a effectué plusieurs appels d\'outils et pourrait avoir besoin d\'étapes supplémentaires pour terminer la tâche. Le contenu généré a été enregistré, vous pouvez choisir de continuer ou d\'arrêter.</string>
     <string name="ai_execution_action_continue_execution">Continuer l\'exécution</string>
     <string name="home_tab_tools">Outils</string>
-    <string name="home_tab_web_title">URL</string>
+    <string name="home_tab_web_title">Sites</string>
     <string name="home_tab_tags_manage">Gestion des tags</string>
     <string name="home_chip_all">Tout</string>
     <string name="home_chip_close">Réduire les filtres</string>
@@ -1788,12 +1788,12 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="comment_document_id_missing">Préparation des données de message, veuillez réessayer plus tard</string>
     <string name="comment_add_image">Ajouter une image</string>
     <string name="comment_max_images_format">Maximum %1$d images</string>
-    <string name="comment_send_with_images_pending">Veuillez attendre la fin du téléchargement des images</string>
+    <string name="comment_send_with_images_pending">Veuillez attendre la fin du téléversement des images</string>
     <string name="comment_image_blocked">Contenu de l\'image non conforme, veuillez en choisir une autre</string>
     <string name="comment_image_suspicious">Image suspectée non conforme, veuillez en choisir une autre</string>
     <string name="comment_image_audit_failed">Service de vérification des images indisponible, veuillez réessayer plus tard</string>
     <string name="comment_image_blocked_unknown">Image non validée (%1$s)</string>
-    <string name="comment_image_upload_failed">Échec du téléchargement de l\'image, veuillez réessayer plus tard</string>
+    <string name="comment_image_upload_failed">Échec du téléversement de l\'image, veuillez réessayer plus tard</string>
     <string name="comment_image_partial_blocked">Certaines images n\'ont pas été validées et ont été filtrées</string>
     <string name="comment_text_blocked">Contenu du commentaire non conforme, veuillez le modifier et réessayer</string>
     <string name="comment_text_audit_failed">Service de vérification des commentaires indisponible, veuillez réessayer plus tard</string>
@@ -1816,33 +1816,43 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="app_update_dialog_confirm">Mettre à jour</string>
     <string name="app_update_dialog_later">Plus tard</string>
     <plurals name="d_seconds_ago">
+        <item quantity="one">il y a %d seconde</item>
         <item quantity="other">il y a %d secondes</item>
     </plurals>
     <plurals name="d_minutes_ago">
+        <item quantity="one">il y a %d minute</item>
         <item quantity="other">il y a %d minutes</item>
     </plurals>
     <plurals name="d_hours_ago">
+        <item quantity="one">il y a %1$d heure</item>
         <item quantity="other">il y a %1$d heures</item>
     </plurals>
     <plurals name="favorite_usage_count">
+        <item quantity="one">Utilisé %d fois</item>
         <item quantity="other">Utilisé %d fois</item>
     </plurals>
     <plurals name="favorite_time_minutes_ago">
+        <item quantity="one">il y a %d minute</item>
         <item quantity="other">il y a %d minutes</item>
     </plurals>
     <plurals name="favorite_time_hours_ago">
+        <item quantity="one">il y a %d heure</item>
         <item quantity="other">il y a %d heures</item>
     </plurals>
     <plurals name="favorite_time_days_ago">
+        <item quantity="one">il y a %d jour</item>
         <item quantity="other">il y a %d jours</item>
     </plurals>
     <plurals name="time_minutes_ago_format">
+        <item quantity="one">il y a %1$d minute</item>
         <item quantity="other">il y a %1$d minutes</item>
     </plurals>
     <plurals name="time_hours_ago_format">
+        <item quantity="one">il y a %1$d heure</item>
         <item quantity="other">il y a %1$d heures</item>
     </plurals>
     <plurals name="time_days_ago_format">
+        <item quantity="one">il y a %1$d jour</item>
         <item quantity="other">il y a %1$d jours</item>
     </plurals>
     <string name="time_due_today">Expire aujourd\'hui</string>
@@ -1902,6 +1912,7 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="altitude_aqi_value">Qualité de l\'air %1$s</string>
 
     <plurals name="ai_reasoning_seconds">
+        <item quantity="one">Réflexion approfondie (%d seconde)</item>
         <item quantity="other">Réflexion approfondie (%d secondes)</item>
     </plurals>
     <plurals name="ai_chat_token_count">
@@ -1911,7 +1922,8 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
         <item quantity="other">Obtenez %s points</item>
     </plurals>
     <plurals name="token_usage_request_times">
-        <item quantity="other">%d Nombre de requêtes</item>
+        <item quantity="one">%d requête</item>
+        <item quantity="other">%d requêtes</item>
     </plurals>
     <string name="ai_duel_system_prompt">Tu es « %1$s ».\nTu discutes avec « %2$s ». Écris uniquement ce que tu veux dire, ne parle pas à la place de l\'autre.</string>
     <string name="ai_duel_default_persona_a">Tu es curieux, tu aimes poser des questions et tu n\'hésites pas à donner ton avis.</string>

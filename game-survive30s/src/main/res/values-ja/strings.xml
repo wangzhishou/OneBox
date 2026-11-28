@@ -50,4 +50,8 @@
     <string name="survive_30s_paused">一時停止</string>
     <string name="survive_30s_pause_desc">バックグラウンドに移動したため自動で一時停止しました。進行状況はそのままです。</string>
     <string name="survive_30s_resume">続ける</string>
+    <string name="survive_30s_remaining">残り時間</string>
+    <string name="survive_30s_shield_count">シールド ×%1$d</string>
+    <string name="survive_30s_invincible">シールド有効 · %.1fs</string>
+    <string name="survive_30s_pause">一時停止</string>
 </resources>

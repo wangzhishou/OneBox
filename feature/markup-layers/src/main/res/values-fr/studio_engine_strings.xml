@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ OneBox is a free AI agent and toolbox for Android
+  ~ Copyright (c) 2026 zhishouwang(网址兽)
+  ~
+  ~ Origin: OneBox original work, not derived from ImageToolbox
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~ You should have received a copy of the Apache License
+  ~ along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+  -->
+
+<resources>
+    <string name="studio_project_untitled">Projet sans titre</string>
+    <string name="studio_project_save_failed">Échec de l\'enregistrement : %1$s</string>
+    <string name="studio_project_saved">Projet enregistré</string>
+    <string name="studio_project_load_failed">Impossible d\'ouvrir le projet : %1$s</string>
+    <string name="studio_processing_limit">%1$d × %2$d dépasse la capacité de cet appareil. Choisissez une résolution plus petite.</string>
+    <string name="studio_image_read_failed">Impossible de lire cette image</string>
+    <string name="studio_image_dimensions_failed">Impossible de lire la taille de l\'image</string>
+    <string name="studio_task_loading">Lecture de l\'image</string>
+    <string name="studio_task_rendering">Composition de l\'image</string>
+    <string name="studio_task_transforming">Application du recadrage et de la rotation</string>
+    <string name="studio_task_ai">Traitement de l\'image IA</string>
+    <string name="studio_task_ai_download">Enregistrement du résultat IA</string>
+    <string name="studio_task_mask">Préparation de l\'aperçu du masque</string>
+    <string name="studio_processing_failed">Échec du traitement : %1$s</string>
+    <string name="studio_mask_target_required">Choisissez une image, un sticker, un calque pinceau ou le fond</string>
+    <string name="studio_recipe_saved">Formule enregistrée</string>
+    <string name="studio_recipe_failed">Échec de la formule : %1$s</string>
+    <string name="studio_batch_finished">%1$d enregistrée(s), %2$d en échec</string>
+    <string name="studio_ai_image_target_required">Choisissez un calque image ou le fond</string>
+    <string name="studio_ai_edit_unsupported">Ce service d\'image ne permet pas l\'édition. Choisissez-en un autre dans les réglages.</string>
+    <string name="studio_merge_locked">Déverrouillez d\'abord le calque du dessous</string>
+    <string name="studio_merge_blended">Gardez le calque de fusion modifiable, ou exportez l\'image composée.</string>
+</resources>

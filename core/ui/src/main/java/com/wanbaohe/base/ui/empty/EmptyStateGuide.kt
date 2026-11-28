@@ -45,6 +45,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.core.ui.widget.glass.glassThin
@@ -129,6 +130,7 @@ fun EmptyStateGuide(
                         val actionIndex = rowIndex * 2 + index
                         val useTertiary = actionIndex % 2 == 0
                         EmptyStateActionButton(
+                            modifier = Modifier.weight(1f),
                             action = action,
                             // 实色容器在浅色主题下会压成一块色板,摊薄后再交给玻璃管线
                             containerColor = softTonalContainer(
@@ -166,9 +168,11 @@ private fun EmptyStateActionButton(
     action: EmptyStateGuideAction,
     containerColor: Color,
     contentColor: Color,
+    modifier: Modifier = Modifier,
 ) {
     GlassTonalButton(
         onClick = action.onClick,
+        modifier = modifier,
         shape = MaterialTheme.shapes.large,
         color = containerColor,
         contentColor = contentColor,
@@ -182,9 +186,12 @@ private fun EmptyStateActionButton(
         Spacer(Modifier.width(8.dp))
         Text(
             text = action.title,
+            modifier = Modifier.weight(1f),
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.SemiBold,
-            maxLines = 1,
+            textAlign = TextAlign.Center,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
         )
     }
 }
