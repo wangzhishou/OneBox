@@ -1400,6 +1400,8 @@
     <string name="ai_model_tag_balanced">均衡</string>
     <string name="ai_model_tag_speed">高速</string>
     <string name="ai_model_tag_fast">快速</string>
+    <string name="ai_model_tier_rapid">極速</string>
+    <string name="ai_model_tier_flagship">旗艦</string>
     <string name="ai_model_tag_code">程式碼</string>
     <string name="ai_engine_capability_fast">快速模型</string>
     <string name="ai_engine_capability_code">程式碼模型</string>

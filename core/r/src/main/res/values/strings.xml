@@ -1532,6 +1532,8 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="ai_model_tag_balanced">Balanced</string>
     <string name="ai_model_tag_speed">Speed</string>
     <string name="ai_model_tag_fast">Fast</string>
+    <string name="ai_model_tier_rapid">Rapid</string>
+    <string name="ai_model_tier_flagship">Flagship</string>
     <string name="ai_model_tag_code">Code</string>
     <string name="ai_engine_capability_fast">Fast Model</string>
     <string name="ai_engine_capability_code">Code Model</string>

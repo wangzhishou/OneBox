@@ -26,10 +26,12 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.MarqueeSpacing
 import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -38,22 +40,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ViewList
-import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.Refresh
-import androidx.compose.material.icons.outlined.Search
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -75,6 +69,7 @@ import com.shifenmiao.core.R
 import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.model.ai.AiModel
 import com.shifenmiao.theme.AppTheme
+import com.wanbaohe.base.ui.card.TonalCardPaletteDefaults
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.wanbaohe.core.ui.widget.enhanced.EnhancedSheetHeader
@@ -82,18 +77,23 @@ import com.wanbaohe.core.ui.widget.glass.GlassCard
 import com.wanbaohe.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.resources.icons.Search
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineQuickTiles
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSettings
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineViewList
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineFeatures
 
 
-/** 模型列表布局模式：Grid（网格）或 List（卡片列表） */
+/** 模型卡片排布：Grid 每行 3 张，List 每行 2 张（单卡更宽）。同一套卡片。 */
 enum class ModelLayoutMode { Grid, List }
 
 /** 内容区固定高度，避免 Grid/List 切换时弹窗跳动 */
 private val CONTENT_AREA_HEIGHT = 480.dp
+
+private val RAPID_NAME_HINTS = listOf("flash", "mini", "lite", "haiku", "nano")
+private val FLAGSHIP_NAME_HINTS = listOf("pro", "opus", "ultra", "flagship")
 
 @Composable
 fun AIModelsPickerBottomSheet(
@@ -311,7 +311,11 @@ private fun LayoutToggleButton(
             label = "layout_toggle"
         ) { grid ->
             Icon(
-                imageVector = if (grid) Icons.AutoMirrored.Filled.ViewList else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFeatures,
+                imageVector = if (grid) {
+                    com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineViewList
+                } else {
+                    com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineQuickTiles
+                },
                 contentDescription = if (grid) {
                     stringResource(R.string.ai_switch_to_list)
                 } else {
@@ -357,176 +361,183 @@ private fun ModelContent(
         label = "model_layout",
         modifier = modifier
     ) { mode ->
-        when (mode) {
-            ModelLayoutMode.List -> ModelCardList(
-                models = models,
-                selectedModelName = selectedModelName,
-                selectedEngineName = selectedEngineName,
-                onModelClick = onModelClick
-            )
-
-            ModelLayoutMode.Grid -> ModelGridContent(
-                models = models,
-                selectedModelName = selectedModelName,
-                selectedEngineName = selectedEngineName,
-                onModelClick = onModelClick
-            )
+        val columns = if (mode == ModelLayoutMode.List) 2 else 3
+        val spacious = mode == ModelLayoutMode.List
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = AppTheme.dimens.spaceLarge, vertical = 8.dp),
+        ) {
+            FlexBox(
+                modifier = Modifier.fillMaxWidth(),
+                config = {
+                    wrap(FlexWrap.Wrap)
+                    maxItemsInEachLine(columns)
+                    columnGap(8.dp)
+                    rowGap(8.dp)
+                },
+            ) {
+                models.forEach { (engine, model) ->
+                    val isSelected = engine.identityKey() == selectedEngineName &&
+                        model.name == selectedModelName
+                    ModelPickCard(
+                        engine = engine,
+                        model = model,
+                        isSelected = isSelected,
+                        spacious = spacious,
+                        onClick = { onModelClick(engine, model) },
+                        modifier = Modifier.flex {
+                            grow(1f)
+                            basis(0f)
+                        },
+                    )
+                }
+                val remainder = models.size % columns
+                if (remainder != 0) {
+                    repeat(columns - remainder) {
+                        Spacer(
+                            Modifier.flex {
+                                grow(1f)
+                                basis(0f)
+                            },
+                        )
+                    }
+                }
+            }
         }
     }
 }
 
 @Composable
-private fun ModelCardList(
-    models: List<Pair<AiEngine, AiModel>>,
-    selectedModelName: String,
-    selectedEngineName: String,
-    onModelClick: (AiEngine, AiModel) -> Unit,
-) {
-    LazyColumn(
-        modifier = Modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(
-            horizontal = AppTheme.dimens.spaceLarge,
-            vertical = 8.dp
-        ),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
-    ) {
-        items(
-            items = models,
-            key = { (engine, model) -> "${engine.identityKey()}_${model.name}" }
-        ) { (engine, model) ->
-            val isSelected =
-                engine.identityKey() == selectedEngineName && model.name == selectedModelName
-            ModelCard(
-                engine = engine,
-                model = model,
-                isSelected = isSelected,
-                onClick = { onModelClick(engine, model) }
-            )
-        }
-    }
-}
-
-@Composable
-private fun ModelCard(
+private fun ModelPickCard(
     engine: AiEngine,
     model: AiModel,
     isSelected: Boolean,
+    spacious: Boolean,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    val contentColor = if (isSelected) {
-        MaterialTheme.colorScheme.onPrimaryContainer
+    val palette = TonalCardPaletteDefaults.forIndex(
+        (engine.identityKey() + ":" + model.name).hashCode(),
+    )
+    val padH = if (spacious) 14.dp else 10.dp
+    val padV = if (spacious) 14.dp else 12.dp
+    val iconSize = if (spacious) 40.dp else 32.dp
+    val titleStyle = if (spacious) {
+        MaterialTheme.typography.bodyMedium
     } else {
-        MaterialTheme.colorScheme.onSurface
-    }
-    val containerColor = if (isSelected) {
-        MaterialTheme.colorScheme.primaryContainer
-    } else {
-        MaterialTheme.colorScheme.surfaceContainerLowest
+        MaterialTheme.typography.labelMedium
     }
 
     GlassCard(
         onClick = onClick,
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(14.dp),
-        colors = CardDefaults.cardColors(containerColor = containerColor),
-        style = if (isSelected) GlassStyle.Regular else GlassStyle.Dense,
+        modifier = modifier,
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = palette.containerColor,
+            contentColor = palette.titleColor,
+        ),
+        style = if (isSelected) GlassStyle.Thick else TonalCardPaletteDefaults.containerStyle,
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            ModelProviderIcon(
-                engine = engine,
-                model = model,
-                modifier = Modifier.size(40.dp),
-            )
-
-            Spacer(modifier = Modifier.width(12.dp))
-
+        Box(modifier = Modifier.fillMaxWidth()) {
             Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(2.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = padH, vertical = padV),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
-                    Text(
-                        text = model.title,
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.SemiBold
-                        ),
-                        color = contentColor,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.weight(1f)
-                    )
-                    ProviderBadge(engine = engine, model = model, isSelected = isSelected)
-                    // 代理中转链路按模型倍率扣积分,展示倍率
-                    if (engine.usesProxyRoute()) {
-                        Text(
-                            text = model.pointsMultiplierText(),
-                            style = MaterialTheme.typography.labelSmall.copy(
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 10.sp,
-                            ),
-                            color = if (isSelected) {
-                                MaterialTheme.colorScheme.onPrimaryContainer
-                            } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant
-                            },
-                            maxLines = 1,
-                        )
-                    }
-                }
-
-                // 模型卡片只保留模型名 + 品牌角标 + 积分倍率, 不再展示简介与协议/路由信息
+                ModelProviderIcon(
+                    engine = engine,
+                    model = model,
+                    modifier = Modifier.size(iconSize),
+                )
+                Text(
+                    text = model.title,
+                    style = titleStyle.copy(fontWeight = FontWeight.SemiBold),
+                    color = palette.titleColor,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                ModelMetaRow(engine = engine, model = model)
             }
-
             if (isSelected) {
-                Spacer(modifier = Modifier.width(8.dp))
-                Surface(
-                    shape = RoundedCornerShape(999.dp),
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier.size(8.dp)
-                ) {}
+                SelectedMark(
+                    color = palette.accentColor,
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(6.dp),
+                )
             }
         }
     }
 }
 
 @Composable
-private fun ModelTagRow(
+private fun ModelMetaRow(
+    engine: AiEngine,
     model: AiModel,
-    maxVisible: Int,
 ) {
-    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        resolveModelTags(model).take(maxVisible).forEach { (tagText, tagColor) ->
-            ModelTagBadge(tagText = tagText, tagColor = tagColor)
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+    ) {
+        if (engine.usesProxyRoute()) {
+            ModelBadge(text = model.pointsMultiplierText())
         }
+        ModelBadge(text = modelTierLabel(model))
     }
 }
 
+/** 倍率旁的短标签:名字里的 Pro/Opus 优先算旗舰,Flash 或低倍率算极速,其余用能力标签。 */
 @Composable
-private fun ModelTagBadge(
-    tagText: String,
-    tagColor: Color,
+private fun modelTierLabel(model: AiModel): String {
+    val key = "${model.title} ${model.name}".lowercase()
+    if (FLAGSHIP_NAME_HINTS.any { key.contains(it) }) {
+        return stringResource(R.string.ai_model_tier_flagship)
+    }
+    val rapid = model.isFast ||
+        model.basePoints < 0.5f ||
+        RAPID_NAME_HINTS.any { key.contains(it) }
+    if (rapid) return stringResource(R.string.ai_model_tier_rapid)
+    return resolveModelTags(model).first().first
+}
+
+/** 与服务列表同一套胶囊:主色容器 + 玻璃薄底,不另配一套标签色。 */
+@Composable
+private fun ModelBadge(text: String) {
+    Text(
+        text = text,
+        modifier = Modifier
+            .glassBackground(
+                style = GlassStyle.Thin,
+                color = MaterialTheme.colorScheme.primaryContainer,
+                shape = RoundedCornerShape(50),
+                borderWidth = 0.dp,
+            )
+            .padding(horizontal = 8.dp, vertical = 3.dp),
+        style = MaterialTheme.typography.labelSmall,
+        color = MaterialTheme.colorScheme.onPrimaryContainer,
+        maxLines = 1,
+    )
+}
+
+@Composable
+private fun SelectedMark(
+    color: Color,
+    modifier: Modifier = Modifier,
 ) {
-    Surface(
-        shape = RoundedCornerShape(999.dp),
-        color = tagColor.copy(alpha = 0.16f),
-        shadowElevation = 0.dp
+    Box(
+        modifier = modifier
+            .size(18.dp)
+            .background(color, CircleShape),
+        contentAlignment = Alignment.Center,
     ) {
-        Text(
-            text = tagText,
-            style = MaterialTheme.typography.labelMedium.copy(
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 11.sp,
-            ),
-            color = tagColor.copy(alpha = 0.92f),
-            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
+        Icon(
+            imageVector = ModelLayoutIcons.Check,
+            contentDescription = null,
+            modifier = Modifier.size(12.dp),
+            tint = MaterialTheme.colorScheme.surface,
         )
     }
 }
@@ -539,52 +550,30 @@ private fun ModelProviderIcon(
 ) {
     val brandIcon = providerBrandIcon(model.provider.value)
 
-    Surface(
-        modifier = modifier,
-        shape = RoundedCornerShape(10.dp),
-        color = MaterialTheme.colorScheme.surfaceContainer,
+    Box(
+        modifier = modifier.glassBackground(
+            style = GlassStyle.Medium,
+            color = MaterialTheme.colorScheme.surfaceContainer,
+            shape = RoundedCornerShape(10.dp),
+            borderWidth = 0.dp,
+        ),
+        contentAlignment = Alignment.Center,
     ) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            if (brandIcon != null) {
-                Icon(
-                    imageVector = brandIcon,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.fillMaxSize(0.58f)
-                )
-            } else {
-                Text(
-                    text = resolveProviderMonogram(engine, model),
-                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-            }
+        if (brandIcon != null) {
+            Icon(
+                imageVector = brandIcon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.fillMaxSize(0.55f),
+            )
+        } else {
+            Text(
+                text = resolveProviderMonogram(engine, model),
+                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
         }
     }
-}
-
-@Composable
-private fun ProviderBadge(
-    engine: AiEngine,
-    model: AiModel,
-    isSelected: Boolean,
-) {
-    Text(
-        text = resolveProviderLabel(engine, model),
-        style = MaterialTheme.typography.labelSmall.copy(
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 10.sp,
-        ),
-        color = if (isSelected) {
-            MaterialTheme.colorScheme.onPrimaryContainer
-        } else {
-            MaterialTheme.colorScheme.onSurfaceVariant
-        },
-        maxLines = 1,
-    )
 }
 
 @Composable
@@ -617,129 +606,21 @@ private fun resolveModelTags(model: AiModel): List<Pair<String, Color>> {
 }
 
 @Composable
-private fun ModelGridContent(
-    models: List<Pair<AiEngine, AiModel>>,
-    selectedModelName: String,
-    selectedEngineName: String,
-    onModelClick: (AiEngine, AiModel) -> Unit,
-) {
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 104.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = AppTheme.dimens.spaceLarge),
-        contentPadding = PaddingValues(vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        items(count = models.size, key = { idx ->
-            val (e, m) = models[idx]
-            "${e.identityKey()}_${m.name}"
-        }) { idx ->
-            val (engine, model) = models[idx]
-            val isSelected =
-                engine.identityKey() == selectedEngineName && model.name == selectedModelName
-            ModelGridItem(
-                engine = engine,
-                model = model,
-                isSelected = isSelected,
-                onClick = { onModelClick(engine, model) }
-            )
-        }
-    }
-}
-
-@Composable
 fun ModelGridItem(
     engine: AiEngine,
     model: AiModel,
     isSelected: Boolean = false,
     onClick: () -> Unit = {},
+    modifier: Modifier = Modifier,
 ) {
-    val contentColor = if (isSelected) {
-        MaterialTheme.colorScheme.onPrimaryContainer
-    } else {
-        MaterialTheme.colorScheme.onSurface
-    }
-    val containerColor = if (isSelected) {
-        MaterialTheme.colorScheme.primaryContainer
-    } else {
-        MaterialTheme.colorScheme.surfaceContainerLowest
-    }
-
-    GlassCard(
+    ModelPickCard(
+        engine = engine,
+        model = model,
+        isSelected = isSelected,
+        spacious = false,
         onClick = onClick,
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = containerColor),
-        style = if (isSelected) GlassStyle.Regular else GlassStyle.Dense,
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp, vertical = 14.dp),
-            verticalArrangement = Arrangement.spacedBy(6.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            ModelProviderIcon(
-                engine = engine,
-                model = model,
-                modifier = Modifier.size(40.dp),
-            )
-
-            Text(
-                text = model.title,
-                style = MaterialTheme.typography.labelMedium.copy(
-                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-                    lineHeight = 16.sp,
-                ),
-                color = contentColor,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(20.dp),
-            )
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(14.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                if (engine.usesProxyRoute()) {
-                    Text(
-                        text = model.pointsMultiplierText(),
-                        style = MaterialTheme.typography.labelSmall.copy(
-                            fontSize = 10.sp,
-                            lineHeight = 14.sp,
-                        ),
-                        color = if (isSelected) {
-                            MaterialTheme.colorScheme.onPrimaryContainer
-                        } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant
-                        },
-                        maxLines = 1,
-                        textAlign = TextAlign.Center,
-                    )
-                }
-            }
-
-            Box(
-                modifier = Modifier.size(6.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                if (isSelected) {
-                    Surface(
-                        shape = RoundedCornerShape(999.dp),
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        modifier = Modifier.size(6.dp),
-                    ) {}
-                }
-            }
-        }
-    }
+        modifier = modifier.fillMaxWidth(),
+    )
 }
 
 @Composable
