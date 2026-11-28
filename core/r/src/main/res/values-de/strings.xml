@@ -207,6 +207,7 @@
     <string name="login_error_toast">Anmeldefehler. Bitte später erneut versuchen.</string>
     <string name="login_first">Bitte melden Sie sich zuerst an, um diese Funktion zu nutzen</string>
     <string name="open_url_toast">Wird im Systembrowser geöffnet</string>
+    <string name="open_url_failed">Systembrowser konnte nicht geöffnet werden</string>
     <string name="open_qq_group">QQ-Gruppe wird geöffnet. Bitte stellen Sie sicher, dass QQ installiert ist.</string>
     <string name="wechat_login">WeChat-Anmeldung</string>
     <string name="wechat_login_not_installed">WeChat ist nicht installiert. Bitte melde dich anders an.</string>

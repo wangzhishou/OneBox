@@ -25,54 +25,65 @@ package com.t8rin.imagetoolbox.feature.scan_qr_code.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexWrap
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.material.icons.Icons
-import com.wanbaohe.core.ui.widget.glass.GlassButton
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import com.wanbaohe.base.ui.ClearHistoryConfirmDialog
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
+import com.shifenmiao.base.utils.ActionUtils
 import com.t8rin.imagetoolbox.core.resources.R
-import com.wanbaohe.core.ui.utils.helper.Clipboard
-import com.wanbaohe.core.ui.utils.helper.rememberBarcodeScanner
-import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
-import com.wanbaohe.core.ui.widget.AdaptiveLayoutScreen
-import com.wanbaohe.core.ui.widget.glass.GlassSurface
-import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
-import com.wanbaohe.core.ui.widget.text.TitleItem
+import com.t8rin.imagetoolbox.core.resources.icons.Delete
+import com.t8rin.imagetoolbox.core.resources.icons.DeleteSweep
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineImage
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineLink
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineQrCode
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineQrScanner
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineText
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineTouchApp
 import com.t8rin.imagetoolbox.feature.scan_qr_code.domain.ScanCodeContentType
 import com.t8rin.imagetoolbox.feature.scan_qr_code.presentation.model.ScanCodeHistoryItem
 import com.t8rin.imagetoolbox.feature.scan_qr_code.presentation.screenLogic.ScanCodeComponent
+import com.wanbaohe.base.ui.ClearHistoryConfirmDialog
+import com.wanbaohe.base.ui.card.TonalCardPaletteDefaults
+import com.wanbaohe.core.ui.utils.helper.Clipboard
+import com.wanbaohe.core.ui.utils.helper.ProvidesValue
+import com.wanbaohe.core.ui.utils.helper.rememberBarcodeScanner
+import com.wanbaohe.core.ui.utils.provider.LocalComponentActivity
+import com.wanbaohe.core.ui.widget.AdaptiveLayoutScreen
+import com.wanbaohe.core.ui.widget.glass.GlassButton
+import com.wanbaohe.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.core.ui.widget.preferences.PreferenceItemDefaults
+import com.wanbaohe.core.ui.widget.system.OneBoxBottomActionBar
+import com.wanbaohe.core.ui.widget.system.OneBoxDesignSystem
+import com.wanbaohe.core.ui.widget.text.TitleItem
 import java.text.DateFormat
 import java.util.Date
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
-import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
-import com.t8rin.imagetoolbox.core.resources.icons.DeleteSweep
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineImage
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineLink
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineText
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineTouchApp
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineQrCode
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineQrScanner
 
 @Composable
 fun ScanCodeContent(
@@ -118,6 +129,7 @@ fun ScanCodeContent(
                     ScanHistoryItemCard(
                         item = it,
                         onOpen = component::openHistoryItem,
+                        onOpenInBrowser = { ActionUtils.openWebBrowser(activity, it.entry.raw) },
                         onCopy = { Clipboard.copy(it.entry.raw) },
                         onDelete = component::removeHistoryItem,
                         isPinned = true
@@ -136,6 +148,7 @@ fun ScanCodeContent(
                         ScanHistoryItemCard(
                             item = item,
                             onOpen = component::openHistoryItem,
+                            onOpenInBrowser = { ActionUtils.openWebBrowser(activity, item.entry.raw) },
                             onCopy = { Clipboard.copy(item.entry.raw) },
                             onDelete = component::removeHistoryItem
                         )
@@ -144,34 +157,13 @@ fun ScanCodeContent(
             }
         },
         buttons = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth().navigationBarsPadding()
-                    .padding(20.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                if (canOpenLatest) {
-                    FilledTonalButton(
-                        onClick = component::openLatest,
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(text = stringResource(R.string.open_latest_result))
-                    }
-                }
-                GlassButton(
-                    onClick = {
-                        scanner.scan(contextActivity = activity)
-                    },
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineQrScanner,
-                        contentDescription = null
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = stringResource(R.string.start_scanning))
-                }
-            }
+            OneBoxBottomActionBar(
+                primaryText = stringResource(R.string.start_scanning),
+                onPrimaryClick = { scanner.scan(contextActivity = activity) },
+                primaryIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineQrScanner,
+                secondaryText = if (canOpenLatest) stringResource(R.string.open_latest_result) else null,
+                onSecondaryClick = if (canOpenLatest) component::openLatest else null,
+            )
         },
         canShowScreenData = true,
         showImagePreviewAsStickyHeader = false,
@@ -246,11 +238,13 @@ private fun ScanHistorySectionTitle(
 private fun ScanHistoryItemCard(
     item: ScanCodeHistoryItem,
     onOpen: (ScanCodeHistoryItem) -> Unit,
+    onOpenInBrowser: () -> Unit,
     onCopy: () -> Unit,
     onDelete: (ScanCodeHistoryItem) -> Unit,
     isPinned: Boolean = false
 ) {
     val canOpen = item.type != ScanCodeContentType.TEXT
+    val canOpenInSystemBrowser = item.canOpenInSystemBrowser()
 
     GlassSurface(
         modifier = Modifier.fillMaxWidth(),
@@ -262,17 +256,10 @@ private fun ScanHistoryItemCard(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            TitleItem(
-                icon = item.type.icon(),
-                text = stringResource(item.type.labelRes()),
-                subtitle = buildString {
-                    append(formatTime(item.entry.scannedAtMillis))
-                    if (isPinned) {
-                        append(" · ")
-                        append(stringResource(R.string.latest_scan_result))
-                    }
-                },
-                modifier = Modifier.fillMaxWidth()
+            ScanHistoryItemHeader(
+                item = item,
+                isPinned = isPinned,
+                onDelete = { onDelete(item) },
             )
 
             SelectionContainer {
@@ -285,35 +272,124 @@ private fun ScanHistoryItemCard(
                 )
             }
 
-            Row(
+            FlexBox(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
+                config = {
+                    wrap(FlexWrap.Wrap)
+                    columnGap(8.dp)
+                    rowGap(8.dp)
+                },
             ) {
+                var paletteIndex = 0
                 if (canOpen) {
-                    FilledTonalButton(onClick = { onOpen(item) }) {
-                        Text(text = stringResource(item.type.openActionRes()))
-                    }
-                }
-
-                OutlinedButton(onClick = onCopy) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ContentCopy,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp)
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(text = stringResource(R.string.copy_content))
-                }
-
-                IconButton(onClick = { onDelete(item) }) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.DeleteSweep,
-                        contentDescription = stringResource(R.string.delete_history_item)
+                    ScanGlassActionButton(
+                        text = stringResource(R.string.open),
+                        paletteIndex = paletteIndex++,
+                        onClick = { onOpen(item) },
                     )
                 }
+                if (canOpenInSystemBrowser) {
+                    ScanGlassActionButton(
+                        text = stringResource(com.shifenmiao.core.R.string.web_browser_title),
+                        paletteIndex = paletteIndex++,
+                        onClick = onOpenInBrowser,
+                    )
+                }
+                ScanGlassActionButton(
+                    text = stringResource(R.string.copy),
+                    paletteIndex = paletteIndex,
+                    onClick = onCopy,
+                )
             }
         }
+    }
+}
+
+@Composable
+private fun ScanHistoryItemHeader(
+    item: ScanCodeHistoryItem,
+    isPinned: Boolean,
+    onDelete: () -> Unit,
+) {
+    Column {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(
+                imageVector = item.type.icon(),
+                contentDescription = null,
+                tint = LocalContentColor.current.copy(alpha = 0.72f),
+                modifier = Modifier.size(22.dp),
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = stringResource(item.type.labelRes()),
+                style = PreferenceItemDefaults.TitleFontStyle,
+                modifier = Modifier.weight(1f),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            ScanHistoryDeleteButton(onClick = onDelete)
+        }
+        Spacer(modifier = Modifier.height(2.dp))
+        Text(
+            text = buildString {
+                append(formatTime(item.entry.scannedAtMillis))
+                if (isPinned) {
+                    append(" · ")
+                    append(stringResource(R.string.latest_scan_result))
+                }
+            },
+            modifier = Modifier.padding(start = 30.dp),
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Normal,
+            lineHeight = 14.sp,
+            color = LocalContentColor.current.copy(alpha = 0.5f),
+        )
+    }
+}
+
+@Composable
+private fun ScanHistoryDeleteButton(onClick: () -> Unit) {
+    LocalMinimumInteractiveComponentSize.ProvidesValue(Dp.Unspecified) {
+        IconButton(
+            onClick = onClick,
+            modifier = Modifier.size(28.dp),
+        ) {
+            Icon(
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
+                contentDescription = stringResource(R.string.delete_history_item),
+                modifier = Modifier.size(16.dp),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
+}
+
+/**
+ * 和首页功能卡片同一套四色轮换：只取主题色相，浓淡交给玻璃管线。
+ */
+@Composable
+private fun ScanGlassActionButton(
+    text: String,
+    paletteIndex: Int,
+    onClick: () -> Unit,
+) {
+    val palette = TonalCardPaletteDefaults.forIndex(paletteIndex)
+    GlassButton(
+        onClick = onClick,
+        shape = OneBoxDesignSystem.pillShape,
+        color = palette.containerColor,
+        contentColor = palette.titleColor,
+        borderWidth = 0.9.dp,
+        contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp),
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.labelLarge,
+            maxLines = 1,
+        )
     }
 }
 
@@ -331,11 +407,9 @@ private fun ScanCodeContentType.labelRes(): Int = when (this) {
     ScanCodeContentType.TEXT -> R.string.scan_content_type_text
 }
 
-private fun ScanCodeContentType.openActionRes(): Int = when (this) {
-    ScanCodeContentType.INTERNAL_DEEPLINK -> R.string.open_internal_deeplink
-    ScanCodeContentType.IMAGE -> R.string.preview_image
-    ScanCodeContentType.WEB -> R.string.open_in_browser
-    ScanCodeContentType.TEXT -> R.string.copy_content
+private fun ScanCodeHistoryItem.canOpenInSystemBrowser(): Boolean {
+    val scheme = entry.raw.trim().toUri().scheme?.lowercase()
+    return scheme == "http" || scheme == "https"
 }
 
 private fun formatTime(timeMillis: Long): String {

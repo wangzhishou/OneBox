@@ -207,6 +207,7 @@
     <string name="login_error_toast">Error sa pag-login. Pakisubukan muli mamaya.</string>
     <string name="login_first">Mangyaring mag-login muna upang gamitin ang feature na ito</string>
     <string name="open_url_toast">Binubuksan sa system browser</string>
+    <string name="open_url_failed">Hindi mabuksan ang system browser</string>
     <string name="open_qq_group">Binubuksan ang QQ group. Pakisiguraduhing naka-install ang QQ.</string>
     <string name="wechat_login">WeChat Login</string>
     <string name="wechat_login_not_installed">Hindi naka-install ang WeChat. Mag-sign in sa ibang paraan.</string>

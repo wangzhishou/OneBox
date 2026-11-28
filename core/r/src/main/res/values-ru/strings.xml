@@ -207,6 +207,7 @@
     <string name="login_error_toast">Ошибка входа. Попробуйте позже.</string>
     <string name="login_first">Пожалуйста, войдите, чтобы использовать эту функцию</string>
     <string name="open_url_toast">Открытие в системном браузере</string>
+    <string name="open_url_failed">Не удалось открыть системный браузер</string>
     <string name="open_qq_group">Открытие группы QQ. Убедитесь, что QQ установлен.</string>
     <string name="wechat_login">Вход через WeChat</string>
     <string name="wechat_login_not_installed">WeChat не установлен. Войдите другим способом.</string>

@@ -236,6 +236,7 @@
     <string name="login_first">Réservé aux utilisateurs inscrits, veuillez d\'abord vous connecter</string>
     <string name="on_device_model_not_supported">Le modèle local sélectionné ne prend pas en charge cette fonctionnalité, veuillez passer à un modèle cloud dans les paramètres</string>
     <string name="open_url_toast">Ouverture dans le navigateur système en cours</string>
+    <string name="open_url_failed">Impossible d\'ouvrir le navigateur système</string>
     <string name="open_qq_group">Ouverture du groupe QQ officiel, veuillez vous assurer que QQ est installé</string>
     <string name="wechat_login">Connexion WeChat</string>
     <string name="wechat_login_not_installed">WeChat n\'est pas installé. Connectez-vous autrement.</string>

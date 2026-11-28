@@ -207,6 +207,7 @@
     <string name="login_error_toast">Kesalahan masuk. Silakan coba lagi nanti.</string>
     <string name="login_first">Silakan masuk terlebih dahulu untuk menggunakan fitur ini</string>
     <string name="open_url_toast">Membuka di browser sistem</string>
+    <string name="open_url_failed">Tidak dapat membuka browser sistem</string>
     <string name="open_qq_group">Membuka grup QQ. Pastikan QQ sudah terinstal.</string>
     <string name="wechat_login">Masuk dengan WeChat</string>
     <string name="wechat_login_not_installed">WeChat tidak terpasang. Silakan masuk dengan cara lain.</string>

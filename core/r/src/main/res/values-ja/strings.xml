@@ -207,6 +207,7 @@
     <string name="login_error_toast">ログインエラー。後でもう一度お試しください。</string>
     <string name="login_first">この機能を利用するには、先にログインしてください</string>
     <string name="open_url_toast">システムブラウザで開いています</string>
+    <string name="open_url_failed">システムブラウザを開けませんでした</string>
     <string name="open_qq_group">QQグループを開いています。QQがインストールされていることを確認してください。</string>
     <string name="wechat_login">WeChatログイン</string>
     <string name="wechat_login_not_installed">WeChatがインストールされていません。別の方法でログインしてください。</string>

@@ -236,6 +236,7 @@
     <string name="login_first">Chỉ người dùng đã đăng ký mới sử dụng được, vui lòng đăng nhập trước</string>
     <string name="on_device_model_not_supported">Mô hình trên thiết bị hiện được chọn không hỗ trợ tính năng này, vui lòng chuyển sang mô hình đám mây trong cài đặt</string>
     <string name="open_url_toast">Đang mở bằng trình duyệt hệ thống</string>
+    <string name="open_url_failed">Không mở được trình duyệt hệ thống</string>
     <string name="open_qq_group">Đang mở nhóm QQ chính thức, vui lòng đảm bảo đã cài đặt QQ</string>
     <string name="wechat_login">Đăng nhập bằng WeChat</string>
     <string name="wechat_login_not_installed">Chưa cài đặt WeChat. Vui lòng đăng nhập bằng cách khác.</string>

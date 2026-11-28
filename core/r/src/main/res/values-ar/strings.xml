@@ -214,6 +214,7 @@
     <string name="login_first">يرجى تسجيل الدخول أولًا لاستخدام هذه الميزة</string>
     <string name="on_device_model_not_supported">النموذج المحلي المحدد لا يدعم هذه الميزة. يرجى التبديل إلى نموذج سحابي من الإعدادات.</string>
     <string name="open_url_toast">جارٍ الفتح في متصفح النظام</string>
+    <string name="open_url_failed">تعذر فتح متصفح النظام</string>
     <string name="open_qq_group">جارٍ فتح مجموعة QQ. يرجى التأكد من تثبيت QQ.</string>
     <string name="wechat_login">تسجيل الدخول عبر WeChat</string>
     <string name="wechat_login_not_installed">WeChat غير مثبّت. يُرجى تسجيل الدخول بطريقة أخرى.</string>

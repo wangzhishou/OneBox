@@ -207,6 +207,7 @@
     <string name="login_error_toast">Error de inicio de sesión. Inténtalo de nuevo más tarde.</string>
     <string name="login_first">Inicia sesión primero para usar esta función</string>
     <string name="open_url_toast">Abriendo en el navegador del sistema</string>
+    <string name="open_url_failed">No se pudo abrir el navegador del sistema</string>
     <string name="open_qq_group">Abriendo grupo de QQ. Asegúrate de que QQ esté instalado.</string>
     <string name="wechat_login">Iniciar sesión con WeChat</string>
     <string name="wechat_login_not_installed">WeChat no está instalado. Inicia sesión de otra forma.</string>

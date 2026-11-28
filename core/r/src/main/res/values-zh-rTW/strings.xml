@@ -235,6 +235,7 @@
     <string name="login_error_toast">登入發生錯誤，請稍後重試！</string>
     <string name="login_first">註冊使用者才能使用，請先登入</string>
     <string name="open_url_toast">正在呼叫系統瀏覽器開啟中</string>
+    <string name="open_url_failed">無法開啟系統瀏覽器</string>
     <string name="open_qq_group">正在開啟官方QQ群，請確保已經安裝QQ</string>
     <string name="wechat_login">微信登入</string>
     <string name="wechat_login_not_installed">未安裝微信，請改用其他登入方式</string>

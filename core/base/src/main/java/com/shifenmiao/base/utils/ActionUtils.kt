@@ -90,11 +90,15 @@ object ActionUtils {
     }
 
     fun openWebBrowser(context: Context, url: String) {
-        showToast(context.getString(R.string.open_url_toast))
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
-        context.startActivity(intent)
+        val opened = runCatching { context.startActivity(intent) }.isSuccess
+        if (opened) {
+            showToast(context.getString(R.string.open_url_toast))
+        } else {
+            showError(R.string.open_url_failed)
+        }
     }
 
     /****************
